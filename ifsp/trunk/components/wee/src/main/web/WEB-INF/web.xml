@@ -14,7 +14,7 @@
 
   <servlet>
     <servlet-name>ContextServlet</servlet-name>
-    <servlet-class>eu.planets_project.ifr.core.wee.impl.WeeContextServlet</servlet-class>
+    <servlet-class>eu.planets_project.ifr.core.wee.gui.WeeContextServlet</servlet-class>
   </servlet>
 
   <servlet>
@@ -50,7 +50,7 @@
   </mime-mapping>
 
   <welcome-file-list id="WelcomeFileList">
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
 </web-app>
