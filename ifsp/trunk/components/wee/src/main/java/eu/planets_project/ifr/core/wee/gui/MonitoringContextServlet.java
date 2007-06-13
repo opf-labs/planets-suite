@@ -1,5 +1,5 @@
 
-package eu.planets_project.ifr.core.wee.impl;
+package eu.planets_project.ifr.core.wee.gui;
 
 import java.io.IOException;
 import java.io.PrintWriter;
