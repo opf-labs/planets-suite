@@ -1,0 +1,9 @@
+package eu.planets_project.TB.api.interfaces.model;
+
+public interface ExperimentResources {
+	
+	//List to be completed
+	
+	public void setNumberOfFiles(int iNr);
+	public int getNumberOfFiles();
+}
