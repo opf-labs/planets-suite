@@ -2,9 +2,7 @@ package eu.planets_project.ifr.core.wee.gui;
 
 
 import org.jboss.logging.Logger;
-import org.jboss.ws.core.CommonContextServlet;
 import org.jboss.ws.core.server.ServiceEndpointManagerFactory;
-import eu.planets_project.ifr.core.wee.gui.MonitoringContextServlet;
 
 
 /**
