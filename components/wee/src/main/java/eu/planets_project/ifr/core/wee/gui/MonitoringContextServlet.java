@@ -69,66 +69,68 @@ public abstract class MonitoringContextServlet extends HttpServlet
       if(endpoints.isEmpty())
       {
          writer.print("<tr>");
-         writer.print("	<td><h3>There are currently no workflows/services deployed</h3></td>");
+         writer.print("	<td><h3>There are currently no PLANETS workflows deployed</h3></td>");
          writer.print("</tr>");
       }
 
       for(ServiceEndpointDTO ep : endpoints)
       {
-         writer.print("<tr>");
-         writer.print("	<td>ServiceEndpointID</td>");
-         writer.print("	<td>"+ep.getSepID()+"</td>");
-         writer.print("</tr>");
-         writer.print("<tr>");
-         writer.print("	<td>ServiceEndpointAddress</td>");
-         writer.print("	<td><a href='"+ep.getAddress()+"?wsdl'>"+ep.getAddress()+"?wsdl</a></td>");
-         writer.print("</tr>");
-         writer.print("<tr>");
-         writer.print("	<td colspan=2>");
-         writer.print("	");
-         writer.print("<fieldset><legend>PLANETS Workflow Data</legend>");
-         writer.print("<table width='650' class='item-date'>");
-         writer.print("<tr>");
-         writer.print("	<td><b>StartTime</b></td>");
-         writer.print("	<td><b>StopTime</b></td>");
-         writer.print("	<td></td>");
-         writer.print("</tr>");
-         writer.print("<tr>");
-         writer.print("	<td>"+ep.getSeMetrics().getStartTime()+"</td>");
-
-         String stopTime = ep.getSeMetrics().getStopTime() != null ? ep.getSeMetrics().getStopTime().toString() : "";
-         writer.print("	<td>"+stopTime+"</td>");
-         writer.print("	<td></td>");
-         writer.print("</tr>");
-         writer.print("<tr>");
-
-         writer.print("	<td><b>RequestCount</b></td>");
-         writer.print("	<td><b>ResponseCount</b></td>");
-         writer.print("	<td><b>FaultCount</b></td>");
-         writer.print("</tr>");
-         writer.print("<tr>");
-         writer.print("	<td>"+ep.getSeMetrics().getRequestCount()+"</td>");
-         writer.print("	<td>"+ep.getSeMetrics().getResponseCount()+"</td>");
-         writer.print("	<td>"+ep.getSeMetrics().getFaultCount()+"</td>");
-         writer.print("</tr>");
-         writer.print("<tr>");
-         writer.print("	<td><b>MinProcessingTime</b></td>");
-         writer.print("	<td><b>MaxProcessingTime</b></td>");
-         writer.print("	<td><b>AvgProcessingTime</b></td>");
-         writer.print("</tr>");
-         writer.print("<tr>");
-         writer.print("	<td>"+ep.getSeMetrics().getMinProcessingTime()+"</td>");
-         writer.print("	<td>"+ep.getSeMetrics().getMaxProcessingTime()+"</td>");
-         writer.print("	<td>"+ep.getSeMetrics().getAverageProcessingTime()+"</td>");
-         writer.print("</tr>");
-         writer.print("");
-         writer.print("");
-         writer.print("</table></fieldset>");
-         writer.print("");
-         writer.print("	</td>");
-         writer.print("</tr>");
-
-         writer.print("<tr><td colspan='3'>&nbsp;</td></tr>");
+    	 if(ep.getAddress().endsWith("Workflow")){
+	         writer.print("<tr>");
+	         writer.print("	<td>ServiceEndpointID</td>");
+	         writer.print("	<td>"+ep.getSepID()+"</td>");
+	         writer.print("</tr>");
+	         writer.print("<tr>");
+	         writer.print("	<td>ServiceEndpointAddress</td>");
+	         writer.print("	<td><a href='"+ep.getAddress()+"?wsdl'>"+ep.getAddress()+"?wsdl</a></td>");
+	         writer.print("</tr>");
+	         writer.print("<tr>");
+	         writer.print("	<td colspan=2>");
+	         writer.print("	");
+	         writer.print("<fieldset><legend>PLANETS Workflow Data</legend>");
+	         writer.print("<table width='650' class='item-date'>");
+	         writer.print("<tr>");
+	         writer.print("	<td><b>StartTime</b></td>");
+	         writer.print("	<td><b>StopTime</b></td>");
+	         writer.print("	<td></td>");
+	         writer.print("</tr>");
+	         writer.print("<tr>");
+	         writer.print("	<td>"+ep.getSeMetrics().getStartTime()+"</td>");
+	
+	         String stopTime = ep.getSeMetrics().getStopTime() != null ? ep.getSeMetrics().getStopTime().toString() : "";
+	         writer.print("	<td>"+stopTime+"</td>");
+	         writer.print("	<td></td>");
+	         writer.print("</tr>");
+	         writer.print("<tr>");
+	
+	         writer.print("	<td><b>RequestCount</b></td>");
+	         writer.print("	<td><b>ResponseCount</b></td>");
+	         writer.print("	<td><b>FaultCount</b></td>");
+	         writer.print("</tr>");
+	         writer.print("<tr>");
+	         writer.print("	<td>"+ep.getSeMetrics().getRequestCount()+"</td>");
+	         writer.print("	<td>"+ep.getSeMetrics().getResponseCount()+"</td>");
+	         writer.print("	<td>"+ep.getSeMetrics().getFaultCount()+"</td>");
+	         writer.print("</tr>");
+	         writer.print("<tr>");
+	         writer.print("	<td><b>MinProcessingTime</b></td>");
+	         writer.print("	<td><b>MaxProcessingTime</b></td>");
+	         writer.print("	<td><b>AvgProcessingTime</b></td>");
+	         writer.print("</tr>");
+	         writer.print("<tr>");
+	         writer.print("	<td>"+ep.getSeMetrics().getMinProcessingTime()+"</td>");
+	         writer.print("	<td>"+ep.getSeMetrics().getMaxProcessingTime()+"</td>");
+	         writer.print("	<td>"+ep.getSeMetrics().getAverageProcessingTime()+"</td>");
+	         writer.print("</tr>");
+	         writer.print("");
+	         writer.print("");
+	         writer.print("</table></fieldset>");
+	         writer.print("");
+	         writer.print("	</td>");
+	         writer.print("</tr>");
+	
+	         writer.print("<tr><td colspan='3'>&nbsp;</td></tr>");
+    	 }
       }
       // end iteration
       writer.print("</table>");
@@ -147,7 +149,7 @@ public abstract class MonitoringContextServlet extends HttpServlet
       Package wsPackage = Package.getPackage("org.jboss.ws");
       writer.println("<head>");
       writer.println("<meta http-equiv='Content-Type content='text/html; charset=iso-8859-1'>");
-      writer.println("<title>PLANETS Workflows/Services</title>");
+      writer.println("<title>PLANETS Workflows</title>");
       writer.println("<link rel='stylesheet' href='css/screen_planets.css' media='screen'>");
       writer.println("<link rel='stylesheet' href='css/print_planets.css' media='print'>");
       writer.println("<link rel='shortcut icon' href='images/planets.ico' />");
