@@ -60,7 +60,7 @@ public abstract class MonitoringContextServlet extends HttpServlet
 
       writer.print("<div id='content'><a name='content'></a>");
       writer.print("<fieldset>");
-      writer.print("<legend><b>Registered PLANETS Workflows/Services Endpoints</b></legend>");
+      writer.print("<legend><b>Registered PLANETS Workflow Endpoints</b></legend>");
       writer.print("<table>");
 
       // begin iteration
