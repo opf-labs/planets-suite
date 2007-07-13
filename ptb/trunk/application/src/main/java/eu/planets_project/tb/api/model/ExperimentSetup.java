@@ -1,6 +1,6 @@
 package eu.planets_project.tb.api.model;
 
-import eu.planets_project.tb.api.services.mockups.ExperimentWorkflow;
+import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
 
 /**
  * The phase ExperimentSetup covers the steps of 1-3 of the Planets Testbed
@@ -30,8 +30,8 @@ public interface ExperimentSetup extends ExperimentPhase{
 	 * Sets the experiment's workflow (= services, data, configuration) 
 	 * @param workflow
 	 */
-	public void setWorkflow(ExperimentWorkflow workflow);
-	public ExperimentWorkflow getExperimentWorkflow();
+	public void setWorkflow(ComplexWorkflow workflow);
+	public ComplexWorkflow getExperimentWorkflow();
 	
 	/**
 	 * Sets a list of explored objectives

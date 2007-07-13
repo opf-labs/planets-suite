@@ -14,7 +14,6 @@ public interface BasicProperties extends PlanetsInstitutions{
 	public void setExperimentName(String sName);
 	public String getExperimentName();
 	
-	
 	/**
 	 * Allows to specify experiments that were an influence, starting point, etc. for this current one.
 	 * @param sRefIDs experimentID
@@ -23,7 +22,7 @@ public interface BasicProperties extends PlanetsInstitutions{
 	public void setExperimentReference(long sRefID);
 	public void setExperimentReference(Experiment refExp);
 	public void setExperimentReferences(Experiment[] refExps);
-	public Iterator getExperimentReferences();
+	public Iterator<Long> getExperimentReferences();
 	public Experiment[] getReferencedExperiments();
 	public long[] getReferencedExperimentIDs();
 	
@@ -55,7 +54,7 @@ public interface BasicProperties extends PlanetsInstitutions{
 	public void setExperimentedObjectType(String sMimeType);
 	public void setExperimentedObjectTypes(String[] sMimeTypes);
 	public String getExperimentedObjectType();
-	public Iterator getExperimentedObjectTypes();
+	public Iterator<String> getExperimentedObjectTypes();
 	
 	public void setFocus(String sFocus);
 	public String getFocus();

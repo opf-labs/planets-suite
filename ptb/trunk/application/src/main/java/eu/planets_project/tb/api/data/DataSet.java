@@ -54,7 +54,7 @@ public interface DataSet{
 	/**
 	 * @return Hashtable<Integer id, String sName>
 	 */
-	public Hashtable getAddedDataSourceIDswithNames();
+	public Hashtable<Integer,String> getAddedDataSourceIDswithNames();
 	
 	/**
 	 * @return Hashtable<Integer id, File fFile>
