@@ -55,12 +55,12 @@ public abstract class MonitoringContextServlet extends HttpServlet
 	  writer.print("<div id='header'>");
 	  writer.print("<div class='logo'><a href='/'>");
 	  writer.print("<img style='border: 0px solid ; ' src='images/Planets_Logo.png' alt='Planets: Home' title='Planets: Home' /></a>");
-	  writer.print("</div><span class='sitetitle'>PLANETS Monitoring Workflows & Services</span> </div>");
+	  writer.print("</div><span class='sitetitle'>PLANETS Workflow Monitor</span> </div>");
 
 
       writer.print("<div id='content'><a name='content'></a>");
       writer.print("<fieldset>");
-      writer.print("<legend><b>Registered PLANETS Workflow Endpoints</b></legend>");
+      writer.print("<legend><b>Deployed PLANETS Workflow Endpoints</b></legend>");
       writer.print("<table>");
 
       // begin iteration
