@@ -1,6 +1,7 @@
 package eu.planets_project.tb.api.model.finals;
 
 import java.util.Iterator;
+import java.util.Vector;
 
 /**
  * @author alindley
@@ -33,11 +34,10 @@ public interface PlanetsInstitutions {
 	/**
 	 * Matchin of Partnertypes
 	 */
-	public int PLANETS_TYPE_ARC = PLANETS_TYPE_TECHNOLOGY;
+	public int MAPPING_PLANETS_INSTITUTION_ARC = PLANETS_TYPE_TECHNOLOGY;
+	public int MAPPING_PLANETS_INSTITUTION_BL = PLANETS_TYPE_LIBRARY;
 
-	public int PLANETS_TYPE_BL = PLANETS_TYPE_LIBRARY;
-
-	// to be completed
+	//TODO List of Institutions and mapping needs to be completed
 
 	/**
 	 * This method returns the institution's names. e.g.
@@ -45,7 +45,16 @@ public interface PlanetsInstitutions {
 	 * 
 	 * @return
 	 */
-	public Iterator<String> getAllAvailableInstitutions();
+	public Vector<Integer> getAllAvailableInstitutionIDs();
+	
+	public Vector<String> getAllAvailableInstitutionNames();
+	
+	/**
+	 * Returns a list of all available InstitutionNames of a given PLANETS_TYPE
+	 * @param instType: PLANETS_TYPE
+	 * @return
+	 */
+	public Vector<String> getAllAvailableInstitutionNames(int instType);
 
 	/**
 	 * Returns the corresponding name for a given ID. e.g.
@@ -59,11 +68,25 @@ public interface PlanetsInstitutions {
 	/**
 	 * Returns the institution's ID
 	 * 
-	 * @param sName
-	 *            full Variable name. e.g. PLANETS_INSTITUTION_ARC
+	 * @param sName: full Variable name. e.g. PLANETS_INSTITUTION_ARC
 	 * @return institutionID; -1 when not found
 	 */
 	public int getInstitutionsID(String sName);
+	
+
+	/**
+	 * This method can be used to check if a given InstitutionID is a (in the range of) valid Institution
+	 * @param inputRoleID
+	 * @return
+	 */
+	public boolean checkInstitutionIDisValid(int inputRoleID);
+	
+	/**
+	 * This method can be used to check if a given InstitutionTypeID is a (in the range of) valid Types
+	 * @param inputInstTypeID
+	 * @return
+	 */
+	public boolean checkInstitutionTypeIsValid(int inputInstTypeID);
 
 	/**
 	 * 
@@ -76,7 +99,7 @@ public interface PlanetsInstitutions {
 	 * @param iInstitutionTypeID
 	 * @return
 	 */
-	public int getInstitutionsParnterType(int iInstitutionID);
+	public int getInstitutionsTypeID(int iInstitutionID);
 
 	/**
 	 * 
@@ -89,14 +112,14 @@ public interface PlanetsInstitutions {
 	 * @param iInstitutionTypeID
 	 * @return
 	 */
-	public String getInstitutionsPartnerTypeDescription(int iInstitutionID);
+	public String getInstitutionsTypeName(int iInstitutionID);
 
 	/**
 	 * This method returns the institution's names. e.g. "PLANETS_TYPE_LIBRARY"
 	 * 
 	 * @return
 	 */
-	public Iterator<String> getAllAvailablePartnerTypes();
+	public Vector<String> getAllAvailablePartnerTypes();
 
 	/**
 	 * Returns the corresponding type name for a given ID. e.g.
@@ -105,7 +128,7 @@ public interface PlanetsInstitutions {
 	 * @param iPartnerTypeID
 	 * @return
 	 */
-	public String getTypeNames(int iPartnerTypeID);
+	public String getTypeName(int iPartnerTypeID);
 
 	/**
 	 * Returns the PartnerType's ID

@@ -17,19 +17,19 @@ public abstract interface ExperimentPhase {
 	
 	public String getPhaseID();
 	
-	public void setStartDate(Date millis);
-	public Date getStartDate();
-	public GregorianCalendar getStartDateReadable();
+	public void setStartDate(GregorianCalendar startDate);
+	public long getStartDateInMillis();
+	public GregorianCalendar getStartDate();
 	
-	public void setEndDate(Date millis);
-	public Date getEndDate();
-	public GregorianCalendar getEndDateReadable();
+	public void setEndDate(GregorianCalendar endDate);
+	public long getEndDateInMillis();
+	public GregorianCalendar getEndDate();
 	
 	/**
 	 * Returns the Duration of the Phase between start and completion in millis
 	 * @return millis
 	 */
-	public long getDuration();
+	public long getDurationInMillis();
 	
 	/**
 	 * Possible states:
@@ -46,7 +46,7 @@ public abstract interface ExperimentPhase {
 	
 	public boolean isCompleted();
 	public boolean isInProgress();
-	public boolean isStarted();
+	public boolean isNotStarted();
 	
 	/**
 	 * The outcome of a phase
@@ -66,10 +66,10 @@ public abstract interface ExperimentPhase {
 	 * 
 	 * @param success
 	 */
-	public void setSuccess(int success);
+	//public void setSuccess(int success);
 	
 	//Method parameters still unclear!!
-	public void persist(DataRegistryBinding registry);
+	//public void persist(DataRegistryBinding registry);
 	
 	/**
 	 * @return html, xml, etc. summary?

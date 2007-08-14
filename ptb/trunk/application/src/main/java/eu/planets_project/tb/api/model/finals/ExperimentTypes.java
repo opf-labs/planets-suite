@@ -1,6 +1,7 @@
 package eu.planets_project.tb.api.model.finals;
 
 import java.util.Iterator;
+import java.util.Vector;
 
 public interface ExperimentTypes {
 
@@ -20,7 +21,15 @@ public interface ExperimentTypes {
 	 * 
 	 * @return
 	 */
-	public Iterator<String> getAlLAvailableExperimentTypes();
+	public Vector<String> getAlLAvailableExperimentTypesNames();
+	
+	/**
+	 * This method returns the experimen type's values. e.g.
+	 * 0,1,2,3. This method may be used to check if a given ID is within the range of possible ones.
+	 * 
+	 * @return
+	 */
+	public Vector<Integer> getAlLAvailableExperimentTypeIDs();
 
 	/**
 	 * @param sExpName
@@ -35,5 +44,12 @@ public interface ExperimentTypes {
 	 * @return full corresponding variable name. e.g. EXPERIMENT_TYPE_EMULATION
 	 */
 	public String getExperimentTypeName(int iTypeID);
+	
+	/**
+	 * Checks if a given TypeID is within the given range of known and valid IDs
+	 * @param iTypeID
+	 * @return
+	 */
+	public boolean checkExperimentTypeIDisValid(int iTypeID);
 
 }

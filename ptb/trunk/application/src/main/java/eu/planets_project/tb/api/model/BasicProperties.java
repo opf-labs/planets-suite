@@ -1,15 +1,14 @@
 package eu.planets_project.tb.api.model;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Iterator;
-
-import eu.planets_project.tb.api.model.finals.PlanetsInstitutions;
+import java.util.Vector;
 
 /**
  * @author alindley
  *
  */
-public interface BasicProperties extends PlanetsInstitutions{
+public interface BasicProperties{
 	
 	public void setExperimentName(String sName);
 	public String getExperimentName();
@@ -18,13 +17,15 @@ public interface BasicProperties extends PlanetsInstitutions{
 	 * Allows to specify experiments that were an influence, starting point, etc. for this current one.
 	 * @param sRefIDs experimentID
 	 */
-	public void setExperimentReferences(long[] sRefIDs);
+	public void setExperimentReferences(Vector<Long> sRefIDs);
 	public void setExperimentReference(long sRefID);
+	public void addExperimentReference(long sRefID);
+	public void removeExperimentReference(long sRefID);
 	public void setExperimentReference(Experiment refExp);
 	public void setExperimentReferences(Experiment[] refExps);
 	public Iterator<Long> getExperimentReferences();
-	public Experiment[] getReferencedExperiments();
-	public long[] getReferencedExperimentIDs();
+	public HashMap<Long,Experiment> getReferencedExperiments();
+	public Iterator<Long> getReferencedExperimentIDs();
 	
 	public void setSummary(String sSummary);
 	public String getSummary();
@@ -46,14 +47,13 @@ public interface BasicProperties extends PlanetsInstitutions{
 	public String getPurpose();
 	
 	public void setSpecificFocus(String sFocus);
-	public void getSpecificFocus();
+	public String getSpecificFocus();
 	
 	public void setIndication(String sDescription);
 	public String getIndication();
 	
 	public void setExperimentedObjectType(String sMimeType);
-	public void setExperimentedObjectTypes(String[] sMimeTypes);
-	public String getExperimentedObjectType();
+	public void setExperimentedObjectTypes(Vector<String> sMimeTypes);
 	public Iterator<String> getExperimentedObjectTypes();
 	
 	public void setFocus(String sFocus);
@@ -70,8 +70,12 @@ public interface BasicProperties extends PlanetsInstitutions{
 	 * @param users
 	 * @see setInvolvedUsers(Hashtable<userID,Role>)
 	 */
-	public void setInvolvedUsers(User[] users);
-	public void setInvolvedUsers(long lUserID);
+	public void setInvolvedUsers(Vector<User> users);
+	public void setInvolvedUsers(User user);
+	
+	public void addInvolvedUsers(Vector<Long> usersIDs);
+	public void removeInvolvedUsers(Vector<Long> userIDs);
+	
 	/**
 	 * A user may take a seperate role (besides his overall Testbed role) for an
 	 * experiment. E.g. he/she could beReader, but within the given context of a certain
@@ -79,8 +83,8 @@ public interface BasicProperties extends PlanetsInstitutions{
 	 * @param hUserIDsAndExperimentRoles Hashtable<userID,roleID>
 	 * @see eu.planets_project.TB.data.model.finals.TestbedRoles
 	 */
-	public void setInvolvedUsers(Hashtable<Long,Integer> hUserIDsAndExperimentRoles);
-	
+	public void addInvolvedUsersWithSpecialExperimentRole(HashMap<Long,Vector<Integer>> hmUserIDsAndExperimentRoles);
+	public void removeInvolvedUsersAndSpecialExperimentRole(HashMap<Long,Vector<Integer>> hmUserIDsAndExperimentRoles);
 	/**
 	 * Sets the approache's ID.
 	 * 0..for migration

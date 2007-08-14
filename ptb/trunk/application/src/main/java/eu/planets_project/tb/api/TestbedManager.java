@@ -1,5 +1,7 @@
 package eu.planets_project.tb.api;
 
+import java.util.Collection;
+import java.util.Set;
 import eu.planets_project.tb.api.model.Experiment;
 
 public interface TestbedManager {
@@ -8,13 +10,13 @@ public interface TestbedManager {
 	public void registerExperiment(Experiment experimentBean);
 	public Experiment getExperiment(long lExpID);
 	public void removeExperiment(long lExpID);
-	public Experiment[] getAllExperiments();
-	public long[] getAllExperimentIDs();
+	public Collection<Experiment> getAllExperiments();
+	public Set<Long> getAllExperimentIDs();
 	/**
 	 * Using this convenience method for creating a new Experiment object
 	 * @return
 	 */
-	public Experiment getNewExperiment();
+	public Experiment createNewExperiment();
 	
 	// User Management
 	public UserManager getUserManager();
