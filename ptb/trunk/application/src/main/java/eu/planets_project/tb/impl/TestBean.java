@@ -5,7 +5,6 @@ import java.util.Hashtable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-
 @Entity
 public class TestBean implements java.io.Serializable{
 	
