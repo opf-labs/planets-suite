@@ -1,5 +1,6 @@
 package eu.planets_project.tb.test;
 
+import javax.ejb.EJB;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
@@ -20,7 +21,7 @@ public class TestWizzardUnitTest extends TestCase{
 			jndiContext = getInitialContext();
 
 			dao_r = (TesterRemote) PortableRemoteObject.narrow(
-				jndiContext.lookup("TestWizzard/remote"), TesterRemote.class);
+				jndiContext.lookup("ejb/TestWizzard/remote"), TesterRemote.class);
 
 			TestBean test_1 = new TestBean();
 			test_1.setId(1);

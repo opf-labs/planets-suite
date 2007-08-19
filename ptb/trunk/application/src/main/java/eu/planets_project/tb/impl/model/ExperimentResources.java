@@ -11,13 +11,13 @@ import javax.persistence.Id;
  * @author alindley
  *
  */
-@Entity
+//@Entity
 public class ExperimentResources implements
 		eu.planets_project.tb.api.model.ExperimentResources,
 		java.io.Serializable {
 	
-	@Id
-	@GeneratedValue
+	//@Id
+	//@GeneratedValue
 	private long lExpRessourceID;
 	private int iNumberOfFiles;
 	/* (non-Javadoc)

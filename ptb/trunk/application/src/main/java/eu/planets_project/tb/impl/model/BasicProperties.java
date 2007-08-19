@@ -14,7 +14,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.impl.TestbedManager;
+import eu.planets_project.tb.impl.UserManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.User;
 
@@ -23,9 +24,8 @@ import eu.planets_project.tb.api.model.User;
  *
  */
 @Entity
-public class BasicProperties implements 
-				eu.planets_project.tb.api.model.BasicProperties, 
-				java.io.Serializable {
+public class BasicProperties extends eu.planets_project.tb.impl.model.ExperimentPhase
+implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable {
 	
 	// TODO:
 	// 2.WAS SOLL IM COMMENTAR DER KLASSE STEHEN?
@@ -40,7 +40,6 @@ public class BasicProperties implements
 	
 	private int iExperimentApproach;
 	
-	private Vector<Long> expRefs;
 	private Vector<String> vExpObjectTypes;
 	private Vector<Long> vRefExpIDs;
 	private Vector<Long> vInvolvedUsers;
@@ -123,15 +122,15 @@ public class BasicProperties implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentReferences()
 	 */
-	public Iterator<Long> getExperimentReferences() {
-		return this.expRefs.iterator();
+	public Vector<Long> getExperimentReferences() {
+		return this.vRefExpIDs;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentedObjectTypes()
 	 */
-	public Iterator<String> getExperimentedObjectTypes() {
-		return this.vExpObjectTypes.iterator();
+	public Vector<String> getExperimentedObjectTypes() {
+		return this.vExpObjectTypes;
 	}
 
 	/* (non-Javadoc)
@@ -158,8 +157,8 @@ public class BasicProperties implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getReferencedExperimentIDs()
 	 */
-	public Iterator<Long> getReferencedExperimentIDs() {
-		return this.vRefExpIDs.iterator();
+	public Vector<Long> getReferencedExperimentIDs() {
+		return this.vRefExpIDs;
 	}
 
 	/* 
@@ -482,6 +481,30 @@ public class BasicProperties implements
 		while(itUserIDs.hasNext()){
 			this.hmInvolvedUserSpecialExperimentRoles.remove(itUserIDs.next());
 		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getInvolvedUserIds()
+	 */
+	public Vector<Long> getInvolvedUserIds() {
+		return this.vInvolvedUsers;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getInvolvedUsers()
+	 */
+	public Vector<User> getInvolvedUsers() {
+		Vector<User> vRet = new Vector<User>();
+	
+		TestbedManager tbmanager = TestbedManager.getInstance();
+		UserManager usermanager = (UserManager)tbmanager.getUserManager();
+		Iterator<Long> itAllUserIDs = this.vInvolvedUsers.iterator();
+		while(itAllUserIDs.hasNext()){
+			vRet.addElement(usermanager.getUser(itAllUserIDs.next()));
+		}
+		return vRet;
 	}
 
 

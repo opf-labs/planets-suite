@@ -3,10 +3,12 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.sql.Date;
 import java.util.GregorianCalendar;
 
-import eu.planets_project.tb.api.data.DataRegistryBinding;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentExecution;
@@ -16,133 +18,86 @@ import eu.planets_project.tb.api.model.ExperimentSetup;
  * @author alindley
  *
  */
-public class Experiment implements eu.planets_project.tb.api.model.Experiment,
+//@Entity
+public class Experiment extends eu.planets_project.tb.impl.model.ExperimentPhase
+						implements eu.planets_project.tb.api.model.Experiment,
 									java.io.Serializable{
-
+	//@Id
+	//@GeneratedValue
+	private Long lExperimentID;
+	private ExperimentEvaluation expEvaluation;
+	private ExperimentApproval expApproval;
+	private ExperimentExecution expExecution;
+	private ExperimentSetup expSetup;
+	
+	public Experiment(){
+		
+	}
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentAnalysis()
+	 */
 	public ExperimentEvaluation getExperimentAnalysis() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.expEvaluation;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentApproval()
+	 */
 	public ExperimentApproval getExperimentApproval() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.expApproval;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentExecution()
+	 */
 	public ExperimentExecution getExperimentExecution() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.expExecution;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentID()
+	 */
 	public long getExperimentID() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.lExperimentID;
+	}
+	
+	private void setExperimentID(long lID){
+		this.lExperimentID = lID;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentSetup()
+	 */
 	public ExperimentSetup getExperimentSetup() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.expSetup;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentAnalysis(eu.planets_project.tb.api.model.ExperimentEvaluation)
+	 */
 	public void setExperimentAnalysis(ExperimentEvaluation analysisPhase) {
-		// TODO Auto-generated method stub
-		
+		this.expEvaluation = analysisPhase;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentApproval(eu.planets_project.tb.api.model.ExperimentApproval)
+	 */
 	public void setExperimentApproval(ExperimentApproval approvalPhase) {
-		// TODO Auto-generated method stub
-		
+		this.expApproval = approvalPhase;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentExecution(eu.planets_project.tb.api.model.ExperimentExecution)
+	 */
 	public void setExperimentExecution(ExperimentExecution executionPhase) {
-		// TODO Auto-generated method stub
-		
+		this.expExecution = executionPhase;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentSetup(eu.planets_project.tb.api.model.ExperimentSetup)
+	 */
 	public void setExperimentSetup(ExperimentSetup setupPhaseObject) {
-		// TODO Auto-generated method stub
-		
+		this.expSetup = setupPhaseObject;
 	}
-
-	public long getDurationInMillis() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public GregorianCalendar getEndDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public long getEndDateInMillis() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public String getPhaseID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int getProgress() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public GregorianCalendar getStartDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public long getStartDateInMillis() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public int getState() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public String getSummary() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isInProgress() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean isNotStarted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void setEndDate(GregorianCalendar endDate) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setProgress(int progress) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setStartDate(GregorianCalendar startDate) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void setState(int state) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }

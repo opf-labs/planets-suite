@@ -13,10 +13,10 @@ import eu.planets_project.tb.impl.model.finals.PlanetsInstitutions;
  * @author alindley
  *
  */
-@Entity
+//@Entity
 public class Institution implements eu.planets_project.tb.api.model.Institution {
 
-	@Id
+	//@Id
 	private long lInstitutionID;
 	private int iInstitutionType;
 	private String sAddress, sName;

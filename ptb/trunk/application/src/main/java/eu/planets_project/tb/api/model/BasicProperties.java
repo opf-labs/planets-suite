@@ -23,9 +23,9 @@ public interface BasicProperties{
 	public void removeExperimentReference(long sRefID);
 	public void setExperimentReference(Experiment refExp);
 	public void setExperimentReferences(Experiment[] refExps);
-	public Iterator<Long> getExperimentReferences();
+	public Vector<Long> getExperimentReferences();
 	public HashMap<Long,Experiment> getReferencedExperiments();
-	public Iterator<Long> getReferencedExperimentIDs();
+	public Vector<Long> getReferencedExperimentIDs();
 	
 	public void setSummary(String sSummary);
 	public String getSummary();
@@ -54,7 +54,7 @@ public interface BasicProperties{
 	
 	public void setExperimentedObjectType(String sMimeType);
 	public void setExperimentedObjectTypes(Vector<String> sMimeTypes);
-	public Iterator<String> getExperimentedObjectTypes();
+	public Vector<String> getExperimentedObjectTypes();
 	
 	public void setFocus(String sFocus);
 	public String getFocus();
@@ -75,6 +75,9 @@ public interface BasicProperties{
 	
 	public void addInvolvedUsers(Vector<Long> usersIDs);
 	public void removeInvolvedUsers(Vector<Long> userIDs);
+	
+	public Vector<User> getInvolvedUsers();
+	public Vector<Long> getInvolvedUserIds();
 	
 	/**
 	 * A user may take a seperate role (besides his overall Testbed role) for an

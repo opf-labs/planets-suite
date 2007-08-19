@@ -1,5 +1,7 @@
 package eu.planets_project.tb.api;
 
+import java.util.Vector;
+
 import eu.planets_project.tb.api.model.User;
 
 /**
@@ -12,9 +14,10 @@ public interface UserManager {
 	public void registerUser(User userBean);
 	public User getUser(long lUserID);
 	public void removeUser(long lUserID);
-	public User[] getAllUsers();
-	public long[] getAllUserIDs();
+	public void updateUser(User user);
+	public Vector<User> getAllUsers();
+	public Vector<Long> getAllUserIDs();
 	
-	public User getNewUserBean();
+	public User getNewUserBean(Vector<Integer> vRoles);
 
 }

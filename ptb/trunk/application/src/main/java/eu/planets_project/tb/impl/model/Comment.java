@@ -14,6 +14,7 @@ import javax.persistence.Id;
 
 import eu.planets_project.tb.impl.UserManager;
 import eu.planets_project.tb.impl.model.User;
+import eu.planets_project.tb.impl.model.Comment;
 import eu.planets_project.tb.impl.CommentManager;
 
 /**
@@ -26,17 +27,50 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	
 	@Id
 	@GeneratedValue
-	private long lCommentID, lAuthorID, lParentID;
+	private long lCommentID;
+	private long lAuthorID, lParentID, lExperimentID;
+	//vChildIDs is a flat structure of Comments just in the next level (not recursively)
 	private Vector<Long> vChildIDs;
 	private String sExperimentPhaseID;
 	private String sTitle, sComment, sAuthorName;
 	//time in millis
 	private GregorianCalendar postDate;
 	
-	public Comment(long lParentID, String sExperimentPhaseID){
+	//Default constructor required for EJB persistency
+	private Comment(){
+		
+	}
+	/**
+	 * Is used to create a new root comment, without any parents
+	 * @param lExperimentID
+	 * @param sExperimentPhaseID
+	 */
+	public Comment(long lExperimentID, String sExperimentPhaseID){
 
+		this.lExperimentID = lExperimentID;
 		this.sExperimentPhaseID = sExperimentPhaseID;
-		this.lParentID = lParentID;
+		//this is a new root comment
+		this.lParentID = -1;
+		
+		this.vChildIDs = new Vector<Long>();
+		
+	}
+	
+	/**
+	 * Used to create a child comment. Attributes lExperimentID and sExperimentPhaseID are retrieved from the Comment(lParentID)
+	 * @param lParentID
+	 */
+	public Comment(long lParentID){
+		CommentManager manager = CommentManager.getInstance();
+		Comment parent = (Comment)manager.getComment(lParentID);
+		//Child element shares the following attributes with its parent
+		this.sExperimentPhaseID = parent.getExperimentPhaseID();
+		this.lParentID = parent.getCommentID();
+		this.lExperimentID = parent.getExperimentID();
+		
+		//add the child comment to the parent's replies
+		parent.addReply(this);
+		manager.updateComment(parent);
 		
 		this.vChildIDs = new Vector<Long>();
 		
@@ -54,6 +88,20 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	 */
 	public String getExperimentPhaseID() {
 		return this.sExperimentPhaseID;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Comment#setExperimentID(long)
+	 */
+	public void setExperimentID(long lID){
+		this.lExperimentID = lID;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Comment#getExperimentID()
+	 */
+	public long getExperimentID(){
+		return this.lExperimentID;
 	}
 
 	/* (non-Javadoc)
@@ -176,7 +224,7 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 		
 		Enumeration<eu.planets_project.tb.api.model.Comment> enumReplies = replies.elements();
 		while (enumReplies.hasMoreElements()){
-			eu.planets_project.tb.api.model.Comment commentReply = enumReplies.nextElement();
+			Comment commentReply = (Comment)enumReplies.nextElement();
 			long replyID = commentReply.getCommentID();
 			this.vChildIDs.addElement(replyID);
 		}

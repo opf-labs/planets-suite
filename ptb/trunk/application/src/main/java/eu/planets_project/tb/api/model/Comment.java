@@ -44,5 +44,8 @@ public interface Comment {
 	
 	public void setExperimentPhaseID(String sID);
 	public String getExperimentPhaseID();
+	
+	public void setExperimentID(long lID);
+	public long getExperimentID();
 
 }

@@ -8,6 +8,10 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import eu.planets_project.tb.impl.CommentManager;
 import eu.planets_project.tb.api.UserManager;
 import eu.planets_project.tb.impl.model.Experiment;
@@ -16,9 +20,12 @@ import eu.planets_project.tb.impl.model.Experiment;
  * @author alindley
  *
  */
+//@Entity
 public class TestbedManager implements eu.planets_project.tb.api.TestbedManager{
 
-	
+	//@Id
+	//@GeneratedValue
+	private long lTestbedManagerID;
 	private static TestbedManager instance;
 	private HashMap<Long,eu.planets_project.tb.api.model.Experiment> hmAllExperiments;
 	

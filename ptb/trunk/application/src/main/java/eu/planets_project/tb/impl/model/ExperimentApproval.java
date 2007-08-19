@@ -7,6 +7,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import eu.planets_project.tb.api.model.User;
 import eu.planets_project.tb.impl.UserManager;
 
@@ -14,10 +18,12 @@ import eu.planets_project.tb.impl.UserManager;
  * @author alindley
  *
  */
-public class ExperimentApproval implements
-		eu.planets_project.tb.api.model.ExperimentApproval,
-		java.io.Serializable{
+//@Entity
+public class ExperimentApproval extends eu.planets_project.tb.impl.model.ExperimentPhase
+implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializable {
 	
+	//@Id
+	//@GeneratedValue
 	private long lExpApprovalID;
 	//roles as defined in the Class TestbedRoles
 	private Vector<Integer> vReqRoles;
@@ -165,185 +171,83 @@ public class ExperimentApproval implements
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setApprovalRequiredRole(int)
 	 */
 	public void setApprovalRequiredRole(int roleID) {
-		// TODO Auto-generated method stub
-
+		this.vReqRoles.removeAllElements();
+		this.vReqRoles.addElement(roleID);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setApprovalRequiredRoles(java.util.Vector)
 	 */
 	public void setApprovalRequiredRoles(Vector<Integer> roleIDs) {
-		// TODO Auto-generated method stub
-
+		this.vReqRoles.removeAllElements();
+		this.vReqRoles.addAll(roleIDs);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setApprovalUser(eu.planets_project.tb.api.model.User)
 	 */
 	public void setApprovalUser(User user) {
-		// TODO Auto-generated method stub
-
+		//approval required roles were added
+		if (this.vReqRoles.size()>0){
+			Vector<Integer> vUserRoleIDs = user.getRolesIDs();
+			Iterator<Integer> itUserRoleIDs = vUserRoleIDs.iterator();
+			int i = 0;
+			while(itUserRoleIDs.hasNext()){
+				//check if user is registered to all required roles for approval
+				int iRole = itUserRoleIDs.next();
+				i++;
+			}
+			if (i==vUserRoleIDs.size()){
+				this.vApprovalUsers.removeAllElements();
+				this.vApprovalUsers.addElement(user.getUserID());
+			}
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setApprovalUsers(java.util.Vector)
 	 */
 	public void setApprovalUsers(Vector<User> users) {
-		// TODO Auto-generated method stub
-
+		this.vApprovalUsers.removeAllElements();
+		Iterator<User> itUsers = users.iterator();
+		while(itUsers.hasNext()){
+			User user = itUsers.next();
+			//approval required roles were added
+			if (this.vReqRoles.size()>0){
+				Vector<Integer> vUserRoleIDs = user.getRolesIDs();
+				Iterator<Integer> itUserRoleIDs = vUserRoleIDs.iterator();
+				int i = 0;
+				while(itUserRoleIDs.hasNext()){
+					//check if user is registered to all required roles for approval
+					int iRole = itUserRoleIDs.next();
+					i++;
+				}
+				if (i==vUserRoleIDs.size()){
+					this.vApprovalUsers.addElement(user.getUserID());
+				}
+			}
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setDecision(java.lang.String)
 	 */
 	public void setDecision(String decision) {
-		// TODO Auto-generated method stub
-
+		this.sDecision = decision;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setExplanation(java.lang.String)
 	 */
 	public void setExplanation(String explanation) {
-		// TODO Auto-generated method stub
-
+		this.sExplanation = explanation;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setGo(boolean)
 	 */
 	public void setGo(boolean go) {
-		// TODO Auto-generated method stub
-
+		this.bGo = go;
 	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getDurationInMillis()
-	 */
-	public long getDurationInMillis() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getEndDate()
-	 */
-	public GregorianCalendar getEndDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getEndDateInMillis()
-	 */
-	public long getEndDateInMillis() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getPhaseID()
-	 */
-	public String getPhaseID() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getProgress()
-	 */
-	public int getProgress() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getStartDate()
-	 */
-	public GregorianCalendar getStartDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getStartDateInMillis()
-	 */
-	public long getStartDateInMillis() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getState()
-	 */
-	public int getState() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getSummary()
-	 */
-	public String getSummary() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#isCompleted()
-	 */
-	public boolean isCompleted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#isInProgress()
-	 */
-	public boolean isInProgress() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#isNotStarted()
-	 */
-	public boolean isNotStarted() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setEndDate(java.util.GregorianCalendar)
-	 */
-	public void setEndDate(GregorianCalendar endDate) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setProgress(int)
-	 */
-	public void setProgress(int progress) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setStartDate(java.util.GregorianCalendar)
-	 */
-	public void setStartDate(GregorianCalendar startDate) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setState(int)
-	 */
-	public void setState(int state) {
-		// TODO Auto-generated method stub
-
-	}
-
 
 }

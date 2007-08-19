@@ -20,21 +20,21 @@ import eu.planets_project.tb.impl.model.finals.TestbedRoles;
  * @author alindley
  *
  */
-@Entity
+//@Entity
 public class User implements eu.planets_project.tb.api.model.User {
 
 	//TODO: Check which class for password encryption can be used
 	
-	@Id
-	@GeneratedValue
+	//@Id
+	//@GeneratedValue
 	private long lUserID;
 	private Vector<Integer> vRoles;
 	private String sAddress, sEmail, sForename, sSurename, sTelNr, sPassword;;
 	private HashMap<String,String> hmPasswordRecovery;
 	private Institution institution;
 	
-	public User(){
-		this.vRoles = new Vector<Integer>();
+	public User(Vector<Integer> vRoles){
+		this.vRoles = vRoles;
 		this.hmPasswordRecovery = new HashMap<String,String>();
 	}
 	

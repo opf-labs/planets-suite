@@ -1,12 +1,14 @@
 package eu.planets_project.tb.test;
 
+import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import eu.planets_project.tb.impl.TestBean;
 
-@Stateless
+@Stateless(name="ejb/TestWizzard")
 public class TestWizzard implements TesterRemote, TesterLocal{
 
 	@PersistenceContext(unitName="testbed")

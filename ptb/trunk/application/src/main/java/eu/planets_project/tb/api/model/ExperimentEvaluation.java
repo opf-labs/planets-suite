@@ -14,7 +14,13 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	//ExperimentObjectives werte hinzufügen
 	//was sonst noch bei Analysis?
 	
-	public ExperimentObjectives evaluateExperimentObjectives();
+	/**
+	 * This method takes a set of given inputObjectives, evaluates them and produces a set of output ExperimentObjectives
+	 * @param inputObjectives
+	 * @return
+	 */
+	public void setEvaluatedExperimentObjectives(ExperimentObjectives inputObjectives);
+	public ExperimentObjectives getEvaluatedExperimentObjectives();
 	
 	public void setExperimentReport(ExperimentReport report);
 	public ExperimentReport getExperimentReport();

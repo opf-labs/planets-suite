@@ -15,11 +15,11 @@ import eu.planets_project.tb.api.data.DataRegistryBinding;
  * @author alindley
  *
  */
-@Entity
+//@Entity
 public class ExperimentPhase implements
 		eu.planets_project.tb.api.model.ExperimentPhase {
 	
-	@Id
+	//@Id
 	private String sPhaseID;
 	private long lDuration;
 	private GregorianCalendar endDate, startDate;

@@ -19,12 +19,12 @@ import eu.planets_project.tb.impl.services.mockups.ComplexWorkflow;
  * @author alindley
  *
  */
-@Entity
+//@Entity
 public class ExperimentSetup extends ExperimentPhase implements
 		eu.planets_project.tb.api.model.ExperimentSetup {
 	
-	@Id
-	@GeneratedValue
+	//@Id
+	//@GeneratedValue
 	private long lExpSetupID;
 	private eu.planets_project.tb.api.model.BasicProperties basicProperties;
 	private eu.planets_project.tb.api.model.ExperimentResources experimentResources;
