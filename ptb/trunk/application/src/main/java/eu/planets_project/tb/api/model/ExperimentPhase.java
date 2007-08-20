@@ -1,6 +1,5 @@
 package eu.planets_project.tb.api.model;
 
-import java.sql.Date;
 import java.util.GregorianCalendar;
 
 import eu.planets_project.tb.api.data.DataRegistryBinding;
@@ -13,7 +12,7 @@ import eu.planets_project.tb.api.data.DataRegistryBinding;
  * @author alindley
  *
  */
-public abstract interface ExperimentPhase {
+public interface ExperimentPhase {
 	
 	public String getPhaseID();
 	
