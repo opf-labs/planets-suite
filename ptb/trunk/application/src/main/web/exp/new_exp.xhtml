@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+        #{res.title} - #{res['new_exp.pageTitle']} #{res['new_exp.stage1']}
+  </ui:define>
+
+<ui:define name="header">
+	<ui:include src="/WEB-INF/templates/header.xhtml">
+		<ui:param name="page" value="new_exp"/>
+	</ui:include>
+</ui:define>
+
+  <ui:define name="content">
+<div id="mainwrapper">
+<div id="maincol">
+<div class="innertubemain">
+<p>Create a new experiment using the form below.  Once you have supplied the required information and have submitted the form the experiment will be added to your list of experiments as found in the <a href="../my-experiments/">my experiments</a> section.</p>
+<form method="post" action="../my-experiments/mock-up-stage2/">
+	<fieldset>
+		<legend>General Information</legend>
+		
+
+			<p><label id="">Formal / Informal Experiment:</label>
+
+	
+	<select><option>Formal</option><option>Informal</option></select> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<div class="clear"></div>
+
+				<p><label id="">Experiment ID:</label>
+	<input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<div class="clear"></div>
+	
+				<p><label id="">Experiment Name:</label>
+
+
+	<input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<div class="clear"></div>
+	
+				<p><label id="">Adapted From:</label>
+
+		<a href="#">Migration of 10 DOC files to PDFa</a> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+		<div class="clear"></div>
+	<p><label id="">Ideas from:</label> <input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<div class="clear"></div>
+
+				<p><label id="">Summary:</label>
+<textarea name="q3" rows="7" cols="56" id="q3"></textarea> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<div class="clear"></div>
+	
+				<p><label id="">Contact:</label>
+<input type="textbox" size="50" value="Brian Aitken, b.aitken@hatii.arts.gla.ac.uk" /> </p>
+<div class="clear"></div>
+
+				<p><label id="">Purpose:</label>
+<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+<div class="clear"></div>
+				<p><label id="">Specific Focus:</label>
+<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+<div class="clear"></div>
+				<p><label id="">References:</label>
+<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+<div class="clear"></div>
+				<p><label id="">Participants:</label>
+<select multiple="multiple" size="5"><option>Brian Aitken</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select></p>
+<div class="clear"></div>
+
+</fieldset>
+<fieldset>
+<legend>Scope</legend>
+				<p><label id="">Experiment Scope:</label>
+<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+<div class="clear"></div>
+</fieldset>
+<fieldset>
+<legend>Experimental Data</legend>
+
+				<p><label id="">Tool Type:</label>
+<select><option>Characterisation Tool</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select></p>
+<div class="clear"></div>
+	<p><label id="">New Type:</label>
+	<input type="textbox" /></p>
+<div class="clear"></div>
+	
+				<p><label id="">Object Type:</label>
+<select><option>PDF</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select></p>
+<div class="clear"></div>
+
+	<p><label id="">New Type:</label>
+	<input type="textbox" /></p>
+<div class="clear"></div>
+</fieldset>
+<fieldset>
+<legend>Approach &amp; Considerations</legend>
+				<p><label id="">Experiment Approach:</label>
+<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+<div class="clear"></div>
+
+					<p><label id="">Considerations:</label>
+<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+<div class="clear"></div>
+</fieldset>
+		<p><input value="Save experiment &amp; continue to Stage 2" type="submit"/></p>
+</form>
+
+</div>
+</div>
+</div>
+
+
+<div id="leftcol">
+
+<h3 class="leftcol">Experiment Progress</h3>
+<div class="innertube">
+<ul class="exp">
+<li class="exp_sel"><a href="#" class="exp">Define Basic Properties</a></li>
+<li class="exp_nd">Design Experiment
+	<ul class="sub_exp">
+		<li class="exp_nd2">Specify Tools</li>
+		<li class="exp_nd2">Specify Data</li>
+	</ul>
+</li>
+<li class="exp_nd">Specify Resources &amp; Outcomes</li>
+<li class="exp_nd"> Experiment Approval</li>
+<li class="exp_nd">Run Experiment</li>
+<li class="exp_nd">Evaluate Experiment</li>
+</ul>
+
+</div>
+</div>
+
+  </ui:define>
+  <ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
