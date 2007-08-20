@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+	<ui:composition>
+	<form method="post" action="j_security_check">
+	<!-- =request.getContextPath()  /  =response.encodeUrl("j_security_check") -->
+		<fieldset class="login">
+			<legend>Your Details</legend>
+			<p>
+				<label for="uname"><span style="color: red;">*</span>#{res['login.username']}</label>
+				<input type="text" name="j_username" id="uname"  size="20" maxlength="20" />
+			</p>
+		
+			<p>
+				<label for="password"><span style="color: red;">*</span>#{res['login.password']}</label>
+				<input type="password" name="j_password" id="password"  size="20" maxlength="20" />
+			</p>
+		</fieldset>
+		<p class="submit"><input type="submit" value="#{res['login.login']}" /></p>
+	</form>
+	</ui:composition>
+</body>
+</html>
+	

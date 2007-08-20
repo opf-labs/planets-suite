@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<head>
+	<link rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/ptb-screen.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/ptb-print.css" type="text/css" media="print" />
+	<title>
+    <ui:insert name="title">Placeholder Title</ui:insert>
+  </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+
+<body>
+ 	<ui:insert name="header">Placeholder Header</ui:insert>
+	<div id="subnav">
+		<h2 class="subnav"><ui:insert name="title">Placeholder Title</ui:insert></h2>
+	</div>
+ 	<ui:insert name="content">Placeholder Content</ui:insert>
+ 	<ui:insert name="footer">Placeholder Footer</ui:insert>
+</body>
+</html>
