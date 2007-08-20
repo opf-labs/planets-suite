@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+  	#{res.title} - #{res['welcome.pageTitle']}
+  </ui:define>
+
+<ui:define name="header">
+	<ui:include src="/WEB-INF/templates/header.xhtml">
+				<ui:param name="page" value="home"/>
+	</ui:include>
+</ui:define>
+
+  <ui:define name="content">
+	<div id="mainwrapper">
+		<div id="maincol">
+			<div class="innertubemain">
+
+				<p><b>#{res['welcome.header']}</b></p>
+				
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				
+			</div>
+		</div>
+	</div>
+
+
+	<div id="leftcol">
+		<h3 class="leftcol">Testbed Stats</h3>
+		<div class="innertube">
+			<p class="leftcol"><b>Users:</b><br />
+			28 experimenters<br />
+			15 readers<br />
+			1 administrator</p>
+			<hr />
+			<p class="leftcol">
+			<b>Experiments:</b><br />
+			236 experiments<br />
+			3 running experiments<br />
+			16 experiments in design phase
+			</p>
+			<hr />
+			<p class="leftcol">
+			<b>Services:</b><br />
+			45 services<br />
+			23 migration services<br />
+			20 characterisation servies<br />
+			12 emulation services</p>
+			<hr />
+			<p class="leftcol">
+			<b>Data:</b><br />
+			1,278,592 files<br />
+			</p>
+		</div>
+	</div>
+  </ui:define>
+  <ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

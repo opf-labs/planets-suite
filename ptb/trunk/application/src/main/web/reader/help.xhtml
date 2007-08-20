@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+        #{res.title} - #{res['help.pageTitle']}
+  </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/templates/header.xhtml">
+			<ui:param name="page" value="help"/>
+		</ui:include>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div id="mainwrapper">
+		<div id="maincol">
+		<div class="innertubemain">
+		
+		<p>Text Goes here.</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+				<p>&#160;</p>
+		
+		
+		</div>
+		</div>
+		</div>
+		
+		
+		<div id="leftcol">
+		
+		<h3 class="leftcol"></h3>
+		<div class="innertube">
+		
+		
+		</div>
+		</div>
+
+	</ui:define>
+
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

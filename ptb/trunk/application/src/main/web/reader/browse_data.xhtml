@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+        #{res.title} - #{res['browse_data.pageTitle']}
+  </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/templates/header.xhtml">
+			<ui:param name="page" value="browse_data"/>
+		</ui:include>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<div id="mainwrapper">
+		<div id="maincol">
+		<div class="innertubemain">
+		
+		<p>You are currently viewing <b>all available data</b>.  There are <b>826,224</b> publicly available items and a further <b>1,206</b> items that can only be viewed by your institution.</p>
+		<p>Files and folders marked with a <span style="background-color: #FDB8B8;">red background</span> can only be viewed by your institution.</p>
+		
+		<div class="filepane">
+		<div class="filebrowse">
+		<span style='line-height:2em;  font-size:0.9em;'>			<img onclick='javascript:visible("0")' id = 'image0' height='10px' width='10px' style='vertical-align:middle' src='../graphics/plus.png' alt='Expand or Collapse'/> <span style="background-color:#BFDEEB"><a href="#" onclick='javascript:visible("0")'><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Sample Folder 1</a></span></span> 	
+					<br/>
+		
+					
+				<div id='id0' style='display:none' >
+				<span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image1' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+					
+				<div id='id1' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image2' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+		
+					
+				<div id='id2' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image3' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+					
+				<div id='id3' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image4' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+		
+					
+				<div id='id4' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image5' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+					
+				<div id='id5' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image6' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+		
+					
+				<div id='id6' style='display:none' ></div></div><span style='line-height:2em;  font-size:0.9em;'>			<img onclick='javascript:visible("7")' id = 'image7' height='10px' width='10px' style='vertical-align:middle' src='../graphics/plus.png' alt='Expand or Collapse'/> <a href="#" onclick='javascript:visible("7")'><img src="../graphics/filetype_folder.gif" /> Sample Folder 2</a></span> 	
+					<br/>
+					
+				<div id='id7' style='display:none' ><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image8' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif"  style='vertical-align:middle'/> Subfolder</a></span> 	
+					<br/>
+		
+					
+				<div id='id8' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image9' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif"  style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+					
+				<div id='id9' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image10' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif"  style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+		
+					
+				<div id='id10' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image11' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif"  style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+					
+				<div id='id11' style='display:none' ></div><span style='line-height:2em;  font-size:0.9em;'>&nbsp;&nbsp;			<img id = 'image12' height='10px' width='10px' style='vertical-align:middle' src='../graphics/transp.gif' alt='Spacer'/> <a href="#"><img src="../graphics/filetype_folder.gif"  style='vertical-align:middle' /> Subfolder</a></span> 	
+					<br/>
+		</div>
+				
+		
+		</div><div class="filemain">
+		<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;width:100%;" ><tr><th>Name <img src="../graphics/asc.png" /></th><th>Size</th><th>Type</th><th>Date Added</th><th>Date Modified</th></tr>
+		
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></td><td>24 Files</td><td>Folder</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></td><td>24 Files</td><td>Folder</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></td><td>24 Files</td><td>Folder</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></td><td>24 Files</td><td>Folder</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></td><td>24 Files</td><td>Folder</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_folder.gif" style='vertical-align:middle' /> Subfolder</a></td><td>24 Files</td><td>Folder</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File1.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File2.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;background-color: #FDB8B8;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File3.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File4.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File5.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File6.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;background-color: #FDB8B8;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File7.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File8.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File9.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File10.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		<tr style="font-size:smaller;"><td><a href="#"><img src="../graphics/filetype_pdf.gif" style='vertical-align:middle' /> File11.pdf</a></td><td>122 KB</td><td>PDF 1.0</td><td>12/05/2007</td><td>23/05/2007</td></tr>
+		</table>
+		</div>
+		</div>
+		
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		</div>
+		</div>
+		</div>
+		
+		
+		<div id="leftcol">
+		
+		<h3 class="leftcol">Restrict Result Set</h3>
+		<div class="innertube">
+		<form method="get" action="restrict/">
+		<p class="leftcol">This option allows you to view only those files that match your specified criteria<br />
+		<input type="submit" value="Supply Criteria"/></p>
+		
+		</form>
+		
+		</div>
+		</div>
+
+	</ui:define>
+
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
