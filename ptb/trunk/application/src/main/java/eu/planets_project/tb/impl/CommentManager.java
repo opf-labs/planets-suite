@@ -104,11 +104,30 @@ public class CommentManager implements eu.planets_project.tb.api.CommentManager,
 	 * @see eu.planets_project.tb.api.CommentManager#getNewComment()
 	 */
 	public Comment getNewRootComment(long lExperimentID, String sExperimentPhaseID) {
+		
+		//CHANGE HISTORY: AT THE MOMENT IT DOES NOT AUTOMATICALLY REGISTER, just returns object
+		
+		System.out.println("get new Root Comment1");
 		eu.planets_project.tb.impl.model.Comment c1 = new eu.planets_project.tb.impl.model.Comment(lExperimentID, sExperimentPhaseID);
+		/* CHANGE HISTORY EDIT
+		System.out.println("get new Root Comment2");
 		boolean bOK = CommentHelper(true,c1,lExperimentID, sExperimentPhaseID,true);
+		System.out.println("get new Root Comment3 bOK? "+ bOK);
+		
+		System.out.println("CommentID: "+c1.getCommentID());
+		System.out.println("CommentManager contains? "+this.hmCommentsMapping.containsKey(c1.getCommentID()));
+		System.out.println("Comment is Null? ");
+		//DELETE
+		if(c1==null){
+			System.out.println(" It is NULL ");
+		}
+		//END DELETE
 		if(bOK)
 			return c1;
 		return null;
+		*/
+		//CHANGE HISTORY EDIT:
+		return c1;
 	}
 	
 
@@ -127,7 +146,7 @@ public class CommentManager implements eu.planets_project.tb.api.CommentManager,
 	public void registerComment(
 			eu.planets_project.tb.api.model.Comment comment, long experimentID,
 			String experimentPhaseID) {
-		
+		System.out.println("register Comment: ID="+comment.getCommentID());
 		CommentHelper(true,comment,experimentID,experimentPhaseID,false);
 		
 	}
@@ -149,19 +168,23 @@ public class CommentManager implements eu.planets_project.tb.api.CommentManager,
 	 * @param newComment: indicates if the prcedure for a new comment (true) or an existing comment (false) shall be followed
 	 */
 	private boolean CommentHelper(boolean bRegister_Remove, Comment cInput, long lExperimentID, String sExperimentPhaseID, boolean newComment){
+		System.out.println("CommentHelper1: register_remove: "+bRegister_Remove+ " InputComment: "+cInput.getExperimentID());
 		boolean bRet = true;
 		Comment c1 = (Comment)cInput;
 		HashMap<String,Vector<Comment>> hmPhaseComments;
 		Vector<Comment> vExistingComments;
-		
+		System.out.println("CommentHelper2");
 		if (lExperimentID>0&&sExperimentPhaseID!=null){
-			
+			System.out.println("CommentHelper3");
 			//TODO: Problem why it could not work: Comment needs to be persisted before an ID is assigned!
 			boolean bCommentExists = hmCommentsMapping.containsKey(c1.getCommentID());
 			//if flag newComment and commentExists in every case return: false
+			System.out.println("bRegister="+bRegister_Remove+" ID: "+ c1.getCommentID()+" "+"bCommentExists="+bCommentExists+" bnewComment="+newComment);
 			if((bRegister_Remove&&bCommentExists&&newComment)||(!bRegister_Remove&&bCommentExists&&newComment)){
 				//TODO error log-message: CommentID does already exist
+				System.out.println("CommentHelper4");
 				return false;
+				
 			}
 			
 			//ADD TO hmCommentsMapping
@@ -169,9 +192,11 @@ public class CommentManager implements eu.planets_project.tb.api.CommentManager,
 			if(bRegister_Remove){
 				//add
 				hmCommentsMapping.put(c1.getCommentID(), c1);
+				System.out.println("CommentHelper5: putting "+c1.getCommentID());
 			}else{
 				//remove
 				hmCommentsMapping.remove(c1.getCommentID());
+				System.out.println("CommentHelper6");
 			}
 				
 			//ADD TO hmExperimentComments
@@ -181,22 +206,27 @@ public class CommentManager implements eu.planets_project.tb.api.CommentManager,
 			if(!bContainsExperiment){
 				//create new hmPhaseComments
 				hmPhaseComments = new HashMap<String,Vector<Comment>>();
+				System.out.println("CommentHelper7");
 			}
 			else{
 				//take existing hmPhaseComments
 				hmPhaseComments = hmExperimentComments.get(c1.getExperimentID());
+				System.out.println("CommentHelper8");
 			}
 			boolean bFirstCommentForStage = hmPhaseComments.containsKey(c1.getExperimentPhaseID());
 			if(bFirstCommentForStage){
 				//take existing comment vector
 				vExistingComments = hmPhaseComments.get(c1.getExperimentPhaseID());
+				System.out.println("CommentHelper9");
 			}else{
 				// create new vExistingComments
 				vExistingComments = new Vector<Comment>();
+				System.out.println("CommentHelper10");
 			}
 				
 			boolean bContains = vExistingComments.contains(c1);
 				if(bRegister_Remove){
+					System.out.println("CommentHelper11");
 					//register
 					if(bContains)
 						vExistingComments.remove(c1);
@@ -204,6 +234,7 @@ public class CommentManager implements eu.planets_project.tb.api.CommentManager,
 				}
 				else{
 					//remove
+					System.out.println("CommentHelper12");
 					vExistingComments.remove(c1);
 				}
 				
@@ -214,9 +245,17 @@ public class CommentManager implements eu.planets_project.tb.api.CommentManager,
 		}
 		else{
 			bRet = false;
+			System.out.println("CommentHelper13");
 		}
 		
 		return bRet;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.CommentManager#containsComment(long)
+	 */
+	public boolean containsComment(long commentID) {
+		return this.hmCommentsMapping.containsKey(commentID);
 	}
 
 }

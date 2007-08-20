@@ -47,6 +47,8 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	 */
 	public Comment(long lExperimentID, String sExperimentPhaseID){
 
+		System.out.println("IN CommentA1");
+		System.out.println("ExperimentID="+lExperimentID+ " PhaseID="+sExperimentPhaseID);
 		this.lExperimentID = lExperimentID;
 		this.sExperimentPhaseID = sExperimentPhaseID;
 		//this is a new root comment
@@ -61,16 +63,41 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	 * @param lParentID
 	 */
 	public Comment(long lParentID){
+		System.out.println("IN Comment1");
 		CommentManager manager = CommentManager.getInstance();
+		System.out.println("IN Comment2");
 		Comment parent = (Comment)manager.getComment(lParentID);
+		System.out.println("IN Comment3");
+		//DELTE
+		System.out.println("parent NULL? ");
+		if (parent==null){
+			System.out.println("Contains? "+manager.containsComment(lParentID));
+			System.out.println("parent =NULL! ");
+		}
+		
+		try{
+			System.out.println("IN TRY0");
+			this.sExperimentPhaseID = parent.getExperimentPhaseID();
+			System.out.println("IN TRY1: "+this.sExperimentPhaseID);
+			this.lParentID = parent.getCommentID();
+			System.out.println("IN TRY2: "+this.lParentID);
+			this.lExperimentID = parent.getExperimentID();
+			System.out.println("IN TRY3: "+this.lExperimentID);
+		}catch(Exception e){
+			System.out.println("In TRY ERROR "+e.toString());
+		}
+		//END DELETE
+		
 		//Child element shares the following attributes with its parent
 		this.sExperimentPhaseID = parent.getExperimentPhaseID();
 		this.lParentID = parent.getCommentID();
 		this.lExperimentID = parent.getExperimentID();
-		
+		System.out.println("IN Comment: "+this.sExperimentPhaseID+ " "+this.lParentID+ " "+this.lExperimentID);
 		//add the child comment to the parent's replies
 		parent.addReply(this);
+		System.out.println("IN Comment4");
 		manager.updateComment(parent);
+		System.out.println("IN Comment5");
 		
 		this.vChildIDs = new Vector<Long>();
 		

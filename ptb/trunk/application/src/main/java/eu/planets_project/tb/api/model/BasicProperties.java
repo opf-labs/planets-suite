@@ -73,6 +73,9 @@ public interface BasicProperties{
 	public void setInvolvedUsers(Vector<User> users);
 	public void setInvolvedUsers(User user);
 	
+	public void addInvolvedUser(long lUserID);
+	public void removeInvolvedUser(long lUserID);
+	
 	public void addInvolvedUsers(Vector<Long> usersIDs);
 	public void removeInvolvedUsers(Vector<Long> userIDs);
 	

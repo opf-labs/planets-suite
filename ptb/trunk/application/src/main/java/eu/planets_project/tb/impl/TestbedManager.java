@@ -109,4 +109,12 @@ public class TestbedManager implements eu.planets_project.tb.api.TestbedManager{
 		this.hmAllExperiments.remove(expID);
 	}
 
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#containsExperiment(long)
+	 */
+	public boolean containsExperiment(long expID) {
+		return this.hmAllExperiments.containsKey(expID);
+	}
+
 }

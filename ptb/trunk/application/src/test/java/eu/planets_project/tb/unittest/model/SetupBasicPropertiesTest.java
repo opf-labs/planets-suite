@@ -1,12 +1,15 @@
 package eu.planets_project.tb.unittest.model;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import eu.planets_project.tb.api.model.finals.TestbedRoles;
 import eu.planets_project.tb.impl.model.BasicProperties;
+import eu.planets_project.tb.impl.model.User;
 import eu.planets_project.tb.test.model.SetupBasicPropertiesRemote;
 
 import junit.framework.TestCase;
@@ -140,8 +143,8 @@ public class SetupBasicPropertiesTest extends TestCase{
 	}
 	
 	
-	/*public void testInvolvedUsers(){
-		//1.test add->get
+	public void testInvolvedUsers(){
+		//1.test addInvolvedUsers->getInvolvedUserIds
 		BasicProperties props = new BasicProperties();
 		long l1 = 1;
 		long l2 = 2;
@@ -151,31 +154,49 @@ public class SetupBasicPropertiesTest extends TestCase{
 		props.addInvolvedUsers(lUserIDs);
 		
 		Vector<Long> vInvolvedUsers = props.getInvolvedUserIds();
+	
 		assertEquals(true,vInvolvedUsers.contains(l1));
 		assertEquals(true,vInvolvedUsers.contains(l2));
 		
-		//2.test: set->get
-		Vector<Integer> userRoles = new Vector<Integer>();
-		userRoles.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
-		userRoles.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
-		User testUser = new User(userRoles);
-		props.setInvolvedUsers(testUser);
+		//2.test: setInvolvedUsers->getInvolvedUserIds
 		
-		Vector<Long> vInvolvedUsers2 = props.getInvolvedUserIds();
-		assertEquals(true,vInvolvedUsers2.contains(l1));
-		assertEquals(true,vInvolvedUsers2.contains(l2));
-		assertEquals(1,vInvolvedUsers2.size());
+			Vector<Integer> userRoles = new Vector<Integer>();
+			userRoles.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
+			userRoles.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
+			User testUser = new User(userRoles);
+			props.setInvolvedUsers(testUser);
 		
-		//3. test: get User Object
-		Vector<eu.planets_project.tb.api.model.User> vUsers = props.getInvolvedUsers();
-		Iterator<eu.planets_project.tb.api.model.User> itUsers = vUsers.iterator();
-		assertEquals(1,vUsers);
-		//TODO: check if this really should correspond to equals
-		assertEquals(testUser,itUsers.next());
+			Vector<Long> vInvolvedUsers2 = props.getInvolvedUserIds();
+			assertNotNull(vInvolvedUsers2);
+				
+			//as set does override the existing settings it must not contain l1,l2
+			assertEquals(false,vInvolvedUsers2.contains(l1));
+			assertEquals(false,vInvolvedUsers2.contains(l2));
+			assertEquals(1,vInvolvedUsers2.size());
 		
-		//4. test: remove->get
+		//3. test: setInvolvedUsers(Users)-->getInvolvedUsers(User)
+			Vector<Integer> userRoles2 = new Vector<Integer>();
+			userRoles2.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
+			userRoles2.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
+			User user1 = new User(userRoles2);
+			user1.setUserDetails("Forename1", "Surname1");
+			User user2 = new User(userRoles2);
+			user1.setUserDetails("Forename2", "Surname2");
+			
+			Vector<eu.planets_project.tb.api.model.User> vUsers = new Vector<eu.planets_project.tb.api.model.User>();
+			vUsers.addElement(user1);
+			vUsers.addElement(user2);
+			props.setInvolvedUsers(vUsers);
+			vUsers = props.getInvolvedUsers();
+			
+			assertEquals(2,vUsers.size());
+			//TODO: At the moment UserManager is not testable - include later
+			//assertTrue(vUsers.contains(user1));
+			//assertTrue(vUsers.contains(user2));
 		
-	}*/
+		//4. test: removeUser->getInvolvedUsers
+		
+	}
 	
 	
 	private static Context getInitialContext() throws javax.naming.NamingException

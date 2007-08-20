@@ -1,5 +1,7 @@
 package eu.planets_project.tb.api.model;
 
+import javax.persistence.Entity;
+
 import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
 
 /**
@@ -16,34 +18,34 @@ public interface ExperimentSetup extends ExperimentPhase{
 	//Step 1:
 	public void setBasicProperties(BasicProperties props);
 	public BasicProperties getBasicProperties();
-	
+
 	/**
 	 * @param iTypeID
 	 * @see model.finals.ExperimentTypes
 	 */
-	public void setExperimentType(int iTypeID);
+	/*public void setExperimentType(int iTypeID);
 	public String getExperimentTypeName();
-	public int getExperimentTypeID();
+	public int getExperimentTypeID();/*
 	
 	//Step 2:
 	/**
 	 * Sets the experiment's workflow (= services, data, configuration) 
 	 * @param workflow
 	 */
-	public void setWorkflow(ComplexWorkflow workflow);
+	/*public void setWorkflow(ComplexWorkflow workflow);
 	public ComplexWorkflow getExperimentWorkflow();
-	
+	/*
 	/**
 	 * Sets a list of explored objectives
 	 * @param exploredObjectives
 	 */
-	public void setExperimentedObjectives(ExperimentObjectives exploredObjectives);
+	/*public void setExperimentedObjectives(ExperimentObjectives exploredObjectives);
 	public ExperimentObjectives getExperimentedObjectives();
-	
+	/*
 	//Step 3: specify resources
-	public void setExperimentResources(ExperimentResources experimentResources);
+	/*public void setExperimentResources(ExperimentResources experimentResources);
 	public ExperimentResources getExperimentResources();
-	
+	*/
 
 
 }

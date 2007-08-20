@@ -18,5 +18,7 @@ public interface CommentManager {
 	public void removeComment(long lCommentID);
 	
 	public void updateComment(Comment comment);
+	
+	public boolean containsComment(long commentID);
 
 }

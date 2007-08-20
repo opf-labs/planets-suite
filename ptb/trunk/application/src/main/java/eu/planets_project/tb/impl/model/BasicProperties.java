@@ -13,6 +13,7 @@ import java.util.Vector;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import eu.planets_project.tb.impl.TestbedManager;
 import eu.planets_project.tb.impl.UserManager;
@@ -24,7 +25,7 @@ import eu.planets_project.tb.api.model.User;
  *
  */
 @Entity
-public class BasicProperties extends eu.planets_project.tb.impl.model.ExperimentPhase
+public class BasicProperties 
 implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable {
 	
 	// TODO:
@@ -468,7 +469,13 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#addInvolvedUsers(java.util.Vector)
 	 */
 	public void addInvolvedUsers(Vector<Long> usersIDs) {
-		this.vInvolvedUsers.addAll(usersIDs);
+		Iterator<Long> itUserIDs = usersIDs.iterator();
+		while(itUserIDs.hasNext()){
+			long lUserID = itUserIDs.next();
+			//check to avoid duplicates
+			if(!this.vInvolvedUsers.contains(lUserID))
+				this.vInvolvedUsers.addElement(lUserID);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -505,6 +512,23 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 			vRet.addElement(usermanager.getUser(itAllUserIDs.next()));
 		}
 		return vRet;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#addInvolvedUser(long)
+	 */
+	public void addInvolvedUser(long userID) {
+		if(!this.vInvolvedUsers.contains(userID))
+			this.vInvolvedUsers.addElement(userID);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#removeInvolvedUser(long)
+	 */
+	public void removeInvolvedUser(long userID) {
+		this.vInvolvedUsers.removeElement(userID);
+		//and also remove special roles for a given User within this experiment
+		this.hmInvolvedUserSpecialExperimentRoles.remove(userID);
 	}
 
 

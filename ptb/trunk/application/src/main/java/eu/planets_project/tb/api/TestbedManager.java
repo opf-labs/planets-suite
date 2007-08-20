@@ -12,6 +12,7 @@ public interface TestbedManager {
 	public void removeExperiment(long lExpID);
 	public Collection<Experiment> getAllExperiments();
 	public Set<Long> getAllExperimentIDs();
+	public boolean containsExperiment(long expID);
 	/**
 	 * Using this convenience method for creating a new Experiment object
 	 * @return

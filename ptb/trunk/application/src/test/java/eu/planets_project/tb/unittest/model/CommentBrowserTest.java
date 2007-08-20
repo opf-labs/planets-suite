@@ -38,14 +38,21 @@ public class CommentBrowserTest extends TestCase{
 			//new root comment with Comment(long lExperimentID, String sExperimentPhaseID)
 			//please note: phaseID are not correct
 			CommentManager manager = CommentManager.getInstance();
-			//Comment com1 = (Comment)manager.getNewRootComment(1, "setup");
-			Comment com1 = new Comment(1, "setup");
+			Comment com1 = (Comment)manager.getNewRootComment(1, "setup");
+			//Comment com1 = new Comment(1, "setup");
+			//System.out.println("Contains? "+manager.containsComment(1));
 			commentID1 = dao_r.persistComment(com1);
-			manager.registerComment(com1, 1, "setup");
+			Comment find_com1 = dao_r.findComment(commentID1);
+			manager.registerComment(find_com1, find_com1.getExperimentID(),find_com1.getExperimentPhaseID());
+			System.out.println("XXXContains? "+manager.containsComment(commentID1));
 			
 			//new root comment
-			//Comment com2 = (Comment)manager.getNewRootComment(2, "evaluation");
-			//commentID2 = dao_r.persistComment(com2);
+			Comment com2 = (Comment)manager.getNewRootComment(2, "evaluation");
+			commentID2 = dao_r.persistComment(com2);
+			Comment find_com2 = dao_r.findComment(commentID2);
+			manager.registerComment(find_com2, find_com2.getExperimentID(),find_com2.getExperimentPhaseID());
+			System.out.println("XXXContains? "+manager.containsComment(commentID2));
+			
 			
 		} catch (NamingException e) {
 			//TODO integrate message into logging mechanism
@@ -111,11 +118,15 @@ public class CommentBrowserTest extends TestCase{
 	public void testAddChildComment(){
 		//TODO: Add CommentManager registration
 		Comment test_find1 =  dao_r.findComment(commentID1);
+		System.out.println("Comment Partent ID: "+test_find1.getCommentID());
 		Comment com_child = new Comment(test_find1.getCommentID());
 		com_child.setComment("Andrew", "TestChild", "Comment Text");
-		dao_r.persistComment(com_child);
-		
+		Long lChildID = dao_r.persistComment(com_child);
+
 		test_find1 =  dao_r.findComment(commentID1);
+		System.out.println("Comment Partent ID: "+test_find1.getCommentID());
+		System.out.println("Comment Child ID: "+com_child.getCommentID());
+		
 		Vector<eu.planets_project.tb.api.model.Comment> vChilds = test_find1.getReplies();
 		
 		assertEquals(1,vChilds.size());	
