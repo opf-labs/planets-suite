@@ -1,0 +1,598 @@
+/*******************
+* Main Page Layout *
+*******************/
+
+body 
+{
+	background:#F5F5F5;
+	margin:0;
+	padding:0;
+	color:#000;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 76%;
+	background-image:  url("../graphics/banner-background.gif");
+	background-repeat:repeat-x;
+	background-position: top left;
+
+} 
+#banner
+{
+	background:transparent;
+	float:left;
+}
+#gelinks
+{
+	float:right;
+	background-color: transparent; 
+	margin:0;
+	padding:0;
+	color:#FFF;
+	font-family: arial, helvetica, sans-serif;
+}
+
+#geleft
+{
+	float:left;
+	background:url("../graphics/tab-top_l.gif") no-repeat left bottom;
+	overflow:hidden;
+	width: 17px;
+	margin:0;
+	padding:0;
+	padding-bottom:7px;
+	padding-top:6px;
+}
+
+#geright
+{
+	float:left;
+	background:url("../graphics/tab-top_r.gif") repeat-x left bottom;
+	overflow:hidden;
+	margin:0;
+	padding:0;
+	padding-bottom:6px;
+	padding-top:6px;
+	padding-right:2px;
+}
+
+#header
+{
+	float:left;
+	width:100%;
+	background:transparent;
+	line-height:normal;
+}
+
+#header ul 
+{
+	margin:0;
+	padding:10px 10px 0;
+	list-style:none;
+}
+
+#header li, .panelTab
+{
+	float:left;
+	background:url("../graphics/tab-n_l.gif") no-repeat left top;
+	margin:0;
+	padding:0 0 0 9px;
+}
+
+#header a 
+{
+	float:left;
+	display:block;
+	background:url("../graphics/tab-n_r.gif") no-repeat right top;
+	padding:5px 15px 4px 6px;
+	text-decoration:none;
+	font-weight:bold;
+	font-size: 0.8em;
+	color:#FFFFFF;
+}
+
+/* Commented Backslash Hack
+   hides rule from IE5-Mac \*/
+#header a {float:none;}
+/* End IE5-Mac hack */
+
+#header a:hover
+{
+	color:#BFDEEB;
+	text-decoration:none;
+}
+
+#header #current
+{
+	background-image:url("../graphics/tab-s_l.gif");
+}
+
+#header #current a
+{
+	background-image:url("../graphics/tab-s_r.gif");
+	color:#000000;
+	text-decoration:none;
+	font-weight:bold;
+}
+
+p
+{
+	font-family: Arial, Helvetica, sans-serif; 
+	color: #000000; 
+	line-height: normal;  
+  	margin: 5px 0px 5px 0px;
+} 
+
+ul 
+{
+	list-style-type: square; 
+	font-family: Arial, Helvetica, sans-serif; 
+	color: #000000;
+
+	
+} 
+
+div.clear
+{
+	clear:both;
+}
+
+a
+{
+	color:#006699;
+	text-decoration:none;
+}
+
+a:hover,active
+{
+	color:#000000;
+	text-decoration:underline;
+}
+
+
+#subnav
+{
+	width:100%;
+	text-align: left; 
+	background-color: #BFDEEB; 
+	border-bottom: 2px solid #579EC2;  
+	padding-top:1px; 
+	padding-bottom:1px; 
+	margin:0px;  
+	margin-top:0px;
+	margin-bottom: 20px;
+	display: block;
+}
+
+
+h2.subnav
+{
+	text-align:center;
+	padding-left:10px; 
+	margin:0px;
+	font-family: arial, helvetica, sans-serif;
+	font-size:1.2em;
+	color: #000000;
+	letter-spacing: 0.1em;
+}
+
+a.subnav
+{
+	text-decoration: none; 
+	color: #FFFFFF; 
+	font-weight: bold; 
+	text-decoration: none;
+} 
+
+a:hover.subnav
+{
+	text-decoration: none; 
+	color: #FFFFFF; 
+	font-weight: bold; 
+	text-decoration: underline
+} 
+
+a:active.subnav 
+{
+	text-decoration: none; 
+	color: #FFFFFF; 
+	font-weight: bold
+} 
+
+#mainwrapper
+
+{
+	float: left;
+	width: 100%;
+	background-image:  url("../graphics/leftcol.gif");
+	background-repeat: repeat-y;
+
+}
+
+#maincol
+{
+	margin-left: 200px;
+}
+
+#leftcol
+{
+	float: left;
+	width: 200px; /*Width of left column*/
+	margin-left: -100%;
+	background:transparent;
+	border-top: 2px solid #579EC2; 
+	text-align:right;
+}
+
+.innertube
+{
+	margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+	margin-top: 0;
+}
+
+.innertubemain
+{
+	margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+	margin-top: 0;
+	padding-left: 5px;
+	border: 2px solid #579EC2; 
+	background: #FFFFFF;
+}
+
+h3.leftcol
+{
+	text-transform:uppercase;
+	text-align:center;
+	background: #579EC2;
+	color: #FFFFFF;
+	margin:0;
+	padding: 5px;
+	letter-spacing: 0.2em;
+	font-size: 0.9em;
+}
+
+p.leftcol
+{
+	text-align:left;
+}
+
+fieldset.login
+{
+	width: 400px;
+}
+
+ul.exp, ul.sub_exp
+{
+	list-style:none;
+	padding: 0;
+	padding-bottom: 0px;
+	padding-top: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border: 0;
+}
+
+li.exp_nd
+{
+	display: block;
+	background-image:  url("../graphics/button_off.gif");
+	background-repeat:no-repeat;
+	background-position: right ;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+li.exp_sel
+{
+	background: #C8E3ED;
+	display: block;
+}
+
+a.exp
+{
+	display: block;
+	background-image:  url("../graphics/button_off.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+a:hover.exp, a:active.exp
+{
+	display: block;
+	background-image:  url("../graphics/button_on.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+a.exp_done
+{
+	display: block;
+	background-image:  url("../graphics/button_off_done.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+a:hover.exp_done, a:active.exp_done
+{
+	display: block;
+	background-image:  url("../graphics/button_on_done.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+li.exp_nd2
+{
+	display: block;
+	background-image:  url("../graphics/button_subsec.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+a.exp2
+{
+	display: block;
+	background-image:  url("../graphics/button_subsec.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+a:hover.exp2, a:active.exp2
+{
+	display: block;
+	background-image:  url("../graphics/button_subsec_on.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+a.exp2_done
+{
+	display: block;
+	background-image:  url("../graphics/button_subsec_done.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+a:hover.exp2_done, a:active.exp2_done
+{
+	display: block;
+	background-image:  url("../graphics/button_subsec_on_done.gif");
+	background-repeat:no-repeat;
+	background-position: right center;
+	padding-right:25px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+
+#footer
+{
+	text-align: right; 
+	font-size: 0.8em;
+	width: 100%;
+	background-image:  url("../graphics/leftcol.gif");
+	background-repeat: repeat-y;
+	margin:0;
+}
+
+#footertext
+{
+	background: transparent;
+	margin-right: 10px;
+}
+
+img.toolbar
+{
+	vertical-align: text-top;
+	padding:0;
+	margin:0;
+	border:0;
+}
+
+img
+{
+	border:0;
+}
+
+hr
+{
+ 	color:#006699;
+	height:1px;
+	border-bottom:1px dashed;
+	border-top: none;
+	margin-top:10px;
+	margin-bottom:0px;
+	text-align:center;
+	width: 100%;
+}
+
+h1 
+{
+  margin: 0px;
+  padding: 0px;
+  font-size: 1.4em;
+  color: #999999;
+  font-family: arial, helvetica, sans-serif;
+}
+
+h2.main
+{
+	background: #579EC2;
+	color: #FFFFFF;
+	margin:0;
+	margin-top: 15px;
+	margin-bottom:15px;
+	margin-left: -5px;
+	padding: 0px;
+	padding-top: 5px;
+	padding-bottom:5px;
+	padding-left: 5px;
+	letter-spacing: 0.2em;
+	font-size: 1em;
+	width:100%;
+	text-align:left;
+}
+
+h3
+{
+  margin: 10px 0px 10px 0px;
+  padding: 0px;
+  font-size: 1.0em;
+  font-weight: bold;
+  font-family: arial, helvetica, sans-serif;
+  color: #999;
+}
+
+legend 
+{ 
+	padding: .2em; 
+	font-weight: bold;
+	color:#006699;
+} 
+
+fieldset
+{
+	width:600px;
+}
+
+label
+{
+	cursor: pointer;
+	float: left;
+	clear: left;
+	text-align: right;
+	margin-right: 0.5em;
+	margin-bottom: 0.5em;
+	font-weight: bold;
+	width: 100px;
+}
+
+p.glinks
+{
+	font-size:0.8em;
+	color:#000;
+	font-family: arial, helvetica, sans-serif;
+	padding:0;
+	margin:0;
+}
+
+a.glinks
+{
+	color:#000000;
+	text-decoration:none;
+	font-weight:bold;
+}
+
+a:hover.glinks
+{
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+a:active.glinks
+{
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+div.enav
+{
+	margin-left: 2px;
+	margin-bottom: 20px;
+	margin-top: 0px;
+	margin-right: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	height:1em; 
+	text-align: left; 
+	background-color: #FFF; 
+	border: solid 1px #BEC9D1;
+	background-image:  url("../graphics/bar.gif");
+	background-repeat:repeat-x;
+	background-position: top; 
+	overflow: hidden; 
+	display: block;
+}
+
+table
+{
+	border: 1px solid #BFDEEB;
+}
+
+td
+{
+	border: 1px solid #BFDEEB;
+}
+
+td.passive
+{
+	text-align: right;
+	font-weight: bold;
+	background-color: #579EC2;
+	color:#FFFFFF;
+	border: 1px solid #BFDEEB;
+}
+
+tr.blue
+{
+	background-color: #C8E3ED;
+}
+
+
+
+th
+{
+	background-color: #579EC2;
+	color:#FFFFFF;
+	text-align:center;
+	border: 1px solid #BFDEEB;
+}
+
+div.filepane
+{
+	width: 600px;
+	height: 600px;
+	overflow: hidden;
+	border:1px solid black;
+}
+
+div.filebrowse
+{
+	float:left;
+	width: 200px;
+	height:595px;
+	overflow: scroll;
+	border-right:1px solid black;
+	padding:2px;
+}
+div.filemain
+{
+	width: auto;
+	overflow: scroll;
+	height:595px;
+	padding:2px;
+}
