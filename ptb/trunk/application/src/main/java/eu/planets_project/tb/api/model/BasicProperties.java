@@ -52,6 +52,10 @@ public interface BasicProperties{
 	public void setIndication(String sDescription);
 	public String getIndication();
 	
+	/**
+	 * This method characterizes the MIME-Types this experiment is all about.
+	 * @param sMimeType: format string/string is checked
+	 */
 	public void setExperimentedObjectType(String sMimeType);
 	public void setExperimentedObjectTypes(Vector<String> sMimeTypes);
 	public Vector<String> getExperimentedObjectTypes();

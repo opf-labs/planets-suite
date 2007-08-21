@@ -8,6 +8,7 @@ import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.api.model.finals.TestbedRoles;
+import eu.planets_project.tb.impl.UserManager;
 import eu.planets_project.tb.impl.model.BasicProperties;
 import eu.planets_project.tb.impl.model.User;
 import eu.planets_project.tb.test.model.SetupBasicPropertiesRemote;
@@ -143,7 +144,7 @@ public class SetupBasicPropertiesTest extends TestCase{
 	}
 	
 	
-	public void testInvolvedUsers(){
+	public void testaddInvolvedUsers(){
 		//1.test addInvolvedUsers->getInvolvedUserIds
 		BasicProperties props = new BasicProperties();
 		long l1 = 1;
@@ -157,45 +158,165 @@ public class SetupBasicPropertiesTest extends TestCase{
 	
 		assertEquals(true,vInvolvedUsers.contains(l1));
 		assertEquals(true,vInvolvedUsers.contains(l2));
-		
+	}
+	
+	public void testsetInvolvedUsers(){
 		//2.test: setInvolvedUsers->getInvolvedUserIds
+		BasicProperties props = new BasicProperties();
+		long l1 = 1;
+		long l2 = 2;
+		Vector<Long> lUserIDs = new Vector<Long>();
+		lUserIDs.addElement(l1);
+		lUserIDs.addElement(l2);
+		props.addInvolvedUsers(lUserIDs);
 		
-			Vector<Integer> userRoles = new Vector<Integer>();
-			userRoles.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
-			userRoles.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
-			User testUser = new User(userRoles);
-			props.setInvolvedUsers(testUser);
+		Vector<Long> vInvolvedUsers = props.getInvolvedUserIds();
+		Vector<Integer> userRoles = new Vector<Integer>();
+		userRoles.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
+		userRoles.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
+		User testUser = new User(userRoles);
+		props.setInvolvedUsers(testUser);
+	
+		Vector<Long> vInvolvedUsers2 = props.getInvolvedUserIds();
+		assertNotNull(vInvolvedUsers2);
+			
+		//as set does override the existing settings it must not contain l1,l2
+		assertEquals(false,vInvolvedUsers2.contains(l1));
+		assertEquals(false,vInvolvedUsers2.contains(l2));
+		assertEquals(1,vInvolvedUsers2.size());
+	}
 		
-			Vector<Long> vInvolvedUsers2 = props.getInvolvedUserIds();
-			assertNotNull(vInvolvedUsers2);
-				
-			//as set does override the existing settings it must not contain l1,l2
-			assertEquals(false,vInvolvedUsers2.contains(l1));
-			assertEquals(false,vInvolvedUsers2.contains(l2));
-			assertEquals(1,vInvolvedUsers2.size());
-		
+	public void testSetInvolvedUsers2(){
 		//3. test: setInvolvedUsers(Users)-->getInvolvedUsers(User)
-			Vector<Integer> userRoles2 = new Vector<Integer>();
-			userRoles2.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
-			userRoles2.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
-			User user1 = new User(userRoles2);
-			user1.setUserDetails("Forename1", "Surname1");
-			User user2 = new User(userRoles2);
-			user1.setUserDetails("Forename2", "Surname2");
-			
-			Vector<eu.planets_project.tb.api.model.User> vUsers = new Vector<eu.planets_project.tb.api.model.User>();
-			vUsers.addElement(user1);
-			vUsers.addElement(user2);
-			props.setInvolvedUsers(vUsers);
-			vUsers = props.getInvolvedUsers();
-			
-			assertEquals(2,vUsers.size());
-			//TODO: At the moment UserManager is not testable - include later
-			//assertTrue(vUsers.contains(user1));
-			//assertTrue(vUsers.contains(user2));
+		//first add user per ID
+		BasicProperties props = new BasicProperties();
+		long l1 = 1;
+		long l2 = 2;
+		Vector<Long> lUserIDs = new Vector<Long>();
+		lUserIDs.addElement(l1);
+		lUserIDs.addElement(l2);
+		props.addInvolvedUsers(lUserIDs);
 		
+		Vector<Integer> userRoles2 = new Vector<Integer>();
+		userRoles2.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
+		userRoles2.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
+		User user1 = new User(userRoles2);
+		user1.setUserDetails("Forename1", "Surname1");
+		User user2 = new User(userRoles2);
+		user1.setUserDetails("Forename2", "Surname2");
+		
+		Vector<eu.planets_project.tb.api.model.User> vUsers = new Vector<eu.planets_project.tb.api.model.User>();
+		vUsers.addElement(user1);
+		vUsers.addElement(user2);
+		//Users with id l1 and l2 should not be added anymore
+		props.setInvolvedUsers(vUsers);
+		vUsers = props.getInvolvedUsers();
+		
+		assertEquals(2,vUsers.size());
+		//TODO: At the moment UserManager is not testable - include later
+		//assertTrue(vUsers.contains(user1));
+		//assertTrue(vUsers.contains(user2));
+	}
+		
+	/*public void testRemoveInvolvedUsers2(){	
 		//4. test: removeUser->getInvolvedUsers
+		BasicProperties props = new BasicProperties();
+		Vector<Integer> userRoles2 = new Vector<Integer>();
+		userRoles2.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
+		userRoles2.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
+		UserManager userManager = UserManager.getInstance();
+		//TODO: UserManager needs to be tested first
+		//Users get their ID injected within the UserManager
+		User user1 = (User) userManager.getNewUserBean(userRoles2);
+		user1.setUserDetails("Forename1", "Surname1");
+		userManager.updateUser(user1);
 		
+		User user2 = (User) userManager.getNewUserBean(userRoles2);
+		user2.setUserDetails("Forename2", "Surname2");
+		userManager.updateUser(user2);
+		
+		Vector<eu.planets_project.tb.api.model.User> vUsers = new Vector<eu.planets_project.tb.api.model.User>();
+		vUsers.addElement(user1);
+		vUsers.addElement(user2);
+		props.setInvolvedUsers(vUsers);
+		//now remove a user
+		vUsers.removeElement(user2);
+		//still need to retrieve user items and check if user is removed
+	}*/
+	
+	public void testConsiderations(){
+		BasicProperties props = new BasicProperties();
+		props.setConsiderations("Considerations1");
+		assertEquals("Considerations1",props.getConsiderations());
+	}
+		
+	public void testContact(){
+		//Test: setContact
+		BasicProperties props = new BasicProperties();
+		props.setContact("Name", "Mail@yahoo.com", "+431585", "Thurngasse 8, 1090 Wien");
+		assertEquals("Thurngasse 8, 1090 Wien", props.getContactAddress());
+		assertEquals("Mail@yahoo.com", props.getContactMail());
+		assertEquals("Name", props.getContactName());
+		assertEquals("+431585", props.getContactTel());
+	}
+	
+	public void testContact2(){
+		//Test: props.setContact(user);
+		BasicProperties props = new BasicProperties();
+		Vector<Integer> userRoles2 = new Vector<Integer>();
+		userRoles2.addElement(TestbedRoles.TESTBED_ROLE_PLANETS_USER);
+		userRoles2.addElement(TestbedRoles.TESTBED_ROLE_EXPERIMENTER);
+		//Please note: THis is not the correct way to retireve a user
+		//Use: User user2 = (User) userManager.getNewUserBean(userRoles2) instead.
+		User user1 = new User(userRoles2);
+		user1.setUserDetails("Forename1", "Surname1");
+		user1.setContactInformation("Mail@yahoo.com", "+431585", "Thurngasse 8, 1090 Wien");
+		props.setContact(user1);
+		assertEquals("Thurngasse 8, 1090 Wien", props.getContactAddress());
+		assertEquals("Mail@yahoo.com", props.getContactMail());
+		assertEquals("Forename1 Surname1", props.getContactName());
+		assertEquals("+431585", props.getContactTel());
+	}
+	
+	public void testExperimentApproach(){
+		BasicProperties props = new BasicProperties();
+		props.setExperimentApproach(0);
+		int iApproach = props.getExperimentApproach();
+		assertEquals(0,iApproach);
+		props.setExperimentApproach(1);
+		iApproach = props.getExperimentApproach();
+		assertEquals(1,iApproach);
+		props.setExperimentApproach(2);
+		iApproach = props.getExperimentApproach();
+		//[0..1] approach must not get modified
+		assertEquals(1,iApproach);
+	}
+		
+	public void testExperimentedObjectType(){
+			BasicProperties props = new BasicProperties();
+		//Test1:
+			props.setExperimentedObjectType("text/plain");
+			Vector<String> vTypes = props.getExperimentedObjectTypes();
+			assertTrue(vTypes.size()==1);
+			assertTrue(vTypes.contains("text/plain"));
+		
+		//Test2:
+			vTypes.addElement("text/html");
+			vTypes.addElement("image/gif");
+			props.setExperimentedObjectTypes(vTypes);
+			vTypes = props.getExperimentedObjectTypes();
+			assertTrue(vTypes.size()==2);
+			assertTrue(vTypes.contains("text/html"));
+			assertTrue(vTypes.contains("image/gif"));
+			
+		//Test3:
+			vTypes.addElement("text/html");
+			vTypes.addElement("image\\gif");
+			props.setExperimentedObjectTypes(vTypes);
+			vTypes = props.getExperimentedObjectTypes();
+			assertTrue(vTypes.size()==1);
+			assertTrue(vTypes.contains("text/html"));
+			assertTrue(!vTypes.contains("image\\gif"));
 	}
 	
 	

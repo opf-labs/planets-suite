@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.persistence.Entity;
@@ -131,6 +132,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentedObjectTypes()
 	 */
 	public Vector<String> getExperimentedObjectTypes() {
+		System.out.println("How many items"+this.vExpObjectTypes.size());
 		return this.vExpObjectTypes;
 	}
 
@@ -214,6 +216,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		this.sContactName = name;
 		this.sContactMail = mail;
 		this.sContaectAddress = address;
+		this.sContactTel = tel;
 	}
 
 	/* (non-Javadoc)
@@ -224,13 +227,17 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		this.sContactName = bean.getForename()+" "+ bean.getSurname();
 		this.sContactMail = bean.getEmail();
 		this.sContaectAddress = bean.getAddress();
+		this.sContactTel = bean.getTelNr();
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentApproach(int)
 	 */
 	public void setExperimentApproach(int iid) {
-		this.iExperimentApproach = iid;
+		//ExperimentApproach must lay between 0..1
+		if(iid>=0&&iid<=1){
+			this.iExperimentApproach = iid;
+		}
 	}
 
 	/* (non-Javadoc)
@@ -300,8 +307,28 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentedObjectType(java.lang.String)
 	 */
 	public void setExperimentedObjectType(String mimeType) {
-		this.vExpObjectTypes.removeAllElements();
-		this.vExpObjectTypes.addElement(mimeType);
+		//parse input string if it is in the format String/String
+		StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
+		System.out.println("Tokens: "+tokenizer.countTokens());
+		if (tokenizer.countTokens()==3){
+			this.vExpObjectTypes.removeAllElements();
+			this.vExpObjectTypes.addElement(mimeType);
+			
+			System.out.println("Hier1: "+this.vExpObjectTypes.contains(mimeType));
+		}
+	}
+	
+	public void addExperimentedObjectType(String mimeType) {
+		//parse input string if it is in the format String/String
+		StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
+		System.out.println("Tokens: "+tokenizer.countTokens());
+		if (tokenizer.countTokens()==3){
+			if(!this.vExpObjectTypes.contains(mimeType)){
+				this.vExpObjectTypes.addElement(mimeType);
+				System.out.println("Hier2: "+this.vExpObjectTypes.contains(mimeType));
+			}
+			
+		}
 	}
 
 	/* (non-Javadoc)
@@ -309,7 +336,10 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 */
 	public void setExperimentedObjectTypes(Vector<String> mimeTypes) {
 		this.vExpObjectTypes.removeAllElements();
-		this.vExpObjectTypes.addAll(mimeTypes);
+		Iterator<String> itTypes = mimeTypes.iterator();
+		for(int i=0;i<mimeTypes.size();i++){
+			addExperimentedObjectType(itTypes.next());
+		}
 	}
 
 	/* (non-Javadoc)

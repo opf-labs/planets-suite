@@ -14,7 +14,7 @@ public interface Experiment extends ExperimentPhase{
 
 	public long getExperimentID();
 	
-	/*public void setExperimentSetup(ExperimentSetup setupPhaseObject);
+	public void setExperimentSetup(ExperimentSetup setupPhaseObject);
 	public ExperimentSetup getExperimentSetup();
 	
 	public void setExperimentApproval(ExperimentApproval approvalPhase);
@@ -24,6 +24,6 @@ public interface Experiment extends ExperimentPhase{
 	public ExperimentExecution getExperimentExecution();
 	
 	public void setExperimentAnalysis(ExperimentEvaluation analysisPhase);
-	public ExperimentEvaluation getExperimentAnalysis();*/
+	public ExperimentEvaluation getExperimentAnalysis();
 	
 }
