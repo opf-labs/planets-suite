@@ -3,10 +3,10 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.sql.Date;
-import java.util.GregorianCalendar;
+import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import eu.planets_project.tb.api.data.DataRegistryBinding;
@@ -16,59 +16,57 @@ import eu.planets_project.tb.api.data.DataRegistryBinding;
  *
  */
 //@Entity
-public class ExperimentPhase implements
+public abstract class ExperimentPhase implements
 		eu.planets_project.tb.api.model.ExperimentPhase {
 	
-	//@Id
-	private String sPhaseID;
-	private long lDuration;
-	private GregorianCalendar endDate, startDate;
-	private int iProgress, iState;
+	
+	public static final int NOT_STARTED = -1;
+	public static final int IN_PROGRESS = 0;
+	public static final int COMPLETED = 1;
+	
+	public static final int NOT_AVAILABLE = -1;
+	public static final int SUCCESS = 0;
+	public static final int ACCEPTED = 1;
+	public static final int FAILURE = 2;
+	public static final int REJECTED = 3;
+	
+	@Id
+	@GeneratedValue
+	private long sPhaseID;
+	private Calendar endDate, startDate;
+	private int iState, iResult;
 	boolean bSuccess;
-
+	
+	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getDuration()
 	 */
 	public long getDurationInMillis() {
-		calculateDuration();
-		return this.lDuration;
+		return calculateDuration();
 	}
 	
-	private void calculateDuration(){
-		this.lDuration = endDate.getTimeInMillis()- startDate.getTimeInMillis();
+	private long calculateDuration(){
+		return endDate.getTimeInMillis()- startDate.getTimeInMillis();
 	}
 
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getPhaseID()
 	 */
-	public String getPhaseID() {
+	public long getPhaseID() {
 		return this.sPhaseID;
 	}
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getProgress()
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getState()
 	 */
-	public int getProgress() {
-		return this.iProgress;
+	public int getState() {
+		return this.iState;
 	}
 	
 	/**
-	 * checks if setProgress lies in [-1..not started; 0..in progress; 1..completed]
+	 * checks if setState lies in [-1..not started; 0..in progress; 1..completed]
 	 * @param progress
-	 * @return
-	 */
-	private boolean checkProgressInput(int progress){
-		boolean bret= false;
-		if(progress<=1&&progress>=-1){
-			bret = true;
-		}
-		return bret;
-	}
-	
-	/**
-	 * -1..not available; 0..sucess/accepted; 1..failure/rejected
-	 * @param state
 	 * @return
 	 */
 	private boolean checkStateInput(int state){
@@ -78,12 +76,25 @@ public class ExperimentPhase implements
 		}
 		return bret;
 	}
+	
+	/**
+	 * -1..not available; 0..success; 1..accepted; 2..failure; 3..rejected;
+	 * @param state
+	 * @return
+	 */
+	private boolean checkResultInput(int result){
+		boolean bret= false;
+		if(result<=3&&result>=-1){
+			bret = true;
+		}
+		return bret;
+	}
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getState()
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getResult()
 	 */
-	public int getState() {
-		return this.iState;
+	public int getResult() {
+		return this.iResult;
 	}
 
 	/* (non-Javadoc)
@@ -99,8 +110,8 @@ public class ExperimentPhase implements
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#isCompleted()
 	 */
 	public boolean isCompleted() {
-		int iProgress = this.getProgress();
-		if (iProgress == 1)
+		int iState = this.getState();
+		if (iState == ExperimentPhase.COMPLETED)
 			return true;
 		return false;
 	}
@@ -109,47 +120,47 @@ public class ExperimentPhase implements
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#isInProgress()
 	 */
 	public boolean isInProgress() {
-		int iProgress = this.getProgress();
-		if (iProgress == 0)
+		int iState = this.getState();
+		if (iState == ExperimentPhase.IN_PROGRESS)
 			return true;
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#isStarted()
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#isNotStarted()
 	 */
 	public boolean isNotStarted() {
-		int iProgress = this.getProgress();
-		if (iProgress == -1)
+		int iState = this.getState();
+		if (iState == ExperimentPhase.NOT_STARTED)
 			return true;
 		return false;
 	}
 
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setProgress(int)
-	 */
-	public void setProgress(int progress) {
-		boolean bOK = this.checkProgressInput(progress);
-		if(bOK)
-			this.iProgress = progress;
-	}
 
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setState(int)
 	 */
 	public void setState(int state) {
-		boolean bOk = this.checkStateInput(state);
-		if (bOk)
+		boolean bOK = this.checkStateInput(state);
+		if(bOK)
 			this.iState = state;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setResult(int)
+	 */
+	public void setResult(int result) {
+		boolean bOk = this.checkResultInput(result);
+		if (bOk)
+			this.iResult = result;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getEndDate()
 	 */
-	public GregorianCalendar getEndDate() {
+	public Calendar getEndDate() {
 		return this.endDate;
 	}
 
@@ -163,7 +174,7 @@ public class ExperimentPhase implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getStartDate()
 	 */
-	public GregorianCalendar getStartDate() {
+	public Calendar getStartDate() {
 		return this.startDate;
 	}
 
@@ -176,17 +187,17 @@ public class ExperimentPhase implements
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setEndDate(java.util.GregorianCalendar)
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setEndDate(java.util.Calendar)
 	 */
-	public void setEndDate(GregorianCalendar endDate) {
+	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
 	}
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setStartDate(java.util.GregorianCalendar)
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setStartDate(java.util.Calendar)
 	 */
-	public void setStartDate(GregorianCalendar startDate) {
+	public void setStartDate(Calendar startDate) {
 		this.startDate = startDate;
 	}
 

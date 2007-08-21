@@ -20,9 +20,7 @@ import eu.planets_project.tb.api.model.ExperimentReport;
 public class ExperimentEvaluation extends eu.planets_project.tb.impl.model.ExperimentPhase
 implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Serializable {
 
-	//@Id
-	//@GeneratedValue
-	private long lExpEvaluationID;
+
 	private ExperimentObjectives evaluatedExpObjectives;
 	private ExperimentObjectives inputObjectives;
 	private ExperimentReport expReport;
@@ -32,13 +30,6 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		this.inputObjectives = inputObjectives;
 	}
 	
-	public long getExperimentID(){
-		return this.lExpEvaluationID;
-	}
-	
-	private void setExperimentID(long lID){
-		this.lExpEvaluationID = lID;
-	}
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateExperimentObjectives(ExperimentObjectives)

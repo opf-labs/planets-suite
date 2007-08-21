@@ -19,7 +19,8 @@ public class ExperimentResources implements
 	@Id
 	@GeneratedValue
 	private long lExpRessourceID;
-	private int iNumberOfFiles;
+	private int iNumberOfOutputFiles;
+	private int iIntensity;
 	
 	public long getExperimentResourcesID(){
 		return this.lExpRessourceID;
@@ -31,15 +32,23 @@ public class ExperimentResources implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentResources#getNumberOfFiles()
 	 */
-	public int getNumberOfFiles() {
-		return this.iNumberOfFiles;
+	public int getNumberOfOutputFiles() {
+		return this.iNumberOfOutputFiles;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentResources#setNumberOfFiles(int)
 	 */
-	public void setNumberOfFiles(int nr) {
-		this.iNumberOfFiles = nr;
+	public void setNumberOfOutputFiles(int nr) {
+		this.iNumberOfOutputFiles = nr;
 	}
+	
+	public void setIntensity(int iIntensity) {
+		this.iIntensity = iIntensity;
+	}
+	public int getIntensity() {
+		return this.iIntensity;
+	}
+	
 
 }

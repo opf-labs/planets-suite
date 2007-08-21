@@ -20,7 +20,7 @@ public class Institution implements eu.planets_project.tb.api.model.Institution 
 	private long lInstitutionID;
 	private int iInstitutionType;
 	private String sAddress, sName;
-	private long lPrimaryContactID;
+	private String sPrimaryContactID;
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Institution#checkInstitutionAllowed(int)
@@ -114,18 +114,12 @@ public class Institution implements eu.planets_project.tb.api.model.Institution 
 			this.iInstitutionType = typeID;
 	}
 
-	public eu.planets_project.tb.api.model.User getPrimaryContact() {
-		TestbedManager tbManager = TestbedManager.getInstance();
-		eu.planets_project.tb.api.UserManager manager = tbManager.getUserManager();
-		return manager.getUser(this.lPrimaryContactID);
+	public String getPrimaryContact() {
+		return this.sPrimaryContactID;
 	}
 
-	public void setPrimaryContact(eu.planets_project.tb.api.model.User user) {
-		this.lPrimaryContactID = user.getUserID();
-	}
-
-	public void setPrimaryContact(long userID) {
-		this.lPrimaryContactID = userID;
+	public void setPrimaryContact(String userID) {
+		this.sPrimaryContactID = userID;
 	}
 
 }

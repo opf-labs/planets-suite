@@ -3,6 +3,7 @@
  */
 package eu.planets_project.tb.impl.model;
 
+import java.util.Calendar;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -12,8 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import eu.planets_project.tb.impl.UserManager;
-import eu.planets_project.tb.impl.model.User;
 import eu.planets_project.tb.impl.model.Comment;
 import eu.planets_project.tb.impl.CommentManager;
 
@@ -28,13 +27,13 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	@Id
 	@GeneratedValue
 	private long lCommentID;
-	private long lAuthorID, lParentID, lExperimentID;
+	private long lParentID, lExperimentID;
 	//vChildIDs is a flat structure of Comments just in the next level (not recursively)
 	private Vector<Long> vChildIDs;
 	private String sExperimentPhaseID;
-	private String sTitle, sComment, sAuthorName;
+	private String sTitle, sComment, sAuthorID;
 	//time in millis
-	private GregorianCalendar postDate;
+	private Calendar postDate;
 	
 	//Default constructor required for EJB persistency
 	private Comment(){
@@ -142,7 +141,7 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#getPostDate()
 	 */
-	public GregorianCalendar getPostDate() {
+	public Calendar getPostDate() {
 		return this.postDate;
 	}
 	
@@ -156,29 +155,21 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	}
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.Comment#setAuthor(java.lang.String)
+	 * @see eu.planets_project.tb.api.model.Comment#setAuthorID(java.lang.String)
 	 */
-	public void setAuthor(long lAuthorID) {
-		this.lAuthorID = lAuthorID;
-		this.sAuthorName = UserManager.getInstance().getUser(lAuthorID).getName();
+	public void setAuthorID(String sAuthorID) {
+		this.sAuthorID = sAuthorID;
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.Comment#setAuthor(eu.planets_project.tb.api.model.User)
-	 */
-	public void setAuthor(eu.planets_project.tb.api.model.User author) {
-		this.lAuthorID = author.getUserID();
-		this.sAuthorName = author.getName();
-	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#setComment(java.lang.String, java.lang.String, java.util.GregorianCalendar)
 	 */
-	public void setComment(String authorName, String title, String commentText) {
+	public void setComment(String authorID, String title, String commentText) {
 		GregorianCalendar temp = new GregorianCalendar();
 		this.postDate = temp;
 		this.sTitle = title;
-		this.sAuthorName = authorName;
+		this.sAuthorID = authorID;
 		this.sComment = commentText;
 	}
 	
@@ -202,7 +193,7 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#setPostDate(java.util.GregorianCalendar)
 	 */
-	public void setPostDate(GregorianCalendar Date) {
+	public void setPostDate(Calendar Date) {
 		this.postDate = Date;
 	}
 
@@ -258,25 +249,12 @@ public class Comment implements eu.planets_project.tb.api.model.Comment,
 	}
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.Comment#getAuthor()
-	 */
-	public eu.planets_project.tb.api.model.User getAuthor() {
-		return 	UserManager.getInstance().getUser(this.lAuthorID);
-	}
-
-	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#getAuthorID()
 	 */
-	public long getAuthorID() {
-		return this.lAuthorID;
+	public String getAuthorID() {
+		return this.sAuthorID;
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.Comment#getAuthorName()
-	 */
-	public String getAuthorName() {
-		return this.sAuthorName;
-	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#getComment()

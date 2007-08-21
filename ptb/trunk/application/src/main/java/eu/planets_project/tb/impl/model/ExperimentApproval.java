@@ -11,8 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-import eu.planets_project.tb.api.model.User;
-import eu.planets_project.tb.impl.UserManager;
 
 /**
  * @author alindley
@@ -22,19 +20,16 @@ import eu.planets_project.tb.impl.UserManager;
 public class ExperimentApproval extends eu.planets_project.tb.impl.model.ExperimentPhase
 implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializable {
 	
-	//@Id
-	//@GeneratedValue
-	private long lExpApprovalID;
 	//roles as defined in the Class TestbedRoles
 	private Vector<Integer> vReqRoles;
-	private Vector<Long> vApprovalUsers;
+	private Vector<String> vApprovalUsers;
 	private String sDecision, sExplanation;
 	private boolean bGo;
 	
 	
 	public ExperimentApproval(){
 		vReqRoles = new Vector<Integer>();
-		vApprovalUsers = new Vector<Long>();
+		vApprovalUsers = new Vector<String>();
 		bGo = false;
 	}
 
@@ -55,9 +50,11 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#addApprovalUser(eu.planets_project.tb.api.model.User)
 	 */
-	public void addApprovalUser(User user) {
+	public void addApprovalUser(String user) {
+		this.vApprovalUsers.addElement(user);
+		
 		//approval required roles were added
-		if (this.vReqRoles.size()>0){
+		/*if (this.vReqRoles.size()>0){
 			Vector<Integer> vUserRoleIDs = user.getRolesIDs();
 			Iterator<Integer> itUserRoleIDs = vUserRoleIDs.iterator();
 			int i = 0;
@@ -69,15 +66,15 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 			if (i==vUserRoleIDs.size()){
 				this.vApprovalUsers.addElement(user.getUserID());
 			}
-		}
+		}*/
 	}
 	
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#addApprovalUsers(java.util.Vector)
 	 */
-	public void addApprovalUsers(Vector<User> user) {
-		Iterator<User> itUsers = user.iterator();
+	public void addApprovalUsers(Vector<String> users) {
+		Iterator<String> itUsers = users.iterator();
 		while(itUsers.hasNext()){
 			addApprovalUser(itUsers.next());
 		}
@@ -93,11 +90,11 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#getApprovalUsers()
 	 */
-	public Vector<Long> getApprovalUsersIDs() {
+	public Vector<String> getApprovalUsersIDs() {
 		return this.vApprovalUsers;
 	}
 	
-	public Vector<User> getApprovalUsers() {
+/*	public Vector<User> getApprovalUsers() {
 		Vector<User> vRet = new Vector<User>();
 		UserManager userManager = UserManager.getInstance();
 		Iterator<Long> vUserIDs = this.vApprovalUsers.iterator();
@@ -107,7 +104,7 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 		}
 		return vRet;
 	}
-
+*/
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#getDecision()
 	 */
@@ -151,17 +148,17 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#removeApprovalUser(eu.planets_project.tb.api.model.User)
 	 */
-	public void removeApprovalUser(User user) {
-		if (this.vApprovalUsers.contains(user.getUserID())){
-			this.vApprovalUsers.remove(user.getUserID());
+	public void removeApprovalUser(String user) {
+		if (this.vApprovalUsers.contains(user)){
+			this.vApprovalUsers.remove(user);
 		}
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#removeApprovalUsers(java.util.Vector)
 	 */
-	public void removeApprovalUsers(Vector<User> users) {
-		Iterator<User> itApprovalUsers = users.iterator();
+	public void removeApprovalUsers(Vector<String> users) {
+		Iterator<String> itApprovalUsers = users.iterator();
 		while(itApprovalUsers.hasNext()){
 			removeApprovalUser(itApprovalUsers.next());
 		}
@@ -186,7 +183,7 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setApprovalUser(eu.planets_project.tb.api.model.User)
 	 */
-	public void setApprovalUser(User user) {
+/*	public void setApprovalUser(User user) {
 		//approval required roles were added
 		if (this.vReqRoles.size()>0){
 			Vector<Integer> vUserRoleIDs = user.getRolesIDs();
@@ -202,12 +199,12 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 				this.vApprovalUsers.addElement(user.getUserID());
 			}
 		}
-	}
+	}*/
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setApprovalUsers(java.util.Vector)
 	 */
-	public void setApprovalUsers(Vector<User> users) {
+/*	public void setApprovalUsers(Vector<User> users) {
 		this.vApprovalUsers.removeAllElements();
 		Iterator<User> itUsers = users.iterator();
 		while(itUsers.hasNext()){
@@ -228,7 +225,7 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 			}
 		}
 	}
-
+*/
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setDecision(java.lang.String)
 	 */

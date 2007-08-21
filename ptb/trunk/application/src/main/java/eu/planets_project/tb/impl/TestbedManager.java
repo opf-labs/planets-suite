@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import eu.planets_project.tb.impl.CommentManager;
-import eu.planets_project.tb.api.UserManager;
 import eu.planets_project.tb.impl.model.Experiment;
 
 /**
@@ -84,15 +83,6 @@ public class TestbedManager implements eu.planets_project.tb.api.TestbedManager{
 		Experiment exp = new Experiment();
 		this.hmAllExperiments.put(exp.getExperimentID(), exp);
 		return exp;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.TestbedManager#getUserManager()
-	 */
-	public eu.planets_project.tb.api.UserManager getUserManager() {
-		//get Singleton: UserManager
-		UserManager userManager = eu.planets_project.tb.impl.UserManager.getInstance();
-		return userManager;
 	}
 
 	/* (non-Javadoc)
