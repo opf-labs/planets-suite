@@ -1,5 +1,6 @@
 package eu.planets_project.tb.api.model;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -8,20 +9,17 @@ public interface Comment {
 	
 	public long getCommentID();
 	
-	public void setAuthor(long lAuthorID);
-	public void setAuthor(User author);
-	public long getAuthorID();
-	public User getAuthor();
-	public String getAuthorName();
+	public void setAuthorID(String sAuthorID);
+	public String getAuthorID();
 	
 	public void setTitle(String sTitle);
 	public String getTile();
 	
-	public void setPostDate(GregorianCalendar Date);
-	public GregorianCalendar getPostDate();
+	public void setPostDate(Calendar Date);
+	public Calendar getPostDate();
 	public long getPostDateInMillis();
 	
-	public void setComment(String authorName, String title, String commentText);
+	public void setComment(String authorID, String title, String commentText);
 	public void setComment(String title, String commentText);
 	public String getComment();
 

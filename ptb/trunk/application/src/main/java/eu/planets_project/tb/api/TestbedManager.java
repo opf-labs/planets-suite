@@ -19,9 +19,7 @@ public interface TestbedManager {
 	 */
 	public Experiment createNewExperiment();
 	
-	// User Management
-	public UserManager getUserManager();
-	
+
 	// Comment Management
 	public CommentManager getCommentManager();
 	

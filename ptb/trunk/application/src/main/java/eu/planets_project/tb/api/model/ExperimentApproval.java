@@ -34,17 +34,14 @@ public interface ExperimentApproval extends ExperimentPhase{
 	 * A concrete User instance may only be added if at least one approvalRequiredRole has been added before
 	 * @param user
 	 */
-	public void setApprovalUser(User user);
-	public void setApprovalUsers(Vector<User> users);
-	public void addApprovalUser(User user);
-	public void addApprovalUsers(Vector<User> user);
-	public void removeApprovalUser(User user);
-	public void removeApprovalUsers(Vector<User> user);
+	public void addApprovalUser(String user);
+	public void addApprovalUsers(Vector<String> users);
+	public void removeApprovalUser(String user);
+	public void removeApprovalUsers(Vector<String> users);
 	/**
 	 * Returns a list of user IDs
 	 * @return
 	 */
-	public Vector<Long> getApprovalUsersIDs();
-	public Vector<User> getApprovalUsers();
+	public Vector<String> getApprovalUsersIDs();
 
 }

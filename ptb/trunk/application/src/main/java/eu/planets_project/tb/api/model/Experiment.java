@@ -26,4 +26,6 @@ public interface Experiment extends ExperimentPhase{
 	public void setExperimentAnalysis(ExperimentEvaluation analysisPhase);
 	public ExperimentEvaluation getExperimentAnalysis();
 	
+	public ExperimentPhase getCurrentPhase();
+	
 }

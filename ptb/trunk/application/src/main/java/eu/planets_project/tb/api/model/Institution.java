@@ -20,9 +20,8 @@ public interface Institution {
 	public String getInstitutionName();
 	public String getInstitutionAddress();
 	
-	public User getPrimaryContact();
-	public void setPrimaryContact(User user);
-	public void setPrimaryContact(long lUserID);
+	public String getPrimaryContact();
+	public void setPrimaryContact(String sUserID);
 
 
 }

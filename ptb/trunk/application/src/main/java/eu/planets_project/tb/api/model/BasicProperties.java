@@ -37,7 +37,6 @@ public interface BasicProperties{
 	 * @param sAddress
 	 */
 	public void setContact(String sName, String sMail, String sTel, String sAddress);
-	public void setContact(User bean);
 	public String getContactName();
 	public String getContactMail();
 	public String getContactTel();
@@ -65,26 +64,16 @@ public interface BasicProperties{
 
 	public void setScope(String sScope);
 	public String getScope();
+
+	public void setExperimenter(String sUserID);
 	
-	public void setExperimenter(User experimenter);
-	public void setExperimenter(long lUserID);
+	public void addInvolvedUser(String sUserID);
+	public void removeInvolvedUser(String sUserID);
 	
-	/**
-	 * If no roles in the experiment specific context are set
-	 * @param users
-	 * @see setInvolvedUsers(Hashtable<userID,Role>)
-	 */
-	public void setInvolvedUsers(Vector<User> users);
-	public void setInvolvedUsers(User user);
+	public void addInvolvedUsers(Vector<String> usersIDs);
+	public void removeInvolvedUsers(Vector<String> userIDs);
 	
-	public void addInvolvedUser(long lUserID);
-	public void removeInvolvedUser(long lUserID);
-	
-	public void addInvolvedUsers(Vector<Long> usersIDs);
-	public void removeInvolvedUsers(Vector<Long> userIDs);
-	
-	public Vector<User> getInvolvedUsers();
-	public Vector<Long> getInvolvedUserIds();
+	public Vector<String> getInvolvedUserIds();
 	
 	/**
 	 * A user may take a seperate role (besides his overall Testbed role) for an
@@ -93,8 +82,8 @@ public interface BasicProperties{
 	 * @param hUserIDsAndExperimentRoles Hashtable<userID,roleID>
 	 * @see eu.planets_project.TB.data.model.finals.TestbedRoles
 	 */
-	public void addInvolvedUsersWithSpecialExperimentRole(HashMap<Long,Vector<Integer>> hmUserIDsAndExperimentRoles);
-	public void removeInvolvedUsersAndSpecialExperimentRole(HashMap<Long,Vector<Integer>> hmUserIDsAndExperimentRoles);
+//	public void addInvolvedUsersWithSpecialExperimentRole(HashMap<Long,Vector<Integer>> hmUserIDsAndExperimentRoles);
+//	public void removeInvolvedUsersAndSpecialExperimentRole(HashMap<Long,Vector<Integer>> hmUserIDsAndExperimentRoles);
 	/**
 	 * Sets the approache's ID.
 	 * 0..for migration
