@@ -26,6 +26,7 @@ public class WizzardFirstStage extends TestCase{
 		props.addExperimentedObjectType("image/gif");
 		props.addExperimentedObjectType("text/html");
 		
+		
 		return props;
 	}
 	

@@ -30,9 +30,15 @@ public class BrowseExperiments extends TestCase{
 		}
 	}
 	
+	private void createExperiment(){
+		
+	}
+	
 	public void getAllExperiments(){
 		manager = TestbedManagerImpl.getInstance();
 		Set<Long> expIDs = manager.getAllExperimentIDs();
+		
+		//Get 
 	}
 	
 	private static Context getInitialContext() throws javax.naming.NamingException
