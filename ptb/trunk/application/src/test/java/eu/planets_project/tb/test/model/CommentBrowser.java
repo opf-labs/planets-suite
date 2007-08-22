@@ -8,8 +8,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
-import eu.planets_project.tb.impl.model.BasicProperties;
-import eu.planets_project.tb.impl.model.Comment;
+import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
+import eu.planets_project.tb.impl.model.CommentImpl;
 
 /**
  * @author alindley
@@ -22,25 +22,25 @@ public class CommentBrowser implements CommentBrowserRemote{
 	private EntityManager manager;
 	
 	public void deleteComment(long id) {
-		Comment t_helper = manager.find(Comment.class, id);
+		CommentImpl t_helper = manager.find(CommentImpl.class, id);
 		manager.remove(t_helper);
 	}
 
-	public void deleteComment(Comment comment) {
-		Comment t_helper = manager.find(Comment.class, comment.getCommentID());
+	public void deleteComment(CommentImpl comment) {
+		CommentImpl t_helper = manager.find(CommentImpl.class, comment.getCommentID());
 		manager.remove(t_helper);
 	}
 
-	public Comment findComment(long id) {
-		return manager.find(Comment.class, id);
+	public CommentImpl findComment(long id) {
+		return manager.find(CommentImpl.class, id);
 	}
 
-	public long persistComment(Comment comment) {
+	public long persistComment(CommentImpl comment) {
 		manager.persist(comment);
 		return comment.getCommentID();
 	}
 
-	public void updateComment(Comment comment) {
+	public void updateComment(CommentImpl comment) {
 		manager.merge(comment);
 	}	
 

@@ -12,7 +12,7 @@ package eu.planets_project.tb.api.model;
  */
 public interface Experiment extends ExperimentPhase{
 
-	public long getExperimentID();
+	//public long getExperimentID();
 	
 	public void setExperimentSetup(ExperimentSetup setupPhaseObject);
 	public ExperimentSetup getExperimentSetup();

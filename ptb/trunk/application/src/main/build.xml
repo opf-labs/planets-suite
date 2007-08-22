@@ -8,14 +8,14 @@
 
   <property environment="env"/>
   
-  <property name="appName" value="testbed"/>
+    <property name="appName" value="testbed"/>
   <property name="war.base.name" value="${appName}.war"/>
-      
+  
   <property name="src.dir" value="${basedir}/java"/>
 
   <property name="src.resources" value="${basedir}/resources"/>
-  <!-- property name="jboss.home" value="${env.JBOSS_HOME}"/-->
-  <property name="jboss.home" value="C:/DATA/apps/_planets/ifr_server"/>
+  <!--property name="jboss.home" value="${env.JBOSS_HOME}"/-->
+  <property name="jboss.home" value="C:/DATA/Implementation/ifr_server"/>
   <property name="build.dir" value="${basedir}/build"/>
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   
@@ -35,7 +35,7 @@
         <fileset dir="${jboss.home}/server/default/deploy/jboss-aop-jdk50.deployer">
             <include name="*.jar"/>
         </fileset>
-        <fileset dir="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/jsf-libs">
+             <fileset dir="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/jsf-libs">
         		<include name="*.jar"/>
         </fileset>
         <fileset dir="${jboss.home}/lib">
@@ -64,13 +64,14 @@
   <!-- Compiles the source code                                            -->
   <!-- =================================================================== -->
   <target name="compile" depends="prepare">
-    <echo message="ant.java.version: ${ant.java.version}" />
+   <echo message="ant.java.version: ${ant.java.version}" />
 	<!--compile the model-->
     <javac srcdir="${src.dir}"
            destdir="${build.classes.dir}"
            debug="on"
            deprecation="on"
            optimize="off"
+           excludes="eu/planets_project/tb/gui/**"
            includes="**">
             <classpath refid="classpath"/>
     </javac>
@@ -86,7 +87,7 @@
   </target>
 
   <target name="createejbjar" depends="compile">
-    <jar jarfile="build/testbed.jar">
+    <jar jarfile="build/testbedmodel.jar">
       <fileset dir="${build.classes.dir}">
       	  <!--include name="com/titan/domain/*.class"/>
       	  <include name="com/titan/travelagent/*.class"/-->
@@ -97,31 +98,34 @@
      </jar>
   </target>
 
- <target name="deploytestbed" depends="createejbjar">
-	 <copy file="build/testbed.jar" todir="${jboss.home}/server/default/deploy"/>
+ <target name="deploymodel" depends="createejbjar">
+	 <copy file="build/testbedmodel.jar" todir="${jboss.home}/server/default/deploy"/>
   </target>
   
-  <target name="run.client" depends="deploytestbed">
+  <target name="run.client" depends="deploymodel">
     <java  classname="test.eu.planets_project.tb.Client" fork="yes" dir=".">
       <classpath refid="classpath"/>
     </java>
   </target>
   
     <target name="run.debug1">
-    <java  classname="test.eu.planets_project.tb.Client" fork="yes" dir=".">
+    <java  classname="test.eu.planets_project.tb.test.Client" fork="yes" dir=".">
       <classpath refid="classpath"/>
     </java>
   </target>
 
   <target name="run.debug2">
-    <java  classname="test.eu.planets_project.tb.Client2" fork="yes" dir=".">
+    <java  classname="eu.planets_project.tb.test.Client2" fork="yes" dir=".">
       <classpath refid="classpath"/>
     </java>
   </target>
   
-    <target name="run.junittests">
+  <target name="run.junittests">
     <junit fork="yes" haltonfailure="yes">
-		<test name="test.eu.planets_project.tb.TestWizzardUnitTest" />
+		<!--test name="eu.planets_project.tb.unittest.model.SetupBasicPropertiesTest" /-->
+		<!--test name="eu.planets_project.tb.unittest.model.CommentBrowserTest" /-->
+		<!--test name="eu.planets_project.tb.unittest.model.SetupExperimentTest" /-->
+		<test name="eu.planets_project.tb.unittest.wizzards.WizzardFirstStage" />
 		<formatter type="plain" usefile="false" />
 		<classpath refid="classpath" />
     </junit>
@@ -136,7 +140,7 @@
 
   <target name="clean">
     <delete dir="${build.dir}"/>
-    <delete file="${jboss.home}/server/default/deploytestbed.jar"/>
+    <delete file="${jboss.home}/server/default/testbedmodel.jar"/>
   </target>
 
   <!-- =================================================================== -->
@@ -147,8 +151,6 @@
     <arg value="/c start run.bat"/>
   </exec>
 </target>
-
-
 
 <!-- ks -->
 
@@ -199,7 +201,6 @@
     <copy todir="${jboss.home}/server/default/deploy" 
           file="${build.dir}/${appName}.war" overwrite="true"/>
   </target>
-
 
 
 </project>

@@ -23,9 +23,9 @@ public interface ExperimentSetup extends ExperimentPhase{
 	 * @param iTypeID
 	 * @see model.finals.ExperimentTypes
 	 */
-	/*public void setExperimentType(int iTypeID);
+	public void setExperimentType(int iTypeID);
 	public String getExperimentTypeName();
-	public int getExperimentTypeID();/*
+	public int getExperimentTypeID();
 	
 	//Step 2:
 	/**

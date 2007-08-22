@@ -2,7 +2,7 @@ package eu.planets_project.tb.test.model;
 
 import javax.ejb.Remote;
 
-import eu.planets_project.tb.impl.model.BasicProperties;
+import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 
 @Remote
 public interface SetupBasicPropertiesRemote {
@@ -13,15 +13,15 @@ public interface SetupBasicPropertiesRemote {
 	 * @param props
 	 * @return
 	 */
-	public long persistProperties(BasicProperties props);
-	public BasicProperties findProperties(long id);
+	public long persistProperties(BasicPropertiesImpl props);
+	public BasicPropertiesImpl findProperties(long id);
 	
 	/**
 	 * Fetches the given and already persisted BasicProperties object and updates it with given values.
 	 * @param props The BasicProperties which is look-uped and contains the values for the update	
 	 */
-	public void updateProperties(BasicProperties props);
+	public void updateProperties(BasicPropertiesImpl props);
 	public void deleteProperties(long id);
-	public void deleteProperties(BasicProperties props);
+	public void deleteProperties(BasicPropertiesImpl props);
 
 }

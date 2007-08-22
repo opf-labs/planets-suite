@@ -6,13 +6,13 @@ import java.util.Vector;
 public interface ExperimentTypes {
 
 	// All available ExperimentTypes and their IDs
-	public final int EXPERIMENT_TYPE_SIMPLEMIGRATION = 0;
+	public static final int EXPERIMENT_TYPE_SIMPLEMIGRATION = 0;
 
-	public final int EXPERIMENT_TYPE_SIMPLECHARACTERISATION = 1;
+	public static final int EXPERIMENT_TYPE_SIMPLECHARACTERISATION = 1;
 
-	public final int EXPERIMENT_TYPE_MIGRATIONWORKFLOW = 2;
+	public static final int EXPERIMENT_TYPE_MIGRATIONWORKFLOW = 2;
 
-	public final int EXPERIMENT_TYPE_EMULATION = 3;
+	public static final int EXPERIMENT_TYPE_EMULATION = 3;
 
 	/**
 	 * This method returns the experimen type's name. e.g.

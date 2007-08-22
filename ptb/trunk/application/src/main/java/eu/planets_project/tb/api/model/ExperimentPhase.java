@@ -15,7 +15,17 @@ import eu.planets_project.tb.api.data.DataRegistryBinding;
  */
 public interface ExperimentPhase {
 	
-	public long getPhaseID();
+	public static final int STATE_NOT_STARTED = -1;
+	public static final int STATE_IN_PROGRESS = 0;
+	public static final int STATE_COMPLETED	  = 1;
+	
+	public static final int RESULT_NOT_AVAILABLE = -1;
+	public static final int RESULT_SUCCESS 		 = 0;
+	public static final int RESULT_ACCEPTED		 = 1;
+	public static final int RESULT_FAILURE		 = 2;
+	public static final int RESULT_REJECTED		 = 3;
+	
+	public abstract long getEntityID();
 	
 	public void setStartDate(Calendar startDate);
 	public long getStartDateInMillis();

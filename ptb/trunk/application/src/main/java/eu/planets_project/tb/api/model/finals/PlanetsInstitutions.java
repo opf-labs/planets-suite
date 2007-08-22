@@ -12,30 +12,30 @@ public interface PlanetsInstitutions {
 	/**
 	 * Fixed constants for InstitutionsID
 	 */
-	public int PLANETS_INSTITUTION_ARC = 0;
+	public static final int PLANETS_INSTITUTION_ARC = 0;
 
-	public int PLANETS_INSTITUTION_BL = 1;
+	public static final int PLANETS_INSTITUTION_BL = 1;
 
 	// to be completed
 
 	/**
 	 * Fixed constants for partnerTypes
 	 */
-	public int PLANETS_TYPE_LIBRARY = 100;
+	public static final int PLANETS_TYPE_LIBRARY = 100;
 
-	public int PLANETS_TYPE_ARCHIVE = 101;
+	public static final int PLANETS_TYPE_ARCHIVE = 101;
 
-	public int PLANETS_TYPE_UNIVERSITY = 102;
+	public static final int PLANETS_TYPE_UNIVERSITY = 102;
 
-	public int PLANETS_TYPE_TECHNOLOGY = 103;
+	public static final int PLANETS_TYPE_TECHNOLOGY = 103;
 
-	public int PLANETS_TYPE_OTHER = 104;
+	public static final int PLANETS_TYPE_OTHER = 104;
 
 	/**
 	 * Matchin of Partnertypes
 	 */
-	public int MAPPING_PLANETS_INSTITUTION_ARC = PLANETS_TYPE_TECHNOLOGY;
-	public int MAPPING_PLANETS_INSTITUTION_BL = PLANETS_TYPE_LIBRARY;
+	public static final int MAPPING_PLANETS_INSTITUTION_ARC = PLANETS_TYPE_TECHNOLOGY;
+	public static final int MAPPING_PLANETS_INSTITUTION_BL = PLANETS_TYPE_LIBRARY;
 
 	//TODO List of Institutions and mapping needs to be completed
 

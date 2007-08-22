@@ -2,16 +2,14 @@ package eu.planets_project.tb.unittest.model;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.persistence.CascadeType;
-import javax.persistence.OneToOne;
 import javax.rmi.PortableRemoteObject;
 
-import eu.planets_project.tb.impl.TestbedManager;
-import eu.planets_project.tb.impl.model.BasicProperties;
-import eu.planets_project.tb.impl.model.Experiment;
-import eu.planets_project.tb.impl.model.ExperimentResources;
-import eu.planets_project.tb.impl.model.ExperimentSetup;
-import eu.planets_project.tb.test.model.ExperimentPersistencyRemote;
+import eu.planets_project.tb.api.model.ExperimentPhase;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
+import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import junit.framework.TestCase;
 
 public class SetupExperimentTest extends TestCase{
@@ -25,23 +23,23 @@ public class SetupExperimentTest extends TestCase{
 		//System.out.println("Setup: Via Remote Interface");
 		try {
 			jndiContext = getInitialContext();
-
 			dao_r = (ExperimentPersistencyRemote) PortableRemoteObject.narrow(
 				jndiContext.lookup("ExperimentPersistency/remote"), ExperimentPersistencyRemote.class);
-
 			//create two test Experiments, note their ID and persist them
-			TestbedManager manager = TestbedManager.getInstance();
-			Experiment exp1 = new Experiment();
+			TestbedManagerImpl manager = TestbedManagerImpl.getInstance();
+			ExperimentImpl exp1 = new ExperimentImpl();
 			expID1 = dao_r.persistExperiment(exp1);
-			Experiment find_exp1 = dao_r.findExperiment(expID1);
+			ExperimentImpl find_exp1 = (ExperimentImpl)dao_r.findExperiment(expID1);
+			System.out.println("OBj: "+find_exp1);
+			System.out.println("ExpID1: "+expID1+ "find_exp1ID: "+find_exp1.getEntityID());
 			//TODO: still need to test TestbedManager
 			manager.registerExperiment(find_exp1);
 			System.out.println("Contains? "+manager.containsExperiment(expID1));
-			
 			//create second test Experiment
-			Experiment exp2 = new Experiment();
+			ExperimentImpl exp2 = new ExperimentImpl();
 			expID2 = dao_r.persistExperiment(exp2);
-			Experiment find_exp2 = dao_r.findExperiment(expID2);
+			ExperimentImpl find_exp2 = (ExperimentImpl)dao_r.findExperiment(expID2);
+			System.out.println("ExpID2: "+expID2+ "find_exp2ID: "+find_exp2.getEntityID());
 			manager.registerExperiment(find_exp2);
 			System.out.println("Contains? "+manager.containsExperiment(expID2));
 			
@@ -109,28 +107,31 @@ public class SetupExperimentTest extends TestCase{
 	
 	//Tests for the underlying Entity Bean's methods setter and getters
 	public void testSetExperimentSetup(){
-		Experiment exp_find1 = dao_r.findExperiment(expID1);
+		ExperimentImpl exp_find1 = (ExperimentImpl)dao_r.findExperiment(expID1);
 		//use the private helper method to setup the ExperimentSetup
-		ExperimentSetup expSetup = createEnvironmentExperimentSetup(1);
+		ExperimentSetupImpl expSetup = createEnvironmentExperimentSetup(1);
 		//Test1: add ExperimentSetup
 			exp_find1.setExperimentSetup(expSetup);
 			dao_r.updateExperiment(exp_find1);
 
-			exp_find1 = dao_r.findExperiment(expID1);
+			exp_find1 = (ExperimentImpl)dao_r.findExperiment(expID1);
+			System.out.println("State from ExperimentPhase persisted? "+exp_find1.getState());
 			assertNotNull(exp_find1.getExperimentSetup());
+			ExperimentSetupImpl expSetup_find1 = (ExperimentSetupImpl)exp_find1.getExperimentSetup();
 			//must also have an ID assigned through @OneToOne(cascade={CascadeType.ALL})
-			assertTrue(exp_find1.getExperimentSetup().getExperimentSetupID()>0);
+			assertTrue(expSetup_find1.getEntityID()>0);
 		
 		//Test2: modify ExperimentSetup
-			exp_find1 = dao_r.findExperiment(expID1);
+			exp_find1 = (ExperimentImpl)dao_r.findExperiment(expID1);
 			expSetup = createEnvironmentExperimentSetup(2);
 			exp_find1.setExperimentSetup(expSetup);
 			dao_r.updateExperiment(exp_find1);
 			
-			exp_find1 = dao_r.findExperiment(expID1);
+			exp_find1 = (ExperimentImpl)dao_r.findExperiment(expID1);
 			assertNotNull(exp_find1.getExperimentSetup());
+			expSetup_find1 = (ExperimentSetupImpl)exp_find1.getExperimentSetup();
 			assertEquals("ExperimentName2", exp_find1.getExperimentSetup().getBasicProperties().getExperimentName());
-			assertTrue(exp_find1.getExperimentSetup().getExperimentSetupID()>0);
+			assertTrue(expSetup_find1.getEntityID()>0);
 	
 	}
 	
@@ -141,9 +142,10 @@ public class SetupExperimentTest extends TestCase{
 		
 	}*/
 	
-	private ExperimentSetup createEnvironmentExperimentSetup(int testnr){
-		ExperimentSetup expSetup = new ExperimentSetup();
-		BasicProperties props = new BasicProperties();
+	private ExperimentSetupImpl createEnvironmentExperimentSetup(int testnr){
+		ExperimentSetupImpl expSetup = new ExperimentSetupImpl();
+		expSetup.setState(ExperimentPhase.STATE_IN_PROGRESS);
+		BasicPropertiesImpl props = new BasicPropertiesImpl();
 		props.setConsiderations("considerations"+testnr);
 		props.setExperimentName("ExperimentName"+testnr);
 		expSetup.setBasicProperties(props);
@@ -160,7 +162,7 @@ public class SetupExperimentTest extends TestCase{
 		return new javax.naming.InitialContext();
 	}
 	
-	protected void tearDown(){
+	/*protected void tearDown(){
 		try{
 			dao_r.deleteExperiment(this.expID1);
 			dao_r.deleteExperiment(this.expID2);
@@ -169,6 +171,6 @@ public class SetupExperimentTest extends TestCase{
 			//TODO Integrate with Logging Framework
 			System.out.println("TearDown: Exception while tearDown: "+e.toString());
 			}
-	}
+	}*/
 
 }

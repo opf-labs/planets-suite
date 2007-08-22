@@ -7,7 +7,13 @@ import eu.planets_project.tb.api.model.Experiment;
 public interface TestbedManager {
 	
 	//Manages Experiments
-	public void registerExperiment(Experiment experimentBean);
+	public long registerExperiment(Experiment experimentBean);
+	/**
+	 * This method looks-up the experimentBean in the manager and if it was already contained
+	 * a merge between the old and the new instance is performed.
+	 * @param experimentBean
+	 */
+	public void updateExperiment(Experiment experimentBean);
 	public Experiment getExperiment(long lExpID);
 	public void removeExperiment(long lExpID);
 	public Collection<Experiment> getAllExperiments();

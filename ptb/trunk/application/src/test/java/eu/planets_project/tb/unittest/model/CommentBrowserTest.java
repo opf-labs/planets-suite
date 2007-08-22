@@ -9,8 +9,8 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import eu.planets_project.tb.impl.CommentManager;
-import eu.planets_project.tb.impl.model.Comment;
+import eu.planets_project.tb.impl.CommentManagerImpl;
+import eu.planets_project.tb.impl.model.CommentImpl;
 import eu.planets_project.tb.test.model.CommentBrowser;
 import eu.planets_project.tb.test.model.CommentBrowserRemote;
 import junit.framework.TestCase;
@@ -37,19 +37,19 @@ public class CommentBrowserTest extends TestCase{
 			//create two test Comments, note their ID and persist them
 			//new root comment with Comment(long lExperimentID, String sExperimentPhaseID)
 			//please note: phaseID are not correct
-			CommentManager manager = CommentManager.getInstance();
-			Comment com1 = (Comment)manager.getNewRootComment(1, "setup");
+			CommentManagerImpl manager = CommentManagerImpl.getInstance();
+			CommentImpl com1 = (CommentImpl)manager.getNewRootComment(1, "setup");
 			//Comment com1 = new Comment(1, "setup");
 			//System.out.println("Contains? "+manager.containsComment(1));
 			commentID1 = dao_r.persistComment(com1);
-			Comment find_com1 = dao_r.findComment(commentID1);
+			CommentImpl find_com1 = dao_r.findComment(commentID1);
 			manager.registerComment(find_com1, find_com1.getExperimentID(),find_com1.getExperimentPhaseID());
 			System.out.println("XXXContains? "+manager.containsComment(commentID1));
 			
 			//new root comment
-			Comment com2 = (Comment)manager.getNewRootComment(2, "evaluation");
+			CommentImpl com2 = (CommentImpl)manager.getNewRootComment(2, "evaluation");
 			commentID2 = dao_r.persistComment(com2);
-			Comment find_com2 = dao_r.findComment(commentID2);
+			CommentImpl find_com2 = dao_r.findComment(commentID2);
 			manager.registerComment(find_com2, find_com2.getExperimentID(),find_com2.getExperimentPhaseID());
 			System.out.println("XXXContains? "+manager.containsComment(commentID2));
 			
@@ -69,7 +69,7 @@ public class CommentBrowserTest extends TestCase{
 	public void testEJBEntityDeleted(){
 		dao_r.deleteComment(this.commentID1);
 		dao_r.deleteComment(dao_r.findComment(commentID2));
-		Comment c1,c2;
+		CommentImpl c1,c2;
 		try{
 			c1 = dao_r.findComment(commentID1);
 			c2 = dao_r.findComment(commentID2);
@@ -83,7 +83,7 @@ public class CommentBrowserTest extends TestCase{
 	}
 	
 	public void testEJBEntityUpdated(){
-		Comment test_find1 =  dao_r.findComment(commentID1);
+		CommentImpl test_find1 =  dao_r.findComment(commentID1);
 		//modify the bean
 		long l1 = 1;
 		test_find1.setTitle("Title1");
@@ -95,7 +95,7 @@ public class CommentBrowserTest extends TestCase{
 	}
 	
 	public void testEJBEntityMerged(){
-		Comment test_find1 =  dao_r.findComment(commentID1);
+		CommentImpl test_find1 =  dao_r.findComment(commentID1);
 		//modify the bean
 		long l1 = 12;
 		test_find1.setTitle("Title1");
@@ -117,9 +117,9 @@ public class CommentBrowserTest extends TestCase{
 	//Tests for the underlying Entity Bean's methods setter and getter's without any EJB issues
 	public void testAddChildComment(){
 		//TODO: Add CommentManager registration
-		Comment test_find1 =  dao_r.findComment(commentID1);
+		CommentImpl test_find1 =  dao_r.findComment(commentID1);
 		System.out.println("Comment Partent ID: "+test_find1.getCommentID());
-		Comment com_child = new Comment(test_find1.getCommentID());
+		CommentImpl com_child = new CommentImpl(test_find1.getCommentID());
 		com_child.setComment("Andrew", "TestChild", "Comment Text");
 		Long lChildID = dao_r.persistComment(com_child);
 
