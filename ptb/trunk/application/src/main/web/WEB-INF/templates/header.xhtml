@@ -123,7 +123,7 @@
 			
 			<c:if test="${page == 'browse_exp'}">
 				<li id="current">
-					<h:commandLink action="browse_experiments">
+					<h:commandLink action="browse_experiments" rendered="#{userBean.reader}">
 						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_browse.gif" alt="" title="" />
 						 #{res['browse_exp.pageTitle']}
 					</h:commandLink>
@@ -131,7 +131,7 @@
 			</c:if>
 			<c:if test="${page != 'browse_exp'}">
 				<li>
-					<h:commandLink action="browse_experiments">
+					<h:commandLink action="browse_experiments"  rendered="#{userBean.reader}">
 						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_browse.gif" alt="" title="" />
 						 #{res['browse_exp.pageTitle']}
 					</h:commandLink>
@@ -139,7 +139,7 @@
 			</c:if>
 			<c:if test="${page == 'browse_services'}">
 				<li id="current">
-				<h:commandLink action="browse_services">
+				<h:commandLink action="browse_services"  rendered="#{userBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_services.pageTitle']}"/>
 				</h:commandLink>
@@ -147,7 +147,7 @@
 			</c:if>
 			<c:if test="${page != 'browse_services'}">
 				<li>
-				<h:commandLink action="browse_services">
+				<h:commandLink action="browse_services" rendered="#{userBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_services.pageTitle']}"/>
 				</h:commandLink>
@@ -155,7 +155,7 @@
 			</c:if>
 			<c:if test="${page == 'browse_data'}">
 				<li id="current">
-				<h:commandLink action="browse_data">
+				<h:commandLink action="browse_data" rendered="#{userBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_data.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_data.pageTitle']}"/>
 				</h:commandLink>
@@ -163,7 +163,7 @@
 			</c:if>
 			<c:if test="${page != 'browse_data'}">
 				<li>
-				<h:commandLink action="browse_data">
+				<h:commandLink action="browse_data" rendered="#{userBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_data.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_data.pageTitle']}"/>
 				</h:commandLink>
@@ -223,7 +223,7 @@
 			
 			<c:if test="${page == 'help'}">
 				<li id="current">
-				<h:commandLink action="help">
+				<h:commandLink action="help"  rendered="#{userBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" class="toolbar"/>
 					<h:outputText value="#{res['help.pageTitle']}"/>
 				</h:commandLink>
@@ -231,7 +231,7 @@
 			</c:if>
 			<c:if test="${page != 'help'}">
 				<li>
-				<h:commandLink action="help">
+				<h:commandLink action="help"  rendered="#{userBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" class="toolbar"/>
 					<h:outputText value="#{res['help.pageTitle']}"/>
 				</h:commandLink>
