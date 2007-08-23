@@ -1,5 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
@@ -19,7 +21,7 @@
 <div id="maincol">
 <div class="innertubemain">
 <p>Create a new experiment using the form below.  Once you have supplied the required information and have submitted the form the experiment will be added to your list of experiments as found in the <a href="../my-experiments/">my experiments</a> section.</p>
-<form method="post" action="../my-experiments/mock-up-stage2/">
+<h:form>
 	<fieldset>
 		<legend>General Information</legend>
 		
@@ -34,10 +36,12 @@
 	<input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 	<div class="clear"></div>
 	
-				<p><label id="">Experiment Name:</label>
-
-
-	<input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+			<p>
+		    	<h:outputLabel value="#{res['new_exp.expName']}" for="ename" />
+	        	<h:inputText  required="true" id="ename" binding="#{CreateExp_Backing.ename}" size="50"/>
+	        	<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+        		<h:message for="ename" errorClass="ValidateError"/>
+			</p>
 	<div class="clear"></div>
 	
 				<p><label id="">Adapted From:</label>
@@ -103,8 +107,11 @@
 <textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
 <div class="clear"></div>
 </fieldset>
-		<p><input value="Save experiment &amp; continue to Stage 2" type="submit"/></p>
-</form>
+		<p>
+            <h:commandButton value="#{res['new_exp.saveStage1']}" 
+            action="#{CreateExp_Backing.CreateExpAction}"/>		
+		</p>
+</h:form>
 
 </div>
 </div>

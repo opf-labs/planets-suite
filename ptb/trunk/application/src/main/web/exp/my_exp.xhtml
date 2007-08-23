@@ -1,5 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
@@ -19,6 +22,64 @@
 	<div id="maincol">
 	<div class="innertubemain">
 	<p>You have 32 experiments listed in the testbed.  Experiments 1 to 10 are listed below.</p>
+		
+	<h:form>
+     <t:dataTable id="data"
+                  styleClass="scrollerTable"
+                  headerClass="standardTable_Header"
+                  footerClass="standardTable_Header"
+                  rowClasses="standardTable_Row1,standardTable_Row2"
+                  columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
+                  var="exp"
+                  value="#{ListExp_Backing.experimentsOfUser}"
+                  preserveDataModel="true"
+                  rows="10"
+                  rowId="#{exp.experimentSetup.basicProperties.expName}"
+                  rowOnClick="alert('rowId: ' + this.id)"
+                  sortColumn="#{ListExp_Backing.sort}"
+                  sortAscending="#{ListExp_Backing.ascending}"
+                  preserveSort="true">
+        <h:column>
+            <f:facet name="header"></f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.expName}" />
+        </h:column>
+    </t:dataTable>
+
+    <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
+        <t:dataScroller id="scroll_1"
+                        for="data"
+                        fastStep="10"
+                        pageCountVar="pageCount"
+                        pageIndexVar="pageIndex"
+                        styleClass="scroller"
+                        paginator="true"
+                        paginatorMaxPages="9"
+                        paginatorTableClass="paginator"
+                        paginatorActiveColumnStyle="font-weight:bold;">
+            <f:actionListener type="org.apache.myfaces.examples.listexample.DataScrollerActionListener"/>
+            <f:facet name="first" >
+                <t:graphicImage url="images/arrow-first.gif" border="1" />
+            </f:facet>
+            <f:facet name="last">
+                <t:graphicImage url="images/arrow-last.gif" border="1" />
+            </f:facet>
+            <f:facet name="previous">
+                <t:graphicImage url="images/arrow-previous.gif" border="1" />
+            </f:facet>
+            <f:facet name="next">
+                <t:graphicImage url="images/arrow-next.gif" border="1" />
+            </f:facet>
+            <f:facet name="fastforward">
+                <t:graphicImage url="images/arrow-ff.gif" border="1" />
+            </f:facet>
+            <f:facet name="fastrewind">
+                <t:graphicImage url="images/arrow-fr.gif" border="1" />
+            </f:facet>
+        </t:dataScroller>
+
+    </h:panelGrid>
+    </h:form>
+	
 	
 	<div class="enav"><span style="float:left; font-size: 0.8em">&nbsp;</span><span style="float: right; font-size: 0.8em"><a class="glinks" href="#">Next &raquo;</a></span></div>	
 	<div class="clear"></div>
@@ -42,6 +103,8 @@
 	</table>
 	<p>&nbsp;</p>
 	<div class="enav"><span style="float:left; font-size: 0.8em">&nbsp;</span><span style="float: right; font-size: 0.8em"><a class="glinks" href="#">Next &raquo;</a></span></div>	
+	
+	
 	<div class="clear"></div>
 	</div>
 	</div>
