@@ -55,7 +55,7 @@
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
-  <target name="prepare" >
+  <target name="prepare" depends="clean">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
   </target>
@@ -66,7 +66,8 @@
   <target name="compile" depends="prepare">
    <echo message="ant.java.version: ${ant.java.version}" />
 	<!--compile the model-->
-    <javac srcdir="${src.dir}"
+    <javac source="1.5" 
+		 srcdir="${src.dir}"
            destdir="${build.classes.dir}"
            debug="on"
            deprecation="on"
@@ -76,7 +77,8 @@
             <classpath refid="classpath"/>
     </javac>
 		<!--compile the test-classes, session beans, etc.-->
-        <javac srcdir="${test.dir}"
+        <javac source="1.5" 
+			srcdir="${test.dir}"
            destdir="${build.classes.dir}"
            debug="on"
            deprecation="on"
@@ -124,7 +126,8 @@
     <junit fork="yes" haltonfailure="yes">
 		<!--test name="eu.planets_project.tb.unittest.model.SetupBasicPropertiesTest" /-->
 		<!--test name="eu.planets_project.tb.unittest.model.CommentBrowserTest" /-->
-		<test name="eu.planets_project.tb.unittest.model.SetupExperimentTest" />
+		<!--test name="eu.planets_project.tb.unittest.model.SetupExperimentTest" /-->
+		<test name="eu.planets_project.tb.unittest.wizzards.WizzardFirstStage" />
 		<formatter type="plain" usefile="false" />
 		<classpath refid="classpath" />
     </junit>
