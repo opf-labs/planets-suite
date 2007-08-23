@@ -10,6 +10,12 @@
     </locale-config>
 		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
   </application>
+  
+  <managed-bean>
+    <managed-bean-name>TestbedManager</managed-bean-name>
+    <managed-bean-class>eu.planets_project.tb.impl.TestbedManagerImpl</managed-bean-class>
+    <managed-bean-scope>application</managed-bean-scope>
+  </managed-bean>
 
   <managed-bean>
     <managed-bean-name>UserBean</managed-bean-name>
@@ -23,6 +29,17 @@
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
   
+  <managed-bean>
+    <managed-bean-name>CreateExp_Backing</managed-bean-name>
+    <managed-bean-class>eu.planets_project.tb.gui.backing.CreateExp</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ListExp_Backing</managed-bean-name>
+    <managed-bean-class>eu.planets_project.tb.gui.backing.ListExp</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>  
   
   <navigation-rule>
     <from-view-id>/*</from-view-id>
@@ -92,5 +109,17 @@
       <redirect />
     </navigation-case>     
   </navigation-rule> 
+  
+  
+  <!-- navigation rules for NEW_EXPERIMENT pages -->
+  <navigation-rule>
+    <from-view-id>/exp/new_exp.xhtml</from-view-id>
+    <navigation-case>
+      <from-action>#{CreateExp_Backing.CreateExpAction}</from-action>
+      <from-outcome>success</from-outcome>
+      <to-view-id>/exp/my_exp.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+  </navigation-rule>
   
 </faces-config>
