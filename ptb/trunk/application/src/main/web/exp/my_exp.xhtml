@@ -25,24 +25,57 @@
 		
 	<h:form>
      <t:dataTable id="data"
-                  styleClass="scrollerTable"
-                  headerClass="standardTable_Header"
-                  footerClass="standardTable_Header"
-                  rowClasses="standardTable_Row1,standardTable_Row2"
-                  columnClasses="standardTable_Column,standardTable_ColumnCentered,standardTable_Column"
                   var="exp"
                   value="#{ListExp_Backing.experimentsOfUser}"
                   preserveDataModel="true"
                   rows="10"
-                  rowId="#{exp.experimentSetup.basicProperties.expName}"
+                  rowId="#{exp.experimentSetup.basicProperties.experimentName}"
                   rowOnClick="alert('rowId: ' + this.id)"
                   sortColumn="#{ListExp_Backing.sort}"
                   sortAscending="#{ListExp_Backing.ascending}"
                   preserveSort="true">
         <h:column>
-            <f:facet name="header"></f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.expName}" />
+            <f:facet name="header">
+	          <t:commandSortHeader columnName="name" arrow="true" immediate="false">
+		          #{res['expList.colHeader.expName']}
+    	      </t:commandSortHeader>
+    	    </f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
         </h:column>
+        <h:column>
+	        <f:facet name="header">
+	    	      #{res['expList.colHeader.type']}
+			</f:facet>		      
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.startDate']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.currentStage']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.lastUpdateAction']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.inputFiles']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.outputFiles']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>        
     </t:dataTable>
 
     <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
@@ -56,31 +89,31 @@
                         paginatorMaxPages="9"
                         paginatorTableClass="paginator"
                         paginatorActiveColumnStyle="font-weight:bold;">
-            <f:actionListener type="org.apache.myfaces.examples.listexample.DataScrollerActionListener"/>
+            
             <f:facet name="first" >
-                <t:graphicImage url="images/arrow-first.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-first.gif" border="1" />
             </f:facet>
             <f:facet name="last">
-                <t:graphicImage url="images/arrow-last.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-last.gif" border="1" />
             </f:facet>
             <f:facet name="previous">
-                <t:graphicImage url="images/arrow-previous.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-previous.gif" border="1" />
             </f:facet>
             <f:facet name="next">
-                <t:graphicImage url="images/arrow-next.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-next.gif" border="1" />
             </f:facet>
             <f:facet name="fastforward">
-                <t:graphicImage url="images/arrow-ff.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-ff.gif" border="1" />
             </f:facet>
             <f:facet name="fastrewind">
-                <t:graphicImage url="images/arrow-fr.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-fr.gif" border="1" />
             </f:facet>
         </t:dataScroller>
 
     </h:panelGrid>
     </h:form>
 	
-	
+	<!-- 
 	<div class="enav"><span style="float:left; font-size: 0.8em">&nbsp;</span><span style="float: right; font-size: 0.8em"><a class="glinks" href="#">Next &raquo;</a></span></div>	
 	<div class="clear"></div>
 	<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" ><tr><th>Experiment Name <img src="../graphics/asc.png" /></th><th>Type</th><th>Start Date</th><th>Execution Date</th><th>Current Stage</th><th>Date Last Updated</th><th>Last Update Action</th><th>Input Files</th><th>Output Files</th></tr>
@@ -101,9 +134,10 @@
 	<tr style="font-size:smaller;"><td><a href="#">Test experiment 10</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>20</td><td>20</td></tr>
 	
 	</table>
+	 
 	<p>&nbsp;</p>
 	<div class="enav"><span style="float:left; font-size: 0.8em">&nbsp;</span><span style="float: right; font-size: 0.8em"><a class="glinks" href="#">Next &raquo;</a></span></div>	
-	
+	-->
 	
 	<div class="clear"></div>
 	</div>

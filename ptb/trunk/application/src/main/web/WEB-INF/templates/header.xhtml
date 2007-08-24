@@ -21,7 +21,7 @@
 	<div id="gelinks">
 		<div id="geleft"> &#160;</div>
 		<h:form>
-			<ui:fragment id="userLogin" rendered="#{empty userBean}">
+			<ui:fragment id="userLogin" rendered="#{empty UserBean.userid}">
 				<div id="geright">
 					<p class="glinks"> 
 						<h:commandLink styleClass="glinks" action="login">
@@ -31,9 +31,9 @@
 					</p>		
 				</div>
 			</ui:fragment>
-			<ui:fragment id="userHeader" rendered="#{not empty userBean}">
+			<ui:fragment id="userHeader" rendered="#{not empty UserBean.userid}">
 				<div id="geright">
-					<p class="glinks">${userBean.userid}
+					<p class="glinks">${UserBean.userid}
 						<h:commandLink styleClass="glinks" action="profile">
 							<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" alt="" title="" />
 							<h:outputText value="#{res.editprofile}"/>
@@ -73,7 +73,7 @@
 <!-- start of experimenter tabs -->						
 			<c:if test="${page == 'new_exp'}">
 				<li id="current">
-				<h:commandLink action="new_experiment" rendered="#{userBean.experimenter}">
+				<h:commandLink action="new_experiment" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_new.gif" class="toolbar"/>
 					<h:outputText value="#{res['new_exp.pageTitle']}"/>
 				</h:commandLink>
@@ -81,7 +81,7 @@
 			</c:if>
 			<c:if test="${page != 'new_exp'}">
 				<li>
-				<h:commandLink action="new_experiment" rendered="#{userBean.experimenter}">
+				<h:commandLink action="new_experiment" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_new.gif" class="toolbar"/>
 					<h:outputText value="#{res['new_exp.pageTitle']}"/>
 				</h:commandLink>
@@ -89,7 +89,7 @@
 			</c:if>
 			<c:if test="${page == 'import_exp'}">
 				<li id="current">
-				<h:commandLink action="import_experiment" rendered="#{userBean.experimenter}">
+				<h:commandLink action="import_experiment" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_import.gif" class="toolbar"/>
 					<h:outputText value="#{res['import_exp.pageTitle']}"/>
 				</h:commandLink>
@@ -97,7 +97,7 @@
 			</c:if>
 			<c:if test="${page != 'import_exp'}">
 				<li>
-				<h:commandLink action="import_experiment" rendered="#{userBean.experimenter}">
+				<h:commandLink action="import_experiment" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_import.gif" class="toolbar"/>
 					<h:outputText value="#{res['import_exp.pageTitle']}"/>
 				</h:commandLink>
@@ -105,7 +105,7 @@
 			</c:if>
 			<c:if test="${page == 'my_exp'}">
 				<li id="current">
-				<h:commandLink action="my_experiments" rendered="#{userBean.experimenter}">
+				<h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_my.gif" class="toolbar"/>
 					<h:outputText value="#{res['my_exp.pageTitle']}"/>
 				</h:commandLink>
@@ -113,7 +113,7 @@
 			</c:if>
 			<c:if test="${page != 'my_exp'}">
 				<li>
-				<h:commandLink action="my_experiments" rendered="#{userBean.experimenter}">
+				<h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_my.gif" class="toolbar"/>
 					<h:outputText value="#{res['my_exp.pageTitle']}"/>
 				</h:commandLink>
@@ -123,7 +123,7 @@
 			
 			<c:if test="${page == 'browse_exp'}">
 				<li id="current">
-					<h:commandLink action="browse_experiments" rendered="#{userBean.reader}">
+					<h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
 						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_browse.gif" alt="" title="" />
 						 #{res['browse_exp.pageTitle']}
 					</h:commandLink>
@@ -131,7 +131,7 @@
 			</c:if>
 			<c:if test="${page != 'browse_exp'}">
 				<li>
-					<h:commandLink action="browse_experiments"  rendered="#{userBean.reader}">
+					<h:commandLink action="browse_experiments"  rendered="#{UserBean.reader}">
 						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_browse.gif" alt="" title="" />
 						 #{res['browse_exp.pageTitle']}
 					</h:commandLink>
@@ -139,7 +139,7 @@
 			</c:if>
 			<c:if test="${page == 'browse_services'}">
 				<li id="current">
-				<h:commandLink action="browse_services"  rendered="#{userBean.reader}">
+				<h:commandLink action="browse_services"  rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_services.pageTitle']}"/>
 				</h:commandLink>
@@ -147,7 +147,7 @@
 			</c:if>
 			<c:if test="${page != 'browse_services'}">
 				<li>
-				<h:commandLink action="browse_services" rendered="#{userBean.reader}">
+				<h:commandLink action="browse_services" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_services.pageTitle']}"/>
 				</h:commandLink>
@@ -155,7 +155,7 @@
 			</c:if>
 			<c:if test="${page == 'browse_data'}">
 				<li id="current">
-				<h:commandLink action="browse_data" rendered="#{userBean.reader}">
+				<h:commandLink action="browse_data" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_data.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_data.pageTitle']}"/>
 				</h:commandLink>
@@ -163,7 +163,7 @@
 			</c:if>
 			<c:if test="${page != 'browse_data'}">
 				<li>
-				<h:commandLink action="browse_data" rendered="#{userBean.reader}">
+				<h:commandLink action="browse_data" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_data.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_data.pageTitle']}"/>
 				</h:commandLink>
@@ -173,7 +173,7 @@
 <!-- start of admin tabs -->
 			<c:if test="${page == 'exp_scheduler'}">
 				<li id="current">
-				<h:commandLink action="exp_scheduler" rendered="#{userBean.admin}">
+				<h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_scheduler.gif" class="toolbar"/>
 					<h:outputText value="#{res['exp_scheduler.pageTitle']}"/>
 				</h:commandLink>
@@ -181,7 +181,7 @@
 			</c:if>
 			<c:if test="${page != 'exp_scheduler'}">
 				<li>
-				<h:commandLink action="exp_scheduler" rendered="#{userBean.admin}">
+				<h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_scheduler.gif" class="toolbar"/>
 					<h:outputText value="#{res['exp_scheduler.pageTitle']}"/>
 				</h:commandLink>
@@ -189,7 +189,7 @@
 			</c:if>
 			<c:if test="${page == 'upload_data'}">
 				<li id="current">
-				<h:commandLink action="upload_data" rendered="#{userBean.admin}">
+				<h:commandLink action="upload_data" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_dataup.gif" class="toolbar"/>
 					<h:outputText value="#{res['upload_data.pageTitle']}"/>
 				</h:commandLink>
@@ -197,7 +197,7 @@
 			</c:if>
 			<c:if test="${page != 'upload_data'}">
 				<li>
-				<h:commandLink action="upload_data" rendered="#{userBean.admin}">
+				<h:commandLink action="upload_data" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_dataup.gif" class="toolbar"/>
 					<h:outputText value="#{res['upload_data.pageTitle']}"/>
 				</h:commandLink>
@@ -205,7 +205,7 @@
 			</c:if>
 			<c:if test="${page == 'manage_users'}">
 				<li id="current">
-				<h:commandLink action="manage_users" rendered="#{userBean.admin}">
+				<h:commandLink action="manage_users" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_usermanage.gif" class="toolbar"/>
 					<h:outputText value="#{res['manage_users.pageTitle']}"/>
 				</h:commandLink>
@@ -213,7 +213,7 @@
 			</c:if>
 			<c:if test="${page != 'manage_users'}">
 				<li>
-				<h:commandLink action="manage_users" rendered="#{userBean.admin}">
+				<h:commandLink action="manage_users" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_usermanage.gif" class="toolbar"/>
 					<h:outputText value="#{res['manage_users.pageTitle']}"/>
 				</h:commandLink>
@@ -223,7 +223,7 @@
 			
 			<c:if test="${page == 'help'}">
 				<li id="current">
-				<h:commandLink action="help"  rendered="#{userBean.reader}">
+				<h:commandLink action="help"  rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" class="toolbar"/>
 					<h:outputText value="#{res['help.pageTitle']}"/>
 				</h:commandLink>
@@ -231,7 +231,7 @@
 			</c:if>
 			<c:if test="${page != 'help'}">
 				<li>
-				<h:commandLink action="help"  rendered="#{userBean.reader}">
+				<h:commandLink action="help"  rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" class="toolbar"/>
 					<h:outputText value="#{res['help.pageTitle']}"/>
 				</h:commandLink>
