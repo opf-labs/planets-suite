@@ -1,8 +1,6 @@
 package eu.planets_project.tb.unittest.wizzards;
 
-import javax.persistence.CascadeType;
-import javax.persistence.OneToOne;
-
+import java.util.Iterator;
 import junit.framework.TestCase;
 
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -25,8 +23,7 @@ public class WizzardFirstStage extends TestCase{
 		//addExperimentedObjectType:
 		props.addExperimentedObjectType("image/gif");
 		props.addExperimentedObjectType("text/html");
-		
-		
+			
 		return props;
 	}
 	
@@ -42,6 +39,9 @@ public class WizzardFirstStage extends TestCase{
 		//setBasicProperties
 		expSetup.setBasicProperties(props);
 		
+		//setExperimentSetup
+		expSetup.setState(ExperimentSetup.STATE_NOT_STARTED);
+		
 		return expSetup;
 		
 	}
@@ -56,6 +56,7 @@ public class WizzardFirstStage extends TestCase{
 		
 		TestbedManagerImpl manager = TestbedManagerImpl.getInstance();
 		ExperimentImpl exp1 = new ExperimentImpl();
+		exp1.setState(ExperimentSetup.STATE_COMPLETED);
 		exp1.setExperimentSetup(expSetup);
 		
 		//as the manager and the ExperimentImpl object are detached it is required to execute:
@@ -65,9 +66,10 @@ public class WizzardFirstStage extends TestCase{
 		 * as well through the @OneToOne(cascade={CascadeType.ALL})annotation
 		**/
 		long expID = manager.registerExperiment(exp1);
+		System.out.println("Registered ExperimentID: "+expID);
 		//As the ID is injected by the container it is important to query the Experiment Object again.
 		exp1 = (ExperimentImpl)manager.getExperiment(expID);
-		
+		System.out.println("Got Registered ExperimentID: "+exp1.getEntityID());
 		return exp1.getEntityID();
 
 	}
@@ -80,17 +82,23 @@ public class WizzardFirstStage extends TestCase{
 		
 		ExperimentSetupImpl expSetup = (ExperimentSetupImpl) createExperimentSetup();
 		
-		TestbedManagerImpl manager = TestbedManagerImpl.getInstance();
+		TestbedManagerImpl tbmanager = TestbedManagerImpl.getInstance();
 		/**
 		 * this call persists the ExperimentImpl. When the Experiment is persisted 
 		 * ExperimentSetupImpl-->BasicPropertiesImpl are persisted as well through the
 		 * @OneToOne(cascade={CascadeType.ALL})annotation
 		**/
-		ExperimentImpl exp = (ExperimentImpl)manager.createNewExperiment();
+		System.out.println("createExperiment2: hier1");
+		ExperimentImpl exp = (ExperimentImpl)tbmanager.createNewExperiment();
+		System.out.println("createExperiment2: hier2: received exp from createNewExp with ID: "+exp.getEntityID());
+		exp.setState(ExperimentSetup.STATE_COMPLETED);
+		System.out.println("createExperiment2: hier3");
 		exp.setExperimentSetup(expSetup);
 		
 		//as the manager and the ExperimentImpl object are detached it is required to execute:
-		manager.updateExperiment(exp);
+		System.out.println("createExperiment2: manager.updateExperiment with ID: "+exp.getEntityID());
+		tbmanager.updateExperiment(exp);
+		System.out.println("createExperiment2: hier4");
 		
 		return exp.getEntityID();
 		
@@ -105,8 +113,8 @@ public class WizzardFirstStage extends TestCase{
 		//check is SetupExperiment created
 		//check are BasicProperties created
 		TestbedManagerImpl manager = TestbedManagerImpl.getInstance();
-		long lExperimentID = createExperiment1();
-		System.out.println("ExpID= "+lExperimentID);
+		long lExperimentID = createExperiment2();
+
 		ExperimentImpl exp = (ExperimentImpl)manager.getExperiment(lExperimentID);
 		ExperimentSetupImpl expSetup = (ExperimentSetupImpl)exp.getExperimentSetup();
 		BasicPropertiesImpl props = (BasicPropertiesImpl)expSetup.getBasicProperties();
@@ -118,10 +126,24 @@ public class WizzardFirstStage extends TestCase{
 		
 		assertEquals(2,props.getExperimentedObjectTypes().size());
 		assertTrue(props.getExperimentedObjectTypes().contains("image/gif"));
+		System.out.println("ExpSetup State: "+expSetup.getState());
+		assertEquals(ExperimentSetup.STATE_NOT_STARTED, expSetup.getState());
+		assertEquals(ExperimentSetup.STATE_COMPLETED, exp.getState());
 	}
 	
 	public void isExperimentPersisted(){
 		
+	}
+	
+	public void testQueryAllExperiments(){
+		TestbedManagerImpl manager = TestbedManagerImpl.getInstance();
+		Iterator<Long> itIDs = manager.getAllExperimentIDs().iterator();
+		while(itIDs.hasNext()){
+			System.out.println("I'm using ID: "+itIDs.next());
+		}
+		
+		//manager.queryAllExperiments();
+		assertTrue(true);
 	}
 
 }

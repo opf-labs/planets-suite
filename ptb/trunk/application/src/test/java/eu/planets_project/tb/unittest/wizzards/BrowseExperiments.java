@@ -6,8 +6,8 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyRemote;
 import junit.framework.TestCase;
 
 public class BrowseExperiments extends TestCase{

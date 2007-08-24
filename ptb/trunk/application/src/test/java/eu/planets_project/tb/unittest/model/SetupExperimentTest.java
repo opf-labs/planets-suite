@@ -5,11 +5,11 @@ import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.api.model.ExperimentPhase;
-import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyRemote;
 import junit.framework.TestCase;
 
 public class SetupExperimentTest extends TestCase{
