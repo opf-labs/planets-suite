@@ -9,17 +9,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.MappedSuperclass;
 
 import eu.planets_project.tb.api.data.DataRegistryBinding;
 
 /**
  * @author alindley
+ * 
+ * Annotation:
+ * MappedSuperClass: A class that provides mapping information but is not an entity 
+ * and thus not queryable nor persistent
  *
  */
-//@Entity
+
+@MappedSuperclass
 public abstract class ExperimentPhaseImpl implements
-		eu.planets_project.tb.api.model.ExperimentPhase {
+		eu.planets_project.tb.api.model.ExperimentPhase, java.io.Serializable {
 	
+	@Id
+	@GeneratedValue
+	private long lEntityID;
 	private Calendar endDate, startDate;
 	private int iState, iResult;
 	boolean bSuccess;
@@ -39,13 +48,13 @@ public abstract class ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getPhaseID()
 	 */
-	/*public long getEntityID(){
+	public long getEntityID(){
 		return this.lEntityID;
 	}
 	
 	private void setEntityID(long lEntityID){
 		this.lEntityID = lEntityID; 
-	}*/
+	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getState()
@@ -56,7 +65,7 @@ public abstract class ExperimentPhaseImpl implements
 	
 	/**
 	 * checks if setState lies in [-1..not started; 0..in progress; 1..completed]
-	 * @param progress
+	 * @param state
 	 * @return
 	 */
 	private boolean checkStateInput(int state){
@@ -69,7 +78,7 @@ public abstract class ExperimentPhaseImpl implements
 	
 	/**
 	 * -1..not available; 0..success; 1..accepted; 2..failure; 3..rejected;
-	 * @param state
+	 * @param result
 	 * @return
 	 */
 	private boolean checkResultInput(int result){

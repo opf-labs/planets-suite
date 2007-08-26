@@ -5,9 +5,13 @@ package eu.planets_project.tb.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.ejb.Stateless;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.persistence.Entity;
@@ -17,19 +21,17 @@ import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 
 /**
  * @author alindley
  *
  */
-@Entity
 public class TestbedManagerImpl 
 	implements eu.planets_project.tb.api.TestbedManager, java.io.Serializable{
 
-	@Id
-	@GeneratedValue
+	
 	private long lTestbedManagerID;
 	private static TestbedManagerImpl instance;
 	private HashMap<Long,eu.planets_project.tb.api.model.Experiment> hmAllExperiments;
@@ -38,22 +40,14 @@ public class TestbedManagerImpl
 	//private Context jndiContext;
 	//private ExperimentPersistencyRemote dao_r;
 	
-
-	public long getID(){
-		return this.lTestbedManagerID;
-	}
-	
-	public void setID(long lID){
-		this.lTestbedManagerID = lID;
-	}
-	
 	
 	/**
 	 * This Class implements the Java singleton pattern and therefore the constructor should be private
 	 * However due to requirements in the front-end Bean it is set public at the moment.
 	 */
 	public TestbedManagerImpl(){
-		hmAllExperiments = new HashMap<Long,eu.planets_project.tb.api.model.Experiment>();
+		//hmAllExperiments = new HashMap<Long,eu.planets_project.tb.api.model.Experiment>();
+		hmAllExperiments = this.queryAllExperiments();
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
 	}
 	
@@ -124,14 +118,11 @@ public class TestbedManagerImpl
 	  //Should this be added in a transaction?
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
 		long lExpID = dao_r.persistExperiment(experimentBean);
-		System.out.println("ExpID: manager: "+lExpID);
 		ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
-		System.out.println("lookup: manager: "+exp.getEntityID());
 		this.hmAllExperiments.put(exp.getEntityID(), exp);
-		System.out.println("hmContains? "+this.hmAllExperiments.containsKey(exp.getEntityID()));
 	    
 		return exp.getEntityID();
-		//End Transaction
+	   //End Transaction
 	}
 	
 	/* (non-Javadoc)
@@ -191,6 +182,37 @@ public class TestbedManagerImpl
 	}
 
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentsOfType(int)
+	 */
+	public Collection<Experiment> getAllExperimentsOfType(int typeID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentsOfUsers(java.lang.String)
+	 */
+	public Collection<Experiment> getAllExperimentsOfUsers(String userID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/**
+	 * @return
+	 */
+	private HashMap<Long,Experiment> queryAllExperiments(){
+		HashMap<Long,Experiment> hmRet = new HashMap<Long,Experiment>();
+		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		List<Experiment> list = dao_r.queryAllExperiments();
+		Iterator<Experiment> itList = list.iterator();
+		while(itList.hasNext()){
+			Experiment exp = itList.next();
+			hmRet.put(exp.getEntityID(), exp);
+		}
+		
+		return hmRet;
+	}
 
 }

@@ -28,10 +28,8 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentPhaseImpl
 						implements eu.planets_project.tb.api.model.Experiment,
 									java.io.Serializable{
-
-	@Id
-	@GeneratedValue
-	private long lEntityID;
+	
+	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	private ExperimentEvaluationImpl expEvaluation;
 	private ExperimentApprovalImpl expApproval;
 	private ExperimentExecutionImpl expExecution;
@@ -61,14 +59,6 @@ public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentP
 	public eu.planets_project.tb.api.model.ExperimentExecution getExperimentExecution() {
 		return this.expExecution;
 	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentID()
-	 */
-	public long getExperimentID() {
-		return this.getEntityID();
-	}
-	
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentSetup()
@@ -111,17 +101,6 @@ public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentP
 	public ExperimentPhaseImpl getCurrentPhase() {
 		//TODO implement
 		return null;
-	}
-	
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.impl.model.ExperimentPhase#getPhaseID()
-	 */
-	public long getEntityID() {
-		return this.lEntityID;
-	}
-	
-	private void setEntityID(long entityID){
-		this.lEntityID = entityID;
 	}
 
 }

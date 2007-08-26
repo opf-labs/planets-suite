@@ -5,17 +5,15 @@ package eu.planets_project.tb.impl.model;
 
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 
@@ -131,7 +129,6 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentedObjectTypes()
 	 */
 	public Vector<String> getExperimentedObjectTypes() {
-		System.out.println("How many items"+this.vExpObjectTypes.size());
 		return this.vExpObjectTypes;
 	}
 
@@ -167,7 +164,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getReferencedExperiments()
 	 */
-	public HashMap<Long,eu.planets_project.tb.api.model.Experiment> getReferencedExperiments() {
+	public Map<Long,eu.planets_project.tb.api.model.Experiment> getReferencedExperiments() {
 		HashMap<Long,eu.planets_project.tb.api.model.Experiment> hmRet = new HashMap<Long,eu.planets_project.tb.api.model.Experiment>();
 		Enumeration<Long> enumExpRefs = this.vRefExpIDs.elements();
 		while(enumExpRefs.hasMoreElements()){
@@ -258,13 +255,13 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 
 	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentReferences(java.util.Vector)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentReferences(java.util.List)
 	 */
-	public void setExperimentReferences(Vector<Long> refIDs) {
+	public void setExperimentReferences(List<Long> refIDs) {
 		this.vRefExpIDs.removeAllElements();
-		Enumeration<Long> elements = refIDs.elements();
-		while(elements.hasMoreElements()){
-			long lRef = elements.nextElement();
+		Iterator<Long> itElements = refIDs.iterator();
+		while(itElements.hasNext()){
+			long lRef = itElements.next();
 			this.vRefExpIDs.addElement(lRef);
 		}
 	}
@@ -300,32 +297,25 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	public void setExperimentedObjectType(String mimeType) {
 		//parse input string if it is in the format String/String
 		StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
-		System.out.println("Tokens: "+tokenizer.countTokens());
 		if (tokenizer.countTokens()==3){
 			this.vExpObjectTypes.removeAllElements();
 			this.vExpObjectTypes.addElement(mimeType);
-			
-			System.out.println("Hier1: "+this.vExpObjectTypes.contains(mimeType));
 		}
 	}
 	
 	public void addExperimentedObjectType(String mimeType) {
 		//parse input string if it is in the format String/String
 		StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
-		System.out.println("Tokens: "+tokenizer.countTokens());
 		if (tokenizer.countTokens()==3){
-			if(!this.vExpObjectTypes.contains(mimeType)){
-				this.vExpObjectTypes.addElement(mimeType);
-				System.out.println("Hier2: "+this.vExpObjectTypes.contains(mimeType));
-			}
-			
+			if(!this.vExpObjectTypes.contains(mimeType))
+				this.vExpObjectTypes.addElement(mimeType);	
 		}
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentedObjectTypes(java.lang.String[])
 	 */
-	public void setExperimentedObjectTypes(Vector<String> mimeTypes) {
+	public void setExperimentedObjectTypes(List<String> mimeTypes) {
 		this.vExpObjectTypes.removeAllElements();
 		Iterator<String> itTypes = mimeTypes.iterator();
 		for(int i=0;i<mimeTypes.size();i++){
@@ -455,9 +445,9 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	}
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.BasicProperties#addInvolvedUsers(java.util.Vector)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#addInvolvedUsers(java.util.List)
 	 */
-	public void addInvolvedUsers(Vector<String> usersIDs) {
+	public void addInvolvedUsers(List<String> usersIDs) {
 		Iterator<String> itUserIDs = usersIDs.iterator();
 		while(itUserIDs.hasNext()){
 			String sUserID = itUserIDs.next();
@@ -468,9 +458,9 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	}
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.BasicProperties#removeInvolvedUsers(java.util.Vector)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#removeInvolvedUsers(java.util.List)
 	 */
-	public void removeInvolvedUsers(Vector<String> userIDs) {
+	public void removeInvolvedUsers(List<String> userIDs) {
 		this.vInvolvedUsers.removeAll(userIDs);
 		//and also remove special roles for a given User within this experiment
 		Iterator<String> itUserIDs = userIDs.iterator();
@@ -483,7 +473,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getInvolvedUserIds()
 	 */
-	public Vector<String> getInvolvedUserIds() {
+	public List<String> getInvolvedUserIds() {
 		return this.vInvolvedUsers;
 	}
 
@@ -519,6 +509,5 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		//and also remove special roles for a given User within this experiment
 		this.hmInvolvedUserSpecialExperimentRoles.remove(userID);
 	}
-
 
 }

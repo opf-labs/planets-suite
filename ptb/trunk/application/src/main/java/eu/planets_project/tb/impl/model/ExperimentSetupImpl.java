@@ -29,9 +29,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		eu.planets_project.tb.api.model.ExperimentSetup,
 		java.io.Serializable{
 	
-	@Id
-	@GeneratedValue
-	private long lEntityID;
+	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	@OneToOne(cascade={CascadeType.ALL})
 	private eu.planets_project.tb.impl.model.BasicPropertiesImpl basicProperties;
 	//@OneToOne(cascade={CascadeType.ALL})
@@ -117,18 +115,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 */
 	public void setWorkflow(eu.planets_project.tb.api.services.mockups.ComplexWorkflow workflow) {
 		this.complexWorkflow = (ComplexWorkflowImpl) workflow;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.impl.model.ExperimentPhase#getEntityID()
-	 */
-	public long getEntityID() {
-		return this.lEntityID;
-	}
-	
-	private void setEntityID(long entityID){
-		this.lEntityID = entityID;
 	}
 	
 }

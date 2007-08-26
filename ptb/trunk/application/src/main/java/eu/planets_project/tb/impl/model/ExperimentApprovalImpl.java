@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package eu.planets_project.tb.impl.model;
 
@@ -19,18 +19,16 @@ import javax.persistence.Id;
 //@Entity
 public class ExperimentApprovalImpl extends eu.planets_project.tb.impl.model.ExperimentPhaseImpl
 implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializable {
-	
-	//@Id
-	//@GeneratedValue
-	private long lEntityID;
-	//roles as defined in the Class TestbedRoles
+
+	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	private Vector<Integer> vReqRoles;
 	private Vector<String> vApprovalUsers;
 	private String sDecision, sExplanation;
 	private boolean bGo;
-	
-	
+
+
 	public ExperimentApprovalImpl(){
+		//roles as defined in the Class TestbedRoles
 		vReqRoles = new Vector<Integer>();
 		vApprovalUsers = new Vector<String>();
 		bGo = false;
@@ -55,7 +53,7 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	 */
 	public void addApprovalUser(String user) {
 		this.vApprovalUsers.addElement(user);
-		
+
 		//approval required roles were added
 		/*if (this.vReqRoles.size()>0){
 			Vector<Integer> vUserRoleIDs = user.getRolesIDs();
@@ -71,7 +69,7 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 			}
 		}*/
 	}
-	
+
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#addApprovalUsers(java.util.Vector)
@@ -96,7 +94,7 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	public Vector<String> getApprovalUsersIDs() {
 		return this.vApprovalUsers;
 	}
-	
+
 /*	public Vector<User> getApprovalUsers() {
 		Vector<User> vRet = new Vector<User>();
 		UserManager userManager = UserManager.getInstance();
@@ -248,14 +246,6 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	 */
 	public void setGo(boolean go) {
 		this.bGo = go;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.impl.model.ExperimentPhase#getPhaseID()
-	 */
-	//@Override
-	public long getEntityID() {
-		return this.lEntityID;
 	}
 
 }

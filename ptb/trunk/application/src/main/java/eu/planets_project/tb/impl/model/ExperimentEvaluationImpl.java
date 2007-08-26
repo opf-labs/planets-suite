@@ -20,9 +20,8 @@ import eu.planets_project.tb.api.model.ExperimentReport;
 public class ExperimentEvaluationImpl extends eu.planets_project.tb.impl.model.ExperimentPhaseImpl
 implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Serializable {
 
-	//@Id
-	//@GeneratedValue
-	private long lEntityID;
+	//the EntityID and it's setter and getters are inherited from ExperimentPhase
+	//roles as defined in the Class TestbedRoles
 	private ExperimentObjectives evaluatedExpObjectives;
 	private ExperimentObjectives inputObjectives;
 	private ExperimentReport expReport;
@@ -59,15 +58,6 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 */
 	public void setExperimentReport(ExperimentReport report) {
 		this.expReport = report;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.impl.model.ExperimentPhase#getEntityID()
-	 */
-	//@Override
-	public long getEntityID() {
-		return this.lEntityID;
 	}
 
 }
