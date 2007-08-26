@@ -17,6 +17,8 @@ public interface TestbedManager {
 	public Experiment getExperiment(long lExpID);
 	public void removeExperiment(long lExpID);
 	public Collection<Experiment> getAllExperiments();
+	public Collection<Experiment> getAllExperimentsOfUsers(String sUserID);
+	public Collection<Experiment> getAllExperimentsOfType(int iTypeID);
 	public Set<Long> getAllExperimentIDs();
 	public boolean containsExperiment(long expID);
 	/**
