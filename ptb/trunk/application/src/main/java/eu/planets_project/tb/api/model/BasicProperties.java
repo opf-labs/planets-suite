@@ -1,8 +1,7 @@
 package eu.planets_project.tb.api.model;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author alindley
@@ -17,15 +16,15 @@ public interface BasicProperties{
 	 * Allows to specify experiments that were an influence, starting point, etc. for this current one.
 	 * @param sRefIDs experimentID
 	 */
-	public void setExperimentReferences(Vector<Long> sRefIDs);
+	public void setExperimentReferences(List<Long> sRefIDs);
 	public void setExperimentReference(long sRefID);
 	public void addExperimentReference(long sRefID);
 	public void removeExperimentReference(long sRefID);
 	public void setExperimentReference(Experiment refExp);
 	public void setExperimentReferences(Experiment[] refExps);
-	public Vector<Long> getExperimentReferences();
-	public HashMap<Long,Experiment> getReferencedExperiments();
-	public Vector<Long> getReferencedExperimentIDs();
+	public List<Long> getExperimentReferences();
+	public Map<Long,Experiment> getReferencedExperiments();
+	public List<Long> getReferencedExperimentIDs();
 	
 	public void setSummary(String sSummary);
 	public String getSummary();
@@ -56,8 +55,8 @@ public interface BasicProperties{
 	 * @param sMimeType: format string/string is checked
 	 */
 	public void setExperimentedObjectType(String sMimeType);
-	public void setExperimentedObjectTypes(Vector<String> sMimeTypes);
-	public Vector<String> getExperimentedObjectTypes();
+	public void setExperimentedObjectTypes(List<String> sMimeTypes);
+	public List<String> getExperimentedObjectTypes();
 	
 	public void setFocus(String sFocus);
 	public String getFocus();
@@ -70,10 +69,10 @@ public interface BasicProperties{
 	public void addInvolvedUser(String sUserID);
 	public void removeInvolvedUser(String sUserID);
 	
-	public void addInvolvedUsers(Vector<String> usersIDs);
-	public void removeInvolvedUsers(Vector<String> userIDs);
+	public void addInvolvedUsers(List<String> usersIDs);
+	public void removeInvolvedUsers(List<String> userIDs);
 	
-	public Vector<String> getInvolvedUserIds();
+	public List<String> getInvolvedUserIds();
 	
 	/**
 	 * A user may take a seperate role (besides his overall Testbed role) for an
