@@ -1,7 +1,5 @@
 package eu.planets_project.tb.api.model;
 
-import javax.persistence.Entity;
-
 import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
 
 /**

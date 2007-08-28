@@ -1,7 +1,6 @@
 package eu.planets_project.tb.api.model.finals;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * @author alindley
@@ -45,16 +44,16 @@ public interface PlanetsInstitutions {
 	 * 
 	 * @return
 	 */
-	public Vector<Integer> getAllAvailableInstitutionIDs();
+	public List<Integer> getAllAvailableInstitutionIDs();
 	
-	public Vector<String> getAllAvailableInstitutionNames();
+	public List<String> getAllAvailableInstitutionNames();
 	
 	/**
 	 * Returns a list of all available InstitutionNames of a given PLANETS_TYPE
 	 * @param instType: PLANETS_TYPE
 	 * @return
 	 */
-	public Vector<String> getAllAvailableInstitutionNames(int instType);
+	public List<String> getAllAvailableInstitutionNames(int instType);
 
 	/**
 	 * Returns the corresponding name for a given ID. e.g.
@@ -119,7 +118,7 @@ public interface PlanetsInstitutions {
 	 * 
 	 * @return
 	 */
-	public Vector<String> getAllAvailablePartnerTypes();
+	public List<String> getAllAvailablePartnerTypes();
 
 	/**
 	 * Returns the corresponding type name for a given ID. e.g.

@@ -6,6 +6,7 @@ package eu.planets_project.tb.impl.model.finals;
 import java.lang.reflect.Field;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.List;
 
 /**
  * @author alindley
@@ -14,10 +15,11 @@ import java.util.Vector;
 public class ExperimentTypesImpl implements
 		eu.planets_project.tb.api.model.finals.ExperimentTypes {
 
+
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#getAlLAvailableExperimentTypes()
+	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#getAlLAvailableExperimentTypesNames()
 	 */
-	public Vector<String> getAlLAvailableExperimentTypesNames() {
+	public List<String> getAlLAvailableExperimentTypesNames() {
 		Vector<String> vret = new Vector<String>();
 		//get all fields of the ExperimentTypes Class via reflection
 		Field[] fields = this.getClass().getFields();
@@ -94,7 +96,7 @@ public class ExperimentTypesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#getAlLAvailableExperimentTypeIDs()
 	 */
-	public Vector<Integer> getAlLAvailableExperimentTypeIDs() {
+	public List<Integer> getAlLAvailableExperimentTypeIDs() {
 		Vector<Integer> vret = new Vector<Integer>();
 		//get all fields of the ExperimentTypes Class via reflection
 		Field[] fields = this.getClass().getFields();
@@ -122,7 +124,7 @@ public class ExperimentTypesImpl implements
 	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#checkExperimentTypeValid(int)
 	 */
 	public boolean checkExperimentTypeIDisValid(int typeID) {
-		Vector<Integer> itGivenTypeIDs = this.getAlLAvailableExperimentTypeIDs();
+		Vector<Integer> itGivenTypeIDs = (Vector<Integer>)this.getAlLAvailableExperimentTypeIDs();
 		return itGivenTypeIDs.contains(typeID);
 	}
 

@@ -1,6 +1,7 @@
 package eu.planets_project.tb.api.services.mockups;
 
-import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 public interface Service {
 	
@@ -14,7 +15,7 @@ public interface Service {
 	 * @return
 	 */
 	public String getInputType(String sParameterName);
-	public String[] getInputTypes(String[] sParameterNames);
+	public List<String> getInputTypes(List<String> sParameterNames);
 	
 	public void setInputParameter(String sParameterName, String sInputValue);
 	public void setInputParameters(String[] sParameterNames, String[] sInputValues);
@@ -23,13 +24,13 @@ public interface Service {
 	/**
 	 * @return Hashtable<ParamName,ParamType>
 	 */
-	public Hashtable<String,String>getAllInputParameterAndTypes();
+	public Map<String,String>getAllInputParameterAndTypes();
 	
 	public String getParameterValue(String sParameterName);
 	/**
 	 * @return Hashtable<ParamName,ParamValue>
 	 */
-	public Hashtable<String,String>getAllInputParameterValues();
+	public Map<String,String>getAllInputParameterValues();
 	
 	public void setServiceWSDL(String sWSDL);
 	public String getServiceWSDL();

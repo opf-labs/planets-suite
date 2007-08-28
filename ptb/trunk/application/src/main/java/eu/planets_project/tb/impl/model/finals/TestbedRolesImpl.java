@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.List;
 
 /**
  * @author alindley
@@ -23,7 +24,7 @@ public class TestbedRolesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.TestbedRoles#getAlLAvailableTestbedRoles(int)
 	 */
-	public Vector<String> getAlLAvailableRoleNames(int context) {
+	public List<String> getAlLAvailableRoleNames(int context) {
 		Vector<String> vret = new Vector<String>();
 		//get all fields of the ExperimentTypes Class via reflection
 		Field[] fields = this.getClass().getFields();
@@ -56,14 +57,14 @@ public class TestbedRolesImpl implements
 		return vret;
 	}
 	
-	public Vector<String> getAllAvailableContextNames(){
+	public List<String> getAllAvailableContextNames(){
 		return getVariableNamesFor("CONTEXT", false);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.TestbedRoles#getAllAvailableTestbedRoles()
 	 */
-	public Vector<String> getAllAvailableRoleNames() {
+	public List<String> getAllAvailableRoleNames() {
 		return getVariableNamesFor("TESTBED_ROLE", false);
 	}
 
@@ -101,7 +102,7 @@ public class TestbedRolesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.TestbedRoles#getAllAvailableContextIDs()
 	 */
-	public Vector<Integer> getAllAvailableContextIDs() {
+	public List<Integer> getAllAvailableContextIDs() {
 		return getValuesFor("CONTEXT",false);
 	}
 
@@ -135,7 +136,7 @@ public class TestbedRolesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.TestbedRoles#getAllAvailableRoleIDs()
 	 */
-	public Vector<Integer> getAllAvailableRoleIDs() {
+	public List<Integer> getAllAvailableRoleIDs() {
 		return getValuesFor("TESTBED_ROLE",false);
 	}
 	

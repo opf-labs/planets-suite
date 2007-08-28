@@ -5,6 +5,7 @@ package eu.planets_project.tb.impl.model;
 
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.Entity;
@@ -44,15 +45,15 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#addApprovalRequiredRoles(java.util.Vector)
 	 */
-	public void addApprovalRequiredRoles(Vector<Integer> roleIDs) {
+	public void addApprovalRequiredRoles(List<Integer> roleIDs) {
 		this.vReqRoles.addAll(roleIDs);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#addApprovalUser(eu.planets_project.tb.api.model.User)
 	 */
-	public void addApprovalUser(String user) {
-		this.vApprovalUsers.addElement(user);
+	public void addApprovalUser(String userID) {
+		this.vApprovalUsers.addElement(userID);
 
 		//approval required roles were added
 		/*if (this.vReqRoles.size()>0){
@@ -74,8 +75,8 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#addApprovalUsers(java.util.Vector)
 	 */
-	public void addApprovalUsers(Vector<String> users) {
-		Iterator<String> itUsers = users.iterator();
+	public void addApprovalUsers(List<String> userIDs) {
+		Iterator<String> itUsers = userIDs.iterator();
 		while(itUsers.hasNext()){
 			addApprovalUser(itUsers.next());
 		}
@@ -84,14 +85,14 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#getApprovalRequiredRoles()
 	 */
-	public Vector<Integer> getApprovalRequiredRoles() {
+	public List<Integer> getApprovalRequiredRoles() {
 		return this.vReqRoles;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#getApprovalUsers()
 	 */
-	public Vector<String> getApprovalUsersIDs() {
+	public List<String> getApprovalUsersIDs() {
 		return this.vApprovalUsers;
 	}
 
@@ -139,7 +140,7 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#removeApprovalRequiredRoles(java.util.Vector)
 	 */
-	public void removeApprovalRequiredRoles(Vector<Integer> roleIDs) {
+	public void removeApprovalRequiredRoles(List<Integer> roleIDs) {
 		Iterator<Integer> itRoleIDs = roleIDs.iterator();
 		while(itRoleIDs.hasNext()){
 			removeApprovalRequiredRole(itRoleIDs.next());
@@ -149,17 +150,17 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#removeApprovalUser(eu.planets_project.tb.api.model.User)
 	 */
-	public void removeApprovalUser(String user) {
-		if (this.vApprovalUsers.contains(user)){
-			this.vApprovalUsers.remove(user);
+	public void removeApprovalUser(String userID) {
+		if (this.vApprovalUsers.contains(userID)){
+			this.vApprovalUsers.remove(userID);
 		}
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#removeApprovalUsers(java.util.Vector)
 	 */
-	public void removeApprovalUsers(Vector<String> users) {
-		Iterator<String> itApprovalUsers = users.iterator();
+	public void removeApprovalUsers(List<String> userIDs) {
+		Iterator<String> itApprovalUsers = userIDs.iterator();
 		while(itApprovalUsers.hasNext()){
 			removeApprovalUser(itApprovalUsers.next());
 		}
@@ -176,7 +177,7 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#setApprovalRequiredRoles(java.util.Vector)
 	 */
-	public void setApprovalRequiredRoles(Vector<Integer> roleIDs) {
+	public void setApprovalRequiredRoles(List<Integer> roleIDs) {
 		this.vReqRoles.removeAllElements();
 		this.vReqRoles.addAll(roleIDs);
 	}

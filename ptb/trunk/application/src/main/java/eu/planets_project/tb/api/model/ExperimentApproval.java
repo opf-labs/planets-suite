@@ -1,6 +1,6 @@
 package eu.planets_project.tb.api.model;
 
-import java.util.Vector;
+import java.util.List;
 
 /**
  * @author alindley
@@ -22,26 +22,26 @@ public interface ExperimentApproval extends ExperimentPhase{
 	 * @param iRoleID
 	 */
 	public void setApprovalRequiredRole(int iRoleID);
-	public void setApprovalRequiredRoles(Vector<Integer> iRoleIDs);
+	public void setApprovalRequiredRoles(List<Integer> iRoleIDs);
 	public void addApprovalRequiredRole(int iRoleID);
-	public void addApprovalRequiredRoles(Vector<Integer> iRoleIDs);
+	public void addApprovalRequiredRoles(List<Integer> iRoleIDs);
 	public void removeApprovalRequiredRole(int iRoleID);
-	public void removeApprovalRequiredRoles(Vector<Integer> iRoleIDs);
-	public Vector<Integer> getApprovalRequiredRoles();
+	public void removeApprovalRequiredRoles(List<Integer> iRoleIDs);
+	public List<Integer> getApprovalRequiredRoles();
 	
 	
 	/**
 	 * A concrete User instance may only be added if at least one approvalRequiredRole has been added before
 	 * @param user
 	 */
-	public void addApprovalUser(String user);
-	public void addApprovalUsers(Vector<String> users);
-	public void removeApprovalUser(String user);
-	public void removeApprovalUsers(Vector<String> users);
+	public void addApprovalUser(String userID);
+	public void addApprovalUsers(List<String> usersIDs);
+	public void removeApprovalUser(String userID);
+	public void removeApprovalUsers(List<String> userIDs);
 	/**
 	 * Returns a list of user IDs
 	 * @return
 	 */
-	public Vector<String> getApprovalUsersIDs();
+	public List<String> getApprovalUsersIDs();
 
 }

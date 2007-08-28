@@ -4,17 +4,19 @@
 package eu.planets_project.tb.impl.model;
 
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import eu.planets_project.tb.api.model.Comment;
 import eu.planets_project.tb.impl.model.CommentImpl;
 import eu.planets_project.tb.impl.CommentManagerImpl;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
 
 /**
  * @author alindley
@@ -37,8 +39,8 @@ public class CommentImpl implements eu.planets_project.tb.api.model.Comment,
 	
 	//Default constructor required for EJB persistency
 	private CommentImpl(){
-		
 	}
+	
 	/**
 	 * Is used to create a new root comment, without any parents
 	 * @param lExperimentID
@@ -46,8 +48,6 @@ public class CommentImpl implements eu.planets_project.tb.api.model.Comment,
 	 */
 	public CommentImpl(long lExperimentID, String sExperimentPhaseID){
 
-		System.out.println("IN CommentA1");
-		System.out.println("ExperimentID="+lExperimentID+ " PhaseID="+sExperimentPhaseID);
 		this.lExperimentID = lExperimentID;
 		this.sExperimentPhaseID = sExperimentPhaseID;
 		//this is a new root comment
@@ -62,11 +62,8 @@ public class CommentImpl implements eu.planets_project.tb.api.model.Comment,
 	 * @param lParentID
 	 */
 	public CommentImpl(long lParentID){
-		System.out.println("IN Comment1");
-		CommentManagerImpl manager = CommentManagerImpl.getInstance();
-		System.out.println("IN Comment2");
+		CommentManagerImpl manager = (CommentManagerImpl)TestbedManagerImpl.getInstance().getCommentManagerInstance();
 		CommentImpl parent = (CommentImpl)manager.getComment(lParentID);
-		System.out.println("IN Comment3");
 		//DELTE
 		System.out.println("parent NULL? ");
 		if (parent==null){
@@ -133,7 +130,7 @@ public class CommentImpl implements eu.planets_project.tb.api.model.Comment,
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#getParent()
 	 */
-	public eu.planets_project.tb.api.model.Comment getParent() {
+	public Comment getParent() {
 		
 		return CommentManagerImpl.getInstance().getComment(this.lParentID);
 	}
@@ -208,7 +205,7 @@ public class CommentImpl implements eu.planets_project.tb.api.model.Comment,
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#getReplies()
 	 */
-	public Vector<eu.planets_project.tb.api.model.Comment> getReplies() {
+	public List<Comment> getReplies() {
 		Vector<eu.planets_project.tb.api.model.Comment> vChilds = new Vector<eu.planets_project.tb.api.model.Comment>();
 		Iterator<Long> itChilds = this.vChildIDs.iterator();
 		for (int i=0; i<this.vChildIDs.size(); i++){
@@ -221,14 +218,14 @@ public class CommentImpl implements eu.planets_project.tb.api.model.Comment,
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#addReply(eu.planets_project.tb.api.model.Comment)
 	 */
-	public void addReply(eu.planets_project.tb.api.model.Comment reply) {
+	public void addReply(Comment reply) {
 		this.vChildIDs.addElement(reply.getCommentID());
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#removeReply(eu.planets_project.tb.api.model.Comment)
 	 */
-	public void removeReply(eu.planets_project.tb.api.model.Comment reply) {
+	public void removeReply(Comment reply) {
 		this.vChildIDs.removeElement(reply.getCommentID());
 	}
 
@@ -236,13 +233,13 @@ public class CommentImpl implements eu.planets_project.tb.api.model.Comment,
 	 * SetReplies removes all replies that have been added until now. To modify use add and remove
 	 * @see eu.planets_project.tb.api.model.Comment#setReplies(java.util.Vector)
 	 */
-	public void setReplies(Vector<eu.planets_project.tb.api.model.Comment> replies) {
+	public void setReplies(List<Comment> replies) {
 		//setReplies removes all replies that have been added until now
 		this.vChildIDs.removeAllElements();
 		
-		Enumeration<eu.planets_project.tb.api.model.Comment> enumReplies = replies.elements();
-		while (enumReplies.hasMoreElements()){
-			CommentImpl commentReply = (CommentImpl)enumReplies.nextElement();
+		Iterator<Comment> itReplies = replies.iterator();
+		while (itReplies.hasNext()){
+			CommentImpl commentReply = (CommentImpl)itReplies.next();
 			long replyID = commentReply.getCommentID();
 			this.vChildIDs.addElement(replyID);
 		}

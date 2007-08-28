@@ -1,7 +1,6 @@
 package eu.planets_project.tb.api.model.finals;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 public interface ExperimentTypes {
 
@@ -21,7 +20,7 @@ public interface ExperimentTypes {
 	 * 
 	 * @return
 	 */
-	public Vector<String> getAlLAvailableExperimentTypesNames();
+	public List<String> getAlLAvailableExperimentTypesNames();
 	
 	/**
 	 * This method returns the experimen type's values. e.g.
@@ -29,7 +28,7 @@ public interface ExperimentTypes {
 	 * 
 	 * @return
 	 */
-	public Vector<Integer> getAlLAvailableExperimentTypeIDs();
+	public List<Integer> getAlLAvailableExperimentTypeIDs();
 
 	/**
 	 * @param sExpName

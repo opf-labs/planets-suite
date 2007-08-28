@@ -3,8 +3,7 @@
  */
 package eu.planets_project.tb.api.model.finals;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
 
 /**
  * @author alindley
@@ -49,7 +48,7 @@ public interface TestbedRoles {
 	 *            for all provided roles in an experiment context
 	 * @return
 	 */
-	public Vector<String> getAlLAvailableRoleNames(int iContext);
+	public List<String> getAlLAvailableRoleNames(int iContext);
 
 	/**
 	 * This method returns the role's names. e.g. "TESTBED_READER" (String)
@@ -59,13 +58,13 @@ public interface TestbedRoles {
 	 *            for all provided roles in an experiment context
 	 * @return
 	 */
-	public Vector<String> getAllAvailableRoleNames();
+	public List<String> getAllAvailableRoleNames();
 	
 	/**
 	 * This method returns a list with all available role IDs
 	 * @return
 	 */
-	public Vector<Integer> getAllAvailableRoleIDs();
+	public List<Integer> getAllAvailableRoleIDs();
 	
 	/**
 	 * This method can be used to check if a given RoleID is a valid Role
@@ -85,9 +84,9 @@ public interface TestbedRoles {
 	/**
 	 * @return
 	 */
-	public Vector<String> getAllAvailableContextNames();
+	public List<String> getAllAvailableContextNames();
 	
-	public Vector<Integer> getAllAvailableContextIDs();
+	public List<Integer> getAllAvailableContextIDs();
 
 	/**
 	 * @param sRoleName

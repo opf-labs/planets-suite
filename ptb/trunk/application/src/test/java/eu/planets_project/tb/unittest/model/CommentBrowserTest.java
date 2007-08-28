@@ -9,6 +9,7 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import eu.planets_project.tb.api.model.Comment;
 import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.CommentImpl;
 import eu.planets_project.tb.test.model.CommentBrowser;
@@ -127,7 +128,7 @@ public class CommentBrowserTest extends TestCase{
 		System.out.println("Comment Partent ID: "+test_find1.getCommentID());
 		System.out.println("Comment Child ID: "+com_child.getCommentID());
 		
-		Vector<eu.planets_project.tb.api.model.Comment> vChilds = test_find1.getReplies();
+		Vector<Comment> vChilds = (Vector<Comment>)test_find1.getReplies();
 		
 		assertEquals(1,vChilds.size());	
 		

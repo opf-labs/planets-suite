@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl.model;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,6 +33,12 @@ public abstract class ExperimentPhaseImpl implements
 	private Calendar endDate, startDate;
 	private int iState, iResult;
 	boolean bSuccess;
+	
+	public ExperimentPhaseImpl(){
+		this.startDate = new GregorianCalendar();
+		this.iState = this.STATE_NOT_STARTED;
+		this.iResult = this.RESULT_NOT_AVAILABLE;
+	}
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getDuration()

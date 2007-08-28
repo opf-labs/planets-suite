@@ -14,6 +14,8 @@ import java.util.Vector;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 
@@ -121,14 +123,14 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentReferences()
 	 */
-	public Vector<Long> getExperimentReferences() {
+	public List<Long> getExperimentReferences() {
 		return this.vRefExpIDs;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentedObjectTypes()
 	 */
-	public Vector<String> getExperimentedObjectTypes() {
+	public List<String> getExperimentedObjectTypes() {
 		return this.vExpObjectTypes;
 	}
 
@@ -156,7 +158,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getReferencedExperimentIDs()
 	 */
-	public Vector<Long> getReferencedExperimentIDs() {
+	public List<Long> getReferencedExperimentIDs() {
 		return this.vRefExpIDs;
 	}
 
@@ -164,7 +166,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getReferencedExperiments()
 	 */
-	public Map<Long,eu.planets_project.tb.api.model.Experiment> getReferencedExperiments() {
+	public Map<Long,Experiment> getReferencedExperiments() {
 		HashMap<Long,eu.planets_project.tb.api.model.Experiment> hmRet = new HashMap<Long,eu.planets_project.tb.api.model.Experiment>();
 		Enumeration<Long> enumExpRefs = this.vRefExpIDs.elements();
 		while(enumExpRefs.hasMoreElements()){
@@ -247,7 +249,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * Please note: SetReference always overrides existing entries - add,remove to modify
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentReference(eu.planets_project.tb.api.model.Experiment)
 	 */
-	public void setExperimentReference(eu.planets_project.tb.api.model.Experiment refExp) {
+	public void setExperimentReference(Experiment refExp) {
 		this.vRefExpIDs.removeAllElements();
 		ExperimentImpl exp = (ExperimentImpl) refExp;
 		this.vRefExpIDs.addElement(exp.getEntityID());	
@@ -269,7 +271,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentReferences(eu.planets_project.tb.api.model.Experiment[])
 	 */
-	public void setExperimentReferences(eu.planets_project.tb.api.model.Experiment[] refExps) {
+	public void setExperimentReferences(Experiment[] refExps) {
 		this.vRefExpIDs.removeAllElements();
 		for (int i=0;i<refExps.length;i++){
 			ExperimentImpl exp = (ExperimentImpl)refExps[i];
@@ -329,6 +331,13 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 */
 	public void setExperimenter(String userID) {
 		this.sExperimenterID = userID;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimenter()
+	 */
+	public String getExperimenter() {
+		return this.sExperimenterID;
 	}
 
 	/* (non-Javadoc)

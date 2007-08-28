@@ -3,8 +3,7 @@
  */
 package eu.planets_project.tb.api.model;
 
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.List;
 
 import eu.planets_project.tb.api.model.benchmark.Objective;
 
@@ -29,20 +28,20 @@ public interface ExperimentObjectives{
 	 * Adds a given Objective to the ones used within this Experiment (=ExperimentObjectives)
 	 */
 	public void setObjectivesAsSelected(Objective objectiveD);
-	public void setObjectivesAsSelected(Vector<Objective> objectives);
+	public void setObjectivesAsSelected(List<Objective> objectives);
 	
 	public void addObjective(Objective objective);
 	
 	/**
 	 * Sets the given objectives (ID) with its value and weight
 	 * "set" always overrides "add".
-	 * @param Objectives
+	 * @param objectives
 	 */
-	public void addObjectives(Vector<Objective> Objectives);
+	public void addObjectives(List<Objective> objectives);
 	
 	public void removeObjective(long sObjectiveID);
 	public void removeObjective(Objective Objective);
-	public void removeObjectives(Vector<Objective> Objectives);
+	public void removeObjectives(List<Objective> Objectives);
 	
 	public Objective getObjective(long sObjectiveID);
 	
@@ -50,7 +49,7 @@ public interface ExperimentObjectives{
 	 * Returns all added objectives.
 	 * @return Objective
 	 */
-	public Vector<Objective> getAllAddedObjectives();
+	public List<Objective> getAllAddedObjectives();
 	
 	/**
 	 * Adds a given objective to the set of used ExperimentObjectives and sets the objective's focus

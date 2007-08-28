@@ -109,19 +109,19 @@ public class SetupBasicPropertiesTest extends TestCase{
 		props.addExperimentReference(l1);
 		props.addExperimentReference(l2);
 		
-		Vector<Long> v = props.getExperimentReferences();
+		Vector<Long> v = (Vector<Long>)props.getExperimentReferences();
 		assertEquals(true,v.contains(l1));
 		assertEquals(true,v.contains(l2));
 		
 		//Test2: remove references
 		props.removeExperimentReference(l1);
-		Vector<Long> v2 = props.getExperimentReferences();
+		Vector<Long> v2 = (Vector<Long>)props.getExperimentReferences();
 		assertEquals(false,v2.contains(l1));
 		assertEquals(true,v2.contains(l2));
 		
 		//Test3: set references
 		props.setExperimentReference(3);
-		Vector<Long> v3 = props.getExperimentReferences();
+		Vector<Long> v3 = (Vector<Long>)props.getExperimentReferences();
 		assertEquals(true,v3.contains(l3));
 		assertEquals(1,v3.size());
 		
@@ -294,7 +294,7 @@ public class SetupBasicPropertiesTest extends TestCase{
 			BasicPropertiesImpl props = new BasicPropertiesImpl();
 		//Test1:
 			props.setExperimentedObjectType("text/plain");
-			Vector<String> vTypes = props.getExperimentedObjectTypes();
+			Vector<String> vTypes = (Vector<String>)props.getExperimentedObjectTypes();
 			assertTrue(vTypes.size()==1);
 			assertTrue(vTypes.contains("text/plain"));
 		
@@ -302,7 +302,7 @@ public class SetupBasicPropertiesTest extends TestCase{
 			vTypes.addElement("text/html");
 			vTypes.addElement("image/gif");
 			props.setExperimentedObjectTypes(vTypes);
-			vTypes = props.getExperimentedObjectTypes();
+			vTypes = (Vector<String>)props.getExperimentedObjectTypes();
 			assertTrue(vTypes.size()==2);
 			assertTrue(vTypes.contains("text/html"));
 			assertTrue(vTypes.contains("image/gif"));
@@ -311,7 +311,7 @@ public class SetupBasicPropertiesTest extends TestCase{
 			vTypes.addElement("text/html");
 			vTypes.addElement("image\\gif");
 			props.setExperimentedObjectTypes(vTypes);
-			vTypes = props.getExperimentedObjectTypes();
+			vTypes = (Vector<String>)props.getExperimentedObjectTypes();
 			assertTrue(vTypes.size()==1);
 			assertTrue(vTypes.contains("text/html"));
 			assertTrue(!vTypes.contains("image\\gif"));

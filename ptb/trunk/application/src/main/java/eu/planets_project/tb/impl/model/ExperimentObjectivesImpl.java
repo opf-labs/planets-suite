@@ -5,6 +5,7 @@ package eu.planets_project.tb.impl.model;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.Entity;
@@ -71,7 +72,7 @@ public class ExperimentObjectivesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentObjectives#addObjectives(java.util.Vector)
 	 */
-	public void addObjectives(Vector<Objective> objectives) {
+	public void addObjectives(List<Objective> objectives) {
 		Iterator<Objective> itObjectives = objectives.iterator();
 		while(itObjectives.hasNext()){
 			Objective obj = itObjectives.next();
@@ -88,7 +89,7 @@ public class ExperimentObjectivesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentObjectives#getAllAddedObjectives()
 	 */
-	public Vector<Objective> getAllAddedObjectives() {
+	public List<Objective> getAllAddedObjectives() {
 		Vector<Objective> vRet = new Vector<Objective>();
 		vRet.addAll(this.hmObjectiveList.keySet());
 		return vRet;
@@ -164,7 +165,7 @@ public class ExperimentObjectivesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentObjectives#removeObjectives(java.util.Vector)
 	 */
-	public void removeObjectives(Vector<Objective> objectives) {
+	public void removeObjectives(List<Objective> objectives) {
 		Iterator<Objective> itObjectives = objectives.iterator();
 		while(itObjectives.hasNext()){
 			Objective objective = itObjectives.next();
@@ -190,7 +191,7 @@ public class ExperimentObjectivesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentObjectives#setObjectivesAsSelected(java.util.Vector)
 	 */
-	public void setObjectivesAsSelected(Vector<Objective> objectives) {
+	public void setObjectivesAsSelected(List<Objective> objectives) {
 		this.hmObjectiveList = new HashMap<Objective,HashMap<String,String>>();
 		Iterator<Objective> itObjectives = objectives.iterator();
 		while(itObjectives.hasNext()){

@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 import java.util.Iterator;
 
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import eu.planets_project.tb.api.model.Comment;
+import eu.planets_project.tb.impl.model.CommentImpl;
 
 /**
  * @author alindley
@@ -59,7 +61,7 @@ public class CommentManagerImpl implements eu.planets_project.tb.api.CommentMana
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.CommentManager#getComment(java.lang.String)
 	 */
-	public  eu.planets_project.tb.api.model.Comment getComment(long commentID) {
+	public Comment getComment(long commentID) {
 		return this.hmCommentsMapping.get(commentID);
 	}
 
@@ -67,7 +69,7 @@ public class CommentManagerImpl implements eu.planets_project.tb.api.CommentMana
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.CommentManager#getCommentIDs(long, java.lang.String)
 	 */
-	public Vector<Long> getCommentIDs(long experimentID, String experimentPhaseID) {
+	public List<Long> getCommentIDs(long experimentID, String experimentPhaseID) {
 		Vector<Long> vRet = new Vector<Long>();
 		//HashMap hmExperimentComments<ExperimentID, HashMap<sPhaseID,Vector<Comments>>>
 		if(this.hmExperimentComments.containsKey(experimentID)){
@@ -86,7 +88,7 @@ public class CommentManagerImpl implements eu.planets_project.tb.api.CommentMana
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.CommentManager#getComments(long, java.lang.String)
 	 */
-	public Vector<eu.planets_project.tb.api.model.Comment> getComments(long experimentID, String experimentPhaseID) {
+	public List<Comment> getComments(long experimentID, String experimentPhaseID) {
 		Vector<Comment> vRet = new Vector<Comment>();
 		//HashMap hmExperimentComments<ExperimentID, HashMap<PhaseID,Vector<Comments>>>
 		if(this.hmExperimentComments.containsKey(experimentID)){
@@ -108,7 +110,7 @@ public class CommentManagerImpl implements eu.planets_project.tb.api.CommentMana
 		//CHANGE HISTORY: AT THE MOMENT IT DOES NOT AUTOMATICALLY REGISTER, just returns object
 		
 		System.out.println("get new Root Comment1");
-		eu.planets_project.tb.impl.model.CommentImpl c1 = new eu.planets_project.tb.impl.model.CommentImpl(lExperimentID, sExperimentPhaseID);
+		CommentImpl c1 = new CommentImpl(lExperimentID, sExperimentPhaseID);
 		/* CHANGE HISTORY EDIT
 		System.out.println("get new Root Comment2");
 		boolean bOK = CommentHelper(true,c1,lExperimentID, sExperimentPhaseID,true);
@@ -136,7 +138,7 @@ public class CommentManagerImpl implements eu.planets_project.tb.api.CommentMana
 	 */
 	public void removeComment(long commentID) {
 		Comment comment = this.hmCommentsMapping.get(commentID);
-		CommentHelper(false, comment,comment.getExperimentID(),comment.getExperimentPhaseID(),false);
+		commentHelper(false, comment,comment.getExperimentID(),comment.getExperimentPhaseID(),false);
 	}
 	
 
@@ -147,7 +149,7 @@ public class CommentManagerImpl implements eu.planets_project.tb.api.CommentMana
 			eu.planets_project.tb.api.model.Comment comment, long experimentID,
 			String experimentPhaseID) {
 		System.out.println("register Comment: ID="+comment.getCommentID());
-		CommentHelper(true,comment,experimentID,experimentPhaseID,false);
+		commentHelper(true,comment,experimentID,experimentPhaseID,false);
 		
 	}
 
@@ -155,7 +157,7 @@ public class CommentManagerImpl implements eu.planets_project.tb.api.CommentMana
 	 * @see eu.planets_project.tb.api.CommentManager#updateComment(eu.planets_project.tb.api.model.Comment)
 	 */
 	public void updateComment(Comment comment) {
-		CommentHelper(false, comment,comment.getExperimentID(),comment.getExperimentPhaseID(),false);
+		commentHelper(false, comment,comment.getExperimentID(),comment.getExperimentPhaseID(),false);
 		
 	}
 	
@@ -167,7 +169,7 @@ public class CommentManagerImpl implements eu.planets_project.tb.api.CommentMana
 	 * @param sExperimentPhaseID
 	 * @param newComment: indicates if the prcedure for a new comment (true) or an existing comment (false) shall be followed
 	 */
-	private boolean CommentHelper(boolean bRegister_Remove, Comment cInput, long lExperimentID, String sExperimentPhaseID, boolean newComment){
+	private boolean commentHelper(boolean bRegister_Remove, Comment cInput, long lExperimentID, String sExperimentPhaseID, boolean newComment){
 		System.out.println("CommentHelper1: register_remove: "+bRegister_Remove+ " InputComment: "+cInput.getExperimentID());
 		boolean bRet = true;
 		Comment c1 = (Comment)cInput;

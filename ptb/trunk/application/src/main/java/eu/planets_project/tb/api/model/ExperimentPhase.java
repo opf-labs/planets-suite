@@ -1,9 +1,6 @@
 package eu.planets_project.tb.api.model;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import eu.planets_project.tb.api.data.DataRegistryBinding;
 
 /**
  * @author alindley
@@ -77,9 +74,6 @@ public interface ExperimentPhase {
 	 * @param success
 	 */
 	//public void setSuccess(int success);
-	
-	//Method parameters still unclear!!
-	//public void persist(DataRegistryBinding registry);
 	
 	/**
 	 * @return html, xml, etc. summary?

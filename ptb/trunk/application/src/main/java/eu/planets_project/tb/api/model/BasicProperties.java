@@ -65,6 +65,7 @@ public interface BasicProperties{
 	public String getScope();
 
 	public void setExperimenter(String sUserID);
+	public String getExperimenter();
 	
 	public void addInvolvedUser(String sUserID);
 	public void removeInvolvedUser(String sUserID);

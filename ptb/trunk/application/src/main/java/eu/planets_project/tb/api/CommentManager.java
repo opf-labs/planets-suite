@@ -1,14 +1,14 @@
 package eu.planets_project.tb.api;
 
-import java.util.Vector;
+import java.util.List;
 
 import eu.planets_project.tb.api.model.Comment;
 
 public interface CommentManager {
 	
-	public Vector<Comment> getComments(long lExperimentID, String sExperimentPhaseID);
+	public List<Comment> getComments(long lExperimentID, String sExperimentPhaseID);
 	
-	public Vector<Long> getCommentIDs(long lExperimentID, String sExperimentPhaseID);
+	public List<Long> getCommentIDs(long lExperimentID, String sExperimentPhaseID);
 	
 	public Comment getComment(long lCommentID);
 	

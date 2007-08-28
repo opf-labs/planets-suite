@@ -3,17 +3,14 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.util.GregorianCalendar;
-
 import javax.persistence.CascadeType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import eu.planets_project.tb.api.model.BasicProperties;
+import eu.planets_project.tb.api.model.ExperimentObjectives;
+import eu.planets_project.tb.api.model.ExperimentResources;
+import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentObjectivesImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
@@ -31,11 +28,11 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	@OneToOne(cascade={CascadeType.ALL})
-	private eu.planets_project.tb.impl.model.BasicPropertiesImpl basicProperties;
+	private BasicPropertiesImpl basicProperties;
 	//@OneToOne(cascade={CascadeType.ALL})
-	private eu.planets_project.tb.impl.model.ExperimentResourcesImpl experimentResources;
-	private eu.planets_project.tb.impl.model.ExperimentObjectivesImpl experimentObjectives;
-	private eu.planets_project.tb.impl.services.mockups.ComplexWorkflowImpl complexWorkflow;
+	private ExperimentResourcesImpl experimentResources;
+	private ExperimentObjectivesImpl experimentObjectives;
+	private ComplexWorkflowImpl complexWorkflow;
 	private int iExperimentTypeID;
 	private String sExperimentTypeName;
 
@@ -48,11 +45,11 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	}
 	
 
-	public eu.planets_project.tb.api.model.BasicProperties getBasicProperties() {
+	public BasicProperties getBasicProperties() {
 		return this.basicProperties;
 	}
 
-	public eu.planets_project.tb.api.model.ExperimentResources getExperimentResources() {
+	public ExperimentResources getExperimentResources() {
 		return this.experimentResources;
 	}
 
@@ -67,31 +64,34 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getExperimentWorkflow()
 	 */
-	public eu.planets_project.tb.api.services.mockups.ComplexWorkflow getExperimentWorkflow() {
+	public ComplexWorkflow getExperimentWorkflow() {
 		return this.complexWorkflow;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getExperimentedObjectives()
 	 */
-	public eu.planets_project.tb.api.model.ExperimentObjectives getExperimentedObjectives() {
+	public ExperimentObjectives getExperimentedObjectives() {
 		return this.experimentObjectives;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setExperimentResources(eu.planets_project.tb.api.model.ExperimentResources)
 	 */
-	public void setExperimentResources(eu.planets_project.tb.api.model.ExperimentResources experimentResources) {
+	public void setExperimentResources(ExperimentResources experimentResources) {
 		this.experimentResources = (ExperimentResourcesImpl)experimentResources;
 	}
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setBasicProperties(eu.planets_project.tb.api.model.BasicProperties)
 	 */
-	public void setBasicProperties(eu.planets_project.tb.api.model.BasicProperties props) {
+	public void setBasicProperties(BasicProperties props) {
 		this.basicProperties = (BasicPropertiesImpl) props;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setExperimentType(int)
+	 */
 	public void setExperimentType(int typeID) {
 		ExperimentTypesImpl finalsExperimentTypes = new ExperimentTypesImpl();
 		boolean bOK= finalsExperimentTypes.checkExperimentTypeIDisValid(typeID);
@@ -105,15 +105,14 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setExperimentedObjectives(eu.planets_project.tb.api.model.ExperimentObjectives)
 	 */
-	public void setExperimentedObjectives(
-			eu.planets_project.tb.api.model.ExperimentObjectives exploredObjectives) {
+	public void setExperimentedObjectives(ExperimentObjectives exploredObjectives) {
 		this.experimentObjectives = (ExperimentObjectivesImpl) exploredObjectives;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setWorkflow(eu.planets_project.tb.api.services.mockups.ComplexWorkflow)
 	 */
-	public void setWorkflow(eu.planets_project.tb.api.services.mockups.ComplexWorkflow workflow) {
+	public void setWorkflow(ComplexWorkflow workflow) {
 		this.complexWorkflow = (ComplexWorkflowImpl) workflow;
 	}
 	

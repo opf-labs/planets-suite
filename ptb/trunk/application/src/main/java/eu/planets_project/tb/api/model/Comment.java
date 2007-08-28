@@ -1,8 +1,7 @@
 package eu.planets_project.tb.api.model;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Vector;
+import java.util.List;
 
 
 public interface Comment {
@@ -28,7 +27,7 @@ public interface Comment {
 	/**
 	 * @param sCommentingNodeID The node for replying on.
 	 */
-	public void setReplies(Vector<Comment> reply);
+	public void setReplies(List<Comment> reply);
 	
 	public void addReply(Comment reply);
 	public void removeReply(Comment reply);
@@ -36,7 +35,7 @@ public interface Comment {
 	 * Returns (non-recursive) replies
 	 * @return
 	 */
-	public Vector<Comment> getReplies();
+	public List<Comment> getReplies();
 	
 	public Comment getParent();
 	

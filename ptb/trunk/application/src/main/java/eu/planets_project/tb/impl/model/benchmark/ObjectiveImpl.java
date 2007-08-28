@@ -80,10 +80,16 @@ public class ObjectiveImpl implements
 		this.sWeight = weight;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.Objective#getVersion()
+	 */
 	public String getVersion() {
 		return this.sVersion;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.Objective#setVersion(java.lang.String)
+	 */
 	public void setVersion(String version) {
 		this.sVersion = version;
 	}

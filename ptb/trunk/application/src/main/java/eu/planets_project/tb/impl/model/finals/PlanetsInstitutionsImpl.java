@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.List;
 
 /**
  * @author alindley
@@ -19,21 +20,21 @@ public class PlanetsInstitutionsImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.PlanetsInstitutions#getAllAvailableInstitutions()
 	 */
-	public Vector<Integer> getAllAvailableInstitutionIDs() {
+	public List<Integer> getAllAvailableInstitutionIDs() {
 		return getValuesFor("PLANETS_INSTITUTION",false);
 	}
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.PlanetsInstitutions#getAllAvailableInstitutionNames()
 	 */
-	public Vector<String> getAllAvailableInstitutionNames(){
+	public List<String> getAllAvailableInstitutionNames(){
 		return getVariableNamesFor("PLANETS_INSTITUTION", false);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.PlanetsInstitutions#getAllAvailablePartnerTypes()
 	 */
-	public Vector<String> getAllAvailablePartnerTypes() {
+	public List<String> getAllAvailablePartnerTypes() {
 		return getVariableNamesFor("PLANETS_TYPE", false);
 	}
 
@@ -148,7 +149,7 @@ public class PlanetsInstitutionsImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.PlanetsInstitutions#getAllAvailableInstitutionNames(int)
 	 */
-	public Vector<String> getAllAvailableInstitutionNames(int instType) {
+	public List<String> getAllAvailableInstitutionNames(int instType) {
 		Vector<String> vRet = new Vector<String>();
 		HashMap<String, Integer> hmMappings = this.getMappingIDsForVariableNames("MAPPING_PLANETS_INSTITUTION", false);
 

@@ -29,7 +29,7 @@ public interface TestbedManager {
 	
 
 	// Comment Management
-	public CommentManager getCommentManager();
+	public CommentManager getCommentManagerInstance();
 	
 	//Manages ..
 

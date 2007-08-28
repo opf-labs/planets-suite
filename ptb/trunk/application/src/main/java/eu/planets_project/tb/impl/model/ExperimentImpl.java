@@ -14,6 +14,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
+import eu.planets_project.tb.api.model.ExperimentApproval;
+import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.ExperimentExecution;
+import eu.planets_project.tb.api.model.ExperimentPhase;
+import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
@@ -42,65 +47,117 @@ public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentP
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentAnalysis()
 	 */
-	public ExperimentEvaluationImpl getExperimentAnalysis() {
+	public ExperimentEvaluation getExperimentAnalysis() {
 		return this.expEvaluation;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentApproval()
 	 */
-	public eu.planets_project.tb.api.model.ExperimentApproval getExperimentApproval() {
+	public ExperimentApproval getExperimentApproval() {
 		return this.expApproval;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentExecution()
 	 */
-	public eu.planets_project.tb.api.model.ExperimentExecution getExperimentExecution() {
+	public ExperimentExecution getExperimentExecution() {
 		return this.expExecution;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentSetup()
 	 */
-	public eu.planets_project.tb.api.model.ExperimentSetup getExperimentSetup() {
+	public ExperimentSetup getExperimentSetup() {
 		return this.expSetup;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentAnalysis(eu.planets_project.tb.api.model.ExperimentEvaluation)
 	 */
-	public void setExperimentAnalysis(eu.planets_project.tb.api.model.ExperimentEvaluation analysisPhase) {
+	public void setExperimentAnalysis(ExperimentEvaluation analysisPhase) {
 		this.expEvaluation = (ExperimentEvaluationImpl)analysisPhase;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentApproval(eu.planets_project.tb.api.model.ExperimentApproval)
 	 */
-	public void setExperimentApproval(eu.planets_project.tb.api.model.ExperimentApproval approvalPhase) {
+	public void setExperimentApproval(ExperimentApproval approvalPhase) {
 		this.expApproval = (ExperimentApprovalImpl)approvalPhase;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentExecution(eu.planets_project.tb.api.model.ExperimentExecution)
 	 */
-	public void setExperimentExecution(eu.planets_project.tb.api.model.ExperimentExecution executionPhase) {
+	public void setExperimentExecution(ExperimentExecution executionPhase) {
 		this.expExecution = (ExperimentExecutionImpl)executionPhase;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentSetup(eu.planets_project.tb.api.model.ExperimentSetup)
 	 */
-	public void setExperimentSetup(eu.planets_project.tb.api.model.ExperimentSetup setupPhaseObject) {
+	public void setExperimentSetup(ExperimentSetup setupPhaseObject) {
 		this.expSetup = (ExperimentSetupImpl)setupPhaseObject;
 	}
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getCurrentPhase()
 	 */
-	public ExperimentPhaseImpl getCurrentPhase() {
-		//TODO implement
-		return null;
+	public ExperimentPhase getCurrentPhase() {
+		ExperimentPhase ret = null;
+		if(this.expSetup.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+			if(checkAllOtherStagesCompleted(0))
+				ret = this.expSetup;
+		
+		if(this.expApproval.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+			if(checkAllOtherStagesCompleted(1))
+				ret = this.expApproval;
+		
+		if(this.expExecution.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+			if(checkAllOtherStagesCompleted(2))
+				ret = this.expExecution;
+		
+		if(this.expEvaluation.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+			if(checkAllOtherStagesCompleted(3))
+				ret = this.expEvaluation;
+		
+		return ret;
+	}
+	
+	/**
+	 * @param iPhaseNr may reach from 0..3, representing 
+	 * 0=ExperimentSetup, 1=ExperimentApproval, 2=ExperimentExecution, 3=ExperimentEvaluation
+	 * @return
+	 */
+	private boolean checkAllOtherStagesCompleted(int iPhaseNr){
+		boolean bRet = false;
+		final int iExperimentSetup 		= 0;
+		final int iExperimentApproval 	= 1;
+		final int iExperimentExecution 	= 2;
+		final int iExperimentEvaluation = 3;
+		
+		switch(iPhaseNr){
+			case iExperimentSetup: 
+				//first stage - nothing to check
+				bRet = true;
+				
+			case iExperimentApproval: 
+				//check if the previous stage was completed 
+				if(this.expSetup.getState()==ExperimentPhase.STATE_COMPLETED)
+					bRet = true;
+			
+			case iExperimentExecution:
+				//check if the previous stages were completed 
+				if(this.expSetup.getState()==ExperimentPhase.STATE_COMPLETED && this.expApproval.getState()==ExperimentPhase.STATE_COMPLETED)
+					bRet = true;
+				
+			case iExperimentEvaluation:
+				//check if the previous stages were completed 
+				if(this.expSetup.getState()==ExperimentPhase.STATE_COMPLETED && this.expApproval.getState()==ExperimentPhase.STATE_COMPLETED && this.expExecution.getState()==ExperimentPhase.STATE_COMPLETED)
+					bRet = true;
+		}
+		
+		return bRet;
 	}
 
 }

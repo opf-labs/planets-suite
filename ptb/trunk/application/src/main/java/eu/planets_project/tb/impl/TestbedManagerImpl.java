@@ -21,8 +21,9 @@ import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
-import eu.planets_project.tb.impl.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 
 /**
  * @author alindley
@@ -75,30 +76,30 @@ public class TestbedManagerImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperiments()
 	 */
-	public Collection<eu.planets_project.tb.api.model.Experiment> getAllExperiments() {
+	public Collection<Experiment> getAllExperiments() {
 		return this.hmAllExperiments.values();
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#getCommentManager()
 	 */
-	public eu.planets_project.tb.api.CommentManager getCommentManager() {
+	public CommentManager getCommentManagerInstance() {
 		//get Singleton: TestbedManager
-		CommentManagerImpl commentManager = eu.planets_project.tb.impl.CommentManagerImpl.getInstance();
+		CommentManagerImpl commentManager = CommentManagerImpl.getInstance();
 		return commentManager;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#getExperiment(long)
 	 */
-	public eu.planets_project.tb.api.model.Experiment getExperiment(long expID) {
+	public Experiment getExperiment(long expID) {
 		return this.hmAllExperiments.get(expID);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#createNewExperiment()
 	 */
-	public eu.planets_project.tb.api.model.Experiment createNewExperiment() {
+	public Experiment createNewExperiment() {
 		ExperimentImpl exp = new ExperimentImpl();
 	  //Should this be added in a transaction?
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
@@ -167,7 +168,7 @@ public class TestbedManagerImpl
 		try{
 			Context jndiContext = getInitialContext();
 			ExperimentPersistencyRemote dao_r = (ExperimentPersistencyRemote) PortableRemoteObject.narrow(
-					jndiContext.lookup("ExperimentPersistency/remote"), ExperimentPersistencyRemote.class);
+					jndiContext.lookup("ExperimentPersistencyImpl/remote"), ExperimentPersistencyRemote.class);
 			return dao_r;
 		}catch (NamingException e) {
 			//TODO integrate message into logging mechanism
@@ -200,6 +201,9 @@ public class TestbedManagerImpl
 	}
 	
 	/**
+	 * This private helper method is used to query the EntityManager (via the ExperimentPersistency) interface
+	 * to retrieve all Experiments in the data store and builds up the HashMap<ExpID,Experiment> which is used due
+	 * to performance reasons within this class.
 	 * @return
 	 */
 	private HashMap<Long,Experiment> queryAllExperiments(){
