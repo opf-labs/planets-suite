@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<BenachmarkGoals>
+<!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="BenchmarkGoalsSchema.xsd"-->
+	<Text>
+		<item id="nop1" name="number of pages" type="java.lang.Integer" scale="1..n" version="1.0">
+			<definition>identifies the number of pages</definition>
+			<description>Count the number of pages including the front-page</description>
+		</item>
+		<item id="nop2" name="page margings" type="java.lang.Boolean" scale="true/false" version="1.0">
+			<definition>unused space left and right of the document next to the text</definition>
+			<description>Tries to provide a subjective feeling if the page margings have changed</description>
+		</item>
+	</Text>
+	<Image>
+		<item  id="cod1" name="color depth" type="java.lang.Integer" scale="bits/pixel" version="1.0">
+			<definition>Describes the number of bits used to represent the color of a single pixe</definition>
+			<description>Test Description</description>
+		</item>
+	</Image>
+</BenachmarkGoals>

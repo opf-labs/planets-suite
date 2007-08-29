@@ -19,8 +19,8 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * @param inputObjectives
 	 * @return
 	 */
-	public void setEvaluatedExperimentObjectives(ExperimentObjectives inputObjectives);
-	public ExperimentObjectives getEvaluatedExperimentObjectives();
+	//public void setEvaluatedExperimentObjectives(ExperimentObjectives inputObjectives);
+	//public ExperimentObjectives getEvaluatedExperimentObjectives();
 	
 	public void setExperimentReport(ExperimentReport report);
 	public ExperimentReport getExperimentReport();

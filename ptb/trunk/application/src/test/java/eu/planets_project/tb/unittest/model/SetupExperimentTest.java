@@ -10,44 +10,24 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.model.benchmark.*;
+
 import junit.framework.TestCase;
 
 public class SetupExperimentTest extends TestCase{
 	
-	Context jndiContext;
-	ExperimentPersistencyRemote dao_r;
-	
 	private long expID1, expID2;
+	private TestbedManagerImpl manager;
 	
 	protected void setUp(){
-		//System.out.println("Setup: Via Remote Interface");
-		try {
-			jndiContext = getInitialContext();
-			dao_r = (ExperimentPersistencyRemote) PortableRemoteObject.narrow(
-				jndiContext.lookup("ExperimentPersistency/remote"), ExperimentPersistencyRemote.class);
-			//create two test Experiments, note their ID and persist them
-			TestbedManagerImpl manager = TestbedManagerImpl.getInstance();
-			ExperimentImpl exp1 = new ExperimentImpl();
-			expID1 = dao_r.persistExperiment(exp1);
-			ExperimentImpl find_exp1 = (ExperimentImpl)dao_r.findExperiment(expID1);
-			System.out.println("OBj: "+find_exp1);
-			System.out.println("ExpID1: "+expID1+ "find_exp1ID: "+find_exp1.getEntityID());
-			//TODO: still need to test TestbedManager
-			manager.registerExperiment(find_exp1);
-			System.out.println("Contains? "+manager.containsExperiment(expID1));
-			//create second test Experiment
-			ExperimentImpl exp2 = new ExperimentImpl();
-			expID2 = dao_r.persistExperiment(exp2);
-			ExperimentImpl find_exp2 = (ExperimentImpl)dao_r.findExperiment(expID2);
-			System.out.println("ExpID2: "+expID2+ "find_exp2ID: "+find_exp2.getEntityID());
-			manager.registerExperiment(find_exp2);
-			System.out.println("Contains? "+manager.containsExperiment(expID2));
+		manager = TestbedManagerImpl.getInstance();
+		//create two new test Experiments
+		ExperimentImpl exp1 = (ExperimentImpl)manager.createNewExperiment();
+		expID1 = exp1.getEntityID();
 			
-			
-		} catch (NamingException e) {
-			//TODO integrate message into logging mechanism
-			System.out.println("Setup: Exception in while setUp: "+e.toString());
-		}
+		ExperimentImpl exp2 = (ExperimentImpl)manager.createNewExperiment();
+		expID2 = exp2.getEntityID();	
+		
 	}
 	
 // Tests all EJB persistency related issues:
@@ -105,35 +85,7 @@ public class SetupExperimentTest extends TestCase{
 	}*/
 	
 	
-	//Tests for the underlying Entity Bean's methods setter and getters
-	public void testSetExperimentSetup(){
-		ExperimentImpl exp_find1 = (ExperimentImpl)dao_r.findExperiment(expID1);
-		//use the private helper method to setup the ExperimentSetup
-		ExperimentSetupImpl expSetup = createEnvironmentExperimentSetup(1);
-		//Test1: add ExperimentSetup
-			exp_find1.setExperimentSetup(expSetup);
-			dao_r.updateExperiment(exp_find1);
-
-			exp_find1 = (ExperimentImpl)dao_r.findExperiment(expID1);
-			System.out.println("State from ExperimentPhase persisted? "+exp_find1.getState());
-			assertNotNull(exp_find1.getExperimentSetup());
-			ExperimentSetupImpl expSetup_find1 = (ExperimentSetupImpl)exp_find1.getExperimentSetup();
-			//must also have an ID assigned through @OneToOne(cascade={CascadeType.ALL})
-			assertTrue(expSetup_find1.getEntityID()>0);
-		
-		//Test2: modify ExperimentSetup
-			exp_find1 = (ExperimentImpl)dao_r.findExperiment(expID1);
-			expSetup = createEnvironmentExperimentSetup(2);
-			exp_find1.setExperimentSetup(expSetup);
-			dao_r.updateExperiment(exp_find1);
-			
-			exp_find1 = (ExperimentImpl)dao_r.findExperiment(expID1);
-			assertNotNull(exp_find1.getExperimentSetup());
-			expSetup_find1 = (ExperimentSetupImpl)exp_find1.getExperimentSetup();
-			assertEquals("ExperimentName2", exp_find1.getExperimentSetup().getBasicProperties().getExperimentName());
-			assertTrue(expSetup_find1.getEntityID()>0);
 	
-	}
 	
 	/**
 	 * Note: The ExperimentResources Object contains an estimate on the required resources
@@ -145,22 +97,59 @@ public class SetupExperimentTest extends TestCase{
 	private ExperimentSetupImpl createEnvironmentExperimentSetup(int testnr){
 		ExperimentSetupImpl expSetup = new ExperimentSetupImpl();
 		expSetup.setState(ExperimentPhase.STATE_IN_PROGRESS);
+		//BasicProperties
 		BasicPropertiesImpl props = new BasicPropertiesImpl();
 		props.setConsiderations("considerations"+testnr);
 		props.setExperimentName("ExperimentName"+testnr);
 		expSetup.setBasicProperties(props);
 		
+		//BenchmarkObjectives
+		BenchmarkGoalsHandlerImpl handler = new BenchmarkGoalsHandlerImpl();
+		BenchmarkGoalImpl goal = (BenchmarkGoalImpl)handler.getBenchmarkGoal("nop1");
+		expSetup.addBenchmarkGoal(goal);
+		
 		return expSetup;
+	}
+	
+	//Tests for the underlying Entity Bean's methods setter and getters
+	public void testSetExperimentSetup(){
+
+		ExperimentImpl exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
+		//use the private helper method to setup the ExperimentSetup
+		ExperimentSetupImpl expSetup = createEnvironmentExperimentSetup(1);
+		//Test1: add ExperimentSetup
+			exp_find1.setExperimentSetup(expSetup);
+			manager.updateExperiment(exp_find1);
+
+			exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
+			assertNotNull(exp_find1.getExperimentSetup());
+			ExperimentSetupImpl expSetup_find1 = (ExperimentSetupImpl)exp_find1.getExperimentSetup();
+			//must also have an ID assigned through @OneToOne(cascade={CascadeType.ALL})
+			assertTrue(expSetup_find1.getEntityID()>0);
+		
+		//Test2: modify ExperimentSetup
+			exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
+			expSetup = createEnvironmentExperimentSetup(2);
+			exp_find1.setExperimentSetup(expSetup);
+			manager.updateExperiment(exp_find1);
+			
+			exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
+			assertNotNull(exp_find1.getExperimentSetup());
+			expSetup_find1 = (ExperimentSetupImpl)exp_find1.getExperimentSetup();
+			assertEquals("ExperimentName2", exp_find1.getExperimentSetup().getBasicProperties().getExperimentName());
+			assertTrue(expSetup_find1.getEntityID()>0);
+			
+			assertEquals(1,expSetup_find1.getAllAddedBenchmarkGoals().size());
+			System.out.println("Definition :"+expSetup_find1.getBenchmarkGoal("nop1").getDefinition());
+			assertEquals("nop1",expSetup_find1.getBenchmarkGoal("nop1").getID());
+			
+	
 	}
 	
 	/*private ExperimentResources createEnvironmentExperimentResources(int testnr){
 		return null;
 	}*/
 	
-	private static Context getInitialContext() throws javax.naming.NamingException
-	{
-		return new javax.naming.InitialContext();
-	}
 	
 	/*protected void tearDown(){
 		try{
