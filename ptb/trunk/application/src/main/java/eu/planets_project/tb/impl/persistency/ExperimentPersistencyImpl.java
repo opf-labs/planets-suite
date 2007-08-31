@@ -48,4 +48,13 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 		return query.getResultList();
 	}
 
+	public boolean queryIsExperimentNameUnique(String expName) {
+		Query query = manager.createQuery("SELECT sExpName FROM BasicPropertiesImpl WHERE sExpName='"+expName+"'");
+		List<String> results = query.getResultList();
+		if(results.size()==0)
+			return true;
+		
+		return false;
+	}
+
 }

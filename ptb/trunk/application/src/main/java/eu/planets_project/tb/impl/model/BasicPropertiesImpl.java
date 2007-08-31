@@ -3,6 +3,7 @@
  */
 package eu.planets_project.tb.impl.model;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,9 +16,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
 
 
 /**
@@ -37,22 +40,25 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	private long id;
 	private String sConsiderations, sContaectAddress, sContactMail, sContactName, sContactTel;
 	private String sExpName, sFocus, sIndication, sPurpose, sScope, sSpecificFocus, sSummary;
-	private String sExperimenterID;
-	
+	private String sExperimenterID, sExternalReferenceID;
+	private boolean bFormal;
 	private int iExperimentApproach;
 	
-	private Vector<String> vExpObjectTypes;
+	private Vector<String> vExpObjectTypes, vExpToolTypes;
 	private Vector<Long> vRefExpIDs;
-	private Vector<String> vInvolvedUsers;
+	private Vector<String> vExternalReferences, vInvolvedUsers;
+	private Vector<List<String>> vLiteratureReference;
 	private HashMap<Long,Vector<Integer>> hmInvolvedUserSpecialExperimentRoles;
 	
 	public BasicPropertiesImpl(){
 		
 		vRefExpIDs			= new Vector<Long>();
 		vExpObjectTypes		= new Vector<String>();
+		vExpToolTypes		= new Vector<String>();
 		vInvolvedUsers		= new Vector<String>();
+		vExternalReferences = new Vector<String>();
+		vLiteratureReference = new Vector<List<String>>();
 		hmInvolvedUserSpecialExperimentRoles = new HashMap<Long,Vector<Integer>>();
-		
 	}
 	
 	public long getId(){
@@ -108,9 +114,10 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentApproach(int)
 	 */
-	public String getExperimentApproach(int iid) {
-		// TODO Mapping of int and ExperimentApproach
-		return null;
+	public String getExperimentApproachName(int iid) {
+		ExperimentTypesImpl expTypes = new ExperimentTypesImpl();
+		return expTypes.getExperimentTypeName(iid);
+		
 	}
 
 	/* (non-Javadoc)
@@ -241,7 +248,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 */
 	public void setExperimentReference(long refID) {
 		//set always overrides existig entries - add,remove to modify
-		this.vRefExpIDs.removeAllElements();
+		this.vRefExpIDs = new Vector<Long>();
 		this.vRefExpIDs.addElement(refID);
 	}
 
@@ -250,7 +257,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentReference(eu.planets_project.tb.api.model.Experiment)
 	 */
 	public void setExperimentReference(Experiment refExp) {
-		this.vRefExpIDs.removeAllElements();
+		this.vRefExpIDs = new Vector<Long>();
 		ExperimentImpl exp = (ExperimentImpl) refExp;
 		this.vRefExpIDs.addElement(exp.getEntityID());	
 	}
@@ -260,7 +267,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentReferences(java.util.List)
 	 */
 	public void setExperimentReferences(List<Long> refIDs) {
-		this.vRefExpIDs.removeAllElements();
+		this.vRefExpIDs = new Vector<Long>();
 		Iterator<Long> itElements = refIDs.iterator();
 		while(itElements.hasNext()){
 			long lRef = itElements.next();
@@ -272,7 +279,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentReferences(eu.planets_project.tb.api.model.Experiment[])
 	 */
 	public void setExperimentReferences(Experiment[] refExps) {
-		this.vRefExpIDs.removeAllElements();
+		this.vRefExpIDs = new Vector<Long>();
 		for (int i=0;i<refExps.length;i++){
 			ExperimentImpl exp = (ExperimentImpl)refExps[i];
 			this.vRefExpIDs.addElement(exp.getEntityID());
@@ -283,7 +290,8 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#addExperimentReference(long)
 	 */
 	public void addExperimentReference(long refID) {
-		this.vRefExpIDs.addElement(refID);
+		if(!this.vRefExpIDs.contains(refID))
+			this.vRefExpIDs.addElement(refID);
 	}
 
 	/* (non-Javadoc)
@@ -300,7 +308,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		//parse input string if it is in the format String/String
 		StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
 		if (tokenizer.countTokens()==3){
-			this.vExpObjectTypes.removeAllElements();
+			this.vExpObjectTypes = new Vector<String>();
 			this.vExpObjectTypes.addElement(mimeType);
 		}
 	}
@@ -318,9 +326,9 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentedObjectTypes(java.lang.String[])
 	 */
 	public void setExperimentedObjectTypes(List<String> mimeTypes) {
-		this.vExpObjectTypes.removeAllElements();
+		this.vExpObjectTypes = new Vector<String>();
 		Iterator<String> itTypes = mimeTypes.iterator();
-		for(int i=0;i<mimeTypes.size();i++){
+		while(itTypes.hasNext()){
 			addExperimentedObjectType(itTypes.next());
 		}
 	}
@@ -517,6 +525,175 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		this.vInvolvedUsers.removeElement(userID);
 		//and also remove special roles for a given User within this experiment
 		this.hmInvolvedUserSpecialExperimentRoles.remove(userID);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#addExternalReference(java.lang.String)
+	 */
+	public void addExternalReference(String refName) {
+		if(!this.vExternalReferences.contains(refName))
+			this.vExternalReferences.add(refName);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getExternalReferences()
+	 */
+	public List<String> getExternalReferences() {
+		return this.vExternalReferences;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#isExperimentFormal()
+	 */
+	public boolean isExperimentFormal() {
+		if (this.bFormal==true)
+			return true;
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#isExperimentInformal()
+	 */
+	public boolean isExperimentInformal() {
+		if (this.bFormal==false)
+			return true;
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#removeExternalReference(java.lang.String)
+	 */
+	public void removeExternalReference(String refName) {
+		if (this.vExternalReferences.contains(refName))
+			this.vExternalReferences.remove(refName);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentFormal(boolean)
+	 */
+	public void setExperimentFormal(boolean formal) {
+		this.bFormal = formal;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#setExternalReferences(java.util.List)
+	 */
+	public void setExternalReferences(List<String> refNames) {
+		this.vExternalReferences = new Vector<String>();
+		Iterator<String> itNames = refNames.iterator();
+		while(itNames.hasNext()){
+			addExternalReference(itNames.next());
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#checkExperimentNameUnique(java.lang.String)
+	 */
+	public boolean checkExperimentNameUnique(String expName) {
+		TestbedManager tbManager = TestbedManagerImpl.getInstance();
+		return tbManager.isExperimentNameUnique(expName);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getExternalReferenceID()
+	 */
+	public String getExternalReferenceID() {
+		return this.sExternalReferenceID;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getAllLiteratureReferences()
+	 */
+	public List<List<String>> getAllLiteratureReferences() {
+		return this.vLiteratureReference;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getToolTypes()
+	 */
+	public List<String> getToolTypes() {
+		return this.vExpToolTypes;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#setExternalReferenceID(java.lang.String)
+	 */
+	public void setExternalReferenceID(String refName) {
+		this.sExternalReferenceID = refName;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#addLiteratureReference(java.lang.String, java.lang.String)
+	 */
+	public void addLiteratureReference(String title, String URI) {
+		Iterator<List<String>> itElements = this.vLiteratureReference.iterator();
+		while(itElements.hasNext()){
+			List<String> element = itElements.next();
+			int i = 0;
+			if(!element.contains(title)&&!element.contains(URI)){
+				i++;
+			}
+			if(i == this.vLiteratureReference.size()){
+				//was not found, so let's add it:
+				List<String> vAdd = new Vector<String>();
+				vAdd.add(0, title);
+				vAdd.add(1, URI);
+				this.vLiteratureReference.add(vAdd);
+			}
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#removeLiteratureReference(java.lang.String, java.lang.String)
+	 */
+	public void removeLiteratureReference(String title, String URI) {
+		Iterator<List<String>> itElements = this.vLiteratureReference.iterator();
+		while(itElements.hasNext()){
+			List<String> element = itElements.next();
+			if(element.contains(title)&&element.contains(URI)){
+				this.vLiteratureReference.remove(element);
+			}
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#setLiteratureReference(java.util.List)
+	 */
+	public void setLiteratureReference(List<String[]> references){
+		this.vLiteratureReference = new Vector<List<String>>();
+		Iterator<String[]> itRefs = references.iterator();
+		while(itRefs.hasNext()){
+			String[] lit = itRefs.next();
+			addLiteratureReference(lit[0],lit[1]);
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#setToolTypes(java.util.List)
+	 */
+	public void setToolTypes(List<String> toolTypes) {
+		this.vExpToolTypes = new Vector<String>();
+		for(int i=0;i<toolTypes.size();i++){
+			addToolType(toolTypes.get(i));
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#addToolType(java.lang.String)
+	 */
+	public void addToolType(String toolType){
+		if(!this.vExpToolTypes.contains(toolType))
+			this.vExpToolTypes.add(toolType);
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#removeToolType(java.lang.String)
+	 */
+	public void removeToolType(String toolType){
+		if(this.vExpToolTypes.contains(toolType))
+			this.vExpToolTypes.remove(toolType);
 	}
 
 }

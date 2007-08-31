@@ -14,7 +14,7 @@ import eu.planets_project.tb.impl.model.benchmark.*;
 
 import junit.framework.TestCase;
 
-public class SetupExperimentTest extends TestCase{
+public class ExperimentSetupTest extends TestCase{
 	
 	private long expID1, expID2;
 	private TestbedManagerImpl manager;
@@ -145,6 +145,12 @@ public class SetupExperimentTest extends TestCase{
 			
 	
 	}
+	
+	public void testBasicProperties(){
+		
+	}
+	
+
 	
 	/*private ExperimentResources createEnvironmentExperimentResources(int testnr){
 		return null;

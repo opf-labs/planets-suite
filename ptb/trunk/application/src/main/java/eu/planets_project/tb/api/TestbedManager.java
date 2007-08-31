@@ -21,6 +21,8 @@ public interface TestbedManager {
 	public Collection<Experiment> getAllExperimentsOfType(int iTypeID);
 	public Set<Long> getAllExperimentIDs();
 	public boolean containsExperiment(long expID);
+	public boolean isExperimentNameUnique(String sExpName);
+	
 	/**
 	 * Using this convenience method for creating a new Experiment object
 	 * @return

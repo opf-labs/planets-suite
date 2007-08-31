@@ -219,4 +219,9 @@ public class TestbedManagerImpl
 		return hmRet;
 	}
 
+	public boolean isExperimentNameUnique(String expName) {
+		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		return dao_r.queryIsExperimentNameUnique(expName);
+	}
+
 }

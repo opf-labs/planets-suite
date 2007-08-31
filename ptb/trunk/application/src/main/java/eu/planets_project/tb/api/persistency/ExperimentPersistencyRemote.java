@@ -16,5 +16,6 @@ public interface ExperimentPersistencyRemote {
 	public void deleteExperiment(long id);
 	public void deleteExperiment(Experiment experiment);
 	public List<Experiment> queryAllExperiments();
+	public boolean queryIsExperimentNameUnique(String sExpName);
 
 }

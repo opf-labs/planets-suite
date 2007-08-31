@@ -3,6 +3,8 @@ package eu.planets_project.tb.api.model;
 import java.util.List;
 import java.util.Map;
 
+import eu.planets_project.tb.api.model.finals.ExperimentTypes;
+
 /**
  * @author alindley
  *
@@ -11,7 +13,8 @@ public interface BasicProperties{
 	
 	public void setExperimentName(String sName);
 	public String getExperimentName();
-        
+	public boolean checkExperimentNameUnique(String sExpName);
+	
 	/**
 	 * Allows to specify experiments that were an influence, starting point, etc. for this current one.
 	 * @param sRefIDs experimentID
@@ -25,6 +28,11 @@ public interface BasicProperties{
 	public List<Long> getExperimentReferences();
 	public Map<Long,Experiment> getReferencedExperiments();
 	public List<Long> getReferencedExperimentIDs();
+	
+	public void setExternalReferences(List<String> sRefNames);
+	public void addExternalReference(String sRefName);
+	public void removeExternalReference(String sRefName);
+	public List<String> getExternalReferences();
 	
 	public void setSummary(String sSummary);
 	public String getSummary();
@@ -51,10 +59,13 @@ public interface BasicProperties{
 	public String getIndication();
 	
 	/**
-	 * This method characterizes the MIME-Types this experiment is all about.
-	 * @param sMimeType: format string/string is checked
+	 * The Object Type  will e.g. specify a experiment on "jpeg" images – but does not contain
+	 * any reference to the actual data which is part of the Design Experiment stage.
+	 * 
+	 * @param sMimeType: formating string/string is checked
 	 */
 	public void setExperimentedObjectType(String sMimeType);
+
 	public void setExperimentedObjectTypes(List<String> sMimeTypes);
 	public List<String> getExperimentedObjectTypes();
 	
@@ -100,13 +111,54 @@ public interface BasicProperties{
 	public int getExperimentApproach();
 	/**
 	 * Returns the corresponding name for a given ID.
-	 * 0.."migration"
-	 * 1.."emulation"
+	 * e.g. ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION 
 	 * @param iID ExperimentApproach ID.
 	 * @return "migration", "emulation" or null
 	 */
-	public String getExperimentApproach(int iID);
+	public String getExperimentApproachName(int iID);
 	
 	public void setConsiderations(String sConsid);
 	public String getConsiderations();
+	
+	/**
+	 * An experiment may either be formal or informal.  
+	 * A formal experiment is available for other users 
+	 * whereas an informal experiment will only be visible to the owner.
+	 * @param bFormal
+	 */
+	public void setExperimentFormal(boolean bFormal);
+	public boolean isExperimentFormal();
+	public boolean isExperimentInformal();
+	
+	/**
+	 * This method is used to specify an external ID for the experiments.  
+	 * Note that the Testbed will automatically generate a Testbed specific ID for each experiment 
+	 * so this method should only be used if one wishes to tie an experiment to an external reference/system. 
+	 * @param sRefName
+	 */
+	public void setExternalReferenceID(String sRefName);
+	public String getExternalReferenceID();
+	
+	/**
+	 * If the experiment references any papers, books or web pages you can add references to them here.
+	 * @param sTitle
+	 * @param URI
+	 */
+	public void addLiteratureReference(String sTitle, String URI);
+	public void removeLiteratureReference(String sTitle, String URI);
+	public void setLiteratureReference(List<String[]> references);
+	/**
+	 * @return List.get(0)=Title; List.get(1) = URI;
+	 */
+	public List<List<String>> getAllLiteratureReferences();
+	
+	/**The Tool Type will specify for example a "jpeg2pdfMigration" experiment – but does not contain
+	 * any reference to actual tools instances, which is part of the Design Experiment stage.
+	 * @param toolTypes: requires to be in the format which is accepted and known by the service registry
+	 **/
+	public void setToolTypes(List<String> toolTypes);
+	public void addToolType(String toolType);
+	public void removeToolType(String toolType);
+	public List<String> getToolTypes();
+	
 }
