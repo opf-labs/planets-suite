@@ -1,5 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
@@ -18,30 +21,75 @@
 <div id="mainwrapper">
 <div id="maincol">
 <div class="innertubemain">
-<p>&nbsp;</p>
-<div class="enav"><span style="float:left; font-size: 0.8em">&nbsp;</span><span style="float: right; font-size: 0.8em"><a class="glinks" href="#">Next &raquo;</a></span></div>	
-<div class="clear"></div>
-<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" ><tr><th>Experiment Name <img src="../../graphics/asc.png" /></th><th>Type</th><th>Start Date</th><th>Execution Date</th><th>Current Stage</th><th>Date Last Updated</th><th>Last Update Action</th><th>Experimenter Name</th><th>Institution</th><th>Input Files</th><th>Output Files</th></tr>
 
-<tr style="font-size:smaller;"><td><a href="mock-up-stage2/">Sample Experiment</a></td><td>Migration</td><td>31/03/2007</td><td>-</td><td>2: Design Experiment</td><td>04/04/2007</td><td>Current Stage Updated</td><td>Brian Aitken</td><td>HATII</td><td>-</td><td>-</td></tr>
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 2</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 3</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 4</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 5</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 6</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 7</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 8</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 9</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-<tr style="font-size:smaller;"><td><a href="#">Test experiment 10</a></td><td>Migration</td><td>31/03/2007</td><td>05/04/2007</td><td>6: Evaluate Experiment</td><td>12/04/2007</td><td>Annotation added</td><td>Brian Aitken</td><td>HATII</td><td>20</td><td>20</td></tr>
-
-</table>
-<p>&nbsp;</p>
-<div class="enav"><span style="float:left; font-size: 0.8em">&nbsp;</span><span style="float: right; font-size: 0.8em"><a class="glinks" href="#">Next &raquo;</a></span></div>	
-<div class="clear"></div>
+<h:form>
+    <t:dataTable id="data"
+                 var="exp"
+                 value="#{ListExp_Backing.experimentsOfUser}"
+                 preserveDataModel="true"
+                 rows="10"
+                 rowId="#{exp.experimentSetup.basicProperties.experimentName}"
+                 rowOnClick="alert('rowId: ' + this.id)"
+                 sortColumn="#{ListExp_Backing.sort}"
+                 sortAscending="#{ListExp_Backing.ascending}"
+                 preserveSort="true"
+                 cellpadding="2"
+                 cellspacing="0"
+                 border="1">
+        <h:column>
+            <f:facet name="header">
+                <t:commandSortHeader columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                    #{res['expList.colHeader.expName']}
+                </t:commandSortHeader>
+            </f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                #{res['expList.colHeader.type']}
+            </f:facet>		      
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.startDate']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.currentStage']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.lastUpdateAction']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.inputFiles']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>
+        <h:column>
+            <f:facet name="header">#{res['expList.colHeader.outputFiles']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        </h:column>        
+    </t:dataTable>
+</h:form>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
 </div>
 </div>
 </div>
@@ -51,7 +99,7 @@
 <h3 class="leftcol">Your Search:</h3>
 <div class="innertube">
 <form method="get" action="../"></form>
-<p class="leftcol">Viewing <b>all experiments</b>.  There are <b>236</b> experiments available in the Testbed.<br />Experiments 1 to 10 are listed on this page.</p>
+<p class="leftcol">Viewing <b>all experiments</b>.  There are <b>#{ListExp_Backing.numAllExperiments}</b> experiments available in the Testbed.<br />Experiments 1 to 10 are listed on this page.</p>
 <p class="leftcol"><input type="submit" value="Try a new search" /></p>
 </div>
  

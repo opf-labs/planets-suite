@@ -13,6 +13,7 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
+import java.util.Collection;
 
 
 public class ListExp extends SortableList {
@@ -25,6 +26,7 @@ public class ListExp extends SortableList {
 	public ListExp()
 	{
 		super("name");
+                exps = this.getExperimentsOfUser();
 
 	}
 	
@@ -51,6 +53,34 @@ public class ListExp extends SortableList {
 	  sort(getSort(), isAscending());
 	  return exps;
 	  }
+          
+          public int getNumExperimentsOfUser()
+          {
+              int num = exps.size();
+              
+              return num; 
+          }
+          
+	  public Collection getAllExperiments()
+	  {
+	  // Get all experiments 
+	  Collection<Experiment> allExps = new ArrayList<Experiment>();
+	     
+	  TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");
+	  
+	  allExps = testbedMan.getAllExperiments();
+	  
+	  return allExps;
+	  }
+          
+          public int getNumAllExperiments()
+          {
+              Collection<Experiment> allExps = this.getAllExperiments();
+              
+              int num = allExps.size();
+              
+              return num; 
+          }
 	  
 		protected void sort(final String column, final boolean ascending)
 		{

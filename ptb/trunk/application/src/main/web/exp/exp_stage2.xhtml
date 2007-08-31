@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+        #{res.title} - #{res['exp_stage2.pageTitle']}
+  </ui:define>
+
+<ui:define name="header">
+	<ui:include src="/WEB-INF/templates/header.xhtml">
+		<ui:param name="page" value="new_exp"/>
+	</ui:include>
+	<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>	
+</ui:define>
+
+  <ui:define name="content">
+<div id="mainwrapper">
+<div id="maincol">
+<div class="innertubemain">
+
+<form method="post" action="../mock-up-stage2/">
+	<fieldset>
+		<legend>Select Experiment Type</legend>
+
+		<p><select name=""><option value=""></option><option value="">Simple Migration Experiment</option><option value="">Simple Characterisation Experiment</option><option value="">Complex Workflow Experiment</option></select></p>
+		<input type="submit" value="Continue" />
+		</fieldset>
+		</form>
+		<p>Your choice of experiment type will affect the tools and data that will be made available.  You return to this page to choose a difference experiment type at any point until you submit your experiment for execution.</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+
+
+
+</div>
+</div>
+</div>
+
+
+<div id="leftcol">
+
+<h3 class="leftcol">Experiment Progress</h3>
+<div class="innertube">
+<ul class="exp">
+<li class="exp"><a href="#" class="exp_done">Define Basic Properties</a></li>
+<li class="exp_sel"><a href="#" class="exp">Design Experiment</a></li></ul>
+<ul class="sub_exp">
+<li class="exp_nd2">Specify Tools</li>
+<li class="exp_nd2">Specify Data</li>
+</ul>
+<ul class="exp">
+<li class="exp_nd">Specify Resources &amp; Outcomes</li>
+<li class="exp_nd"> Experiment Approval</li>
+<li class="exp_nd">Run Experiment</li>
+<li class="exp_nd">Evaluate Experiment</li>
+</ul>
+
+</div>
+</div>
+
+  </ui:define>
+  <ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

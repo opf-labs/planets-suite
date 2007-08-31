@@ -11,7 +11,7 @@ public interface BasicProperties{
 	
 	public void setExperimentName(String sName);
 	public String getExperimentName();
-	
+        
 	/**
 	 * Allows to specify experiments that were an influence, starting point, etc. for this current one.
 	 * @param sRefIDs experimentID

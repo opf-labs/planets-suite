@@ -21,7 +21,7 @@
 	<div id="mainwrapper">
 	<div id="maincol">
 	<div class="innertubemain">
-	<p>You have 32 experiments listed in the testbed.  Experiments 1 to 10 are listed below.</p>
+	<p>You have #{ListExp_Backing.numExperimentsOfUser} experiments listed in the testbed.  Experiments 1 to 10 are listed below.</p>
 		
 	<h:form>
      <t:dataTable id="data"
@@ -33,10 +33,13 @@
                   rowOnClick="alert('rowId: ' + this.id)"
                   sortColumn="#{ListExp_Backing.sort}"
                   sortAscending="#{ListExp_Backing.ascending}"
-                  preserveSort="true">
+                  preserveSort="true"
+                  cellpadding="2"
+                  cellspacing="0"
+                  border="1">
         <h:column>
             <f:facet name="header">
-	          <t:commandSortHeader columnName="name" arrow="true" immediate="false">
+	          <t:commandSortHeader columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
 		          #{res['expList.colHeader.expName']}
     	      </t:commandSortHeader>
     	    </f:facet>

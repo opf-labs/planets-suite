@@ -26,85 +26,91 @@
 		<legend>General Information</legend>
 		
 
-			<p><label id="">Formal / Informal Experiment:</label>
+			<p><h:outputLabel value="#{res['new_exp.expFormalInformal']}" for="eformalinformal" />
 
 	
-	<select><option>Formal</option><option>Informal</option></select> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<select><option>Formal</option><option>Informal</option></select> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFormalInformal']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 	<div class="clear"></div>
 
-				<p><label id="">Experiment ID:</label>
-	<input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+				<p><h:outputLabel value="#{res['new_exp.expID']}" for="eid" />
+	<input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipID']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+        
+        
 	<div class="clear"></div>
 	
 			<p>
 		    	<h:outputLabel value="#{res['new_exp.expName']}" for="ename" />
 	        	<h:inputText  required="true" id="ename" binding="#{CreateExp_Backing.ename}" size="50"/>
-	        	<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+	        	<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipName']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
         		<h:message for="ename" errorClass="ValidateError"/>
 			</p>
 	<div class="clear"></div>
 	
-				<p><label id="">Adapted From:</label>
+				<p><h:outputLabel value="#{res['new_exp.expAdapted']}" for="eadapted" />
 
-		<a href="#">Migration of 10 DOC files to PDFa</a> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+		<a href="#">Migration of 10 DOC files to PDFa</a> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipAdaptedFrom']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 		<div class="clear"></div>
-	<p><label id="">Ideas from:</label> <input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<p><h:outputLabel value="#{res['new_exp.expIdeas']}" for="eideas" /> <input type="textbox" size="50" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 	<div class="clear"></div>
 
-				<p><label id="">Summary:</label>
-<textarea name="q3" rows="7" cols="56" id="q3"></textarea> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;&lt;b&gt;Contextual Help&lt;/b&gt;&lt;br /&gt;These popups will contain useful information about each field.  HTML formatting can be used in them, even images may be included.&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-	<div class="clear"></div>
-	
-				<p><label id="">Contact:</label>
-<input type="textbox" size="50" value="Brian Aitken, b.aitken@hatii.arts.gla.ac.uk" /> </p>
+<p>
+<h:outputLabel value="#{res['new_exp.expSummary']}" for="esummary" />
+<h:inputTextarea rows="7" cols="55" required="false" id="esummary" binding="#{CreateExp_Backing.esummary}" />
+<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipSummary']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+</p>
+<div class="clear"></div>
+				<p>		    	<h:outputLabel value="#{res['new_exp.expContact']}" for="econtact" />
+	        	<h:inputText  required="false" id="econtact" binding="#{CreateExp_Backing.econtact}" size="50"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipContact']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 
-				<p><label id="">Purpose:</label>
-<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+				<p><h:outputLabel value="#{res['new_exp.expPurpose']}" for="epurpose" />
+<h:inputTextarea rows="7" cols="55" required="false" id="epurpose" binding="#{CreateExp_Backing.epurpose}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipPurpose']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
-				<p><label id="">Specific Focus:</label>
-<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+
+
+				<p><h:outputLabel value="#{res['new_exp.expFocus']}" for="efocus" />
+<h:inputTextarea rows="7" cols="55" required="false" id="efocus" binding="#{CreateExp_Backing.efocus}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFocus']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
-				<p><label id="">References:</label>
-<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+				<p><h:outputLabel value="#{res['new_exp.expRefs']}" for="erefs" />
+<h:inputTextarea rows="7" cols="55" required="false" id="erefs" binding="#{CreateExp_Backing.erefs}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipRefs']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
-				<p><label id="">Participants:</label>
-<select multiple="multiple" size="5"><option>Brian Aitken</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select></p>
+				<p><h:outputLabel value="#{res['new_exp.expParticipants']}" for="eparticipants" />
+<select multiple="multiple" size="5"><option>Brian Aitken</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipParticipants']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 
 </fieldset>
 <fieldset>
 <legend>Scope</legend>
-				<p><label id="">Experiment Scope:</label>
-<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+				<p><h:outputLabel value="#{res['new_exp.expScope']}" for="escope" />
+<h:inputTextarea rows="7" cols="55" required="false" id="escope" binding="#{CreateExp_Backing.escope}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipScope']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 </fieldset>
 <fieldset>
 <legend>Experimental Data</legend>
 
-				<p><label id="">Tool Type:</label>
-<select><option>Characterisation Tool</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select></p>
+				<p><h:outputLabel value="#{res['new_exp.expToolType']}" for="etooltype" />
+<select><option>Characterisation Tool</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipToolType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
-	<p><label id="">New Type:</label>
+	<p><h:outputLabel value="#{res['new_exp.expNewToolType']}" for="enewtooltype" />
 	<input type="textbox" /></p>
 <div class="clear"></div>
 	
-				<p><label id="">Object Type:</label>
-<select><option>PDF</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select></p>
+				<p><h:outputLabel value="#{res['new_exp.expObjectType']}" for="eobjecttype" />
+<select><option>PDF</option><option>Joy Davidson</option><option>Seamus Ross</option><option>Adam Rusbridge</option><option>Kellie Snow</option></select> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipObjectType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 
-	<p><label id="">New Type:</label>
+	<p><h:outputLabel value="#{res['new_exp.expNewObjectType']}" for="enewobjecttype" />
 	<input type="textbox" /></p>
 <div class="clear"></div>
 </fieldset>
 <fieldset>
 <legend>Approach &amp; Considerations</legend>
-				<p><label id="">Experiment Approach:</label>
-<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+				<p><h:outputLabel value="#{res['new_exp.expApproach']}" for="eapproach" />
+<h:inputTextarea rows="7" cols="55" required="false" id="eapproach" binding="#{CreateExp_Backing.eapproach}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipApproach']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 
-					<p><label id="">Considerations:</label>
-<textarea name="q3" rows="7" cols="58" id="q3"></textarea></p>
+					<p><h:outputLabel value="#{res['new_exp.expConsiderations']}" for="econsiderations" />
+<h:inputTextarea rows="7" cols="55" required="false" id="econsiderations" binding="#{CreateExp_Backing.econsiderations}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipConsiderations']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 </fieldset>
 		<p>
@@ -124,12 +130,12 @@
 <div class="innertube">
 <ul class="exp">
 <li class="exp_sel"><a href="#" class="exp">Define Basic Properties</a></li>
-<li class="exp_nd">Design Experiment
-	<ul class="sub_exp">
-		<li class="exp_nd2">Specify Tools</li>
-		<li class="exp_nd2">Specify Data</li>
-	</ul>
-</li>
+<li class="exp_nd">Design Experiment</li></ul>
+<ul class="sub_exp">
+<li class="exp_nd2">Specify Tools</li>
+<li class="exp_nd2">Specify Data</li>
+</ul>
+<ul class="exp">
 <li class="exp_nd">Specify Resources &amp; Outcomes</li>
 <li class="exp_nd"> Experiment Approval</li>
 <li class="exp_nd">Run Experiment</li>
