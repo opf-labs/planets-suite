@@ -35,7 +35,7 @@ public class TestbedManagerImpl
 	
 	private long lTestbedManagerID;
 	private static TestbedManagerImpl instance;
-	private HashMap<Long,eu.planets_project.tb.api.model.Experiment> hmAllExperiments;
+	private HashMap<Long,Experiment> hmAllExperiments;
 	
 	//PortableRemoteObject and Context required for EJB persistence
 	//private Context jndiContext;
@@ -187,8 +187,15 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentsOfType(int)
 	 */
 	public Collection<Experiment> getAllExperimentsOfType(int typeID) {
-		// TODO Auto-generated method stub
-		return null;
+		Vector<Experiment> vRet = new Vector<Experiment>();
+		Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
+		while(itExpIDs.hasNext()){
+			Experiment exp = this.hmAllExperiments.get(itExpIDs.next());
+			if (exp.getExperimentSetup().getExperimentTypeID()==typeID){
+				vRet.add(exp);
+			}
+		}
+		return vRet;
 	}
 
 
@@ -196,8 +203,16 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentsOfUsers(java.lang.String)
 	 */
 	public Collection<Experiment> getAllExperimentsOfUsers(String userID) {
-		// TODO Auto-generated method stub
-		return null;
+		Vector<Experiment> vRet = new Vector<Experiment>();
+		Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
+		while(itExpIDs.hasNext()){
+			Experiment exp = this.hmAllExperiments.get(itExpIDs.next());
+			List<String> involvedUsers = exp.getExperimentSetup().getBasicProperties().getInvolvedUserIds();
+			if (involvedUsers.contains(userID)){
+				vRet.add(exp);
+			}
+		}
+		return vRet;
 	}
 	
 	/**
@@ -219,9 +234,34 @@ public class TestbedManagerImpl
 		return hmRet;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#isExperimentNameUnique(java.lang.String)
+	 */
 	public boolean isExperimentNameUnique(String expName) {
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
 		return dao_r.queryIsExperimentNameUnique(expName);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#isRegistered(long)
+	 */
+	public boolean isRegistered(long expID) {
+		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		if(dao_r.findExperiment(expID)!=null)
+			return true;
+		return false;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#isRegistered(eu.planets_project.tb.api.model.Experiment)
+	 */
+	public boolean isRegistered(Experiment experiment) {
+		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		if(dao_r.findExperiment(experiment.getEntityID())!=null)
+			return true;
+		return false;
 	}
 
 }

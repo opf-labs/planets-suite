@@ -5,6 +5,7 @@ import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.api.model.ExperimentPhase;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
@@ -104,7 +105,7 @@ public class ExperimentSetupTest extends TestCase{
 		expSetup.setBasicProperties(props);
 		
 		//BenchmarkObjectives
-		BenchmarkGoalsHandlerImpl handler = new BenchmarkGoalsHandlerImpl();
+		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
 		BenchmarkGoalImpl goal = (BenchmarkGoalImpl)handler.getBenchmarkGoal("nop1");
 		expSetup.addBenchmarkGoal(goal);
 		

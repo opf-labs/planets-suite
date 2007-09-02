@@ -146,8 +146,15 @@ public abstract class ExperimentPhaseImpl implements
 	 */
 	public void setState(int state) {
 		boolean bOK = this.checkStateInput(state);
-		if(bOK)
+		if(bOK){
 			this.iState = state;
+			
+			if(this.iState == this.STATE_IN_PROGRESS)
+				this.setStartDate(new GregorianCalendar());
+			
+			if(this.iState == this.STATE_COMPLETED)
+				this.setEndDate(new GregorianCalendar());
+		}
 	}
 
 

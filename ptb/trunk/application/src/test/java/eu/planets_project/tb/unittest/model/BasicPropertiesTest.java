@@ -306,11 +306,132 @@ public class BasicPropertiesTest extends TestCase{
 		assertEquals(sSummary, props.getSummary());
 	}
 	
-	public void testExternalReferences(){
+	public void testExperimentStructureReference(){
+		BasicProperties props = new BasicPropertiesImpl();
+		TestbedManager tbmanager = TestbedManagerImpl.getInstance();
+		//Test1:
+		Experiment exp1 = tbmanager.createNewExperiment();
+		props.setExperimentStructureReferences(exp1.getEntityID());
 		
+		assertEquals(exp1,props.getExperimentStructureReference());
+		//Test2:
+		props.removeExperimentStructureReference();
+		assertEquals(null,props.getExperimentStructureReference());
+		
+		//Test3:
+		props.setExperimentStructureReferences(exp1);
+		assertEquals(exp1,props.getExperimentStructureReference());
 	}
 	
 
+	public void testExperimentFormal(){
+		BasicProperties props = new BasicPropertiesImpl();
+		boolean bFormal = true;
+		props.setExperimentFormal(bFormal);
+		
+		assertEquals(bFormal,props.isExperimentFormal());
+		assertEquals(bFormal,!props.isExperimentInformal());
+		
+		bFormal = false;
+		props.setExperimentFormal(bFormal);
+		
+		assertEquals(bFormal,props.isExperimentFormal());
+		assertEquals(bFormal,!props.isExperimentInformal());
+	}
+	
+	
+	public void testLiteratureReference(){
+		BasicProperties props = new BasicPropertiesImpl();
+
+		//Test1:
+		assertEquals(0,props.getAllLiteratureReferences().size());
+
+		//Test2:
+		String sTitle = "Digital Long Term Preservation";
+		String sURI = "ISBN: 20-323-3233";
+		props.addLiteratureReference(sTitle, sURI);
+		List<String[]> refs = props.getAllLiteratureReferences();
+
+		Iterator<String[]> itElement = refs.iterator();
+		while(itElement.hasNext()){
+			String[] element = itElement.next();
+			assertEquals(1,refs.size());
+			assertEquals(sTitle,element[0]);
+			assertEquals(sURI,element[1]);
+		}
+
+		//Test3:
+		String sTitle2 = "Digital Long Term Preservation2";
+		String sURI2 = "ISBN: 20-323-3233";
+		props.addLiteratureReference(sTitle2, sURI2);
+		//Element should have been added:
+		assertEquals(2,props.getAllLiteratureReferences().size());
+		
+		props.addLiteratureReference(sTitle2, sURI2);
+		//Duplicate element should not have been added:
+		assertEquals(2,props.getAllLiteratureReferences().size());
+
+		//Test4:
+		String sTitle3 = "Comic Book";
+		String sURI3 = "ISBN: 111111";
+		props.addLiteratureReference(sTitle3, sURI3);
+		//Element should not have been added:
+		assertEquals(3,props.getAllLiteratureReferences().size());
+		
+		props.removeLiteratureReference(sTitle,sURI);
+		assertEquals(2,props.getAllLiteratureReferences().size());
+		System.out.println("Hier4");
+		
+		//Test5:
+		String sTitle4 = "Title Website1";
+		String sURI4 = "http://localhost:8080";
+		Vector<String[]> vAdd = new Vector<String[]>();
+		vAdd.add(new String[]{sTitle4,sURI4});
+		props.setLiteratureReference(vAdd);
+		//Element should not have been added:
+		assertEquals(1,props.getAllLiteratureReferences().size());
+
+		String sTitle5 = "Title Website2";
+		String sURI5 = "http://localhost:8080/jsf";
+		vAdd.add(new String[]{sTitle5,sURI5});
+		props.setLiteratureReference(vAdd);
+		assertEquals(2,props.getAllLiteratureReferences().size());
+	}
+	
+	public void testToolTypes(){
+		BasicProperties props = new BasicPropertiesImpl();
+		
+		//Test1:
+		assertEquals(0,props.getToolTypes().size());
+		
+		//Test2:
+		//Should be: ServiceRegistry.getToolTypes();
+		props.addToolType("jpeg2pdf");
+		
+		assertEquals(1,props.getToolTypes().size());
+		assertTrue(props.getToolTypes().contains("jpeg2pdf"));
+		
+		//Test3:
+		//Should be: ServiceRegistry.getToolTypes();
+		props.addToolType("jpeg2pdf");
+		
+		//should not add duplicates
+		assertEquals(1,props.getToolTypes().size());
+		
+		//Test4:
+		Vector<String> vAdd = new Vector<String>();
+		vAdd.add("jpeg2pdf");
+		vAdd.add("jpeg2tiff");
+		props.setToolTypes(vAdd);
+		
+		assertEquals(2,props.getToolTypes().size());
+		
+		//Test5:
+		props.removeToolType("jpeg2pdf");
+		
+		assertEquals(1,props.getToolTypes().size());
+		assertTrue(!props.getToolTypes().contains("jpeg2pdf"));
+	}
 	
 	public BasicProperties getBasicPropertiesSample(){
 		//TODO impl

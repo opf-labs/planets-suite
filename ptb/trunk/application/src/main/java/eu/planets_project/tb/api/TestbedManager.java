@@ -17,11 +17,19 @@ public interface TestbedManager {
 	public Experiment getExperiment(long lExpID);
 	public void removeExperiment(long lExpID);
 	public Collection<Experiment> getAllExperiments();
+	
+	/**
+	 * Returns a collection of experiments where the provided userID is of the type "involved user"
+	 * @param sUserID
+	 * @return
+	 */
 	public Collection<Experiment> getAllExperimentsOfUsers(String sUserID);
 	public Collection<Experiment> getAllExperimentsOfType(int iTypeID);
 	public Set<Long> getAllExperimentIDs();
 	public boolean containsExperiment(long expID);
 	public boolean isExperimentNameUnique(String sExpName);
+	public boolean isRegistered(long lExpID);
+	public boolean isRegistered(Experiment experiment);
 	
 	/**
 	 * Using this convenience method for creating a new Experiment object

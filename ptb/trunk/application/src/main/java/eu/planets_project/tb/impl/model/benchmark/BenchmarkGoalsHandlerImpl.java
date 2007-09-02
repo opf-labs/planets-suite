@@ -6,6 +6,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 private Log log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");*/
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -45,15 +46,33 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	private Vector<String> vCategoryNames;
 	//HashMap<Id,BenchmarkGoal>
 	private HashMap<String,BenchmarkGoal> hmBmGoals; 
+	private static BenchmarkGoalsHandlerImpl instance;
 	
 	
-	public BenchmarkGoalsHandlerImpl(){
+	private BenchmarkGoalsHandlerImpl(){
 		//initialize Variables
 		vCategoryNames = new Vector<String>();
 		hmBmGoals = new HashMap<String,BenchmarkGoal>();
 		
 		//parse XML and build up BenchmarkObjectivesList
 		buildBenchmarkGoalsFromXML();
+	}
+	
+	public static synchronized BenchmarkGoalsHandlerImpl getInstance(){
+		if (instance == null){
+			instance = new BenchmarkGoalsHandlerImpl();
+		}
+		return instance;
+	}
+	
+	/**
+	 * @param readXML: indicates if the XML source shall be parsed and read again for changes
+	 * @return
+	 */
+	public static synchronized BenchmarkGoalsHandlerImpl getInstance(boolean readXML){
+		if (readXML)
+			instance = new BenchmarkGoalsHandlerImpl();
+		return instance;
 	}
 
 	public void buildBenchmarkGoalsFromXML(){
@@ -62,7 +81,7 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			DocumentBuilder builder = dbfactory.newDocumentBuilder();
 			Document doc = builder.parse(new File("C:/DATA/Implementation/SVN_Planets/ptb/trunk/application/src/main/resources/eu/planets_project/tb/impl/BenchmarkGoals.xml"));
 			root = doc.getDocumentElement();
-
+			
 			//read Category Names (e.g. Text, Image, etc.)
 			this.vCategoryNames = this.parseCategoryNames();
 			Iterator<String> itCategoryNames = vCategoryNames.iterator();

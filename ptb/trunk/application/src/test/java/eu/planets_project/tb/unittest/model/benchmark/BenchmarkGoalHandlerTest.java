@@ -1,14 +1,14 @@
 package eu.planets_project.tb.unittest.model.benchmark;
 
-import java.util.List;
-
+import junit.framework.TestCase;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
-public class BenchmarkGoalHandlerTester {
+public class BenchmarkGoalHandlerTest extends TestCase{
 	
-	public static void main (String[] args) {
+	/*public static void main (String[] args) {
 		BenchmarkGoalsHandlerImpl handler = new BenchmarkGoalsHandlerImpl();
 		List<BenchmarkGoal> textitems = handler.getAllBenchmarkGoals("Text");
 		for(int i=0;i<textitems.size();i++){
@@ -17,6 +17,12 @@ public class BenchmarkGoalHandlerTester {
 		BenchmarkGoalImpl goal = (BenchmarkGoalImpl)handler.getBenchmarkGoal("nop2");
 		
 		
+	}*/
+	
+	public void testBuildBenchmarkGoalsFromXML(){
+		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
+		handler.buildBenchmarkGoalsFromXML();
+		assertEquals(true,true);
 	}
 	
 

@@ -29,10 +29,10 @@ public interface BasicProperties{
 	public Map<Long,Experiment> getReferencedExperiments();
 	public List<Long> getReferencedExperimentIDs();
 	
-	public void setExternalReferences(List<String> sRefNames);
-	public void addExternalReference(String sRefName);
-	public void removeExternalReference(String sRefName);
-	public List<String> getExternalReferences();
+	public void setExperimentStructureReferences(Experiment expStructure);
+	public void setExperimentStructureReferences(long expID);
+	public void removeExperimentStructureReference();
+	public Experiment getExperimentStructureReference();
 	
 	public void setSummary(String sSummary);
 	public String getSummary();
@@ -146,11 +146,16 @@ public interface BasicProperties{
 	 */
 	public void addLiteratureReference(String sTitle, String URI);
 	public void removeLiteratureReference(String sTitle, String URI);
+
+	/**
+	 * @param references String[0]=title, String[1]=URI
+	 */
 	public void setLiteratureReference(List<String[]> references);
 	/**
-	 * @return List.get(0)=Title; List.get(1) = URI;
+	 * @return String[0]=title, String[1]=URI
 	 */
-	public List<List<String>> getAllLiteratureReferences();
+	public List<String[]> getAllLiteratureReferences();
+	//TODO: modify comment for String[] and not List
 	
 	/**The Tool Type will specify for example a "jpeg2pdfMigration" experiment – but does not contain
 	 * any reference to actual tools instances, which is part of the Design Experiment stage.
