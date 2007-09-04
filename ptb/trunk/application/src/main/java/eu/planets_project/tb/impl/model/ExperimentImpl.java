@@ -42,6 +42,10 @@ public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentP
 	private ExperimentSetupImpl expSetup;
 	
 	public ExperimentImpl(){
+		expSetup = new ExperimentSetupImpl();
+		expExecution = new ExperimentExecutionImpl();
+		expApproval = new ExperimentApprovalImpl();
+		expEvaluation = new ExperimentEvaluationImpl();
 		
 	}
 	/* (non-Javadoc)

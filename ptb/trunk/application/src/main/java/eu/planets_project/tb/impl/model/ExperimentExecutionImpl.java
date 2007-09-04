@@ -31,9 +31,9 @@ public class ExperimentExecutionImpl extends eu.planets_project.tb.impl.model.Ex
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getScheduledExecutionDate()
 	 */
-	public long getScheduledExecutionDate() {
+	public Calendar getScheduledExecutionDate() {
 		// TODO Auto-generated method stub
-		return 0;
+		return null;
 	}
 
 	/* (non-Javadoc)
@@ -66,6 +66,10 @@ public class ExperimentExecutionImpl extends eu.planets_project.tb.impl.model.Ex
 	public void setScheduledExecutionDate(long millis) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public void setScheduledExecutionDate(Calendar date){
+		// TODO Auto-generated method stub
 	}
 
 	/* (non-Javadoc)

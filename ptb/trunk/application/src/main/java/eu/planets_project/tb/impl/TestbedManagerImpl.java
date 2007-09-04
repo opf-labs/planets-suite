@@ -37,17 +37,12 @@ public class TestbedManagerImpl
 	private static TestbedManagerImpl instance;
 	private HashMap<Long,Experiment> hmAllExperiments;
 	
-	//PortableRemoteObject and Context required for EJB persistence
-	//private Context jndiContext;
-	//private ExperimentPersistencyRemote dao_r;
-	
 	
 	/**
 	 * This Class implements the Java singleton pattern and therefore the constructor should be private
 	 * However due to requirements in the front-end Bean it is set public at the moment.
 	 */
 	public TestbedManagerImpl(){
-		//hmAllExperiments = new HashMap<Long,eu.planets_project.tb.api.model.Experiment>();
 		hmAllExperiments = this.queryAllExperiments();
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
 	}
@@ -118,11 +113,17 @@ public class TestbedManagerImpl
 	{	
 	  //Should this be added in a transaction?
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
-		long lExpID = dao_r.persistExperiment(experimentBean);
-		ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
-		this.hmAllExperiments.put(exp.getEntityID(), exp);
-	    
-		return exp.getEntityID();
+		//check if really a detached entity
+		if(experimentBean.getEntityID()!=-1){
+			//it's not possible to register a previously registered experiment
+			//as the container cannot inject a valid ID
+			return -1;
+		}else{
+			long lExpID = dao_r.persistExperiment(experimentBean);
+			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
+			this.hmAllExperiments.put(exp.getEntityID(), exp);
+			return exp.getEntityID();
+		}
 	   //End Transaction
 	}
 	
@@ -190,7 +191,8 @@ public class TestbedManagerImpl
 		Vector<Experiment> vRet = new Vector<Experiment>();
 		Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
 		while(itExpIDs.hasNext()){
-			Experiment exp = this.hmAllExperiments.get(itExpIDs.next());
+			long helper = itExpIDs.next();
+			Experiment exp = this.hmAllExperiments.get(helper);
 			if (exp.getExperimentSetup().getExperimentTypeID()==typeID){
 				vRet.add(exp);
 			}
@@ -202,14 +204,24 @@ public class TestbedManagerImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentsOfUsers(java.lang.String)
 	 */
-	public Collection<Experiment> getAllExperimentsOfUsers(String userID) {
+	public Collection<Experiment> getAllExperimentsOfUsers(String userID, boolean bIsExperimenter) {
 		Vector<Experiment> vRet = new Vector<Experiment>();
 		Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
+
 		while(itExpIDs.hasNext()){
 			Experiment exp = this.hmAllExperiments.get(itExpIDs.next());
-			List<String> involvedUsers = exp.getExperimentSetup().getBasicProperties().getInvolvedUserIds();
-			if (involvedUsers.contains(userID)){
-				vRet.add(exp);
+			//if type involved user (bIsExperimenter=false) is requested
+			if(!bIsExperimenter){
+				List<String> involvedUsers = exp.getExperimentSetup().getBasicProperties().getInvolvedUserIds();
+				if (involvedUsers.contains(userID)){
+					vRet.add(exp);
+				}
+			}else{
+			//if type experimenter user (bIsExperimenter=true) is requested
+				String sExperimenterID = exp.getExperimentSetup().getBasicProperties().getExperimenter();
+				if (sExperimenterID.equals(userID)){
+					vRet.add(exp);
+				}
 			}
 		}
 		return vRet;
@@ -262,6 +274,43 @@ public class TestbedManagerImpl
 		if(dao_r.findExperiment(experiment.getEntityID())!=null)
 			return true;
 		return false;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#getNumberOfExperiments()
+	 */
+	public int getNumberOfExperiments() {
+		return this.hmAllExperiments.size();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#getNumberOfExperiments(java.lang.String, boolean)
+	 */
+	public int getNumberOfExperiments(String userID, boolean bWhereExperimenter) {
+		int iCount = 0;
+		Iterator<Long> itKeys = this.hmAllExperiments.keySet().iterator();
+		while(itKeys.hasNext()){
+			Experiment exp = this.hmAllExperiments.get(itKeys.next());
+			
+			//a)check bWhereExperimenter=true=Experimenter
+			if(bWhereExperimenter){
+				if(exp.getExperimentSetup().getBasicProperties().
+						getExperimenter().equals(userID)){
+					iCount++;
+				}
+			}
+			//b)check bWhereExperimenter=true=Experimenter
+			else{
+				if(exp.getExperimentSetup().getBasicProperties().
+						getInvolvedUserIds().contains(userID)){
+					iCount++;
+				}
+			}
+		}
+		
+		return iCount;
 	}
 
 }

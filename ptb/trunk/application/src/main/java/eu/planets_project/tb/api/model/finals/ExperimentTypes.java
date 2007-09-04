@@ -9,7 +9,7 @@ public interface ExperimentTypes {
 
 	public static final int EXPERIMENT_TYPE_SIMPLECHARACTERISATION = 1;
 
-	public static final int EXPERIMENT_TYPE_MIGRATIONWORKFLOW = 2;
+	public static final int EXPERIMENT_TYPE_COMPLEXWORKFLOW = 2;
 
 	public static final int EXPERIMENT_TYPE_EMULATION = 3;
 

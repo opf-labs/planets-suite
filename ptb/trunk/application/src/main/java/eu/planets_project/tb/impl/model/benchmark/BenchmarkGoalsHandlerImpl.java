@@ -82,6 +82,14 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			Document doc = builder.parse(new File("C:/DATA/Implementation/SVN_Planets/ptb/trunk/application/src/main/resources/eu/planets_project/tb/impl/BenchmarkGoals.xml"));
 			root = doc.getDocumentElement();
 			
+			//DELETE
+			File f_test = new File("BenchmarkGoals.xml");
+			System.out.println("Can read? "+f_test.canRead());
+			System.out.println("abs path "+f_test.getAbsolutePath());
+			System.out.println("can path "+f_test.getCanonicalPath());
+			
+			//END DELETE
+			
 			//read Category Names (e.g. Text, Image, etc.)
 			this.vCategoryNames = this.parseCategoryNames();
 			Iterator<String> itCategoryNames = vCategoryNames.iterator();

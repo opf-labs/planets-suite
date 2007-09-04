@@ -35,6 +35,7 @@ public abstract class ExperimentPhaseImpl implements
 	boolean bSuccess;
 	
 	public ExperimentPhaseImpl(){
+		this.lEntityID = -1;
 		this.startDate = new GregorianCalendar();
 		this.iState = this.STATE_NOT_STARTED;
 		this.iResult = this.RESULT_NOT_AVAILABLE;

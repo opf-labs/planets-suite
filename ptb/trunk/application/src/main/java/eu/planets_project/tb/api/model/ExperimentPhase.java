@@ -22,7 +22,13 @@ public interface ExperimentPhase {
 	public static final int RESULT_FAILURE		 = 2;
 	public static final int RESULT_REJECTED		 = 3;
 	
-	public abstract long getEntityID();
+	/**
+	 * Using the EJB persistence mechanism to store an Entity, the EntityID is injected by
+	 * the container. If an Entity (e.g. Experiment, ExperimentSetup, etc.) is not managed
+	 * by the container it returns ID -1;
+	 * @return -1 of not managed by the container;
+	 */
+	public long getEntityID();
 	
 	public void setStartDate(Calendar startDate);
 	public long getStartDateInMillis();
@@ -39,14 +45,12 @@ public interface ExperimentPhase {
 	public long getDurationInMillis();
 	
 	/**
-	 * Possible states:
-	 * -1..not started; 0..in progress; 1..completed
+	 * Possible states: see final int of this class
 	 * @param iState
 	 */
 	public void setState(int iState);
 	/**
-	 * Possible states the phase's progress can be in:
-	 * -1..not started; 0..in progress; 1..completed
+	 * Possible states the phase's progress can be in: see final int of this class
 	 * return iState
 	 */
 	public int getState();

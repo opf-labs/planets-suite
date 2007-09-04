@@ -11,6 +11,10 @@ import eu.planets_project.tb.api.model.finals.ExperimentTypes;
  */
 public interface BasicProperties{
 	
+	/**
+	 * It's only allowed to set a unique experimentName
+	 * @param sName
+	 */
 	public void setExperimentName(String sName);
 	public String getExperimentName();
 	public boolean checkExperimentNameUnique(String sExpName);
@@ -155,7 +159,7 @@ public interface BasicProperties{
 	 * @return String[0]=title, String[1]=URI
 	 */
 	public List<String[]> getAllLiteratureReferences();
-	//TODO: modify comment for String[] and not List
+
 	
 	/**The Tool Type will specify for example a "jpeg2pdfMigration" experiment – but does not contain
 	 * any reference to actual tools instances, which is part of the Design Experiment stage.

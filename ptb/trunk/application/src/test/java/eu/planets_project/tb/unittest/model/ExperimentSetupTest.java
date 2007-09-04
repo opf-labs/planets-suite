@@ -1,10 +1,15 @@
 package eu.planets_project.tb.unittest.model;
 
+import java.util.GregorianCalendar;
+
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.ExperimentPhase;
+import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
@@ -12,13 +17,14 @@ import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.*;
+import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 
 import junit.framework.TestCase;
 
 public class ExperimentSetupTest extends TestCase{
 	
 	private long expID1, expID2;
-	private TestbedManagerImpl manager;
+	private TestbedManager manager;
 	
 	protected void setUp(){
 		manager = TestbedManagerImpl.getInstance();
@@ -149,6 +155,14 @@ public class ExperimentSetupTest extends TestCase{
 	
 	public void testBasicProperties(){
 		
+	}
+	
+	public ExperimentSetup getExperimentSetupSample(){
+		//TODO: add a samle experimentSetup
+		ExperimentSetup test_setup = new ExperimentSetupImpl();
+		test_setup.setStartDate(new GregorianCalendar());
+		test_setup.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION);
+		return test_setup;
 	}
 	
 

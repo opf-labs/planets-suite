@@ -49,12 +49,8 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	
 	public BasicPropertiesImpl(){
 		
-		vRefExpIDs			= new Vector<Long>();
-		vExpObjectTypes		= new Vector<String>();
-		vExpToolTypes		= new Vector<String>();
-		vInvolvedUsers		= new Vector<String>();
-		hmLiteratureReference = new HashMap<String,Vector<String>>();
-		hmInvolvedUserSpecialExperimentRoles = new HashMap<Long,Vector<Integer>>();
+		initialiseVariables();
+		
 	}
 	
 	public long getId(){
@@ -235,7 +231,9 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentName(java.lang.String)
 	 */
 	public void setExperimentName(String name) {
-		this.sExpName = name;
+		//it's only allowed to set a unique experimentName
+		if(this.checkExperimentNameUnique(name))
+			this.sExpName = name;
 	}
 
 	/* (non-Javadoc)
@@ -687,6 +685,33 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		TestbedManager tbmanager = TestbedManagerImpl.getInstance();
 		if(tbmanager.isRegistered(expID))
 			this.lExperimentStructureReference = expID;
+	}
+	
+	private void initialiseVariables(){
+		vRefExpIDs			= new Vector<Long>();
+		vExpObjectTypes		= new Vector<String>();
+		vExpToolTypes		= new Vector<String>();
+		vInvolvedUsers		= new Vector<String>();
+		hmLiteratureReference = new HashMap<String,Vector<String>>();
+		hmInvolvedUserSpecialExperimentRoles = new HashMap<Long,Vector<Integer>>();
+		
+		sConsiderations = new String();
+		sContaectAddress= new String();
+		sContactMail	= new String();
+		sContactName	= new String();
+		sContactTel		= new String();
+		sExpName		= new String();
+		sFocus			= new String();
+		sIndication		= new String(); 
+		sPurpose		= new String(); 
+		sScope			= new String(); 
+		sSpecificFocus	= new String();
+		sSummary		= new String();
+		sExperimenterID = new String();
+		sExternalReferenceID = new String();
+		bFormal			= new Boolean(false);
+		iExperimentApproach	 = new Integer(-1);
+		lExperimentStructureReference = new Long(-1);
 	}
 
 }

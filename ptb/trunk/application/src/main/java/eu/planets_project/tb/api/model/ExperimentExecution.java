@@ -1,6 +1,8 @@
 package eu.planets_project.tb.api.model;
 
 
+import java.util.Calendar;
+
 import eu.planets_project.tb.api.services.mockups.WorkflowExecution;
 import eu.planets_project.tb.api.system.SystemMonitoring;
 
@@ -11,7 +13,8 @@ import eu.planets_project.tb.api.system.SystemMonitoring;
 public interface ExperimentExecution extends ExperimentPhase{
 	
 	public void setScheduledExecutionDate(long millis);
-	public long getScheduledExecutionDate();
+	public void setScheduledExecutionDate(Calendar date);
+	public Calendar getScheduledExecutionDate();
 	
 	/**
 	 * @param systemState

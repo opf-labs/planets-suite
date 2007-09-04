@@ -65,9 +65,9 @@ public class BasicPropertiesTest extends TestCase{
 		props.setExperimentApproach(ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION);
 		assertEquals(ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION, props.getExperimentApproach());
 	
-		int iType = ExperimentTypes.EXPERIMENT_TYPE_MIGRATIONWORKFLOW;
+		int iType = ExperimentTypes.EXPERIMENT_TYPE_COMPLEXWORKFLOW;
 		props.setExperimentApproach(iType);
-		assertEquals("EXPERIMENT_TYPE_MIGRATIONWORKFLOW", props.getExperimentApproachName(iType));
+		assertEquals("EXPERIMENT_TYPE_COMPLEXWORKFLOW", props.getExperimentApproachName(iType));
 	}
 	
 	
@@ -380,7 +380,6 @@ public class BasicPropertiesTest extends TestCase{
 		
 		props.removeLiteratureReference(sTitle,sURI);
 		assertEquals(2,props.getAllLiteratureReferences().size());
-		System.out.println("Hier4");
 		
 		//Test5:
 		String sTitle4 = "Title Website1";
