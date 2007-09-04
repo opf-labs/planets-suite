@@ -3,15 +3,8 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.util.GregorianCalendar;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 
 import eu.planets_project.tb.api.model.ExperimentApproval;
@@ -19,24 +12,28 @@ import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentPhaseImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 
+
 /**
  * @author alindley
  *
  */
 @Entity
-public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentPhaseImpl
-						implements eu.planets_project.tb.api.model.Experiment,
-									java.io.Serializable{
+public class ExperimentImpl extends ExperimentPhaseImpl
+		implements Experiment, java.io.Serializable{
 	
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
+	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentEvaluationImpl expEvaluation;
+	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentApprovalImpl expApproval;
+	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentExecutionImpl expExecution;
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentSetupImpl expSetup;
@@ -46,6 +43,8 @@ public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentP
 		expExecution = new ExperimentExecutionImpl();
 		expApproval = new ExperimentApprovalImpl();
 		expEvaluation = new ExperimentEvaluationImpl();
+		
+		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
 		
 	}
 	/* (non-Javadoc)
@@ -108,15 +107,16 @@ public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentP
 	 * @see eu.planets_project.tb.api.model.Experiment#getCurrentPhase()
 	 */
 	public ExperimentPhase getCurrentPhase() {
+		
 		ExperimentPhase ret = null;
 		if(this.expSetup.getState() == ExperimentPhase.STATE_IN_PROGRESS)
 			if(checkAllOtherStagesCompleted(0))
 				ret = this.expSetup;
-		
+			
 		if(this.expApproval.getState() == ExperimentPhase.STATE_IN_PROGRESS)
 			if(checkAllOtherStagesCompleted(1))
 				ret = this.expApproval;
-		
+
 		if(this.expExecution.getState() == ExperimentPhase.STATE_IN_PROGRESS)
 			if(checkAllOtherStagesCompleted(2))
 				ret = this.expExecution;
@@ -124,6 +124,31 @@ public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentP
 		if(this.expEvaluation.getState() == ExperimentPhase.STATE_IN_PROGRESS)
 			if(checkAllOtherStagesCompleted(3))
 				ret = this.expEvaluation;
+		
+		return ret;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#getCurrentPhasePointer()
+	 */
+	public int getCurrentPhasePointer() {
+		int ret = Experiment.STAGE_NOSTAGE;
+		if(this.expSetup.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+			if(checkAllOtherStagesCompleted(0))
+				ret = Experiment.STAGE_EXPERIMENTSETUP;
+			
+		if(this.expApproval.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+			if(checkAllOtherStagesCompleted(1))
+				ret = Experiment.STAGE_EXPERIMENTAPPROVAL;
+
+		if(this.expExecution.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+			if(checkAllOtherStagesCompleted(2))
+				ret = Experiment.STAGE_EXPERIMENTEXECUTION;
+		
+		if(this.expEvaluation.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+			if(checkAllOtherStagesCompleted(3))
+				ret = Experiment.STAGE_EXPERIMENTEVALUATION;
 		
 		return ret;
 	}
@@ -163,5 +188,6 @@ public class ExperimentImpl extends eu.planets_project.tb.impl.model.ExperimentP
 		
 		return bRet;
 	}
+
 
 }

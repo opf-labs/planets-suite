@@ -15,11 +15,11 @@ import javax.persistence.OneToOne;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
+import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
-import eu.planets_project.tb.impl.services.mockups.ComplexWorkflowImpl;
+import eu.planets_project.tb.impl.services.mockups.WorkflowImpl;
 
 /**
  * @author alindley
@@ -41,9 +41,10 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	//the structure: HashMap<BenchmarkGoal.getXMLID,BenchmarkGoal>();
 	private HashMap<String,BenchmarkGoal> hmBenchmarkGoals;
 	
-	//@OneToOne(cascade={CascadeType.ALL})
+	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentResourcesImpl experimentResources;
-	private ComplexWorkflowImpl complexWorkflow;
+	@OneToOne(cascade={CascadeType.ALL})
+	private WorkflowImpl workflow;
 	private int iExperimentTypeID;
 	private String sExperimentTypeName;
 	
@@ -51,9 +52,11 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	public ExperimentSetupImpl(){
 		basicProperties = new BasicPropertiesImpl();
 		bBenchmarkGoalListFinal = false;
-		hmBenchmarkGoals = new HashMap();
+		hmBenchmarkGoals = new HashMap<String,BenchmarkGoal>();
 		experimentResources = new ExperimentResourcesImpl();
-		complexWorkflow = new ComplexWorkflowImpl();
+		workflow = new WorkflowImpl();
+		
+		setStageMarker(STAGE_EXPERIMENTSETUP);
 	}
 	
 
@@ -76,8 +79,8 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getExperimentWorkflow()
 	 */
-	public ComplexWorkflow getExperimentWorkflow() {
-		return this.complexWorkflow;
+	public Workflow getExperimentWorkflow() {
+		return this.workflow;
 	}
 
 	/* (non-Javadoc)
@@ -91,7 +94,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setBasicProperties(eu.planets_project.tb.api.model.BasicProperties)
 	 */
 	public void setBasicProperties(BasicProperties props) {
-		this.basicProperties = (BasicPropertiesImpl) props;
+		this.basicProperties = (BasicPropertiesImpl)props;
 	}
 
 	/* (non-Javadoc)
@@ -109,8 +112,8 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setWorkflow(eu.planets_project.tb.api.services.mockups.ComplexWorkflow)
 	 */
-	public void setWorkflow(ComplexWorkflow workflow) {
-		this.complexWorkflow = (ComplexWorkflowImpl) workflow;
+	public void setWorkflow(Workflow workflow) {
+		this.workflow = (WorkflowImpl)workflow;
 	}
 
 

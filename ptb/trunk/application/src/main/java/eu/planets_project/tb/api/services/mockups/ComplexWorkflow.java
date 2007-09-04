@@ -2,9 +2,12 @@
 
 package eu.planets_project.tb.api.services.mockups;
 
+import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
+
 
 /**
  * @author alindley
+ * @deprecated
  * "Predefined workflows" or "Complex workflows" are workflows coming from the IF Workflow Designer (or
  * any other BPEL compliant tool) and already contain the actual service orchestration, the
  * configuration of services as well as the selection and chaining of data. All this information can
@@ -59,6 +62,6 @@ public interface ComplexWorkflow {
 	/**
 	 * @return BPEL for this ExperimentWorkflow
 	 */
-	public BPELWorkflowHandler generateBPEL();
+	public WorkflowHandler generateBPEL();
 
 }

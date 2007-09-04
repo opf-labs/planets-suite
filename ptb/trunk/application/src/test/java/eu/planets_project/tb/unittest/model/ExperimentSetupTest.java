@@ -8,16 +8,21 @@ import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.*;
+import eu.planets_project.tb.impl.model.mockup.ServiceImpl;
+import eu.planets_project.tb.impl.services.mockups.WorkflowImpl;
 import eu.planets_project.tb.api.model.finals.ExperimentTypes;
+import eu.planets_project.tb.api.model.mockups.Workflow;
 
 import junit.framework.TestCase;
 
@@ -37,69 +42,26 @@ public class ExperimentSetupTest extends TestCase{
 		
 	}
 	
-// Tests all EJB persistency related issues:
 	
-	/*public void testEJBEntityCreated(){
-		assertNotNull(dao_r.findExperiment(this.expID1));
+	public void testWorkflow(){
+		Experiment exp_test = manager.getExperiment(this.expID1);
+		ExperimentSetup expSetup = new ExperimentSetupImpl();
+		Workflow workflow = new WorkflowImpl();
+		Service service1 = new ServiceImpl();
+		service1.setServiceName("TestService1");
+		workflow.addService(0, service1);
+		expSetup.setWorkflow(workflow);
+		exp_test.setExperimentSetup(expSetup);
+		
+		manager.updateExperiment(exp_test);
+		
+		Experiment exp_find = manager.getExperiment(exp_test.getEntityID());
+		assertEquals("TestService1",exp_find.getExperimentSetup().
+				getExperimentWorkflow().getService(0).getServiceName());
+		assertEquals(1,exp_find.getExperimentSetup().getExperimentWorkflow().
+				getServices().size());
 	}
 	
-	public void testEJBEntityDeleted(){
-		dao_r.deleteExperiment(this.expID1);
-		dao_r.deleteExperiment(dao_r.findExperiment(expID2));
-		Experiment c1,c2;
-		try{
-			c1 = dao_r.findExperiment(expID1);
-			c2 = dao_r.findExperiment(expID2);
-			
-		}catch(Exception e){
-			c1 = null;
-			c2 = null;
-		}
-		assertNull(c1);
-		assertNull(c2);	
-	}*/
-	
-	/*public void testEJBEntityUpdated(){
-		Experiment test_find1 =  dao_r.findExperiment(expID1);
-		//modify the bean
-		long l1 = 1;
-		test_find1.setTitle("Title1");
-		test_find1.setExperimentID(l1);
-		dao_r.updateComment(test_find1);
-		//Test1: updating existing entity
-		test_find1 =  dao_r.findComment(commentID1);
-		assertEquals("Title1",test_find1.getTile());	
-	}*/
-	
-	/*public void testEJBEntityMerged(){
-		Comment test_find1 =  dao_r.findComment(commentID1);
-		//modify the bean
-		long l1 = 12;
-		test_find1.setTitle("Title1");
-		test_find1.setExperimentID(l1);
-		dao_r.updateComment(test_find1);
-		//Test1: updating existing entity
-		assertEquals("Title1",test_find1.getTile());
-		
-		//Test2: checking if merging entity works
-		test_find1 =  dao_r.findComment(commentID1);
-		test_find1.setTitle("TitleUpdated");
-		dao_r.updateComment(test_find1);
-		
-		test_find1 =  dao_r.findComment(commentID1);
-		assertEquals(l1,test_find1.getExperimentID());	
-		assertEquals("TitleUpdated",test_find1.getTile());	
-	}*/
-	
-	
-	
-	
-	/**
-	 * Note: The ExperimentResources Object contains an estimate on the required resources
-	 */
-	/*public void testExperimentResources(){
-		
-	}*/
 	
 	private ExperimentSetupImpl createEnvironmentExperimentSetup(int testnr){
 		ExperimentSetupImpl expSetup = new ExperimentSetupImpl();
@@ -172,15 +134,13 @@ public class ExperimentSetupTest extends TestCase{
 	}*/
 	
 	
-	/*protected void tearDown(){
+	protected void tearDown(){
 		try{
-			dao_r.deleteExperiment(this.expID1);
-			dao_r.deleteExperiment(this.expID2);
+			manager.removeExperiment(this.expID1);
+			manager.removeExperiment(this.expID2);
 		}
 		catch(Exception e){
-			//TODO Integrate with Logging Framework
-			System.out.println("TearDown: Exception while tearDown: "+e.toString());
-			}
-	}*/
+		}
+	}
 
 }

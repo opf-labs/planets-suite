@@ -1,4 +1,4 @@
-package eu.planets_project.tb.test.model;
+/*package eu.planets_project.tb.test.model;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -30,14 +30,14 @@ public class SetupBasicPropertiesBean implements SetupBasicPropertiesRemote{
 	public void deleteProperties(BasicPropertiesImpl props) {
 		BasicPropertiesImpl t_helper = manager.find(BasicPropertiesImpl.class, props.getId());
 		manager.remove(t_helper);
-	}
+	}*/
 
 	/* (non-Javadoc)
 	 * Note: The Object must be the one that is already persisted
 	 * @see eu.planets_project.tb.test.model.SetupBasicPropertiesRemote#updateProperties(eu.planets_project.tb.impl.model.BasicProperties)
 	 */
-	public void updateProperties(BasicPropertiesImpl props) {
+	/*public void updateProperties(BasicPropertiesImpl props) {
 		manager.merge(props);
 	}
 	
-}
+}*/

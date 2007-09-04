@@ -5,21 +5,26 @@ package eu.planets_project.tb.impl.model;
 
 import java.util.Calendar;
 
+import javax.persistence.Entity;
+
 import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.ExperimentResults;
-import eu.planets_project.tb.api.services.mockups.WorkflowExecution;
 import eu.planets_project.tb.api.system.SystemMonitoring;
 
 /**
  * @author alindley
  *
  */
-//@Entity
-public class ExperimentExecutionImpl extends eu.planets_project.tb.impl.model.ExperimentPhaseImpl
+@Entity
+public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	implements ExperimentExecution, java.io.Serializable {
 
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	
+	public ExperimentExecutionImpl(){
+		
+		setStageMarker(STAGE_EXPERIMENTEXECUTION);
+	}
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExperimentResults()
 	 */
@@ -47,10 +52,10 @@ public class ExperimentExecutionImpl extends eu.planets_project.tb.impl.model.Ex
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getWorkflowExecutionData()
 	 */
-	public WorkflowExecution getWorkflowExecutionData() {
+	/*public WorkflowExecution getWorkflowExecutionData() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#setExperimentResults(eu.planets_project.tb.api.model.ExperimentResults)
@@ -83,9 +88,9 @@ public class ExperimentExecutionImpl extends eu.planets_project.tb.impl.model.Ex
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#setWorkflowExecutionData(eu.planets_project.tb.api.services.mockups.WorkflowExecution)
 	 */
-	public void setWorkflowExecutionData(WorkflowExecution wee_Information) {
+	/*public void setWorkflowExecutionData(WorkflowExecution wee_Information) {
 		// TODO Auto-generated method stub
 
-	}
+	}*/
 
 }

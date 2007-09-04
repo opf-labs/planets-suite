@@ -22,6 +22,12 @@ public interface ExperimentPhase {
 	public static final int RESULT_FAILURE		 = 2;
 	public static final int RESULT_REJECTED		 = 3;
 	
+	public static final int STAGE_NOSTAGE		       = -1;
+	public static final int STAGE_EXPERIMENTSETUP 	   = 0;
+	public static final int STAGE_EXPERIMENTAPPROVAL   = 1;
+	public static final int STAGE_EXPERIMENTEXECUTION  = 2;
+	public static final int STAGE_EXPERIMENTEVALUATION = 3;
+	
 	/**
 	 * Using the EJB persistence mechanism to store an Entity, the EntityID is injected by
 	 * the container. If an Entity (e.g. Experiment, ExperimentSetup, etc.) is not managed
@@ -37,6 +43,15 @@ public interface ExperimentPhase {
 	public void setEndDate(Calendar endDate);
 	public long getEndDateInMillis();
 	public Calendar getEndDate();
+	
+	/**
+	 * @return int stage: as defined within the finals starting with "STAGE_"
+	 */
+	public int getStageMarker();
+	/**
+	 * @param stage: as defined within the finals starting with "STAGE_"
+	 */
+	//public void setStageMarker(int stage);
 	
 	/**
 	 * Returns the Duration of the Phase between start and completion in millis

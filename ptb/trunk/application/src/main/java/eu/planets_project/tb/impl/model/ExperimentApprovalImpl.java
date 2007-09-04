@@ -12,14 +12,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import eu.planets_project.tb.api.model.ExperimentApproval;
+
 
 /**
  * @author alindley
  *
  */
-//@Entity
-public class ExperimentApprovalImpl extends eu.planets_project.tb.impl.model.ExperimentPhaseImpl
-implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializable {
+@Entity
+public class ExperimentApprovalImpl extends ExperimentPhaseImpl
+implements ExperimentApproval, java.io.Serializable {
 
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	private Vector<Integer> vReqRoles;
@@ -33,6 +35,8 @@ implements eu.planets_project.tb.api.model.ExperimentApproval, java.io.Serializa
 		vReqRoles = new Vector<Integer>();
 		vApprovalUsers = new Vector<String>();
 		bGo = false;
+		
+		setStageMarker(STAGE_EXPERIMENTAPPROVAL);
 	}
 
 	/* (non-Javadoc)

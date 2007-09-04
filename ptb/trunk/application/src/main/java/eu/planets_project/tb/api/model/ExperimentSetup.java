@@ -3,6 +3,7 @@ package eu.planets_project.tb.api.model;
 import java.util.List;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
 
 /**
@@ -70,8 +71,8 @@ public interface ExperimentSetup extends ExperimentPhase{
 	 * Sets the experiment's workflow (= services, data, configuration) 
 	 * @param workflow
 	 */
-	public void setWorkflow(ComplexWorkflow workflow);
-	public ComplexWorkflow getExperimentWorkflow();
+	public void setWorkflow(Workflow workflow);
+	public Workflow getExperimentWorkflow();
 	
 
 	//Step 3: specify resources

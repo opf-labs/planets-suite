@@ -13,6 +13,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
 
 import eu.planets_project.tb.api.data.DataRegistryBinding;
+import eu.planets_project.tb.api.model.ExperimentPhase;
 
 /**
  * @author alindley
@@ -33,12 +34,31 @@ public abstract class ExperimentPhaseImpl implements
 	private Calendar endDate, startDate;
 	private int iState, iResult;
 	boolean bSuccess;
+	int iStageMarker;
 	
 	public ExperimentPhaseImpl(){
 		this.lEntityID = -1;
 		this.startDate = new GregorianCalendar();
-		this.iState = this.STATE_NOT_STARTED;
-		this.iResult = this.RESULT_NOT_AVAILABLE;
+		this.iState = ExperimentPhase.STATE_NOT_STARTED;
+		this.iResult = ExperimentPhase.RESULT_NOT_AVAILABLE;
+		this.iStageMarker = -1;
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getStageMarker()
+	 */
+	public int getStageMarker(){
+		return this.iStageMarker;
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setStageMarker(int)
+	 */
+	protected void setStageMarker(int stage){
+		if(stage>=ExperimentPhase.STAGE_NOSTAGE&&stage<=ExperimentPhase.STAGE_EXPERIMENTEVALUATION)
+			this.iStageMarker = stage;
 	}
 	
 	/* (non-Javadoc)

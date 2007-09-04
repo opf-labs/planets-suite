@@ -3,7 +3,6 @@ package eu.planets_project.tb.api.model;
 
 import java.util.Calendar;
 
-import eu.planets_project.tb.api.services.mockups.WorkflowExecution;
 import eu.planets_project.tb.api.system.SystemMonitoring;
 
 /**
@@ -11,6 +10,8 @@ import eu.planets_project.tb.api.system.SystemMonitoring;
  * The interface for Experiment Execution covers step 5 of the Testbed workflow
  */
 public interface ExperimentExecution extends ExperimentPhase{
+	
+	//TODO: check if experimentExecution Phase has correct properties
 	
 	public void setScheduledExecutionDate(long millis);
 	public void setScheduledExecutionDate(Calendar date);
@@ -30,8 +31,9 @@ public interface ExperimentExecution extends ExperimentPhase{
 	/**
 	 * @param wee_Information
 	 */
-	public void setWorkflowExecutionData(WorkflowExecution wee_Information);
-	public WorkflowExecution getWorkflowExecutionData();
+	//TODO Schauen 
+	/*public void setWorkflowExecutionData(WorkflowExecution wee_Information);
+	public WorkflowExecution getWorkflowExecutionData();*/
 	
 	//Unclear in which form "experiment results" are packed and from where to retrieve them
 	//possibly from the WEE context

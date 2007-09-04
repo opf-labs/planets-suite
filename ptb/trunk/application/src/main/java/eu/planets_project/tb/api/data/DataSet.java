@@ -2,7 +2,8 @@ package eu.planets_project.tb.api.data;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author alindley
@@ -45,21 +46,21 @@ public interface DataSet{
 	
 	public void addDirectory(String sPath);
 	
-	public String[] getAddedDataSourceNames();
+	public List<String> getAddedDataSourceNames();
 	/**
-	 * @return Hashtable<Integer id, String sName>
+	 * @return HashMap<Integer id, String sName>
 	 */
-	public Hashtable<Integer,String> getAddedDataSourceNamesWithIDs();
+	public Map<Integer,String> getAddedDataSourceNamesWithIDs();
 	
 	/**
-	 * @return Hashtable<Integer id, String sName>
+	 * @return HashMap<Integer id, String sName>
 	 */
-	public Hashtable<Integer,String> getAddedDataSourceIDswithNames();
+	public Map<Integer,String> getAddedDataSourceIDswithNames();
 	
 	/**
-	 * @return Hashtable<Integer id, File fFile>
+	 * @return HashMap<Integer id, File fFile>
 	 */
-	public Hashtable<Integer,File> getAddedDataSources();
+	public Map<Integer,File> getAddedDataSources();
 	
 	/**
 	 * The sourceID is unique within a DataSet object

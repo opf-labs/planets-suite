@@ -52,14 +52,6 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		initialiseVariables();
 		
 	}
-	
-	public long getId(){
-		return this.id;
-	}
-	
-	private void setId(long id){
-		this.id=id;
-	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getConsiderations()
