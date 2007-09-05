@@ -1,9 +1,10 @@
 package eu.planets_project.tb.gui.backing;
 
 
+import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
+import java.util.List;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlInputTextarea;
-import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.gui.UserBean;
@@ -14,18 +15,19 @@ import eu.planets_project.tb.impl.model.*;
 
 public class CreateExp {
     
-	private boolean formality;
+	private boolean formality = true;
     private HtmlInputText ename;
     private HtmlInputTextarea esummary;
-    private HtmlInputText econtact;
+    private HtmlInputText econtactname;
+    private HtmlInputText econtactemail;
+    private HtmlInputText econtacttel;
+    private HtmlInputTextarea econtactaddress;
     private HtmlInputTextarea epurpose;
     private HtmlInputTextarea efocus;
     private HtmlInputTextarea erefs;
     private HtmlInputTextarea escope;
     private HtmlInputTextarea eapproach;
     private HtmlInputTextarea econsiderations;
-    
-    
     
     public CreateExp() {
     }
@@ -53,11 +55,17 @@ public class CreateExp {
         props.setExperimentName(ename.getValue().toString());
         // set current User as experimenter
         props.setExperimenter(currentUser.getUserid());
+        
+        //set the experiment information
         props.setSummary(esummary.getValue().toString());
         props.setConsiderations(econsiderations.getValue().toString());
         props.setPurpose(epurpose.getValue().toString());
-        props.setSpecificFocus(efocus.getValue().toString());
+        props.setFocus(efocus.getValue().toString());
         props.setScope(escope.getValue().toString());
+        props.setContact(econtactname.getValue().toString(),econtactemail.getValue().toString(),econtacttel.getValue().toString(),econtactaddress.getValue().toString());
+        
+        
+         props.setExperimentFormal(this.getFormality());
         
         ExperimentSetup expSetup = new ExperimentSetupImpl();
         expSetup.setBasicProperties(props);
@@ -98,12 +106,36 @@ public class CreateExp {
         return esummary;
     }
     
-    public HtmlInputText getEcontact() {
-        return econtact;
+    public HtmlInputText getEcontactname() {
+        return econtactname;
     }
     
-    public void setEcontact(HtmlInputText econtact) {
-        this.econtact = econtact;
+    public void setEcontactname(HtmlInputText econtactname) {
+        this.econtactname = econtactname;
+    }
+    
+    public HtmlInputText getEcontactemail() {
+        return econtactemail;
+    }
+    
+    public void setEcontactemail(HtmlInputText econtactemail) {
+        this.econtactemail = econtactemail;
+    }
+    
+    public HtmlInputText getEcontacttel() {
+        return econtacttel;
+    }
+    
+    public void setEcontacttel(HtmlInputText econtacttel) {
+        this.econtacttel = econtacttel;
+    }
+    
+    public HtmlInputTextarea getEcontactaddress() {
+        return econtactaddress;
+    }
+    
+    public void setEcontactaddress(HtmlInputTextarea econtactaddress) {
+        this.econtactaddress = econtactaddress;
     }
     
     public HtmlInputTextarea getEpurpose() {
@@ -153,10 +185,12 @@ public class CreateExp {
     public void setEconsiderations(HtmlInputTextarea econsiderations) {
         this.econsiderations = econsiderations;
     }
+
+       public List<String> getExperimentTypes() {
+        ExperimentTypesImpl types = new ExperimentTypesImpl();    
+        
+        List<String> passtypes = types.getAlLAvailableExperimentTypesNames();
     
-    
-    
-    
-    
-    
+        return passtypes;
+    }
 }

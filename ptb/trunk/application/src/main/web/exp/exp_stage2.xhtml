@@ -21,14 +21,17 @@
 <div id="maincol">
 <div class="innertubemain">
 
-<form method="post" action="../mock-up-stage2/">
-	<fieldset>
-		<legend>Select Experiment Type</legend>
-
-		<p><select name=""><option value=""></option><option value="">Simple Migration Experiment</option><option value="">Simple Characterisation Experiment</option><option value="">Complex Workflow Experiment</option></select></p>
-		<input type="submit" value="Continue" />
-		</fieldset>
-		</form>
+                <h:form>
+                    <fieldset>
+                        <legend>Select Experiment Type</legend>
+                        
+                        <p><h:selectOneMenu><f:selectItems value="#{CreateExp_Backing.experimentTypes}" /></h:selectOneMenu></select></p>
+                    </fieldset>
+                    		<p>
+            <h:commandButton value="#{res['new_exp.saveStage2']}" 
+            action="#{CreateExp_Backing.CreateExpAction2}"/>		
+		</p>
+                </h:form>
 		<p>Your choice of experiment type will affect the tools and data that will be made available.  You return to this page to choose a difference experiment type at any point until you submit your experiment for execution.</p>
 		<p>&#160;</p>
 		<p>&#160;</p>
