@@ -25,7 +25,7 @@
 <h:form>
     <t:dataTable id="data"
                  var="exp"
-                 value="#{ListExp_Backing.experimentsOfUser}"
+                 value="#{ListExp_Backing.allExperiments}"
                  preserveDataModel="true"
                  rows="10"
                  rowId="#{exp.experimentSetup.basicProperties.experimentName}"
@@ -45,39 +45,41 @@
             <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
         </h:column>
         <h:column>
-            <f:facet name="header">
-                #{res['expList.colHeader.type']}
-            </f:facet>		      
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+	        <f:facet name="header">
+	          <t:commandSortHeader columnName="type" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	    	      #{res['expList.colHeader.type']}
+				</t:commandSortHeader>
+			</f:facet>		      
+            <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
         </h:column>
         <h:column>
             <f:facet name="header">#{res['expList.colHeader.startDate']}</f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+            <h:outputText value="#{exp.startDate.time}" />
         </h:column>
         <h:column>
             <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+            <h:outputText value="#{exp.experimentExecution.scheduledExecutionDate.time}" />
         </h:column>
         <h:column>
             <f:facet name="header">#{res['expList.colHeader.currentStage']}</f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+            <h:outputText value="#{exp.currentPhasePointer}" />
         </h:column>
         <h:column>
             <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+            <h:outputText value="" />
         </h:column>
         <h:column>
-            <f:facet name="header">#{res['expList.colHeader.lastUpdateAction']}</f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+            <f:facet name="header">#{res['expList.colHeader.inputOutputFiles']}</f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentedObjectTypes}" />
         </h:column>
         <h:column>
-            <f:facet name="header">#{res['expList.colHeader.inputFiles']}</f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+            <f:facet name="header">
+                <t:commandSortHeader columnName="experimenter" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                    #{res['expList.colHeader.experimenterName']}
+                </t:commandSortHeader>
+            </f:facet>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimenter}" />
         </h:column>
-        <h:column>
-            <f:facet name="header">#{res['expList.colHeader.outputFiles']}</f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-        </h:column>        
     </t:dataTable>
 </h:form>
     <p>&#160;</p>

@@ -53,20 +53,26 @@
 
 <h3 class="leftcol">Experiment Progress</h3>
 <div class="innertube">
+<h:form>
 <ul class="exp">
-<li class="exp"><a href="#" class="exp_done">Define Basic Properties</a></li>
-<li class="exp_sel"><a href="#" class="exp">Design Experiment</a></li></ul>
+	<li class="exp">
+		<h:commandLink action="new_experiment" styleClass="exp">
+			<h:outputText value="#{res['new_exp.stage1']}"/>
+		</h:commandLink>
+	</li>
+	<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage2']}</a></li>
+</ul>
 <ul class="sub_exp">
-<li class="exp_nd2">Specify Tools</li>
-<li class="exp_nd2">Specify Data</li>
+	<li class="exp_nd2"> #{res['new_exp.stage2a']}</li>
+	<li class="exp_nd2"> #{res['new_exp.stage2b']}</li>
 </ul>
 <ul class="exp">
-<li class="exp_nd">Specify Resources &amp; Outcomes</li>
-<li class="exp_nd"> Experiment Approval</li>
-<li class="exp_nd">Run Experiment</li>
-<li class="exp_nd">Evaluate Experiment</li>
+	<li class="exp_nd"> #{res['new_exp.stage3']}</li>
+	<li class="exp_nd"> #{res['new_exp.stage4']}</li>
+	<li class="exp_nd"> #{res['new_exp.stage5']}</li>
+	<li class="exp_nd"> #{res['new_exp.stage6']}</li>
 </ul>
-
+</h:form>
 </div>
 </div>
 

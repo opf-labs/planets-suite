@@ -1,5 +1,6 @@
 package eu.planets_project.tb.gui.backing;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -18,7 +19,9 @@ import java.util.Collection;
 
 public class ListExp extends SortableList {
 
-	private List<Experiment> exps = new ArrayList<Experiment>();
+	private Collection<Experiment> myExps = new ArrayList<Experiment>();
+	private Collection<Experiment> allExps = new ArrayList<Experiment>();
+	private List<Experiment> currExps;
 	private String column = "name";
 	private boolean ascending = true;
 	//private UIData data = null;
@@ -26,68 +29,60 @@ public class ListExp extends SortableList {
 	public ListExp()
 	{
 		super("name");
-                exps = this.getExperimentsOfUser();
+        myExps = this.getExperimentsOfUser();
+        allExps = this.getAllExperiments();
 
 	}
 	
-	  public List getExperimentsOfUser()
+	  public Collection<Experiment> getExperimentsOfUser()
 	  {
-	  // Get all experiments created/owned by the current user  
-	  // get user id from MB facility
-	  // get UserBean - grab userid   
-	  List<Experiment> usersExpList = new ArrayList<Experiment>();
-	  UserBean managedUserBean = (UserBean)JSFUtil.getManagedObject("UserBean");  
-	     
-	  String userid = managedUserBean.getUserid();
-	     
-	  TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");
-	  
-	  Iterator<Experiment> iter = testbedMan.getAllExperiments().iterator();
-	  
-	  while (iter.hasNext()) {
-		  Experiment exp = iter.next();
-		  if (userid.equals(exp.getExperimentSetup().getBasicProperties().getExperimenter()))
-			  usersExpList.add(exp);
-	  }
-	  exps = usersExpList;	
-	  sort(getSort(), isAscending());
-	  return exps;
+		  // Get all experiments created/owned by the current user  
+		  // get user id from MB facility
+		  // get UserBean - grab userid   
+		  /*List<Experiment> usersExpList = new ArrayList<Experiment>();*/
+		  UserBean managedUserBean = (UserBean)JSFUtil.getManagedObject("UserBean");    
+		  String userid = managedUserBean.getUserid();	     
+		  TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");		  
+		  /*Iterator<Experiment> iter = testbedMan.getAllExperiments().iterator();		  
+		  while (iter.hasNext()) {
+			  Experiment exp = iter.next();
+			  if (userid.equals(exp.getExperimentSetup().getBasicProperties().getExperimenter()))
+				  usersExpList.add(exp);
+		  }
+		  myExps = usersExpList; */
+		  myExps = testbedMan.getAllExperimentsOfUsers(userid, true);
+		  currExps = Collections.list(Collections.enumeration(myExps));
+		  sort(getSort(), isAscending());
+		  return currExps;
 	  }
           
-          public int getNumExperimentsOfUser()
-          {
-              int num = exps.size();
-              
-              return num; 
-          }
+      public int getNumExperimentsOfUser()
+      {
+          int num = myExps.size();              
+          return num; 
+      }
           
-	  public Collection getAllExperiments()
-	  {
-	  // Get all experiments 
-	  Collection<Experiment> allExps = new ArrayList<Experiment>();
-	     
-	  TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");
-	  
-	  allExps = testbedMan.getAllExperiments();
-	  
-	  return allExps;
+	  public Collection<Experiment> getAllExperiments()
+	  {    
+		  TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+		  allExps = testbedMan.getAllExperiments();
+		  currExps = Collections.list(Collections.enumeration(allExps));
+		  sort(getSort(), isAscending());
+		  return currExps;
 	  }
           
-          public int getNumAllExperiments()
-          {
-              Collection<Experiment> allExps = this.getAllExperiments();
-              
-              int num = allExps.size();
-              
-              return num; 
-          }
+      public int getNumAllExperiments()
+      {
+          int num = allExps.size();              
+          return num; 
+      }
 	  
 		protected void sort(final String column, final boolean ascending)
 		{
 			this.column = column;
 			this.ascending = ascending;
 			Comparator<Object> comparator = new MyComparator();
-			Collections.sort(exps, comparator);
+			Collections.sort(currExps, comparator);
 		}
 
 		protected boolean isDefaultAscending(String sortColumn)
@@ -109,7 +104,20 @@ public class ListExp extends SortableList {
 				{
 					return ascending ? c1.getExperimentSetup().getBasicProperties().getExperimentName().compareTo(c2.getExperimentSetup().getBasicProperties().getExperimentName()) : c2.getExperimentSetup().getBasicProperties().getExperimentName()
 									.compareTo(c1.getExperimentSetup().getBasicProperties().getExperimentName());
-				}					
+				}
+				if (column.equals("type"))
+				{
+					String c1_type = c1.getExperimentSetup().getExperimentTypeName();
+					String c2_type = c2.getExperimentSetup().getExperimentTypeName();
+					if (c1_type==null) c1_type="";
+					if (c2_type==null) c2_type="";
+					return ascending ? c1_type.compareTo(c2_type) : c2_type.compareTo(c1_type);
+				}	
+				if (column.equals("experimenter"))
+				{
+					return ascending ? c1.getExperimentSetup().getBasicProperties().getExperimenter().compareTo(c2.getExperimentSetup().getBasicProperties().getExperimenter()) : c2.getExperimentSetup().getBasicProperties().getExperimenter()
+									.compareTo(c1.getExperimentSetup().getBasicProperties().getExperimenter());
+				}
 				else
 					return 0;
 			}			

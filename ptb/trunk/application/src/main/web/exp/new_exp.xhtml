@@ -6,7 +6,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
-        #{res.title} - #{res['new_exp.pageTitle']} #{res['new_exp.stage1']}
+        #{res.title} - #{res['new_exp.pageTitle']} - #{res['new_exp.stage1']}
   </ui:define>
 
 <ui:define name="header">
@@ -24,12 +24,13 @@
 <h:form>
 	<fieldset>
 		<legend>General Information</legend>
-		
 
-			<p><h:outputLabel value="#{res['new_exp.expFormalInformal']}" for="eformalinformal" />
-
-	
-	<select><option>Formal</option><option>Informal</option></select> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFormalInformal']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<p>
+		<h:outputLabel value="#{res['new_exp.expFormalInformal']}" for="formality" />
+	 	<h:selectBooleanCheckbox title="formality" id="formality" value="#{CreateExp_Backing.formality}">
+		</h:selectBooleanCheckbox>
+		<img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFormalInformal']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+	</p>
 	<div class="clear"></div>
 
 				<p><h:outputLabel value="#{res['new_exp.expID']}" for="eid" />
@@ -57,6 +58,7 @@
 <h:outputLabel value="#{res['new_exp.expSummary']}" for="esummary" />
 <h:inputTextarea rows="7" cols="55" required="false" id="esummary" binding="#{CreateExp_Backing.esummary}" />
 <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipSummary']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+<h:message for="esummary" errorClass="ValidateError"/>
 </p>
 <div class="clear"></div>
 				<p>		    	<h:outputLabel value="#{res['new_exp.expContact']}" for="econtact" />
@@ -129,19 +131,18 @@
 <h3 class="leftcol">Experiment Progress</h3>
 <div class="innertube">
 <ul class="exp">
-<li class="exp_sel"><a href="#" class="exp">Define Basic Properties</a></li>
-<li class="exp_nd">Design Experiment</li></ul>
+	<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage1']}</a></li>
+	<li class="exp_nd">#{res['new_exp.stage2']}</li></ul>
 <ul class="sub_exp">
-<li class="exp_nd2">Specify Tools</li>
-<li class="exp_nd2">Specify Data</li>
+	<li class="exp_nd2"> #{res['new_exp.stage2a']}</li>
+	<li class="exp_nd2"> #{res['new_exp.stage2b']}</li>
 </ul>
 <ul class="exp">
-<li class="exp_nd">Specify Resources &amp; Outcomes</li>
-<li class="exp_nd"> Experiment Approval</li>
-<li class="exp_nd">Run Experiment</li>
-<li class="exp_nd">Evaluate Experiment</li>
+	<li class="exp_nd"> #{res['new_exp.stage3']}</li>
+	<li class="exp_nd"> #{res['new_exp.stage4']}</li>
+	<li class="exp_nd"> #{res['new_exp.stage5']}</li>
+	<li class="exp_nd"> #{res['new_exp.stage6']}</li>
 </ul>
-
 </div>
 </div>
 

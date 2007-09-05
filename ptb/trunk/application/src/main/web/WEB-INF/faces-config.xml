@@ -32,7 +32,7 @@
   <managed-bean>
     <managed-bean-name>CreateExp_Backing</managed-bean-name>
     <managed-bean-class>eu.planets_project.tb.gui.backing.CreateExp</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
+    <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
   <managed-bean>

@@ -3,6 +3,7 @@ package eu.planets_project.tb.gui.backing;
 
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlInputTextarea;
+import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.gui.UserBean;
@@ -13,6 +14,7 @@ import eu.planets_project.tb.impl.model.*;
 
 public class CreateExp {
     
+	private boolean formality;
     private HtmlInputText ename;
     private HtmlInputTextarea esummary;
     private HtmlInputText econtact;
@@ -27,6 +29,18 @@ public class CreateExp {
     
     public CreateExp() {
     }
+    
+ /*   public void clean() {
+    	ename=null;
+    	esummary=null;
+    	econtact=null;
+    	epurpose=null;
+    	efocus=null;
+    	erefs=null;
+    	escope=null;
+    	eapproach=null;
+    	econsiderations=null;
+    }*/
     
     public String CreateExpAction(){
         
@@ -48,16 +62,26 @@ public class CreateExp {
         ExperimentSetup expSetup = new ExperimentSetupImpl();
         expSetup.setBasicProperties(props);
         newExp.setExperimentSetup(expSetup);
-        
-        
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         testbedMan.registerExperiment(newExp);
-        
+        // Workaround
+        // update in cached lists
+        ListExp listExp_Backing = (ListExp)JSFUtil.getManagedObject("ListExp_Backing");
+        listExp_Backing.getExperimentsOfUser();
+        listExp_Backing.getAllExperiments();
         
         return "success";
     }
     
     
+    public void setFormality(boolean formality) {
+        this.formality = formality;
+    }
+    
+    public boolean getFormality() {
+        return formality;
+    }
+
     public void setEname(HtmlInputText ename) {
         this.ename = ename;
     }
