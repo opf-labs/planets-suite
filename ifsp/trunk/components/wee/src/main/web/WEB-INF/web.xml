@@ -22,11 +22,11 @@
         <filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>
         <init-param>
             <param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
-            <param-value>https://localhost:8443/pssos/login</param-value>
+            <param-value>https://localhost:8443/security/login</param-value>
         </init-param>
         <init-param>
             <param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
-            <param-value>https://localhost:8443/pssos/serviceValidate</param-value>
+            <param-value>https://localhost:8443/security/serviceValidate</param-value>
         </init-param>
         <init-param>
             <param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>
