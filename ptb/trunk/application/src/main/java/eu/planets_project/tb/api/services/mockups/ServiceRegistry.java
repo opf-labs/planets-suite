@@ -14,7 +14,7 @@ public interface ServiceRegistry {
 	 * tool and object types, e.g. specify a ‘jpeg2pdfMigration’ experiment on ‘jpeg’ images – no
 	 * reference to actual tools or data that is part of the Design Experiment stage (stage 2).
 	 * */
-	public List<String> getAllAvailableToolTypes(String s);
+	//public List<String> getAllAvailableToolTypes(String s);
 	
 	
 

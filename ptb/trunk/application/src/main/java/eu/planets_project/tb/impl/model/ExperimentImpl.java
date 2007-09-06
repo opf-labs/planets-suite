@@ -133,22 +133,22 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.Experiment#getCurrentPhasePointer()
 	 */
 	public int getCurrentPhasePointer() {
-		int ret = Experiment.STAGE_NOSTAGE;
+		int ret = Experiment.PHASE_NOPHASE;
 		if(this.expSetup.getState() == ExperimentPhase.STATE_IN_PROGRESS)
 			if(checkAllOtherStagesCompleted(0))
-				ret = Experiment.STAGE_EXPERIMENTSETUP;
+				ret = Experiment.PHASE_EXPERIMENTSETUP;
 			
 		if(this.expApproval.getState() == ExperimentPhase.STATE_IN_PROGRESS)
 			if(checkAllOtherStagesCompleted(1))
-				ret = Experiment.STAGE_EXPERIMENTAPPROVAL;
+				ret = Experiment.PHASE_EXPERIMENTAPPROVAL;
 
 		if(this.expExecution.getState() == ExperimentPhase.STATE_IN_PROGRESS)
 			if(checkAllOtherStagesCompleted(2))
-				ret = Experiment.STAGE_EXPERIMENTEXECUTION;
+				ret = Experiment.PHASE_EXPERIMENTEXECUTION;
 		
 		if(this.expEvaluation.getState() == ExperimentPhase.STATE_IN_PROGRESS)
 			if(checkAllOtherStagesCompleted(3))
-				ret = Experiment.STAGE_EXPERIMENTEVALUATION;
+				ret = Experiment.PHASE_EXPERIMENTEVALUATION;
 		
 		return ret;
 	}

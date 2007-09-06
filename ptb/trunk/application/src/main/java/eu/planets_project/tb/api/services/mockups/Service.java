@@ -6,8 +6,11 @@ import java.util.Map;
 
 public interface Service {
 	
-	public void setEndpoint(String sURI);
-	public String getEndpoint();
+	public void setEndpointAddress(String sURI);
+	public String getEndpointAddress();
+	
+	public void setEndpointID(String sName);
+	public String getEndpointID();
 	
 	public void setWSDL(String sWSDL);
 	public void setWSDL(File fileWSDL);
@@ -34,5 +37,8 @@ public interface Service {
 	
 	public void setServiceName(String sName);
 	public String getServiceName();
+	
+	public void setAuthorName(String sName);
+	public String getAuthorName();
 
 }

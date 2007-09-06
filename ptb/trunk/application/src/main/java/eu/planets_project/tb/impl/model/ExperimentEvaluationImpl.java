@@ -29,7 +29,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	public ExperimentEvaluationImpl(){
 		//this.inputObjectives = inputObjectives;
 		
-		setStageMarker(STAGE_EXPERIMENTEVALUATION);
+		setPhasePointer(PHASE_EXPERIMENTEVALUATION);
 	}
 	
 	

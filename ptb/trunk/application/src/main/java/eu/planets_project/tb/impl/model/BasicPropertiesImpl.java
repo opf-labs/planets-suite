@@ -324,7 +324,13 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimenter(long)
 	 */
 	public void setExperimenter(String userID) {
+		//delte old Experimenter from involvedUsers
+		this.removeInvolvedUser(this.sExperimenterID);
+		//Experimenter automatically also is a InvolvedUser
+		this.addInvolvedUser(userID);
+		
 		this.sExperimenterID = userID;
+		
 	}
 	
 	/* (non-Javadoc)

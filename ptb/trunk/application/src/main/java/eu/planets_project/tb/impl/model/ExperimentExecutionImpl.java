@@ -23,7 +23,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	
 	public ExperimentExecutionImpl(){
 		
-		setStageMarker(STAGE_EXPERIMENTEXECUTION);
+		setPhasePointer(PHASE_EXPERIMENTEXECUTION);
 	}
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExperimentResults()

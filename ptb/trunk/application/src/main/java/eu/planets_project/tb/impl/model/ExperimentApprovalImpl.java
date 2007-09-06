@@ -36,7 +36,7 @@ implements ExperimentApproval, java.io.Serializable {
 		vApprovalUsers = new Vector<String>();
 		bGo = false;
 		
-		setStageMarker(STAGE_EXPERIMENTAPPROVAL);
+		setPhasePointer(PHASE_EXPERIMENTAPPROVAL);
 	}
 
 	/* (non-Javadoc)

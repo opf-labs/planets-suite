@@ -1,6 +1,9 @@
 package eu.planets_project.tb.unittest.model;
 
 import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -19,10 +22,12 @@ import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.*;
-import eu.planets_project.tb.impl.model.mockup.ServiceImpl;
-import eu.planets_project.tb.impl.services.mockups.WorkflowImpl;
+import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
+import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
+import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
 import eu.planets_project.tb.api.model.finals.ExperimentTypes;
-import eu.planets_project.tb.api.model.mockups.Workflow;
+import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
+import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 
 import junit.framework.TestCase;
 
@@ -43,23 +48,31 @@ public class ExperimentSetupTest extends TestCase{
 	}
 	
 	
-	public void testWorkflow(){
-		Experiment exp_test = manager.getExperiment(this.expID1);
-		ExperimentSetup expSetup = new ExperimentSetupImpl();
-		Workflow workflow = new WorkflowImpl();
-		Service service1 = new ServiceImpl();
-		service1.setServiceName("TestService1");
-		workflow.addService(0, service1);
-		expSetup.setWorkflow(workflow);
-		exp_test.setExperimentSetup(expSetup);
-		
-		manager.updateExperiment(exp_test);
-		
-		Experiment exp_find = manager.getExperiment(exp_test.getEntityID());
-		assertEquals("TestService1",exp_find.getExperimentSetup().
-				getExperimentWorkflow().getService(0).getServiceName());
-		assertEquals(1,exp_find.getExperimentSetup().getExperimentWorkflow().
-				getServices().size());
+	public void testExperimentWorkflow(){
+			Experiment exp_test = manager.getExperiment(this.expID1);
+			ExperimentSetup expSetup = new ExperimentSetupImpl();
+
+			WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
+			Vector<Long> vTemplateIDs = (Vector<Long>)wfhandler.getAllWorkflowIDs();
+			//Build an ExperimentWorkflow with the first given Workflow
+			if(vTemplateIDs.size()>0){
+				//use template to build a workflow instance
+				ExperimentWorkflow expWorkflow1 = wfhandler.getExperimentWorkflow(vTemplateIDs.firstElement());
+				assertNotNull(expWorkflow1);
+				
+				//Test2: Does it contain a Workflow
+				assertNotNull(expWorkflow1.getWorkflowTemplate());
+				
+				//Test3: Does the workflow at least contain one service
+				assertTrue(expWorkflow1.getWorkflowTemplate().getWorkflowServices().size()>0);
+				
+				//Test4: Does Service contain an Endpoint
+				assertNotNull(expWorkflow1.getWorkflowTemplate().getWorkflowService(0).getEndpointAddress());
+				
+			}else{
+				//Testcase cannot be completed without any Workflow in the DB
+				assertTrue(false);
+			}
 	}
 	
 	

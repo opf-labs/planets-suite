@@ -34,31 +34,45 @@ public abstract class ExperimentPhaseImpl implements
 	private Calendar endDate, startDate;
 	private int iState, iResult;
 	boolean bSuccess;
-	int iStageMarker;
+	int iStagePointer;
 	
 	public ExperimentPhaseImpl(){
 		this.lEntityID = -1;
 		this.startDate = new GregorianCalendar();
 		this.iState = ExperimentPhase.STATE_NOT_STARTED;
 		this.iResult = ExperimentPhase.RESULT_NOT_AVAILABLE;
-		this.iStageMarker = -1;
+		this.iStagePointer = -1;
 	}
 	
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#getStageMarker()
 	 */
-	public int getStageMarker(){
-		return this.iStageMarker;
+	public int getPhasePointer(){
+		return this.iStagePointer;
+	}
+	
+	public String getPhaseName(){
+		if(this.iStagePointer == PHASE_EXPERIMENTSETUP)
+			return PHASENAME_EXPERIMENTSETUP;
+		if(this.iStagePointer == PHASE_EXPERIMENTAPPROVAL)
+			return PHASENAME_EXPERIMENTAPPROVAL;
+		if(this.iStagePointer == PHASE_EXPERIMENTEXECUTION)
+			return PHASENAME_EXPERIMENTEXECUTION;
+		if(this.iStagePointer == PHASE_EXPERIMENTEVALUATION)
+			return PHASENAME_EXPERIMENTEVALUATION;
+
+		//else (should never be reached)
+		return PHASENAME_NOPHASE;
 	}
 	
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setStageMarker(int)
 	 */
-	protected void setStageMarker(int stage){
-		if(stage>=ExperimentPhase.STAGE_NOSTAGE&&stage<=ExperimentPhase.STAGE_EXPERIMENTEVALUATION)
-			this.iStageMarker = stage;
+	protected void setPhasePointer(int stage){
+		if(stage>=ExperimentPhase.PHASE_NOPHASE&&stage<=ExperimentPhase.PHASE_EXPERIMENTEVALUATION)
+			this.iStagePointer = stage;
 	}
 	
 	/* (non-Javadoc)

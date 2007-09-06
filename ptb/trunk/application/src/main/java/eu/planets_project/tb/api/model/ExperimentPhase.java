@@ -22,11 +22,17 @@ public interface ExperimentPhase {
 	public static final int RESULT_FAILURE		 = 2;
 	public static final int RESULT_REJECTED		 = 3;
 	
-	public static final int STAGE_NOSTAGE		       = -1;
-	public static final int STAGE_EXPERIMENTSETUP 	   = 0;
-	public static final int STAGE_EXPERIMENTAPPROVAL   = 1;
-	public static final int STAGE_EXPERIMENTEXECUTION  = 2;
-	public static final int STAGE_EXPERIMENTEVALUATION = 3;
+	public static final int PHASE_NOPHASE		       = -1;
+	public static final int PHASE_EXPERIMENTSETUP 	   = 0;
+	public static final int PHASE_EXPERIMENTAPPROVAL   = 1;
+	public static final int PHASE_EXPERIMENTEXECUTION  = 2;
+	public static final int PHASE_EXPERIMENTEVALUATION = 3;
+	
+	public final String PHASENAME_NOPHASE			  = "No Phase";
+	public final String PHASENAME_EXPERIMENTSETUP	  = "Experiment Setup";
+	public final String PHASENAME_EXPERIMENTAPPROVAL  = "Experiment Approval";
+	public final String PHASENAME_EXPERIMENTEXECUTION = "Experiment Execution";
+	public final String PHASENAME_EXPERIMENTEVALUATION= "Experiment Evaluation";
 	
 	/**
 	 * Using the EJB persistence mechanism to store an Entity, the EntityID is injected by
@@ -47,11 +53,11 @@ public interface ExperimentPhase {
 	/**
 	 * @return int stage: as defined within the finals starting with "STAGE_"
 	 */
-	public int getStageMarker();
+	public int getPhasePointer();
 	/**
 	 * @param stage: as defined within the finals starting with "STAGE_"
 	 */
-	//public void setStageMarker(int stage);
+	public String getPhaseName();
 	
 	/**
 	 * Returns the Duration of the Phase between start and completion in millis

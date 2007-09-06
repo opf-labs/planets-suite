@@ -1,6 +1,8 @@
 package eu.planets_project.tb.api.model.mockups;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -9,5 +11,11 @@ import java.util.List;
  */
 public interface WorkflowHandler {
 	
-	public List<Workflow> getAvailableWorkflows();
+	public Collection<Workflow> getAllWorkflows();
+	public List<Long> getAllWorkflowIDs();
+	public Map<Long,String> getAllWorkflowIDAndNames();
+	public List<String> getAllWorkflowNames();
+	
+	public ExperimentWorkflow getExperimentWorkflow(long lWorkflowEntityID);
+
 }

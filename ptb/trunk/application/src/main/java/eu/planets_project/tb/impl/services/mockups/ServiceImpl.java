@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.tb.impl.model.mockup;
+package eu.planets_project.tb.impl.services.mockups;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -28,16 +28,16 @@ public class ServiceImpl implements Service, java.io.Serializable {
 
 	//@Id
 	//@GeneratedValue
-	//private long id;
+	private long id;
 	private Vector<String> vInputMimeTypes;
 	private Vector<String> vOutputMimeTypes;
-	private String sDescription, sEndpoint, sName, sWSDL;
+	private String sDescription, sEndpointAddress, sName, sWSDL, sAuthor, sEndpointID;
 	
 	public ServiceImpl(){
 		vInputMimeTypes = new Vector<String>();
 		vOutputMimeTypes = new Vector<String>();
 		sDescription = new String();
-		sEndpoint = new String();
+		sEndpointAddress = new String();
 		sName = new String();
 		sWSDL = new String();
 	}
@@ -72,8 +72,8 @@ public class ServiceImpl implements Service, java.io.Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.services.mockups.Service#getEndpoint()
 	 */
-	public String getEndpoint() {
-		return this.sEndpoint;
+	public String getEndpointAddress() {
+		return this.sEndpointAddress;
 	}
 
 	/* (non-Javadoc)
@@ -116,8 +116,8 @@ public class ServiceImpl implements Service, java.io.Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.services.mockups.Service#setEndpoint(java.lang.String)
 	 */
-	public void setEndpoint(String sURI) {
-		this.sEndpoint = sURI;
+	public void setEndpointAddress(String sURI) {
+		this.sEndpointAddress = sURI;
 	}
 
 	/* (non-Javadoc)
@@ -194,6 +194,22 @@ public class ServiceImpl implements Service, java.io.Serializable {
 		for(int i=0;i<mimeTypes.size();i++){
 			this.addOutputMIMEType(mimeTypes.get(i));
 		}
+	}
+
+	public String getAuthorName() {
+		return this.sAuthor;
+	}
+
+	public String getEndpointID() {
+		return this.sEndpointID;
+	}
+
+	public void setAuthorName(String name) {
+		this.sAuthor = name;
+	}
+
+	public void setEndpointID(String name) {
+		this.sEndpointID = name;
 	}
 
 }
