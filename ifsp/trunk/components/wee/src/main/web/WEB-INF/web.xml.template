@@ -22,15 +22,15 @@
         <filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>
         <init-param>
             <param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
-            <param-value>https://localhost:8443/security/login</param-value>
+            <param-value>https://@framework.host@:@framework.ssl.port@/security/login</param-value>
         </init-param>
         <init-param>
             <param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
-            <param-value>https://localhost:8443/security/serviceValidate</param-value>
+            <param-value>https://@framework.host@:@framework.ssl.port@/security/serviceValidate</param-value>
         </init-param>
         <init-param>
             <param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>
-            <param-value>localhost:8080</param-value>
+            <param-value>@framework.host@:@framework.port@</param-value>
         </init-param>
     </filter>
  
