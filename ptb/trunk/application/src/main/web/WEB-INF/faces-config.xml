@@ -22,7 +22,7 @@
     <managed-bean-class>eu.planets_project.tb.gui.UserBean</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
-  
+
   <managed-bean>
     <managed-bean-name>Login_Backing</managed-bean-name>
     <managed-bean-class>eu.planets_project.tb.gui.backing.Login</managed-bean-class>
@@ -30,8 +30,14 @@
   </managed-bean>
   
   <managed-bean>
-    <managed-bean-name>CreateExp_Backing</managed-bean-name>
-    <managed-bean-class>eu.planets_project.tb.gui.backing.CreateExp</managed-bean-class>
+    <managed-bean-name>Manager_Backing</managed-bean-name>
+    <managed-bean-class>eu.planets_project.tb.gui.backing.Manager</managed-bean-class>
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
+
+  <managed-bean>
+    <managed-bean-name>ModifyExp_Backing</managed-bean-name>
+    <managed-bean-class>eu.planets_project.tb.gui.backing.ModifyExp</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
 
@@ -53,10 +59,10 @@
     	<to-view-id>/login.xhtml</to-view-id>
     </navigation-case>
     <navigation-case>
-      <from-outcome>new_experiment</from-outcome>
+      <from-action>#{Manager_Backing.initExperimentAction}</from-action>
       <to-view-id>/exp/new_exp.xhtml</to-view-id>
-	    <redirect />
-    </navigation-case>   
+      <redirect/>
+    </navigation-case>    
     <navigation-case>
       <from-outcome>import_experiment</from-outcome>
       <to-view-id>/exp/import_exp.xhtml</to-view-id>
@@ -115,21 +121,32 @@
   <navigation-rule>
     <from-view-id>/exp/new_exp.xhtml</from-view-id>
     <navigation-case>
-      <from-action>#{CreateExp_Backing.CreateExpAction}</from-action>
+      <from-action>#{Manager_Backing.updateBasicPropsAction}</from-action>
       <from-outcome>success</from-outcome>
       <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
       <redirect/>
     </navigation-case>
   </navigation-rule>
-  
   <navigation-rule>
     <from-view-id>/exp/exp_stage2.xhtml</from-view-id>
     <navigation-case>
-      <from-action>#{CreateExp_Backing.CreateExpAction2}</from-action>
+      <from-action>#{Manager_Backing.updateExpTypeAction}</from-action>
       <from-outcome>success</from-outcome>
       <to-view-id>/exp/my_exp.xhtml</to-view-id>
       <redirect/>
     </navigation-case>
   </navigation-rule>
   
+  
+
+  <!-- navigation rules for MY_EXPERIMENT page -->
+  <navigation-rule>
+    <from-view-id>/exp/my_exp.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>editExp</from-outcome>
+      <to-view-id>/exp/new_exp.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
+  </navigation-rule>  
+
 </faces-config>

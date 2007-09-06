@@ -25,11 +25,15 @@
                     <fieldset>
                         <legend>Select Experiment Type</legend>
                         
-                        <p><h:selectOneMenu><f:selectItems value="#{CreateExp_Backing.experimentTypes}" /></h:selectOneMenu></select></p>
+                        <p>
+                        	<h:selectOneMenu value="#{ExperimentBean.etype}" >
+                        		<f:selectItems value="#{Manager_Backing.availableExperimentTypes}" />
+                        	</h:selectOneMenu>
+                        </p>
                     </fieldset>
                     		<p>
-            <h:commandButton value="#{res['new_exp.saveStage2']}" 
-            action="#{CreateExp_Backing.CreateExpAction2}"/>		
+            <h:commandButton value="#{res['button.continue']}" 
+            action="#{Manager_Backing.updateExpTypeAction}"/>		
 		</p>
                 </h:form>
 		<p>Your choice of experiment type will affect the tools and data that will be made available.  You return to this page to choose a difference experiment type at any point until you submit your experiment for execution.</p>

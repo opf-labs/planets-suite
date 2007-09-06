@@ -73,7 +73,7 @@
 <!-- start of experimenter tabs -->						
 			<c:if test="${page == 'new_exp'}">
 				<li id="current">
-				<h:commandLink action="new_experiment" rendered="#{UserBean.experimenter}">
+				<h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_new.gif" class="toolbar"/>
 					<h:outputText value="#{res['new_exp.pageTitle']}"/>
 				</h:commandLink>
@@ -81,7 +81,7 @@
 			</c:if>
 			<c:if test="${page != 'new_exp'}">
 				<li>
-				<h:commandLink action="new_experiment" rendered="#{UserBean.experimenter}">
+				<h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_new.gif" class="toolbar"/>
 					<h:outputText value="#{res['new_exp.pageTitle']}"/>
 				</h:commandLink>

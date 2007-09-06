@@ -8,12 +8,19 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
 
 import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
+import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
+import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+
 import java.util.Collection;
 
 
@@ -24,7 +31,7 @@ public class ListExp extends SortableList {
 	private List<Experiment> currExps;
 	private String column = "name";
 	private boolean ascending = true;
-	//private UIData data = null;
+	private UIData data = null;
 	
 	public ListExp()
 	{
@@ -123,17 +130,34 @@ public class ListExp extends SortableList {
 			}			
 		}
 		
-//		 Property getters - setters
+	    public String editExperimentAction()
+	    {
+	    
+	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
+	      FacesContext ctx = FacesContext.getCurrentInstance();
 
-/*		  public void setData(UIData data)
-		  {
-		    this.data = data;
-		  }
+	      ExperimentBean expBean = new ExperimentBean();
+	      expBean.fill(selectedExperiment);
+	      
+	      //Store selected Experiment Row accessible later as #{Experiment} 
+	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+	              
+	      // go to edit page
+	      return "editExp";
+	    }
+	    
+	    
+//	  Property getters - setters
+
+	    public void setData(UIData data)
+	    {
+	      this.data = data;
+	    }
 
 
-		  public UIData getData()
-		  {
-		    return data;
-		  }
-*/
+	    public UIData getData()
+	    {
+	      return data;
+	    }
 }

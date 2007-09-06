@@ -24,60 +24,66 @@
 	<p>You have #{ListExp_Backing.numExperimentsOfUser} experiments listed in the testbed.  Experiments 1 to 10 are listed below.</p>
 		
 	<h:form>
-     <t:dataTable id="data"
+     <t:dataTable id="dataTable"
                   var="exp"
                   value="#{ListExp_Backing.experimentsOfUser}"
                   preserveDataModel="true"
                   rows="10"
                   rowId="#{exp.experimentSetup.basicProperties.experimentName}"
-                  rowOnClick="alert('rowId: ' + this.id)"
                   sortColumn="#{ListExp_Backing.sort}"
                   sortAscending="#{ListExp_Backing.ascending}"
                   preserveSort="true"
                   cellpadding="2"
                   cellspacing="0"
-                  border="1">
-        <h:column>
+                  border="1"
+                  binding="#{ListExp_Backing.data}">
+        <t:column>
             <f:facet name="header">
-	          <t:commandSortHeader columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	         <t:commandSortHeader id="sortName" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
 		          #{res['expList.colHeader.expName']}
     	      </t:commandSortHeader>
     	    </f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-        </h:column>
-        <h:column>
+            <h:commandLink action="#{ListExp_Backing.editExperimentAction}">
+	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+    		</h:commandLink>
+        </t:column>
+        <t:column>
 	        <f:facet name="header">
-	          <t:commandSortHeader columnName="type" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	            <t:commandSortHeader id="sortType" columnName="type" arrow="true" immediate="false" styleClass="tableHeaderSel">
 	    	      #{res['expList.colHeader.type']}
 				</t:commandSortHeader>
-			</f:facet>		      
-            <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
-        </h:column>
-        <h:column>
+			</f:facet>	  
+	            <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.startDate']}</f:facet>
-            <h:outputText value="#{exp.startDate.time}" />
-        </h:column>
-        <h:column>
+            <h:outputText value="#{exp.startDate.time}">
+	            <f:convertDateTime type="both" dateStyle="long" timeZone="TimeZone.getTimeZone('GMT+1').getID()"/>
+            </h:outputText>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>
-            <h:outputText value="#{exp.experimentExecution.scheduledExecutionDate.time}" />
-        </h:column>
-        <h:column>
+            <h:outputText value="#{exp.experimentExecution.scheduledExecutionDate.time}">
+	             <f:convertDateTime type="both" dateStyle="short"/>
+            </h:outputText>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.currentStage']}</f:facet>
             <h:outputText value="#{exp.currentPhasePointer}" />
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
             <h:outputText value="" />
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.inputOutputFiles']}</f:facet>
             <h:outputText value="#{exp.experimentSetup.basicProperties.experimentedObjectTypes}" />
-        </h:column>       
+        </t:column>       
     </t:dataTable>
 
     <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
         <t:dataScroller id="scroll_1"
-                        for="data"
+                        for="dataTable"
                         fastStep="10"
                         pageCountVar="pageCount"
                         pageIndexVar="pageIndex"
