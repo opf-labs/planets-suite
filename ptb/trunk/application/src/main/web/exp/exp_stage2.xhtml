@@ -6,7 +6,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
-        #{res.title} - #{res['exp_stage2.pageTitle']}
+        #{res.title} - #{ExperimentBean.ename}: #{res['exp_stage2.pageTitle']}
   </ui:define>
 
 <ui:define name="header">
@@ -36,7 +36,8 @@
             action="#{Manager_Backing.updateExpTypeAction}"/>		
 		</p>
                 </h:form>
-		<p>Your choice of experiment type will affect the tools and data that will be made available.  You return to this page to choose a difference experiment type at any point until you submit your experiment for execution.</p>
+		<p>Your choice of experiment type will affect the tools and data that will be made available.<br />
+                You may return to this page to choose a difference experiment type at any point until you submit your experiment for execution.</p>
 		<p>&#160;</p>
 		<p>&#160;</p>
 
@@ -63,7 +64,7 @@
 <h:form>
 <ul class="exp">
 	<li class="exp">
-		<h:commandLink action="new_experiment" styleClass="exp">
+		<h:commandLink action="new_experiment" styleClass="exp_done">
 			<h:outputText value="#{res['new_exp.stage1']}"/>
 		</h:commandLink>
 	</li>
