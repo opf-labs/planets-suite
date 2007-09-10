@@ -17,11 +17,12 @@ import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
-import eu.planets_project.tb.api.persistency.WorkflowTemplatePersistencyRemote;
+import eu.planets_project.tb.api.persistency.WorkflowPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
@@ -39,13 +40,13 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 
 	private WorkflowHandlerImpl() {
 		//fillHashMap with Entities
-		hmWorkflowTemplates = queryAllWorkflowTemplates();
+		hmWorkflowTemplates = queryAllWorkflows();
 
 		//TODO DELETE when Frontend is finished
 		//add some dummy workflowtemplates if non are already stored
 		if(this.hmWorkflowTemplates.size()<=0){
 			this.helperCreateDummyWorkflowTemplates();
-			hmWorkflowTemplates = queryAllWorkflowTemplates();
+			hmWorkflowTemplates = queryAllWorkflows();
 		}
 	}
 	
@@ -61,7 +62,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getAllWorkflows()
 	 */
 	public Collection<Workflow> getAllWorkflows(){
-		hmWorkflowTemplates = queryAllWorkflowTemplates();
+		hmWorkflowTemplates = queryAllWorkflows();
 		return this.hmWorkflowTemplates.values();
 	}
 
@@ -71,7 +72,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 */
 	public Map<Long,String> getAllWorkflowIDAndNames() {
 		//updateIndex
-		hmWorkflowTemplates = queryAllWorkflowTemplates();
+		hmWorkflowTemplates = queryAllWorkflows();
 		//Info: <TemplateID,TemplateName>
 		HashMap<Long,String> hmIDandNames = new HashMap<Long,String>();
 		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
@@ -87,7 +88,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 */
 	public List<Long> getAllWorkflowIDs() {
 		//updateIndex
-		hmWorkflowTemplates = queryAllWorkflowTemplates();
+		hmWorkflowTemplates = queryAllWorkflows();
 		Vector<Long> vRet = new Vector<Long>();
 		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
 		while(itKeys.hasNext()){
@@ -102,7 +103,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 */
 	public List<String> getAllWorkflowNames() {
 		//updateIndex
-		hmWorkflowTemplates = queryAllWorkflowTemplates();
+		hmWorkflowTemplates = queryAllWorkflows();
 		//Info: <TemplateID,TemplateName>
 		Vector<String> vRet = new Vector<String>();
 		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
@@ -123,14 +124,49 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		return null;
 	}
 	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getAllWorkflowNames(int)
+	 */
+	public List<String> getAllWorkflowNames(int experimentType) {
+		//updateIndex
+		hmWorkflowTemplates = queryAllWorkflows();
+		//Info: <TemplateID,TemplateName>
+		Vector<String> vRet = new Vector<String>();
+		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
+		while(itKeys.hasNext()){
+			long lKey = itKeys.next();
+			if(this.hmWorkflowTemplates.get(lKey).getExperimentType()==experimentType){
+				vRet.add(this.hmWorkflowTemplates.get(lKey).getName());
+			}
+		}
+		return vRet;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getAllWorkflows(int)
+	 */
+	public Collection<Workflow> getAllWorkflows(int experimentType) {
+		//updateIndex
+		hmWorkflowTemplates = queryAllWorkflows();
+		Vector<Workflow> vRet = new Vector<Workflow>();
+		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
+		while(itKeys.hasNext()){
+			long lKey = itKeys.next();
+			if(this.hmWorkflowTemplates.get(lKey).getExperimentType() == experimentType){
+				vRet.add(this.hmWorkflowTemplates.get(lKey));
+			}
+		}
+		return vRet;
+	}
+	
 	/**
 	 * This private helper method is used to query the EntityManager (via the ExperimentPersistency) interface
 	 * to retrieve all WorkflowTemplates in the data store and builds up the HashMap<ExpID,WorkflowTemplate>.
 	 * @return
 	 */
-	private HashMap<Long,Workflow> queryAllWorkflowTemplates(){
+	private HashMap<Long,Workflow> queryAllWorkflows(){
 		HashMap<Long,Workflow> hmRet = new HashMap<Long,Workflow>();
-		WorkflowTemplatePersistencyRemote dao_r = this.createPersistencyHandler();
+		WorkflowPersistencyRemote dao_r = this.createPersistencyHandler();
 		
 		List<Workflow> list = dao_r.queryAllWorkflowTemplates();
 		Iterator<Workflow> itList = list.iterator();
@@ -143,11 +179,12 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 
 	}
 	
-	private WorkflowTemplatePersistencyRemote createPersistencyHandler(){
+	
+	private WorkflowPersistencyRemote createPersistencyHandler(){
 		try{
 			Context jndiContext = getInitialContext();
-			WorkflowTemplatePersistencyRemote dao_r = (WorkflowTemplatePersistencyRemote) PortableRemoteObject.narrow(
-					jndiContext.lookup("WorkflowTemplatePersistencyImpl/remote"), WorkflowTemplatePersistencyRemote.class);
+			WorkflowPersistencyRemote dao_r = (WorkflowPersistencyRemote) PortableRemoteObject.narrow(
+					jndiContext.lookup("WorkflowPersistencyImpl/remote"), WorkflowPersistencyRemote.class);
 			return dao_r;
 		}catch (NamingException e) {
 			//TODO integrate message into logging mechanism
@@ -176,6 +213,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		template1.addRequiredInputMIMEType("application/msword");
 		template1.addRequiredOutputMIMEType("text/xml");
 		template1.addRequiredOutputMIMEType("application/xml");
+		template1.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
 		//create services for workflow
 		Service service0 = new ServiceImpl();
 			service0.setServiceName("Office Converter");
@@ -188,7 +226,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 			service0.addOutputMIMEType("application/xml");
 		template1.addWorkflowService(0, service0);
 		if(template1.isValidWorkflow()){
-			WorkflowTemplatePersistencyRemote dao_r = this.createPersistencyHandler();
+			WorkflowPersistencyRemote dao_r = this.createPersistencyHandler();
 			dao_r.persistWorkflowTemplate(template1);
 		}
 		
@@ -198,6 +236,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		template2.setToolType("Tiff2Jpeg");
 		template2.addRequiredInputMIMEType("image/tiff");
 		template2.addRequiredOutputMIMEType("image/jpeg");
+		template2.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
 		//create services for workflow
 		Service service1 = new ServiceImpl();
 			service1.setServiceName("Tiff2Jpeg Action Converter");
@@ -210,7 +249,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 			service1.addOutputMIMEType("image/jpeg");
 		template2.addWorkflowService(0, service1);
 		if(template1.isValidWorkflow()){
-			WorkflowTemplatePersistencyRemote dao_r = this.createPersistencyHandler();
+			WorkflowPersistencyRemote dao_r = this.createPersistencyHandler();
 			dao_r.persistWorkflowTemplate(template2);
 		}
 		

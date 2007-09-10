@@ -13,7 +13,7 @@ import javax.persistence.Query;
 
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
-import eu.planets_project.tb.api.persistency.WorkflowTemplatePersistencyRemote;
+import eu.planets_project.tb.api.persistency.WorkflowPersistencyRemote;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowImpl;
 
@@ -22,8 +22,8 @@ import eu.planets_project.tb.impl.model.mockup.WorkflowImpl;
  *
  */
 @Stateless
-public class WorkflowTemplatePersistencyImpl implements
-		WorkflowTemplatePersistencyRemote {
+public class WorkflowPersistencyImpl implements
+		WorkflowPersistencyRemote {
 	
 	@PersistenceContext(unitName="testbed", type=PersistenceContextType.TRANSACTION)
 	private EntityManager manager;

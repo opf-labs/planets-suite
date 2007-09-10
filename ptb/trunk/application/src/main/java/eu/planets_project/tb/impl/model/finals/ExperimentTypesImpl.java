@@ -5,6 +5,7 @@ package eu.planets_project.tb.impl.model.finals;
 
 import java.lang.reflect.Field;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.List;
 
@@ -25,7 +26,29 @@ public class ExperimentTypesImpl implements
 		Field[] fields = this.getClass().getFields();
 		for(int i=0; i<fields.length; i++){
 			if (fields[i].getName().startsWith("EXPERIMENT_TYPE")){
-				vret.addElement(fields[i].getName());
+				String sVariableName = fields[i].getName();
+				StringTokenizer tokenizer = new StringTokenizer(sVariableName,"_",false);
+				int iTokens = tokenizer.countTokens();
+				if(tokenizer.countTokens()>2){
+					if(tokenizer.nextToken().equals("EXPERIMENT")){
+						if(tokenizer.nextToken().equals("TYPE")){
+							String sToken = new String();
+							for(int j=2;j<iTokens;j++){
+								//check if only one token
+								if(iTokens-j==1){
+									sToken += tokenizer.nextToken();
+								}else{
+									sToken += tokenizer.nextToken()+" ";
+								}
+								
+							}
+							//now add the String an return the value;
+							//now add the name without the "EXPERIMENT_TYPE" prefix
+							vret.addElement(sToken);
+						}
+					}
+				}
+				
 			}
 		}
 		return vret;
@@ -77,8 +100,32 @@ public class ExperimentTypesImpl implements
 					iValue = fields[i].getInt(fields[i]);
 					
 					//check if this value is the typeID whe're looking for
-					if(iValue==typeID)
+					if(iValue==typeID){
+						//now parse the name without the '_'
 						sRet = fields[i].getName();
+						String sVariableName = fields[i].getName();
+						StringTokenizer tokenizer = new StringTokenizer(sVariableName,"_",false);
+						int iTokens = tokenizer.countTokens();
+						if(tokenizer.countTokens()>2){
+							if(tokenizer.nextToken().equals("EXPERIMENT")){
+								if(tokenizer.nextToken().equals("TYPE")){
+									String sToken = new String();
+									for(int j=2;j<iTokens;j++){
+										//check if only one token
+										if(iTokens-j==1){
+											sToken += tokenizer.nextToken();
+										}else{
+											sToken += tokenizer.nextToken()+" ";
+										}
+											
+									}
+									//now add the String an return the value;
+									//now add the name without the "EXPERIMENT_TYPE" prefix
+									return sRet = sToken;
+								}
+							}
+						}
+					}
 					
 				} catch (IllegalArgumentException e) {
 					// TODO ADD Logging Statement

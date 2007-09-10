@@ -1,5 +1,12 @@
 package eu.planets_project.tb.unittest.model;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
@@ -49,49 +56,116 @@ public class ExperimentSetupTest extends TestCase{
 	
 	
 	public void testExperimentWorkflow(){
-			Experiment exp_test = manager.getExperiment(this.expID1);
-			ExperimentSetup expSetup = new ExperimentSetupImpl();
+		Experiment exp_test = manager.getExperiment(this.expID1);
+		ExperimentSetup expSetup = new ExperimentSetupImpl();
 
-			WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
-			Vector<Long> vTemplateIDs = (Vector<Long>)wfhandler.getAllWorkflowIDs();
-			//Build an ExperimentWorkflow with the first given Workflow
-			if(vTemplateIDs.size()>0){
-				//use template to build a workflow instance
-				ExperimentWorkflow expWorkflow1 = wfhandler.getExperimentWorkflow(vTemplateIDs.firstElement());
-				assertNotNull(expWorkflow1);
+		WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
+		Vector<Long> vTemplateIDs = (Vector<Long>)wfhandler.getAllWorkflowIDs();
+		//Build an ExperimentWorkflow with the first given Workflow
+		if(vTemplateIDs.size()>0){
+			//use template to build a workflow instance
+			ExperimentWorkflow expWorkflow1 = wfhandler.getExperimentWorkflow(vTemplateIDs.firstElement());
+			assertNotNull(expWorkflow1);
 				
-				//Test2: Does it contain a Workflow
-				assertNotNull(expWorkflow1.getWorkflowTemplate());
+			//Test2: Does it contain a Workflow
+			assertNotNull(expWorkflow1.getWorkflow());
 				
-				//Test3: Does the workflow at least contain one service
-				assertTrue(expWorkflow1.getWorkflowTemplate().getWorkflowServices().size()>0);
+			//Test3: Does the workflow at least contain one service
+			assertTrue(expWorkflow1.getWorkflow().getWorkflowServices().size()>0);
 				
-				//Test4: Does Service contain an Endpoint
-				assertNotNull(expWorkflow1.getWorkflowTemplate().getWorkflowService(0).getEndpointAddress());
+			//Test4: Does Service contain an Endpoint
+			assertNotNull(expWorkflow1.getWorkflow().getWorkflowService(0).getEndpointAddress());
 				
-			}else{
-				//Testcase cannot be completed without any Workflow in the DB
-				assertTrue(false);
+		}else{
+			//Testcase cannot be completed without any Workflow in the DB
+			assertTrue(false);
+		}
+	}
+	
+	//IN WORK
+	/*public void testExperimentWorkflowSetData(){
+		Experiment exp_test = manager.getExperiment(this.expID1);
+		ExperimentSetup expSetup = new ExperimentSetupImpl();
+
+		//now celect a workflow to use
+		WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
+		Vector<Long> vTemplateIDs = (Vector<Long>)wfhandler.getAllWorkflowIDs();
+		
+		if(vTemplateIDs.size()>0){
+			//use the last available Workflow in this Experiment
+			ExperimentWorkflow expWorkflow1 = wfhandler.getExperimentWorkflow(vTemplateIDs.lastElement());
+			
+			//now add Experiment input data
+			List<String> sInputMIMETypes = expWorkflow1.getWorkflow().getRequiredInputMIMETypes();
+			
+			//if(sInputMIMETypes.contains("image/png"))
+			//expWorkflow1.addInputData(new File("http://www.planets-project.eu/graphics/Planets_Logo.png"));
+			try{
+			expWorkflow1.addInputData(new File(new java.net.URL("file:http://dme021:8080/ImageMagicWS/Tiff2JpegAction?wsdl").toURI()));
+			}catch(Exception e){
+				System.out.println("Exception "+e.toString());
 			}
-	}
+			//DELTE
+			try{
+			java.net.URL url_test = new java.net.URL("file:http://www.planets-project.eu/graphics/Planets_Logo.png");
+			File f_tester = new File(url_test.toURI());
+			System.out.println("Length "+f_tester.length());
+			}catch(Exception e){
+				System.out.println("URI Exception"+e.toString());
+			}
+			//END DELETE
+			
+			//now store Experiment
+			expSetup.setWorkflow(expWorkflow1);
+			exp_test.setExperimentSetup(expSetup);
+			manager.updateExperiment(exp_test);
+			
+			Experiment exp_found = manager.getExperiment(this.expID1);
+			List<File> inputfiles = exp_found.getExperimentSetup().getExperimentWorkflow().getInputData();
+			
+			assertEquals(1,inputfiles.size());
+			Iterator<File> itInputFiles = inputfiles.iterator();
+			while(itInputFiles.hasNext()){
+				File file = itInputFiles.next();
+				System.out.println("file location: "+file.getAbsolutePath());
+				System.out.println("can read input file: "+file.canRead());
+				
+				//DELETE
+				try {
+					FileInputStream fis = new FileInputStream(file);
+
+				    // Here BufferedInputStream is added for fast reading.
+				    BufferedInputStream bis = new BufferedInputStream(fis);
+				    DataInputStream dis = new DataInputStream(bis);
+
+				    // dis.available() returns 0 if the file does not have more lines.
+				    while(dis.available()!=0) {
+				    	System.out.println(dis.readLine());
+				    }
+
+				    //dispose all the resources after using them.
+				    fis.close();
+				    bis.close();
+				    dis.close();
+				    
+				  }catch(FileNotFoundException e) {
+				     System.out.println(e.toString());
+				  }catch(IOException e) {
+					  System.out.println(e.toString());
+				  }
+				
+				//END DELETE
+			}
+			
+			assertTrue(true);
+
+		}
+		else{
+			//Testcase cannot be completed without any Workflow available in the DB
+			assertTrue(false);
+		}
+	}*/
 	
-	
-	private ExperimentSetupImpl createEnvironmentExperimentSetup(int testnr){
-		ExperimentSetupImpl expSetup = new ExperimentSetupImpl();
-		expSetup.setState(ExperimentPhase.STATE_IN_PROGRESS);
-		//BasicProperties
-		BasicPropertiesImpl props = new BasicPropertiesImpl();
-		props.setConsiderations("considerations"+testnr);
-		props.setExperimentName("ExperimentName"+testnr);
-		expSetup.setBasicProperties(props);
-		
-		//BenchmarkObjectives
-		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
-		BenchmarkGoalImpl goal = (BenchmarkGoalImpl)handler.getBenchmarkGoal("nop1");
-		expSetup.addBenchmarkGoal(goal);
-		
-		return expSetup;
-	}
 	
 	//Tests for the underlying Entity Bean's methods setter and getters
 	public void testSetExperimentSetup(){
@@ -127,20 +201,34 @@ public class ExperimentSetupTest extends TestCase{
 			
 	
 	}
-	
-	public void testBasicProperties(){
-		
-	}
+
 	
 	public ExperimentSetup getExperimentSetupSample(){
 		//TODO: add a samle experimentSetup
 		ExperimentSetup test_setup = new ExperimentSetupImpl();
 		test_setup.setStartDate(new GregorianCalendar());
-		test_setup.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION);
+		test_setup.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
 		return test_setup;
 	}
 	
-
+	
+	private ExperimentSetupImpl createEnvironmentExperimentSetup(int testnr){
+		ExperimentSetupImpl expSetup = new ExperimentSetupImpl();
+		expSetup.setState(ExperimentPhase.STATE_IN_PROGRESS);
+		//BasicProperties
+		BasicPropertiesImpl props = new BasicPropertiesImpl();
+		props.setConsiderations("considerations"+testnr);
+		props.setExperimentName("ExperimentName"+testnr);
+		expSetup.setBasicProperties(props);
+		
+		//BenchmarkObjectives
+		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
+		BenchmarkGoalImpl goal = (BenchmarkGoalImpl)handler.getBenchmarkGoal("nop1");
+		expSetup.addBenchmarkGoal(goal);
+		
+		return expSetup;
+	}
+	
 	
 	/*private ExperimentResources createEnvironmentExperimentResources(int testnr){
 		return null;

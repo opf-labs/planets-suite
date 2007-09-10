@@ -3,6 +3,7 @@ package eu.planets_project.tb.unittest.model.mockup;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.naming.Context;
@@ -12,11 +13,13 @@ import javax.rmi.PortableRemoteObject;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
-import eu.planets_project.tb.api.persistency.WorkflowTemplatePersistencyRemote;
+import eu.planets_project.tb.api.persistency.WorkflowPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
+import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
+import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 import junit.framework.TestCase;
 
 public class WorkflowHandlerTest extends TestCase{
@@ -45,6 +48,7 @@ public class WorkflowHandlerTest extends TestCase{
 		}
 	}
 	
+	
 	public void testAvailableWorkflowIDsAndNames(){
 		HashMap<Long,String> hmIDNames = (HashMap<Long,String>)wfhandler.getAllWorkflowIDAndNames();
 		if(hmIDNames.keySet().size()>0){
@@ -57,6 +61,31 @@ public class WorkflowHandlerTest extends TestCase{
 		}
 	}
 	
+	
+	public void testGetWorkflowsPerType(){
+		Iterator<Workflow> workflows = wfhandler.getAllWorkflows(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION).iterator();
+		boolean bFound = false;
+		while(workflows.hasNext()){
+			if(workflows.next().getEntityID() == this.testWorkflowID){
+				bFound = true;
+			}
+		}
+		assertTrue(bFound);
+	}
+	
+	
+	public void testGetWorkflowNamesPerType(){
+		Iterator<String> workflows = wfhandler.getAllWorkflowNames(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION).iterator();
+		boolean bFound = false;
+		while(workflows.hasNext()){
+			if(workflows.next().equals(this.testWorkflowName)){
+				bFound = true;
+			}
+		}
+		assertTrue(bFound);
+	}
+	
+	
 	public void testGetExperimentWorkflow(){
 		Collection<Workflow> vWorkflows = wfhandler.getAllWorkflows();
 		//Build an ExperimentWorkflow with the first given Workflow
@@ -66,14 +95,14 @@ public class WorkflowHandlerTest extends TestCase{
 			assertNotNull(expWorkflow1);
 			
 			//Test2: Does it contain our Test Workflow
-			assertNotNull(expWorkflow1.getWorkflowTemplate());
-			assertEquals(this.testWorkflowID,expWorkflow1.getWorkflowTemplate().getEntityID());
+			assertNotNull(expWorkflow1.getWorkflow());
+			assertEquals(this.testWorkflowID,expWorkflow1.getWorkflow().getEntityID());
 			
 			//Test3: Does the workflow at least contain one service
-			assertTrue(expWorkflow1.getWorkflowTemplate().getWorkflowServices().size()>0);
+			assertTrue(expWorkflow1.getWorkflow().getWorkflowServices().size()>0);
 			
 			//Test4: Does Service contain an Endpoint
-			assertNotNull(expWorkflow1.getWorkflowTemplate().getWorkflowService(0).getEndpointAddress());
+			assertNotNull(expWorkflow1.getWorkflow().getWorkflowService(0).getEndpointAddress());
 			
 		}else{
 			//Testcase cannot be completed without any Workflow in the DB
@@ -83,7 +112,7 @@ public class WorkflowHandlerTest extends TestCase{
 	
 	protected void tearDown(){
 		try{
-			WorkflowTemplatePersistencyRemote dao_r = this.createPersistencyHandler();
+			WorkflowPersistencyRemote dao_r = this.createPersistencyHandler();
 			dao_r.deleteWorkflowTemplate(this.testWorkflowID);
 		}catch(Exception e){
 			
@@ -99,6 +128,7 @@ public class WorkflowHandlerTest extends TestCase{
 		workflow_test.setToolType("Tiff2Jpeg");
 		workflow_test.addRequiredInputMIMEType("image/tiff");
 		workflow_test.addRequiredOutputMIMEType("image/jpeg");
+		workflow_test.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
 		//create services for workflow
 		Service service1 = new ServiceImpl();
 			service1.setServiceName("Tiff2Jpeg Action Converter");
@@ -111,16 +141,16 @@ public class WorkflowHandlerTest extends TestCase{
 			service1.addOutputMIMEType("image/jpeg");
 		workflow_test.addWorkflowService(0, service1);
 		if(workflow_test.isValidWorkflow()){
-			WorkflowTemplatePersistencyRemote dao_r = this.createPersistencyHandler();
+			WorkflowPersistencyRemote dao_r = this.createPersistencyHandler();
 			testWorkflowID = dao_r.persistWorkflowTemplate(workflow_test);
 		}
 	}
 	
-	private WorkflowTemplatePersistencyRemote createPersistencyHandler(){
+	private WorkflowPersistencyRemote createPersistencyHandler(){
 		try{
 			Context jndiContext = getInitialContext();
-			WorkflowTemplatePersistencyRemote dao_r = (WorkflowTemplatePersistencyRemote) PortableRemoteObject.narrow(
-					jndiContext.lookup("WorkflowTemplatePersistencyImpl/remote"), WorkflowTemplatePersistencyRemote.class);
+			WorkflowPersistencyRemote dao_r = (WorkflowPersistencyRemote) PortableRemoteObject.narrow(
+					jndiContext.lookup("WorkflowPersistencyImpl/remote"), WorkflowPersistencyRemote.class);
 			return dao_r;
 		}catch (NamingException e) {
 			//TODO integrate message into logging mechanism

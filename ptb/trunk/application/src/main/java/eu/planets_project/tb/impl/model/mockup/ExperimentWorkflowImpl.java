@@ -32,11 +32,18 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	private Vector<File> vInputData, vOutputData;
 	@OneToOne(cascade={CascadeType.ALL})
 	private WorkflowImpl workflow;
+	private boolean bIsExecuted;
 	
 	public ExperimentWorkflowImpl(Workflow template) {
 		vInputData = new Vector<File>();
 		vOutputData = new Vector<File>();
 		workflow = (WorkflowImpl)template;
+		bIsExecuted = false;
+	}
+	
+	//Default Constructor required for Entity Annotation
+	private ExperimentWorkflowImpl(){
+		
 	}
 
 
@@ -44,7 +51,8 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addInputData(java.io.File)
 	 */
 	public void addInputData(File file) {
-		if(!this.vInputData.contains(file)){
+		if(!this.vInputData.contains(file)&&!bIsExecuted){
+			//now check if this corresponds to the 
 			this.vInputData.add(file);
 		}
 	}
@@ -108,7 +116,7 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#removeInputData(java.io.File)
 	 */
 	public void removeInputData(File file) {
-		if(this.vInputData.contains(file)){
+		if(this.vInputData.contains(file)&&!bIsExecuted){
 			this.vInputData.remove(file);
 		}
 	}
@@ -123,7 +131,6 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 			this.removeInputData(itFiles.next());
 		}
 	}
-
 
 
 	/* (non-Javadoc)
@@ -153,7 +160,7 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#getWorkflowTemplate()
 	 */
-	public Workflow getWorkflowTemplate() {
+	public Workflow getWorkflow() {
 		return this.workflow;
 	}
 
@@ -161,7 +168,20 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setWorkflowTemplate(eu.planets_project.tb.api.model.mockups.WorkflowTemplate)
 	 */
-	public void setWorkflowTemplate(Workflow workflow) {
-		this.workflow = (WorkflowImpl)workflow;
+	public void setWorkflow(Workflow workflow) {
+		if(!bIsExecuted){
+			this.workflow = (WorkflowImpl)workflow;
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param file
+	 * @return
+	 */
+	private String getMIMEType(File file){
+		//TODO
+		return null;
 	}
 }

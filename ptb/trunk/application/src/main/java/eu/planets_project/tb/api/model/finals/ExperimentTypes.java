@@ -5,9 +5,9 @@ import java.util.List;
 public interface ExperimentTypes {
 
 	// All available ExperimentTypes and their IDs
-	public static final int EXPERIMENT_TYPE_SIMPLEMIGRATION = 0;
+	public static final int EXPERIMENT_TYPE_SIMPLE_MIGRATION = 0;
 
-	public static final int EXPERIMENT_TYPE_SIMPLECHARACTERISATION = 1;
+	public static final int EXPERIMENT_TYPE_SIMPLE_CHARACTERISATION = 1;
 
 	public static final int EXPERIMENT_TYPE_COMPLEXWORKFLOW = 2;
 

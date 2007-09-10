@@ -177,15 +177,15 @@ public class TestbedManagerTest extends TestCase{
 		
 		//Test3:
 		int size3 = manager.getAllExperimentsOfType(
-				ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION).size();
+				ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION).size();
 		Experiment exp_test3 = manager.createNewExperiment();
 		ExperimentSetup expSetup = new ExperimentSetupImpl();
-		expSetup.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION);
+		expSetup.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
 		exp_test3.setExperimentSetup(expSetup);
 		manager.updateExperiment(exp_test3);
 		
 		assertEquals(size3+1,manager.getAllExperimentsOfType(
-				ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION).size());
+				ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION).size());
 		
 		//now clean up the mess
 		manager.removeExperiment(exp_test3.getEntityID());

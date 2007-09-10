@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
@@ -46,7 +47,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentWorkflowImpl workflow;
 	private int iExperimentTypeID;
-	private String sExperimentTypeName;
 	
 
 	public ExperimentSetupImpl(){
@@ -56,7 +56,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		experimentResources = new ExperimentResourcesImpl();
 		//workflow = new WorkflowImpl();
 		iExperimentTypeID = -1;
-		sExperimentTypeName = new String();
 		
 		setPhasePointer(PHASE_EXPERIMENTSETUP);
 	}
@@ -75,7 +74,14 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	}
 
 	public String getExperimentTypeName() {
-		return this.sExperimentTypeName;
+		ExperimentTypes types = new ExperimentTypesImpl();
+		if(types.checkExperimentTypeIDisValid(this.iExperimentTypeID)){
+			types.getExperimentTypeName(this.iExperimentTypeID);
+			return 	types.getExperimentTypeName(this.iExperimentTypeID);
+		}
+		else{
+			return new String();
+		}
 	}
 
 	/* (non-Javadoc)
@@ -107,7 +113,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		boolean bOK= finalsExperimentTypes.checkExperimentTypeIDisValid(typeID);
 		if  (bOK){
 			this.iExperimentTypeID = typeID;
-			this.sExperimentTypeName = finalsExperimentTypes.getExperimentTypeName(typeID);
 		}
 	}
 

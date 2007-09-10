@@ -6,7 +6,7 @@ import javax.ejb.Remote;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 
 @Remote
-public interface WorkflowTemplatePersistencyRemote {
+public interface WorkflowPersistencyRemote {
 	
 	public long persistWorkflowTemplate(Workflow template);
 	public Workflow getWorkflowTemplate(long id);

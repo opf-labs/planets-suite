@@ -14,8 +14,8 @@ public interface ExperimentWorkflow{
 	public void removeInputData(List<File> files);
 	public void setInputData(List<File> files);
 	
-	public Workflow getWorkflowTemplate();
-	public void setWorkflowTemplate(Workflow workflow);
+	public Workflow getWorkflow();
+	public void setWorkflow(Workflow workflow);
 	
 	public List<File> getOutputData();
 	public void setOutputData(List<File> files);

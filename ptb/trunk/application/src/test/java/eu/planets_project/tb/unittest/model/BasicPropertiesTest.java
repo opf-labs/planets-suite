@@ -62,8 +62,8 @@ public class BasicPropertiesTest extends TestCase{
 	
 	public void testExperimentApproach(){
 		BasicProperties props = new BasicPropertiesImpl();
-		props.setExperimentApproach(ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION);
-		assertEquals(ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION, props.getExperimentApproach());
+		props.setExperimentApproach(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
+		assertEquals(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION, props.getExperimentApproach());
 	
 		int iType = ExperimentTypes.EXPERIMENT_TYPE_COMPLEXWORKFLOW;
 		props.setExperimentApproach(iType);
