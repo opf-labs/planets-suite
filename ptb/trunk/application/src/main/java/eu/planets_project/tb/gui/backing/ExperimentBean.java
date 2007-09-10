@@ -8,17 +8,18 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
 
 public class ExperimentBean {
 	
 	private long id;
 	private boolean eformality = true;
-    private String etype;
 	private String ename = new String();
     private String esummary = new String();
     private String econtactname = new String();
@@ -31,7 +32,8 @@ public class ExperimentBean {
     private String escope = new String();
     private String eapproach = new String();
     private String econsiderations = new String();
-    
+    private String etype;
+    private ExperimentWorkflow eworkflow;    
     
     public ExperimentBean() {
     	
@@ -51,22 +53,25 @@ public class ExperimentBean {
     	this.efocus=(props.getFocus());
     	this.epurpose=(props.getPurpose());
     	this.esummary=(props.getSummary());
-    	this.eformality = props.isExperimentFormal();
-    	
+    	this.eformality = props.isExperimentFormal();    	
     	this.etype = String.valueOf(expsetup.getExperimentTypeID());
-    	
+    	this.eworkflow = exp.getExperimentSetup().getExperimentWorkflow();
     }
     
     
- 
+    public void setEworkflow(ExperimentWorkflow ewf) {
+    	this.eworkflow = ewf;
+    }
     
+    public ExperimentWorkflow getEworkflow(){
+    	return this.eworkflow;
+    }
     
-    
-    
-    
-    
-    
-    
+    public String getWorkflowTypeId() {
+    	if (eworkflow !=null)
+    		return String.valueOf(eworkflow.getWorkflow().getEntityID());
+    	return null;
+    }
     
     public void setID(long id) {
     	this.id = id;
@@ -186,6 +191,13 @@ public class ExperimentBean {
     
     public String getEtype() {
     	return this.etype;
+    }
+    
+    public String getEtypeName() {
+        ExperimentTypesImpl types = new ExperimentTypesImpl();    
+        if (etype != null) 
+        	return types.getExperimentTypeName(Integer.parseInt(etype));         
+        return null;
     }
 
 }
