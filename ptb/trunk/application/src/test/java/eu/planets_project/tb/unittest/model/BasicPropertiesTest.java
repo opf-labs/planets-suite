@@ -285,12 +285,6 @@ public class BasicPropertiesTest extends TestCase{
 		assertEquals(sPurpose, props.getScope());
 	}
 	
-	public void testSpecificFocus(){
-		BasicProperties props = new BasicPropertiesImpl();
-		String sSpecificFocus = "A more detailed description";
-		props.setSpecificFocus(sSpecificFocus);
-		assertEquals(sSpecificFocus, props.getSpecificFocus());
-	}
 	
 	public void testIndication(){
 		BasicProperties props = new BasicPropertiesImpl();

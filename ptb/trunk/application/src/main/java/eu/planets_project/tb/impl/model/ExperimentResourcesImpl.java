@@ -22,6 +22,12 @@ public class ExperimentResourcesImpl implements
 	private int iNumberOfOutputFiles;
 	private int iIntensity;
 	
+	public ExperimentResourcesImpl(){
+		lExpRessourceID = -1;
+		iNumberOfOutputFiles = -1;
+		iIntensity = -1;
+	}
+	
 	public long getExperimentResourcesID(){
 		return this.lExpRessourceID;
 	}

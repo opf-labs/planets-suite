@@ -35,18 +35,18 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	
 	private static WorkflowHandlerImpl instance;
 	//Info: HashMap<EntityID,WorkflowTemplate>
-	private HashMap<Long,Workflow> hmWorkflowTemplates;
+	private HashMap<Long,Workflow> hmWorkflows;
 	
 
 	private WorkflowHandlerImpl() {
 		//fillHashMap with Entities
-		hmWorkflowTemplates = queryAllWorkflows();
+		hmWorkflows = queryAllWorkflows();
 
 		//TODO DELETE when Frontend is finished
 		//add some dummy workflowtemplates if non are already stored
-		if(this.hmWorkflowTemplates.size()<=0){
+		if(this.hmWorkflows.size()<=0){
 			this.helperCreateDummyWorkflowTemplates();
-			hmWorkflowTemplates = queryAllWorkflows();
+			hmWorkflows = queryAllWorkflows();
 		}
 	}
 	
@@ -62,8 +62,8 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getAllWorkflows()
 	 */
 	public Collection<Workflow> getAllWorkflows(){
-		hmWorkflowTemplates = queryAllWorkflows();
-		return this.hmWorkflowTemplates.values();
+		hmWorkflows = queryAllWorkflows();
+		return this.hmWorkflows.values();
 	}
 
 
@@ -72,13 +72,13 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 */
 	public Map<Long,String> getAllWorkflowIDAndNames() {
 		//updateIndex
-		hmWorkflowTemplates = queryAllWorkflows();
+		hmWorkflows = queryAllWorkflows();
 		//Info: <TemplateID,TemplateName>
 		HashMap<Long,String> hmIDandNames = new HashMap<Long,String>();
-		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
+		Iterator<Long> itKeys = this.hmWorkflows.keySet().iterator();
 		while(itKeys.hasNext()){
 			long lKey = itKeys.next();
-			hmIDandNames.put(lKey,this.hmWorkflowTemplates.get(lKey).getName());
+			hmIDandNames.put(lKey,this.hmWorkflows.get(lKey).getName());
 		}
 		return hmIDandNames;
 	}
@@ -88,9 +88,9 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 */
 	public List<Long> getAllWorkflowIDs() {
 		//updateIndex
-		hmWorkflowTemplates = queryAllWorkflows();
+		hmWorkflows = queryAllWorkflows();
 		Vector<Long> vRet = new Vector<Long>();
-		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
+		Iterator<Long> itKeys = this.hmWorkflows.keySet().iterator();
 		while(itKeys.hasNext()){
 			vRet.add(itKeys.next());
 		}
@@ -103,12 +103,12 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 */
 	public List<String> getAllWorkflowNames() {
 		//updateIndex
-		hmWorkflowTemplates = queryAllWorkflows();
+		hmWorkflows = queryAllWorkflows();
 		//Info: <TemplateID,TemplateName>
 		Vector<String> vRet = new Vector<String>();
-		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
+		Iterator<Long> itKeys = this.hmWorkflows.keySet().iterator();
 		while(itKeys.hasNext()){
-			vRet.add(this.hmWorkflowTemplates.get(itKeys.next()).getName());
+			vRet.add(this.hmWorkflows.get(itKeys.next()).getName());
 		}
 		return vRet;
 	}
@@ -118,8 +118,8 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getExperimentWorkflow(long)
 	 */
 	public ExperimentWorkflow getExperimentWorkflow(long lWorkflowEntityID){
-		if(this.hmWorkflowTemplates.containsKey(lWorkflowEntityID)){
-			return new ExperimentWorkflowImpl(this.hmWorkflowTemplates.get(lWorkflowEntityID));
+		if(this.hmWorkflows.containsKey(lWorkflowEntityID)){
+			return new ExperimentWorkflowImpl(this.hmWorkflows.get(lWorkflowEntityID));
 		}
 		return null;
 	}
@@ -129,14 +129,14 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 */
 	public List<String> getAllWorkflowNames(int experimentType) {
 		//updateIndex
-		hmWorkflowTemplates = queryAllWorkflows();
+		hmWorkflows = queryAllWorkflows();
 		//Info: <TemplateID,TemplateName>
 		Vector<String> vRet = new Vector<String>();
-		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
+		Iterator<Long> itKeys = this.hmWorkflows.keySet().iterator();
 		while(itKeys.hasNext()){
 			long lKey = itKeys.next();
-			if(this.hmWorkflowTemplates.get(lKey).getExperimentType()==experimentType){
-				vRet.add(this.hmWorkflowTemplates.get(lKey).getName());
+			if(this.hmWorkflows.get(lKey).getExperimentType()==experimentType){
+				vRet.add(this.hmWorkflows.get(lKey).getName());
 			}
 		}
 		return vRet;
@@ -147,16 +147,27 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	 */
 	public Collection<Workflow> getAllWorkflows(int experimentType) {
 		//updateIndex
-		hmWorkflowTemplates = queryAllWorkflows();
+		hmWorkflows = queryAllWorkflows();
 		Vector<Workflow> vRet = new Vector<Workflow>();
-		Iterator<Long> itKeys = this.hmWorkflowTemplates.keySet().iterator();
+		Iterator<Long> itKeys = this.hmWorkflows.keySet().iterator();
 		while(itKeys.hasNext()){
 			long lKey = itKeys.next();
-			if(this.hmWorkflowTemplates.get(lKey).getExperimentType() == experimentType){
-				vRet.add(this.hmWorkflowTemplates.get(lKey));
+			if(this.hmWorkflows.get(lKey).getExperimentType() == experimentType){
+				vRet.add(this.hmWorkflows.get(lKey));
 			}
 		}
 		return vRet;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getWorkflow(int)
+	 */
+	public Workflow getWorkflow(int workflowID) {
+		if(this.hmWorkflows.containsKey(workflowID)){
+			return this.hmWorkflows.get(workflowID);
+		}
+		return null;
 	}
 	
 	/**

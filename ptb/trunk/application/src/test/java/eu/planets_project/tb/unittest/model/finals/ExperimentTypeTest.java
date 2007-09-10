@@ -36,6 +36,25 @@ public class ExperimentTypeTest extends TestCase{
 			if (fields[i].getName().startsWith("EXPERIMENT_TYPE")){
 				String sVariableName = fields[i].getName();
 				
+				if (sVariableName.equals(sRetName)){
+					bFound = true;
+				}
+			}
+		}
+		assertTrue(bFound);
+	}
+	
+	
+	public void testGetExpeirmentTypeNamePrettyPrint(){
+		ExperimentTypes types = new ExperimentTypesImpl();
+		String sRetName = types.getExpeirmentTypeName(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION, true);
+		
+		Field[] fields = new ExperimentTypesImpl().getClass().getFields();
+		boolean bFound = false;
+		for(int i=0; i<fields.length; i++){
+			if (fields[i].getName().startsWith("EXPERIMENT_TYPE")){
+				String sVariableName = fields[i].getName();
+				
 				if(sRetName.contains(" ")){
 					StringTokenizer tokens = new StringTokenizer(sRetName," ",true);
 					String sBuildVariableName = new String();
@@ -68,8 +87,8 @@ public class ExperimentTypeTest extends TestCase{
 			if (fields[i].getName().startsWith("EXPERIMENT_TYPE")){
 				String sVariableName = fields[i].getName();
 				
-				//now use the method that extracts the name from the variable name
-				List<String> vTypes = types.getAlLAvailableExperimentTypesNames();
+				//now use the method that extracts the pretty print name from the variable name
+				List<String> vTypes = types.getAlLAvailableExperimentTypesNames(true);
 				assertTrue(vTypes.size()>0);
 				
 				Iterator<String> itTypes = vTypes.iterator();

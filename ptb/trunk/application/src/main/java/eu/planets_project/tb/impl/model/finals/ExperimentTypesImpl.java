@@ -20,41 +20,68 @@ public class ExperimentTypesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#getAlLAvailableExperimentTypesNames()
 	 */
-	public List<String> getAlLAvailableExperimentTypesNames() {
+	public List<String> getAlLAvailableExperimentTypesNames(boolean bPrettyPrint) {
+		
+		List<String> vret = new Vector<String>();
+		//get the pretty print name of the variable i.e. cut Experiment_Type and replace _ with ' '
+		if(bPrettyPrint){
+			//get all fields of the ExperimentTypes Class via reflection
+			Field[] fields = this.getClass().getFields();
+			for(int i=0; i<fields.length; i++){
+				if (fields[i].getName().startsWith("EXPERIMENT_TYPE")){
+					String sVariableName = fields[i].getName();
+					StringTokenizer tokenizer = new StringTokenizer(sVariableName,"_",false);
+					int iTokens = tokenizer.countTokens();
+					if(tokenizer.countTokens()>2){
+						if(tokenizer.nextToken().equals("EXPERIMENT")){
+							if(tokenizer.nextToken().equals("TYPE")){
+								String sToken = new String();
+								for(int j=2;j<iTokens;j++){
+									//check if only one token
+									if(iTokens-j==1){
+										sToken += tokenizer.nextToken();
+									}else{
+										sToken += tokenizer.nextToken()+" ";
+									}
+								
+								}
+								//now add the String an return the value;
+								//now add the name without the "EXPERIMENT_TYPE" prefix
+								vret.add(sToken);
+							}
+						}
+					}
+				
+				}
+			}
+		}
+		else{
+		//return the variable name which is used to query the reflection's value
+			vret = getAlLAvailableExperimentTypesNames();
+		}
+		return vret;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#getAlLAvailableExperimentTypesNames()
+	 */
+	public List<String> getAlLAvailableExperimentTypesNames(){
 		Vector<String> vret = new Vector<String>();
 		//get all fields of the ExperimentTypes Class via reflection
 		Field[] fields = this.getClass().getFields();
 		for(int i=0; i<fields.length; i++){
 			if (fields[i].getName().startsWith("EXPERIMENT_TYPE")){
-				String sVariableName = fields[i].getName();
-				StringTokenizer tokenizer = new StringTokenizer(sVariableName,"_",false);
-				int iTokens = tokenizer.countTokens();
-				if(tokenizer.countTokens()>2){
-					if(tokenizer.nextToken().equals("EXPERIMENT")){
-						if(tokenizer.nextToken().equals("TYPE")){
-							String sToken = new String();
-							for(int j=2;j<iTokens;j++){
-								//check if only one token
-								if(iTokens-j==1){
-									sToken += tokenizer.nextToken();
-								}else{
-									sToken += tokenizer.nextToken()+" ";
-								}
-								
-							}
-							//now add the String an return the value;
-							//now add the name without the "EXPERIMENT_TYPE" prefix
-							vret.addElement(sToken);
-						}
-					}
-				}
-				
+				//now add the name without the "EXPERIMENT_TYPE" prefix
+				vret.add(fields[i].getName());
 			}
 		}
 		return vret;
 	}
+	
 
 	/* (non-Javadoc)
+	 * Note: not the pretty print name
 	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#getExperimentTypeID(java.lang.String)
 	 */
 	public int getExperimentTypeID(String sTypeName) {
@@ -89,44 +116,74 @@ public class ExperimentTypesImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#getExperimentTypeName(int)
 	 */
+	public String getExpeirmentTypeName(int typeID, boolean bPrettyPrint){
+		String sRet = null;
+		
+		//get the pretty print name of the variable i.e. cut Experiment_Type and replace _ with ' '
+		if(bPrettyPrint){
+			//get all fields of the ExperimentTypes Class via reflection
+			Field[] fields = this.getClass().getFields();
+			for(int i=0; i<fields.length; i++){
+				if (fields[i].getName().startsWith("EXPERIMENT_TYPE")){
+					int iValue;
+					try {
+						iValue = fields[i].getInt(fields[i]);
+					
+						//check if this value is the typeID whe're looking for
+						if(iValue==typeID){
+							//now parse the name without the '_'
+							sRet = fields[i].getName();
+							String sVariableName = fields[i].getName();
+							StringTokenizer tokenizer = new StringTokenizer(sVariableName,"_",false);
+							int iTokens = tokenizer.countTokens();
+							if(tokenizer.countTokens()>2){
+								if(tokenizer.nextToken().equals("EXPERIMENT")){
+									if(tokenizer.nextToken().equals("TYPE")){
+										String sToken = new String();
+										for(int j=2;j<iTokens;j++){
+											//check if only one token
+											if(iTokens-j==1){
+												sToken += tokenizer.nextToken();
+											}else{
+												sToken += tokenizer.nextToken()+" ";
+											}
+											
+										}
+										//now add the String an return the value;
+										//now add the name without the "EXPERIMENT_TYPE" prefix
+										return sRet = sToken;
+									}
+								}
+							}
+						}
+					
+					} catch (IllegalArgumentException e) {
+						// TODO ADD Logging Statement
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO ADD Logging Statement
+						e.printStackTrace();
+					}
+
+				}
+			}
+		}
+		else{
+			//return the variable name which is used to query the reflection's value
+			sRet = getExperimentTypeName(typeID);
+		}
+		return sRet;
+	}
+	
 	public String getExperimentTypeName(int typeID) {
 		String sRet = null;
 		//get all fields of the ExperimentTypes Class via reflection
 		Field[] fields = this.getClass().getFields();
 		for(int i=0; i<fields.length; i++){
 			if (fields[i].getName().startsWith("EXPERIMENT_TYPE")){
-				int iValue;
 				try {
-					iValue = fields[i].getInt(fields[i]);
-					
-					//check if this value is the typeID whe're looking for
-					if(iValue==typeID){
-						//now parse the name without the '_'
-						sRet = fields[i].getName();
-						String sVariableName = fields[i].getName();
-						StringTokenizer tokenizer = new StringTokenizer(sVariableName,"_",false);
-						int iTokens = tokenizer.countTokens();
-						if(tokenizer.countTokens()>2){
-							if(tokenizer.nextToken().equals("EXPERIMENT")){
-								if(tokenizer.nextToken().equals("TYPE")){
-									String sToken = new String();
-									for(int j=2;j<iTokens;j++){
-										//check if only one token
-										if(iTokens-j==1){
-											sToken += tokenizer.nextToken();
-										}else{
-											sToken += tokenizer.nextToken()+" ";
-										}
-											
-									}
-									//now add the String an return the value;
-									//now add the name without the "EXPERIMENT_TYPE" prefix
-									return sRet = sToken;
-								}
-							}
-						}
-					}
-					
+					fields[i].getInt(fields[i]);
+					sRet = fields[i].getName();
 				} catch (IllegalArgumentException e) {
 					// TODO ADD Logging Statement
 					e.printStackTrace();
@@ -134,11 +191,11 @@ public class ExperimentTypesImpl implements
 					// TODO ADD Logging Statement
 					e.printStackTrace();
 				}
-
 			}
 		}
 		return sRet;
 	}
+					
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.finals.ExperimentTypes#getAlLAvailableExperimentTypeIDs()
@@ -174,5 +231,7 @@ public class ExperimentTypesImpl implements
 		Vector<Integer> itGivenTypeIDs = (Vector<Integer>)this.getAlLAvailableExperimentTypeIDs();
 		return itGivenTypeIDs.contains(typeID);
 	}
+
+
 
 }

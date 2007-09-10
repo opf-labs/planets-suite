@@ -19,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -83,11 +84,17 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			root = doc.getDocumentElement();
 			
 			//DELETE
-			File f_test = new File("BenchmarkGoals.xml");
-			System.out.println("Can read? "+f_test.canRead());
-			System.out.println("abs path "+f_test.getAbsolutePath());
-			System.out.println("can path "+f_test.getCanonicalPath());
+			try{
+				System.out.println("BenchmarkGoalshandler1");
+			//java.net.URL url = getClass().getResource("eu/planets_project/tb/impl/BenchmarkGoals.xml");
+			java.io.InputStream input = getClass().getClassLoader().getResourceAsStream("eu/planets_project/tb/impl/BenchmarkGoals.xml");
 			
+			System.out.println("Reading: "+input.read());
+			System.out.println("BenchmarkGoalshandler2");
+			
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 			//END DELETE
 			
 			//read Category Names (e.g. Text, Image, etc.)

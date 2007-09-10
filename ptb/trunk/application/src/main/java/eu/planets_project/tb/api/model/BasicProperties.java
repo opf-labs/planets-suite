@@ -56,9 +56,6 @@ public interface BasicProperties{
 	public void setPurpose(String sPurpose);
 	public String getPurpose();
 	
-	public void setSpecificFocus(String sFocus);
-	public String getSpecificFocus();
-	
 	public void setIndication(String sDescription);
 	public String getIndication();
 	

@@ -23,6 +23,13 @@ public interface ExperimentTypes {
 	public List<String> getAlLAvailableExperimentTypesNames();
 	
 	/**
+	 * This method returns a pretty print version of the Experiment_Type variable name
+	 * @param bPrettyPrint: true: pretty print name of Experiment Type
+	 * @return
+	 */
+	public List<String> getAlLAvailableExperimentTypesNames(boolean bPrettyPrint);
+	
+	/**
 	 * This method returns the experimen type's values. e.g.
 	 * 0,1,2,3. This method may be used to check if a given ID is within the range of possible ones.
 	 * 
@@ -43,6 +50,14 @@ public interface ExperimentTypes {
 	 * @return full corresponding variable name. e.g. EXPERIMENT_TYPE_EMULATION
 	 */
 	public String getExperimentTypeName(int iTypeID);
+	
+	/**
+	 * This method returns a pretty print version of the Experiment_Type variable name
+	 * @param iTypeID
+	 * @param bPrettyPrint
+	 * @return
+	 */
+	public String getExpeirmentTypeName(int iTypeID, boolean bPrettyPrint);
 	
 	/**
 	 * Checks if a given TypeID is within the given range of known and valid IDs

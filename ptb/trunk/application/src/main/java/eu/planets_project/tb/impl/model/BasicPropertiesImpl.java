@@ -35,7 +35,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	@GeneratedValue
 	private long id;
 	private String sConsiderations, sContaectAddress, sContactMail, sContactName, sContactTel;
-	private String sExpName, sFocus, sIndication, sPurpose, sScope, sSpecificFocus, sSummary;
+	private String sExpName, sFocus, sIndication, sPurpose, sScope, sSummary;
 	private String sExperimenterID, sExternalReferenceID;
 	private boolean bFormal;
 	private int iExperimentApproach;
@@ -176,13 +176,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	public String getScope() {
 		return sScope;
 	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.BasicProperties#getSpecificFocus()
-	 */
-	public String getSpecificFocus() {
-		return sSpecificFocus;
-	}
+	
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getSummary()
@@ -439,12 +433,6 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		this.sScope = scope;
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.BasicProperties#setSpecificFocus(java.lang.String)
-	 */
-	public void setSpecificFocus(String focus) {
-		this.sSpecificFocus = focus;
-	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setSummary(java.lang.String)
@@ -703,7 +691,6 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		sIndication		= new String(); 
 		sPurpose		= new String(); 
 		sScope			= new String(); 
-		sSpecificFocus	= new String();
 		sSummary		= new String();
 		sExperimenterID = new String();
 		sExternalReferenceID = new String();
