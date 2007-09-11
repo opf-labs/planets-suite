@@ -31,6 +31,6 @@ public interface WorkflowHandler {
 	
 	public ExperimentWorkflow getExperimentWorkflow(long lWorkflowEntityID);
 	
-	public Workflow getWorkflow(int workflowID);
+	public Workflow getWorkflow(long workflowID);
 
 }

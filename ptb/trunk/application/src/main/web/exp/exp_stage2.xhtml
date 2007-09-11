@@ -1,43 +1,89 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
-  <ui:define name="title">
+	<ui:define name="title">
         #{res.title} - #{ExperimentBean.ename}: #{res['exp_stage2.pageTitle']}
   </ui:define>
 
-<ui:define name="header">
-	<ui:include src="/WEB-INF/templates/header.xhtml">
-		<ui:param name="page" value="new_exp"/>
-	</ui:include>
-	<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>	
-</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/templates/header.xhtml">
+			<ui:param name="page" value="new_exp" />
+		</ui:include>
+		<script type="text/javascript"
+			src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>
+	</ui:define>
 
-  <ui:define name="content">
-<div id="mainwrapper">
-<div id="maincol">
-<div class="innertubemain">
+	<ui:define name="content">
+		<div id="mainwrapper">
+		<div id="maincol">
+		<div class="innertubemain">
+			<h:form id="selectExpTypeForm">
+				<fieldset>
+					<legend>STEP 1: Select Experiment Type</legend>
+					<p>Your choice of experiment type will affect the tools and data
+					that will be made available.<br />
+					You may return to this page to choose a difference experiment type at
+					any point until you submit your experiment for execution.</p>
+					<p>
+						<h:selectOneMenu onchange="this.form.submit()" 
+						value="#{ExperimentBean.etype}"
+						valueChangeListener="#{Manager_Backing.changedExpTypeEvent}"
+						immediate="true">
+							<f:selectItems value="#{Manager_Backing.availableExperimentTypes}" />
+						</h:selectOneMenu>
+						<h:commandButton value="#{res['button.go']}"
+						action="#{Manager_Backing.changedExpType}" />
+					</p>
+				</fieldset>
+			</h:form>
+			<h:form id="selectWorkflowForm" rendered="#{not empty ExperimentBean.etype}">
+				<fieldset>
+					<legend>STEP 2: Specify Workflow</legend>
+					<h:selectOneMenu
+					onchange="this.form.submit()"
+					value="#{ExperimentBean.workflowTypeId}"
+					valueChangeListener="#{Manager_Backing.changedExpWorkflowEvent}"
+					immediate="true">
+						<f:selectItems value="#{Manager_Backing.availableWorkflows}" />
+					</h:selectOneMenu>
+					<h:commandButton value="#{res['button.go']}"
+					action="#{Manager_Backing.changedExpWorkflow}" />
+				</fieldset>
+			</h:form>
+			<h:form id="configureExpWorkflowForm" rendered="#{not empty Workflow}">
+				<fieldset>
+					<legend>STEP 3: Configure Workflow</legend>
+					<b>Workflow name: </b>#{Workflow.name}<br/>
+					<b>Workflow tooltype: </b>#{Workflow.toolType}<br/>
+					<b>Input mimetypes: </b> #{Workflow.requiredInputMIMETypes}<br/>
+					<b>Workflow Services: </b> <br/>
+					<t:dataTable id="dataTable" var="svc" value="#{Workflow.workflowServices}"
+	                  preserveDataModel="true"
+    	              rows="4"
+        	          rowId="#{svc.serviceName}"
+            	      cellpadding="2"
+                	  cellspacing="0"
+	                  border="1">
+				        <t:column>
+            				<f:facet name="header">ServiceName</f:facet>
+			            	<h:outputText value="#{svc.serviceName}" />
+			        	</t:column>
+				        <t:column>
+            				<f:facet name="header">WSDL</f:facet>
+			            	<h:outputText value="#{svc.WSDL}" />
+			        	</t:column>			        	
+					</t:dataTable>
+					<b>Output mimetypes: </b> #{Workflow.requiredOutputMIMETypes}<br/>
+					<h:commandButton value="#{res['button.save']}"
+						action="#{Manager_Backing.updateWorkflowTypeAction}" />
+				</fieldset>
+			</h:form>
 
-                <h:form>
-                    <fieldset>
-                        <legend>Select Experiment Type</legend>
-                        
-                        <p>
-                        	<h:selectOneMenu value="#{ExperimentBean.etype}" >
-                        		<f:selectItems value="#{Manager_Backing.availableExperimentTypes}" />
-                        	</h:selectOneMenu>
-                        </p>
-                    </fieldset>
-                    		<p>
-            <h:commandButton value="#{res['button.continue']}" 
-            action="#{Manager_Backing.updateExpTypeAction}"/>		
-		</p>
-                </h:form>
-		<p>Your choice of experiment type will affect the tools and data that will be made available.<br />
-                You may return to this page to choose a difference experiment type at any point until you submit your experiment for execution.</p>
 		<p>&#160;</p>
 		<p>&#160;</p>
 
@@ -52,41 +98,38 @@
 
 
 
-</div>
-</div>
-</div>
+		</div>
+		</div>
+		</div>
 
 
-<div id="leftcol">
+		<div id="leftcol">
 
-<h3 class="leftcol">Experiment Progress</h3>
-<div class="innertube">
-<h:form>
-<ul class="exp">
-	<li class="exp">
-		<h:commandLink action="new_experiment" styleClass="exp_done">
-			<h:outputText value="#{res['new_exp.stage1']}"/>
-		</h:commandLink>
-	</li>
-	<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage2']}</a></li>
-</ul>
-<ul class="sub_exp">
-	<li class="exp_nd2"> #{res['new_exp.stage2a']}</li>
-	<li class="exp_nd2"> #{res['new_exp.stage2b']}</li>
-</ul>
-<ul class="exp">
-	<li class="exp_nd"> #{res['new_exp.stage3']}</li>
-	<li class="exp_nd"> #{res['new_exp.stage4']}</li>
-	<li class="exp_nd"> #{res['new_exp.stage5']}</li>
-	<li class="exp_nd"> #{res['new_exp.stage6']}</li>
-</ul>
-</h:form>
-</div>
-</div>
+		<h3 class="leftcol">Experiment Progress</h3>
+		<div class="innertube"><h:form>
+			<ul class="exp">
+				<li class="exp"><h:commandLink action="new_experiment"
+					styleClass="exp_done">
+					<h:outputText value="#{res['new_exp.stage1']}" />
+				</h:commandLink></li>
+				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage2']}</a></li>
+			</ul>
+			<ul class="sub_exp">
+				<li class="exp_nd2">#{res['new_exp.stage2a']}</li>
+				<li class="exp_nd2">#{res['new_exp.stage2b']}</li>
+			</ul>
+			<ul class="exp">
+				<li class="exp_nd">#{res['new_exp.stage3']}</li>
+				<li class="exp_nd">#{res['new_exp.stage4']}</li>
+				<li class="exp_nd">#{res['new_exp.stage5']}</li>
+				<li class="exp_nd">#{res['new_exp.stage6']}</li>
+			</ul>
+		</h:form></div>
+		</div>
 
-  </ui:define>
-  <ui:define name="footer">
-		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml" />
 	</ui:define>
 </ui:composition>
 

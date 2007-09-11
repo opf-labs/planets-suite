@@ -34,7 +34,7 @@ public class ExperimentBean {
     private String econsiderations = new String();
     private String etype;
     private ExperimentWorkflow eworkflow;    
-    
+    private String workflowtypeid;
     public ExperimentBean() {
     	
     }
@@ -56,6 +56,7 @@ public class ExperimentBean {
     	this.eformality = props.isExperimentFormal();    	
     	this.etype = String.valueOf(expsetup.getExperimentTypeID());
     	this.eworkflow = exp.getExperimentSetup().getExperimentWorkflow();
+    	
     }
     
     
@@ -70,7 +71,12 @@ public class ExperimentBean {
     public String getWorkflowTypeId() {
     	if (eworkflow !=null)
     		return String.valueOf(eworkflow.getWorkflow().getEntityID());
-    	return null;
+    	else
+    		return this.workflowtypeid;
+    }
+    
+    public void setWorkflowTypeId(String wftypeId) {
+    	this.workflowtypeid = wftypeId;
     }
     
     public void setID(long id) {

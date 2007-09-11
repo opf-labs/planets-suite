@@ -85,7 +85,7 @@ public class Manager {
         return "success";
     }
     
-    public String updateExpTypeAction() {
+   /* public String updateExpTypeAction() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
@@ -95,7 +95,7 @@ public class Manager {
         
         testbedMan.updateExperiment(exp);
     	return "success";
-    }
+    }*/
       
     public String updateWorkflowTypeAction() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -115,17 +115,32 @@ public class Manager {
     }
     
     public void changedExpWorkflowEvent(ValueChangeEvent ce) {
-    	int id = Integer.parseInt(ce.getNewValue().toString());
-    	Workflow wf = null;
-    	Iterator iter = WorkflowHandlerImpl.getInstance().getAllWorkflows().iterator();
-        while (iter.hasNext()) {
-        	wf = (Workflow)iter.next();
-        	if (wf.getEntityID()==id)
-        		break;
-        }
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		ctx.getExternalContext().getSessionMap().put("Workflow", wf);
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	expBean.setWorkflowTypeId(ce.getNewValue().toString());
+    	this.changedExpWorkflow();
     }
+    
+    public void changedExpWorkflow() {
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Workflow wf = WorkflowHandlerImpl.getInstance().getWorkflow(Long.parseLong(expBean.getWorkflowTypeId()));
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+		ctx.getExternalContext().getSessionMap().put("Workflow", wf);    	
+    }
+    
+    public void changedExpTypeEvent(ValueChangeEvent ce) {
+    	int id = Integer.parseInt(ce.getNewValue().toString());  
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	expBean.setEtype(String.valueOf(id));
+    	//updateExpTypeAction();
+    	changedExpType();
+    }
+    
+    // when type is changed, remove workflow etc. from session 
+    public void changedExpType() {
+    	//reset workflow-display
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");    	
+    }
+    
 
     public Map<String,String> getAvailableExperimentTypes() {
         ExperimentTypesImpl types = new ExperimentTypesImpl();    
@@ -135,13 +150,15 @@ public class Manager {
         for (int i=0;i<passtypes.size();i++) {
         	typeMap.put(types.getExperimentTypeName(passtypes.get(i)),String.valueOf(passtypes.get(i)) );
         }
+        typeMap.put("dummy","0");
         return typeMap;
     }
     
     public Map<String,String> getAvailableWorkflows() {
     	WorkflowHandlerImpl wfh = WorkflowHandlerImpl.getInstance();
     	TreeMap<String,String> wfMap = new TreeMap<String,String>();
-    	Iterator iter = wfh.getAllWorkflows().iterator();
+       	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Iterator iter = wfh.getAllWorkflows(Integer.parseInt(expBean.getEtype())).iterator();
     	while(iter.hasNext()) {
     		Workflow wf = (Workflow)iter.next();
     		wfMap.put(wf.getName(),String.valueOf(wf.getEntityID()));

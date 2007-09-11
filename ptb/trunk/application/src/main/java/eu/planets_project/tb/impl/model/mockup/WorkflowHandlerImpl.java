@@ -163,7 +163,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getWorkflow(int)
 	 */
-	public Workflow getWorkflow(int workflowID) {
+	public Workflow getWorkflow(long workflowID) {
 		if(this.hmWorkflows.containsKey(workflowID)){
 			return this.hmWorkflows.get(workflowID);
 		}
@@ -243,11 +243,11 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		
 		//Create WorkflowTemplate2: consists of one MigrationService
 		WorkflowImpl template2 = new WorkflowImpl();
-		template2.setName("SimpleMigrationWorkflow2");
+		template2.setName("EmulationWorkflow2");
 		template2.setToolType("Tiff2Jpeg");
 		template2.addRequiredInputMIMEType("image/tiff");
 		template2.addRequiredOutputMIMEType("image/jpeg");
-		template2.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
+		template2.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_EMULATION);
 		//create services for workflow
 		Service service1 = new ServiceImpl();
 			service1.setServiceName("Tiff2Jpeg Action Converter");
