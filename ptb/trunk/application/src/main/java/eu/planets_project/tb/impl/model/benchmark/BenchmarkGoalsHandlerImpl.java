@@ -9,6 +9,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
+import javax.ejb.Stateless;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -39,7 +40,7 @@ import java.util.Vector;
  * 	</Text>
  * </BenachmarkGoals>
  **/
-
+@Stateless
 public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	
 	private List<BenchmarkGoal> benchmarkGoals = new Vector<BenchmarkGoal>();
@@ -80,22 +81,10 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 		try{
 			DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = dbfactory.newDocumentBuilder();
-			Document doc = builder.parse(new File("C:/DATA/Implementation/SVN_Planets/ptb/trunk/application/src/main/resources/eu/planets_project/tb/impl/BenchmarkGoals.xml"));
+			//Document doc = builder.parse(new File("C:/DATA/Implementation/SVN_Planets/ptb/trunk/application/src/main/resources/eu/planets_project/tb/impl/BenchmarkGoals.xml"));
+			java.io.InputStream BenchmarkFile = getClass().getClassLoader().getResourceAsStream("eu/planets_project/tb/impl/BenchmarkGoals.xml");
+			Document doc = builder.parse(BenchmarkFile);
 			root = doc.getDocumentElement();
-			
-			//DELETE
-			try{
-				System.out.println("BenchmarkGoalshandler1");
-			//java.net.URL url = getClass().getResource("eu/planets_project/tb/impl/BenchmarkGoals.xml");
-			java.io.InputStream input = getClass().getClassLoader().getResourceAsStream("eu/planets_project/tb/impl/BenchmarkGoals.xml");
-			
-			System.out.println("Reading: "+input.read());
-			System.out.println("BenchmarkGoalshandler2");
-			
-			}catch(Exception e){
-				e.printStackTrace();
-			}
-			//END DELETE
 			
 			//read Category Names (e.g. Text, Image, etc.)
 			this.vCategoryNames = this.parseCategoryNames();
@@ -104,8 +93,11 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			while(itCategoryNames.hasNext())
 				this.parseBenchmarkGoals(itCategoryNames.next());
 			
+			BenchmarkFile.close();
+			
 		}catch(Exception e){
 			//TODO throw new exception and/or write log statement
+			System.out.println("BuildBenchmarkGoalsFromXML failed");
 		}
 	}
 	

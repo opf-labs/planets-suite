@@ -21,13 +21,13 @@ public interface WorkflowHandler {
 	 * @param experimentType
 	 * @return
 	 */
-	public List<String> getAllWorkflowNames(int experimentType);
+	public List<String> getAllWorkflowNames(String experimentTypeID);
 	/**
 	 * Gets all available Workflows of a certain given Experiment type e.g. ExperimentTypes.EXPERIMENT_TYPE_EMULATION
 	 * @param experimentType
 	 * @return
 	 */
-	public Collection<Workflow> getAllWorkflows(int experimentType);
+	public Collection<Workflow> getAllWorkflows(String experimentType);
 	
 	public ExperimentWorkflow getExperimentWorkflow(long lWorkflowEntityID);
 	

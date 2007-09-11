@@ -15,15 +15,16 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.persistency.WorkflowPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
 
@@ -127,7 +128,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getAllWorkflowNames(int)
 	 */
-	public List<String> getAllWorkflowNames(int experimentType) {
+	public List<String> getAllWorkflowNames(String experimentType) {
 		//updateIndex
 		hmWorkflows = queryAllWorkflows();
 		//Info: <TemplateID,TemplateName>
@@ -135,7 +136,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		Iterator<Long> itKeys = this.hmWorkflows.keySet().iterator();
 		while(itKeys.hasNext()){
 			long lKey = itKeys.next();
-			if(this.hmWorkflows.get(lKey).getExperimentType()==experimentType){
+			if(this.hmWorkflows.get(lKey).getExperimentType().equals(experimentType)){
 				vRet.add(this.hmWorkflows.get(lKey).getName());
 			}
 		}
@@ -145,14 +146,14 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.WorkflowHandler#getAllWorkflows(int)
 	 */
-	public Collection<Workflow> getAllWorkflows(int experimentType) {
+	public Collection<Workflow> getAllWorkflows(String experimentTypeID) {
 		//updateIndex
 		hmWorkflows = queryAllWorkflows();
 		Vector<Workflow> vRet = new Vector<Workflow>();
 		Iterator<Long> itKeys = this.hmWorkflows.keySet().iterator();
 		while(itKeys.hasNext()){
 			long lKey = itKeys.next();
-			if(this.hmWorkflows.get(lKey).getExperimentType() == experimentType){
+			if(this.hmWorkflows.get(lKey).getExperimentType().equals(experimentTypeID)){
 				vRet.add(this.hmWorkflows.get(lKey));
 			}
 		}
@@ -224,7 +225,8 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		template1.addRequiredInputMIMEType("application/msword");
 		template1.addRequiredOutputMIMEType("text/xml");
 		template1.addRequiredOutputMIMEType("application/xml");
-		template1.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
+		AdminManager manager = AdminManagerImpl.getInstance();
+		template1.setExperimentType(manager.getExperimentTypeID("simple migration"));
 		//create services for workflow
 		Service service0 = new ServiceImpl();
 			service0.setServiceName("Office Converter");
@@ -247,7 +249,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		template2.setToolType("Tiff2Jpeg");
 		template2.addRequiredInputMIMEType("image/tiff");
 		template2.addRequiredOutputMIMEType("image/jpeg");
-		template2.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_EMULATION);
+		template2.setExperimentType(manager.getExperimentTypeID("simple migration"));
 		//create services for workflow
 		Service service1 = new ServiceImpl();
 			service1.setServiceName("Tiff2Jpeg Action Converter");

@@ -10,16 +10,16 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.persistency.WorkflowPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
-import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
-import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 import junit.framework.TestCase;
 
 public class WorkflowHandlerTest extends TestCase{
@@ -63,7 +63,8 @@ public class WorkflowHandlerTest extends TestCase{
 	
 	
 	public void testGetWorkflowsPerType(){
-		Iterator<Workflow> workflows = wfhandler.getAllWorkflows(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION).iterator();
+		Iterator<Workflow> workflows = wfhandler.getAllWorkflows(
+				AdminManagerImpl.getInstance().getExperimentTypeID("simple migration")).iterator();
 		boolean bFound = false;
 		while(workflows.hasNext()){
 			if(workflows.next().getEntityID() == this.testWorkflowID){
@@ -75,7 +76,8 @@ public class WorkflowHandlerTest extends TestCase{
 	
 	
 	public void testGetWorkflowNamesPerType(){
-		Iterator<String> workflows = wfhandler.getAllWorkflowNames(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION).iterator();
+		Iterator<String> workflows = wfhandler.getAllWorkflowNames(
+				AdminManagerImpl.getInstance().getExperimentTypeID("simple migration")).iterator();
 		boolean bFound = false;
 		while(workflows.hasNext()){
 			if(workflows.next().equals(this.testWorkflowName)){
@@ -128,7 +130,8 @@ public class WorkflowHandlerTest extends TestCase{
 		workflow_test.setToolType("Tiff2Jpeg");
 		workflow_test.addRequiredInputMIMEType("image/tiff");
 		workflow_test.addRequiredOutputMIMEType("image/jpeg");
-		workflow_test.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
+		AdminManager manager = AdminManagerImpl.getInstance();
+		workflow_test.setExperimentType(manager.getExperimentTypeID("simple migration"));
 		//create services for workflow
 		Service service1 = new ServiceImpl();
 			service1.setServiceName("Tiff2Jpeg Action Converter");

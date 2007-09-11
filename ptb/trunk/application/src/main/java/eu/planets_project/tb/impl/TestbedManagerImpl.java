@@ -187,13 +187,13 @@ public class TestbedManagerImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentsOfType(int)
 	 */
-	public Collection<Experiment> getAllExperimentsOfType(int typeID) {
+	public Collection<Experiment> getAllExperimentsOfType(String sExperimentTypeID) {
 		Vector<Experiment> vRet = new Vector<Experiment>();
 		Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
 		while(itExpIDs.hasNext()){
 			long helper = itExpIDs.next();
 			Experiment exp = this.hmAllExperiments.get(helper);
-			if (exp.getExperimentSetup().getExperimentTypeID()==typeID){
+			if (exp.getExperimentSetup().getExperimentTypeID().equals(sExperimentTypeID)){
 				vRet.add(exp);
 			}
 		}

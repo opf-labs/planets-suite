@@ -3,8 +3,6 @@ package eu.planets_project.tb.api.model;
 import java.util.List;
 import java.util.Map;
 
-import eu.planets_project.tb.api.model.finals.ExperimentTypes;
-
 /**
  * @author alindley
  *
@@ -97,26 +95,22 @@ public interface BasicProperties{
 //	public void addInvolvedUsersWithSpecialExperimentRole(HashMap<Long,Vector<Integer>> hmUserIDsAndExperimentRoles);
 //	public void removeInvolvedUsersAndSpecialExperimentRole(HashMap<Long,Vector<Integer>> hmUserIDsAndExperimentRoles);
 	/**
-	 * Sets the approache's ID.
-	 * 0..for migration
-	 * 1..for emulation
+	 * Sets the approache's ID with an experimentType
 	 * @param iID
 	 */
-	public void setExperimentApproach(int iID);
+	public void setExperimentApproach(String sExperimentTypeID);
 	/**
 	 * Returns the approache's ID.
-	 * 0..for migration
-	 * 1..for emulation
 	 * @return
 	 */
-	public int getExperimentApproach();
+	public String getExperimentApproach();
 	/**
-	 * Returns the corresponding name for a given ID.
-	 * e.g. ExperimentTypes.EXPERIMENT_TYPE_SIMPLEMIGRATION 
+	 * Returns the corresponding name for a given ExperimentTypeID.
+	 * e.g. "simple migration" for "experimentTypes.simpleMigration" 
 	 * @param iID ExperimentApproach ID.
 	 * @return "migration", "emulation" or null
 	 */
-	public String getExperimentApproachName(int iID);
+	public String getExperimentApproachName(String experimentTypeID);
 	
 	public void setConsiderations(String sConsid);
 	public String getConsiderations();

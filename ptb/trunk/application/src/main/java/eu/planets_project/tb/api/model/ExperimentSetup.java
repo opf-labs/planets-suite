@@ -59,11 +59,11 @@ public interface ExperimentSetup extends ExperimentPhase{
 		//ExperimentType
 	/**
 	 * @param iTypeID
-	 * @see model.finals.ExperimentTypes
+	 * @see AdminManager.getExperimentTypeID
 	 */
-	public void setExperimentType(int iTypeID);
+	public void setExperimentType(String sexpTypeID);
 	public String getExperimentTypeName();
-	public int getExperimentTypeID();
+	public String getExperimentTypeID();
 	
 	
 	//Step 2:

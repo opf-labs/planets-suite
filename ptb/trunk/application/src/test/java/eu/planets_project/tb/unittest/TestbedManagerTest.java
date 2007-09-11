@@ -2,29 +2,31 @@ package eu.planets_project.tb.unittest;
 
 import java.util.GregorianCalendar;
 
+import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.unittest.model.ExperimentSetupTest;
-import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 import junit.framework.TestCase;
 
 public class TestbedManagerTest extends TestCase{
 	
 	private long expID1, expID2;
 	private TestbedManager manager;
+	private AdminManager adminManager;
 	
 	protected void setUp(){
 		manager = TestbedManagerImpl.getInstance();
+		adminManager = AdminManagerImpl.getInstance();
 		//create two new test Experiments
 		Experiment exp1 = (ExperimentImpl)manager.createNewExperiment();
 		expID1 = exp1.getEntityID();
-			
 		Experiment exp2 = (ExperimentImpl)manager.createNewExperiment();
 		expID2 = exp2.getEntityID();	
 		
@@ -177,15 +179,15 @@ public class TestbedManagerTest extends TestCase{
 		
 		//Test3:
 		int size3 = manager.getAllExperimentsOfType(
-				ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION).size();
+				adminManager.getExperimentTypeID("simple migration")).size();
 		Experiment exp_test3 = manager.createNewExperiment();
 		ExperimentSetup expSetup = new ExperimentSetupImpl();
-		expSetup.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
+		expSetup.setExperimentType(adminManager.getExperimentTypeID("simple migration"));
 		exp_test3.setExperimentSetup(expSetup);
 		manager.updateExperiment(exp_test3);
 		
 		assertEquals(size3+1,manager.getAllExperimentsOfType(
-				ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION).size());
+				adminManager.getExperimentTypeID("simple migration")).size());
 		
 		//now clean up the mess
 		manager.removeExperiment(exp_test3.getEntityID());
@@ -251,9 +253,8 @@ public class TestbedManagerTest extends TestCase{
 		int iNumb = manager.getNumberOfExperiments();
 		//now register a new Experiment
 		Experiment exp_test = manager.createNewExperiment();
-		
 		assertEquals(iNumb+1,manager.getNumberOfExperiments());
-		
+
 		//Test2:
 		//getNumberOfExperiments(String userID)
 		String sUserID = "Andrew";
@@ -270,19 +271,19 @@ public class TestbedManagerTest extends TestCase{
 		
 		//Number of Experiments for Experimenter should be +1
 		assertEquals(iNumbExperimenter1+1,manager.getNumberOfExperiments(sUserID, true));
-		//Number of Experiments for InvolvedUser should be +0
-		assertEquals(iNumbInvolved1,manager.getNumberOfExperiments(sUserID, false));
+		//Number of Experiments for InvolvedUser should be +1 as Experimenter is also set as involved user
+		assertEquals(iNumbInvolved1+1,manager.getNumberOfExperiments(sUserID, false));
 		
 		//Test2b:
 		int iNumbExperimenter2 = manager.getNumberOfExperiments(sUserID, true);
 		int iNumbInvolved2 = manager.getNumberOfExperiments(sUserID, false);
-		exp_test2 = manager.getExperiment(exp_test2.getEntityID());
-		expSetup = exp_test2.getExperimentSetup();
+		Experiment exp_test3 = manager.createNewExperiment();
+		expSetup = exp_test3.getExperimentSetup();
 		props = expSetup.getBasicProperties();
 		props.addInvolvedUser(sUserID);
 		expSetup.setBasicProperties(props);
-		exp_test2.setExperimentSetup(expSetup);
-		manager.updateExperiment(exp_test2);
+		exp_test3.setExperimentSetup(expSetup);
+		manager.updateExperiment(exp_test3);
 		
 		//Number of Experiments for Experimenter should be +0
 		assertEquals(iNumbExperimenter2,manager.getNumberOfExperiments(sUserID, true));
@@ -292,6 +293,7 @@ public class TestbedManagerTest extends TestCase{
 		//noew clean up the mess
 		manager.removeExperiment(exp_test.getEntityID());
 		manager.removeExperiment(exp_test2.getEntityID());
+		manager.removeExperiment(exp_test3.getEntityID());
 	}
 	
 	

@@ -9,17 +9,18 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
+import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.finals.TestbedRoles;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.test.model.SetupBasicPropertiesRemote;
-import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 
 import junit.framework.TestCase;
 
@@ -62,12 +63,14 @@ public class BasicPropertiesTest extends TestCase{
 	
 	public void testExperimentApproach(){
 		BasicProperties props = new BasicPropertiesImpl();
-		props.setExperimentApproach(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
-		assertEquals(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION, props.getExperimentApproach());
+		AdminManager adminManager = AdminManagerImpl.getInstance();
+		props.setExperimentApproach(
+				adminManager.getExperimentTypeID("simple migration"));
+		assertEquals(adminManager.getExperimentTypeID("simple migration"), props.getExperimentApproach());
 	
-		int iType = ExperimentTypes.EXPERIMENT_TYPE_COMPLEXWORKFLOW;
-		props.setExperimentApproach(iType);
-		assertEquals("EXPERIMENT_TYPE_COMPLEXWORKFLOW", props.getExperimentApproachName(iType));
+		String sTypeID = adminManager.getExperimentTypeID("complex workflow");
+		props.setExperimentApproach(sTypeID);
+		assertEquals("complex workflow", props.getExperimentApproachName(sTypeID));
 	}
 	
 	

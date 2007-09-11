@@ -44,8 +44,8 @@ public interface Workflow {
 	public String getToolType();
 	public void setToolType(String sToolType);
 	
-	public void setExperimentType(int iExperimentType);
-	public int getExperimentType();
+	public void setExperimentType(String sExperimentTypeID);
+	public String getExperimentType();
 	public String getExpeirmentTypeName();
 	
 	public boolean isValidWorkflow();

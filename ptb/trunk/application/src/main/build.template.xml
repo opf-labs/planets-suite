@@ -46,6 +46,8 @@
            <!--fileset dir="${junit.lib}">
             <include name="*.jar"/>
         </fileset--> 
+ 	<!--include our external resources as *.xml and *.props-->
+	<pathelement location="${basedir}/resources"/>
 	<pathelement location="${build.classes.dir}"/>
 	<!-- So that we can get jndi.properties for InitialContext -->
 	<pathelement location="${client.config}"/>
@@ -100,6 +102,7 @@
       </fileset>
       <fileset dir="${src.resources}/">
           <include name="eu/planets_project/tb/impl/BenchmarkGoals.xml"/>
+          <include name="eu/planets_project/tb/impl/BackendResources.properties"/>
       </fileset>
      </jar>
   </target>
@@ -128,13 +131,14 @@
   
   <target name="run.junittests">
     <junit fork="yes" haltonfailure="yes">
-		<!--test name="eu.planets_project.tb.unittest.model.BasicPropertiesTest" /-->
+		<test name="eu.planets_project.tb.unittest.model.BasicPropertiesTest" />
 		<!--test name="eu.planets_project.tb.unittest.model.benchmark.BenchmarkGoalHandlerTest" /-->
-		<!--test name="eu.planets_project.tb.unittest.TestbedManagerTest" /-->
+		<!--test name="eu.planets_project.tb.unittest.model.benchmark.BenchmarkGoalTest" /-->
+		<test name="eu.planets_project.tb.unittest.TestbedManagerTest" />
+		<test name="eu.planets_project.tb.unittest.AdminManagerTest" />
 		<!--test name="eu.planets_project.tb.unittest.model.ExperimentTest" /-->
 		<test name="eu.planets_project.tb.unittest.model.ExperimentSetupTest" />
 		<test name="eu.planets_project.tb.unittest.model.mockup.WorkflowHandlerTest" />
-		<test name="eu.planets_project.tb.unittest.model.finals.ExperimentTypeTest" />
 		<!--test name="eu.planets_project.tb.unittest.model.CommentBrowserTest" /-->
 		<!--test name="eu.planets_project.tb.unittest.wizzards.WizzardFirstStage" /-->
 		<formatter type="plain" usefile="false" />

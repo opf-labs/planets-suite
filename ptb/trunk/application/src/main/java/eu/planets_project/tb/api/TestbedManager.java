@@ -32,7 +32,7 @@ public interface TestbedManager {
 	 * @return
 	 */
 	public Collection<Experiment> getAllExperimentsOfUsers(String sUserID, boolean bIsExperimenter);
-	public Collection<Experiment> getAllExperimentsOfType(int iTypeID);
+	public Collection<Experiment> getAllExperimentsOfType(String sExperimentTypeID);
 	public Set<Long> getAllExperimentIDs();
 	public boolean containsExperiment(long expID);
 	public boolean isExperimentNameUnique(String sExpName);

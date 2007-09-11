@@ -24,6 +24,7 @@ import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
@@ -32,7 +33,6 @@ import eu.planets_project.tb.impl.model.benchmark.*;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
-import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 
@@ -196,7 +196,6 @@ public class ExperimentSetupTest extends TestCase{
 			assertTrue(expSetup_find1.getEntityID()>0);
 			
 			assertEquals(1,expSetup_find1.getAllAddedBenchmarkGoals().size());
-			System.out.println("Definition :"+expSetup_find1.getBenchmarkGoal("nop1").getDefinition());
 			assertEquals("nop1",expSetup_find1.getBenchmarkGoal("nop1").getID());
 			
 	
@@ -207,7 +206,7 @@ public class ExperimentSetupTest extends TestCase{
 		//TODO: add a samle experimentSetup
 		ExperimentSetup test_setup = new ExperimentSetupImpl();
 		test_setup.setStartDate(new GregorianCalendar());
-		test_setup.setExperimentType(ExperimentTypes.EXPERIMENT_TYPE_SIMPLE_MIGRATION);
+		test_setup.setExperimentType(AdminManagerImpl.getInstance().getExperimentTypeID("simple migration"));
 		return test_setup;
 	}
 	

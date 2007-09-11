@@ -16,11 +16,11 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-import eu.planets_project.tb.api.model.finals.ExperimentTypes;
+import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.services.mockups.Service;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
-import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
 
 /**
  * @author alindley
@@ -38,7 +38,7 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	private Vector<Service> vServiceWorkflow;  
 	private Vector<String> vInputMimeTypes, vOutputMimeTypes;
 	private String sWorkflowName, sToolType;
-	private int iExperimentType;
+	private String sExperimentTypeID;
 	private Vector<Service> vWorkflow;
 
 	/**
@@ -51,7 +51,7 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 		vWorkflow		= new Vector<Service>();
 		sWorkflowName = new String();
 		sToolType = new String();
-		iExperimentType = -1;
+		sExperimentTypeID = new String();
 	}
 
 	/* (non-Javadoc)
@@ -212,27 +212,31 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 		this.sToolType = toolType;
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#getExpeirmentTypeName()
 	 */
 	public String getExpeirmentTypeName() {
-		return new ExperimentTypesImpl().getExperimentTypeName(this.iExperimentType);
+		AdminManager manager = AdminManagerImpl.getInstance();
+		return manager.getExperimentTypeName(this.sExperimentTypeID);
 	}
+
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#getExperimentType()
 	 */
-	public int getExperimentType() {
-		return this.iExperimentType;
+	public String getExperimentType() {
+		return this.sExperimentTypeID;
 	}
 
+	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setExperimentType(int)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setExperimentType(java.lang.String)
 	 */
-	public void setExperimentType(int experimentType) {
-		ExperimentTypes types = new ExperimentTypesImpl();
-		if(types.checkExperimentTypeIDisValid(experimentType)){
-			this.iExperimentType = experimentType;
+	public void setExperimentType(String experimentTypeID) {
+		AdminManager manager = AdminManagerImpl.getInstance();
+		if(manager.getExperimentTypeIDs().contains(experimentTypeID)){
+			this.sExperimentTypeID = experimentTypeID;
 		}
 	}
 

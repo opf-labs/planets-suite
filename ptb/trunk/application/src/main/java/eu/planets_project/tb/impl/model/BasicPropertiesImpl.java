@@ -16,11 +16,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
-import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
 
 
 /**
@@ -38,14 +39,14 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	private String sExpName, sFocus, sIndication, sPurpose, sScope, sSummary;
 	private String sExperimenterID, sExternalReferenceID;
 	private boolean bFormal;
-	private int iExperimentApproach;
+	private String sExperimentApproach;
 	private long lExperimentStructureReference;
 	
 	private Vector<String> vExpObjectTypes, vExpToolTypes;
 	private Vector<Long> vRefExpIDs;
 	private Vector<String>vInvolvedUsers;
 	private HashMap<String,Vector<String>> hmLiteratureReference;
-	private HashMap<Long,Vector<Integer>> hmInvolvedUserSpecialExperimentRoles;
+	//private HashMap<Long,Vector<Integer>> hmInvolvedUserSpecialExperimentRoles;
 	
 	public BasicPropertiesImpl(){
 		
@@ -88,20 +89,21 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		return sContactTel;
 	}
 
+
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentApproach()
 	 */
-	public int getExperimentApproach() {
-		return this.iExperimentApproach;
+	public String getExperimentApproach() {
+		return this.sExperimentApproach;
 	}
 
+
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentApproach(int)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentApproachName(java.lang.String)
 	 */
-	public String getExperimentApproachName(int iid) {
-		ExperimentTypesImpl expTypes = new ExperimentTypesImpl();
-		return expTypes.getExperimentTypeName(iid);
-		
+	public String getExperimentApproachName(String sExperimentTypeID) {
+		AdminManager manager = AdminManagerImpl.getInstance();
+		return manager.getExperimentTypeName(sExperimentTypeID);
 	}
 
 	/* (non-Javadoc)
@@ -206,10 +208,11 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentApproach(int)
 	 */
-	public void setExperimentApproach(int iid) {
-		//ExperimentApproach must lay between 0..1
-		if(iid>=0&&iid<=1){
-			this.iExperimentApproach = iid;
+	public void setExperimentApproach(String sExperimentTypeID) {
+		AdminManager manager = AdminManagerImpl.getInstance();
+		//check ExperimentApproach valid?
+		if(manager.getExperimentTypeIDs().contains(sExperimentTypeID)){
+			this.sExperimentApproach = sExperimentTypeID;
 		}
 	}
 
@@ -447,10 +450,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	public void addInvolvedUsers(List<String> usersIDs) {
 		Iterator<String> itUserIDs = usersIDs.iterator();
 		while(itUserIDs.hasNext()){
-			String sUserID = itUserIDs.next();
-			//check to avoid duplicates
-			if(!this.vInvolvedUsers.contains(sUserID))
-				this.vInvolvedUsers.addElement(sUserID);
+			this.addInvolvedUser(itUserIDs.next());
 		}
 	}
 
@@ -458,11 +458,9 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#removeInvolvedUsers(java.util.List)
 	 */
 	public void removeInvolvedUsers(List<String> userIDs) {
-		this.vInvolvedUsers.removeAll(userIDs);
-		//and also remove special roles for a given User within this experiment
 		Iterator<String> itUserIDs = userIDs.iterator();
 		while(itUserIDs.hasNext()){
-			this.hmInvolvedUserSpecialExperimentRoles.remove(itUserIDs.next());
+			this.removeInvolvedUser(itUserIDs.next());
 		}
 	}
 
@@ -504,7 +502,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	public void removeInvolvedUser(String userID) {
 		this.vInvolvedUsers.removeElement(userID);
 		//and also remove special roles for a given User within this experiment
-		this.hmInvolvedUserSpecialExperimentRoles.remove(userID);
+		//this.hmInvolvedUserSpecialExperimentRoles.remove(userID);
 	}
 
 	/* (non-Javadoc)
@@ -679,7 +677,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		vExpToolTypes		= new Vector<String>();
 		vInvolvedUsers		= new Vector<String>();
 		hmLiteratureReference = new HashMap<String,Vector<String>>();
-		hmInvolvedUserSpecialExperimentRoles = new HashMap<Long,Vector<Integer>>();
+		//hmInvolvedUserSpecialExperimentRoles = new HashMap<Long,Vector<Integer>>();
 		
 		sConsiderations = new String();
 		sContaectAddress= new String();
@@ -695,7 +693,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		sExperimenterID = new String();
 		sExternalReferenceID = new String();
 		bFormal			= new Boolean(false);
-		iExperimentApproach	 = new Integer(-1);
+		sExperimentApproach	 = new String();
 		lExperimentStructureReference = new Long(-1);
 	}
 

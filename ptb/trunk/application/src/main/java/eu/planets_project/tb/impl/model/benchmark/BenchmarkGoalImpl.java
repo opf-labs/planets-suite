@@ -24,6 +24,19 @@ public class BenchmarkGoalImpl implements BenchmarkGoal, java.io.Serializable{
 	private int iWeight;
 	private String sXMLID, sCategory;
 	
+	public BenchmarkGoalImpl(){
+		sName = new String();
+		sType = new String();
+		sScale = new String();
+		sDefinition = new String();
+		sDescription = new String();
+		sVersion = new String();
+		sValue = new String();
+		iWeight = -1;
+		sXMLID = new String();
+		sCategory = new String();
+	}
+	
 	//private void setEntityID(long lEntityID){
 		//this.lEntityID = lEntityID;
 	//}
@@ -197,14 +210,14 @@ public class BenchmarkGoalImpl implements BenchmarkGoal, java.io.Serializable{
 	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getValue()
 	 */
 	public String getValue() {
-		return this.getValue();
+		return this.sValue;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getWeight()
 	 */
 	public int getWeight() {
-		return this.getWeight();
+		return this.iWeight;
 	}
 
 	/* (non-Javadoc)

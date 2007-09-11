@@ -15,11 +15,9 @@ import javax.persistence.OneToOne;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.finals.ExperimentTypes;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
-import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 
 /**
@@ -46,7 +44,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	private ExperimentResourcesImpl experimentResources;
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentWorkflowImpl workflow;
-	private int iExperimentTypeID;
 	
 
 	public ExperimentSetupImpl(){
@@ -54,8 +51,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		bBenchmarkGoalListFinal = false;
 		hmBenchmarkGoals = new HashMap<String,BenchmarkGoal>();
 		experimentResources = new ExperimentResourcesImpl();
-		//workflow = new WorkflowImpl();
-		iExperimentTypeID = -1;
 		
 		setPhasePointer(PHASE_EXPERIMENTSETUP);
 	}
@@ -69,19 +64,13 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		return this.experimentResources;
 	}
 
-	public int getExperimentTypeID() {
-		return this.iExperimentTypeID;
+	public String getExperimentTypeID() {
+		return this.basicProperties.getExperimentApproach();
 	}
 
 	public String getExperimentTypeName() {
-		ExperimentTypes types = new ExperimentTypesImpl();
-		if(types.checkExperimentTypeIDisValid(this.iExperimentTypeID)){
-			types.getExperimentTypeName(this.iExperimentTypeID);
-			return 	types.getExperimentTypeName(this.iExperimentTypeID);
-		}
-		else{
-			return new String();
-		}
+		return this.basicProperties.getExperimentApproachName(
+				this.basicProperties.getExperimentApproach());
 	}
 
 	/* (non-Javadoc)
@@ -108,12 +97,8 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setExperimentType(int)
 	 */
-	public void setExperimentType(int typeID) {
-		ExperimentTypesImpl finalsExperimentTypes = new ExperimentTypesImpl();
-		boolean bOK= finalsExperimentTypes.checkExperimentTypeIDisValid(typeID);
-		if  (bOK){
-			this.iExperimentTypeID = typeID;
-		}
+	public void setExperimentType(String typeID) {
+		this.basicProperties.setExperimentApproach(typeID);
 	}
 
 	/* (non-Javadoc)
