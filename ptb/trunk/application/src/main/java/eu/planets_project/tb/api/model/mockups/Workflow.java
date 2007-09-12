@@ -17,14 +17,20 @@ public interface Workflow {
 	 */
 	public List<String> getRequiredInputMIMETypes();
 	public void addRequiredInputMIMEType(String sMimeType);
+	public void addRequiredInputMIMETypes(List<String> sMimeTypes);
 	public void removeRequiredInputMIMEType(String sMimeType);
+	public void removeRequiredInputMIMETypes(List<String> sMimeTypes);
+	public void setRequiredInputMIMETypes(List<String> sMimeTypes);
 	
 	/**
 	 * @return String representing the required mime-type of output information
 	 */
 	public List<String> getRequiredOutputMIMETypes();
 	public void addRequiredOutputMIMEType(String sMimeType);
+	public void addRequiredOutputMIMETypes(List<String> sMimeTypes);
 	public void removeRequiredOutputMIMEType(String sMimeType);
+	public void removeRequiredOutputMIMETypes(List<String> sMimeTypes);
+	public void setRequiredOutputMIMETypes(List<String> sMimeTypes);
 	
 	public Service getWorkflowService(int iPosition);
 	/**

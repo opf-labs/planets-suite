@@ -222,7 +222,6 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		WorkflowImpl template1 = new WorkflowImpl();
 		template1.setName("SimpleMigrationWorkflow1");
 		template1.setToolType("doc2OpenOfficeXML");
-		template1.addRequiredInputMIMEType("application/msword");
 		template1.addRequiredOutputMIMEType("text/xml");
 		template1.addRequiredOutputMIMEType("application/xml");
 		AdminManager manager = AdminManagerImpl.getInstance();
@@ -237,6 +236,8 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 			service0.setWSDL(new File("http://dme021:8080/ifr-sample/SimpleCharacterisationService?wsdl"));
 			service0.addInputMIMEType("application/msword");
 			service0.addOutputMIMEType("application/xml");
+			service0.addOutputMIMEType("text/xml");
+			service0.addOutputMIMEType("application/msword");
 		template1.addWorkflowService(0, service0);
 		if(template1.isValidWorkflow()){
 			WorkflowPersistencyRemote dao_r = this.createPersistencyHandler();
@@ -261,7 +262,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 			service1.addInputMIMEType("image/tiff");
 			service1.addOutputMIMEType("image/jpeg");
 		template2.addWorkflowService(0, service1);
-		if(template1.isValidWorkflow()){
+		if(template2.isValidWorkflow()){
 			WorkflowPersistencyRemote dao_r = this.createPersistencyHandler();
 			dao_r.persistWorkflowTemplate(template2);
 		}

@@ -39,16 +39,15 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	private Vector<String> vInputMimeTypes, vOutputMimeTypes;
 	private String sWorkflowName, sToolType;
 	private String sExperimentTypeID;
-	private Vector<Service> vWorkflow;
 
 	/**
 	 * 
 	 */
 	public WorkflowImpl() {
+		id = -1;
 		vServiceWorkflow = new Vector<Service>();
 		vInputMimeTypes = new Vector<String>();
 		vOutputMimeTypes = new Vector<String>();
-		vWorkflow		= new Vector<Service>();
 		sWorkflowName = new String();
 		sToolType = new String();
 		sExperimentTypeID = new String();
@@ -119,7 +118,7 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	/**
 	 * @param lEntityID
 	 */
-	public void setEntityID(long lEntityID){
+	private void setEntityID(long lEntityID){
 		this.id = lEntityID;
 	}
 
@@ -156,16 +155,47 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	 */
 	public boolean isValidWorkflow() {
 		//At the moment: returns true if there's no gap between the services
+		boolean bRet = false;
 		try{
-			int iNumbOfServices = this.vWorkflow.size();
+			//Test1
+			int iNumbOfServices = this.vServiceWorkflow.size();
 			for(int i=0;i<iNumbOfServices;i++){
 				//this checks if they are in a row or if there are any gaps
-				this.vWorkflow.get(i);
+				this.vServiceWorkflow.get(i);
 			}
-			return true;
+
+			//Test2:
+			bRet = checkInputOutputServiceType(this.vServiceWorkflow.get(0),this.vServiceWorkflow.get(iNumbOfServices-1));
+			return bRet;
 		}catch(ArrayIndexOutOfBoundsException e){
 			return false;
 		}
+	}
+	
+	/**
+	 * This method checks the validity of the workflow in terms of
+	 * a) if the starting service's mime-type is contained incovers the required input mime-types
+	 * b) and if the last service's MIME-type covers the required output mime-types.
+	 * @return
+	 */
+	private boolean checkInputOutputServiceType(Service startService, Service endService){
+		boolean b1 = true;
+		boolean b2 = true;
+		Iterator<String> itInputMIMETypes = this.vInputMimeTypes.iterator();
+		while(itInputMIMETypes.hasNext()){
+			String mimetype = itInputMIMETypes.next();
+			if(!startService.getInputMIMETypes().contains(mimetype)){
+				b1 = false;
+			}
+		}
+		Iterator<String> itOutputMIMETypes = this.vOutputMimeTypes.iterator();
+		while(itOutputMIMETypes.hasNext()){
+			String mimetype = itOutputMIMETypes.next();
+			if(!endService.getOutputMIMETypes().contains(mimetype)){
+				b2 = false;
+			}
+		}
+		return b1&&b2;
 	}
 
 	/* (non-Javadoc)
@@ -191,8 +221,8 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	 */
 	public void removeWorkflowService(int position) {
 		try{
-			this.vWorkflow.get(position);
-			this.vWorkflow.remove(position);
+			this.vServiceWorkflow.get(position);
+			this.vServiceWorkflow.remove(position);
 		}catch(ArrayIndexOutOfBoundsException e){
 			
 		}
@@ -237,6 +267,68 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 		AdminManager manager = AdminManagerImpl.getInstance();
 		if(manager.getExperimentTypeIDs().contains(experimentTypeID)){
 			this.sExperimentTypeID = experimentTypeID;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addRequiredInputMIMETypes(java.util.List)
+	 */
+	public void addRequiredInputMIMETypes(List<String> mimeTypes) {
+		Iterator<String> itMimeTypes = mimeTypes.iterator();
+		while(itMimeTypes.hasNext()){
+			this.addRequiredInputMIMEType(itMimeTypes.next());
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addRequiredOutputMIMETypes(java.util.List)
+	 */
+	public void addRequiredOutputMIMETypes(List<String> mimeTypes) {
+		Iterator<String> itMimeTypes = mimeTypes.iterator();
+		while(itMimeTypes.hasNext()){
+			this.addRequiredOutputMIMEType(itMimeTypes.next());
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#removeRequiredInputMIMETypes(java.util.List)
+	 */
+	public void removeRequiredInputMIMETypes(List<String> mimeTypes) {
+		Iterator<String> itMimeTypes = mimeTypes.iterator();
+		while(itMimeTypes.hasNext()){
+			this.removeRequiredInputMIMEType(itMimeTypes.next());
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#removeRequiredOutputMIMETypes(java.util.List)
+	 */
+	public void removeRequiredOutputMIMETypes(List<String> mimeTypes) {
+		Iterator<String> itMimeTypes = mimeTypes.iterator();
+		while(itMimeTypes.hasNext()){
+			this.removeRequiredOutputMIMEType(itMimeTypes.next());
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setRequiredInputMIMETypes(java.util.List)
+	 */
+	public void setRequiredInputMIMETypes(List<String> mimeTypes) {
+		this.vInputMimeTypes = new Vector<String>();
+		Iterator<String> itMimeTypes = mimeTypes.iterator();
+		while(itMimeTypes.hasNext()){
+			this.addRequiredInputMIMEType(itMimeTypes.next());
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setRequiredOutputMIMETypes(java.util.List)
+	 */
+	public void setRequiredOutputMIMETypes(List<String> mimeTypes) {
+		this.vOutputMimeTypes = new Vector<String>();
+		Iterator<String> itMimeTypes = mimeTypes.iterator();
+		while(itMimeTypes.hasNext()){
+			this.addRequiredOutputMIMEType(itMimeTypes.next());
 		}
 	}
 
