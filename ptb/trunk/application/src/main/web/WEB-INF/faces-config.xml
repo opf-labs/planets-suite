@@ -45,7 +45,17 @@
     <managed-bean-name>ListExp_Backing</managed-bean-name>
     <managed-bean-class>eu.planets_project.tb.gui.backing.ListExp</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>  
+  </managed-bean> 
+  
+  <managed-bean>
+    <managed-bean-name>FileUploadBean</managed-bean-name>
+    <managed-bean-class>eu.planets_project.tb.gui.backing.FileUploadBean</managed-bean-class>
+    <managed-bean-scope>request</managed-bean-scope>
+    <managed-property>
+      <property-name>uploadDir</property-name>
+      <value>../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata</value>
+    </managed-property>      
+  </managed-bean> 
   
   <navigation-rule>
     <from-view-id>/*</from-view-id>
@@ -60,7 +70,7 @@
     </navigation-case>
     <navigation-case>
       <from-action>#{Manager_Backing.initExperimentAction}</from-action>
-      <to-view-id>/exp/new_exp.xhtml</to-view-id>
+      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
       <redirect/>
     </navigation-case>    
     <navigation-case>
@@ -119,7 +129,7 @@
   
   <!-- navigation rules for NEW_EXPERIMENT pages -->
   <navigation-rule>
-    <from-view-id>/exp/new_exp.xhtml</from-view-id>
+    <from-view-id>/exp/exp_stage1.xhtml</from-view-id>
     <navigation-case>
       <from-action>#{Manager_Backing.updateBasicPropsAction}</from-action>
       <from-outcome>success</from-outcome>
@@ -127,15 +137,41 @@
       <redirect/>
     </navigation-case>
   </navigation-rule>
+  
+  <!-- navigating between stages of experiment wizzard -->
   <navigation-rule>
-    <from-view-id>/exp/exp_stage2.xhtml</from-view-id>
-    <navigation-case>
-      <from-action>#{Manager_Backing.updateExpTypeAction}</from-action>
-      <from-outcome>success</from-outcome>
-      <to-view-id>/exp/exp_stage2a.xhtml</to-view-id>
-      <redirect/>
+  	<navigation-case>
+      <from-outcome>goToStage1</from-outcome>
+      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+      <redirect />
+  	</navigation-case>
+  	<navigation-case>
+      <from-outcome>goToStage2</from-outcome>
+      <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
+      <redirect />
+  	</navigation-case>
+     <navigation-case>
+      <from-outcome>goToStage3</from-outcome>
+      <to-view-id>/exp/exp_stage3.xhtml</to-view-id>
+      <redirect />
     </navigation-case>
-  </navigation-rule>
+    <navigation-case>
+      <from-outcome>goToStage4</from-outcome>
+      <to-view-id>/exp/exp_stage4.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>goToStage5</from-outcome>
+      <to-view-id>/exp/exp_stage5.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>goToStage6</from-outcome>
+      <to-view-id>/exp/exp_stage6.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>        
+  </navigation-rule> 
+  
   
   <!-- navigation rules for MY_EXPERIMENT page -->
   <navigation-rule>
@@ -146,5 +182,6 @@
      <redirect />
     </navigation-case>
   </navigation-rule>  
+
 
 </faces-config>

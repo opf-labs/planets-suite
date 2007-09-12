@@ -9,25 +9,29 @@ import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
-import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 
+import java.net.URI;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 public class Manager {
     
-   
+	private Log log = LogFactory.getLog(Manager.class);
     
     public Manager() {
     }
@@ -97,21 +101,31 @@ public class Manager {
     	return "success";
     }*/
       
-    public String updateWorkflowTypeAction() {
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        Workflow workflow = (Workflow)JSFUtil.getManagedObject("Workflow");
-        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-        Experiment exp = testbedMan.getExperiment(expBean.getID());
-        // remove old workflow and add newadd/change workflow of this experiment
-        ExperimentWorkflow ewf = exp.getExperimentSetup().getExperimentWorkflow();
-        if (ewf == null) {
-        	ewf = new ExperimentWorkflowImpl(workflow);
+    public String saveExpWorkflowAction()  {
+        try {
+	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	        Workflow workflow = (Workflow)JSFUtil.getManagedObject("Workflow");
+	        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+	        Experiment exp = testbedMan.getExperiment(expBean.getID());
+	        // remove old workflow and add newadd/change workflow of this experiment
+	        ExperimentWorkflow ewf = exp.getExperimentSetup().getExperimentWorkflow();
+	        if (ewf == null) {
+	        	ewf = new ExperimentWorkflowImpl(workflow);
+	        }
+	        //expBean.getEworkflow()
+	        //exp.getExperimentSetup().setExperimentType(Integer.parseInt(expBean.getEtype()));
+	        FileUploadBean uploadBean = (FileUploadBean)JSFUtil.getManagedObject("FileUploadBean");
+	        uploadBean.upload();
+	        ewf.addInputData(uploadBean.getURI());
+	        ewf.setWorkflow(workflow);
+	        expBean.setEworkflow(ewf);
+	        
+	        testbedMan.updateExperiment(exp);
+	    	return "goToStage3";
+        } catch (Exception e) {
+        	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
+        	return "failure";
         }
-        //expBean.getEworkflow()
-        //exp.getExperimentSetup().setExperimentType(Integer.parseInt(expBean.getEtype()));
-        
-        testbedMan.updateExperiment(exp);
-    	return "success";
     }
     
     public void changedExpWorkflowEvent(ValueChangeEvent ce) {
@@ -128,9 +142,9 @@ public class Manager {
     }
     
     public void changedExpTypeEvent(ValueChangeEvent ce) {
-    	int id = Integer.parseInt(ce.getNewValue().toString());  
+    	String id = ce.getNewValue().toString();  
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	expBean.setEtype(String.valueOf(id));
+    	expBean.setEtype(id);
     	//updateExpTypeAction();
     	changedExpType();
     }
@@ -143,22 +157,22 @@ public class Manager {
     
 
     public Map<String,String> getAvailableExperimentTypes() {
-        ExperimentTypesImpl types = new ExperimentTypesImpl();    
-        
-        List<Integer> passtypes = types.getAlLAvailableExperimentTypeIDs();
-        TreeMap<String,String> typeMap = new TreeMap<String,String>();
-        for (int i=0;i<passtypes.size();i++) {
-        	typeMap.put(types.getExperimentTypeName(passtypes.get(i)),String.valueOf(passtypes.get(i)) );
-        }
-        typeMap.put("dummy","0");
-        return typeMap;
+        // for display with selectonemenu-component, we have to flip key and value of map
+    	Map oriMap = AdminManagerImpl.getInstance().getExperimentTypeIDsandNames();
+    	Map<String,String> expTypeMap = new HashMap<String,String>();
+    	Iterator iter = oriMap.keySet().iterator();
+    	while(iter.hasNext()){
+    		String key = (String)iter.next();
+    		expTypeMap.put((String)oriMap.get(key), key);
+    	}
+    	return expTypeMap;
     }
     
     public Map<String,String> getAvailableWorkflows() {
     	WorkflowHandlerImpl wfh = WorkflowHandlerImpl.getInstance();
     	TreeMap<String,String> wfMap = new TreeMap<String,String>();
        	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Iterator iter = wfh.getAllWorkflows(Integer.parseInt(expBean.getEtype())).iterator();
+    	Iterator iter = wfh.getAllWorkflows(expBean.getEtype()).iterator();
     	while(iter.hasNext()) {
     		Workflow wf = (Workflow)iter.next();
     		wfMap.put(wf.getName(),String.valueOf(wf.getEntityID()));

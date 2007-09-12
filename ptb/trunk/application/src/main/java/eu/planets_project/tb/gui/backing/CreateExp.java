@@ -1,11 +1,8 @@
 package eu.planets_project.tb.gui.backing;
 
 
-import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
-import java.util.List;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlInputTextarea;
-
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -186,11 +183,5 @@ public class CreateExp {
         this.econsiderations = econsiderations;
     }
 
-       public List<String> getExperimentTypes() {
-        ExperimentTypesImpl types = new ExperimentTypesImpl();    
-        
-        List<String> passtypes = types.getAlLAvailableExperimentTypesNames();
-    
-        return passtypes;
-    }
+
 }

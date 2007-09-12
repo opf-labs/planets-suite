@@ -1,26 +1,26 @@
 package eu.planets_project.tb.api.model.mockups;
 
-import java.io.File;
+
+import java.net.URI;
 import java.util.List;
 
-import eu.planets_project.tb.api.services.mockups.Service;
 
 public interface ExperimentWorkflow{
 	
-	public List<File> getInputData();
-	public void addInputData(File file);
-	public void addInputData(List<File> files);
-	public void removeInputData(File file);
-	public void removeInputData(List<File> files);
-	public void setInputData(List<File> files);
+	public List<URI> getInputData();
+	public void addInputData(URI uri);
+	public void addInputData(List<URI> uris);
+	public void removeInputData(URI uri);
+	public void removeInputData(List<URI> uris);
+	public void setInputData(List<URI> uris);
 	
 	public Workflow getWorkflow();
 	public void setWorkflow(Workflow workflow);
 	
-	public List<File> getOutputData();
-	public void setOutputData(List<File> files);
-	public void addOutputData(File file);
-	public void addOutputData(List<File> files);
+	public List<URI> getOutputData();
+	public void setOutputData(List<URI> uris);
+	public void addOutputData(URI uri);
+	public void addOutputData(List<URI> uris);
 	
 	//public String getWorkflowBPEL();
 

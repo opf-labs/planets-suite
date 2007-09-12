@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+	<ui:define name="title">
+        #{res.title} - #{ExperimentBean.ename}: #{res['exp_stage3.pageTitle']}
+  </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/templates/header.xhtml">
+			<ui:param name="page" value="new_exp" />
+		</ui:include>
+		<script type="text/javascript"
+			src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>
+	</ui:define>
+
+	<ui:define name="content">
+		<div id="mainwrapper">
+			<div id="maincol">
+				<div class="innertubemain">
+					<p>Supply information about the estimated resources your experiment will require and the objectives you expect your experiment to meet.</p>
+					<form method="post" action="../mock-up-stage3-saved/">
+						<fieldset>
+							<legend>Specify Resources</legend>
+							<p>
+								<label id="">Estimated Output files:</label>
+								<select><option>1-10</option><option>11-100</option><option>101-1000</option><option>1001-10000</option><option>10000+</option></select>
+							</p>
+							<div class="clear"></div>
+							<p>
+								<label id="">Extimated Intensity:</label>		
+								<select><option>Low</option><option>Medium</option><option>High</option></select>
+							</p>
+							<div class="clear"></div>
+							<p><i>Further fields required</i></p>
+							<div class="clear"></div>
+						</fieldset>
+						<fieldset>
+							<legend>Specify Outcomes</legend>
+							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
+							<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" >
+								<tr><th>&nbsp;</th><th>Criteria: Preservation of... </th><th>Explanation</th></tr>
+								<tr><td><input type="checkbox" /></td><td>Number of pages</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Page margins</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Page breaks</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Page height</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Page width</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Page background image</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header font size </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header font style </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header font colour </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header horizontal alignment </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header vertical alignment</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Footer font size </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header font style </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header font colour </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header horizontal alignment </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Header vertical alignment</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Number of columns</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Spacing of columns</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Number of paragraphs</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Paragraph font style</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Paragraph font colour </td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Image position</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Image horizontal alignment</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Image vertical alignment</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Table of contents content</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Table of contents numbering</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Table of contents font style</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Table of contents font colour</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Index content</td><td>More info</td></tr>
+								<tr><td><input type="checkbox" /></td><td>Index numbering</td><td>More info</td></tr>
+							</table>	
+						</fieldset>
+						<p><input type="submit" value="Save Stage 3" /></p>
+					</form>
+
+					<form method="get" action="../mock-up-stage4/">
+						<p><input type="submit" value="Save Stage 3 and submit experiment for approval" /></p>
+					</form>
+					<p><b>Note:  Once you submit your experiment for approval you will not be able to make any further changes to your experiment.</b></p>		
+				</div>
+			</div>
+		</div>
+
+		<div id="leftcol">
+
+		<h3 class="leftcol">Experiment Progress</h3>
+		<div class="innertube"><h:form>
+			<ul class="exp">
+				<li class="exp"><h:commandLink action="goToStage1"
+					styleClass="exp_done">
+					<h:outputText value="#{res['new_exp.stage1']}" />
+				</h:commandLink></li>
+				<li class="exp"><h:commandLink action="goToStage2"
+					styleClass="exp_done">
+					<h:outputText value="#{res['new_exp.stage2']}" />
+				</h:commandLink></li>
+				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage3']}</a></li>
+				<li class="exp_nd"> #{res['new_exp.stage4']}</li>
+				<li class="exp_nd"> #{res['new_exp.stage5']}</li>
+				<li class="exp_nd"> #{res['new_exp.stage6']}</li>
+			</ul>
+		</h:form></div>
+		</div>
+
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml" />
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

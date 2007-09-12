@@ -245,7 +245,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		
 		//Create WorkflowTemplate2: consists of one MigrationService
 		WorkflowImpl template2 = new WorkflowImpl();
-		template2.setName("EmulationWorkflow2");
+		template2.setName("SimpleMigrationWorkflow2");
 		template2.setToolType("Tiff2Jpeg");
 		template2.addRequiredInputMIMEType("image/tiff");
 		template2.addRequiredOutputMIMEType("image/jpeg");

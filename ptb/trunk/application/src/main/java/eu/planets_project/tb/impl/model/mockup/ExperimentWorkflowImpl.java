@@ -3,7 +3,7 @@
  */
 package eu.planets_project.tb.impl.model.mockup;
 
-import java.io.File;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -29,14 +29,14 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	@Id
 	@GeneratedValue
 	private long id;
-	private Vector<File> vInputData, vOutputData;
+	private Vector<URI> vInputData, vOutputData;
 	@OneToOne(cascade={CascadeType.ALL})
 	private WorkflowImpl workflow;
 	private boolean bIsExecuted;
 	
 	public ExperimentWorkflowImpl(Workflow template) {
-		vInputData = new Vector<File>();
-		vOutputData = new Vector<File>();
+		vInputData = new Vector<URI>();
+		vOutputData = new Vector<URI>();
 		workflow = (WorkflowImpl)template;
 		bIsExecuted = false;
 	}
@@ -48,12 +48,12 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addInputData(java.io.File)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addInputData(URI)
 	 */
-	public void addInputData(File file) {
-		if(!this.vInputData.contains(file)&&!bIsExecuted){
+	public void addInputData(URI uri) {
+		if(!this.vInputData.contains(uri)&&!bIsExecuted){
 			//now check if this corresponds to the 
-			this.vInputData.add(file);
+			this.vInputData.add(uri);
 		}
 	}
 
@@ -61,20 +61,20 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addInputData(java.util.List)
 	 */
-	public void addInputData(List<File> files) {
-		Iterator<File> itFiles = files.iterator();
-		while(itFiles.hasNext()){
-			this.addInputData(itFiles.next());
+	public void addInputData(List<URI> uris) {
+		Iterator<URI> itURIs = uris.iterator();
+		while(itURIs.hasNext()){
+			this.addInputData(itURIs.next());
 		}
 	}
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addOutputData(java.io.File)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addOutputData(URI)
 	 */
-	public void addOutputData(File file) {
-		if(!this.vOutputData.contains(file)){
-			this.vOutputData.add(file);
+	public void addOutputData(URI uri) {
+		if(!this.vOutputData.contains(uri)){
+			this.vOutputData.add(uri);
 		}
 	}
 
@@ -82,10 +82,10 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addOutputData(java.util.List)
 	 */
-	public void addOutputData(List<File> files) {
-		Iterator<File> itFiles = files.iterator();
-		while(itFiles.hasNext()){
-			this.addOutputData(itFiles.next());
+	public void addOutputData(List<URI> URIs) {
+		Iterator<URI> itURIs = URIs.iterator();
+		while(itURIs.hasNext()){
+			this.addOutputData(itURIs.next());
 		}
 	}
 
@@ -93,7 +93,7 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#getInputData()
 	 */
-	public List<File> getInputData() {
+	public List<URI> getInputData() {
 		return this.vInputData;
 	}
 
@@ -101,7 +101,7 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#getOutputData()
 	 */
-	public List<File> getOutputData() {
+	public List<URI> getOutputData() {
 		return this.vOutputData;
 	}
 
@@ -113,11 +113,11 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.mockups.Workflow#removeInputData(java.io.File)
+	 * @see eu.planets_project.tb.api.model.mockups.Workflow#removeInputData(URI)
 	 */
-	public void removeInputData(File file) {
-		if(this.vInputData.contains(file)&&!bIsExecuted){
-			this.vInputData.remove(file);
+	public void removeInputData(URI uri) {
+		if(this.vInputData.contains(uri)&&!bIsExecuted){
+			this.vInputData.remove(uri);
 		}
 	}
 
@@ -125,10 +125,10 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#removeInputData(java.util.List)
 	 */
-	public void removeInputData(List<File> files) {
-		Iterator<File> itFiles = files.iterator();
-		while(itFiles.hasNext()){
-			this.removeInputData(itFiles.next());
+	public void removeInputData(List<URI> URIs) {
+		Iterator<URI> itURIs = URIs.iterator();
+		while(itURIs.hasNext()){
+			this.removeInputData(itURIs.next());
 		}
 	}
 
@@ -136,11 +136,11 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setOutputData(java.util.List)
 	 */
-	public void setOutputData(List<File> files) {
-		this.vOutputData = new Vector<File>();
-		Iterator<File> itFiles = files.iterator();
-		while(itFiles.hasNext()){
-			this.addOutputData(itFiles.next());
+	public void setOutputData(List<URI> URIs) {
+		this.vOutputData = new Vector<URI>();
+		Iterator<URI> itURIs = URIs.iterator();
+		while(itURIs.hasNext()){
+			this.addOutputData(itURIs.next());
 		}
 	}
 
@@ -148,11 +148,11 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setInputData(java.util.List)
 	 */
-	public void setInputData(List<File> files) {
-		this.vInputData = new Vector<File>();
-		Iterator<File> itFiles = files.iterator();
-		while(itFiles.hasNext()){
-			this.addInputData(itFiles.next());
+	public void setInputData(List<URI> URIs) {
+		this.vInputData = new Vector<URI>();
+		Iterator<URI> itURIs = URIs.iterator();
+		while(itURIs.hasNext()){
+			this.addInputData(itURIs.next());
 		}
 	}
 
@@ -174,14 +174,5 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 		}
 	}
 	
-	
-	/**
-	 * 
-	 * @param file
-	 * @return
-	 */
-	private String getMIMEType(File file){
-		//TODO
-		return null;
-	}
+
 }

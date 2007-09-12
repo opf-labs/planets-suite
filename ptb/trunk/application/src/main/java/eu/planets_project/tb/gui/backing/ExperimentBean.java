@@ -1,23 +1,18 @@
 package eu.planets_project.tb.gui.backing;
 
-import javax.faces.component.html.HtmlInputText;
-import javax.faces.component.html.HtmlInputTextarea;
-import javax.faces.context.FacesContext;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
-import eu.planets_project.tb.gui.UserBean;
-import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
-import eu.planets_project.tb.impl.model.ExperimentImpl;
-import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
-import eu.planets_project.tb.impl.model.finals.ExperimentTypesImpl;
+import eu.planets_project.tb.impl.AdminManagerImpl;
+
 
 public class ExperimentBean {
 	
+	private Log log = LogFactory.getLog(ExperimentBean.class);
 	private long id;
 	private boolean eformality = true;
 	private String ename = new String();
@@ -200,9 +195,8 @@ public class ExperimentBean {
     }
     
     public String getEtypeName() {
-        ExperimentTypesImpl types = new ExperimentTypesImpl();    
         if (etype != null) 
-        	return types.getExperimentTypeName(Integer.parseInt(etype));         
+        	return AdminManagerImpl.getInstance().getExperimentTypeName(etype);
         return null;
     }
 

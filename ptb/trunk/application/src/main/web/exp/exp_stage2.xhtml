@@ -3,7 +3,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
@@ -55,14 +56,20 @@
 					action="#{Manager_Backing.changedExpWorkflow}" />
 				</fieldset>
 			</h:form>
-			<h:form id="configureExpWorkflowForm" rendered="#{not empty Workflow}">
+			<h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{not empty Workflow}">
 				<fieldset>
 					<legend>STEP 3: Configure Workflow</legend>
 					<b>Workflow name: </b>#{Workflow.name}<br/>
 					<b>Workflow tooltype: </b>#{Workflow.toolType}<br/>
-					<b>Input mimetypes: </b> #{Workflow.requiredInputMIMETypes}<br/>
+					<b>Output mimetypes: </b> #{Workflow.requiredOutputMIMETypes}<br/>	
 					<b>Workflow Services: </b> <br/>
-					<t:dataTable id="dataTable" var="svc" value="#{Workflow.workflowServices}"
+					<ul>
+					<c:forEach var="svc" items="#{Workflow.workflowServices}">
+						  <li>Service Name: #{svc.serviceName}</li>
+						  <li>WSDL: #{svc.WSDL}</li><br/>
+					</c:forEach>
+					</ul>
+					<!-- <t:dataTable id="dataTable" var="svc" value="#{Workflow.workflowServices}"
 	                  preserveDataModel="true"
     	              rows="4"
         	          rowId="#{svc.serviceName}"
@@ -77,10 +84,27 @@
             				<f:facet name="header">WSDL</f:facet>
 			            	<h:outputText value="#{svc.WSDL}" />
 			        	</t:column>			        	
-					</t:dataTable>
-					<b>Output mimetypes: </b> #{Workflow.requiredOutputMIMETypes}<br/>
+					</t:dataTable> -->
+			
+		            <b>Input mimetypes: </b> #{Workflow.requiredInputMIMETypes}<br/>					
+		            <t:inputFileUpload id="fileupload"
+                               accept="#{Workflow.requiredInputMIMETypes[0]}"
+                               value="#{FileUploadBean.upFile}"
+                               storage="file"
+                               styleClass="fileUploadInput"
+                               required="true"
+                               maxlength="10000000"/><br/>
+					<h:panelGroup rendered="#{not empty ExperimentBean.eworkflow}">
+	                    <h:outputText value="Specified input data: "/>
+	                    <h:outputText value="#{ExperimentBean.eworkflow.inputData[0]}" style="font-style: italic;font-weight: bold;"/>
+					</h:panelGroup>                               
+                    <!-- <h:outputText value="The file " rendered="#{FileUploadBean.uploaded}"/>
+                    <h:outputText value="#{FileUploadBean.upFile.name}" rendered="#{FileUploadBean.uploaded}" style="font-style: italic;font-weight: bold;"/> 
+                    <h:outputText value=" has been successfully uploaded." rendered="#{FileUploadBean.uploaded}"/>
+					 -->
+					<br/>
 					<h:commandButton value="#{res['button.save']}"
-						action="#{Manager_Backing.updateWorkflowTypeAction}" />
+						action="#{Manager_Backing.saveExpWorkflowAction}" />
 				</fieldset>
 			</h:form>
 
@@ -108,17 +132,11 @@
 		<h3 class="leftcol">Experiment Progress</h3>
 		<div class="innertube"><h:form>
 			<ul class="exp">
-				<li class="exp"><h:commandLink action="new_experiment"
+				<li class="exp"><h:commandLink action="goToStage1"
 					styleClass="exp_done">
 					<h:outputText value="#{res['new_exp.stage1']}" />
 				</h:commandLink></li>
 				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage2']}</a></li>
-			</ul>
-			<ul class="sub_exp">
-				<li class="exp_nd2">#{res['new_exp.stage2a']}</li>
-				<li class="exp_nd2">#{res['new_exp.stage2b']}</li>
-			</ul>
-			<ul class="exp">
 				<li class="exp_nd">#{res['new_exp.stage3']}</li>
 				<li class="exp_nd">#{res['new_exp.stage4']}</li>
 				<li class="exp_nd">#{res['new_exp.stage5']}</li>
