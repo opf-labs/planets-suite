@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
@@ -41,7 +42,25 @@
 						<fieldset>
 							<legend>Specify Outcomes</legend>
 							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
-							<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" >
+
+							<t:dataTable id="dataTable" var="bm" value="#{Manager_Backing.availableBenchmarks}"
+				                  preserveDataModel="true"
+			    	              rows="4"
+			        	          rowId="#{bm.ID}"
+			            	      cellpadding="2"
+			                	  cellspacing="0"
+				                  border="1">
+							        <t:column>
+			            				<f:facet name="header">Benchmark ID</f:facet>
+						            	<h:outputText value="#{bm.ID}" />
+						        	</t:column>
+							        <t:column>
+			            				<f:facet name="header">Benchmark Name</f:facet>
+						            	<h:outputText value="#{bm.name}" />
+						        	</t:column>			        	
+							</t:dataTable>
+								
+				<!--  			<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" >
 								<tr><th>&nbsp;</th><th>Criteria: Preservation of... </th><th>Explanation</th></tr>
 								<tr><td><input type="checkbox" /></td><td>Number of pages</td><td>More info</td></tr>
 								<tr><td><input type="checkbox" /></td><td>Page margins</td><td>More info</td></tr>
@@ -73,7 +92,7 @@
 								<tr><td><input type="checkbox" /></td><td>Table of contents font colour</td><td>More info</td></tr>
 								<tr><td><input type="checkbox" /></td><td>Index content</td><td>More info</td></tr>
 								<tr><td><input type="checkbox" /></td><td>Index numbering</td><td>More info</td></tr>
-							</table>	
+							</table>	 -->
 						</fieldset>
 						<p><input type="submit" value="Save Stage 3" /></p>
 					</form>
