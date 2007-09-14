@@ -1,13 +1,24 @@
 package eu.planets_project.tb.gui.backing;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.component.UIData;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 
 
 public class ExperimentBean {
@@ -30,9 +41,21 @@ public class ExperimentBean {
     private String etype;
     private ExperimentWorkflow eworkflow;    
     private String workflowtypeid;
+    private List<BenchmarkGoal> benchmarks;
+    private String intensity;
+    private String nrOutputFiles;
+    
+        
     public ExperimentBean() {
-    	
+    	benchmarks = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals();
     }
+    
+    
+    public List<BenchmarkGoal> getBenchmarks() {
+		return benchmarks;    	
+    }
+    
+    
     
     public void fill(Experiment exp) {
     	ExperimentSetup expsetup = exp.getExperimentSetup();
@@ -51,7 +74,19 @@ public class ExperimentBean {
     	this.eformality = props.isExperimentFormal();    	
     	this.etype = String.valueOf(expsetup.getExperimentTypeID());
     	this.eworkflow = exp.getExperimentSetup().getExperimentWorkflow();
-    	
+    	if (this.eworkflow !=null) {
+    		this.workflowtypeid=String.valueOf(eworkflow.getWorkflow().getEntityID());
+    	}
+    	// merge benchmarks     	
+    	List<BenchmarkGoal> expbms = exp.getExperimentSetup().getAllAddedBenchmarkGoals();
+    	Iterator iter = benchmarks.iterator();
+    	while (iter.hasNext()) {
+    		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
+    		if (expbms.contains(bmg))
+    			benchmarks.set(benchmarks.indexOf(bmg),bmg);
+    	}
+    	this.intensity = Integer.toString(exp.getExperimentSetup().getExperimentResources().getIntensity());
+    	this.nrOutputFiles = Integer.toString(exp.getExperimentSetup().getExperimentResources().getNumberOfOutputFiles());
     }
     
     
@@ -74,6 +109,31 @@ public class ExperimentBean {
     	this.workflowtypeid = wftypeId;
     }
     
+    public String getEworkflowInputData() {
+    	if (eworkflow != null) {
+    		if (eworkflow.getInputData()!=null) {    			
+    	    	return eworkflow.getInputData().toArray()[0].toString();   			
+    		}
+    	}    
+    	return null;
+    }
+    
+	public void setNumberOfOutputFiles(String nr) {
+		this.nrOutputFiles = nr;
+	}
+
+	public String getNumberOfOutputFiles() {
+		return this.nrOutputFiles;
+	}
+
+	public void setIntensity(String intensity) {
+		this.intensity = intensity;
+	}
+	
+	public String getIntensity(){
+		return this.intensity;
+	}
+	
     public void setID(long id) {
     	this.id = id;
     }

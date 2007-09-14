@@ -23,17 +23,27 @@
 			<div id="maincol">
 				<div class="innertubemain">
 					<p>Supply information about the estimated resources your experiment will require and the objectives you expect your experiment to meet.</p>
-					<form method="post" action="../mock-up-stage3-saved/">
+					<h:form>
 						<fieldset>
 							<legend>Specify Resources</legend>
 							<p>
 								<label id="">Estimated Output files:</label>
-								<select><option>1-10</option><option>11-100</option><option>101-1000</option><option>1001-10000</option><option>10000+</option></select>
+								<h:selectOneMenu required="false" value="#{ExperimentBean.numberOfOutputFiles}">
+									<f:selectItem itemValue="1" itemLabel="1-10" />
+									<f:selectItem itemValue="11" itemLabel="11-100"/>
+									<f:selectItem itemValue="101" itemLabel="101-1000"/>
+									<f:selectItem itemValue="1001" itemLabel="1001-10000"/>
+									<f:selectItem itemValue="10000" itemLabel="10000+"/>
+								</h:selectOneMenu>
 							</p>
 							<div class="clear"></div>
 							<p>
 								<label id="">Extimated Intensity:</label>		
-								<select><option>Low</option><option>Medium</option><option>High</option></select>
+								<h:selectOneMenu required="false" value="#{ExperimentBean.intensity}">
+									<f:selectItem itemValue="0" itemLabel="Low" />
+									<f:selectItem itemValue="1" itemLabel="Medium"/>
+									<f:selectItem itemValue="2" itemLabel="High"/>
+								</h:selectOneMenu>
 							</p>
 							<div class="clear"></div>
 							<p><i>Further fields required</i></p>
@@ -43,7 +53,7 @@
 							<legend>Specify Outcomes</legend>
 							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
 
-							<t:dataTable id="dataTable" var="bm" value="#{Manager_Backing.availableBenchmarks}"
+							<t:dataTable id="dataTable" var="bm" value="#{ExperimentBean.benchmarks}"
 				                  preserveDataModel="true"
 			    	              rows="4"
 			        	          rowId="#{bm.ID}"
@@ -51,56 +61,31 @@
 			                	  cellspacing="0"
 				                  border="1">
 							        <t:column>
-			            				<f:facet name="header">Benchmark ID</f:facet>
-						            	<h:outputText value="#{bm.ID}" />
-						        	</t:column>
+						            	<h:selectBooleanCheckbox id="checkbox" value="#{not empty bm.value}">
+										</h:selectBooleanCheckbox>						            	
+						            </t:column>
 							        <t:column>
-			            				<f:facet name="header">Benchmark Name</f:facet>
-						            	<h:outputText value="#{bm.name}" />
+			            				<f:facet name="header">Criteria</f:facet>
+						            	#{bm.name}
 						        	</t:column>			        	
-							</t:dataTable>
-								
-				<!--  			<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" >
-								<tr><th>&nbsp;</th><th>Criteria: Preservation of... </th><th>Explanation</th></tr>
-								<tr><td><input type="checkbox" /></td><td>Number of pages</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Page margins</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Page breaks</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Page height</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Page width</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Page background image</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header font size </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header font style </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header font colour </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header horizontal alignment </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header vertical alignment</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Footer font size </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header font style </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header font colour </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header horizontal alignment </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Header vertical alignment</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Number of columns</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Spacing of columns</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Number of paragraphs</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Paragraph font style</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Paragraph font colour </td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Image position</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Image horizontal alignment</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Image vertical alignment</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Table of contents content</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Table of contents numbering</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Table of contents font style</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Table of contents font colour</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Index content</td><td>More info</td></tr>
-								<tr><td><input type="checkbox" /></td><td>Index numbering</td><td>More info</td></tr>
-							</table>	 -->
-						</fieldset>
-						<p><input type="submit" value="Save Stage 3" /></p>
-					</form>
+							        <t:column>
+			            				<f:facet name="header">Explanation</f:facet>
+						            	#{bm.definition} <br/>
+						            	<i>#{bm.description}</i>
+						        	</t:column>			        	
 
-					<form method="get" action="../mock-up-stage4/">
-						<p><input type="submit" value="Save Stage 3 and submit experiment for approval" /></p>
-					</form>
-					<p><b>Note:  Once you submit your experiment for approval you will not be able to make any further changes to your experiment.</b></p>		
+							</t:dataTable>
+						</fieldset>
+							<p>
+					            <h:commandButton value="#{res['button.save']}" immediate="true" 
+					            action="#{Manager_Backing.updateBenchmarksAction}"/>		
+							</p>
+							<p>
+					            <h:commandButton value="#{res['button.save']} and submit for approval" 
+					            action="#{Manager_Backing.updateBenchmarksAndSubmitAction}"/>										
+							</p>
+							<p><b>Note:  Once you submit your experiment for approval you will not be able to make any further changes to your experiment.</b></p>		
+					</h:form>
 				</div>
 			</div>
 		</div>

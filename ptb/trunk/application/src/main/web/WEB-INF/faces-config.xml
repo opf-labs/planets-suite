@@ -178,7 +178,7 @@
     <from-view-id>/exp/my_exp.xhtml</from-view-id>
     <navigation-case>
       <from-outcome>editExp</from-outcome>
-      <to-view-id>/exp/new_exp.xhtml</to-view-id>
+      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
      <redirect />
     </navigation-case>
   </navigation-rule>  

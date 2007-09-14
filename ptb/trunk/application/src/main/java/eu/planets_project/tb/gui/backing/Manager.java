@@ -4,6 +4,7 @@ package eu.planets_project.tb.gui.backing;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
@@ -14,6 +15,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
@@ -94,6 +96,37 @@ public class Manager {
         return "success";
     }
     
+    public String updateBenchmarksAndSubmitAction() {
+    	if (this.updateBenchmarksAction() == "success") {
+        	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+            ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        	Experiment exp = testbedMan.getExperiment(expBean.getID());
+        	
+        	testbedMan.updateExperiment(exp);        	
+    		return "success";
+    	} else
+    		return "failure";    	
+    }
+    
+    
+    public String updateBenchmarksAction(){
+   	    // create bm-goals
+    	
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = testbedMan.getExperiment(expBean.getID());
+    	exp.getExperimentSetup().setBenchmarkGoals(expBean.getBenchmarks());
+    	ExperimentResources expRes = exp.getExperimentSetup().getExperimentResources();
+    	if (expRes == null)
+    		expRes = new ExperimentResourcesImpl();
+    	expRes.setIntensity(Integer.parseInt(expBean.getIntensity()));
+    	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutputFiles()));
+    	exp.getExperimentSetup().setExperimentResources(expRes);
+    	testbedMan.updateExperiment(exp);
+        return "success";
+    }
+    
+    
    /* public String updateExpTypeAction() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         
@@ -118,14 +151,16 @@ public class Manager {
 	        	ewf = new ExperimentWorkflowImpl(workflow);
 	        }
 	        //expBean.getEworkflow()
-	        //exp.getExperimentSetup().setExperimentType(Integer.parseInt(expBean.getEtype()));
+	        exp.getExperimentSetup().setExperimentType(expBean.getEtype());
 	        FileUploadBean uploadBean = (FileUploadBean)JSFUtil.getManagedObject("FileUploadBean");
 	        uploadBean.upload();
 	        ewf.addInputData(uploadBean.getURI());
 	        ewf.setWorkflow(workflow);
+	        exp.getExperimentSetup().setWorkflow(ewf);
 	        expBean.setEworkflow(ewf);
 	        
 	        testbedMan.updateExperiment(exp);
+	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");    
 	    	return "goToStage3";
         } catch (Exception e) {
         	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
@@ -184,11 +219,6 @@ public class Manager {
     	}
     	return wfMap;
     }
-
-    public List getAvailableBenchmarks() {
-		return BenchmarkGoalsHandlerImpl.getInstance(true).getAllBenchmarkGoals();
-		
-    }
-    
+   
     
 }
