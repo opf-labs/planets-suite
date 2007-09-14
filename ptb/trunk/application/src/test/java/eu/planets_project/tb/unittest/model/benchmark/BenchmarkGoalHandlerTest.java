@@ -14,96 +14,77 @@ public class BenchmarkGoalHandlerTest extends TestCase{
 	public final int iNumbOfCategories = 2;
 	public final int iNumbOfGoals = 3;
 	
-	//sample goal that is contained in the XML document
-	public final String sCathegory = "Text";
-	public final String sGoalID = "nop1";
-	public final String sGoalName = "number of pages";
-	public final String sGoalType="java.lang.Integer";
-	public final String sGoalScale="1..n";
-	public final String sGoalVersion="1.0";
-	public final String sGoalDefinition = "identifies the number of pages";
-	public final String sGoalDescription = "Count the number of pages including the front-page";
+	BenchmarkGoalsHandler handler;
 	
+	
+	public void setUp(){
+		handler = BenchmarkGoalsHandlerImpl.getInstance();
+	}
 	
 	public void testBuildBenchmarkGoalsFromXML(){
-		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance(true);
-		//handler.buildBenchmarkGoalsFromXML();
-		Iterator<String> itCategory = handler.getCategoryNames().iterator();
 		assertEquals(this.iNumbOfCategories,handler.getCategoryNames().size());
 		assertEquals(this.iNumbOfGoals,handler.getAllBenchmarkGoals().size());
 	}
 	
-	
-	public void testSampleBenchmarkGoal(){
-		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance(true);
+	public void testGetBenchmarkGoals(){
+		//Multiple tests
+		assertTrue(0<handler.getAllBenchmarkGoals().size());
+		Iterator<String> itCategories = handler.getCategoryNames().iterator();
+		int count = 0;
+		int iSizeSum = 0;
+		while(itCategories.hasNext()){
+			count++;
+			String category = itCategories.next();
+			iSizeSum += handler.getAllBenchmarkGoalIDs(category).size();
+			assertEquals(handler.getAllBenchmarkGoalIDs(category).size(),handler.getAllBenchmarkGoals(category).size());
+		}
+		assertEquals(count,this.iNumbOfCategories);
+		assertEquals(iSizeSum,handler.getAllBenchmarkGoals().size());
+		assertEquals(handler.getAllBenchmarkGoalIDs().size(),handler.getAllBenchmarkGoals().size());
+		//getBenchmarkGoal
+		Iterator<String> ids = handler.getAllBenchmarkGoalIDs().iterator();
+		while(ids.hasNext()){
+			String id = ids.next();
+			assertNotNull(handler.getBenchmarkGoal(id));
+		}
 		
-		BenchmarkGoal nop1 = handler.getBenchmarkGoal(this.sGoalID);
-		assertEquals(this.sCathegory,nop1.getCategory());
-		assertEquals(this.sGoalID, nop1.getID());
-		assertEquals(this.sGoalName, nop1.getName());
-		assertEquals(this.sGoalType, nop1.getType());
-		assertEquals(this.sGoalScale, nop1.getScale());
-		assertEquals(this.sGoalVersion, nop1.getVersion());
-		assertEquals(this.sGoalDefinition, nop1.getDefinition());
-		assertEquals(this.sGoalDescription, nop1.getDescription());
 	}
 	
+	/*public void testPrintln(){
+		Iterator<String> itCategories = handler.getCategoryNames().iterator();
+		while(itCategories.hasNext()){
+			System.out.println("Categories: "+itCategories.next());
+		}
+		Iterator<String> itText = handler.getAllBenchmarkGoalIDs("Text").iterator();
+		while(itText.hasNext()){
+			System.out.println("Text: "+itText.next());
+		}
+		Iterator<String> itImage = handler.getAllBenchmarkGoalIDs("Image").iterator();
+		while(itImage.hasNext()){
+			System.out.println("Image: "+itImage.next());
+		}
+		
+		Iterator<BenchmarkGoal> itGoals = handler.getAllBenchmarkGoals().iterator();
+		while(itGoals.hasNext()){
+			System.out.println("Goal: "+itGoals.next().getName());
+		}
+		
+		Iterator<BenchmarkGoal> itText2 = handler.getAllBenchmarkGoals("Text").iterator();
+		while(itText2.hasNext()){
+			System.out.println("TextNode: "+itText2.next().getName());
+		}
+		Iterator<BenchmarkGoal> itImage2 = handler.getAllBenchmarkGoals("Image").iterator();
+		while(itImage2.hasNext()){
+			System.out.println("TextNode: "+itImage2.next().getName());
+		}
+		
+		Iterator<String> ids = handler.getAllBenchmarkGoalIDs().iterator();
+		while(ids.hasNext()){
+			String id = ids.next();
+			System.out.println(handler.getBenchmarkGoal(id).getDescription());
+		}
+		assertEquals(true,true);
+	}*/
 	
-	public void testWeight(){
-		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance(true);
-		BenchmarkGoal nop1 = handler.getBenchmarkGoal(this.sGoalID);
-		
-		assertEquals(-1,nop1.getWeight());
-		
-		nop1.setWeight(BenchmarkGoal.WEIGHT_MEDIUM);
-		assertEquals(BenchmarkGoal.WEIGHT_MEDIUM,nop1.getWeight());
-		
-		/*nop1.setWeight(BenchmarkGoal.WEIGHT_MINIMUM);
-		assertEquals(BenchmarkGoal.WEIGHT_MINIMUM,nop1.getWeight());
-		*/
-		System.out.println("Weight nop1: "+nop1.getWeight());
-
-		BenchmarkGoal nop2 = handler.getBenchmarkGoal(this.sGoalID);
-		System.out.println("Weight nop2: "+nop2.getWeight());
-		//assertEquals(-1,nop2.getWeight());
-		
-		BenchmarkGoal nop3 = handler.getBenchmarkGoal(this.sGoalID);
-		System.out.println("Weight nop3: "+nop3.getWeight());
-		assertEquals(-1,nop3.getWeight());
-	}
-	
-	
-	public void testValue(){
-		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance(true);
-		BenchmarkGoal nop1 = handler.getBenchmarkGoal(this.sGoalID);
-		
-		assertEquals("",nop1.getValue());
-		
-		//Type is of java.lang.Integer
-		nop1.setValue("25");
-		assertEquals("25",nop1.getValue());
-		
-		nop1.setValue("true");
-		assertEquals("25",nop1.getValue());
-	}
-	
-	
-	public void testWeightAndValueValid(){
-		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance(true);
-		BenchmarkGoal nop1 = handler.getBenchmarkGoal(this.sGoalID);
-		
-		//Test1: Weight Valid
-		nop1.setWeight(BenchmarkGoal.WEIGHT_MEDIUM);
-		assertEquals(BenchmarkGoal.WEIGHT_MEDIUM,nop1.getWeight());
-		
-		//ValueIsValid should be checked: must be in the range of Minimum to Maximum
-		nop1.setWeight(20);
-		assertEquals(BenchmarkGoal.WEIGHT_MEDIUM,nop1.getWeight());
-		
-		//Test2: Value Valid
-		assertTrue(nop1.checkValueValid("5"));
-		assertFalse(nop1.checkValueValid("1.5"));
-		assertFalse(nop1.checkValueValid("true"));
-	}
 		
 }

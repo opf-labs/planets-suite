@@ -14,6 +14,7 @@ public interface BenchmarkGoalsHandler {
 	 */
 	public List<BenchmarkGoal> getAllBenchmarkGoals(String sCategoryName);
 	public List<String> getAllBenchmarkGoalIDs(String sCategoryName);
+	public List<String> getAllBenchmarkGoalIDs();
 	public BenchmarkGoal getBenchmarkGoal(String sID);
 	public List<String> getCategoryNames();
 	

@@ -115,7 +115,7 @@ public class BenchmarkGoalImpl implements BenchmarkGoal, java.io.Serializable{
 		this.sCategory=sCategory;
 	}
 	
-	protected void setXMLID(String sXMLID){
+	protected void setID(String sXMLID){
 		this.sXMLID = sXMLID;
 	}
 	

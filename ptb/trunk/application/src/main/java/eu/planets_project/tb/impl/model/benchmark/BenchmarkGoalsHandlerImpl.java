@@ -40,16 +40,13 @@ import java.util.Vector;
  * 	</Text>
  * </BenachmarkGoals>
  **/
-@Stateless
 public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	
-	private List<BenchmarkGoal> benchmarkGoals = new Vector<BenchmarkGoal>();
 	private Element root;
 	private Vector<String> vCategoryNames;
 	//HashMap<Id,BenchmarkGoal>
-	private HashMap<String,BenchmarkGoal> hmBmGoals; 
+	private HashMap<String,BenchmarkGoal> hmBmGoals; 	
 	private static BenchmarkGoalsHandlerImpl instance;
-	
 	
 	private BenchmarkGoalsHandlerImpl(){
 		//initialize Variables
@@ -76,7 +73,96 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			instance = new BenchmarkGoalsHandlerImpl();
 		return instance;
 	}
-
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getAllBenchmarkGoals()
+	 */
+	public List<BenchmarkGoal> getAllBenchmarkGoals(){
+		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
+		Iterator<String> sKeys = this.hmBmGoals.keySet().iterator();
+		while(sKeys.hasNext()){
+			ret.add(getBenchmarkGoal(sKeys.next()));
+		}
+		return ret;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getAllBenchmarkGoals(java.lang.String)
+	 */
+	public List<BenchmarkGoal> getAllBenchmarkGoals(String sCategoryName){
+		//all benchmark goals for a given category
+		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
+		Iterator<BenchmarkGoal> itTemplates = this.hmBmGoals.values().iterator();
+		while(itTemplates.hasNext()){
+			BenchmarkGoal template = itTemplates.next(); 
+			if(template.getCategory().equals(sCategoryName))
+				ret.add(this.getBenchmarkGoal(template.getID()));
+		}
+		return ret;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getAllBenchmarkGoalIDs(java.lang.String)
+	 */
+	public List<String> getAllBenchmarkGoalIDs(String sCategoryName){
+		List<String> ret = new Vector<String>();
+		Iterator<BenchmarkGoal> itGoals = this.hmBmGoals.values().iterator();
+		while(itGoals.hasNext()){
+			BenchmarkGoal goal = itGoals.next(); 
+			if(goal.getCategory().equals(sCategoryName))
+				ret.add(goal.getID());
+		}
+		return ret;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getAllBenchmarkGoalIDs()
+	 */
+	public List<String> getAllBenchmarkGoalIDs() {
+		List<String> ret = new Vector<String>();
+		Iterator<BenchmarkGoal> itGoals = this.hmBmGoals.values().iterator();
+		while(itGoals.hasNext()){
+			BenchmarkGoal goal = itGoals.next(); 
+			ret.add(goal.getID());
+		}
+		return ret;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getBenchmarkGoal(java.lang.String)
+	 */
+	public BenchmarkGoal getBenchmarkGoal(String sID){
+		//returns a new BenchmarkGoal instance from a template
+		BenchmarkGoalImpl ret = new BenchmarkGoalImpl();
+		BenchmarkGoal template = this.hmBmGoals.get(sID);
+		if(template !=null){
+			ret.setCategory(template.getCategory());
+			ret.setDefinition(template.getDefinition());
+			ret.setDescription(template.getDescription());
+			ret.setName(template.getName());
+			ret.setScale(template.getScale());
+			ret.setType(template.getType());
+			ret.setVersion(template.getVersion());
+			ret.setID(template.getID());
+			
+			return ret;
+		}
+		else{
+			return null;
+		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getCategoryNames()
+	 */
+	public List<String> getCategoryNames(){
+		return this.vCategoryNames;
+	}
+	
+	
 	public void buildBenchmarkGoalsFromXML(){
 		try{
 			DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
@@ -89,7 +175,7 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			//read Category Names (e.g. Text, Image, etc.)
 			this.vCategoryNames = this.parseCategoryNames();
 			Iterator<String> itCategoryNames = vCategoryNames.iterator();
-			//parse benchmark objectives
+			//parse benchmark goals
 			while(itCategoryNames.hasNext())
 				this.parseBenchmarkGoals(itCategoryNames.next());
 			
@@ -100,6 +186,7 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			System.out.println("BuildBenchmarkGoalsFromXML failed");
 		}
 	}
+	
 	
 	//e.g. get all items for the category "Text"
 	private void parseBenchmarkGoals(String sCategoryName){
@@ -119,7 +206,7 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 					 //Now within an item (=benchmarkGoal)
 					 NamedNodeMap attributes = item.getAttributes();
 					 bmGoal.setCategory(sCategoryName);
-					 bmGoal.setXMLID(attributes.getNamedItem("id").getNodeValue());
+					 bmGoal.setID(attributes.getNamedItem("id").getNodeValue());
 					 bmGoal.setName(attributes.getNamedItem("name").getNodeValue());
 					 bmGoal.setType(attributes.getNamedItem("type").getNodeValue());
 					 bmGoal.setScale(attributes.getNamedItem("scale").getNodeValue());
@@ -144,41 +231,6 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 		 
 	}
 	
-	public List<BenchmarkGoal> getAllBenchmarkGoals(){
-		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
-		Iterator<BenchmarkGoal> itGoals = this.hmBmGoals.values().iterator();
-		while(itGoals.hasNext()){
-			ret.add(itGoals.next());
-		}
-		return ret;
-	}
-	
-	//all benchmark goals for a given category
-	public List<BenchmarkGoal> getAllBenchmarkGoals(String sCategoryName){
-		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
-		Iterator<BenchmarkGoal> itGoals = this.hmBmGoals.values().iterator();
-		while(itGoals.hasNext()){
-			BenchmarkGoal goal = itGoals.next(); 
-			if(goal.getCategory().equals(sCategoryName))
-				ret.add(goal);
-		}
-		return ret;
-	}
-	
-	public List<String> getAllBenchmarkGoalIDs(String sCategoryName){
-		List<String> ret = new Vector<String>();
-		Iterator<BenchmarkGoal> itGoals = this.hmBmGoals.values().iterator();
-		while(itGoals.hasNext()){
-			BenchmarkGoal goal = itGoals.next(); 
-			if(goal.getCategory().equals(sCategoryName))
-				ret.add(goal.getID());
-		}
-		return ret;
-	}
-	
-	public BenchmarkGoal getBenchmarkGoal(String sID){
-		return this.hmBmGoals.get(sID);
-	}
 	
 	private Vector<String> parseCategoryNames(){
 		Vector<String> vRet = new Vector<String>();
@@ -192,9 +244,6 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 		}
 		return vRet;
 	}
-	
-	public List<String> getCategoryNames(){
-		return this.vCategoryNames;
-	}
+
 
 }
