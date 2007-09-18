@@ -11,8 +11,10 @@ import java.util.Vector;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import eu.planets_project.tb.api.model.ExperimentApproval;
+import eu.planets_project.tb.api.model.ExperimentSetup;
 
 
 /**
@@ -29,12 +31,26 @@ implements ExperimentApproval, java.io.Serializable {
 	private String sDecision, sExplanation;
 	private boolean bGo;
 
+	@Transient
+	//This annotation specifies that the property or field is not persistent.
+	private ExperimentSetup expSetup;
 
-	public ExperimentApprovalImpl(){
+	//required for EJB Persistence
+	private ExperimentApprovalImpl(){
 		//roles as defined in the Class TestbedRoles
 		vReqRoles = new Vector<Integer>();
 		vApprovalUsers = new Vector<String>();
 		bGo = false;
+		
+		setPhasePointer(PHASE_EXPERIMENTAPPROVAL);
+	}
+	
+	public ExperimentApprovalImpl(ExperimentSetup expSetup){
+		//roles as defined in the Class TestbedRoles
+		vReqRoles = new Vector<Integer>();
+		vApprovalUsers = new Vector<String>();
+		bGo = false;
+		this.expSetup = expSetup;
 		
 		setPhasePointer(PHASE_EXPERIMENTAPPROVAL);
 	}
@@ -251,6 +267,38 @@ implements ExperimentApproval, java.io.Serializable {
 	 */
 	public void setGo(boolean go) {
 		this.bGo = go;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setState(int)
+	 */
+	public void setState(int state) {
+		boolean bOK = checkStateInput(state);
+		if(bOK){
+			super.setState(state);
+			
+			if(super.getState() == STATE_IN_PROGRESS)
+				this.setStartDate(new GregorianCalendar());
+			
+			if(super.getState() == STATE_COMPLETED)
+				this.setEndDate(new GregorianCalendar());
+				if(this.bGo){
+					this.expSetup.setBenchmarkGoalListFinal();
+				}
+		}
+	}
+	
+	/**
+	 * checks if setState lies in [-1..not started; 0..in progress; 1..completed]
+	 * @param state
+	 * @return
+	 */
+	private boolean checkStateInput(int state){
+		boolean bret= false;
+		if(state<=STATE_COMPLETED&&state>=STATE_NOT_STARTED){
+			bret = true;
+		}
+		return bret;
 	}
 
 }

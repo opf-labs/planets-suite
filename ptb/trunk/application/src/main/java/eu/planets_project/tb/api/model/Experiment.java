@@ -23,8 +23,8 @@ public interface Experiment extends ExperimentPhase{
 	public void setExperimentExecution(ExperimentExecution executionPhase);
 	public ExperimentExecution getExperimentExecution();
 	
-	public void setExperimentAnalysis(ExperimentEvaluation analysisPhase);
-	public ExperimentEvaluation getExperimentAnalysis();
+	public void setExperimentEvaluation(ExperimentEvaluation analysisPhase);
+	public ExperimentEvaluation getExperimentEvaluation();
 	
 	public ExperimentPhase getCurrentPhase();
 	public int getCurrentPhasePointer();

@@ -112,7 +112,7 @@ public abstract class ExperimentPhaseImpl implements
 	 */
 	private boolean checkStateInput(int state){
 		boolean bret= false;
-		if(state<=1&&state>=-1){
+		if(state<=STATE_COMPLETED&&state>=STATE_NOT_STARTED){
 			bret = true;
 		}
 		return bret;
@@ -125,7 +125,7 @@ public abstract class ExperimentPhaseImpl implements
 	 */
 	private boolean checkResultInput(int result){
 		boolean bret= false;
-		if(result<=3&&result>=-1){
+		if(result<=RESULT_REJECTED&&result>=RESULT_NOT_AVAILABLE){
 			bret = true;
 		}
 		return bret;
@@ -184,10 +184,10 @@ public abstract class ExperimentPhaseImpl implements
 		if(bOK){
 			this.iState = state;
 			
-			if(this.iState == this.STATE_IN_PROGRESS)
+			if(this.iState == STATE_IN_PROGRESS)
 				this.setStartDate(new GregorianCalendar());
 			
-			if(this.iState == this.STATE_COMPLETED)
+			if(this.iState == STATE_COMPLETED)
 				this.setEndDate(new GregorianCalendar());
 		}
 	}

@@ -1,8 +1,13 @@
 package eu.planets_project.tb.api.model;
 
 
+import java.net.URI;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
+import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.system.SystemMonitoring;
 
 /**
@@ -28,16 +33,32 @@ public interface ExperimentExecution extends ExperimentPhase{
 	 */
 	public SystemMonitoring getSystemMonitoringData();
 	
+	public List<String> getExecutionMetadata(URI inputFile);
+	public URI getExecutionOutputData(URI inputFile);
 	/**
-	 * @param wee_Information
+	 * Could capture if the migration/characterisation was performed correctly
+	 * @param inputFile
+	 * @return
 	 */
-	//TODO Schauen 
-	/*public void setWorkflowExecutionData(WorkflowExecution wee_Information);
-	public WorkflowExecution getWorkflowExecutionData();*/
+	public String getExecutionState(URI inputFile);
 	
-	//Unclear in which form "experiment results" are packed and from where to retrieve them
-	//possibly from the WEE context
-	public void setExperimentResults(ExperimentResults expResults);
-	public ExperimentResults getExperimentResults();
+	/**
+	 * Returns a Collection of OutputURIs
+	 * @return does not contain null values
+	 */
+	public Collection<URI> getExecutionOutputData();
+	//getMapping input,output data
+	/**
+	 * Gets a Map.Entry containing the InputData URI as key and the outputData URI as value
+	 * @param inputFileRef an existing inputFileRef
+	 * @return null if the inputFileRef is not found. Map.Entry<Input,Output>: output is null if no URI available
+	 */
+	public Map.Entry<URI,URI> getExecutionDataEntry(URI inputFileRef);
+	/**
+	 * Gets all available Entries in the form of key=InputURI, value=OutputURI
+	 * @see getDataEntry for return values.
+	 * @return
+	 */
+	public Collection<Map.Entry<URI,URI>> getExecutionDataEntries();
 
 }

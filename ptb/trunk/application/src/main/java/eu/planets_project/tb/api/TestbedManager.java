@@ -59,6 +59,9 @@ public interface TestbedManager {
 	// Comment Management
 	public CommentManager getCommentManagerInstance();
 	
+	// Admin Manager
+	public AdminManager getAdminManagerInstance();
+	
 	//Manages ..
 
 }

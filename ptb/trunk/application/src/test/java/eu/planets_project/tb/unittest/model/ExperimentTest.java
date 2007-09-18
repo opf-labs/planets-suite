@@ -58,6 +58,7 @@ public class ExperimentTest extends TestCase{
 		//Test2:
 		test_exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
 		test_exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
+
 		int iPhase = test_exp.getCurrentPhase().getPhasePointer();
 		assertEquals(Experiment.PHASE_EXPERIMENTAPPROVAL, iPhase);
 		
@@ -75,7 +76,7 @@ public class ExperimentTest extends TestCase{
 		Experiment test_exp = manager.getExperiment(this.expID1);
 
 		//Test1:
-		ExperimentPhase phase = test_exp.getCurrentPhase();
+		ExperimentPhase phase = test_exp.getCurrentPhase();		
 		assertNotNull(phase);
 		assertEquals(Experiment.PHASE_EXPERIMENTSETUP, phase.getPhasePointer());
 		

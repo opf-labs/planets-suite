@@ -41,8 +41,8 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	public ExperimentImpl(){
 		expSetup = new ExperimentSetupImpl();
 		expExecution = new ExperimentExecutionImpl();
-		expApproval = new ExperimentApprovalImpl();
-		expEvaluation = new ExperimentEvaluationImpl();
+		expApproval = new ExperimentApprovalImpl(expSetup);
+		expEvaluation = new ExperimentEvaluationImpl(expSetup);
 		
 		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
 		
@@ -50,7 +50,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentAnalysis()
 	 */
-	public ExperimentEvaluation getExperimentAnalysis() {
+	public ExperimentEvaluation getExperimentEvaluation() {
 		return this.expEvaluation;
 	}
 
@@ -78,7 +78,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentAnalysis(eu.planets_project.tb.api.model.ExperimentEvaluation)
 	 */
-	public void setExperimentAnalysis(ExperimentEvaluation analysisPhase) {
+	public void setExperimentEvaluation(ExperimentEvaluation analysisPhase) {
 		this.expEvaluation = (ExperimentEvaluationImpl)analysisPhase;
 	}
 

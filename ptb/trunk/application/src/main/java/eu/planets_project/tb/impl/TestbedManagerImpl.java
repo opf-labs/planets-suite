@@ -21,6 +21,7 @@ import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
@@ -80,8 +81,12 @@ public class TestbedManagerImpl
 	 */
 	public CommentManager getCommentManagerInstance() {
 		//get Singleton: TestbedManager
-		CommentManagerImpl commentManager = CommentManagerImpl.getInstance();
-		return commentManager;
+		return CommentManagerImpl.getInstance();
+	}
+	
+	public AdminManager getAdminManagerInstance() {
+		//get Singleton: AdminManager
+		return AdminManagerImpl.getInstance();
 	}
 
 	/* (non-Javadoc)
@@ -312,5 +317,6 @@ public class TestbedManagerImpl
 		
 		return iCount;
 	}
+
 
 }
