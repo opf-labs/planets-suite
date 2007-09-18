@@ -21,6 +21,7 @@ import eu.planets_project.tb.gui.util.SortableList;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
 
 import java.util.Collection;
 
@@ -152,6 +153,17 @@ public class ListExp extends SortableList {
 	      return "editExp";
 	    }
 	    
+            public String deleteExperimentAction()
+	    {
+	    
+	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+              TestbedManagerImpl mgr = new TestbedManagerImpl();
+              
+              mgr.removeExperiment(selectedExperiment.getEntityID());
+	              
+	      // go to edit page
+	      return "deleteExp";
+	    }
 	    
 //	  Property getters - setters
 

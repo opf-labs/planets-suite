@@ -123,7 +123,7 @@
       <from-outcome>success</from-outcome>
       <to-view-id>/reader/welcome.xhtml</to-view-id>
       <redirect />
-    </navigation-case>     
+    </navigation-case>    
   </navigation-rule> 
   
   
@@ -179,6 +179,11 @@
     <navigation-case>
       <from-outcome>editExp</from-outcome>
       <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>deleteExp</from-outcome>
+      <to-view-id>/exp/my_exp.xhtml</to-view-id>
      <redirect />
     </navigation-case>
   </navigation-rule>  

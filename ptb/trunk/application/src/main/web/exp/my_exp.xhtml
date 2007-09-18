@@ -78,7 +78,13 @@
         <t:column>
             <f:facet name="header">#{res['expList.colHeader.inputOutputFiles']}</f:facet>
             <h:outputText value="#{exp.experimentSetup.basicProperties.experimentedObjectTypes}" />
-        </t:column>       
+        </t:column> 
+                <t:column>
+            <f:facet name="header">#{res['expList.colHeader.delete']}</f:facet>
+            <h:commandLink action="#{ListExp_Backing.deleteExperimentAction}">
+	            <h:outputText value="Delete" />
+    		</h:commandLink>
+        </t:column>
     </t:dataTable>
 
     <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >

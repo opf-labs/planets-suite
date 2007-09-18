@@ -103,9 +103,9 @@ public class Manager {
         	Experiment exp = testbedMan.getExperiment(expBean.getID());
         	
         	testbedMan.updateExperiment(exp);        	
-    		return "success";
+    		return "goToStage4";
     	} else
-    		return "failure";    	
+    		return "goToStage4";    	
     }
     
     
@@ -123,7 +123,7 @@ public class Manager {
     	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutputFiles()));
     	exp.getExperimentSetup().setExperimentResources(expRes);
     	testbedMan.updateExperiment(exp);
-        return "success";
+        return "goToStage4";
     }
     
     
@@ -218,6 +218,13 @@ public class Manager {
     		wfMap.put(wf.getName(),String.valueOf(wf.getEntityID()));
     	}
     	return wfMap;
+    }
+    
+    public String approveExperiment(){
+        return "goToStage5";
+    }
+    public String proceedToEvaluation(){
+        return "goToStage6";
     }
    
     

@@ -606,3 +606,50 @@ div.filemain
 	height:595px;
 	padding:2px;
 }
+
+div.box
+{
+	border: 2px solid #579EC2; 
+	width: 300px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	
+}
+
+h3.box
+{
+	text-align:center;
+	background-color: #579EC2;
+	color: #FFFFFF;
+	margin:0;
+	margin-bottom: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-transform:uppercase;
+	letter-spacing: 0.2em;
+	font-size: 0.9em;
+}
+
+p.box
+{
+	margin: 2px;
+	margin-bottom:10px;
+}
+
+textarea
+{
+	font-size:1em;
+	font-family: arial, helvetica, sans-serif;
+}
+
+input
+{
+	font-size:1em;
+	font-family: arial, helvetica, sans-serif;
+}
+
+select
+{
+	font-size:1em;
+	font-family: arial, helvetica, sans-serif;
+}
