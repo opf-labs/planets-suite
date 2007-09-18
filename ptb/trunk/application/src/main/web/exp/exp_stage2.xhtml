@@ -71,21 +71,19 @@
 					</ul>
 		
 		            <b>Input mimetypes: </b> #{Workflow.requiredInputMIMETypes}<br/>					
-		            <t:inputFileUpload id="fileupload"
+		            <t:inputFileUpload id="fileupload" rendered="#{empty ExperimentBean.eworkflowInputData}"
                                accept="#{Workflow.requiredInputMIMETypes[0]}"
                                value="#{FileUploadBean.upFile}"
                                storage="file"
                                styleClass="fileUploadInput"
                                required="true"
                                maxlength="10000000"/><br/>
-					<h:panelGroup rendered="#{not empty ExperimentBean.eworkflow}">
+					<h:panelGroup rendered="#{not empty ExperimentBean.eworkflowInputData}">
 	                    <h:outputText value="Specified input data: "/>
 	                    <h:outputText value="#{ExperimentBean.eworkflowInputData}" style="font-style: italic;font-weight: bold;"/>
+						<h:commandButton value="#{res['button.change']}"
+						action="#{Manager_Backing.changeExpWorkflowDataAction}" />
 					</h:panelGroup>                               
-                    <!-- <h:outputText value="The file " rendered="#{FileUploadBean.uploaded}"/>
-                    <h:outputText value="#{FileUploadBean.upFile.name}" rendered="#{FileUploadBean.uploaded}" style="font-style: italic;font-weight: bold;"/> 
-                    <h:outputText value=" has been successfully uploaded." rendered="#{FileUploadBean.uploaded}"/>
-					 -->
 					<br/>
 					<h:commandButton value="#{res['button.save']}"
 						action="#{Manager_Backing.saveExpWorkflowAction}" />

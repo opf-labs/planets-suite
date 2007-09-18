@@ -28,7 +28,7 @@
 							<legend>Specify Resources</legend>
 							<p>
 								<label id="">Estimated Output files:</label>
-								<h:selectOneMenu required="false" value="#{ExperimentBean.numberOfOutputFiles}">
+								<h:selectOneMenu immediate="true" required="false" value="#{ExperimentBean.numberOfOutputFiles}">
 									<f:selectItem itemValue="1" itemLabel="1-10" />
 									<f:selectItem itemValue="11" itemLabel="11-100"/>
 									<f:selectItem itemValue="101" itemLabel="101-1000"/>
@@ -38,7 +38,7 @@
 							</p>
 							<div class="clear"></div>
 							<p>
-								<label id="">Extimated Intensity:</label>		
+								<label id="">Estimated Intensity:</label>		
 								<h:selectOneMenu required="false" value="#{ExperimentBean.intensity}">
 									<f:selectItem itemValue="0" itemLabel="Low" />
 									<f:selectItem itemValue="1" itemLabel="Medium"/>
@@ -53,16 +53,15 @@
 							<legend>Specify Outcomes</legend>
 							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
 
-							<t:dataTable id="dataTable" var="bm" value="#{ExperimentBean.benchmarks}"
-				                  preserveDataModel="true"
+						  	<t:dataTable id="dataTable" var="bm" value="#{ExperimentBean.benchmarkBeans}"
+				                  preserveDataModel="false"
 			    	              rows="4"
 			        	          rowId="#{bm.ID}"
 			            	      cellpadding="2"
 			                	  cellspacing="0"
 				                  border="1">
 							        <t:column>
-						            	<h:selectBooleanCheckbox id="checkbox" value="#{not empty bm.value}">
-										</h:selectBooleanCheckbox>						            	
+									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"/>				            	
 						            </t:column>
 							        <t:column>
 			            				<f:facet name="header">Criteria</f:facet>
@@ -77,7 +76,7 @@
 							</t:dataTable>
 						</fieldset>
 							<p>
-					            <h:commandButton value="#{res['button.save']}" immediate="true" 
+					            <h:commandButton value="#{res['button.save']}"  
 					            action="#{Manager_Backing.updateBenchmarksAction}"/>		
 							</p>
 							<p>
