@@ -21,7 +21,8 @@ import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -221,8 +222,8 @@ public class ExperimentSetupTest extends TestCase{
 		expSetup.setBasicProperties(props);
 		
 		//BenchmarkObjectives
-		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
-		BenchmarkGoalImpl goal = (BenchmarkGoalImpl)handler.getBenchmarkGoal("nop1");
+		BenchmarkHandler handler = BenchmarkHandlerImpl.getInstance();
+		BenchmarkGoal goal = (BenchmarkGoalImpl)handler.getBenchmark("nop1");
 		expSetup.addBenchmarkGoal(goal);
 		
 		return expSetup;

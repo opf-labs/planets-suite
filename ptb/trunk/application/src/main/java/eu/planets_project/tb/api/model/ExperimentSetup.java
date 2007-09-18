@@ -4,7 +4,6 @@ import java.util.List;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
-import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
 
 /**
  * The phase ExperimentSetup covers the steps of 1-3 of the Planets Testbed
@@ -24,7 +23,7 @@ public interface ExperimentSetup extends ExperimentPhase{
 	
 		//BenchmarkGoals
 	/**
-	 * Adds a given BenchmarkGoal to the ones used within this Experiment
+	 * Adds a given Benchmark to the ones used within this Experiment
 	 * @param goal
 	 */
 	public void addBenchmarkGoal(BenchmarkGoal goal);

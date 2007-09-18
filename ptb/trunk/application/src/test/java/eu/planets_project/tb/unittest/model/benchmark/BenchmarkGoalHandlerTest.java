@@ -4,9 +4,9 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkHandler;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkHandlerImpl;
 
 public class BenchmarkGoalHandlerTest extends TestCase{
 	
@@ -14,38 +14,38 @@ public class BenchmarkGoalHandlerTest extends TestCase{
 	public final int iNumbOfCategories = 2;
 	public final int iNumbOfGoals = 3;
 	
-	BenchmarkGoalsHandler handler;
+	BenchmarkHandler handler;
 	
 	
 	public void setUp(){
-		handler = BenchmarkGoalsHandlerImpl.getInstance();
+		handler = BenchmarkHandlerImpl.getInstance();
 	}
 	
 	public void testBuildBenchmarkGoalsFromXML(){
 		assertEquals(this.iNumbOfCategories,handler.getCategoryNames().size());
-		assertEquals(this.iNumbOfGoals,handler.getAllBenchmarkGoals().size());
+		assertEquals(this.iNumbOfGoals,handler.getAllBenchmarks().size());
 	}
 	
-	public void testGetBenchmarkGoals(){
+	public void testGetBenchmarks(){
 		//Multiple tests
-		assertTrue(0<handler.getAllBenchmarkGoals().size());
+		assertTrue(0<handler.getAllBenchmarks().size());
 		Iterator<String> itCategories = handler.getCategoryNames().iterator();
 		int count = 0;
 		int iSizeSum = 0;
 		while(itCategories.hasNext()){
 			count++;
 			String category = itCategories.next();
-			iSizeSum += handler.getAllBenchmarkGoalIDs(category).size();
-			assertEquals(handler.getAllBenchmarkGoalIDs(category).size(),handler.getAllBenchmarkGoals(category).size());
+			iSizeSum += handler.getAllBenchmarkIDs(category).size();
+			assertEquals(handler.getAllBenchmarkIDs(category).size(),handler.getAllBenchmarks(category).size());
 		}
 		assertEquals(count,this.iNumbOfCategories);
-		assertEquals(iSizeSum,handler.getAllBenchmarkGoals().size());
-		assertEquals(handler.getAllBenchmarkGoalIDs().size(),handler.getAllBenchmarkGoals().size());
+		assertEquals(iSizeSum,handler.getAllBenchmarks().size());
+		assertEquals(handler.getAllBenchmarkIDs().size(),handler.getAllBenchmarks().size());
 		//getBenchmarkGoal
-		Iterator<String> ids = handler.getAllBenchmarkGoalIDs().iterator();
+		Iterator<String> ids = handler.getAllBenchmarkIDs().iterator();
 		while(ids.hasNext()){
 			String id = ids.next();
-			assertNotNull(handler.getBenchmarkGoal(id));
+			assertNotNull(handler.getBenchmark(id));
 		}
 		
 	}

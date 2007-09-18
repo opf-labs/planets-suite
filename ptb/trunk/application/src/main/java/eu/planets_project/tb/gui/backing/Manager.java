@@ -6,8 +6,9 @@ import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.api.model.benchmark.Benchmark;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkHandler;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
@@ -18,11 +19,13 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -92,6 +95,7 @@ public class Manager {
         // Put updated Bean into Session; accessible later as #{ExperimentBean}
         //FacesContext ctx = FacesContext.getCurrentInstance();
 	    //ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
         testbedMan.updateExperiment(exp);
         return "success";
     }
@@ -115,13 +119,29 @@ public class Manager {
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID());
-    	exp.getExperimentSetup().setBenchmarkGoals(expBean.getBenchmarks());
+    	// create Goal objects from Beans
+    	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
+    	Iterator iter = expBean.getBenchmarks().values().iterator();
+    	while (iter.hasNext()) {
+    		BenchmarkBean bmb = (BenchmarkBean)iter.next();
+    		if (bmb.getSelected()) {
+    			Benchmark bm = BenchmarkHandlerImpl.getInstance().getBenchmark(bmb.getID());
+	    		BenchmarkGoal bmg = new BenchmarkGoalImpl(bm);
+	    		bmg.setValue(bmb.getValue());
+	    		if (bmb.getWeight()!=null)
+	    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
+	    		bmgoals.add(bmg);
+    		}
+    	}
+    	exp.getExperimentSetup().setBenchmarkGoals(bmgoals);
     	ExperimentResources expRes = exp.getExperimentSetup().getExperimentResources();
     	if (expRes == null)
     		expRes = new ExperimentResourcesImpl();
     	expRes.setIntensity(Integer.parseInt(expBean.getIntensity()));
     	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutputFiles()));
     	exp.getExperimentSetup().setExperimentResources(expRes);
+    	exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
+    	exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
     	testbedMan.updateExperiment(exp);
         return "goToStage4";
     }
@@ -158,7 +178,8 @@ public class Manager {
 	        ewf.setWorkflow(workflow);
 	        exp.getExperimentSetup().setWorkflow(ewf);
 	        expBean.setEworkflow(ewf);
-	        
+	        expBean.setEworkflowInputData(uploadBean.getURI().toString());
+	        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
 	        testbedMan.updateExperiment(exp);
 	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");    
 	    	return "goToStage3";
@@ -166,6 +187,11 @@ public class Manager {
         	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
         	return "failure";
         }
+    }
+    
+    public void changeExpWorkflowDataAction() {
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        expBean.setEworkflowInputData(null);    	
     }
     
     public void changedExpWorkflowEvent(ValueChangeEvent ce) {

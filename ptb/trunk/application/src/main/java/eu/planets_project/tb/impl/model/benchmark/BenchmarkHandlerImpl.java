@@ -4,10 +4,10 @@ package eu.planets_project.tb.impl.model.benchmark;
 /*import org.apache.commons.logging.Log;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 private Log log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");*/
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkHandler;
+import eu.planets_project.tb.api.model.benchmark.Benchmark;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkImpl;
 
 import javax.ejb.Stateless;
 import javax.xml.parsers.DocumentBuilder;
@@ -40,26 +40,26 @@ import java.util.Vector;
  * 	</Text>
  * </BenachmarkGoals>
  **/
-public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
+public class BenchmarkHandlerImpl implements BenchmarkHandler{
 	
 	private Element root;
 	private Vector<String> vCategoryNames;
-	//HashMap<Id,BenchmarkGoal>
-	private HashMap<String,BenchmarkGoal> hmBmGoals; 	
-	private static BenchmarkGoalsHandlerImpl instance;
+	//HashMap<Id,Benchmark>
+	private HashMap<String,Benchmark> hmBmGoals; 	
+	private static BenchmarkHandlerImpl instance;
 	
-	private BenchmarkGoalsHandlerImpl(){
+	private BenchmarkHandlerImpl(){
 		//initialize Variables
 		vCategoryNames = new Vector<String>();
-		hmBmGoals = new HashMap<String,BenchmarkGoal>();
+		hmBmGoals = new HashMap<String,Benchmark>();
 		
 		//parse XML and build up BenchmarkObjectivesList
-		buildBenchmarkGoalsFromXML();
+		buildBenchmarksFromXML();
 	}
 	
-	public static synchronized BenchmarkGoalsHandlerImpl getInstance(){
+	public static synchronized BenchmarkHandlerImpl getInstance(){
 		if (instance == null){
-			instance = new BenchmarkGoalsHandlerImpl();
+			instance = new BenchmarkHandlerImpl();
 		}
 		return instance;
 	}
@@ -68,49 +68,49 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	 * @param readXML: indicates if the XML source shall be parsed and read again for changes
 	 * @return
 	 */
-	public static synchronized BenchmarkGoalsHandlerImpl getInstance(boolean readXML){
+	public static synchronized BenchmarkHandlerImpl getInstance(boolean readXML){
 		if (readXML)
-			instance = new BenchmarkGoalsHandlerImpl();
+			instance = new BenchmarkHandlerImpl();
 		return instance;
 	}
 	
 	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getAllBenchmarkGoals()
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkHandler#getAllBenchmarkGoals()
 	 */
-	public List<BenchmarkGoal> getAllBenchmarkGoals(){
-		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
+	public List<Benchmark> getAllBenchmarks(){
+		List<Benchmark> ret = new Vector<Benchmark>();
 		Iterator<String> sKeys = this.hmBmGoals.keySet().iterator();
 		while(sKeys.hasNext()){
-			ret.add(getBenchmarkGoal(sKeys.next()));
+			ret.add(getBenchmark(sKeys.next()));
 		}
 		return ret;
 	}
 	
 	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getAllBenchmarkGoals(java.lang.String)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkHandler#getAllBenchmarkGoals(java.lang.String)
 	 */
-	public List<BenchmarkGoal> getAllBenchmarkGoals(String sCategoryName){
+	public List<Benchmark> getAllBenchmarks(String sCategoryName){
 		//all benchmark goals for a given category
-		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
-		Iterator<BenchmarkGoal> itTemplates = this.hmBmGoals.values().iterator();
+		List<Benchmark> ret = new Vector<Benchmark>();
+		Iterator<Benchmark> itTemplates = this.hmBmGoals.values().iterator();
 		while(itTemplates.hasNext()){
-			BenchmarkGoal template = itTemplates.next(); 
+			Benchmark template = itTemplates.next(); 
 			if(template.getCategory().equals(sCategoryName))
-				ret.add(this.getBenchmarkGoal(template.getID()));
+				ret.add(this.getBenchmark(template.getID()));
 		}
 		return ret;
 	}
 	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getAllBenchmarkGoalIDs(java.lang.String)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkHandler#getAllBenchmarkGoalIDs(java.lang.String)
 	 */
-	public List<String> getAllBenchmarkGoalIDs(String sCategoryName){
+	public List<String> getAllBenchmarkIDs(String sCategoryName){
 		List<String> ret = new Vector<String>();
-		Iterator<BenchmarkGoal> itGoals = this.hmBmGoals.values().iterator();
+		Iterator<Benchmark> itGoals = this.hmBmGoals.values().iterator();
 		while(itGoals.hasNext()){
-			BenchmarkGoal goal = itGoals.next(); 
+			Benchmark goal = itGoals.next(); 
 			if(goal.getCategory().equals(sCategoryName))
 				ret.add(goal.getID());
 		}
@@ -118,25 +118,25 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	}
 	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getAllBenchmarkGoalIDs()
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkHandler#getAllBenchmarkGoalIDs()
 	 */
-	public List<String> getAllBenchmarkGoalIDs() {
+	public List<String> getAllBenchmarkIDs() {
 		List<String> ret = new Vector<String>();
-		Iterator<BenchmarkGoal> itGoals = this.hmBmGoals.values().iterator();
+		Iterator<Benchmark> itGoals = this.hmBmGoals.values().iterator();
 		while(itGoals.hasNext()){
-			BenchmarkGoal goal = itGoals.next(); 
+			Benchmark goal = itGoals.next(); 
 			ret.add(goal.getID());
 		}
 		return ret;
 	}
 	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getBenchmarkGoal(java.lang.String)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkHandler#getBenchmarkGoal(java.lang.String)
 	 */
-	public BenchmarkGoal getBenchmarkGoal(String sID){
-		//returns a new BenchmarkGoal instance from a template
-		BenchmarkGoalImpl ret = new BenchmarkGoalImpl();
-		BenchmarkGoal template = this.hmBmGoals.get(sID);
+	public Benchmark getBenchmark(String sID){
+		//returns a new Benchmark instance from a template
+		BenchmarkImpl ret = new BenchmarkImpl();
+		Benchmark template = this.hmBmGoals.get(sID);
 		if(template !=null){
 			ret.setCategory(template.getCategory());
 			ret.setDefinition(template.getDefinition());
@@ -156,14 +156,14 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	
 	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#getCategoryNames()
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkHandler#getCategoryNames()
 	 */
 	public List<String> getCategoryNames(){
 		return this.vCategoryNames;
 	}
 	
 	
-	public void buildBenchmarkGoalsFromXML(){
+	public void buildBenchmarksFromXML(){
 		try{
 			DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = dbfactory.newDocumentBuilder();
@@ -177,7 +177,7 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			Iterator<String> itCategoryNames = vCategoryNames.iterator();
 			//parse benchmark goals
 			while(itCategoryNames.hasNext())
-				this.parseBenchmarkGoals(itCategoryNames.next());
+				this.parseBenchmarks(itCategoryNames.next());
 			
 			BenchmarkFile.close();
 			
@@ -189,7 +189,7 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	
 	
 	//e.g. get all items for the category "Text"
-	private void parseBenchmarkGoals(String sCategoryName){
+	private void parseBenchmarks(String sCategoryName){
 		 NodeList categories = root.getElementsByTagName(sCategoryName);
 		 
 		 for(int k=0;k<categories.getLength();k++){
@@ -198,7 +198,7 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			 //now parse items
 			
 			 for(int i=0;i<items.getLength();i++){
-				 BenchmarkGoalImpl bmGoal = new BenchmarkGoalImpl();
+				 BenchmarkImpl bmGoal = new BenchmarkImpl();
 				 Node item = items.item(i);
 
 				 if(item.getNodeName().equals("item") && item.getNodeType() == Node.ELEMENT_NODE){

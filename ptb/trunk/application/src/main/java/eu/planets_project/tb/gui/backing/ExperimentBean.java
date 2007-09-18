@@ -1,6 +1,7 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +15,12 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.api.model.benchmark.Benchmark;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkHandlerImpl;
 
 
 public class ExperimentBean {
@@ -41,21 +43,20 @@ public class ExperimentBean {
     private String etype;
     private ExperimentWorkflow eworkflow;    
     private String workflowtypeid;
-    private List<BenchmarkGoal> benchmarks;
-    private String intensity;
-    private String nrOutputFiles;
+    private Map<String,BenchmarkBean> benchmarks;
+    private String intensity="0";
+    private String nrOutputFiles="1";
+    private String inputData;
     
         
     public ExperimentBean() {
-    	benchmarks = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals();
+    	benchmarks = new HashMap<String,BenchmarkBean>();
+    	Iterator iter = BenchmarkHandlerImpl.getInstance().getAllBenchmarks().iterator();
+    	while (iter.hasNext()) {
+    		Benchmark bm = (Benchmark)iter.next();
+    		benchmarks.put(bm.getID(), new BenchmarkBean(bm));
+    	}
     }
-    
-    
-    public List<BenchmarkGoal> getBenchmarks() {
-		return benchmarks;    	
-    }
-    
-    
     
     public void fill(Experiment exp) {
     	ExperimentSetup expsetup = exp.getExperimentSetup();
@@ -76,19 +77,40 @@ public class ExperimentBean {
     	this.eworkflow = exp.getExperimentSetup().getExperimentWorkflow();
     	if (this.eworkflow !=null) {
     		this.workflowtypeid=String.valueOf(eworkflow.getWorkflow().getEntityID());
+   			if (eworkflow.getInputData()!=null)     			
+   				this.inputData = eworkflow.getInputData().toArray()[0].toString();   			    		    		
     	}
-    	// merge benchmarks     	
-    	List<BenchmarkGoal> expbms = exp.getExperimentSetup().getAllAddedBenchmarkGoals();
-    	Iterator iter = benchmarks.iterator();
+    	
+    	// merge information to benchmark beans    	
+    	Iterator iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
     		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
-    		if (expbms.contains(bmg))
-    			benchmarks.set(benchmarks.indexOf(bmg),bmg);
+    		if (benchmarks.containsKey(bmg.getID())) {
+    			BenchmarkBean bmb = benchmarks.get(bmg.getID());
+    			bmb.setValue(bmg.getValue());
+    			bmb.setWeight(String.valueOf(bmg.getWeight()));
+    			bmb.setSelected(true);
+    		}
     	}
-    	this.intensity = Integer.toString(exp.getExperimentSetup().getExperimentResources().getIntensity());
-    	this.nrOutputFiles = Integer.toString(exp.getExperimentSetup().getExperimentResources().getNumberOfOutputFiles());
+    	String intensity = Integer.toString(exp.getExperimentSetup().getExperimentResources().getIntensity());
+    	if (intensity != null && intensity != "-1") 
+    		this.intensity = intensity;
+    	String nroutputfiles = Integer.toString(exp.getExperimentSetup().getExperimentResources().getNumberOfOutputFiles());
+    	if (nroutputfiles !=null && nroutputfiles != "-1") 
+    		this.nrOutputFiles = nroutputfiles;
     }
     
+    public Map<String,BenchmarkBean> getBenchmarks() {
+		return benchmarks;    	
+    }
+    
+    public List<BenchmarkBean> getBenchmarkBeans() {
+    	return new ArrayList<BenchmarkBean>(benchmarks.values());
+    }
+    
+    public void setBenchmarks(Map<String,BenchmarkBean>bms) {
+    	this.benchmarks = bms;
+    }
     
     public void setEworkflow(ExperimentWorkflow ewf) {
     	this.eworkflow = ewf;
@@ -110,15 +132,14 @@ public class ExperimentBean {
     }
     
     public String getEworkflowInputData() {
-    	if (eworkflow != null) {
-    		if (eworkflow.getInputData()!=null) {    			
-    	    	return eworkflow.getInputData().toArray()[0].toString();   			
-    		}
-    	}    
-    	return null;
+    	return this.inputData;
     }
     
-	public void setNumberOfOutputFiles(String nr) {
+    public void setEworkflowInputData(String inputdata) {
+    	this.inputData = inputdata;
+    }
+
+    public void setNumberOfOutputFiles(String nr) {
 		this.nrOutputFiles = nr;
 	}
 

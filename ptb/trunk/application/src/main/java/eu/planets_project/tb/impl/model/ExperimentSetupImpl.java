@@ -23,7 +23,7 @@ import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 /**
  * @author alindley
  * hmBenchmarkGoalList: 
- * Please not the BenchmarkGoalList does hold the the BenchmarkGoal object itself
+ * Please not the BenchmarkGoalList does hold the the Benchmark object itself
  *
  */
 @Entity
@@ -37,7 +37,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	
 	//BenchmarkGoals:
 	private boolean bBenchmarkGoalListFinal;
-	//the structure: HashMap<BenchmarkGoal.getXMLID,BenchmarkGoal>();
+	//the structure: HashMap<Benchmark.getXMLID,Benchmark>();
 	private HashMap<String,BenchmarkGoal> hmBenchmarkGoals;
 	
 	@OneToOne(cascade={CascadeType.ALL})
@@ -110,7 +110,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentSetup#addBenchmarkGoal(eu.planets_project.tb.api.model.benchmark.BenchmarkGoal)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#addBenchmarkGoal(eu.planets_project.tb.api.model.benchmark.Benchmark)
 	 */
 	public void addBenchmarkGoal(BenchmarkGoal goal) {
 		if(!isBenchmarkGoalListFinal()){
@@ -179,7 +179,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		Iterator<BenchmarkGoal> itGoals = this.hmBenchmarkGoals.values().iterator();
 		while(itGoals.hasNext()){
 			BenchmarkGoal goal = itGoals.next();
-			if (goal.getCategory().equals(category)&&goal.getName().equals(name)){
+			if (goal.getBenchmark().getCategory().equals(category)&&goal.getBenchmark().getName().equals(name)){
 				removeBenchmarkGoal(goal.getID());
 			}
 		}

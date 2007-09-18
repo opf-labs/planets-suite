@@ -17,7 +17,7 @@ import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.benchmark.Benchmark;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.model.mockups.Workflow;
@@ -25,7 +25,7 @@ import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.persistency.WorkflowPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.AdminManagerImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkHandlerImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
 
 /**
