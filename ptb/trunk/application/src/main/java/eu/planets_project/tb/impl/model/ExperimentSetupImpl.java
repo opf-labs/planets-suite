@@ -45,12 +45,16 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentWorkflowImpl workflow;
 	
+	//temporary helper
+	private int iSubstage;
+	
 
 	public ExperimentSetupImpl(){
 		basicProperties = new BasicPropertiesImpl();
 		bBenchmarkGoalListFinal = false;
 		hmBenchmarkGoals = new HashMap<String,BenchmarkGoal>();
 		experimentResources = new ExperimentResourcesImpl();
+		iSubstage = -1;
 		
 		setPhasePointer(PHASE_EXPERIMENTSETUP);
 	}
@@ -211,6 +215,22 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		//delete old object
 		this.hmBenchmarkGoals = new HashMap<String,BenchmarkGoal>();
 		this.addBenchmarkGoals(goals);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getSubStage()
+	 */
+	public int getSubStage() {
+		return this.iSubstage;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setSubStage(int)
+	 */
+	public void setSubStage(int subStage) {
+		this.iSubstage = subStage;
 	}
 	
 }

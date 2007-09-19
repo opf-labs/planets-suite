@@ -79,6 +79,14 @@ public interface ExperimentSetup extends ExperimentPhase{
 	public void setExperimentResources(ExperimentResources experimentResources);
 	public ExperimentResources getExperimentResources();
 	
+	
+	final int SUBSTAGE1 = 1;
+	final int SUBSTAGE2 = 2;
+	final int SUBSTAGE3 = 3;
+	
+	//Temporary Helper:
+	public void setSubStage(int iSubStage);
+	public int getSubStage();
 
 
 }

@@ -14,7 +14,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
  *
  */
 //@Entity
-public class BenchmarkGoalImpl implements BenchmarkGoal, java.io.Serializable{
+public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.Serializable, Cloneable{
 	
 	//@Id
 	//@GeneratedValue
@@ -235,6 +235,18 @@ public class BenchmarkGoalImpl implements BenchmarkGoal, java.io.Serializable{
 		if(this.WEIGHT_MINIMUM<=weight&&weight<=this.WEIGHT_MAXIMUM){
 			this.iWeight = weight;
 		}
+	}
+	
+	public BenchmarkGoalImpl clone(){
+		BenchmarkGoalImpl goal = null;
+		try{
+			goal = (BenchmarkGoalImpl) super.clone();
+		}catch(CloneNotSupportedException e){
+			//TODO add logging statement
+			System.out.println("BenchmarkGoalImpl problems cloning "+e.toString());
+		}
+		
+		return goal;
 	}
 
 }

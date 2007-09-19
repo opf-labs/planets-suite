@@ -42,7 +42,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 		expSetup = new ExperimentSetupImpl();
 		expExecution = new ExperimentExecutionImpl();
 		expApproval = new ExperimentApprovalImpl(expSetup);
-		expEvaluation = new ExperimentEvaluationImpl(expSetup);
+		expEvaluation = new ExperimentEvaluationImpl();
 		
 		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
 		

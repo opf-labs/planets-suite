@@ -4,12 +4,15 @@ import java.util.List;
 
 public interface ExperimentReport {
 	
-	public String getExecutionMetadata();
+	/*public String getExecutionMetadata();*/
 
-	public void setText(String report);
-	public String getText();
+	public void setHeader(String text);
+	public String getHeader();
 	
-	public List<String> getGeneralBenchmarkGoals();
-	public List<String> getBenchmarkGoalsForFiles();
+	public void setBodyText(String text);
+	public String getBodyText();
+	
+	/*public List<String> getGeneralBenchmarkGoals();
+	public List<String> getBenchmarkGoalsForFiles();*/
 
 }

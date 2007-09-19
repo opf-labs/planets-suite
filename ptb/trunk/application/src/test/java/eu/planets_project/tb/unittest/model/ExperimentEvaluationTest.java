@@ -1,5 +1,8 @@
 package eu.planets_project.tb.unittest.model;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -7,14 +10,20 @@ import junit.framework.TestCase;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
+import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
+import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 
 public class ExperimentEvaluationTest extends TestCase{
 	
@@ -33,16 +42,16 @@ public class ExperimentEvaluationTest extends TestCase{
 	}
 	
 	
-	/*public void testEvaluateExperimentBenchmarkGoals(){
+	public void testEvaluateExperimentBenchmarkGoals(){
 	
 		ExperimentSetup expSetup = new ExperimentSetupImpl();
-		ExperimentEvaluation expEval = new ExperimentEvaluationImpl(expSetup);
+		ExperimentEvaluation expEval = new ExperimentEvaluationImpl();
 		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
 		
-		//Test1:
-		assertEquals(0,expEval.getAddedExperimentBenchmarkGoals().size());
+	//Test1:
+		assertNull(expEval.getEvaluatedExperimentBenchmarkGoals());
 		
-		//Test2: exp must not be evaluated as the benchmark is not contained in experimentSetup
+	//Test2: exp must not be evaluated as the benchmark is not contained in experimentSetup
 		Vector<String> sGoalIDs = (Vector<String>)handler.getAllBenchmarkGoalIDs();
 		//now find a benchmark that accepts input value Integer
 		Iterator<String> itGoalIDs = sGoalIDs.iterator();
@@ -56,27 +65,83 @@ public class ExperimentEvaluationTest extends TestCase{
 		//check if there is a benchmarkGoal with type Integer else cannot perform checks
 		assertNotNull(goal1);
 		//now check the actual unittests
-		expEval.evaluateExperimentBenchmarkGoal(goal1, "20");
-		assertEquals(0,expEval.getEvaluatedExperimentBenchmarkGoals().size());
+		expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+		assertNull(expEval.getEvaluatedExperimentBenchmarkGoals());
+		assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
 		
-		//Test3:
+	//Test3: Example how it should run
 		expSetup.addBenchmarkGoal(goal1);
-		expEval.evaluateExperimentBenchmarkGoal(goal1, "20");
+		//important to set the GoalListFinal
+		expSetup.setBenchmarkGoalListFinal();
+		//important to set the input - otherwise no evaluation can be performed and getEvaluatedGoals will return null
+		expEval.setInput(expSetup);
+		expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
 			
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
+		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
 		assertEquals("20", goalFound.getValue());
-
-	}*/
+	}
+	
 	
 	public void testEvaluateFileBenchmarkGoals(){
+		Experiment expFound = manager.getExperiment(this.expID1);
+		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
+		Vector<String> sGoalIDs = (Vector<String>)handler.getAllBenchmarkGoalIDs();
+		
+		try{
+			ExperimentSetup expSetup = expFound.getExperimentSetup();
+			URI testFile = new URI("file:http://planets-project.eu/testbed/files/1");
+			expSetup = this.setupTestWorkflow(expSetup, testFile);
+			
+		//Test1:
+			ExperimentEvaluation expEval = expFound.getExperimentEvaluation();
+			assertNull(expEval.getEvaluatedFileBenchmarkGoals(testFile));
+			
+		//Test2: exp must not be evaluated as the benchmark is not contained in experimentSetup
+			//now find a benchmark that accepts input value Integer
+			Iterator<String> itGoalIDs = sGoalIDs.iterator();
+			BenchmarkGoal goal1 = null;
+			while(itGoalIDs.hasNext()){
+				BenchmarkGoal goalTest = handler.getBenchmarkGoal(itGoalIDs.next());
+				if(goalTest.getType().equals("java.lang.Integer")){
+					goal1 = goalTest;
+				}
+			}
+			//check if there is a benchmarkGoal with type Integer else cannot perform checks
+			assertNotNull(goal1);
+			//now check the actual unittests
+			expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
+			assertNull(expEval.getEvaluatedFileBenchmarkGoals(testFile));
+			assertNull(expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID()));
+			
+		//Test3: Example how it should run
+			expSetup.addBenchmarkGoal(goal1);
+			//important to set the GoalListFinal
+			expSetup.setBenchmarkGoalListFinal();
+			//important to set the input - otherwise no evaluation can be performed and getEvaluatedGoals will return null
+			expEval.setInput(expSetup);
+			expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
+				
+			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
+			//I'm working with the File's Benchmark Goals and not the Experiment's 
+			assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
+			assertEquals(1,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
+			assertEquals("20", goalFound.getValue());
+			
+		}
+		catch(URISyntaxException e){
+			System.out.println("Error in ExperimentEvaluationTest: "+e.toString());
+			assertEquals(true,false);
+		}
 		
 	}
+	
 	
 	public void testRelatioshipSetupEvaluation(){
 		Experiment expFound = manager.getExperiment(this.expID1);
 		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
-		System.out.println("ExperimentEvaluationTest1");
 		Vector<String> sGoalIDs = (Vector<String>)handler.getAllBenchmarkGoalIDs();
+		
 		//now find a benchmark that accepts input value Integer
 		Iterator<String> itGoalIDs = sGoalIDs.iterator();
 		BenchmarkGoal goal1 = null;
@@ -88,29 +153,93 @@ public class ExperimentEvaluationTest extends TestCase{
 		}
 		//check if there is a benchmarkGoal with type Integer else cannot perform checks
 		assertNotNull(goal1);
-		//now check the actual unittests
-		System.out.println("ExperimentEvaluationTest2");
-
+		
+		//Testsetup part two
 		expFound.getExperimentSetup().addBenchmarkGoal(goal1);
-		System.out.println(expFound.getExperimentSetup().getAllAddedBenchmarkGoals().size());
-		System.out.println("ExperimentEvaluationTest2.5");
-		expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1, "20");
-		System.out.println("ExperimentEvaluationTest3 "+expFound.getExperimentEvaluation().getAddedExperimentBenchmarkGoals().size());
-
-		manager.updateExperiment(expFound);
+		expFound.getExperimentSetup().setBenchmarkGoalListFinal();
+		
+		try{
+			URI testFile = new URI("file:http://planets-project.eu/testbed/files/1");
+			//create an ExperimentWorkflow
+			WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
+			Vector<Long> wfIds = (Vector<Long>)wfhandler.getAllWorkflowIDs();
+			ExperimentWorkflow workflow = new ExperimentWorkflowImpl(wfhandler.getWorkflow(wfIds.firstElement()));
+			//need to set a workflow, as no predefined wf can be set
+			expFound.getExperimentSetup().setWorkflow(workflow);
+			expFound.getExperimentSetup().getExperimentWorkflow().addInputData(testFile);
+		
+			//Note: important to call evaluation.setInputBenchmarkGoals(experimentSetup)
+			expFound.getExperimentEvaluation().setInput(expFound.getExperimentSetup());
+			expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
 			
-		Experiment expFound2 = manager.getExperiment(this.expID1);
-		System.out.println("ExperimentEvaluationTest4"+expFound2.getExperimentSetup().getAllAddedBenchmarkGoals().size());
+		//UnitTestSetup completed: now perform the actual Tests
+			//Test1:
+			assertEquals(1,expFound.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoals().size());
+			Collection<BenchmarkGoal> evalBMGoals = expFound.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoals();
+			if(evalBMGoals.size()>0){
+				Iterator<BenchmarkGoal> itEvalBMGoals = evalBMGoals.iterator();
+				while(itEvalBMGoals.hasNext()){
+					BenchmarkGoal evalGoal = itEvalBMGoals.next();
+					if(evalGoal.getID().equals(goal1.getID())){
+						assertEquals("20", evalGoal.getValue());
+					}
+				}
+			}
+			
+			assertEquals("20", expFound.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(goal1.getID()).getValue());
+			
+			manager.updateExperiment(expFound);
+			Experiment expFound2 = manager.getExperiment(this.expID1);
 
-		BenchmarkGoal goalTest = expFound2.getExperimentSetup().getBenchmarkGoal(goal1.getID());
-		System.out.println("ExperimentEvaluationTest5");
-		System.out.println("FoundGoal: "+goalTest.getName());
-		System.out.println("ExpSetup has Value?"+goalTest.getValue());
-		BenchmarkGoal goalTest2 = expFound2.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(goal1.getID());
-		System.out.println(goalTest2.getName());
-		System.out.println("ExpEval has Value?"+goalTest2.getValue());
-		assertEquals("20", goalTest2.getValue());
+			//Test2:
+			BenchmarkGoal goalTest = expFound2.getExperimentSetup().getBenchmarkGoal(goal1.getID());
+			assertEquals("", goalTest.getValue());
+			
+			BenchmarkGoal goalTest2 = expFound2.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(goal1.getID());
+			assertEquals("20", goalTest2.getValue());
+		}
+		catch(URISyntaxException e){
+			System.out.println("Error in ExperimentEvaluationTest: "+e.toString());
+			assertEquals(true,false);
+		}
 	}
+	
+	
+	/**
+	 * Helper method to build and add a workflow to an ExperimentSetup, as this object cannot
+	 * be initialized by default
+	 * @param expSetup
+	 * @return
+	 */
+	private ExperimentSetup setupTestWorkflow(ExperimentSetup expSetup, URI testFile){
+			//create an ExperimentWorkflow
+			WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
+			Vector<Long> wfIds = (Vector<Long>)wfhandler.getAllWorkflowIDs();
+			ExperimentWorkflow workflow = new ExperimentWorkflowImpl(wfhandler.getWorkflow(wfIds.firstElement()));
+			//need to set a workflow, as no predefined wf can be set
+			expSetup.setWorkflow(workflow);
+			expSetup.getExperimentWorkflow().addInputData(testFile);
+			
+			return expSetup;
+	}
+	
+	
+	public void testExperimentReport(){
+		ExperimentEvaluation eval = new ExperimentEvaluationImpl();
+		ExperimentReport report = new ExperimentReportImpl();
+		
+		//Test1: properly initialized
+		assertNotNull(eval.getExperimentReport());
+		
+		//Test2: 
+		report.setHeader("Header1");
+		report.setBodyText("Body");
+		eval.setExperimentReport(report);
+		
+		assertEquals("Header1",eval.getExperimentReport().getHeader());
+		assertEquals("Body",eval.getExperimentReport().getBodyText());
+	}
+	
 	
 	protected void tearDown(){
 		try{

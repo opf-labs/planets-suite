@@ -73,7 +73,9 @@ implements ExperimentApproval, java.io.Serializable {
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#addApprovalUser(eu.planets_project.tb.api.model.User)
 	 */
 	public void addApprovalUser(String userID) {
-		this.vApprovalUsers.addElement(userID);
+		if(!this.vApprovalUsers.contains(userID)){
+			this.vApprovalUsers.addElement(userID);
+		}
 
 		//approval required roles were added
 		/*if (this.vReqRoles.size()>0){
