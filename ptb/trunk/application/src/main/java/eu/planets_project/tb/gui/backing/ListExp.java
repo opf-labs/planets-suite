@@ -153,13 +153,12 @@ public class ListExp extends SortableList {
 	      return "editExp";
 	    }
 	    
-            public String deleteExperimentAction()
+        public String deleteExperimentAction()
 	    {
 	    
 	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
-              TestbedManagerImpl mgr = new TestbedManagerImpl();
-              
-              mgr.removeExperiment(selectedExperiment.getEntityID());
+		  TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+          testbedMan.removeExperiment(selectedExperiment.getEntityID());
 	              
 	      // go to edit page
 	      return "deleteExp";
