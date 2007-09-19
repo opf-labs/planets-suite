@@ -6,9 +6,7 @@ import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
-import eu.planets_project.tb.api.model.benchmark.Benchmark;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkHandler;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
@@ -19,8 +17,7 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkHandlerImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 
@@ -125,8 +122,8 @@ public class Manager {
     	while (iter.hasNext()) {
     		BenchmarkBean bmb = (BenchmarkBean)iter.next();
     		if (bmb.getSelected()) {
-    			Benchmark bm = BenchmarkHandlerImpl.getInstance().getBenchmark(bmb.getID());
-	    		BenchmarkGoal bmg = new BenchmarkGoalImpl(bm);
+	    		// method to get a new instance of BenchmarkGoal
+    			BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
 	    		bmg.setValue(bmb.getValue());
 	    		if (bmb.getWeight()!=null)
 	    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));

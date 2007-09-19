@@ -15,12 +15,11 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
-import eu.planets_project.tb.api.model.benchmark.Benchmark;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkHandlerImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 
 
 public class ExperimentBean {
@@ -51,9 +50,9 @@ public class ExperimentBean {
         
     public ExperimentBean() {
     	benchmarks = new HashMap<String,BenchmarkBean>();
-    	Iterator iter = BenchmarkHandlerImpl.getInstance().getAllBenchmarks().iterator();
+    	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
-    		Benchmark bm = (Benchmark)iter.next();
+    		BenchmarkGoal bm = (BenchmarkGoal)iter.next();
     		benchmarks.put(bm.getID(), new BenchmarkBean(bm));
     	}
     }

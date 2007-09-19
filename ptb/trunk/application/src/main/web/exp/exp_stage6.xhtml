@@ -50,11 +50,23 @@
 					styleClass="exp_done">
 					<h:outputText value="#{res['new_exp.stage1']}" />
 				</h:commandLink></li>
-				<li class="exp"><a href="#" class="exp_done">#{res['new_exp.stage2']}</a></li>
-                                <li class="exp"><a href="#" class="exp_done">#{res['new_exp.stage3']}</a></li>
-                                <li class="exp"><a href="#" class="exp_done">#{res['new_exp.stage4']}</a></li>
-                                <li class="exp"><a href="#" class="exp_done">#{res['new_exp.stage5']}</a></li>
-                                <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
+				<li class="exp"><h:commandLink action="goToStage2"
+					styleClass="exp_done">
+					<h:outputText value="#{res['new_exp.stage2']}" />
+				</h:commandLink></li>
+				<li class="exp"><h:commandLink action="goToStage3"
+					styleClass="exp_done">
+					<h:outputText value="#{res['new_exp.stage3']}" />
+				</h:commandLink></li>
+				<li class="exp"><h:commandLink action="goToStage4"
+					styleClass="exp_done">
+					<h:outputText value="#{res['new_exp.stage4']}" />
+				</h:commandLink></li>	
+				<li class="exp"><h:commandLink action="goToStage5"
+					styleClass="exp_done">
+					<h:outputText value="#{res['new_exp.stage5']}" />
+				</h:commandLink></li>	
+                 <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
 			</ul>
 		</h:form></div>
 		</div>
