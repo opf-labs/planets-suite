@@ -14,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
@@ -46,6 +47,7 @@ public class ExperimentBean {
     private String intensity="0";
     private String nrOutputFiles="1";
     private String inputData;
+    private int currStage =1;
     
         
     public ExperimentBean() {
@@ -97,6 +99,17 @@ public class ExperimentBean {
     	String nroutputfiles = Integer.toString(exp.getExperimentSetup().getExperimentResources().getNumberOfOutputFiles());
     	if (nroutputfiles !=null && nroutputfiles != "-1") 
     		this.nrOutputFiles = nroutputfiles;
+    	// determine current Stage
+    	String currPhase = exp.getCurrentPhase().getPhaseName();
+    	if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTSETUP)) {
+    		this.currStage = exp.getExperimentSetup().getSubStage();
+    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTAPPROVAL)) {
+    		this.currStage = 4;
+    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEXECUTION)) {
+    		this.currStage = 5;
+    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION)) {
+    		this.currStage = 6;
+    	}
     }
     
     public Map<String,BenchmarkBean> getBenchmarks() {
@@ -278,6 +291,14 @@ public class ExperimentBean {
         if (etype != null) 
         	return AdminManagerImpl.getInstance().getExperimentTypeName(etype);
         return null;
+    }
+    
+    public int getCurrentStage() {
+    	return this.currStage;
+    }
+    
+    public void setCurrentStage(int cs) {
+    	this.currStage = cs;
     }
 
 }

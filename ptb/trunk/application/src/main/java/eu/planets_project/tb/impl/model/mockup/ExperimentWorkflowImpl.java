@@ -36,7 +36,7 @@ public class ExperimentWorkflowImpl implements ExperimentWorkflow, java.io.Seria
 	private long id;
 	//private Vector<URI> vInputData, vOutputData;
 	private HashMap<URI,URI> hmInputOutputData;
-	@OneToOne(cascade={CascadeType.ALL})
+	@OneToOne(cascade={CascadeType.PERSIST})
 	private WorkflowImpl workflow;
 	
 	public ExperimentWorkflowImpl(Workflow template) {

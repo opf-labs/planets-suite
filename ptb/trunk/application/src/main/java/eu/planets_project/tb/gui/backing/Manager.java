@@ -177,6 +177,7 @@ public class Manager {
 	        expBean.setEworkflow(ewf);
 	        expBean.setEworkflowInputData(uploadBean.getURI().toString());
 	        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
+	        exp.setState(Experiment.STATE_IN_PROGRESS);
 	        testbedMan.updateExperiment(exp);
 	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");    
 	    	return "goToStage3";
@@ -244,10 +245,20 @@ public class Manager {
     }
     
     public String approveExperiment(){
-        return "goToStage5";
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = testbedMan.getExperiment(expBean.getID());
+    	exp.getExperimentApproval().setState(Experiment.STATE_COMPLETED);
+    	exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
+    	return "goToStage5";
     }
     public String proceedToEvaluation(){
-        return "goToStage6";
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = testbedMan.getExperiment(expBean.getID());    	
+    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
+    	return "goToStage6";
     }
    
     

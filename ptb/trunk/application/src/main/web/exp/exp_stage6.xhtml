@@ -44,31 +44,32 @@
 		<div id="leftcol">
 
 		<h3 class="leftcol">Experiment Progress</h3>
-		<div class="innertube"><h:form>
-			<ul class="exp">
-				<li class="exp"><h:commandLink action="goToStage1"
-					styleClass="exp_done">
-					<h:outputText value="#{res['new_exp.stage1']}" />
-				</h:commandLink></li>
-				<li class="exp"><h:commandLink action="goToStage2"
-					styleClass="exp_done">
-					<h:outputText value="#{res['new_exp.stage2']}" />
-				</h:commandLink></li>
-				<li class="exp"><h:commandLink action="goToStage3"
-					styleClass="exp_done">
-					<h:outputText value="#{res['new_exp.stage3']}" />
-				</h:commandLink></li>
-				<li class="exp"><h:commandLink action="goToStage4"
-					styleClass="exp_done">
-					<h:outputText value="#{res['new_exp.stage4']}" />
-				</h:commandLink></li>	
-				<li class="exp"><h:commandLink action="goToStage5"
-					styleClass="exp_done">
-					<h:outputText value="#{res['new_exp.stage5']}" />
-				</h:commandLink></li>	
-                 <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
-			</ul>
-		</h:form></div>
+		<div class="innertube">
+			<ul class="exp"><h:form>
+					<li class="exp"><h:commandLink action="goToStage1"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage1']}" />
+					</h:commandLink></li>
+					<li class="exp"><h:commandLink action="goToStage2"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage2']}" />
+					</h:commandLink></li>
+					<li class="exp"><h:commandLink action="goToStage3"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage3']}" />
+					</h:commandLink></li>
+					<li class="exp"><h:commandLink action="goToStage4"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage4']}" />
+					</h:commandLink></li>
+					<li class="exp"><h:commandLink action="goToStage5"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage5']}" />
+					</h:commandLink></li>
+					<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
+				</h:form>
+			</ul>													
+		</div>
 		</div>
 
 	</ui:define>

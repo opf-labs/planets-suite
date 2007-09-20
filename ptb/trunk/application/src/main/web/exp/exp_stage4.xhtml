@@ -56,25 +56,42 @@
 		<div id="leftcol">
 
 		<h3 class="leftcol">Experiment Progress</h3>
-		<div class="innertube"><h:form>
-			<ul class="exp">
+		<div class="innertube">
+			<ul class="exp"><h:form>
 				<li class="exp"><h:commandLink action="goToStage1"
-					styleClass="exp_done">
-					<h:outputText value="#{res['new_exp.stage1']}" />
+							styleClass="exp_done">
+						<t:outputText value="#{res['new_exp.stage1']}" />
 				</h:commandLink></li>
 				<li class="exp"><h:commandLink action="goToStage2"
-					styleClass="exp_done">
-					<h:outputText value="#{res['new_exp.stage2']}" />
+							styleClass="exp_done">
+						<t:outputText value="#{res['new_exp.stage2']}" />
 				</h:commandLink></li>
 				<li class="exp"><h:commandLink action="goToStage3"
-					styleClass="exp_done">
-					<h:outputText value="#{res['new_exp.stage3']}" />
+							styleClass="exp_done">
+						<t:outputText value="#{res['new_exp.stage3']}" />
 				</h:commandLink></li>
-                <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage4']}</a></li>
-				<li class="exp_nd">#{res['new_exp.stage5']}</li>
-				<li class="exp_nd">#{res['new_exp.stage6']}</li>
-			</ul>
-		</h:form></div>
+				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage4']}</a></li>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
+					<li class="exp"><h:commandLink action="goToStage5"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage5']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
+					<li class="exp_nd">#{res['new_exp.stage5']}</li>
+				</h:panelGroup>		
+				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
+					<li class="exp"><h:commandLink action="goToStage6"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage6']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
+					<li class="exp_nd">#{res['new_exp.stage2']}</li>
+				</h:panelGroup>	
+				</h:form>
+			</ul>							
+		</div>
 		</div>
 
 	</ui:define>
