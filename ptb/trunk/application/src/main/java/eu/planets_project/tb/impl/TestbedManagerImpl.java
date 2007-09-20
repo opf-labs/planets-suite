@@ -20,7 +20,11 @@ import javax.persistence.Id;
 import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.impl.CommentManagerImpl;
+import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
+import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
@@ -104,9 +108,15 @@ public class TestbedManagerImpl
 	  //Should this be added in a transaction?
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
 		long lExpID = dao_r.persistExperiment(exp);
+		
 		//should now already contain a container injected EntityID;
 		exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
+		
+		//now register experimentRefID in Phases
+		this.setExperimentRefInPhase(exp);
+		
 		this.hmAllExperiments.put(exp.getEntityID(), exp);
+		
 	  //End Transaction
 		return exp;
 	}
@@ -127,9 +137,29 @@ public class TestbedManagerImpl
 			long lExpID = dao_r.persistExperiment(experimentBean);
 			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
 			this.hmAllExperiments.put(exp.getEntityID(), exp);
+			
+			//now register experimentRefID in Phases
+			this.setExperimentRefInPhase(exp);
+			
+			//finally return the entityID
 			return exp.getEntityID();
 		}
 	   //End Transaction
+	}
+	
+	/**
+	 * Precondition: Experiment must already be known by the EntityManager, i.e. have an EntityID assigned
+	 * @param exp
+	 */
+	private void setExperimentRefInPhase(Experiment exp){
+		//set the reference pointers for the stages:
+		((ExperimentSetupImpl)exp.getExperimentSetup()).setExpeirmentRefID(exp.getEntityID());
+		((ExperimentApprovalImpl)exp.getExperimentApproval()).setExpeirmentRefID(exp.getEntityID());
+		((ExperimentExecutionImpl)exp.getExperimentExecution()).setExpeirmentRefID(exp.getEntityID());
+		((ExperimentEvaluationImpl)exp.getExperimentEvaluation()).setExpeirmentRefID(exp.getEntityID());
+		
+		//As the Experiment's attributes have been modified we must call update
+		this.updateExperiment(exp);
 	}
 	
 	/* (non-Javadoc)

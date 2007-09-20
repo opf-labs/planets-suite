@@ -30,20 +30,38 @@ implements ExperimentApproval, java.io.Serializable {
 	private Vector<String> vApprovalUsers;
 	private String sDecision, sExplanation;
 	private boolean bGo;
+	
+    //a helper reference pointer, for retrieving the experiment in the phase
+    private long lExperimentIDRef;
 
 	@Transient
 	//This annotation specifies that the property or field is not persistent.
 	private ExperimentSetup expSetup;
 
 	//required for EJB Persistence
-	private ExperimentApprovalImpl(){
+	public ExperimentApprovalImpl(){
 		//roles as defined in the Class TestbedRoles
 		vReqRoles = new Vector<Integer>();
 		vApprovalUsers = new Vector<String>();
 		bGo = false;
+		lExperimentIDRef = -1;
 		
 		setPhasePointer(PHASE_EXPERIMENTAPPROVAL);
 	}
+	
+	
+    /**
+     * A helper reference pointer on the experiment's ID to retrieve other phases or the
+     * experiment itself if this is required.
+     * @return
+     */
+    public long getExperimentRefID(){
+        return this.lExperimentIDRef;
+    }
+
+    public void setExpeirmentRefID(long lExperimentIDRef){
+        this.lExperimentIDRef = lExperimentIDRef;
+    }
 	
 	public ExperimentApprovalImpl(ExperimentSetup expSetup){
 		//roles as defined in the Class TestbedRoles
@@ -269,38 +287,6 @@ implements ExperimentApproval, java.io.Serializable {
 	 */
 	public void setGo(boolean go) {
 		this.bGo = go;
-	}
-	
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setState(int)
-	 */
-	public void setState(int state) {
-		boolean bOK = checkStateInput(state);
-		if(bOK){
-			super.setState(state);
-			
-			if(super.getState() == STATE_IN_PROGRESS)
-				this.setStartDate(new GregorianCalendar());
-			
-			if(super.getState() == STATE_COMPLETED)
-				this.setEndDate(new GregorianCalendar());
-				if(this.bGo){
-					this.expSetup.setBenchmarkGoalListFinal();
-				}
-		}
-	}
-	
-	/**
-	 * checks if setState lies in [-1..not started; 0..in progress; 1..completed]
-	 * @param state
-	 * @return
-	 */
-	private boolean checkStateInput(int state){
-		boolean bret= false;
-		if(state<=STATE_COMPLETED&&state>=STATE_NOT_STARTED){
-			bret = true;
-		}
-		return bret;
 	}
 
 }

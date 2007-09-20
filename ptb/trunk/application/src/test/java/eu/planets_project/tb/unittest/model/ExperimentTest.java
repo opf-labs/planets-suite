@@ -4,7 +4,11 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
+import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import junit.framework.TestCase;
 
 public class ExperimentTest extends TestCase{
@@ -95,6 +99,16 @@ public class ExperimentTest extends TestCase{
 		assertEquals(Experiment.PHASE_EXPERIMENTAPPROVAL, iPhase);
 	}
 	
+	public void testGetExperimentRefInPhase(){
+		
+		Experiment test_exp = manager.getExperiment(this.expID1);
+		
+		//Test1:
+		assertEquals(test_exp.getEntityID(),((ExperimentSetupImpl)test_exp.getExperimentSetup()).getExperimentRefID());
+		assertEquals(test_exp.getEntityID(),((ExperimentApprovalImpl)test_exp.getExperimentApproval()).getExperimentRefID());
+		assertEquals(test_exp.getEntityID(),((ExperimentExecutionImpl)test_exp.getExperimentExecution()).getExperimentRefID());
+		assertEquals(test_exp.getEntityID(),((ExperimentEvaluationImpl)test_exp.getExperimentEvaluation()).getExperimentRefID());
+	}
 	
 	protected void tearDown(){
 		try{

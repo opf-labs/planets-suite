@@ -166,6 +166,7 @@ public class TestbedManagerTest extends TestCase{
 		//Test2:
 		int size2 = manager.getAllExperiments().size();
 		Experiment exp_test2 = manager.createNewExperiment();
+		System.out.println("exp_test2ID: "+exp_test2.getEntityID());
 		assertEquals(size2+1,manager.getAllExperiments().size());
 		assertTrue(manager.getAllExperiments().contains(exp_test2));
 		

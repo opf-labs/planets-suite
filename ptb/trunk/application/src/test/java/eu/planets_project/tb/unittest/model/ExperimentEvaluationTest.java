@@ -46,13 +46,14 @@ public class ExperimentEvaluationTest extends TestCase{
 	
 	
 	public void testEvaluateExperimentBenchmarkGoals(){
-	
-		ExperimentSetup expSetup = new ExperimentSetupImpl();
-		ExperimentEvaluation expEval = new ExperimentEvaluationImpl();
+		
+		Experiment expTest = manager.getExperiment(this.expID1);
+		ExperimentSetup expSetup = expTest.getExperimentSetup();
+		ExperimentEvaluation expEval = expTest.getExperimentEvaluation();
 		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
 		
 	//Test1:
-		assertNull(expEval.getEvaluatedExperimentBenchmarkGoals());
+		assertEquals(0,expEval.getEvaluatedExperimentBenchmarkGoals().size());
 		
 	//Test2: exp must not be evaluated as the benchmark is not contained in experimentSetup
 		Vector<String> sGoalIDs = (Vector<String>)handler.getAllBenchmarkGoalIDs();
@@ -69,15 +70,10 @@ public class ExperimentEvaluationTest extends TestCase{
 		assertNotNull(goal1);
 		//now check the actual unittests
 		expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
-		assertNull(expEval.getEvaluatedExperimentBenchmarkGoals());
+		assertEquals(0,expEval.getEvaluatedExperimentBenchmarkGoals().size());
 		assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
-		
 	//Test3: Example how it should run
 		expSetup.addBenchmarkGoal(goal1);
-		//important to set the GoalListFinal
-		expSetup.setBenchmarkGoalListFinal();
-		//important to set the input - otherwise no evaluation can be performed and getEvaluatedGoals will return null
-		expEval.setInput(expSetup);
 		expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
 			
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
@@ -98,7 +94,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			
 		//Test1:
 			ExperimentEvaluation expEval = expFound.getExperimentEvaluation();
-			assertNull(expEval.getEvaluatedFileBenchmarkGoals(testFile));
+			assertEquals(0,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
 			
 		//Test2: exp must not be evaluated as the benchmark is not contained in experimentSetup
 			//now find a benchmark that accepts input value Integer
@@ -114,15 +110,11 @@ public class ExperimentEvaluationTest extends TestCase{
 			assertNotNull(goal1);
 			//now check the actual unittests
 			expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
-			assertNull(expEval.getEvaluatedFileBenchmarkGoals(testFile));
+			assertEquals(0,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
 			assertNull(expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID()));
 			
 		//Test3: Example how it should run
 			expSetup.addBenchmarkGoal(goal1);
-			//important to set the GoalListFinal
-			expSetup.setBenchmarkGoalListFinal();
-			//important to set the input - otherwise no evaluation can be performed and getEvaluatedGoals will return null
-			expEval.setInput(expSetup);
 			expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
 				
 			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
@@ -141,13 +133,13 @@ public class ExperimentEvaluationTest extends TestCase{
 	
 	
 	public void testSetEvaluatedExperimentBenchmarkGoals(){
-		
-		ExperimentSetup expSetup = new ExperimentSetupImpl();
-		ExperimentEvaluation expEval = new ExperimentEvaluationImpl();
+		Experiment expTest = manager.getExperiment(this.expID1);
+		ExperimentSetup expSetup = expTest.getExperimentSetup();
+		ExperimentEvaluation expEval = expTest.getExperimentEvaluation();
 		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
 		
 	//Test1:
-		assertNull(expEval.getEvaluatedExperimentBenchmarkGoals());
+		assertEquals(0,expEval.getEvaluatedExperimentBenchmarkGoals().size());
 		
 	//Helper: setup actual test
 		Vector<String> sGoalIDs = (Vector<String>)handler.getAllBenchmarkGoalIDs();
@@ -172,10 +164,6 @@ public class ExperimentEvaluationTest extends TestCase{
 	//Test3: Example how it should run
 		expSetup.addBenchmarkGoal(goal1);
 
-		//important to set the GoalListFinal
-		expSetup.setBenchmarkGoalListFinal();
-		//important to set the input - otherwise no evaluation can be performed and getEvaluatedGoals will return null
-		expEval.setInput(expSetup);
 		expEval.setEvaluatedExperimentBenchmarkGoals(list_test);
 			
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
@@ -197,7 +185,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			
 		//Test1:
 			ExperimentEvaluation expEval = expFound.getExperimentEvaluation();
-			assertNull(expEval.getEvaluatedFileBenchmarkGoals(testFile));
+			assertEquals(0,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
 			
 		//SetupHelper:
 			//now find a benchmark that accepts input value Integer
@@ -221,10 +209,6 @@ public class ExperimentEvaluationTest extends TestCase{
 			
 		//Test2: Example how it should run
 			expSetup.addBenchmarkGoal(goal1);
-			//important to set the GoalListFinal
-			expSetup.setBenchmarkGoalListFinal();
-			//important to set the input - otherwise no evaluation can be performed and getEvaluatedGoals will return null
-			expEval.setInput(expSetup);
 			expEval.setEvaluatedFileBenchmarkGoals(hmFileGoals);
 				
 			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
@@ -261,7 +245,6 @@ public class ExperimentEvaluationTest extends TestCase{
 		
 		//Testsetup part two
 		expFound.getExperimentSetup().addBenchmarkGoal(goal1);
-		expFound.getExperimentSetup().setBenchmarkGoalListFinal();
 		
 		try{
 			URI testFile = new URI("file:http://planets-project.eu/testbed/files/1");
@@ -273,8 +256,6 @@ public class ExperimentEvaluationTest extends TestCase{
 			expFound.getExperimentSetup().setWorkflow(workflow);
 			expFound.getExperimentSetup().getExperimentWorkflow().addInputData(testFile);
 		
-			//Note: important to call evaluation.setInputBenchmarkGoals(experimentSetup)
-			expFound.getExperimentEvaluation().setInput(expFound.getExperimentSetup());
 			expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
 			
 		//UnitTestSetup completed: now perform the actual Tests

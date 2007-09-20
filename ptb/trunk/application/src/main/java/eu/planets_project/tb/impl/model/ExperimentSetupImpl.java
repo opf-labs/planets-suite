@@ -36,7 +36,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	private BasicPropertiesImpl basicProperties;
 	
 	//BenchmarkGoals:
-	private boolean bBenchmarkGoalListFinal;
+	//private boolean bBenchmarkGoalListFinal;
 	//the structure: HashMap<BenchmarkGoal.getXMLID,BenchmarkGoal>();
 	private HashMap<String,BenchmarkGoal> hmBenchmarkGoals;
 	
@@ -44,6 +44,8 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	private ExperimentResourcesImpl experimentResources;
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentWorkflowImpl workflow;
+	//a helper reference pointer, for retrieving the experiment in the phase
+	private long lExperimentIDRef;
 	
 	//temporary helper
 	private int iSubstage;
@@ -51,27 +53,53 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 
 	public ExperimentSetupImpl(){
 		basicProperties = new BasicPropertiesImpl();
-		bBenchmarkGoalListFinal = false;
+		//bBenchmarkGoalListFinal = false;
 		hmBenchmarkGoals = new HashMap<String,BenchmarkGoal>();
 		experimentResources = new ExperimentResourcesImpl();
 		iSubstage = -1;
+		lExperimentIDRef = -1;
 		
 		setPhasePointer(PHASE_EXPERIMENTSETUP);
 	}
 	
+	
+	/**
+	 * A helper reference pointer on the experiment's ID to retrieve other phases or the
+	 * experiment itself if this is required.
+	 * @return
+	 */
+	public long getExperimentRefID(){
+		return this.lExperimentIDRef;
+	}
 
+	public void setExpeirmentRefID(long lExperimentIDRef){
+		this.lExperimentIDRef = lExperimentIDRef;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getBasicProperties()
+	 */
 	public BasicProperties getBasicProperties() {
 		return this.basicProperties;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getExperimentResources()
+	 */
 	public ExperimentResources getExperimentResources() {
 		return this.experimentResources;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getExperimentTypeID()
+	 */
 	public String getExperimentTypeID() {
 		return this.basicProperties.getExperimentApproach();
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getExperimentTypeName()
+	 */
 	public String getExperimentTypeName() {
 		return this.basicProperties.getExperimentApproachName(
 				this.basicProperties.getExperimentApproach());
@@ -117,12 +145,10 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#addBenchmarkGoal(eu.planets_project.tb.api.model.benchmark.BenchmarkGoal)
 	 */
 	public void addBenchmarkGoal(BenchmarkGoal goal) {
-		if(!isBenchmarkGoalListFinal()){
-			if(this.hmBenchmarkGoals.containsKey(goal.getID()))
-				this.hmBenchmarkGoals.remove(goal.getID());
+		if(this.hmBenchmarkGoals.containsKey(goal.getID()))
+			this.hmBenchmarkGoals.remove(goal.getID());
 			
-			this.hmBenchmarkGoals.put(goal.getID(), goal);
-		}
+		this.hmBenchmarkGoals.put(goal.getID(), goal);
 	}
 
 
@@ -160,19 +186,17 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#isBenchmarkGoalListFinal()
 	 */
-	public boolean isBenchmarkGoalListFinal() {
+	/*public boolean isBenchmarkGoalListFinal() {
 		return this.bBenchmarkGoalListFinal;
-	}
+	}*/
 
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#removeBenchmarkGoal(java.lang.String)
 	 */
 	public void removeBenchmarkGoal(String benchmarkGoalXMLID) {
-		if(!isBenchmarkGoalListFinal()){
-			if(this.hmBenchmarkGoals.containsKey(benchmarkGoalXMLID))
-				this.hmBenchmarkGoals.remove(benchmarkGoalXMLID);
-		}
+		if(this.hmBenchmarkGoals.containsKey(benchmarkGoalXMLID))
+			this.hmBenchmarkGoals.remove(benchmarkGoalXMLID);
 	}
 
 
@@ -203,9 +227,9 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setBenchmarkGoalListFinal()
 	 */
-	public void setBenchmarkGoalListFinal() {
+	/*public void setBenchmarkGoalListFinal() {
 		this.bBenchmarkGoalListFinal = true;
-	}
+	}*/
 
 
 	/* (non-Javadoc)

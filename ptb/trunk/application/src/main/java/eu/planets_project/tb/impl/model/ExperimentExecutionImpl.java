@@ -23,11 +23,27 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	implements ExperimentExecution, java.io.Serializable {
 
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
+	 //a helper reference pointer, for retrieving the experiment in the phase
+	 private long lExperimentIDRef;
 	
 	public ExperimentExecutionImpl(){
+		lExperimentIDRef = -1;
 		
 		setPhasePointer(PHASE_EXPERIMENTEXECUTION);
 	}
+	
+    /**
+     * A helper reference pointer on the experiment's ID to retrieve other phases or the
+     * experiment itself if this is required.
+     * @return
+     */
+    public long getExperimentRefID(){
+        return this.lExperimentIDRef;
+    }
+
+    public void setExpeirmentRefID(long lExperimentIDRef){
+        this.lExperimentIDRef = lExperimentIDRef;
+    }
 
 	public Collection<Entry<URI, URI>> getExecutionDataEntries() {
 		// TODO Auto-generated method stub

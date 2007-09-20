@@ -53,8 +53,8 @@ public interface ExperimentSetup extends ExperimentPhase{
 	 * BenchmarkObjectives to/from the Experiment
 	 * <p>
 	 */
-	public void setBenchmarkGoalListFinal();
-	public boolean isBenchmarkGoalListFinal();
+	//public void setBenchmarkGoalListFinal();
+	//public boolean isBenchmarkGoalListFinal();
 
 		//ExperimentType
 	/**

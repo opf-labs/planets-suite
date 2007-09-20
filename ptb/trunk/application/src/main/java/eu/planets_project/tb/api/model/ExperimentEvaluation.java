@@ -59,11 +59,7 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	public ExperimentReport getExperimentReport();
 	public File getExperimentReportFile();
 	
-	/**
-	 * Takes the ExperimentSetup object and extracts the added BenchmarkGoals if the benchmarkListisFinal() was set to true
-	 * @param inputBenchmarkGoals
-	 */
-	public void setInput(ExperimentSetup expSetup);
+	
 	/**
 	 * Returns the List of inputBenchmarkGoals which the evaluation uses as basis for the experimentBenchmarks as well as for the fileBenchmarks
 	 * @return emty list if either no benchmark was defined in the SetupPhase or when the benchmarkListisFinal is not true

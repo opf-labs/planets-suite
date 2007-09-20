@@ -21,10 +21,12 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
 /**
@@ -41,13 +43,13 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	//Note: URI: inputFile is the key, String: BenchmarkGoalID
 	private HashMap<URI,HashMap<String,BenchmarkGoal>> fileBenchmarkGoals;
 	//Note: HashMap<BenchmarkGoalID, BenchmarkGoal>
-	//@Transient
-	private HashMap<String,BenchmarkGoal> inputBenchmarkGoals;
-	//@Transient
-	private Vector<URI> inputFiles;
+
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentReportImpl report;
-	
+	private boolean bExpSetupImputValuesSet;
+	//a helper reference pointer, for retrieving the experiment in the phase
+	private long lExperimentIDRef;
+
 	
 	/*//constructor required for EJB persistence
 	private ExperimentEvaluationImpl(){
@@ -57,22 +59,37 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 
 		this.experimentBenchmarkGoals = new HashMap<String, BenchmarkGoal>();
 		this.fileBenchmarkGoals = new HashMap<URI,HashMap<String,BenchmarkGoal>>();
-		inputBenchmarkGoals = new HashMap<String,BenchmarkGoal>();
-		inputFiles = new Vector<URI>();
 		report = new ExperimentReportImpl();
+		lExperimentIDRef = -1;
+		bExpSetupImputValuesSet = false;
 		
 		setPhasePointer(PHASE_EXPERIMENTEVALUATION);
 	}
 
+	
+    /**
+     * A helper reference pointer on the experiment's ID to retrieve other phases or the
+     * experiment itself if this is required.
+     * @return
+     */
+    public long getExperimentRefID(){
+        return this.lExperimentIDRef;
+    }
+
+    public void setExpeirmentRefID(long lExperimentIDRef){
+        this.lExperimentIDRef = lExperimentIDRef;
+    }
+    
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateExperimentBenchmarkGoal(eu.planets_project.tb.api.model.benchmark.BenchmarkGoal, java.lang.String)
 	 */
 	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID,
 			String value) {
-		if(this.inputBenchmarkGoals.keySet().contains(addedBenchmarkGoalID)){
+	
+		if(this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID)){
 			//get the input BenchmarkGoal
-			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.inputBenchmarkGoals.get(addedBenchmarkGoalID)).clone();
+			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.getInputBenchmarkGoals().get(addedBenchmarkGoalID)).clone();
 			if(this.experimentBenchmarkGoals.keySet().contains(addedBenchmarkGoalID)){
 				this.experimentBenchmarkGoals.remove(addedBenchmarkGoalID);
 			}
@@ -133,9 +150,9 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	public void evaluateFileBenchmarkGoal(Entry<URI, URI> ioFile,
 			String addedBenchmarkGoalID, String value) {
 		
-		if((this.inputBenchmarkGoals.keySet().contains(addedBenchmarkGoalID))&&(this.fileBenchmarkGoals.containsKey(ioFile.getKey()))){
+		if((this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID))&&(this.fileBenchmarkGoals.containsKey(ioFile.getKey()))){
 			//get the input BenchmarkGoal
-			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.inputBenchmarkGoals.get(addedBenchmarkGoalID)).clone();
+			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.getInputBenchmarkGoals().get(addedBenchmarkGoalID)).clone();
 			
 			//get file's BenchmarkGoalSet
 			HashMap<String,BenchmarkGoal> hmFileGoals = this.fileBenchmarkGoals.get(ioFile.getKey());
@@ -157,9 +174,9 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID,
 			String value) {
 		
-		if((this.inputBenchmarkGoals.keySet().contains(addedBenchmarkGoalID))&&(this.inputFiles.contains(inputFile))){
+		if((this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID))&&(this.getInputFiles().contains(inputFile))){
 			//get the input BenchmarkGoal
-			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.inputBenchmarkGoals.get(addedBenchmarkGoalID)).clone();
+			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.getInputBenchmarkGoals().get(addedBenchmarkGoalID)).clone();
 			//get file's BenchmarkGoalSet
 			HashMap<String,BenchmarkGoal> hmFileGoals = this.fileBenchmarkGoals.get(inputFile);
 			
@@ -232,7 +249,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		if(this.experimentBenchmarkGoals.keySet().size()>0){
 			return this.experimentBenchmarkGoals.values();
 		}
-		return null;
+		return new Vector<BenchmarkGoal>();
 	}
 
 	/* (non-Javadoc)
@@ -261,7 +278,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 				return fileBMGoals.values();
 			}
 		}
-		return null;
+		return new Vector<BenchmarkGoal>();
 	}
 
 
@@ -269,14 +286,15 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getInputBenchmarkGoals()
 	 */
 	public Collection<String> getInputBenchmarkGoalIDs() {
-		return this.inputBenchmarkGoals.keySet();
+		return this.getInputBenchmarkGoals().keySet();
 	}
 
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setInputBenchmarkGoals(eu.planets_project.tb.api.model.ExperimentSetup)
+	/**
+	 * Takes the ExperimentSetup object and extracts the added BenchmarkGoals if the benchmarkListisFinal() was set to true
+	 * @param inputBenchmarkGoals
 	 */
-	public void setInput(ExperimentSetup expSetup) {
+	/*private void setInput(ExperimentSetup expSetup) {
 		
 		if(expSetup.isBenchmarkGoalListFinal()){
 			//add inputBenchmarkGoals
@@ -293,8 +311,87 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 					this.inputFiles.addAll(expSetup.getExperimentWorkflow().getInputData());
 				}
 			}
+			
+			this.bExpSetupImputValuesSet = true;
 		}
 		
+	}*/
+	
+	/**
+	 * This method checks of the Evaluation attributes have already been set (This
+	 * should happen when the stage ExperimentEvaluation is set to "active".
+	 * If no: it calls ExperimentEvaluation.setInput(ExperimentSetup setup) and sets the values
+	 * if yes: nothing
+	 * @return
+	 */
+	/*private void setExperimentSetupValues(){
+		TestbedManager tbManager = TestbedManagerImpl.getInstance();
+		//get the Experiment this phase belongs to
+		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
+
+		if(!this.bExpSetupImputValuesSet){
+			this.setInput(thisExperiment.getExperimentSetup());
+		}
+		else{
+			//do nothing
+		}
+	}*/
+	
+	/**
+	 * Fetches the ExperimentSetup phase and extracts the InputData from it's ExperimentWorkflow
+	 * @return 
+	 */
+	private Vector<URI> getInputFiles(){
+		Vector<URI> vRet = new Vector<URI>();
+		
+		TestbedManager tbManager = TestbedManagerImpl.getInstance();
+		//get the Experiment this phase belongs to
+		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
+		
+		try{
+			Collection<URI> inputFiles = thisExperiment.getExperimentSetup().
+			getExperimentWorkflow().getInputData();
+			
+			if((inputFiles!=null)&&(inputFiles.size()>0)){
+				Iterator<URI> itURIs = inputFiles.iterator();
+				while(itURIs.hasNext()){
+					URI uri = itURIs.next();
+					vRet.add(uri);
+				}
+			}
+		
+			return vRet;
+		}
+		catch(Exception e){
+			//it's possible that no ExperimentWorkflowInstance was set:
+			return vRet;
+		}
+	}
+	
+	/**
+	 * Fetches the ExperimentSetup phase and extracts the InputBenchmarkGoals from it.
+	 * @return HashMap<BenchmarkGoalXMLID, BenchmarkGoal>
+	 */
+	private HashMap<String, BenchmarkGoal> getInputBenchmarkGoals(){
+		HashMap<String,BenchmarkGoal> hmRet = new HashMap<String,BenchmarkGoal>();
+		if(this.lExperimentIDRef!=-1){
+			TestbedManager tbManager = TestbedManagerImpl.getInstance();
+			//get the Experiment this phase belongs to
+			Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
+		
+			List<BenchmarkGoal> inputBMGoals = thisExperiment.getExperimentSetup().getAllAddedBenchmarkGoals();
+			if((inputBMGoals!=null)&&(inputBMGoals.size()>0)){
+				Iterator<BenchmarkGoal> itBMGoals = inputBMGoals.iterator();
+				while(itBMGoals.hasNext()){
+					BenchmarkGoalImpl bmGoal = ((BenchmarkGoalImpl)itBMGoals.next()).clone();
+					hmRet.put(bmGoal.getID(), bmGoal);
+				}
+			}
+			return hmRet;
+		}
+		else{
+			return hmRet;
+		}
 	}
 	
 }

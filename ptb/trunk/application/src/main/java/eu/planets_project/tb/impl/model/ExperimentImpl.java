@@ -38,15 +38,17 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentSetupImpl expSetup;
 	
+	
 	public ExperimentImpl(){
 		expSetup = new ExperimentSetupImpl();
 		expExecution = new ExperimentExecutionImpl();
-		expApproval = new ExperimentApprovalImpl(expSetup);
+		expApproval = new ExperimentApprovalImpl();
 		expEvaluation = new ExperimentEvaluationImpl();
 		
 		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
 		
 	}
+	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentAnalysis()
 	 */
