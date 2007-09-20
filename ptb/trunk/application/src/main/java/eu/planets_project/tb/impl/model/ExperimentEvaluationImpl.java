@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
@@ -80,17 +81,48 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		}
 		
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedExperimentBenchmarkGoals(java.util.List)
+	 */
+	public void setEvaluatedExperimentBenchmarkGoals(
+			List<BenchmarkGoal> addedBMGoals) {
+		
+		if(addedBMGoals.size()>0){
+			Iterator<BenchmarkGoal> itBMGoals = addedBMGoals.iterator();
+			while(itBMGoals.hasNext()){
+				BenchmarkGoal bmGoal = itBMGoals.next();
+				
+				//some preconditions
+				if((bmGoal!=null)&&(bmGoal.getValue()!="")){
+					//now start with the evaluation
+					this.evaluateExperimentBenchmarkGoal(bmGoal.getID(), bmGoal.getValue());
+				}
+			}
+		}
+		
+	}
 
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getExperimentReport()
+	 */
 	public ExperimentReport getExperimentReport() {
 		return this.report;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getExperimentReportFile()
+	 */
 	public File getExperimentReportFile() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setExperimentReport(eu.planets_project.tb.api.model.ExperimentReport)
+	 */
 	public void setExperimentReport(ExperimentReport report) {
 		this.report = (ExperimentReportImpl)report;
 	}
@@ -151,6 +183,37 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 			}
 		}
 	}
+	
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedFileBenchmarkGoals(java.util.Map)
+	 */
+	public void setEvaluatedFileBenchmarkGoals(
+			Map<URI, List<BenchmarkGoal>> addedFileBMGoals) {
+
+		if(addedFileBMGoals!=null&&addedFileBMGoals.keySet().size()>0){
+			Iterator<URI> itKeys = addedFileBMGoals.keySet().iterator();
+			while(itKeys.hasNext()){
+				URI uri = itKeys.next();
+				
+				//now get the BMGoals and extract ID and value
+				if((addedFileBMGoals.get(uri)!=null)&&(addedFileBMGoals.get(uri).size()>0)){
+					Iterator<BenchmarkGoal> itBMGoals = addedFileBMGoals.get(uri).iterator();
+					
+					while(itBMGoals.hasNext()){
+						BenchmarkGoal bmGoal = itBMGoals.next();
+						
+						//some preconditions
+						if((bmGoal!=null)&&(bmGoal.getValue()!="")){
+							//now call the actual evaluation
+							this.evaluateFileBenchmarkGoal(uri, bmGoal.getID(), bmGoal.getValue());
+						}
+					}
+				}
+			}
+		}
+	}
+	
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedExperimentBenchmarkGoal(java.lang.String)

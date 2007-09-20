@@ -3,7 +3,9 @@ package eu.planets_project.tb.unittest.model;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import junit.framework.TestCase;
@@ -21,6 +23,7 @@ import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
@@ -135,6 +138,108 @@ public class ExperimentEvaluationTest extends TestCase{
 		}
 		
 	}
+	
+	
+	public void testSetEvaluatedExperimentBenchmarkGoals(){
+		
+		ExperimentSetup expSetup = new ExperimentSetupImpl();
+		ExperimentEvaluation expEval = new ExperimentEvaluationImpl();
+		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
+		
+	//Test1:
+		assertNull(expEval.getEvaluatedExperimentBenchmarkGoals());
+		
+	//Helper: setup actual test
+		Vector<String> sGoalIDs = (Vector<String>)handler.getAllBenchmarkGoalIDs();
+		//now find a benchmark that accepts input value Integer
+		Iterator<String> itGoalIDs = sGoalIDs.iterator();
+		BenchmarkGoal goal1 = null;
+		while(itGoalIDs.hasNext()){
+			BenchmarkGoal goalTest = handler.getBenchmarkGoal(itGoalIDs.next());
+			if(goalTest.getType().equals("java.lang.Integer")){
+				goal1 = goalTest;
+			}
+		}
+		//check if there is a benchmarkGoal with type Integer else cannot perform checks
+		assertNotNull(goal1);
+		//now check the actual unittests
+		BenchmarkGoal goal_test = ((BenchmarkGoalImpl)goal1).clone();
+		goal_test.setValue("100");
+		List<BenchmarkGoal> list_test = new Vector<BenchmarkGoal>();
+		list_test.add(goal_test);
+
+		
+	//Test3: Example how it should run
+		expSetup.addBenchmarkGoal(goal1);
+
+		//important to set the GoalListFinal
+		expSetup.setBenchmarkGoalListFinal();
+		//important to set the input - otherwise no evaluation can be performed and getEvaluatedGoals will return null
+		expEval.setInput(expSetup);
+		expEval.setEvaluatedExperimentBenchmarkGoals(list_test);
+			
+		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
+		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
+		assertEquals("100", goalFound.getValue());
+	}
+	
+	
+	
+	public void testSetEvaluateFileBenchmarkGoals(){
+		Experiment expFound = manager.getExperiment(this.expID1);
+		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
+		Vector<String> sGoalIDs = (Vector<String>)handler.getAllBenchmarkGoalIDs();
+		
+		try{
+			ExperimentSetup expSetup = expFound.getExperimentSetup();
+			URI testFile = new URI("file:http://planets-project.eu/testbed/files/1");
+			expSetup = this.setupTestWorkflow(expSetup, testFile);
+			
+		//Test1:
+			ExperimentEvaluation expEval = expFound.getExperimentEvaluation();
+			assertNull(expEval.getEvaluatedFileBenchmarkGoals(testFile));
+			
+		//SetupHelper:
+			//now find a benchmark that accepts input value Integer
+			Iterator<String> itGoalIDs = sGoalIDs.iterator();
+			BenchmarkGoal goal1 = null;
+			while(itGoalIDs.hasNext()){
+				BenchmarkGoal goalTest = handler.getBenchmarkGoal(itGoalIDs.next());
+				if(goalTest.getType().equals("java.lang.Integer")){
+					goal1 = goalTest;
+				}
+			}
+			//check if there is a benchmarkGoal with type Integer else cannot perform checks
+			assertNotNull(goal1);
+			//now check the actual unittests
+			BenchmarkGoal goal_test = ((BenchmarkGoalImpl)goal1).clone();
+			goal_test.setValue("100");
+			List<BenchmarkGoal> list_test = new Vector<BenchmarkGoal>();
+			list_test.add(goal_test);
+			HashMap<URI, List<BenchmarkGoal>> hmFileGoals = new HashMap<URI, List<BenchmarkGoal>>();
+			hmFileGoals.put(testFile, list_test);
+			
+		//Test2: Example how it should run
+			expSetup.addBenchmarkGoal(goal1);
+			//important to set the GoalListFinal
+			expSetup.setBenchmarkGoalListFinal();
+			//important to set the input - otherwise no evaluation can be performed and getEvaluatedGoals will return null
+			expEval.setInput(expSetup);
+			expEval.setEvaluatedFileBenchmarkGoals(hmFileGoals);
+				
+			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
+			//I'm working with the File's Benchmark Goals and not the Experiment's 
+			assertEquals(1,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
+			assertEquals("100", goalFound.getValue());
+			
+		}
+		catch(URISyntaxException e){
+			System.out.println("Error in ExperimentEvaluationTest: "+e.toString());
+			assertEquals(true,false);
+		}
+		
+	}
+	
 	
 	
 	public void testRelatioshipSetupEvaluation(){
