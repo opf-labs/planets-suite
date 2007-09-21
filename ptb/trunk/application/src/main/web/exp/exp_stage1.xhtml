@@ -43,10 +43,15 @@
 <div id="mainwrapper">
 <div id="maincol">
 <div class="innertubemain">
-<p>Create a new experiment using the form below.  Once you have supplied the required information and have submitted the form the experiment will be added to your list of experiments as found in the <a href="../my-experiments/">my experiments</a> section.</p>
+    <h:form>
+        <p>Create a new experiment using the form below.  Once you have supplied the required information and have submitted the form the experiment will be added to your list of experiments as found in the             
+            <h:commandLink action="my_experiments">
+                <h:outputText value=" #{res['my_exp.pageTitle']}" />
+        </h:commandLink> section.</p>
+    </h:form>
 <h:form>
 	<fieldset>
-		<legend>General Information</legend>
+		<legend>#{res['new_exp.legendGeneral']}</legend>
 
 	<p><h:outputLabel value="#{res['new_exp.expFormalInformal']}" for="formality" />
 	 	<h:selectBooleanCheckbox title="formality" id="formality" onclick="toggleRequired(event)" value="#{ExperimentBean.formality}">
@@ -87,7 +92,7 @@
 
 </fieldset>
 <fieldset>
-    <legend>Contact Information</legend>
+    <legend>#{res['new_exp.legendContact']}</legend>
                             <p><h:outputLabel value="#{res['new_exp.expContactName']}" for="econtactname" ><span id="asterisk[2]" style="color:red;font-weight:bold;"> *</span></h:outputLabel>
 	        	<h:inputText  required="false" id="econtactname" value="#{ExperimentBean.econtactname}" size="50"/> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipContactName']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
@@ -107,7 +112,7 @@
 </fieldset>
 
 <fieldset>
-    <legend>References</legend>
+    <legend>#{res['new_exp.legendReferences']}</legend>
     <p><h:outputLabel value="#{res['new_exp.expID']}" for="eid" />
 	<input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipID']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 	<div class="clear"></div>
@@ -123,14 +128,14 @@
 </fieldset>
 
 <fieldset>
-<legend>Scope</legend>
+<legend>#{res['new_exp.legendScope']}</legend>
 <p><h:outputLabel value="#{res['new_exp.expScope']}" for="escope" ><span id="asterisk[5]" style="color:red;font-weight:bold;"> *</span></h:outputLabel>
 <h:inputTextarea rows="7" cols="55" required="false" id="escope" value="#{ExperimentBean.escope}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipScope']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 </fieldset>
 
 <fieldset>
-<legend>Considerations</legend>
+<legend>#{res['new_exp.legendConsiderations']}</legend>
 			
 
 					<p><h:outputLabel value="#{res['new_exp.expConsiderations']}" for="econsiderations" />
@@ -150,7 +155,7 @@
 
 <div id="leftcol">
 
-<h3 class="leftcol">Experiment Progress</h3>
+<h3 class="leftcol">#{res['new_exp.progress']}</h3>
 <div class="innertube">
 <ul class="exp"><h:form>
 	<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage1']}</a></li>

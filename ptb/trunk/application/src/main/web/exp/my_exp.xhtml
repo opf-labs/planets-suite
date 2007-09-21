@@ -81,8 +81,8 @@
         </t:column> 
                 <t:column>
             <f:facet name="header">#{res['expList.colHeader.delete']}</f:facet>
-            <h:commandLink action="#{ListExp_Backing.deleteExperimentAction}">
-	            <h:outputText value="Delete" />
+            <h:commandLink action="#{ListExp_Backing.selectExperimentForDeletion}">
+	            <h:outputText value="#{res['expList.colHeader.delete']}" />
     		</h:commandLink>
         </t:column>
     </t:dataTable>

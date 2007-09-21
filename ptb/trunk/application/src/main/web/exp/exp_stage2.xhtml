@@ -25,7 +25,7 @@
 		<div class="innertubemain">
 			<h:form id="selectExpTypeForm">
 				<fieldset>
-					<legend>STEP 1: Select Experiment Type</legend>
+					<legend>#{res['exp_stage2.legendOne']}</legend>
 					<p>Your choice of experiment type will affect the tools and data
 					that will be made available.<br />
 					You may return to this page to choose a difference experiment type at
@@ -44,7 +44,7 @@
 			</h:form>
 			<h:form id="selectWorkflowForm" rendered="#{not empty ExperimentBean.etype}">
 				<fieldset>
-					<legend>STEP 2: Specify Workflow</legend>
+					<legend>#{res['exp_stage2.legendTwo']}</legend>
 					<h:selectOneMenu
 					onchange="this.form.submit()"
 					value="#{ExperimentBean.workflowTypeId}"
@@ -58,46 +58,48 @@
 			</h:form>
 			<h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{not empty Workflow}">
 				<fieldset>
-					<legend>STEP 3: Configure Workflow</legend>
-					<b>Workflow name: </b>#{Workflow.name}<br/>
-					<b>Workflow tooltype: </b>#{Workflow.toolType}<br/>
-					<b>Output mimetypes: </b> <br/>
+
+					<legend>#{res['exp_stage2.legendThree']}</legend>
+					<b>#{res['exp_stage2.workflowName']} </b>#{Workflow.name}<br/>
+					<b>#{res['exp_stage2.workflowTool']} </b>#{Workflow.toolType}<br/>
+					<b>#{res['exp_stage2.outputMime']} </b> <br/>
 					<ul>
 						<c:forEach var="mtype" items="#{Workflow.requiredOutputMIMETypes}">
 						  <li>#{mtype}</li>
 						</c:forEach>
 					</ul>					
 					<br/>	
-					<b>Workflow Services: </b> <br/>
+					<b>#{res['exp_stage2.workflowServices']} </b> <br/>
 					<ul>
 					<c:forEach var="svc" items="#{Workflow.workflowServices}">
-						  <li>Service Name: #{svc.serviceName}</li>
-						  <li>WSDL: #{svc.WSDL}</li><br/>
+						  <li>#{res['exp_stage2.serviceName']} #{svc.serviceName}</li>
+						  <li>#{res['exp_stage2.WSDL']} #{svc.WSDL}</li><br/>
 					</c:forEach>
 					</ul>
-					<br/>
-		            <b>Input mimetypes: </b> <br/>
-					<ul>
-						<c:forEach var="mtype" items="#{Workflow.requiredInputMIMETypes}">
-						  <li>#{mtype}</li>
-						</c:forEach>
-					</ul>					
-		            <t:inputFileUpload id="fileupload" rendered="#{empty ExperimentBean.eworkflowInputData}"
-                               accept="#{Workflow.requiredInputMIMETypes[0]}"
-                               value="#{FileUploadBean.upFile}"
-                               storage="file"
-                               styleClass="fileUploadInput"
-                               required="true"
-                               maxlength="10000000"/><br/>
-					<h:panelGroup rendered="#{not empty ExperimentBean.eworkflowInputData}">
-	                    <h:outputText value="Specified input data: "/>
-	                    <h:outputText value="#{ExperimentBean.eworkflowInputData}" style="font-style: italic;font-weight: bold;"/>
-						<h:commandButton value="#{res['button.change']}"
-						action="#{Manager_Backing.changeExpWorkflowDataAction}" />
-					</h:panelGroup>                               
-					<br/>
-					<h:commandButton value="#{res['button.save']}"
-						action="#{Manager_Backing.saveExpWorkflowAction}" />
+                                    <p>
+                                        <b>#{res['exp_stage2.inputMime']} </b> <br/>
+                                        <ul>
+                                            <c:forEach var="mtype" items="#{Workflow.requiredInputMIMETypes}">
+                                                <li>#{mtype}</li>
+                                            </c:forEach>
+                                        </ul>					
+                                        <t:inputFileUpload id="fileupload" rendered="#{empty ExperimentBean.eworkflowInputData}"
+                                             accept="#{Workflow.requiredInputMIMETypes[0]}"
+                                             value="#{FileUploadBean.upFile}"
+                                             storage="file"
+                                             styleClass="fileUploadInput"
+                                             required="true"
+                                             maxlength="10000000"/><br/>
+                                        <h:panelGroup rendered="#{not empty ExperimentBean.eworkflowInputData}">
+                                            <h:outputText value="#{res['exp_stage2.inputData']} "/>
+                                            <h:outputText value="#{ExperimentBean.eworkflowInputData}" style="font-style: italic;font-weight: bold;"/>
+                                            <h:commandButton value="#{res['button.change']}"
+                   action="#{Manager_Backing.changeExpWorkflowDataAction}" />
+                                        </h:panelGroup>                               
+                                        <br/>
+                                        <h:commandButton value="#{res['button.save']}"
+                      action="#{Manager_Backing.saveExpWorkflowAction}" />
+                                    </p>
 				</fieldset>
 			</h:form>
 
@@ -122,7 +124,7 @@
 
 		<div id="leftcol">
 
-		<h3 class="leftcol">Experiment Progress</h3>
+		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
 		<div class="innertube">
 			<ul class="exp"><h:form>
 				<li class="exp"><h:commandLink action="goToStage1"

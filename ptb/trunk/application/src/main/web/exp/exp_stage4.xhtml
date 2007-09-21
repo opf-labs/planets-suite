@@ -27,9 +27,9 @@
 <hr />
 <h:form>
 				<fieldset>
-					<legend>Approve Experiment</legend>
+					<legend>#{res['exp_stage4.legend']}</legend>
                                         <p>
-						<h:commandButton value="Approve Experiment"
+						<h:commandButton value="#{res['exp_stage4.button']}"
 						action="#{Manager_Backing.approveExperiment}" />
 					</p>
 				</fieldset>
@@ -55,7 +55,7 @@
 
 		<div id="leftcol">
 
-		<h3 class="leftcol">Experiment Progress</h3>
+		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
 		<div class="innertube">
 			<ul class="exp"><h:form>
 				<li class="exp"><h:commandLink action="goToStage1"

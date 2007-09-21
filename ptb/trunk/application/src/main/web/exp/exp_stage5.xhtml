@@ -22,17 +22,17 @@
 		<div id="maincol">
 		<div class="innertubemain">
 <div class="box">
-<h3 class="box">Execution Statistics</h3>
-<p class="box"><b>Execution started:</b> 10:01 BST on 19th July 2007<br />
+<h3 class="box">#{res['exp_stage5.statistics']}</h3>
+<p class="box"><b>#{res['exp_stage5.started']}</b> 10:01 BST on 19th July 2007<br />
 
-<b>Files Successfully Migrated:</b> 6498 our of 6500<br />
-<b>Errors:</b> 2<br />
-<b>Estimated Completion:</b> 21:00 on 19th July 2007<br />
-<b>Actual Completion:</b> 21:15 on 19th July 2007</p>
+<b>#{res['exp_stage5.success']}</b> 6498 our of 6500<br />
+<b>#{res['exp_stage5.errors']}</b> 2<br />
+<b>#{res['exp_stage5.estimatedCompletion']}</b> 21:00 on 19th July 2007<br />
+<b>#{res['exp_stage5.actualCompletion']}</b> 21:15 on 19th July 2007</p>
 </div>
 <h:form>
                                         <p>
-						<h:commandButton value="Proceed to Evaluation"
+						<h:commandButton value="#{res['exp_stage5.button']}"
 						action="#{Manager_Backing.proceedToEvaluation}" />
 					</p>
 </h:form>
@@ -57,7 +57,7 @@
 
 		<div id="leftcol">
 
-		<h3 class="leftcol">Experiment Progress</h3>
+		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
 		<div class="innertube">
 			<ul class="exp"><h:form>
 				<li class="exp"><h:commandLink action="goToStage1"

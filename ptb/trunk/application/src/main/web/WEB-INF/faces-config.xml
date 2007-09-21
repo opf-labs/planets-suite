@@ -187,7 +187,12 @@
      <redirect />
     </navigation-case>
     <navigation-case>
-      <from-outcome>deleteExp</from-outcome>
+      <from-outcome>selectDelete</from-outcome>
+      <to-view-id>/exp/exp_delete.xhtml</to-view-id>
+	    <redirect />
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>expDeleted</from-outcome>
       <to-view-id>/exp/my_exp.xhtml</to-view-id>
      <redirect />
     </navigation-case>

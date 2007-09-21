@@ -28,14 +28,14 @@
 		experiment. You may save and re-edit your evaluation as often as
 		required.</p>
 
-		<h2 class="main">Experiment Data</h2>
+		<h2 class="main">#{res['exp_stage6.headingData']}</h2>
 		<h:form>
 
 			<table border="1" cellspacing="0" cellpadding="2"
 				style="border: 1px solid #579EC2;">
 				<tr>
-					<th>Input Files</th>
-					<th>Output Files</th>
+					<th>#{res['exp_stage6.inputFiles']}</th>
+					<th>#{res['exp_stage6.outputFiles']}</th>
 				</tr>
 
 				<tr style="font-size:smaller;">
@@ -52,7 +52,7 @@
 				</tr>
 			</table>
 
-			<h2 class="main">Benchmark Goals</h2>
+			<h2 class="main">#{res['exp_stage6.headingBG']}</h2>
 			<p>Below are the benchmark goals you specified during stage three
 			of the experiment design. Evaluate the success of your experiment by
 			selecting the level of success of each goal.</p>
@@ -61,25 +61,25 @@
 				value="#{ExperimentBean.benchmarkBeans}" preserveDataModel="false"
 				rows="4" rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
 				<t:column>
-					<f:facet name="header">Criteria</f:facet>
+					<f:facet name="header">#{res['exp_stage6.criteria']}</f:facet>
 				    #{bm.name}
 				</t:column>
 				<t:column>
-					<f:facet name="header">Explanation</f:facet>
+					<f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
 				    #{bm.definition} <br />
 					<i>#{bm.description}</i>
 				</t:column>
 				<t:column>
-					<f:facet name="header">Evaluation</f:facet>
+					<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
 					<h:inputText value="#{bm.value}" />
 				</t:column>
 			</t:dataTable>
 
 
-			<h2 class="main">Evaluation Report</h2>
+			<h2 class="main">#{res['exp_stage6.headingReport']}</h2>
 			<p><textarea rows="15" cols="100"></textarea></p>
 
-			<p><h:commandButton value="#{res['button.save']}"
+			<p><h:commandButton value="#{res['exp_stage6.button']}"
 				action="#{Manager_Backing.updateEvaluationAction}" /></p>
 		</h:form></div>
 		</div>
@@ -124,5 +124,3 @@
 
 </body>
 </html>
-
-

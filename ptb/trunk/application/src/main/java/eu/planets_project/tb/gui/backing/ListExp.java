@@ -152,16 +152,34 @@ public class ListExp extends SortableList {
 	      // go to edit page
 	      return "editExp";
 	    }
+            
+        public String selectExperimentForDeletion()
+        {
+	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
+	      FacesContext ctx = FacesContext.getCurrentInstance();
+
+	      ExperimentBean expBean = new ExperimentBean();
+	      expBean.fill(selectedExperiment);
+	      //Store selected Experiment Row accessible later as #{Experiment} 
+	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+              
+            //go to page for confirming deletion
+            return "selectDelete";
+        }
 	    
         public String deleteExperimentAction()
 	    {
-	    
-	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+	    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		  TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-          testbedMan.removeExperiment(selectedExperiment.getEntityID());
+          testbedMan.removeExperiment(expBean.getID());
+          
+          //remove this experiment from the session
+          FacesContext ctx = FacesContext.getCurrentInstance();
+          ctx.getExternalContext().getSessionMap().remove("ExperimentBean");
 	              
-	      // go to edit page
-	      return "deleteExp";
+	      // go back to 'my experiments' page
+	      return "expDeleted";
 	    }
 	    
 //	  Property getters - setters

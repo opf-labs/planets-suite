@@ -25,9 +25,9 @@
 					<p>Supply information about the estimated resources your experiment will require and the objectives you expect your experiment to meet.</p>
 					<h:form>
 						<fieldset>
-							<legend>Specify Resources</legend>
+							<legend>#{res['exp_stage3.legendResources']}</legend>
 							<p>
-								<label id="">Estimated Output files:</label>
+								<label id="">#{res['exp_stage3.outputFiles']}</label>
 								<h:selectOneMenu immediate="true" required="false" value="#{ExperimentBean.numberOfOutputFiles}">
 									<f:selectItem itemValue="1" itemLabel="1-10" />
 									<f:selectItem itemValue="11" itemLabel="11-100"/>
@@ -38,11 +38,11 @@
 							</p>
 							<div class="clear"></div>
 							<p>
-								<label id="">Estimated Intensity:</label>		
+								<label id="">#{res['exp_stage3.intensity']}</label>		
 								<h:selectOneMenu required="false" value="#{ExperimentBean.intensity}">
-									<f:selectItem itemValue="0" itemLabel="Low" />
-									<f:selectItem itemValue="1" itemLabel="Medium"/>
-									<f:selectItem itemValue="2" itemLabel="High"/>
+									<f:selectItem itemValue="0" itemLabel="#{res['exp_stage3.intensityLow']}" />
+									<f:selectItem itemValue="1" itemLabel="#{res['exp_stage3.intensityMedium']}"/>
+									<f:selectItem itemValue="2" itemLabel="#{res['exp_stage3.intensityHigh']}"/>
 								</h:selectOneMenu>
 							</p>
 							<div class="clear"></div>
@@ -50,7 +50,7 @@
 							<div class="clear"></div>
 						</fieldset>
 						<fieldset>
-							<legend>Specify Outcomes</legend>
+							<legend>#{res['exp_stage3.legendOutcomes']}</legend>
 							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
 
 						  	<h:dataTable id="dataTable" var="bm" value="#{BenchmarkBeans}"
@@ -63,11 +63,11 @@
 									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"/>				            	
 						            </h:column>
 							        <h:column>
-			            				<f:facet name="header">Criteria</f:facet>
+			            				<f:facet name="header">#{res['exp_stage3.bgCriteria']}</f:facet>
 						            	#{bm.name}
 						        	</h:column>			        	
 							        <h:column>
-			            				<f:facet name="header">Explanation</f:facet>
+			            				<f:facet name="header">#{res['exp_stage3.bgExplanation']}</f:facet>
 						            	#{bm.definition} <br/>
 						            	<i>#{bm.description}</i>
 						        	</h:column>			        	
@@ -79,10 +79,10 @@
 					            action="#{Manager_Backing.updateBenchmarksAction}"/>		
 							</p>
 							<p>
-					            <h:commandButton value="#{res['button.save']} and submit for approval" 
+					            <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
 					            action="#{Manager_Backing.updateBenchmarksAndSubmitAction}"/>										
 							</p>
-							<p><b>Note:  Once you submit your experiment for approval you will not be able to make any further changes to your experiment.</b></p>		
+							<p><b>#{res['exp_stage3.warning']}</b></p>		
 					</h:form>
 				</div>
 			</div>
@@ -90,7 +90,7 @@
 
 		<div id="leftcol">
 
-		<h3 class="leftcol">Experiment Progress</h3>
+		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
 		<div class="innertube">
 			<ul class="exp"><h:form>
 				<li class="exp"><h:commandLink action="goToStage1"
