@@ -260,6 +260,14 @@ public class Manager {
     	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
     	return "goToStage6";
     }
-   
+
+    public String saveEvaluation(){
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = testbedMan.getExperiment(expBean.getID());    	
+    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
+    	return "completeExperiment";
+    }
     
 }

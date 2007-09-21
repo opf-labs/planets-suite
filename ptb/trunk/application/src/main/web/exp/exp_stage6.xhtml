@@ -22,25 +22,45 @@
 		<div id="maincol">
 		<div class="innertubemain">
 
-		<p>&#160;</p>
-		<p>&#160;</p>
+<p>View the experiment's input and output data, evaluate the outcomes of your experiment against the benchmark goals you specified during Stage 3 of the experiment and supply a report about your experiment.  You may save and re-edit your evaluation as often as required.</p>
 
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
+<h2 class="main">Experiment Data</h2>
+
+<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" ><tr><th>Input Files</th><th>Output Files</th></tr>
+
+<tr style="font-size:smaller;">
+    <td><p><a href="#">File1.pdf</a><br /><b>Type:</b> PDF 1.0<br /><b>Size:</b> 122KB
+</p></td>
+<td><p><a href="#">File1.pdf</a><br /><b>Type:</b> PDF 1.0<br /><b>Size:</b> 122KB
+</p></td></tr>
+</table>
+
+<h:form>
+<h2 class="main">Benchmark Goals</h2>
+<p>Below are the benchmark goals you specified during stage three of the experiment design. Evaluate the success of your experiment by selecting the level of success of each goal.</p>
+
+<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" >
+<tr><th>Criteria </th><th>Explanation</th><th>Evaluation</th></tr>
+<tr><td>Number of pages</td><td>More info</td><td><input type="text" name="bg" size="20" /></td></tr>
+<tr><td>Page margins</td><td>More info</td><td><input type="text" name="bg" size="20" /></td></tr>
+
+<tr><td>Page breaks</td><td>More info</td><td><input type="text" name="bg" size="20" /></td></tr>
+</table>
+
+<h2 class="main">Evaluation Report</h2>
+<p><textarea rows="40" cols="120"></textarea></p>
+                                        <p>
+						<h:commandButton value="Save Evaluation"
+						action="#{Manager_Backing.saveEvaluation}" />
+					</p>
+</h:form>
+
 
 
 
 		</div>
 		</div>
 		</div>
-
-
 		<div id="leftcol">
 
 		<h3 class="leftcol">Experiment Progress</h3>

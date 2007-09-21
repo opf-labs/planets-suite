@@ -169,7 +169,12 @@
       <from-outcome>goToStage6</from-outcome>
       <to-view-id>/exp/exp_stage6.xhtml</to-view-id>
       <redirect />
-    </navigation-case>        
+    </navigation-case>   
+    <navigation-case>
+      <from-outcome>completeExperiment</from-outcome>
+      <to-view-id>/exp/my_exp.xhtml</to-view-id>
+      <redirect />
+    </navigation-case>  
   </navigation-rule> 
   
   
