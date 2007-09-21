@@ -177,7 +177,12 @@ public class ListExp extends SortableList {
           //remove this experiment from the session
           FacesContext ctx = FacesContext.getCurrentInstance();
           ctx.getExternalContext().getSessionMap().remove("ExperimentBean");
-	              
+
+          // Workaround
+          // update in cached lists
+          this.getExperimentsOfUser();
+          this.getAllExperiments();
+          
 	      // go back to 'my experiments' page
 	      return "expDeleted";
 	    }

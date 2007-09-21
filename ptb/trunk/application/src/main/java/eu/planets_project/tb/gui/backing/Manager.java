@@ -173,6 +173,8 @@ public class Manager {
 	    	}
 	    	Map<URI,List<BenchmarkGoal>> bhm = new HashMap<URI,List<BenchmarkGoal>>();
 	    	bhm.put(new URI(expBean.getEworkflowInputData()),bmgoals);
+	    	Experiment e = testbedMan.getExperiment(exp.getEntityID());
+	    	System.out.println("Exp ID: "+ exp.getEntityID() + " e: " + e);   	
 	    	exp.getExperimentEvaluation().setEvaluatedFileBenchmarkGoals(bhm);
 	    	return null;
         } catch (Exception e) {
@@ -217,11 +219,7 @@ public class Manager {
 	        exp.setState(Experiment.STATE_IN_PROGRESS);
 	        testbedMan.updateExperiment(exp);
 	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");   
-	        
-	        // create and put BenchmarkBeans into session for Stage 3
-	        List<BenchmarkBean> bmbeans = this.getAvailableBenchmarkBeans();
-	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BenchmarkBeans",bmbeans);   	        
-	        
+	        	        
 	    	return "goToStage3";
         } catch (Exception e) {
         	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
@@ -286,7 +284,7 @@ public class Manager {
     	return wfMap;
     }
     
-    public List<BenchmarkBean> getAvailableBenchmarkBeans() {
+    public String getRetrieveBenchmarkBeans() {
        	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");   	
     	Map<String,BenchmarkBean> availBenchmarks = new HashMap<String,BenchmarkBean>(expBean.getBenchmarks());
     	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
@@ -301,7 +299,10 @@ public class Manager {
         		availBenchmarks.put(bmg.getID(), bmb);
     		}
     	}
-    	return new ArrayList<BenchmarkBean>(availBenchmarks.values());
+        // create and put BenchmarkBeans into session 
+        List<BenchmarkBean> bmbeans = new ArrayList<BenchmarkBean>(availBenchmarks.values());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BenchmarkBeans",bmbeans);
+        return "";
     }
     
        
