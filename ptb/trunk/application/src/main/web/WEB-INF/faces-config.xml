@@ -193,5 +193,15 @@
     </navigation-case>
   </navigation-rule>  
 
+  <!-- navigation rules for MY_EXPERIMENT page -->
+  <navigation-rule>
+    <from-view-id>/reader/browse_exp.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>editExp</from-outcome>
+      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
+  </navigation-rule>
+
 
 </faces-config>

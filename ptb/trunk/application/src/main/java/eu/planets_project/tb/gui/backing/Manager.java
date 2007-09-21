@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 
@@ -118,7 +119,9 @@ public class Manager {
     	Experiment exp = testbedMan.getExperiment(expBean.getID());
     	// create Goal objects from Beans
     	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
-    	Iterator iter = expBean.getBenchmarks().values().iterator();
+    	List<BenchmarkBean> bmbeans = (List<BenchmarkBean>)JSFUtil.getManagedObject("BenchmarkBeans");
+    	Iterator iter = bmbeans.iterator();
+    	//Iterator iter = expBean.getBenchmarks().values().iterator();    	
     	while (iter.hasNext()) {
     		BenchmarkBean bmb = (BenchmarkBean)iter.next();
     		if (bmb.getSelected()) {
@@ -128,6 +131,10 @@ public class Manager {
 	    		if (bmb.getWeight()!=null)
 	    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
 	    		bmgoals.add(bmg);
+	    		// add to experimentbean benchmarks
+	    		expBean.addBenchmarkBean(bmb);
+    		} else {
+    			expBean.deleteBenchmarkBean(bmb);
     		}
     	}
     	exp.getExperimentSetup().setBenchmarkGoals(bmgoals);
@@ -140,9 +147,39 @@ public class Manager {
     	exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
     	exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
     	testbedMan.updateExperiment(exp);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("BenchmarkBeans");   
         return "goToStage4";
     }
     
+    
+    public String updateEvaluationAction() {
+        try {
+	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
+	    	Experiment exp = testbedMan.getExperiment(expBean.getID());
+	    	// create Goal objects from Beans
+	    	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
+	    	Iterator iter = expBean.getBenchmarkBeans().iterator();
+	    	while (iter.hasNext()) {
+	    		BenchmarkBean bmb = (BenchmarkBean)iter.next();
+	    		if (bmb.getSelected()) {
+		    		// method to get a new instance of BenchmarkGoal
+	    			BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
+		    		bmg.setValue(bmb.getValue());
+		    		if (bmb.getWeight()!=null)
+		    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
+		    		bmgoals.add(bmg);
+	    		}
+	    	}
+	    	Map<URI,List<BenchmarkGoal>> bhm = new HashMap<URI,List<BenchmarkGoal>>();
+	    	bhm.put(new URI(expBean.getEworkflowInputData()),bmgoals);
+	    	exp.getExperimentEvaluation().setEvaluatedFileBenchmarkGoals(bhm);
+	    	return null;
+        } catch (Exception e) {
+        	log.error("Exception when trying to create/update Evaluations: "+e.toString());
+        	return null;
+        }
+    }
     
    /* public String updateExpTypeAction() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -179,7 +216,12 @@ public class Manager {
 	        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
 	        exp.setState(Experiment.STATE_IN_PROGRESS);
 	        testbedMan.updateExperiment(exp);
-	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");    
+	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");   
+	        
+	        // create and put BenchmarkBeans into session for Stage 3
+	        List<BenchmarkBean> bmbeans = this.getAvailableBenchmarkBeans();
+	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BenchmarkBeans",bmbeans);   	        
+	        
 	    	return "goToStage3";
         } catch (Exception e) {
         	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
@@ -244,6 +286,25 @@ public class Manager {
     	return wfMap;
     }
     
+    public List<BenchmarkBean> getAvailableBenchmarkBeans() {
+       	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");   	
+    	Map<String,BenchmarkBean> availBenchmarks = new HashMap<String,BenchmarkBean>(expBean.getBenchmarks());
+    	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
+    	while (iter.hasNext()) {
+    		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
+    		if (availBenchmarks.containsKey(bmg.getID())) {
+    			BenchmarkBean bmb = availBenchmarks.get(bmg.getID());
+    			bmb.setSelected(true);
+    		} else {
+    			BenchmarkBean bmb = new BenchmarkBean(bmg);  			
+    			bmb.setSelected(false);
+        		availBenchmarks.put(bmg.getID(), bmb);
+    		}
+    	}
+    	return new ArrayList<BenchmarkBean>(availBenchmarks.values());
+    }
+    
+       
     public String approveExperiment(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -258,6 +319,9 @@ public class Manager {
     	Experiment exp = testbedMan.getExperiment(expBean.getID());    	
     	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
     	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
+    	// running experiment: dummy invoker should be called here
+    	expBean.setEworkflowOutputData("sdfsf");
+    	
     	return "goToStage6";
     }
 

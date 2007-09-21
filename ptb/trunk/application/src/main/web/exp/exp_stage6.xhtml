@@ -3,8 +3,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:c="http://java.sun.com/jstl/core">
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
@@ -22,73 +22,97 @@
 		<div id="maincol">
 		<div class="innertubemain">
 
-<p>View the experiment's input and output data, evaluate the outcomes of your experiment against the benchmark goals you specified during Stage 3 of the experiment and supply a report about your experiment.  You may save and re-edit your evaluation as often as required.</p>
+		<p>View the experiment's input and output data, evaluate the
+		outcomes of your experiment against the benchmark goals you specified
+		during Stage 3 of the experiment and supply a report about your
+		experiment. You may save and re-edit your evaluation as often as
+		required.</p>
 
-<h2 class="main">Experiment Data</h2>
+		<h2 class="main">Experiment Data</h2>
+		<h:form>
 
-<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" ><tr><th>Input Files</th><th>Output Files</th></tr>
+			<table border="1" cellspacing="0" cellpadding="2"
+				style="border: 1px solid #579EC2;">
+				<tr>
+					<th>Input Files</th>
+					<th>Output Files</th>
+				</tr>
 
-<tr style="font-size:smaller;">
-    <td><p><a href="#">File1.pdf</a><br /><b>Type:</b> PDF 1.0<br /><b>Size:</b> 122KB
-</p></td>
-<td><p><a href="#">File1.pdf</a><br /><b>Type:</b> PDF 1.0<br /><b>Size:</b> 122KB
-</p></td></tr>
-</table>
-
-<h:form>
-<h2 class="main">Benchmark Goals</h2>
-<p>Below are the benchmark goals you specified during stage three of the experiment design. Evaluate the success of your experiment by selecting the level of success of each goal.</p>
-
-<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" >
-<tr><th>Criteria </th><th>Explanation</th><th>Evaluation</th></tr>
-<tr><td>Number of pages</td><td>More info</td><td><input type="text" name="bg" size="20" /></td></tr>
-<tr><td>Page margins</td><td>More info</td><td><input type="text" name="bg" size="20" /></td></tr>
-
-<tr><td>Page breaks</td><td>More info</td><td><input type="text" name="bg" size="20" /></td></tr>
-</table>
-
-<h2 class="main">Evaluation Report</h2>
-<p><textarea rows="40" cols="120"></textarea></p>
-                                        <p>
-						<h:commandButton value="Save Evaluation"
-						action="#{Manager_Backing.saveEvaluation}" />
+				<tr style="font-size:smaller;">
+					<td>
+					<p><a href="#{ExperimentBean.eworkflowInputData}"> <h:outputText
+						value="#{ExperimentBean.eworkflowInputData}" /> </a><br />
 					</p>
-</h:form>
+					</td>
+					<td>
+					<p><a href="#{ExperimentBean.eworkflowOutputData}"> <h:outputText
+						value="#{ExperimentBean.eworkflowOutputData}" /> </a> <br />
+					</p>
+					</td>
+				</tr>
+			</table>
+
+			<h2 class="main">Benchmark Goals</h2>
+			<p>Below are the benchmark goals you specified during stage three
+			of the experiment design. Evaluate the success of your experiment by
+			selecting the level of success of each goal.</p>
+
+			<t:dataTable id="dataTable" var="bm"
+				value="#{ExperimentBean.benchmarkBeans}" preserveDataModel="false"
+				rows="4" rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
+				<t:column>
+					<f:facet name="header">Criteria</f:facet>
+				    #{bm.name}
+				</t:column>
+				<t:column>
+					<f:facet name="header">Explanation</f:facet>
+				    #{bm.definition} <br />
+					<i>#{bm.description}</i>
+				</t:column>
+				<t:column>
+					<f:facet name="header">Evaluation</f:facet>
+					<h:inputText value="#{bm.value}" />
+				</t:column>
+			</t:dataTable>
 
 
+			<h2 class="main">Evaluation Report</h2>
+			<p><textarea rows="15" cols="100"></textarea></p>
 
-
-		</div>
+			<p><h:commandButton value="#{res['button.save']}"
+				action="#{Manager_Backing.updateEvaluationAction}" /></p>
+		</h:form></div>
 		</div>
 		</div>
 		<div id="leftcol">
 
 		<h3 class="leftcol">Experiment Progress</h3>
 		<div class="innertube">
-			<ul class="exp"><h:form>
-					<li class="exp"><h:commandLink action="goToStage1"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-					<li class="exp"><h:commandLink action="goToStage2"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-					<li class="exp"><h:commandLink action="goToStage3"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-					<li class="exp"><h:commandLink action="goToStage4"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-					<li class="exp"><h:commandLink action="goToStage5"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-					<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
-				</h:form>
-			</ul>													
+		<ul class="exp">
+			<h:form>
+				<li class="exp"><h:commandLink action="goToStage1"
+					styleClass="exp_done">
+					<t:outputText value="#{res['new_exp.stage1']}" />
+				</h:commandLink></li>
+				<li class="exp"><h:commandLink action="goToStage2"
+					styleClass="exp_done">
+					<t:outputText value="#{res['new_exp.stage2']}" />
+				</h:commandLink></li>
+				<li class="exp"><h:commandLink action="goToStage3"
+					styleClass="exp_done">
+					<t:outputText value="#{res['new_exp.stage3']}" />
+				</h:commandLink></li>
+				<li class="exp"><h:commandLink action="goToStage4"
+					styleClass="exp_done">
+					<t:outputText value="#{res['new_exp.stage4']}" />
+				</h:commandLink></li>
+				<li class="exp"><h:commandLink action="goToStage5"
+					styleClass="exp_done">
+					<t:outputText value="#{res['new_exp.stage5']}" />
+				</h:commandLink></li>
+				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
+			</h:form>
+		</ul>
 		</div>
 		</div>
 
@@ -100,3 +124,5 @@
 
 </body>
 </html>
+
+

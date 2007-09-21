@@ -53,27 +53,26 @@
 							<legend>Specify Outcomes</legend>
 							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
 
-						  	<t:dataTable id="dataTable" var="bm" value="#{ExperimentBean.benchmarkBeans}"
-				                  preserveDataModel="false"
+						  	<h:dataTable id="dataTable" var="bm" value="#{BenchmarkBeans}"
 			    	              rows="4"
 			        	          rowId="#{bm.ID}"
 			            	      cellpadding="2"
 			                	  cellspacing="0"
 				                  border="1">
-							        <t:column>
+							        <h:column>
 									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"/>				            	
-						            </t:column>
-							        <t:column>
+						            </h:column>
+							        <h:column>
 			            				<f:facet name="header">Criteria</f:facet>
 						            	#{bm.name}
-						        	</t:column>			        	
-							        <t:column>
+						        	</h:column>			        	
+							        <h:column>
 			            				<f:facet name="header">Explanation</f:facet>
 						            	#{bm.definition} <br/>
 						            	<i>#{bm.description}</i>
-						        	</t:column>			        	
+						        	</h:column>			        	
 
-							</t:dataTable>
+							</h:dataTable>
 						</fieldset>
 							<p>
 					            <h:commandButton value="#{res['button.save']}"  

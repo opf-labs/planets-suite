@@ -111,8 +111,8 @@ public class ListExp extends SortableList {
 				}
 				if (column.equals("name"))
 				{
-					return ascending ? c1.getExperimentSetup().getBasicProperties().getExperimentName().compareTo(c2.getExperimentSetup().getBasicProperties().getExperimentName()) : c2.getExperimentSetup().getBasicProperties().getExperimentName()
-									.compareTo(c1.getExperimentSetup().getBasicProperties().getExperimentName());
+					return ascending ? c1.getExperimentSetup().getBasicProperties().getExperimentName().compareToIgnoreCase(c2.getExperimentSetup().getBasicProperties().getExperimentName()) : c2.getExperimentSetup().getBasicProperties().getExperimentName()
+									.compareToIgnoreCase(c1.getExperimentSetup().getBasicProperties().getExperimentName());
 				}
 				if (column.equals("type"))
 				{

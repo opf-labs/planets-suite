@@ -160,9 +160,6 @@
 				<t:outputText value="#{res['new_exp.stage2']}" />
 		</h:commandLink></li>
 	</h:panelGroup>
-	<h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
-		<li class="exp_nd">#{res['new_exp.stage2']}</li>
-	</h:panelGroup>
 	<h:panelGroup rendered="#{ExperimentBean.currentStage >= 3}">
 		<li class="exp"><h:commandLink action="goToStage3"
 					styleClass="exp_done">

@@ -29,20 +29,23 @@
                  preserveDataModel="true"
                  rows="10"
                  rowId="#{exp.experimentSetup.basicProperties.experimentName}"
-                 rowOnClick="alert('rowId: ' + this.id)"
                  sortColumn="#{ListExp_Backing.sort}"
                  sortAscending="#{ListExp_Backing.ascending}"
                  preserveSort="true"
                  cellpadding="2"
                  cellspacing="0"
-                 border="1">
+                 border="1"
+                 binding="#{ListExp_Backing.data}">
         <h:column>
             <f:facet name="header">
                 <t:commandSortHeader columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+            <h:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{exp.experimentSetup.basicProperties.experimenter == UserBean.userid}">
+	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+    		</h:commandLink>
+            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}"  rendered="#{exp.experimentSetup.basicProperties.experimenter != UserBean.userid}" />
         </h:column>
         <h:column>
 	        <f:facet name="header">

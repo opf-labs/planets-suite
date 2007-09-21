@@ -1,5 +1,6 @@
 package eu.planets_project.tb.gui.backing;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,20 +44,21 @@ public class ExperimentBean {
     private String etype;
     private ExperimentWorkflow eworkflow;    
     private String workflowtypeid;
-    private Map<String,BenchmarkBean> benchmarks;
+    private Map<String,BenchmarkBean> benchmarks = new HashMap<String,BenchmarkBean>();
     private String intensity="0";
     private String nrOutputFiles="1";
     private String inputData;
+    private String outputData;
     private int currStage =1;
     
         
     public ExperimentBean() {
-    	benchmarks = new HashMap<String,BenchmarkBean>();
+    	/*benchmarks = new HashMap<String,BenchmarkBean>();
     	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
     		BenchmarkGoal bm = (BenchmarkGoal)iter.next();
     		benchmarks.put(bm.getID(), new BenchmarkBean(bm));
-    	}
+    	}*/
     }
     
     public void fill(Experiment exp) {
@@ -82,8 +84,24 @@ public class ExperimentBean {
    				this.inputData = eworkflow.getInputData().toArray()[0].toString();   			    		    		
     	}
     	
+    	// set benchmarks
+    	try {
+    		if (this.inputData != null) {
+    			Iterator iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(new URI(inputData)).iterator();
+    			while (iter.hasNext()) {
+		    		BenchmarkGoal bm = (BenchmarkGoal)iter.next();
+		    		BenchmarkBean bmb = new BenchmarkBean(bm);
+					bmb.setValue(bm.getValue());
+					bmb.setWeight(String.valueOf(bm.getWeight()));
+					bmb.setSelected(true);
+		    		benchmarks.put(bm.getID(), bmb);
+    			}
+    		}
+        } catch (Exception e) {
+        	log.error("Exception when trying to create ExperimentBean from database object: "+e.toString());        	
+        }
     	// merge information to benchmark beans    	
-    	Iterator iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
+    	/*Iterator iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
     		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
     		if (benchmarks.containsKey(bmg.getID())) {
@@ -92,7 +110,7 @@ public class ExperimentBean {
     			bmb.setWeight(String.valueOf(bmg.getWeight()));
     			bmb.setSelected(true);
     		}
-    	}
+    	}*/
     	String intensity = Integer.toString(exp.getExperimentSetup().getExperimentResources().getIntensity());
     	if (intensity != null && intensity != "-1") 
     		this.intensity = intensity;
@@ -118,6 +136,14 @@ public class ExperimentBean {
     
     public List<BenchmarkBean> getBenchmarkBeans() {
     	return new ArrayList<BenchmarkBean>(benchmarks.values());
+    }
+    
+    public void addBenchmarkBean(BenchmarkBean bmb) {
+    	this.benchmarks.put(bmb.getID(),bmb);
+    }
+    
+    public void deleteBenchmarkBean(BenchmarkBean bmb) {
+    	this.benchmarks.remove(bmb.getID());
     }
     
     public void setBenchmarks(Map<String,BenchmarkBean>bms) {
@@ -149,6 +175,14 @@ public class ExperimentBean {
     
     public void setEworkflowInputData(String inputdata) {
     	this.inputData = inputdata;
+    }
+    
+    public String getEworkflowOutputData() {
+    	return this.outputData;
+    }
+    
+    public void setEworkflowOutputData(String outputdata) {
+    	this.outputData = outputdata;
     }
 
     public void setNumberOfOutputFiles(String nr) {

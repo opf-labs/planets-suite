@@ -26,6 +26,8 @@ public class BenchmarkBean implements Serializable {
 		this.name = bm.getName();
 		this.definition = bm.getDefinition();
 		this.description = bm.getDescription();	
+		this.value = bm.getValue();
+		this.weight = String.valueOf(bm.getWeight());
 
 	} 
 		

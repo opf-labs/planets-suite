@@ -93,7 +93,7 @@ public class FileUploadBean
         	// create unique filename
         	Random r = new Random();
         	String ext = _upFile.getName().substring(_upFile.getName().lastIndexOf('.'));
-        	this._name = Integer.toString(r.nextInt())+ext;
+        	this._name = Long.toString(r.nextLong())+ext;
         	File f = new File(dir, this._name );
         	f.createNewFile();
         	log.debug("Writing byte[] to file: " + f.getCanonicalPath());

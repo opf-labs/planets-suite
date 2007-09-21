@@ -61,7 +61,13 @@
 					<legend>STEP 3: Configure Workflow</legend>
 					<b>Workflow name: </b>#{Workflow.name}<br/>
 					<b>Workflow tooltype: </b>#{Workflow.toolType}<br/>
-					<b>Output mimetypes: </b> #{Workflow.requiredOutputMIMETypes}<br/>	
+					<b>Output mimetypes: </b> <br/>
+					<ul>
+						<c:forEach var="mtype" items="#{Workflow.requiredOutputMIMETypes}">
+						  <li>#{mtype}</li>
+						</c:forEach>
+					</ul>					
+					<br/>	
 					<b>Workflow Services: </b> <br/>
 					<ul>
 					<c:forEach var="svc" items="#{Workflow.workflowServices}">
@@ -69,8 +75,13 @@
 						  <li>WSDL: #{svc.WSDL}</li><br/>
 					</c:forEach>
 					</ul>
-		
-		            <b>Input mimetypes: </b> #{Workflow.requiredInputMIMETypes}<br/>					
+					<br/>
+		            <b>Input mimetypes: </b> <br/>
+					<ul>
+						<c:forEach var="mtype" items="#{Workflow.requiredInputMIMETypes}">
+						  <li>#{mtype}</li>
+						</c:forEach>
+					</ul>					
 		            <t:inputFileUpload id="fileupload" rendered="#{empty ExperimentBean.eworkflowInputData}"
                                accept="#{Workflow.requiredInputMIMETypes[0]}"
                                value="#{FileUploadBean.upFile}"
