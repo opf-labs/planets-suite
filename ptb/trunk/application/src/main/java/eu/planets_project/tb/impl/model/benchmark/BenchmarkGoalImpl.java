@@ -223,7 +223,7 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setValue(java.lang.String)
 	 */
-	public void setValue(String value) {
+	public void setValue(String value){
 		if(checkValueValid(value))
 			this.sValue = value;
 	}

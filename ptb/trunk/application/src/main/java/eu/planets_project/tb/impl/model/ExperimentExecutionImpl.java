@@ -11,8 +11,13 @@ import java.util.Map.Entry;
 
 import javax.persistence.Entity;
 
+import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.system.SystemMonitoring;
+import eu.planets_project.tb.api.system.mockup.WorkflowInvoker;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.system.mockup.WorkflowInvokerImpl;
 
 /**
  * @author alindley
@@ -41,18 +46,39 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
         return this.lExperimentIDRef;
     }
 
+    /**
+     * @param lExperimentIDRef
+     */
     public void setExpeirmentRefID(long lExperimentIDRef){
         this.lExperimentIDRef = lExperimentIDRef;
     }
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionDataEntries()
+	 */
 	public Collection<Entry<URI, URI>> getExecutionDataEntries() {
-		// TODO Auto-generated method stub
-		return null;
+		TestbedManager manager = new TestbedManagerImpl().getInstance();
+		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
+		if(exp!=null){
+			return exp.getExperimentSetup().getExperimentWorkflow().getDataEntries();
+		}
+		else{
+			return null;
+		}
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionDataEntry(java.net.URI)
+	 */
 	public Entry<URI, URI> getExecutionDataEntry(URI inputFileRef) {
-		// TODO Auto-generated method stub
-		return null;
+		TestbedManager manager = new TestbedManagerImpl().getInstance();
+		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
+		if(exp!=null){
+			return exp.getExperimentSetup().getExperimentWorkflow().getDataEntry(inputFileRef);
+		}
+		else{
+			return null;
+		}
 	}
 
 	public List<String> getExecutionMetadata(URI inputFile) {
@@ -60,14 +86,29 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 		return null;
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionOutputData(java.net.URI)
+	 */
 	public URI getExecutionOutputData(URI inputFile) {
-		// TODO Auto-generated method stub
-		return null;
+		TestbedManager manager = new TestbedManagerImpl().getInstance();
+		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
+		if(exp!=null){
+			return exp.getExperimentSetup().getExperimentWorkflow().getDataEntry(inputFile).getValue();
+		}
+		else{
+			return null;
+		}
 	}
 
 	public Collection<URI> getExecutionOutputData() {
-		// TODO Auto-generated method stub
-		return null;
+		TestbedManager manager = new TestbedManagerImpl().getInstance();
+		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
+		if(exp!=null){
+			return exp.getExperimentSetup().getExperimentWorkflow().getOutputData();
+		}
+		else{
+			return null;
+		}
 	}
 
 	public String getExecutionState(URI inputFile) {
@@ -98,6 +139,11 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	public void setSystemMonitoringData(SystemMonitoring systemState) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void executeExperiment() throws Exception{
+		WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
+		wfinvoker.executeExperimentWorkflow(this.lExperimentIDRef);
 	}
 
 

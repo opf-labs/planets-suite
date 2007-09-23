@@ -3,6 +3,8 @@ package eu.planets_project.tb.api;
 import java.util.Collection;
 import java.util.Set;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 
 public interface TestbedManager {
 	
@@ -61,6 +63,12 @@ public interface TestbedManager {
 	
 	// Admin Manager
 	public AdminManager getAdminManagerInstance();
+	
+	// BenchmarkGoalHandler
+	public BenchmarkGoalsHandler getBenchmarkGoalHandler();
+	
+	// WorkflowHandler
+	public WorkflowHandler getWorkflowHandler();
 	
 	//Manages ..
 

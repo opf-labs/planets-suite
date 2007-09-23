@@ -25,9 +25,13 @@ import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 
 /**
@@ -346,6 +350,22 @@ public class TestbedManagerImpl
 		}
 		
 		return iCount;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#getBenchmarkGoalHandler()
+	 */
+	public BenchmarkGoalsHandler getBenchmarkGoalHandler() {
+		return BenchmarkGoalsHandlerImpl.getInstance();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#getWorkflowHandler()
+	 */
+	public WorkflowHandler getWorkflowHandler() {
+		return WorkflowHandlerImpl.getInstance();
 	}
 
 

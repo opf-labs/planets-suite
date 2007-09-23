@@ -23,6 +23,11 @@ public interface ExperimentExecution extends ExperimentPhase{
 	public Calendar getScheduledExecutionDate();
 	
 	/**
+	 * A temporary helper until the calendar schedule is in place to execute experiments
+	 */
+	public void executeExperiment() throws Exception;
+	
+	/**
 	 * @param systemState
 	 */
 	public void setSystemMonitoringData(SystemMonitoring systemState);
