@@ -22,6 +22,10 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentExecution;
+import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
+import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
+import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 
 /**
@@ -36,7 +40,7 @@ public class WorkflowInvokerImpl implements
 	
 	
 	public WorkflowInvokerImpl(){
-		manager = TestbedManagerImpl.getInstance();
+		manager = TestbedManagerImpl.getInstance(true);
 		
 		//read the properties file for settings:
 		setDirNames();
@@ -50,8 +54,11 @@ public class WorkflowInvokerImpl implements
 	 */
 	public void executeExperimentWorkflow(long lExperimentID) throws Exception{
 		try{
+			manager = TestbedManagerImpl.getInstance(true);
 			Experiment exp = manager.getExperiment(lExperimentID);
+
 			ExperimentWorkflow expWorkflow = exp.getExperimentSetup().getExperimentWorkflow();
+
 			if(expWorkflow!=null){
 				Collection<URI> inputData = expWorkflow.getInputData();
 			
@@ -67,22 +74,24 @@ public class WorkflowInvokerImpl implements
 							File fOutput = new File(this.sOutputDir+"/"+this.sOutputFileName);
 							//create duplicate of the file
 							this.copyFile(fInput, fOutput);
-						
 							//get the URI to the outputfile
 							URI outputURI = this.getOutputFileURI();
 						
 							//now store results back to experiment
 							expWorkflow.setOutputData(inputURI, outputURI);
-
 							//setExperimentExecutionPhase as executed
 							exp.getExperimentExecution().setState(ExperimentExecution.STATE_COMPLETED);
 							exp.getExperimentEvaluation().setState(ExperimentEvaluation.STATE_IN_PROGRESS);
+							
 							//Finally update the Experiment
 							manager.updateExperiment(exp);
 						}
 					
 					}
 				}
+			}
+			else{
+				System.out.println("Error while executing ExperimentWorkflow");
 			}
 		}catch(Exception e){
 			//TODO Logg statement

@@ -86,7 +86,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 */
 	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID,
 			String value) {
-	
+		
 		if(this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID)){
 			//get the input BenchmarkGoal
 			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.getInputBenchmarkGoals().get(addedBenchmarkGoalID)).clone();
@@ -344,7 +344,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	private Vector<URI> getInputFiles(){
 		Vector<URI> vRet = new Vector<URI>();
 		
-		TestbedManager tbManager = TestbedManagerImpl.getInstance();
+		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
 		//get the Experiment this phase belongs to
 		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
 		
@@ -375,7 +375,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	private HashMap<String, BenchmarkGoal> getInputBenchmarkGoals(){
 		HashMap<String,BenchmarkGoal> hmRet = new HashMap<String,BenchmarkGoal>();
 		if(this.lExperimentIDRef!=-1){
-			TestbedManager tbManager = TestbedManagerImpl.getInstance();
+			TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
 			//get the Experiment this phase belongs to
 			Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
 		

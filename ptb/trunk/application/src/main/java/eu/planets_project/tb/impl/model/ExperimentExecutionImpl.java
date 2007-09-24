@@ -57,7 +57,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionDataEntries()
 	 */
 	public Collection<Entry<URI, URI>> getExecutionDataEntries() {
-		TestbedManager manager = new TestbedManagerImpl().getInstance();
+		TestbedManager manager = new TestbedManagerImpl().getInstance(true);
 		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
 		if(exp!=null){
 			return exp.getExperimentSetup().getExperimentWorkflow().getDataEntries();
@@ -71,7 +71,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionDataEntry(java.net.URI)
 	 */
 	public Entry<URI, URI> getExecutionDataEntry(URI inputFileRef) {
-		TestbedManager manager = new TestbedManagerImpl().getInstance();
+		TestbedManager manager = new TestbedManagerImpl().getInstance(true);
 		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
 		if(exp!=null){
 			return exp.getExperimentSetup().getExperimentWorkflow().getDataEntry(inputFileRef);
@@ -90,7 +90,8 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionOutputData(java.net.URI)
 	 */
 	public URI getExecutionOutputData(URI inputFile) {
-		TestbedManager manager = new TestbedManagerImpl().getInstance();
+		TestbedManager manager = new TestbedManagerImpl().getInstance(true);
+		
 		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
 		if(exp!=null){
 			return exp.getExperimentSetup().getExperimentWorkflow().getDataEntry(inputFile).getValue();
@@ -101,7 +102,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	}
 
 	public Collection<URI> getExecutionOutputData() {
-		TestbedManager manager = new TestbedManagerImpl().getInstance();
+		TestbedManager manager = new TestbedManagerImpl().getInstance(true);
 		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
 		if(exp!=null){
 			return exp.getExperimentSetup().getExperimentWorkflow().getOutputData();

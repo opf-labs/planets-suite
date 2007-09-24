@@ -138,14 +138,15 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 		BenchmarkGoalImpl ret = new BenchmarkGoalImpl();
 		BenchmarkGoal template = this.hmBmGoals.get(sID);
 		if(template !=null){
-			ret.setCategory(template.getCategory());
+			ret = ((BenchmarkGoalImpl)this.hmBmGoals.get(sID)).clone();
+			/*ret.setCategory(template.getCategory());
 			ret.setDefinition(template.getDefinition());
 			ret.setDescription(template.getDescription());
 			ret.setName(template.getName());
 			ret.setScale(template.getScale());
 			ret.setType(template.getType());
 			ret.setVersion(template.getVersion());
-			ret.setID(template.getID());
+			ret.setID(template.getID());*/
 			
 			return ret;
 		}
@@ -163,6 +164,9 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler#buildBenchmarkGoalsFromXML()
+	 */
 	public void buildBenchmarkGoalsFromXML(){
 		try{
 			DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();

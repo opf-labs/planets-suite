@@ -16,7 +16,11 @@ import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.system.mockup.WorkflowInvoker;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
+import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowImpl;
@@ -32,7 +36,7 @@ public class WorkflowInvokerTest extends TestCase{
 		//create two new test Experiments
 		ExperimentImpl exp1 = (ExperimentImpl)manager.createNewExperiment();
 		expID1 = exp1.getEntityID();
-				
+		
 		ExperimentImpl exp2 = (ExperimentImpl)manager.createNewExperiment();
 		expID2 = exp2.getEntityID();	
 			
@@ -41,7 +45,6 @@ public class WorkflowInvokerTest extends TestCase{
 	public void testExecuteExperimentWorkflow() {
 	//setupTest:
 		WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
-		TestbedManager manager = TestbedManagerImpl.getInstance();
 		Experiment exp = manager.getExperiment(this.expID1);
 		WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
 		Workflow workflow = null;
@@ -67,15 +70,17 @@ public class WorkflowInvokerTest extends TestCase{
 			
 			//now execute the experiment
 			wfinvoker.executeExperimentWorkflow(exp.getEntityID());
-				
+			
 			//now check if the migration succeeded 
+			manager = TestbedManagerImpl.getInstance(true);
 			Experiment expUpdated = manager.getExperiment(this.expID1);
-			System.out.println("Got Output URI: "+expUpdated.getExperimentSetup().getExperimentWorkflow().getDataEntry(input1).getValue());
-			//System.out.println("CurrentPhase: "+expUpdated.getCurrentPhase().getPhaseName());
+
+			assertNotNull(expUpdated.getExperimentSetup().getExperimentWorkflow().getDataEntry(input1).getValue());
+			assertEquals(Experiment.PHASENAME_EXPERIMENTEVALUATION,expUpdated.getCurrentPhase().getPhaseName());
 			assertNotNull(expUpdated.getExperimentExecution().getExecutionDataEntry(input1).getValue());
 			
 		}catch(Exception e){
-			System.out.println("Problem in running ExperimentWorkflowTest "+e.toString());
+			System.out.println("Problem in running ExecuteExperimentWorkflowTest "+e.toString());
 			assertEquals(true,false);
 		}
 		assertEquals(true,true);

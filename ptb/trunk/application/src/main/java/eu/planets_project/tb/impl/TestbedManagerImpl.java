@@ -70,6 +70,21 @@ public class TestbedManagerImpl
 	}
 	
 	
+	/**
+	 * Use this method in the backend to retrieve the instance of this class.
+	 * @param bUpdate indicates if the TB manager's content shall be updated (true) from the  persistency unit again
+	 * @return
+	 */
+	public static synchronized TestbedManagerImpl getInstance(boolean bUpdate){
+		if (!bUpdate){
+			return getInstance();
+		}else{
+			instance = new TestbedManagerImpl();
+			return instance;
+		}
+	}
+	
+	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentIDs()
 	 */
@@ -102,6 +117,7 @@ public class TestbedManagerImpl
 	 */
 	public Experiment getExperiment(long expID) {
 		return this.hmAllExperiments.get(expID);
+
 	}
 
 	/* (non-Javadoc)
@@ -115,10 +131,10 @@ public class TestbedManagerImpl
 		
 		//should now already contain a container injected EntityID;
 		exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
-		
+
 		//now register experimentRefID in Phases
 		this.setExperimentRefInPhase(exp);
-		
+
 		this.hmAllExperiments.put(exp.getEntityID(), exp);
 		
 	  //End Transaction

@@ -34,7 +34,7 @@ public class ExperimentEvaluationTest extends TestCase{
 	private TestbedManager manager;
 	
 	protected void setUp(){
-		manager = TestbedManagerImpl.getInstance();
+		manager = TestbedManagerImpl.getInstance(true);
 		//create two new test Experiments
 		ExperimentImpl exp1 = (ExperimentImpl)manager.createNewExperiment();
 		expID1 = exp1.getEntityID();
@@ -74,8 +74,10 @@ public class ExperimentEvaluationTest extends TestCase{
 		assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
 	//Test3: Example how it should run
 		expSetup.addBenchmarkGoal(goal1);
+		manager.updateExperiment(expTest);
+
 		expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
-			
+		
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
 		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
 		assertEquals("20", goalFound.getValue());
@@ -115,6 +117,8 @@ public class ExperimentEvaluationTest extends TestCase{
 			
 		//Test3: Example how it should run
 			expSetup.addBenchmarkGoal(goal1);
+			manager.updateExperiment(expFound);
+			
 			expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
 				
 			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
@@ -163,7 +167,7 @@ public class ExperimentEvaluationTest extends TestCase{
 		
 	//Test3: Example how it should run
 		expSetup.addBenchmarkGoal(goal1);
-
+		manager.updateExperiment(expTest);
 		expEval.setEvaluatedExperimentBenchmarkGoals(list_test);
 			
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
@@ -209,6 +213,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			
 		//Test2: Example how it should run
 			expSetup.addBenchmarkGoal(goal1);
+			manager.updateExperiment(expFound);
 			expEval.setEvaluatedFileBenchmarkGoals(hmFileGoals);
 				
 			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
@@ -255,7 +260,8 @@ public class ExperimentEvaluationTest extends TestCase{
 			//need to set a workflow, as no predefined wf can be set
 			expFound.getExperimentSetup().setWorkflow(workflow);
 			expFound.getExperimentSetup().getExperimentWorkflow().addInputData(testFile);
-		
+			manager.updateExperiment(expFound);
+			
 			expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
 			
 		//UnitTestSetup completed: now perform the actual Tests

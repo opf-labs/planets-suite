@@ -165,7 +165,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		while(enumExpRefs.hasMoreElements()){
 			long lExpRefId = enumExpRefs.nextElement();
 			//get Singleton: TestbedManager
-			TestbedManagerImpl testbedManager = eu.planets_project.tb.impl.TestbedManagerImpl.getInstance();
+			TestbedManagerImpl testbedManager = TestbedManagerImpl.getInstance(true);
 			ExperimentImpl experiment = (ExperimentImpl)testbedManager.getExperiment(lExpRefId);
 			hmRet.put(experiment.getEntityID(), experiment);
 		}
@@ -536,7 +536,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#checkExperimentNameUnique(java.lang.String)
 	 */
 	public boolean checkExperimentNameUnique(String expName) {
-		TestbedManager tbManager = TestbedManagerImpl.getInstance();
+		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
 		return tbManager.isExperimentNameUnique(expName);
 	}
 
@@ -642,7 +642,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentStructureReference()
 	 */
 	public Experiment getExperimentStructureReference() {
-		TestbedManager tbmanager = TestbedManagerImpl.getInstance();
+		TestbedManager tbmanager = TestbedManagerImpl.getInstance(true);
 		return tbmanager.getExperiment(this.lExperimentStructureReference);
 	}
 
@@ -666,7 +666,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentStructureReferences(long)
 	 */
 	public void setExperimentStructureReferences(long expID) {
-		TestbedManager tbmanager = TestbedManagerImpl.getInstance();
+		TestbedManager tbmanager = TestbedManagerImpl.getInstance(true);
 		if(tbmanager.isRegistered(expID))
 			this.lExperimentStructureReference = expID;
 	}

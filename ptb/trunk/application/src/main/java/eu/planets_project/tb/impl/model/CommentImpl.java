@@ -62,7 +62,7 @@ public class CommentImpl implements eu.planets_project.tb.api.model.Comment,
 	 * @param lParentID
 	 */
 	public CommentImpl(long lParentID){
-		CommentManagerImpl manager = (CommentManagerImpl)TestbedManagerImpl.getInstance().getCommentManagerInstance();
+		CommentManagerImpl manager = (CommentManagerImpl)TestbedManagerImpl.getInstance(true).getCommentManagerInstance();
 		CommentImpl parent = (CommentImpl)manager.getComment(lParentID);
 		//DELTE
 		System.out.println("parent NULL? ");
