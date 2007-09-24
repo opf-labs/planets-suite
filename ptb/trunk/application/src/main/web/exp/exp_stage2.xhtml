@@ -8,7 +8,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
-        #{res.title} - #{ExperimentBean.ename}: #{res['exp_stage2.pageTitle']}
+        #{res.title} - <h:outputText value="#{ExperimentBean.ename}"/> : #{res['exp_stage2.pageTitle']}
   </ui:define>
 
 	<ui:define name="header">

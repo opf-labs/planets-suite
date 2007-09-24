@@ -15,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
@@ -88,7 +89,11 @@ public class ExperimentBean {
     	// set benchmarks
     	try {
     		if (this.inputData != null) {
-    			Iterator iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(new URI(inputData)).iterator();
+    			Iterator iter;
+    			if (exp.getCurrentPhase() instanceof ExperimentEvaluation) 
+    				iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(new URI(inputData)).iterator();
+    			else
+    				iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
     			while (iter.hasNext()) {
 		    		BenchmarkGoal bm = (BenchmarkGoal)iter.next();
 		    		BenchmarkBean bmb = new BenchmarkBean(bm);

@@ -111,7 +111,7 @@ public class Manager {
         	testbedMan.updateExperiment(exp);        	
     		return "goToStage4";
     	} else
-    		return "goToStage4";    	
+    		return null;    	
     }
     
     
@@ -326,20 +326,30 @@ public class Manager {
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID());    	
-    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
-    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
+    	//exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+    	//exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
     	// running experiment: dummy invoker should be called here
-    	expBean.setEworkflowOutputData("sdfsf");
-    	testbedMan.updateExperiment(exp);
-    	return "goToStage6";
+    	try {
+    		exp.getExperimentExecution().executeExperiment();
+        	String inputData = expBean.getEworkflowInputData();
+        	URI outputURI = exp.getExperimentExecution().getExecutionOutputData(new URI(inputData));
+        	expBean.setEworkflowOutputData(outputURI.toString());    		
+	  	  	testbedMan.updateExperiment(exp);
+  	  		return "goToStage6";
+    	} catch (Exception e) {
+    		log.error("Error when executing Experiment: " + e.toString());
+    		System.out.println("Error when executing Experiment: " + e.toString());
+    		return null;
+    	}   	
     }
 
     public String saveEvaluation(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID());    	
-    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
-    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
+    	//exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+    	//exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
+    	exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
     	return "completeExperiment";
     }
     
