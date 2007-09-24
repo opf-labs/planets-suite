@@ -206,11 +206,55 @@
   <navigation-rule>
     <from-view-id>/reader/browse_exp.xhtml</from-view-id>
     <navigation-case>
-      <from-outcome>editExp</from-outcome>
-      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+      <from-outcome>viewExp</from-outcome>
+      <to-view-id>/reader/exp_stage1.xhtml</to-view-id>
      <redirect />
     </navigation-case>
   </navigation-rule>
 
+  <navigation-rule>
+    <from-view-id>/reader/exp_stage1.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>goToReaderStage2</from-outcome>
+      <to-view-id>/reader/exp_stage2.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/reader/exp_stage2.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>goToReaderStage3</from-outcome>
+      <to-view-id>/reader/exp_stage3.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+    <from-view-id>/reader/exp_stage3.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>goToReaderStage4</from-outcome>
+      <to-view-id>/reader/exp_stage4.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+    <from-view-id>/reader/exp_stage4.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>goToReaderStage5</from-outcome>
+      <to-view-id>/reader/exp_stage5.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
+  </navigation-rule>
+  
+  <navigation-rule>
+    <from-view-id>/reader/exp_stage5.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>goToReaderStage6</from-outcome>
+      <to-view-id>/reader/exp_stage6.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
+  </navigation-rule>
 
 </faces-config>

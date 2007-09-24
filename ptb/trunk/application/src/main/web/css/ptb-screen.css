@@ -653,3 +653,14 @@ select
 	font-size:1em;
 	font-family: arial, helvetica, sans-serif;
 }
+
+span.readerLabel
+{
+	float: left;
+	clear: left;
+	text-align: right;
+	margin-right: 0.5em;
+	margin-bottom: 0.5em;
+	font-weight: bold;
+	width: 100px;
+}

@@ -153,6 +153,27 @@ public class ListExp extends SortableList {
 	      return "editExp";
 	    }
             
+	    public String readerExperimentAction()
+	    {
+	    
+	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
+	      FacesContext ctx = FacesContext.getCurrentInstance();
+
+	      ExperimentBean expBean = new ExperimentBean();
+	      expBean.fill(selectedExperiment);
+	      // if experiment workflow already specified, set a workflow bean into session as backing bean for inputfields
+	      if (expBean.getWorkflowTypeId()!=null) {
+	    	  Workflow wf = selectedExperiment.getExperimentSetup().getExperimentWorkflow().getWorkflow();
+	    	  ctx.getExternalContext().getSessionMap().put("Workflow",wf);
+	      }
+	      //Store selected Experiment Row accessible later as #{Experiment} 
+	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+	              
+	      // go to edit page
+	      return "viewExp";
+	    }
+            
         public String selectExperimentForDeletion()
         {
 	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();

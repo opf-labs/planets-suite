@@ -343,4 +343,23 @@ public class Manager {
     	return "completeExperiment";
     }
     
+    public String loadReaderStage2() {
+        return "goToReaderStage2";
+    }
+
+    public String loadReaderStage3() {
+        return "goToReaderStage3";
+    }
+    
+    public String loadReaderStage4() {
+        return "goToReaderStage4";
+    }
+    
+    public String loadReaderStage5() {
+        return "goToReaderStage5";
+    }
+    
+    public String loadReaderStage6() {
+        return "goToReaderStage6";
+    }
 }

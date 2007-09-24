@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+	<ui:define name="title">
+        #{res.title} - #{ExperimentBean.ename}: #{res['exp_stage2.pageTitle']}
+  </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/templates/header.xhtml">
+			<ui:param name="page" value="new_exp" />
+		</ui:include>
+		<script type="text/javascript"
+			src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>
+	</ui:define>
+
+	<ui:define name="content">
+		<div id="mainwrapper">
+		<div id="maincol">
+		<div class="innertubemain">
+
+				<fieldset>
+					<legend>#{res['reader_exp.stageTwoLegendOne']}</legend>
+					<p>
+						#{ExperimentBean.etype}			</p>
+				</fieldset>
+			<h:form>
+				<fieldset>
+
+					<legend>#{res['reader_exp.stageTwoLegendTwo']}</legend>
+					<b>#{res['exp_stage2.workflowName']} </b>#{Workflow.name}<br/>
+					<b>#{res['exp_stage2.workflowTool']} </b>#{Workflow.toolType}<br/>
+					<b>#{res['exp_stage2.outputMime']} </b> <br/>
+					<ul>
+						<c:forEach var="mtype" items="#{Workflow.requiredOutputMIMETypes}">
+						  <li>#{mtype}</li>
+						</c:forEach>
+					</ul>					
+					<br/>	
+					<b>#{res['exp_stage2.workflowServices']} </b> <br/>
+					<ul>
+					<c:forEach var="svc" items="#{Workflow.workflowServices}">
+						  <li>#{res['exp_stage2.serviceName']} #{svc.serviceName}</li>
+						  <li>#{res['exp_stage2.WSDL']} #{svc.WSDL}</li><br/>
+					</c:forEach>
+					</ul>
+                                        <p>
+                                        <b>#{res['exp_stage2.inputMime']} </b> </p>
+                                        <ul>
+                                            <c:forEach var="mtype" items="#{Workflow.requiredInputMIMETypes}">
+                                                <li>#{mtype}</li>
+                                            </c:forEach>
+                                        </ul>					
+ <p>
+                                        <h:panelGroup rendered="#{not empty ExperimentBean.eworkflowInputData}">
+                                            <h:outputText value="#{res['exp_stage2.inputData']} "/>
+                                            <h:outputText value="#{ExperimentBean.eworkflowInputData}" style="font-style: italic;font-weight: bold;"/>
+                                        </h:panelGroup>
+                                    </p>
+				</fieldset>
+                                		<p>
+            <h:commandButton value="#{res['reader_exp.buttonStage2']}" 
+            action="#{Manager_Backing.loadReaderStage3}" disabled="#{ExperimentBean.currentStage >= 3}" />		
+		</p>
+			</h:form>
+
+		<p>&#160;</p>
+		<p>&#160;</p>
+
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+
+
+
+		</div>
+		</div>
+		</div>
+
+
+		<div id="leftcol">
+
+		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
+		<div class="innertube">
+			<ul class="exp"><h:form>
+				<li class="exp"><h:commandLink action="goToStage1"
+							styleClass="exp_done">
+						<t:outputText value="#{res['new_exp.stage1']}" />
+				</h:commandLink></li>
+				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage2']}</a></li>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 3}">
+					<li class="exp"><h:commandLink action="goToStage3"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage3']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
+					<li class="exp_nd">#{res['new_exp.stage3']}</li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 4}">
+					<li class="exp"><h:commandLink action="goToStage4"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage4']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
+					<li class="exp_nd">#{res['new_exp.stage4']}</li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
+					<li class="exp"><h:commandLink action="goToStage5"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage5']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
+					<li class="exp_nd">#{res['new_exp.stage5']}</li>
+				</h:panelGroup>		
+				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
+					<li class="exp"><h:commandLink action="goToStage6"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage6']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
+					<li class="exp_nd">#{res['new_exp.stage6']}</li>
+				</h:panelGroup>	
+				</h:form>
+			</ul>
+		</div>
+		</div>
+
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml" />
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>
