@@ -179,12 +179,12 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 			
 			case iExperimentExecution:
 				//check if the previous stages were completed 
-				if(this.expSetup.getState()==ExperimentPhase.STATE_COMPLETED && this.expApproval.getState()==ExperimentPhase.STATE_COMPLETED)
+				if((this.expSetup.getState()==ExperimentPhase.STATE_COMPLETED) && (this.expApproval.getState()==ExperimentPhase.STATE_COMPLETED))
 					bRet = true;
 				
 			case iExperimentEvaluation:
 				//check if the previous stages were completed 
-				if(this.expSetup.getState()==ExperimentPhase.STATE_COMPLETED && this.expApproval.getState()==ExperimentPhase.STATE_COMPLETED && this.expExecution.getState()==ExperimentPhase.STATE_COMPLETED)
+				if((this.expSetup.getState()==ExperimentPhase.STATE_COMPLETED) && (this.expApproval.getState()==ExperimentPhase.STATE_COMPLETED) && (this.expExecution.getState()==ExperimentPhase.STATE_COMPLETED))
 					bRet = true;
 		}
 		

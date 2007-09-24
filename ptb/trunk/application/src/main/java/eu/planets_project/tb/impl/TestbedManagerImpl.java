@@ -140,10 +140,11 @@ public class TestbedManagerImpl
 		}else{
 			long lExpID = dao_r.persistExperiment(experimentBean);
 			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
-			this.hmAllExperiments.put(exp.getEntityID(), exp);
 			
 			//now register experimentRefID in Phases
 			this.setExperimentRefInPhase(exp);
+			
+			this.hmAllExperiments.put(exp.getEntityID(), exp);
 			
 			//finally return the entityID
 			return exp.getEntityID();
