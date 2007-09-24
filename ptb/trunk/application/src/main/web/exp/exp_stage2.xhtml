@@ -34,11 +34,11 @@
 						<h:selectOneMenu onchange="this.form.submit()" 
 						value="#{ExperimentBean.etype}"
 						valueChangeListener="#{Manager_Backing.changedExpTypeEvent}"
-						immediate="true">
+						immediate="true"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
 							<f:selectItems value="#{Manager_Backing.availableExperimentTypes}" />
 						</h:selectOneMenu>
 						<h:commandButton value="#{res['button.go']}"
-						action="#{Manager_Backing.changedExpType}" />
+						action="#{Manager_Backing.changedExpType}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
 					</p>
 				</fieldset>
 			</h:form>
@@ -49,11 +49,11 @@
 					onchange="this.form.submit()"
 					value="#{ExperimentBean.workflowTypeId}"
 					valueChangeListener="#{Manager_Backing.changedExpWorkflowEvent}"
-					immediate="true">
+					immediate="true"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
 						<f:selectItems value="#{Manager_Backing.availableWorkflows}" />
 					</h:selectOneMenu>
 					<h:commandButton value="#{res['button.go']}"
-					action="#{Manager_Backing.changedExpWorkflow}" />
+					action="#{Manager_Backing.changedExpWorkflow}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
 				</fieldset>
 			</h:form>
 			<h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{not empty Workflow}">
@@ -89,12 +89,12 @@
                                              storage="file"
                                              styleClass="fileUploadInput"
                                              required="true"
-                                             maxlength="10000000"/><br/>
+                                             maxlength="10000000"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/><br/>
                                         <h:panelGroup rendered="#{not empty ExperimentBean.eworkflowInputData}">
                                             <h:outputText value="#{res['exp_stage2.inputData']} "/>
                                             <h:outputText value="#{ExperimentBean.eworkflowInputData}" style="font-style: italic;font-weight: bold;"/>
                                             <h:commandButton value="#{res['button.change']}"
-                   action="#{Manager_Backing.changeExpWorkflowDataAction}" />
+                   action="#{Manager_Backing.changeExpWorkflowDataAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
                                         </h:panelGroup>                               
                                         <br/>
                                         <h:commandButton value="#{res['button.save']}"

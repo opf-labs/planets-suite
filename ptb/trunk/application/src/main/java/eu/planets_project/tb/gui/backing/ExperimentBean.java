@@ -50,6 +50,7 @@ public class ExperimentBean {
     private String inputData;
     private String outputData;
     private int currStage =1;
+    private boolean approved = false;
     
         
     public ExperimentBean() {
@@ -128,6 +129,8 @@ public class ExperimentBean {
     	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION)) {
     		this.currStage = 6;
     	}
+        if(currStage>3)
+            approved=true;
     }
     
     public Map<String,BenchmarkBean> getBenchmarks() {
@@ -334,5 +337,12 @@ public class ExperimentBean {
     public void setCurrentStage(int cs) {
     	this.currStage = cs;
     }
-
+    
+    public boolean getApproved() {
+        return approved;
+    }
+    
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
 }

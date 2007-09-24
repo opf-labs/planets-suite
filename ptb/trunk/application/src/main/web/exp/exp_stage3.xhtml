@@ -29,7 +29,7 @@
 							<legend>#{res['exp_stage3.legendResources']}</legend>
 							<p>
 								<label id="">#{res['exp_stage3.outputFiles']}</label>
-								<h:selectOneMenu immediate="true" required="false" value="#{ExperimentBean.numberOfOutputFiles}">
+								<h:selectOneMenu immediate="true" required="false" value="#{ExperimentBean.numberOfOutputFiles}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
 									<f:selectItem itemValue="1" itemLabel="1-10" />
 									<f:selectItem itemValue="11" itemLabel="11-100"/>
 									<f:selectItem itemValue="101" itemLabel="101-1000"/>
@@ -40,7 +40,7 @@
 							<div class="clear"></div>
 							<p>
 								<label id="">#{res['exp_stage3.intensity']}</label>		
-								<h:selectOneMenu required="false" value="#{ExperimentBean.intensity}">
+								<h:selectOneMenu required="false" value="#{ExperimentBean.intensity}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
 									<f:selectItem itemValue="0" itemLabel="#{res['exp_stage3.intensityLow']}" />
 									<f:selectItem itemValue="1" itemLabel="#{res['exp_stage3.intensityMedium']}"/>
 									<f:selectItem itemValue="2" itemLabel="#{res['exp_stage3.intensityHigh']}"/>
@@ -61,7 +61,7 @@
 			                	  cellspacing="0"
 				                  border="1">
 							        <h:column>
-									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"/>				            	
+									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>				            	
 						            </h:column>
 							        <h:column>
 			            				<f:facet name="header">#{res['exp_stage3.bgCriteria']}</f:facet>
@@ -77,7 +77,7 @@
 						</fieldset>
 							<p>
 					            <h:commandButton value="#{res['button.save']}"  
-					            action="#{Manager_Backing.updateBenchmarksAction}"/>		
+					            action="#{Manager_Backing.updateBenchmarksAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>		
 							</p>
 							<p>
 					            <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
