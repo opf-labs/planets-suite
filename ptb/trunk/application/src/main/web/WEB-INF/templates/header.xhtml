@@ -49,9 +49,9 @@
 	</div>
 
 	<div class="clear"></div>
-
+<h:form styleClass="hidden">
 	<div id="header">
-<h:form>	    
+	    
 		<ul>
 			<c:if test="${(empty page) or (page == 'home')}">
 				<li id="current">
@@ -79,13 +79,14 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'new_exp'}">
-				<li>
-				<h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_new.gif" class="toolbar"/>
-					<h:outputText value="#{res['new_exp.pageTitle']}"/>
-				</h:commandLink>
-			</li>
+			<c:if test="${page != 'new_exp' and UserBean.experimenter == true}">
+                            <li>
+                                <h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
+                                    <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_new.gif" class="toolbar"/>
+                                    <h:outputText value="#{res['new_exp.pageTitle']}"/>
+                                </h:commandLink>
+                            </li>
+			
 			</c:if>
 			<c:if test="${page == 'import_exp'}">
 				<li id="current">
@@ -95,7 +96,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'import_exp'}">
+			<c:if test="${page != 'import_exp' and UserBean.experimenter == true}">
 				<li>
 				<h:commandLink action="import_experiment" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_import.gif" class="toolbar"/>
@@ -111,7 +112,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'my_exp'}">
+			<c:if test="${page != 'my_exp' and UserBean.experimenter == true}">
 				<li>
 				<h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_my.gif" class="toolbar"/>
@@ -129,7 +130,7 @@
 					</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'browse_exp'}">
+			<c:if test="${page != 'browse_exp' and UserBean.reader == true}">
 				<li>
 					<h:commandLink action="browse_experiments"  rendered="#{UserBean.reader}">
 						<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_browse.gif" alt="" title="" />
@@ -145,7 +146,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'browse_services'}">
+			<c:if test="${page != 'browse_services' and UserBean.reader == true}">
 				<li>
 				<h:commandLink action="browse_services" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
@@ -161,7 +162,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'browse_data'}">
+			<c:if test="${page != 'browse_data' and UserBean.reader == true}">
 				<li>
 				<h:commandLink action="browse_data" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_data.gif" class="toolbar"/>
@@ -179,7 +180,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'exp_scheduler'}">
+			<c:if test="${page != 'exp_scheduler' and UserBean.admin == true}">
 				<li>
 				<h:commandLink action="exp_scheduler" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_scheduler.gif" class="toolbar"/>
@@ -195,7 +196,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'upload_data'}">
+			<c:if test="${page != 'upload_data' and UserBean.admin == true}">
 				<li>
 				<h:commandLink action="upload_data" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_dataup.gif" class="toolbar"/>
@@ -211,7 +212,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'manage_users'}">
+			<c:if test="${page != 'manage_users' and UserBean.admin == true}">
 				<li>
 				<h:commandLink action="manage_users" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_usermanage.gif" class="toolbar"/>
@@ -229,7 +230,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'help'}">
+			<c:if test="${page != 'help' and UserBean.reader == true}">
 				<li>
 				<h:commandLink action="help"  rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" class="toolbar"/>
@@ -238,8 +239,8 @@
 			</li>
 			</c:if>			
 		</ul>
-</h:form>
 	</div>
+        </h:form>
 	<div class="clear"></div>
 </ui:composition>
 </body>

@@ -664,3 +664,10 @@ span.readerLabel
 	font-weight: bold;
 	width: 100px;
 }
+
+.hidden
+{
+    margin:0;
+    padding:0;
+    border:0;
+}
