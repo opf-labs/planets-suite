@@ -372,4 +372,8 @@ public class Manager {
     public String loadReaderStage6() {
         return "goToReaderStage6";
     }
+    
+    public String finishReaderStage6() {
+        return "goToBrowseExperiments";
+    }
 }

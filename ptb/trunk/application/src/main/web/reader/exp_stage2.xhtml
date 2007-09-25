@@ -65,7 +65,7 @@
 				</fieldset>
                                 		<p>
             <h:commandButton value="#{res['reader_exp.buttonStage2']}" 
-            action="#{Manager_Backing.loadReaderStage3}" disabled="#{ExperimentBean.currentStage >= 3}" />		
+            action="#{Manager_Backing.loadReaderStage3}" disabled="#{ExperimentBean.currentStage lt 3}" />		
 		</p>
 			</h:form>
 
@@ -93,13 +93,13 @@
 		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
 		<div class="innertube">
 			<ul class="exp"><h:form>
-				<li class="exp"><h:commandLink action="goToStage1"
+				<li class="exp"><h:commandLink action="goToReaderStage1"
 							styleClass="exp_done">
 						<t:outputText value="#{res['new_exp.stage1']}" />
 				</h:commandLink></li>
 				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage2']}</a></li>
 				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 3}">
-					<li class="exp"><h:commandLink action="goToStage3"
+					<li class="exp"><h:commandLink action="goToReaderStage3"
 								styleClass="exp_done">
 							<t:outputText value="#{res['new_exp.stage3']}" />
 					</h:commandLink></li>
@@ -108,7 +108,7 @@
 					<li class="exp_nd">#{res['new_exp.stage3']}</li>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 4}">
-					<li class="exp"><h:commandLink action="goToStage4"
+					<li class="exp"><h:commandLink action="goToReaderStage4"
 								styleClass="exp_done">
 							<t:outputText value="#{res['new_exp.stage4']}" />
 					</h:commandLink></li>
@@ -117,7 +117,7 @@
 					<li class="exp_nd">#{res['new_exp.stage4']}</li>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
-					<li class="exp"><h:commandLink action="goToStage5"
+					<li class="exp"><h:commandLink action="goToReaderStage5"
 								styleClass="exp_done">
 							<t:outputText value="#{res['new_exp.stage5']}" />
 					</h:commandLink></li>
@@ -126,7 +126,7 @@
 					<li class="exp_nd">#{res['new_exp.stage5']}</li>
 				</h:panelGroup>		
 				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
-					<li class="exp"><h:commandLink action="goToStage6"
+					<li class="exp"><h:commandLink action="goToReaderStage6"
 								styleClass="exp_done">
 							<t:outputText value="#{res['new_exp.stage6']}" />
 					</h:commandLink></li>

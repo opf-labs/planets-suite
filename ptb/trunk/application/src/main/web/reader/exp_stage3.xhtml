@@ -40,30 +40,23 @@
 						</fieldset>
 						<fieldset>
 							<legend>#{res['reader_exp.stageThreeLegendTwo']}</legend>
-						  	<h:dataTable id="dataTable" var="bm" value="#{BenchmarkBeans}"
-			    	              rows="4"
-			        	          rowId="#{bm.ID}"
-			            	      cellpadding="2"
-			                	  cellspacing="0"
-				                  border="1">
-							        <h:column>
-									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>				            	
-						            </h:column>
-							        <h:column>
-			            				<f:facet name="header">#{res['exp_stage3.bgCriteria']}</f:facet>
-						            	#{bm.name}
-						        	</h:column>			        	
-							        <h:column>
-			            				<f:facet name="header">#{res['exp_stage3.bgExplanation']}</f:facet>
-						            	#{bm.definition} <br/>
-						            	<i>#{bm.description}</i>
-						        	</h:column>			        	
-
-							</h:dataTable>
+						  				<t:dataTable id="dataTable" var="bm"
+				value="#{ExperimentBean.benchmarkBeans}" preserveDataModel="false"
+				rows="4" rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
+				<t:column>
+					<f:facet name="header">#{res['exp_stage6.criteria']}</f:facet>
+				    #{bm.name}
+				</t:column>
+				<t:column>
+					<f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
+				    #{bm.definition} <br />
+					<i>#{bm.description}</i>
+				</t:column>
+			</t:dataTable>
 						</fieldset>
                                 		<p>
             <h:commandButton value="#{res['reader_exp.buttonStage3']}" 
-            action="#{Manager_Backing.loadReaderStage4}" disabled="#{ExperimentBean.currentStage >= 4}" />		
+            action="#{Manager_Backing.loadReaderStage4}" disabled="#{ExperimentBean.currentStage lt 4}" />		
 		</p>		
 					</h:form>
 				</div>
@@ -75,17 +68,17 @@
 		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
 		<div class="innertube">
 			<ul class="exp"><h:form>
-				<li class="exp"><h:commandLink action="goToStage1"
+				<li class="exp"><h:commandLink action="goToReaderStage1"
 							styleClass="exp_done">
 						<t:outputText value="#{res['new_exp.stage1']}" />
 				</h:commandLink></li>
-				<li class="exp"><h:commandLink action="goToStage2"
+				<li class="exp"><h:commandLink action="goToReaderStage2"
 							styleClass="exp_done">
 						<t:outputText value="#{res['new_exp.stage2']}" />
 				</h:commandLink></li>
 				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage3']}</a></li>
 				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 4}">
-					<li class="exp"><h:commandLink action="goToStage4"
+					<li class="exp"><h:commandLink action="goToReaderStage4"
 								styleClass="exp_done">
 							<t:outputText value="#{res['new_exp.stage4']}" />
 					</h:commandLink></li>
@@ -94,7 +87,7 @@
 					<li class="exp_nd">#{res['new_exp.stage4']}</li>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
-					<li class="exp"><h:commandLink action="goToStage5"
+					<li class="exp"><h:commandLink action="goToReaderStage5"
 								styleClass="exp_done">
 							<t:outputText value="#{res['new_exp.stage5']}" />
 					</h:commandLink></li>
@@ -103,7 +96,7 @@
 					<li class="exp_nd">#{res['new_exp.stage5']}</li>
 				</h:panelGroup>		
 				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
-					<li class="exp"><h:commandLink action="goToStage6"
+					<li class="exp"><h:commandLink action="goToReaderStage6"
 								styleClass="exp_done">
 							<t:outputText value="#{res['new_exp.stage6']}" />
 					</h:commandLink></li>
