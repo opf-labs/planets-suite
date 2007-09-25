@@ -102,6 +102,7 @@ public class ExperimentBean {
 					bmb.setSelected(true);
 		    		benchmarks.put(bm.getID(), bmb);
     			}
+    			this.outputData = eworkflow.getOutputData().toArray()[0].toString(); 
     		}
         } catch (Exception e) {
         	log.error("Exception when trying to create ExperimentBean from database object: "+e.toString());        	
