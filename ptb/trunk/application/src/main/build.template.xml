@@ -92,7 +92,7 @@
   </target>
 
   <target name="createejbjar" depends="compile">
-    <jar jarfile="build/testbedmodel.jar">
+    <jar jarfile="${build.dir}/testbedmodel.jar">
       <fileset dir="${build.classes.dir}">
       	  <!--include name="com/titan/domain/*.class"/>
       	  <include name="com/titan/travelagent/*.class"/-->
@@ -108,7 +108,7 @@
   </target>
 
  <target name="deploymodel" depends="createejbjar">
-	 <copy file="build/testbedmodel.jar" todir="${jboss.home}/server/default/deploy"/>
+ 	<copy file="${build.dir}/testbedmodel.jar" todir="${jboss.home}/server/default/deploy"/>
   </target>
   
   <target name="run.client" depends="deploymodel">
@@ -205,18 +205,26 @@
       </fileset>   
     </copy>
 
-
+  	<!-- delete items that are in JAR file -->
+  	<delete dir="${build.dir}/${appName}/WEB-INF/classes/eu/planets_project/tb/api"/>
+  	<delete dir="${build.dir}/${appName}/WEB-INF/classes/eu/planets_project/tb/impl"/>
 
     <jar jarfile="${build.dir}/${appName}.war" 
 	 basedir="${build.dir}/${appName}"/>
 
+  	<ear destfile="${build.dir}/${appName}.ear" appxml="META-INF/application.xml">
+	      <fileset dir="${build.dir}" includes="*.jar,*.war"/>
+	 </ear>
+  	
   </target>
   
   <target name="deploy" depends="deploymodel,dist">
-    <copy todir="${jboss.home}/server/default/deploy" 
-          file="${build.dir}/${appName}.war" overwrite="true"/>
+    <copy file="${build.dir}/${appName}.war" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
-
+  <target name="deployEar" depends="createejbjar,dist">
+  	<copy file="${build.dir}/${appName}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>	
+	</target>
+	
 </project>
 
