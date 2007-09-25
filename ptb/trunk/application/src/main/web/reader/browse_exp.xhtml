@@ -36,7 +36,7 @@
                  cellspacing="0"
                  border="1"
                  binding="#{ListExp_Backing.data}">
-        <h:column>
+        <t:column>
             <f:facet name="header">
                 <t:commandSortHeader columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
                     #{res['expList.colHeader.expName']}
@@ -45,43 +45,43 @@
             <h:commandLink action="#{ListExp_Backing.readerExperimentAction}">
 	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
     		</h:commandLink>
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
 	        <f:facet name="header">
 	          <t:commandSortHeader columnName="type" arrow="true" immediate="false" styleClass="tableHeaderSel">
 	    	      #{res['expList.colHeader.type']}
 				</t:commandSortHeader>
 			</f:facet>		      
             <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.startDate']}</f:facet>
             <h:outputText value="#{exp.startDate.time}" />
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>
             <h:outputText value="#{exp.experimentExecution.scheduledExecutionDate.time}" />
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.currentStage']}</f:facet>
             <h:outputText value="#{exp.currentPhasePointer}" />
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
             <h:outputText value="" />
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
             <f:facet name="header">#{res['expList.colHeader.inputOutputFiles']}</f:facet>
             <h:outputText value="#{exp.experimentSetup.basicProperties.experimentedObjectTypes}" />
-        </h:column>
-        <h:column>
+        </t:column>
+        <t:column>
             <f:facet name="header">
                 <t:commandSortHeader columnName="experimenter" arrow="true" immediate="false" styleClass="tableHeaderSel">
                     #{res['expList.colHeader.experimenterName']}
                 </t:commandSortHeader>
             </f:facet>
             <h:outputText value="#{exp.experimentSetup.basicProperties.experimenter}" />
-        </h:column>
+        </t:column>
     </t:dataTable>
     
       <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
