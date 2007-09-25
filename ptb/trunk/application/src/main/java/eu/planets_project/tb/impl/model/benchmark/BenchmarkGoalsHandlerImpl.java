@@ -182,7 +182,7 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 			//parse benchmark goals
 			while(itCategoryNames.hasNext())
 				this.parseBenchmarkGoals(itCategoryNames.next());
-			
+
 			BenchmarkFile.close();
 			
 		}catch(Exception e){
@@ -194,43 +194,52 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	
 	//e.g. get all items for the category "Text"
 	private void parseBenchmarkGoals(String sCategoryName){
-		 NodeList categories = root.getElementsByTagName(sCategoryName);
+		 NodeList categories = root.getElementsByTagName("category");
 		 
 		 for(int k=0;k<categories.getLength();k++){
 			 Node category = categories.item(k);
 			 NodeList items = category.getChildNodes();
-			 //now parse items
-			
-			 for(int i=0;i<items.getLength();i++){
-				 BenchmarkGoalImpl bmGoal = new BenchmarkGoalImpl();
-				 Node item = items.item(i);
+			 
+			 //now check if this is the category we're looking for
+			 NamedNodeMap catattributes = category.getAttributes();
+			 String sCategory = catattributes.getNamedItem("name").getNodeValue();
+			 if(sCategory.equals(sCategoryName)){   
+				 //now parse items
+				 for(int i=0;i<items.getLength();i++){
+					 BenchmarkGoalImpl bmGoal = new BenchmarkGoalImpl();
+					 Node item = items.item(i);
 
-				 if(item.getNodeName().equals("item") && item.getNodeType() == Node.ELEMENT_NODE){
-					
-					 //Now within an item (=benchmarkGoal)
-					 NamedNodeMap attributes = item.getAttributes();
-					 bmGoal.setCategory(sCategoryName);
-					 bmGoal.setID(attributes.getNamedItem("id").getNodeValue());
-					 bmGoal.setName(attributes.getNamedItem("name").getNodeValue());
-					 bmGoal.setType(attributes.getNamedItem("type").getNodeValue());
-					 bmGoal.setScale(attributes.getNamedItem("scale").getNodeValue());
-					 bmGoal.setVersion(attributes.getNamedItem("version").getNodeValue());
-					 //now get childNodesw: definition and description
-					 NodeList itemchilds =  item.getChildNodes();
-					 for(int j=0;j<itemchilds.getLength();j++){
-						if(itemchilds.item(j).getNodeType() == Node.ELEMENT_NODE){
-							if(itemchilds.item(j).getNodeName().equals("definition"))
-								bmGoal.setDefinition(itemchilds.item(j).getTextContent());
-							if(itemchilds.item(j).getNodeName().equals("description"))
-								bmGoal.setDescription(itemchilds.item(j).getTextContent());
-						}
-					 }
+					 if(item.getNodeName().equals("item") && item.getNodeType() == Node.ELEMENT_NODE){
+						 //Now within an item (=benchmarkGoal)
+						 NamedNodeMap attributes = item.getAttributes();
+						 bmGoal.setCategory(sCategoryName);
+						 bmGoal.setID(attributes.getNamedItem("id").getNodeValue());
+						 bmGoal.setType(attributes.getNamedItem("type").getNodeValue());
+						 bmGoal.setScale(attributes.getNamedItem("scale").getNodeValue());
+						 bmGoal.setVersion(attributes.getNamedItem("version").getNodeValue());
+						 //now get childNodesw: definition and description
+						 NodeList itemchilds =  item.getChildNodes();
+						 for(int j=0;j<itemchilds.getLength();j++){
+							 if(itemchilds.item(j).getNodeType() == Node.ELEMENT_NODE){
+								 if(itemchilds.item(j).getNodeName().equals("definition")){
+									 bmGoal.setDefinition(itemchilds.item(j).getTextContent());
+								 }
+								 if(itemchilds.item(j).getNodeName().equals("description")){
+									 bmGoal.setDescription(itemchilds.item(j).getTextContent());
+								 }
+								 if(itemchilds.item(j).getNodeName().equals("name")){
+									 bmGoal.setName(itemchilds.item(j).getTextContent());
+								 }
+							 }
+						 }
 					 
-					 if(this.hmBmGoals.containsKey(bmGoal.getID()))
-					 	this.hmBmGoals.remove(bmGoal.getID());
-					 this.hmBmGoals.put(bmGoal.getID(), bmGoal);
+						 if(this.hmBmGoals.containsKey(bmGoal.getID()))
+							 this.hmBmGoals.remove(bmGoal.getID());
+						 this.hmBmGoals.put(bmGoal.getID(), bmGoal);
+					 }
 				 }
-		      }
+			 }
+			 //End Check if correct category name
 		 }
 		 
 	}
@@ -242,8 +251,9 @@ public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 		for(int i=0;i<cathegories.getLength();i++){
 			Node category = cathegories.item(i);
 			//We only want to add Element Nodes and not Text Nodes
-			if(category.getNodeType() == Node.ELEMENT_NODE){
-				vRet.add(category.getNodeName());
+			if((category.getNodeType() == Node.ELEMENT_NODE)&&(category.getNodeName().equals("category"))){
+				NamedNodeMap attributes = category.getAttributes();
+				vRet.add(attributes.getNamedItem("name").getNodeValue());
 			}
 		}
 		return vRet;
