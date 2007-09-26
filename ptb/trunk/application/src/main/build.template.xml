@@ -212,7 +212,7 @@
     <jar jarfile="${build.dir}/${appName}.war" 
 	 basedir="${build.dir}/${appName}"/>
 
-  	<ear destfile="${build.dir}/${appName}.ear" appxml="META-INF/application.xml">
+  	<ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">
 	      <fileset dir="${build.dir}" includes="*.jar,*.war"/>
 	 </ear>
   	
