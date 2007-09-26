@@ -14,11 +14,31 @@
 	</ui:define>
 
 	<ui:define name="content">
+<script type="text/javascript">
+	<!--
+function visible(item)
+{
+	if(document.getElementById("id"+item).style.display=="none")
+        {
+		                          
+		document.getElementById("id"+item).style.display=""  ;
+                document.getElementById("image"+item).src="../graphics/minus.png" ;
+		document.getElementById("image"+item).alt="Collapse" ;
+        }
+        else
+        {
+                document.getElementById("id"+item).style.display="none";
+                document.getElementById("image"+item).src="../graphics/plus.png" ;
+		document.getElementById("image"+item).alt="Expand" ;
+        }
+}
+	//-->
 
+</script>
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
-		
+		<p><b>This page is not yet operational.  Below is a mockup of how this page may look in later versions.</b></p>
 		<p>You are currently viewing <b>all available data</b>.  There are <b>826,224</b> publicly available items and a further <b>1,206</b> items that can only be viewed by your institution.</p>
 		<p>Files and folders marked with a <span style="background-color: #FDB8B8;">red background</span> can only be viewed by your institution.</p>
 		
@@ -111,8 +131,7 @@
 		<h3 class="leftcol">Restrict Result Set</h3>
 		<div class="innertube">
 		<form method="get" action="restrict/">
-		<p class="leftcol">This option allows you to view only those files that match your specified criteria<br />
-		<input type="submit" value="Supply Criteria"/></p>
+		<p class="leftcol">The option to restrict the data based on supplied criteria will be added in a later version.</p>
 		
 		</form>
 		

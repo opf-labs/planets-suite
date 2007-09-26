@@ -21,7 +21,9 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
+                    <p><b>Note that the statistics are not yet implemented.  The information below is a mock-up.</b></p>
 <div class="box">
+    
 <h3 class="box">#{res['exp_stage5.statistics']}</h3>
 <p class="box"><b>#{res['exp_stage5.started']}</b> 10:01 BST on 19th July 2007<br />
 
@@ -50,6 +52,12 @@
 						action="#{Manager_Backing.proceedToEvaluation}" />
 					</p>
 	</h:panelGroup>
+        
+                           <p>(Temporary button just so I can get to the evaluation stage)
+						<h:commandButton value="#{res['exp_stage5.button.proceed']}"
+						action="#{Manager_Backing.proceedToEvaluation}" />
+					</p>
+        
 </h:form>
 		<p>&#160;</p>
 		<p>&#160;</p>

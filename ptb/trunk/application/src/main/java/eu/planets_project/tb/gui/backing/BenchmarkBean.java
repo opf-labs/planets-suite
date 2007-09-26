@@ -17,6 +17,7 @@ public class BenchmarkBean implements Serializable {
     String weight;
     String type = "";
     String typename;
+    String scale;
 		
     
     public BenchmarkBean() {
@@ -32,6 +33,7 @@ public class BenchmarkBean implements Serializable {
 		this.weight = String.valueOf(bm.getWeight());
                 this.type = bm.getType();
                 this.typename = this.assignTypename();
+                this.scale = "Very Good";
 	} 
 		
     public boolean getSelected() {
@@ -121,5 +123,13 @@ public class BenchmarkBean implements Serializable {
                     tn = "Boolean";
             return tn;
         }
+        
+	public String getScale() {            
+            return scale;
+	}
+
+	public void setScale(String scale) {
+		this.scale=scale;
+	}
 
 }

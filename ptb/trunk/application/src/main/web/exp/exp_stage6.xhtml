@@ -71,7 +71,17 @@
 				</t:column>
 				<t:column>
 					<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
-					<h:inputText value="#{bm.value}" />
+                                        <select>
+                                                <option>Very Good</option>
+                                                <option>Fairly Good</option>
+                                                <option>Not Good Enough</option>
+                                                <option>Poor</option>
+                                                <option>Very Poor</option>
+                                        </select>       
+				</t:column>
+				<t:column>
+					<f:facet name="header">#{res['exp_stage6.outcome']}</f:facet>
+                                            <h:inputText value="#{bm.value}" required="true" id="bg" /> <h:message for="bg" />         
 				</t:column>
 				<t:column>
 					<f:facet name="header">#{res['exp_stage6.requiredType']}</f:facet>
