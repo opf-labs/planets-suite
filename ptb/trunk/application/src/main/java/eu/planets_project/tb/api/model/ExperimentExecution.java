@@ -72,6 +72,6 @@ public interface ExperimentExecution extends ExperimentPhase{
 	 * @return
 	 */
 	public boolean isExecutionInProgress();
-	public void setExecutionInProgress();
+	public void setExecutionInProgress(boolean bInProgress);
 
 }

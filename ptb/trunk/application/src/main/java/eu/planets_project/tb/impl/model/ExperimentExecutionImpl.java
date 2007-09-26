@@ -148,9 +148,15 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#executeExperiment()
 	 */
 	public void executeExperiment() throws Exception{
-		this.setExecutionInProgress();
+		this.setExecutionInProgress(true);
 		WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
+		try{
 		wfinvoker.executeExperimentWorkflow(this.lExperimentIDRef);
+		this.setExecutionInProgress(false);
+		}catch(Exception e){
+			this.setExecutionInProgress(false);
+			throw new Exception(e);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -163,8 +169,8 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#setExecutionInProgress(boolean)
 	 */
-	public void setExecutionInProgress() {
-		this.bExecutionInProgress = true;
+	public void setExecutionInProgress(boolean bInProgress) {
+		this.bExecutionInProgress = bInProgress;
 	}
 
 
