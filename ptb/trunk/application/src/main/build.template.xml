@@ -4,7 +4,7 @@
 <!-- Testbed EJB deployer build file                                                       -->
 <!-- ======================================================================= -->
 
-<project name="Testbed EJB deployer" default="createejbar" basedir=".">
+<project name="Testbed EJB deployer" default="deployEar" basedir=".">
 
   <property environment="env"/>
   
@@ -156,6 +156,8 @@
   <target name="clean">
     <delete dir="${build.dir}"/>
     <delete file="${jboss.home}/server/default/testbedmodel.jar"/>
+ 	 <delete file="${jboss.home}/server/default/${appName}.ear"/>
+ 	 <delete file="${jboss.home}/server/default/${appName}.war"/>
   </target>
 
   <!-- =================================================================== -->
