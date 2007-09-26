@@ -65,5 +65,13 @@ public interface ExperimentExecution extends ExperimentPhase{
 	 * @return
 	 */
 	public Collection<Map.Entry<URI,URI>> getExecutionDataEntries();
+	
+	/**
+	 * As the ExperimentExecutionPhase may be in progress but the actual execution of workflofs has not been
+	 * triggered - this method can be used to verify if the execution has been started.
+	 * @return
+	 */
+	public boolean isExecutionInProgress();
+	public void setExecutionInProgress();
 
 }

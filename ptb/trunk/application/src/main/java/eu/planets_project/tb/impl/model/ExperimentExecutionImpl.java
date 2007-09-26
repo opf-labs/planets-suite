@@ -30,9 +30,11 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	 //a helper reference pointer, for retrieving the experiment in the phase
 	 private long lExperimentIDRef;
+	 private boolean bExecutionInProgress;
 	
 	public ExperimentExecutionImpl(){
 		lExperimentIDRef = -1;
+		bExecutionInProgress = false;
 		
 		setPhasePointer(PHASE_EXPERIMENTEXECUTION);
 	}
@@ -142,9 +144,27 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#executeExperiment()
+	 */
 	public void executeExperiment() throws Exception{
+		this.setExecutionInProgress();
 		WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
 		wfinvoker.executeExperimentWorkflow(this.lExperimentIDRef);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#isExecutionInProgress()
+	 */
+	public boolean isExecutionInProgress() {
+		return this.bExecutionInProgress;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#setExecutionInProgress(boolean)
+	 */
+	public void setExecutionInProgress() {
+		this.bExecutionInProgress = true;
 	}
 
 
