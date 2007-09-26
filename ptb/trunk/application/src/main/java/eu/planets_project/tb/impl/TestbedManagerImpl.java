@@ -225,7 +225,7 @@ public class TestbedManagerImpl
 		try{
 			Context jndiContext = getInitialContext();
 			ExperimentPersistencyRemote dao_r = (ExperimentPersistencyRemote) PortableRemoteObject.narrow(
-					jndiContext.lookup("ExperimentPersistencyImpl/remote"), ExperimentPersistencyRemote.class);
+					jndiContext.lookup("testbed/ExperimentPersistencyImpl/remote"), ExperimentPersistencyRemote.class);
 			return dao_r;
 		}catch (NamingException e) {
 			//TODO integrate message into logging mechanism
