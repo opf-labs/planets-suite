@@ -24,10 +24,10 @@
 	<p>You have #{ListExp_Backing.numExperimentsOfUser} experiments listed in the testbed.  Experiments 1 to 10 are listed below.</p>
 		
 	<h:form>
-     <t:dataTable id="dataTable"
+     <t:dataTable id="dataTable_myExp"
                   var="exp"
                   value="#{ListExp_Backing.experimentsOfUser}"
-                  preserveDataModel="true"
+                  preserveDataModel="false"
                   rows="10"
                   rowId="#{exp.experimentSetup.basicProperties.experimentName}"
                   sortColumn="#{ListExp_Backing.sort}"
@@ -36,7 +36,7 @@
                   cellpadding="2"
                   cellspacing="0"
                   border="1"
-                  binding="#{ListExp_Backing.data}">
+                  binding="#{ListExp_Backing.myExp_data}">
         <t:column>
             <f:facet name="header">
 	         <t:commandSortHeader id="sortName" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
@@ -89,7 +89,7 @@
 
     <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
         <t:dataScroller id="scroll_1"
-                        for="dataTable"
+                        for="dataTable_myExp"
                         fastStep="10"
                         pageCountVar="pageCount"
                         pageIndexVar="pageIndex"

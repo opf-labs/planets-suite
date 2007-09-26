@@ -4,6 +4,7 @@ package eu.planets_project.tb.gui.backing;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
@@ -95,6 +96,7 @@ public class Manager {
 	    //ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
         exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
         testbedMan.updateExperiment(exp);
+        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
         return "success";
     }
     
@@ -103,21 +105,18 @@ public class Manager {
         	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
             ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         	Experiment exp = testbedMan.getExperiment(expBean.getID());
-        	
-                exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
-                exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
-                testbedMan.updateExperiment(exp);
-                
-        	testbedMan.updateExperiment(exp);        	
+            exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
+            exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
+            testbedMan.updateExperiment(exp);
+            expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTAPPROVAL);  
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("BenchmarkBeans"); 
     		return "goToStage4";
     	} else
     		return null;    	
     }
     
-    
     public String updateBenchmarksAction(){
-   	    // create bm-goals
-    	
+   	    // create bm-goals    	
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID());
@@ -148,11 +147,8 @@ public class Manager {
     	expRes.setIntensity(Integer.parseInt(expBean.getIntensity()));
     	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutputFiles()));
     	exp.getExperimentSetup().setExperimentResources(expRes);
-    	exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
-    	exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
-    	testbedMan.updateExperiment(exp);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("BenchmarkBeans");   
-        return "goToStage4";
+    	testbedMan.updateExperiment(exp); 
+        return "success";
     }
     
     
@@ -223,7 +219,7 @@ public class Manager {
 	        exp.setState(Experiment.STATE_IN_PROGRESS);
 	        testbedMan.updateExperiment(exp);
 	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");   
-	        	        
+	        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);	        	        
 	    	return "goToStage3";
         } catch (Exception e) {
         	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
@@ -319,28 +315,57 @@ public class Manager {
         //exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
         //exp.setState(Experiment.STATE_IN_PROGRESS);
         testbedMan.updateExperiment(exp);
-        
+        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);        
     	return "goToStage5";
     }
-    public String proceedToEvaluation(){
+    public String executeExperiment(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Experiment exp = testbedMan.getExperiment(expBean.getID());    	
-    	//exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
-    	//exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
+    	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
     	// running experiment: dummy invoker should be called here
     	try {
     		exp.getExperimentExecution().executeExperiment();
         	String inputData = expBean.getEworkflowInputData();
         	URI outputURI = exp.getExperimentExecution().getExecutionOutputData(new URI(inputData));
         	expBean.setEworkflowOutputData(outputURI.toString());    		
-	  	  	testbedMan.updateExperiment(exp);
-  	  		return "goToStage6";
+	  	  	//testbedMan.updateExperiment(exp);
+	  	  	if (exp.getExperimentExecution().isExecuted()) {
+	  	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+	  	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
+	  	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
+	  	  	}
+	  	  	return null;
     	} catch (Exception e) {
     		log.error("Error when executing Experiment: " + e.toString());
     		System.out.println("Error when executing Experiment: " + e.toString());
     		return null;
     	}   	
+    }
+    
+    public String proceedToEvaluation() {
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
+  	  	if (exp.getExperimentExecution().isExecuted()) {
+  	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+  	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
+  	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
+    		return "goToStage6";
+  	  	} else
+    		return null;
+    }
+    
+    public boolean getExperimentExecutionRunning() {
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
+    	if (exp.getExperimentExecution().isExecutionInProgress())
+    		return true;
+    	else {
+      	  	//if (exp.getCurrentPhase().getPhaseName().equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION))
+      	  	//	expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
+    		return false;
+    	}
     }
 
     public String saveEvaluation(){

@@ -27,6 +27,12 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 
 public class ExperimentBean {
 	
+	public static final int PHASE_EXPERIMENTSETUP_1   = 1;
+	public static final int PHASE_EXPERIMENTSETUP_2   = 2;
+	public static final int PHASE_EXPERIMENTSETUP_3   = 3;
+	public static final int PHASE_EXPERIMENTAPPROVAL   = 4;
+	public static final int PHASE_EXPERIMENTEXECUTION  = 5;
+	public static final int PHASE_EXPERIMENTEVALUATION = 6;
 	private Log log = LogFactory.getLog(ExperimentBean.class);
 	private long id;
 	private boolean eformality = true;
@@ -50,9 +56,9 @@ public class ExperimentBean {
     private String nrOutputFiles="1";
     private String inputData;
     private String outputData;
-    private int currStage =1;
+    private int currStage =ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
-    
+    private boolean executed = false;
         
     public ExperimentBean() {
     	/*benchmarks = new HashMap<String,BenchmarkBean>();
@@ -129,14 +135,16 @@ public class ExperimentBean {
     	if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTSETUP)) {
     		this.currStage = exp.getExperimentSetup().getSubStage();
     	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTAPPROVAL)) {
-    		this.currStage = 4;
+    		this.currStage = ExperimentBean.PHASE_EXPERIMENTAPPROVAL;
     	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEXECUTION)) {
-    		this.currStage = 5;
+    		this.currStage = ExperimentBean.PHASE_EXPERIMENTEXECUTION;
     	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION)) {
-    		this.currStage = 6;
+    		this.currStage = ExperimentBean.PHASE_EXPERIMENTEVALUATION;
     	}
-        if(currStage>3)
+        if(currStage>ExperimentBean.PHASE_EXPERIMENTSETUP_3)
             approved=true;
+        if (currStage==ExperimentBean.PHASE_EXPERIMENTEVALUATION)
+        	executed=true;
     }
     
     public Map<String,BenchmarkBean> getBenchmarks() {
@@ -350,5 +358,13 @@ public class ExperimentBean {
     
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+
+    public boolean getExecuted() {
+        return executed;
+    }
+    
+    public void setExecuted(boolean executed) {
+        this.executed = executed;
     }
 }

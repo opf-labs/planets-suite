@@ -33,8 +33,9 @@ public class ListExp extends SortableList {
 	private List<Experiment> currExps;
 	private String column = "name";
 	private boolean ascending = true;
-	private UIData data = null;
-	
+	private UIData myExp_data = null;
+	private UIData allExp_data = null;	
+
 	public ListExp()
 	{
 		super("name");
@@ -135,7 +136,7 @@ public class ListExp extends SortableList {
 	    public String editExperimentAction()
 	    {
 	    
-	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+	      Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 	      FacesContext ctx = FacesContext.getCurrentInstance();
 
@@ -156,7 +157,7 @@ public class ListExp extends SortableList {
 	    public String readerExperimentAction()
 	    {
 	    
-	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+	      Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 	      FacesContext ctx = FacesContext.getCurrentInstance();
 
@@ -176,7 +177,7 @@ public class ListExp extends SortableList {
             
         public String selectExperimentForDeletion()
         {
-	      Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+	      Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 	      FacesContext ctx = FacesContext.getCurrentInstance();
 
@@ -210,14 +211,26 @@ public class ListExp extends SortableList {
 	    
 //	  Property getters - setters
 
-	    public void setData(UIData data)
+	    public void setMyExp_data(UIData data)
 	    {
-	      this.data = data;
+	      this.myExp_data = data;
 	    }
 
 
-	    public UIData getData()
+	    public UIData getMyExp_data()
 	    {
-	      return data;
+	      return myExp_data;
 	    }
+
+	    public void setAllExp_data(UIData data)
+	    {
+	      this.allExp_data = data;
+	    }
+
+
+	    public UIData getAllExp_data()
+	    {
+	      return allExp_data;
+	    }
+
 }

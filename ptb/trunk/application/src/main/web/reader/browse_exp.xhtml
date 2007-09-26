@@ -23,10 +23,10 @@
 <div class="innertubemain">
 
 <h:form>
-    <t:dataTable id="data"
+    <t:dataTable id="dataTable_allExp"
                  var="exp"
                  value="#{ListExp_Backing.allExperiments}"
-                 preserveDataModel="true"
+                 preserveDataModel="false"
                  rows="10"
                  rowId="#{exp.experimentSetup.basicProperties.experimentName}"
                  sortColumn="#{ListExp_Backing.sort}"
@@ -35,10 +35,10 @@
                  cellpadding="2"
                  cellspacing="0"
                  border="1"
-                 binding="#{ListExp_Backing.data}">
+                 binding="#{ListExp_Backing.allExp_data}">
         <t:column>
             <f:facet name="header">
-                <t:commandSortHeader columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                <t:commandSortHeader id="sortHeader_name" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
@@ -48,7 +48,7 @@
         </t:column>
         <t:column>
 	        <f:facet name="header">
-	          <t:commandSortHeader columnName="type" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	          <t:commandSortHeader id="sortHeader_type" columnName="type" arrow="true" immediate="false" styleClass="tableHeaderSel">
 	    	      #{res['expList.colHeader.type']}
 				</t:commandSortHeader>
 			</f:facet>		      
@@ -64,7 +64,7 @@
         </t:column>
         <t:column>
             <f:facet name="header">#{res['expList.colHeader.currentStage']}</f:facet>
-            <h:outputText value="#{exp.currentPhasePointer}" />
+            <h:outputText value="#{exp.currentPhase.phaseName}" />
         </t:column>
         <t:column>
             <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
@@ -76,7 +76,7 @@
         </t:column>
         <t:column>
             <f:facet name="header">
-                <t:commandSortHeader columnName="experimenter" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                <t:commandSortHeader id="sortHeader_experimenter" columnName="experimenter" arrow="true" immediate="false" styleClass="tableHeaderSel">
                     #{res['expList.colHeader.experimenterName']}
                 </t:commandSortHeader>
             </f:facet>
@@ -86,7 +86,7 @@
     
       <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
         <t:dataScroller id="scroll_1"
-                        for="data"
+                        for="dataTable_allExp"
                         fastStep="10"
                         pageCountVar="pageCount"
                         pageIndexVar="pageIndex"

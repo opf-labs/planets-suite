@@ -31,10 +31,25 @@
 <b>#{res['exp_stage5.actualCompletion']}</b> 21:15 on 19th July 2007</p>
 </div>
 <h:form>
-                                        <p>
-						<h:commandButton value="#{res['exp_stage5.button']}"
+	<h:panelGroup rendered="#{ExperimentBean.currentStage==5}">
+                   <p>
+						<h:commandButton value="#{res['exp_stage5.button.run']}"
+						action="#{Manager_Backing.executeExperiment}" rendered="#{not Manager_Backing.experimentExecutionRunning}" />
+						<h:panelGroup rendered="#{Manager_Backing.experimentExecutionRunning}" >
+						<p>
+							Experiment is being executed ... please wait.
+							<h:commandButton value="Refresh"
+							action="#{Manager_Backing.proceedToEvaluation}" />
+						</p>
+						</h:panelGroup>
+					</p>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{ExperimentBean.currentStage==6}">
+                   <p>
+						<h:commandButton value="#{res['exp_stage5.button.proceed']}"
 						action="#{Manager_Backing.proceedToEvaluation}" />
 					</p>
+	</h:panelGroup>
 </h:form>
 		<p>&#160;</p>
 		<p>&#160;</p>
