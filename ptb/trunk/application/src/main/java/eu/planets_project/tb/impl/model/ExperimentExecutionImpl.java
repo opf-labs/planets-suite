@@ -31,10 +31,12 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	 //a helper reference pointer, for retrieving the experiment in the phase
 	 private long lExperimentIDRef;
 	 private boolean bExecutionInProgress;
+	 private boolean bExecuted;
 	
 	public ExperimentExecutionImpl(){
 		lExperimentIDRef = -1;
 		bExecutionInProgress = false;
+		bExecuted = false;
 		
 		setPhasePointer(PHASE_EXPERIMENTEXECUTION);
 	}
@@ -151,10 +153,12 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 		this.setExecutionInProgress(true);
 		WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
 		try{
-		wfinvoker.executeExperimentWorkflow(this.lExperimentIDRef);
-		this.setExecutionInProgress(false);
+			wfinvoker.executeExperimentWorkflow(this.lExperimentIDRef);
+			this.setExecutionInProgress(false);
+			this.setExecuted(true);
 		}catch(Exception e){
 			this.setExecutionInProgress(false);
+			this.setExecuted(false);
 			throw new Exception(e);
 		}
 	}
@@ -169,8 +173,22 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#setExecutionInProgress(boolean)
 	 */
-	public void setExecutionInProgress(boolean bInProgress) {
+	private void setExecutionInProgress(boolean bInProgress) {
 		this.bExecutionInProgress = bInProgress;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#isExecuted()
+	 */
+	public boolean isExecuted() {
+		return this.bExecuted;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#setExecuted(boolean)
+	 */
+	private void setExecuted(boolean executed) {
+		this.bExecuted = executed;
 	}
 
 

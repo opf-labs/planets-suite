@@ -33,7 +33,7 @@ public class CommentBrowserTest extends TestCase{
 			jndiContext = getInitialContext();
 
 			dao_r = (CommentBrowserRemote) PortableRemoteObject.narrow(
-				jndiContext.lookup("CommentBrowser/remote"), CommentBrowserRemote.class);
+				jndiContext.lookup("testbed/CommentBrowser/remote"), CommentBrowserRemote.class);
 
 			//create two test Comments, note their ID and persist them
 			//new root comment with Comment(long lExperimentID, String sExperimentPhaseID)

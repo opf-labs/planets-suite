@@ -76,13 +76,9 @@ public class WorkflowInvokerImpl implements
 							this.copyFile(fInput, fOutput);
 							//get the URI to the outputfile
 							URI outputURI = this.getOutputFileURI();
-						
 							//now store results back to experiment
 							expWorkflow.setOutputData(inputURI, outputURI);
-							//setExperimentExecutionPhase as executed
-							exp.getExperimentExecution().setState(ExperimentExecution.STATE_COMPLETED);
-							exp.getExperimentEvaluation().setState(ExperimentEvaluation.STATE_IN_PROGRESS);
-							
+
 							//Finally update the Experiment
 							manager.updateExperiment(exp);
 						}

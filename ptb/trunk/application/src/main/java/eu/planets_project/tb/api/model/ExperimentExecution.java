@@ -72,6 +72,13 @@ public interface ExperimentExecution extends ExperimentPhase{
 	 * @return
 	 */
 	public boolean isExecutionInProgress();
-	public void setExecutionInProgress(boolean bInProgress);
+	//public void setExecutionInProgress(boolean bInProgress);
+	
+	/**
+	 * Indicates if an experiment workflow has been executed
+	 * @return
+	 */
+	public boolean isExecuted();
+	//public void setExecuted(boolean bExecuted);
 
 }

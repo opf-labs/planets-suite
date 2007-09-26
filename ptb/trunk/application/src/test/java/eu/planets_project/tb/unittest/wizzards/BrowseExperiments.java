@@ -21,7 +21,7 @@ public class BrowseExperiments extends TestCase{
 		try {
 			jndiContext = getInitialContext();
 			dao_r = (ExperimentPersistencyRemote) PortableRemoteObject.narrow(
-				jndiContext.lookup("ExperimentPersistency/remote"), ExperimentPersistencyRemote.class);
+				jndiContext.lookup("testbed/ExperimentPersistency/remote"), ExperimentPersistencyRemote.class);
 			//create two test Experiments, note their ID and persist them
 			manager = TestbedManagerImpl.getInstance();
 		} catch (NamingException e) {
