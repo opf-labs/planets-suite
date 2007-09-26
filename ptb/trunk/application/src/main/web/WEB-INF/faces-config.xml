@@ -244,6 +244,11 @@
       <to-view-id>/reader/exp_stage1.xhtml</to-view-id>
      <redirect />
     </navigation-case>
+    <navigation-case>
+      <from-outcome>editExp</from-outcome>
+      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+     <redirect />
+    </navigation-case>
   </navigation-rule>
 
   <navigation-rule>

@@ -3,7 +3,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
@@ -17,7 +18,6 @@
 </ui:define>
 
   <ui:define name="content">
-
 <div id="mainwrapper">
 <div id="maincol">
 <div class="innertubemain">
@@ -42,9 +42,12 @@
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
-            <h:commandLink action="#{ListExp_Backing.readerExperimentAction}">
-	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-    		</h:commandLink>
+                <h:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
+                    <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+                </h:commandLink>
+                <h:commandLink action="#{ListExp_Backing.readerExperimentAction}" rendered="#{UserBean.userid != exp.experimentSetup.basicProperties.experimenter}">
+                    <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+                </h:commandLink>
         </t:column>
         <t:column>
 	        <f:facet name="header">

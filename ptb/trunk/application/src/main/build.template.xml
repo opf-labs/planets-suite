@@ -22,8 +22,8 @@
    <property name="client.config" value="${basedir}/../test/client-config"/>
    
    <!--To configure-->
-   <property name="jboss.home" value="C:/DATA/Implementation/ifr_server"/>
-   <property name="junit.lib" value="C:/Programme/Eclipse_JEE/eclipse/plugins/org.junit4_4.3.1"/>
+   <property name="jboss.home" value="C:/ifr_server"/>
+   <property name="junit.lib" value="C:/Program Files/eclipse/plugins/org.junit4_4.3.1"/>
 
   <!-- Build classpath -->
   <path id="classpath">

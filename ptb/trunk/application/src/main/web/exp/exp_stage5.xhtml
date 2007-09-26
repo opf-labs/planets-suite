@@ -91,7 +91,14 @@
 							styleClass="exp_done">
 						<t:outputText value="#{res['new_exp.stage4']}" />
 				</h:commandLink></li>
-				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage5']}</a></li>
+                                
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
+                                    <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage5']}</a></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
+					<li class="exp_sel"><a href="#" class="exp_done">#{res['new_exp.stage5']}</a></li>
+				</h:panelGroup>	
+                               
 				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
 					<li class="exp"><h:commandLink action="goToStage6"
 								styleClass="exp_done">

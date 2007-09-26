@@ -15,6 +15,8 @@ public class BenchmarkBean implements Serializable {
     boolean selected = false;
     String value;
     String weight;
+    String type = "";
+    String typename;
 		
     
     public BenchmarkBean() {
@@ -28,7 +30,8 @@ public class BenchmarkBean implements Serializable {
 		this.description = bm.getDescription();	
 		this.value = bm.getValue();
 		this.weight = String.valueOf(bm.getWeight());
-
+                this.type = bm.getType();
+                this.typename = this.assignTypename();
 	} 
 		
     public boolean getSelected() {
@@ -87,5 +90,36 @@ public class BenchmarkBean implements Serializable {
 		this.description = description;
 	}
 
+	public String getType() {            
+            return type;
+	}
+
+	public void setType(String type) {
+		this.type=type;
+	}
+        
+        public String getTypename() {
+         return typename;
+        }
+        
+        public String assignTypename(){
+            
+            String tn="";
+                        if(Integer.class.getCanonicalName().equals(this.type))
+                    tn = "Integer";
+            //check if the value input matches teh supported type: java.lang.Long
+            if(Long.class.getCanonicalName().equals(this.type))
+                    tn = "Long";
+            //check if the value input matches teh supported type: java.lang.Float
+            if(Float.class.getCanonicalName().equals(this.type))
+                    tn = "Float";
+            //check if the value input matches teh supported type: java.lang.String
+            if(String.class.getCanonicalName().equals(this.type))
+                    tn = "String";
+            //check if the value input matches teh supported type: java.lang.Boolean
+            if(Boolean.class.getCanonicalName().equals(this.type))
+                    tn = "Boolean";
+            return tn;
+        }
 
 }

@@ -17,10 +17,12 @@ import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
+import javax.faces.component.html.HtmlInputTextarea;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ import org.apache.commons.logging.LogFactory;
 public class Manager {
     
 	private Log log = LogFactory.getLog(Manager.class);
+        private HtmlInputTextarea ereport;
     
     public Manager() {
     }
@@ -157,6 +160,14 @@ public class Manager {
 	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
 	    	Experiment exp = testbedMan.getExperiment(expBean.getID());
+                
+                ExperimentReportImpl rep = new ExperimentReportImpl();
+                rep.setBodyText(ereport.getValue().toString());
+                rep.setHeader("Report Header");
+                
+                //save the evaluation report
+                exp.getExperimentEvaluation().setExperimentReport(rep);
+                
 	    	// create Goal objects from Beans
 	    	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
 	    	Iterator iter = expBean.getBenchmarkBeans().iterator();
@@ -400,5 +411,13 @@ public class Manager {
     
     public String finishReaderStage6() {
         return "goToBrowseExperiments";
+    }
+
+    public HtmlInputTextarea getEreport() {
+        return ereport;
+    }
+    
+    public void setEreport(HtmlInputTextarea ereport) {
+        this.ereport = ereport;
     }
 }

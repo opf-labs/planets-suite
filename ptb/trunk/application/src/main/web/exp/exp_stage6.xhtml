@@ -73,11 +73,15 @@
 					<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
 					<h:inputText value="#{bm.value}" />
 				</t:column>
+				<t:column>
+					<f:facet name="header">#{res['exp_stage6.requiredType']}</f:facet>
+					<h:outputText value="#{bm.type}" />
+				</t:column>
 			</t:dataTable>
 
 
 			<h2 class="main">#{res['exp_stage6.headingReport']}</h2>
-			<p><textarea rows="15" cols="100"></textarea></p>
+			<p><h:inputTextarea rows="20" cols="100" required="false" id="ereport" value="#{Manager_Backing.ereport}" /></p>
 
 			<p><h:commandButton value="#{res['exp_stage6.button']}"
 				action="#{Manager_Backing.updateEvaluationAction}" /></p>
@@ -110,7 +114,13 @@
 					styleClass="exp_done">
 					<t:outputText value="#{res['new_exp.stage5']}" />
 				</h:commandLink></li>
-				<li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
+                                    <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
+					<li class="exp_sel"><a href="#" class="exp_done">#{res['new_exp.stage6']}</a></li>
+				</h:panelGroup>		
+				
 			</h:form>
 		</ul>
 		</div>

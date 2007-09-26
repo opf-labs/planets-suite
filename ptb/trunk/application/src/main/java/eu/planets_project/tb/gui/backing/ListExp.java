@@ -175,6 +175,19 @@ public class ListExp extends SortableList {
 	      return "viewExp";
 	    }
             
+//            public void chooseView()
+//            {
+//                UserBean managedUserBean = (UserBean)JSFUtil.getManagedObject("UserBean");  
+//                Experiment selectedExperiment = (Experiment) this.getData().getRowData();
+//                
+//                String selectedExperimenter = selectedExperiment.getExperimentSetup().getBasicProperties().getExperimenter();
+//                
+//                if(selectedExperiment.equals(managedUserBean.getUserid()))
+//                    this.editExperimentAction();
+//                else
+//                    this.readerExperimentAction();
+//            }
+            
         public String selectExperimentForDeletion()
         {
 	      Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
