@@ -13,7 +13,9 @@ public class BenchmarkBean implements Serializable {
     String description;
     String id;
     boolean selected = false;
-    String value;
+    String srcValue;
+    String trgValue;
+    String evalValue;
     String weight;
     String type = "";
     String typename;
@@ -29,7 +31,9 @@ public class BenchmarkBean implements Serializable {
 		this.name = bm.getName();
 		this.definition = bm.getDefinition();
 		this.description = bm.getDescription();	
-		this.value = bm.getValue();
+		this.srcValue = bm.getSourceValue();
+		this.trgValue = bm.getTargetValue();
+		this.evalValue = bm.getEvaluationValue();		
 		this.weight = String.valueOf(bm.getWeight());
                 this.type = bm.getType();
                 this.typename = this.assignTypename();
@@ -43,14 +47,31 @@ public class BenchmarkBean implements Serializable {
       this.selected = selected;
     }
  
-    public String getValue() {
-    	return value;
+    public String getSourceValue() {
+    	return srcValue;
     }
     
-    public void setValue(String value) {
-    	this.value = value;
+    public void setSourceValue(String value) {
+    	this.srcValue = value;
     }
 
+    public String getTargetValue() {
+    	return trgValue;
+    }
+    
+    public void setTargetValue(String value) {
+    	this.trgValue = value;
+    }
+
+    public String getEvaluationValue() {
+    	return evalValue;
+    }
+    
+    public void setEvaluationValue(String value) {
+    	this.evalValue = value;
+    }
+
+    
 	public String getWeight() {
 		return this.weight;
 	}

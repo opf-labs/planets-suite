@@ -4,6 +4,7 @@ package eu.planets_project.tb.gui.backing;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
@@ -15,6 +16,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
+import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
@@ -155,10 +157,24 @@ public class Manager {
     		if (bmb.getSelected()) {
 	    		// method to get a new instance of BenchmarkGoal
     			BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
-	    		bmg.setValue(bmb.getValue());
-	    		if (bmb.getWeight()!=null)
-	    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
-	    		bmgoals.add(bmg);
+	    		try {
+	    			bmg.setSourceValue(bmb.getSourceValue());
+		    		bmg.setTargetValue(bmb.getTargetValue());
+		    		bmg.setEvaluationValue(bmb.getEvaluationValue());
+		    		if (bmb.getWeight()!=null)
+		    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
+		    		bmgoals.add(bmg);
+	    		} catch (InvalidInputException e) {
+	    	        // create message for duplicate name error message
+	    	        FacesMessage fmsg = new FacesMessage();
+	    	        fmsg.setDetail("Values for Benchmarkgoal are not valid!"+e.toString());
+	    	        fmsg.setSummary("Values for Benchmarkgoal are not valid!");
+		    		// add message-tag for duplicate name
+			        FacesContext ctx = FacesContext.getCurrentInstance();
+			        ctx.addMessage("bg",fmsg);
+	    			log.error(e.toString());
+		    		return "failure";
+	    		}
 	    		// add to experimentbean benchmarks
 	    		expBean.addBenchmarkBean(bmb);
     		} else {
@@ -198,10 +214,24 @@ public class Manager {
 	    		if (bmb.getSelected()) {
 		    		// method to get a new instance of BenchmarkGoal
 	    			BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
-		    		bmg.setValue(bmb.getValue());
+		    	try {
+	    			bmg.setSourceValue(bmb.getSourceValue());
+		    		bmg.setTargetValue(bmb.getTargetValue());
+		    		bmg.setEvaluationValue(bmb.getEvaluationValue());
 		    		if (bmb.getWeight()!=null)
 		    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
 		    		bmgoals.add(bmg);
+	    		} catch (InvalidInputException e) {
+	    	        // create message for duplicate name error message
+	    	        FacesMessage fmsg = new FacesMessage();
+	    	        fmsg.setDetail("Values for Benchmarkgoal are not valid!"+e.toString());
+	    	        fmsg.setSummary("Values for Benchmarkgoal are not valid!");
+		    		// add message-tag for duplicate name
+			        FacesContext ctx = FacesContext.getCurrentInstance();
+			        ctx.addMessage("bg",fmsg);
+	    			log.error(e.toString());
+		    		return "failure";
+	    		}
 	    		}
 	    	}
 	    	Map<URI,List<BenchmarkGoal>> bhm = new HashMap<URI,List<BenchmarkGoal>>();
@@ -315,6 +345,17 @@ public class Manager {
     		wfMap.put(wf.getName(),String.valueOf(wf.getEntityID()));
     	}
     	return wfMap;
+    }
+    
+    public Map<String,String> getAvailableEvaluationValues() {
+       	TreeMap<String,String> map = new TreeMap<String,String>();
+    	ExperimentEvaluation ev = new ExperimentEvaluationImpl();
+    	Iterator iter = ev.getAllAcceptedEvaluationValues().iterator();
+    	while (iter.hasNext()) {
+    		String v = (String)iter.next();
+    		map.put(v, v);
+    	}       	
+    	return map;
     }
     
     public String getRetrieveBenchmarkBeans() {

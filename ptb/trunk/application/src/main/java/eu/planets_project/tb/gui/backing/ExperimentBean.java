@@ -103,7 +103,9 @@ public class ExperimentBean {
     			while (iter.hasNext()) {
 		    		BenchmarkGoal bm = (BenchmarkGoal)iter.next();
 		    		BenchmarkBean bmb = new BenchmarkBean(bm);
-					bmb.setValue(bm.getValue());
+					bmb.setSourceValue(bm.getSourceValue());
+					bmb.setTargetValue(bm.getTargetValue());
+					bmb.setEvaluationValue(bm.getEvaluationValue());
 					bmb.setWeight(String.valueOf(bm.getWeight()));
 					bmb.setSelected(true);
 		    		benchmarks.put(bm.getID(), bmb);
