@@ -13,6 +13,7 @@ import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
@@ -22,6 +23,8 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlInputTextarea;
 
 import java.net.URI;
@@ -76,9 +79,19 @@ public class Manager {
             long expId = testbedMan.registerExperiment(exp);            
             expBean.setID(expId);
         }
-    	exp = testbedMan.getExperiment(expBean.getID());
-    	props = exp.getExperimentSetup().getBasicProperties();          
-        props.setExperimentName(expBean.getEname());        
+	    exp = testbedMan.getExperiment(expBean.getID());
+        props = exp.getExperimentSetup().getBasicProperties();          
+	    try {
+	        props.setExperimentName(expBean.getEname());        
+	    } catch (InvalidInputException e) {
+    		// get message-tag for name and display according error-message
+	        FacesContext ctx = FacesContext.getCurrentInstance();
+	        FacesMessage fmsg = new FacesMessage();
+	        fmsg.setDetail("Experiment name already in use! - Please specify a unique name.");
+	        fmsg.setSummary("Duplicate name: Experiment names must be unique!");
+	        ctx.addMessage("ename",fmsg);
+    		return "failure";
+    	}
         //set the experiment information
         props.setSummary(expBean.getEsummary());
         props.setConsiderations(expBean.getEconsiderations());
@@ -87,7 +100,7 @@ public class Manager {
         props.setScope(expBean.getEscope());
         props.setContact(expBean.getEcontactname(),expBean.getEcontactemail(),expBean.getEcontacttel(),expBean.getEcontactaddress());       
         props.setExperimentFormal(expBean.getFormality());
-              
+
         // Workaround
         // update in cached lists
         ListExp listExp_Backing = (ListExp)JSFUtil.getManagedObject("ListExp_Backing");
@@ -101,7 +114,7 @@ public class Manager {
         testbedMan.updateExperiment(exp);
         expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
         return "success";
-    }
+	}
     
     public String updateBenchmarksAndSubmitAction() {
     	if (this.updateBenchmarksAction() == "success") {

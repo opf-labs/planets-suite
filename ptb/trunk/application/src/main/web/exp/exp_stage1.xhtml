@@ -64,7 +64,7 @@
 		    	<h:outputLabel value="#{res['new_exp.expName']}" for="ename" ><span style='color:red;font-weight:bold;'> *</span></h:outputLabel>
 	        	<h:inputText  required="true" id="ename" value="#{ExperimentBean.ename}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
 	        	<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipName']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-        		<h:message for="ename" errorClass="ValidateError"/>
+        		<h:messages for="ename" errorClass="ValidateError"/>
 			</p>
 	<div class="clear"></div>
 	
