@@ -7,6 +7,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
@@ -58,7 +59,11 @@ public class BenchmarkGoalHandlerTest extends TestCase{
 		
 		//Test1:
 		assertEquals(-1, goal1.getWeight());
-		goal1.setWeight(BenchmarkGoal.WEIGHT_MEDIUM);
+		try {
+			goal1.setWeight(BenchmarkGoal.WEIGHT_MEDIUM);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(BenchmarkGoal.WEIGHT_MEDIUM,goal1.getWeight());
 		//check if a new object was returned
 		BenchmarkGoal goal2 = handler.getBenchmarkGoal(IDs.firstElement());

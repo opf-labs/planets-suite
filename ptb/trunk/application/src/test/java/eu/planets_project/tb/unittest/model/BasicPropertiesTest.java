@@ -274,6 +274,7 @@ public class BasicPropertiesTest extends TestCase{
 		ExperimentSetup expSetup = new ExperimentSetupImpl();
 		Experiment exp1 = new ExperimentImpl();
 		
+	//Test1:
 		long expID = manager.registerExperiment(exp1);
 		exp1 = manager.getExperiment(expID);
 
@@ -294,6 +295,15 @@ public class BasicPropertiesTest extends TestCase{
 		
 		assertEquals(false, props.checkExperimentNameUnique(sTestname));
 		assertEquals(false, manager.isExperimentNameUnique(sTestname));
+		
+	//Test2:
+		try {
+			//although experimentname already exists, if the name stays the same no exception should be thrown
+			props.setExperimentName(sTestname);
+			assertEquals(true,true);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		
 		//clean up the mess
 		manager.removeExperiment(exp1.getEntityID());

@@ -1,23 +1,444 @@
 <?xml version="1.0" encoding="Shift_JIS"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by Kantoorautomatisering (Nationaal Archief) -->
 <BenchmarkGoals xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="BenchmarkGoalsSchema.xsd">
+	<!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="BenchmarkGoalsSchema.xsd"-->
 	<category name="Text">
-		<item id="nop1"  type="java.lang.Integer" scale="1..n" version="1.0">
-			<name>number of pages</name>
-			<definition>identifies the number of pages</definition>
-			<description>Count the number of pages including the front-page</description>
+		<item id="text-gen1" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of levels</name>
+			<definition>Defines the number of subdivision levels beneath the highest level in a text.</definition>
+			<description>If the text is e.g. divided in parts, which each have chapters, which are divided in paragraphs, the number of levels would be 3. For most emails, the number of levels will be 0 if they are not subdivided. Makes it possible to decide whether the structure has been preserved / characterised. "structure"</description>
 		</item>
-		<item id="nop2"  type="java.lang.Boolean" scale="true/false" version="1.0">
-			<name>page margings</name>
-			<definition>unused space left and right of the document next to the text</definition>
-			<description>Tries to provide a subjective feeling if the page margings have changed</description>
+		<item id="text-gen2" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of level 1 subdivisions</name>
+			<definition>Identifies the number of highest level parts the text is divided in.</definition>
+			<description>IIf the text has a table of contents, a preface and 3 chapters, this number could be 5. Makes it possible to decide whether the structure has been preserved / characterised, and e.g. no chapters have been lost. "structure"</description>
+		</item>
+		<item id="text-gen3" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of footnotes</name>
+			<definition>Indicates the number of footnotes in the text.</definition>
+			<description>Count the number of footnotes in the entire text. "structure"</description>
+		</item>
+		<item id="text-gen4" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of footnote references (indicators).</name>
+			<definition>Indicates the number of footnote references (indicators).</definition>
+			<description>Count the number of footnote references (indicators) in the entire text. "structure"</description>
+		</item>
+		<item id="text-gen5" type="java.lang.Boolean" scale="yes/no" version="1.0">
+			<name>Use of headers</name>
+			<definition>Indicates whether or not headers are used in the text.</definition>
+			<description>Yes if (one or more) headers are used, no if not. "structure"</description>
+		</item>
+		<item id="text-gen6" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of different headers</name>
+			<definition>Indicates the number of different headers used in the text.</definition>
+			<description>Count the number of different headers, e.g. each chapter could have a different header. "structure"</description>
+		</item>
+		<item id="text-gen7" type="java.lang.Boolean" scale="yes/no" version="1.0">
+			<name>Use of footers</name>
+			<definition>Indicates whether or not footers are used in the text.</definition>
+			<description>Yes if (one or more) footers are used, no if not. "structure"</description>
+		</item>
+		<item id="text-gen8" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of different footers</name>
+			<definition>Indicates the number of different footers used in the text.</definition>
+			<description>Count the number of different footers e.g. each chapter could have a different footer. "structure"</description>
+		</item>
+		<item id="text-gen9" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of tables</name>
+			<definition>Indicates the number of tables used in the text.</definition>
+			<description>Count the number of tables. "structure"</description>
+		</item>
+		<item id="text-gen10" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of table captions</name>
+			<definition>Indicates the number of table captions.</definition>
+			<description>Count the number of table captions. "structure"</description>
+		</item>
+		<item id="text-gen11" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of images</name>
+			<definition>Indicates the number of image captions used in the text.</definition>
+			<description>Count the number of image captions. "structure"</description>
+		</item>
+		<item id="text-gen12" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of image captions</name>
+			<definition>Indicates the number of images used in the text.</definition>
+			<description>Count the number of images. "structure"</description>
+		</item>
+		<item id="text-gen13" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of graphics</name>
+			<definition>Indicates the number of graphics used in the text.</definition>
+			<description>Count the number of graphics. "structure"</description>
+		</item>
+		<item id="text-gen14" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of graphics captions</name>
+			<definition>Indicates the number of graphic captions used in the text.</definition>
+			<description>Count the number of graphic captions. "structure"</description>
+		</item>
+		<item id="text-gen15" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of formulas</name>
+			<definition>Indicates the number of formulas used in the text.</definition>
+			<description>Count the number of formulas. "structure"</description>
+		</item>
+		<item id="text-gen16" type="java.lang.Boolean" scale="yes/no" version="1.0">
+			<name>Use of signatures</name>
+			<definition>Indicates whether or not the text contains signatures.</definition>
+			<description>Yes if text contains one ore more signatures, no otherwise. "structure"</description>
+		</item>
+		<item id="text-gen17" type="java.lang.Boolean" scale="yes/no" version="1.0">
+			<name>Use of signatures</name>
+			<definition>Indicates whether or not the text contains any signatures.</definition>
+			<description>Yes if text contains one ore more signatures, no otherwise. Can be in any form, e.g. digital signature ir watermark-like. "structure"</description>
+		</item>
+		<item id="text-gen18" type="java.lang.Boolean" scale="yes/no" version="1.0">
+			<name>Use of watermarks / background images</name>
+			<definition>Indicates whether or not the text contains a watermark or background image.</definition>
+			<description>Yes if text contains (one ore more) watermarks or background images.  "structure"</description>
+		</item>
+		<item id="text-gen19" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of working hyperlinks</name>
+			<definition>Indicates the number of working hyperlinks used in the text.</definition>
+			<description>Count the number of working hyperlinks. "behaviour"</description>
+		</item>
+		<item id="text-gen20" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of pages</name>
+			<definition>Defines the number of pages.</definition>
+			<description>Count the number of pages, including the front page. "appearance"</description>
+		</item>
+		<item id="text-gen21" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of lines</name>
+			<definition>Defines the number of lines.</definition>
+			<description>Count the number of lines.  "appearance"</description>
+		</item>
+		<item id="text-gen22" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of characters</name>
+			<definition>Defines the number of characters.</definition>
+			<description>Count the number of characters. "appearance"</description>
+		</item>
+		<item id="text-page1" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Page margin-top</name>
+			<definition>Unused space at the top of the document above the text.</definition>
+			<description>"appearance"</description>
+		</item>
+		<item id="text-page2" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Page margin-right</name>
+			<definition>Unused space at the right of the document above the text.</definition>
+			<description>"appearance"</description>
+		</item>
+		<item id="text-page3" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Page margin-bottom</name>
+			<definition>Unused space at the bottom of the document above the text.</definition>
+			<description>"appearance"</description>
+		</item>
+		<item id="text-page4" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Page margin-left</name>
+			<definition>Unused space at the left of the document above the text.</definition>
+			<description>"appearance"</description>
+		</item>
+		<item id="text-page5" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Page height</name>
+			<definition>Total height of the page.</definition>
+			<description>"appearance"</description>
+		</item>
+		<item id="text-page6" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Page width</name>
+			<definition>Total width of the page.</definition>
+			<description>"appearance"</description>
+		</item>
+		<item id="text-page7" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Number of columns</name>
+			<definition>Identifies the number of columns.</definition>
+			<description>Count the number of columns on a page No columns means the number is 1. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-page8" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Columns spacing</name>
+			<definition>Identifies the white space between two columns. </definition>
+			<description>Define the unused space between two columns. If there are several values for this property, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-page9" type="java.lang.String" scale="proportional / absolute" version="1.0">
+			<name>Letter / word spacing</name>
+			<definition>Identifies the letter / word spacing of plain text. </definition>
+			<description>Indicate if the white space of a line is evenly distributed between the letters or words. If there are several values for this property, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-par1" type="java.lang.Integer" scale="px. / pt/ / cm. / inch" version="1.0">
+			<name>Paragraph font size</name>
+			<definition>Font size of plain text.</definition>
+			<description>The font size of plain text. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-par2" type="java.lang.String" scale="category" version="1.0">
+			<name>Paragraph font style</name>
+			<definition>Font style of plain text.</definition>
+			<description>The font style of plain text. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text31" type="java.lang.String" scale="string" version="1.0">
+			<name>Paragraph font colour</name>
+			<definition>Identifies the font colour of plain text.</definition>
+			<description>The font colour of plain text. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-par3" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Paragraph line spacing </name>
+			<definition>Identifies the line spacing of plain text.</definition>
+			<description>The spacing between two lines of plain text. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-par4" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Paragraph spacing-top </name>
+			<definition>Identifies the space from top of paragraph to element above.</definition>
+			<description>Space from top of paragraph to element above. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-par5" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Paragraph spacing-right </name>
+			<definition>Identifies the space from right of paragraph to element at the right.</definition>
+			<description>Space from right of paragraph to element at the right. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-par6" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Paragraph spacing-bottom</name>
+			<definition>Identifies the space from bottom of paragraph to element below. </definition>
+			<description>Space from right of paragraph to element below. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-par7" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Paragraph spacing-left</name>
+			<definition>Identifies the space from left of paragraph to element at the left. </definition>
+			<description>Space from left of paragraph to element at the left. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-par8" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Paragraph indentation</name>
+			<definition>Identifies the space from page margin to left of first line of paragraph.</definition>
+			<description>Space from the page margin to the left of the first line of the paragraph. If there are several instances of "plain text" with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-head1" type="java.lang.Integer" scale="px. / pt/ / cm. / inch" version="1.0">
+			<name>Header font size</name>
+			<definition>Font size of headers.</definition>
+			<description>The font size of headers. If there are several instances of headers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-head2" type="java.lang.String" scale="category" version="1.0">
+			<name>Header font style</name>
+			<definition>Font style of headers.</definition>
+			<description>The font style of headers. If there are several instances of headers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-head3" type="java.lang.String" scale="string" version="1.0">
+			<name>Header font colour</name>
+			<definition>Identifies the font colour of headers.</definition>
+			<description>The font colour of headers. If there are several instances of headers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-head4" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Header line spacing </name>
+			<definition>Identifies the line spacing of headers.</definition>
+			<description>The spacing between two lines of headers. If there are several instances of headers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-head5" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Header spacing-top </name>
+			<definition>Identifies the space from top of header to element above.</definition>
+			<description>Space from top of header to element above. If there are several instances of headers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-head6" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Header spacing-right </name>
+			<definition>Identifies the space from right of header to element at the right.</definition>
+			<description>Space from right of header to element at the right. If there are several instances of headers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-head7" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Header spacing-bottom</name>
+			<definition>Identifies the space from bottom of header to element below. </definition>
+			<description>Space from right of header to element below. If there are several instances of headers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-head8" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Header spacing-left</name>
+			<definition>Identifies the space from left of Header to element at the left. </definition>
+			<description>Space from left of header to element at the left. If there are several instances of headers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-foot1" type="java.lang.Integer" scale="px. / pt/ / cm. / inch" version="1.0">
+			<name>Footer font size</name>
+			<definition>Font size of footers.</definition>
+			<description>The font size of footers. If there are several instances of footers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-foot2" type="java.lang.String" scale="category" version="1.0">
+			<name>Footer font style</name>
+			<definition>Font style of footers.</definition>
+			<description>The font style of footers. If there are several instances of footers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-foot3" type="java.lang.String" scale="string" version="1.0">
+			<name>Footer font colour</name>
+			<definition>Identifies the font colour of footers.</definition>
+			<description>The font colour of footers. If there are several instances of footers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-foot4" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Footer line spacing </name>
+			<definition>Identifies the line spacing of footers.</definition>
+			<description>The spacing between two lines of footers. If there are several instances of footers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-foot5" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Footer spacing-top </name>
+			<definition>Identifies the space from top of footer to element above.</definition>
+			<description>Space from top of footer to element above. If there are several instances of footers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-foot6" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Footer spacing-right </name>
+			<definition>Identifies the space from right of footer to element at the right.</definition>
+			<description>Space from right of footer to element at the right. If there are several instances of footers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-foot7" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Footer spacing-bottom</name>
+			<definition>Identifies the space from bottom of footer to element below. </definition>
+			<description>Space from right of footer to element below. If there are several instances of footers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-foot8" type="java.lang.Float" scale="cm. / inch." version="1.0">
+			<name>Footer spacing-left</name>
+			<definition>Identifies the space from left of Footer to element at the left. </definition>
+			<description>Space from left of footer to element at the left. If there are several instances of footers with different values, choose one to focus on. (for first version) "appearance"</description>
+		</item>
+		<item id="text-gen30" type="java.lang.Integer" scale="1..10" version="1.0">
+			<name>Human readibility</name>
+			<definition>Indicates how well the text is readable.</definition>
+			<description>Grade how well the text is readable. 1 is very bad, 10 is excellent.</description>
+		</item>
+		<item id="text-gen31" type="java.lang.Float" scale="0..100" version="1.0">
+			<name>Machine readability</name>
+			<definition>Indicates which percentage of the characters of the text are machine readable.</definition>
+			<description>Define this value with a reference application, e.g. an OCR-application. 0% means nothing readable, 100% means every character readable.</description>
 		</item>
 	</category>
 	<category name="Image">
-		<item  id="cod1"  type="java.lang.Integer" scale="bits/pixel" version="2.0">
-			<name>color depth</name>			
+		<item id="img-gen1" type="java.lang.Float" scale="cm. / inch" version="1.0">
+			<name>Image height</name>
+			<definition>Identifies the height of the image.</definition>
+			<description>Size from top to bottom. "appearance"</description>
+		</item>
+		<item id="img-gen2" type="java.lang.Float" scale="cm. / inch" version="1.0">
+			<name>Image width</name>
+			<definition>Identifies the width of the image.</definition>
+			<description>Size from left to right. "appearance"</description>
+		</item>
+		<item id="img-gen3" type="java.lang.Integer" scale="bits/pixel" version="1.0">
+			<name>Color depth</name>
 			<definition>Describes the number of bits used to represent the color of a single pixe</definition>
-			<description>Test Description</description>
+			<description>Can not be determined by visual inspection (you cannot simply see it) but only by a tool.</description>
+		</item>
+		<item id="img-gen4" type="java.lang.Boolean" scale="yes / no" version="1.0">
+			<name>Colour space defined</name>
+			<definition>Indicates wthether or not the colour space has been defined. </definition>
+			<description>The colour space defines how an application interpretes the value of a colour. Can not be determined by visual inspection (you cannot simply see it) but only by a tool.</description>
+		</item>
+		<item id="img-gen5" type="java.lang.Float" scale="cm. / inch" version="1.0">
+			<name>Size of smallest detail</name>
+			<definition>Defines the smallest detail that can be distinguished in an image.</definition>
+			<description>Can be resolution in a .jpeg or .bmp image, but different for a vector image.</description>
+		</item>
+	</category>
+	<category name="Audio">
+		<item id="audio-gen1" type="lava.lang.Long" scale="Bit per sample" version="1.0">
+			<name>Audio resolution</name>
+			<definition>Describes the band-with</definition>
+			<description>Describes the band-with</description>
+		</item>
+		<item id="audio-gen2" type="java.lang.Boolean" scale="p.m." version="1.0">
+			<name>Tracking</name>
+			<definition>p.m.</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="audio-gen3" type="java.lang.Integer" scale="p.m." version="1.0">
+			<name>Level</name>
+			<definition>p.m.</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="audio-gen4" type="java.lang.Float" scale="p.m." version="1.0">
+			<name>Dynamic</name>
+			<definition>Defines the difference between the loudest and the softest sounds.</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="audio-gen5" type="java.lang.Boolean" scale="yes / no" version="1.0">
+			<name>Spectral components</name>
+			<definition>??</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="audio-gen6" type="java.lang.Boolean" scale="yes / no" version="1.0">
+			<name>Contains phasing</name>
+			<definition>??</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="audio-gen7" type="java.lang.Float" scale="0..1" version="1.0">
+			<name>Signal-to-noise-ratio</name>
+			<definition>p.m.</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="audio-gen8" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Drop-Out</name>
+			<definition>Short periods where the sound is interrupted</definition>
+			<description>Count or estimate of the avarage number of drop-outs per minute in the audio record.</description>
+		</item>
+		<item id="audio-gen9" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Sample Rate</name>
+			<definition>Describes how often per second the data source is touched.</definition>
+			<description>Cannot de defined manually, tool needed.</description>
+		</item>
+		<item id="audio-gen10" type="java.lang.Boolean" scale="yes / no" version="1.0">
+			<name>Water marking</name>
+			<definition>Describes if the objects contains a watermark</definition>
+			<description>Cannot de defined manually, tool needed.</description>
+		</item>
+		<item id="audio-gen11" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Multitrack</name>
+			<definition>Descibes the number of channels used in recording the sound.</definition>
+			<description>Give the number of tracks. Cannot be heard, should be known in advance.</description>
+		</item>
+		<item id="audio-gen12" type="java.lang.Boolean" scale="yes / no" version="1.0">
+			<name>Speed variance</name>
+			<definition>Describes whether the speed gets sometimes a little faster or a little slower.</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="audio-gen13" type="java.lang.String" scale="Mono / Stereo" version="1.0">
+			<name>Mono/Stereo</name>
+			<definition>Describes whether the recording is in mono or in stereo</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="audio-gen14" type="java.lang.Float" scale="Seconds" version="1.0">
+			<name>Duration</name>
+			<definition>Length of recording</definition>
+			<description>Length of recording, induding "silence" before and after sound.</description>
+		</item>
+	</category>
+	<category name="Video">
+		<item id="video-gen1" type="lava.lang.Long" scale="1..n" version="1.0">
+			<name>Resolution</name>
+			<definition>The granularity of the picture</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="video-gen2" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Picture Drop-Out</name>
+			<definition>Small errors in the picture stream, e.g. a short black screen.</definition>
+			<description>Count or estimate of the avarage number of drop-outs per minute in the video record.</description>
+		</item>
+		<item id="video-gen3" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Sound Drop-Out</name>
+			<definition>Small errors in the sound, such as no sound for a short term</definition>
+			<description>Count or estimate of the avarage number of drop-outs per minute in the video record.</description>
+		</item>
+		<item id="video-gen4" type="java.lang.Float" scale="0..n" version="1.0">
+			<name>Picture Aspect Ratio</name>
+			<definition>Relation of width to length of a picture</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="video-gen5" type="java.lang.Boolean" scale="yes / no" version="1.0">
+			<name>High Definition</name>
+			<definition>Defines if the video conforms to the High Definition standard.</definition>
+			<description>The amount of information transmitted to the screen. High Definition is the upcoming standard for television sets.</description>
+		</item>
+		<item id="video-gen6" type="java.lang.Integer" scale="1..n" version="1.0">
+			<name>Frame rate</name>
+			<definition>The speed of change between the pictures</definition>
+			<description>In frames per second</description>
+		</item>
+		<item id="video-gen7" type="java.lang.Boolean" scale="yes / no" version="1.0">
+			<name>Stereo</name>
+			<definition>Describes whether files are opened with one or two sound channels</definition>
+			<description>yes for stereo, no for mono.</description>
+		</item>
+		<item id="video-gen8" type="java.lang.String" scale="string" version="1.0">
+			<name>Signal representation</name>
+			<definition>Indicates the colour representation scheme, such as RGB</definition>
+			<description>p.m.</description>
+		</item>
+		<item id="video-gen10" type="java.lang.Boolean" scale="yes / no" version="1.0">
+			<name>Picture-audio synchronisation</name>
+			<definition>Indicates whether sound and the adjusted pictures are shown at exactly the same time.</definition>
+			<description>p.m.</description>
 		</item>
 	</category>
 </BenchmarkGoals>
-

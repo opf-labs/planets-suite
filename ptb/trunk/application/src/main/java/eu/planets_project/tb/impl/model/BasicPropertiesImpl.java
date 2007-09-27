@@ -226,11 +226,17 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 */
 	public void setExperimentName(String name) throws InvalidInputException{
 		//it's only allowed to set a unique experimentName
-		if(this.checkExperimentNameUnique(name)){
-			this.sExpName = name;
+		if((this.sExpName!=null)&&(this.sExpName.equals(name))){
+			//required by the frontend, as when editing an experiment the same existing name is used
 		}
 		else{
-			throw new InvalidInputException("ExperimentName "+name+" not unique");
+			//standard procedure for new experiments
+			if(this.checkExperimentNameUnique(name)){
+				this.sExpName = name;
+			}
+			else{
+				throw new InvalidInputException("ExperimentName "+name+" not unique");
+			}
 		}
 	}
 

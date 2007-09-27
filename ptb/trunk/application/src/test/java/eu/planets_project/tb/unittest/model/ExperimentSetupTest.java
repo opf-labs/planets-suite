@@ -10,6 +10,7 @@ import java.net.URI;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.naming.Context;
@@ -171,35 +172,37 @@ public class ExperimentSetupTest extends TestCase{
 	
 	//Tests for the underlying Entity Bean's methods setter and getters
 	public void testSetExperimentSetup(){
-
 		ExperimentImpl exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
 		//use the private helper method to setup the ExperimentSetup
-		ExperimentSetupImpl expSetup = createEnvironmentExperimentSetup(1);
+		Random generator = new Random();
+		int r = generator.nextInt();
+		String sExperimentName = "ExperimentName"+r;
+		ExperimentSetupImpl expSetup = createEnvironmentExperimentSetup(r);
 		//Test1: add ExperimentSetup
 			exp_find1.setExperimentSetup(expSetup);
 			manager.updateExperiment(exp_find1);
-
+			
 			exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
 			assertNotNull(exp_find1.getExperimentSetup());
 			ExperimentSetupImpl expSetup_find1 = (ExperimentSetupImpl)exp_find1.getExperimentSetup();
 			//must also have an ID assigned through @OneToOne(cascade={CascadeType.ALL})
 			assertTrue(expSetup_find1.getEntityID()>0);
-		
+			
 		//Test2: modify ExperimentSetup
 			exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
-			expSetup = createEnvironmentExperimentSetup(2);
+			r = generator.nextInt();
+			sExperimentName = "ExperimentName"+r;
+			expSetup = createEnvironmentExperimentSetup(r);
 			exp_find1.setExperimentSetup(expSetup);
 			manager.updateExperiment(exp_find1);
 			
 			exp_find1 = (ExperimentImpl)manager.getExperiment(expID1);
 			assertNotNull(exp_find1.getExperimentSetup());
 			expSetup_find1 = (ExperimentSetupImpl)exp_find1.getExperimentSetup();
-			assertEquals("ExperimentName2", exp_find1.getExperimentSetup().getBasicProperties().getExperimentName());
+			assertEquals(sExperimentName, exp_find1.getExperimentSetup().getBasicProperties().getExperimentName());
 			assertTrue(expSetup_find1.getEntityID()>0);
-			
 			assertEquals(1,expSetup_find1.getAllAddedBenchmarkGoals().size());
-			assertEquals("nop1",expSetup_find1.getBenchmarkGoal("nop1").getID());
-			
+			assertEquals("text-gen1",expSetup_find1.getBenchmarkGoal("text-gen1").getID());
 	
 	}
 
@@ -220,7 +223,11 @@ public class ExperimentSetupTest extends TestCase{
 		
 		//Test2:
 		BenchmarkGoal goal2 = handler.getBenchmarkGoal(IDs.firstElement());
-		goal2.setWeight(BenchmarkGoal.WEIGHT_MEDIUM);
+		try {
+			goal2.setWeight(BenchmarkGoal.WEIGHT_MEDIUM);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(-1,exp_find2.getExperimentSetup().getBenchmarkGoal(IDs.firstElement()).getWeight());
 	}
 	
@@ -253,7 +260,7 @@ public class ExperimentSetupTest extends TestCase{
 		
 		//BenchmarkObjectives
 		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
-		BenchmarkGoalImpl goal = (BenchmarkGoalImpl)handler.getBenchmarkGoal("nop1");
+		BenchmarkGoalImpl goal = (BenchmarkGoalImpl)handler.getBenchmarkGoal("text-gen1");
 		expSetup.addBenchmarkGoal(goal);
 		
 		return expSetup;

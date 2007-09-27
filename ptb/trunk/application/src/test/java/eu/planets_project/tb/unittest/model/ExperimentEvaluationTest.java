@@ -46,7 +46,7 @@ public class ExperimentEvaluationTest extends TestCase{
 	}
 	
 	
-	public void testEvaluateExperimentBenchmarkGoals(){
+	public void testEvaluateExperimentInputBenchmarkGoals(){
 		
 		Experiment expTest = manager.getExperiment(this.expID1);
 		ExperimentSetup expSetup = expTest.getExperimentSetup();
@@ -71,7 +71,8 @@ public class ExperimentEvaluationTest extends TestCase{
 		assertNotNull(goal1);
 		//now check the actual unittests
 		try {
-			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+			//just evaluating source value - no output value
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20",null);
 			//an exception should be thrown
 			assertEquals(true,false);
 		} catch (InvalidInputException e) {
@@ -84,14 +85,79 @@ public class ExperimentEvaluationTest extends TestCase{
 		manager.updateExperiment(expTest);
 
 		try {
-			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+			//just evaluating source value - no output value
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20",null);
 		} catch (InvalidInputException e) {
 			assertEquals(true,false);
 		}
 		
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
 		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
-		assertEquals("20", goalFound.getValue());
+		assertEquals("20", goalFound.getSourceValue());
+		
+	//Test4: test evaluate source and target BMGoals
+
+		try {
+			//just evaluating source value - no output value
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "30","25");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
+		
+		goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
+		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
+		assertEquals("30", goalFound.getSourceValue());
+		assertEquals("25", goalFound.getTargetValue());
+	}
+	
+	public void testEvaluateExperimentOutputBenchmarkGoals(){
+		
+		Experiment expTest = manager.getExperiment(this.expID1);
+		ExperimentSetup expSetup = expTest.getExperimentSetup();
+		ExperimentEvaluation expEval = expTest.getExperimentEvaluation();
+		BenchmarkGoalsHandler handler = BenchmarkGoalsHandlerImpl.getInstance();
+		
+	//Test1:
+		assertEquals(0,expEval.getEvaluatedExperimentBenchmarkGoals().size());
+		
+	//Test2: exp must not be evaluated as the benchmark is not contained in experimentSetup
+		Vector<String> sGoalIDs = (Vector<String>)handler.getAllBenchmarkGoalIDs();
+		//now find a benchmark that accepts input value Integer
+		Iterator<String> itGoalIDs = sGoalIDs.iterator();
+		BenchmarkGoal goal1 = null;
+		while(itGoalIDs.hasNext()){
+			BenchmarkGoal goalTest = handler.getBenchmarkGoal(itGoalIDs.next());
+			if(goalTest.getType().equals("java.lang.Integer")){
+				goal1 = goalTest;
+			}
+		}
+		//check if there is a benchmarkGoal with type Integer else cannot perform checks
+		assertNotNull(goal1);
+		//now check the actual unittests
+		try {
+			//just evaluating source value - no output value
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), null, "20");
+			//an exception should be thrown
+			assertEquals(true,false);
+		} catch (InvalidInputException e) {
+			assertEquals(true,true);
+		}
+		assertEquals(0,expEval.getEvaluatedExperimentBenchmarkGoals().size());
+		assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
+	//Test3: Example how it should run
+		expSetup.addBenchmarkGoal(goal1);
+		manager.updateExperiment(expTest);
+
+		try {
+			//just evaluating source value - no output value
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(),null, "20");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
+		
+		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
+		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
+		assertEquals("20", goalFound.getTargetValue());
 	}
 	
 	
@@ -123,7 +189,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			assertNotNull(goal1);
 			//now check the actual unittests
 			try {
-				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
+				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20",null);
 				//an exception should be thrown
 				assertEquals(true,false);
 			} catch (InvalidInputException e) {
@@ -137,7 +203,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			manager.updateExperiment(expFound);
 			
 			try {
-				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
+				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20",null);
 			} catch (InvalidInputException e) {
 				assertEquals(true,false);
 			}
@@ -145,7 +211,22 @@ public class ExperimentEvaluationTest extends TestCase{
 			//I'm working with the File's Benchmark Goals and not the Experiment's 
 			assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
 			assertEquals(1,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
-			assertEquals("20", goalFound.getValue());
+			assertEquals("20", goalFound.getSourceValue());
+			assertEquals("", goalFound.getTargetValue());
+
+			
+		//Test4: 
+			try {
+				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), null,"30");
+			} catch (InvalidInputException e) {
+				assertEquals(true,false);
+			}
+			goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
+			//I'm working with the File's Benchmark Goals and not the Experiment's 
+			assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
+			assertEquals(1,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
+			assertEquals("20", goalFound.getSourceValue());
+			assertEquals("30", goalFound.getTargetValue());
 			
 		}
 		catch(URISyntaxException e){
@@ -180,25 +261,45 @@ public class ExperimentEvaluationTest extends TestCase{
 		assertNotNull(goal1);
 		//now check the actual unittests
 		BenchmarkGoal goal_test = ((BenchmarkGoalImpl)goal1).clone();
-		goal_test.setValue("100");
+		try {
+			goal_test.setSourceValue("100");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		List<BenchmarkGoal> list_test = new Vector<BenchmarkGoal>();
 		list_test.add(goal_test);
 
-		
 	//Test3: Example how it should run
 		expSetup.addBenchmarkGoal(goal1);
 		manager.updateExperiment(expTest);
 		try {
 			expEval.setEvaluatedExperimentBenchmarkGoals(list_test);
 		} catch (InvalidInputException e) {
+			e.printStackTrace();
 			assertEquals(true,false);
 		}
 			
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
 		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
-		assertEquals("100", goalFound.getValue());
+		assertEquals("100", goalFound.getSourceValue());
+		
+	//Test4: 
+		goal_test = ((BenchmarkGoalImpl)goal1).clone();
+		try {
+			goal_test.setSourceValue("150");
+			goal_test.setTargetValue("200");
+			list_test = new Vector<BenchmarkGoal>();
+			list_test.add(goal_test);
+			expEval.setEvaluatedExperimentBenchmarkGoals(list_test);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
+		
+		goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
+		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
+		assertEquals("150", goalFound.getSourceValue());
+		assertEquals("200", goalFound.getTargetValue());
 	}
-	
 	
 	
 	public void testSetEvaluateFileBenchmarkGoals(){
@@ -229,7 +330,11 @@ public class ExperimentEvaluationTest extends TestCase{
 			assertNotNull(goal1);
 			//now check the actual unittests
 			BenchmarkGoal goal_test = ((BenchmarkGoalImpl)goal1).clone();
-			goal_test.setValue("100");
+			try {
+				goal_test.setSourceValue("100");
+			} catch (InvalidInputException e) {
+				assertEquals(true,false);
+			}
 			List<BenchmarkGoal> list_test = new Vector<BenchmarkGoal>();
 			list_test.add(goal_test);
 			HashMap<URI, List<BenchmarkGoal>> hmFileGoals = new HashMap<URI, List<BenchmarkGoal>>();
@@ -247,7 +352,27 @@ public class ExperimentEvaluationTest extends TestCase{
 			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
 			//I'm working with the File's Benchmark Goals and not the Experiment's 
 			assertEquals(1,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
-			assertEquals("100", goalFound.getValue());
+			assertEquals("100", goalFound.getSourceValue());
+			assertEquals("",goalFound.getTargetValue());
+			
+		//Test3: 
+			try {
+				goal_test.setSourceValue("-1");
+				goal_test.setTargetValue("20");
+				list_test = new Vector<BenchmarkGoal>();
+				list_test.add(goal_test);
+				hmFileGoals = new HashMap<URI, List<BenchmarkGoal>>();
+				hmFileGoals.put(testFile, list_test);
+				
+				expEval.setEvaluatedFileBenchmarkGoals(hmFileGoals);
+			} catch (InvalidInputException e) {
+				assertEquals(true,false);
+			}
+			goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
+			//I'm working with the File's Benchmark Goals and not the Experiment's 
+			assertEquals(1,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
+			assertEquals("-1", goalFound.getSourceValue());
+			assertEquals("20",goalFound.getTargetValue());
 			
 		}
 		catch(URISyntaxException e){
@@ -256,7 +381,6 @@ public class ExperimentEvaluationTest extends TestCase{
 		}
 		
 	}
-	
 	
 	
 	public void testRelatioshipSetupEvaluation(){
@@ -291,7 +415,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			manager.updateExperiment(expFound);
 			
 			try {
-				expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+				expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20", "30");
 			} catch (InvalidInputException e) {
 				assertEquals(true,false);
 			}
@@ -305,22 +429,23 @@ public class ExperimentEvaluationTest extends TestCase{
 				while(itEvalBMGoals.hasNext()){
 					BenchmarkGoal evalGoal = itEvalBMGoals.next();
 					if(evalGoal.getID().equals(goal1.getID())){
-						assertEquals("20", evalGoal.getValue());
+						assertEquals("20", evalGoal.getSourceValue());
+						assertEquals("30", evalGoal.getTargetValue());
 					}
 				}
 			}
 			
-			assertEquals("20", expFound.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(goal1.getID()).getValue());
+			assertEquals("20", expFound.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(goal1.getID()).getSourceValue());
 			
 			manager.updateExperiment(expFound);
 			Experiment expFound2 = manager.getExperiment(this.expID1);
 
 			//Test2:
 			BenchmarkGoal goalTest = expFound2.getExperimentSetup().getBenchmarkGoal(goal1.getID());
-			assertEquals("", goalTest.getValue());
+			assertEquals("", goalTest.getSourceValue());
 			
 			BenchmarkGoal goalTest2 = expFound2.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(goal1.getID());
-			assertEquals("20", goalTest2.getValue());
+			assertEquals("20", goalTest2.getSourceValue());
 		}
 		catch(URISyntaxException e){
 			System.out.println("Error in ExperimentEvaluationTest: "+e.toString());

@@ -82,19 +82,46 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
     }
     
 	
+
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateExperimentBenchmarkGoal(eu.planets_project.tb.api.model.benchmark.BenchmarkGoal, java.lang.String)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateExperimentBenchmarkGoal(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID,
-			String value) throws InvalidInputException{
+			String sSourceValue, String sTargetValue) throws InvalidInputException{
 		
 		if(this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID)){
 			//get the input BenchmarkGoal
 			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.getInputBenchmarkGoals().get(addedBenchmarkGoalID)).clone();
+			
+			String oldSourceValue="";
+			String oldTargetValue="";
 			if(this.experimentBenchmarkGoals.keySet().contains(addedBenchmarkGoalID)){
+				BenchmarkGoal bmTemp = experimentBenchmarkGoals.get(addedBenchmarkGoalID);
+				oldSourceValue = bmTemp.getSourceValue();
+				oldTargetValue = bmTemp.getTargetValue();
+				//now remove the old goal - it's being replaced
 				this.experimentBenchmarkGoals.remove(addedBenchmarkGoalID);
 			}
-			goal.setValue(value);
+			
+			if((sSourceValue!=null)&&(!sSourceValue.equals(""))){
+				goal.setSourceValue(sSourceValue);
+			}
+			else{
+				//check if we have some old values to set:
+				if((sSourceValue==null)&&(oldSourceValue!=null)&&(!oldSourceValue.equals(""))){
+					goal.setSourceValue(oldSourceValue);
+				}
+			}
+			if((sTargetValue!=null)&&(!sTargetValue.equals(""))){
+				goal.setTargetValue(sTargetValue);
+			}
+			else{
+				//check if we have some old values to set:
+				if((sTargetValue==null)&&(oldTargetValue!=null)&&(!oldTargetValue.equals(""))){
+					goal.setTargetValue(oldTargetValue);
+				}
+			}
+			
 			this.experimentBenchmarkGoals.put(goal.getID(), goal);
 		}
 		else{
@@ -108,21 +135,68 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedExperimentBenchmarkGoals(java.util.List)
 	 */
 	public void setEvaluatedExperimentBenchmarkGoals (
-			List<BenchmarkGoal> addedBMGoals) throws InvalidInputException{
-		
-		if(addedBMGoals.size()>0){
-			Iterator<BenchmarkGoal> itBMGoals = addedBMGoals.iterator();
+			List<BenchmarkGoal> lBMGoals) throws InvalidInputException{
+		if((lBMGoals!=null)&&(lBMGoals.size()>0)){
+			Iterator<BenchmarkGoal> itBMGoals = lBMGoals.iterator();
 			while(itBMGoals.hasNext()){
 				BenchmarkGoal bmGoal = itBMGoals.next();
 				
 				//some preconditions
-				if((bmGoal!=null)&&(bmGoal.getValue()!="")){
-					//now start with the evaluation
-					this.evaluateExperimentBenchmarkGoal(bmGoal.getID(), bmGoal.getValue());
+				if((bmGoal!=null)){
+					if(!bmGoal.getSourceValue().equals("")){
+						//now set the value
+						this.evaluateExperimentBenchmarkGoal(bmGoal.getID(), bmGoal.getSourceValue(),null);
+					}
+					if(!bmGoal.getTargetValue().equals("")){
+						//now set the value
+						this.evaluateExperimentBenchmarkGoal(bmGoal.getID(), null, bmGoal.getTargetValue());
+					}
 				}
 			}
 		}
 		
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedExperimentSourceBenchmarkGoals(java.util.List)
+	 */
+	public void setEvaluatedExperimentSourceBenchmarkGoals (
+			List<BenchmarkGoal> addedSourceBMGoals) throws InvalidInputException{
+		
+		if((addedSourceBMGoals!=null)&&(addedSourceBMGoals.size()>0)){
+			Iterator<BenchmarkGoal> itBMGoals = addedSourceBMGoals.iterator();
+			while(itBMGoals.hasNext()){
+				BenchmarkGoal bmGoal = itBMGoals.next();
+				
+				//some preconditions
+				if((bmGoal!=null)&&(!bmGoal.getSourceValue().equals(""))){
+					//now start with the evaluation
+					this.evaluateExperimentBenchmarkGoal(bmGoal.getID(), bmGoal.getSourceValue(),null);
+				}
+			}
+		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedExperimentTargetBenchmarkGoals(java.util.List)
+	 */
+	public void setEvaluatedExperimentTargetBenchmarkGoals (
+			List<BenchmarkGoal> addedTargetBMGoals) throws InvalidInputException{
+		
+		if((addedTargetBMGoals!=null)&&(addedTargetBMGoals.size()>0)){
+			Iterator<BenchmarkGoal> itBMGoals = addedTargetBMGoals.iterator();
+			while(itBMGoals.hasNext()){
+				BenchmarkGoal bmGoal = itBMGoals.next();
+				
+				//some preconditions
+				if((bmGoal!=null)&&(!bmGoal.getTargetValue().equals(""))){
+					//now start with the evaluation
+					this.evaluateExperimentBenchmarkGoal(bmGoal.getID(), null, bmGoal.getTargetValue());
+				}
+			}
+		}
 	}
 
 
@@ -148,11 +222,12 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		this.report = (ExperimentReportImpl)report;
 	}
 
+
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateFileBenchmarkGoal(java.util.Map.Entry, eu.planets_project.tb.api.model.benchmark.BenchmarkGoal, java.lang.String)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateFileBenchmarkGoal(java.util.Map.Entry, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void evaluateFileBenchmarkGoal(Entry<URI, URI> ioFile,
-			String addedBenchmarkGoalID, String value) throws InvalidInputException{
+			String addedBenchmarkGoalID, String sSourceValue, String sTargetValue) throws InvalidInputException{
 		
 		if((this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID))&&(this.fileBenchmarkGoals.containsKey(ioFile.getKey()))){
 			//get the input BenchmarkGoal
@@ -161,12 +236,37 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 			//get file's BenchmarkGoalSet
 			HashMap<String,BenchmarkGoal> hmFileGoals = this.fileBenchmarkGoals.get(ioFile.getKey());
 			
+			String oldSourceValue="";
+			String oldTargetValue="";
 			if(hmFileGoals.keySet().contains(addedBenchmarkGoalID)){
+				BenchmarkGoal bmTemp = hmFileGoals.get(addedBenchmarkGoalID);
+				oldSourceValue = bmTemp.getSourceValue();
+				oldTargetValue = bmTemp.getTargetValue();
+				//now remove the old goal - it's being replaced
 				hmFileGoals.remove(addedBenchmarkGoalID);
 			}
 			
 			//set value:
-			goal.setValue(value);
+			if((sSourceValue!=null)&&(!sSourceValue.equals(""))){
+				goal.setSourceValue(sSourceValue);
+			}
+			else{
+				//check if we have some old values to set:
+				if((sSourceValue==null)&&(oldSourceValue!=null)&&(!oldSourceValue.equals(""))){
+					goal.setSourceValue(oldSourceValue);
+				}
+			}
+			if((sTargetValue!=null)&&(!sTargetValue.equals(""))){
+				goal.setTargetValue(sTargetValue);
+			}
+			else{
+				//check if we have some old values to set:
+				if((sTargetValue==null)&&(oldTargetValue!=null)&&(!oldTargetValue.equals(""))){
+					goal.setTargetValue(oldTargetValue);
+				}
+			}
+			
+			//now put back the goal
 			hmFileGoals.put(goal.getID(), goal);
 		}
 		else{
@@ -176,10 +276,10 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateFileBenchmarkGoal(java.net.URI, eu.planets_project.tb.api.model.benchmark.BenchmarkGoal, java.lang.String)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateFileBenchmarkGoal(java.net.URI, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID,
-			String value) throws InvalidInputException{
+			String sSourceValue, String sTargetValue) throws InvalidInputException{
 		
 		if((this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID))&&(this.getInputFiles().contains(inputFile))){
 			//get the input BenchmarkGoal
@@ -187,20 +287,44 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 			//get file's BenchmarkGoalSet
 			HashMap<String,BenchmarkGoal> hmFileGoals = this.fileBenchmarkGoals.get(inputFile);
 			
+			//checks if for this inputfile a HashMap has already been created or if it's the first time
 			boolean bMarker = false;
 			if(hmFileGoals == null){
 				hmFileGoals = new HashMap<String, BenchmarkGoal>();
 				bMarker = true;
 			}
 			
+			String oldSourceValue="";
+			String oldTargetValue="";
 			if(hmFileGoals.keySet().size()>0){
 				if(hmFileGoals.keySet().contains(addedBenchmarkGoalID)){
+					BenchmarkGoal bmTemp = hmFileGoals.get(addedBenchmarkGoalID);
+					oldSourceValue = bmTemp.getSourceValue();
+					oldTargetValue = bmTemp.getTargetValue();
 					hmFileGoals.remove(addedBenchmarkGoalID);
 				}
 			}
 
 			//set value:
-			goal.setValue(value);
+			if((sSourceValue!=null)&&(!sSourceValue.equals(""))){
+				goal.setSourceValue(sSourceValue);
+			}
+			else{
+				//check if we have some old values to set:
+				if((sSourceValue==null)&&(oldSourceValue!=null)&&(!oldSourceValue.equals(""))){
+					goal.setSourceValue(oldSourceValue);
+				}
+			}
+			if((sTargetValue!=null)&&(!sTargetValue.equals(""))){
+				goal.setTargetValue(sTargetValue);
+			}
+			else{
+				//check if we have some old values to set:
+				if((sTargetValue==null)&&(oldTargetValue!=null)&&(!oldTargetValue.equals(""))){
+					goal.setTargetValue(oldTargetValue);
+				}
+			}
+			
 			hmFileGoals.put(goal.getID(), goal);
 			if(bMarker){
 				this.fileBenchmarkGoals.put(inputFile, hmFileGoals);
@@ -231,9 +355,15 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 						BenchmarkGoal bmGoal = itBMGoals.next();
 						
 						//some preconditions
-						if((bmGoal!=null)&&(bmGoal.getValue()!="")){
-							//now call the actual evaluation
-							this.evaluateFileBenchmarkGoal(uri, bmGoal.getID(), bmGoal.getValue());
+						if((bmGoal!=null)){
+							if(!bmGoal.getSourceValue().equals("")){
+								//now set the actual values
+								this.evaluateFileBenchmarkGoal(uri, bmGoal.getID(), bmGoal.getSourceValue(),null);
+							}
+							if(!bmGoal.getTargetValue().equals("")){
+								this.evaluateFileBenchmarkGoal(uri, bmGoal.getID(), null, bmGoal.getTargetValue());
+
+							}
 						}
 					}
 				}
@@ -402,6 +532,21 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		else{
 			return hmRet;
 		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getAllAcceptedEvaluationValues()
+	 */
+	public List<String> getAllAcceptedEvaluationValues() {
+		Vector<String> vRet = new Vector<String>();
+		vRet.add(0,this.EVALUATION_VALUE_VERY_GOOD);
+		vRet.add(1,this.EVALUATION_VALUE_GOOD);
+		vRet.add(2,this.EVALUATION_VALUE_BAD);
+		vRet.add(3,this.EVALUATION_VALUE_VERY_BAD);
+		
+		return vRet;
+		
 	}
 	
 }

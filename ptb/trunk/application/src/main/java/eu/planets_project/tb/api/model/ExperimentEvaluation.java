@@ -21,13 +21,17 @@ import eu.planets_project.tb.impl.exceptions.InvalidInputException;
  */
 public interface ExperimentEvaluation extends ExperimentPhase{
 	
+	public final String EVALUATION_VALUE_VERY_GOOD = "very good";
+	public final String EVALUATION_VALUE_GOOD = "good";
+	public final String EVALUATION_VALUE_BAD = "bad";
+	public final String EVALUATION_VALUE_VERY_BAD = "very bad";
 	
 	/**
 	 * Goals to evaluate the entire experiment
 	 * @param addedBenchmarkGoal
 	 * @param value
 	 */
-	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID, String value) throws InvalidInputException;
+	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID, String sSourceValue, String sTargetValue) throws InvalidInputException;
 	public Collection<BenchmarkGoal> getEvaluatedExperimentBenchmarkGoals();
 	public BenchmarkGoal getEvaluatedExperimentBenchmarkGoal(String sGoalXMLID);
 	/**
@@ -36,15 +40,18 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * set in the ExperimentSetup phase are taken into account.
 	 * @param addedBMGoals
 	 */
-	public void setEvaluatedExperimentBenchmarkGoals(List<BenchmarkGoal> addedBMGoals) throws InvalidInputException;
+	public void setEvaluatedExperimentBenchmarkGoals(List<BenchmarkGoal> lBMGoals) throws InvalidInputException;
+	public void setEvaluatedExperimentSourceBenchmarkGoals (List<BenchmarkGoal> addedSourceBMGoals) throws InvalidInputException;
+	public void setEvaluatedExperimentTargetBenchmarkGoals (List<BenchmarkGoal> addedTargetBMGoals) throws InvalidInputException;
+	
 	
 	/**
 	 * Goals applied to a single input - output File tuple 
 	 * @param addedBenchmarkGoal
 	 * @param value
 	 */
-	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID, String value) throws InvalidInputException;
-	public void evaluateFileBenchmarkGoal(Entry<URI,URI> ioFile, String addedBenchmarkGoalID, String value) throws InvalidInputException;
+	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue) throws InvalidInputException;
+	public void evaluateFileBenchmarkGoal(Entry<URI,URI> ioFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue) throws InvalidInputException;
 	public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile);
 	public BenchmarkGoal getEvaluatedFileBenchmarkGoal(URI inputFile, String sGoalXMLID);
 	/**
@@ -66,4 +73,6 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * @return emty list if either no benchmark was defined in the SetupPhase or when the benchmarkListisFinal is not true
 	 */
 	public Collection<String> getInputBenchmarkGoalIDs();
+	
+	public List<String> getAllAcceptedEvaluationValues();
 }

@@ -1,5 +1,7 @@
 package eu.planets_project.tb.api.model.benchmark;
 
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
+
 /**
  * @author alindley
  * 
@@ -32,10 +34,32 @@ public interface BenchmarkGoal {
 	public String getVersion();
 	
 	//Individual information for a BenchmarGoal instance
-	public void setValue(String sValue);
-	public String getValue();
+	/**
+	 * @param sValue
+	 * @throws InvalidInputException
+	 */
+	public void setSourceValue(String sValue) throws InvalidInputException;
+	public String getSourceValue();
 	
-	public void setWeight(int iWeight);
+	/**
+	 * @param sValue
+	 * @throws InvalidInputException
+	 */
+	public void setTargetValue(String sValue) throws InvalidInputException;
+	public String getTargetValue();
+	
+	/**
+	 * @param sValue
+	 * @throws InvalidInputException
+	 */
+	public void setEvaluationValue(String sValue)throws InvalidInputException;
+	public String getEvaluationValue();
+	
+	/**
+	 * @param iWeight
+	 * @throws InvalidInputException
+	 */
+	public void setWeight(int iWeight)throws InvalidInputException;
 	public int getWeight();
 	
 	/**

@@ -1,10 +1,16 @@
 package eu.planets_project.tb.impl.model.benchmark;
 
+import java.util.Vector;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import java.util.List;
+
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
+import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 
 
 /**
@@ -20,7 +26,11 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	//@GeneratedValue
 	//private long lEntityID;
 	
-	private String sName, sType, sScale, sDefinition, sDescription, sVersion, sValue;
+	private String sName, sType, sScale, sDefinition, sDescription, sVersion;
+	//Note: SourceValue for the input file information, TargetValue for the output file information
+	private String sSourceValue, sTargetValue;
+	//Note: a predefined set of classifiers how well this target was matched
+	private String sEvaluationValue;
 	private int iWeight;
 	private String sXMLID, sCategory;
 	
@@ -31,7 +41,9 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 		sDefinition = new String();
 		sDescription = new String();
 		sVersion = new String();
-		sValue = new String();
+		sSourceValue = new String();
+		sTargetValue = new String();
+		sEvaluationValue = new String();
 		iWeight = -1;
 		sXMLID = new String();
 		sCategory = new String();
@@ -90,6 +102,7 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 		return this.sXMLID;
 	}
 	
+
 	protected void setName(String sName){
 		this.sName = sName;
 	}
@@ -157,60 +170,65 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#checkValueValid(java.lang.String)
 	 */
 	public boolean checkValueValid(String sValue) {
-		boolean bRet = false;
 		try{
 			//type e.g. "java.lang.Integer"
 			Class obj1 = Class.forName(this.getType());
-			try{
-				//Integer
-				if(obj1.isInstance(new Integer(10))){
-					//if input is no Integer this will cause an exception
+			//Integer
+			if(obj1.isInstance(new Integer(10))){
+				//if input is no Integer this will cause an exception
+				try{
 					Integer.valueOf(sValue);
-					bRet = true;
-				}
-			}catch(Exception e){}
-			try{
-				//Long
-				if(obj1.isInstance(new Long(10))){
-					//if input is no Long this will cause an exception
+					return true;
+				}catch(Exception e){}
+			}
+			//Long
+			if(obj1.isInstance(new Long(10))){
+				//if input is no Long this will cause an exception
+				try{
 					Long.valueOf(sValue);
-					bRet = true;
-				}
-			}catch(Exception e){}
-			try{
-				//Float
-				if(obj1.isInstance(new Float(10))){
-					//if input is no Float this will cause an exception
-					Float.valueOf(sValue);
-					bRet = true;
-				}
-			}catch(Exception e){}
-			try{
-				//String
-				if(obj1.isInstance(new String())){
-					bRet = true;
-				}
-			}catch(Exception e){}
-			try{
-				//Boolean
-				if(obj1.isInstance(new Boolean(true))){
+					return true;
+				}catch(Exception e){}
+			}
+			//Float
+			if(obj1.isInstance(new Float(10))){
+				//if input is no Float this will cause an exception
+				try{
+				Float.valueOf(sValue);
+				return true;
+				}catch(Exception e){}
+			}
+			//String
+			if(obj1.isInstance(new String())){
+				return true;
+			}
+			//Boolean
+			if(obj1.isInstance(new Boolean(true))){
+				try{
 					if(sValue.equals(Boolean.valueOf(sValue).toString())){
-						bRet = true;
+						return true;
 					}
-				}
-			}catch(Exception e){}
+				}catch(Exception e){}
+			}
 			
 		}catch(Exception e){
-			bRet = false;
+			return false;
 		}
-		return bRet;
+		return false;
 	}
 
+
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getValue()
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getSourceValue()
 	 */
-	public String getValue() {
-		return this.sValue;
+	public String getSourceValue() {
+		return this.sSourceValue;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getTargetValue()
+	 */
+	public String getTargetValue() {
+		return this.sTargetValue;
 	}
 
 	/* (non-Javadoc)
@@ -220,20 +238,40 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 		return this.iWeight;
 	}
 
+
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setValue(java.lang.String)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setSourceValue(java.lang.String)
 	 */
-	public void setValue(String value){
-		if(checkValueValid(value))
-			this.sValue = value;
+	public void setSourceValue(String value)throws InvalidInputException{
+		if(checkValueValid(value)){
+			this.sSourceValue = value;
+		}
+		else{
+			throw new InvalidInputException("Invalid value "+value);
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setTargetValue(java.lang.String)
+	 */
+	public void setTargetValue(String value)throws InvalidInputException{
+		if(checkValueValid(value)){
+			this.sTargetValue = value;
+		}
+		else{
+			throw new InvalidInputException("Invalid value "+value);
+		}
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setWeight(int)
 	 */
-	public void setWeight(int weight) {
+	public void setWeight(int weight) throws InvalidInputException{
 		if(this.WEIGHT_MINIMUM<=weight&&weight<=this.WEIGHT_MAXIMUM){
 			this.iWeight = weight;
+		}
+		else{
+			throw new InvalidInputException("Invalid weight "+weight);
 		}
 	}
 	
@@ -247,6 +285,26 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 		}
 		
 		return goal;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getEvaluationValue()
+	 */
+	public String getEvaluationValue() {
+		return this.sEvaluationValue;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setEvaluationValue(java.lang.String)
+	 */
+	public void setEvaluationValue(String value) throws InvalidInputException {
+		List<String> list = new ExperimentEvaluationImpl().getAllAcceptedEvaluationValues();
+		if((value!=null)&&(list.contains(value))){
+			this.sEvaluationValue = value;
+		}
+		else{
+			throw new InvalidInputException("EvaluationValue not in the range of accepted values");
+		}
 	}
 
 }
