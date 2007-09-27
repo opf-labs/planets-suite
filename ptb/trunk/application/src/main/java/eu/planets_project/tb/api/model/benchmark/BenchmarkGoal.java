@@ -35,6 +35,8 @@ public interface BenchmarkGoal {
 	
 	//Individual information for a BenchmarGoal instance
 	/**
+	 * Sets (for migration experiments) the input source's characterisation value.
+	 * e.g. page numbers of input files was 10. 
 	 * @param sValue
 	 * @throws InvalidInputException
 	 */
@@ -42,6 +44,8 @@ public interface BenchmarkGoal {
 	public String getSourceValue();
 	
 	/**
+	 * Sets (for migration experiments) the output source's characterisation value.
+	 * e.g. page numbers of output files was 10. 
 	 * @param sValue
 	 * @throws InvalidInputException
 	 */
@@ -49,6 +53,7 @@ public interface BenchmarkGoal {
 	public String getTargetValue();
 	
 	/**
+	 * 
 	 * @param sValue
 	 * @throws InvalidInputException
 	 */
