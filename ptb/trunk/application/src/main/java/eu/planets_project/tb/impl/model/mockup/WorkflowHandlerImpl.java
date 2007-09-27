@@ -197,7 +197,7 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		try{
 			Context jndiContext = getInitialContext();
 			WorkflowPersistencyRemote dao_r = (WorkflowPersistencyRemote) PortableRemoteObject.narrow(
-					jndiContext.lookup("WorkflowPersistencyImpl/remote"), WorkflowPersistencyRemote.class);
+					jndiContext.lookup("testbed/WorkflowPersistencyImpl/remote"), WorkflowPersistencyRemote.class);
 			return dao_r;
 		}catch (NamingException e) {
 			//TODO integrate message into logging mechanism
