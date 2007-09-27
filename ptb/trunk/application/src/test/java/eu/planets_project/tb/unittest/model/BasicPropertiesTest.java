@@ -17,6 +17,8 @@ import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.finals.TestbedRoles;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.exceptions.ExperimentNotFoundException;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
@@ -64,13 +66,32 @@ public class BasicPropertiesTest extends TestCase{
 	public void testExperimentApproach(){
 		BasicProperties props = new BasicPropertiesImpl();
 		AdminManager adminManager = AdminManagerImpl.getInstance();
-		props.setExperimentApproach(
-				adminManager.getExperimentTypeID("simple migration"));
+		try {
+			props.setExperimentApproach(
+					adminManager.getExperimentTypeID("simple migration"));
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(adminManager.getExperimentTypeID("simple migration"), props.getExperimentApproach());
 	
+		//Test2:
 		String sTypeID = adminManager.getExperimentTypeID("complex workflow");
-		props.setExperimentApproach(sTypeID);
+		try {
+			props.setExperimentApproach(sTypeID);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals("complex workflow", props.getExperimentApproachName(sTypeID));
+		
+		
+		//Test3:
+		sTypeID = adminManager.getExperimentTypeID("novalidtypename");
+		try {
+			props.setExperimentApproach(sTypeID);
+			assertEquals(false,true);
+		} catch (InvalidInputException e) {
+			assertEquals(true,true);
+		}		
 	}
 	
 	
@@ -86,7 +107,11 @@ public class BasicPropertiesTest extends TestCase{
 	public void testExperimentedObjectType(){
 		BasicProperties props = new BasicPropertiesImpl();
 	//Test1:
-		props.setExperimentedObjectType("text/plain");
+		try {
+			props.setExperimentedObjectType("text/plain");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		List<String> vTypes = new Vector<String>();
 		vTypes = props.getExperimentedObjectTypes();
 		assertEquals(1,vTypes.size());
@@ -98,7 +123,11 @@ public class BasicPropertiesTest extends TestCase{
 		vTypes.add("text/plain");
 		vTypes.add("text/html");
 		vTypes.add("image/gif");
-		props.setExperimentedObjectTypes(vTypes);
+		try {
+			props.setExperimentedObjectTypes(vTypes);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		vTypes = props.getExperimentedObjectTypes();
 		assertEquals(3,vTypes.size());
 		assertTrue(vTypes.contains("text/html"));
@@ -108,17 +137,24 @@ public class BasicPropertiesTest extends TestCase{
 		vTypes = new Vector<String>();
 		vTypes.add("text/html");
 		vTypes.add("image\\gif");
-		props.setExperimentedObjectTypes(vTypes);
+		vTypes.add("image/gif");
+		try {
+			props.setExperimentedObjectTypes(vTypes);
+			assertEquals(true,false);
+		} catch (InvalidInputException e) {
+			assertEquals(true,true);
+		}
 		vTypes = props.getExperimentedObjectTypes();
 		assertEquals(1,vTypes.size());
 		assertTrue(vTypes.contains("text/html"));
 		assertTrue(!vTypes.contains("image\\gif"));
+		assertTrue(!vTypes.contains("image/gif"));
 		
 	}
 	
 	public void testExperimentReference(){
 		BasicProperties props = new BasicPropertiesImpl();
-		
+
 		//Test1:
 		long l1 = 123;
 		props.addExperimentReference(l1);
@@ -179,15 +215,14 @@ public class BasicPropertiesTest extends TestCase{
 		assertEquals(2, props.getExperimentReferences().size());
 		assertTrue(props.getExperimentReferences().contains(exp5.getEntityID()));
 		assertTrue(props.getExperimentReferences().contains(exp6.getEntityID()));
-		
+
 		//Test: 5
 		HashMap<Long,Experiment> refs = (HashMap<Long,Experiment>)props.getReferencedExperiments();
 		assertEquals(2, props.getReferencedExperimentIDs().size());
 		assertTrue(props.getReferencedExperimentIDs().contains(exp5.getEntityID()));
-		assertTrue(refs.get(exp5.getEntityID()).equals(exp5));
+		assertTrue(refs.get(exp5.getEntityID()).getEntityID()== exp5.getEntityID());
 		manager.removeExperiment(exp5.getEntityID());
 		manager.removeExperiment(exp6.getEntityID());
-		
 		
 	}
 	
@@ -247,7 +282,11 @@ public class BasicPropertiesTest extends TestCase{
 		//check if the two methods deliver the same results
 		assertEquals(bUnique, props.checkExperimentNameUnique(sTestname));
 		
-		props.setExperimentName(sTestname);
+		try {
+			props.setExperimentName(sTestname);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(sTestname,props.getExperimentName());
 		expSetup.setBasicProperties(props);
 		exp1.setExperimentSetup(expSetup);
@@ -308,16 +347,43 @@ public class BasicPropertiesTest extends TestCase{
 		TestbedManager tbmanager = TestbedManagerImpl.getInstance();
 		//Test1:
 		Experiment exp1 = tbmanager.createNewExperiment();
-		props.setExperimentStructureReferences(exp1.getEntityID());
+		try {
+			props.setExperimentStructureReference(exp1.getEntityID());
+		} catch (ExperimentNotFoundException e2) {
+			assertEquals(true,false);
+		}
 		
-		assertEquals(exp1,props.getExperimentStructureReference());
+		try {
+			assertEquals(exp1.getEntityID(),props.getExperimentStructureReference().getEntityID());
+		} catch (ExperimentNotFoundException e1) {
+			assertEquals(true,false);
+		}
+
 		//Test2:
 		props.removeExperimentStructureReference();
-		assertEquals(null,props.getExperimentStructureReference());
+		try {
+			assertEquals(null,props.getExperimentStructureReference());
+		} catch (ExperimentNotFoundException e1) {
+			assertEquals(true,false);
+		}
 		
 		//Test3:
-		props.setExperimentStructureReferences(exp1);
-		assertEquals(exp1,props.getExperimentStructureReference());
+		try {
+			props.setExperimentStructureReference(exp1);
+			assertEquals(exp1.getEntityID(),props.getExperimentStructureReference().getEntityID());
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		} catch (ExperimentNotFoundException e) {
+			assertEquals(true,false);
+		}
+		
+		//Test4:
+		try {
+			props.setExperimentStructureReference(new ExperimentImpl());
+			assertEquals(true,false);
+		} catch (InvalidInputException e) {
+			assertEquals(true,true);
+		}
 	}
 	
 
@@ -383,14 +449,22 @@ public class BasicPropertiesTest extends TestCase{
 		String sURI4 = "http://localhost:8080";
 		Vector<String[]> vAdd = new Vector<String[]>();
 		vAdd.add(new String[]{sTitle4,sURI4});
-		props.setLiteratureReference(vAdd);
+		try {
+			props.setLiteratureReference(vAdd);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		//Element should not have been added:
 		assertEquals(1,props.getAllLiteratureReferences().size());
 
 		String sTitle5 = "Title Website2";
 		String sURI5 = "http://localhost:8080/jsf";
 		vAdd.add(new String[]{sTitle5,sURI5});
-		props.setLiteratureReference(vAdd);
+		try {
+			props.setLiteratureReference(vAdd);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(2,props.getAllLiteratureReferences().size());
 	}
 	

@@ -21,6 +21,8 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.exceptions.ExperimentNotFoundException;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 
 
@@ -208,21 +210,28 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentApproach(int)
 	 */
-	public void setExperimentApproach(String sExperimentTypeID) {
+	public void setExperimentApproach(String sExperimentTypeID) throws InvalidInputException{
 		AdminManager manager = AdminManagerImpl.getInstance();
 		//check ExperimentApproach valid?
 		if(manager.getExperimentTypeIDs().contains(sExperimentTypeID)){
 			this.sExperimentApproach = sExperimentTypeID;
+		}
+		else{
+			throw new InvalidInputException("Unsupported ExperimentTypeID "+sExperimentTypeID);
 		}
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentName(java.lang.String)
 	 */
-	public void setExperimentName(String name) {
+	public void setExperimentName(String name) throws InvalidInputException{
 		//it's only allowed to set a unique experimentName
-		if(this.checkExperimentNameUnique(name))
+		if(this.checkExperimentNameUnique(name)){
 			this.sExpName = name;
+		}
+		else{
+			throw new InvalidInputException("ExperimentName "+name+" not unique");
+		}
 	}
 
 	/* (non-Javadoc)
@@ -232,7 +241,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	public void setExperimentReference(long refID) {
 		//set always overrides existig entries - add,remove to modify
 		this.vRefExpIDs = new Vector<Long>();
-		this.vRefExpIDs.addElement(refID);
+		this.vRefExpIDs.add(refID);
 	}
 
 	/* (non-Javadoc)
@@ -242,7 +251,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	public void setExperimentReference(Experiment refExp) {
 		this.vRefExpIDs = new Vector<Long>();
 		ExperimentImpl exp = (ExperimentImpl) refExp;
-		this.vRefExpIDs.addElement(exp.getEntityID());	
+		this.vRefExpIDs.add(exp.getEntityID());	
 	}
 
 	
@@ -254,7 +263,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		Iterator<Long> itElements = refIDs.iterator();
 		while(itElements.hasNext()){
 			long lRef = itElements.next();
-			this.vRefExpIDs.addElement(lRef);
+			this.vRefExpIDs.add(lRef);
 		}
 	}
 
@@ -265,7 +274,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		this.vRefExpIDs = new Vector<Long>();
 		for (int i=0;i<refExps.length;i++){
 			ExperimentImpl exp = (ExperimentImpl)refExps[i];
-			this.vRefExpIDs.addElement(exp.getEntityID());
+			this.vRefExpIDs.add(exp.getEntityID());
 		}
 	}
 	
@@ -274,7 +283,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 */
 	public void addExperimentReference(long refID) {
 		if(!this.vRefExpIDs.contains(refID))
-			this.vRefExpIDs.addElement(refID);
+			this.vRefExpIDs.add(refID);
 	}
 
 	/* (non-Javadoc)
@@ -287,28 +296,52 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentedObjectType(java.lang.String)
 	 */
-	public void setExperimentedObjectType(String mimeType) {
+	public void setExperimentedObjectType(String mimeType) throws InvalidInputException{
 		//parse input string if it is in the format String/String
 		StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
 		if (tokenizer.countTokens()==3){
 			this.vExpObjectTypes = new Vector<String>();
-			this.vExpObjectTypes.addElement(mimeType);
+			this.vExpObjectTypes.add(mimeType);
+		}
+		else{
+			throw new InvalidInputException("ExperimentedObject MIME Type "+mimeType+" is not supported");
 		}
 	}
 	
-	public void addExperimentedObjectType(String mimeType) {
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#addExperimentedObjectType(java.lang.String)
+	 */
+	public void addExperimentedObjectType(String mimeType) throws InvalidInputException{
 		//parse input string if it is in the format String/String
 		StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
 		if (tokenizer.countTokens()==3){
 			if(!this.vExpObjectTypes.contains(mimeType))
-				this.vExpObjectTypes.addElement(mimeType);	
+				this.vExpObjectTypes.add(mimeType);	
+		}
+		else{
+			throw new InvalidInputException("ExperimentedObject MIME Type "+mimeType+" is not supported");
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#removeExperimentedObjectType(java.lang.String)
+	 */
+	public void removeExperimentedObjectType(String mimeType) throws InvalidInputException{
+		//parse input string if it is in the format String/String
+		StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
+		if (tokenizer.countTokens()==3){
+			if(!this.vExpObjectTypes.contains(mimeType))
+				this.vExpObjectTypes.remove(mimeType);	
+		}
+		else{
+			throw new InvalidInputException("ExperimentedObject MIME Type "+mimeType+" is not supported");
 		}
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentedObjectTypes(java.lang.String[])
 	 */
-	public void setExperimentedObjectTypes(List<String> mimeTypes) {
+	public void setExperimentedObjectTypes(List<String> mimeTypes) throws InvalidInputException{
 		this.vExpObjectTypes = new Vector<String>();
 		Iterator<String> itTypes = mimeTypes.iterator();
 		while(itTypes.hasNext()){
@@ -493,14 +526,14 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 */
 	public void addInvolvedUser(String userID) {
 		if(!this.vInvolvedUsers.contains(userID))
-			this.vInvolvedUsers.addElement(userID);
+			this.vInvolvedUsers.add(userID);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#removeInvolvedUser(long)
 	 */
 	public void removeInvolvedUser(String userID) {
-		this.vInvolvedUsers.removeElement(userID);
+		this.vInvolvedUsers.remove(userID);
 		//and also remove special roles for a given User within this experiment
 		//this.hmInvolvedUserSpecialExperimentRoles.remove(userID);
 	}
@@ -603,12 +636,16 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setLiteratureReference(java.util.List)
 	 */
-	public void setLiteratureReference(List<String[]> references){
+	public void setLiteratureReference(List<String[]> references) throws InvalidInputException{
 		this.hmLiteratureReference = new HashMap<String,Vector<String>>();
 		for(int i=0;i<references.size();i++){
 			String[] litRef= references.get(i);
-			if(litRef.length==2)
+			if(litRef.length==2){
 				this.addLiteratureReference(litRef[0], litRef[1]);
+			}
+			else{
+				throw new InvalidInputException("LiteraturReference List not supported");
+			}
 		}
 	}
 
@@ -641,9 +678,19 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentStructureReference()
 	 */
-	public Experiment getExperimentStructureReference() {
-		TestbedManager tbmanager = TestbedManagerImpl.getInstance(true);
-		return tbmanager.getExperiment(this.lExperimentStructureReference);
+	public Experiment getExperimentStructureReference() throws ExperimentNotFoundException{
+		if(this.lExperimentStructureReference==-1){
+			return null;
+		}else{
+			TestbedManager tbmanager = TestbedManagerImpl.getInstance(true);
+			Experiment exp = tbmanager.getExperiment(this.lExperimentStructureReference);
+			if(exp!=null){
+				return exp;
+			}
+			else{
+				throw new ExperimentNotFoundException("ExperimentStructure Reference "+this.lExperimentStructureReference +" cannot be resolved");
+			}
+		}
 	}
 
 	/* (non-Javadoc)
@@ -651,24 +698,33 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 */
 	public void removeExperimentStructureReference() {
 		//ExperimentIDs have the range from [1..n]
-		this.lExperimentStructureReference = 0;
+		this.lExperimentStructureReference = -1;
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentStructureReferences(eu.planets_project.tb.api.model.Experiment)
 	 */
-	public void setExperimentStructureReferences(Experiment expStructure) {
-		if(expStructure.getEntityID()>0)
-		this.lExperimentStructureReference = expStructure.getEntityID();
+	public void setExperimentStructureReference(Experiment expStructure) throws InvalidInputException{
+		if(expStructure.getEntityID()>0){
+			this.lExperimentStructureReference = expStructure.getEntityID();
+		}
+		else{
+			throw new InvalidInputException("ExperimentStructureReference "+expStructure +" does not contain a valid EntityID");
+		}
+		
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentStructureReferences(long)
 	 */
-	public void setExperimentStructureReferences(long expID) {
+	public void setExperimentStructureReference(long expID) throws ExperimentNotFoundException {
 		TestbedManager tbmanager = TestbedManagerImpl.getInstance(true);
-		if(tbmanager.isRegistered(expID))
+		if(tbmanager.isRegistered(expID)){
 			this.lExperimentStructureReference = expID;
+		}
+		else{
+			throw new ExperimentNotFoundException("ExperimentStructureReference "+expID+" cannot be resolved");
+		}
 	}
 	
 	private void initialiseVariables(){

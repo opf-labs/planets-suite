@@ -16,6 +16,7 @@ import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
@@ -129,7 +130,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setExperimentType(int)
 	 */
-	public void setExperimentType(String typeID) {
+	public void setExperimentType(String typeID) throws InvalidInputException {
 		this.basicProperties.setExperimentApproach(typeID);
 	}
 

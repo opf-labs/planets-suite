@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
@@ -21,8 +22,13 @@ public class WizzardFirstStage extends TestCase{
 		BasicPropertiesImpl props = new BasicPropertiesImpl();
 		
 		//addExperimentedObjectType:
-		props.addExperimentedObjectType("image/gif");
-		props.addExperimentedObjectType("text/html");
+		try {
+			props.addExperimentedObjectType("image/gif");
+			props.addExperimentedObjectType("text/html");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
+		
 			
 		return props;
 	}

@@ -17,6 +17,7 @@ import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.persistency.WorkflowPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
@@ -128,8 +129,12 @@ public class WorkflowHandlerTest extends TestCase{
 		testWorkflowName="TestWorkflow12345";
 		workflow_test.setName(testWorkflowName);
 		workflow_test.setToolType("Tiff2Jpeg");
-		workflow_test.addRequiredInputMIMEType("image/tiff");
-		workflow_test.addRequiredOutputMIMEType("image/jpeg");
+		try {
+			workflow_test.addRequiredInputMIMEType("image/tiff");
+			workflow_test.addRequiredOutputMIMEType("image/jpeg");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}		
 		AdminManager manager = AdminManagerImpl.getInstance();
 		workflow_test.setExperimentType(manager.getExperimentTypeID("simple migration"));
 		//create services for workflow

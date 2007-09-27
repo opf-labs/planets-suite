@@ -5,6 +5,7 @@ import java.util.List;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 
 /**
  * The phase ExperimentSetup covers the steps of 1-3 of the Planets Testbed
@@ -61,7 +62,7 @@ public interface ExperimentSetup extends ExperimentPhase{
 	 * @param iTypeID
 	 * @see AdminManager.getExperimentTypeID
 	 */
-	public void setExperimentType(String sexpTypeID);
+	public void setExperimentType(String sexpTypeID)throws InvalidInputException;
 	public String getExperimentTypeName();
 	public String getExperimentTypeID();
 	

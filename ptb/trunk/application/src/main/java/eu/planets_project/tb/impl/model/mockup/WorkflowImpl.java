@@ -20,6 +20,7 @@ import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
 
 /**
@@ -86,11 +87,14 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addRequiredInputMIMEType(java.lang.String)
 	 */
-	public void addRequiredInputMIMEType(String mimeType) {
+	public void addRequiredInputMIMEType(String mimeType) throws InvalidInputException{
 		if(!this.vInputMimeTypes.contains(mimeType)){
 			StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
 			if (tokenizer.countTokens()==3){
 				this.vInputMimeTypes.add(mimeType);
+			}
+			else{
+				throw new InvalidInputException("Not supported MIME type: "+mimeType);
 			}
 		}
 	}
@@ -99,11 +103,14 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addRequiredOutputMIMEType(java.lang.String)
 	 */
-	public void addRequiredOutputMIMEType(String mimeType) {
+	public void addRequiredOutputMIMEType(String mimeType)  throws InvalidInputException{
 		if(!this.vOutputMimeTypes.contains(mimeType)){
 			StringTokenizer tokenizer = new StringTokenizer(mimeType,"/",true);
 			if (tokenizer.countTokens()==3){
 				this.vOutputMimeTypes.add(mimeType);
+			}
+			else{
+				throw new InvalidInputException("Not supported MIME type: "+mimeType);
 			}
 		}
 	}
@@ -273,7 +280,7 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addRequiredInputMIMETypes(java.util.List)
 	 */
-	public void addRequiredInputMIMETypes(List<String> mimeTypes) {
+	public void addRequiredInputMIMETypes(List<String> mimeTypes) throws InvalidInputException{
 		Iterator<String> itMimeTypes = mimeTypes.iterator();
 		while(itMimeTypes.hasNext()){
 			this.addRequiredInputMIMEType(itMimeTypes.next());
@@ -283,7 +290,7 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#addRequiredOutputMIMETypes(java.util.List)
 	 */
-	public void addRequiredOutputMIMETypes(List<String> mimeTypes) {
+	public void addRequiredOutputMIMETypes(List<String> mimeTypes) throws InvalidInputException{
 		Iterator<String> itMimeTypes = mimeTypes.iterator();
 		while(itMimeTypes.hasNext()){
 			this.addRequiredOutputMIMEType(itMimeTypes.next());
@@ -313,7 +320,7 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setRequiredInputMIMETypes(java.util.List)
 	 */
-	public void setRequiredInputMIMETypes(List<String> mimeTypes) {
+	public void setRequiredInputMIMETypes(List<String> mimeTypes) throws InvalidInputException{
 		this.vInputMimeTypes = new Vector<String>();
 		Iterator<String> itMimeTypes = mimeTypes.iterator();
 		while(itMimeTypes.hasNext()){
@@ -324,7 +331,7 @@ public class WorkflowImpl implements Workflow, java.io.Serializable {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.Workflow#setRequiredOutputMIMETypes(java.util.List)
 	 */
-	public void setRequiredOutputMIMETypes(List<String> mimeTypes) {
+	public void setRequiredOutputMIMETypes(List<String> mimeTypes) throws InvalidInputException{
 		this.vOutputMimeTypes = new Vector<String>();
 		Iterator<String> itMimeTypes = mimeTypes.iterator();
 		while(itMimeTypes.hasNext()){

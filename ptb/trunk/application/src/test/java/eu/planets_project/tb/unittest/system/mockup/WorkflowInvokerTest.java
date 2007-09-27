@@ -11,6 +11,7 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.ExperimentApproval;
+import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
@@ -56,6 +57,7 @@ public class WorkflowInvokerTest extends TestCase{
 				workflow = itWFs.next();
 			}
 		}else{
+			System.out.println("Hier1");
 			assertEquals(true,false);
 		}
 		ExperimentWorkflow wf = new ExperimentWorkflowImpl(workflow);
@@ -66,6 +68,7 @@ public class WorkflowInvokerTest extends TestCase{
 			exp.getExperimentSetup().setWorkflow(wf);
 			exp.getExperimentSetup().setState(ExperimentSetup.STATE_COMPLETED);
 			exp.getExperimentApproval().setState(ExperimentApproval.STATE_COMPLETED);
+			exp.getExperimentExecution().setState(ExperimentExecution.STATE_IN_PROGRESS);
 			manager.updateExperiment(exp);
 			
 			//now execute the experiment
@@ -75,15 +78,20 @@ public class WorkflowInvokerTest extends TestCase{
 			manager = TestbedManagerImpl.getInstance(true);
 			Experiment expUpdated = manager.getExperiment(this.expID1);
 
+			System.out.println("Hier2");
 			assertNotNull(expUpdated.getExperimentSetup().getExperimentWorkflow().getDataEntry(input1).getValue());
-			assertEquals(Experiment.PHASENAME_EXPERIMENTEVALUATION,expUpdated.getCurrentPhase().getPhaseName());
+			System.out.println("Hier3");
+			assertEquals(Experiment.PHASENAME_EXPERIMENTEXECUTION,expUpdated.getCurrentPhase().getPhaseName());
+			System.out.println("Hier4");
 			assertNotNull(expUpdated.getExperimentExecution().getExecutionDataEntry(input1).getValue());
-			
+			System.out.println("Hier5");
 		}catch(Exception e){
 			System.out.println("Problem in running ExecuteExperimentWorkflowTest "+e.toString());
 			assertEquals(true,false);
+			System.out.println("Hier6");
 		}
 		assertEquals(true,true);
+		System.out.println("Hier7");
 
 	}
 		

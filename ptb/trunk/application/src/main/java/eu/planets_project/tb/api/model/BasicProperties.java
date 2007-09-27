@@ -3,6 +3,9 @@ package eu.planets_project.tb.api.model;
 import java.util.List;
 import java.util.Map;
 
+import eu.planets_project.tb.impl.exceptions.ExperimentNotFoundException;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
+
 /**
  * @author alindley
  *
@@ -13,7 +16,7 @@ public interface BasicProperties{
 	 * It's only allowed to set a unique experimentName
 	 * @param sName
 	 */
-	public void setExperimentName(String sName);
+	public void setExperimentName(String sName) throws InvalidInputException;
 	public String getExperimentName();
 	public boolean checkExperimentNameUnique(String sExpName);
 	
@@ -31,10 +34,10 @@ public interface BasicProperties{
 	public Map<Long,Experiment> getReferencedExperiments();
 	public List<Long> getReferencedExperimentIDs();
 	
-	public void setExperimentStructureReferences(Experiment expStructure);
-	public void setExperimentStructureReferences(long expID);
+	public void setExperimentStructureReference(Experiment expStructure) throws InvalidInputException;
+	public void setExperimentStructureReference(long expID) throws ExperimentNotFoundException;
 	public void removeExperimentStructureReference();
-	public Experiment getExperimentStructureReference();
+	public Experiment getExperimentStructureReference() throws ExperimentNotFoundException;
 	
 	public void setSummary(String sSummary);
 	public String getSummary();
@@ -63,9 +66,10 @@ public interface BasicProperties{
 	 * 
 	 * @param sMimeType: formating string/string is checked
 	 */
-	public void setExperimentedObjectType(String sMimeType);
-
-	public void setExperimentedObjectTypes(List<String> sMimeTypes);
+	public void setExperimentedObjectType(String sMimeType) throws InvalidInputException;
+	public void setExperimentedObjectTypes(List<String> sMimeTypes) throws InvalidInputException;
+	public void addExperimentedObjectType(String mimeType) throws InvalidInputException;
+	public void removeExperimentedObjectType(String mimeType) throws InvalidInputException;
 	public List<String> getExperimentedObjectTypes();
 	
 	public void setFocus(String sFocus);
@@ -98,7 +102,7 @@ public interface BasicProperties{
 	 * Sets the approache's ID with an experimentType
 	 * @param iID
 	 */
-	public void setExperimentApproach(String sExperimentTypeID);
+	public void setExperimentApproach(String sExperimentTypeID) throws InvalidInputException;
 	/**
 	 * Returns the approache's ID.
 	 * @return
@@ -145,7 +149,7 @@ public interface BasicProperties{
 	/**
 	 * @param references String[0]=title, String[1]=URI
 	 */
-	public void setLiteratureReference(List<String[]> references);
+	public void setLiteratureReference(List<String[]> references) throws InvalidInputException;;
 	/**
 	 * @return String[0]=title, String[1]=URI
 	 */

@@ -9,6 +9,7 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
@@ -183,7 +184,11 @@ public class TestbedManagerTest extends TestCase{
 				adminManager.getExperimentTypeID("simple migration")).size();
 		Experiment exp_test3 = manager.createNewExperiment();
 		ExperimentSetup expSetup = new ExperimentSetupImpl();
+		try{
 		expSetup.setExperimentType(adminManager.getExperimentTypeID("simple migration"));
+		}catch(InvalidInputException e){
+			assertEquals(true,false);
+		}
 		exp_test3.setExperimentSetup(expSetup);
 		manager.updateExperiment(exp_test3);
 		
@@ -227,10 +232,14 @@ public class TestbedManagerTest extends TestCase{
 	
 	public void testIsExperimentNameUnique(){
 		//setup
-		Experiment exp_test = manager.createNewExperiment();
-		ExperimentSetup expSetup = new ExperimentSetupImpl();
-		BasicProperties props = new BasicPropertiesImpl();
-		props.setExperimentName("TestName1");
+		Experiment exp_test = manager.getExperiment(this.expID1);
+		ExperimentSetup expSetup = exp_test.getExperimentSetup();
+		BasicProperties props = expSetup.getBasicProperties();
+		try {
+			props.setExperimentName("TestName1");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		expSetup.setBasicProperties(props);
 		exp_test.setExperimentSetup(expSetup);
 		manager.updateExperiment(exp_test);
@@ -241,9 +250,16 @@ public class TestbedManagerTest extends TestCase{
 		//Test1:
 		assertTrue(!manager.isExperimentNameUnique("TestName1"));
 		assertTrue(manager.isExperimentNameUnique("FDSKLÖEWRJKDHSFIUWEHK"));
-		
-		//noew clean up the mess
-		manager.removeExperiment(exp_test.getEntityID());
+	
+		//Test2:
+		Experiment exp2 = manager.getExperiment(this.expID2);
+		try {
+			exp2.getExperimentSetup().getBasicProperties().setExperimentName("TestName1");
+			//Exception should be thrown
+			assertEquals(true,false);
+		} catch (InvalidInputException e) {
+			assertEquals(true,true);
+		}
 	}
 	
 	

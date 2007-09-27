@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import eu.planets_project.tb.api.services.mockups.Service;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 
 public interface Workflow {
 	
@@ -16,21 +17,21 @@ public interface Workflow {
 	 * @return String representing the required mime-type of input information
 	 */
 	public List<String> getRequiredInputMIMETypes();
-	public void addRequiredInputMIMEType(String sMimeType);
-	public void addRequiredInputMIMETypes(List<String> sMimeTypes);
+	public void addRequiredInputMIMEType(String sMimeType) throws InvalidInputException;
+	public void addRequiredInputMIMETypes(List<String> sMimeTypes) throws InvalidInputException;
 	public void removeRequiredInputMIMEType(String sMimeType);
 	public void removeRequiredInputMIMETypes(List<String> sMimeTypes);
-	public void setRequiredInputMIMETypes(List<String> sMimeTypes);
+	public void setRequiredInputMIMETypes(List<String> sMimeTypes) throws InvalidInputException;
 	
 	/**
 	 * @return String representing the required mime-type of output information
 	 */
 	public List<String> getRequiredOutputMIMETypes();
-	public void addRequiredOutputMIMEType(String sMimeType);
-	public void addRequiredOutputMIMETypes(List<String> sMimeTypes);
+	public void addRequiredOutputMIMEType(String sMimeType)throws InvalidInputException;
+	public void addRequiredOutputMIMETypes(List<String> sMimeTypes) throws InvalidInputException;
 	public void removeRequiredOutputMIMEType(String sMimeType);
 	public void removeRequiredOutputMIMETypes(List<String> sMimeTypes);
-	public void setRequiredOutputMIMETypes(List<String> sMimeTypes);
+	public void setRequiredOutputMIMETypes(List<String> sMimeTypes)throws InvalidInputException;
 	
 	public Service getWorkflowService(int iPosition);
 	/**

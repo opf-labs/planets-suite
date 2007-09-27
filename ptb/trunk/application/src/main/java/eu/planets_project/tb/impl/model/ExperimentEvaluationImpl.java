@@ -27,6 +27,7 @@ import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
 /**
@@ -85,7 +86,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateExperimentBenchmarkGoal(eu.planets_project.tb.api.model.benchmark.BenchmarkGoal, java.lang.String)
 	 */
 	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID,
-			String value) {
+			String value) throws InvalidInputException{
 		
 		if(this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID)){
 			//get the input BenchmarkGoal
@@ -96,6 +97,9 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 			goal.setValue(value);
 			this.experimentBenchmarkGoals.put(goal.getID(), goal);
 		}
+		else{
+			throw new InvalidInputException("evaluateExperimentBenchmarkGoal failed: InputBenchmarkGoalID "+addedBenchmarkGoalID+" not contained.");
+		}
 		
 	}
 	
@@ -103,8 +107,8 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedExperimentBenchmarkGoals(java.util.List)
 	 */
-	public void setEvaluatedExperimentBenchmarkGoals(
-			List<BenchmarkGoal> addedBMGoals) {
+	public void setEvaluatedExperimentBenchmarkGoals (
+			List<BenchmarkGoal> addedBMGoals) throws InvalidInputException{
 		
 		if(addedBMGoals.size()>0){
 			Iterator<BenchmarkGoal> itBMGoals = addedBMGoals.iterator();
@@ -148,7 +152,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateFileBenchmarkGoal(java.util.Map.Entry, eu.planets_project.tb.api.model.benchmark.BenchmarkGoal, java.lang.String)
 	 */
 	public void evaluateFileBenchmarkGoal(Entry<URI, URI> ioFile,
-			String addedBenchmarkGoalID, String value) {
+			String addedBenchmarkGoalID, String value) throws InvalidInputException{
 		
 		if((this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID))&&(this.fileBenchmarkGoals.containsKey(ioFile.getKey()))){
 			//get the input BenchmarkGoal
@@ -165,6 +169,9 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 			goal.setValue(value);
 			hmFileGoals.put(goal.getID(), goal);
 		}
+		else{
+			throw new InvalidInputException("evaluateFileBenchmarkGoal failed. Unsupported BenchmarkGoal or InvalidInput File");
+		}
 	}
 
 
@@ -172,7 +179,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#evaluateFileBenchmarkGoal(java.net.URI, eu.planets_project.tb.api.model.benchmark.BenchmarkGoal, java.lang.String)
 	 */
 	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID,
-			String value) {
+			String value) throws InvalidInputException{
 		
 		if((this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID))&&(this.getInputFiles().contains(inputFile))){
 			//get the input BenchmarkGoal
@@ -199,6 +206,9 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 				this.fileBenchmarkGoals.put(inputFile, hmFileGoals);
 			}
 		}
+		else{
+			throw new InvalidInputException("evaluateFileBenchmarkGoal failed. Unsupported BenchmarkGoal or InvalidInput File");
+		}
 	}
 	
 
@@ -206,7 +216,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setEvaluatedFileBenchmarkGoals(java.util.Map)
 	 */
 	public void setEvaluatedFileBenchmarkGoals(
-			Map<URI, List<BenchmarkGoal>> addedFileBMGoals) {
+			Map<URI, List<BenchmarkGoal>> addedFileBMGoals) throws InvalidInputException{
 
 		if(addedFileBMGoals!=null&&addedFileBMGoals.keySet().size()>0){
 			Iterator<URI> itKeys = addedFileBMGoals.keySet().iterator();

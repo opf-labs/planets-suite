@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 
 /**
  * @author alindley
@@ -26,7 +27,7 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * @param addedBenchmarkGoal
 	 * @param value
 	 */
-	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID, String value);
+	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID, String value) throws InvalidInputException;
 	public Collection<BenchmarkGoal> getEvaluatedExperimentBenchmarkGoals();
 	public BenchmarkGoal getEvaluatedExperimentBenchmarkGoal(String sGoalXMLID);
 	/**
@@ -35,15 +36,15 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * set in the ExperimentSetup phase are taken into account.
 	 * @param addedBMGoals
 	 */
-	public void setEvaluatedExperimentBenchmarkGoals(List<BenchmarkGoal> addedBMGoals);
+	public void setEvaluatedExperimentBenchmarkGoals(List<BenchmarkGoal> addedBMGoals) throws InvalidInputException;
 	
 	/**
 	 * Goals applied to a single input - output File tuple 
 	 * @param addedBenchmarkGoal
 	 * @param value
 	 */
-	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID, String value);
-	public void evaluateFileBenchmarkGoal(Entry<URI,URI> ioFile, String addedBenchmarkGoalID, String value);
+	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID, String value) throws InvalidInputException;
+	public void evaluateFileBenchmarkGoal(Entry<URI,URI> ioFile, String addedBenchmarkGoalID, String value) throws InvalidInputException;
 	public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile);
 	public BenchmarkGoal getEvaluatedFileBenchmarkGoal(URI inputFile, String sGoalXMLID);
 	/**
@@ -52,7 +53,7 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * set in the ExperimentSetup phase are taken into account.
 	 * @param addedBMGoals
 	 */
-	public void setEvaluatedFileBenchmarkGoals(Map<URI,List<BenchmarkGoal>> addedFileBMGoals);
+	public void setEvaluatedFileBenchmarkGoals(Map<URI,List<BenchmarkGoal>> addedFileBMGoals) throws InvalidInputException;
 	
 	
 	public void setExperimentReport(ExperimentReport report);

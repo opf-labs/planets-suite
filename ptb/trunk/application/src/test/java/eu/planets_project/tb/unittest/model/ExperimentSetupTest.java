@@ -27,6 +27,7 @@ import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
@@ -228,7 +229,11 @@ public class ExperimentSetupTest extends TestCase{
 		//TODO: add a samle experimentSetup
 		ExperimentSetup test_setup = new ExperimentSetupImpl();
 		test_setup.setStartDate(new GregorianCalendar());
-		test_setup.setExperimentType(AdminManagerImpl.getInstance().getExperimentTypeID("simple migration"));
+		try {
+			test_setup.setExperimentType(AdminManagerImpl.getInstance().getExperimentTypeID("simple migration"));
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		return test_setup;
 	}
 	
@@ -239,7 +244,11 @@ public class ExperimentSetupTest extends TestCase{
 		//BasicProperties
 		BasicPropertiesImpl props = new BasicPropertiesImpl();
 		props.setConsiderations("considerations"+testnr);
-		props.setExperimentName("ExperimentName"+testnr);
+		try {
+			props.setExperimentName("ExperimentName"+testnr);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		expSetup.setBasicProperties(props);
 		
 		//BenchmarkObjectives

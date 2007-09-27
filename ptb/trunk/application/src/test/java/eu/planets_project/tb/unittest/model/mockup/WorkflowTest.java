@@ -8,6 +8,7 @@ import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.services.mockups.Service;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
@@ -70,23 +71,39 @@ public class WorkflowTest extends TestCase{
 		types.add(sMimeType1);
 
 		//Test1: addMimeType
-		workflow.addRequiredInputMIMEType(sMimeType1);
+		try {
+			workflow.addRequiredInputMIMEType(sMimeType1);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(1,workflow.getRequiredInputMIMETypes().size());
 		assertTrue(workflow.getRequiredInputMIMETypes().contains(sMimeType1));
 		
 		//Test2: addMimeType: add duplicate mime type should not get added
-		workflow.addRequiredInputMIMEType(sMimeType1);
+		try {
+			workflow.addRequiredInputMIMEType(sMimeType1);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(1,workflow.getRequiredInputMIMETypes().size());
 		assertTrue(workflow.getRequiredInputMIMETypes().contains(sMimeType1));
 		
 		//Test3: addMimeType
-		workflow.addRequiredInputMIMEType(sMimeType2);
+		try {
+			workflow.addRequiredInputMIMEType(sMimeType2);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(2,workflow.getRequiredInputMIMETypes().size());
 		assertTrue(workflow.getRequiredInputMIMETypes().contains(sMimeType1));
 		assertTrue(workflow.getRequiredInputMIMETypes().contains(sMimeType2));
 		
 		//Test4: setMimeTypes
-		workflow.setRequiredInputMIMETypes(types);
+		try {
+			workflow.setRequiredInputMIMETypes(types);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(types.size()-1, workflow.getRequiredInputMIMETypes().size());
 		assertTrue(workflow.getRequiredInputMIMETypes().contains(sMimeType1));
 		assertTrue(workflow.getRequiredInputMIMETypes().contains(sMimeType2));
@@ -103,7 +120,11 @@ public class WorkflowTest extends TestCase{
 		assertEquals(0,workflow.getRequiredInputMIMETypes().size());
 		
 		//Test4: addMIMETypes
-		workflow.addRequiredInputMIMETypes(types);
+		try {
+			workflow.addRequiredInputMIMETypes(types);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(types.size()-1,workflow.getRequiredInputMIMETypes().size());
 		assertTrue(workflow.getRequiredInputMIMETypes().contains(sMimeType1));
 		assertTrue(workflow.getRequiredInputMIMETypes().contains(sMimeType2));	
@@ -124,23 +145,39 @@ public class WorkflowTest extends TestCase{
 		types.add(sMimeType1);
 
 		//Test1: addMimeType
-		workflow.addRequiredOutputMIMEType(sMimeType1);
+		try {
+			workflow.addRequiredOutputMIMEType(sMimeType1);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(1,workflow.getRequiredOutputMIMETypes().size());
 		assertTrue(workflow.getRequiredOutputMIMETypes().contains(sMimeType1));
 		
 		//Test2: addMimeType: add duplicate mime type should not get added
-		workflow.addRequiredOutputMIMEType(sMimeType1);
+		try {
+			workflow.addRequiredOutputMIMEType(sMimeType1);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(1,workflow.getRequiredOutputMIMETypes().size());
 		assertTrue(workflow.getRequiredOutputMIMETypes().contains(sMimeType1));
 		
 		//Test3: addMimeType
-		workflow.addRequiredOutputMIMEType(sMimeType2);
+		try {
+			workflow.addRequiredOutputMIMEType(sMimeType2);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(2,workflow.getRequiredOutputMIMETypes().size());
 		assertTrue(workflow.getRequiredOutputMIMETypes().contains(sMimeType1));
 		assertTrue(workflow.getRequiredOutputMIMETypes().contains(sMimeType2));
 		
 		//Test4: setMimeTypes
-		workflow.setRequiredOutputMIMETypes(types);
+		try {
+			workflow.setRequiredOutputMIMETypes(types);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(types.size()-1, workflow.getRequiredOutputMIMETypes().size());
 		assertTrue(workflow.getRequiredOutputMIMETypes().contains(sMimeType1));
 		assertTrue(workflow.getRequiredOutputMIMETypes().contains(sMimeType2));
@@ -157,7 +194,11 @@ public class WorkflowTest extends TestCase{
 		assertEquals(0,workflow.getRequiredOutputMIMETypes().size());
 		
 		//Test4: addMIMETypes
-		workflow.addRequiredOutputMIMETypes(types);
+		try {
+			workflow.addRequiredOutputMIMETypes(types);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		assertEquals(types.size()-1,workflow.getRequiredOutputMIMETypes().size());
 		assertTrue(workflow.getRequiredOutputMIMETypes().contains(sMimeType1));
 		assertTrue(workflow.getRequiredOutputMIMETypes().contains(sMimeType2));	
@@ -174,7 +215,11 @@ public class WorkflowTest extends TestCase{
 		Service service0 = new ServiceImpl();
 		service0.setServiceName("TestService0");
 		//Test1:
-		workflow.addRequiredInputMIMEType("text/html");
+		try {
+			workflow.addRequiredInputMIMEType("text/html");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		workflow.addWorkflowService(0, service0);
 		assertEquals(service0,workflow.getWorkflowService(0));
 		assertEquals(false,workflow.isValidWorkflow());
@@ -195,9 +240,13 @@ public class WorkflowTest extends TestCase{
 		service0.addInputMIMEType("text/html");
 		service0.addInputMIMEType("text/xml");
 		service0.addOutputMIMEType("text/pdf");
-		workflow.addRequiredInputMIMEType("text/html");
-		workflow.addRequiredOutputMIMEType("text/pdf");
-		
+		try {
+			workflow.addRequiredInputMIMEType("text/html");
+			workflow.addRequiredOutputMIMEType("text/pdf");
+
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		workflow.removeWorkflowService(0);
 		workflow.addWorkflowService(0, service0);
 		assertEquals(service0,workflow.getWorkflowService(0));

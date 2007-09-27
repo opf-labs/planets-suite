@@ -19,6 +19,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentReportImpl;
@@ -69,14 +70,24 @@ public class ExperimentEvaluationTest extends TestCase{
 		//check if there is a benchmarkGoal with type Integer else cannot perform checks
 		assertNotNull(goal1);
 		//now check the actual unittests
-		expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+		try {
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+			//an exception should be thrown
+			assertEquals(true,false);
+		} catch (InvalidInputException e) {
+			assertEquals(true,true);
+		}
 		assertEquals(0,expEval.getEvaluatedExperimentBenchmarkGoals().size());
 		assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
 	//Test3: Example how it should run
 		expSetup.addBenchmarkGoal(goal1);
 		manager.updateExperiment(expTest);
 
-		expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+		try {
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 		
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
 		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
@@ -111,7 +122,13 @@ public class ExperimentEvaluationTest extends TestCase{
 			//check if there is a benchmarkGoal with type Integer else cannot perform checks
 			assertNotNull(goal1);
 			//now check the actual unittests
-			expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
+			try {
+				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
+				//an exception should be thrown
+				assertEquals(true,false);
+			} catch (InvalidInputException e) {
+				assertEquals(true,true);
+			}
 			assertEquals(0,expEval.getEvaluatedFileBenchmarkGoals(testFile).size());
 			assertNull(expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID()));
 			
@@ -119,8 +136,11 @@ public class ExperimentEvaluationTest extends TestCase{
 			expSetup.addBenchmarkGoal(goal1);
 			manager.updateExperiment(expFound);
 			
-			expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
-				
+			try {
+				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20");
+			} catch (InvalidInputException e) {
+				assertEquals(true,false);
+			}
 			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
 			//I'm working with the File's Benchmark Goals and not the Experiment's 
 			assertNull(expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID()));
@@ -168,7 +188,11 @@ public class ExperimentEvaluationTest extends TestCase{
 	//Test3: Example how it should run
 		expSetup.addBenchmarkGoal(goal1);
 		manager.updateExperiment(expTest);
-		expEval.setEvaluatedExperimentBenchmarkGoals(list_test);
+		try {
+			expEval.setEvaluatedExperimentBenchmarkGoals(list_test);
+		} catch (InvalidInputException e) {
+			assertEquals(true,false);
+		}
 			
 		BenchmarkGoal goalFound = expEval.getEvaluatedExperimentBenchmarkGoal(goal1.getID());
 		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
@@ -214,7 +238,11 @@ public class ExperimentEvaluationTest extends TestCase{
 		//Test2: Example how it should run
 			expSetup.addBenchmarkGoal(goal1);
 			manager.updateExperiment(expFound);
-			expEval.setEvaluatedFileBenchmarkGoals(hmFileGoals);
+			try {
+				expEval.setEvaluatedFileBenchmarkGoals(hmFileGoals);
+			} catch (InvalidInputException e) {
+				assertEquals(true,false);
+			}
 				
 			BenchmarkGoal goalFound = expEval.getEvaluatedFileBenchmarkGoal(testFile, goal1.getID());
 			//I'm working with the File's Benchmark Goals and not the Experiment's 
@@ -262,7 +290,11 @@ public class ExperimentEvaluationTest extends TestCase{
 			expFound.getExperimentSetup().getExperimentWorkflow().addInputData(testFile);
 			manager.updateExperiment(expFound);
 			
-			expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+			try {
+				expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20");
+			} catch (InvalidInputException e) {
+				assertEquals(true,false);
+			}
 			
 		//UnitTestSetup completed: now perform the actual Tests
 			//Test1:

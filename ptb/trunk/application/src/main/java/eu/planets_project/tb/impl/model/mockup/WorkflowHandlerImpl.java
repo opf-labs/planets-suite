@@ -25,6 +25,7 @@ import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.persistency.WorkflowPersistencyRemote;
 import eu.planets_project.tb.api.services.mockups.Service;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
 
@@ -222,8 +223,10 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		WorkflowImpl template1 = new WorkflowImpl();
 		template1.setName("SimpleMigrationWorkflow1");
 		template1.setToolType("doc2OpenOfficeXML");
+		try{
 		template1.addRequiredOutputMIMEType("text/xml");
 		template1.addRequiredOutputMIMEType("application/xml");
+		}catch(InvalidInputException e){}
 		AdminManager manager = AdminManagerImpl.getInstance();
 		template1.setExperimentType(manager.getExperimentTypeID("simple migration"));
 		//create services for workflow
@@ -248,8 +251,10 @@ public class WorkflowHandlerImpl implements WorkflowHandler {
 		WorkflowImpl template2 = new WorkflowImpl();
 		template2.setName("SimpleMigrationWorkflow2");
 		template2.setToolType("Tiff2Jpeg");
+		try{
 		template2.addRequiredInputMIMEType("image/tiff");
 		template2.addRequiredOutputMIMEType("image/jpeg");
+		}catch(InvalidInputException e){}
 		template2.setExperimentType(manager.getExperimentTypeID("simple migration"));
 		//create services for workflow
 		Service service1 = new ServiceImpl();

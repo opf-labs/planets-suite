@@ -69,11 +69,11 @@ public class ExperimentExecutionTest extends TestCase{
 				exp.getExperimentExecution().executeExperiment();
 				assertEquals(false,exp.getExperimentExecution().isExecutionInProgress());
 				assertEquals(true,exp.getExperimentExecution().isExecuted());
-				
+
 				//now check if the migration succeeded 
 				manager = TestbedManagerImpl.getInstance(true);
 				Experiment expUpdated = manager.getExperiment(this.expID1);
-				assertNotNull(expUpdated.getExperimentSetup().getExperimentWorkflow().getDataEntry(input1).getValue());
+				assertNotNull(expUpdated.getExperimentExecution().getExecutionOutputData(input1));
 				assertEquals(Experiment.PHASENAME_EXPERIMENTEXECUTION,expUpdated.getCurrentPhase().getPhaseName());
 				assertNotNull(expUpdated.getExperimentExecution().getExecutionDataEntry(input1).getValue());
 			}catch(Exception e){
