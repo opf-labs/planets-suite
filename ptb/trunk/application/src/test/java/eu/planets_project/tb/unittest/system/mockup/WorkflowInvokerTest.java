@@ -57,7 +57,6 @@ public class WorkflowInvokerTest extends TestCase{
 				workflow = itWFs.next();
 			}
 		}else{
-			System.out.println("Hier1");
 			assertEquals(true,false);
 		}
 		ExperimentWorkflow wf = new ExperimentWorkflowImpl(workflow);
@@ -78,20 +77,14 @@ public class WorkflowInvokerTest extends TestCase{
 			manager = TestbedManagerImpl.getInstance(true);
 			Experiment expUpdated = manager.getExperiment(this.expID1);
 
-			System.out.println("Hier2");
 			assertNotNull(expUpdated.getExperimentSetup().getExperimentWorkflow().getDataEntry(input1).getValue());
-			System.out.println("Hier3");
 			assertEquals(Experiment.PHASENAME_EXPERIMENTEXECUTION,expUpdated.getCurrentPhase().getPhaseName());
-			System.out.println("Hier4");
 			assertNotNull(expUpdated.getExperimentExecution().getExecutionDataEntry(input1).getValue());
-			System.out.println("Hier5");
 		}catch(Exception e){
 			System.out.println("Problem in running ExecuteExperimentWorkflowTest "+e.toString());
 			assertEquals(true,false);
-			System.out.println("Hier6");
 		}
 		assertEquals(true,true);
-		System.out.println("Hier7");
 
 	}
 		
