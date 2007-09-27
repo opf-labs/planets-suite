@@ -11,5 +11,5 @@ import eu.planets_project.tb.api.model.Experiment;
  */
 public interface WorkflowInvoker {
 	
-	public void executeExperimentWorkflow(long ExperimentID) throws Exception;
+	public void executeExperimentWorkflow(Experiment exp) throws Exception;
 }

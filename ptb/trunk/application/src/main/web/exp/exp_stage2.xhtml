@@ -90,6 +90,7 @@
                                              styleClass="fileUploadInput"
                                              required="true"
                                              maxlength="10000000"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/><br/>
+										<h:message for="fileupload"/>
                                         <h:panelGroup rendered="#{not empty ExperimentBean.eworkflowInputData}">
                                             <h:outputText value="#{res['exp_stage2.inputData']} "/>
                                             <h:outputText value="#{ExperimentBean.eworkflowInputData}" style="font-style: italic;font-weight: bold;"/>

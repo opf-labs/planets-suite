@@ -94,7 +94,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionOutputData(java.net.URI)
 	 */
 	public URI getExecutionOutputData(URI inputFile) {
-		TestbedManager manager = new TestbedManagerImpl().getInstance(true);
+		TestbedManager manager = new TestbedManagerImpl().getInstance(false);
 		
 		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
 		if(exp!=null){
@@ -106,7 +106,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	}
 
 	public Collection<URI> getExecutionOutputData() {
-		TestbedManager manager = new TestbedManagerImpl().getInstance(true);
+		TestbedManager manager = new TestbedManagerImpl().getInstance(false);
 		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
 		if(exp!=null){
 			return exp.getExperimentSetup().getExperimentWorkflow().getOutputData();
@@ -146,22 +146,6 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecution#executeExperiment()
-	 */
-	public void executeExperiment() throws Exception{
-		this.setExecutionInProgress(true);
-		WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
-		try{
-			wfinvoker.executeExperimentWorkflow(this.lExperimentIDRef);
-			this.setExecutionInProgress(false);
-			this.setExecuted(true);
-		}catch(Exception e){
-			this.setExecutionInProgress(false);
-			this.setExecuted(false);
-			throw new Exception(e);
-		}
-	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#isExecutionInProgress()
@@ -173,7 +157,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#setExecutionInProgress(boolean)
 	 */
-	private void setExecutionInProgress(boolean bInProgress) {
+	public void setExecutionInProgress(boolean bInProgress) {
 		this.bExecutionInProgress = bInProgress;
 	}
 
@@ -187,7 +171,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#setExecuted(boolean)
 	 */
-	private void setExecuted(boolean executed) {
+	public void setExecuted(boolean executed) {
 		this.bExecuted = executed;
 	}
 

@@ -66,7 +66,7 @@ public class ExperimentExecutionTest extends TestCase{
 				
 				//now execute the experiment
 				//wfinvoker.executeExperimentWorkflow(exp.getEntityID());
-				exp.getExperimentExecution().executeExperiment();
+				manager.executeExperiment(exp);
 				assertEquals(false,exp.getExperimentExecution().isExecutionInProgress());
 				assertEquals(true,exp.getExperimentExecution().isExecuted());
 

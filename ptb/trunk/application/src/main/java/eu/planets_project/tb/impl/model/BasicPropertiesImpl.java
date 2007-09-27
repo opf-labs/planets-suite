@@ -225,6 +225,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentName(java.lang.String)
 	 */
 	public void setExperimentName(String name) throws InvalidInputException{
+	  if (!name.equals(this.sExpName)) {
 		//it's only allowed to set a unique experimentName
 		if((this.sExpName!=null)&&(this.sExpName.equals(name))){
 			//required by the frontend, as when editing an experiment the same existing name is used
@@ -238,6 +239,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 				throw new InvalidInputException("ExperimentName "+name+" not unique");
 			}
 		}
+	  }
 	}
 
 	/* (non-Javadoc)

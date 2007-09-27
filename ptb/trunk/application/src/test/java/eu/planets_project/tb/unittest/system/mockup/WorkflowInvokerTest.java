@@ -71,7 +71,7 @@ public class WorkflowInvokerTest extends TestCase{
 			manager.updateExperiment(exp);
 			
 			//now execute the experiment
-			wfinvoker.executeExperimentWorkflow(exp.getEntityID());
+			wfinvoker.executeExperimentWorkflow(exp);
 			
 			//now check if the migration succeeded 
 			manager = TestbedManagerImpl.getInstance(true);

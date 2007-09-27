@@ -40,7 +40,7 @@ public interface TestbedManager {
 	public boolean isExperimentNameUnique(String sExpName);
 	public boolean isRegistered(long lExpID);
 	public boolean isRegistered(Experiment experiment);
-	
+	public void executeExperiment(Experiment exp) throws Exception;
 	public int getNumberOfExperiments();
 
 	/**

@@ -27,12 +27,15 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
+import eu.planets_project.tb.impl.system.mockup.WorkflowInvokerImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.api.system.mockup.WorkflowInvoker;
 
 /**
  * @author alindley
@@ -385,5 +388,24 @@ public class TestbedManagerImpl
 		return WorkflowHandlerImpl.getInstance();
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#executeExperiment()
+	 */
+	public void executeExperiment(Experiment exp) throws Exception{
+		ExperimentExecutionImpl expExPhase = (ExperimentExecutionImpl)exp.getExperimentExecution();
+		if (expExPhase != null) {
+			expExPhase.setExecutionInProgress(true);
+			WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
+			try{
+				wfinvoker.executeExperimentWorkflow(exp);
+				expExPhase.setExecutionInProgress(false);
+				expExPhase.setExecuted(true);
+			}catch(Exception e){
+				expExPhase.setExecutionInProgress(false);
+				expExPhase.setExecuted(false);
+				throw new Exception(e);
+			}
+		}
+	}
 
 }

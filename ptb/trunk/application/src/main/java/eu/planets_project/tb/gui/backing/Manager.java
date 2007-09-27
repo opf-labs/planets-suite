@@ -64,6 +64,10 @@ public class Manager {
     	Experiment exp = null;
 		BasicProperties props = null;
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        // create message for duplicate name error message
+        FacesMessage fmsg = new FacesMessage();
+        fmsg.setDetail("Experiment name already in use! - Please specify a unique name.");
+        fmsg.setSummary("Duplicate name: Experiment names must be unique!");
         // if not yet created, create new Experiment object and new Bean
         if ((expBean.getID() == 0)) { 
 	        // Create new Experiment
@@ -73,6 +77,14 @@ public class Manager {
 	        UserBean currentUser = (UserBean) JSFUtil.getManagedObject("UserBean");
 	        // set current User as experimenter
 	        props.setExperimenter(currentUser.getUserid());
+		    try {
+		        props.setExperimentName(expBean.getEname());        
+		    } catch (InvalidInputException e) {
+	    		// add message-tag for duplicate name
+		        FacesContext ctx = FacesContext.getCurrentInstance();
+		        ctx.addMessage("ename",fmsg);
+	    		return "failure";
+	    	}
 	        ExperimentSetup expSetup = new ExperimentSetupImpl();
 	        expSetup.setBasicProperties(props);       
 	        exp.setExperimentSetup(expSetup);
@@ -84,11 +96,8 @@ public class Manager {
 	    try {
 	        props.setExperimentName(expBean.getEname());        
 	    } catch (InvalidInputException e) {
-    		// get message-tag for name and display according error-message
+    		// add message-tag for duplicate name
 	        FacesContext ctx = FacesContext.getCurrentInstance();
-	        FacesMessage fmsg = new FacesMessage();
-	        fmsg.setDetail("Experiment name already in use! - Please specify a unique name.");
-	        fmsg.setSummary("Duplicate name: Experiment names must be unique!");
 	        ctx.addMessage("ename",fmsg);
     		return "failure";
     	}
@@ -336,11 +345,10 @@ public class Manager {
     	Experiment exp = testbedMan.getExperiment(expBean.getID());
     	exp.getExperimentApproval().setState(Experiment.STATE_COMPLETED);
     	exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
-        //exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
-        //exp.setState(Experiment.STATE_IN_PROGRESS);
         testbedMan.updateExperiment(exp);
         expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);        
-    	return "goToStage5";
+        expBean.setApproved(true);
+        return "goToStage5";
     }
     public String executeExperiment(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
@@ -348,7 +356,7 @@ public class Manager {
     	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
     	// running experiment: dummy invoker should be called here
     	try {
-    		exp.getExperimentExecution().executeExperiment();
+    		testbedMan.executeExperiment(exp);
         	String inputData = expBean.getEworkflowInputData();
         	URI outputURI = exp.getExperimentExecution().getExecutionOutputData(new URI(inputData));
         	expBean.setEworkflowOutputData(outputURI.toString());    		
@@ -358,6 +366,7 @@ public class Manager {
 	  	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
 	  	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
 	  	  	}
+	        testbedMan.updateExperiment(exp);
 	  	  	return null;
     	} catch (Exception e) {
     		log.error("Error when executing Experiment: " + e.toString());
@@ -374,6 +383,7 @@ public class Manager {
   	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
   	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
   	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
+  	        testbedMan.updateExperiment(exp);
     		return "goToStage6";
   	  	} else
     		return null;
@@ -399,6 +409,7 @@ public class Manager {
     	//exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
     	//exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
     	exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
+        testbedMan.updateExperiment(exp);
     	return "completeExperiment";
     }
     

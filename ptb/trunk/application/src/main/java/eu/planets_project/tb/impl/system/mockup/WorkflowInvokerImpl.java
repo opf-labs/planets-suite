@@ -52,11 +52,10 @@ public class WorkflowInvokerImpl implements
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.system.mockup.WorkflowInvoker#executeExperimentWorkflow(eu.planets_project.tb.api.model.Experiment)
 	 */
-	public void executeExperimentWorkflow(long lExperimentID) throws Exception{
+	public void executeExperimentWorkflow(Experiment exp) throws Exception{
 		try{
 			manager = TestbedManagerImpl.getInstance(true);
-			Experiment exp = manager.getExperiment(lExperimentID);
-
+			
 			ExperimentWorkflow expWorkflow = exp.getExperimentSetup().getExperimentWorkflow();
 
 			if(expWorkflow!=null){

@@ -59,7 +59,6 @@ public class ExperimentBean {
     private String outputData;
     private int currStage =ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
-    private boolean executed = false;
         
     public ExperimentBean() {
     	/*benchmarks = new HashMap<String,BenchmarkBean>();
@@ -109,7 +108,9 @@ public class ExperimentBean {
 					bmb.setSelected(true);
 		    		benchmarks.put(bm.getID(), bmb);
     			}
-    			this.outputData = eworkflow.getOutputData().toArray()[0].toString(); 
+    			//this.outputData = eworkflow.getOutputData().toArray()[0].toString();
+    			if (exp.getExperimentExecution() != null)
+    				this.outputData = (exp.getExperimentExecution().getExecutionOutputData((new URI(this.inputData)))).toString();
     		}
         } catch (Exception e) {
         	log.error("Exception when trying to create ExperimentBean from database object: "+e.toString());        	
@@ -132,20 +133,21 @@ public class ExperimentBean {
     	if (nroutputfiles !=null && nroutputfiles != "-1") 
     		this.nrOutputFiles = nroutputfiles;
     	// determine current Stage
-    	String currPhase = exp.getCurrentPhase().getPhaseName();
-    	if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTSETUP)) {
-    		this.currStage = exp.getExperimentSetup().getSubStage();
-    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTAPPROVAL)) {
-    		this.currStage = ExperimentBean.PHASE_EXPERIMENTAPPROVAL;
-    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEXECUTION)) {
-    		this.currStage = ExperimentBean.PHASE_EXPERIMENTEXECUTION;
-    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION)) {
-    		this.currStage = ExperimentBean.PHASE_EXPERIMENTEVALUATION;
+    	ExperimentPhase currPhaseObj = exp.getCurrentPhase();
+    	if (currPhaseObj != null) {
+    		String currPhase = currPhaseObj.getPhaseName();
+	    	if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTSETUP)) {
+	    		this.currStage = exp.getExperimentSetup().getSubStage();
+	    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTAPPROVAL)) {
+	    		this.currStage = ExperimentBean.PHASE_EXPERIMENTAPPROVAL;
+	    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEXECUTION)) {
+	    		this.currStage = ExperimentBean.PHASE_EXPERIMENTEXECUTION;
+	    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION)) {
+	    		this.currStage = ExperimentBean.PHASE_EXPERIMENTEVALUATION;
+	    	}
     	}
-        if(currStage>ExperimentBean.PHASE_EXPERIMENTSETUP_3)
-            approved=true;
-        if (currStage==ExperimentBean.PHASE_EXPERIMENTEVALUATION)
-        	executed=true;
+	    if(currStage>ExperimentBean.PHASE_EXPERIMENTSETUP_3)
+	    	approved=true;
     }
     
     public Map<String,BenchmarkBean> getBenchmarks() {
@@ -361,11 +363,4 @@ public class ExperimentBean {
         this.approved = approved;
     }
 
-    public boolean getExecuted() {
-        return executed;
-    }
-    
-    public void setExecuted(boolean executed) {
-        this.executed = executed;
-    }
 }
