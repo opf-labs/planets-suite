@@ -225,10 +225,24 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	}
 	
 	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#deleteSourceValue()
+	 */
+	public void deleteSourceValue(){
+		this.sSourceValue = new String();
+	}
+	
+	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getTargetValue()
 	 */
 	public String getTargetValue() {
 		return this.sTargetValue;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#deleteTargetValue()
+	 */
+	public void deleteTargetValue(){
+		this.sTargetValue = new String();
 	}
 
 	/* (non-Javadoc)
@@ -292,6 +306,13 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	 */
 	public String getEvaluationValue() {
 		return this.sEvaluationValue;
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#deleteEvaluationValue()
+	 */
+	public void deleteEvaluationValue(){
+		this.sEvaluationValue = new String();
 	}
 
 	/* (non-Javadoc)

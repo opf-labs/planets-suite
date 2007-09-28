@@ -42,6 +42,7 @@ public interface BenchmarkGoal {
 	 */
 	public void setSourceValue(String sValue) throws InvalidInputException;
 	public String getSourceValue();
+	public void deleteSourceValue();
 	
 	/**
 	 * Sets (for migration experiments) the output source's characterisation value.
@@ -51,6 +52,7 @@ public interface BenchmarkGoal {
 	 */
 	public void setTargetValue(String sValue) throws InvalidInputException;
 	public String getTargetValue();
+	public void deleteTargetValue();
 	
 	/**
 	 * 
@@ -59,6 +61,7 @@ public interface BenchmarkGoal {
 	 */
 	public void setEvaluationValue(String sValue)throws InvalidInputException;
 	public String getEvaluationValue();
+	public void deleteEvaluationValue();
 	
 	/**
 	 * @param iWeight
