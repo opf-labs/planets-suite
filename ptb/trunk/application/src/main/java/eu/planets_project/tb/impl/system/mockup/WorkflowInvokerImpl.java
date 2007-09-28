@@ -17,6 +17,8 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
+import org.apache.commons.logging.Log;
+
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.api.model.Experiment;
@@ -28,6 +30,8 @@ import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+
 /**
  * @author alindley
  *
@@ -35,6 +39,7 @@ import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 public class WorkflowInvokerImpl implements
 		eu.planets_project.tb.api.system.mockup.WorkflowInvoker {
 
+	//private Log log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 	private TestbedManager manager;
 	private String sOutputDir, sInputDir, sOutputFileName,sURIOutputDir;
 	
@@ -71,13 +76,14 @@ public class WorkflowInvokerImpl implements
 							File fInput = this.getFile(inputURI);
 							this.sOutputFileName = fInput.getName();
 							File fOutput = new File(this.sOutputDir+"/"+this.sOutputFileName);
+							
 							//create duplicate of the file
 							this.copyFile(fInput, fOutput);
 							//get the URI to the outputfile
 							URI outputURI = this.getOutputFileURI();
 							//now store results back to experiment
 							expWorkflow.setOutputData(inputURI, outputURI);
-
+					  
 							//Finally update the Experiment
 							manager.updateExperiment(exp);
 						}
@@ -101,8 +107,8 @@ public class WorkflowInvokerImpl implements
 	        java.io.InputStream ResourceFile = getClass().getClassLoader().getResourceAsStream("eu/planets_project/tb/impl/BackendResources.properties");
 	        properties.load(ResourceFile); 
 	        
-	        String sJBossHome = properties.getProperty("Jboss.Home");
-	        String sFileDirBase = sJBossHome+properties.getProperty("Jboss.FiledirBase");
+	        //Note: sFileDirBaase = ifr_server/bin/../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war
+	        String sFileDirBase = properties.getProperty("Jboss.FiledirBase");
 	        sOutputDir = sFileDirBase+properties.getProperty("JBoss.FileOutDir");
 	        sURIOutputDir = properties.getProperty("JBoss.FileOutDir");
 	        sInputDir = sFileDirBase+properties.getProperty("JBoss.FileInDir");
@@ -153,6 +159,7 @@ public class WorkflowInvokerImpl implements
     }
     
 	private void copyFile(File srcFile, File destFile) throws IOException {
+		
 		InputStream in = new FileInputStream(srcFile);
 		OutputStream out = new FileOutputStream(destFile);
 
@@ -161,6 +168,7 @@ public class WorkflowInvokerImpl implements
 		while((bytesRead=in.read(buffer)) >= 0) {
 			out.write(buffer, 0, bytesRead);
 		}
+
 		out.close();
 		in.close();
 	}
