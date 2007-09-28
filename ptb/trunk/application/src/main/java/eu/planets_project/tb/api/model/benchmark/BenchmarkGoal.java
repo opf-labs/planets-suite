@@ -69,6 +69,7 @@ public interface BenchmarkGoal {
 	 */
 	public void setWeight(int iWeight)throws InvalidInputException;
 	public int getWeight();
+	public void deleteWeight();
 	
 	/**
 	 * Validates if the provided input matches the defined type. 

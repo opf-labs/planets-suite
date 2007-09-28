@@ -251,6 +251,13 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	public int getWeight() {
 		return this.iWeight;
 	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#deleteWeight()
+	 */
+	public void deleteWeight(){
+		this.iWeight = -1;
+	}
 
 
 	/* (non-Javadoc)
