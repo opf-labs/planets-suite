@@ -70,6 +70,7 @@ public class Manager {
         FacesMessage fmsg = new FacesMessage();
         fmsg.setDetail("Experiment name already in use! - Please specify a unique name.");
         fmsg.setSummary("Duplicate name: Experiment names must be unique!");
+        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
         // if not yet created, create new Experiment object and new Bean
         if ((expBean.getID() == 0)) { 
 	        // Create new Experiment
@@ -143,7 +144,8 @@ public class Manager {
     }
     
     public String updateBenchmarksAction(){
-   	    // create bm-goals    	
+	  try {
+    	// create bm-goals    	
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID());
@@ -157,24 +159,15 @@ public class Manager {
     		if (bmb.getSelected()) {
 	    		// method to get a new instance of BenchmarkGoal
     			BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
-	    		try {
+	    		if (bmb.getSourceValue()!=null && (!(bmb.getSourceValue().equals(""))))    			
 	    			bmg.setSourceValue(bmb.getSourceValue());
-		    		bmg.setTargetValue(bmb.getTargetValue());
-		    		bmg.setEvaluationValue(bmb.getEvaluationValue());
-		    		if (bmb.getWeight()!=null)
-		    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
-		    		bmgoals.add(bmg);
-	    		} catch (InvalidInputException e) {
-	    	        // create message for duplicate name error message
-	    	        FacesMessage fmsg = new FacesMessage();
-	    	        fmsg.setDetail("Values for Benchmarkgoal are not valid!"+e.toString());
-	    	        fmsg.setSummary("Values for Benchmarkgoal are not valid!");
-		    		// add message-tag for duplicate name
-			        FacesContext ctx = FacesContext.getCurrentInstance();
-			        ctx.addMessage("bg",fmsg);
-	    			log.error(e.toString());
-		    		return "failure";
-	    		}
+	    		if (bmb.getTargetValue()!=null && (!(bmb.getTargetValue().equals(""))))	    		
+	    			bmg.setTargetValue(bmb.getTargetValue());
+	    		if (bmb.getEvaluationValue()!=null && (!(bmb.getEvaluationValue().equals(""))))
+	    			bmg.setEvaluationValue(bmb.getEvaluationValue());
+	    		if (bmb.getWeight()!=null && (!(bmb.getWeight().equals("-1"))))
+	    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
+	    		bmgoals.add(bmg);
 	    		// add to experimentbean benchmarks
 	    		expBean.addBenchmarkBean(bmb);
     		} else {
@@ -189,8 +182,26 @@ public class Manager {
     	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutputFiles()));
     	exp.getExperimentSetup().setExperimentResources(expRes);
     	testbedMan.updateExperiment(exp); 
+    	// if successful, set a message at top of page
+        FacesMessage fmsg = new FacesMessage();
+        fmsg.setDetail("Your data have been saved successfully!");
+        fmsg.setSummary("Your data have been saved successfully!");
+        fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
+		// add message-tag for duplicate name
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        ctx.addMessage("stage3form",fmsg);
         return "success";
-    }
+	  } catch (InvalidInputException e) {
+		log.error(e.toString());
+        FacesMessage fmsg = new FacesMessage();
+        fmsg.setDetail("Problem saving data!");
+        fmsg.setSummary("Problem saving data!");
+        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        ctx.addMessage("stage3form",fmsg);
+		return "failure";
+	  }
+   	}
     
     
     public String updateEvaluationAction() {
@@ -199,12 +210,12 @@ public class Manager {
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
 	    	Experiment exp = testbedMan.getExperiment(expBean.getID());
                 
-                ExperimentReportImpl rep = new ExperimentReportImpl();
-                rep.setBodyText(ereport.getValue().toString());
-                rep.setHeader("Report Header");
+                //ExperimentReportImpl rep = new ExperimentReportImpl();
+                //rep.setBodyText(ereport.getValue().toString());
+                //rep.setHeader("Report Header");
                 
                 //save the evaluation report
-                exp.getExperimentEvaluation().setExperimentReport(rep);
+                //exp.getExperimentEvaluation().setExperimentReport(rep);
                 
 	    	// create Goal objects from Beans
 	    	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
@@ -215,20 +226,25 @@ public class Manager {
 		    		// method to get a new instance of BenchmarkGoal
 	    			BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
 		    	try {
-	    			bmg.setSourceValue(bmb.getSourceValue());
-		    		bmg.setTargetValue(bmb.getTargetValue());
-		    		bmg.setEvaluationValue(bmb.getEvaluationValue());
-		    		if (bmb.getWeight()!=null)
+	    			String srcVal = bmb.getSourceValue();
+	    			if (srcVal!=null && !srcVal.equals(""))
+	    				bmg.setSourceValue(srcVal);
+	    			String trgVal = bmb.getTargetValue();
+	    			if (trgVal!=null && !trgVal.equals(""))
+	    				bmg.setTargetValue(trgVal);
+	    			String evalVal = bmb.getEvaluationValue();
+	    			if (evalVal!=null && !evalVal.equals(""))
+	    				bmg.setEvaluationValue(evalVal);
+		    		if (bmb.getWeight()!=null && !bmb.getWeight().equals("-1"))
 		    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
 		    		bmgoals.add(bmg);
 	    		} catch (InvalidInputException e) {
-	    	        // create message for duplicate name error message
 	    	        FacesMessage fmsg = new FacesMessage();
 	    	        fmsg.setDetail("Values for Benchmarkgoal are not valid!"+e.toString());
 	    	        fmsg.setSummary("Values for Benchmarkgoal are not valid!");
-		    		// add message-tag for duplicate name
+	    	        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			        FacesContext ctx = FacesContext.getCurrentInstance();
-			        ctx.addMessage("bg",fmsg);
+			        ctx.addMessage("bmTable",fmsg);
 	    			log.error(e.toString());
 		    		return "failure";
 	    		}
@@ -239,10 +255,17 @@ public class Manager {
 	    	Experiment e = testbedMan.getExperiment(exp.getEntityID());
 	    	System.out.println("Exp ID: "+ exp.getEntityID() + " e: " + e);   	
 	    	exp.getExperimentEvaluation().setEvaluatedFileBenchmarkGoals(bhm);
-	    	return null;
+	    	testbedMan.updateExperiment(exp);
+	        FacesMessage fmsg = new FacesMessage();
+	        fmsg.setDetail("Evaluation Data saved successfully!");
+	        fmsg.setSummary("Evaluation Data saved successfully!");
+	        fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
+	        FacesContext ctx = FacesContext.getCurrentInstance();
+	        ctx.addMessage("bmTable",fmsg);	    	
+	    	return "success";
         } catch (Exception e) {
         	log.error("Exception when trying to create/update Evaluations: "+e.toString());
-        	return null;
+        	return "failure";
         }
     }
     

@@ -57,9 +57,9 @@
 			of the experiment design. Evaluate the success of your experiment by
 			selecting the level of success of each goal.</p>
 
-			<t:dataTable id="dataTable" var="bm"
+			<t:dataTable id="bmTable" var="bm"
 				value="#{ExperimentBean.benchmarkBeans}" preserveDataModel="false"
-				rows="4" rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
+				rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
 				<t:column>
 					<f:facet name="header">#{res['exp_stage6.criteria']}</f:facet>
 				    #{bm.name}
@@ -71,29 +71,29 @@
 				</t:column>
 				<t:column>
 					<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
-                                        <select>
-                                                <option>Very Good</option>
-                                                <option>Fairly Good</option>
-                                                <option>Not Good Enough</option>
-                                                <option>Poor</option>
-                                                <option>Very Poor</option>
-                                        </select>       
+					<h:selectOneMenu value="#{bm.evaluationValue}">
+						<f:selectItems value="#{Manager_Backing.availableEvaluationValues}" />
+					</h:selectOneMenu>
 				</t:column>
 				<t:column>
-					<f:facet name="header">#{res['exp_stage6.outcome']}</f:facet>
-                                            <h:inputText value="#{bm.value}" required="true" id="bg" /> <h:message for="bg" />         
+					<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
+                                            <h:inputText value="#{bm.sourceValue}" /> <br/>     
+                                            	<h:outputText value="#{bm.typename}" />      
 				</t:column>
 				<t:column>
+					<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
+                                            <h:inputText value="#{bm.targetValue}" /><br/>          
+                                            	<h:outputText value="#{bm.typename}" />
+				</t:column>
+				
+				<!-- t:column>
 					<f:facet name="header">#{res['exp_stage6.requiredType']}</f:facet>
 					<h:outputText value="#{bm.typename}" />
-				</t:column>
+				</t:column -->
 			</t:dataTable>
+			<h:messages for="bmTable" errorClass="errorMessage" infoClass="infoMessage"/>
 
-
-			<h2 class="main">#{res['exp_stage6.headingReport']}</h2>
-			<p><h:inputTextarea rows="20" cols="100" required="false" id="ereport" value="#{Manager_Backing.ereport}" /></p>
-
-			<p><h:commandButton value="#{res['exp_stage6.button']}"
+	<p><h:commandButton value="#{res['exp_stage6.button']}"
 				action="#{Manager_Backing.updateEvaluationAction}" /></p>
 		</h:form></div>
 		</div>

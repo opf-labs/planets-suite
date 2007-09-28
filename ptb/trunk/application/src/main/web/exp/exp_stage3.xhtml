@@ -24,7 +24,8 @@
 			<div id="maincol">
 				<div class="innertubemain">
 					<p>Supply information about the estimated resources your experiment will require and the objectives you expect your experiment to meet.</p>
-					<h:form>
+					<h:form id="stage3form">
+						<h:messages for="stage3form" errorClass="errorMessage" infoClass="infoMessage"/>
 						<fieldset>
 							<legend>#{res['exp_stage3.legendResources']}</legend>
 							<p>
@@ -54,8 +55,7 @@
 							<legend>#{res['exp_stage3.legendOutcomes']}</legend>
 							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
 
-						  	<h:dataTable id="dataTable" var="bm" value="#{BenchmarkBeans}"
-			    	              rows="4"
+						  	<h:dataTable id="dataTable" var="bm" value="#{BenchmarkBeans}"			    	              
 			        	          rowId="#{bm.ID}"
 			            	      cellpadding="2"
 			                	  cellspacing="0"

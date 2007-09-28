@@ -671,3 +671,13 @@ span.readerLabel
     padding:0;
     border:0;
 }
+
+.infoMessage
+{
+	color: green;
+}
+
+.errorMessage
+{
+	color: red;
+}
