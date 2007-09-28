@@ -45,7 +45,11 @@ public class ExperimentBean {
     private String econtactaddress = new String();
     private String epurpose = new String();
     private String efocus = new String();
+
+    private String litrefs = new String();
     private Long erefs;
+    private String exid = new String();
+
     private String escope = new String();
     private String eapproach = new String();
     private String econsiderations = new String();
@@ -80,6 +84,26 @@ public class ExperimentBean {
     	this.econtactemail=(props.getContactMail());
     	this.econtacttel=(props.getContactTel());
     	this.econtactname=(props.getContactName());
+        
+        
+        this.exid=(props.getExternalReferenceID());
+        
+        List<String[]> lit = props.getAllLiteratureReferences();
+        String actualLitref = new String();
+        
+        for(int i=0;i<lit.size();i++){
+			String[] l= lit.get(i);
+                        actualLitref = actualLitref + l[0] + " " + l[1] + "\n";
+        }
+        
+        this.litrefs=actualLitref;
+        
+
+        
+        String Test = props.getExternalReferenceID();
+        
+        this.exid=(Test);
+        
     	this.efocus=(props.getFocus());
     	this.epurpose=(props.getPurpose());
     	this.esummary=(props.getSummary());
@@ -310,6 +334,7 @@ public class ExperimentBean {
     public Long getErefs() {
             return erefs;
     }
+
         
     public void setErefs(Long erefs) {
     	this.erefs = erefs;
@@ -369,10 +394,39 @@ public class ExperimentBean {
         this.approved = approved;
     }
     
-    public List<Long> getErefAsList() {        
-        List<Long> ef = new ArrayList<Long>();
-        if (this.getErefs()!=null)
-        	ef.add(0,this.getErefs());        
+    public void setExid(String exid) {
+    	this.exid = exid;
+    }
+    
+    public String getExid() {
+    	return this.exid;
+    }
+    
+    public void setLitrefs(String litrefs) {
+    	this.litrefs = litrefs;
+    }
+    
+    public String getLitrefs() {
+    	return this.litrefs;
+    }
+    
+    public List<String[]> getLitrefsAsList() {
+        
+                List<String[]> lit = new ArrayList<String[]>();
+                
+                String[] lref = new String[2];
+                lref[0] = this.getLitrefs();
+                lref[1] = "";
+                
+                lit.add(0,lref);        
+        return lit;
+    }
+    
+    public List<Long> getErefAsList() {
+        
+                List<Long> ef = new ArrayList<Long>();
+                
+                ef.add(0,this.getErefs());        
         return ef;
     }
 

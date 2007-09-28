@@ -113,8 +113,8 @@
 
 <fieldset>
     <legend>#{res['new_exp.legendReferences']}</legend>
-    <p><h:outputLabel value="#{res['new_exp.expID']}" for="eid" />
-	<input type="textbox" size="50" /> <img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipID']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+    <p><h:outputLabel value="#{res['new_exp.expID']}" for="exid" />
+	 <h:inputText  required="false" id="exid" value="#{ExperimentBean.exid}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/><img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipID']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 	<div class="clear"></div>
    		<p><h:outputLabel value="#{res['new_exp.expRefs']}" for="erefs" />
 		<h:inputText  required="false" id="erefs" value="#{ExperimentBean.erefs}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
@@ -126,9 +126,10 @@
 <div class="clear"></div>     
       <p><h:outputLabel value="#{res['new_exp.expAdapted']}" for="eadapted" />
 
-		<a href="#">Migration of 10 DOC files to PDFa</a> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipAdaptedFrom']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+                <i>If your experiment was based on a previous experiment a link to the experiment would appear here.</i> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipAdaptedFrom']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 		<div class="clear"></div>
-	<p><h:outputLabel value="#{res['new_exp.expIdeas']}" for="eideas" /> <input type="textbox" size="50" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<p><h:outputLabel value="#{res['new_exp.expIdeas']}" for="erefs" />
+<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 	<div class="clear"></div>
 </fieldset>
 

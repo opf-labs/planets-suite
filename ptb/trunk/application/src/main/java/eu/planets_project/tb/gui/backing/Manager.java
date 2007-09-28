@@ -115,7 +115,21 @@ public class Manager {
         props.setScope(expBean.getEscope());
         props.setContact(expBean.getEcontactname(),expBean.getEcontactemail(),expBean.getEcontacttel(),expBean.getEcontactaddress());       
         props.setExperimentFormal(expBean.getFormality());
-  		props.setExperimentReferences(expBean.getErefAsList());
+
+        props.setExternalReferenceID(expBean.getExid());
+        
+        props.setExperimentReferences(expBean.getErefAsList());
+        
+        try {
+        props.setLiteratureReference(expBean.getLitrefsAsList());
+        } catch (InvalidInputException e) {
+            return "failure";
+        }
+        
+        
+        
+        props.setExperimentReferences(expBean.getErefAsList());
+
 
         // Workaround
         // update in cached lists
