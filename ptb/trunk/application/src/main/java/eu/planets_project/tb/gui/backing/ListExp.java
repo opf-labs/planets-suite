@@ -142,11 +142,12 @@ public class ListExp extends SortableList {
 
 	      ExperimentBean expBean = new ExperimentBean();
 	      expBean.fill(selectedExperiment);
-	      // if experiment workflow already specified, set a workflow bean into session as backing bean for inputfields
+	      // if experiment workflow already specified, set a workflow bean into session as backing bean for inputfields, else remove any existing workflow from session
 	      if (expBean.getWorkflowTypeId()!=null) {
 	    	  Workflow wf = selectedExperiment.getExperimentSetup().getExperimentWorkflow().getWorkflow();
 	    	  ctx.getExternalContext().getSessionMap().put("Workflow",wf);
-	      }
+	      } else 
+	    	  ctx.getExternalContext().getSessionMap().remove("Workflow"); 
 	      //Store selected Experiment Row accessible later as #{Experiment} 
 	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
 	              

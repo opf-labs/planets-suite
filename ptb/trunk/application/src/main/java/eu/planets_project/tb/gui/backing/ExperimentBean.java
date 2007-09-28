@@ -45,7 +45,7 @@ public class ExperimentBean {
     private String econtactaddress = new String();
     private String epurpose = new String();
     private String efocus = new String();
-    private String erefs = new String();
+    private Long erefs;
     private String escope = new String();
     private String eapproach = new String();
     private String econsiderations = new String();
@@ -91,7 +91,11 @@ public class ExperimentBean {
    			if (eworkflow.getInputData()!=null)     			
    				this.inputData = eworkflow.getInputData().toArray()[0].toString();   			    		    		
     	}
-    	
+    	List<Long> ef = props.getExperimentReferences();
+    	if (ef != null && !ef.isEmpty()) {
+    		Long actualeref = ef.get(0);
+        	this.erefs=actualeref;
+    	}
     	// set benchmarks
     	try {
     		if (this.inputData != null) {
@@ -303,12 +307,12 @@ public class ExperimentBean {
         this.efocus = efocus;
     }
     
-    public String getErefs() {
-        return erefs;
+    public Long getErefs() {
+            return erefs;
     }
-    
-    public void setErefs(String erefs) {
-        this.erefs = erefs;
+        
+    public void setErefs(Long erefs) {
+    	this.erefs = erefs;
     }
     
     public String getEscope() {
@@ -363,6 +367,13 @@ public class ExperimentBean {
     
     public void setApproved(boolean approved) {
         this.approved = approved;
+    }
+    
+    public List<Long> getErefAsList() {        
+        List<Long> ef = new ArrayList<Long>();
+        if (this.getErefs()!=null)
+        	ef.add(0,this.getErefs());        
+        return ef;
     }
 
 }

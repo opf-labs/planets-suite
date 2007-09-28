@@ -62,7 +62,10 @@ public class Manager {
     }
 
     public String updateBasicPropsAction(){
-   	    TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        // remove workflow object from session, if still available from previously viewed experiment
+    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
+    	
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
     	Experiment exp = null;
 		BasicProperties props = null;
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -112,6 +115,7 @@ public class Manager {
         props.setScope(expBean.getEscope());
         props.setContact(expBean.getEcontactname(),expBean.getEcontactemail(),expBean.getEcontacttel(),expBean.getEcontactaddress());       
         props.setExperimentFormal(expBean.getFormality());
+  		props.setExperimentReferences(expBean.getErefAsList());
 
         // Workaround
         // update in cached lists
