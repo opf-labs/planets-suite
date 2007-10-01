@@ -134,9 +134,18 @@ public class ListExp extends SortableList {
 		}
 		
 	    public String editExperimentAction()
-	    {
-	    
+	    {	    
+	      Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
+	      return this.editExperimentAction(selectedExperiment);
+	    }
+
+	    public String editMyExperimentAction()
+	    {	    
 	      Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
+	      return this.editExperimentAction(selectedExperiment);
+	    }
+	    
+	    private String editExperimentAction(Experiment selectedExperiment) {
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 	      FacesContext ctx = FacesContext.getCurrentInstance();
 
@@ -154,7 +163,7 @@ public class ListExp extends SortableList {
 	      // go to edit page
 	      return "editExp";
 	    }
-            
+	    
 	    public String readerExperimentAction()
 	    {
 	    
