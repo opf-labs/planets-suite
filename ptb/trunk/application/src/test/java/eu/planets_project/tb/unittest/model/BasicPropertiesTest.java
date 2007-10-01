@@ -454,7 +454,6 @@ public class BasicPropertiesTest extends TestCase{
 		props.removeLiteratureReference(sTitle,sURI);
 		assertEquals(2,props.getAllLiteratureReferences().size());
 		
-		//Test5:
 		String sTitle4 = "Title Website1";
 		String sURI4 = "http://localhost:8080";
 		Vector<String[]> vAdd = new Vector<String[]>();

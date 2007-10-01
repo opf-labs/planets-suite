@@ -116,6 +116,11 @@ public class Manager {
         props.setContact(expBean.getEcontactname(),expBean.getEcontactemail(),expBean.getEcontacttel(),expBean.getEcontactaddress());       
         props.setExperimentFormal(expBean.getFormality());
 
+        String partpnts = expBean.getEparticipants();
+        String[] partpntlist = partpnts.split(",");
+        for(int i=0;i<partpntlist.length;i++){        
+            props.addInvolvedUser(partpntlist[i]);
+        }
         props.setExternalReferenceID(expBean.getExid());
                 
         String litRefDesc = expBean.getLitRefDesc();
@@ -513,6 +518,7 @@ public class Manager {
     	return "completeExperiment";
     }
     
+  
     public String loadReaderStage2() {
         return "goToReaderStage2";
     }

@@ -45,6 +45,7 @@ public class ExperimentBean {
     private String econtactaddress = new String();
     private String epurpose = new String();
     private String efocus = new String();
+    private String eparticipants = new String();
 
     private String litrefdesc = new String();
     private String litrefuri = new String();
@@ -100,9 +101,22 @@ public class ExperimentBean {
         if (refs != null && !refs.isEmpty()) {
         	this.eref = refs.get(0);
         }        
-
+        List<String> involvedUsers = props.getInvolvedUserIds();
+        String partpnts = " ";
+        for(int i=0;i<involvedUsers.size();i++){
+            partpnts +=involvedUsers.get(i)+", ";
+        }
         
+
+        this.eparticipants = partpnts;
+        
+        String Test = props.getExternalReferenceID();
+        
+        this.exid=(Test);
+        
+
         this.efocus=(props.getFocus());
+
     	this.epurpose=(props.getPurpose());
     	this.esummary=(props.getSummary());
     	this.eformality = props.isExperimentFormal();    	
@@ -401,6 +415,14 @@ public class ExperimentBean {
     
     public String getLitRefURI() {
     	return this.litrefuri;
+    }
+
+    public void setEparticipants(String eparticipants) {
+    	this.eparticipants = eparticipants;
+    }
+    
+    public String getEparticipants() {
+    	return this.eparticipants;
     }
 
     public Long getEref() {
