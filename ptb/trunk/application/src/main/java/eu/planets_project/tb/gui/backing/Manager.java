@@ -117,20 +117,38 @@ public class Manager {
         props.setExperimentFormal(expBean.getFormality());
 
         props.setExternalReferenceID(expBean.getExid());
-        
-        props.setExperimentReferences(expBean.getErefAsList());
-        
-        try {
-        props.setLiteratureReferences(expBean.getLitrefsAsList());
-        } catch (InvalidInputException e) {
-            return "failure";
+                
+        String litRefDesc = expBean.getLitRefDesc();
+        String litRefURI = expBean.getLitRefURI();     
+	    List<String[]> refList = new ArrayList<String[]>();
+        if (litRefDesc != null && !litRefDesc.equals("")) {
+	    	refList.add(new String[]{litRefDesc,litRefURI});
         }
+        try {
+        	props.setLiteratureReference(refList);
+        } catch (InvalidInputException e) {
+        	log.error("Problems setting literature references: "+e.toString());
+        }
+        List<Long> refs = new ArrayList<Long>();
+        if (expBean.getEref() != null && !expBean.getEref().equals(""))
+        	refs.add(expBean.getEref());
+        props.setExperimentReferences(refs);
+	    /*List<String[]> lit = props.getAllLiteratureReferences();
+        if (lit != null && !lit.isEmpty()) {
+        	String[] l = lit.get(0);
+        	props.removeLiteratureReference(l[0],l[1]);            	
+        } 
+        if (litRefDesc != null && !litRefDesc.equals("") && litRefURI != null && !litRefURI.equals(""))
+        	props.addLiteratureReference(litRefDesc, litRefURI);
         
+        if (expBean.getEref() != null)
+        	props.addExperimentReference(expBean.getEref());
+        else {
+            List<Long> refs = props.getExperimentReferences();
+            if (refs != null && !refs.isEmpty()) 
+            	props.removeExperimentReference(refs.get(0));
+    	}*/
         
-        
-        props.setExperimentReferences(expBean.getErefAsList());
-
-
         // Workaround
         // update in cached lists
         ListExp listExp_Backing = (ListExp)JSFUtil.getManagedObject("ListExp_Backing");

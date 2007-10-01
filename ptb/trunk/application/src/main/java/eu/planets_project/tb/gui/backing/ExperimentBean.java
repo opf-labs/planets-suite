@@ -46,8 +46,9 @@ public class ExperimentBean {
     private String epurpose = new String();
     private String efocus = new String();
 
-    private String litrefs = new String();
-    private Long erefs;
+    private String litrefdesc = new String();
+    private String litrefuri = new String();
+    private Long eref;
     private String exid = new String();
 
     private String escope = new String();
@@ -85,26 +86,23 @@ public class ExperimentBean {
     	this.econtacttel=(props.getContactTel());
     	this.econtactname=(props.getContactName());
         
-        
-        this.exid=(props.getExternalReferenceID());
+        // references
+        this.exid=props.getExternalReferenceID();
         
         List<String[]> lit = props.getAllLiteratureReferences();
-        String actualLitref = new String();
+        if (lit != null && !lit.isEmpty()) {
+        	String[] l = lit.get(0);
+        	this.litrefdesc = l[0];
+        	this.litrefuri = l[1];
+        }       
         
-        for(int i=0;i<lit.size();i++){
-			String[] l= lit.get(i);
-                        actualLitref = actualLitref + l[0] + " " + l[1] + "\n";
-        }
-        
-        this.litrefs=actualLitref;
-        
+        List<Long> refs = props.getExperimentReferences();
+        if (refs != null && !refs.isEmpty()) {
+        	this.eref = refs.get(0);
+        }        
 
         
-        String Test = props.getExternalReferenceID();
-        
-        this.exid=(Test);
-        
-    	this.efocus=(props.getFocus());
+        this.efocus=(props.getFocus());
     	this.epurpose=(props.getPurpose());
     	this.esummary=(props.getSummary());
     	this.eformality = props.isExperimentFormal();    	
@@ -115,11 +113,7 @@ public class ExperimentBean {
    			if (eworkflow.getInputData()!=null)     			
    				this.inputData = eworkflow.getInputData().toArray()[0].toString();   			    		    		
     	}
-    	List<Long> ef = props.getExperimentReferences();
-    	if (ef != null && !ef.isEmpty()) {
-    		Long actualeref = ef.get(0);
-        	this.erefs=actualeref;
-    	}
+
     	// set benchmarks
     	try {
     		if (this.inputData != null) {
@@ -331,15 +325,6 @@ public class ExperimentBean {
         this.efocus = efocus;
     }
     
-    public Long getErefs() {
-            return erefs;
-    }
-
-        
-    public void setErefs(Long erefs) {
-    	this.erefs = erefs;
-    }
-    
     public String getEscope() {
         return escope;
     }
@@ -402,32 +387,28 @@ public class ExperimentBean {
     	return this.exid;
     }
     
-    public void setLitrefs(String litrefs) {
-    	this.litrefs = litrefs;
+    public void setLitRefDesc(String litref) {
+    	this.litrefdesc = litref;
     }
     
-    public String getLitrefs() {
-    	return this.litrefs;
+    public String getLitRefDesc() {
+    	return this.litrefdesc;
+    }
+
+    public void setLitRefURI(String uri) {
+    	this.litrefuri = uri;
     }
     
-    public List<String[]> getLitrefsAsList() {
-        
-                List<String[]> lit = new ArrayList<String[]>();
-                
-                String[] lref = new String[2];
-                lref[0] = this.getLitrefs();
-                lref[1] = "";
-                
-                lit.add(0,lref);        
-        return lit;
+    public String getLitRefURI() {
+    	return this.litrefuri;
     }
-    
-    public List<Long> getErefAsList() {
-        
-                List<Long> ef = new ArrayList<Long>();
-                
-                ef.add(0,this.getErefs());        
-        return ef;
+
+    public Long getEref() {
+        return eref;
+    }
+   
+    public void setEref(Long eref) {
+    	this.eref = eref;
     }
 
 }

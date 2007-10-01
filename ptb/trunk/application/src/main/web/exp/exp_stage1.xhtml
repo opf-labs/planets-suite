@@ -52,8 +52,9 @@
 <h:form>
 	<fieldset>
 		<legend>#{res['new_exp.legendGeneral']}</legend>
-
-	<p><h:outputLabel value="#{res['new_exp.expFormalInformal']}" for="formality" />
+	<p>
+   		<h:messages errorClass="errorMessage" infoClass="infoMessage"/>	
+		<h:outputLabel value="#{res['new_exp.expFormalInformal']}" for="formality" />
 	 	<h:selectBooleanCheckbox title="formality" id="formality" onclick="toggleRequired(event)" value="#{ExperimentBean.formality}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
 		</h:selectBooleanCheckbox>
 		<img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFormalInformal']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
@@ -64,7 +65,7 @@
 		    	<h:outputLabel value="#{res['new_exp.expName']}" for="ename" ><span style='color:red;font-weight:bold;'> *</span></h:outputLabel>
 	        	<h:inputText  required="true" id="ename" value="#{ExperimentBean.ename}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
 	        	<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipName']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-        		<h:messages for="ename" errorClass="errorMessage" infoClass="infoMessage"/>
+        		<h:message for="ename" errorClass="errorMessage" infoClass="infoMessage"/>
 			</p>
 	<div class="clear"></div>
 	
@@ -113,23 +114,40 @@
 
 <fieldset>
     <legend>#{res['new_exp.legendReferences']}</legend>
-    <p><h:outputLabel value="#{res['new_exp.expID']}" for="exid" />
-	 <h:inputText  required="false" id="exid" value="#{ExperimentBean.exid}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/><img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipID']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+    <p>
+    	<h:outputLabel value="#{res['new_exp.expID']}" for="exid" />
+	 	<h:inputText  required="false" id="exid" value="#{ExperimentBean.exid}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+	 	<img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipID']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+		<h:message for="exid" errorClass="errorMessage" />			
+ 	</p>
 	<div class="clear"></div>
-   		<p><h:outputLabel value="#{res['new_exp.expRefs']}" for="erefs" />
-		<h:inputText  required="false" id="erefs" value="#{ExperimentBean.erefs}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-            <f:converter converterId="javax.faces.Long"/>
-        </h:inputText>
-        <h:messages for="erefs" errorClass="errorMessage"/>
-<!--h:inputTextarea rows="7" cols="55" required="false" id="erefs" value="#{ExperimentBean.erefs}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipRefs']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /-->
-</p>
-<div class="clear"></div>     
-      <p><h:outputLabel value="#{res['new_exp.expAdapted']}" for="eadapted" />
-
-                <i>If your experiment was based on a previous experiment a link to the experiment would appear here.</i> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipAdaptedFrom']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-		<div class="clear"></div>
-	<p><h:outputLabel value="#{res['new_exp.expIdeas']}" for="erefs" />
-<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+	<p>
+		<h:outputLabel value="#{res['new_exp.litRef']}" />
+		<table>
+		  <tr>
+			<td><h:outputLabel value="#{res['new_exp.litRef_Desc']}" for="litRefDesc" /></td>
+			<td>
+				<h:inputText  required="#{((ExperimentBean.litRefURI!=null) and (ExperimentBean.litRefURI!=''))}" id="litRefDesc" value="#{ExperimentBean.litRefDesc}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+				<h:message for="litRefDesc" errorClass="errorMessage" />			
+			</td>
+		  </tr><tr>
+			<td><h:outputLabel value="#{res['new_exp.litRef_URI']}" for="litRefURI" /></td>
+			<td>
+				<h:inputText  required="#{((ExperimentBean.litRefDesc!=null) and (ExperimentBean.litRefDesc!=''))}" id="litRefURI" value="#{ExperimentBean.litRefURI}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+				<h:message for="litRefURI" errorClass="errorMessage" />			
+			</td>
+  		  </tr>
+        </table>
+	</p>
+	<div class="clear"></div>     
+	<p>
+		<h:outputLabel value="#{res['new_exp.expIdeas']}" for="eref" />
+	 	<h:inputText required="false" id="eref" value="#{ExperimentBean.eref}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
+	        <f:converter converterId="javax.faces.Long"/>
+		</h:inputText>
+		<h:message for="eref" errorClass="errorMessage" />
+		<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+	</p>
 	<div class="clear"></div>
 </fieldset>
 
