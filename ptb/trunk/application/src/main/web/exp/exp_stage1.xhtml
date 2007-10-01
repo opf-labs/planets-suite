@@ -183,10 +183,10 @@
 <h3 class="leftcol">#{res['new_exp.progress']}</h3>
 <div class="innertube">
 <ul class="exp"><h:form>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 1}">
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 1 || ExperimentBean.currentStage == 1}">
                                     <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage1']}</a></li>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 1}">
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 1}">
 					<li class="exp_sel"><a href="#" class="exp_done">#{res['new_exp.stage1']}</a></li>
 				</h:panelGroup>	
 	<h:panelGroup rendered="#{ExperimentBean.currentStage >= 2}">

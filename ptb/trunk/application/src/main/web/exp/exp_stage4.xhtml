@@ -71,10 +71,10 @@
 						<t:outputText value="#{res['new_exp.stage3']}" />
 				</h:commandLink></li>
 
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4 || ExperimentBean.currentStage == 4}">
                                     <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage4']}</a></li>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 4}">
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 4}">
 					<li class="exp_sel"><a href="#" class="exp_done">#{res['new_exp.stage4']}</a></li>
 				</h:panelGroup>	
                                 

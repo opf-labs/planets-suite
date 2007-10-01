@@ -53,10 +53,6 @@
 					</p>
 	</h:panelGroup>
         
-                           <p>(Temporary button just so I can get to the evaluation stage)
-						<h:commandButton value="#{res['exp_stage5.button.proceed']}"
-						action="#{Manager_Backing.proceedToEvaluation}" />
-					</p>
         
 </h:form>
 		<p>&#160;</p>
@@ -100,20 +96,20 @@
 						<t:outputText value="#{res['new_exp.stage4']}" />
 				</h:commandLink></li>
                                 
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5 || ExperimentBean.currentStage == 5}">
                                     <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage5']}</a></li>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 5}">
 					<li class="exp_sel"><a href="#" class="exp_done">#{res['new_exp.stage5']}</a></li>
 				</h:panelGroup>	
                                
-				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 6}">
 					<li class="exp"><h:commandLink action="goToStage6"
 								styleClass="exp_done">
 							<t:outputText value="#{res['new_exp.stage6']}" />
 					</h:commandLink></li>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6 || ExperimentBean.currentStage == 6}">
 					<li class="exp_nd">#{res['new_exp.stage6']}</li>
 				</h:panelGroup>	
 				</h:form>
