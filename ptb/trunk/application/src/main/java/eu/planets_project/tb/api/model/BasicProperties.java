@@ -149,7 +149,7 @@ public interface BasicProperties{
 	/**
 	 * @param references String[0]=title, String[1]=URI
 	 */
-	public void setLiteratureReference(List<String[]> references) throws InvalidInputException;;
+	public void setLiteratureReferences(List<String[]> references) throws InvalidInputException;;
 	/**
 	 * @return String[0]=title, String[1]=URI
 	 */

@@ -644,7 +644,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setLiteratureReference(java.util.List)
 	 */
-	public void setLiteratureReference(List<String[]> references) throws InvalidInputException{
+	public void setLiteratureReferences(List<String[]> references) throws InvalidInputException{
 		this.hmLiteratureReference = new HashMap<String,Vector<String>>();
 		for(int i=0;i<references.size();i++){
 			String[] litRef= references.get(i);

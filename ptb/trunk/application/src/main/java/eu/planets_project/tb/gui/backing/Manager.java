@@ -121,7 +121,7 @@ public class Manager {
         props.setExperimentReferences(expBean.getErefAsList());
         
         try {
-        props.setLiteratureReference(expBean.getLitrefsAsList());
+        props.setLiteratureReferences(expBean.getLitrefsAsList());
         } catch (InvalidInputException e) {
             return "failure";
         }
