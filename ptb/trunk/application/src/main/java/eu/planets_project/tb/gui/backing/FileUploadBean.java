@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Random;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -91,9 +92,19 @@ public class FileUploadBean
         	File dir = new File(uploadDir);
         	dir.mkdirs();    
         	// create unique filename
-        	Random r = new Random();
+     
         	String ext = _upFile.getName().substring(_upFile.getName().lastIndexOf('.'));
-        	this._name = Long.toString(r.nextLong())+ext;
+        	
+        	//Use java.util.UUID to create unique file name for uploaded file
+        	/*Version 4 UUIDs are generated from a large random number and do 
+    		 *not include the MAC address. The implementation of java.util.UUID
+    		 * creates version 4 UUIDs.
+    		 * There are 122 significant bits in a type 4 UUID. 2^122 is a *very* 
+    		 * large number. Assuming a random distribution of these bits, the 
+    		 * probability of collission is *very* low.
+    		 */
+        	this._name = new UUID(20,122).randomUUID().toString() + ext;
+        	
         	File f = new File(dir, this._name );
         	f.createNewFile();
         	log.debug("Writing byte[] to file: " + f.getCanonicalPath());
