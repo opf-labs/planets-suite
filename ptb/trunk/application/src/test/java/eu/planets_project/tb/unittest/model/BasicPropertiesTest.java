@@ -460,7 +460,7 @@ public class BasicPropertiesTest extends TestCase{
 		Vector<String[]> vAdd = new Vector<String[]>();
 		vAdd.add(new String[]{sTitle4,sURI4});
 		try {
-			props.setLiteratureReference(vAdd);
+			props.setLiteratureReferences(vAdd);
 		} catch (InvalidInputException e) {
 			assertEquals(true,false);
 		}
@@ -471,7 +471,7 @@ public class BasicPropertiesTest extends TestCase{
 		String sURI5 = "http://localhost:8080/jsf";
 		vAdd.add(new String[]{sTitle5,sURI5});
 		try {
-			props.setLiteratureReference(vAdd);
+			props.setLiteratureReferences(vAdd);
 		} catch (InvalidInputException e) {
 			assertEquals(true,false);
 		}
