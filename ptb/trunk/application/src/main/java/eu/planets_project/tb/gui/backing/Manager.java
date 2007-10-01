@@ -125,7 +125,7 @@ public class Manager {
 	    	refList.add(new String[]{litRefDesc,litRefURI});
         }
         try {
-        	props.setLiteratureReference(refList);
+        	props.setLiteratureReferences(refList);
         } catch (InvalidInputException e) {
         	log.error("Problems setting literature references: "+e.toString());
         }
