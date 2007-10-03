@@ -72,7 +72,7 @@ public class ExperimentEvaluationTest extends TestCase{
 		//now check the actual unittests
 		try {
 			//just evaluating source value - no output value
-			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20",null);
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20",null,null);
 			//an exception should be thrown
 			assertEquals(true,false);
 		} catch (InvalidInputException e) {
@@ -86,7 +86,7 @@ public class ExperimentEvaluationTest extends TestCase{
 
 		try {
 			//just evaluating source value - no output value
-			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20",null);
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "20",null,null);
 		} catch (InvalidInputException e) {
 			assertEquals(true,false);
 		}
@@ -99,7 +99,7 @@ public class ExperimentEvaluationTest extends TestCase{
 
 		try {
 			//just evaluating source value - no output value
-			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "30","25");
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), "30","25","very good");
 		} catch (InvalidInputException e) {
 			assertEquals(true,false);
 		}
@@ -108,6 +108,7 @@ public class ExperimentEvaluationTest extends TestCase{
 		assertEquals(1,expEval.getEvaluatedExperimentBenchmarkGoals().size());
 		assertEquals("30", goalFound.getSourceValue());
 		assertEquals("25", goalFound.getTargetValue());
+		assertEquals("very good", goalFound.getEvaluationValue());
 	}
 	
 	public void testEvaluateExperimentOutputBenchmarkGoals(){
@@ -136,7 +137,7 @@ public class ExperimentEvaluationTest extends TestCase{
 		//now check the actual unittests
 		try {
 			//just evaluating source value - no output value
-			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), null, "20");
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(), null, "20",null);
 			//an exception should be thrown
 			assertEquals(true,false);
 		} catch (InvalidInputException e) {
@@ -150,7 +151,7 @@ public class ExperimentEvaluationTest extends TestCase{
 
 		try {
 			//just evaluating source value - no output value
-			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(),null, "20");
+			expEval.evaluateExperimentBenchmarkGoal(goal1.getID(),null, "20",null);
 		} catch (InvalidInputException e) {
 			assertEquals(true,false);
 		}
@@ -189,7 +190,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			assertNotNull(goal1);
 			//now check the actual unittests
 			try {
-				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20",null);
+				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20",null,null);
 				//an exception should be thrown
 				assertEquals(true,false);
 			} catch (InvalidInputException e) {
@@ -203,7 +204,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			manager.updateExperiment(expFound);
 			
 			try {
-				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20",null);
+				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), "20",null,null);
 			} catch (InvalidInputException e) {
 				assertEquals(true,false);
 			}
@@ -217,7 +218,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			
 		//Test4: 
 			try {
-				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), null,"30");
+				expEval.evaluateFileBenchmarkGoal(testFile, goal1.getID(), null,"30",null);
 			} catch (InvalidInputException e) {
 				assertEquals(true,false);
 			}
@@ -415,7 +416,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			manager.updateExperiment(expFound);
 			
 			try {
-				expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20", "30");
+				expFound.getExperimentEvaluation().evaluateExperimentBenchmarkGoal(goal1.getID(), "20", "30", "bad");
 			} catch (InvalidInputException e) {
 				assertEquals(true,false);
 			}
@@ -431,6 +432,7 @@ public class ExperimentEvaluationTest extends TestCase{
 					if(evalGoal.getID().equals(goal1.getID())){
 						assertEquals("20", evalGoal.getSourceValue());
 						assertEquals("30", evalGoal.getTargetValue());
+						assertEquals("bad", evalGoal.getEvaluationValue());
 					}
 				}
 			}

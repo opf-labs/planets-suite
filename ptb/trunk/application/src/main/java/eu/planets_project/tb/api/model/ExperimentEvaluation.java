@@ -31,7 +31,7 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * @param addedBenchmarkGoal
 	 * @param value
 	 */
-	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID, String sSourceValue, String sTargetValue) throws InvalidInputException;
+	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException;
 	public Collection<BenchmarkGoal> getEvaluatedExperimentBenchmarkGoals();
 	public BenchmarkGoal getEvaluatedExperimentBenchmarkGoal(String sGoalXMLID);
 	/**
@@ -50,8 +50,8 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * @param addedBenchmarkGoal
 	 * @param value
 	 */
-	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue) throws InvalidInputException;
-	public void evaluateFileBenchmarkGoal(Entry<URI,URI> ioFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue) throws InvalidInputException;
+	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException;
+	public void evaluateFileBenchmarkGoal(Entry<URI,URI> ioFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException;
 	public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile);
 	public BenchmarkGoal getEvaluatedFileBenchmarkGoal(URI inputFile, String sGoalXMLID);
 	/**
