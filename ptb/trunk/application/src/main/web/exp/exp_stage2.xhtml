@@ -17,6 +17,17 @@
 		</ui:include>
 		<script type="text/javascript"
 			src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>
+		<script type="text/javascript">
+			var valid_extensions = /(.jpg|.jpeg|.gif)$/i;
+
+			function checkExtension(fld) {
+			    if (valid_extensions.test(fld.value)) return true;
+			    alert('The selected file is of the wrong type.');
+			    fld.select();
+			    fld.focus();
+			    return false;
+			}
+		</script>			
 	</ui:define>
 
 	<ui:define name="content">
@@ -89,7 +100,9 @@
                                              storage="file"
                                              styleClass="fileUploadInput"
                                              required="true"
-                                             maxlength="10000000"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/><br/>
+                                             maxlength="10000000"  
+                                             readonly="#{ExperimentBean.approved}" 
+                                             disabled="#{ExperimentBean.approved}"/><br/>
 										<h:message for="fileupload"/>
                                         <h:panelGroup rendered="#{not empty ExperimentBean.eworkflowInputData}">
                                             <h:outputText value="#{res['exp_stage2.inputData']} "/>

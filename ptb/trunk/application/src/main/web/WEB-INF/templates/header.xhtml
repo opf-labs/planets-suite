@@ -24,7 +24,8 @@
 			<ui:fragment id="userLogin" rendered="#{empty UserBean.userid}">
 				<div id="geright">
 					<p class="glinks"> 
-						<h:commandLink styleClass="glinks" action="login">
+						<h:commandLink styleClass="glinks" action="home">
+						<!-- h:commandLink styleClass="glinks" action="login" -->
 							<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" class="toolbar"/>
 							<h:outputText value="#{res['login.login']}"/>
 						</h:commandLink>
