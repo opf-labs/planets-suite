@@ -5,9 +5,9 @@ public class BPELRewriter_Impl {
 	
 	private static BPELRewriter_Impl instance = null;
 	
-	
+	 
 	/**
-	 * Private constructor
+	 * Private constructor 
 	 */
 	private BPELRewriter_Impl () {
 		
