@@ -1,6 +1,5 @@
-package eu.planets_project.ifr.core.wdt.impl.gui;
+package eu.planets_project.ifr.core.wdt.gui;
 
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -11,10 +10,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.handlers.HandlerUtil;
 
-import eu.planets_project.ifr.core.wdt.impl.util.Util;
+
+
 
 public class PLANETSWizard {
 	
@@ -22,14 +20,14 @@ public class PLANETSWizard {
 	/**
 	 * Construct the Wizard
 	 */
-	public PLANETSWizard(Shell shell) {
+	public PLANETSWizard() {
 
-	
 		//Create a window
 		Display display = new Display();
-		//Shell shell = new Shell(display);
+		Shell shell = new Shell(display);
 		
-		shell.setText("PLANETS Wizard");
+		
+	    shell.setText("PLANETS Wizard");
 		shell.setBounds(100,100,175,125);
 		shell.setLayout(new FillLayout());
 		
@@ -51,7 +49,7 @@ public class PLANETSWizard {
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				System.out.println("BPEL Cleaner started");
-			}
+			} 
 		});
 		
 
