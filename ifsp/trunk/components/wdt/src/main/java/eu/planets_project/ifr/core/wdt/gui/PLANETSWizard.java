@@ -23,11 +23,14 @@ public class PLANETSWizard {
 	public PLANETSWizard() {
 
 		//Create a window
-		Display display = new Display();
+		//Display display = new Display();
+		//Shell shell = new Shell(display);
+		
+		Display display = Display.getCurrent();
 		Shell shell = new Shell(display);
 		
 		
-	    shell.setText("PLANETS Wizard");
+        shell.setText("PLANETS Wizard");
 		shell.setBounds(100,100,175,125);
 		shell.setLayout(new FillLayout());
 		
