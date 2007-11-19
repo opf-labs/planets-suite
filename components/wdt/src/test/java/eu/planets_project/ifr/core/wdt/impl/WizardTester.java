@@ -1,5 +1,7 @@
 package eu.planets_project.ifr.core.wdt.impl;
 
+import eu.planets_project.ifr.core.wdt.gui.PLANETSWizard;
+
 
 public class WizardTester {
 
@@ -8,7 +10,7 @@ public class WizardTester {
 	
 	public WizardTester() {
 		
-		new PLANETSWizward();
+		new PLANETSWizard();
 		
 	}	
 	
