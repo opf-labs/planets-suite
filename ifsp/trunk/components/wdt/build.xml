@@ -5,7 +5,6 @@
 	<property name="component.description" value="wdt package"/>
 	<property name="component.version" value="0.1"/>
 	<property name="component.dependencies" value=""/>
-	<property name="appserver.lib.dependencies" value="..${file.separator}..${file.separator}..${file.separator}appserver, ..${file.separator}..${file.separator}..${file.separator}appserver${file.separator}server${file.separator}default, ..${file.separator}..${file.separator}..${file.separator}appserver${file.separator}server${file.separator}default${file.separator}deploy${file.separator}jbossweb-tomcat55.sar, ..${file.separator}..${file.separator}..${file.separator}appserver${file.separator}server${file.separator}default${file.separator}deploy${file.separator}ejb3.deployer"/>
 	<!-- deployment.model can either be ear|war|ejb-jar|other -->
 	<property name="deployment.model" value="other"/>
 </project>
