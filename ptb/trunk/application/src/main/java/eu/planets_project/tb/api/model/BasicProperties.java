@@ -164,5 +164,15 @@ public interface BasicProperties{
 	public void addToolType(String toolType);
 	public void removeToolType(String toolType);
 	public List<String> getToolTypes();
+        
+	/**The Digi Type will hold the digital object types selected for an experiment.
+	 * These will be used to limit the types of Benchmark Goals that are avaialble for selection
+         * in Stage 3 of the experiment process.
+	 * @param digiTypes: this stores the unique ID for all select digital object types.
+	 **/
+	public void setDigiTypes(List<String> digiTypes);
+	public void addDigiType(String digiType);
+	public void removeDigiType(String digiType);
+	public List<String> getDigiTypes();
 	
 }

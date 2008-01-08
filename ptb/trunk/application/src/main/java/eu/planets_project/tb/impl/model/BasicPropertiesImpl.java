@@ -44,7 +44,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	private String sExperimentApproach;
 	private long lExperimentStructureReference;
 	
-	private Vector<String> vExpObjectTypes, vExpToolTypes;
+	private Vector<String> vExpObjectTypes, vExpToolTypes, vExpDigiTypes;
 	private Vector<Long> vRefExpIDs;
 	private Vector<String>vInvolvedUsers;
 	private HashMap<String,Vector<String>> hmLiteratureReference;
@@ -611,6 +611,13 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	public List<String> getToolTypes() {
 		return this.vExpToolTypes;
 	}
+        
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#getDigiTypes()
+	 */
+	public List<String> getDigiTypes() {
+		return this.vExpDigiTypes;
+	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExternalReferenceID(java.lang.String)
@@ -682,6 +689,32 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		if(this.vExpToolTypes.contains(toolType))
 			this.vExpToolTypes.remove(toolType);
 	}
+        
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#setDigiTypes(java.util.List)
+	 */
+	public void setDigiTypes(List<String> digiTypes) {
+		this.vExpDigiTypes = new Vector<String>();
+		for(int i=0;i<digiTypes.size();i++){
+			addDigiType(digiTypes.get(i));
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#addDigiType(java.lang.String)
+	 */
+	public void addDigiType(String digiType){
+		if(!this.vExpDigiTypes.contains(digiType))
+			this.vExpDigiTypes.add(digiType);
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#removeDigiType(java.lang.String)
+	 */
+	public void removeDigiType(String digiType){
+		if(this.vExpDigiTypes.contains(digiType))
+			this.vExpDigiTypes.remove(digiType);
+	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getExperimentStructureReference()
@@ -740,6 +773,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		vExpObjectTypes		= new Vector<String>();
 		vExpToolTypes		= new Vector<String>();
 		vInvolvedUsers		= new Vector<String>();
+                vExpDigiTypes = new Vector<String>();
 		hmLiteratureReference = new HashMap<String,Vector<String>>();
 		//hmInvolvedUserSpecialExperimentRoles = new HashMap<Long,Vector<Integer>>();
 		

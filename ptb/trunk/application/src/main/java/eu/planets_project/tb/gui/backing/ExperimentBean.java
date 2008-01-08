@@ -1,5 +1,6 @@
 package eu.planets_project.tb.gui.backing;
 
+import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.component.UIData;
+import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,9 +36,10 @@ public class ExperimentBean {
 	public static final int PHASE_EXPERIMENTAPPROVAL   = 4;
 	public static final int PHASE_EXPERIMENTEXECUTION  = 5;
 	public static final int PHASE_EXPERIMENTEVALUATION = 6;
+               
 	private Log log = LogFactory.getLog(ExperimentBean.class);
 	private long id;
-	private boolean eformality = true;
+	private boolean formality = true;
 	private String ename = new String();
     private String esummary = new String();
     private String econtactname = new String();
@@ -56,6 +59,7 @@ public class ExperimentBean {
     private String eapproach = new String();
     private String econsiderations = new String();
     private String etype;
+    private String etypeName;
     private ExperimentWorkflow eworkflow;    
     private String workflowtypeid;
     private Map<String,BenchmarkBean> benchmarks = new HashMap<String,BenchmarkBean>();
@@ -65,6 +69,10 @@ public class ExperimentBean {
     private String outputData;
     private int currStage =ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
+    private List dtype = new ArrayList();
+    private List dtypeList = new ArrayList();
+    private DigitalObjectTypesImpl dtypeImpl = new DigitalObjectTypesImpl();
+    private List<String[]> fullDtypes = new ArrayList<String[]>();
         
     public ExperimentBean() {
     	/*benchmarks = new HashMap<String,BenchmarkBean>();
@@ -73,6 +81,16 @@ public class ExperimentBean {
     		BenchmarkGoal bm = (BenchmarkGoal)iter.next();
     		benchmarks.put(bm.getID(), new BenchmarkBean(bm));
     	}*/
+        
+        fullDtypes = dtypeImpl.getAlLDtypes();
+        
+        for(int i=0;i<fullDtypes.size();i++) {
+            
+            String[] tmp = fullDtypes.get(i);
+            
+            SelectItem option = new SelectItem(tmp[0],tmp[1]);
+            dtypeList.add(option);  
+        }    
     }
     
     public void fill(Experiment exp) {
@@ -119,8 +137,9 @@ public class ExperimentBean {
 
     	this.epurpose=(props.getPurpose());
     	this.esummary=(props.getSummary());
-    	this.eformality = props.isExperimentFormal();    	
+    	this.formality = props.isExperimentFormal();    	
     	this.etype = String.valueOf(expsetup.getExperimentTypeID());
+        this.etypeName = AdminManagerImpl.getInstance().getExperimentTypeName(this.etype);
     	this.eworkflow = exp.getExperimentSetup().getExperimentWorkflow();
     	if (this.eworkflow !=null) {
     		this.workflowtypeid=String.valueOf(eworkflow.getWorkflow().getEntityID());
@@ -186,6 +205,8 @@ public class ExperimentBean {
     	}
 	    if(currStage>ExperimentBean.PHASE_EXPERIMENTSETUP_3)
 	    	approved=true;
+        
+        this.dtype = props.getDigiTypes();
     }
     
     public Map<String,BenchmarkBean> getBenchmarks() {
@@ -268,11 +289,11 @@ public class ExperimentBean {
     }
     
     public void setFormality(boolean formality) {
-        this.eformality = formality;
+        this.formality = formality;
     }
     
     public boolean getFormality() {
-        return eformality;
+        return formality;
     }
 
     public void setEname(String ename) {
@@ -432,5 +453,20 @@ public class ExperimentBean {
     public void setEref(Long eref) {
     	this.eref = eref;
     }
-
+    
+    public List getDtype() {
+        return dtype;
+    }
+   
+    public void setDtype(List dtype) {
+    	this.dtype = dtype;
+    }
+    
+    public List getDtypeList() {
+        return dtypeList;
+    }
+   
+    public void setDtypeList(List dtypeList) {
+    	this.dtypeList = dtypeList;
+    }
 }

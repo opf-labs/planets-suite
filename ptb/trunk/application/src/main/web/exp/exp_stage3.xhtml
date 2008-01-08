@@ -27,31 +27,6 @@
 					<h:form id="stage3form">
 						<h:messages for="stage3form" errorClass="errorMessage" infoClass="infoMessage"/>
 						<fieldset>
-							<legend>#{res['exp_stage3.legendResources']}</legend>
-							<p>
-								<label id="">#{res['exp_stage3.outputFiles']}</label>
-								<h:selectOneMenu immediate="true" required="false" value="#{ExperimentBean.numberOfOutputFiles}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-									<f:selectItem itemValue="1" itemLabel="1-10" />
-									<f:selectItem itemValue="11" itemLabel="11-100"/>
-									<f:selectItem itemValue="101" itemLabel="101-1000"/>
-									<f:selectItem itemValue="1001" itemLabel="1001-10000"/>
-									<f:selectItem itemValue="10000" itemLabel="10000+"/>
-								</h:selectOneMenu>
-							</p>
-							<div class="clear"></div>
-							<p>
-								<label id="">#{res['exp_stage3.intensity']}</label>		
-								<h:selectOneMenu required="false" value="#{ExperimentBean.intensity}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-									<f:selectItem itemValue="0" itemLabel="#{res['exp_stage3.intensityLow']}" />
-									<f:selectItem itemValue="1" itemLabel="#{res['exp_stage3.intensityMedium']}"/>
-									<f:selectItem itemValue="2" itemLabel="#{res['exp_stage3.intensityHigh']}"/>
-								</h:selectOneMenu>
-							</p>
-							<div class="clear"></div>
-							<p><i>Further fields required</i></p>
-							<div class="clear"></div>
-						</fieldset>
-						<fieldset>
 							<legend>#{res['exp_stage3.legendOutcomes']}</legend>
 							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
 

@@ -34,25 +34,10 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
-			<h:form id="selectExpTypeForm">
-				<fieldset>
-					<legend>#{res['exp_stage2.legendOne']}</legend>
-					<p>Your choice of experiment type will affect the tools and data
-					that will be made available.<br />
-					You may return to this page to choose a difference experiment type at
-					any point until you submit your experiment for execution.</p>
-					<p>
-						<h:selectOneMenu onchange="this.form.submit()" 
-						value="#{ExperimentBean.etype}"
-						valueChangeListener="#{Manager_Backing.changedExpTypeEvent}"
-						immediate="true"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-							<f:selectItems value="#{Manager_Backing.availableExperimentTypes}" />
-						</h:selectOneMenu>
-						<h:commandButton value="#{res['button.go']}"
-						action="#{Manager_Backing.changedExpType}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
-					</p>
-				</fieldset>
-			</h:form>
+                        <fieldset>
+                            <legend>#{res['exp_stage2.legendOne']}</legend>
+                            <p>#{ExperimentBean.etypeName}</p>
+                        </fieldset>
 			<h:form id="selectWorkflowForm" rendered="#{not empty ExperimentBean.etype}">
 				<fieldset>
 					<legend>#{res['exp_stage2.legendTwo']}</legend>

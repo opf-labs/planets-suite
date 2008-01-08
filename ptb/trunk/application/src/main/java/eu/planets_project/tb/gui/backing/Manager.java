@@ -154,6 +154,8 @@ public class Manager {
             	props.removeExperimentReference(refs.get(0));
     	}*/
         
+        props.setDigiTypes(expBean.getDtype());
+        
         // Workaround
         // update in cached lists
         ListExp listExp_Backing = (ListExp)JSFUtil.getManagedObject("ListExp_Backing");
@@ -397,6 +399,12 @@ public class Manager {
     		expTypeMap.put((String)oriMap.get(key), key);
     	}
     	return expTypeMap;
+    }
+    
+    public String getExperimentTypeName(String ID) {
+        String name = AdminManagerImpl.getInstance().getExperimentTypeName(ID);
+        
+        return name;
     }
     
     public Map<String,String> getAvailableWorkflows() {
