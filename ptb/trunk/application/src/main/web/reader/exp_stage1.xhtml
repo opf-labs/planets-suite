@@ -94,7 +94,14 @@
 			<p><h:commandButton value="#{res['reader_exp.buttonStage1']}"
 				action="#{Manager_Backing.loadReaderStage2}"
 				disabled="#{ExperimentBean.currentStage lt 2}" /></p>
-		</h:form></div>
+		</h:form>
+		
+    <ui:include src="/WEB-INF/templates/comment_template.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ExperimentPhase" value="1" />
+    </ui:include>
+            
+		</div>
 		</div>
 		</div>
 

@@ -6,10 +6,6 @@ import java.util.Calendar;
  * @author alindley
  *
  */
-/**
- * @author alindley
- *
- */
 public interface ExperimentPhase {
 	
 	public static final int STATE_NOT_STARTED = -1;

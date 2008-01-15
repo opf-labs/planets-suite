@@ -233,7 +233,7 @@ public class ExperimentSetupTest extends TestCase{
 	
 	
 	public ExperimentSetup getExperimentSetupSample(){
-		//TODO: add a samle experimentSetup
+		//TODO: add a sample experimentSetup
 		ExperimentSetup test_setup = new ExperimentSetupImpl();
 		test_setup.setStartDate(new GregorianCalendar());
 		try {

@@ -33,7 +33,7 @@ public final class GetUser extends TagHandler {
   public void apply(FaceletContext ctx, UIComponent parent)
           throws IOException, FacesException, ELException {
      		log.debug("in Tag: GetUser!");		
-     		FacesContext context = ctx.getFacesContext().getCurrentInstance();
+     		FacesContext context = FacesContext.getCurrentInstance();
   			//Object session = context.getExternalContext().getSession(false);
   			//if (session != null) {
   				UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
@@ -44,11 +44,11 @@ public final class GetUser extends TagHandler {
 	     			// JAAS Login before?
 	     			if (userId != null) {        		
 	     				//user = new UserBean();
-	     				user.setUserid(userId);       
+	     				user.setUserid(userId);
 	     				//((HttpSession)session).setAttribute("userBean",user);
 	     			}
-	     		}  			
-	     		log.debug("user is: " + user.getUserid());
+	     		}
+	     		log.debug("user is: '" + user.getUserid() + "'");
   			//}
   	}
 }

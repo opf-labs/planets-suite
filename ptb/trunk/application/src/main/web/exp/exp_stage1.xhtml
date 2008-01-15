@@ -239,6 +239,11 @@ ni.appendChild(newdiv);
 		</p>
 </h:form>
 
+    <ui:include src="/WEB-INF/templates/comment_template.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ExperimentPhase" value="1" />
+    </ui:include>
+
 </div>
 </div>
 </div>

@@ -95,7 +95,14 @@
 
 	<p><h:commandButton value="#{res['exp_stage6.button']}"
 				action="#{Manager_Backing.updateEvaluationAction}" /></p>
-		</h:form></div>
+		</h:form>
+            
+    <ui:include src="/WEB-INF/templates/comment_template.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ExperimentPhase" value="6" />
+    </ui:include>
+            
+		</div>
 		</div>
 		</div>
 		<div id="leftcol">

@@ -27,7 +27,6 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 
 
-
 public class ExperimentBean {
 	
 	public static final int PHASE_EXPERIMENTSETUP_1   = 1;
@@ -67,8 +66,9 @@ public class ExperimentBean {
     private String nrOutputFiles="1";
     private String inputData;
     private String outputData;
-    private int currStage =ExperimentBean.PHASE_EXPERIMENTSETUP_1;
+    private int currStage = ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
+    
     private List dtype = new ArrayList();
     private List dtypeList = new ArrayList();
     private DigitalObjectTypesImpl dtypeImpl = new DigitalObjectTypesImpl();
@@ -150,13 +150,13 @@ public class ExperimentBean {
     	// set benchmarks
     	try {
     		if (this.inputData != null) {
-    			Iterator iter;
+    			Iterator<BenchmarkGoal> iter;
     			if (exp.getCurrentPhase() instanceof ExperimentEvaluation) 
     				iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(new URI(inputData)).iterator();
     			else
     				iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
     			while (iter.hasNext()) {
-		    		BenchmarkGoal bm = (BenchmarkGoal)iter.next();
+		    		BenchmarkGoal bm = iter.next();
 		    		BenchmarkBean bmb = new BenchmarkBean(bm);
 					bmb.setSourceValue(bm.getSourceValue());
 					bmb.setTargetValue(bm.getTargetValue());
@@ -205,6 +205,7 @@ public class ExperimentBean {
     	}
 	    if(currStage>ExperimentBean.PHASE_EXPERIMENTSETUP_3)
 	    	approved=true;
+	    
         
         this.dtype = props.getDigiTypes();
     }
@@ -457,16 +458,42 @@ public class ExperimentBean {
     public List getDtype() {
         return dtype;
     }
-   
+    
     public void setDtype(List dtype) {
     	this.dtype = dtype;
     }
     
     public List getDtypeList() {
+        if( dtypeList == null ) return new ArrayList();
         return dtypeList;
     }
    
     public void setDtypeList(List dtypeList) {
     	this.dtypeList = dtypeList;
     }
+
+    /**
+     * Gets a list of all the phases of this experiment.
+     * @return List of ExperimentPhaseBean, one for each possible Phase.
+     */
+    public List<ExperimentPhaseBean> getPhaseBeans() {
+        // TODO ANJ Surely there is a better way of organising this:
+        log.info("Building array of ExperimentPhaseBeans");
+        ExperimentPhaseBean[] phaseBeans = new ExperimentPhaseBean[7]; 
+        phaseBeans[ExperimentBean.PHASE_EXPERIMENTSETUP_1] =  
+                new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTSETUP);
+        phaseBeans[ExperimentBean.PHASE_EXPERIMENTSETUP_2] =  
+                new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTSETUP);
+        phaseBeans[ExperimentBean.PHASE_EXPERIMENTSETUP_3] = 
+                new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTSETUP);
+        phaseBeans[ExperimentBean.PHASE_EXPERIMENTAPPROVAL] =
+                new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTAPPROVAL);
+        phaseBeans[ExperimentBean.PHASE_EXPERIMENTEXECUTION] =
+                new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTEXECUTION);
+        phaseBeans[ExperimentBean.PHASE_EXPERIMENTEVALUATION] =
+                new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION);
+        return java.util.Arrays.asList(phaseBeans);
+    }
+    
+    
 }

@@ -92,7 +92,7 @@ public class CommentBrowserTest extends TestCase{
 		dao_r.updateComment(test_find1);
 		//Test1: updating existing entity
 		test_find1 =  dao_r.findComment(commentID1);
-		assertEquals("Title1",test_find1.getTile());	
+		assertEquals("Title1",test_find1.getTitle());	
 	}
 	
 	public void testEJBEntityMerged(){
@@ -103,7 +103,7 @@ public class CommentBrowserTest extends TestCase{
 		test_find1.setExperimentID(l1);
 		dao_r.updateComment(test_find1);
 		//Test1: updating existing entity
-		assertEquals("Title1",test_find1.getTile());
+		assertEquals("Title1",test_find1.getTitle());
 		
 		//Test2: checking if merging entity works
 		test_find1 =  dao_r.findComment(commentID1);
@@ -112,7 +112,7 @@ public class CommentBrowserTest extends TestCase{
 		
 		test_find1 =  dao_r.findComment(commentID1);
 		assertEquals(l1,test_find1.getExperimentID());	
-		assertEquals("TitleUpdated",test_find1.getTile());	
+		assertEquals("TitleUpdated",test_find1.getTitle());	
 	}
 	
 	//Tests for the underlying Entity Bean's methods setter and getter's without any EJB issues

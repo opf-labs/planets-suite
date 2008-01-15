@@ -60,6 +60,12 @@
 							</p>
 							<p><b>#{res['exp_stage3.warning']}</b></p>		
 					</h:form>
+            
+    <ui:include src="/WEB-INF/templates/comment_template.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ExperimentPhase" value="3" />
+    </ui:include>
+            
 				</div>
 			</div>
 		</div>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="Shift_JIS"?>
 <!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by Kantoorautomatisering (Nationaal Archief) -->
 <BenchmarkGoals xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="BenchmarkGoalsSchema.xsd">
-	<!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:noNamespaceSchemaLocation="BenchmarkGoalsSchema.xsd"-->
+	<!-- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="BenchmarkGoalsSchema.xsd" -->
 	<category name="Text">
 		<item id="text-gen1" type="java.lang.Integer" scale="1..n" version="1.0">
 			<name>Number of levels</name>

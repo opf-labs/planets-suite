@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+  <ui:composition>
+    <div id="experimentComments">
+
+<t:dataTable id="commentTable_all"
+                 var="cmt"
+                 value="#{Comment_Backing.allComments}"
+                 preserveDataModel="true"
+                 rows="10"
+                 rowId="#{cmt.comment}"
+                 preserveSort="true"
+                 cellpadding="2"
+                 cellspacing="0"
+                 border="1"
+                 >
+        <t:column>
+            <f:facet name="header">
+                <t:commandSortHeader id="sortHeader_name" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                    #{res['comment.commentsOn']}
+                </t:commandSortHeader>
+            </f:facet>
+                <h:commandLink action="#{Comment_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
+                    <h:outputText value="#{cmt.comment}" />
+                    Hey use this command link idea elsewhere!
+                </h:commandLink>
+                <h3><h:outputText value="#{cmt.title}" /></h3>
+                <h:outputText value="#{cmt.comment}" />
+        </t:column>
+    </t:dataTable>
+    
+      <div class="experimentCommentTitle">
+        <h:outputText value="#{res['comment.commentOn']}"/> '#{ExperimentBean.ename}', <h:outputText value=" #{res['comment.atStage']}"/> #{ExperimentBean.phaseBeans[ExperimentPhase].experimentPhaseID}:
+      </div>
+      <!-- TODO Add comment list and forms etc etc. -->
+      <h:form id="commentForm">
+        <!--  ANJ Sort out how all this fits together -->
+<h:inputTextarea rows="7" cols="55" required="false" id="comment" value="#{Comment_Backing.comment}" readonly="false" disabled="false" />
+        <p>
+          <h:commandButton value="#{res['comment.addNew']}" 
+            action="#{Comment_Backing.addCommentAction}"/>
+        </p>
+      </h:form>
+    </div>
+  </ui:composition>
+</body>
+</html>

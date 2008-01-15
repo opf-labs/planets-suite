@@ -1,307 +1,292 @@
 <?xml version="1.0" encoding="windows-1252"?>
-<!DOCTYPE faces-config PUBLIC
-  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
-  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
-<faces-config xmlns="http://java.sun.com/JSF/Configuration">
-
-  <application>
-    <locale-config>
-      <default-locale>en</default-locale>
-    </locale-config>
-		<view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
-  </application>
-  
-  <managed-bean>
-    <managed-bean-name>TestbedManager</managed-bean-name>
-    <managed-bean-class>eu.planets_project.tb.impl.TestbedManagerImpl</managed-bean-class>
-    <managed-bean-scope>application</managed-bean-scope>
-  </managed-bean>
-
-  <managed-bean>
-    <managed-bean-name>UserBean</managed-bean-name>
-    <managed-bean-class>eu.planets_project.tb.gui.UserBean</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-
-  <managed-bean>
-    <managed-bean-name>Login_Backing</managed-bean-name>
-    <managed-bean-class>eu.planets_project.tb.gui.backing.Login</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
-  </managed-bean>
-  
-  <managed-bean>
-    <managed-bean-name>Manager_Backing</managed-bean-name>
-    <managed-bean-class>eu.planets_project.tb.gui.backing.Manager</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-
-  <managed-bean>
-    <managed-bean-name>ModifyExp_Backing</managed-bean-name>
-    <managed-bean-class>eu.planets_project.tb.gui.backing.ModifyExp</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-
-  <managed-bean>
-    <managed-bean-name>ListExp_Backing</managed-bean-name>
-    <managed-bean-class>eu.planets_project.tb.gui.backing.ListExp</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean> 
-  
-  <managed-bean>
-    <managed-bean-name>FileUploadBean</managed-bean-name>
-    <managed-bean-class>eu.planets_project.tb.gui.backing.FileUploadBean</managed-bean-class>
-    <managed-bean-scope>request</managed-bean-scope>
-    <managed-property>
-      <property-name>uploadDir</property-name>
-      <value>../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata</value>
-    </managed-property>      
-  </managed-bean> 
-  
-  <navigation-rule>
-    <from-view-id>/*</from-view-id>
-    <navigation-case>
-      <from-outcome>home</from-outcome>
-      <to-view-id>/reader/welcome.xhtml</to-view-id>
-	    <redirect />
-    </navigation-case>
-    <navigation-case>
-    	<from-outcome>login</from-outcome>
-    	<to-view-id>/login.xhtml</to-view-id>
-    </navigation-case>
-    <navigation-case>
-      <from-action>#{Manager_Backing.initExperimentAction}</from-action>
-      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-      <redirect/>
-    </navigation-case>    
-    <navigation-case>
-      <from-outcome>import_experiment</from-outcome>
-      <to-view-id>/exp/import_exp.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case> 
-    <navigation-case>
-      <from-outcome>my_experiments</from-outcome>
-      <to-view-id>/exp/my_exp.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case> 
-    <navigation-case>
-      <from-outcome>browse_experiments</from-outcome>
-      <to-view-id>/reader/browse_exp.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case> 
-    <navigation-case>
-      <from-outcome>browse_services</from-outcome>
-      <to-view-id>/reader/browse_services.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case> 
-    <navigation-case>
-      <from-outcome>browse_data</from-outcome>
-      <to-view-id>/reader/browse_data.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case> 
-    <navigation-case>
-      <from-outcome>exp_scheduler</from-outcome>
-      <to-view-id>/admin/exp_scheduler.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case> 
-    <navigation-case>
-      <from-outcome>manage_users</from-outcome>
-      <to-view-id>/admin/manage_users.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case> 
-    <navigation-case>
-      <from-outcome>upload_data</from-outcome>
-      <to-view-id>/admin/upload_data.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>help</from-outcome>
-      <to-view-id>/reader/help.xhtml</to-view-id>
-	    <redirect />      
-    </navigation-case>        
-    <navigation-case>
-      <from-action>#{Login_Backing.logout}</from-action>
-      <from-outcome>success</from-outcome>
-      <to-view-id>/reader/welcome.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>    
-  </navigation-rule> 
-  
-  
-  <!-- navigation rules for NEW_EXPERIMENT pages -->
-  <navigation-rule>
-    <from-view-id>/exp/exp_stage1.xhtml</from-view-id>
-    <navigation-case>
-      <from-action>#{Manager_Backing.updateBasicPropsAction}</from-action>
-      <from-outcome>success</from-outcome>
-      <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
-      <redirect/>
-    </navigation-case>
-  </navigation-rule>
-  
-  <!-- navigating between stages of experiment wizard -->
-  <navigation-rule>
-  	<navigation-case>
-      <from-outcome>goToStage1</from-outcome>
-      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-      <redirect />
-  	</navigation-case>
-  	<navigation-case>
-      <from-outcome>goToStage2</from-outcome>
-      <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
-      <redirect />
-  	</navigation-case>
-     <navigation-case>
-      <from-outcome>goToStage3</from-outcome>
-      <to-view-id>/exp/exp_stage3.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>goToStage4</from-outcome>
-      <to-view-id>/exp/exp_stage4.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>goToStage5</from-outcome>
-      <to-view-id>/exp/exp_stage5.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>goToStage6</from-outcome>
-      <to-view-id>/exp/exp_stage6.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>   
-    <navigation-case>
-      <from-outcome>completeExperiment</from-outcome>
-      <to-view-id>/exp/my_exp.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>  
-  </navigation-rule> 
-  
-    <!-- navigating between stages of reader's version of the experiment wizard -->
-  <navigation-rule>
-  	<navigation-case>
-      <from-outcome>goToReaderStage1</from-outcome>
-      <to-view-id>/reader/exp_stage1.xhtml</to-view-id>
-      <redirect />
-  	</navigation-case>
-  	<navigation-case>
-      <from-outcome>goToReaderStage2</from-outcome>
-      <to-view-id>/reader/exp_stage2.xhtml</to-view-id>
-      <redirect />
-  	</navigation-case>
-     <navigation-case>
-      <from-outcome>goToReaderStage3</from-outcome>
-      <to-view-id>/reader/exp_stage3.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>goToReaderStage4</from-outcome>
-      <to-view-id>/reader/exp_stage4.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>goToReaderStage5</from-outcome>
-      <to-view-id>/reader/exp_stage5.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>goToReaderStage6</from-outcome>
-      <to-view-id>/reader/exp_stage6.xhtml</to-view-id>
-      <redirect />
-    </navigation-case>   
-  </navigation-rule> 
-  
-  
-  <!-- navigation rules for MY_EXPERIMENT page -->
-  <navigation-rule>
-    <from-view-id>/exp/my_exp.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>editExp</from-outcome>
-      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>selectDelete</from-outcome>
-      <to-view-id>/exp/exp_delete.xhtml</to-view-id>
-	    <redirect />
-    </navigation-case>
-   </navigation-rule>
-   
-   <navigation-rule>
-    <from-view-id>/exp/exp_delete.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>expDeleted</from-outcome>
-      <to-view-id>/exp/my_exp.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-  </navigation-rule>  
-
-
-  <navigation-rule>
-    <from-view-id>/reader/browse_exp.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>viewExp</from-outcome>
-      <to-view-id>/reader/exp_stage1.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-    <navigation-case>
-      <from-outcome>editExp</from-outcome>
-      <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-  </navigation-rule>
-
-  <navigation-rule>
-    <from-view-id>/reader/exp_stage1.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>goToReaderStage2</from-outcome>
-      <to-view-id>/reader/exp_stage2.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-  </navigation-rule>
-
-  <navigation-rule>
-    <from-view-id>/reader/exp_stage2.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>goToReaderStage3</from-outcome>
-      <to-view-id>/reader/exp_stage3.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-  </navigation-rule>
-  
-  <navigation-rule>
-    <from-view-id>/reader/exp_stage3.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>goToReaderStage4</from-outcome>
-      <to-view-id>/reader/exp_stage4.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-  </navigation-rule>
-  
-  <navigation-rule>
-    <from-view-id>/reader/exp_stage4.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>goToReaderStage5</from-outcome>
-      <to-view-id>/reader/exp_stage5.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-  </navigation-rule>
-  
-  <navigation-rule>
-    <from-view-id>/reader/exp_stage5.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>goToReaderStage6</from-outcome>
-      <to-view-id>/reader/exp_stage6.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-  </navigation-rule>
-
-  <navigation-rule>
-    <from-view-id>/reader/exp_stage6.xhtml</from-view-id>
-    <navigation-case>
-      <from-outcome>goToBrowseExperiments</from-outcome>
-      <to-view-id>/reader/browse_exp.xhtml</to-view-id>
-     <redirect />
-    </navigation-case>
-  </navigation-rule>
+<!DOCTYPE faces-config PUBLIC "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+                              "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+<faces-config>
+ <managed-bean>
+  <managed-bean-name>TestbedManager</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.impl.TestbedManagerImpl</managed-bean-class>
+  <managed-bean-scope>application</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>UserBean</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.UserBean</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>Login_Backing</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.Login</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>Manager_Backing</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.Manager</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ModifyExp_Backing</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.ModifyExp</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ListExp_Backing</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.ListExp</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>FileUploadBean</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.FileUploadBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+  <managed-property>
+   <property-name>uploadDir</property-name>
+   <value>../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata</value>
+  </managed-property>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>Comment_Backing</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.CommentBacking</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <navigation-rule>
+  <from-view-id>/*</from-view-id>
+  <navigation-case>
+   <from-outcome>home</from-outcome>
+   <to-view-id>/reader/welcome.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>login</from-outcome>
+   <to-view-id>/login.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{Manager_Backing.initExperimentAction}</from-action>
+   <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>import_experiment</from-outcome>
+   <to-view-id>/exp/import_exp.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>my_experiments</from-outcome>
+   <to-view-id>/exp/my_exp.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>browse_experiments</from-outcome>
+   <to-view-id>/reader/browse_exp.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>browse_services</from-outcome>
+   <to-view-id>/reader/browse_services.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>browse_data</from-outcome>
+   <to-view-id>/reader/browse_data.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>exp_scheduler</from-outcome>
+   <to-view-id>/admin/exp_scheduler.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>manage_users</from-outcome>
+   <to-view-id>/admin/manage_users.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>upload_data</from-outcome>
+   <to-view-id>/admin/upload_data.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>help</from-outcome>
+   <to-view-id>/reader/help.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{Login_Backing.logout}</from-action>
+   <from-outcome>success</from-outcome>
+   <to-view-id>/reader/welcome.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <!-- navigating between stages of experiment wizard -->
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>goToStage1</from-outcome>
+   <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToStage2</from-outcome>
+   <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToStage3</from-outcome>
+   <to-view-id>/exp/exp_stage3.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToStage4</from-outcome>
+   <to-view-id>/exp/exp_stage4.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToStage5</from-outcome>
+   <to-view-id>/exp/exp_stage5.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToStage6</from-outcome>
+   <to-view-id>/exp/exp_stage6.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>completeExperiment</from-outcome>
+   <to-view-id>/exp/my_exp.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>addComment</from-outcome>
+   <to-view-id>/add_comment.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <!-- navigation rules for NEW_EXPERIMENT pages -->
+ <navigation-rule>
+  <from-view-id>/exp/exp_stage1.xhtml</from-view-id>
+  <navigation-case>
+   <from-action>#{Manager_Backing.updateBasicPropsAction}</from-action>
+   <from-outcome>success</from-outcome>
+   <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <!-- navigating between stages of reader's version of the experiment wizard -->
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>goToReaderStage1</from-outcome>
+   <to-view-id>/reader/exp_stage1.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToReaderStage2</from-outcome>
+   <to-view-id>/reader/exp_stage2.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToReaderStage3</from-outcome>
+   <to-view-id>/reader/exp_stage3.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToReaderStage4</from-outcome>
+   <to-view-id>/reader/exp_stage4.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToReaderStage5</from-outcome>
+   <to-view-id>/reader/exp_stage5.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>goToReaderStage6</from-outcome>
+   <to-view-id>/reader/exp_stage6.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <!-- navigation rules for MY_EXPERIMENT page -->
+ <navigation-rule>
+  <from-view-id>/exp/my_exp.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>editExp</from-outcome>
+   <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>selectDelete</from-outcome>
+   <to-view-id>/exp/exp_delete.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/exp/exp_delete.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>expDeleted</from-outcome>
+   <to-view-id>/exp/my_exp.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/reader/browse_exp.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>viewExp</from-outcome>
+   <to-view-id>/reader/exp_stage1.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>editExp</from-outcome>
+   <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/reader/exp_stage1.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>goToReaderStage2</from-outcome>
+   <to-view-id>/reader/exp_stage2.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/reader/exp_stage2.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>goToReaderStage3</from-outcome>
+   <to-view-id>/reader/exp_stage3.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/reader/exp_stage3.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>goToReaderStage4</from-outcome>
+   <to-view-id>/reader/exp_stage4.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/reader/exp_stage4.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>goToReaderStage5</from-outcome>
+   <to-view-id>/reader/exp_stage5.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/reader/exp_stage5.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>goToReaderStage6</from-outcome>
+   <to-view-id>/reader/exp_stage6.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/reader/exp_stage6.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>goToBrowseExperiments</from-outcome>
+   <to-view-id>/reader/browse_exp.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <application>
+  <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
+  <locale-config>
+   <default-locale>en</default-locale>
+  </locale-config>
+ </application>
 </faces-config>

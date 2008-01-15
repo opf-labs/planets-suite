@@ -78,7 +78,14 @@
 						<h:commandButton value="#{res['reader_exp.buttonStage6']}"
 						action="#{Manager_Backing.finishReaderStage6}" />
 					</p>
-			</h:form></div>
+			</h:form>
+			
+    <ui:include src="/WEB-INF/templates/comment_template.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ExperimentPhase" value="6" />
+    </ui:include>
+            
+		</div>
 		</div>
 		</div>
 		<div id="leftcol">

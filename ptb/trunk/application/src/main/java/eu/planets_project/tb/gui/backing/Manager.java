@@ -558,4 +558,6 @@ public class Manager {
     public void setEreport(HtmlInputTextarea ereport) {
         this.ereport = ereport;
     }
+    
+
 }
