@@ -25,6 +25,7 @@ import org.apache.myfaces.custom.tree2.TreeModelBase;
 import org.apache.myfaces.custom.tree2.TreeState;
 import org.apache.myfaces.custom.tree2.TreeStateBase;
 import org.apache.myfaces.custom.tree2.HtmlTree;
+import org.apache.myfaces.custom.tree2.TreeWalker;
 
 /**
  * @author AnJackson
@@ -40,6 +41,8 @@ public class CommentBacking {
     String title;
     String comment;
     String parentId;
+    String author;
+    String time;
     
     // The comment manager:
     CommentManager cm = CommentManagerImpl.getInstance();
@@ -84,6 +87,10 @@ public class CommentBacking {
         this.title = c.getTitle();
         this.comment = c.getComment();
         this.parentId = new Long(c.getParentID()).toString();
+        this.author = c.getAuthorID();
+        // Format the date:
+        java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance();
+        this.time = df.format(c.getPostDate().getTime());
         this.storeCurrentURL();
     }
 
@@ -146,6 +153,20 @@ public class CommentBacking {
     }
 
     /**
+     * @return the author
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * @param author the author to set
+     */
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    /**
      * @return the tree
      */
     public HtmlTree getTree() {
@@ -182,17 +203,21 @@ public class CommentBacking {
             if ( title.length() > CommentBacking.TITLE_LENGTH ) 
                 title = getComment().substring(0, CommentBacking.TITLE_LENGTH );
         }
+        // User is?
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
         // Existing comment?
-        if( ! "".equals(commentId) )
+        if( ! "".equals(commentId) ) {
             cmt = cm.getComment(this.getlCommentID());
+        } else {
+            cmt.setAuthorID(user.getUserid());
+        }
         // Edit/update the comment:
         cmt.setParentID( getlParentID() );
         cmt.setExperimentID(exp.getEntityID());
         cmt.setExperimentPhaseID(getExpPhase());
         cmt.setPostDate( java.util.Calendar.getInstance() );
         cmt.setComment(title , this.comment );
-        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
-        cmt.setAuthorID(user.getUserid());
+        
 
         // Add or update, depending on commendId:
         if( "".equals(commentId) ) {
@@ -207,6 +232,8 @@ public class CommentBacking {
         this.setParentId("");
         this.setExpPhase("");
         this.setCommentId("");
+        this.author = "";
+        this.time = "";
         
         // Redirect to the original page, if it is set:
         if( parentURI == null || parentURI == "" ) return;
@@ -287,8 +314,10 @@ public class CommentBacking {
      * 
      * @return
      */
-    public Comment getParentComment() {
-        return cm.getComment(getlParentID());
+    public CommentBacking getParentComment() {
+        CommentBacking cb = new CommentBacking();
+        cb.setCommentId(parentId);
+        return cb;
     }
     
     /**
@@ -320,6 +349,20 @@ public class CommentBacking {
       return null;
     }
     
+    /**
+     * 
+     * @return
+     */
+    public String collapseAll()
+    {
+      if( htmlTree != null )
+        htmlTree.collapseAll();
+      return null;
+    }
+    
+    /**
+     * Stores the URL needed to drop the user back at the page they initiated the comment editor from.
+     */
     private void storeCurrentURL() {
         // Pick up the view-id that invoked this method:
         javax.faces.context.ExternalContext fec = javax.faces.context.FacesContext.getCurrentInstance().getExternalContext();
@@ -328,5 +371,31 @@ public class CommentBacking {
             this.parentURI += fec.getRequestServletPath();
         if( fec.getRequestPathInfo() != null )
             this.parentURI += fec.getRequestPathInfo();
+    }
+
+    /**
+     * Code taken from org.apache.myfaces.custom.tree2.UITreeData
+     * @param expanded
+     */
+    private void toggleAll(boolean expanded) {
+        TreeWalker walker = htmlTree.getDataModel().getTreeWalker();
+        walker.reset();
+
+        TreeState state =  htmlTree.getDataModel().getTreeState();
+        walker.setCheckState(false);
+        walker.setTree(htmlTree);
+
+        while(walker.next())
+        {
+            String id = htmlTree.getNodeId();
+            if ((expanded && !state.isNodeExpanded(id)) || (!expanded && state.isNodeExpanded(id)))
+            {
+                state.toggleExpanded(id);
+            }
+        }
+    }
+    
+    public String getTime() {
+        return time;
     }
 }

@@ -18,10 +18,11 @@
         <legend>#{res['comment.commentsOn']} '#{ExperimentBean.ename}' </legend>
 
         <div class="expandAllTop">
-          <h:commandLink immediate="true" value="Expand All" action="#{Comment_Backing.expandAll}"/>
+          <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
+          <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
         </div>
 
-        <t:tree2 id="commentTree" value="#{Comment_Backing.commentTree}" var="cmt" varNodeToggler="t" showRootNode="false" binding="#{Comment_Backing.tree}" showLines="true">
+        <t:tree2 id="commentTree" value="#{Comment_Backing.commentTree}" var="cmt" varNodeToggler="t" showRootNode="false" binding="#{Comment_Backing.tree}" showLines="true" preserveToggle="true">
         <f:facet name="comments">
             <h:panelGroup>
                 <h:outputText value="#{cmt.description}" styleClass="cmtFolder"/>
@@ -41,7 +42,7 @@
                 <h:outputText value="#{cmt.author}" styleClass="commentAuthor"/><h:outputText value=" (#{cmt.time})" styleClass="commentDate"/>
                 </div>
                 <t:div styleClass="commentEditWrap">
-                  <h:commandLink action="addComment" rendered="#{cmt.author==UserBean.userid}">
+                  <h:commandLink action="addComment" rendered="#{cmt.author==UserBean.userid||UserBean.isAdmin}">
                     <h:outputText value="#{res['comment.edit']}"/>
                     <t:updateActionListener property="#{Comment_Backing.commentId}" value="#{cmt.identifier}" />
                   </h:commandLink>
@@ -67,7 +68,8 @@
         </t:tree2>
         
         <div class="expandAll">
-          <h:commandLink immediate="true" value="Expand All" action="#{Comment_Backing.expandAll}"/>
+          <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
+          <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
         </div>
         
         </fieldset>

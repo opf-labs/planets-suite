@@ -737,6 +737,12 @@ span.readerLabel
   padding-left: 0.5em;
 }
 
+.commentReplyingToWrap{
+  margin: 2em;
+  background-color: #f6f6ff;
+  padding: 5px;
+}
+
 .expandAll, .expandAllTop {
   font-weight: bold;
   margin: 1em;

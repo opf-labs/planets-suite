@@ -104,9 +104,16 @@ ni.appendChild(newdiv);
       <div class="commentFormWrap">
         <h3>#{res['comment.addNew']} (#{res['comment.atStage']} #{Comment_Backing.expPhase})</h3>
         <h:panelGroup rendered="#{Comment_Backing.parentId!=-1}">
-        <p>IN REPLY TO</p>
-        <p>#{Comment_Backing.parentComment.title}</p>
-        <p>#{Comment_Backing.parentComment.comment}</p>
+        <h2>#{res['comment.inReplyTo']}</h2>
+        <t:div styleClass="commentReplyingToWrap">
+        <h:outputText value="#{Comment_Backing.parentComment.title}" styleClass="commentTitle"/>
+        <t:div styleClass="commentBodyWrap">
+        <h:outputText value="#{Comment_Backing.parentComment.comment}" styleClass="commentBody"/>
+        </t:div>
+        <div class="commentSigWrap">
+        <h:outputText value="#{Comment_Backing.parentComment.author}" styleClass="commentAuthor"/><h:outputText value=" (#{Comment_Backing.parentComment.time})" styleClass="commentDate"/>
+        </div>
+        </t:div>
         </h:panelGroup>
 
       <h:form id="commentForm">
@@ -125,7 +132,7 @@ ni.appendChild(newdiv);
         <div class="clear"></div>
         
           <div class="addCommentSubmitWrap">
-            <h:commandButton value="#{res['comment.addNew']}" 
+            <h:commandButton value="#{res['comment.submit']}" 
             action="#{Comment_Backing.addCommentAction}" />
           </div>
       </h:form>
