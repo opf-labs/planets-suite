@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+        #{res.title} - #{res['new_exp.pageTitle']} - #{res['new_exp.stage1']}
+  </ui:define>
+
+<ui:define name="header">
+    <ui:include src="/WEB-INF/templates/header.xhtml">
+        <ui:param name="page" value="new_exp"/>
+    </ui:include>
+            <script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script> 
+                <script type="text/javascript">
+        <!--
+        function toggleRequired(evt) {
+    evt = (evt) ? evt: event;
+    var target = (evt.target) ? evt.target : evt.srcElement;
+    
+    for(var i=1;i<7;i++) {
+    var block = document.getElementById("asterisk["+i+"]");
+    
+    if(target.id == "true") {
+        block.style.display = "";
+        }
+    
+    else {
+        block.style.display = "none";
+        }
+    }
+    
+    }
+        
+function countLines(strtocount, cols) {
+    var hard_lines = 1;
+    var last = 0;
+    while ( true ) {
+        last = strtocount.indexOf("\n", last+1);
+        hard_lines ++;
+        if ( last == -1 ) break;
+    }
+    var soft_lines = Math.round(strtocount.length / (cols-1));
+    var hard = eval("hard_lines  " + unescape("%3e") + "soft_lines;");
+    if ( hard ) soft_lines = hard_lines;
+    return soft_lines;
+}
+function cleanForm() {
+    var the_form = document.forms[3];
+    for ( var x in the_form ) {
+        if ( ! the_form[x] ) continue;
+        if( typeof the_form[x].rows != "number" ) continue;
+        the_form[x].rows = countLines(the_form[x].value,the_form[x].cols) +1;
+    }
+    setTimeout("cleanForm();", 300);
+}
+
+    window.onload = cleanForm();
+    //-->
+    </script>
+        
+<script type="text/javascript">
+<!--
+
+function addRows()
+{
+var ni = document.getElementById('anotherLitRef');
+var numi = document.getElementById('theValue');
+var num = (document.getElementById("theValue").value -1)+ 2;
+numi.value = num;
+var divIdName = "anotherLitRef"+num;
+var newdiv = document.createElement('div');
+newdiv.setAttribute("id",divIdName);
+newdiv.innerHTML =      '<p><label for="litRefDesc"><span style="color: red;"></span>#{res["new_exp.litRef_Desc"]}</label><input name="litRefDesc" id="litRefDesc" type="text" size="50" maxlength="255" /></p><div class="clear"></div><p><label for="litRefURI"><span style="color: red;"></span>#{res["new_exp.litRef_URI"]}</label><input name="litRefURI" id="litRefURI" type="text" size="50" maxlength="255" /></p><div class="clear"></div>';
+ni.appendChild(newdiv);
+}
+
+//-->
+</script>
+</ui:define>
+
+  <ui:define name="content">
+<div id="mainwrapper">
+<div id="maincol">
+<div class="innertubemain">
+    
+            <fieldset><legend>#{res['new_exp.legendGeneral']}</legend>
+
+            <p><h:outputText value="#{res['new_exp.expName']}"
+                styleClass="readerLabel" /> #{ExperimentBean.ename}</p>
+            <div class="clear"></div>
+            <p><h:outputText value="#{res['new_exp.expSummary']}"
+                styleClass="readerLabel" /> #{ExperimentBean.esummary}</p>
+            <div class="clear"></div>
+
+            <p><h:outputText value="#{res['new_exp.expParticipants']}"
+                styleClass="readerLabel" /> Brian Aitken</p>
+            <div class="clear"></div>
+            </fieldset>
+
+      <div class="commentFormWrap">
+        <h3>#{res['comment.addNew']} (#{res['comment.atStage']} #{Comment_Backing.expPhase})</h3>
+        <h:panelGroup rendered="#{Comment_Backing.parentId!=-1}">
+        <p>IN REPLY TO</p>
+        <p>#{Comment_Backing.parentComment.title}</p>
+        <p>#{Comment_Backing.parentComment.comment}</p>
+        </h:panelGroup>
+
+      <h:form id="commentForm">
+
+          <h:messages errorClass="errorMessage" infoClass="infoMessage"/>
+          <h:outputLabel value="#{res['comment.title']}" for="title" ><span style='color:red;font-weight:bold;'> *</span></h:outputLabel>
+          <h:inputText required="true" id="title" value="#{Comment_Backing.title}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+          <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['comment.title.tooltip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+          <h:message for="title" errorClass="errorMessage" infoClass="infoMessage"/>
+        <div class="clear"></div>
+    
+          <h:outputLabel value="#{res['comment.comment']}" for="comment" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
+          <h:inputTextarea rows="3" cols="50" required="true" id="comment" value="#{Comment_Backing.comment}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+          <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['comment.comment.tooltip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+          <h:message for="comment" errorClass="errorMessage" infoClass="infoMessage"/>
+        <div class="clear"></div>
+        
+          <div class="addCommentSubmitWrap">
+            <h:commandButton value="#{res['comment.addNew']}" 
+            action="#{Comment_Backing.addCommentAction}" />
+          </div>
+      </h:form>
+      </div>
+
+</div>
+</div>
+</div>
+
+
+<div id="leftcol">
+
+<h3 class="leftcol">#{res['new_exp.progress']}</h3>
+<div class="innertube">
+<ul class="exp"><h:form>
+                <h:panelGroup rendered="#{ExperimentBean.currentStage lt 1 || ExperimentBean.currentStage == 1}">
+                                    <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage1']}</a></li>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{ExperimentBean.currentStage > 1}">
+                    <li class="exp_sel"><a href="#" class="exp_done">#{res['new_exp.stage1']}</a></li>
+                </h:panelGroup> 
+    <h:panelGroup rendered="#{ExperimentBean.currentStage >= 2}">
+        <li class="exp"><h:commandLink action="goToStage2"
+                    styleClass="exp_done">
+                <t:outputText value="#{res['new_exp.stage2']}" />
+        </h:commandLink></li>
+    </h:panelGroup>
+            <h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
+        <li class="exp_nd">#{res['new_exp.stage2']}</li>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage >= 3}">
+        <li class="exp"><h:commandLink action="goToStage3"
+                    styleClass="exp_done">
+                <t:outputText value="#{res['new_exp.stage3']}" />
+        </h:commandLink></li>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
+        <li class="exp_nd">#{res['new_exp.stage3']}</li>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage >= 4}">
+        <li class="exp"><h:commandLink action="goToStage4"
+                    styleClass="exp_done">
+                <t:outputText value="#{res['new_exp.stage4']}" />
+        </h:commandLink></li>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
+        <li class="exp_nd">#{res['new_exp.stage4']}</li>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
+        <li class="exp"><h:commandLink action="goToStage5"
+                    styleClass="exp_done">
+                <t:outputText value="#{res['new_exp.stage5']}" />
+        </h:commandLink></li>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
+        <li class="exp_nd">#{res['new_exp.stage5']}</li>
+    </h:panelGroup>     
+    <h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
+        <li class="exp"><h:commandLink action="goToStage6"
+                    styleClass="exp_done">
+                <t:outputText value="#{res['new_exp.stage6']}" />
+        </h:commandLink></li>
+    </h:panelGroup>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
+        <li class="exp_nd">#{res['new_exp.stage6']}</li>
+    </h:panelGroup> 
+    </h:form>
+</ul>
+</div>
+</div>
+
+  </ui:define>
+  <ui:define name="footer">
+        <ui:include src="/WEB-INF/templates/footer.xhtml"/>
+    </ui:define>
+</ui:composition>
+
+</body>
+</html>

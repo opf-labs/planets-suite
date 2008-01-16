@@ -17,5 +17,6 @@ public interface CommentPersistencyRemote {
 	public void deleteComment(Comment comment);
 	public List<Comment> getAllComments();
     public List<Comment> getComments(long experimentID, String experimentPhaseID);
+    public List<Comment> getCommentsByParent(long commentID );    
 	
 }

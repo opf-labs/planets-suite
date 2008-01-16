@@ -681,3 +681,66 @@ span.readerLabel
 {
 	color: red;
 }
+
+/* -------------------------------------------------- */
+/* Additional styling for comments */
+/* -------------------------------------------------- */
+.commentFormWrap fieldset {
+  margin: 2em 0;
+  border:1px solid #aaa;
+}
+
+.commentFormWrap legend {
+  color: #444;
+}
+
+.commentFormWrap table {
+  border: none;
+  width: 100%;
+}
+
+.commentFormWrap td {
+  border: none;
+  padding: 0 0 0.7em 0;
+}
+
+.commentFormWrap tr {
+  font-size: 1.0em;
+}
+
+.commentFormWrap h3 {
+  margin-top: 0;
+  color: black;
+}
+
+.commentTitle, .commentReplyWrap, .commentEditWrap {
+  font-weight: bold;
+}
+.commentBody {
+  color: #222222;
+  padding: 0.5em;
+}
+.commentReplyWrap, .commentEditWrap {
+  display: inline;
+  padding-right: 4px;
+}
+.commentSigWrap {
+  display: inline;
+  color: #888;
+}
+.commentDate {
+  font-style: italic;
+}
+
+.addCommentSubmitWrap {
+  margin-left: 100px;
+  padding-left: 0.5em;
+}
+
+.expandAll, .expandAllTop {
+  font-weight: bold;
+  margin: 1em;
+}
+.expandAllTop {
+  float: right;
+}

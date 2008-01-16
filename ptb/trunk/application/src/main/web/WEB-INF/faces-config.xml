@@ -153,7 +153,15 @@
   </navigation-case>
   <navigation-case>
    <from-outcome>addComment</from-outcome>
-   <to-view-id>/add_comment.xhtml</to-view-id>
+   <to-view-id>/edit_comment.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <from-view-id>/edit_comment.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>success</from-outcome>
+   <to-view-id>/reader/browse_exp.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>

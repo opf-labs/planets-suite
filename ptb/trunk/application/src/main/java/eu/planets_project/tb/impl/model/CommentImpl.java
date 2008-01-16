@@ -70,7 +70,7 @@ public class CommentImpl implements Comment, java.io.Serializable {
 		return this.commentID;
 	}
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#getExperimentPhaseID()
 	 */
 	public String getExperimentPhaseID() {

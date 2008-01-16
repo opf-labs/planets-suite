@@ -16,6 +16,11 @@ public class CommentTreeNode extends TreeNodeBase {
     private String author;
     private String time;
     
+    private void initComment() {
+        this.setType("comment");
+        this.setDescription(this.getTitle());
+    }
+        
     /**
      * @return the title
      */
@@ -27,6 +32,7 @@ public class CommentTreeNode extends TreeNodeBase {
      */
     public void setTitle(String title) {
         this.title = title;
+        this.initComment();
     }
     /**
      * @return the body
@@ -39,6 +45,7 @@ public class CommentTreeNode extends TreeNodeBase {
      */
     public void setBody(String body) {
         this.body = body;
+        this.initComment();
     }
     /**
      * @return the author
@@ -51,6 +58,7 @@ public class CommentTreeNode extends TreeNodeBase {
      */
     public void setAuthor(String author) {
         this.author = author;
+        this.initComment();
     }
     /**
      * @return the time
@@ -63,6 +71,7 @@ public class CommentTreeNode extends TreeNodeBase {
      */
     public void setTime(String time) {
         this.time = time;
+        this.initComment();
     }
     
     

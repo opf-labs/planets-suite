@@ -9,45 +9,71 @@
 <body>
   <ui:composition>
     <div id="experimentComments">
-
-<t:dataTable id="commentTable_all"
-                 var="cmt"
-                 value="#{Comment_Backing.allComments}"
-                 preserveDataModel="true"
-                 rows="10"
-                 rowId="#{cmt.comment}"
-                 preserveSort="true"
-                 cellpadding="2"
-                 cellspacing="0"
-                 border="1"
-                 >
-        <t:column>
-            <f:facet name="header">
-                <t:commandSortHeader id="sortHeader_name" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
-                    #{res['comment.commentsOn']}
-                </t:commandSortHeader>
-            </f:facet>
-                <h:commandLink action="#{Comment_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
-                    <h:outputText value="#{cmt.comment}" />
-                    Hey use this command link idea elsewhere!
-                </h:commandLink>
-                <h3><h:outputText value="#{cmt.title}" /></h3>
-                <h:outputText value="#{cmt.comment}" />
-        </t:column>
-    </t:dataTable>
     
-      <div class="experimentCommentTitle">
-        <h:outputText value="#{res['comment.commentOn']}"/> '#{ExperimentBean.ename}', <h:outputText value=" #{res['comment.atStage']}"/> #{ExperimentBean.phaseBeans[ExperimentPhase].experimentPhaseID}:
-      </div>
       <!-- TODO Add comment list and forms etc etc. -->
+      <div class="commentFormWrap">
       <h:form id="commentForm">
-        <!--  ANJ Sort out how all this fits together -->
-<h:inputTextarea rows="7" cols="55" required="false" id="comment" value="#{Comment_Backing.comment}" readonly="false" disabled="false" />
-        <p>
-          <h:commandButton value="#{res['comment.addNew']}" 
-            action="#{Comment_Backing.addCommentAction}"/>
-        </p>
+
+        <fieldset>
+        <legend>#{res['comment.commentsOn']} '#{ExperimentBean.ename}' </legend>
+
+        <div class="expandAllTop">
+          <h:commandLink immediate="true" value="Expand All" action="#{Comment_Backing.expandAll}"/>
+        </div>
+
+        <t:tree2 id="commentTree" value="#{Comment_Backing.commentTree}" var="cmt" varNodeToggler="t" showRootNode="false" binding="#{Comment_Backing.tree}" showLines="true">
+        <f:facet name="comments">
+            <h:panelGroup>
+                <h:outputText value="#{cmt.description}" styleClass="cmtFolder"/>
+                <h:outputText value="#{res['comment.commentsOn']}" styleClass="commentsTitle"/>
+                <div class="commentDescWrap">
+                    <h:outputText value="#{res['comment.commentOn']}"/> '#{ExperimentBean.ename}', <h:outputText value=" #{res['comment.atStage']}"/> #{ExperimentBean.phaseBeans[ExperimentPhase].experimentPhaseID}:
+                </div>
+            </h:panelGroup>
+        </f:facet>
+        <f:facet name="comment">
+            <h:panelGroup>
+                <h:outputText value="#{cmt.title}" styleClass="commentTitle"/>
+                <t:div styleClass="commentBodyWrap">
+                <h:outputText value="#{cmt.body}" styleClass="commentBody"/>
+                </t:div>
+                <div class="commentSigWrap">
+                <h:outputText value="#{cmt.author}" styleClass="commentAuthor"/><h:outputText value=" (#{cmt.time})" styleClass="commentDate"/>
+                </div>
+                <t:div styleClass="commentEditWrap">
+                  <h:commandLink action="addComment" rendered="#{cmt.author==UserBean.userid}">
+                    <h:outputText value="#{res['comment.edit']}"/>
+                    <t:updateActionListener property="#{Comment_Backing.commentId}" value="#{cmt.identifier}" />
+                  </h:commandLink>
+                </t:div>
+                <t:div styleClass="commentReplyWrap">
+                  <h:commandLink action="addComment">
+                    <h:outputText value="#{res['comment.replyToThis']}"/>
+                    <t:updateActionListener property="#{Comment_Backing.parentId}" value="#{cmt.identifier}" />
+                    <t:updateActionListener property="#{Comment_Backing.expPhase}" value="#{ExperimentPhase}" />
+                  </h:commandLink>
+                </t:div>
+            </h:panelGroup>
+        </f:facet>
+        <f:facet name="commentbox">
+          <t:div styleClass="commentReplyWrap">
+           <h:commandLink immediate="true" action="addComment">
+              <h:outputText value="#{res['comment.addNew']}"/>
+              <t:updateActionListener property="#{Comment_Backing.parentId}" value="-1" />
+              <t:updateActionListener property="#{Comment_Backing.expPhase}" value="#{ExperimentPhase}" />
+           </h:commandLink>
+          </t:div>
+        </f:facet>
+        </t:tree2>
+        
+        <div class="expandAll">
+          <h:commandLink immediate="true" value="Expand All" action="#{Comment_Backing.expandAll}"/>
+        </div>
+        
+        </fieldset>
       </h:form>
+      
+     </div>
     </div>
   </ui:composition>
 </body>

@@ -21,5 +21,7 @@ public interface CommentManager {
 	public void updateComment(Comment comment);
 	
 	public boolean containsComment(long commentID);
+	
+	public List<Comment> getCommentsByParent( Comment c );
 
 }

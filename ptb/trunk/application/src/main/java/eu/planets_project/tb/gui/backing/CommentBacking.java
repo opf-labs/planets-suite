@@ -11,6 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
+import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Comment;
@@ -23,6 +24,7 @@ import org.apache.myfaces.custom.tree2.TreeModel;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
 import org.apache.myfaces.custom.tree2.TreeState;
 import org.apache.myfaces.custom.tree2.TreeStateBase;
+import org.apache.myfaces.custom.tree2.HtmlTree;
 
 /**
  * @author AnJackson
@@ -34,13 +36,28 @@ public class CommentBacking {
     private Log log = LogFactory.getLog(CommentBacking.class);
 
     // The currently-being-edited comment:
+    String commentId;
+    String title;
     String comment;
+    String parentId;
     
     // The comment manager:
     CommentManager cm = CommentManagerImpl.getInstance();
     
     // The experimental phase this comment pertains to
     String expPhase = ExperimentPhase.PHASENAME_EXPERIMENTSETUP;
+    
+    // The view-id that the comment was attached to:
+    private String parentURI = null;
+
+    // UI Data
+    HtmlTree htmlTree;
+    
+    // Default maximum title length
+    static int TITLE_LENGTH = 30;
+    
+    // NO PARENT indicator
+    static int NO_PARENT = -1;
  
 
     /**
@@ -50,6 +67,26 @@ public class CommentBacking {
         comment = "";
     }
     
+    /**
+     * @return the commentId
+     */
+    public String getCommentId() {
+        return commentId;
+    }
+
+    /**
+     * @param commentId the commentId to set
+     */
+    public void setCommentId(String commentId) {
+        this.commentId = commentId;
+        if( commentId == null || "".equals(commentId) ) return;
+        Comment c = cm.getComment(getlCommentID());
+        this.title = c.getTitle();
+        this.comment = c.getComment();
+        this.parentId = new Long(c.getParentID()).toString();
+        this.storeCurrentURL();
+    }
+
     /**
      * @return the comment
      */
@@ -64,7 +101,36 @@ public class CommentBacking {
         this.comment = comment;
     }
     
-    
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * @return the parentId
+     */
+    public String getParentId() {
+        return parentId;
+    }
+
+    /**
+     * @param parentId the parentId to set
+     */
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+        if( parentId == null || "".equals(parentId) ) return;
+        this.storeCurrentURL();
+    }
+
     /**
      * @return the expPhase
      */
@@ -80,10 +146,27 @@ public class CommentBacking {
     }
 
     /**
+     * @return the tree
+     */
+    public HtmlTree getTree() {
+        return htmlTree;
+    }
+
+    /**
+     * @param tree the tree to set
+     */
+    public void setTree(HtmlTree tree) {
+        
+        this.htmlTree = tree;
+    }
+
+    /**
      * 
      */
     public void addCommentAction() {
         log.info("Recieved addCommentAction()" );
+        log.info("Recieved addCommentAction parentId = '" + parentId + "'" );
+        log.info("Recieved addCommentAction expPhase = '" + expPhase + "'" );
         //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
         
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
@@ -94,15 +177,44 @@ public class CommentBacking {
         log.info("Recieved comment " + getComment() + " for " + expBean.getEname());
         
         Comment cmt = new CommentImpl(exp.getEntityID(), getExpPhase() );
-        String title = getComment();
-        if ( title.length() > 10 ) title = getComment().substring(0, 10);
+        if( title == null || "".equals(title) ) {
+            title = getComment();
+            if ( title.length() > CommentBacking.TITLE_LENGTH ) 
+                title = getComment().substring(0, CommentBacking.TITLE_LENGTH );
+        }
+        // Existing comment?
+        if( ! "".equals(commentId) )
+            cmt = cm.getComment(this.getlCommentID());
+        // Edit/update the comment:
+        cmt.setParentID( getlParentID() );
         cmt.setExperimentID(exp.getEntityID());
         cmt.setExperimentPhaseID(getExpPhase());
         cmt.setPostDate( java.util.Calendar.getInstance() );
         cmt.setComment(title , this.comment );
-        cmt.setAuthorID("fred");
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        cmt.setAuthorID(user.getUserid());
+
+        // Add or update, depending on commendId:
+        if( "".equals(commentId) ) {
+            cm.registerComment(cmt, expBean.getID(), getExpPhase() );
+        } else {
+            cm.updateComment(cmt);
+        }
         
-        cm.registerComment(cmt, expBean.getID(), getExpPhase() );
+        // Un-set the comment and title as they have now been used:
+        this.setTitle("");
+        this.setComment("");
+        this.setParentId("");
+        this.setExpPhase("");
+        this.setCommentId("");
+        
+        // Redirect to the original page, if it is set:
+        if( parentURI == null || parentURI == "" ) return;
+        try {
+          javax.faces.context.FacesContext.getCurrentInstance().getExternalContext().redirect(parentURI);
+        } catch ( java.io.IOException e) {
+            log.error("Redirect failed with exception: " + e);
+        }
     }
 
     /**
@@ -117,27 +229,104 @@ public class CommentBacking {
         return cm.getComments(expBean.getID(), getExpPhase() );
     }
 
+    /**
+     * Backing for the Tomahawk Tree2 I'm using for displaying the comments.
+     * @return A TreeModel holding the comments.
+     */
     public TreeModel getCommentTree() {
         // Get the comments.
         List<Comment> cmts = this.getAllComments();
+        
         // Build the tree.
         TreeNode tn = new CommentTreeNode();
-        tn.setType("comment"); tn.setLeaf(false);
+        tn.setType("comments"); tn.setLeaf(false);
+
+        // Create the tree:
+        TreeModel tm = new TreeModelBase(tn);
+
+        // Add child nodes:
+        this.addChildComments(tm, tn, cmts);
         
-        for (java.util.Iterator<Comment> it = cmts.iterator (); it.hasNext (); ) {
-            Comment c = it.next();
+        // Add a child for the reply box:
+        TreeNode tncb = new CommentTreeNode();
+        tncb.setType("commentbox"); tncb.setLeaf(true);
+        tn.getChildren().add(tncb);
+        
+        return tm;
+    }
+    
+    private void addChildComments( TreeModel tm, TreeNode parent, List<Comment> cmts ) {
+        // Do nothing if there are no comments.
+        if( cmts.size() == 0 ) return;
+        
+        // Iterate over the children:
+        for (java.util.Iterator<Comment> cit = cmts.iterator(); cit.hasNext (); ) {
+            Comment c = cit.next();
             CommentTreeNode cnode = new CommentTreeNode();
-            cnode.setAuthor(c.getAuthorID());
             cnode.setTitle(c.getTitle());
             cnode.setBody(c.getComment());
-            cnode.setTime(c.getPostDate().toString());
-            List<CommentTreeNode> cchilds = (List<CommentTreeNode>) tn.getChildren();
+            cnode.setIdentifier(new Long(c.getCommentID()).toString());
+            cnode.setAuthor(c.getAuthorID());
+            // Format the date:
+            java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance();
+            cnode.setTime( df.format(c.getPostDate().getTime()) );
+            cnode.setLeaf(false);
+            // Add the child element to the tree:
+            List<CommentTreeNode> cchilds = (List<CommentTreeNode>) parent.getChildren();
             cchilds.add(cnode);
+            // Look for sub-comments:
+            List<Comment> ccmt = cm.getCommentsByParent(c);
+            // If there are any, add them via recursion:
+            if( ccmt.size() > 0 ) 
+                this.addChildComments(tm, cnode, ccmt);
         }
         
-        TreeModel tree = new TreeModelBase(tn);
-        
-        return tree;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public Comment getParentComment() {
+        return cm.getComment(getlParentID());
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public long getlCommentID() {
+        if( commentId == null || "".equals(commentId) ) return -1;
+        return Long.parseLong(commentId);
     }
 
+    /**
+     * 
+     * @return
+     */
+    public long getlParentID() {
+        if( parentId == null || "".equals(parentId) ) return NO_PARENT;
+        return Long.parseLong(parentId);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String expandAll()
+    {
+      if( htmlTree != null )
+        htmlTree.expandAll();
+      return null;
+    }
+    
+    private void storeCurrentURL() {
+        // Pick up the view-id that invoked this method:
+        javax.faces.context.ExternalContext fec = javax.faces.context.FacesContext.getCurrentInstance().getExternalContext();
+        this.parentURI = fec.getRequestContextPath();
+        if( fec.getRequestServletPath() != null )
+            this.parentURI += fec.getRequestServletPath();
+        if( fec.getRequestPathInfo() != null )
+            this.parentURI += fec.getRequestPathInfo();
+    }
 }

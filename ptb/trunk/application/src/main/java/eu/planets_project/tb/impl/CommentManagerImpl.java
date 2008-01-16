@@ -111,5 +111,12 @@ public class CommentManagerImpl implements CommentManager {
 	public boolean containsComment(long commentID) {
 		return false;
 	}
+	
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.CommentManager#getCommentsByParent(Comment)
+     */
+    public List<Comment> getCommentsByParent( Comment c ) {
+        return cmp.getCommentsByParent(c.getCommentID());
+    }
 
 }
