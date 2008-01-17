@@ -15,6 +15,7 @@ public class CommentTreeNode extends TreeNodeBase {
     private String body;
     private String author;
     private String time;
+    private String expPhase;
     
     private void initComment() {
         this.setType("comment");
@@ -72,6 +73,20 @@ public class CommentTreeNode extends TreeNodeBase {
     public void setTime(String time) {
         this.time = time;
         this.initComment();
+    }
+
+    /**
+     * @return the expPhase
+     */
+    public String getExpPhase() {
+        return expPhase;
+    }
+
+    /**
+     * @param expPhase the expPhase to set
+     */
+    public void setExpPhase(String expPhase) {
+        this.expPhase = expPhase;
     }
     
     

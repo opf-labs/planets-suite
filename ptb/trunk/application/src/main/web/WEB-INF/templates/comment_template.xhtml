@@ -28,21 +28,21 @@
                 <h:outputText value="#{cmt.description}" styleClass="cmtFolder"/>
                 <h:outputText value="#{res['comment.commentsOn']}" styleClass="commentsTitle"/>
                 <div class="commentDescWrap">
-                    <h:outputText value="#{res['comment.commentOn']}"/> '#{ExperimentBean.ename}', <h:outputText value=" #{res['comment.atStage']}"/> #{ExperimentBean.phaseBeans[ExperimentPhase].experimentPhaseID}:
+                    <h:outputText value="#{res['comment.commentOn']}"/> '#{ExperimentBean.ename}', <h:outputText value=" #{res['comment.atStage']}"/> #{ExperimentBean.currentPhaseName}:
                 </div>
             </h:panelGroup>
         </f:facet>
         <f:facet name="comment">
-            <h:panelGroup>
+            <h:panelGroup styleClass="#{cmt.expPhase==ExperimentBean.phaseBeans[ExperimentPhase].experimentPhaseID ? 'commentWrapCurrent' : 'commentWrap'}">
                 <h:outputText value="#{cmt.title}" styleClass="commentTitle"/>
                 <t:div styleClass="commentBodyWrap">
                 <h:outputText value="#{cmt.body}" styleClass="commentBody"/>
                 </t:div>
                 <div class="commentSigWrap">
-                <h:outputText value="#{cmt.author}" styleClass="commentAuthor"/><h:outputText value=" (#{cmt.time})" styleClass="commentDate"/>
+                <h:outputText value="#{cmt.author}" styleClass="commentAuthor"/><h:outputText value=" (#{cmt.time} - #{cmt.expPhase})" styleClass="commentDate"/>
                 </div>
-                <t:div styleClass="commentEditWrap">
-                  <h:commandLink action="addComment" rendered="#{cmt.author==UserBean.userid||UserBean.isAdmin}">
+                <t:div styleClass="commentEditWrap" rendered="#{cmt.author==UserBean.userid||UserBean.admin}">
+                  <h:commandLink action="addComment">
                     <h:outputText value="#{res['comment.edit']}"/>
                     <t:updateActionListener property="#{Comment_Backing.commentId}" value="#{cmt.identifier}" />
                   </h:commandLink>
@@ -51,26 +51,26 @@
                   <h:commandLink action="addComment">
                     <h:outputText value="#{res['comment.replyToThis']}"/>
                     <t:updateActionListener property="#{Comment_Backing.parentId}" value="#{cmt.identifier}" />
-                    <t:updateActionListener property="#{Comment_Backing.expPhase}" value="#{ExperimentPhase}" />
                   </h:commandLink>
                 </t:div>
             </h:panelGroup>
         </f:facet>
-        <f:facet name="commentbox">
+        <f:facet name="commentbox">        
+          <h:panelGroup styleClass="commentWrap">
+          <div class="expandAll">
+            <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
+            <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
+          </div>
           <t:div styleClass="commentReplyWrap">
            <h:commandLink immediate="true" action="addComment">
               <h:outputText value="#{res['comment.addNew']}"/>
               <t:updateActionListener property="#{Comment_Backing.parentId}" value="-1" />
-              <t:updateActionListener property="#{Comment_Backing.expPhase}" value="#{ExperimentPhase}" />
            </h:commandLink>
           </t:div>
+          </h:panelGroup>
         </f:facet>
-        </t:tree2>
         
-        <div class="expandAll">
-          <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
-          <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
-        </div>
+        </t:tree2>
         
         </fieldset>
       </h:form>

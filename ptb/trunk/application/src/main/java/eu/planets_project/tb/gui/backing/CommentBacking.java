@@ -88,6 +88,7 @@ public class CommentBacking {
         this.comment = c.getComment();
         this.parentId = new Long(c.getParentID()).toString();
         this.author = c.getAuthorID();
+        this.expPhase = c.getExperimentPhaseID();
         // Format the date:
         java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance();
         this.time = df.format(c.getPostDate().getTime());
@@ -206,7 +207,7 @@ public class CommentBacking {
         // User is?
         UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
         // Existing comment?
-        if( ! "".equals(commentId) ) {
+        if( ! "".equals(commentId) && commentId != null ) {
             cmt = cm.getComment(this.getlCommentID());
         } else {
             cmt.setAuthorID(user.getUserid());
@@ -214,7 +215,7 @@ public class CommentBacking {
         // Edit/update the comment:
         cmt.setParentID( getlParentID() );
         cmt.setExperimentID(exp.getEntityID());
-        cmt.setExperimentPhaseID(getExpPhase());
+        cmt.setExperimentPhaseID( expBean.getCurrentPhaseName() );
         cmt.setPostDate( java.util.Calendar.getInstance() );
         cmt.setComment(title , this.comment );
         
@@ -272,7 +273,7 @@ public class CommentBacking {
         TreeModel tm = new TreeModelBase(tn);
 
         // Add child nodes:
-        this.addChildComments(tm, tn, cmts);
+        this.getChildComments(tm, tn, cmts);
         
         // Add a child for the reply box:
         TreeNode tncb = new CommentTreeNode();
@@ -282,7 +283,7 @@ public class CommentBacking {
         return tm;
     }
     
-    private void addChildComments( TreeModel tm, TreeNode parent, List<Comment> cmts ) {
+    private void getChildComments( TreeModel tm, TreeNode parent, List<Comment> cmts ) {
         // Do nothing if there are no comments.
         if( cmts.size() == 0 ) return;
         
@@ -297,6 +298,7 @@ public class CommentBacking {
             // Format the date:
             java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance();
             cnode.setTime( df.format(c.getPostDate().getTime()) );
+            cnode.setExpPhase(c.getExperimentPhaseID());
             cnode.setLeaf(false);
             // Add the child element to the tree:
             List<CommentTreeNode> cchilds = (List<CommentTreeNode>) parent.getChildren();
@@ -305,7 +307,7 @@ public class CommentBacking {
             List<Comment> ccmt = cm.getCommentsByParent(c);
             // If there are any, add them via recursion:
             if( ccmt.size() > 0 ) 
-                this.addChildComments(tm, cnode, ccmt);
+                this.getChildComments(tm, cnode, ccmt);
         }
         
     }

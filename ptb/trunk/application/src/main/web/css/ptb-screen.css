@@ -701,7 +701,6 @@ span.readerLabel
 
 .commentFormWrap td {
   border: none;
-  padding: 0 0 0.7em 0;
 }
 
 .commentFormWrap tr {
@@ -722,11 +721,13 @@ span.readerLabel
 }
 .commentReplyWrap, .commentEditWrap {
   display: inline;
-  padding-right: 4px;
+  padding: 0 2px;
+  margin-left: 4px;
+  border-bottom: 1px solid #aaaaaa;
 }
 .commentSigWrap {
   display: inline;
-  color: #888;
+  color: #666666;
 }
 .commentDate {
   font-style: italic;
@@ -737,16 +738,26 @@ span.readerLabel
   padding-left: 0.5em;
 }
 
-.commentReplyingToWrap{
+.commentReplyingToWrap {
   margin: 2em;
   background-color: #f6f6ff;
   padding: 5px;
 }
 
+.commentWrapCurrent, .commentWrap {
+  padding: 0.5em;
+  border-left: 1px solid #aaaaaa;
+  display: block;
+}
+.commentWrapCurrent {
+  background-color: #ffffe8;
+  display: block;
+}
+
 .expandAll, .expandAllTop {
   font-weight: bold;
   margin: 1em;
-}
-.expandAllTop {
+  border: 1px solid #888;
   float: right;
+  padding: 0.5em 1em;
 }

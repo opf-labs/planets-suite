@@ -19,6 +19,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.rmi.PortableRemoteObject;
 
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
@@ -199,7 +201,9 @@ public class TestbedManagerImpl
 			this.hmAllExperiments.put(exp.getEntityID(), exp);
 		  //End Transaction
 		}
-		
+		// Also update the Experiment backing bean to reflect the changes:
+	    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	    expBean.fill(experimentBean);
 	}
 
 	/* (non-Javadoc)

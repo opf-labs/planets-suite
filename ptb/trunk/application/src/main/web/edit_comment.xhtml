@@ -102,7 +102,7 @@ ni.appendChild(newdiv);
             </fieldset>
 
       <div class="commentFormWrap">
-        <h3>#{res['comment.addNew']} (#{res['comment.atStage']} #{Comment_Backing.expPhase})</h3>
+        <h3>#{res['comment.addNew']} (#{res['comment.atStage']} #{ExperimentBean.currentPhaseName})</h3>
         <h:panelGroup rendered="#{Comment_Backing.parentId!=-1}">
         <h2>#{res['comment.inReplyTo']}</h2>
         <t:div styleClass="commentReplyingToWrap">
@@ -120,13 +120,13 @@ ni.appendChild(newdiv);
 
           <h:messages errorClass="errorMessage" infoClass="infoMessage"/>
           <h:outputLabel value="#{res['comment.title']}" for="title" ><span style='color:red;font-weight:bold;'> *</span></h:outputLabel>
-          <h:inputText required="true" id="title" value="#{Comment_Backing.title}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+          <h:inputText required="true" id="title" value="#{Comment_Backing.title}" size="50" />
           <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['comment.title.tooltip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
           <h:message for="title" errorClass="errorMessage" infoClass="infoMessage"/>
         <div class="clear"></div>
     
           <h:outputLabel value="#{res['comment.comment']}" for="comment" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-          <h:inputTextarea rows="3" cols="50" required="true" id="comment" value="#{Comment_Backing.comment}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+          <h:inputTextarea rows="3" cols="50" required="true" id="comment" value="#{Comment_Backing.comment}" />
           <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['comment.comment.tooltip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
           <h:message for="comment" errorClass="errorMessage" infoClass="infoMessage"/>
         <div class="clear"></div>

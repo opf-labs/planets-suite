@@ -35,6 +35,9 @@ public class ExperimentBean {
 	public static final int PHASE_EXPERIMENTAPPROVAL   = 4;
 	public static final int PHASE_EXPERIMENTEXECUTION  = 5;
 	public static final int PHASE_EXPERIMENTEVALUATION = 6;
+	
+	// To avoid the data held here falling out of date, store the experiment:
+	Experiment exp = null;
                
 	private Log log = LogFactory.getLog(ExperimentBean.class);
 	private long id;
@@ -94,6 +97,7 @@ public class ExperimentBean {
     }
     
     public void fill(Experiment exp) {
+        this.exp = exp; 
     	ExperimentSetup expsetup = exp.getExperimentSetup();
     	BasicProperties props = expsetup.getBasicProperties();
     	this.id = exp.getEntityID();
@@ -477,6 +481,10 @@ public class ExperimentBean {
      * @return List of ExperimentPhaseBean, one for each possible Phase.
      */
     public List<ExperimentPhaseBean> getPhaseBeans() {
+        return java.util.Arrays.asList(getPhaseBeanArray());
+    }
+    
+    private ExperimentPhaseBean[] getPhaseBeanArray() {
         // TODO ANJ Surely there is a better way of organising this:
         log.info("Building array of ExperimentPhaseBeans");
         ExperimentPhaseBean[] phaseBeans = new ExperimentPhaseBean[7]; 
@@ -492,8 +500,11 @@ public class ExperimentBean {
                 new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTEXECUTION);
         phaseBeans[ExperimentBean.PHASE_EXPERIMENTEVALUATION] =
                 new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION);
-        return java.util.Arrays.asList(phaseBeans);
+        return phaseBeans;
     }
     
+    public String getCurrentPhaseName() {
+        return exp.getCurrentPhase().getPhaseName();
+    }
     
 }
