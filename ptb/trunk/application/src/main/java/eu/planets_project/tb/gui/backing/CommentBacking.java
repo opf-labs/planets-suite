@@ -211,11 +211,11 @@ public class CommentBacking {
             cmt = cm.getComment(this.getlCommentID());
         } else {
             cmt.setAuthorID(user.getUserid());
+            cmt.setExperimentPhaseID( expBean.getCurrentPhaseName() );
         }
         // Edit/update the comment:
         cmt.setParentID( getlParentID() );
         cmt.setExperimentID(exp.getEntityID());
-        cmt.setExperimentPhaseID( expBean.getCurrentPhaseName() );
         cmt.setPostDate( java.util.Calendar.getInstance() );
         cmt.setComment(title , this.comment );
         
