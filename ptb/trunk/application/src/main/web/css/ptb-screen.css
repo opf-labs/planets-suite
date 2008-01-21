@@ -688,6 +688,7 @@ span.readerLabel
 .commentFormWrap fieldset {
   margin: 2em 0;
   border:1px solid #aaa;
+  clear: both;
 }
 
 .commentFormWrap legend {
@@ -697,14 +698,17 @@ span.readerLabel
 .commentFormWrap table {
   border: none;
   width: 100%;
+  clear: none;
 }
 
 .commentFormWrap td {
   border: none;
+  clear: none;
 }
 
 .commentFormWrap tr {
   font-size: 1.0em;
+  clear: none;
 }
 
 .commentFormWrap h3 {
@@ -712,12 +716,23 @@ span.readerLabel
   color: black;
 }
 
+.commentWrapCurrent, .commentWrap {
+  padding: 0.5em;
+  border-left: 1px solid #aaaaaa;
+  display: block;
+  clear: none;
+}
+.commentWrapCurrent {
+  background-color: #ffffe8;
+  display: block;
+}
+
 .commentTitle, .commentReplyWrap, .commentEditWrap {
   font-weight: bold;
 }
 .commentBody {
   color: #222222;
-  padding: 0.5em;
+  padding: 0 0.5em;
 }
 .commentReplyWrap, .commentEditWrap {
   display: inline;
@@ -742,16 +757,6 @@ span.readerLabel
   margin: 2em;
   background-color: #f6f6ff;
   padding: 5px;
-}
-
-.commentWrapCurrent, .commentWrap {
-  padding: 0.5em;
-  border-left: 1px solid #aaaaaa;
-  display: block;
-}
-.commentWrapCurrent {
-  background-color: #ffffe8;
-  display: block;
 }
 
 .expandAll, .expandAllTop {

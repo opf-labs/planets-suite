@@ -14,8 +14,9 @@
 			<url-pattern>/admin/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
-			<description>Allow TestbedAdmin role to access Admin pages</description>
-			<role-name>TestbedAdmin</role-name>
+			<description>Allow Testbed Administrator role to access Admin pages</description>
+			<role-name>testbed.admin</role-name>
+			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
 	
@@ -26,7 +27,9 @@
 		</web-resource-collection>
 		<auth-constraint>
 			<description>Allow Experimenter role to access Experimenter pages</description>
-			<role-name>Experimenter</role-name>
+			<role-name>testbed.experimenter</role-name>
+			<role-name>user</role-name>
+			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
 	
@@ -37,32 +40,80 @@
 		</web-resource-collection>
 		<auth-constraint>
 			<description>Allow Reader role to access pages</description>
-			<role-name>TestbedReader</role-name>
+            <role-name>testbed.reader</role-name>
+            <role-name>testbed.experimenter</role-name>
+            <role-name>testbed.admin</role-name>
+			<role-name>user</role-name>
+			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
 
-	<security-role>
-		<description>Testbed Admin</description>
-		<role-name>TestbedAdmin</role-name>
-	</security-role> 
+    <security-role>
+        <description>Testbed Administrator</description>
+        <role-name>testbed.admin</role-name>
+    </security-role> 
 	<security-role>
 		<description>Testbed Experimenter</description>
-		<role-name>Experimenter</role-name>
+		<role-name>testbed.experimenter</role-name>
 	</security-role> 
 	<security-role>
 		<description>Testbed Reader</description>
-		<role-name>TestbedReader</role-name>
+		<role-name>testbed.reader</role-name>
 	</security-role>
+    <security-role>
+        <description>Planets Administrator</description>
+        <role-name>admin</role-name>
+    </security-role> 
+    <security-role>
+        <description>Planets User</description>
+        <role-name>user</role-name>
+    </security-role> 
 		  
-	
+	<!-- Uncomment when PSSOS is available
+	       NOTE1: make sure that java keystore is set up correctly (see instructions)
+	                 in "Adding SSO to PLANETS Web Applications"
+	       NOTE2: make sure that casclient-2.1.1.jar is on classpath (should be in
+	                 server/default/lib)     -->
+<!--
+    <filter>
+        <filter-name>CAS Filter</filter-name>
+        <filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>
+        <init-param>
+            <param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
+            <param-value>https://localhost:8443/security/login</param-value>
+        </init-param>
+        <init-param>
+            <param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
+            <param-value>https://localhost:8443/security/serviceValidate</param-value>
+        </init-param>
+        <init-param>
+            <param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>
+            <param-value>localhost:8080</param-value>
+        </init-param>
+        <init-param>
+            <param-name>edu.yale.its.tp.cas.client.filter.wrapRequest</param-name>
+            <param-value>true</param-value>
+        </init-param>        
+    </filter>
+ -->
+<!-- 
+    <filter-mapping>
+        <filter-name>CAS Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+ -->
+ 
+<!--  
+-->
 	<login-config>
 		<auth-method>FORM</auth-method>
-		<realm-name>TestbedJaasDbRealm</realm-name>
+		<realm-name>PlanetsRealm</realm-name>
 		<form-login-config>
 			<form-login-page>/login.faces</form-login-page>
 			<form-error-page>/error.html</form-error-page>
 		</form-login-config>
 	</login-config>
+		<!--  realm-name>TestbedJaasDbRealm</realm-name -->
 	 
 
   <context-param>

@@ -22,7 +22,7 @@
           <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
         </div>
 
-        <t:tree2 id="commentTree" value="#{Comment_Backing.commentTree}" var="cmt" varNodeToggler="t" showRootNode="false" binding="#{Comment_Backing.tree}" showLines="true" preserveToggle="true">
+        <t:tree2 id="commentTree" value="#{Comment_Backing.commentTree}" var="cmt" varNodeToggler="t" showRootNode="false" binding="#{Comment_Backing.tree}" showLines="true" preserveToggle="true" clientSideToggle="true">
         <f:facet name="comments">
             <h:panelGroup>
                 <h:outputText value="#{cmt.description}" styleClass="cmtFolder"/>
@@ -34,10 +34,12 @@
         </f:facet>
         <f:facet name="comment">
             <h:panelGroup styleClass="#{cmt.expPhase==ExperimentBean.phaseBeans[ExperimentPhase].experimentPhaseID ? 'commentWrapCurrent' : 'commentWrap'}">
-                <h:outputText value="#{cmt.title}" styleClass="commentTitle"/>
-                <t:div styleClass="commentBodyWrap">
+              <t:graphicImage value="/graphics/toolbar_user.gif" rendered="#{t.nodeExpanded}" border="0"/>
+              <t:graphicImage value="/graphics/toolbar_user.gif" rendered="#{!t.nodeExpanded}" border="0"/> 
+              <h:outputText value="#{cmt.title}" styleClass="commentTitle"/>
+              <t:div styleClass="commentBodyWrap">
                 <h:outputText value="#{cmt.body}" styleClass="commentBody"/>
-                </t:div>
+              </t:div>
                 <div class="commentSigWrap">
                 <h:outputText value="#{cmt.author}" styleClass="commentAuthor"/><h:outputText value=" (#{cmt.time} - #{cmt.expPhase})" styleClass="commentDate"/>
                 </div>

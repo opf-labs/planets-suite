@@ -31,7 +31,8 @@ import org.apache.myfaces.custom.tree2.TreeWalker;
  * @author AnJackson
  *
  */
-public class CommentBacking {
+public class CommentBacking implements java.io.Serializable {
+    static final long serialVerionUID = 1283216316723l;
     
     // A logger for this bean
     private Log log = LogFactory.getLog(CommentBacking.class);
