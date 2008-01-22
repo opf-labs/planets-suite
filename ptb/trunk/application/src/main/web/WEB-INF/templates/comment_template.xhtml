@@ -10,6 +10,8 @@
   <ui:composition>
     <div id="experimentComments">
     
+    <h:panelGroup rendered="#{ExperimentBean.ename!=''}">
+    
       <!-- TODO Add comment list and forms etc etc. -->
       <div class="commentFormWrap">
       <h:form id="commentForm">
@@ -17,10 +19,10 @@
         <fieldset>
         <legend>#{res['comment.commentsOn']} '#{ExperimentBean.ename}' </legend>
 
-        <div class="expandAllTop">
+        <h:panelGroup styleClass="expandAllTop" rendered="#{Comment_Backing.numberOfComments gt 2}">
           <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
           <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
-        </div>
+        </h:panelGroup>
 
         <t:tree2 id="commentTree" value="#{Comment_Backing.commentTree}" var="cmt" varNodeToggler="t" showRootNode="false" binding="#{Comment_Backing.tree}" showLines="true" preserveToggle="true" clientSideToggle="true">
         <f:facet name="comments">
@@ -59,10 +61,10 @@
         </f:facet>
         <f:facet name="commentbox">        
           <h:panelGroup styleClass="commentWrap">
-          <div class="expandAll">
-            <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
-            <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
-          </div>
+        <h:panelGroup styleClass="expandAllTop" rendered="#{Comment_Backing.numberOfComments gt 2}">
+          <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
+          <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
+        </h:panelGroup>
           <t:div styleClass="commentReplyWrap">
            <h:commandLink immediate="true" action="addComment">
               <h:outputText value="#{res['comment.addNew']}"/>
@@ -78,6 +80,9 @@
       </h:form>
       
      </div>
+     
+     </h:panelGroup>
+     
     </div>
   </ui:composition>
 </body>

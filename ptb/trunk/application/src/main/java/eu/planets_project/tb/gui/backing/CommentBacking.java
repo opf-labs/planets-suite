@@ -257,6 +257,14 @@ public class CommentBacking implements java.io.Serializable {
         
         return cm.getComments(expBean.getID(), getExpPhase() );
     }
+    
+    /**
+     * Looks up the total number of comments
+     * @return The number of comments.
+     */
+    public int getNumberOfComments() {
+        return this.getAllComments().size();
+    }
 
     /**
      * Backing for the Tomahawk Tree2 I'm using for displaying the comments.
@@ -401,4 +409,5 @@ public class CommentBacking implements java.io.Serializable {
     public String getTime() {
         return time;
     }
+    
 }
