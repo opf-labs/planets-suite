@@ -15,6 +15,8 @@ import java.util.Vector;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+import javax.servlet.http.HttpServletRequest;
 
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
@@ -24,6 +26,9 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.ExperimentNotFoundException;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+
+import org.apache.commons.logging.Log;
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
 
 /**
@@ -50,10 +55,14 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	private HashMap<String,Vector<String>> hmLiteratureReference;
 	//private HashMap<Long,Vector<Integer>> hmInvolvedUserSpecialExperimentRoles;
 	
+	@Transient
+	//This annotation specifies that the property or field is not persistent.
+	private Log log;
+	
 	public BasicPropertiesImpl(){
 		
+		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 		initialiseVariables();
-		
 	}
 
 	/* (non-Javadoc)
@@ -147,6 +156,8 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getPurpose()
 	 */
 	public String getPurpose() {
+		//log.debug("getting purpose");
+		PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml").debug("getting purpose");
 		return sPurpose;
 	}
 
@@ -467,6 +478,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setPurpose(java.lang.String)
 	 */
 	public void setPurpose(String purpose) {
+		//log.debug("setting purpose");
 		this.sPurpose = purpose;
 	}
 

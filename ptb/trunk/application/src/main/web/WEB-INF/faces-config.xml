@@ -46,6 +46,9 @@
   <managed-bean-class>eu.planets_project.tb.gui.backing.CommentBacking</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+<!--End Managed Beans -->
+
+<!-- Start Navigation Rules: General Navigation Rules -->
  <navigation-rule>
   <from-view-id>/*</from-view-id>
   <navigation-case>
@@ -103,6 +106,12 @@
    <redirect/>
   </navigation-case>
   <navigation-case>
+   <!-- register_TBServices -->
+   <from-action>#{Manager_Backing.initRegisterTBService}</from-action>
+   <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
    <from-outcome>help</from-outcome>
    <to-view-id>/reader/help.xhtml</to-view-id>
    <redirect/>
@@ -114,6 +123,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <!-- navigating between stages of experiment wizard -->
  <navigation-rule>
   <navigation-case>
@@ -165,6 +175,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <!-- navigation rules for NEW_EXPERIMENT pages -->
  <navigation-rule>
   <from-view-id>/exp/exp_stage1.xhtml</from-view-id>
@@ -175,6 +186,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <!-- navigating between stages of reader's version of the experiment wizard -->
  <navigation-rule>
   <navigation-case>
@@ -291,6 +303,47 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
+ <!--NAVIGATION for ADMIN role: -->
+ <!-- Register TB Service Wizzard -->
+ <navigation-rule>
+  <navigation-case>
+    <from-outcome>reload-page</from-outcome>
+    <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>success-analyze</from-outcome>
+    <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+     <from-outcome>error-analyze</from-outcome>
+     <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+     <from-outcome>error-send</from-outcome>
+     <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>success-send</from-outcome>
+    <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>browse-all-services</from-outcome>
+    <to-view-id>/admin/browse_TBServices.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>remove-services</from-outcome>
+    <to-view-id>/admin/remove_TBServices.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <!-- register_TBServices -->
+   <from-action>#{Manager_Backing.initRegisterTBService}</from-action>
+   <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+
  <application>
   <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
   <locale-config>

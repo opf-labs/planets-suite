@@ -12,6 +12,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
@@ -52,7 +53,7 @@ public class Manager {
     
     public Manager() {
     }
-    
+ 
     public String initExperimentAction() {
 		ExperimentBean expBean = new ExperimentBean();
 		// Put Bean into Session; accessible later as #{ExperimentBean}
@@ -559,5 +560,17 @@ public class Manager {
         this.ereport = ereport;
     }
     
+    /**
+     * @author alindley
+     * (re)Init and register a an admin backing bean (scope = session) for the 
+     * wizzard: register_TBServices
+     */
+    public String initRegisterTBService(){
+    	RegisterTBServices regTBSer = new RegisterTBServices();
+		// Put Bean into Session; accessible later as #{ExperimentBean}
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		ctx.getExternalContext().getSessionMap().put("RegisterTBServiceBean", regTBSer);
+	    return "register_TBservices";
+    }
 
 }

@@ -1,6 +1,5 @@
 package eu.planets_project.tb.gui.backing;
 
-import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 
 
 public class ExperimentBean {

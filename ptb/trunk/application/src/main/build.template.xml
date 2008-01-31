@@ -42,6 +42,10 @@
         <fileset dir="${jboss.home}/lib">
             <include name="*.jar"/>
         </fileset>
+        <!--testbed specific libs -->
+	<fileset dir="${basedir}/web/WEB-INF/lib">
+	    <include name="*.jar"/>
+        </fileset>
         <!--include JUNIT 4.0 lib-->
            <!--fileset dir="${junit.lib}">
             <include name="*.jar"/>

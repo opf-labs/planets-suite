@@ -123,6 +123,7 @@
 			</c:if>
 <!-- end of experimenter tabs -->			
 			
+			<!-- tab is selected (current) and highlighted-->
 			<c:if test="${page == 'browse_exp'}">
 				<li id="current">
 					<h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
@@ -131,6 +132,7 @@
 					</h:commandLink>
 				</li>
 			</c:if>
+			<!-- tab is not selected (current) but just displayed-->
 			<c:if test="${page != 'browse_exp' and UserBean.reader == true}">
 				<li>
 					<h:commandLink action="browse_experiments"  rendered="#{UserBean.reader}">
@@ -139,6 +141,7 @@
 					</h:commandLink>
 				</li>
 			</c:if>
+			
 			<c:if test="${page == 'browse_services'}">
 				<li id="current">
 				<h:commandLink action="browse_services"  rendered="#{UserBean.reader}">
@@ -155,6 +158,7 @@
 				</h:commandLink>
 			</li>
 			</c:if>
+
 			<c:if test="${page == 'browse_data'}">
 				<li id="current">
 				<h:commandLink action="browse_data" rendered="#{UserBean.reader}">
@@ -218,6 +222,25 @@
 				<h:commandLink action="manage_users" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_usermanage.gif" class="toolbar"/>
 					<h:outputText value="#{res['manage_users.pageTitle']}"/>
+				</h:commandLink>
+			</li>
+			</c:if>
+			
+			<!-- Register Testbed Services -->
+			<c:if test="${page == 'register_TBservices'}">
+				<li id="current">
+				<!-- calls the init method to register the session's wizzard bean -->
+				<h:commandLink action="#{Manager_Backing.initRegisterTBService}"  rendered="#{UserBean.admin}">
+					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
+					<h:outputText value="#{res['register_TBservices.pageTitle']}"/>
+				</h:commandLink>
+				</li>
+			</c:if>
+			<c:if test="${page != 'register_TBservices' and UserBean.admin == true}">
+				<li>
+				<h:commandLink action="#{Manager_Backing.initRegisterTBService}" rendered="#{UserBean.admin}">
+					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
+					<h:outputText value="#{res['register_TBservices.pageTitle']}"/>
 				</h:commandLink>
 			</li>
 			</c:if>
