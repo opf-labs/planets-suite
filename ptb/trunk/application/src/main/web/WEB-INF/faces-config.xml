@@ -112,6 +112,12 @@
    <redirect/>
   </navigation-case>
   <navigation-case>
+  <!-- render_TBServices -->
+   <from-action>#{Manager_Backing.initTBServiceDisplayer}</from-action>
+   <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
    <from-outcome>help</from-outcome>
    <to-view-id>/reader/help.xhtml</to-view-id>
    <redirect/>
@@ -329,18 +335,18 @@
     <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
-    <from-outcome>browse-all-services</from-outcome>
-    <to-view-id>/admin/browse_TBServices.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
     <from-outcome>remove-services</from-outcome>
     <to-view-id>/admin/remove_TBServices.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
-   <!-- register_TBServices -->
+   <!-- col left navigation options -->
    <from-action>#{Manager_Backing.initRegisterTBService}</from-action>
    <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
    <redirect/>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>render_TBservices</from-outcome>
+    <to-view-id>/overview_registeredTBServices.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
 

@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core">
+<body>
+<f:view>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+    Testbed : Registered Services Overview
+  </ui:define>
+
+<ui:define name="header">
+	<ui:include src="/WEB-INF/templates/header.xhtml">
+		<ui:param name="page" value="overview_registeredTBServices"/>
+	</ui:include>
+</ui:define>
+
+<ui:define name="content">
+
+	<div id="mainwrapper">
+	<div id="maincol">
+	<div class="innertubemain">
+     
+		<h2>registered testbed services:</h2>    
+     
+     	<h:form id="formServiceSelection">
+    	 	<h:outputText value="Select a Services:"/>
+     		<h:selectOneMenu id="selectService" value="#{TBServiceRenderer.serviceSelectItemValue}" immediate="true" 
+                valueChangeListener="#{TBServiceRenderer.processServiceChange}" onchange="submit()">
+                    <f:selectItems value="#{TBServiceRenderer.serviceSelectItems}"/>
+     		</h:selectOneMenu>
+     		<h:message for="selectService"/>
+     	</h:form>
+     
+     	<h:form id="FormOperationSelection">
+        	<h:outputText value="Select Operation Name:"/>
+        	<h:selectOneMenu id="selectOperation" value="#{TBServiceRenderer.operationSelectItemValue}">
+            	 <f:selectItems value="#{TBServiceRenderer.operationSelectItems}"/>
+        	</h:selectOneMenu>
+        	<h:message for="selectOperation"/>  
+     	</h:form>
+     	
+     	<h:form id="FormDisplayMetadata" rendered="#{TBServiceRenderer.TBServiceSelected}">
+        	<h:outputText value="Endpoint:"/>
+			<h:outputText value="#{TBServiceRenderer.TBService.entpoint}"/>
+			<h:outputText value="ServiceID:"/>
+			<h:outputText value="#{TBServiceRenderer.TBService.UUID}"/>
+			<h:outputText value="XMLRequestTemplate:"/>
+            <h:outputText value="#{TBServiceRenderer.serviceOperation.XMLRequestTemplate}"/>
+     </h:form>
+	  
+</div>
+</div>
+</div>
+
+
+<div id="leftcol">
+<h3 class="leftcol">Navigation Options</h3>
+<div class="innertube">
+<ul class="exp">
+	<h:form>
+		<h:panelGroup>
+			<li class="exp_sel">
+				<h:commandLink value="register new service" action="#{Manager_Backing.initRegisterTBService}">
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup>
+			<li class="exp_sel">
+				<h:commandLink value="browse registered services" action="#{Manager_Backing.initTBServiceDisplayer}">
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup>
+			<li class="exp_sel">
+				<h:commandLink value="remove registered services" action="remove-services">
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+	</h:form>
+</ul>
+</div>
+</div>
+<!-- end navigation options -->
+
+</ui:define>
+
+  
+  <ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+</f:view>
+</body>
+</html>

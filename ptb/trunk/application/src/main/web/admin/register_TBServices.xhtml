@@ -78,10 +78,15 @@
       
      <!--Step2 build XML request template-->  
      <h:form id="formXmlRequestTemplate" rendered="#{RegisterTBServiceBean.renderedStage == 2}"> 
+		 <p><b>Selected Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
+                 <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
+         </p>
 		 <fieldset>
              <legend>Creating the XML Request template</legend>
+             
             <p><h:outputText value="XML Request Template:" styleClass="readerLabel"/></p>
-            <h:panelGrid id="panelStep2" binding="#{RegisterTBServiceBean.componentPanelStep2}" border="2" columns="1"/>
+            <h:panelGrid id="panelStep2" binding="#{RegisterTBServiceBean.componentPanelStep2}" border="2" columns="1">
+            </h:panelGrid>
             <br/>   
             <h:commandButton id="buttonAddOpp" value="add template" action="#{RegisterTBServiceBean.command_addRequestTemplate}" disabled="#{RegisterTBServiceBean.stage2Completed}"/>
               <br/>
@@ -92,130 +97,141 @@
        		 <p>&#160;</p>
         	 <p>&#160;</p>
        	 	 <p>&#160;</p>
-       		 <p>&#160;</p-->
+       		 <p>&#160;</p>
       </h:form>
-      
       <!--Step2 build XML request template completed-->  
-     
+    
       <!--Step3 invoke sample request with data-->
       <h:form id="formXmlRequestSampleInvocation" rendered="#{RegisterTBServiceBean.renderedStage == 3}">
-      	 <h:message for="input_selectFile" errorClass="errorMessage" infoClass="infoMessage"/>
-      	 <h:panelGroup id="panelStep3" binding="#{RegisterTBServiceBean.componentPanelStep3}">
-         	 <p><b>Selected Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
-         	    <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
+           <h:message for="input_selectFile" errorClass="errorMessage" infoClass="infoMessage"/>
+           <h:panelGroup id="panelStep3" binding="#{RegisterTBServiceBean.componentPanelStep3}">
+              <p><b>Selected Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
+                 <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
              </p>
              <fieldset>
-      	 		<legend>add files for sample invokation</legend>
+                   <legend>add files for sample invokation</legend>
              <p><h:outputText value="Specify File: " styleClass="readerLabel"/>
-            	<h:inputText id="input_selectFile" value="#{RegisterTBServiceBean.currentFileInput}" required="true" disabled="#{RegisterTBServiceBean.stage3Completed}"/>
-            	<h:commandLink id="link_addFileInputItem" action="#{RegisterTBServiceBean.command_addFileRefToStep3}" rendered="#{RegisterTBServiceBean.addFileButtonRendered}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
-				</h:commandLink>
-			 </p>
-			 <!--The panel where the already added FileArrayElements get displayed -->
+                <h:inputText id="input_selectFile" value="#{RegisterTBServiceBean.currentFileInput}" required="true" disabled="#{RegisterTBServiceBean.stage3Completed}"/>
+                <h:commandLink id="link_addFileInputItem" action="#{RegisterTBServiceBean.command_addFileRefToStep3}" rendered="#{RegisterTBServiceBean.addFileButtonRendered}">
+                    <img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
+                </h:commandLink>
+             </p>
+             <!--The panel where the already added FileArrayElements get displayed -->
              <h:panelGroup id="panelStep3add" binding="#{RegisterTBServiceBean.componentPanelStep3Add}"/>
-        	 </fieldset>
-        	 <br/>
-        	 <h:commandButton id="buttonInvokeSample" value="invoke service" 
-        	 action="#{RegisterTBServiceBean.command_invokeSampleRequest}" disabled="#{RegisterTBServiceBean.stage3Completed}"/> 
-      	</h:panelGroup>
-      	<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
+             </fieldset>
+
+             <h:commandButton id="buttonInvokeSample" value="invoke service"
+             action="#{RegisterTBServiceBean.command_invokeSampleRequest}" disabled="#{RegisterTBServiceBean.stage3Completed}"/>
+          </h:panelGroup>
+          <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
       </h:form>
       <!--Step3 invoke sample request with data completed-->
-      
+     
      <!--Step4 build xpath to output element(s) and check: results ok?-->
      <h:form id="formXmlRespondsSampleInvocation" rendered="#{RegisterTBServiceBean.renderedStage == 4}">
-		 <fieldset>
-      	 	<legend>Mapping of results</legend>
-              	<h:panelGroup id="panelStep4" binding="#{RegisterTBServiceBean.componentPanelStep4}">
-              		<p><h:outputText value="XML Service Responds: " styleClass="readerLabel"/>
-              		   <h:inputTextarea id="xmlResponse" value="#{WSClientBean.xmlResponse}" cols="50" rows="35" readonly="true"/>
-					</p>
-					<br/>
-              		<p><h:outputText value="XPath query to element node containing the data: " styleClass="readerLabel"/>
-              		   <h:inputText id="input_outputQuery" value="#{RegisterTBServiceBean.XPathToOutputQuery}" required="true"/>
-              		</p>
-              		<br/>
-              		<h:commandButton id="buttonTestParseResponds" value="test query" action="#{RegisterTBServiceBean.command_sampleRespondsQueryTest}"/> 
-              	</h:panelGroup>
+         <fieldset>
+               <legend>Mapping of results</legend>
+                  <h:panelGroup id="panelStep4" binding="#{RegisterTBServiceBean.componentPanelStep4}">
+                      <p><h:outputText value="XML Service Responds: " styleClass="readerLabel"/>
+                         <h:inputTextarea id="xmlResponse" value="#{WSClientBean.xmlResponse}" cols="70" rows="20" readonly="true"/>
+                    </p>
+                    <br/>
+                      <p><h:outputText value="XPath query to element node containing the data: " styleClass="readerLabel"/>
+                         <h:inputText id="input_outputQuery" value="#{RegisterTBServiceBean.XPathToOutputQuery}" required="true"/>
+                      </p>
+                      <br/>
+                      <h:commandButton id="buttonTestParseResponds" value="test query" action="#{RegisterTBServiceBean.command_sampleRespondsQueryTest}"/>
+                  </h:panelGroup>
            </fieldset>
            <fieldset>
-      	 		<legend>Received service output</legend>
-      	 		<p>Are you  able to se the service's results? (i.e. migration/characterisation results) then you have
-      	 		completed this task successfully. If not: redefine XPath statement and run "test query" again.</p>
-				<p><h:panelGrid id="panelStep4Add" binding="#{RegisterTBServiceBean.componentPanelStep4Add}" border="0" columns="2"/>
+                   <legend>Received service output</legend>
+                   <p>Are you  able to see the service's output? (i.e. migration/characterisation results) Then you have
+                   completed this task successfully. If not: redefine XPath statement and run "test query" again.</p>
+                <p><h:panelGrid id="panelStep4Add" binding="#{RegisterTBServiceBean.componentPanelStep4Add}" border="0" columns="2"/>
                 <h:outputText value="Output is of type:" styleClass="readerLabel"/>
-          			<h:selectOneMenu id="selectOutputType" value="#{RegisterTBServiceBean.selectedOutputTypeValue}">
-                		<f:selectItems value="#{RegisterTBServiceBean.selectedOutputTypeItems}" />                        
-          			</h:selectOneMenu>
-          		</p>
-          		<br/>
-                <p><h:commandButton id="buttonParseResponds" value="yes?" action="#{RegisterTBServiceBean.command_continueToAddServiceRegistryMetadata}"/> 
-              	</p>
-        	</fieldset>
+                      <h:selectOneMenu id="selectOutputType" value="#{RegisterTBServiceBean.selectedOutputTypeValue}">
+                        <f:selectItems value="#{RegisterTBServiceBean.selectedOutputTypeItems}" />                       
+                      </h:selectOneMenu>
+                  </p>
+                  <br/>
+                <p><h:commandButton id="buttonParseResponds" value="continue" action="#{RegisterTBServiceBean.command_continueToAddServiceRegistryMetadata}"/>
+                  </p>
+            </fieldset>
       </h:form>
       <!--Step4 build xpath to output element(s) and check: results ok? completed-->
-      
+     
       <!--Step5 add service metadata to be written into the registry-->
       <h:form id="formServiceRegistryMetadata" rendered="#{RegisterTBServiceBean.renderedStage == 5}">
+           <p><b>Selected Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
+                 <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
+             </p>
            <fieldset>
-      	 		<legend>Add service specific metadata</legend>
-          	<p><h:outputText value="Service description " styleClass="readerLabel"/>
-            	 <h:inputText id="input_serviceDescription" value="#{RegisterTBServiceBean.serviceDescription}"/>
-          	</p>
-          	<br/>
-          	<h:panelGroup rendered="#{RegisterTBServiceBean.selectedTagIDArray}">
-          	<p><h:outputText value="max. supported input files" styleClass="readerLabel"/>
-            	 <h:inputText id="input_maxNR" value="#{RegisterTBServiceBean.maxAllowedNrOfInputFiles}">
-            	 	  <f:validateLongRange minimum="1" maximum="100"/>
-            	 </h:inputText>
-            	 <h:message for="input_maxNR" errorClass="errorMessage" infoClass="infoMessage"/>
-          	</p>
-          	<br/>
-          	<p><h:outputText value="min. required input files" styleClass="readerLabel"/>
-            	 <h:inputText id="input_minNR" value="#{RegisterTBServiceBean.minRequireddNrOfInputFiles}">
-            	 	 <f:validateLongRange minimum="1" maximum="100"/>
-            	 </h:inputText>
-            	 <h:message for="input_minNR" errorClass="errorMessage" infoClass="infoMessage"/>
-          	</p>
-          	</h:panelGroup>
+                   <legend>Add service specific metadata</legend>
+              <p><h:outputText value="Service description " styleClass="readerLabel"/>
+              	 <h:inputTextarea id="input_serviceDescription" value="#{RegisterTBServiceBean.serviceDescription}" cols="50" rows="3"/>
+              </p>
+
+              <h:panelGroup id="panelMetadata" rendered="#{RegisterTBServiceBean.selectedTagIDArray}">
+              <p><h:outputText value="max. supported input files" styleClass="readerLabel"/>
+                 <h:inputText id="input_maxNR" value="#{RegisterTBServiceBean.maxAllowedNrOfInputFiles}">
+                       <f:validateLongRange minimum="1" maximum="100"/>
+                 </h:inputText>
+                 <h:message for="input_maxNR" errorClass="errorMessage" infoClass="infoMessage"/>
+              </p>
+              <p><h:outputText value="min. required input files" styleClass="readerLabel"/>
+                 <h:inputText id="input_minNR" value="#{RegisterTBServiceBean.minRequiredNrOfInputFiles}">
+                      <f:validateLongRange minimum="1" maximum="100"/>
+                 </h:inputText>
+                 <h:message for="input_minNR" errorClass="errorMessage" infoClass="infoMessage"/>
+              </p>
+              <br/>
+               <p><h:outputText value="service operation type" styleClass="readerLabel"/>
+                 <h:selectOneMenu id="selectServiceOperationType" value="#{RegisterTBServiceBean.serviceOperationTypeValue}">
+                        <f:selectItems value="#{RegisterTBServiceBean.serviceOperationTypeItems}" />                       
+                  </h:selectOneMenu>
+              </p>
+              </h:panelGroup>
           </fieldset>
           <fieldset>
-      	 		<legend>Add service tags for searchability</legend>
-          <p><h:outputText value="tag name: " styleClass="readerLabel"/>
-             <h:inputText id="input_tagName" value="#{RegisterTBServiceBean.tagName}" required="true"/>
-          </p>
-          <br/>
-          <p>
-			 <h:outputText value="tag value: " styleClass="readerLabel"/>
-             <h:inputText id="input_tagValue" value="#{RegisterTBServiceBean.tagValue}" required="true"/>
-          	
-          	 <h:commandLink id="link_addTag" action="#{RegisterTBServiceBean.command_addTagNameAndValue}">
-				<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
-			</h:commandLink>
-          </p>
-          <br/>
-          <b>added tags:</b>
-             <ul>
-                <c:forEach var="names" items="#{RegisterTBServiceBean.allTagNames}">
+                   <legend>Add service tags for searchability</legend>
+          	<h:panelGroup id="panelTags">
+          		<p><h:outputText value="tag name: " styleClass="readerLabel"/>
+             	<h:inputText id="input_tagName" value="#{RegisterTBServiceBean.currentTagName}"/>
+         		 </p>
+         		 <p>
+            	 <h:outputText value="tag value: " styleClass="readerLabel"/>
+            	 <h:inputText id="input_tagValue" value="#{RegisterTBServiceBean.currentTagValue}"/>
+             
+              	 <h:commandLink id="link_addTag" action="#{RegisterTBServiceBean.command_addTagNameAndValue}">
+               		 <img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
+            	</h:commandLink>
+         		</p>
+          		<br/>
+         		 <b>added tags:</b>
+            	 <ul>
+               		 <c:forEach var="names" items="#{RegisterTBServiceBean.printableTagNamesAndValues}">
                     <li>
-                    		#{names}
-                    		<img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="delete" title="delete"/>
-                    	
+                    	<h:commandLink action="#{RegisterTBServiceBean.command_removeTag}" immediate="true">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="delete" title="delete"/>
+                        	<f:param name="tagNameToRemove" value="#{names}"/>
+                        </h:commandLink>
+                        #{names}
                     </li>
-                </c:forEach>
-            </ul>	
+               		 </c:forEach>
+           		 </ul>   
+           </h:panelGroup>
           </fieldset>
           <br/>
-          <h:commandButton id="buttonStoreService" value="store service" action="#{RegisterTBServiceBean.command_completeRegistration}"/> 
-	  	  <br/>
-	  </h:form>
+          <h:commandButton id="buttonStoreService" value="store service" action="#{RegisterTBServiceBean.command_completeRegistration}"/>
+          <br/>
+      </h:form>
+
 	  
 </div>
 </div>
@@ -307,7 +323,7 @@
 				<a class="exp"><h:outputText value="5. service metadata"/></a>
 			</li>
 		</h:panelGroup>
-		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage == 5}">
+				<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage == 5}">
 			<li class="exp_sel">
 				<h:commandLink value="5. service metadata" styleClass="exp" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
 					<f:param name="wizzardStep" value="step5" />
@@ -338,7 +354,7 @@
 		</h:panelGroup>
 		<h:panelGroup>
 			<li class="exp_sel">
-				<h:commandLink value="browse registered services" action="browse-all-services">
+				<h:commandLink value="browse registered services" action="#{Manager_Backing.initTBServiceDisplayer}">
 				</h:commandLink>
 			</li>
 		</h:panelGroup>

@@ -14,23 +14,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
+import javax.faces.component.UIForm;
 import javax.faces.component.UIPanel;
 import javax.faces.component.UISelectItems;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlInputTextarea;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -46,7 +52,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import eu.planets_project.tb.api.services.ServiceRegistry;
+import eu.planets_project.tb.api.services.TestbedService;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
+import eu.planets_project.tb.impl.services.ServiceRegistryImpl;
+import eu.planets_project.tb.impl.services.TestbedServiceImpl;
 
 /**
  * 
@@ -59,7 +69,7 @@ import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
  * @author Andrew Lindley, ARC
  *
  */
-public class RegisterTBServices {
+public class RegisterTBServices{
 	
 	//FacesContext
 	FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -67,7 +77,7 @@ public class RegisterTBServices {
 	private String sEndpointURI = "";
 	
 	//JSF UI containing the xmlRequestTemplate UI elements
-	private UIComponent panelStep2 = new UIPanel();
+	private HtmlPanelGrid panelStep2 = new HtmlPanelGrid();
 	//counts how many inputText and outputText are needed to generate the required panelStep1 UI
 	private int iCountNumbOfXMLRequestInputTokens = 0;
 	private int iCountNumberOfXMLRequestOutputTokens = 0;
@@ -80,7 +90,7 @@ public class RegisterTBServices {
 	//a list of human readable TagNames. e.g. "File" or "FileArray"
 	private List<SelectItem> lTagNames = new Vector<SelectItem>();
 	
-	//the selected TagName
+	//the selected TagName: i.e. "File" or "String"
 	private String sTagIDFile = "File";
 	private String sTagIDFileArray = "FileArray";
 	private SelectItem selectedTagNameItem = new SelectItem(sTagIDFile);
@@ -116,9 +126,13 @@ public class RegisterTBServices {
 	private String sOutputTypeFile = "java.io.File";
 	private String sOutputTypeString = "java.lang.String";
 	
+	//the service operation's characterisation i.e. PA or PC service
+	private SelectItem serviceOperationTypeItem = new SelectItem();
+	private List<SelectItem> lServiceOperationTypes= new Vector<SelectItem>();
+	
 	//JSF UI Step3: XPath queries for the XML Responds
 	private UIComponent panelStep4 = new UIPanel();
-	private UIComponent panelStep4Add = new UIPanel();
+	private HtmlPanelGrid panelStep4Add = new HtmlPanelGrid();
 	//The query entered by the user to point to the output-elements in the XML Responds
 	private String sXpathQueryToOutput = new String("/*//return/item");
 	
@@ -146,6 +160,10 @@ public class RegisterTBServices {
 		//set the Tag value and labels 
 		lOutputTypes.add(new SelectItem(sOutputTypeFile,   "File"));
 		lOutputTypes.add(new SelectItem(sOutputTypeString, "String"));
+		
+		//set the Tag value and labels 
+		lServiceOperationTypes.add(new SelectItem(TestbedService.ServiceOperation.SERVICE_OPERATION_TYPE_MIGRATION, "migration"));
+		lServiceOperationTypes.add(new SelectItem(TestbedService.ServiceOperation.SERVICE_OPERATION_TYPE_CHARACTERISATION, "characterisation"));
 	}
 	
 	
@@ -324,21 +342,22 @@ public class RegisterTBServices {
 	 * @return "error-analyze" or "error_analyze"
 	 */
 	private String createXMLRequestTokensGUI(){
+
 		WSClientBean wsclient = getCurrentWSClientBean();
-		
+			
 		//RequestTemplate is the one with "?" and without TB specific tokens
 		String sRequestTemplate = wsclient.getOperationRequestTemplate();
-		
+			
 		//Split the RequestTemplate message to fill the gui elements
 		StringTokenizer templateTokenizer = new StringTokenizer(sRequestTemplate,"?",true);
 		if(templateTokenizer.countTokens()>1){
-			//UIPanel panel = (UIPanel)getComponent("formXmlRequestTemplate:panelStep2");
-			UIComponent panel = this.getComponentPanelStep2();
+			HtmlPanelGrid panel = (HtmlPanelGrid)getComponent("formXmlRequestTemplate:panelStep2");
+
 			while(templateTokenizer.hasMoreTokens()){
 				//the next token to operate on
 				String templateToken = templateTokenizer.nextToken();
 				try
-		        {
+			    {
 					if(!templateToken.equals("?")){
 						facesContext = FacesContext.getCurrentInstance();
 						//dynamically add an OutputTextField component for this to the GUI
@@ -348,20 +367,20 @@ public class RegisterTBServices {
 						outputText.setId("xmlRequestOutputText"+this.iCountNumberOfXMLRequestOutputTokens);
 						
 						this.iCountNumberOfXMLRequestOutputTokens++;
-						
+							
 						//add the UIcomponent outputText to the UI parent component ("UIPanel")
 						panel.getChildren().add(outputText);
 					}
 					else{
 						//found the placeholder "?" and add the possible tokens to choose from
 						facesContext = FacesContext.getCurrentInstance();
-						
+							
 						//dynamically add a InputTextField (which is only enabled for FileArray)
 						HtmlInputText arrayInputStart = (HtmlInputText) facesContext.getApplication().createComponent(HtmlInputText.COMPONENT_TYPE);
 						arrayInputStart.setId("xmlRequestArrayStart"+this.iCountNumbOfXMLRequestInputTokens);
-						arrayInputStart.setValue("<surrounding xml>");
+						arrayInputStart.setValue("<array item>");
 						arrayInputStart.setRendered(false);
-						
+							
 						//dynamically add SelectOneMenu with the possible XMLRequestInputTypes (lTagNames)
 						HtmlSelectOneMenu selectText = (HtmlSelectOneMenu) facesContext.getApplication().createComponent(HtmlSelectOneMenu.COMPONENT_TYPE);
 						selectText.setValue(((String)lTagNames.get(0).getValue()));
@@ -373,38 +392,39 @@ public class RegisterTBServices {
 						//add a onChangeMethod
 						selectText.setOnchange("submit()");
 						UISelectItems items = new UISelectItems();
+						List<SelectItem> lItems = new Vector<SelectItem>();
 						items.setValue(this.lTagNames);
-						
+							
 						//dynamically add a InputTextField (which is only enabled for FileArray)
 						HtmlInputText arrayInputEnd = (HtmlInputText) facesContext.getApplication().createComponent(HtmlInputText.COMPONENT_TYPE);
 						arrayInputEnd.setId("xmlRequestArrayEnd"+this.iCountNumbOfXMLRequestInputTokens);
-						arrayInputEnd.setValue("</surrounding xml>");
+						arrayInputEnd.setValue("</array item>");
 						arrayInputEnd.setRendered(false);
-						
+							
 						this.iCountNumbOfXMLRequestInputTokens++;
-						
+							
 						//add the UIcomponents to their UI parent components (mainly: "UIPanel")
 						panel.getChildren().add(arrayInputStart);
 						selectText.getChildren().add(items);
 						panel.getChildren().add(selectText);
 						panel.getChildren().add(arrayInputEnd);
 					}
-		            
-		        }
-		        catch (java.lang.Throwable t)
-		        {
-		        	//TODO: add log statement
-		            System.out.println("java.lang.Throwable exception encountered...t.getMessage()=" + t.getMessage());
-		            t.printStackTrace();
-		            return "error-analyze";
-		        }
+			            
+			    }
+			    catch (java.lang.Throwable t)
+			    {
+			        System.out.println("java.lang.Throwable exception encountered...t.getMessage()=" + t.getMessage());
+			        t.printStackTrace();
+			    }
 			}
 		}
 		else{
 			//TODO: add log statement: MEssage wasn't analyzed correctly
-			return "error-analyze";
 		}
-		
+			
+		//UI elements will be set disabled.
+		this.bServiceSelectionDisabled = true;
+			
 		return "reload-page";
 	}
 	
@@ -442,14 +462,14 @@ public class RegisterTBServices {
 	 * @see javax.faces.event.ValueChangeListener#processValueChange(javax.faces.event.ValueChangeEvent)
 	 */
 	public void processTokenValueChange(ValueChangeEvent vce){
-		
+
 		//selectMenuOne changed from File to FileArray or vice-versa
 		this.setTagSelectedItemValue((String)vce.getNewValue());
 		
 		//get the InputPanel and set the InputTextFields when File:disbled / FileArray:enabled
 		boolean bInputIsFile = true;
 		//determine which input we're dealing with:
-			if(this.getTagSelectItemValue().equals("File"))
+			if(((String)this.getTagSelectItemValue()).equals(sTagIDFile))
 				bInputIsFile = true;
 			else
 				//value="FileArray"
@@ -806,6 +826,15 @@ public class RegisterTBServices {
 		return wsclient.getOperationSelectItemValue();
 	}
 	
+	/**
+	 * Returns the currently in the gui selected service name that we're working on
+	 * @return
+	 */
+	private String getCurrentServiceName(){
+		WSClientBean wsclient = this.getCurrentWSClientBean();
+		return wsclient.getServiceSelectItemValue();
+	}
+	
 	
 	/**
 	 * @param sOperationName
@@ -943,7 +972,8 @@ public class RegisterTBServices {
 			this.iStageRendered = stageNr;
 			
 			//retrieve dynamically added model elements and set them disabled
-			Iterator<UIComponent> itComps = this.getComponentPanelStep2().getChildren().iterator();
+			setElementsDisabled(this.getComponentPanelStep2());
+			/*Iterator<UIComponent> itComps = this.getComponentPanelStep2().getChildren().iterator();
 			while(itComps.hasNext()){
 				UIComponent com = itComps.next();
 				try{
@@ -954,26 +984,62 @@ public class RegisterTBServices {
 					HtmlInputText input = (HtmlInputText)com;
 					input.setDisabled(true);
 				}catch(Exception e){}
-			}
+			}*/
 		}
 		//add sample invocation data and send request
 		if(stageNr == 3){
+			setElementsDisabled(this.getComponentPanelStep3());
 			this.iStageCompleted = stageNr;
 			this.iStageRendered = stageNr;
 			//nothing else required
 		}
 		//mapping output with xpath
 		if(stageNr == 4){
+			setElementsDisabled(this.getComponentPanelStep4());
+			setElementsDisabled(this.getComponentPanelStep4Add());
+			setElementsDisabled((UIComponent)this.getComponent("formXmlRespondsSampleInvocation"));
 			this.iStageCompleted = stageNr;
 			this.iStageRendered = stageNr;
+			
 		}
 		//provide metadata 
 		if(stageNr == 5){
+			System.out.println("This should be 5");
+			setElementsDisabled((UIComponent)this.getComponent("panelTags"));
+			setElementsDisabled((UIComponent)this.getComponent("panelMetadata"));
 			this.iStageCompleted = stageNr;
 			this.iStageRendered = stageNr;
 		}
+		if(stageNr > 5){
+			this.iStageCompleted = stageNr;
+			this.iStageRendered = 5;
+		}
 	}
 	
+
+	private void setElementsDisabled(UIComponent panel){
+		//retrieve dynamically added model elements and set them disabled
+		Iterator<UIComponent> itComps = panel.getChildren().iterator();
+		while(itComps.hasNext()){
+			UIComponent com = itComps.next();
+			try{
+				HtmlSelectOneMenu menu = (HtmlSelectOneMenu)com;
+				menu.setDisabled(true);
+			}catch(Exception e){}
+			try{
+				HtmlInputText input = (HtmlInputText)com;
+				input.setDisabled(true);
+			}catch(Exception e){}
+			try{
+				HtmlInputTextarea input = (HtmlInputTextarea)com;
+				input.setDisabled(true);
+			}catch(Exception e){}
+			try{
+				HtmlCommandButton input = (HtmlCommandButton)com;
+				input.setDisabled(true);
+			}catch(Exception e){}
+		}
+	}
 	
 	/**
 	 * Used to query which UI form of the deployServiceOperation wizzard is completed
@@ -1074,16 +1140,14 @@ public class RegisterTBServices {
 	 * Returns the UIComponent containing the XmlRequestTemplate Screen
 	 * @return
 	 */
-	public UIComponent getComponentPanelStep2(){ 
-		System.out.println(" A:"+panelStep2.getChildCount());
-		System.out.println(" B:"+panelStep2.getId());
+	public HtmlPanelGrid getComponentPanelStep2(){ 
 		return this.panelStep2;
 	}
 	
 	/**
 	 * Returns the UIComponent containing the XmlRequestTemplate Screen
 	 */
-	public void setComponentPanelStep2(UIComponent panel){
+	public void setComponentPanelStep2(HtmlPanelGrid panel){
 		this.panelStep2 = panel;
 	}
 	
@@ -1112,11 +1176,11 @@ public class RegisterTBServices {
 		this.panelStep4 = panel;
 	}
 	
-	public UIComponent getComponentPanelStep4Add(){
+	public HtmlPanelGrid getComponentPanelStep4Add(){
 		return this.panelStep4Add;
 	}
 	
-	public void setComponentPanelStep4Add(UIComponent panel){
+	public void setComponentPanelStep4Add(HtmlPanelGrid panel){
 		this.panelStep4Add = panel;
 	}
 	
@@ -1376,6 +1440,10 @@ public class RegisterTBServices {
 		return "";
 	}
 	
+	/**
+	 * service's result currently is either "File" or "String"
+	 * @param sOutputType
+	 */
 	public void setSelectedOutputTypeValue(String sOutputType){
 		setSelectedOutputTypeItem(new SelectItem(sOutputType));
 	}
@@ -1390,14 +1458,54 @@ public class RegisterTBServices {
 	
 	
 	/**
+	 * Used to fill the gui selectOneMenu with all possible service operation types
+	 * i.e. PA or PC
+	 * @return
+	 */
+	public List<SelectItem> getServiceOperationTypeItems(){
+		return this.lServiceOperationTypes;
+	}
+	
+	/**
+	 * Metadata for the operation's type: PA or PC
+	 * @return
+	 */
+	public String getServiceOperationTypeValue(){
+		if (this.getServiceOperationTypeItem() != null) {
+			if (this.getServiceOperationTypeItem().getValue() != null)
+				return this.getServiceOperationTypeItem().getValue().toString();    		
+		}
+		return "";
+	}
+	
+	/**
+	 * service's operation classification currently is either "PA" or "PC"
+	 * @param sOutputType
+	 */
+	public void setServiceOperationTypeValue(String sType){
+		setServiceOperationTypeItem(new SelectItem(sType));
+	}
+	
+	public SelectItem getServiceOperationTypeItem(){
+		return this.serviceOperationTypeItem;
+	}
+	
+	public void setServiceOperationTypeItem(SelectItem item){
+		this.serviceOperationTypeItem = item;
+	}
+	
+	
+	/**
 	 * This method is triggered by the final step of the gui. Tasks are
 	 *  - store relevant information in the backend 
 	 *  - register service within the service registry (inkluding collected metadata)
 	 * @return
 	 */
 	public String command_completeRegistration(){
+
 		this.setStageCompleted(5);
-		/*TestbedServiceImpl tbService = new TestbedServiceImpl();
+		
+		TestbedServiceImpl tbService = new TestbedServiceImpl();
 		TestbedService.ServiceOperation operation = tbService.new ServiceOperationImpl();
 		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 		
@@ -1410,7 +1518,6 @@ public class RegisterTBServices {
 		tbService.setName(this.getCurrentServiceName());
 		
 		//check if this is a new service or just a new operation for it
-		boolean bKnown = registry.isServiceRegistered(tbService.getWSDLContent());
 		TestbedService s = registry.getServiceByWSDLContent(tbService.getWSDLContent());
 		if(s!=null){
 			tbService = (TestbedServiceImpl)s;
@@ -1421,23 +1528,50 @@ public class RegisterTBServices {
 		operation.setXMLRequestTemplate(this.getXMLRequestTemplate(this.getCurrentOperationName()));
 		//xpathQueryToOutput
 		operation.setXPathToOutput(this.getXPathToOutputQuery());
-		//operation name
-		operation.setName(this.getCurrentOperationName());
+		//max. supported input files
+		operation.setMaxSupportedInputFiles(this.getMaxAllowedNrOfInputFiles());
+		//min. required input files
+		operation.setMinRequiredInputFiles(this.getMinRequiredNrOfInputFiles());
+		//set service Operation type: e.g. PA or PC
+		operation.setServiceOperationType(this.getServiceOperationTypeValue());
+		//set service output type
+		operation.setOutputObjectType(this.getSelectedOutputTypeValue());
 		
 		//add the service operation
 		tbService.addServiceOperation(operation);
 		
-		//register the service within the registry
+		
 		try {
+			//register the service within the registry
 			registry.registerService(tbService);
+			String serviceID = tbService.getUUID();
+			if(serviceID==null){
+				//this leads to the error-page
+				throw new Exception("Service did not obtain a proper UUID");
+			}
+			
+			//register additional metadata for this service
+			//register all Tag names + values
+			Iterator<String> itTags = this.mapTagNamesValues.keySet().iterator();
+			while(itTags.hasNext()){
+				String sTag = itTags.next();
+				String sValue = this.mapTagNamesValues.get(sTag);
+				if((sValue!=null)&&(!sValue.equals(""))){
+					
+					//add this tag to the registry
+					registry.addTag(serviceID, sTag, sValue);
+				}
+			}
+			
 		} catch (Exception e) {
 			//render general error page
 			return "general-error-page";
 		}
-*/
+
 		//return "reg-services-overview";
 		return "reload-page";
 	}
+	
 	
 	public void setMaxAllowedNrOfInputFiles(int i){
 		if(i>=1)
@@ -1463,7 +1597,7 @@ public class RegisterTBServices {
 			this.iFileArrayLineMinRequired = i;
 	}
 	
-	public int getMinRequireddNrOfInputFiles(){
+	public int getMinRequiredNrOfInputFiles(){
 		String TagFileOrArray = getTagSelectItemValue();
 		if((TagFileOrArray!=null)&&(TagFileOrArray!="")){
 			//if FileArray
@@ -1536,7 +1670,7 @@ public class RegisterTBServices {
 	 * Fills in the GUI element for creating new TagNames
 	 * @param sTagName
 	 */
-	public void setTagName(String sTagName){
+	public void setCurrentTagName(String sTagName){
 		if(sTagName!=null){
 			this.newTagName = sTagName;
 		}
@@ -1546,7 +1680,7 @@ public class RegisterTBServices {
 	 * Gets the String to fill in the GUI element for creating new TagNames
 	 * @return
 	 */
-	public String getTagName(){
+	public String getCurrentTagName(){
 		return this.newTagName;
 	}
 	
@@ -1554,9 +1688,9 @@ public class RegisterTBServices {
 	 * Fills in the GUI element for creating new TagValues
 	 * @param sTagName
 	 */
-	public void setTagValue(String sTagValue){
+	public void setCurrentTagValue(String sTagValue){
 		if(sTagValue!=null){
-			this.newTagName = sTagValue;
+			this.newTagValue = sTagValue;
 		}
 	}
 	
@@ -1564,7 +1698,7 @@ public class RegisterTBServices {
 	 * Gets the String to fill in the GUI element for creating new TagValues
 	 * @return
 	 */
-	public String getTagValue(){
+	public String getCurrentTagValue(){
 		return this.newTagValue;
 	}
 	
@@ -1574,16 +1708,40 @@ public class RegisterTBServices {
 	 */
 	public String command_addTagNameAndValue(){
 		if((this.newTagName!=null)&&(!this.newTagName.equals(""))&&(this.newTagValue!=null)){
+			//store tag name + values
 			this.mapTagNamesValues.put(this.newTagName, this.newTagValue);
+			// clean gui elements
+			this.newTagName ="";
+			this.newTagValue="";
 		}
 		return "reload-page";
 	}
 	
-	public List<String> getAllTagNames(){
-		List<String> test = new Vector<String>();
-		test.add("hallo");
-		test.add("welt");
-		return test;
+	public List<String> getPrintableTagNamesAndValues(){
+		List<String> lRet = new Vector<String>();
+		Iterator<String> it = this.mapTagNamesValues.keySet().iterator();
+		while(it.hasNext()){
+			String sKey = it.next();
+			String value = this.mapTagNamesValues.get(sKey);
+			lRet.add(sKey+"="+value);
+		}
+		return lRet;
+	}
+	
+	/**
+	 * Delete an added Tag name + value (triggered by the GUI)
+	 * @return
+	 */
+	public String command_removeTag(){
+		String tagToRemove = (String)facesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("tagNameToRemove"); 
+		if(tagToRemove!=null){
+			int i = tagToRemove.indexOf("=");
+			tagToRemove = tagToRemove.substring(0,i);
+			if(this.mapTagNamesValues.containsKey(tagToRemove)){
+				this.mapTagNamesValues.remove(tagToRemove);
+			}
+		}
+		return "reload-page";
 	}
 
 }

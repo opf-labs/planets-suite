@@ -13,6 +13,7 @@ import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
+import eu.planets_project.tb.gui.backing.admin.TBServiceRenderer;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
@@ -562,7 +563,7 @@ public class Manager {
     
     /**
      * @author alindley
-     * (re)Init and register a an admin backing bean (scope = session) for the 
+     * (re)Init and register an admin backing bean (scope = session) for the 
      * wizzard: register_TBServices
      */
     public String initRegisterTBService(){
@@ -571,6 +572,21 @@ public class Manager {
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		ctx.getExternalContext().getSessionMap().put("RegisterTBServiceBean", regTBSer);
 	    return "register_TBservices";
+    }
+    
+    /**
+     * @author alindley
+     * (re)Init and render the content of the TBServiceRegistry for displaying
+     * all registered services and their metadata on the screen
+     * overview_registeredTBServices.xhtml
+     * @return
+     */
+    public String initTBServiceDisplayer(){
+    	TBServiceRenderer renderer = new TBServiceRenderer();
+		// Put Bean into Session; accessible later as #{TBServiceRenderer}
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		ctx.getExternalContext().getSessionMap().put("TBServiceRenderer", renderer);
+	    return "render_TBservices";
     }
 
 }
