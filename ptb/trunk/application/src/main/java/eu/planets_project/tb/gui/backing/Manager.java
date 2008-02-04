@@ -14,6 +14,7 @@ import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
 import eu.planets_project.tb.gui.backing.admin.TBServiceRenderer;
+import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
@@ -588,5 +589,15 @@ public class Manager {
 		ctx.getExternalContext().getSessionMap().put("TBServiceRenderer", renderer);
 	    return "render_TBservices";
     }
+    
+	/**
+	 * @author alindley
+	 * Helper to fetch the current WSClientBean from the session
+	 * @return
+	 */
+	public WSClientBean getCurrentWSClientBean(){
+		return (WSClientBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("WSClientBean"); 
+	}
+	
 
 }

@@ -51,6 +51,20 @@
 			<h:outputText value="XMLRequestTemplate:"/>
             <h:outputText value="#{TBServiceRenderer.serviceOperation.XMLRequestTemplate}"/>
      </h:form>
+     
+     <h:form enctype="multipart/form-data">
+            <t:inputFileUpload id="fileupload" rendered="true"
+                    value="#{FileUploadBean.upFile}"
+                    storage="file"
+                    styleClass="fileUploadInput"
+                    required="true"
+                    maxlength="10000000"  
+                    readonly="false" 
+                    disabled="false"/>
+             <h:message for="fileupload"/>
+             <h:commandButton value = "upload" action ="#{TBServiceRenderer.command_uploadFile}"/>
+             <br/>
+    </h:form>
 	  
 </div>
 </div>

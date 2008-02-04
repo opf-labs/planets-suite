@@ -54,7 +54,10 @@ import org.xml.sax.SAXException;
 
 import eu.planets_project.tb.api.services.ServiceRegistry;
 import eu.planets_project.tb.api.services.TestbedService;
+import eu.planets_project.tb.gui.backing.FileUploadBean;
+import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.services.ServiceRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceImpl;
 
@@ -210,6 +213,50 @@ public class RegisterTBServices{
 	
 	
 	/**
+	 * Triggers the page's file upload element, takes the selected data and 
+	 * transfers it into the Testbed's file repository. The reference to this file
+	 * is layed into the system's application map.
+	 * @return: Returns an instance of the FileUploadBean (e.g. for additional operations as .getEntryName, etc.)
+	 * if the operation was successful or null if an error occured
+	 */
+	public FileUploadBean uploadFile(){
+		FileUploadBean file_upload = this.getCurrentFileUploadBean();
+		try{
+			//trigger the upload command
+			String result = file_upload.upload();
+			
+			if(result.equals("success-upload")){
+				//1) retrieve the file
+				//URI: file_upload.getURI());
+				//disk_name: "+file_upload.getName());
+				//logical name: "+file_upload.getIndexFileEntryName(file_upload.getName()));
+		
+				//2) Add the file into the list of added files
+				this.setCurrentFileInput(file_upload.getURI().toString());
+			}
+			else{
+				return null;
+			}
+		}
+		catch(Exception e){
+			//In this case an error occured ("error-upload"): just reload the page without adding any information
+			return null;
+		}
+		
+		return file_upload;
+	}
+	
+	
+	/**
+	 * Helper to fetch the FileUploadBean from the request
+	 * @return
+	 */
+	private FileUploadBean getCurrentFileUploadBean(){
+		return (FileUploadBean)JSFUtil.getManagedObject("FileUploadBean");
+	}
+	
+	
+	/**
 	 * Addds one selected file reference from the input field to the list of added file refs for Step2.
 	 * This information is rendered within the GUI by a HtmlOutputText + CommandLink&Icon (remove symbol) which are connected via the ID.
 	 * The specified file ref(s) are used as input data to invoke a given service operation. 
@@ -221,8 +268,16 @@ public class RegisterTBServices{
         {
 			facesContext = FacesContext.getCurrentInstance();
 			
-			//1) Get the InputFileRef data from the HtmlInputText Element
-			String sFileRef = ((String)((HtmlInputText)this.getComponent("formXmlRequestSampleInvocation:input_selectFile")).getValue());
+			//0) upload the specified data to the Testbed's file repository
+			FileUploadBean uploadBean = this.uploadFile();
+			
+			//1) Get the InputFileRef data from uploaded data
+			String sFileRef = "";
+			if(uploadBean!=null){
+				sFileRef = uploadBean.getURI().toString();
+			}else{
+				throw new IOException("No file was specified or uploaded");
+			}
 			
 			if((sFileRef!=null)&&(!addedFileRefs.containsValue(sFileRef))){
 				//2) Add the Data to the bean's variable
@@ -927,7 +982,8 @@ public class RegisterTBServices{
 	 */
 	private WSClientBean getCurrentWSClientBean(){
 		facesContext = FacesContext.getCurrentInstance();
-		return (WSClientBean)facesContext.getExternalContext().getSessionMap().get("WSClientBean"); 
+		Manager manager_backing = (Manager)facesContext.getExternalContext().getSessionMap().get("Manager_Backing"); 
+		return manager_backing.getCurrentWSClientBean();
 	}
 	
 	
@@ -991,7 +1047,7 @@ public class RegisterTBServices{
 			setElementsDisabled(this.getComponentPanelStep3());
 			this.iStageCompleted = stageNr;
 			this.iStageRendered = stageNr;
-			//nothing else required
+			setElementsDisabled(this.getComponentPanelStep3Add());
 		}
 		//mapping output with xpath
 		if(stageNr == 4){
@@ -1037,6 +1093,10 @@ public class RegisterTBServices{
 			try{
 				HtmlCommandButton input = (HtmlCommandButton)com;
 				input.setDisabled(true);
+			}catch(Exception e){}
+			try{
+				HtmlCommandLink input = (HtmlCommandLink)com;
+				input.setRendered(false);
 			}catch(Exception e){}
 		}
 	}

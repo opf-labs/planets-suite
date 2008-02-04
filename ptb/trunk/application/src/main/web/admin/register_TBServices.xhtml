@@ -102,22 +102,34 @@
       <!--Step2 build XML request template completed-->  
     
       <!--Step3 invoke sample request with data-->
-      <h:form id="formXmlRequestSampleInvocation" rendered="#{RegisterTBServiceBean.renderedStage == 3}">
-           <h:message for="input_selectFile" errorClass="errorMessage" infoClass="infoMessage"/>
+      <h:form id="formXmlRequestSampleInvocation" enctype="multipart/form-data" 
+      rendered="#{RegisterTBServiceBean.renderedStage == 3}">
+           <h:message for="fileupload" errorClass="errorMessage" infoClass="infoMessage"/>
            <h:panelGroup id="panelStep3" binding="#{RegisterTBServiceBean.componentPanelStep3}">
               <p><b>Selected Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
                  <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
              </p>
              <fieldset>
                    <legend>add files for sample invokation</legend>
-             <p><h:outputText value="Specify File: " styleClass="readerLabel"/>
-                <h:inputText id="input_selectFile" value="#{RegisterTBServiceBean.currentFileInput}" required="true" disabled="#{RegisterTBServiceBean.stage3Completed}"/>
-                <h:commandLink id="link_addFileInputItem" action="#{RegisterTBServiceBean.command_addFileRefToStep3}" rendered="#{RegisterTBServiceBean.addFileButtonRendered}">
-                    <img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
-                </h:commandLink>
-             </p>
-             <!--The panel where the already added FileArrayElements get displayed -->
-             <h:panelGroup id="panelStep3add" binding="#{RegisterTBServiceBean.componentPanelStep3Add}"/>
+                   
+            	   <p><h:outputText value="Specify File: " styleClass="readerLabel"/>
+                
+               	   <t:inputFileUpload id="fileupload" rendered="true"
+                    	value="#{FileUploadBean.upFile}"
+                   	 	storage="file"
+                   	 	styleClass="fileUploadInput"
+                    	required="false"
+                    	maxlength="10000000"  
+                    	readonly="false" 
+                    	disabled="#{RegisterTBServiceBean.stage3Completed}"/>
+                
+                	<h:commandLink id="link_addFileInputItem" action="#{RegisterTBServiceBean.command_addFileRefToStep3}" rendered="#{RegisterTBServiceBean.addFileButtonRendered}">
+                    	<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
+                	</h:commandLink>
+             	   </p>
+             	   <!--The panel where the already added FileArrayElements get displayed -->
+                   <p><h:outputText value="Added files: " styleClass="readerLabel"/></p>
+                   <h:panelGroup id="panelStep3add" binding="#{RegisterTBServiceBean.componentPanelStep3Add}"/>
              </fieldset>
 
              <h:commandButton id="buttonInvokeSample" value="invoke service"

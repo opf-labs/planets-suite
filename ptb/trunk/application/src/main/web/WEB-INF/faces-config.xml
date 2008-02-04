@@ -173,6 +173,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/edit_comment.xhtml</from-view-id>
   <navigation-case>
@@ -192,7 +193,6 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
- 
  <!-- navigating between stages of reader's version of the experiment wizard -->
  <navigation-rule>
   <navigation-case>
@@ -226,6 +226,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <!-- navigation rules for MY_EXPERIMENT page -->
  <navigation-rule>
   <from-view-id>/exp/my_exp.xhtml</from-view-id>
@@ -240,6 +241,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/exp/exp_delete.xhtml</from-view-id>
   <navigation-case>
@@ -248,6 +250,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/reader/browse_exp.xhtml</from-view-id>
   <navigation-case>
@@ -261,6 +264,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/reader/exp_stage1.xhtml</from-view-id>
   <navigation-case>
@@ -269,6 +273,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/reader/exp_stage2.xhtml</from-view-id>
   <navigation-case>
@@ -277,6 +282,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/reader/exp_stage3.xhtml</from-view-id>
   <navigation-case>
@@ -285,6 +291,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/reader/exp_stage4.xhtml</from-view-id>
   <navigation-case>
@@ -293,6 +300,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/reader/exp_stage5.xhtml</from-view-id>
   <navigation-case>
@@ -301,6 +309,7 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
  <navigation-rule>
   <from-view-id>/reader/exp_stage6.xhtml</from-view-id>
   <navigation-case>
@@ -309,10 +318,11 @@
    <redirect/>
   </navigation-case>
  </navigation-rule>
- 
+
  <!--NAVIGATION for ADMIN role: -->
  <!-- Register TB Service Wizzard -->
  <navigation-rule>
+  <from-view-id>/admin/register_TBServices.xhtml</from-view-id>
   <navigation-case>
     <from-outcome>reload-page</from-outcome>
     <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
@@ -346,9 +356,19 @@
   </navigation-case>
   <navigation-case>
     <from-outcome>render_TBservices</from-outcome>
-    <to-view-id>/overview_registeredTBServices.xhtml</to-view-id>
+    <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
+ 
+ <!-- page: overview_registeredTBServices.xhtml -->
+ <navigation-rule>
+   <from-view-id>/admin/overview_registeredTBServices.xhtml</from-view-id>
+   <navigation-case>
+     <from-outcome>reload-page</from-outcome>
+     <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
+     <redirect/>
+   </navigation-case>
+  </navigation-rule>
 
  <application>
   <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
