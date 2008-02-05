@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import eu.planets_project.tb.api.services.TestbedService;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 
 /**
  * @author alindley
@@ -21,26 +21,26 @@ public interface ServiceRegistry {
 	public List<String> getAllServiceNames();
 	public List<String> getAllEndpoints();
 	
-	public Collection<TestbedService> getAllServices();
+	public Collection<TestbedServiceTemplate> getAllServices();
 	public Collection<String> getAllServiceUUIDs();
 	
 	/**
 	 * @param UUID
 	 * @return: null if the Service could not be found
 	 */
-	public TestbedService getServiceByID(String UUID);
+	public TestbedServiceTemplate getServiceByID(String UUID);
 	
 	/**
 	 * @param sWSDLContent: WSDL contract not the Endpoint URL
 	 * @return: null if the Service could not be found
 	 */
-	public TestbedService getServiceByWSDLContent(String sWSDLContent);
+	public TestbedServiceTemplate getServiceByWSDLContent(String sWSDLContent);
 	
 	/**
 	 * This method combines the non-unique service name with the TestbedService object
 	 * @return a set of all Entry<ServiceName,TestbedService> known and registered services
 	 */
-	public Set<Entry<String,TestbedService>> getAllServicNamesAndServiceEntrySets();
+	public Set<Entry<String,TestbedServiceTemplate>> getAllServicNamesAndServiceEntrySets();
 	
 	/**
 	 * Service must have at least have:
@@ -49,7 +49,7 @@ public interface ServiceRegistry {
 	 * @param service
 	 * @throws Exception
 	 */
-	public void registerService(TestbedService service) throws Exception;
+	public void registerService(TestbedServiceTemplate service) throws Exception;
 	
 	/**
 	 * This method takes an arbitrary WSDL service contract, generates an MD5 has out of its content

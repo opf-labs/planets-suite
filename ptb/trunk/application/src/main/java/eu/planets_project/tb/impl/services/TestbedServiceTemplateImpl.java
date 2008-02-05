@@ -18,14 +18,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.Vector;
 
-import eu.planets_project.tb.api.services.TestbedService;
-import eu.planets_project.tb.api.services.TestbedService.ServiceOperation;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 
 /**
  * @author alindley
  *
  */
-public class TestbedServiceImpl implements TestbedService{
+public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 	
 	private String sServiceDescription, sServiceEndpoint, sServiceName, sServiceID, sWSDLContent;
 	private boolean bURIisWSICompliant;
@@ -36,7 +36,7 @@ public class TestbedServiceImpl implements TestbedService{
 
 	
 	
-	public TestbedServiceImpl(){
+	public TestbedServiceTemplateImpl(){
 		sServiceDescription = "";
 		sServiceEndpoint = "";
 		sServiceName = "";
@@ -63,9 +63,9 @@ public class TestbedServiceImpl implements TestbedService{
 	}
 	
 	/* (non-Javadoc)
-	 * @see eu.planets.test.api.model.Service#getServiceEntpoint()
+	 * @see eu.planets.test.api.model.Service#getServiceEndpoint()
 	 */
-	public String getEntpoint(){
+	public String getEndpoint(){
 		return this.sServiceEndpoint;
 	}
 	
@@ -320,8 +320,8 @@ public class TestbedServiceImpl implements TestbedService{
 		
 		if((this.getWSDLContent()==null)||(this.getWSDLContent().length()==0)){
 			//last chance: download information from service Endpoint
-			if((this.getEntpoint()!=null)&&(this.getEntpoint().length()!=0)){
-				this.extractWSDLContent(this.getEntpoint());
+			if((this.getEndpoint()!=null)&&(this.getEndpoint().length()!=0)){
+				this.extractWSDLContent(this.getEndpoint());
 			}
 			else{
 				//no chance to get the information
@@ -360,7 +360,7 @@ public class TestbedServiceImpl implements TestbedService{
 	}
 	
 	
-	public class ServiceOperationImpl implements TestbedService.ServiceOperation{
+	public class ServiceOperationImpl implements TestbedServiceTemplate.ServiceOperation{
 		
 		private String sName ="";
 		//Template containing a valid XML Request for this operation - with placeholders

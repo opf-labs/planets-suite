@@ -19,12 +19,12 @@ import java.util.UUID;
  * for being able to invoke an experiment, execute the underlying service, and knows how to
  * extract the resulting data.
  */
-public interface TestbedService {
+public interface TestbedServiceTemplate {
 
 	public String getDescription();
 	public void setDescription(String sDescription);
 	
-	public String getEntpoint();
+	public String getEndpoint();
 	public void setEndpoint(String sURL);
 	/**
 	 * Takes the Service's Endpoint and if extract = true, fetches and stores the WSDL's content.

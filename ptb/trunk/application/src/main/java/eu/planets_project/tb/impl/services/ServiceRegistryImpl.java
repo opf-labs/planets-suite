@@ -13,9 +13,9 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import eu.planets_project.tb.api.services.TestbedService;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.ServiceRegistry;
-import eu.planets_project.tb.impl.services.TestbedServiceImpl;
+import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 
 /**
  * @author alindley
@@ -25,7 +25,7 @@ import eu.planets_project.tb.impl.services.TestbedServiceImpl;
 public class ServiceRegistryImpl implements ServiceRegistry{
 	
 	//Map<ServiceUUID, Service>
-	private Map<String,TestbedService> hm_AllServices;
+	private Map<String,TestbedServiceTemplate> hm_AllServices;
 	//Map containing the free annotation Tags for tagging a service for all UUIDS
 	//Structure is: Map<UUID,List<Map<key,value>>>
 	private Map<String,Map<String, String>> mapTags;
@@ -38,7 +38,7 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	 */
 	private ServiceRegistryImpl(){
 		//HashMap<ServiceUUID, TestbedService>
-		this.hm_AllServices = new HashMap<String,TestbedService>();
+		this.hm_AllServices = new HashMap<String,TestbedServiceTemplate>();
 		this.mapTags = new HashMap<String,Map<String,String>>();
 	}
 	
@@ -61,7 +61,7 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	 */
 	public List<String> getAllServiceNames(){
 		List<String> sRet = new Vector<String>();
-		Iterator<TestbedService> it =this.getAllServices().iterator();
+		Iterator<TestbedServiceTemplate> it =this.getAllServices().iterator();
 		while(it.hasNext()){
 			//get the service's name and add it
 			sRet.add(it.next().getName());
@@ -73,20 +73,20 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	/* (non-Javadoc)
 	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#getAllServicNamesAndServiceEntrySets()
 	 */
-	public Set<Entry<String,TestbedService>> getAllServicNamesAndServiceEntrySets(){
+	public Set<Entry<String,TestbedServiceTemplate>> getAllServicNamesAndServiceEntrySets(){
 		//Set contains Entry<UUID,TBservice>
-		Set<Entry<String,TestbedService>> setUUIDAndService = this.hm_AllServices.entrySet();
+		Set<Entry<String,TestbedServiceTemplate>> setUUIDAndService = this.hm_AllServices.entrySet();
 		//Return Set contains: Entry<Name, TBService>
-		Set<Entry<String,TestbedService>> setRet = new HashSet<Entry<String,TestbedService>>();
+		Set<Entry<String,TestbedServiceTemplate>> setRet = new HashSet<Entry<String,TestbedServiceTemplate>>();
 		
-		Iterator<Entry<String,TestbedService>> it = setUUIDAndService.iterator();
+		Iterator<Entry<String,TestbedServiceTemplate>> it = setUUIDAndService.iterator();
 		while(it.hasNext()){
-			Entry<String,TestbedService> entry = it.next();
-			TestbedService service = entry.getValue();
-			Map<String,TestbedService> mapHelper = new HashMap<String,TestbedService>();
+			Entry<String,TestbedServiceTemplate> entry = it.next();
+			TestbedServiceTemplate service = entry.getValue();
+			Map<String,TestbedServiceTemplate> mapHelper = new HashMap<String,TestbedServiceTemplate>();
 			//now put ServiceName and TestbedService as return value
 			mapHelper.put(service.getName(), service);
-			Iterator<Entry<String,TestbedService>> entryret = mapHelper.entrySet().iterator();
+			Iterator<Entry<String,TestbedServiceTemplate>> entryret = mapHelper.entrySet().iterator();
 			setRet.add(entryret.next());
 		}
 		
@@ -97,7 +97,7 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	/* (non-Javadoc)
 	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#getAllServices()
 	 */
-	public Collection<TestbedService> getAllServices(){
+	public Collection<TestbedServiceTemplate> getAllServices(){
 		return this.hm_AllServices.values();
 	}
 	
@@ -115,9 +115,9 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	 */
 	public List<String> getAllEndpoints() {
 		List<String> sRet = new Vector<String>();
-		Iterator<TestbedService> it = this.getAllServices().iterator();
+		Iterator<TestbedServiceTemplate> it = this.getAllServices().iterator();
 		while(it.hasNext()){
-			sRet.add(it.next().getEntpoint());
+			sRet.add(it.next().getEndpoint());
 		}
 		return sRet;
 	}
@@ -126,7 +126,7 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	/* (non-Javadoc)
 	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#getServiceByID(java.lang.String)
 	 */
-	public TestbedService getServiceByID(String sServiceUUID) {
+	public TestbedServiceTemplate getServiceByID(String sServiceUUID) {
 		if(sServiceUUID!=null){
 			if(this.getAllServiceUUIDs().contains(sServiceUUID)){
 				//now return the object
@@ -140,11 +140,11 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	/* (non-Javadoc)
 	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#getServiceByWSDLContent(java.lang.String)
 	 */
-	public TestbedService getServiceByWSDLContent(String sWSDLContent){
+	public TestbedServiceTemplate getServiceByWSDLContent(String sWSDLContent){
 		if(sWSDLContent!=null){
-			Iterator<TestbedService> it = this.getAllServices().iterator();
+			Iterator<TestbedServiceTemplate> it = this.getAllServices().iterator();
 			while(it.hasNext()){
-				TestbedService tbService = it.next();
+				TestbedServiceTemplate tbService = it.next();
 				String content = tbService.getWSDLContent();
 				if((content!=null)&&(sWSDLContent.equals(content))){
 					return tbService;
@@ -158,7 +158,7 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	/* (non-Javadoc)
 	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#registerService(eu.planets.test.backend.api.model.mockup.TestbedService)
 	 */
-	public void registerService(TestbedService service) throws Exception{
+	public void registerService(TestbedServiceTemplate service) throws Exception{
 		if((service!=null)&&(service.getUUID()!="")){
 			this.hm_AllServices.put(service.getUUID(), service);
 		}
@@ -169,7 +169,7 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#isServiceRegistered(java.lang.String)
 	 */
 	public boolean isServiceRegistered(String WSDLContent) {
-		Iterator<TestbedService> it = this.getAllServices().iterator();
+		Iterator<TestbedServiceTemplate> it = this.getAllServices().iterator();
 		while(it.hasNext()){
 			//this can never be null;
 			String wsdlcontent = it.next().getWSDLContent();
@@ -184,10 +184,10 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#isServiceEndpointRegistered(java.lang.String)
 	 */
 	public boolean isServiceEndpointRegistered(String sEndpointRef){
-		Iterator<TestbedService> it = this.getAllServices().iterator();
+		Iterator<TestbedServiceTemplate> it = this.getAllServices().iterator();
 		while(it.hasNext()){
 			//this can never be null;
-			String endpoint = it.next().getEntpoint();
+			String endpoint = it.next().getEndpoint();
 			if(endpoint.equals(sEndpointRef))
 				return true;
 		}

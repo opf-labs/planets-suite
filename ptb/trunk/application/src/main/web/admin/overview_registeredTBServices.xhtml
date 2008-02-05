@@ -24,10 +24,11 @@
 	<div id="maincol">
 	<div class="innertubemain">
      
-		<h2>registered testbed services:</h2>    
+     <fieldset>
+		<legend>browse registered services</legend>   
      
      	<h:form id="formServiceSelection">
-    	 	<h:outputText value="Select a Services:"/>
+    	 	<h:outputText value="Select a Services:" styleClass="readerLabel"/>
      		<h:selectOneMenu id="selectService" value="#{TBServiceRenderer.serviceSelectItemValue}" immediate="true" 
                 valueChangeListener="#{TBServiceRenderer.processServiceChange}" onchange="submit()">
                     <f:selectItems value="#{TBServiceRenderer.serviceSelectItems}"/>
@@ -36,35 +37,37 @@
      	</h:form>
      
      	<h:form id="FormOperationSelection">
-        	<h:outputText value="Select Operation Name:"/>
-        	<h:selectOneMenu id="selectOperation" value="#{TBServiceRenderer.operationSelectItemValue}">
+        	<h:outputText value="Select Operation Name:" styleClass="readerLabel"/>
+        	<h:selectOneMenu id="selectOperation" value="#{TBServiceRenderer.operationSelectItemValue}" immediate="true"
+        	 onchange="submit()">
             	 <f:selectItems value="#{TBServiceRenderer.operationSelectItems}"/>
         	</h:selectOneMenu>
         	<h:message for="selectOperation"/>  
      	</h:form>
      	
-     	<h:form id="FormDisplayMetadata" rendered="#{TBServiceRenderer.TBServiceSelected}">
-        	<h:outputText value="Endpoint:"/>
-			<h:outputText value="#{TBServiceRenderer.TBService.entpoint}"/>
-			<h:outputText value="ServiceID:"/>
-			<h:outputText value="#{TBServiceRenderer.TBService.UUID}"/>
-			<h:outputText value="XMLRequestTemplate:"/>
-            <h:outputText value="#{TBServiceRenderer.serviceOperation.XMLRequestTemplate}"/>
-     </h:form>
+     	<h:form id="FormSelectAttributes">
+			<h:selectBooleanCheckbox value="#{TBServiceRenderer.allCheckboxes['endpoint']}" immediate="true" onclick="submit()"/>
+			<h:outputText value="endpoint"/>
+			<h:selectBooleanCheckbox value="#{TBServiceRenderer.allCheckboxes['uri']}" immediate="true" onclick="submit()"/>	
+			<h:outputText value="service URI"/>
+			<br/>			            				
+			<h:selectBooleanCheckbox value="#{TBServiceRenderer.allCboxesSelected}" immediate="true" 
+			valueChangeListener="#{TBServiceRenderer.processSelAllBoxesChange}" onclick="submit()"/>				            						            	
+     		<h:outputText value="select all"/>
+     	</h:form>
+     </fieldset>
      
-     <h:form enctype="multipart/form-data">
-            <t:inputFileUpload id="fileupload" rendered="true"
-                    value="#{FileUploadBean.upFile}"
-                    storage="file"
-                    styleClass="fileUploadInput"
-                    required="true"
-                    maxlength="10000000"  
-                    readonly="false" 
-                    disabled="false"/>
-             <h:message for="fileupload"/>
-             <h:commandButton value = "upload" action ="#{TBServiceRenderer.command_uploadFile}"/>
-             <br/>
-    </h:form>
+     <fieldset>
+     	<legend>browse operation specific data</legend>	
+     	<h:form id="FormDisplayMetadata" rendered="#{TBServiceRenderer.TBServiceSelected}">
+        	<p><h:outputText value="Endpoint: #{TBServiceRenderer.TBService.entpoint}" styleClass="readerLabel"/>
+			   <h:outputText value="#{TBServiceRenderer.TBService.endpoint}"/></p>
+			<p><h:outputText value="ServiceID:" styleClass="readerLabel"/>
+			   <h:outputText value="#{TBServiceRenderer.TBService.UUID}"/></p>
+			<p><h:outputText value="XMLRequestTemplate:" styleClass="readerLabel"/>
+     		   <h:inputTextarea value="#{TBServiceRenderer.serviceOperation.XMLRequestTemplate}" cols="70" rows="20" readonly="true"/> </p>
+     </h:form>
+     </fieldset>
 	  
 </div>
 </div>

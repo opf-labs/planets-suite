@@ -1,19 +1,24 @@
 package eu.planets_project.tb.gui.backing.admin;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
+import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import org.apache.myfaces.custom.fileupload.HtmlInputFileUploadTag;
 
 import eu.planets_project.tb.api.services.ServiceRegistry;
-import eu.planets_project.tb.api.services.TestbedService;
-import eu.planets_project.tb.api.services.TestbedService.ServiceOperation;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
@@ -35,9 +40,17 @@ public class TBServiceRenderer implements ValueChangeListener {
 	private List<SelectItem> lOperationSelectItems = new Vector<SelectItem>();
 	private SelectItem serviceSelectItem;
 	private SelectItem operationSelectItem;
-	
+
+	//the selectChoices
+	private Map<String,Boolean> cboxes = new HashMap<String,Boolean>();
+	private boolean allCboxesSelected = false;
 	
 	public TBServiceRenderer(){
+		
+		//fill the cboxes list:
+		cboxes.put("endpoint",true);
+		cboxes.put("uri",false);
+		
 		//query the service registry and load all available services
 		this.loadServices();
 		if(this.serviceSelectItem!=null)
@@ -241,7 +254,7 @@ public class TBServiceRenderer implements ValueChangeListener {
 	 * @return
 	 */
 	public void processOperationChange(ValueChangeEvent vce){
-		//
+		//processOperationChange
 	}
 	
 	/* (non-Javadoc)
@@ -259,11 +272,11 @@ public class TBServiceRenderer implements ValueChangeListener {
 		this.lServiceSelectItems = new Vector<SelectItem>();
 		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 		if(registry.getAllServices()!=null){
-			Iterator<TestbedService> itServices = registry.getAllServices().iterator();
+			Iterator<TestbedServiceTemplate> itServices = registry.getAllServices().iterator();
 			
 			int count = 0;
 			while(itServices.hasNext()){
-				TestbedService service = itServices.next();
+				TestbedServiceTemplate service = itServices.next();
 				//adds a SelectItem with value=serviceID label=serviceName
 				SelectItem item = new SelectItem(service.getUUID(),service.getName());
 				this.lServiceSelectItems.add(item);
@@ -283,7 +296,7 @@ public class TBServiceRenderer implements ValueChangeListener {
 		this.lOperationSelectItems = new Vector<SelectItem>();
 		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 		if((registry.getAllServiceUUIDs()!=null)&&(registry.getAllServiceUUIDs().contains(serviceID))){
-			TestbedService s1 = registry.getServiceByID(serviceID);
+			TestbedServiceTemplate s1 = registry.getServiceByID(serviceID);
 			Iterator<String> itOps = s1.getAllServiceOperationNames().iterator();
 			
 			int count = 0;
@@ -301,7 +314,7 @@ public class TBServiceRenderer implements ValueChangeListener {
 	 * Just needs to be there for JSF reasons
 	 * @param s
 	 */
-	public void setTBService(TestbedService s){
+	public void setTBService(TestbedServiceTemplate s){
 		//just needs to be there
 	}
 	
@@ -310,12 +323,12 @@ public class TBServiceRenderer implements ValueChangeListener {
 	 * Could also be used to hand over the selected TestbedService object to further components
 	 * @return
 	 */
-	public TestbedService getTBService(){
+	public TestbedServiceTemplate getTBService(){
 		//query serviceRegistry for the selected TestbedService Object
 		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 		if(this.serviceSelectItem!=null){
 			//value stores the service's UUID; service may also be null
-			TestbedService service = registry.getServiceByID(this.serviceSelectItem.getValue().toString());
+			TestbedServiceTemplate service = registry.getServiceByID(this.serviceSelectItem.getValue().toString());
 		return service;
 		}
 		else{
@@ -341,7 +354,7 @@ public class TBServiceRenderer implements ValueChangeListener {
 	 */
 	public ServiceOperation getServiceOperation(){
 		if(this.getTBService()!=null){
-			TestbedService tbService = this.getTBService();
+			TestbedServiceTemplate tbService = this.getTBService();
 			return tbService.getServiceOperation(this.getOperationSelectItemValue());
 		}
 		else{
@@ -355,6 +368,37 @@ public class TBServiceRenderer implements ValueChangeListener {
 	 */
 	public void setServiceOperation(ServiceOperation op){
 		//just needs to be there
+	}
+	
+	/**
+	 * Returns a list of all checkboxes in the stage of browsing service+operation
+	 * metadata. The Boolean attributes are directly modified by the GUI
+	 * @return
+	 */
+	public Map<String,Boolean> getAllCheckboxes(){
+		//return this.cboxes;
+		return this.cboxes;
+	}
+	
+	public boolean getAllCboxesSelected(){
+		return this.allCboxesSelected;
+	}
+	
+	public void setAllCBoxesSelected(boolean b){
+		this.allCboxesSelected = b;
+	}
+	
+	/**
+	 * Select or deselect all checkboxes
+	 */
+	public void processSelAllBoxesChange(ValueChangeEvent vce){
+		
+		this.allCboxesSelected = (Boolean)vce.getNewValue();
+
+		Iterator<String> itValues = this.cboxes.keySet().iterator();
+		while(itValues.hasNext()){
+			this.cboxes.put(itValues.next(), this.allCboxesSelected);
+		}
 	}
 
 }

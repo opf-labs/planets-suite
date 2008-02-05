@@ -128,12 +128,12 @@
                 	</h:commandLink>
              	   </p>
              	   <!--The panel where the already added FileArrayElements get displayed -->
-                   <p><h:outputText value="Added files: " styleClass="readerLabel"/></p>
+                   <p><h:outputText value="Added files: " styleClass="readerLabel" rendered="#{!RegisterTBServiceBean.fileRefAdded}"/></p>
                    <h:panelGroup id="panelStep3add" binding="#{RegisterTBServiceBean.componentPanelStep3Add}"/>
              </fieldset>
 
              <h:commandButton id="buttonInvokeSample" value="invoke service"
-             action="#{RegisterTBServiceBean.command_invokeSampleRequest}" disabled="#{RegisterTBServiceBean.stage3Completed}"/>
+             action="#{RegisterTBServiceBean.command_invokeSampleRequest}" disabled="#{RegisterTBServiceBean.stage3Completed||!RegisterTBServiceBean.fileRefAdded}"/>
           </h:panelGroup>
           <p>&#160;</p>
         <p>&#160;</p>
@@ -167,12 +167,13 @@
                    completed this task successfully. If not: redefine XPath statement and run "test query" again.</p>
                 <p><h:panelGrid id="panelStep4Add" binding="#{RegisterTBServiceBean.componentPanelStep4Add}" border="0" columns="2"/>
                 <h:outputText value="Output is of type:" styleClass="readerLabel"/>
-                      <h:selectOneMenu id="selectOutputType" value="#{RegisterTBServiceBean.selectedOutputTypeValue}">
+                      <h:selectOneMenu id="selectOutputType" value="#{RegisterTBServiceBean.selectedOutputTypeValue}" disabled="#{RegisterTBServiceBean.stage4Completed}">
                         <f:selectItems value="#{RegisterTBServiceBean.selectedOutputTypeItems}" />                       
                       </h:selectOneMenu>
                   </p>
                   <br/>
-                <p><h:commandButton id="buttonParseResponds" value="continue" action="#{RegisterTBServiceBean.command_continueToAddServiceRegistryMetadata}"/>
+                <p><h:commandButton id="buttonParseResponds" value="continue" action="#{RegisterTBServiceBean.command_continueToAddServiceRegistryMetadata}"
+                	disabled="#{RegisterTBServiceBean.stage4Completed}"/>
                   </p>
             </fieldset>
       </h:form>
@@ -242,6 +243,50 @@
           <br/>
           <h:commandButton id="buttonStoreService" value="store service" action="#{RegisterTBServiceBean.command_completeRegistration}"/>
           <br/>
+      </h:form>
+      <!--End of Step5 add service metadata to be written into the registry-->
+      
+      <!--Final: display register service success-->
+      <h:form id="formRegisterSuccess" rendered="#{RegisterTBServiceBean.renderedStage > 5}">
+      	 <p>
+      	     <div class="box">
+				<h3 class="box">#{res['exp_stage5.statistics']}</h3>
+				<p class="box">
+					<b>currently registered number of services}</b> 10:01 BST on 19th July 2007<br />
+					<b>migration services:</b> 6498 out of 6500<br />
+					<b>characterisation services:</b> 2<br />
+					<b>number of registered operations?</b> 21:00 on 19th July 2007<br />
+				</p>
+			</div>
+      	  Congratulations you have successfully completed the registration wizzard for this operation.
+      	  You can now use this service operation to execute Testbed experiments.
+      	  <img src="${facesContext.externalContext.requestContextPath}/graphics/state_ok.gif" alt="state-ok" title="ok"/>
+      	</p>
+      		<b>Added Service Name:</b>#{WSClientBean.serviceSelectItemValue}<br/><p>
+      		<b>Added Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
+            <b>Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
+        </p>
+        <br/>
+        <b>navigation options:</b>
+        	<ul>
+        		<li>
+					<h:commandLink value="register new service" action="#{Manager_Backing.initRegisterTBService}"/>
+        		</li>
+        		<li>
+					<h:commandLink value="browse registered services" action="#{Manager_Backing.initTBServiceDisplayer}"/>
+        		</li>
+        		<li>
+					<h:commandLink value="remove registered services" action="remove-services"/>
+				</li>
+        	</ul>
+        	
+      	<p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
       </h:form>
 
 	  

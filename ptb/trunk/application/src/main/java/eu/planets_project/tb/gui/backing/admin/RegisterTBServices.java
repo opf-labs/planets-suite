@@ -53,13 +53,13 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import eu.planets_project.tb.api.services.ServiceRegistry;
-import eu.planets_project.tb.api.services.TestbedService;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.services.ServiceRegistryImpl;
-import eu.planets_project.tb.impl.services.TestbedServiceImpl;
+import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 
 /**
  * 
@@ -107,15 +107,11 @@ public class RegisterTBServices{
 	//holding the data for the registeredOperations in Form of a List<String>: e.g. [0]xmlrequesttemplate [1]xmlrespondstemplate
 	private Map<String, List<String>> registeredOperations = new HashMap<String,List<String>>();
 
-	//holds the inputField's current state
-	private String sCurrentFileRef = new String("C:/DATA/Test1.doc");
 	//Please Note: addedFileRefs and fileOutput are connected as follows
 	//i.e. fileRef1 and its fileOutput1 both have key "1"
 	//holds a list of all added file references. When array:[1..n] when input type file: [1]
 	private Map<String,String> addedFileRefs = new HashMap<String,String>();
 	private Map<String,String> fileOutput = new HashMap<String,String>();
-	//a helper counter that counts one up everytime a new file gets added (but not down when one is deleted)
-	private int iFileRefCounter = 0;
 	
 	//TODO: add. restrictions on the size of the file array
 	private int iFileArrayLineMinRequired = 1;
@@ -165,8 +161,8 @@ public class RegisterTBServices{
 		lOutputTypes.add(new SelectItem(sOutputTypeString, "String"));
 		
 		//set the Tag value and labels 
-		lServiceOperationTypes.add(new SelectItem(TestbedService.ServiceOperation.SERVICE_OPERATION_TYPE_MIGRATION, "migration"));
-		lServiceOperationTypes.add(new SelectItem(TestbedService.ServiceOperation.SERVICE_OPERATION_TYPE_CHARACTERISATION, "characterisation"));
+		lServiceOperationTypes.add(new SelectItem(TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_MIGRATION, "migration"));
+		lServiceOperationTypes.add(new SelectItem(TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_CHARACTERISATION, "characterisation"));
 	}
 	
 	
@@ -231,8 +227,6 @@ public class RegisterTBServices{
 				//disk_name: "+file_upload.getName());
 				//logical name: "+file_upload.getIndexFileEntryName(file_upload.getName()));
 		
-				//2) Add the file into the list of added files
-				this.setCurrentFileInput(file_upload.getURI().toString());
 			}
 			else{
 				return null;
@@ -273,22 +267,31 @@ public class RegisterTBServices{
 			
 			//1) Get the InputFileRef data from uploaded data
 			String sFileRef = "";
+			String sFileName ="";
 			if(uploadBean!=null){
 				sFileRef = uploadBean.getURI().toString();
+				sFileName = uploadBean.getIndexFileEntryName(uploadBean.getName());
 			}else{
 				throw new IOException("No file was specified or uploaded");
 			}
 			
 			if((sFileRef!=null)&&(!addedFileRefs.containsValue(sFileRef))){
+				//generate an ID for this inputFile
+				int id = getNextValidInputFileID();
 				//2) Add the Data to the bean's variable
-				this.addedFileRefs.put(iFileRefCounter+"", sFileRef);
+				this.addedFileRefs.put(id+"", sFileRef);
 			
 				//3) For the current fileRef create an GUI outputfield + a RemoveIcon+Link
-				int id = this.iFileRefCounter;
-					//OutputText
+					//File Name + File Reference with HtmlOutputLink to file source
+				//file ref
 				HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
-				outputText.setValue(sFileRef);
+				outputText.setValue(sFileName);
 				outputText.setId("OutputTextStep2Refs"+id);
+				//file name
+				HtmlOutputLink link_src = (HtmlOutputLink) facesContext.getApplication().createComponent(HtmlOutputLink.COMPONENT_TYPE);
+				link_src.setId("OutputLinkStep2Refs"+id);
+				link_src.setValue("file:///"+sFileRef);
+				
 	        		//CommandLink+Icon allowing to delete this entry
 				HtmlCommandLink link_remove = (HtmlCommandLink) facesContext.getApplication().createComponent(HtmlCommandLink.COMPONENT_TYPE);
 				//set the ActionMethod to the method: "command_removeFileRefFromStep2(ActionEvent e)"
@@ -304,14 +307,10 @@ public class RegisterTBServices{
 				image.setId("HtmlGraphicImageStep2Refs"+id);
 				link_remove.getChildren().add(image);
             
-				//add both components
+				//add all three components
 				this.getComponentPanelStep3Add().getChildren().add(link_remove);
-				this.getComponentPanelStep3Add().getChildren().add(outputText);
-	        
-				//4) reset the fileInputText
-				this.setCurrentFileInput("Enter File URI");
-				
-				this.iFileRefCounter++;
+				link_src.getChildren().add(outputText);
+				this.getComponentPanelStep3Add().getChildren().add(link_src);
         	}
         }
         catch (java.lang.Throwable t)
@@ -320,6 +319,26 @@ public class RegisterTBServices{
             t.printStackTrace();
         }
 		return "reload-page";
+	}
+	
+	/**
+	 * Private helper to retrieve the next valid ID in the step of adding
+	 * input files.
+	 * @return
+	 */
+	private int getNextValidInputFileID(){
+		int IDCount = 0;
+		boolean idNotFound = true;
+		while(idNotFound){
+			boolean b = this.addedFileRefs.containsKey(IDCount+"");
+			if(b){
+				IDCount++;
+			}
+			else{
+				idNotFound=false;
+			}
+		}
+		return IDCount;
 	}
 	
 	
@@ -340,16 +359,28 @@ public class RegisterTBServices{
 			this.addedFileRefs.remove(IDnr+"");
 			
 			//3) Remove the GUI elements from the panel
-			UIComponent comp_link = this.getComponent("formXmlRequestSampleInvocation:UICommandStep2Refs"+IDnr);
-			UIComponent comp_text = this.getComponent("formXmlRequestSampleInvocation:OutputTextStep2Refs"+IDnr);
-			this.getComponentPanelStep3Add().getChildren().remove(comp_link);
-			this.getComponentPanelStep3Add().getChildren().remove(comp_text);
+			UIComponent comp_link_remove = this.getComponent("formXmlRequestSampleInvocation:UICommandStep2Refs"+IDnr);
+			//UIComponent comp_text = this.getComponent("formXmlRequestSampleInvocation:OutputTextStep2Refs"+IDnr);
+			UIComponent comp_link_src = this.getComponent("formXmlRequestSampleInvocation:OutputLinkStep2Refs"+IDnr);
+			this.getComponentPanelStep3Add().getChildren().remove(comp_link_remove);
+			//this.getComponentPanelStep3Add().getChildren().remove(comp_text);
+			this.getComponentPanelStep3Add().getChildren().remove(comp_link_src);
 
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		return "reload-page";
+	}
+	
+	/**
+	 * At least one file reference must be added as sample invocation data
+	 * @return
+	 */
+	public boolean isFileRefAdded(){
+		if(this.addedFileRefs.keySet().size()>=1)
+			return true;
+		return false;
 	}
 	
 	public String command_continueToAddServiceRegistryMetadata(){
@@ -855,13 +886,12 @@ public class RegisterTBServices{
 			String sArrayLineEnd = fileTokens[1];
 			
 			if(this.addedFileRefs.values()!=null){
-				Iterator it = addedFileRefs.values().iterator();
-				
+				int iElements = addedFileRefs.values().size();
 				//build the return String
 				sRet = sMessageStart;
-				while(it.hasNext()){
-					//add file ref to arrayLine
-					sRet+=sArrayLineStart + it.next() +sArrayLineEnd;
+				
+				for(int i=0;i<iElements;i++){
+					sRet+=sArrayLineStart + this.addedFileRefs.get(i+"") + sArrayLineEnd;
 				}
 				sRet += sMessageEnd;
 			}
@@ -988,29 +1018,6 @@ public class RegisterTBServices{
 	
 	
 	/**
-	 * Used by UI Element to set the FileRef input field which will get added
-	 * through the "add link" for sample Invocation
-	 * @param sFileRef
-	 */
-	public void setCurrentFileInput(String sFileRef){
-		this.sCurrentFileRef = sFileRef;
-	}
-	
-	/**
-	 * Used by UI Element to get the FileRef input field
-	 * @return
-	 */
-	public String getCurrentFileInput(){
-		try{ 
-			return this.sCurrentFileRef;
-		}
-		catch(Exception e){
-			return "";
-		}
-	}
-	
-	
-	/**
 	 * Sets iStageCompleted and iStageRendered to the stage number and performs any
 	 * operations like get dynamically added components and set them disabled
 	 * @param stageNr 1..n
@@ -1060,7 +1067,6 @@ public class RegisterTBServices{
 		}
 		//provide metadata 
 		if(stageNr == 5){
-			System.out.println("This should be 5");
 			setElementsDisabled((UIComponent)this.getComponent("panelTags"));
 			setElementsDisabled((UIComponent)this.getComponent("panelMetadata"));
 			this.iStageCompleted = stageNr;
@@ -1390,14 +1396,18 @@ public class RegisterTBServices{
 	}
 	
 	/**
-	 * Tests if the localFileRef can be converted into a File, if it's a file and if it's redable
-	 * @param localFileRef
+	 * Tests if the provided String starts with the suffix "http"
+	 * @param sFileRef
 	 * @return
 	 */
-	private boolean canReadFile(String localFileRef){
-		File f = new File(localFileRef);
+	private boolean isHttpFileRef(String sFileRef){
+		/*File f = new File(localFileRef);
 		if(f.exists()&&f.isFile()&&f.canRead())
 			return true;
+		return false;*/
+		if((sFileRef!=null)&&(sFileRef.startsWith("http"))){
+			return true;
+		}
 		return false;
 	}
 	
@@ -1421,7 +1431,7 @@ public class RegisterTBServices{
 				//Display the INPUT
 				int addedrow = 0;
 				//if file can be read, then display as Link
-				if(canReadFile(input)){
+				if(isHttpFileRef(input)){
 					//OutputLink to view this File
 					HtmlOutputLink link_input = (HtmlOutputLink) facesContext.getApplication().createComponent(HtmlOutputLink.COMPONENT_TYPE);
 					link_input.setId("Step3OutputLinkInput"+i);
@@ -1444,7 +1454,7 @@ public class RegisterTBServices{
 				
 				if(output!=null){
 					//Display the OUTPUT
-					if(canReadFile(output)){
+					if(isHttpFileRef(output)){
 						//OutputLink to view this File
 						HtmlOutputLink link_output = (HtmlOutputLink) facesContext.getApplication().createComponent(HtmlOutputLink.COMPONENT_TYPE);
 						link_output.setId("Step3OutputLinkOutput"+i);
@@ -1565,8 +1575,8 @@ public class RegisterTBServices{
 
 		this.setStageCompleted(5);
 		
-		TestbedServiceImpl tbService = new TestbedServiceImpl();
-		TestbedService.ServiceOperation operation = tbService.new ServiceOperationImpl();
+		TestbedServiceTemplateImpl tbService = new TestbedServiceTemplateImpl();
+		TestbedServiceTemplate.ServiceOperation operation = tbService.new ServiceOperationImpl();
 		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
 		
 		//relevant information to build the wsclient bean: wsdlURI, servicename, opname
@@ -1578,9 +1588,9 @@ public class RegisterTBServices{
 		tbService.setName(this.getCurrentServiceName());
 		
 		//check if this is a new service or just a new operation for it
-		TestbedService s = registry.getServiceByWSDLContent(tbService.getWSDLContent());
+		TestbedServiceTemplate s = registry.getServiceByWSDLContent(tbService.getWSDLContent());
 		if(s!=null){
-			tbService = (TestbedServiceImpl)s;
+			tbService = (TestbedServiceTemplateImpl)s;
 		}
 		//operationName
 		operation.setName(this.getCurrentOperationName());
