@@ -14,9 +14,13 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+
 @Stateless
 public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 	
+    private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentPersistencyImpl.class);
+    
 	@PersistenceContext(unitName="testbed", type=PersistenceContextType.TRANSACTION)
 	private EntityManager manager;
 
@@ -35,11 +39,13 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 	}
 
 	public long persistExperiment(Experiment experiment) {
+	    log.debug("Persisting experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
 		manager.persist(experiment);
 		return experiment.getEntityID();
 	}
 
 	public void updateExperiment(Experiment experiment) {
+        log.debug("Updating experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
 		manager.merge(experiment);
 	}
 
@@ -49,6 +55,7 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 	}
 
 	public boolean queryIsExperimentNameUnique(String expName) {
+	    log.debug("Checking uniqueness of exp. name: " + expName );
 		Query query = manager.createQuery("SELECT sExpName FROM BasicPropertiesImpl WHERE sExpName='"+expName+"'");
 		List<String> results = query.getResultList();
 		if(results.size()==0)

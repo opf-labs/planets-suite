@@ -65,6 +65,9 @@ public class Manager {
     }
 
     public String updateBasicPropsAction(){
+        // Flag to indicate validity of submission:
+        boolean validForm = true;
+        
         // remove workflow object from session, if still available from previously viewed experiment
     	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
     	
@@ -77,8 +80,12 @@ public class Manager {
         fmsg.setDetail("Experiment name already in use! - Please specify a unique name.");
         fmsg.setSummary("Duplicate name: Experiment names must be unique!");
         fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+        // Flag to catch new/existing state:
+        boolean existingExp = true;
+        log.debug("Checking if this is a new experiment.");
         // if not yet created, create new Experiment object and new Bean
         if ((expBean.getID() == 0)) { 
+            existingExp = false;
 	        // Create new Experiment
 	        exp = new ExperimentImpl();
 	        props = new BasicPropertiesImpl();
@@ -87,12 +94,13 @@ public class Manager {
 	        // set current User as experimenter
 	        props.setExperimenter(currentUser.getUserid());
 		    try {
+		        log.debug("New experiment, setting name: " + expBean.getEname() );
 		        props.setExperimentName(expBean.getEname());        
 		    } catch (InvalidInputException e) {
 	    		// add message-tag for duplicate name
 		        FacesContext ctx = FacesContext.getCurrentInstance();
 		        ctx.addMessage("ename",fmsg);
-	    		return "failure";
+	    		validForm = false;
 	    	}
 	        ExperimentSetup expSetup = new ExperimentSetupImpl();
 	        expSetup.setBasicProperties(props);       
@@ -100,17 +108,23 @@ public class Manager {
             long expId = testbedMan.registerExperiment(exp);            
             expBean.setID(expId);
         }
+        // Get the Experiment description objects
 	    exp = testbedMan.getExperiment(expBean.getID());
-        props = exp.getExperimentSetup().getBasicProperties();          
-	    try {
+        props = exp.getExperimentSetup().getBasicProperties();
+        // If the experiment already existed, check for valid name changes:
+        if( existingExp ) {
+  	      try {
+            log.debug("Existing experiment, setting name: " + expBean.getEname() );
 	        props.setExperimentName(expBean.getEname());        
-	    } catch (InvalidInputException e) {
+	      } catch (InvalidInputException e) {
     		// add message-tag for duplicate name
 	        FacesContext ctx = FacesContext.getCurrentInstance();
 	        ctx.addMessage("ename",fmsg);
-    		return "failure";
-    	}
+    		validForm = false;
+    	 }
+        }
         //set the experiment information
+        log.debug("Setting the experimental properties.");
         props.setSummary(expBean.getEsummary());
         props.setConsiderations(expBean.getEconsiderations());
         props.setPurpose(expBean.getEpurpose());
@@ -121,8 +135,11 @@ public class Manager {
 
         String partpnts = expBean.getEparticipants();
         String[] partpntlist = partpnts.split(",");
-        for(int i=0;i<partpntlist.length;i++){        
-            props.addInvolvedUser(partpntlist[i]);
+        for(int i=0;i<partpntlist.length;i++){
+            partpntlist[i] = partpntlist[i].trim();
+            if( partpntlist[i] != "" ) {
+                props.addInvolvedUser(partpntlist[i]);
+            }
         }
         props.setExternalReferenceID(expBean.getExid());
                 
@@ -159,11 +176,31 @@ public class Manager {
         
         props.setDigiTypes(expBean.getDtype());
         
+        // Set the experiment type:
+        try {
+            exp.getExperimentSetup().setExperimentType(expBean.getEtype());
+        } catch (InvalidInputException e) {
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            FacesMessage tfmsg = new FacesMessage();
+            tfmsg.setSummary("No experiment type specified!");
+            tfmsg.setDetail("You must select and experiment type.");
+            tfmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            ctx.addMessage("etype",tfmsg);
+            validForm = false;
+        }
+        
+        log.debug("Updating...");
         // Workaround
         // update in cached lists
         ListExp listExp_Backing = (ListExp)JSFUtil.getManagedObject("ListExp_Backing");
         listExp_Backing.getExperimentsOfUser();
         listExp_Backing.getAllExperiments();
+        
+        // Exit with failure condition if the form submission was not valid.
+        if( ! validForm ) {
+            log.debug("Exiting with failure.");
+            return "failure";
+        }
         
         // Put updated Bean into Session; accessible later as #{ExperimentBean}
         //FacesContext ctx = FacesContext.getCurrentInstance();
@@ -171,6 +208,7 @@ public class Manager {
         exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
         testbedMan.updateExperiment(exp);
         expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
+        log.debug("Exiting in success.");
         return "success";
 	}
     

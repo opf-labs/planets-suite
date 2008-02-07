@@ -38,7 +38,7 @@ public class ExperimentPhaseBean {
     public ExperimentPhaseBean(ExperimentBean eb, String experimentPhaseID) {
         this.eb = eb;
         this.experimentPhaseID = experimentPhaseID;
-        log.info("Initialised an EPB with: " + experimentPhaseID );
+        log.debug("Initialised an EPB with: " + experimentPhaseID );
     }
     
     /**
@@ -46,7 +46,7 @@ public class ExperimentPhaseBean {
      * @return A List of Comment objects about this stage of the experiment.
      */
     public List<Comment> getComments() {
-        log.info("getting comments on #" + eb.getID() + " at phase " + experimentPhaseID );
+        log.debug("getting comments on #" + eb.getID() + " at phase " + experimentPhaseID );
         return cm.getComments(eb.getID(), experimentPhaseID);
     }
 

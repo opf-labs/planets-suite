@@ -1,4 +1,3 @@
-
 package eu.planets_project.tb.gui.tags;
 
 import javax.servlet.jsp.JspException;
@@ -18,7 +17,7 @@ import javax.faces.context.FacesContext;
 
 public final class GetUser extends TagHandler {
 
-	private Log log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
+	private static Log log = PlanetsLogger.getLogger(GetUser.class,"testbed-log4j.xml");
   
 
    /**
@@ -32,7 +31,7 @@ public final class GetUser extends TagHandler {
    */
   public void apply(FaceletContext ctx, UIComponent parent)
           throws IOException, FacesException, ELException {
-     		log.debug("in Tag: GetUser!");		
+     		//log.debug("in Tag: GetUser!");		
      		FacesContext context = FacesContext.getCurrentInstance();
   			//Object session = context.getExternalContext().getSession(false);
   			//if (session != null) {

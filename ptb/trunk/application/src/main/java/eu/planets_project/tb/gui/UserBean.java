@@ -112,7 +112,7 @@ public class UserBean
             this.firstname = u.getFirstName();
             this.lastname = u.getLastName();
             this.email = u.getEmail();
-            log.info("User lookup succeeded: Got details for "+u.getFullName());
+            log.debug("User lookup succeeded: Got details for "+u.getFullName());
         }
     }
 
@@ -125,9 +125,7 @@ public class UserBean
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         boolean result = false;
         result = request.isUserInRole("testbed.admin");
-        // TODO ANJ: Temporary override to ensure that the global administrator gets full access:
-        if( request.isUserInRole("admin") ) result = true;
-        //log.info("user " + request.getRemoteUser() +" is admin? - " + result);
+        //log.debug("user " + request.getRemoteUser() +" is admin? - " + result);
         return result;  
     }
 
@@ -136,7 +134,7 @@ public class UserBean
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         boolean result = false;
         result = request.isUserInRole("testbed.experimenter");
-        //log.info("user " + request.getRemoteUser() + " is experimenter? - " + result);
+        //log.debug("user " + request.getRemoteUser() + " is experimenter? - " + result);
         return result;  
     }
 
@@ -145,7 +143,7 @@ public class UserBean
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         boolean result = false;
         result = request.isUserInRole("testbed.reader");
-        //log.info("user " + request.getRemoteUser() +" is reader? - " + result);
+        //log.debug("user " + request.getRemoteUser() +" is reader? - " + result);
         return result;  
     }  
 

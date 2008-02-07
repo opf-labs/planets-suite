@@ -97,6 +97,8 @@ public class ExperimentBean {
     }
     
     public void fill(Experiment exp) {
+        log.debug("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName());
+
         this.exp = exp; 
     	ExperimentSetup expsetup = exp.getExperimentSetup();
     	BasicProperties props = expsetup.getBasicProperties();
@@ -125,8 +127,9 @@ public class ExperimentBean {
         }        
         List<String> involvedUsers = props.getInvolvedUserIds();
         String partpnts = " ";
-        for(int i=0;i<involvedUsers.size();i++){
-            partpnts +=involvedUsers.get(i)+", ";
+        for(int i=0;i<involvedUsers.size();i++) {
+            partpnts +=involvedUsers.get(i);
+            if( i < involvedUsers.size()-1 ) partpnts += ", ";
         }
         
 
@@ -486,7 +489,7 @@ public class ExperimentBean {
     
     private ExperimentPhaseBean[] getPhaseBeanArray() {
         // TODO ANJ Surely there is a better way of organising this:
-        log.info("Building array of ExperimentPhaseBeans");
+        log.debug("Building array of ExperimentPhaseBeans");
         ExperimentPhaseBean[] phaseBeans = new ExperimentPhaseBean[7]; 
         phaseBeans[ExperimentBean.PHASE_EXPERIMENTSETUP_1] =  
                 new ExperimentPhaseBean(this, ExperimentPhase.PHASENAME_EXPERIMENTSETUP);

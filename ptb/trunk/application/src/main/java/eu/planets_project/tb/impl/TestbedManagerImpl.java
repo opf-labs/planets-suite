@@ -19,6 +19,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.rmi.PortableRemoteObject;
 
+import org.apache.commons.logging.Log;
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.CommentManagerImpl;
@@ -46,6 +49,7 @@ import eu.planets_project.tb.api.system.mockup.WorkflowInvoker;
 public class TestbedManagerImpl 
 	implements eu.planets_project.tb.api.TestbedManager, java.io.Serializable{
 
+    private static Log log = PlanetsLogger.getLogger(TestbedManagerImpl.class);
 	
 	private long lTestbedManagerID;
 	private static TestbedManagerImpl instance;
@@ -192,6 +196,7 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#updateExperiment(eu.planets_project.tb.api.model.Experiment)
 	 */
 	public void updateExperiment(Experiment experimentBean) {
+	    log.debug("Updating experiment.");
 		boolean bContains = this.hmAllExperiments.containsKey(experimentBean.getEntityID());
 		if(bContains){
 		  //Should this be added in a transaction?
@@ -199,11 +204,11 @@ public class TestbedManagerImpl
 			dao_r.updateExperiment(experimentBean);
 			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(experimentBean.getEntityID());
 			this.hmAllExperiments.put(exp.getEntityID(), exp);
-		  //End Transaction
+		    // Also update the Experiment backing bean to reflect the changes:
+		    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		    expBean.fill(experimentBean);
+          //End Transaction
 		}
-		// Also update the Experiment backing bean to reflect the changes:
-	    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-	    expBean.fill(experimentBean);
 	}
 
 	/* (non-Javadoc)

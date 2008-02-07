@@ -54,10 +54,10 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	private Vector<String>vInvolvedUsers;
 	private HashMap<String,Vector<String>> hmLiteratureReference;
 	//private HashMap<Long,Vector<Integer>> hmInvolvedUserSpecialExperimentRoles;
-	
+
+    // This annotation specifies that the property or field is not persistent.
 	@Transient
-	//This annotation specifies that the property or field is not persistent.
-	private Log log;
+	private static Log log;
 	
 	public BasicPropertiesImpl(){
 		
@@ -156,8 +156,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getPurpose()
 	 */
 	public String getPurpose() {
-		//log.debug("getting purpose");
-		PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml").debug("getting purpose");
+		log.debug("getting purpose");
 		return sPurpose;
 	}
 
@@ -235,7 +234,9 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#setExperimentName(java.lang.String)
 	 */
-	public void setExperimentName(String name) throws InvalidInputException{
+	public void setExperimentName(String name) throws InvalidInputException {
+	  log.debug("Setting experiment name to: " + name );
+	
 	  if (!name.equals(this.sExpName)) {
 		//it's only allowed to set a unique experimentName
 		if((this.sExpName!=null)&&(this.sExpName.equals(name))){

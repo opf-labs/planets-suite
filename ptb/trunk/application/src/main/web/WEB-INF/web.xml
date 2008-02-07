@@ -4,144 +4,24 @@
 
 <web-app>
 
-  <listener>
-    <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
-  </listener>
-
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Testbed protected Admin pages</web-resource-name>
-			<url-pattern>/admin/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<description>Allow Testbed Administrator role to access Admin pages</description>
-			<role-name>testbed.admin</role-name>
-			<role-name>admin</role-name>
-		</auth-constraint>
-	</security-constraint>
-
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Testbed protected Experimenter pages</web-resource-name>
-			<url-pattern>/exp/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<description>Allow Experimenter role to access Experimenter pages</description>
-			<role-name>testbed.experimenter</role-name>
-			<role-name>user</role-name>
-			<role-name>admin</role-name>
-		</auth-constraint>
-	</security-constraint>
-	
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Testbed protected Reader pages</web-resource-name>
-			<url-pattern>/reader/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<description>Allow Reader role to access pages</description>
-            <role-name>testbed.reader</role-name>
-            <role-name>testbed.experimenter</role-name>
-            <role-name>testbed.admin</role-name>
-			<role-name>user</role-name>
-			<role-name>admin</role-name>
-		</auth-constraint>
-	</security-constraint>
-
-    <security-role>
-        <description>Testbed Administrator</description>
-        <role-name>testbed.admin</role-name>
-    </security-role> 
-	<security-role>
-		<description>Testbed Experimenter</description>
-		<role-name>testbed.experimenter</role-name>
-	</security-role> 
-	<security-role>
-		<description>Testbed Reader</description>
-		<role-name>testbed.reader</role-name>
-	</security-role>
-    <security-role>
-        <description>Planets Administrator</description>
-        <role-name>admin</role-name>
-    </security-role> 
-    <security-role>
-        <description>Planets User</description>
-        <role-name>user</role-name>
-    </security-role> 
-		  
-	<!-- Uncomment when PSSOS is available
-	       NOTE1: make sure that java keystore is set up correctly (see instructions)
-	                 in "Adding SSO to PLANETS Web Applications"
-	       NOTE2: make sure that casclient-2.1.1.jar is on classpath (should be in
-	                 server/default/lib)     -->
-<!--
-    <filter>
-        <filter-name>CAS Filter</filter-name>
-        <filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>
-        <init-param>
-            <param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
-            <param-value>https://localhost:8443/security/login</param-value>
-        </init-param>
-        <init-param>
-            <param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
-            <param-value>https://localhost:8443/security/serviceValidate</param-value>
-        </init-param>
-        <init-param>
-            <param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>
-            <param-value>localhost:8080</param-value>
-        </init-param>
-        <init-param>
-            <param-name>edu.yale.its.tp.cas.client.filter.wrapRequest</param-name>
-            <param-value>true</param-value>
-        </init-param>        
-    </filter>
- -->
-<!-- 
-    <filter-mapping>
-        <filter-name>CAS Filter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
- -->
-
-<!--  
--->
-	<login-config>
-		<auth-method>FORM</auth-method>
-		<realm-name>PlanetsRealm</realm-name>
-		<form-login-config>
-			<form-login-page>/login.faces</form-login-page>
-			<form-error-page>/error.html</form-error-page>
-		</form-login-config>
-	</login-config>
-		<!--  realm-name>TestbedJaasDbRealm</realm-name -->
-	 
-
-  <context-param>
-    <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
-    <param-value>.xhtml</param-value>
-  </context-param>
-	
-  <context-param>
-    <param-name>facelets.REFRESH_PERIOD</param-name>
-    <param-value>2</param-value>
-  </context-param>
-
-  <context-param>
-    <param-name>facelets.DEVELOPMENT</param-name>
-    <param-value>true</param-value>
-  </context-param>
-  
-  <context-param>
-	  <param-name>facelets.LIBRARIES</param-name>
-    <param-value>
-            /WEB-INF/taglibs/testbed.taglib.xml
-    </param-value>
-  </context-param>
-  
-  <context-param>
-		<param-name>
-			org.apache.myfaces.CHECK_EXTENSIONS_FILTER
-		</param-name>
+	<context-param>
+		<param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+		<param-value>.xhtml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>facelets.REFRESH_PERIOD</param-name>
+		<param-value>2</param-value>
+	</context-param>
+	<context-param>
+		<param-name>facelets.DEVELOPMENT</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>facelets.LIBRARIES</param-name>
+		<param-value>/WEB-INF/taglibs/testbed.taglib.xml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.apache.myfaces.CHECK_EXTENSIONS_FILTER</param-name>
 		<param-value>true</param-value>
 	</context-param>
 	<context-param>
@@ -150,41 +30,36 @@
 		</param-name>
 		<param-value>/faces/extensionResource</param-value>
 	</context-param>
-  
-  
-  <!-- Denying Directory Browsing -->
-	<servlet>
-        <servlet-name>local_default</servlet-name>
-        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
-        <init-param>
-            <param-name>debug</param-name>
-            <param-value>0</param-value>
-        </init-param>
-        <init-param>
-            <param-name>listings</param-name>
-            <param-value>false</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-        <servlet-name>local_default</servlet-name>
-        <url-pattern>/</url-pattern>
-	</servlet-mapping>
 
-  
-  <!-- Faces Servlet -->
-  <servlet>
-    <servlet-name>Faces Servlet</servlet-name>
-    <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Faces Servlet</servlet-name>
-    <url-pattern>*.faces</url-pattern>
-  </servlet-mapping>
- 
+	<!-- Uncomment when PSSOS is available
+		NOTE1: make sure that java keystore is set up correctly (see instructions)
+		in "Adding SSO to PLANETS Web Applications"
+		NOTE2: make sure that casclient-2.1.1.jar is on classpath (should be in
+		server/default/lib)     -->
+	<!--
+		<filter>
+		<filter-name>CAS Filter</filter-name>
+		<filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>
+		<init-param>
+		<param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
+		<param-value>https://localhost:8443/security/login</param-value>
+		</init-param>
+		<init-param>
+		<param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
+		<param-value>https://localhost:8443/security/serviceValidate</param-value>
+		</init-param>
+		<init-param>
+		<param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>
+		<param-value>localhost:8080</param-value>
+		</init-param>
+		<init-param>
+		<param-name>edu.yale.its.tp.cas.client.filter.wrapRequest</param-name>
+		<param-value>true</param-value>
+		</init-param>        
+		</filter>
+	-->
   <!--Extension Filter for File Upload -->
-  <filter>
+	<filter>
 		<filter-name>extensionsFilter</filter-name>
 		<filter-class>
 			org.apache.myfaces.webapp.filter.ExtensionsFilter
@@ -206,6 +81,7 @@
 			</description>
 		</init-param>
 	</filter>
+
 	<filter-mapping>
 		<filter-name>extensionsFilter</filter-name>
 		<url-pattern>*.faces</url-pattern>
@@ -222,29 +98,150 @@
 		<filter-name>extensionsFilter</filter-name>
 		<url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
 	</filter-mapping>
-  
-   
-      <mime-mapping>
-                 <extension>html</extension>
-                 <mime-type>text/html</mime-type>
-         </mime-mapping>
-           <mime-mapping>
-              <extension>xml</extension>
-                <mime-type>text/xml</mime-type>
-        </mime-mapping>
-  
-  <!-- Welcome files -->
-  <welcome-file-list>
-     <welcome-file>index.jsp</welcome-file>
-     <welcome-file>welcome.html</welcome-file>
-  </welcome-file-list>
-  
-  <error-page>
-	<!-- 400 code is from trying to go directly to login page -->
-    <error-code>400</error-code>
-    <location>/index.jsp</location>
-  </error-page>
-  
+
+	<!-- 
+		<filter-mapping>
+		<filter-name>CAS Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+		</filter-mapping>
+	-->
+
+	<listener>
+		<listener-class>
+			org.apache.myfaces.webapp.StartupServletContextListener
+		</listener-class>
+	</listener>
+
+	<!-- Denying Directory Browsing -->
+	<servlet>
+		<servlet-name>local_default</servlet-name>
+		<servlet-class>
+			org.apache.catalina.servlets.DefaultServlet
+		</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>0</param-value>
+		</init-param>
+		<init-param>
+			<param-name>listings</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<!-- Faces Servlet -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+
+
+	<servlet-mapping>
+		<servlet-name>local_default</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.faces</url-pattern>
+	</servlet-mapping>
+
+
+	<mime-mapping>
+		<extension>html</extension>
+		<mime-type>text/html</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xml</extension>
+		<mime-type>text/xml</mime-type>
+	</mime-mapping>
+
+
+
+	<!-- Welcome files -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>welcome.html</welcome-file>
+	</welcome-file-list>
+
+	<error-page>
+		<!-- 400 code is from trying to go directly to login page -->
+		<error-code>400</error-code>
+		<location>/index.jsp</location>
+	</error-page>
+
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>
+				Testbed protected Admin pages
+			</web-resource-name>
+			<url-pattern>/admin/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>
+				Allow Testbed Administrator role to access Admin pages
+			</description>
+			<role-name>testbed.admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>
+				Testbed protected Experimenter pages
+			</web-resource-name>
+			<url-pattern>/exp/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>
+				Allow Experimenter role to access Experimenter pages
+			</description>
+			<role-name>testbed.experimenter</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>
+				Testbed protected Reader pages
+			</web-resource-name>
+			<url-pattern>/reader/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<description>Allow Reader role to access pages</description>
+			<role-name>testbed.reader</role-name>
+			<role-name>testbed.experimenter</role-name>
+			<role-name>testbed.admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+	<!--  
+	-->
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>PlanetsRealm</realm-name>
+		<form-login-config>
+			<form-login-page>/login.faces</form-login-page>
+			<form-error-page>/error.html</form-error-page>
+		</form-login-config>
+	</login-config>
+	<!--  realm-name>TestbedJaasDbRealm</realm-name -->
+
+	<security-role>
+		<description>Testbed Administrator</description>
+		<role-name>testbed.admin</role-name>
+	</security-role>
+	<security-role>
+		<description>Testbed Experimenter</description>
+		<role-name>testbed.experimenter</role-name>
+	</security-role>
+	<security-role>
+		<description>Testbed Reader</description>
+		<role-name>testbed.reader</role-name>
+	</security-role>
+
 </web-app>
-  
-  
+
+

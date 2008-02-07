@@ -187,9 +187,9 @@ public class CommentBacking implements java.io.Serializable {
      * 
      */
     public void addCommentAction() {
-        log.info("Recieved addCommentAction()" );
-        log.info("Recieved addCommentAction parentId = '" + parentId + "'" );
-        log.info("Recieved addCommentAction expPhase = '" + expPhase + "'" );
+        log.debug("Recieved addCommentAction()" );
+        log.debug("Recieved addCommentAction parentId = '" + parentId + "'" );
+        log.debug("Recieved addCommentAction expPhase = '" + expPhase + "'" );
         //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
         
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
@@ -197,7 +197,7 @@ public class CommentBacking implements java.io.Serializable {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         exp = testbedMan.getExperiment(expBean.getID());
         
-        log.info("Recieved comment " + getComment() + " for " + expBean.getEname());
+        log.debug("Recieved comment " + getComment() + " for " + expBean.getEname());
         
         Comment cmt = new CommentImpl(exp.getEntityID(), getExpPhase() );
         if( title == null || "".equals(title) ) {

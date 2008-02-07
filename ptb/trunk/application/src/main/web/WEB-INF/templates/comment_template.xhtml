@@ -19,7 +19,7 @@
         <fieldset>
         <legend>#{res['comment.commentsOn']} '#{ExperimentBean.ename}' </legend>
 
-        <h:panelGroup styleClass="expandAllTop" rendered="#{Comment_Backing.numberOfComments gt 2}">
+        <h:panelGroup styleClass="expandAllTop" rendered="#{Comment_Backing.numberOfComments gt 0}">
           <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
           <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
         </h:panelGroup>
@@ -61,7 +61,7 @@
         </f:facet>
         <f:facet name="commentbox">        
           <h:panelGroup styleClass="commentWrap">
-        <h:panelGroup styleClass="expandAllTop" rendered="#{Comment_Backing.numberOfComments gt 2}">
+        <h:panelGroup styleClass="expandAllTop" rendered="#{Comment_Backing.numberOfComments gt 4}">
           <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
           <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
         </h:panelGroup>
