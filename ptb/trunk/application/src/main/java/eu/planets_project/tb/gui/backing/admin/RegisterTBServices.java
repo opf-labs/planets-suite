@@ -1586,6 +1586,8 @@ public class RegisterTBServices{
 		tbService.setEndpoint(this.getEndpointURI(),true);
 		//serviceName
 		tbService.setName(this.getCurrentServiceName());
+		//description
+		tbService.setDescription(this.getServiceDescription());
 		
 		//check if this is a new service or just a new operation for it
 		TestbedServiceTemplate s = registry.getServiceByWSDLContent(tbService.getWSDLContent());
@@ -1702,7 +1704,6 @@ public class RegisterTBServices{
 	 * @param sDescr: Human readable description about the service
 	 */
 	public void setServiceDescription(String sDescr){
-		if(sDescr != null)
 			this.sServiceDescription = sDescr;
 	}
 	

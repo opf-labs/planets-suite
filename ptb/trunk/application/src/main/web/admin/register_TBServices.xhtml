@@ -26,7 +26,7 @@
      
 <!-- Step1: Enter WSDL URI and select service name + operation -->
      <h:form id="formanalyzeWSDL" rendered="#{RegisterTBServiceBean.renderedStage == 1}">
-		 <p>Registration Wizzard for deploying executable services within the Testbed<br />
+		 <p>Registration Wizard for deploying executable services within the Testbed<br />
 			Please note that currently every service that's being used within the Testbed must follow this registration process.</p>
 		 <fieldset>
 		 	<legend>Analyze Service Endpoint</legend>
@@ -204,12 +204,12 @@
                  <h:message for="input_minNR" errorClass="errorMessage" infoClass="infoMessage"/>
               </p>
               <br/>
-               <p><h:outputText value="service operation type" styleClass="readerLabel"/>
+              </h:panelGroup>
+              <p><h:outputText value="service operation type" styleClass="readerLabel"/>
                  <h:selectOneMenu id="selectServiceOperationType" value="#{RegisterTBServiceBean.serviceOperationTypeValue}">
                         <f:selectItems value="#{RegisterTBServiceBean.serviceOperationTypeItems}" />                       
                   </h:selectOneMenu>
               </p>
-              </h:panelGroup>
           </fieldset>
           <fieldset>
                    <legend>Add service tags for searchability</legend>
@@ -248,17 +248,8 @@
       
       <!--Final: display register service success-->
       <h:form id="formRegisterSuccess" rendered="#{RegisterTBServiceBean.renderedStage > 5}">
-      	 <p>
-      	     <div class="box">
-				<h3 class="box">#{res['exp_stage5.statistics']}</h3>
-				<p class="box">
-					<b>currently registered number of services}</b> 10:01 BST on 19th July 2007<br />
-					<b>migration services:</b> 6498 out of 6500<br />
-					<b>characterisation services:</b> 2<br />
-					<b>number of registered operations?</b> 21:00 on 19th July 2007<br />
-				</p>
-			</div>
-      	  Congratulations you have successfully completed the registration wizzard for this operation.
+		<p>
+      	  Congratulations you have successfully completed the registration wizard for this operation.
       	  You can now use this service operation to execute Testbed experiments.
       	  <img src="${facesContext.externalContext.requestContextPath}/graphics/state_ok.gif" alt="state-ok" title="ok"/>
       	</p>
@@ -296,7 +287,7 @@
 
 
 <div id="leftcol">
-<h3 class="leftcol">Registration Wizzard Progress</h3>
+<h3 class="leftcol">Registration Wizard Progress</h3>
 <div class="innertube">
 <ul class="exp">
 	<h:form>

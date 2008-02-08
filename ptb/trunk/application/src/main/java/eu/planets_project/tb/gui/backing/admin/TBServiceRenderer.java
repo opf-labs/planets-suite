@@ -41,15 +41,50 @@ public class TBServiceRenderer implements ValueChangeListener {
 	private SelectItem serviceSelectItem;
 	private SelectItem operationSelectItem;
 
-	//the selectChoices
-	private Map<String,Boolean> cboxes = new HashMap<String,Boolean>();
+	//the selected rendering choices
+	private Map<String,HtmlSelectBooleanCheckbox> cboxes = new HashMap<String,HtmlSelectBooleanCheckbox>();
+	private HtmlSelectBooleanCheckbox cbx_endpoint = new HtmlSelectBooleanCheckbox();
+	private HtmlSelectBooleanCheckbox cbx_uri = new HtmlSelectBooleanCheckbox();
+	private HtmlSelectBooleanCheckbox cbx_wsdlcontent = new HtmlSelectBooleanCheckbox();
+	private HtmlSelectBooleanCheckbox cbx_description = new HtmlSelectBooleanCheckbox();
+	private HtmlSelectBooleanCheckbox cbx_tags = new HtmlSelectBooleanCheckbox();
+	
+	private HtmlSelectBooleanCheckbox cbx_serOpType = new HtmlSelectBooleanCheckbox();
+	private HtmlSelectBooleanCheckbox cbx_xmlRequtemplate = new HtmlSelectBooleanCheckbox();
+	private HtmlSelectBooleanCheckbox cbx_xPath = new HtmlSelectBooleanCheckbox();
+	private HtmlSelectBooleanCheckbox cbx_RequFilesNr = new HtmlSelectBooleanCheckbox();
+	private HtmlSelectBooleanCheckbox cbx_outputType = new HtmlSelectBooleanCheckbox();
 	private boolean allCboxesSelected = false;
 	
+	
 	public TBServiceRenderer(){
+			
+		//set all service rendered checkboxes
+		cbx_endpoint.setSelected(true);
+		cbx_uri.setSelected(true);
+		cbx_wsdlcontent.setSelected(false);
+		cbx_description.setSelected(false);
+		cbx_tags.setSelected(false);
 		
-		//fill the cboxes list:
-		cboxes.put("endpoint",true);
-		cboxes.put("uri",false);
+		//set all operation rendered checkboxes
+		cbx_serOpType.setSelected(true);
+		cbx_xmlRequtemplate.setSelected(false);
+		cbx_xPath.setSelected(false);
+		cbx_RequFilesNr.setSelected(false);
+		cbx_outputType.setSelected(false);
+		
+		//add rendered checkboxes
+		cboxes.put("endpoint", cbx_endpoint);
+		cboxes.put("uri",cbx_uri);
+		cboxes.put("wsdlcontent", cbx_wsdlcontent);
+		cboxes.put("description",  cbx_description);
+		cboxes.put("tags", cbx_tags);
+		
+		cboxes.put("xmltemplate",cbx_xmlRequtemplate);
+		cboxes.put("xpath",cbx_xPath);
+		cboxes.put("NrOfFiles", cbx_RequFilesNr);
+		cboxes.put("operationType", cbx_serOpType);
+		cboxes.put("outputType", cbx_outputType);
 		
 		//query the service registry and load all available services
 		this.loadServices();
@@ -349,6 +384,18 @@ public class TBServiceRenderer implements ValueChangeListener {
 	}
 	
 	/**
+	 * Returns true if the TestbedServiceOperation has already been selected. Used to decide
+	 * if certain gui elements are rendered or not.
+	 * @return
+	 */
+	public boolean isTBServiceOperationSelected(){
+		if(this.getServiceOperation()!=null){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * Used to hand the selected TBService operation over to the GUI for extracting and displaying its metadata
 	 * @return
 	 */
@@ -369,17 +416,18 @@ public class TBServiceRenderer implements ValueChangeListener {
 	public void setServiceOperation(ServiceOperation op){
 		//just needs to be there
 	}
+
 	
 	/**
 	 * Returns a list of all checkboxes in the stage of browsing service+operation
 	 * metadata. The Boolean attributes are directly modified by the GUI
 	 * @return
 	 */
-	public Map<String,Boolean> getAllCheckboxes(){
-		//return this.cboxes;
+	public Map<String,HtmlSelectBooleanCheckbox> getAllCheckboxes(){
 		return this.cboxes;
 	}
 	
+
 	public boolean getAllCboxesSelected(){
 		return this.allCboxesSelected;
 	}
@@ -389,16 +437,42 @@ public class TBServiceRenderer implements ValueChangeListener {
 	}
 	
 	/**
-	 * Select or deselect all checkboxes
+	 * Select all or select none of the checkboxes
+	 * @return
 	 */
 	public void processSelAllBoxesChange(ValueChangeEvent vce){
 		
-		this.allCboxesSelected = (Boolean)vce.getNewValue();
+		this.setAllCBoxesSelected((Boolean)vce.getNewValue());
 
 		Iterator<String> itValues = this.cboxes.keySet().iterator();
 		while(itValues.hasNext()){
-			this.cboxes.put(itValues.next(), this.allCboxesSelected);
+			String key = itValues.next();
+			HtmlSelectBooleanCheckbox cbx = this.cboxes.get(key);
+			cbx.setSelected(this.allCboxesSelected);
 		}
+	}
+	
+	/**
+	 * Returns a list to get a printable form of all tags and values for rendering
+	 * @return
+	 */
+	public List<String> getTagsForSelectedService(){
+		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		if(this.getTBService()!=null){
+			//get all tags that have been registered for this service
+			Map<String,String> tagsVals = registry.getTags(this.getTBService().getUUID());
+			Iterator<String> it = tagsVals.keySet().iterator();
+			List<String> ret = new Vector<String>();
+			while(it.hasNext()){
+				String sKey = it.next();
+				ret.add(sKey+"="+tagsVals.get(sKey));
+			}
+			return ret;
+		}
+		else{
+			return new Vector<String>();
+		}
+		
 	}
 
 }

@@ -35,7 +35,7 @@
      		</h:selectOneMenu>
      		<h:message for="selectService"/>
      	</h:form>
-     
+     	<br/>
      	<h:form id="FormOperationSelection">
         	<h:outputText value="Select Operation Name:" styleClass="readerLabel"/>
         	<h:selectOneMenu id="selectOperation" value="#{TBServiceRenderer.operationSelectItemValue}" immediate="true"
@@ -44,31 +44,102 @@
         	</h:selectOneMenu>
         	<h:message for="selectOperation"/>  
      	</h:form>
-     	
-     	<h:form id="FormSelectAttributes">
-			<h:selectBooleanCheckbox value="#{TBServiceRenderer.allCheckboxes['endpoint']}" immediate="true" onclick="submit()"/>
+     	<br/>
+     	<h:form id="FormSelectAttributes">	
+     		<h:outputText value="render metadata: " styleClass="readerLabel"/>
+     		<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['endpoint']}" onclick="submit()"/>
 			<h:outputText value="endpoint"/>
-			<h:selectBooleanCheckbox value="#{TBServiceRenderer.allCheckboxes['uri']}" immediate="true" onclick="submit()"/>	
-			<h:outputText value="service URI"/>
-			<br/>			            				
-			<h:selectBooleanCheckbox value="#{TBServiceRenderer.allCboxesSelected}" immediate="true" 
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['uri']}" onclick="submit()"/>	
+			<h:outputText value="serviceID"/>
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['description']}" onclick="submit()"/>	
+			<h:outputText value="description"/>
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['wsdlcontent']}" onclick="submit()"/>	
+			<h:outputText value="wsdl content"/>
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['tags']}" onclick="submit()"/>	
+			<h:outputText value="tags and values"/>		
+			<br/>
+			<h:outputText value=" " styleClass="readerLabel"/>
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['operationType']}" onclick="submit()"/>	
+			<h:outputText value="operation type"/>
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['xmltemplate']}" onclick="submit()"/>	
+			<h:outputText value="request template"/>
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['xpath']}" onclick="submit()"/>	
+			<h:outputText value="xpath to output"/>
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['NrOfFiles']}" onclick="submit()"/>	
+			<h:outputText value="restrictions"/>
+			<h:selectBooleanCheckbox binding="#{TBServiceRenderer.allCheckboxes['outputType']}" onclick="submit()"/>	
+			<h:outputText value="output type"/>
+			<br/>         				
+			<h:outputText value="" styleClass="readerLabel"/>
+			<h:selectBooleanCheckbox value="#{TBServiceRenderer.allCboxesSelected}"
 			valueChangeListener="#{TBServiceRenderer.processSelAllBoxesChange}" onclick="submit()"/>				            						            	
      		<h:outputText value="select all"/>
      	</h:form>
      </fieldset>
      
      <fieldset>
-     	<legend>browse operation specific data</legend>	
-     	<h:form id="FormDisplayMetadata" rendered="#{TBServiceRenderer.TBServiceSelected}">
-        	<p><h:outputText value="Endpoint: #{TBServiceRenderer.TBService.endpoint}" styleClass="readerLabel"/>
-			   <h:outputText value="#{TBServiceRenderer.TBService.endpoint}"/></p>
-			<p><h:outputText value="ServiceID:" styleClass="readerLabel"/>
-			   <h:outputText value="#{TBServiceRenderer.TBService.UUID}"/></p>
-			<p><h:outputText value="XMLRequestTemplate:" styleClass="readerLabel"/>
-     		   <h:inputTextarea value="#{TBServiceRenderer.serviceOperation.XMLRequestTemplate}" cols="70" rows="20" readonly="true"/> </p>
-     </h:form>
+     	<legend>browse service specific data</legend>	
+     	<h:form id="FormDisplayMetadataService" rendered="#{TBServiceRenderer.TBServiceSelected}">
+        	<p><h:outputText value="Endpoint: " styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['endpoint'].selected}"/>
+			   <h:outputText value="#{TBServiceRenderer.TBService.endpoint}" rendered="#{TBServiceRenderer.allCheckboxes['endpoint'].selected}"/></p>
+			
+			<p><h:outputText value="ServiceID:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['uri'].selected}"/>
+			   <h:outputText value="#{TBServiceRenderer.TBService.UUID}" rendered="#{TBServiceRenderer.allCheckboxes['uri'].selected}"/></p>
+			
+			   <p><h:outputText value="Description:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['description'].selected}"/>
+     		   <h:inputTextarea value="#{TBServiceRenderer.TBService.description}" 
+     		   cols="80" rows="2" readonly="true" 
+     		   rendered="#{TBServiceRenderer.allCheckboxes['description'].selected}"/></p>
+			
+			<p><h:outputText value="WSDL content:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['wsdlcontent'].selected}"/>
+     		   <h:inputTextarea value="#{TBServiceRenderer.TBService.WSDLContent}" 
+     		   cols="80" rows="20" readonly="true" 
+     		   rendered="#{TBServiceRenderer.allCheckboxes['wsdlcontent'].selected}"/></p>
+     	</h:form>
      </fieldset>
-	  
+     
+     <fieldset>
+     	<legend>browse operation specific data</legend>	
+     	<h:form id="FormDisplayMetadataOps" rendered="#{TBServiceRenderer.TBServiceOperationSelected}">
+	 		
+	 		<p><h:outputText value="operation type:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['operationType'].selected}"/>
+			   <h:outputText value="#{TBServiceRenderer.serviceOperation.serviceOperationType}" rendered="#{TBServiceRenderer.allCheckboxes['operationType'].selected}"/>
+	 		</p>
+	 		<p><h:outputText value="XML Request Template:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['xmltemplate'].selected}"/>
+     		   <h:inputTextarea value="#{TBServiceRenderer.serviceOperation.XMLRequestTemplate}" 
+     		   cols="80" rows="10" readonly="true" 
+     		   rendered="#{TBServiceRenderer.allCheckboxes['xmltemplate'].selected}"/> 
+     		</p>
+     		
+     		<p><h:outputText value="XPath to Output:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['xpath'].selected}"/>
+			   <h:outputText value="#{TBServiceRenderer.serviceOperation.XPathToOutput}" rendered="#{TBServiceRenderer.allCheckboxes['xpath'].selected}"/>
+	 		</p>
+     		
+     		<p><h:outputText value="min. required files:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['NrOfFiles'].selected}"/>
+			   <h:outputText value="#{TBServiceRenderer.serviceOperation.minRequiredInputFiles}" rendered="#{TBServiceRenderer.allCheckboxes['NrOfFiles'].selected}"/></p>
+			<br/>
+			<p><h:outputText value="max. supported files:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['NrOfFiles'].selected}"/>
+			   <h:outputText value="#{TBServiceRenderer.serviceOperation.maxSupportedInputFiles}" rendered="#{TBServiceRenderer.allCheckboxes['NrOfFiles'].selected}"/>
+			</p>
+			<br/>
+			<p><h:outputText value="operation output:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['outputType'].selected}"/>
+			   <h:outputText value="#{TBServiceRenderer.serviceOperation.outputObjectType}" rendered="#{TBServiceRenderer.allCheckboxes['outputType'].selected}"/>
+			</p>
+	 	</h:form>
+	 </fieldset>
+	 
+	 <fieldset>
+     	<legend>browse registry specific data</legend>
+     	<h:form id="FormDisplayMetadataRegistry" rendered="#{TBServiceRenderer.TBServiceSelected}">
+    		  <p><h:outputText value="Added tags:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['tags'].selected}"/>
+    		  <h:panelGrid rendered="#{TBServiceRenderer.allCheckboxes['tags'].selected}" border="0" columns="1"> 
+               		 <c:forEach var="mapitem" items="#{TBServiceRenderer.tagsForSelectedService}">
+                        <h:outputText value="#{mapitem}"/>
+               		 </c:forEach>
+           		 </h:panelGrid>  
+           	 </p>
+    	</h:form>
+     </fieldset>
 </div>
 </div>
 </div>
