@@ -91,6 +91,9 @@ public interface TestbedServiceTemplate {
 		public String getName();
 		public void setName(String sName);
 		
+		public String getDescription();
+		public void setDescription(String sDescr);
+		
 		public String getXMLRequestTemplate();
 		public void setXMLRequestTemplate(String template);
 		

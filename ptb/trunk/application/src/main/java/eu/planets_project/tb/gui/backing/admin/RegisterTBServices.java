@@ -144,8 +144,9 @@ public class RegisterTBServices{
 	//contains information about which stage of the wizzard is rendered
 	private int iStageRendered = 0;
 	
-//Service Registry Metadata
+//Descriptive Metadata
 	private String sServiceDescription ="";
+	private String sOperationDescription="";
 	private Map<String,String> mapTagNamesValues = new HashMap<String,String>();
 	private String newTagName = "";
 	private String newTagValue = "";
@@ -1596,6 +1597,8 @@ public class RegisterTBServices{
 		}
 		//operationName
 		operation.setName(this.getCurrentOperationName());
+		//description
+		operation.setDescription(this.getOperationDescription());
 		//xmlRequestTemplate
 		operation.setXMLRequestTemplate(this.getXMLRequestTemplate(this.getCurrentOperationName()));
 		//xpathQueryToOutput
@@ -1709,6 +1712,14 @@ public class RegisterTBServices{
 	
 	public String getServiceDescription(){
 		return this.sServiceDescription;
+	}
+	
+	public void setOperationDescription(String sDescr){
+		this.sOperationDescription = sDescr;
+	}
+	
+	public String getOperationDescription(){
+		return this.sOperationDescription;
 	}
 	
 	/**

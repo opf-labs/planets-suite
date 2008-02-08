@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.ServiceRegistry;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 
 /**
@@ -159,9 +160,51 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#registerService(eu.planets.test.backend.api.model.mockup.TestbedService)
 	 */
 	public void registerService(TestbedServiceTemplate service) throws Exception{
-		if((service!=null)&&(service.getUUID()!="")){
+		if((service!=null)&&(isExecutionInformationComplete(service))){
 			this.hm_AllServices.put(service.getUUID(), service);
 		}
+	}
+	
+	/**
+	 * Required data for a servicetemplate to be registered are:
+	 * service: name, uuid, endpoint
+	 * for all operation: name, xmlrequest template, xpath
+	 * @param template
+	 * @return
+	 */
+	private boolean isExecutionInformationComplete(TestbedServiceTemplate template){
+		boolean bret = true;
+		try{
+			if((template!=null)&&(template.getAllServiceOperations()!=null)){
+				//service specific:
+				if((template.getName()==null)||(template.getName().equals("")))
+					bret = false;
+				if((template.getUUID()==null)||(template.getUUID().equals("")))
+					bret = false;
+				if((template.getEndpoint()==null)||(template.getEndpoint().equals("")))
+					bret = false;
+				
+				//for all operations:
+				Iterator<ServiceOperation> ops = template.getAllServiceOperations().iterator();
+				while(ops.hasNext()){
+					ServiceOperation operation = ops.next();
+					if((operation.getName()==null)||(operation.getName().equals("")))
+						bret = false;
+					if((operation.getXMLRequestTemplate()==null)||(operation.getXMLRequestTemplate().equals("")))
+						bret = false;
+					if((operation.getXPathToOutput()==null)||(operation.getXPathToOutput().equals("")))
+						bret = false;
+				}
+				
+			}
+			else{
+				bret = false;
+			}
+		}catch(Exception e){
+			bret = false;
+		}
+		
+		return bret;
 	}
 
 
@@ -272,6 +315,34 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 				Map<String, String> mapRet = new HashMap<String, String>();
 				this.mapTags.put(serviceUUID, mapRet);
 			}
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.ServiceRegistry#removeService(eu.planets_project.tb.api.services.TestbedServiceTemplate)
+	 */
+	public void removeService(TestbedServiceTemplate service) {
+		if((service!=null)&&(service.getUUID()!=null)){
+			this.removeService(service.getUUID());
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.ServiceRegistry#removeService(java.lang.String)
+	 */
+	public void removeService(String UUID) {
+		// TODO Auto-generated method stub
+		if(UUID!=null){
+			//remove it's registered tags and values
+			this.removeTags(UUID);
+			
+			//remove the service from the registry
+			boolean b = this.hm_AllServices.containsKey(UUID);
+			if (b){
+				this.hm_AllServices.remove(UUID);
+			}	
 		}
 	}
 	

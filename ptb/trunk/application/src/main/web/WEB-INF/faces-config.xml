@@ -118,6 +118,12 @@
    <redirect/>
   </navigation-case>
   <navigation-case>
+  <!-- remove_TBServices -->
+   <from-action>#{Manager_Backing.initTBServiceManager}</from-action>
+   <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
    <from-outcome>help</from-outcome>
    <to-view-id>/reader/help.xhtml</to-view-id>
    <redirect/>
@@ -319,8 +325,8 @@
   </navigation-case>
  </navigation-rule>
 
- <!--NAVIGATION for ADMIN role: -->
- <!-- Register TB Service Wizzard -->
+
+ <!-- Navigation for Register TB Service Wizzard (Admin role)-->
  <navigation-rule>
   <from-view-id>/admin/register_TBServices.xhtml</from-view-id>
   <navigation-case>
@@ -345,11 +351,11 @@
     <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
-    <from-outcome>remove-services</from-outcome>
-    <to-view-id>/admin/remove_TBServices.xhtml</to-view-id>
+     <!-- col left navigation options -->
+    <from-action>#{Manager_Backing.initTBServiceManager}</from-action>
+    <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
-   <!-- col left navigation options -->
    <from-action>#{Manager_Backing.initRegisterTBService}</from-action>
    <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
    <redirect/>
@@ -366,6 +372,16 @@
    <navigation-case>
      <from-outcome>reload-page</from-outcome>
      <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
+     <redirect/>
+   </navigation-case>
+  </navigation-rule>
+  
+ <!-- page: remove_registeredTBServices.xhtml -->
+ <navigation-rule>
+   <from-view-id>/admin/remove_registeredTBServices.xhtml</from-view-id>
+   <navigation-case>
+     <from-outcome>reload-page</from-outcome>
+     <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
      <redirect/>
    </navigation-case>
   </navigation-rule>

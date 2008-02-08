@@ -13,7 +13,7 @@ import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
-import eu.planets_project.tb.gui.backing.admin.TBServiceRenderer;
+import eu.planets_project.tb.gui.backing.admin.ManagerTBServices;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -615,13 +615,13 @@ public class Manager {
     
     /**
      * @author alindley
-     * (re)Init and render the content of the TBServiceRegistry for displaying
+     * (re)Init and render the content of the TBServiceRegistry for displaying 
      * all registered services and their metadata on the screen
      * overview_registeredTBServices.xhtml
      * @return
      */
     public String initTBServiceDisplayer(){
-    	TBServiceRenderer renderer = new TBServiceRenderer();
+    	ManagerTBServices renderer = new ManagerTBServices();
 		// Put Bean into Session; accessible later as #{TBServiceRenderer}
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		ctx.getExternalContext().getSessionMap().put("TBServiceRenderer", renderer);
@@ -637,5 +637,20 @@ public class Manager {
 		return (WSClientBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("WSClientBean"); 
 	}
 	
+	
+    /**
+     * @author alindley
+     * (re)Init and manage the content of the TBServiceRegistry for removing
+     * services and rendering their metadata on the screen
+     * remove_registeredTBServices.xhtml
+     * @return
+     */
+    public String initTBServiceManager(){
+    	ManagerTBServices manager = new ManagerTBServices();
+		// Put Bean into Session; accessible later as #{TBServiceRenderer}
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		ctx.getExternalContext().getSessionMap().put("TBServiceManager", manager);
+	    return "manage_TBservices";
+    }
 
 }

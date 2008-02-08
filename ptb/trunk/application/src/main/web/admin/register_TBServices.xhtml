@@ -185,9 +185,13 @@
                  <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
              </p>
            <fieldset>
-                   <legend>Add service specific metadata</legend>
+                   <legend>Add descriptive metadata</legend>
               <p><h:outputText value="Service description " styleClass="readerLabel"/>
-              	 <h:inputTextarea id="input_serviceDescription" value="#{RegisterTBServiceBean.serviceDescription}" cols="50" rows="3"/>
+              	 <h:inputTextarea id="input_serviceDescription" value="#{RegisterTBServiceBean.serviceDescription}" cols="50" rows="2"/>
+              </p>
+              
+              <p><h:outputText value="Operation description " styleClass="readerLabel"/>
+              	 <h:inputTextarea id="input_operationDescription" value="#{RegisterTBServiceBean.operationDescription}" cols="50" rows="2"/>
               </p>
 
               <h:panelGroup id="panelMetadata" rendered="#{RegisterTBServiceBean.selectedTagIDArray}">
@@ -261,13 +265,13 @@
         <b>navigation options:</b>
         	<ul>
         		<li>
-					<h:commandLink value="register new service" action="#{Manager_Backing.initRegisterTBService}"/>
+					<h:commandLink value="register new service operation" action="#{Manager_Backing.initRegisterTBService}"/>
         		</li>
         		<li>
 					<h:commandLink value="browse registered services" action="#{Manager_Backing.initTBServiceDisplayer}"/>
         		</li>
         		<li>
-					<h:commandLink value="remove registered services" action="remove-services"/>
+					<h:commandLink value="remove registered services" action="#{Manager_Backing.initTBServiceManager}"/>
 				</li>
         	</ul>
         	
@@ -396,7 +400,7 @@
 	<h:form>
 		<h:panelGroup>
 			<li class="exp_sel">
-				<h:commandLink value="register new service" action="#{Manager_Backing.initRegisterTBService}">
+				<h:commandLink value="register new service operation" action="#{Manager_Backing.initRegisterTBService}">
 				</h:commandLink>
 			</li>
 		</h:panelGroup>
@@ -408,7 +412,7 @@
 		</h:panelGroup>
 		<h:panelGroup>
 			<li class="exp_sel">
-				<h:commandLink value="remove registered services" action="remove-services">
+				<h:commandLink value="remove registered services" action="#{Manager_Backing.initTBServiceManager}">
 				</h:commandLink>
 			</li>
 		</h:panelGroup>

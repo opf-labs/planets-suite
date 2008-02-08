@@ -18,7 +18,16 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 public interface ServiceRegistry {
 	
 
+	/**
+	 * A list of all in the registry contained service names.
+	 * @return
+	 */
 	public List<String> getAllServiceNames();
+	
+	/**
+	 * A list of all in the registry contained service Endpoints.
+	 * @return
+	 */
 	public List<String> getAllEndpoints();
 	
 	public Collection<TestbedServiceTemplate> getAllServices();
@@ -44,12 +53,24 @@ public interface ServiceRegistry {
 	
 	/**
 	 * Service must have at least have:
-	 *  - service.isExecutionInformationComplete() true
+	 *  - TBservice.isExecutionInformationComplete() true
 	 *  - WSDL contract stored (as this is used to generate an MD5 unique ID out of the services WSDL contract)
 	 * @param service
 	 * @throws Exception
 	 */
 	public void registerService(TestbedServiceTemplate service) throws Exception;
+	
+	/**
+	 * Removes an existing TestbedService (and its operations) from the registry
+	 * @param service
+	 */
+	public void removeService(TestbedServiceTemplate service);
+	
+	/**
+	 * Removes an existing TestbedService (and its operations) from the registry by its ID
+	 * @param UUID
+	 */
+	public void removeService(String UUID);
 	
 	/**
 	 * This method takes an arbitrary WSDL service contract, generates an MD5 has out of its content

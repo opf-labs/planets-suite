@@ -136,11 +136,17 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 		if(sOperationName!=null){
 			if(this.getAllServiceOperationNames().contains(sOperationName)){
 				Iterator<ServiceOperation> it = this.getAllServiceOperations().iterator();
+				boolean bFound = false;
+				ServiceOperation opRet = null;
 				while(it.hasNext()){
 					ServiceOperation op = it.next();
 					if(op.getName().equals(sOperationName)){
-						this.lAllRegisteredServiceOperations.remove(op);
+						opRet = op;
+						bFound=true;
 					}
+				}
+				if(bFound){
+					this.lAllRegisteredServiceOperations.remove(opRet);
 				}
 			}
 		}
@@ -360,9 +366,11 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 	}
 	
 	
+	
 	public class ServiceOperationImpl implements TestbedServiceTemplate.ServiceOperation{
 		
 		private String sName ="";
+		private String sDescription ="";
 		//Template containing a valid XML Request for this operation - with placeholders
 		private String sXMLRequestTemplate="";
 		private String sXPathToOutput="";
@@ -500,6 +508,23 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 			if(type!=null){
 				this.sOutputOjbectType = type;
 			}
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation#getDescription()
+		 */
+		public String getDescription() {
+			return this.sDescription;
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation#setDescription(java.lang.String)
+		 */
+		public void setDescription(String sDescr) {
+			if(sDescr!=null){
+				this.sDescription = sDescr;
+			}
+			
 		}
 
 	}

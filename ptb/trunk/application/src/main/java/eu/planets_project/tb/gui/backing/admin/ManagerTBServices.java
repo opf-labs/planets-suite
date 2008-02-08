@@ -28,13 +28,15 @@ import eu.planets_project.tb.impl.services.ServiceRegistryImpl;
 
 /**
  * This bean implements the following logic:
+ *   (backing bean is used for render and update mode)
  *    - renderer for all registered TestbedServices and their metadata
  *    - queries Testbed's service registry
+ *    - deletes existing entries from the TBServiceRegistry
  *
  * @author Andrew Lindley, ARC
  */
 
-public class TBServiceRenderer implements ValueChangeListener {
+public class ManagerTBServices implements ValueChangeListener {
 	
 	private List<SelectItem> lServiceSelectItems = new Vector<SelectItem>();
 	private List<SelectItem> lOperationSelectItems = new Vector<SelectItem>();
@@ -57,7 +59,7 @@ public class TBServiceRenderer implements ValueChangeListener {
 	private boolean allCboxesSelected = false;
 	
 	
-	public TBServiceRenderer(){
+	public ManagerTBServices(){
 			
 		//set all service rendered checkboxes
 		cbx_endpoint.setSelected(true);
@@ -473,6 +475,56 @@ public class TBServiceRenderer implements ValueChangeListener {
 			return new Vector<String>();
 		}
 		
+	}
+	
+	/**
+	 * commands for the "delete" mode of this bean. Takes the selected service
+	 * and removes it (as well as all of its operations) from the TBServiceRegistry
+	 * @return
+	 */
+	public String command_deleteSelectedService(){
+		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		if(this.getTBService()!=null){
+			//delete the service
+			registry.removeService(this.getTBService());
+			
+			//reload this bean's entries
+			this.loadServices();
+			if(this.serviceSelectItem!=null)
+				this.loadOperations(this.serviceSelectItem.getValue().toString());
+		}
+		
+		return "reload-page";
+	}
+	
+	/**
+	 * commands for the "delete" mode of this bean. Takes the selected operation
+	 * and removes it from the selected TestbedService
+	 * @return
+	 */
+	public String command_deleteSelectedOperation(){
+		if((this.getTBService()!=null)&&(this.getServiceOperation()!=null)){
+			
+			//check if this is the last operations that's left, if yes also delete the Service.
+			boolean bLast = (this.getTBService().getAllServiceOperationNames().size()>1)?false:true;
+			
+			if(bLast){
+				//delete service as well
+				this.command_deleteSelectedService();
+			}
+			else{
+				//delte operation
+				this.getTBService().removeServiceOperation(
+					this.getServiceOperation().getName()
+				);
+			}
+			
+			//reload this bean's entries
+			if(this.serviceSelectItem!=null)
+				this.loadOperations(this.serviceSelectItem.getValue().toString());
+		}
+		
+		return "reload-page";
 	}
 
 }
