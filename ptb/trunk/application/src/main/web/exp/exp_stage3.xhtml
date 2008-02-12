@@ -19,7 +19,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-#{Manager_Backing.retrieveBenchmarkBeans}
+#{NewExp_Controller.retrieveBenchmarkBeans}
 		<div id="mainwrapper">
 			<div id="maincol">
 				<div class="innertubemain">
@@ -52,11 +52,11 @@
 						</fieldset>
 							<p>
 					            <h:commandButton value="#{res['button.save']}"  
-					            action="#{Manager_Backing.updateBenchmarksAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>		
+					            action="#{NewExp_Controller.updateBenchmarksAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>		
 							</p>
 							<p>
 					            <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
-					            action="#{Manager_Backing.updateBenchmarksAndSubmitAction}"/>										
+					            action="#{NewExp_Controller.updateBenchmarksAndSubmitAction}"/>										
 							</p>
 							<p><b>#{res['exp_stage3.warning']}</b></p>		
 					</h:form>

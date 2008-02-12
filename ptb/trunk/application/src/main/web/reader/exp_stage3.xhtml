@@ -19,7 +19,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-#{Manager_Backing.retrieveBenchmarkBeans}
+#{NewExp_Controller.retrieveBenchmarkBeans}
 		<div id="mainwrapper">
 			<div id="maincol">
 				<div class="innertubemain">
@@ -56,7 +56,7 @@
 						</fieldset>
                                 		<p>
             <h:commandButton value="#{res['reader_exp.buttonStage3']}" 
-            action="#{Manager_Backing.loadReaderStage4}" disabled="#{ExperimentBean.currentStage lt 4}" />		
+            action="#{NewExp_Controller.loadReaderStage4}" disabled="#{ExperimentBean.currentStage lt 4}" />		
 		</p>		
 					</h:form>
                                         		<p>&#160;</p>

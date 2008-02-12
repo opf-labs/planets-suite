@@ -205,7 +205,7 @@ ni.appendChild(newdiv);
         <h:selectOneMenu id="etype"
         value="#{ExperimentBean.etype}"
  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-                <f:selectItems value="#{Manager_Backing.availableExperimentTypes}" />
+                <f:selectItems value="#{NewExp_Controller.availableExperimentTypes}" />
         </h:selectOneMenu>
         <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipExperimentType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
 </p>
@@ -235,7 +235,7 @@ ni.appendChild(newdiv);
 </fieldset>
 		<p>
             <h:commandButton value="#{res['new_exp.saveStage1']}" 
-            action="#{Manager_Backing.updateBasicPropsAction}"/>		
+            action="#{NewExp_Controller.updateBasicPropsAction}"/>		
 		</p>
 </h:form>
 

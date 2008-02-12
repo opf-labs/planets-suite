@@ -23,8 +23,8 @@
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
  <managed-bean>
-  <managed-bean-name>ModifyExp_Backing</managed-bean-name>
-  <managed-bean-class>eu.planets_project.tb.gui.backing.ModifyExp</managed-bean-class>
+  <managed-bean-name>NewExp_Controller</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.exp.NewExpWizardController</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
  <managed-bean>
@@ -193,7 +193,7 @@
  <navigation-rule>
   <from-view-id>/exp/exp_stage1.xhtml</from-view-id>
   <navigation-case>
-   <from-action>#{Manager_Backing.updateBasicPropsAction}</from-action>
+   <from-action>#{NewExp_Controller.updateBasicPropsAction}</from-action>
    <from-outcome>success</from-outcome>
    <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
    <redirect/>

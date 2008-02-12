@@ -40,16 +40,17 @@
                         </fieldset>
 			<h:form id="selectWorkflowForm" rendered="#{not empty ExperimentBean.etype}">
 				<fieldset>
+					<!-- step1: specify workflow -->
 					<legend>#{res['exp_stage2.legendTwo']}</legend>
 					<h:selectOneMenu
 					onchange="this.form.submit()"
 					value="#{ExperimentBean.workflowTypeId}"
-					valueChangeListener="#{Manager_Backing.changedExpWorkflowEvent}"
+					valueChangeListener="#{NewExp_Controller.changedExpWorkflowEvent}"
 					immediate="true"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-						<f:selectItems value="#{Manager_Backing.availableWorkflows}" />
+						<f:selectItems value="#{NewExp_Controller.availableWorkflows}" />
 					</h:selectOneMenu>
 					<h:commandButton value="#{res['button.go']}"
-					action="#{Manager_Backing.changedExpWorkflow}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+					action="#{NewExp_Controller.changedExpWorkflow}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
 				</fieldset>
 			</h:form>
 			<h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{not empty Workflow}">
@@ -93,11 +94,11 @@
                                             <h:outputText value="#{res['exp_stage2.inputData']} "/>
                                             <h:outputText value="#{ExperimentBean.eworkflowInputData}" style="font-style: italic;font-weight: bold;"/>
                                             <h:commandButton value="#{res['button.change']}"
-                   action="#{Manager_Backing.changeExpWorkflowDataAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+                   action="#{NewExp_Controller.changeExpWorkflowDataAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
                                         </h:panelGroup>                               
                                         <br/>
                                         <h:commandButton value="#{res['button.save']}"
-                      action="#{Manager_Backing.saveExpWorkflowAction}" />
+                      action="#{NewExp_Controller.saveExpWorkflowAction}" />
                                     </p>
 				</fieldset>
 			</h:form>

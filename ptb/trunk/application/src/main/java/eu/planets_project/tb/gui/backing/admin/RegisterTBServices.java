@@ -64,12 +64,13 @@ import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 
 /**
  * 
- * This bean implements the following logic:
+ * This class implements the following logic:
  * 
  *  - the service's operation deployer for the application
  *  - templates and xpath statements for service requests
  *  - writes TBServices to the backend and registers them within the service registry
  *  
+ *  gui backing bean + gui controller
  * @author Andrew Lindley, ARC
  *
  */
