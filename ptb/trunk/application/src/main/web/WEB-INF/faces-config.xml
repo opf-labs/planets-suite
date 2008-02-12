@@ -280,6 +280,17 @@
   </navigation-case>
  </navigation-rule>
  
+ <!-- TEMP AND DELETE -->
+<navigation-rule>
+  <from-view-id>/exp/exp_stage2.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>reload-step2</from-outcome>
+   <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+ </navigation-rule>
+  <!-- TEMP AND DELETE -->
+ 
  <navigation-rule>
   <from-view-id>/reader/exp_stage2.xhtml</from-view-id>
   <navigation-case>

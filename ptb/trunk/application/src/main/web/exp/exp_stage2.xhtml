@@ -6,6 +6,7 @@
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:c="http://java.sun.com/jstl/core">
 <body>
+<f:view>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
         #{res.title} - <h:outputText value="#{ExperimentBean.ename}"/> : #{res['exp_stage2.pageTitle']}
@@ -27,7 +28,10 @@
 			    fld.focus();
 			    return false;
 			}
-		</script>			
+		</script>	
+		<!-- css popup javascript -->
+		<script type="text/javascript"
+			src="${facesContext.externalContext.requestContextPath}/js/csspopup/csspopup.js"></script>		
 	</ui:define>
 
 	<ui:define name="content">
@@ -39,6 +43,7 @@
                             <p>#{ExperimentBean.etypeName}</p>
                         </fieldset>
 			<h:form id="selectWorkflowForm" rendered="#{not empty ExperimentBean.etype}">
+				<p><a href="#" onclick="popup('popUpDiv')">Click Here To Open The Pop Up</a></p>
 				<fieldset>
 					<!-- step1: specify workflow -->
 					<legend>#{res['exp_stage2.legendTwo']}</legend>
@@ -181,12 +186,40 @@
 			</ul>
 		</div>
 		</div>
+		
+		<!-- the div for the popup screen -->
+		<div id="blanket" style="display:none;"></div>
+		<div id="popUpDiv" style="display:none;">
+
+		<div id="overlay-menu"><p><a href="#" onclick="popup('popUpDiv')"><img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="close" title="close"/></a> </p></div>
+			<div id="overlay-main">
+			<h2>Pop-up title</h2>
+			<p>Pop-up main page here.</p>
+			<p>Pop-up main page here.</p>
+			<p>Pop-up main page here.</p>
+			<h:form>
+				<h:panelGroup>
+					<h:commandLink value="test link outside screen" action="goToStage1">
+					</h:commandLink>
+				</h:panelGroup>
+				
+                <p><h:commandButton value="reload page" action="reload-step2"/></p>
+			</h:form>
+			<p>Pop-up main page here.</p>
+			<p>Pop-up main page here.</p>
+			<p>Pop-up main page here.</p>
+			<p>Pop-up main page here.</p>
+			<p>Pop-up main page here.</p>
+
+			<p>Pop-up main page here.</p>
+			</div>
+		</div>
 
 	</ui:define>
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/templates/footer.xhtml" />
 	</ui:define>
 </ui:composition>
-
+</f:view>
 </body>
 </html>
