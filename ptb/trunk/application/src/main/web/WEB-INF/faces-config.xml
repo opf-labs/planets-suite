@@ -351,6 +351,10 @@
     <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
+    <from-outcome>general-error-page</from-outcome>
+    <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
      <!-- col left navigation options -->
     <from-action>#{Manager_Backing.initTBServiceManager}</from-action>
     <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>

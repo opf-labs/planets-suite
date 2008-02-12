@@ -69,12 +69,9 @@ public class CommentManagerImpl implements CommentManager {
 	}
 
 	/* (non-Javadoc)
-	 * Please note: one ExperimentID as well as one ExperimentPhase may have multiple root comments
-	 * getNewComment automatically register it in hmCommentsMapping AND in 	hmExperimentComments.
 	 * @see eu.planets_project.tb.api.CommentManager#getNewComment()
 	 */
 	public Comment getNewRootComment(long lExperimentID, String sExperimentPhaseID) {
-		System.out.println("get new Root Comment1");
 		CommentImpl c1 = new CommentImpl(lExperimentID, sExperimentPhaseID);
 		return c1;
 	}
@@ -94,7 +91,6 @@ public class CommentManagerImpl implements CommentManager {
 	public void registerComment(
 			eu.planets_project.tb.api.model.Comment comment, long experimentID,
 			String experimentPhaseID) {
-		System.out.println("register Comment: ID="+comment.getCommentID());
 		cmp.persistComment(comment);
 	}
 

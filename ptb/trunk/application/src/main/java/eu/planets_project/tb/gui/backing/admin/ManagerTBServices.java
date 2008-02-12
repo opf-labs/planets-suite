@@ -19,6 +19,7 @@ import org.apache.myfaces.custom.fileupload.HtmlInputFileUploadTag;
 import eu.planets_project.tb.api.services.ServiceRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
@@ -459,23 +460,24 @@ public class ManagerTBServices implements ValueChangeListener {
 	 * @return
 	 */
 	public List<String> getTagsForSelectedService(){
-		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		
 		if(this.getTBService()!=null){
+			TestbedServiceTemplate template = this.getTBService();
 			//get all tags that have been registered for this service
-			Map<String,String> tagsVals = registry.getTags(this.getTBService().getUUID());
-			Iterator<String> it = tagsVals.keySet().iterator();
+			Iterator<ServiceTag> itTags= template.getAllTags().iterator();
+			
 			List<String> ret = new Vector<String>();
-			while(it.hasNext()){
-				String sKey = it.next();
-				ret.add(sKey+"="+tagsVals.get(sKey));
+			while(itTags.hasNext()){
+				ServiceTag tag = itTags.next();
+				ret.add(tag.getName()+"="+tag.getValue());
 			}
 			return ret;
 		}
 		else{
 			return new Vector<String>();
 		}
-		
 	}
+	
 	
 	/**
 	 * commands for the "delete" mode of this bean. Takes the selected service

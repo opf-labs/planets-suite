@@ -83,23 +83,18 @@ public interface ServiceRegistry {
 	
 	public boolean isServiceEndpointRegistered(String sEndpointRef);
 	
-	/**
-	 * Allows the user to use free search-tags and values for tagging services.
-	 * These tags should be searchable via the web interface. 
-	 * @param serviceUUID: null not allowed
-	 * @param sTagName: null not allowed
-	 * @param sTagValue: null not allowed
-	 */
-	public void addTag(String serviceUUID, String sTagName,String sTagValue);
-	public void removeTag(String serviceUUID, String sTagName);
-	public void removeTags(String serviceUUID);
-	public String getTag(String serviceUUID, String sTagName);
-	
-	/**
-	 * A Map<key,value> of all Tags for a registered service
-	 * @param serviceUUID
-	 * @return
-	 */
-	public Map<String,String> getTags(String serviceUUID);
+    /**
+     * Get a list of ServiceTemplates by a registered tag name
+     * @param sTagName
+     * @return (not null)
+     */
+    public List<TestbedServiceTemplate> getServicesByTagName(String sTagName);
+    
+    /**
+     * Get a list of ServiceTemplates by a registered tag name and value
+     * @param sTagName
+     * @return (not null)
+     */
+    public List<TestbedServiceTemplate> getServicesByTagNameAndValue(String sTagName, String sValue);
 	
 }

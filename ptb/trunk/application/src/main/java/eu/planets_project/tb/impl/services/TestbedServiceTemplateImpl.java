@@ -18,6 +18,16 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Transient;
+
+import org.apache.commons.logging.Log;
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 
@@ -25,18 +35,30 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperatio
  * @author alindley
  *
  */
-public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="DiscrCol")
+//@Table(name="TBServiceTemplate")
+public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.io.Serializable{
 	
-	private String sServiceDescription, sServiceEndpoint, sServiceName, sServiceID, sWSDLContent;
+	private String sServiceDescription, sServiceEndpoint, sServiceName, sWSDLContent;
 	private boolean bURIisWSICompliant;
 	//not only the registered Service Operations - note: non registered ones cannot be invoked
-	private List<ServiceOperation> lAllRegisteredServiceOperations;
+	private Vector<ServiceOperation> lAllRegisteredServiceOperations;
 	//all Operation Names within the WSDL not only the registered ones that can be executed via the TB
-	private List<String> lAllOperationNamesFromWSDL;
-
-	
+	//Note: to persist this object it's impl and not its interface is required here
+	private Vector<String> lAllOperationNamesFromWSDL;
+    //all tag names and values that have been registered for this service
+	private Vector<ServiceTag> lTags;
+	// This annotation specifies that the property or field is not persistent.
+	@Transient
+	private static Log log;
+	//The ServiceTemplate's UUID is used as discriminator
+	@Id
+	private String sServiceID;
 	
 	public TestbedServiceTemplateImpl(){
+		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 		sServiceDescription = "";
 		sServiceEndpoint = "";
 		sServiceName = "";
@@ -45,6 +67,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 		bURIisWSICompliant = false;
 		lAllOperationNamesFromWSDL = new Vector<String>();
 		lAllRegisteredServiceOperations = new Vector<ServiceOperation>();
+		lTags = new Vector<ServiceTag>();
 
 	}
 	
@@ -107,7 +130,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 	 */
 	public void setAllWSDLOperationNames(List<String> operationNames){
 		if(operationNames!=null){
-			this.lAllOperationNamesFromWSDL = operationNames;
+			this.lAllOperationNamesFromWSDL = (Vector<String>)operationNames;
 		}
 	}
 	
@@ -282,7 +305,82 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 			}
 		}
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#addTag(eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag)
+	 */
+	public void addTag(ServiceTag tag) {
+		if(tag!=null){
+			
+			//try to remove a previous tag with the same name
+			this.removeTag(tag.getName());
+			
+			//add the new item
+			this.lTags.add(tag);
+		}
+	}
 
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#getAllTags()
+	 */
+	public List<ServiceTag> getAllTags() {
+		return this.lTags;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#getTag(java.lang.String)
+	 */
+	public ServiceTag getTag(String sTagName) {
+		if(sTagName!=null){
+			Iterator<ServiceTag> tags = this.lTags.iterator();
+
+			while(tags.hasNext()){
+				ServiceTag tagit = tags.next();
+				//Tag was found, as TagName only may exist once
+				if(tagit.getName().equals(sTagName)){
+					return tagit;
+				}
+			}
+		}
+		return null;
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#removeTag(java.lang.String)
+	 */
+	public void removeTag(String sTagName) {
+		if(sTagName!=null){
+			Iterator<ServiceTag> tags = this.lTags.iterator();
+			boolean bFound = false;
+			ServiceTag bFoundTag = null;
+			while(tags.hasNext()){
+				ServiceTag tagit = tags.next();
+				//Tag to replace was found
+				if(tagit.getName().equals(sTagName)){
+					bFound = true;
+					bFoundTag = tagit;
+				}
+			}
+			//remove the old item
+			if(bFound){
+				this.lTags.remove(bFoundTag);
+			}
+		}
+	}
+
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#removeTags()
+	 */
+	public void removeTags() {
+		this.lTags = new Vector<ServiceTag>();
+	}
+
+	
 	/* (non-Javadoc)
 	 * @see eu.planets.test.backend.api.model.mockup.TestbedService#extractWSDLContent(java.lang.String)
 	 */
@@ -367,7 +465,11 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 	
 	
 	
-	public class ServiceOperationImpl implements TestbedServiceTemplate.ServiceOperation{
+	/**
+	 * @author Andrew Lindley, ARC
+	 *
+	 */
+	public class ServiceOperationImpl implements TestbedServiceTemplate.ServiceOperation, java.io.Serializable{
 		
 		private String sName ="";
 		private String sDescription ="";
@@ -527,6 +629,67 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate{
 			
 		}
 
+	}
+	
+	/**
+	 * @author Andrew Lindley, ARC
+	 *
+	 */
+	public class ServiceTagImpl implements TestbedServiceTemplate.ServiceTag, java.io.Serializable{
+		
+		String sName ="";
+		String sValue="";
+		String sDescription = "";
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#getName()
+		 */
+		public String getName() {
+			return this.sName;
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#getValue()
+		 */
+		public String getValue() {
+			return this.sValue;
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#setTag(java.lang.String, java.lang.String)
+		 */
+		public void setTag(String sTagName, String sTagValue) {
+			if((sTagName!=null)&&(sTagValue!=null)){
+				this.sName = sTagName;
+				this.sValue = sTagValue;
+			}
+			
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#getDescription()
+		 */
+		public String getDescription() {
+			return this.sDescription;
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#setDescription(java.lang.String)
+		 */
+		public void setDescription(String sDescription) {
+			if(sDescription!=null){
+				this.sDescription = sDescription;
+			}
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#setTag(java.lang.String, java.lang.String, java.lang.String)
+		 */
+		public void setTag(String sTagName, String sTagValue, String sDescription) {
+			this.setTag(sTagName, sTagValue);
+			this.setDescription(sDescription);
+		}
+		
 	}
 
 }

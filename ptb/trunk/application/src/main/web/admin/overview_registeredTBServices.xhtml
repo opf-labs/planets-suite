@@ -105,6 +105,12 @@
 	 		<p><h:outputText value="operation type:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['operationType'].selected}"/>
 			   <h:outputText value="#{TBServiceRenderer.serviceOperation.serviceOperationType}" rendered="#{TBServiceRenderer.allCheckboxes['operationType'].selected}"/>
 	 		</p>
+	 		
+	 		<p><h:outputText value="Description:" styleClass="readerLabel" rendered="#{TBServiceManager.allCheckboxes['description'].selected}"/>
+     		   <h:inputTextarea value="#{TBServiceRenderer.serviceOperation.description}" 
+     		   cols="80" rows="2" readonly="true" 
+     		   rendered="#{TBServiceRenderer.allCheckboxes['description'].selected}"/></p>
+     		   
 	 		<p><h:outputText value="XML Request Template:" styleClass="readerLabel" rendered="#{TBServiceRenderer.allCheckboxes['xmltemplate'].selected}"/>
      		   <h:inputTextarea value="#{TBServiceRenderer.serviceOperation.XMLRequestTemplate}" 
      		   cols="80" rows="10" readonly="true" 

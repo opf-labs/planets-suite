@@ -54,6 +54,7 @@ import org.xml.sax.SAXException;
 
 import eu.planets_project.tb.api.services.ServiceRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
@@ -386,6 +387,9 @@ public class RegisterTBServices{
 	
 	public String command_continueToAddServiceRegistryMetadata(){
 		this.setStageCompleted(4);
+		//fill out already added service metadata
+		this.fillOutExistingServiceMetaDataForStep5();
+		
 		return "reload-page";
 	}
 	
@@ -1617,25 +1621,33 @@ public class RegisterTBServices{
 		
 		
 		try {
+			//register additional metadata for this service
+			//register all Tag names + values
+			Iterator<String> itTags = this.mapTagNamesValues.keySet().iterator();
+			int count =0;
+			while(itTags.hasNext()){
+				String sTag = itTags.next();
+				String sValue = this.mapTagNamesValues.get(sTag);
+				if((sValue!=null)&&(!sValue.equals(""))){
+					
+					//add this tag to the service template
+					TestbedServiceTemplate.ServiceTag tag = tbService.new ServiceTagImpl();
+					tag.setTag(sTag,sValue);
+					
+					//remove all tags because this wizard contains and adds all of them
+					if(count==0)
+						tbService.removeTags();
+					tbService.addTag(tag);
+					count++;
+				}
+			}
+			
 			//register the service within the registry
 			registry.registerService(tbService);
 			String serviceID = tbService.getUUID();
 			if(serviceID==null){
 				//this leads to the error-page
 				throw new Exception("Service did not obtain a proper UUID");
-			}
-			
-			//register additional metadata for this service
-			//register all Tag names + values
-			Iterator<String> itTags = this.mapTagNamesValues.keySet().iterator();
-			while(itTags.hasNext()){
-				String sTag = itTags.next();
-				String sValue = this.mapTagNamesValues.get(sTag);
-				if((sValue!=null)&&(!sValue.equals(""))){
-					
-					//add this tag to the registry
-					registry.addTag(serviceID, sTag, sValue);
-				}
 			}
 			
 		} catch (Exception e) {
@@ -1824,6 +1836,34 @@ public class RegisterTBServices{
 			}
 		}
 		return "reload-page";
+	}
+	
+	/**
+	 * As we're registering service operations and only a service for the
+	 * first service operation the defined policy is the following:
+	 *  - if service has not been registered: 
+	 *  - if serive has been registered: take it's old metadata (e.g. description) and already present this data within the wizard
+	 * So in both cases all service specific metadata will be stored from the wizard
+	 *
+	 */
+	private void fillOutExistingServiceMetaDataForStep5(){
+		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		TestbedServiceTemplate tbSerHelper = new TestbedServiceTemplateImpl();
+		tbSerHelper.setEndpoint(this.getEndpointURI(),true);
+		TestbedServiceTemplate tbSerFound =  registry.getServiceByWSDLContent(tbSerHelper.getWSDLContent());
+		
+		if(tbSerFound!=null){
+			//fetch the metadata
+			//service description
+			this.sServiceDescription = tbSerFound.getDescription();
+			
+			//service tags
+			Iterator<ServiceTag> itTags= tbSerFound.getAllTags().iterator();
+			while(itTags.hasNext()){
+				ServiceTag tag = itTags.next();
+				this.mapTagNamesValues.put(tag.getName(), tag.getValue());
+			}
+		}
 	}
 
 }

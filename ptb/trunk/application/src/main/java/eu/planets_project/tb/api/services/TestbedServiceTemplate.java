@@ -3,6 +3,7 @@ package eu.planets_project.tb.api.services;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
  * for being able to invoke an experiment, execute the underlying service, and knows how to
  * extract the resulting data.
  */
-public interface TestbedServiceTemplate {
+public interface TestbedServiceTemplate{
 
 	public String getDescription();
 	public void setDescription(String sDescription);
@@ -82,6 +83,30 @@ public interface TestbedServiceTemplate {
 	
 	public boolean isOperationRegistered(String sOpName);
 	
+	/**
+	 * Allows the user to use free search-tags and values for tagging service templates.
+	 * These tags should be searchable via the web interface. 
+	 * When duplicate tag names: the old one is removed
+	 * @param sTagName: null not allowed
+	 * @param sTagValue: null not allowed
+	 */
+	public void addTag(ServiceTag tag);
+	public void removeTag(String sTagName);
+	public void removeTags();
+	
+	/**
+	 * @param sTagName
+	 * @return may return null if no item for TagName was found
+	 */
+	public ServiceTag getTag(String sTagName);
+	
+	/**
+	 * A List of all ServiceTags for a service template
+	 * @param serviceUUID
+	 * @return
+	 */
+	public List<ServiceTag> getAllTags();
+	
 	
 	/**
 	 * @author Andrew Lindley, ARC
@@ -142,6 +167,23 @@ public interface TestbedServiceTemplate {
 		 */
 		public void setOutputObjectType(String type);
 		public String getOutputObjectType();
+	}
+	
+	
+	public interface ServiceTag{
+		/**
+		 * Allows the user to use free search-tags and values for tagging service templates.
+		 * These tags should be searchable via the web interface. 
+		 * @param sTagName: null not allowed
+		 * @param sTagValue: null not allowed
+		 * @param sDescription: null allowed
+		 */
+		public void setTag(String sTagName,String sTagValue, String sDescription);
+		public void setTag(String sTagName,String sTagValue);
+		public String getValue();
+		public String getName();
+		public void setDescription(String sDescription);
+		public String getDescription();
 	}
 
 }

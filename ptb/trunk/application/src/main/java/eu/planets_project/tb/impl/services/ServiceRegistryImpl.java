@@ -13,24 +13,32 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
+
+import eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.ServiceRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
+import eu.planets_project.tb.impl.persistency.TestbedServiceTemplatePersistencyImpl;
 
 /**
  * @author alindley
  *
  */
+public class ServiceRegistryImpl implements ServiceRegistry, java.io.Serializable{
 
-public class ServiceRegistryImpl implements ServiceRegistry{
-	
 	//Map<ServiceUUID, Service>
 	private Map<String,TestbedServiceTemplate> hm_AllServices;
-	//Map containing the free annotation Tags for tagging a service for all UUIDS
-	//Structure is: Map<UUID,List<Map<key,value>>>
-	private Map<String,Map<String, String>> mapTags;
-	
+	//Map<ServiceUUID, List<ServiceTag>
+	private Map<String, List<ServiceTag>> hm_ServiceTags;
+
+	TestbedServiceTemplatePersistencyRemote dao_r = TestbedServiceTemplatePersistencyImpl.getInstance();
+	//this object is implemented following the java singleton pattern
 	private static ServiceRegistryImpl instance; 
 	
 	
@@ -38,9 +46,19 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	 * This Class implements the Java singleton pattern
 	 */
 	private ServiceRegistryImpl(){
+		
+		loadExistingTemplateData();
+	}
+	
+	
+	/**
+	 * Uses the remote session object to fetch all existing (=registered) 
+	 * service templates
+	 */
+	private void loadExistingTemplateData(){
 		//HashMap<ServiceUUID, TestbedService>
-		this.hm_AllServices = new HashMap<String,TestbedServiceTemplate>();
-		this.mapTags = new HashMap<String,Map<String,String>>();
+		this.hm_AllServices = dao_r.getAllTBServiceIDAndTemplates();
+		this.hm_ServiceTags = dao_r.getAllTBServiceIDAndTags();
 	}
 	
 	
@@ -161,8 +179,32 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	 */
 	public void registerService(TestbedServiceTemplate service) throws Exception{
 		if((service!=null)&&(isExecutionInformationComplete(service))){
+			
 			this.hm_AllServices.put(service.getUUID(), service);
+			
+			//check if we're updating/extending an existing object
+			if(isUpdateService(service.getUUID())){
+				//update the already registered persistent object
+				dao_r.updateTBServiceTemplate(service);
+			}
+			else{
+				//add to persistency layer
+				dao_r.persistTBServiceTemplate(service);
+			}
+			
+			//reload the registry
+			this.loadExistingTemplateData();
 		}
+	}
+	
+	/**
+	 * A private helper method that checks if the service has already been persisted
+	 * (in this case don't call "persist" but rather "update"
+	 * @param UUID
+	 * @return
+	 */
+	private boolean isUpdateService(String UUID){
+		return dao_r.isServiceTemplateIDRegistered(UUID);
 	}
 	
 	/**
@@ -239,87 +281,6 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#addTag(java.lang.String, java.lang.String, java.lang.String)
-	 */
-	public void addTag(String serviceUUID, String sTagName, String sTagValue) {
-		if((serviceUUID!=null)&&(sTagName!=null)&&(sTagValue!=null)){
-			Map<String,String> tags;
-			if(this.mapTags.containsKey(serviceUUID)){
-				//1) get List with tags and add the new items
-				tags = this.mapTags.get(serviceUUID);
-			}
-			else{
-				//first tags for this object
-				//1)initialize a new Map and add it to the outer map
-				tags = new HashMap<String,String>();
-				this.mapTags.put(serviceUUID, tags);
-			}
-			//2) add the new items
-			tags.put(sTagName, sTagValue);
-		}
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#removeTag(java.lang.String, java.lang.String)
-	 */
-	public void removeTag(String serviceUUID, String sTagName) {
-		if((serviceUUID!=null)&&(sTagName!=null)){
-			if(this.mapTags.containsKey(serviceUUID)){
-				Map<String,String> tags = this.mapTags.get(serviceUUID);
-				if(tags.containsKey(sTagName))
-					tags.remove(sTagName);
-			}
-			//else: do nothing, this Service didn't have any tags
-		}
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#getTag(java.lang.String, java.lang.String)
-	 */
-	public String getTag(String serviceUUID, String sTagName) {
-		if((serviceUUID!=null)&&(sTagName!=null)){
-			if(this.mapTags.containsKey(serviceUUID)){
-				Map<String,String> tags = this.mapTags.get(serviceUUID);
-				if(tags.containsKey(sTagName))
-					return tags.get(sTagName);
-			}
-			//else: do nothing, this Service didn't have any tags
-		}
-		return "";
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#getTags(java.lang.String)
-	 */
-	public Map<String, String> getTags(String serviceUUID) {
-		Map<String, String> mapRet = new HashMap<String,String>();
-		if(serviceUUID!=null){
-			if(this.mapTags.containsKey(serviceUUID)){
-				mapRet = this.mapTags.get(serviceUUID);
-			}
-		}
-		return mapRet;
-		
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#removeTags(java.lang.String)
-	 */
-	public void removeTags(String serviceUUID) {
-		if(serviceUUID!=null){
-			if(this.mapTags.containsKey(serviceUUID)){
-				Map<String, String> mapRet = new HashMap<String, String>();
-				this.mapTags.put(serviceUUID, mapRet);
-			}
-		}
-	}
-
-
-	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.services.ServiceRegistry#removeService(eu.planets_project.tb.api.services.TestbedServiceTemplate)
 	 */
 	public void removeService(TestbedServiceTemplate service) {
@@ -335,15 +296,68 @@ public class ServiceRegistryImpl implements ServiceRegistry{
 	public void removeService(String UUID) {
 		// TODO Auto-generated method stub
 		if(UUID!=null){
-			//remove it's registered tags and values
-			this.removeTags(UUID);
 			
 			//remove the service from the registry
 			boolean b = this.hm_AllServices.containsKey(UUID);
 			if (b){
 				this.hm_AllServices.remove(UUID);
+				
+				//remove from persistency layer
+				dao_r.deleteTBServiceTemplate(UUID);
+				
+				//reload the registry
+				this.loadExistingTemplateData();
 			}	
 		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.ServiceRegistry#getServicesByTagName(java.lang.String)
+	 */
+	public List<TestbedServiceTemplate> getServicesByTagName(String sTagName) {
+		return this.getServicesByTagNameAndValue(sTagName, null);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.ServiceRegistry#getServicesByTagNameAndValue(java.lang.String, java.lang.String)
+	 */
+	public List<TestbedServiceTemplate> getServicesByTagNameAndValue(String sTagName, String sValue) {
+		
+		boolean bValueSearch = sValue==null ? false : true;
+		
+		List<TestbedServiceTemplate> ret = new Vector<TestbedServiceTemplate>();
+		if(sTagName !=null){
+			//iterate over all key items
+			Iterator<String> skeys = this.hm_ServiceTags.keySet().iterator();
+			
+			while(skeys.hasNext()){
+				String UUID = skeys.next();
+				Iterator<ServiceTag> ittag = this.hm_ServiceTags.get(UUID).iterator();
+			
+				//iterate over all tags
+				while(ittag.hasNext()){
+					ServiceTag tag =ittag.next();
+
+					if(bValueSearch){
+						//also looking for the value
+						if((tag.getName().equals(sTagName))&&(tag.getValue().equals(sValue))){
+							//fetch the object and add it to the list
+							ret.add(dao_r.getTBServiceTemplate(UUID));
+						}
+					}
+					else{
+						//value is not being searched 
+						if(tag.getName().equals(sTagName)){
+							//fetch the object and add it to the list
+							ret.add(dao_r.getTBServiceTemplate(UUID));
+						}
+					}
+				}
+			}
+		}
+		return ret;
 	}
 	
 }

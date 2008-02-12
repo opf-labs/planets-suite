@@ -20,6 +20,7 @@ import eu.planets_project.tb.api.AdminManager;
 public class AdminManagerImpl implements AdminManager {
 
 	private static AdminManagerImpl instance;
+	//e.g. key:"experimentType.simpleMigration" value:"simple migration"
 	private HashMap<String,String> hmExperimentTypes;
 	
 	private AdminManagerImpl(){
@@ -40,6 +41,10 @@ public class AdminManagerImpl implements AdminManager {
 	}
 	
 	
+	/**
+	 * Fetches the BackendResources.properties file to read all supported "ExperimentTypes".
+	 * @return
+	 */
 	private HashMap<String,String> readExperimentTypes(){
 		HashMap<String,String> hmRet = new HashMap<String,String>();
 		Properties properties = new Properties();
@@ -51,6 +56,7 @@ public class AdminManagerImpl implements AdminManager {
 	        while(itKeys.hasNext()){
 	        	String key = (String)itKeys.next();
 	        	if(key.startsWith("experimentType")){
+	        		//e.g. key: "experimentType.simpleMigration" value: "simple migration"
 	        		hmRet.put(key, properties.getProperty(key));
 	        	}
 	        }
@@ -72,6 +78,9 @@ public class AdminManagerImpl implements AdminManager {
 		return this.hmExperimentTypes.values();
 	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.AdminManager#getExperimentTypeID(java.lang.String)
+	 */
 	public String getExperimentTypeID(String expTypeName) {
 		if(this.hmExperimentTypes.containsValue(expTypeName)){
 			Iterator<String> itKeys = this.hmExperimentTypes.keySet().iterator();

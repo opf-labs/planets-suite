@@ -10,6 +10,12 @@ public interface AdminManager {
 
 	public Collection<String> getExperimentTypeIDs();
 
+	/**
+	 * Returns the ID for a given experiment type name.
+	 * e.g. "
+	 * @param sExpTypeName
+	 * @return
+	 */
 	public String getExperimentTypeID(String sExpTypeName);
 
 	public String getExperimentTypeName(String sTypeID);
