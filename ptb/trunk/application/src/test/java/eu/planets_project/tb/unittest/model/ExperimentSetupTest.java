@@ -1,3 +1,4 @@
+/*COMMENT IN AGAIN
 package eu.planets_project.tb.unittest.model;
 
 import java.io.BufferedInputStream;
@@ -30,11 +31,11 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.*;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
-import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.services.mockups.ServiceImpl;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
@@ -85,6 +86,8 @@ public class ExperimentSetupTest extends TestCase{
 		}
 	}
 	
+	END OF COMMENT IN AGAIN*/
+
 	//IN WORK
 	/*public void testExperimentWorkflowSetData(){
 		Experiment exp_test = manager.getExperiment(this.expID1);
@@ -169,6 +172,7 @@ public class ExperimentSetupTest extends TestCase{
 		}
 	}*/
 	
+/*COMMENT IN AGAIN
 	
 	//Tests for the underlying Entity Bean's methods setter and getters
 	public void testSetExperimentSetup(){
@@ -265,11 +269,7 @@ public class ExperimentSetupTest extends TestCase{
 		
 		return expSetup;
 	}
-	
-	
-	/*private ExperimentResources createEnvironmentExperimentResources(int testnr){
-		return null;
-	}*/
+
 	
 	
 	protected void tearDown(){
@@ -282,3 +282,5 @@ public class ExperimentSetupTest extends TestCase{
 	}
 
 }
+
+COMMENT IN AGAIN*/

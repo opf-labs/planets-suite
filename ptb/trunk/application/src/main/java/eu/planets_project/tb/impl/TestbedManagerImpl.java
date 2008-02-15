@@ -31,16 +31,16 @@ import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
-import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
-import eu.planets_project.tb.impl.system.mockup.WorkflowInvokerImpl;
+import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
+import eu.planets_project.tb.impl.system.ExperimentInvocationHandlerImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
-import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
-import eu.planets_project.tb.api.system.mockup.WorkflowInvoker;
+import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
+import eu.planets_project.tb.api.system.ExperimentInvocationHandler;
 
 /**
  * @author alindley
@@ -58,9 +58,9 @@ public class TestbedManagerImpl
 	
 	/**
 	 * This Class implements the Java singleton pattern and therefore the constructor should be private
-	 * However due to requirements in the front-end Bean it is set public at the moment.
+	 * However due to requirements of JSF managed beans it is set public (at the moment).
 	 */
-	public TestbedManagerImpl(){
+	private TestbedManagerImpl(){
 		hmAllExperiments = this.queryAllExperiments();
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
 	}
@@ -391,30 +391,18 @@ public class TestbedManagerImpl
 
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.TestbedManager#getWorkflowHandler()
+	 * @see eu.planets_project.tb.api.TestbedManager#getServiceTemplateRegistry()
 	 */
-	public WorkflowHandler getWorkflowHandler() {
-		return WorkflowHandlerImpl.getInstance();
+	public ServiceTemplateRegistry getServiceTemplateRegistry() {
+		return ServiceTemplateRegistryImpl.getInstance();
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#executeExperiment()
 	 */
-	public void executeExperiment(Experiment exp) throws Exception{
-		ExperimentExecutionImpl expExPhase = (ExperimentExecutionImpl)exp.getExperimentExecution();
-		if (expExPhase != null) {
-			expExPhase.setExecutionInProgress(true);
-			WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
-			try{
-				wfinvoker.executeExperimentWorkflow(exp);
-				expExPhase.setExecutionInProgress(false);
-				expExPhase.setExecuted(true);
-			}catch(Exception e){
-				expExPhase.setExecutionInProgress(false);
-				expExPhase.setExecuted(false);
-				throw new Exception(e);
-			}
-		}
+	public void executeExperiment(Experiment exp){
+		ExperimentInvocationHandler invoHandler = new ExperimentInvocationHandlerImpl();
+		invoHandler.executeExperiment(exp);
 	}
 
 }

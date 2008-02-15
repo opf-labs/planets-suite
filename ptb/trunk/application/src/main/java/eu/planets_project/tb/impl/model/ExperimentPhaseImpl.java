@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
 
-import eu.planets_project.tb.api.data.DataRegistryBinding;
+import eu.planets_project.tb.api.data.mockups.DataRegistryBinding;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 
 /**

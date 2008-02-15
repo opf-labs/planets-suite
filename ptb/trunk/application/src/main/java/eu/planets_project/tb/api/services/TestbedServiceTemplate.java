@@ -42,6 +42,13 @@ public interface TestbedServiceTemplate{
 	 * @return
 	 */
 	public List<ServiceOperation> getAllServiceOperations();
+	/**
+	 * Returns a list of all available ServiceOperations of a given Type 
+	 * e.g. PA or PC
+	 * @param serviceType: ServiceOperation.SERVICE_OPERATION_TYPE_XY
+	 * @return
+	 */
+	public List<ServiceOperation> getAllServiceOperationsByType(String serviceType);
 	public List<String> getAllServiceOperationNames();
 	
 	/**

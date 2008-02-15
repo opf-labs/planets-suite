@@ -20,16 +20,20 @@ import java.util.Vector;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
 /**
  * @author alindley
@@ -39,7 +43,7 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperatio
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="DiscrCol")
 //@Table(name="TBServiceTemplate")
-public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.io.Serializable{
+public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.io.Serializable, Cloneable{
 	
 	private String sServiceDescription, sServiceEndpoint, sServiceName, sWSDLContent;
 	private boolean bURIisWSICompliant;
@@ -52,13 +56,13 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	private Vector<ServiceTag> lTags;
 	// This annotation specifies that the property or field is not persistent.
 	@Transient
-	private static Log log;
-	//The ServiceTemplate's UUID is used as discriminator
+	//A logger for this - transient: it's not persisted with this entity
+    private Log log = LogFactory.getLog(TestbedServiceTemplateImpl.class);
 	@Id
+	//The ServiceTemplate's UUID is used as discriminator
 	private String sServiceID;
 	
 	public TestbedServiceTemplateImpl(){
-		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 		sServiceDescription = "";
 		sServiceEndpoint = "";
 		sServiceName = "";
@@ -265,6 +269,20 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	}
 	
 	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#getAllServiceOperationsByType(java.lang.String)
+	 */
+	public List<ServiceOperation> getAllServiceOperationsByType(String serviceOperationType){
+		List<ServiceOperation> ret = new Vector<ServiceOperation>();
+		Iterator<ServiceOperation> operations = getAllServiceOperations().iterator();
+		while(operations.hasNext()){
+			ServiceOperation operation = operations.next();
+			if(operation.getServiceOperationType().equals(serviceOperationType))
+				ret.add(operation);
+		}
+		return ret;
+	}
+	
+	/* (non-Javadoc)
 	 * @see eu.planets.test.backend.api.model.mockup.TestbedService#getAllServiceOperationNames()
 	 */
 	public List<String> getAllServiceOperationNames(){
@@ -461,6 +479,24 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 		     result.append( digits[ b&0x0f] );
 		  }
 		  return result.toString();
+	}
+	
+	
+	/* (non-Javadoc)
+	 * This method is required to seperate between ServiceTemplates that 
+	 * 1.are stored as part of an experiment an may not be deleted and templates
+	 * 2.that are registered by the admin. So if 2. gets deleted 1. must be still available
+	 * @see java.lang.Object#clone()
+	 */
+	public TestbedServiceTemplateImpl clone(){
+		TestbedServiceTemplateImpl template = null;
+		try{
+			template = (TestbedServiceTemplateImpl) super.clone();
+		}catch(CloneNotSupportedException e){
+			log.error("Error cloning TestbedServiceTemplateImpl Object"+e.toString());
+		}
+		
+		return template;
 	}
 	
 	

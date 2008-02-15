@@ -3,11 +3,11 @@ package eu.planets_project.tb.api.model;
 import java.util.List;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
-import eu.planets_project.tb.api.services.mockups.ComplexWorkflow;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 
 /**
+ * @author alindley
  * The phase ExperimentSetup covers the steps of 1-3 of the Planets Testbed
  * process model.
  * Step 1 define basic properties;
@@ -69,11 +69,19 @@ public interface ExperimentSetup extends ExperimentPhase{
 	
 	//Step 2:
 	/**
-	 * Sets the experiment's workflow (= services, data, configuration) 
+	 * Inits also inits the experiment's executable (contains servicesTemplate, data, configuration)
 	 * @param workflow
 	 */
-	public void setWorkflow(ExperimentWorkflow workflow);
-	public ExperimentWorkflow getExperimentWorkflow();
+	public void setServiceTemplate(TestbedServiceTemplate template);
+	/**
+	 * Retrieves the TBServiceTemplate form the executable part of an experiment
+	 * @return null if non has been registered
+	 */
+	public TestbedServiceTemplate getServiceTemplate();
+	/**
+	 * Removes an already added ServiceTemplate (i.e. the information which endpoint to call, etc.)
+	 */
+	public void removeServiceTemplate();
 	
 
 	//Step 3: specify resources

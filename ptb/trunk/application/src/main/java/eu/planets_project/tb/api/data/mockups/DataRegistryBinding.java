@@ -1,4 +1,4 @@
-package eu.planets_project.tb.api.data;
+package eu.planets_project.tb.api.data.mockups;
 
 public interface DataRegistryBinding {
 	

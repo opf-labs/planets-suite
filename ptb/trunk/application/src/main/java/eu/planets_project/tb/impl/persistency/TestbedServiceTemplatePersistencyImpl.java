@@ -43,7 +43,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
      * A Factory method to build a reference to this interface.
      * @return
      */
-    public static TestbedServiceTemplatePersistencyRemote getInstance() {
+    /*public static TestbedServiceTemplatePersistencyRemote getInstance() {
         Log log = LogFactory.getLog(TestbedServiceTemplatePersistencyImpl.class);
         try {
             Context jndiContext = new javax.naming.InitialContext();
@@ -57,7 +57,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
                     + e.toString());
             return null;
         }
-    }
+    }*/
 
 
 	/* (non-Javadoc)
@@ -91,7 +91,11 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#persistTBServiceTemplate(eu.planets_project.tb.api.services.TestbedServiceTemplate)
 	 */
 	public void persistTBServiceTemplate(TestbedServiceTemplate template){
-		manager.persist(template);
+		System.out.println("remote: persistTBServiceTemplate");
+		String test = "dfssdfsdf";
+		//TEMP auskommentiert
+		//manager.persist(template);
+		System.out.println("Was here");
 	}
 
 
@@ -109,6 +113,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#updateTBServiceTemplate(eu.planets_project.tb.api.services.TestbedServiceTemplate)
 	 */
 	public void updateTBServiceTemplate(TestbedServiceTemplate template){
+		System.out.println("Remote: updateTBServiceTemplate "+template.getName());
 		manager.merge(template);
 	}
 
@@ -117,6 +122,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#getAllTBServiceIDAndTemplates()
 	 */
 	public Map<String, TestbedServiceTemplate> getAllTBServiceIDAndTemplates() {
+		System.out.println("Remote: getAllTBServiceIDAndTemplates");
 		Query query = manager.createQuery("from TestbedServiceTemplateImpl");
 		Iterator<TestbedServiceTemplate> itTemplates = query.getResultList().iterator();
 		Map<String, TestbedServiceTemplate> ret = new HashMap<String, TestbedServiceTemplate>();
@@ -150,6 +156,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#isServiceTemplateIDRegistered(java.lang.String)
 	 */
 	public boolean isServiceTemplateIDRegistered(String UUID) {
+		System.out.println("Remote: isServiceTemplateIDRegistered");
 		if(manager.find(TestbedServiceTemplateImpl.class, UUID)!=null){
 			return true;
 		}

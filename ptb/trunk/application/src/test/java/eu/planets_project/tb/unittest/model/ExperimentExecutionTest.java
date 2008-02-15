@@ -1,3 +1,4 @@
+/*COMMENT IN AGAIN
 package eu.planets_project.tb.unittest.model;
 
 import java.net.URI;
@@ -14,12 +15,12 @@ import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
 import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
-import eu.planets_project.tb.api.system.mockup.WorkflowInvoker;
+import eu.planets_project.tb.api.system.ExperimentInvocationHandler;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
-import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
-import eu.planets_project.tb.impl.system.mockup.WorkflowInvokerImpl;
+import eu.planets_project.tb.impl.system.ExperimentInvokerImpl;
 
 public class ExperimentExecutionTest extends TestCase{
 
@@ -39,7 +40,7 @@ public class ExperimentExecutionTest extends TestCase{
 	
 	public void testExecuteExperiment() {
 		//setupTest:
-			WorkflowInvoker wfinvoker = new WorkflowInvokerImpl();
+			ExperimentInvocationHandler wfinvoker = new ExperimentInvokerImpl();
 			Experiment exp = manager.getExperiment(this.expID1);
 			WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
 			Workflow workflow = null;
@@ -53,7 +54,7 @@ public class ExperimentExecutionTest extends TestCase{
 			}else{
 				assertEquals(true,false);
 			}
-			ExperimentWorkflow wf = new ExperimentWorkflowImpl(workflow);
+			ExperimentWorkflow wf = new ExperimentExecutableImpl(workflow);
 		//Not generic for Unittests must crate sample input
 			try{
 				URI input1 = new URI("http://localhost:8080/testbed/planets-testbed/inputdata/-1171883584.jpg");
@@ -93,3 +94,4 @@ public class ExperimentExecutionTest extends TestCase{
 		}
 	}
 }
+COMMENT IN AGAIN*/

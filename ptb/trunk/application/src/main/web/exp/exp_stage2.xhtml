@@ -45,66 +45,63 @@
 			<h:form id="selectWorkflowForm" rendered="#{not empty ExperimentBean.etype}">
 				<p><a href="#" onclick="popup('popUpDiv')">Click Here To Open The Pop Up</a></p>
 				<fieldset>
-					<!-- step1: specify workflow -->
+					<!-- step1: select available service + serviceoperation -->
 					<legend>#{res['exp_stage2.legendTwo']}</legend>
+				 	<p><h:outputText value="Available Services for type:" styleClass="readerLabel"/>#{ExperimentBean.etypeName}</p>
+			     	<br/>
+			     	<p><h:outputText value="Selected Service Name:" styleClass="readerLabel"/>
 					<h:selectOneMenu
 					onchange="this.form.submit()"
-					value="#{ExperimentBean.workflowTypeId}"
-					valueChangeListener="#{NewExp_Controller.changedExpWorkflowEvent}"
+					value="#{ExperimentBean.selectedServiceTemplateID}"
+					valueChangeListener="#{NewExp_Controller.changedSelTBServiceTemplateEvent}"
 					immediate="true"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-						<f:selectItems value="#{NewExp_Controller.availableWorkflows}" />
+						<f:selectItems value="#{NewExp_Controller.allAvailableTBServiceTemplates}" />
 					</h:selectOneMenu>
-					<h:commandButton value="#{res['button.go']}"
-					action="#{NewExp_Controller.changedExpWorkflow}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+				</p>
+					<!-- select from the available service operations -->
+				 <p><h:outputText value="Selected Operation Name:" styleClass="readerLabel"/>
+             		<h:selectOneMenu 
+             		    value="#{ExperimentBean.selectedServiceOperationName}" 
+             		    immediate="true" readonly="#{ExperimentBean.approved}" 
+             		    disabled="#{ExperimentBean.approved}"
+             			valueChangeListener="#{NewExp_Controller.changedSelServiceOperationEvent}" 
+             			onchange="submit()">
+                 		<f:selectItems value="#{NewExp_Controller.allAvailableServiceOperations}" />                        
+             		</h:selectOneMenu>
+      		    </p>
 				</fieldset>
 			</h:form>
-			<h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{not empty Workflow}">
+			<h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{not empty ExperimentBean.selectedServiceTemplate}">
 				<fieldset>
 
 					<legend>#{res['exp_stage2.legendThree']}</legend>
-					<b>#{res['exp_stage2.workflowName']} </b>#{Workflow.name}<br/>
-					<b>#{res['exp_stage2.workflowTool']} </b>#{Workflow.toolType}<br/>
-					<b>#{res['exp_stage2.outputMime']} </b> <br/>
-					<ul>
-						<c:forEach var="mtype" items="#{Workflow.requiredOutputMIMETypes}">
-						  <li>#{mtype}</li>
-						</c:forEach>
-					</ul>					
-					<br/>	
-					<b>#{res['exp_stage2.workflowServices']} </b> <br/>
-					<ul>
-					<c:forEach var="svc" items="#{Workflow.workflowServices}">
-						  <li>#{res['exp_stage2.serviceName']} #{svc.serviceName}</li>
-						  <li>#{res['exp_stage2.WSDL']} #{svc.WSDL}</li><br/>
-					</c:forEach>
-					</ul>
-                                    <p>
-                                        <b>#{res['exp_stage2.inputMime']} </b> <br/>
-                                        <ul>
-                                            <c:forEach var="mtype" items="#{Workflow.requiredInputMIMETypes}">
-                                                <li>#{mtype}</li>
-                                            </c:forEach>
-                                        </ul>					
-                                        <t:inputFileUpload id="fileupload" rendered="#{empty ExperimentBean.eworkflowInputData}"
-                                             accept="#{Workflow.requiredInputMIMETypes[0]}"
-                                             value="#{FileUploadBean.upFile}"
-                                             storage="file"
-                                             styleClass="fileUploadInput"
-                                             required="true"
-                                             maxlength="10000000"  
-                                             readonly="#{ExperimentBean.approved}" 
-                                             disabled="#{ExperimentBean.approved}"/><br/>
-										<h:message for="fileupload"/>
-                                        <h:panelGroup rendered="#{not empty ExperimentBean.eworkflowInputData}">
-                                            <h:outputText value="#{res['exp_stage2.inputData']} "/>
-                                            <h:outputText value="#{ExperimentBean.eworkflowInputData}" style="font-style: italic;font-weight: bold;"/>
-                                            <h:commandButton value="#{res['button.change']}"
-                   action="#{NewExp_Controller.changeExpWorkflowDataAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
-                                        </h:panelGroup>                               
-                                        <br/>
-                                        <h:commandButton value="#{res['button.save']}"
-                      action="#{NewExp_Controller.saveExpWorkflowAction}" />
-                                    </p>
+					<b>#{res['exp_stage2.serviceName']} </b>#{ExperimentBean.selectedServiceTemplate.name}<br/>
+					<b>#{res['exp_stage2.WSDL']} </b>#{ExperimentBean.selectedServiceTemplate.Endpoint}<br/>
+					<b>#{res['exp_stage2.serviceOperationName']} </b>#{ExperimentBean.selectedServiceTemplate.ServiceOperationType}<br/>
+                         <p>				
+                            <t:inputFileUpload id="fileupload" rendered="#{empty ExperimentBean.eworkflowInputData}"
+                                  value="#{FileUploadBean.upFile}"
+                                  storage="file"
+                                  styleClass="fileUploadInput"
+                                  required="false"
+                                  maxlength="10000000"  
+                                  readonly="#{ExperimentBean.approved}" 
+                                  disabled="#{ExperimentBean.approved}"/><br/>
+                                  
+							<h:commandLink id="link_addFileInputItem" action="#{RegisterTBServiceBean.command_addFileRefToStep3}" rendered="#{RegisterTBServiceBean.addFileButtonRendered}">
+                    			<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
+                			</h:commandLink>
+                			
+							<h:message for="fileupload"/>
+                            <h:panelGroup id="panelAddedFiles" rendered="#{not empty ExperimentBean.eworkflowInputData}">
+                            	<!-- display the specified input data -->
+                            	<h:outputText value="#{res['exp_stage2.inputData']} "/>
+                           
+                            </h:panelGroup>                               
+                            <br/>
+                            <h:commandButton value="#{res['button.save']}"
+                      				action="#{NewExp_Controller.commandSaveStep2Substep2Action}" />
+                          </p>
 				</fieldset>
 			</h:form>
 

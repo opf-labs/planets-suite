@@ -7,6 +7,11 @@
   <managed-bean-class>eu.planets_project.tb.impl.TestbedManagerImpl</managed-bean-class>
   <managed-bean-scope>application</managed-bean-scope>
  </managed-bean>
+  <!--managed-bean>
+  <managed-bean-name>ServiceTemplateRegistry</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl</managed-bean-class>
+  <managed-bean-scope>application</managed-bean-scope>
+ </managed-bean-->
  <managed-bean>
   <managed-bean-name>UserBean</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.UserBean</managed-bean-class>

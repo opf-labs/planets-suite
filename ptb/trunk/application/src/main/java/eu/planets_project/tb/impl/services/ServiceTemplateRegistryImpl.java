@@ -1,8 +1,6 @@
 package eu.planets_project.tb.impl.services;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,40 +11,42 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.rmi.PortableRemoteObject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.api.services.ServiceRegistry;
+import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
-import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.persistency.TestbedServiceTemplatePersistencyImpl;
 
 /**
  * @author alindley
  *
  */
-public class ServiceRegistryImpl implements ServiceRegistry, java.io.Serializable{
+public class ServiceTemplateRegistryImpl implements ServiceTemplateRegistry, java.io.Serializable{
 
 	//Map<ServiceUUID, Service>
 	private Map<String,TestbedServiceTemplate> hm_AllServices;
 	//Map<ServiceUUID, List<ServiceTag>
 	private Map<String, List<ServiceTag>> hm_ServiceTags;
 
-	TestbedServiceTemplatePersistencyRemote dao_r = TestbedServiceTemplatePersistencyImpl.getInstance();
+	TestbedServiceTemplatePersistencyRemote dao_r;
 	//this object is implemented following the java singleton pattern
-	private static ServiceRegistryImpl instance; 
+	private static ServiceTemplateRegistryImpl instance; 
 	
 	
 	/**
-	 * This Class implements the Java singleton pattern
+	 * This Class implements the Java singleton pattern and therefore the constructor should be private
+	 * However due to requirements of JSF managed beans it is set public (at the moment).
 	 */
-	private ServiceRegistryImpl(){
-		
+	public ServiceTemplateRegistryImpl(){
+		dao_r = createPersistencyHandler();
 		loadExistingTemplateData();
 	}
 	
@@ -67,9 +67,9 @@ public class ServiceRegistryImpl implements ServiceRegistry, java.io.Serializabl
 	 * Use this method to retrieve the instance of this class.
 	 * @return
 	 */
-	public static synchronized ServiceRegistryImpl getInstance(){
+	public static synchronized ServiceTemplateRegistryImpl getInstance(){
 		if (instance == null){
-			instance = new ServiceRegistryImpl();
+			instance = new ServiceTemplateRegistryImpl();
 		}
 		return instance;
 	}
@@ -118,6 +118,31 @@ public class ServiceRegistryImpl implements ServiceRegistry, java.io.Serializabl
 	 */
 	public Collection<TestbedServiceTemplate> getAllServices(){
 		return this.hm_AllServices.values();
+	}
+	
+	/* (non-Javadoc)
+	 * Please note the serviceTemplate may also contain other operations than the ones
+	 * implementing the selecte type. This needs to be filtered out sparately
+	 * @see eu.planets_project.tb.api.services.ServiceTemplateRegistry#getAllServicesByType(java.lang.String)
+	 */
+	public Collection<TestbedServiceTemplate> getAllServicesWithType(String serviceOperationType){
+		Collection<TestbedServiceTemplate> ret = new Vector<TestbedServiceTemplate>();
+		Iterator<String> itIDs = this.hm_AllServices.keySet().iterator();
+		while(itIDs.hasNext()){
+			String id = itIDs.next();
+			TestbedServiceTemplate template = this.hm_AllServices.get(id);
+			Iterator<ServiceOperation> operations = template.getAllServiceOperations().iterator();
+			boolean bFound = false;
+			while(operations.hasNext()){
+				ServiceOperation operation = operations.next();
+				if(operation.getServiceOperationType().equals(serviceOperationType))
+					bFound = true;
+			}
+			if(bFound){
+				ret.add(template);
+			}
+		}
+		return ret;
 	}
 	
 	
@@ -174,13 +199,14 @@ public class ServiceRegistryImpl implements ServiceRegistry, java.io.Serializabl
 	}
 
 	
+
 	/* (non-Javadoc)
-	 * @see eu.planets.test.backend.api.model.mockup.ServiceRegistry#registerService(eu.planets.test.backend.api.model.mockup.TestbedService)
+	 * @see eu.planets_project.tb.api.services.ServiceTemplateRegistry#registerService(eu.planets_project.tb.api.services.TestbedServiceTemplate)
 	 */
 	public void registerService(TestbedServiceTemplate service) throws Exception{
 		if((service!=null)&&(isExecutionInformationComplete(service))){
-			
-			this.hm_AllServices.put(service.getUUID(), service);
+
+			//this.hm_AllServices.put(service.getUUID(), service);
 			
 			//check if we're updating/extending an existing object
 			if(isUpdateService(service.getUUID())){
@@ -189,11 +215,21 @@ public class ServiceRegistryImpl implements ServiceRegistry, java.io.Serializabl
 			}
 			else{
 				//add to persistency layer
-				dao_r.persistTBServiceTemplate(service);
+				System.out.println("Before calling persistTBServiceTemplate");
+				//DELTE
+				//--> THE next line causes a remote proxy exception
+				dao_r.isServiceTemplateIDRegistered(service.getUUID());
+				TestbedServiceTemplate DEL = new TestbedServiceTemplateImpl();
+				DEL.setName("SimpleCharacterisationService");
+				DEL.setEndpoint("http://localhost:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl",true);
+				System.out.println("Objekt erzeugt mit ID: "+DEL.getUUID());
+				//END DELETE
+				dao_r.persistTBServiceTemplate(DEL);
 			}
 			
 			//reload the registry
 			this.loadExistingTemplateData();
+			
 		}
 	}
 	
@@ -359,5 +395,22 @@ public class ServiceRegistryImpl implements ServiceRegistry, java.io.Serializabl
 		}
 		return ret;
 	}
+	
+	
+    private TestbedServiceTemplatePersistencyRemote createPersistencyHandler() {
+        Log log = LogFactory.getLog(TestbedServiceTemplatePersistencyImpl.class);
+        try {
+            Context jndiContext = new javax.naming.InitialContext();
+            TestbedServiceTemplatePersistencyRemote dao_r = (TestbedServiceTemplatePersistencyRemote) PortableRemoteObject
+                    .narrow(jndiContext
+                            .lookup("testbed/TestbedServiceTemplatePersistencyImpl/remote"),
+                            TestbedServiceTemplatePersistencyRemote.class);
+            return dao_r;
+        } catch (NamingException e) {
+            log.error("Failure in getting PortableRemoteObject: "
+                    + e.toString());
+            return null;
+        }
+    }
 	
 }

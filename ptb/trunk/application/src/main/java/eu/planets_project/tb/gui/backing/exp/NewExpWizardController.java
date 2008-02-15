@@ -2,15 +2,18 @@ package eu.planets_project.tb.gui.backing.exp;
 
 
 import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
-import eu.planets_project.tb.api.model.mockups.Workflow;
+import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.BenchmarkBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
@@ -21,31 +24,43 @@ import eu.planets_project.tb.gui.backing.admin.ManagerTBServices;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
-import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
-import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
+import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.html.HtmlCommandLink;
+import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.html.HtmlInputTextarea;
+import javax.faces.component.html.HtmlOutputLink;
+import javax.faces.component.html.HtmlOutputText;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Vector;
 
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIComponentBase;
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
+import javax.faces.el.MethodBinding;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;
@@ -159,21 +174,6 @@ public class NewExpWizardController {
         if (expBean.getEref() != null && !expBean.getEref().equals(""))
         	refs.add(expBean.getEref());
         props.setExperimentReferences(refs);
-	    /*List<String[]> lit = props.getAllLiteratureReferences();
-        if (lit != null && !lit.isEmpty()) {
-        	String[] l = lit.get(0);
-        	props.removeLiteratureReference(l[0],l[1]);            	
-        } 
-        if (litRefDesc != null && !litRefDesc.equals("") && litRefURI != null && !litRefURI.equals(""))
-        	props.addLiteratureReference(litRefDesc, litRefURI);
-        
-        if (expBean.getEref() != null)
-        	props.addExperimentReference(expBean.getEref());
-        else {
-            List<Long> refs = props.getExperimentReferences();
-            if (refs != null && !refs.isEmpty()) 
-            	props.removeExperimentReference(refs.get(0));
-    	}*/
         
         props.setDigiTypes(expBean.getDtype());
         
@@ -288,8 +288,8 @@ public class NewExpWizardController {
 	  }
    	}
     
-    
-    public String updateEvaluationAction() {
+    //TODO:comment in again
+    /*public String updateEvaluationAction() {
         try {
 	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
@@ -352,44 +352,36 @@ public class NewExpWizardController {
         	log.error("Exception when trying to create/update Evaluations: "+e.toString());
         	return "failure";
         }
-    }
-    
-   /* public String updateExpTypeAction() {
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        
-        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-        Experiment exp = testbedMan.getExperiment(expBean.getID());
-        // add/change attributes
-        exp.getExperimentSetup().setExperimentType(Integer.parseInt(expBean.getEtype()));
-        
-        testbedMan.updateExperiment(exp);
-    	return "success";
     }*/
+    
       
-    public String saveExpWorkflowAction()  {
+    /**
+     * This action completes stage2. i.e. create an experiment's executable, store the
+     * added files within, hand over the selected ServiceTemplate, etc.
+     * @return
+     */
+    public String commandSaveStep2Substep2Action()  {
         try {
 	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-	        Workflow workflow = (Workflow)JSFUtil.getManagedObject("Workflow");
 	        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
 	        Experiment exp = testbedMan.getExperiment(expBean.getID());
-	        // remove old workflow and add newadd/change workflow of this experiment
-	        ExperimentWorkflow ewf = exp.getExperimentSetup().getExperimentWorkflow();
-	        if (ewf == null) {
-	        	ewf = new ExperimentWorkflowImpl(workflow);
+	        
+	        // create the experiment's executable - the constructor takes the ServiceTemplate
+	        ExperimentExecutable executable = exp.getExperimentExecutable();
+	        if (executable == null) {
+	        	executable = new ExperimentExecutableImpl(expBean.getSelectedServiceTemplate());
 	        }
-	        //expBean.getEworkflow()
-	        exp.getExperimentSetup().setExperimentType(expBean.getEtype());
-	        FileUploadBean uploadBean = (FileUploadBean)JSFUtil.getManagedObject("FileUploadBean");
-	        uploadBean.upload();
-	        ewf.addInputData(uploadBean.getURI());
-	        ewf.setWorkflow(workflow);
-	        exp.getExperimentSetup().setWorkflow(ewf);
-	        expBean.setEworkflow(ewf);
-	        expBean.setEworkflowInputData(uploadBean.getURI().toString());
+	        
+	        // store the provided input data
+	        executable.setInputData(expBean.getExperimentInputData().values());	        
+	        // store all other metadata
+	        executable.setSelectedServiceOperationName(expBean.getSelectedServiceOperationName());
+	        
+	        //modify the experiment's stage information
 	        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
 	        exp.setState(Experiment.STATE_IN_PROGRESS);
 	        testbedMan.updateExperiment(exp);
-	        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");   
+	        
 	        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);	        	        
 	    	return "goToStage3";
         } catch (Exception e) {
@@ -398,23 +390,193 @@ public class NewExpWizardController {
         }
     }
     
-    public void changeExpWorkflowDataAction() {
+    
+    /**
+     * In the process of selecting the proper TBServiceTemplate to work with
+     * Reacts to changes within the selectOneMenu
+     * @param ce
+     */
+    public void changedSelTBServiceTemplateEvent(ValueChangeEvent ce) {
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        expBean.setEworkflowInputData(null);    	
+    	//also sets the beans selectedServiceTemplate (from the registry)
+    	expBean.setSelServiceTemplateID(ce.getNewValue().toString());
+    	//reloadOperations();
     }
     
-    public void changedExpWorkflowEvent(ValueChangeEvent ce) {
+    /**
+     * In the process of selecting the proper TBServiceTemplate to work with
+     * Reacts to changes within the selectOneMenu
+     * @param ce
+     */
+    public void changedSelServiceOperationEvent(ValueChangeEvent ce) {
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	expBean.setWorkflowTypeId(ce.getNewValue().toString());
-    	this.changedExpWorkflow();
+    	expBean.setSelectedServiceOperationName(ce.getNewValue().toString());
     }
     
-    public void changedExpWorkflow() {
+    /**
+     * When the selected ServiceTemplate has changed - reload it's available
+     * ServiceOperations.
+     */
+    /*private void reloadOperations(){
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Workflow wf = WorkflowHandlerImpl.getInstance().getWorkflow(Long.parseLong(expBean.getWorkflowTypeId()));
-    	FacesContext ctx = FacesContext.getCurrentInstance();
-		ctx.getExternalContext().getSessionMap().put("Workflow", wf);    	
+    	expBean.setSelectedServiceOperationName("");
+    }*/
+    
+    
+    /**
+     * A file has been slected for being uploaded and the add icon was pressed to add a reference
+     * for this within the experiment bean
+     * @return
+     */
+    public String commandAddInputDataItem(){
+    	//0) upload the specified data to the Testbed's file repository
+		FileUploadBean uploadBean = this.uploadFile();
+		String fileRef = uploadBean.getLocalFileRef();
+		if(!(new File(fileRef).canRead())){
+			log.debug("Added file reference not correct or reachable by the VM "+fileRef);
+		}
+    	
+    	//1) Add the file reference to the expBean
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	String position = expBean.addExperimentInputData(fileRef);
+    	
+    	//2) For the current fileRef create an GUI outputfield + a RemoveIcon+Link
+    	UIComponent panel = this.getComponent("panelAddedFiles");
+    	helperCreateRemoveFileElement(panel, fileRef, position);
+    	
+    	//reload stage2 and displaying the added data items
+    	return "goToStage2";
     }
+    
+    /**
+     * Creates the JSF Elements to render a given fileRef as CommandLink within the given UIComponent
+     * @param panel
+     * @param fileRef
+     * @param key
+     */
+    private void helperCreateRemoveFileElement(UIComponent panel, String fileRef, String key){
+		try {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			//file ref
+			HtmlOutputText outputText = (HtmlOutputText) facesContext
+					.getApplication().createComponent(
+							HtmlOutputText.COMPONENT_TYPE);
+			outputText.setValue(fileRef);
+			outputText.setId("fileName" + key);
+			//file name
+			HtmlOutputLink link_src = (HtmlOutputLink) facesContext
+					.getApplication().createComponent(
+							HtmlOutputLink.COMPONENT_TYPE);
+			link_src.setId("fileRef" + key);
+			DataHandler dh = new DataHandlerImpl();
+			URI URIFileRef = dh.getHttpFileRef(new File(fileRef), true);
+			link_src.setValue("file:///" + URIFileRef);
+
+			//CommandLink+Icon allowing to delete this entry
+			HtmlCommandLink link_remove = (HtmlCommandLink) facesContext
+					.getApplication().createComponent(
+							HtmlCommandLink.COMPONENT_TYPE);
+			//set the ActionMethod to the method: "commandRemoveAddedFileRef(ActionEvent e)"
+			Class[] parms = new Class[] { ActionEvent.class };
+			MethodBinding mb = FacesContext.getCurrentInstance()
+					.getApplication().createMethodBinding(
+							"#{NewExp_Controller.commandRemoveAddedFileRef}",
+							parms);
+			link_remove.setActionListener(mb);
+			link_remove.setId("removeLink" + key);
+			//send along an helper attribute to identify which component triggered the event
+			link_remove.getAttributes().put("IDint", key);
+			HtmlGraphicImage image = (HtmlGraphicImage) facesContext
+					.getApplication().createComponent(
+							HtmlGraphicImage.COMPONENT_TYPE);
+			image.setUrl("../graphics/button_delete.gif");
+			image.setAlt("delete-image");
+			image.setId("graphicRemove" + key);
+			link_remove.getChildren().add(image);
+
+			//add all three components
+			panel.getChildren().add(link_remove);
+			link_src.getChildren().add(outputText);
+			panel.getChildren().add(link_src);
+			
+		} catch (Exception e) {
+			log.error("error building components for file removal "+e.toString());
+		}
+    }
+    
+    /**
+	 * Removes one selected file reference from the list of added file refs for Step3.
+	 * The specified file ref(s) are used as input data to invoke a given service operation. 
+	 * @return
+	 */
+	public String commandRemoveAddedFileRef(ActionEvent event){
+		
+		try {
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			
+			//1)get the passed Attribute "IDint", which is the counting number of the component
+			int IDnr = ((Integer)event.getComponent().getAttributes().get("IDint")).intValue();
+			
+			//2) Remove the data from the bean's variable
+			ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+			expBean.removeExperimentInputData(IDnr+"");
+			
+			//3) Remove the GUI elements from the panel
+			UIComponent comp_link_remove = this.getComponent("panelAddedFiles:removeLink"+IDnr);
+		
+			UIComponent comp_link_src = this.getComponent("panelAddedFiles:fileRef"+IDnr);
+			getComponent("panelAddedFiles").getChildren().remove(comp_link_remove);
+			//this.getComponentPanelStep3Add().getChildren().remove(comp_text);
+			getComponent("panelAddedFiles").getChildren().remove(comp_link_src);
+
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return "goToStage2";
+	}
+    
+	/**
+	 * Helper to fetch the FileUploadBean from the request
+	 * @return
+	 */
+	private FileUploadBean getCurrentFileUploadBean(){
+		return (FileUploadBean)JSFUtil.getManagedObject("FileUploadBean");
+	}
+	
+	/**
+	 * Triggers the page's file upload element, takes the selected data and 
+	 * transfers it into the Testbed's file repository. The reference to this file
+	 * is layed into the system's application map.
+	 * @return: Returns an instance of the FileUploadBean (e.g. for additional operations as .getEntryName, etc.)
+	 * if the operation was successful or null if an error occured
+	 */
+	public FileUploadBean uploadFile(){
+		FileUploadBean file_upload = this.getCurrentFileUploadBean();
+		try{
+			//trigger the upload command
+			String result = file_upload.upload();
+			
+			if(!result.equals("success-upload")){
+				return null;
+			}
+		}
+		catch(Exception e){
+			//In this case an error occured ("error-upload"): just reload the page without adding any information
+			log.error("error uploading file to Testbed's input folder: "+e.toString());
+			return null;
+		}
+		
+		return file_upload;
+	}
+    
+    /**
+     * Reacting to the "use" button, to make ServiceTemplate Selection final
+     */
+    /*public void commandUseSelTBServiceTemplate(){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	//TODO: continue with implementation
+    }*/
     
     public void changedExpTypeEvent(ValueChangeEvent ce) {
     	String id = ce.getNewValue().toString();  
@@ -449,17 +611,83 @@ public class NewExpWizardController {
         return name;
     }
     
-    public Map<String,String> getAvailableWorkflows() {
-    	WorkflowHandlerImpl wfh = WorkflowHandlerImpl.getInstance();
-    	TreeMap<String,String> wfMap = new TreeMap<String,String>();
-       	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Iterator iter = wfh.getAllWorkflows(expBean.getEtype()).iterator();
-    	while(iter.hasNext()) {
-    		Workflow wf = (Workflow)iter.next();
-    		wfMap.put(wf.getName(),String.valueOf(wf.getEntityID()));
+    
+    /**
+     * Queries the ServiceTemplateRegistry and returns a Map of all available Templates
+     * with service name and it's UUID as key, which is then displayed in the GUI
+     * Restriction: The list is restricted by the already chosen experiment type:
+     * e.g. only fetch Migration/Characterisation templates
+     * @return
+     */
+    public Map<String,String> getAllAvailableTBServiceTemplates(){
+    	TreeMap<String,String> ret = new TreeMap<String,String>();
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
+    	Collection<TestbedServiceTemplate> templates = new Vector<TestbedServiceTemplate>();
+    	
+    	//determine which typeID has been selected
+    	  //simple migration experiment
+    	if(expBean.getEtype().equals("experimentType.simpleMigration")){
+    		//mapping between service type ID and experiment type ID
+    		templates = registry.getAllServicesWithType(
+    				TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_MIGRATION
+    				);
     	}
-    	return wfMap;
+    	 //simple characterisation experiment
+    	if(expBean.getEtype().equals("experimentType.simpleCharacterisation")){
+    		templates = registry.getAllServicesWithType(
+    				TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_CHARACTERISATION
+    				);
+    	}
+    	//add data for rendering
+		Iterator<TestbedServiceTemplate> itTemplates = templates.iterator();
+		while(itTemplates.hasNext()){
+			TestbedServiceTemplate template = itTemplates.next();
+			ret.put(template.getName(),String.valueOf(template.getUUID()));
+		}
+    	return ret;
     }
+    
+    /**
+     * Returns a Map of all available serviceOperations for an already selected
+     * ServiceTemplate
+     * Restriction: The list is restricted by the already chosen experiment type:
+     * e.g. only fetch Migration/Characterisation templates
+     * @return
+     */
+    public Map<String,String> getAllAvailableServiceOperations(){
+    	TreeMap<String,String> ret = new TreeMap<String,String>();
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	TestbedServiceTemplate template = expBean.getSelectedServiceTemplate();
+    	if(template!=null){
+    		List<ServiceOperation> lOperations = null;
+    		  //simple migration experiment
+        	if(expBean.getEtype().equals("experimentType.simpleMigration")){
+        		//mapping between operationTypeID and experiment type ID
+        		lOperations = template.getAllServiceOperationsByType(
+        				TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_MIGRATION
+        				);
+        	}
+        	 //simple characterisation experiment
+        	if(expBean.getEtype().equals("experimentType.simpleCharacterisation")){
+        		lOperations = template.getAllServiceOperationsByType(
+        				TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_CHARACTERISATION
+        				);
+        	}
+        	
+        	if(lOperations!=null){
+        		//add data for rendering
+        		Iterator<ServiceOperation> itOperations = lOperations.iterator();
+        		while(itOperations.hasNext()){
+        			ServiceOperation operation = itOperations.next();
+        			//Treevalue, key
+        			ret.put(operation.getName(),operation.getName());
+        		}
+        	}
+    	}
+    	return ret;
+    }
+    
     
     public Map<String,String> getAvailableEvaluationValues() {
        	TreeMap<String,String> map = new TreeMap<String,String>();
@@ -505,7 +733,9 @@ public class NewExpWizardController {
         expBean.setApproved(true);
         return "goToStage5";
     }
-    public String executeExperiment(){
+    
+    //TODO: comment in again
+    /*public String executeExperiment(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
@@ -528,13 +758,13 @@ public class NewExpWizardController {
     		System.out.println("Error when executing Experiment: " + e.toString());
     		return null;
     	}   	
-    }
+    }*/
     
     public String proceedToEvaluation() {
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
-  	  	if (exp.getExperimentExecution().isExecuted()) {
+  	  	if (exp.getExperimentExecution().isExecutionCompleted()) {
   	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
   	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
   	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
@@ -548,7 +778,7 @@ public class NewExpWizardController {
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
-    	if (exp.getExperimentExecution().isExecutionInProgress())
+    	if ((exp.getExperimentExecution().isExecutionInvoked())&&(!exp.getExperimentExecution().isCompleted()))
     		return true;
     	else {
       	  	//if (exp.getCurrentPhase().getPhaseName().equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION))
@@ -604,6 +834,29 @@ public class NewExpWizardController {
  * END methods for new_experiment wizard page
  * -------------------------------------------
  */
+    
+    /**
+	 * Get the component from the JSF view model - it's id is registered withinin the page
+	 * @return
+	 */
+	private UIComponent getComponent(String sID){
+
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			
+			//the ViewRoot contains all children not only in sub-level1
+			Iterator<UIComponentBase> it = facesContext.getViewRoot().getChildren().iterator();
+			UIComponent returnComp = null;
+			
+			while(it.hasNext()){
+				UIComponent guiComponent = it.next().findComponent(sID);
+				if(guiComponent!=null){
+					returnComp = guiComponent;
+				}
+			}
+			
+			//changes on the object are directly reflected within the GUI
+			return returnComp;
+	  }
     
 
 }

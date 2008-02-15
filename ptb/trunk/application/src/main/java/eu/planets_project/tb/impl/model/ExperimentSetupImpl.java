@@ -12,14 +12,17 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
+import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
+import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
-import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 
 /**
  * @author alindley
@@ -43,8 +46,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentResourcesImpl experimentResources;
-	@OneToOne(cascade={CascadeType.ALL})
-	private ExperimentWorkflowImpl workflow;
 	//a helper reference pointer, for retrieving the experiment in the phase
 	private long lExperimentIDRef;
 	
@@ -106,12 +107,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 				this.basicProperties.getExperimentApproach());
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getExperimentWorkflow()
-	 */
-	public ExperimentWorkflow getExperimentWorkflow() {
-		return this.workflow;
-	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setExperimentResources(eu.planets_project.tb.api.model.ExperimentResources)
@@ -132,13 +127,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 */
 	public void setExperimentType(String typeID) throws InvalidInputException {
 		this.basicProperties.setExperimentApproach(typeID);
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setWorkflow(eu.planets_project.tb.api.services.mockups.ComplexWorkflow)
-	 */
-	public void setWorkflow(ExperimentWorkflow workflow) {
-		this.workflow = (ExperimentWorkflowImpl)workflow;
 	}
 
 
@@ -256,6 +244,52 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 */
 	public void setSubStage(int subStage) {
 		this.iSubstage = subStage;
+	}
+
+
+	/* (non-Javadoc)
+	 * Retrieves the ServiceTemplate from the ExperimentExecutable, which is
+	 * persisted within the Experiment. Please note: this is null for a new experiment.
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getServiceTemplate()
+	 */
+	public TestbedServiceTemplate getServiceTemplate() {
+		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
+		//get the Experiment this phase belongs to
+		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
+		
+		ExperimentExecutable executable = thisExperiment.getExperimentExecutable();
+		if(executable !=null){
+			//it has already been created
+			return executable.getServiceTemplate();
+		}
+		else{
+			return null;
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * When removing the serviceTemplate also the ExperimentExecutable is removed
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#removeServiceTemplate()
+	 */
+	public void removeServiceTemplate() {
+		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
+		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
+		
+		thisExperiment.removeExperimentExecutable();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setServiceTemplate(eu.planets_project.tb.api.model.ExperimentExecutable)
+	 */
+	public void setServiceTemplate(TestbedServiceTemplate template) {
+		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
+		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
+		
+		//ExperimentExecutable is set and initialized for this experiment
+		ExperimentExecutable executable = new ExperimentExecutableImpl(template);
+		thisExperiment.setExperimentExecutable(executable);
 	}
 	
 }

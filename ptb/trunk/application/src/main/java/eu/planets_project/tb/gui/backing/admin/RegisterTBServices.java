@@ -52,14 +52,14 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import eu.planets_project.tb.api.services.ServiceRegistry;
+import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.services.ServiceRegistryImpl;
+import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 
 /**
@@ -1583,7 +1583,7 @@ public class RegisterTBServices{
 		
 		TestbedServiceTemplateImpl tbService = new TestbedServiceTemplateImpl();
 		TestbedServiceTemplate.ServiceOperation operation = tbService.new ServiceOperationImpl();
-		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
 		
 		//relevant information to build the wsclient bean: wsdlURI, servicename, opname
 		//relevant information to build the TB parts: XMLRequest template, XPath query
@@ -1643,10 +1643,18 @@ public class RegisterTBServices{
 				}
 			}
 			
-			//register the service within the registry
-			registry.registerService(tbService);
-			String serviceID = tbService.getUUID();
-			if(serviceID==null){
+			try{
+				//register the service within the registry
+				registry.registerService(tbService);
+				//we need to retrieve a new instance of this object as the registry persists it
+				/*tbService = (TestbedServiceTemplateImpl)registry.getServiceByID(id);
+				String serviceID = tbService.getUUID();
+				if(serviceID==null){
+					//this leads to the error-page
+					throw new Exception("Service did not obtain a proper UUID");
+				}*/
+			}catch(Exception e){
+				e.printStackTrace();
 				//this leads to the error-page
 				throw new Exception("Service did not obtain a proper UUID");
 			}
@@ -1848,7 +1856,7 @@ public class RegisterTBServices{
 	 *
 	 */
 	private void fillOutExistingServiceMetaDataForStep5(){
-		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
 		TestbedServiceTemplate tbSerHelper = new TestbedServiceTemplateImpl();
 		tbSerHelper.setEndpoint(this.getEndpointURI(),true);
 		TestbedServiceTemplate tbSerFound =  registry.getServiceByWSDLContent(tbSerHelper.getWSDLContent());

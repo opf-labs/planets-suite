@@ -2,10 +2,12 @@ package eu.planets_project.tb.gui.backing;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.faces.component.UIData;
 import javax.faces.model.SelectItem;
@@ -17,14 +19,17 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.mockups.ExperimentWorkflow;
+import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
+import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 
 
 public class ExperimentBean {
@@ -61,14 +66,18 @@ public class ExperimentBean {
     private String eapproach = new String();
     private String econsiderations = new String();
     private String etype;
-    private String etypeName;
-    private ExperimentWorkflow eworkflow;    
-    private String workflowtypeid;
+    private String etypeName;  
+    //the selected TBServiceTemplate's ID
+    private TestbedServiceTemplate selSerTemplate;
+    private String sSelSerTemplateID="";
+    private String sSelSerOperationName="";
+    
     private Map<String,BenchmarkBean> benchmarks = new HashMap<String,BenchmarkBean>();
     private String intensity="0";
     private String nrOutputFiles="1";
-    private String inputData;
-    private String outputData;
+    //The input file refs with Map<Position+"",localFileRef>
+    private Map<String,String> inputData = new HashMap<String,String>();
+    //private Map<String,String> outputData = new HashMap<String,String>();
     private int currStage = ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
     
@@ -147,15 +156,19 @@ public class ExperimentBean {
     	this.formality = props.isExperimentFormal();    	
     	this.etype = String.valueOf(expsetup.getExperimentTypeID());
         this.etypeName = AdminManagerImpl.getInstance().getExperimentTypeName(this.etype);
-    	this.eworkflow = exp.getExperimentSetup().getExperimentWorkflow();
-    	if (this.eworkflow !=null) {
-    		this.workflowtypeid=String.valueOf(eworkflow.getWorkflow().getEntityID());
-   			if (eworkflow.getInputData()!=null)     			
-   				this.inputData = eworkflow.getInputData().toArray()[0].toString();   			    		    		
-    	}
+    	
+        //get already added TestbedServiceTemplate data
+        if(exp.getExperimentExecutable()!=null){
+        	ExperimentExecutable executable = exp.getExperimentExecutable();
+        	this.selSerTemplate = executable.getServiceTemplate();
+        	this.sSelSerTemplateID = selSerTemplate.getUUID();
+        	this.sSelSerOperationName = executable.getSelectedServiceOperationName();
+        	helperLoadInputData(executable.getInputData());
+        }
 
     	// set benchmarks
-    	try {
+    	//TODO einkommentieren
+        /*try {
     		if (this.inputData != null) {
     			Iterator<BenchmarkGoal> iter;
     			if (exp.getCurrentPhase() instanceof ExperimentEvaluation) 
@@ -178,7 +191,7 @@ public class ExperimentBean {
     		}
         } catch (Exception e) {
         	log.error("Exception when trying to create ExperimentBean from database object: "+e.toString());        	
-        }
+        }*/
     	// merge information to benchmark beans    	
     	/*Iterator iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
@@ -216,6 +229,7 @@ public class ExperimentBean {
         
         this.dtype = props.getDigiTypes();
     }
+    //END OF FILL METHOD
     
     public Map<String,BenchmarkBean> getBenchmarks() {
 		return benchmarks;    	
@@ -237,40 +251,99 @@ public class ExperimentBean {
     	this.benchmarks = bms;
     }
     
-    public void setEworkflow(ExperimentWorkflow ewf) {
-    	this.eworkflow = ewf;
-    }
-    
-    public ExperimentWorkflow getEworkflow(){
-    	return this.eworkflow;
-    }
-    
-    public String getWorkflowTypeId() {
-    	if (eworkflow !=null)
-    		return String.valueOf(eworkflow.getWorkflow().getEntityID());
+    /**
+     * Returns the selected service template UUID
+     * @return
+     */
+    public String getSelectedServiceTemplateID() {
+    	if (selSerTemplate !=null)
+    		return selSerTemplate.getUUID();
     	else
-    		return this.workflowtypeid;
+    		return this.sSelSerTemplateID;
     }
     
-    public void setWorkflowTypeId(String wftypeId) {
-    	this.workflowtypeid = wftypeId;
+    public void setSelServiceTemplateID(String sID){
+    	this.sSelSerTemplateID = sID;
+    	setSelectedServiceTemplate(sID);
     }
     
-    public String getEworkflowInputData() {
+    public void setSelectedServiceOperationName(String sName){
+    	this.sSelSerOperationName = sName;
+    }
+    
+    public String getSelectedServiceOperationName(){
+    	return this.sSelSerOperationName;
+    }
+    
+    /**
+     * Sets the selected object's id and also fetches the object from the registry
+     * @param sID
+     */
+    public void setSelectedServiceTemplate(String sID){
+    	ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
+    	this.selSerTemplate = registry.getServiceByID(sID);
+    }
+    
+    public TestbedServiceTemplate getSelectedServiceTemplate(){
+    	return this.selSerTemplate;
+    }
+
+    
+    /**
+     * Returns a Map of added file Refs
+     * Map<position+"",fileRef>
+     * @return
+     */
+    public Map<String,String> getExperimentInputData() {
     	return this.inputData;
     }
     
-    public void setEworkflowInputData(String inputdata) {
-    	this.inputData = inputdata;
+    /**
+     * Returns the position where this item has been added
+     * @param localFileRef
+     * @return
+     */
+    public String addExperimentInputData(String localFileRef) {
+    	String key = getNextInputDataKey();
+    	if(!this.inputData.values().contains(localFileRef)){
+    		this.inputData.put(key, localFileRef); 
+    	}
+    	return key;
     }
     
-    public String getEworkflowOutputData() {
+    public void removeExperimentInputData(String key){
+    	if(this.inputData.containsKey(key)){
+    		this.inputData.remove(key);
+    	}
+    }
+    
+    /**
+     * As the InputData HashMap should be filled up with IDs without any 
+     * gap, this method is used to find the next possible key
+     * @return
+     */
+    private String getNextInputDataKey(){
+    	boolean bFound = false;
+    	int count = 0;
+    	while(!bFound){
+    		if(this.inputData.containsKey(count+"")){
+    			bFound = true;
+    		}
+    		else{
+    			count++;
+    		}
+    	}
+    	return count+"";
+    }
+    
+    //TODO: einkommentieren??
+    /*public String getEworkflowOutputData() {
     	return this.outputData;
     }
     
     public void setEworkflowOutputData(String outputdata) {
     	this.outputData = outputdata;
-    }
+    }*/
 
     public void setNumberOfOutputFiles(String nr) {
 		this.nrOutputFiles = nr;
@@ -509,5 +582,20 @@ public class ExperimentBean {
     public String getCurrentPhaseName() {
         return exp.getCurrentPhase().getPhaseName();
     }
+    
+    /**
+     * Helper to load already entered input data from the experiment's executable
+     * into this backing bean
+     * @param fileRefs
+     */
+    private void helperLoadInputData(Collection<String> fileRefs){
+    	Iterator<String> itFileRefs = fileRefs.iterator();
+    	int i =0;
+    	while(itFileRefs.hasNext()){
+    		this.inputData.put(i+"",itFileRefs.next());
+    		i++;
+    	}
+    }
+    
     
 }

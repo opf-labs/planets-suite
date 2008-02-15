@@ -7,13 +7,14 @@ package eu.planets_project.tb.api.model;
  * Within this steps it's possible to navigate forward and backward - afer a phase has completed its data may not be modified any longer. 
  * <p>
  * - Status: Every phase contains a status as well as there's an overall status status for the entire Experiment
+ * - ExperimentExecutable: the part of an experiment (related to the idea of an "executable preservation plan)
+ *   All phases may read or write into this object, the actual execution takes place on this object.
+ *   While the Phases correspond to the actual experiment related ideas the executable capturs the technical bits.
  * @author alindley
  *
  */
 public interface Experiment extends ExperimentPhase{
 
-	//public long getExperimentID();
-	
 	public void setExperimentSetup(ExperimentSetup setupPhaseObject);
 	public ExperimentSetup getExperimentSetup();
 	
@@ -25,6 +26,10 @@ public interface Experiment extends ExperimentPhase{
 	
 	public void setExperimentEvaluation(ExperimentEvaluation analysisPhase);
 	public ExperimentEvaluation getExperimentEvaluation();
+	
+	public void setExperimentExecutable(ExperimentExecutable executable);
+	public ExperimentExecutable getExperimentExecutable();
+	public void removeExperimentExecutable();
 	
 	public ExperimentPhase getCurrentPhase();
 	public int getCurrentPhasePointer();

@@ -1,27 +1,18 @@
 package eu.planets_project.tb.gui.backing;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 
 import eu.planets_project.tb.api.TestbedManager;
-import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.ExperimentSetup;
-import eu.planets_project.tb.api.model.mockups.Workflow;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
-import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
-import eu.planets_project.tb.impl.model.ExperimentImpl;
-import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
-import eu.planets_project.tb.impl.TestbedManagerImpl;
 
 import java.util.Collection;
 
@@ -151,12 +142,7 @@ public class ListExp extends SortableList {
 
 	      ExperimentBean expBean = new ExperimentBean();
 	      expBean.fill(selectedExperiment);
-	      // if experiment workflow already specified, set a workflow bean into session as backing bean for inputfields, else remove any existing workflow from session
-	      if (expBean.getWorkflowTypeId()!=null) {
-	    	  Workflow wf = selectedExperiment.getExperimentSetup().getExperimentWorkflow().getWorkflow();
-	    	  ctx.getExternalContext().getSessionMap().put("Workflow",wf);
-	      } else 
-	    	  ctx.getExternalContext().getSessionMap().remove("Workflow"); 
+	      
 	      //Store selected Experiment Row accessible later as #{Experiment} 
 	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
 	              
@@ -173,11 +159,7 @@ public class ListExp extends SortableList {
 
 	      ExperimentBean expBean = new ExperimentBean();
 	      expBean.fill(selectedExperiment);
-	      // if experiment workflow already specified, set a workflow bean into session as backing bean for inputfields
-	      if (expBean.getWorkflowTypeId()!=null) {
-	    	  Workflow wf = selectedExperiment.getExperimentSetup().getExperimentWorkflow().getWorkflow();
-	    	  ctx.getExternalContext().getSessionMap().put("Workflow",wf);
-	      }
+
 	      //Store selected Experiment Row accessible later as #{Experiment} 
 	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
 	              

@@ -15,7 +15,7 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
  * @author alindley
  *
  */
-public interface ServiceRegistry {
+public interface ServiceTemplateRegistry {
 	
 
 	/**
@@ -31,6 +31,13 @@ public interface ServiceRegistry {
 	public List<String> getAllEndpoints();
 	
 	public Collection<TestbedServiceTemplate> getAllServices();
+	
+	/**
+	 * Type: e.g. All servicess containing operations of type PA or PC 
+	 * @param serviceType
+	 * @return
+	 */
+	public Collection<TestbedServiceTemplate> getAllServicesWithType(String serviceOperationType);
 	public Collection<String> getAllServiceUUIDs();
 	
 	/**

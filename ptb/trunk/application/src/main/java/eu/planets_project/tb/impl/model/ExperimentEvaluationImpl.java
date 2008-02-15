@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
@@ -308,7 +309,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID,
 			String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException{
 		
-		if((this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID))&&(this.getInputFiles().contains(inputFile))){
+		if((this.getInputBenchmarkGoals().keySet().contains(addedBenchmarkGoalID))&&(this.getInputFileURIs().contains(inputFile))){
 			//get the input BenchmarkGoal
 			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.getInputBenchmarkGoals().get(addedBenchmarkGoalID)).clone();
 			//get file's BenchmarkGoalSet
@@ -520,35 +521,24 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	}*/
 	
 	/**
-	 * Fetches the ExperimentSetup phase and extracts the InputData from it's ExperimentWorkflow
+	 * Fetches the experiment's executable and extracts the InputData from it's execution
 	 * @return 
 	 */
-	private Vector<URI> getInputFiles(){
-		Vector<URI> vRet = new Vector<URI>();
+	private Collection<URI> getInputFileURIs(){
 		
-		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
-		//get the Experiment this phase belongs to
-		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
-		
-		try{
-			Collection<URI> inputFiles = thisExperiment.getExperimentSetup().
-			getExperimentWorkflow().getInputData();
-			
-			if((inputFiles!=null)&&(inputFiles.size()>0)){
-				Iterator<URI> itURIs = inputFiles.iterator();
-				while(itURIs.hasNext()){
-					URI uri = itURIs.next();
-					vRet.add(uri);
-				}
+		TestbedManager manager = TestbedManagerImpl.getInstance(true);
+		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
+		if(exp!=null){
+			//contains the experiment's execution data
+			ExperimentExecutable executable = exp.getExperimentExecutable();
+			if(executable!=null){
+				return executable.getAllInputHttpDataEntries();
 			}
+		}
 		
-			return vRet;
-		}
-		catch(Exception e){
-			//it's possible that no ExperimentWorkflowInstance was set:
-			return vRet;
-		}
+		return new Vector<URI>();
 	}
+	
 	
 	/**
 	 * Fetches the ExperimentSetup phase and extracts the InputBenchmarkGoals from it.

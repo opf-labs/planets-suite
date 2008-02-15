@@ -16,7 +16,7 @@ import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 
 import org.apache.myfaces.custom.fileupload.HtmlInputFileUploadTag;
 
-import eu.planets_project.tb.api.services.ServiceRegistry;
+import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
@@ -24,7 +24,7 @@ import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.services.ServiceRegistryImpl;
+import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 
 
 /**
@@ -308,7 +308,7 @@ public class ManagerTBServices implements ValueChangeListener {
 	 */
 	private void loadServices(){
 		this.lServiceSelectItems = new Vector<SelectItem>();
-		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
 		if(registry.getAllServices()!=null){
 			Iterator<TestbedServiceTemplate> itServices = registry.getAllServices().iterator();
 			
@@ -332,7 +332,7 @@ public class ManagerTBServices implements ValueChangeListener {
 	 */
 	private void loadOperations(String serviceID){
 		this.lOperationSelectItems = new Vector<SelectItem>();
-		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
 		if((registry.getAllServiceUUIDs()!=null)&&(registry.getAllServiceUUIDs().contains(serviceID))){
 			TestbedServiceTemplate s1 = registry.getServiceByID(serviceID);
 			Iterator<String> itOps = s1.getAllServiceOperationNames().iterator();
@@ -363,7 +363,7 @@ public class ManagerTBServices implements ValueChangeListener {
 	 */
 	public TestbedServiceTemplate getTBService(){
 		//query serviceRegistry for the selected TestbedService Object
-		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
 		if(this.serviceSelectItem!=null){
 			//value stores the service's UUID; service may also be null
 			TestbedServiceTemplate service = registry.getServiceByID(this.serviceSelectItem.getValue().toString());
@@ -485,7 +485,7 @@ public class ManagerTBServices implements ValueChangeListener {
 	 * @return
 	 */
 	public String command_deleteSelectedService(){
-		ServiceRegistry registry = ServiceRegistryImpl.getInstance();
+		ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
 		if(this.getTBService()!=null){
 			//delete the service
 			registry.removeService(this.getTBService());

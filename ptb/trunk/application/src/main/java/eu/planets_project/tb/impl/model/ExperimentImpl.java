@@ -9,6 +9,7 @@ import javax.persistence.OneToOne;
 
 import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
@@ -37,13 +38,20 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	private ExperimentExecutionImpl expExecution;
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentSetupImpl expSetup;
+	@OneToOne(cascade={CascadeType.ALL})
+	//get's instantiated within the experimentSetup phase
+	private ExperimentExecutableImpl executable;
 	
 	
 	public ExperimentImpl(){
+		//the experiment's stages
 		expSetup = new ExperimentSetupImpl();
 		expExecution = new ExperimentExecutionImpl();
 		expApproval = new ExperimentApprovalImpl();
 		expEvaluation = new ExperimentEvaluationImpl();
+		//the experiment's executable inforamtion
+		//note: executable gets instantiated within the expeirment setup phase
+		executable = null;
 		
 		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
 		
@@ -189,6 +197,29 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 		}
 		
 		return bRet;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentExecutable()
+	 */
+	public ExperimentExecutable getExperimentExecutable() {
+		return this.executable;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#setExperimentExecutable(eu.planets_project.tb.api.model.ExperimentExecutable)
+	 */
+	public void setExperimentExecutable(ExperimentExecutable executable) {
+		this.executable = (ExperimentExecutableImpl) executable;
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Experiment#removeExperimentExecutable()
+	 */
+	public void removeExperimentExecutable() {
+		this.executable = null;
+		
 	}
 
 

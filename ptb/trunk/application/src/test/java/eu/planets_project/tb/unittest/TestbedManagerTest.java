@@ -1,3 +1,4 @@
+/*COMMENT IN AGAIN
 package eu.planets_project.tb.unittest;
 
 import java.util.GregorianCalendar;
@@ -324,3 +325,5 @@ public class TestbedManagerTest extends TestCase{
 	}
 
 }
+
+	END OF COMMENT IN AGAIN*/

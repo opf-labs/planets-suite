@@ -68,6 +68,12 @@ public class FileUploadBean
         originalName = name;
     }
     
+    /**
+     * Returns a URI reference to this uploaded file.
+     * e.g. http://localhost:8080/planets-testbed/inputdata/213fsz9432ljl324.doc
+     * @return
+     * @throws Exception
+     */
     public URI getURI() throws Exception {
     	HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
     	String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
@@ -75,6 +81,15 @@ public class FileUploadBean
     	return uri;
     }
     
+    
+    /**
+     * Returns a localFile reference to this uploaded file.
+     * ../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata/213fsz9432ljl324.doc
+     * @return
+     */
+    public String getLocalFileRef(){
+    	return this.uploadDir+"/"+this._name;
+    }
 
     public String upload() throws IOException
     {

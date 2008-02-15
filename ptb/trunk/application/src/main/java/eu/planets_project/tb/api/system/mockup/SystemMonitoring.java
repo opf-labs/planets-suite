@@ -1,4 +1,4 @@
-package eu.planets_project.tb.api.system;
+package eu.planets_project.tb.api.system.mockup;
 
 public interface SystemMonitoring {
 	

@@ -1,4 +1,4 @@
-package eu.planets_project.tb.unittest.model;
+/*package eu.planets_project.tb.unittest.model;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -21,12 +21,12 @@ import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
-import eu.planets_project.tb.impl.model.mockup.ExperimentWorkflowImpl;
 import eu.planets_project.tb.impl.model.mockup.WorkflowHandlerImpl;
 
 public class ExperimentEvaluationTest extends TestCase{
@@ -409,7 +409,7 @@ public class ExperimentEvaluationTest extends TestCase{
 			//create an ExperimentWorkflow
 			WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
 			Vector<Long> wfIds = (Vector<Long>)wfhandler.getAllWorkflowIDs();
-			ExperimentWorkflow workflow = new ExperimentWorkflowImpl(wfhandler.getWorkflow(wfIds.firstElement()));
+			ExperimentWorkflow workflow = new ExperimentExecutableImpl(wfhandler.getWorkflow(wfIds.firstElement()));
 			//need to set a workflow, as no predefined wf can be set
 			expFound.getExperimentSetup().setWorkflow(workflow);
 			expFound.getExperimentSetup().getExperimentWorkflow().addInputData(testFile);
@@ -455,18 +455,19 @@ public class ExperimentEvaluationTest extends TestCase{
 		}
 	}
 	
-	
+	COMMENT IN AGAIN*/
 	/**
 	 * Helper method to build and add a workflow to an ExperimentSetup, as this object cannot
 	 * be initialized by default
 	 * @param expSetup
 	 * @return
 	 */
-	private ExperimentSetup setupTestWorkflow(ExperimentSetup expSetup, URI testFile){
+	/*START COMMENT IN AGAIN
+	/*private ExperimentSetup setupTestWorkflow(ExperimentSetup expSetup, URI testFile){
 			//create an ExperimentWorkflow
 			WorkflowHandler wfhandler = WorkflowHandlerImpl.getInstance();
 			Vector<Long> wfIds = (Vector<Long>)wfhandler.getAllWorkflowIDs();
-			ExperimentWorkflow workflow = new ExperimentWorkflowImpl(wfhandler.getWorkflow(wfIds.firstElement()));
+			ExperimentWorkflow workflow = new ExperimentExecutableImpl(wfhandler.getWorkflow(wfIds.firstElement()));
 			//need to set a workflow, as no predefined wf can be set
 			expSetup.setWorkflow(workflow);
 			expSetup.getExperimentWorkflow().addInputData(testFile);
@@ -502,3 +503,4 @@ public class ExperimentEvaluationTest extends TestCase{
 	}
 
 }
+COMMEND IN AGAIN*/

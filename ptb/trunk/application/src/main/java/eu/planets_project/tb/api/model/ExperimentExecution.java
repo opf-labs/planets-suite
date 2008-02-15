@@ -7,17 +7,18 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import eu.planets_project.tb.api.model.mockups.Workflow;
-import eu.planets_project.tb.api.system.SystemMonitoring;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.api.system.mockup.SystemMonitoring;
 
 /**
  * @author alindley
  * The interface for Experiment Execution covers step 5 of the Testbed workflow
+ * 
+ * Note that this interface takes and delivers URIs and no local file Refs (as the ExperimentExecutable)
  */
 public interface ExperimentExecution extends ExperimentPhase{
 	
 	//TODO: check if experimentExecution Phase has correct properties
-	
 	public void setScheduledExecutionDate(long millis);
 	public void setScheduledExecutionDate(Calendar date);
 	public Calendar getScheduledExecutionDate();
@@ -35,7 +36,7 @@ public interface ExperimentExecution extends ExperimentPhase{
 	public SystemMonitoring getSystemMonitoringData();
 	
 	public List<String> getExecutionMetadata(URI inputFile);
-	public URI getExecutionOutputData(URI inputFile);
+
 	/**
 	 * Could capture if the migration/characterisation was performed correctly
 	 * @param inputFile
@@ -47,34 +48,80 @@ public interface ExperimentExecution extends ExperimentPhase{
 	 * Returns a Collection of OutputURIs
 	 * @return does not contain null values
 	 */
-	public Collection<URI> getExecutionOutputData();
+	public Collection<URI> getMigrationOutputData();
+	
+	/**
+	 * Returns a Collection of Output Characterisation Strings
+	 * @return does not contain null values
+	 */
+	public Collection<String> getCharacterisationOutputData();
+	
 	//getMapping input,output data
 	/**
-	 * Gets a Map.Entry containing the InputData URI as key and the outputData URI as value
-	 * @param inputFileRef an existing inputFileRef
-	 * @return null if the inputFileRef is not found. Map.Entry<Input,Output>: output is null if no URI available
-	 */
-	public Map.Entry<URI,URI> getExecutionDataEntry(URI inputFileRef);
-	/**
-	 * Gets all available Entries in the form of key=InputURI, value=OutputURI
+	 * Gets all available Migration resultsin the form of Entry key=InputURI, value=OutputURI
 	 * @see getDataEntry for return values.
 	 * @return
 	 */
-	public Collection<Map.Entry<URI,URI>> getExecutionDataEntries();
+	public Collection<Map.Entry<URI,URI>> getMigrationOutputDataEntries();
 	
 	/**
-	 * As the ExperimentExecutionPhase may be in progress but the actual execution of workflofs has not been
-	 * triggered - this method can be used to verify if the execution has been started.
+	 * Gets a Map.Entry containing the InputData URI as key and the outputData URI as value
+	 * @see getDataEntry in form of URI, URI as return value
 	 * @return
 	 */
-	public boolean isExecutionInProgress();
-	//public void setExecutionInProgress(boolean bInProgress);
+	public Map.Entry<URI, URI> getMigrationOutputDataEntry(URI inputFileURI);
 	
 	/**
-	 * Indicates if an experiment workflow has been executed
+	 * Gets all available Characterisation resultsin the form of Entry key=InputURI, value=String
+	 * Note: Characterisation output maps to String (not file!) 
+	 * @see getDataEntry for return values.
 	 * @return
 	 */
-	public boolean isExecuted();
-	//public void setExecuted(boolean bExecuted);
+	public Collection<Map.Entry<URI, String>> getCharacterisationOutputDataEntries();
+	
+	/**
+	 * Gets a Map.Entry containing the InputData URI as key and the outputData characterisation String as value
+	 *  Note: Characterisation output maps to String (not file!) 
+	 * @see getDataEntry in form of URI, String as return value
+	 * @return
+	 */
+	public Map.Entry<URI, String> getCharacterisationOutputDataEntry(URI inputFileURI);
+	
+	/**
+	 * Returns the ServiceOperation of the expeirment's executable part
+	 * This contains data about: operation name, max. supported files, etc.
+	 * @return
+	 */
+	public TestbedServiceTemplate.ServiceOperation getselectedTBServiceTemplateOperation();
+	
+	/**
+	 * Returns the Service of the experiment's executable part
+	 * This contains information about: description, all operations, etc.
+	 * @return
+	 */
+	public TestbedServiceTemplate getSelectedTBServiceTemplate();
+	
+	/**
+	 * Returns the executable part of the experiment
+	 * @return
+	 */
+	public ExperimentExecutable getExperimentExecutable();
+	
+	/**
+	 * Building request, invoking service, parsing results, etc. was performed
+	 * successfully
+	 * @return
+	 */
+	public boolean isExecutionSuccess() ;
+	/**
+	 * service invocation was completed - does not tell anything about its success
+	 * @return
+	 */
+	public boolean isExecutionCompleted();
+	/**
+	 * service invocation has started
+	 * @return
+	 */
+	public boolean isExecutionInvoked();
 
 }

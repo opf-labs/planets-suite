@@ -190,7 +190,6 @@ public class CommentBacking implements java.io.Serializable {
         log.debug("Recieved addCommentAction()" );
         log.debug("Recieved addCommentAction parentId = '" + parentId + "'" );
         log.debug("Recieved addCommentAction expPhase = '" + expPhase + "'" );
-        //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
         
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         Experiment exp = null;

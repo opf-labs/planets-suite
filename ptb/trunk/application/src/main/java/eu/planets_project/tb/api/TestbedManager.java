@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
-import eu.planets_project.tb.api.model.mockups.WorkflowHandler;
+import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 
 public interface TestbedManager {
 	
@@ -40,7 +40,7 @@ public interface TestbedManager {
 	public boolean isExperimentNameUnique(String sExpName);
 	public boolean isRegistered(long lExpID);
 	public boolean isRegistered(Experiment experiment);
-	public void executeExperiment(Experiment exp) throws Exception;
+	public void executeExperiment(Experiment exp);
 	public int getNumberOfExperiments();
 
 	/**
@@ -67,8 +67,8 @@ public interface TestbedManager {
 	// BenchmarkGoalHandler
 	public BenchmarkGoalsHandler getBenchmarkGoalHandler();
 	
-	// WorkflowHandler
-	public WorkflowHandler getWorkflowHandler();
+	// ServiceTemplateRegistry
+	public ServiceTemplateRegistry getServiceTemplateRegistry();
 	
 	//Manages ..
 
