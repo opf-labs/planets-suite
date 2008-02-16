@@ -53,7 +53,7 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	//hashmap of local file refs for input and output data of service execution
 	//note: C:/DATA/ rather than http://localhost:8080/testbed/
 	private HashMap<String,String> hmInputOutputData;
-	@OneToOne(cascade={CascadeType.ALL})
+	@OneToOne(cascade={CascadeType.PERSIST})
 	private TestbedServiceTemplateImpl tbServiceTemplate;
 	private String sSelectedServiceOperationName="";
 	private boolean bExecutionStarted = false;
@@ -66,7 +66,7 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	
 	public ExperimentExecutableImpl(TestbedServiceTemplate template) {
 		//decouple this object
-		tbServiceTemplate = ((TestbedServiceTemplateImpl)template).clone();
+		tbServiceTemplate = ((TestbedServiceTemplateImpl)template);
 		//Info: HashMap<InputFileRef,OutputFileRef>
 		hmInputOutputData = new HashMap<String,String>();
 	}

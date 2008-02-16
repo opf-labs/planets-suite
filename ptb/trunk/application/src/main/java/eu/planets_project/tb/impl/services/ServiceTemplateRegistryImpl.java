@@ -11,13 +11,6 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
@@ -46,7 +39,7 @@ public class ServiceTemplateRegistryImpl implements ServiceTemplateRegistry, jav
 	 * However due to requirements of JSF managed beans it is set public (at the moment).
 	 */
 	public ServiceTemplateRegistryImpl(){
-		dao_r = createPersistencyHandler();
+		dao_r = TestbedServiceTemplatePersistencyImpl.getInstance();
 		loadExistingTemplateData();
 	}
 	
@@ -215,16 +208,8 @@ public class ServiceTemplateRegistryImpl implements ServiceTemplateRegistry, jav
 			}
 			else{
 				//add to persistency layer
-				System.out.println("Before calling persistTBServiceTemplate");
-				//DELTE
-				//--> THE next line causes a remote proxy exception
-				dao_r.isServiceTemplateIDRegistered(service.getUUID());
-				TestbedServiceTemplate DEL = new TestbedServiceTemplateImpl();
-				DEL.setName("SimpleCharacterisationService");
-				DEL.setEndpoint("http://localhost:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl",true);
-				System.out.println("Objekt erzeugt mit ID: "+DEL.getUUID());
-				//END DELETE
-				dao_r.persistTBServiceTemplate(DEL);
+				dao_r.persistTBServiceTemplate(service);
+				
 			}
 			
 			//reload the registry
@@ -395,22 +380,5 @@ public class ServiceTemplateRegistryImpl implements ServiceTemplateRegistry, jav
 		}
 		return ret;
 	}
-	
-	
-    private TestbedServiceTemplatePersistencyRemote createPersistencyHandler() {
-        Log log = LogFactory.getLog(TestbedServiceTemplatePersistencyImpl.class);
-        try {
-            Context jndiContext = new javax.naming.InitialContext();
-            TestbedServiceTemplatePersistencyRemote dao_r = (TestbedServiceTemplatePersistencyRemote) PortableRemoteObject
-                    .narrow(jndiContext
-                            .lookup("testbed/TestbedServiceTemplatePersistencyImpl/remote"),
-                            TestbedServiceTemplatePersistencyRemote.class);
-            return dao_r;
-        } catch (NamingException e) {
-            log.error("Failure in getting PortableRemoteObject: "
-                    + e.toString());
-            return null;
-        }
-    }
 	
 }

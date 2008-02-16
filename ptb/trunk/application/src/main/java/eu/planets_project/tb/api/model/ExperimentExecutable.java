@@ -1,9 +1,7 @@
 package eu.planets_project.tb.api.model;
 
-import java.io.File;
 import java.net.URI;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;

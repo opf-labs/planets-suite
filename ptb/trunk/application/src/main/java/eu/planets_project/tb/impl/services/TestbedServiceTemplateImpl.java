@@ -19,21 +19,18 @@ import java.util.UUID;
 import java.util.Vector;
 
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Transient;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
-import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 
 /**
  * @author alindley
@@ -43,7 +40,7 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="DiscrCol")
 //@Table(name="TBServiceTemplate")
-public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.io.Serializable, Cloneable{
+public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.io.Serializable{
 	
 	private String sServiceDescription, sServiceEndpoint, sServiceName, sWSDLContent;
 	private boolean bURIisWSICompliant;
@@ -56,13 +53,13 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	private Vector<ServiceTag> lTags;
 	// This annotation specifies that the property or field is not persistent.
 	@Transient
-	//A logger for this - transient: it's not persisted with this entity
-    private Log log = LogFactory.getLog(TestbedServiceTemplateImpl.class);
-	@Id
+	private static Log log;
 	//The ServiceTemplate's UUID is used as discriminator
+	@Id
 	private String sServiceID;
 	
 	public TestbedServiceTemplateImpl(){
+		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 		sServiceDescription = "";
 		sServiceEndpoint = "";
 		sServiceName = "";
@@ -488,7 +485,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * 2.that are registered by the admin. So if 2. gets deleted 1. must be still available
 	 * @see java.lang.Object#clone()
 	 */
-	public TestbedServiceTemplateImpl clone(){
+	/*public TestbedServiceTemplateImpl clone(){
 		TestbedServiceTemplateImpl template = null;
 		try{
 			template = (TestbedServiceTemplateImpl) super.clone();
@@ -497,7 +494,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 		}
 		
 		return template;
-	}
+	}*/
 	
 	
 	
@@ -505,6 +502,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * @author Andrew Lindley, ARC
 	 *
 	 */
+	@Embeddable
 	public class ServiceOperationImpl implements TestbedServiceTemplate.ServiceOperation, java.io.Serializable{
 		
 		private String sName ="";
@@ -671,6 +669,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * @author Andrew Lindley, ARC
 	 *
 	 */
+	@Embeddable
 	public class ServiceTagImpl implements TestbedServiceTemplate.ServiceTag, java.io.Serializable{
 		
 		String sName ="";

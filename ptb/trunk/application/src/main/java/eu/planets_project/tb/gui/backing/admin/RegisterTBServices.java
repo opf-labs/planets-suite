@@ -1592,14 +1592,16 @@ public class RegisterTBServices{
 		tbService.setEndpoint(this.getEndpointURI(),true);
 		//serviceName
 		tbService.setName(this.getCurrentServiceName());
-		//description
-		tbService.setDescription(this.getServiceDescription());
 		
 		//check if this is a new service or just a new operation for it
 		TestbedServiceTemplate s = registry.getServiceByWSDLContent(tbService.getWSDLContent());
 		if(s!=null){
 			tbService = (TestbedServiceTemplateImpl)s;
 		}
+		
+		//description
+		tbService.setDescription(this.getServiceDescription());
+		
 		//operationName
 		operation.setName(this.getCurrentOperationName());
 		//description
@@ -1642,17 +1644,17 @@ public class RegisterTBServices{
 					count++;
 				}
 			}
-			
+			//now register the template within the registry
 			try{
-				//register the service within the registry
-				registry.registerService(tbService);
-				//we need to retrieve a new instance of this object as the registry persists it
-				/*tbService = (TestbedServiceTemplateImpl)registry.getServiceByID(id);
 				String serviceID = tbService.getUUID();
 				if(serviceID==null){
 					//this leads to the error-page
 					throw new Exception("Service did not obtain a proper UUID");
-				}*/
+				}
+				
+				//register the service within the registry
+				registry.registerService(tbService);
+
 			}catch(Exception e){
 				e.printStackTrace();
 				//this leads to the error-page
