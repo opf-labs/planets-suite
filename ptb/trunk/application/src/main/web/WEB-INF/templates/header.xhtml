@@ -227,7 +227,7 @@
 			</c:if>
 			
 			<!-- Register Testbed Services -->
-			<c:if test="${page == 'register_TBservices'}">
+			<c:if test="${page == 'register_TBservices' or page == 'overview_registeredTBServices' or page == 'remove_registeredTBServices'}">
 				<li id="current">
 				<!-- calls the init method to register the session's wizzard bean -->
 				<h:commandLink action="#{Manager_Backing.initRegisterTBService}"  rendered="#{UserBean.admin}">
@@ -236,7 +236,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'register_TBservices' and UserBean.admin == true}">
+			<c:if test="${page != 'register_TBservices' and page != 'overview_registeredTBServices' and page != 'remove_registeredTBServices' and UserBean.admin == true}">
 				<li>
 				<h:commandLink action="#{Manager_Backing.initRegisterTBService}" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_services.gif" class="toolbar"/>
