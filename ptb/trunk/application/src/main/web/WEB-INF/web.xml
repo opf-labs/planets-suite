@@ -30,6 +30,16 @@
 		</param-name>
 		<param-value>/faces/extensionResource</param-value>
 	</context-param>
+	
+	<!-- Testbed context parameters for file maangement -->
+    <context-param>
+        <param-name>eu.planetsproject.tb.tmpDirProperty</param-name>
+        <param-value>jboss.home.dir</param-value>
+    </context-param>
+    <context-param>
+        <param-name>eu.planetsproject.tb.dataDir</param-name>
+        <param-value>TestbedData</param-value>
+    </context-param>
 
 	<!-- Uncomment when PSSOS is available
 		NOTE1: make sure that java keystore is set up correctly (see instructions)
@@ -227,7 +237,6 @@
 			<form-error-page>/error.html</form-error-page>
 		</form-login-config>
 	</login-config>
-	<!--  realm-name>TestbedJaasDbRealm</realm-name -->
 
 	<security-role>
 		<description>Testbed Administrator</description>

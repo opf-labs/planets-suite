@@ -175,7 +175,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 		Collection<URI> ret = new Vector<URI>();
 		TestbedManager manager = TestbedManagerImpl.getInstance(true);
 		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
-		if(exp!=null){
+		if(exp!=null && exp.getExperimentExecutable().getOutputData() != null){
 			//contains the experiment's execution data
 			ExperimentExecutable executable = exp.getExperimentExecutable();
 			if(executable!=null){

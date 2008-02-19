@@ -1,6 +1,7 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -69,8 +70,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class NewExpWizardController {
     
-	private Log log = LogFactory.getLog(NewExpWizardController.class);
-        private HtmlInputTextarea ereport;
+    private static Log log = PlanetsLogger.getLogger(NewExpWizardController.class, "testbed-log4j.xml");
+    private HtmlInputTextarea ereport;
     
     public NewExpWizardController() {
     }
@@ -127,6 +128,7 @@ public class NewExpWizardController {
         // Get the Experiment description objects
 	    exp = testbedMan.getExperiment(expBean.getID());
         props = exp.getExperimentSetup().getBasicProperties();
+        log.debug("TEST: exec: "+exp.getExperimentExecutable());
         // If the experiment already existed, check for valid name changes:
         if( existingExp ) {
   	      try {
@@ -159,11 +161,15 @@ public class NewExpWizardController {
         }
         props.setExternalReferenceID(expBean.getExid());
                 
-        String litRefDesc = expBean.getLitRefDesc();
-        String litRefURI = expBean.getLitRefURI();     
+        ArrayList<String> litRefDesc = expBean.getLitRefDesc();
+        ArrayList<String> litRefURI = expBean.getLitRefURI();     
 	    List<String[]> refList = new ArrayList<String[]>();
         if (litRefDesc != null && !litRefDesc.equals("")) {
-	    	refList.add(new String[]{litRefDesc,litRefURI});
+            for( int i = 0; i < litRefDesc.size(); i++ ) {
+                if( ! "".equals(litRefDesc.get(i).trim()) && 
+                        ! "".equals(litRefURI.get(i).trim()) )
+                    refList.add(new String[]{litRefDesc.get(i).trim(), litRefURI.get(i).trim()});
+            }
         }
         try {
         	props.setLiteratureReferences(refList);
@@ -171,8 +177,10 @@ public class NewExpWizardController {
         	log.error("Problems setting literature references: "+e.toString());
         }
         List<Long> refs = new ArrayList<Long>();
-        if (expBean.getEref() != null && !expBean.getEref().equals(""))
-        	refs.add(expBean.getEref());
+        if (expBean.getEref() != null && !expBean.getEref().equals("")) {
+            for( int i = 0; i < expBean.getEref().size(); i++)
+                refs.add(Long.parseLong( (expBean.getEref().get(i)) ));
+        }
         props.setExperimentReferences(refs);
         
         props.setDigiTypes(expBean.getDtype());
@@ -210,8 +218,15 @@ public class NewExpWizardController {
         testbedMan.updateExperiment(exp);
         expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
         log.debug("Exiting in success.");
+        log.debug("TEST: exec: "+exp.getExperimentExecutable());
         return "success";
 	}
+    
+    public String addAnotherLitRefAction() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        expBean.addLitRefSpot();
+        return "success";
+    }
     
     public String updateBenchmarksAndSubmitAction() {
     	if (this.updateBenchmarksAction() == "success") {
@@ -223,7 +238,9 @@ public class NewExpWizardController {
             testbedMan.updateExperiment(exp);
             expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTAPPROVAL);  
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("BenchmarkBeans"); 
-    		return "goToStage4";
+            // TODO The next line automatically submits and approves the request.  Should be temporary.
+            return approveExperiment();
+    		//return "goToStage4";
     	} else
     		return null;    	
     }
@@ -266,7 +283,7 @@ public class NewExpWizardController {
     	expRes.setIntensity(Integer.parseInt(expBean.getIntensity()));
     	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutput()));
     	exp.getExperimentSetup().setExperimentResources(expRes);
-    	testbedMan.updateExperiment(exp); 
+    	testbedMan.updateExperiment(exp);
     	// if successful, set a message at top of page
         FacesMessage fmsg = new FacesMessage();
         fmsg.setDetail("Your data have been saved successfully!");
@@ -349,6 +366,8 @@ public class NewExpWizardController {
 	    	
 	    	//now write these changes back to the experiment
 	    	Experiment e = testbedMan.getExperiment(exp.getEntityID());
+	    	log.debug("Exp ID: "+ exp.getEntityID() + " exp: " + e);
+	    	
 	    	exp.getExperimentEvaluation().setEvaluatedFileBenchmarkGoals(bhm);
 	    	testbedMan.updateExperiment(exp);
 	        FacesMessage fmsg = new FacesMessage();
@@ -363,8 +382,33 @@ public class NewExpWizardController {
         	return "failure";
         }
     }
+
+    public String finalizeEvaluationAction() {
+        // Finalise the experiment:
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");        
+        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        // First, catch any updates.
+        updateEvaluationAction();
+        exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
+        log.debug("attempting to save finalized evaluation. "+ exp.getExperimentEvaluation().getState());
+        testbedMan.updateExperiment(exp);
+        log.debug("saved finalized evaluation. "+ exp.getExperimentEvaluation().getState());
+        //expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTFINALIZED);
+        // And report:
+        FacesMessage fmsg = new FacesMessage();
+        fmsg.setDetail("Evaluation Data finalised!");
+        fmsg.setSummary("Evaluation Data finalised!");
+        fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        ctx.addMessage("bmTable",fmsg);         
+        return "success";
+    }
     
-      
+
+    
+    
+
     /**
      * This action completes stage2. i.e. create an experiment's executable, store the
      * added files within, hand over the selected ServiceTemplate, etc.
@@ -380,7 +424,8 @@ public class NewExpWizardController {
 	        ExperimentExecutable executable = exp.getExperimentExecutable();
 	        if (executable == null) {
 	        	executable = new ExperimentExecutableImpl(expBean.getSelectedServiceTemplate());
-	        	exp.setExperimentExecutable((ExperimentExecutableImpl)executable);
+	        	exp.setExperimentExecutable(executable);
+	        	log.debug("save: Created a new executable: "+executable);
 	        }
 	        // store the provided input data
 	        executable.setInputData(expBean.getExperimentInputData().values());	        
@@ -392,6 +437,8 @@ public class NewExpWizardController {
 	        exp.setState(Experiment.STATE_IN_PROGRESS);
 	        testbedMan.updateExperiment(exp);
 	        
+	        //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");   
+	        
 	        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);	        	        
 	    	return "goToStage3";
         } catch (Exception e) {
@@ -401,13 +448,13 @@ public class NewExpWizardController {
         }
     }
     
-    
     /**
      * In the process of selecting the proper TBServiceTemplate to work with
      * Reacts to changes within the selectOneMenu
      * @param ce
      */
     public void changedSelTBServiceTemplateEvent(ValueChangeEvent ce) {
+        log.debug("changedSelTBServiceTemplateEvent: setting to "+ce.getNewValue().toString());
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	//also sets the beans selectedServiceTemplate (from the registry)
     	expBean.setSelServiceTemplateID(ce.getNewValue().toString());
@@ -420,6 +467,8 @@ public class NewExpWizardController {
      * @param ce
      */
     public void changedSelServiceOperationEvent(ValueChangeEvent ce) {
+        if( ce.getNewValue() == null ) return;
+        log.debug("changedSelServiceOperationEvent: setting to "+ce.getNewValue().toString());
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	expBean.setSelectedServiceOperationName(ce.getNewValue().toString());
     }
@@ -448,13 +497,16 @@ public class NewExpWizardController {
      */
     public String commandAddInputDataItem(){
     	//0) upload the specified data to the Testbed's file repository
+        log.debug("commandAddInputDataItem: Uploading file.");
 		FileUploadBean uploadBean = this.uploadFile();
+		if( uploadBean == null ) return "goToStage2";
 		String fileRef = uploadBean.getLocalFileRef();
 		if(!(new File(fileRef).canRead())){
 			log.debug("Added file reference not correct or reachable by the VM "+fileRef);
 		}
     	
     	//1) Add the file reference to the expBean
+		log.debug("Adding file to Experiment Bean.");
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	String position = expBean.addExperimentInputData(fileRef);
     	
@@ -464,6 +516,7 @@ public class NewExpWizardController {
     	helperCreateRemoveFileElement(panel, fileRef, position);
     	
     	//reload stage2 and displaying the added data items
+        log.debug("commandAddInputDataItem DONE");
     	return "goToStage2";
     }
     
@@ -760,7 +813,9 @@ public class NewExpWizardController {
     	TreeMap<String,String> ret = new TreeMap<String,String>();
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	TestbedServiceTemplate template = expBean.getSelectedServiceTemplate();
+    	log.debug("Looking up service operations for template: "+template);
     	if(template!=null){
+            log.debug("Looking for services of type: "+expBean.getEtype());
     		List<ServiceOperation> lOperations = null;
     		  //simple migration experiment
         	if(expBean.getEtype().equals("experimentType.simpleMigration")){
@@ -856,7 +911,7 @@ public class NewExpWizardController {
 	  	  	return null;
     	} catch (Exception e) {
     		log.error("Error when executing Experiment: " + e.toString());
-    		System.out.println("Error when executing Experiment: " + e.toString());
+    		if( log.isDebugEnabled() ) e.printStackTrace();
     		return null;
     	}   	
     }
@@ -902,7 +957,6 @@ public class NewExpWizardController {
     	return "completeExperiment";
     }
     
-  
     public String loadReaderStage2() {
         return "goToReaderStage2";
     }
@@ -923,7 +977,7 @@ public class NewExpWizardController {
         return "goToReaderStage6";
     }
     
-    public String finishReaderStage6() {
+    public String finishReader() {
         return "goToBrowseExperiments";
     }
 

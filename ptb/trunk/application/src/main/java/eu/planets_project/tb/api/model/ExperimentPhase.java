@@ -2,6 +2,11 @@ package eu.planets_project.tb.api.model;
 
 import java.util.Calendar;
 
+import org.apache.commons.logging.Log;
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.tb.impl.model.ExperimentImpl;
+
 /**
  * @author alindley
  *
@@ -10,7 +15,7 @@ public interface ExperimentPhase {
 	
 	public static final int STATE_NOT_STARTED = -1;
 	public static final int STATE_IN_PROGRESS = 0;
-	public static final int STATE_COMPLETED	  = 1;
+    public static final int STATE_COMPLETED   = 1;
 	
 	public static final int RESULT_NOT_AVAILABLE = -1;
 	public static final int RESULT_SUCCESS 		 = 0;
@@ -22,14 +27,19 @@ public interface ExperimentPhase {
 	public static final int PHASE_EXPERIMENTSETUP 	   = 0;
 	public static final int PHASE_EXPERIMENTAPPROVAL   = 1;
 	public static final int PHASE_EXPERIMENTEXECUTION  = 2;
-	public static final int PHASE_EXPERIMENTEVALUATION = 3;
+    public static final int PHASE_EXPERIMENTEVALUATION = 3;
+    public static final int PHASE_EXPERIMENTFINALIZED  = 4;
 	
 	public final String PHASENAME_NOPHASE			  = "No Phase";
 	public final String PHASENAME_EXPERIMENTSETUP	  = "Experiment Setup";
 	public final String PHASENAME_EXPERIMENTAPPROVAL  = "Experiment Approval";
 	public final String PHASENAME_EXPERIMENTEXECUTION = "Experiment Execution";
-	public final String PHASENAME_EXPERIMENTEVALUATION= "Experiment Evaluation";
-	
+    public final String PHASENAME_EXPERIMENTEVALUATION= "Experiment Evaluation";
+    public final String PHASENAME_EXPERIMENTFINALIZED = "Experiment Finalized";
+
+    public static final Log log = PlanetsLogger.getLogger(ExperimentPhase.class, "testbed-log4j.xml");
+
+
 	/**
 	 * Using the EJB persistence mechanism to store an Entity, the EntityID is injected by
 	 * the container. If an Entity (e.g. Experiment, ExperimentSetup, etc.) is not managed

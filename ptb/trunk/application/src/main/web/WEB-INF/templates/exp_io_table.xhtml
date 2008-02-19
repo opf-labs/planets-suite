@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+  <ui:composition rendered="#{ExperimentBean != null}">
+    <h:form>
+            <!--  table border="1" cellspacing="0" cellpadding="2"
+                style="border: 1px solid #579EC2;">
+                <tr>
+                    <th>#{res['exp_stage6.inputFiles']}</th>
+                    <th>#{res['exp_stage6.outputFiles']}</th>
+                </tr>
+
+                <tr style="font-size:smaller;">
+                    <td>
+          <t:dataList value="#{ExperimentBean.eworkflowInputData}" var="inFile">
+                    <p>
+          <a href="#{inFile}"> <h:outputText
+                        value="#{inFile}" /> </a>
+                    </p>
+          </t:dataList>
+                    </td>
+                    <td>
+          <t:dataList value="#{ExperimentBean.eworkflowOutputData}" var="outFile">
+                    <p>
+          <a href="#{outFile}"> <h:outputText
+                        value="#{outFile}" /> </a>
+                    </p>
+          </t:dataList>
+                    </td>
+                </tr>
+            </table -->
+
+     <t:dataTable id="exp_ioTable"
+                  var="inFile"
+                  rowIndexVar="frow"
+                  value="#{ExperimentBean.eworkflowInputData}"
+                  preserveDataModel="false"
+                  rows="10"
+                  cellpadding="2"
+                  cellspacing="0"
+                  border="1">
+  <!--
+                  rowId="#{exp.experimentSetup.basicProperties.experimentName}"
+                  sortColumn="#{ListExp_Backing.sort}"
+                  sortAscending="#{ListExp_Backing.ascending}"
+                  preserveSort="true"
+                  binding="#{ListExp_Backing.myExp_data}" -->
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
+          <a href="#{ExperimentBean.eworkflowInputData[frow]}"> <h:outputText
+                        value="#{ExperimentBean.eworkflowInputData[frow]}" /></a>
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.outputFiles']}</f:facet>
+          <a href="#{ExperimentBean.eworkflowOutputData[frow]}"> <h:outputText
+                        value="#{ExperimentBean.eworkflowOutputData[frow]}" /></a>
+                </t:column>
+            </t:dataTable>
+
+  
+    </h:form>
+  </ui:composition>
+</body>
+</html>

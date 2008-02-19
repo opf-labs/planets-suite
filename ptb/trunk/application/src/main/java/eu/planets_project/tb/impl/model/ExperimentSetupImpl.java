@@ -288,8 +288,10 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
 		
 		//ExperimentExecutable is set and initialized for this experiment
-		ExperimentExecutable executable = new ExperimentExecutableImpl(template);
-		thisExperiment.setExperimentExecutable(executable);
+		if( thisExperiment.getExperimentExecutable() == null ) {
+		  ExperimentExecutable executable = new ExperimentExecutableImpl(template);
+		  thisExperiment.setExperimentExecutable(executable);
+		}
 	}
 	
 }

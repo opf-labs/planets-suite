@@ -6,7 +6,11 @@ package eu.planets_project.tb.impl.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
+import org.apache.commons.logging.Log;
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
@@ -14,6 +18,8 @@ import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
@@ -39,9 +45,11 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentSetupImpl expSetup;
 	@OneToOne(cascade={CascadeType.ALL})
-	//get's instantiated within the experimentSetup phase
 	private ExperimentExecutableImpl executable;
+    //get's instantiated within the experimentSetup phase
 	
+    @Transient
+    private static Log log = PlanetsLogger.getLogger(ExperimentImpl.class, "testbed-log4j.xml");
 	
 	public ExperimentImpl(){
 		//the experiment's stages
@@ -131,7 +139,8 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 			if(checkAllOtherStagesCompleted(2))
 				ret = this.expExecution;
 		
-		if(this.expEvaluation.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+		if(this.expEvaluation.getState() == ExperimentPhase.STATE_IN_PROGRESS ||
+		        this.expEvaluation.getState() == ExperimentPhase.STATE_COMPLETED )
 			if(checkAllOtherStagesCompleted(3))
 				ret = this.expEvaluation;
 		
@@ -156,12 +165,17 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 			if(checkAllOtherStagesCompleted(2))
 				ret = Experiment.PHASE_EXPERIMENTEXECUTION;
 		
-		if(this.expEvaluation.getState() == ExperimentPhase.STATE_IN_PROGRESS)
-			if(checkAllOtherStagesCompleted(3))
-				ret = Experiment.PHASE_EXPERIMENTEVALUATION;
-		
+        if(this.expEvaluation.getState() == ExperimentPhase.STATE_IN_PROGRESS)
+            if(checkAllOtherStagesCompleted(3))
+                ret = Experiment.PHASE_EXPERIMENTEVALUATION;
+        
+        if(this.expEvaluation.getState() == ExperimentPhase.STATE_COMPLETED)
+            if(checkAllOtherStagesCompleted(3))
+                ret = Experiment.PHASE_EXPERIMENTFINALIZED;
+        
 		return ret;
 	}
+	
 	
 	/**
 	 * @param iPhaseNr may reach from 0..3, representing 

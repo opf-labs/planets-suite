@@ -97,7 +97,11 @@ ni.appendChild(newdiv);
             <div class="clear"></div>
 
             <p><h:outputText value="#{res['new_exp.expParticipants']}"
-                styleClass="readerLabel" /> Brian Aitken</p>
+                styleClass="readerLabel" /> #{ExperimentBean.eparticipants}</p>
+                
+            <p><h:outputText value="#{res['new_exp.expContactName']}"
+                styleClass="readerLabel" /> #{ExperimentBean.econtactname}</p>
+                
             <div class="clear"></div>
             </fieldset>
 

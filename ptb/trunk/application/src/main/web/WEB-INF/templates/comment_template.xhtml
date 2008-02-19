@@ -7,10 +7,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
-  <ui:composition>
+  <ui:composition rendered="#{ExperimentBean != null}">
     <div id="experimentComments">
     
-    <h:panelGroup rendered="#{ExperimentBean.ename!=''}">
+    <h:panelGroup rendered="#{ExperimentBean.currentStage gt 1}">
     
       <!-- TODO Add comment list and forms etc etc. -->
       <div class="commentFormWrap">

@@ -62,24 +62,6 @@ function cleanForm() {
 	//-->
 	</script>
         
-<script type="text/javascript">
-<!--
-
-function addRows()
-{
-var ni = document.getElementById('anotherLitRef');
-var numi = document.getElementById('theValue');
-var num = (document.getElementById("theValue").value -1)+ 2;
-numi.value = num;
-var divIdName = "anotherLitRef"+num;
-var newdiv = document.createElement('div');
-newdiv.setAttribute("id",divIdName);
-newdiv.innerHTML =   	'<p><label for="litRefDesc"><span style="color: red;"></span>#{res["new_exp.litRef_Desc"]}</label><input name="litRefDesc" id="litRefDesc" type="text" size="50" maxlength="255" /></p><div class="clear"></div><p><label for="litRefURI"><span style="color: red;"></span>#{res["new_exp.litRef_URI"]}</label><input name="litRefURI" id="litRefURI" type="text" size="50" maxlength="255" /></p><div class="clear"></div>';
-ni.appendChild(newdiv);
-}
-
-//-->
-</script>
 </ui:define>
 
   <ui:define name="content">
@@ -106,7 +88,7 @@ ni.appendChild(newdiv);
 				
 
         <p><h:outputLabel value="#{res['new_exp.expSummary']}" for="esummary" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-<h:inputTextarea rows="2" cols="55" required="true" id="esummary" value="#{ExperimentBean.esummary}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+<h:inputTextarea rows="2" cols="50" required="true" id="esummary" value="#{ExperimentBean.esummary}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
 <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipSummary']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
 <h:message for="esummary" errorClass="errorMessage" infoClass="infoMessage"/>
 </p>
@@ -141,7 +123,7 @@ ni.appendChild(newdiv);
 <div class="clear"></div>
 
                             <p><h:outputLabel value="#{res['new_exp.expContactAddress']}" for="econtactaddress" ></h:outputLabel>
-                            <h:inputTextarea rows="2" cols="55" required="false" id="econtactaddress" value="#{ExperimentBean.econtactaddress}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" ></h:inputTextarea> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipContactAddress']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+                            <h:inputTextarea rows="2" cols="50" required="false" id="econtactaddress" value="#{ExperimentBean.econtactaddress}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" ></h:inputTextarea> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipContactAddress']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
     
 </fieldset>
@@ -158,32 +140,38 @@ ni.appendChild(newdiv);
     
 	<p>
 		<h:outputLabel value="#{res['new_exp.expIdeas']}" for="eref" />
-	 	<h:inputText required="false" id="eref" value="#{ExperimentBean.eref}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-	        <f:converter converterId="javax.faces.Long"/>
-		</h:inputText>
+        <h:selectManyListbox id="expRefMulti"
+            value="#{ExperimentBean.eref}" size="5" style="width: 23em;"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
+          <f:selectItems value="#{ExperimentBean.allExperimentsSelectItems}"/>
+        </h:selectManyListbox>
 		<h:message for="eref" errorClass="errorMessage" />
 		<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
 	</p>
+  
 	<div class="clear"></div>
         
 
                 <p style="color:#006699;"><b>#{res['new_exp.litRef']}</b>
                 </p>
-
+                <t:dataList var="refurl" value="#{ExperimentBean.litRefURI}" rowIndexVar="rowi">
                 <div>
-                    <p><h:outputLabel value="#{res['new_exp.litRef_Desc']}" for="litRefDesc" />
-                        <h:inputText  required="#{((ExperimentBean.litRefURI!=null) and (ExperimentBean.litRefURI!=''))}" id="litRefDesc" value="#{ExperimentBean.litRefDesc}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+                    <p><h:outputLabel value="#{res['new_exp.litRef_Desc']}" for="litRefDesc_#{rowi}" />
+                        <h:inputText  required="#{((ExperimentBean.litRefURI[rowi]!=null) and (ExperimentBean.litRefURI[rowi]!=''))}" id="litRefDesc_#{rowi}" value="#{ExperimentBean.litRefDesc[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
                         <h:message for="litRefDesc" errorClass="errorMessage" />			
                     </p>
-                    <p><h:outputLabel value="#{res['new_exp.litRef_URI']}" for="litRefURI" />
-                        <h:inputText  required="#{((ExperimentBean.litRefDesc!=null) and (ExperimentBean.litRefDesc!=''))}" id="litRefURI" value="#{ExperimentBean.litRefURI}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                        <h:message for="litRefURI" errorClass="errorMessage" />			
+                    <p><h:outputLabel value="#{res['new_exp.litRef_URI']}" for="litRefURI_#{rowi}" />
+                        <h:inputText  required="#{((ExperimentBean.litRefDesc[rowi]!=null) and (ExperimentBean.litRefDesc[rowi]!=''))}" id="litRefURI_#{rowi}" value="#{ExperimentBean.litRefURI[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+                        <h:message for="litRefURI" errorClass="errorMessage" />	
                     </p>
                 </div>
-<input type="hidden" value="1" id="theValue" />
-<div id="anotherLitRef"> </div>
-<p style="margin-left:110px;"><a href="javascript:;" onclick="addRows();">Add Another Literature Reference</a></p>
-                
+                </t:dataList>
+
+<p style="margin-left:110px;">
+  <h:commandLink action="#{NewExp_Controller.addAnotherLitRefAction}">
+    <h:outputText value=" #{res['new_exp.addLitRef']}" />
+  </h:commandLink> 
+</p>
+
 	<div class="clear"></div> 
 </fieldset>
 
@@ -194,7 +182,7 @@ ni.appendChild(newdiv);
     
     <h:selectManyListbox
  id="dtype" required="true" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"
-  value="#{ExperimentBean.dtype}">
+  value="#{ExperimentBean.dtype}" style="width: 23em;">
    <f:selectItems
     value="#{ExperimentBean.dtypeList}"/>
 </h:selectManyListbox> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipObjectType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
@@ -203,7 +191,7 @@ ni.appendChild(newdiv);
 <p>
     <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
         <h:selectOneMenu id="etype"
-        value="#{ExperimentBean.etype}"
+        value="#{ExperimentBean.etype}"  style="width: 23em;"
  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
                 <f:selectItems value="#{NewExp_Controller.availableExperimentTypes}" />
         </h:selectOneMenu>
@@ -216,26 +204,26 @@ ni.appendChild(newdiv);
 <fieldset>
 <legend>#{res['new_exp.legendFurtherInfo']}</legend>
 <p><h:outputLabel value="#{res['new_exp.expPurpose']}" for="epurpose" ></h:outputLabel>
-<h:inputTextarea rows="2" cols="55" required="false" id="epurpose" value="#{ExperimentBean.epurpose}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipPurpose']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+<h:inputTextarea rows="2" cols="50" required="false" id="epurpose" value="#{ExperimentBean.epurpose}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipPurpose']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 
 
 <p><h:outputLabel value="#{res['new_exp.expFocus']}" for="efocus" ></h:outputLabel>
-<h:inputTextarea rows="2" cols="55" required="false" id="efocus" value="#{ExperimentBean.efocus}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFocus']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+<h:inputTextarea rows="2" cols="50" required="false" id="efocus" value="#{ExperimentBean.efocus}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFocus']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 				<div class="clear"></div>
 
 <p><h:outputLabel value="#{res['new_exp.expScope']}" for="escope" ></h:outputLabel>
-<h:inputTextarea rows="2" cols="55" required="false" id="escope" value="#{ExperimentBean.escope}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipScope']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+<h:inputTextarea rows="2" cols="50" required="false" id="escope" value="#{ExperimentBean.escope}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipScope']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 
 					<p><h:outputLabel value="#{res['new_exp.expConsiderations']}" for="econsiderations" />
-<h:inputTextarea rows="2" cols="55" required="false" id="econsiderations" value="#{ExperimentBean.econsiderations}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipConsiderations']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+<h:inputTextarea rows="2" cols="50" required="false" id="econsiderations" value="#{ExperimentBean.econsiderations}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipConsiderations']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 </fieldset>
 		<p>
             <h:commandButton value="#{res['new_exp.saveStage1']}" 
-            action="#{NewExp_Controller.updateBasicPropsAction}"/>		
+            action="#{NewExp_Controller.updateBasicPropsAction}" disabled="#{ExperimentBean.approved}"/>
 		</p>
 </h:form>
 

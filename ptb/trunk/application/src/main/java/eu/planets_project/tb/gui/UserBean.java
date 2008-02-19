@@ -21,6 +21,9 @@ public class UserBean
     private String firstname;
     private String lastname;
     private String email;
+    private String fullname;
+    private String address;
+    private String telephone;
     private String userid;
     private String password;
     private boolean isLoggedIn;
@@ -85,6 +88,49 @@ public class UserBean
         this.password = password;
     }
 
+    
+
+    /**
+     * @return the fullname
+     */
+    public String getFullname() {
+        return fullname;
+    }
+
+    /**
+     * @param fullname the fullname to set
+     */
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the telephone
+     */
+    public String getTelephone() {
+        return telephone;
+    }
+
+    /**
+     * @param telephone the telephone to set
+     */
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
 
     public void setIsLoggedIn(boolean isLoggedIn)
     {
@@ -111,7 +157,15 @@ public class UserBean
         if( u != null ) {
             this.firstname = u.getFirstName();
             this.lastname = u.getLastName();
+            this.fullname = u.getFullName();
             this.email = u.getEmail();
+            this.telephone = u.getPhoneNumber();
+            // For now, we must format the address manually.
+            // FIXME The Address entity should do this.
+            this.address = u.getAddress().getAddress() + ",\n" + 
+            u.getAddress().getCity() + ",\n" +
+            u.getAddress().getProvince() + " " + u.getAddress().getPostalCode() + ",\n" +
+            u.getAddress().getCountry();
             log.debug("User lookup succeeded: Got details for "+u.getFullName());
         }
     }
@@ -143,6 +197,8 @@ public class UserBean
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         boolean result = false;
         result = request.isUserInRole("testbed.reader");
+        // Also add reader access for administrators:
+        if( isAdmin() ) result = true;
         //log.debug("user " + request.getRemoteUser() +" is reader? - " + result);
         return result;  
     }  

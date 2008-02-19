@@ -58,18 +58,18 @@
 				</t:column>
 				<t:column>
 					<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
-					<h:selectOneMenu value="#{bm.evaluationValue}">
+					<h:selectOneMenu value="#{bm.evaluationValue}" disabled="#{ExperimentBean.finished}">
 						<f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
 					</h:selectOneMenu>
 				</t:column>
 				<t:column>
 					<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
-                                            <h:inputText value="#{bm.sourceValue}" /> <br/>     
+                                            <h:inputText value="#{bm.sourceValue}" disabled="#{ExperimentBean.finished}"/> <br/>     
                                             	<h:outputText value="#{bm.typename}" />      
 				</t:column>
 				<t:column>
 					<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
-                                            <h:inputText value="#{bm.targetValue}" /><br/>          
+                                            <h:inputText value="#{bm.targetValue}"  disabled="#{ExperimentBean.finished}"/><br/>          
                                             	<h:outputText value="#{bm.typename}" />
 				</t:column>
 				
@@ -78,11 +78,25 @@
 					<h:outputText value="#{bm.typename}" />
 				</t:column -->
 			</t:dataTable>
-			<h:messages for="bmTable" errorClass="errorMessage" infoClass="infoMessage"/>
+      
+           <h2 class="main">#{res['exp_stage6.report']}</h2>
+           <p>
+               <h:outputLabel value="#{res['exp_stage6.reportTitle']}" for="repTitle" ></h:outputLabel>
+               <h:inputText required="false" id="repTitle" value="#{ExperimentBean.report.header}" size="82" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" />
+               <h:message for="repTitle" errorClass="errorMessage" infoClass="infoMessage"/>
+           </p>
+           <p>
+               <h:outputLabel value="#{res['exp_stage6.reportBody']}" for="repBody" ></h:outputLabel>
+               <h:inputTextarea rows="10" cols="80" required="false" id="repBody" value="#{ExperimentBean.report.bodyText}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" />
+               <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
+           </p>
+      
 
-			<p><h:commandButton value="#{res['exp_stage6.button']}"
-				action="#{NewExp_Controller.updateEvaluationAction}" /></p>
-			
+            <p><h:commandButton value="#{res['exp_stage6.button']}"
+                action="#{NewExp_Controller.updateEvaluationAction}" /></p>
+                
+            <p><h:commandButton value="#{res['exp_stage6.finalize']}"
+                action="#{NewExp_Controller.finalizeEvaluationAction}" /></p>
 		</h:form>
 		
 		<!-- A: If the execution was NOT successfully: display an error page -->

@@ -43,7 +43,7 @@
   <managed-bean-scope>request</managed-bean-scope>
   <managed-property>
    <property-name>uploadDir</property-name>
-   <value>../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata</value>
+   <value>server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata</value>
   </managed-property>
  </managed-bean>
  <managed-bean>
@@ -179,6 +179,11 @@
    <redirect/>
   </navigation-case>
   <navigation-case>
+   <from-outcome>viewExperimentReport</from-outcome>
+   <to-view-id>/reader/view_exp.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>  
+  <navigation-case>
    <from-outcome>addComment</from-outcome>
    <to-view-id>/edit_comment.xhtml</to-view-id>
    <redirect/>
@@ -246,18 +251,13 @@
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
-  <navigation-case>
-   <from-outcome>selectDelete</from-outcome>
-   <to-view-id>/exp/exp_delete.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
  </navigation-rule>
  
  <navigation-rule>
-  <from-view-id>/exp/exp_delete.xhtml</from-view-id>
+  <from-view-id>/admin/exp_delete.xhtml</from-view-id>
   <navigation-case>
    <from-outcome>expDeleted</from-outcome>
-   <to-view-id>/exp/my_exp.xhtml</to-view-id>
+   <to-view-id>/reader/browse_exp.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -266,12 +266,17 @@
   <from-view-id>/reader/browse_exp.xhtml</from-view-id>
   <navigation-case>
    <from-outcome>viewExp</from-outcome>
-   <to-view-id>/reader/exp_stage1.xhtml</to-view-id>
+   <to-view-id>/reader/view_exp.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>editExp</from-outcome>
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>selectDelete</from-outcome>
+   <to-view-id>/admin/exp_delete.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>
@@ -333,7 +338,7 @@
  </navigation-rule>
  
  <navigation-rule>
-  <from-view-id>/reader/exp_stage6.xhtml</from-view-id>
+  <from-view-id>/reader/view_exp.xhtml</from-view-id>
   <navigation-case>
    <from-outcome>goToBrowseExperiments</from-outcome>
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>

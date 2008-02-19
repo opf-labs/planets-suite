@@ -56,12 +56,22 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 
 	public boolean queryIsExperimentNameUnique(String expName) {
 	    log.debug("Checking uniqueness of exp. name: " + expName );
-		Query query = manager.createQuery("SELECT sExpName FROM BasicPropertiesImpl WHERE sExpName='"+expName+"'");
-		List<String> results = query.getResultList();
+		Query query = manager.createQuery("SELECT sExpName FROM BasicPropertiesImpl WHERE LOWER(sExpName)=LOWER(:expname)");
+		query.setParameter("expname", expName);
+		List<String> results = (List<String>) query.getResultList();
 		if(results.size()==0)
 			return true;
 		
 		return false;
+	}
+	
+	public List<Experiment> searchAllExperiments( String toFind ) {
+        // Not case sensitive, wildcarded:
+	    toFind = "%"+toFind.toLowerCase()+"%";
+        log.debug("Searching for experiments that match: " + toFind );
+        Query query = manager.createQuery("FROM ExperimentImpl AS e WHERE LOWER(e.expSetup.basicProperties.sExpName) LIKE :toFind OR LOWER(e.expSetup.basicProperties.sSummary) LIKE :toFind");
+        query.setParameter("toFind", toFind);
+        return query.getResultList();
 	}
 	
 }

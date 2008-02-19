@@ -34,11 +34,10 @@ public class FileUploadBean
     private String originalName ="";
     
     public FileUploadBean() {
-
     }
     
     public void setUploadDir(String dir) {
- 	   uploadDir = dir;
+ 	   uploadDir = System.getProperty("jboss.home.dir") + "/" + dir;
     }
     
     

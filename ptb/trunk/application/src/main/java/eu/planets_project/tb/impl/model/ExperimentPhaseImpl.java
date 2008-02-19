@@ -12,7 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.logging.Log;
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.mockups.DataRegistryBinding;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 
 /**
@@ -35,6 +39,7 @@ public abstract class ExperimentPhaseImpl implements
 	private int iState, iResult;
 	boolean bSuccess;
 	int iStagePointer;
+	
 	
 	public ExperimentPhaseImpl(){
 		this.lEntityID = -1;
@@ -59,8 +64,15 @@ public abstract class ExperimentPhaseImpl implements
 			return PHASENAME_EXPERIMENTAPPROVAL;
 		if(this.iStagePointer == PHASE_EXPERIMENTEXECUTION)
 			return PHASENAME_EXPERIMENTEXECUTION;
-		if(this.iStagePointer == PHASE_EXPERIMENTEVALUATION)
-			return PHASENAME_EXPERIMENTEVALUATION;
+        if(this.iStagePointer == PHASE_EXPERIMENTEVALUATION) {
+            if( this.getState() == ExperimentPhase.STATE_COMPLETED ) {
+                return PHASENAME_EXPERIMENTFINALIZED;
+            } else {
+                return PHASENAME_EXPERIMENTEVALUATION;                
+            }
+        }
+        if(this.iStagePointer == PHASE_EXPERIMENTFINALIZED)
+            return PHASENAME_EXPERIMENTFINALIZED;
 
 		//else (should never be reached)
 		return PHASENAME_NOPHASE;
@@ -71,8 +83,12 @@ public abstract class ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentPhase#setStageMarker(int)
 	 */
 	protected void setPhasePointer(int stage){
-		if(stage>=ExperimentPhase.PHASE_NOPHASE&&stage<=ExperimentPhase.PHASE_EXPERIMENTEVALUATION)
+	    
+		if(stage>=ExperimentPhase.PHASE_NOPHASE&&stage<=ExperimentPhase.PHASE_EXPERIMENTFINALIZED)
 			this.iStagePointer = stage;
+		// If Evaluation is Complete, set as Finalized:
+		if( stage == ExperimentPhase.PHASE_EXPERIMENTEVALUATION && this.isCompleted() )
+		    this.iStagePointer = ExperimentPhase.PHASE_EXPERIMENTFINALIZED;
 	}
 	
 	/* (non-Javadoc)

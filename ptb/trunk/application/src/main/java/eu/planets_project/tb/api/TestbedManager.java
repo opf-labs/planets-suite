@@ -1,6 +1,7 @@
 package eu.planets_project.tb.api;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
@@ -38,6 +39,7 @@ public interface TestbedManager {
 	public Set<Long> getAllExperimentIDs();
 	public boolean containsExperiment(long expID);
 	public boolean isExperimentNameUnique(String sExpName);
+	public List<Experiment> searchAllExperiments(String toFind);
 	public boolean isRegistered(long lExpID);
 	public boolean isRegistered(Experiment experiment);
 	public void executeExperiment(Experiment exp);

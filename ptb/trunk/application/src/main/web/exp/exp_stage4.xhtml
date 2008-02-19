@@ -21,11 +21,13 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
+    
+<h:form>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage le 4}">
 <p><b>Your experiment has been submitted for approval and execution.</b></p>
 <p>Your experiment will either be automatically approved or checked by the Testbed administrator, depending on the intensity of your experiment and the size of the experiment dataset.</p>
 <p>If your experiment requires manual approval the Testbed administrator may approve your experiment for immediate execution, schedule your experiment for execution at a later time or request that you make changes to your experiment before it is executed.  If changes are requested the administrator will notify you and control of the experiment will be returned to you.</p>
 <hr />
-<h:form>
 				<fieldset>
 					<legend>#{res['exp_stage4.legend']}</legend>
                                         <p>
@@ -33,7 +35,19 @@
 						action="#{NewExp_Controller.approveExperiment}" />
 					</p>
 				</fieldset>
-			</h:form>
+    </h:panelGroup>
+ </h:form>
+    
+<h:form>
+    <h:panelGroup rendered="#{ExperimentBean.currentStage gt 4}">
+<p><b>Your experiment has been approved for execution.</b></p>
+<p>
+Please proceed to the next stage:<br/>
+ <h:commandButton value="#{res['new_exp.stage5']}"
+                        action="#{NewExp_Controller.approveExperiment}"  disabled="#{ExperimentBean.approved}"/>
+</p>
+    </h:panelGroup>
+</h:form>
 		<p>&#160;</p>
 		<p>&#160;</p>
 

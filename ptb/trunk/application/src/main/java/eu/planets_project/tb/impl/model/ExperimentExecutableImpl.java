@@ -62,8 +62,8 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	private boolean bExecutionSuccess = false;
 	private String sXMLRequest ="";
 	private String sXMLResponds = "";
-	@Transient
 	//A logger for this - transient: it's not persisted with this entity
+    @Transient
 	private static Log log;
 	
 	
@@ -76,7 +76,7 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	}
 	
 	//Default Constructor required for Entity Annotation
-	private ExperimentExecutableImpl(){
+	public ExperimentExecutableImpl(){
 	}
 	
 

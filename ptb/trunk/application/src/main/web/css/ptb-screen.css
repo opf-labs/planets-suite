@@ -326,7 +326,12 @@ h3.leftcol
 
 p.leftcol
 {
-	text-align:left;
+    text-align:left;
+}
+
+p.center
+{
+    text-align: center;
 }
 
 fieldset.login
@@ -872,4 +877,14 @@ background-color:#579EC2;
 
 #overlay-main {
 background-color:white;
+}
+
+/* Search-in-sidebar functionality */
+#searchBoxSidebar {
+  padding: 0 0;
+  margin: 0;
+  text-align: center;
+}
+#searchBoxSidebar input[type=submit] {
+  margin-top: 4px;
 }

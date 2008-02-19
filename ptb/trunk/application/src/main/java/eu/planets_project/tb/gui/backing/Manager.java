@@ -28,7 +28,7 @@ public class Manager {
 		ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
 	    return "success";
     }
-
+    
     
     /**
      * @author alindley

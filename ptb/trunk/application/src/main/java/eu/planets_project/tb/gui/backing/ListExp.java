@@ -7,10 +7,15 @@ import java.util.List;
 
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 
+import org.apache.commons.logging.Log;
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.backing.exp.NewExpWizardController;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
 
@@ -18,6 +23,8 @@ import java.util.Collection;
 
 
 public class ListExp extends SortableList {
+    
+    private static Log log = PlanetsLogger.getLogger(ListExp.class, "testbed-log4j.xml");
 
 	private Collection<Experiment> myExps = new ArrayList<Experiment>();
 	private Collection<Experiment> allExps = new ArrayList<Experiment>();
@@ -26,6 +33,10 @@ public class ListExp extends SortableList {
 	private boolean ascending = true;
 	private UIData myExp_data = null;
 	private UIData allExp_data = null;	
+	// Value to hold link ids.
+	private String linkEid = null;
+	// Value to hold the search string:
+	private String toFind = "";
 
 	public ListExp()
 	{
@@ -63,15 +74,48 @@ public class ListExp extends SortableList {
           return num; 
       }
           
-	  public Collection<Experiment> getAllExperiments()
-	  {    
-		  TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-		  allExps = testbedMan.getAllExperiments();
-		  currExps = Collections.list(Collections.enumeration(allExps));
-		  sort(getSort(), isAscending());
-		  return currExps;
-	  }
-          
+      public Collection<Experiment> getAllExperiments()
+      {    
+          TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+          allExps = testbedMan.getAllExperiments();
+          currExps = Collections.list(Collections.enumeration(allExps));
+          sort(getSort(), isAscending());
+          return currExps;
+      }
+                
+    /**
+     * @return the toFind
+     */
+    public String getToFind() {
+        return toFind;
+    }
+
+    /**
+     * @param toFind the toFind to set
+     */
+    public void setToFind(String toFind) {
+        this.toFind = toFind;
+    }
+    
+    public String clearSearchStringAction() {
+        setToFind("");
+        return "browse_experiments";
+    }
+
+    public Collection<Experiment> getAllMatchingExperiments()
+      {
+          // Only go if there is a string to search for:
+          if( toFind == null || "".equals(toFind)) return getAllExperiments();
+          // Otherwise, search for the string toFind:
+          log.debug("Searching experiments for: " + toFind );
+          TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+          allExps = testbedMan.searchAllExperiments(toFind);
+          log.debug("Found "+allExps.size()+" matching experiment(s).");
+          currExps = Collections.list(Collections.enumeration(allExps));
+          sort(getSort(), isAscending());
+          return currExps;
+      }
+                
       public int getNumAllExperiments()
       {
           int num = allExps.size();              
@@ -166,6 +210,26 @@ public class ListExp extends SortableList {
 	      // go to edit page
 	      return "viewExp";
 	    }
+	    
+        public String readerExperimentLinkAction() {
+            
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            this.linkEid = (String) (String) ctx.getExternalContext().getRequestParameterMap().get("linkEid");
+            if( this.linkEid == null || "".equals(this.linkEid))
+                return "goToBrowseExperiments";
+            
+            TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");
+            Experiment selectedExperiment = testbedMan.getExperiment(Long.parseLong(linkEid));
+            System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
+
+            ExperimentBean expBean = new ExperimentBean();
+            expBean.fill(selectedExperiment);
+            //Store selected Experiment Row accessible later as #{Experiment} 
+            ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+                    
+            // go to edit page
+            return "viewExp";            
+        }
             
 //            public void chooseView()
 //            {
@@ -182,7 +246,7 @@ public class ListExp extends SortableList {
             
         public String selectExperimentForDeletion()
         {
-	      Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
+	      Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 	      FacesContext ctx = FacesContext.getCurrentInstance();
 
@@ -237,5 +301,19 @@ public class ListExp extends SortableList {
 	    {
 	      return allExp_data;
 	    }
+
+        /**
+         * @return the linkEid
+         */
+        public String getLinkEid() {
+            return linkEid;
+        }
+
+        /**
+         * @param linkEid the linkEid to set
+         */
+        public void setLinkEid(String linkEid) {
+            this.linkEid = linkEid;
+        }
 
 }

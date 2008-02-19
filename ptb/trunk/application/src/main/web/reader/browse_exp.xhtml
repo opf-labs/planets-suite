@@ -25,7 +25,7 @@
 <h:form>
     <t:dataTable id="dataTable_allExp"
                  var="exp"
-                 value="#{ListExp_Backing.allExperiments}"
+                 value="#{ListExp_Backing.allMatchingExperiments}"
                  preserveDataModel="false"
                  rows="10"
                  rowId="#{exp.experimentSetup.basicProperties.experimentName}"
@@ -85,8 +85,15 @@
             </f:facet>
             <h:outputText value="#{exp.experimentSetup.basicProperties.experimenter}" />
         </t:column>
+        <t:column rendered="#{UserBean.admin}">
+            <f:facet name="header">#{res['expList.colHeader.delete']}</f:facet>
+            <h:commandLink action="#{ListExp_Backing.selectExperimentForDeletion}">
+                <h:outputText value="#{res['expList.colHeader.delete']}" />
+            </h:commandLink>
+        </t:column>
+        
     </t:dataTable>
-    
+
       <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
         <t:dataScroller id="scroll_1"
                         for="dataTable_allExp"
@@ -140,8 +147,12 @@
 <div id="leftcol">
 <h3 class="leftcol">Your Search:</h3>
 <div class="innertube">
-<form method="get" action="../"></form>
-<p class="leftcol">Information about search criteria and the option to supply different search critera will appear here in later versions.</p>
+  <p class="center">You can search the titles and summaries of all the experiments using this form.</p>
+  <h:form id="searchBoxSidebar">
+    <h:inputText value="#{ListExp_Backing.toFind}"/>
+    <h:commandButton action="browse_experiments" value="Search"/>
+    <h:commandButton action="#{ListExp_Backing.clearSearchStringAction}" value="Clear" disabled="#{ListExp_Backing.toFind == ''}"/>
+  </h:form>
 </div>
  
 <h3 class="leftcol">Listing Options</h3>

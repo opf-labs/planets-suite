@@ -206,6 +206,7 @@ public class TestbedManagerImpl
 			this.hmAllExperiments.put(exp.getEntityID(), exp);
 		    // Also update the Experiment backing bean to reflect the changes:
 		    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		    log.debug("Re-filling expBean from exp.");
 		    expBean.fill(experimentBean);
           //End Transaction
 		}
@@ -324,6 +325,15 @@ public class TestbedManagerImpl
 
 
 	/* (non-Javadoc)
+     * @see eu.planets_project.tb.api.TestbedManager#searchAllExperiments(java.lang.String)
+     */
+    public List<Experiment> searchAllExperiments(String toFind) {
+        ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+        return dao_r.searchAllExperiments(toFind);
+    }
+
+
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#isRegistered(long)
 	 */
 	public boolean isRegistered(long expID) {

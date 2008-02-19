@@ -56,7 +56,7 @@
 							</p>
 							<p>
 					            <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
-					            action="#{NewExp_Controller.updateBenchmarksAndSubmitAction}"/>										
+					            action="#{NewExp_Controller.updateBenchmarksAndSubmitAction}" disabled="#{ExperimentBean.approved}"/>										
 							</p>
 							<p><b>#{res['exp_stage3.warning']}</b></p>		
 					</h:form>

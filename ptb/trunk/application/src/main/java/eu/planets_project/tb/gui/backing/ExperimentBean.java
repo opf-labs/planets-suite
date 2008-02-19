@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIPanel;
 import javax.faces.component.html.HtmlDataTable;
@@ -32,12 +33,15 @@ import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
@@ -54,7 +58,8 @@ public class ExperimentBean {
 	public static final int PHASE_EXPERIMENTSETUP_3   = 3;
 	public static final int PHASE_EXPERIMENTAPPROVAL   = 4;
 	public static final int PHASE_EXPERIMENTEXECUTION  = 5;
-	public static final int PHASE_EXPERIMENTEVALUATION = 6;
+    public static final int PHASE_EXPERIMENTEVALUATION = 6;
+    public static final int PHASE_EXPERIMENTFINALIZED   = 7;
 	
 	// To avoid the data held here falling out of date, store the experiment:
 	Experiment exp = null;
@@ -72,10 +77,10 @@ public class ExperimentBean {
     private String efocus = new String();
     private String eparticipants = new String();
 
-    private String litrefdesc = new String();
-    private String litrefuri = new String();
-    private Long eref;
     private String exid = new String();
+    private ArrayList<String> eref = new ArrayList<String>();
+    private ArrayList<String> litrefdesc = new ArrayList<String>();
+    private ArrayList<String> litrefuri = new ArrayList<String>();
 
     private String escope = new String();
     private String eapproach = new String();
@@ -124,11 +129,27 @@ public class ExperimentBean {
             
             SelectItem option = new SelectItem(tmp[0],tmp[1]);
             dtypeList.add(option);  
-        }    
+        }
+        
+        // Add in default data:
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        if( user != null ) {
+            this.eparticipants = user.getUserid();
+            this.econtactname = user.getFullname();
+            this.econtactemail = user.getEmail();
+            this.econtacttel = user.getTelephone();
+            this.econtactaddress = user.getAddress();
+        }
+        // Default spaces:
+        this.litrefdesc.add("");
+        this.litrefuri.add("");
     }
     
     public void fill(Experiment exp) {
         log.debug("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName());
+        log.debug("Experiment Phase Name = " + exp.getPhaseName());
+        log.debug("Experiment Current Phase " + exp.getCurrentPhase());
+        log.debug("Experiment Current Phase Stage is " + exp.getCurrentPhase().getState());
 
         this.exp = exp; 
     	ExperimentSetup expsetup = exp.getExperimentSetup();
@@ -147,14 +168,18 @@ public class ExperimentBean {
         
         List<String[]> lit = props.getAllLiteratureReferences();
         if (lit != null && !lit.isEmpty()) {
-        	String[] l = lit.get(0);
-        	this.litrefdesc = l[0];
-        	this.litrefuri = l[1];
+            this.litrefdesc = new ArrayList<String>(lit.size());
+            this.litrefuri = new ArrayList<String>(lit.size());
+            for( int i = 0; i < lit.size(); i++ ) {
+        	  this.litrefdesc.add(i, lit.get(i)[0]);
+        	  this.litrefuri.add(i,lit.get(i)[1]);
+            }
         }       
         
         List<Long> refs = props.getExperimentReferences();
         if (refs != null && !refs.isEmpty()) {
-        	this.eref = refs.get(0);
+            for( int i = 0; i < refs.size(); i++ )
+                this.eref.add(i, ""+refs.get(i) );
         }        
         List<String> involvedUsers = props.getInvolvedUserIds();
         String partpnts = " ";
@@ -180,6 +205,7 @@ public class ExperimentBean {
         this.etypeName = AdminManagerImpl.getInstance().getExperimentTypeName(this.etype);
     	
         //get already added TestbedServiceTemplate data
+        log.debug("fill expBean: executable = "+exp.getExperimentExecutable());
         if(exp.getExperimentExecutable()!=null){
         	ExperimentExecutable executable = exp.getExperimentExecutable();
         	this.selSerTemplate = executable.getServiceTemplate();
@@ -196,13 +222,14 @@ public class ExperimentBean {
 
     	// set benchmarks
     	//TODO einkommentieren
-        /*try {
+        try {
     		if (this.inputData != null) {
     			Iterator<BenchmarkGoal> iter;
-    			if (exp.getCurrentPhase() instanceof ExperimentEvaluation) 
-    				iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(new URI(inputData)).iterator();
-    			else
+//    			if (exp.getCurrentPhase() instanceof ExperimentEvaluation) { 
+//                    iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(new URI(inputData[i])).iterator();
+//    			} else {
     				iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
+//    			}
     			while (iter.hasNext()) {
 		    		BenchmarkGoal bm = iter.next();
 		    		BenchmarkBean bmb = new BenchmarkBean(bm);
@@ -214,23 +241,28 @@ public class ExperimentBean {
 		    		benchmarks.put(bm.getID(), bmb);
     			}
     			//this.outputData = eworkflow.getOutputData().toArray()[0].toString();
-    			if (exp.getExperimentExecution() != null)
-    				this.outputData = (exp.getExperimentExecution().getExecutionOutputData((new URI(this.inputData)))).toString();
-    		}
+    			/*
+    			if( this.outputData == null ) outputData = new String[this.inputData.length];
+    			if (exp.getExperimentExecution() != null && 
+    			        exp.getExperimentExecution().getExecutionOutputData((new URI(this.inputData[i]))) != null )
+    				this.outputData[i] = (exp.getExperimentExecution().getExecutionOutputData((new URI(this.inputData[i])))).toString();
+    			*/       
+              }
         } catch (Exception e) {
-        	log.error("Exception when trying to create ExperimentBean from database object: "+e.toString());        	
-        }*/
+        	log.error("Exception while setting benchmarks, during attempt to create ExperimentBean from database object: "+e.toString());
+        	if( log.isDebugEnabled() ) e.printStackTrace();
+        }
     	// merge information to benchmark beans    	
-    	/*Iterator iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
+    	Iterator iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
     		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
     		if (benchmarks.containsKey(bmg.getID())) {
     			BenchmarkBean bmb = benchmarks.get(bmg.getID());
-    			bmb.setValue(bmg.getValue());
+    			bmb.setTargetValue(bmg.getTargetValue());
     			bmb.setWeight(String.valueOf(bmg.getWeight()));
     			bmb.setSelected(true);
     		}
-    	}*/
+    	}
     	String intensity = Integer.toString(exp.getExperimentSetup().getExperimentResources().getIntensity());
     	if (intensity != null && intensity != "-1") 
     		this.intensity = intensity;
@@ -244,15 +276,18 @@ public class ExperimentBean {
 	    		this.currStage = ExperimentBean.PHASE_EXPERIMENTAPPROVAL;
 	    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEXECUTION)) {
 	    		this.currStage = ExperimentBean.PHASE_EXPERIMENTEXECUTION;
-	    	} else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION)) {
-	    		this.currStage = ExperimentBean.PHASE_EXPERIMENTEVALUATION;
-	    	}
+            } else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION)) {
+                this.currStage = ExperimentBean.PHASE_EXPERIMENTEVALUATION;
+            } else if (currPhase.equals(ExperimentPhase.PHASENAME_EXPERIMENTFINALIZED)) {
+                this.currStage = ExperimentBean.PHASE_EXPERIMENTFINALIZED;                
+            }
     	}
 	    if(currStage>ExperimentBean.PHASE_EXPERIMENTSETUP_3)
 	    	approved=true;
 	    
         
         this.dtype = props.getDigiTypes();
+        
     }
     //END OF FILL METHOD
     
@@ -325,8 +360,18 @@ public class ExperimentBean {
      * @return
      */
     public Map<String,String> getExperimentInputData() {
-    	return this.inputData;
+        log.debug("getting experiment input data: "+this.inputData);
+        return this.inputData;
     }
+    
+    /**
+     * Get the list of files as a simple String collection.
+     * @return
+     */
+    public Collection<String> getExperimentInputDataFiles() {
+        return this.inputData.values();
+    }
+        
     
     /**
      * Returns the position where this item has been added
@@ -334,6 +379,7 @@ public class ExperimentBean {
      * @return
      */
     public String addExperimentInputData(String localFileRef) {
+        log.debug("Adding input file: "+localFileRef);
     	String key = getNextInputDataKey();
     	if(!this.inputData.values().contains(localFileRef)){
     		this.inputData.put(key, localFileRef); 
@@ -357,17 +403,18 @@ public class ExperimentBean {
      * @return
      */
     private String getNextInputDataKey(){
-    	boolean bFound = false;
+    	boolean bFound = true;
     	int count = 0;
-    	while(!bFound){
-    		//int the case that no item was added until now - index is 0
-    		if((this.inputData.size()<=0)||(!this.inputData.containsKey(count+""))){
-    			bFound = true;
+    	while(bFound){
+    		// Check if the current key is already in: 
+    		if(this.inputData.containsKey(count+"")){
+                count++;
     		}
     		else{
-    			count++;
+                bFound = false;
     		}
     	}
+    	log.debug("Returning input data key: "+count+" / "+inputData.size());
     	return count+"";
     }
     
@@ -627,20 +674,26 @@ public class ExperimentBean {
     	return this.exid;
     }
     
-    public void setLitRefDesc(String litref) {
+    public void setLitRefDesc(ArrayList<String> litref) {
     	this.litrefdesc = litref;
     }
     
-    public String getLitRefDesc() {
+    public ArrayList<String> getLitRefDesc() {
     	return this.litrefdesc;
     }
 
-    public void setLitRefURI(String uri) {
+    public void setLitRefURI(ArrayList<String> uri) {
     	this.litrefuri = uri;
     }
     
-    public String getLitRefURI() {
+    public ArrayList<String> getLitRefURI() {
     	return this.litrefuri;
+    }
+    
+    public void addLitRefSpot() {
+        // Add space for another lit ref:
+        this.litrefdesc.add("");
+        this.litrefuri.add("");
     }
 
     public void setEparticipants(String eparticipants) {
@@ -651,13 +704,39 @@ public class ExperimentBean {
     	return this.eparticipants;
     }
 
-    public Long getEref() {
+    public ArrayList<String> getEref() {
         return eref;
     }
-   
-    public void setEref(Long eref) {
+
+    public ArrayList<Experiment> getErefBeans() {
+        ArrayList<Experiment> ert = new ArrayList<Experiment>();
+        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+        for( int i=0; i < this.eref.size(); i++ ) {
+            Experiment erp = testbedMan.getExperiment((Long.parseLong(this.eref.get(i))));
+            ert.add(i,erp);
+        }
+        return ert;
+    }
+
+    
+    public void setEref(ArrayList<String> eref) {
     	this.eref = eref;
     }
+    
+    public Collection<SelectItem> getAllExperimentsSelectItems() {
+        ListExp listExp = (ListExp)JSFUtil.getManagedObject("ListExp_Backing");
+        
+        ArrayList<SelectItem> expList = new ArrayList<SelectItem>();
+        Collection<Experiment> allExps = listExp.getAllExperiments();
+        for( Experiment exp : allExps ) {
+            SelectItem item = new SelectItem();
+            item.setValue( ""+exp.getEntityID() );
+            item.setLabel(exp.getExperimentSetup().getBasicProperties().getExperimentName());
+            if( exp.getEntityID() != this.getID() )
+                expList.add(item);
+        }
+        return expList;
+    }    
     
     public List getDtype() {
         return dtype;
@@ -707,6 +786,18 @@ public class ExperimentBean {
         return exp.getCurrentPhase().getPhaseName();
     }
     
+    public boolean isFinished() {
+        if( this.currStage == ExperimentBean.PHASE_EXPERIMENTFINALIZED ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public ExperimentReport getReport() {
+        return exp.getExperimentEvaluation().getExperimentReport();
+    }
+    
     /**
      * Helper to load already entered input data from the experiment's executable
      * into this backing bean
@@ -716,6 +807,7 @@ public class ExperimentBean {
     	Iterator<String> itFileRefs = fileRefs.iterator();
     	int i =0;
     	while(itFileRefs.hasNext()){
+    	    log.debug("helperLoadInputData: adding file: "+i);
     		this.inputData.put(i+"",itFileRefs.next());
     		i++;
     	}

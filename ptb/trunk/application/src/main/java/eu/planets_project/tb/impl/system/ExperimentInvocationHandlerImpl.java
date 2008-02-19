@@ -60,11 +60,15 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 		 //1) Get the required data and build the request
 			//ExperimentExecutable already contains the input data
 			ExperimentExecutable executable = exp.getExperimentExecutable();
+			if( executable == null ) {
+			    log.error("executeExperiment: executable is null!");
+			    return;
+			}
 			executable.setExecutableInvoked(true);
 		try {
 			//stores the inputFiles with a mapping Map<position i,fileRef>
 			createInputDataMap(executable.getInputData());
-			//TBServiceTemplate which is registerd within the admin wizard
+			//TBServiceTemplate which is registered within the admin wizard
 			TestbedServiceTemplate serTempl = executable.getServiceTemplate();
 			ServiceOperation selOperation = serTempl.getServiceOperation(
 					executable.getSelectedServiceOperationName()
