@@ -1,5 +1,6 @@
 package eu.planets_project.tb.gui.backing;
 
+import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,14 +9,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Map.Entry;
 
+import javax.faces.component.UIColumn;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIData;
+import javax.faces.component.UIOutput;
+import javax.faces.component.UIPanel;
+import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlOutputLink;
+import javax.faces.component.html.HtmlOutputText;
+import javax.faces.component.html.HtmlPanelGrid;
+import javax.faces.context.FacesContext;
+import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+//import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
@@ -25,8 +38,10 @@ import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
@@ -71,13 +86,20 @@ public class ExperimentBean {
     private TestbedServiceTemplate selSerTemplate;
     private String sSelSerTemplateID="";
     private String sSelSerOperationName="";
+    private UIComponent panelAddedFiles = new UIPanel();
+    private boolean bOperationSelectionCompleted = false;
+    //tomahawk data table binding for input/output data table
+    private HtmlPanelGrid inputOutputTable = new HtmlPanelGrid();
     
     private Map<String,BenchmarkBean> benchmarks = new HashMap<String,BenchmarkBean>();
     private String intensity="0";
-    private String nrOutputFiles="1";
+
     //The input file refs with Map<Position+"",localFileRef>
     private Map<String,String> inputData = new HashMap<String,String>();
-    //private Map<String,String> outputData = new HashMap<String,String>();
+    //distinguish between migration and characterisation output results
+    //output in the form of localInputFile Ref and localFileRef/String
+    private Collection<Map.Entry<String,String>> outputData = new Vector<Map.Entry<String,String>>();
+    
     private int currStage = ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
     
@@ -164,6 +186,12 @@ public class ExperimentBean {
         	this.sSelSerTemplateID = selSerTemplate.getUUID();
         	this.sSelSerOperationName = executable.getSelectedServiceOperationName();
         	helperLoadInputData(executable.getInputData());
+        	if(executable.isExecutionSuccess()){
+        		//uses the executable to get the data
+            	this.outputData = exp.getExperimentExecutable().getOutputDataEntries();
+            	//fill the bound table
+            	this.buildIODataTable();
+        	}
         }
 
     	// set benchmarks
@@ -206,9 +234,6 @@ public class ExperimentBean {
     	String intensity = Integer.toString(exp.getExperimentSetup().getExperimentResources().getIntensity());
     	if (intensity != null && intensity != "-1") 
     		this.intensity = intensity;
-    	String nroutputfiles = Integer.toString(exp.getExperimentSetup().getExperimentResources().getNumberOfOutputFiles());
-    	if (nroutputfiles !=null && nroutputfiles != "-1") 
-    		this.nrOutputFiles = nroutputfiles;
     	// determine current Stage
     	ExperimentPhase currPhaseObj = exp.getCurrentPhase();
     	if (currPhaseObj != null) {
@@ -288,6 +313,11 @@ public class ExperimentBean {
     	return this.selSerTemplate;
     }
 
+    public ServiceOperation getSelectedServiceOperation(){
+    	return this.getSelectedServiceTemplate().getServiceOperation(
+    			this.getSelectedServiceOperationName()
+    			);
+    }
     
     /**
      * Returns a Map of added file Refs
@@ -317,6 +347,10 @@ public class ExperimentBean {
     	}
     }
     
+    public void removeAllExperimentInputData(){
+    	this.inputData = new HashMap<String,String>();
+    }
+    
     /**
      * As the InputData HashMap should be filled up with IDs without any 
      * gap, this method is used to find the next possible key
@@ -326,7 +360,8 @@ public class ExperimentBean {
     	boolean bFound = false;
     	int count = 0;
     	while(!bFound){
-    		if(this.inputData.containsKey(count+"")){
+    		//int the case that no item was added until now - index is 0
+    		if((this.inputData.size()<=0)||(!this.inputData.containsKey(count+""))){
     			bFound = true;
     		}
     		else{
@@ -336,21 +371,110 @@ public class ExperimentBean {
     	return count+"";
     }
     
-    //TODO: einkommentieren??
-    /*public String getEworkflowOutputData() {
-    	return this.outputData;
+    
+    public void setOutputData(Collection<Entry<String,String>> data){
+    	this.outputData = data;
     }
     
-    public void setEworkflowOutputData(String outputdata) {
-    	this.outputData = outputdata;
-    }*/
+    /**
+     * Retrieves the URI references as UIComponents 
+     * i.e. all localFileRefs are converted to URIs and wraped within an
+     * HtmlOutputLink link. In the case of an characterisation experiment
+     * the results are put into a HtmlOutputText telement
+     * @return
+     */
+    public Collection<Entry<UIComponent,UIComponent>> getOutputDataForGUI(){
+    	//Entry of inputComponent, outputComponent
+    	Collection<Entry<UIComponent,UIComponent>> ret = new Vector<Entry<UIComponent,UIComponent>>();
+    	Iterator<Entry<String,String>> itData = this.outputData.iterator();
+    	
+    	FacesContext facesContext = FacesContext.getCurrentInstance();
+    	DataHandler dh = new DataHandlerImpl();
+    	int count =0;
+    	while(itData.hasNext()){
+    		Entry<String,String> entry = itData.next();
+    		String input = entry.getKey();
+    		String output = entry.getValue();
+    		UIComponent componentInput = null;
+    		UIComponent componentOutput = null;
+    		
+    	 //For the Input:
+    		try{
+    		//test: convert input to URI
+    			URI uriInput = dh.getHttpFileRef(new File(input), true);
+    			//wrap uri as output link - get its original file name as label
+    			HtmlOutputText outputText = (HtmlOutputText) facesContext
+					.getApplication().createComponent(
+						HtmlOutputText.COMPONENT_TYPE);
+    			outputText.setValue(dh.getIndexFileEntryName(new File(input)));
+    			outputText.setId("inputFileName" + count+"");
+    			
+    			//use its URI as file Output Link
+    			HtmlOutputLink link_src = (HtmlOutputLink) facesContext
+					.getApplication().createComponent(
+						HtmlOutputLink.COMPONENT_TYPE);
+    			link_src.setId("inputFileRef" + count+"");
+    			link_src.setValue("file:///" + uriInput);	
+    			link_src.getChildren().add(outputText);
+    			//add to return
+    			componentInput = link_src;
+    		}
+    		catch(Exception e){
+    			//this input was not a file or fileRef not readable  - display as text
+    			//wrap input as outputText
+    			HtmlOutputText outputText = (HtmlOutputText) facesContext
+					.getApplication().createComponent(
+						HtmlOutputText.COMPONENT_TYPE);
+    			outputText.setValue(dh.getIndexFileEntryName(new File(input)));
+    			outputText.setId("inputFileName" + count+"");
+    			componentInput = outputText;
+    		}
+    		
+    	 //For the Output:
+    		try{
+        		//test: convert output to URI
+        		URI uriOutput = dh.getHttpFileRef(new File(output), false);
+        		//wrap uri as output link - get its original file name as label
+        		HtmlOutputText outputText = (HtmlOutputText) facesContext
+    				.getApplication().createComponent(
+    					HtmlOutputText.COMPONENT_TYPE);
+        		outputText.setValue(output);
+        		outputText.setId("outputFileName" + count+"");
+        			
+        		//use its URI as file Output Link
+        		HtmlOutputLink link_src = (HtmlOutputLink) facesContext
+    				.getApplication().createComponent(
+    					HtmlOutputLink.COMPONENT_TYPE);
+        		link_src.setId("outputFileRef" + count+"");
+        		link_src.setValue("file:///" + uriOutput);	
+        		link_src.getChildren().add(outputText);
+        		//add to return
+        		componentOutput = link_src;
+        	}
+        	catch(Exception e){
+        		//this input was not a file or fileRef not readable  - display as text
+        		//wrap input as outputText
+        		HtmlOutputText outputText = (HtmlOutputText) facesContext
+    				.getApplication().createComponent(
+    					HtmlOutputText.COMPONENT_TYPE);
+        		outputText.setValue(output);
+        		outputText.setId("outputFileName" + count+"");
+        		componentOutput = outputText;
+        	}  
+        	HashMap<UIComponent,UIComponent> helper = new HashMap<UIComponent,UIComponent>();
+        	helper.put(componentInput, componentOutput);
+        	ret.add(helper.entrySet().iterator().next());
+        	count++;
+    	}
+    	return ret;
+    }
 
-    public void setNumberOfOutputFiles(String nr) {
-		this.nrOutputFiles = nr;
+	public String getNumberOfOutput() {
+		return this.outputData.size()+"";
 	}
-
-	public String getNumberOfOutputFiles() {
-		return this.nrOutputFiles;
+	
+	public int getNumberOfInputFiles(){
+		return this.inputData.values().size();
 	}
 
 	public void setIntensity(String intensity) {
@@ -597,5 +721,99 @@ public class ExperimentBean {
     	}
     }
     
+    public boolean isOperationSelectionCompleted(){
+    	return this.bOperationSelectionCompleted;
+    }
     
+    /**
+     * Marks the process of selecting service + operation as completed
+     * Note: selecting an other service or operation after this step leads to
+     * loosing all added input data
+     * @param b
+     */
+    public void setOpartionSelectionCompleted(boolean b){
+    	this.bOperationSelectionCompleted = b;
+    }
+    
+    /**
+     * The panel to render all added file inputs
+     * @return
+     */
+    public UIComponent getPanelAddedFiles(){
+    	return this.panelAddedFiles;
+    }
+    
+    public void setPanelAddedFiles(UIComponent panel){
+    	this.panelAddedFiles = panel;
+    }
+    
+    /**
+     * Returns the binding for the input/output data table
+     * @param table
+     */
+    public void setInputOutputTable(HtmlPanelGrid table){
+    	this.inputOutputTable = table;
+    }
+    
+    public HtmlPanelGrid getInputOutputTable(){
+    	return this.inputOutputTable;
+    }
+    
+    public void buildIODataTable(){
+    	HtmlPanelGrid table = this.getInputOutputTable();
+    	table = new HtmlPanelGrid();
+    	//table.setId("inputOutputTable");
+    		
+    	//table.setPreserveDataModel(false);
+    	//table.setCellpadding("2");
+    	//table.setCellspacing("0");
+    	//table.setBorder(1);
+    	//table.setStyle("border: 1px solid #579EC2;");
+    	
+    	table.setColumns(2);
+    	/*UIColumn col1 = new UIColumn();
+    	col1.setId("colInputData1");
+    	UIOutput header1 = new HtmlOutputText();
+    	header1.setId("header1");
+    	header1.setValue("Input Files");
+    	col1.setHeader(header1);*/
+    	
+    	/*UIColumn col2 = new UIColumn();
+    	col2.setId("colInputData2");
+    	UIOutput header2 = new HtmlOutputText();
+    	header2.setId("header2");
+    	header2.setValue("Output Files");
+    	col2.setHeader(header2);  	*/
+    	
+    	/*Iterator<Entry<UIComponent,UIComponent>> itIO = getOutputDataForGUI().iterator();
+    	while(itIO.hasNext()){
+    		Entry<UIComponent,UIComponent> entry = itIO.next();
+    		//input
+    		try{
+    			HtmlOutputLink input = (HtmlOutputLink)entry.getKey();
+    			col1.getChildren().add(input);
+    		}catch(Exception e){
+    			HtmlOutputText input= (HtmlOutputText)entry.getKey();
+    			col1.getChildren().add(input);
+    		}
+    		//output
+    		try{
+    			HtmlOutputLink output = (HtmlOutputLink)entry.getKey();
+    			col2.getChildren().add(output);
+    		}catch(Exception e){
+    			HtmlOutputText output= (HtmlOutputText)entry.getKey();
+    			col2.getChildren().add(output);
+    		}
+    	}*/
+    	
+    	HtmlOutputText outputText = new HtmlOutputText();
+    	outputText.setValue("TestValue");
+    	outputText.setId("outputFileName1");
+    	//col1.getChildren().add(outputText);
+    	
+    	/*table.getChildren().add(col1);
+    	table.getChildren().add(col2);
+    	table.setRows(1);*/
+    	table.getChildren().add(outputText);
+    }
 }

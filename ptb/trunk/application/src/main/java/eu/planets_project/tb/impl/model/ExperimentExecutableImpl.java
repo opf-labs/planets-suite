@@ -25,6 +25,7 @@ import javax.persistence.Transient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
@@ -59,12 +60,15 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	private boolean bExecutionStarted = false;
 	private boolean bExecutionEnded = false;
 	private boolean bExecutionSuccess = false;
+	private String sXMLRequest ="";
+	private String sXMLResponds = "";
 	@Transient
 	//A logger for this - transient: it's not persisted with this entity
-    private Log log = LogFactory.getLog(ExperimentExecutableImpl.class);
+	private static Log log;
 	
 	
 	public ExperimentExecutableImpl(TestbedServiceTemplate template) {
+		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 		//decouple this object
 		tbServiceTemplate = ((TestbedServiceTemplateImpl)template);
 		//Info: HashMap<InputFileRef,OutputFileRef>
@@ -302,6 +306,13 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	public Collection<Entry<String, String>> getCharacterisationDataEntries() {
 		return this.hmInputOutputData.entrySet();
 	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getOutputDataEntries()
+	 */
+	public Collection<Entry<String, String>> getOutputDataEntries() {
+		return this.hmInputOutputData.entrySet();
+	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getCharacterisationHttpDataEntries()
@@ -459,6 +470,38 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	 */
 	public void setExecutableInvoked(boolean b) {
 		this.bExecutionStarted = b;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getServiceXMLRequest()
+	 */
+	public String getServiceXMLRequest() {
+		return this.sXMLRequest;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getServiceXMLResponds()
+	 */
+	public String getServiceXMLResponds() {
+		return this.sXMLResponds;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setServiceXMLRequest(java.lang.String)
+	 */
+	public void setServiceXMLRequest(String xmlrequest) {
+		if(xmlrequest!=null){
+			this.sXMLRequest = xmlrequest;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setServiceXMLResponds(java.lang.String)
+	 */
+	public void setServiceXMLResponds(String xmlresponds) {
+		if(xmlresponds!=null){
+			this.sXMLResponds = xmlresponds;
+		}
 	}
 
 

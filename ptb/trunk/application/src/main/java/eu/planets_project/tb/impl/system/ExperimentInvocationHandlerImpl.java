@@ -81,6 +81,7 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 			//create the web service client
 			WSClientBean wsclient = createWSClient(serTempl,selOperation);
 			wsclient.setXmlRequest(serviceRequest);
+			executable.setServiceXMLRequest(serviceRequest);
 		
 		  //3) Send the request and check if completed successfully
 			String message = wsclient.sendRequest();
@@ -92,6 +93,7 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 		  //4) Fetch the results from the service's responds
 			String xPathToOutput = selOperation.getXPathToOutput();
 			String xmlResponds = wsclient.getXmlResponse();
+			executable.setServiceXMLResponds(xmlResponds);
 			ServiceRespondsExtractor respondsExtractor = new ServiceRespondsExtractorImpl(xmlResponds, xPathToOutput);
 			//Structure: <int position+"",String fileRefToServiceOutput>
 			Map<String,String> mapResults = respondsExtractor.getAllOutputs();
@@ -115,6 +117,7 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 				String key = itKeys.next();
 				executable.setOutputData(this.hmInputFiles.get(key), mapResults.get(key));
 			}
+	
 			executable.setExecutionCompleted(true);
 			executable.setExecutionSuccess(true);
 			

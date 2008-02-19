@@ -264,7 +264,7 @@ public class NewExpWizardController {
     	if (expRes == null)
     		expRes = new ExperimentResourcesImpl();
     	expRes.setIntensity(Integer.parseInt(expBean.getIntensity()));
-    	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutputFiles()));
+    	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutput()));
     	exp.getExperimentSetup().setExperimentResources(expRes);
     	testbedMan.updateExperiment(exp); 
     	// if successful, set a message at top of page
@@ -276,6 +276,7 @@ public class NewExpWizardController {
         FacesContext ctx = FacesContext.getCurrentInstance();
         ctx.addMessage("stage3form",fmsg);
         return "success";
+        
 	  } catch (InvalidInputException e) {
 		log.error(e.toString());
         FacesMessage fmsg = new FacesMessage();
@@ -288,8 +289,8 @@ public class NewExpWizardController {
 	  }
    	}
     
-    //TODO:comment in again
-    /*public String updateEvaluationAction() {
+
+    public String updateEvaluationAction() {
         try {
 	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
@@ -335,10 +336,19 @@ public class NewExpWizardController {
 	    		}
 	    		}
 	    	}
+	    	//fill the benchmark goals for every input file - used for evaluation
 	    	Map<URI,List<BenchmarkGoal>> bhm = new HashMap<URI,List<BenchmarkGoal>>();
-	    	bhm.put(new URI(expBean.getEworkflowInputData()),bmgoals);
+	    	Iterator<String> itLocalInputFileRefs = expBean.getExperimentInputData().values().iterator();
+	    	DataHandler dh = new DataHandlerImpl();
+	    	//iterate over every input file and add it's BM goals
+	    	while(itLocalInputFileRefs.hasNext()){
+	    		String localInputFileRef = itLocalInputFileRefs.next();
+	    		URI inputURI = dh.getHttpFileRef(new File(localInputFileRef), true);
+		    	bhm.put(inputURI,bmgoals);
+	    	}
+	    	
+	    	//now write these changes back to the experiment
 	    	Experiment e = testbedMan.getExperiment(exp.getEntityID());
-	    	System.out.println("Exp ID: "+ exp.getEntityID() + " e: " + e);   	
 	    	exp.getExperimentEvaluation().setEvaluatedFileBenchmarkGoals(bhm);
 	    	testbedMan.updateExperiment(exp);
 	        FacesMessage fmsg = new FacesMessage();
@@ -352,7 +362,7 @@ public class NewExpWizardController {
         	log.error("Exception when trying to create/update Evaluations: "+e.toString());
         	return "failure";
         }
-    }*/
+    }
     
       
     /**
@@ -370,8 +380,8 @@ public class NewExpWizardController {
 	        ExperimentExecutable executable = exp.getExperimentExecutable();
 	        if (executable == null) {
 	        	executable = new ExperimentExecutableImpl(expBean.getSelectedServiceTemplate());
+	        	exp.setExperimentExecutable((ExperimentExecutableImpl)executable);
 	        }
-	        
 	        // store the provided input data
 	        executable.setInputData(expBean.getExperimentInputData().values());	        
 	        // store all other metadata
@@ -386,6 +396,7 @@ public class NewExpWizardController {
 	    	return "goToStage3";
         } catch (Exception e) {
         	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
+        	e.printStackTrace();
         	return "failure";
         }
     }
@@ -400,7 +411,7 @@ public class NewExpWizardController {
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	//also sets the beans selectedServiceTemplate (from the registry)
     	expBean.setSelServiceTemplateID(ce.getNewValue().toString());
-    	//reloadOperations();
+    	reloadOperations();
     }
     
     /**
@@ -415,12 +426,19 @@ public class NewExpWizardController {
     
     /**
      * When the selected ServiceTemplate has changed - reload it's available
-     * ServiceOperations.
+     * ServiceOperations and select the first one in the list
      */
-    /*private void reloadOperations(){
+    private void reloadOperations(){
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	expBean.setSelectedServiceOperationName("");
-    }*/
+    	List<String> lNames = expBean.getSelectedServiceTemplate().getAllServiceOperationNames();
+    	if((lNames!=null)&&(lNames.size()>0)){
+    		//sets the first operationname selected so that it gets displayed
+    		expBean.setSelectedServiceOperationName(lNames.iterator().next());
+    	}
+    	else{
+    		expBean.setSelectedServiceOperationName("");
+    	}
+    }
     
     
     /**
@@ -441,11 +459,64 @@ public class NewExpWizardController {
     	String position = expBean.addExperimentInputData(fileRef);
     	
     	//2) For the current fileRef create an GUI outputfield + a RemoveIcon+Link
-    	UIComponent panel = this.getComponent("panelAddedFiles");
+    	//UIComponent panel = this.getComponent("configureExpWorkflowForm:panelAddedFiles");
+    	UIComponent panel = expBean.getPanelAddedFiles();
     	helperCreateRemoveFileElement(panel, fileRef, position);
     	
     	//reload stage2 and displaying the added data items
     	return "goToStage2";
+    }
+    
+    
+    /**
+     * checks for the max supported and min required number of input files and triggers
+     * the file upload button rendered or not.
+     * @return
+     */
+    public boolean isAddFileButtonRendered(){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	if((expBean.getSelectedServiceTemplate()!=null)&&(expBean.getSelectedServiceOperationName()!="")){
+    		ServiceOperation operation = expBean.getSelectedServiceTemplate().getServiceOperation(
+    				expBean.getSelectedServiceOperationName()
+    				);
+    		int maxsupp = operation.getMaxSupportedInputFiles();
+    		int current = expBean.getNumberOfInputFiles();
+    		if((current<maxsupp)){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    /**
+     * May only proceed to the next step if the min. number of required input files
+     * was provided
+     * @return
+     */
+    public boolean isMinReqNrOfFilesSelected(){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	if((expBean.getSelectedServiceTemplate()!=null)&&(expBean.getSelectedServiceOperationName()!="")){
+    		ServiceOperation operation = expBean.getSelectedServiceTemplate().getServiceOperation(
+    				expBean.getSelectedServiceOperationName()
+    				);
+    		int minrequ = operation.getMinRequiredInputFiles();
+    		int current = expBean.getNumberOfInputFiles();
+    		if(current>=minrequ){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    
+    public boolean isExecutionSuccess(){
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");   
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = testbedMan.getExperiment(expBean.getID());   	
+    	if(exp.getExperimentExecutable()!=null){
+    		return exp.getExperimentExecutable().isExecutionSuccess();
+    	} 
+    	return false;
     }
     
     /**
@@ -457,18 +528,18 @@ public class NewExpWizardController {
     private void helperCreateRemoveFileElement(UIComponent panel, String fileRef, String key){
 		try {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
+			DataHandler dh = new DataHandlerImpl();
 			//file ref
 			HtmlOutputText outputText = (HtmlOutputText) facesContext
 					.getApplication().createComponent(
 							HtmlOutputText.COMPONENT_TYPE);
-			outputText.setValue(fileRef);
+			outputText.setValue(dh.getIndexFileEntryName(new File(fileRef)));
 			outputText.setId("fileName" + key);
 			//file name
 			HtmlOutputLink link_src = (HtmlOutputLink) facesContext
 					.getApplication().createComponent(
 							HtmlOutputLink.COMPONENT_TYPE);
 			link_src.setId("fileRef" + key);
-			DataHandler dh = new DataHandlerImpl();
 			URI URIFileRef = dh.getHttpFileRef(new File(fileRef), true);
 			link_src.setValue("file:///" + URIFileRef);
 
@@ -515,24 +586,49 @@ public class NewExpWizardController {
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			
 			//1)get the passed Attribute "IDint", which is the counting number of the component
-			int IDnr = ((Integer)event.getComponent().getAttributes().get("IDint")).intValue();
+			String IDnr = event.getComponent().getAttributes().get("IDint").toString();
+			
 			
 			//2) Remove the data from the bean's variable
 			ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 			expBean.removeExperimentInputData(IDnr+"");
 			
 			//3) Remove the GUI elements from the panel
-			UIComponent comp_link_remove = this.getComponent("panelAddedFiles:removeLink"+IDnr);
-		
-			UIComponent comp_link_src = this.getComponent("panelAddedFiles:fileRef"+IDnr);
-			getComponent("panelAddedFiles").getChildren().remove(comp_link_remove);
+			
+			UIComponent comp_link_remove = this.getComponent(expBean.getPanelAddedFiles(),"removeLink"+IDnr);
+			UIComponent comp_link_src = this.getComponent(expBean.getPanelAddedFiles(),"fileRef"+IDnr);
+
+			//UIComponent comp_link_src = this.getComponent("panelAddedFiles:fileRef"+IDnr);
+			expBean.getPanelAddedFiles().getChildren().remove(comp_link_remove);
 			//this.getComponentPanelStep3Add().getChildren().remove(comp_text);
-			getComponent("panelAddedFiles").getChildren().remove(comp_link_src);
+			expBean.getPanelAddedFiles().getChildren().remove(comp_link_src);
 
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+		return "goToStage2";
+	}
+	
+	/**
+	 * Undo the process of selecting service and operation to pick another one.
+	 * Note: this leads to losing already uploaded input data - warn the user
+	 * @return
+	 */
+	public String changeAlreadySelectedSerOps(){
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		expBean.removeAllExperimentInputData();
+		expBean.setOpartionSelectionCompleted(false);
+		return "goToStage2";
+	}
+	
+	/**
+	 * Set the selected service and operation to final and continue to select input data
+	 * @return
+	 */
+	public String completeSerOpsSelection(){
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		expBean.setOpartionSelectionCompleted(true);
 		return "goToStage2";
 	}
     
@@ -551,7 +647,7 @@ public class NewExpWizardController {
 	 * @return: Returns an instance of the FileUploadBean (e.g. for additional operations as .getEntryName, etc.)
 	 * if the operation was successful or null if an error occured
 	 */
-	public FileUploadBean uploadFile(){
+	private FileUploadBean uploadFile(){
 		FileUploadBean file_upload = this.getCurrentFileUploadBean();
 		try{
 			//trigger the upload command
@@ -645,6 +741,11 @@ public class NewExpWizardController {
 			TestbedServiceTemplate template = itTemplates.next();
 			ret.put(template.getName(),String.valueOf(template.getUUID()));
 		}
+		
+		//finally set an item within the list as selected for the bean
+		if(ret.size()>0)
+			expBean.setSelServiceTemplateID(ret.values().iterator().next());
+		
     	return ret;
     }
     
@@ -734,19 +835,19 @@ public class NewExpWizardController {
         return "goToStage5";
     }
     
-    //TODO: comment in again
-    /*public String executeExperiment(){
+    
+   public String executeExperiment(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
-    	// running experiment: dummy invoker should be called here
     	try {
+    		//call invocation on the experiment's executable
     		testbedMan.executeExperiment(exp);
-        	String inputData = expBean.getEworkflowInputData();
-        	URI outputURI = exp.getExperimentExecution().getExecutionOutputData(new URI(inputData));
-        	expBean.setEworkflowOutputData(outputURI.toString());    		
-	  	  	//testbedMan.updateExperiment(exp);
-	  	  	if (exp.getExperimentExecution().isExecuted()) {
+        	
+    		//fill the expBean with the execution's results
+        	expBean.setOutputData(exp.getExperimentExecutable().getOutputDataEntries());
+
+	  	  	if (exp.getExperimentExecution().isExecutionInvoked()) {
 	  	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
 	  	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
 	  	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
@@ -758,7 +859,8 @@ public class NewExpWizardController {
     		System.out.println("Error when executing Experiment: " + e.toString());
     		return null;
     	}   	
-    }*/
+    }
+    
     
     public String proceedToEvaluation() {
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
@@ -769,6 +871,8 @@ public class NewExpWizardController {
   	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
   	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
   	        testbedMan.updateExperiment(exp);
+  	        //fill the dataTable with execution results
+  	        expBean.buildIODataTable();
     		return "goToStage6";
   	  	} else
     		return null;
@@ -835,16 +939,23 @@ public class NewExpWizardController {
  * -------------------------------------------
  */
     
-    /**
+
+	/**
 	 * Get the component from the JSF view model - it's id is registered withinin the page
+	 * @param panel if null then from the root
+	 * @param sID
 	 * @return
 	 */
-	private UIComponent getComponent(String sID){
+	private UIComponent getComponent(UIComponent panel, String sID){
 
 			FacesContext facesContext = FacesContext.getCurrentInstance();
 			
-			//the ViewRoot contains all children not only in sub-level1
-			Iterator<UIComponentBase> it = facesContext.getViewRoot().getChildren().iterator();
+			if(panel==null){
+				//the ViewRoot contains all children starting from sub-level 0
+				panel = facesContext.getViewRoot();
+			}
+			
+			Iterator<UIComponentBase> it = panel.getChildren().iterator();
 			UIComponent returnComp = null;
 			
 			while(it.hasNext()){

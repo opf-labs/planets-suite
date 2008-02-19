@@ -16,6 +16,8 @@
 	<ui:include src="/WEB-INF/templates/header.xhtml">
 		<ui:param name="page" value="register_TBservices"/>
 	</ui:include>
+	
+	<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script> 
 </ui:define>
 
 <ui:define name="content">
@@ -34,6 +36,7 @@
 		 	<!-- note: RegisterTBServiceBean is put into session by Manager.initExperimentAction() -->
 		 	<h:inputTextarea value="#{RegisterTBServiceBean.endpointURI}" id="ServiceURI" required="true" cols="80" rows="1" disabled="#{RegisterTBServiceBean.stage1Completed}">
          	</h:inputTextarea>
+         	<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['serTempl.register.registrytip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
          	<h:message for="ServiceURI" errorClass="errorMessage" infoClass="infoMessage"/>
          	</p>
 			

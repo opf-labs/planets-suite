@@ -3,6 +3,7 @@ package eu.planets_project.tb.api.model;
 import java.net.URI;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 
@@ -118,6 +119,12 @@ public interface ExperimentExecutable{
 	public Map.Entry<URI, String> getCharacterisationHttpDataEntry(String localFileRef);
 	
 	/**
+	 * A general, independent of the experiment type, method to retrieve the output data
+	 * @return
+	 */
+	public Collection<Entry<String, String>> getOutputDataEntries();
+	
+	/**
 	 * An indicator if the service invocation has been triggered
 	 */
 	public boolean isExecutableInvoked();
@@ -135,6 +142,21 @@ public interface ExperimentExecutable{
 	 */
 	public boolean isExecutionSuccess();
 	public void setExecutionSuccess(boolean b);
+	
+	/**
+	 * To retrieve the plain text of the XML request  message that's been used for
+	 * invoking the web service
+	 * @return
+	 */
+	public String getServiceXMLRequest();
+	public void setServiceXMLRequest(String xmlrequest);
+	/**
+	 * To retrieve the plain text of the XML responds message that's been received from
+	 * invoking the web service
+	 * @return
+	 */
+	public String getServiceXMLResponds();
+	public void setServiceXMLResponds(String xmlresponds);
 	
 
 }

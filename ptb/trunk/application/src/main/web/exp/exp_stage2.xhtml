@@ -54,55 +54,77 @@
 					onchange="this.form.submit()"
 					value="#{ExperimentBean.selectedServiceTemplateID}"
 					valueChangeListener="#{NewExp_Controller.changedSelTBServiceTemplateEvent}"
-					immediate="true"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
+					immediate="true"  readonly="#{ExperimentBean.approved}" 
+					disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==true)}">
 						<f:selectItems value="#{NewExp_Controller.allAvailableTBServiceTemplates}" />
 					</h:selectOneMenu>
 				</p>
+				<br/>
 					<!-- select from the available service operations -->
 				 <p><h:outputText value="Selected Operation Name:" styleClass="readerLabel"/>
              		<h:selectOneMenu 
              		    value="#{ExperimentBean.selectedServiceOperationName}" 
              		    immediate="true" readonly="#{ExperimentBean.approved}" 
-             		    disabled="#{ExperimentBean.approved}"
+             		    disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==true)}"
              			valueChangeListener="#{NewExp_Controller.changedSelServiceOperationEvent}" 
              			onchange="submit()">
                  		<f:selectItems value="#{NewExp_Controller.allAvailableServiceOperations}" />                        
              		</h:selectOneMenu>
       		    </p>
-				</fieldset>
+      		    </fieldset>
+      		    <h:commandButton value="#{res['button.change']}"
+                      				action="#{NewExp_Controller.changeAlreadySelectedSerOps}"
+                      				disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==false)}"
+                      				rendered="#{ExperimentBean.operationSelectionCompleted}"
+                      				readonly="#{ExperimentBean.approved}"
+                      				immediate="true" />
+               <h:commandButton value="#{res['button.select']}"
+                      				action="#{NewExp_Controller.completeSerOpsSelection}"
+                      				disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==true)}"
+                      				rendered="#{ExperimentBean.operationSelectionCompleted==false}"
+                      				readonly="#{ExperimentBean.approved}"
+                      				immediate="true"/>
+
 			</h:form>
-			<h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{not empty ExperimentBean.selectedServiceTemplate}">
+			<h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{ExperimentBean.operationSelectionCompleted}">
 				<fieldset>
 
 					<legend>#{res['exp_stage2.legendThree']}</legend>
-					<b>#{res['exp_stage2.serviceName']} </b>#{ExperimentBean.selectedServiceTemplate.name}<br/>
-					<b>#{res['exp_stage2.WSDL']} </b>#{ExperimentBean.selectedServiceTemplate.Endpoint}<br/>
-					<b>#{res['exp_stage2.serviceOperationName']} </b>#{ExperimentBean.selectedServiceTemplate.ServiceOperationType}<br/>
-                         <p>				
-                            <t:inputFileUpload id="fileupload" rendered="#{empty ExperimentBean.eworkflowInputData}"
+					<ul>
+						<li><b>#{res['exp_stage2.serviceName']} </b>#{ExperimentBean.selectedServiceTemplate.name}<br/></li>
+						<li><b>#{res['exp_stage2.serviceOperationName']} </b>#{ExperimentBean.selectedServiceOperationName}<br/></li>
+						<li><b>#{res['exp_stage2.serviceOperationDescription']} </b>#{ExperimentBean.selectedServiceOperation.description}<br/></li>
+						<li><b>#{res['exp_stage2.minRequiredInput']} </b>#{ExperimentBean.selectedServiceOperation.minRequiredInputFiles}<br/></li>
+                    	<li><b>#{res['exp_stage2.maxSupportedInput']} </b>#{ExperimentBean.selectedServiceOperation.maxSupportedInputFiles}<br/></li>
+                    </ul>    	
+                         <p><h:outputText value="Specify Input: " styleClass="readerLabel"/>		
+                            <t:inputFileUpload id="fileupload"
                                   value="#{FileUploadBean.upFile}"
                                   storage="file"
                                   styleClass="fileUploadInput"
                                   required="false"
                                   maxlength="10000000"  
                                   readonly="#{ExperimentBean.approved}" 
-                                  disabled="#{ExperimentBean.approved}"/><br/>
+                                  disabled="#{ExperimentBean.approved}"/>
                                   
-							<h:commandLink id="link_addFileInputItem" action="#{RegisterTBServiceBean.command_addFileRefToStep3}" rendered="#{RegisterTBServiceBean.addFileButtonRendered}">
+							<h:commandLink id="link_addFileInputItem" 
+								action="#{NewExp_Controller.commandAddInputDataItem}" 
+								rendered="#{NewExp_Controller.addFileButtonRendered}"
+								disabled="#{ExperimentBean.approved}"
+								readonly="#{ExperimentBean.approved}">
                     			<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
                 			</h:commandLink>
-                			
-							<h:message for="fileupload"/>
-                            <h:panelGroup id="panelAddedFiles" rendered="#{not empty ExperimentBean.eworkflowInputData}">
+                		</p>
+							<h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>
+							<b><h:outputText value="#{res['exp_stage2.inputData']} "/></b><br/>
+                            <h:panelGroup id="panelAddedFiles" binding="#{ExperimentBean.panelAddedFiles}">
                             	<!-- display the specified input data -->
-                            	<h:outputText value="#{res['exp_stage2.inputData']} "/>
-                           
                             </h:panelGroup>                               
                             <br/>
-                            <h:commandButton value="#{res['button.save']}"
-                      				action="#{NewExp_Controller.commandSaveStep2Substep2Action}" />
-                          </p>
 				</fieldset>
+				<h:commandButton value="#{res['button.save']}"
+                      				action="#{NewExp_Controller.commandSaveStep2Substep2Action}"
+                      				disabled="#{NewExp_Controller.minReqNrOfFilesSelected==false}" />
 			</h:form>
 
 		<p>&#160;</p>

@@ -1,5 +1,6 @@
 package eu.planets_project.tb.impl.services.util;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -7,7 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 /**
  * @author Andrew Lindley, ARC
@@ -21,10 +26,12 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 	private String xmlRequestTemplate = "";
 	//Map<position i+"", localFileRef> to keep position of the fileRef's position
 	private Map<String,String> hmLocalFileRefs = new HashMap<String,String>();
+	//A logger for this:
+    private Log log = LogFactory.getLog(ServiceRequestBuilderImpl.class);
 	
 	public ServiceRequestBuilderImpl(String xmlRequestTemplate, Map<String,String> localFileRefs){
 		this.xmlRequestTemplate = xmlRequestTemplate;
-		this.hmLocalFileRefs = localFileRefs;
+		this.hmLocalFileRefs = this.convertToAbsoluteLocalFileRefs(localFileRefs);
 	}
 	
 	/**
@@ -34,7 +41,7 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 	 */
 	public ServiceRequestBuilderImpl(String xmlRequestTemplate, String localFileRef){
 		this.xmlRequestTemplate = xmlRequestTemplate;
-		this.hmLocalFileRefs.put("0", localFileRef);
+		this.hmLocalFileRefs.put("0", this.convertToAbsoluteFileRef(localFileRef));
 	}
 	
 	/* (non-Javadoc)
@@ -100,13 +107,15 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 			sMessageStart = tokenizer[0];
 			temp = tokenizer[1];
 		}
-		tokenizer = this.xmlRequestTemplate.split(TAG_FILE);
+
+		//temp.split(TAG_FILE)[0];
+		tokenizer = temp.split(TAG_FILE);
 		if(tokenizer.length!=1){
 			//e.g. "<item>"
 			sArrayLineStart = tokenizer[0];
 			temp = tokenizer[1];
 		}
-		tokenizer = this.xmlRequestTemplate.split(TAG_FILEARRAYLINE_END);
+		tokenizer = temp.split(TAG_FILEARRAYLINE_END);
 		if(tokenizer.length!=1){
 			//e.g. "</item>"
 			sArrayLineEnd = tokenizer[0];
@@ -132,6 +141,7 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 		XMLRequest = sMessageStart + sArrayLines + sMessageEnd;
 		return XMLRequest;
 	}
+	
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.services.util.ServiceRequestBuilder#isFileTemplate()
@@ -169,5 +179,41 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 		ret.add(TAG_FILEARRAYLINE_END);
 		return ret;
 	}
+	
+	/**
+	 * Takes given file refs, converts them into File objects and returns
+	 * the proper object that's used within this class
+	 * e.g. ../data/file1.doc --> C:/input/data/file1.doc
+	 * @param localFileRef
+	 * @return
+	 */
+	private Map<String,String> convertToAbsoluteLocalFileRefs(Map<String,String> refs){
+		Map<String,String> ret = new HashMap<String,String>();
+		Iterator<String> sKeys = refs.keySet().iterator();
+		while(sKeys.hasNext()){
+			String key = sKeys.next();
+			String fileRef = refs.get(key);
+			ret.put(key, convertToAbsoluteFileRef(fileRef));
+		}
+		return ret;
+	}
 
+	/**
+	 * Takes a given file ref, converts it into a File object and returns
+	 * its abolsut path
+	 * e.g. ../data/file1.doc --> C:/input/data/file1.doc
+	 * @param localFileRef
+	 * @return
+	 */
+	private String convertToAbsoluteFileRef(String localFileRef){
+		File f = new File(localFileRef);
+		if(!f.canRead()){
+			log.error("error retrieving file ref "+localFileRef+" to absolute path");
+			//in this case add the non-absolut path
+			return localFileRef;
+		}
+		else{
+			return f.getAbsolutePath();
+		}
+	}
 }

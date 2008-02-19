@@ -60,7 +60,7 @@ public class TestbedManagerImpl
 	 * This Class implements the Java singleton pattern and therefore the constructor should be private
 	 * However due to requirements of JSF managed beans it is set public (at the moment).
 	 */
-	private TestbedManagerImpl(){
+	public TestbedManagerImpl(){
 		hmAllExperiments = this.queryAllExperiments();
 		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
 	}

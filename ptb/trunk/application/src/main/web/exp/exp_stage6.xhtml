@@ -6,6 +6,7 @@
 	xmlns:t="http://myfaces.apache.org/tomahawk"
 	xmlns:c="http://java.sun.com/jstl/core">
 <body>
+<f:view>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
         #{res.title} - #{ExperimentBean.ename}: #{res['exp_stage6.pageTitle']}
@@ -29,28 +30,14 @@
 		required.</p>
 
 		<h2 class="main">#{res['exp_stage6.headingData']}</h2>
-		<h:form>
+		
+		<!-- A: If the execution was successfully: display the results -->
+		<h:form rendered="#{NewExp_Controller.executionSuccess}">
+			<!-- display the experiment's output -->
+			<h:panelGrid id="inputOutputTable" binding="#{ExperimentBean.inputOutputTable}">
+			</h:panelGrid>
+			<h:messages for="inputOutputTable" errorClass="errorMessage" infoClass="infoMessage"/>
 
-			<table border="1" cellspacing="0" cellpadding="2"
-				style="border: 1px solid #579EC2;">
-				<tr>
-					<th>#{res['exp_stage6.inputFiles']}</th>
-					<th>#{res['exp_stage6.outputFiles']}</th>
-				</tr>
-
-				<tr style="font-size:smaller;">
-					<td>
-					<p><a href="#{ExperimentBean.eworkflowInputData}"> <h:outputText
-						value="#{ExperimentBean.eworkflowInputData}" /> </a><br />
-					</p>
-					</td>
-					<td>
-					<p><a href="#{ExperimentBean.eworkflowOutputData}"> <h:outputText
-						value="#{ExperimentBean.eworkflowOutputData}" /> </a> <br />
-					</p>
-					</td>
-				</tr>
-			</table>
 
 			<h2 class="main">#{res['exp_stage6.headingBG']}</h2>
 			<p>Below are the benchmark goals you specified during stage three
@@ -93,10 +80,17 @@
 			</t:dataTable>
 			<h:messages for="bmTable" errorClass="errorMessage" infoClass="infoMessage"/>
 
-	<p><h:commandButton value="#{res['exp_stage6.button']}"
+			<p><h:commandButton value="#{res['exp_stage6.button']}"
 				action="#{NewExp_Controller.updateEvaluationAction}" /></p>
+			
 		</h:form>
-            
+		
+		<!-- A: If the execution was NOT successfully: display an error page -->
+        <h:form rendered="#{NewExp_Controller.executionSuccess==false}">
+        	<h2 class="main">Error Page</h2>
+			<p>Experiment Execution failed due to the reason: </p>
+        </h:form>    
+        
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
        <ui:param name="ExperimentPhase" value="6" />
@@ -148,6 +142,6 @@
 		<ui:include src="/WEB-INF/templates/footer.xhtml" />
 	</ui:define>
 </ui:composition>
-
+</f:view>
 </body>
 </html>

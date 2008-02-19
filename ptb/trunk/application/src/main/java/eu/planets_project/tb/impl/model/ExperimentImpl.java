@@ -51,7 +51,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 		expEvaluation = new ExperimentEvaluationImpl();
 		//the experiment's executable inforamtion
 		//note: executable gets instantiated within the expeirment setup phase
-		executable = null;
+		//executable = null;
 		
 		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
 		
