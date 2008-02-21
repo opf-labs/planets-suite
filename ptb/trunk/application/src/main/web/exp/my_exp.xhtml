@@ -63,7 +63,7 @@
         </t:column>
         <t:column>
             <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>
-            <h:outputText value="#{exp.experimentExecution.scheduledExecutionDate.time}">
+            <h:outputText value="#{exp.experimentExecution.executionEndedDate.time}">
 	             <f:convertDateTime type="both" dateStyle="short"/>
             </h:outputText>
         </t:column>

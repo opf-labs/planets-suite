@@ -17,7 +17,6 @@ import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIOutput;
 import javax.faces.component.UIPanel;
-import javax.faces.component.html.HtmlDataTable;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
@@ -27,6 +26,7 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.component.html.ext.HtmlDataTable;
 //import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
@@ -91,10 +91,11 @@ public class ExperimentBean {
     private TestbedServiceTemplate selSerTemplate;
     private String sSelSerTemplateID="";
     private String sSelSerOperationName="";
+    private UIComponent panelAddedSerTags = new UIPanel();
     private UIComponent panelAddedFiles = new UIPanel();
     private boolean bOperationSelectionCompleted = false;
     //tomahawk data table binding for input/output data table
-    private HtmlPanelGrid inputOutputTable = new HtmlPanelGrid();
+    private HtmlPanelGrid panelInputOutputResults;
     
     private Map<String,BenchmarkBean> benchmarks = new HashMap<String,BenchmarkBean>();
     private String intensity="0";
@@ -215,8 +216,6 @@ public class ExperimentBean {
         	if(executable.isExecutionSuccess()){
         		//uses the executable to get the data
             	this.outputData = exp.getExperimentExecutable().getOutputDataEntries();
-            	//fill the bound table
-            	this.buildIODataTable();
         	}
         }
 
@@ -485,7 +484,8 @@ public class ExperimentBean {
         		HtmlOutputText outputText = (HtmlOutputText) facesContext
     				.getApplication().createComponent(
     					HtmlOutputText.COMPONENT_TYPE);
-        		outputText.setValue(output);
+        		outputText.setValue(uriOutput);
+        		outputText.setStyle("color:red");
         		outputText.setId("outputFileName" + count+"");
         			
         		//use its URI as file Output Link
@@ -840,72 +840,65 @@ public class ExperimentBean {
     }
     
     /**
-     * Returns the binding for the input/output data table
+     * The panel to restrict service selection by available tags
+     * @param panel
+     */
+    public void setAddedSerTags(UIComponent panel){
+    	this.panelAddedSerTags = panel;
+    }
+    
+    public UIComponent getAddedSerTags(){  
+    	return this.panelAddedSerTags;
+    }
+    
+    /**
+     * Returns the binding for the input/output data panel
      * @param table
      */
-    public void setInputOutputTable(HtmlPanelGrid table){
-    	this.inputOutputTable = table;
+    public void setPanelInputOutputResults(HtmlPanelGrid panel){
+    	this.panelInputOutputResults = panel;
     }
     
-    public HtmlPanelGrid getInputOutputTable(){
-    	return this.inputOutputTable;
+    public HtmlPanelGrid getPanelInputOutputResults(){
+    	if(this.panelInputOutputResults==null){
+    		this.panelInputOutputResults = buildIODataTable();
+    	}
+    	return this.panelInputOutputResults;
     }
     
-    public void buildIODataTable(){
-    	HtmlPanelGrid table = this.getInputOutputTable();
-    	table = new HtmlPanelGrid();
-    	//table.setId("inputOutputTable");
-    		
-    	//table.setPreserveDataModel(false);
-    	//table.setCellpadding("2");
-    	//table.setCellspacing("0");
-    	//table.setBorder(1);
-    	//table.setStyle("border: 1px solid #579EC2;");
+    /**
+     * Builds a renderer for the experiment's input and output data 
+     * @return
+     */
+    public HtmlPanelGrid buildIODataTable(){
+    	HtmlPanelGrid panel = new HtmlPanelGrid();
+    	panel.setId("panelInputOutputResults");
+    	panel.setBorder(1);
+    	panel.setColumns(2);
+    	panel.setCellpadding("2");
+    	panel.setCellspacing("0");
+    	panel.setStyle("border: 1px solid #579EC2;");
     	
-    	table.setColumns(2);
-    	/*UIColumn col1 = new UIColumn();
-    	col1.setId("colInputData1");
-    	UIOutput header1 = new HtmlOutputText();
-    	header1.setId("header1");
-    	header1.setValue("Input Files");
-    	col1.setHeader(header1);*/
-    	
-    	/*UIColumn col2 = new UIColumn();
-    	col2.setId("colInputData2");
-    	UIOutput header2 = new HtmlOutputText();
-    	header2.setId("header2");
-    	header2.setValue("Output Files");
-    	col2.setHeader(header2);  	*/
-    	
-    	/*Iterator<Entry<UIComponent,UIComponent>> itIO = getOutputDataForGUI().iterator();
+    	Iterator<Entry<UIComponent,UIComponent>> itIO = getOutputDataForGUI().iterator();
     	while(itIO.hasNext()){
     		Entry<UIComponent,UIComponent> entry = itIO.next();
     		//input
     		try{
     			HtmlOutputLink input = (HtmlOutputLink)entry.getKey();
-    			col1.getChildren().add(input);
+    			panel.getChildren().add(input);
     		}catch(Exception e){
     			HtmlOutputText input= (HtmlOutputText)entry.getKey();
-    			col1.getChildren().add(input);
+    			panel.getChildren().add(input);
     		}
     		//output
     		try{
-    			HtmlOutputLink output = (HtmlOutputLink)entry.getKey();
-    			col2.getChildren().add(output);
+    			HtmlOutputLink output = (HtmlOutputLink)entry.getValue();
+    			panel.getChildren().add(output);
     		}catch(Exception e){
-    			HtmlOutputText output= (HtmlOutputText)entry.getKey();
-    			col2.getChildren().add(output);
+    			HtmlOutputText output= (HtmlOutputText)entry.getValue();
+    			panel.getChildren().add(output);
     		}
-    	}*/
-    	
-    	HtmlOutputText outputText = new HtmlOutputText();
-    	outputText.setValue("TestValue");
-    	outputText.setId("outputFileName1");
-    	//col1.getChildren().add(outputText);
-    	
-    	/*table.getChildren().add(col1);
-    	table.getChildren().add(col2);
-    	table.setRows(1);*/
-    	table.getChildren().add(outputText);
+    	}
+    	return panel;
     }
 }

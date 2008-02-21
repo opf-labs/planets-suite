@@ -39,8 +39,12 @@ public class DataHandlerImpl implements DataHandler{
 	private String localFileDirBase ="";
 	//e.g. localFileDirBase+/planets-testbed/inputdata
 	private String FileInDir = "";
+	//e.g. /planets-testbed/inputdata
+	private String FileInSubDir = "";
 	//e.g. localFileDirBase/planets-testbed/outputdata
 	private String FileOutDir = "";
+	//e.g. /planets-testbed/outputdata
+	private String FileOutSubDir = "";
 	
 	public DataHandlerImpl(){
 		//read the file input and output directory from the proeprties file 
@@ -59,8 +63,10 @@ public class DataHandlerImpl implements DataHandler{
 	        
 	        //Note: sFileDirBaase = ifserver/bin/../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war
 	        localFileDirBase = properties.getProperty("Jboss.FiledirBase");
-	        FileOutDir = localFileDirBase+properties.getProperty("JBoss.FileOutDir");
-	        FileInDir = localFileDirBase+properties.getProperty("JBoss.FileInDir");
+	        FileOutSubDir = properties.getProperty("JBoss.FileOutDir");
+	        FileOutDir = localFileDirBase+FileOutSubDir;
+	        FileInSubDir = properties.getProperty("JBoss.FileInDir");
+	        FileInDir = localFileDirBase+FileInSubDir;
 	        
 	        ResourceFile.close();
 	        
@@ -84,12 +90,68 @@ public class DataHandlerImpl implements DataHandler{
 	   	//distinguish between inputdata and outputdata
 	   	if(input){
 	   		//URI input file ref to be created
+	   		//URI(scheme,authority,path,query,fragement)
 	   		return new URI("http",authority,"/planets-testbed/inputdata/"+localFileRef.getName(),null,null);
 	   	}
 	   	else{
 	   		//URI output file ref to be created
 	   		return new URI("http",authority,"/planets-testbed/outputdata/"+localFileRef.getName(),null,null);
 	   	}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#getLocalFileRef(java.net.URI, boolean)
+	 */
+	public File getLocalFileRef(URI uriFileRef, boolean input) throws FileNotFoundException{
+		boolean bException = false;
+		if(uriFileRef!=null){
+			String sFileName = "";
+			
+			HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			String expScheme = "http";
+			String expAuthority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
+		   
+			if(!expScheme.equalsIgnoreCase(uriFileRef.getScheme()))
+		   		bException = true;
+		   	
+		   	if(!uriFileRef.getAuthority().equalsIgnoreCase(expAuthority))
+		   		bException = true;
+
+		   	//for an input URI
+		   	if(input){
+		   		int i = uriFileRef.getPath().indexOf(this.FileInSubDir);
+		   		if(i==-1)
+		   			bException = true;
+		   		sFileName = uriFileRef.getPath().substring(i+FileInSubDir.length()+1, uriFileRef.getPath().length());
+		   	}
+		   	//for an output URI
+		 	if(!input){
+		 		int i = uriFileRef.getPath().indexOf(this.FileOutSubDir);
+		   		if(i==-1)
+		   			bException = true;
+		   		sFileName = uriFileRef.getPath().substring(i+FileOutSubDir.length()+1, uriFileRef.getPath().length());
+		   	}
+		 	
+		 	//check if the parsing process occured without any failure
+		 	if(!bException){
+		 		File f;
+		 		if(input){
+		 			f = new File(FileInDir,sFileName);
+		 		}
+		 		else{
+		 			f = new File(FileOutDir,sFileName);
+		 		}
+		 		if(!f.canRead()){
+		 			throw new FileNotFoundException(f.getName() +" not accessible");
+		 		}
+		 		return f;
+		 	}
+		 	else{
+		 		throw new FileNotFoundException(uriFileRef +" not according to Testbed schema");
+		 	}
+		}
+		return null;	
 	}
 	
 

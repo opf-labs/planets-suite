@@ -123,5 +123,17 @@ public interface ExperimentExecution extends ExperimentPhase{
 	 * @return
 	 */
 	public boolean isExecutionInvoked();
+	
+	/**
+	 * Returns the experiment execution's enddate
+	 * @return
+	 */
+	public Calendar getExecutionEndedDate();
+	
+	/**
+	 * Returns the experiment execution's startdate
+	 * @return
+	 */
+	public Calendar getExecutionStartedDate();
 
 }

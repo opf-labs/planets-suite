@@ -2,6 +2,7 @@ package eu.planets_project.tb.api.data.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -26,6 +27,16 @@ public interface DataHandler {
 	 * @throws  
 	 */
 	public URI getHttpFileRef(File localFileRef, boolean input)throws URISyntaxException, FileNotFoundException;
+	
+	/**
+	 * Transforms a given Testbed URI for a file within the Testbed's public directory
+	 * into a local File
+	 * @param uriFileRef
+	 * @param input: create localFileRef for input (true) or output (false) data directory
+	 * e.g. if (true): C:/Data/..etc../planets-testbed/inputdata/RandonNumber.doc
+	 * @return
+	 */
+	public File getLocalFileRef(URI uriFileRef, boolean input) throws FileNotFoundException;
 	
 	 /**
      * Fetches for a given file (the resource's physical file name on the disk) its

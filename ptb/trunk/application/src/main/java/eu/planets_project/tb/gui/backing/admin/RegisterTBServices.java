@@ -4,9 +4,12 @@
 package eu.planets_project.tb.gui.backing.admin;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,13 +17,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
-import javax.faces.component.UIForm;
 import javax.faces.component.UIPanel;
 import javax.faces.component.UISelectItems;
 import javax.faces.component.html.HtmlCommandButton;
@@ -36,8 +38,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -52,6 +54,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
@@ -59,6 +62,7 @@ import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 
@@ -80,6 +84,10 @@ public class RegisterTBServices{
 	FacesContext facesContext = FacesContext.getCurrentInstance();
 	// that holds the service's endpoint URI
 	private String sEndpointURI = "";
+	//is the URI by hand or queryJBossEndpoints used
+	private boolean bEndpointByHand = true;
+	private List<SelectItem> lJbossEndpoints;
+	private SelectItem selectedJBossEndpoint;
 	
 	//JSF UI containing the xmlRequestTemplate UI elements
 	private HtmlPanelGrid panelStep2 = new HtmlPanelGrid();
@@ -843,6 +851,7 @@ public class RegisterTBServices{
 		
 		String sRet = "";
 		String sMessageStart = "", sFileArrayLine = "", sMessageEnd = "";
+		DataHandler dh = new DataHandlerImpl();
 		
 		//1)parse TB tokens and inject file references instead
 		String sTokenTemplate = this.getXMLRequestTemplate(getCurrentOperationName());
@@ -875,6 +884,10 @@ public class RegisterTBServices{
 			if((this.addedFileRefs.values()!=null)&&(this.addedFileRefs.values().size()==1)){
 				//get file ref
 				String sFileRef = this.addedFileRefs.values().iterator().next();
+				try{
+					File f = dh.getLocalFileRef(new URI(sFileRef), true);
+					sFileRef = f.getAbsolutePath();
+				}catch(Exception e){}	
 				
 				//build return String
 				sRet = sMessageStart + sFileRef + sMessageEnd;
@@ -897,7 +910,13 @@ public class RegisterTBServices{
 				sRet = sMessageStart;
 				
 				for(int i=0;i<iElements;i++){
-					sRet+=sArrayLineStart + this.addedFileRefs.get(i+"") + sArrayLineEnd;
+					//convert from URI to absolute local file reference
+					String sFileRef = this.addedFileRefs.get(i+"");
+					try{
+						File f = dh.getLocalFileRef(new URI(sFileRef), true);
+						sFileRef = f.getAbsolutePath();
+					}catch(Exception e){}	
+					sRet+=sArrayLineStart + sFileRef + sArrayLineEnd;
 				}
 				sRet += sMessageEnd;
 			}
@@ -1425,6 +1444,7 @@ public class RegisterTBServices{
 		
 		facesContext = FacesContext.getCurrentInstance();
 		UIComponent panel = this.getComponentPanelStep4Add();
+		panel.getChildren().clear();
 		
 		//loop through all input files and try to assign its output
 		int j = this.getAllFileInputs().size();
@@ -1445,6 +1465,7 @@ public class RegisterTBServices{
 					HtmlOutputText link_text = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 					link_text.setId("Step3LinkInputText"+i);
 					link_text.setValue(input);
+					link_text.setStyle("color:red");
 					link_input.getChildren().add(link_text);
 					panel.getChildren().add(link_input);
 					addedrow++;
@@ -1454,6 +1475,7 @@ public class RegisterTBServices{
 					HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 					outputText.setId("Step3OutputTextInput"+i);
 					outputText.setValue(input);
+					outputText.setStyle("color:red");
 					panel.getChildren().add(outputText);
 					addedrow++;
 				}
@@ -1684,7 +1706,7 @@ public class RegisterTBServices{
 				return this.iFileArrayLineMaxAllowed;
 
 			//if File
-			if(TagFileOrArray.equals(this.sTagIDFileArray))
+			if(TagFileOrArray.equals(this.sTagIDFile))
 				return 1;
 		}
 		return this.iFileArrayLineMaxAllowed;
@@ -1875,6 +1897,156 @@ public class RegisterTBServices{
 				this.mapTagNamesValues.put(tag.getName(), tag.getValue());
 			}
 		}
+	}
+	
+	
+	/**
+	 * Choose to not enter a WSDL URL but rather use the selectOneMenu for
+	 * browsing all locally registered http://localhost:8080/jbossws/services services
+	 * @return
+	 */
+	public String command_selectFromJBossWS(){
+		this.lJbossEndpoints = buildAllJBossWSEndpoints();
+		if(lJbossEndpoints.size()>0){
+			this.bEndpointByHand = false;
+			this.sEndpointURI = (String)lJbossEndpoints.iterator().next().getValue();
+			this.command_analyzeWSDL();
+		}
+		else{
+			//display the "enter URI by hand" and display message
+			this.bEndpointByHand = true;
+	        // Add message:
+	        FacesMessage fmsg = new FacesMessage();
+	        fmsg.setDetail("No service endpoints found within JBoss");
+	        fmsg.setSummary("No service endpoints found within JBoss");
+	        fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
+	        FacesContext ctx = FacesContext.getCurrentInstance();
+	        ctx.addMessage("formanalyzeWSDL:link_byHand",fmsg); 
+		}
+		
+		return "reload-page";
+	}
+	
+	public boolean isSelectFromJBossWS(){
+		return !this.bEndpointByHand;
+	}
+	
+	public List<SelectItem> buildAllJBossWSEndpoints(){
+		List<SelectItem> ret = new Vector<SelectItem>();
+		
+		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+	   	//e.g. localhost:8080
+		String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
+		try {
+			//1) enter the jbossws/services uri
+			//URI(scheme,authority,path,query,fragement)
+			URI uriPage = new URI("http",authority,"/jbossws/services",null,null);
+			//2) extract the page's content: note: not well-formed --> modifications
+			String pageContent = extractWSDLContent(uriPage);
+			//3) build a dom tree and extract the text nodes
+			//String xPath = new String("/*//fieldset/table/tbody/tr/td/a/@href");
+			ret = parseJBossWSEndpoints(pageContent);
+		} catch (Exception e) {}
+		
+		return ret;
+	}
+	
+	
+	/**
+	 * As the wsdlcontent is not well-formed we're not able to use DOM here.
+	 * Parse through the xml manually to return a list of given ServiceEndpointAddresses
+	 * @param xhtml
+	 * @return
+	 * @throws Exception
+	 */
+	private List<SelectItem> parseJBossWSEndpoints(String xhtml){
+		List<SelectItem> ret = new Vector<SelectItem>();
+		
+		String keyword = new String("ServiceEndpointAddress");
+		String href = "<a href=";
+		String symb = ">";
+		String[] s = xhtml.split(keyword);
+		
+		for(int k=1;k<s.length;k++){
+			String p = s[k].split(href)[1];
+			int j = p.indexOf(symb);
+			String link = p.substring(1,j-1);
+			ret.add(new SelectItem(link));
+		}
+		return ret;
+	}
+	
+	/**
+	 * Takes a given http URI and extracts the page's content which is returned as String
+	 * @param uri
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	private String extractWSDLContent(URI uri)throws FileNotFoundException, IOException{
+
+		InputStream in = null;
+		try{
+			if(!uri.getScheme().equals("http")){
+				throw new FileNotFoundException("URI schema "+uri.getScheme()+" not supported");
+			}
+			in = uri.toURL().openStream();
+			boolean eof = false;
+			String content = "";
+			StringBuffer sb = new StringBuffer();
+			while(!eof){
+				int byteValue = in.read();
+				if(byteValue != -1){
+					char b = (char)byteValue;
+					sb.append(b);
+				}
+				else{
+					eof = true;
+				}
+			}
+			content = sb.toString();
+			if(content!=null){
+				//now return the services WSDL content
+				return content;
+			}
+			else{
+				throw new FileNotFoundException("extracted content is null");
+			}
+		}
+		finally{
+			in.close();
+		}
+	}
+	
+	public List<SelectItem> getAllJBossEndpoints(){
+		if(lJbossEndpoints!=null){
+			return this.lJbossEndpoints;
+		}
+		else{
+			return new Vector<SelectItem>();
+		}
+	}
+	
+	public SelectItem getSelectedJBossEndpoint(){
+		if(this.selectedJBossEndpoint!=null){
+			return this.selectedJBossEndpoint;
+		}
+		else{
+			return new SelectItem();
+		}
+	}
+	
+	public void setSelectedJBossEndpoint(SelectItem item){
+		this.selectedJBossEndpoint = item;
+		this.sEndpointURI = (String)item.getValue();
+	}
+	
+	public void processJBossEndpointChange(ValueChangeEvent vce){
+		String endpoint = (String)vce.getNewValue();
+		SelectItem item = new SelectItem(endpoint);
+		this.setSelectedJBossEndpoint(item);
+		//analyze the selected item
+		this.command_analyzeWSDL();
 	}
 
 }

@@ -1,6 +1,7 @@
 package eu.planets_project.tb.api.model;
 
 import java.net.URI;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -157,6 +158,19 @@ public interface ExperimentExecutable{
 	 */
 	public String getServiceXMLResponds();
 	public void setServiceXMLResponds(String xmlresponds);
+	
+	/**
+	 * Records the execution's start date
+	 * @param date
+	 */
+	public void setExecutionStartDate(long timeInMillis);
+	public Calendar getExecutionStartDate();
+	/**
+	 * Records the execution's end date
+	 * @param date
+	 */
+	public void setExecutionEndDate(long timeInMillis);
+	public Calendar getExecutionEndDate();
 	
 
 }

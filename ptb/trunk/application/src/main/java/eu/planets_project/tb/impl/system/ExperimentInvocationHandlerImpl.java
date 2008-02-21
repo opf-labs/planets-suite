@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,6 +30,7 @@ import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
 import eu.planets_project.tb.api.services.util.ServiceRespondsExtractor;
 import eu.planets_project.tb.api.system.ExperimentInvocationHandler;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.exceptions.ServiceInvocationException;
 import eu.planets_project.tb.impl.services.util.ServiceRequestBuilderImpl;
 import eu.planets_project.tb.impl.services.util.ServiceRespondsExtractorImpl;
@@ -88,7 +90,9 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 			executable.setServiceXMLRequest(serviceRequest);
 		
 		  //3) Send the request and check if completed successfully
+			executable.setExecutionStartDate(new GregorianCalendar().getTimeInMillis());
 			String message = wsclient.sendRequest();
+			executable.setExecutionEndDate(new GregorianCalendar().getTimeInMillis());
 			if(!message.equals("success-send")){
 				log.error("WSClientbean error sending request");
 				throw new ServiceInvocationException("error-send");
@@ -101,6 +105,10 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 			ServiceRespondsExtractor respondsExtractor = new ServiceRespondsExtractorImpl(xmlResponds, xPathToOutput);
 			//Structure: <int position+"",String fileRefToServiceOutput>
 			Map<String,String> mapResults = respondsExtractor.getAllOutputs();
+			//test if there was any outputdata retrieved successfully
+			if((mapResults==null)||(mapResults.size()<1)){
+				throw new InvalidInputException("Could not retireve output data from the xmlResult");
+			}
 			//if migration experiment, move the file output to the TB's repository
 			boolean bMigration = selOperation.getServiceOperationType().equals(
 					selOperation.SERVICE_OPERATION_TYPE_MIGRATION
@@ -126,7 +134,7 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 			executable.setExecutionSuccess(true);
 			
 		} catch (Exception e) {
-			log.debug("Experiment execution failed - setting state: failure within the experiment's executable");
+			log.debug("Experiment execution failed - setting state: failure within the experiment's executable"+e.toString());
 			executable.setExecutionCompleted(true);
 			executable.setExecutionSuccess(false);
 		}
@@ -287,9 +295,9 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 	 * i.e. with its math random number
 	 * @param inputFileName
 	 */
-	private void renameOutputFile(File outputFile, String inputFileName){
+	/*private void renameOutputFile(File outputFile, String inputFileName){
 		
-	}
+	}*/
 	
 	/**
 	 * copies a file from one location to another

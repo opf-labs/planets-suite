@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -62,6 +64,8 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	private boolean bExecutionSuccess = false;
 	private String sXMLRequest ="";
 	private String sXMLResponds = "";
+	private Calendar execStartDate = new GregorianCalendar();
+	private Calendar execEndDate = new GregorianCalendar();
 	//A logger for this - transient: it's not persisted with this entity
     @Transient
 	private static Log log;
@@ -502,6 +506,35 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 		if(xmlresponds!=null){
 			this.sXMLResponds = xmlresponds;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getExecutionEndDate()
+	 */
+	public Calendar getExecutionEndDate() {
+		return this.execEndDate;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getExecutionStartDate()
+	 */
+	public Calendar getExecutionStartDate() {
+		return this.execStartDate;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutionEndDate(long)
+	 */
+	public void setExecutionEndDate(long timeInMillis) {
+			this.execEndDate.setTimeInMillis(timeInMillis);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutionStartDate(long)
+	 */
+	public void setExecutionStartDate(long timeInMillis) {
+		this.execStartDate.setTimeInMillis(timeInMillis);
 	}
 
 

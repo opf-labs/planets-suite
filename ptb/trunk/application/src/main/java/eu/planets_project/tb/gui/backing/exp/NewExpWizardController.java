@@ -39,9 +39,12 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.html.HtmlCommandButton;
 import javax.faces.component.html.HtmlCommandLink;
+import javax.faces.component.html.HtmlForm;
 import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.html.HtmlInputTextarea;
+import javax.faces.component.html.HtmlOutputLabel;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
 
@@ -71,8 +74,6 @@ import org.apache.commons.logging.LogFactory;
 public class NewExpWizardController {
     
     private static Log log = PlanetsLogger.getLogger(NewExpWizardController.class, "testbed-log4j.xml");
-    private HtmlInputTextarea ereport;
-    
     public NewExpWizardController() {
     }
     
@@ -86,7 +87,7 @@ public class NewExpWizardController {
         boolean validForm = true;
         
         // remove workflow object from session, if still available from previously viewed experiment
-    	FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
+    	//FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
     	
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
     	Experiment exp = null;
@@ -572,6 +573,7 @@ public class NewExpWizardController {
     	return false;
     }
     
+    
     /**
      * Creates the JSF Elements to render a given fileRef as CommandLink within the given UIComponent
      * @param panel
@@ -844,6 +846,8 @@ public class NewExpWizardController {
     	return ret;
     }
     
+
+    
     
     public Map<String,String> getAvailableEvaluationValues() {
        	TreeMap<String,String> map = new TreeMap<String,String>();
@@ -926,8 +930,6 @@ public class NewExpWizardController {
   	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
   	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
   	        testbedMan.updateExperiment(exp);
-  	        //fill the dataTable with execution results
-  	        expBean.buildIODataTable();
     		return "goToStage6";
   	  	} else
     		return null;
@@ -981,13 +983,6 @@ public class NewExpWizardController {
         return "goToBrowseExperiments";
     }
 
-    public HtmlInputTextarea getEreport() {
-        return ereport;
-    }
-    
-    public void setEreport(HtmlInputTextarea ereport) {
-        this.ereport = ereport;
-    }
 /*
  * END methods for new_experiment wizard page
  * -------------------------------------------

@@ -6,6 +6,7 @@ package eu.planets_project.tb.impl.model;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -235,7 +236,38 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionStartedDate()
+	 */
+	public Calendar getExecutionStartedDate(){
+		TestbedManager manager = TestbedManagerImpl.getInstance(true);
+		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
+		if(exp!=null){
+			//contains the experiment's execution data
+			ExperimentExecutable executable = exp.getExperimentExecutable();
+			if(executable!=null){
+				return executable.getExecutionStartDate();
+			}
+		}
+		return null;
+	}
 
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecution#getExecutionEndedDate()
+	 */
+	public Calendar getExecutionEndedDate(){
+		TestbedManager manager = TestbedManagerImpl.getInstance(true);
+		Experiment exp = manager.getExperiment(this.lExperimentIDRef);
+		if(exp!=null){
+			//contains the experiment's execution data
+			ExperimentExecutable executable = exp.getExperimentExecutable();
+			if(executable!=null){
+				return executable.getExecutionEndDate();
+			}
+		}
+		return null;
+	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#isExecutionInProgress()

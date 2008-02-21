@@ -34,10 +34,8 @@
 		<!-- A: If the execution was successfully: display the results -->
 		<h:form rendered="#{NewExp_Controller.executionSuccess}">
 			<!-- display the experiment's output -->
-			<h:panelGrid id="inputOutputTable" binding="#{ExperimentBean.inputOutputTable}">
-			</h:panelGrid>
-			<h:messages for="inputOutputTable" errorClass="errorMessage" infoClass="infoMessage"/>
-
+            <h:panelGrid id="panelInputOutputResults" binding="#{ExperimentBean.panelInputOutputResults}" border="1" columns="2">
+            </h:panelGrid>
 
 			<h2 class="main">#{res['exp_stage6.headingBG']}</h2>
 			<p>Below are the benchmark goals you specified during stage three
