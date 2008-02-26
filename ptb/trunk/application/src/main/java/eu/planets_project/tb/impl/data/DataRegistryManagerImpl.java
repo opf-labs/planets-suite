@@ -58,13 +58,22 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
             
             ResourceFile.close();
             
-            // Attempt to convert to URI:
+            // Open the localDataDir
             File ldd = new File(localDataDir);
+            // Create it if it does not exist:
+            if( ! ldd.exists() ) {
+               ldd.mkdir();
+            } else {
+                if( ldd.isFile() ) throw 
+                    new IOException("The specified Data Registry already exists, but is a file, not a directory! : "+localDataDir);
+            }
+            // Attempt to convert to URI:
             localDataURI = ldd.toURI().normalize();
             log.debug("(init) Got local data dir: " + localDataURI);
             
         } catch (IOException e) {
             log.fatal("Exception: Reading JBoss.LocalDataDir from BackendResources.properties failed!"+e.toString());
+            localDataURI = null;
         }
         
     }
