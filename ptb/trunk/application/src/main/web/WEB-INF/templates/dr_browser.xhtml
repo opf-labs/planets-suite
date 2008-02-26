@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+  <ui:composition rendered="#{FileBrowser != null}">
+
+        <div id="mainwrapper">
+        <div id="maincol">
+        <div class="innertubemain">
+  
+  <p>#{res['browse_data.browsing']} <a href="#{FileBrowser.rootUrl}">#{FileBrowser.rootUrl}</a></p>
+ 
+  <h:form id="drBrowserForm">
+                
+  <div class="filepane">
+   <div class="filebrowse">
+    <t:tree2 id="filerTree" value="#{FileBrowser.filerTree}" var="do" varNodeToggler="t" showRootNode="true" showLines="true" preserveToggle="true" clientSideToggle="true">
+    
+    <f:facet name="folder">
+            <h:panelGroup>
+                  <h:commandLink action="success">
+                    <t:graphicImage value="/graphics/filetype_folder.gif" border="0" />
+                    <h:outputText value=" #{do.leafname}"/>
+                    <t:updateActionListener property="#{FileBrowser.location}" value="#{do.uri}" />
+                  </h:commandLink>
+            </h:panelGroup>
+    </f:facet>
+    
+    <f:facet name="file">
+            <h:panelGroup>
+                  <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+                  <h:outputText value=" #{do.leafname}"/>
+            </h:panelGroup>
+    </f:facet>
+    
+    </t:tree2>
+   </div>
+  <div class="filemain">
+  
+    <div id="dataRegistryBrowser">
+
+                <p>
+                
+                <!--  h:panelGroup rendered="#{FileBrowser.parentExists}">
+                  <h:commandLink action=".">
+                    <h:outputText value="#{res['browse_data.goToParent']}"/>
+                    <h:outputText value="#{FileBrowser.parentName}"/>
+                    <t:updateActionListener property="#{FileBrowser.location}" value="#{FileBrowser.parentUri}" />
+                  </h:commandLink>
+                  <br/>
+                </h:panelGroup -->
+                
+                <!-- t:dataList id="FileBrowserList" var="do" value="#{FileBrowser.list}">
+                <h:panelGroup rendered="#{do.directory}">
+                  <h:selectBooleanCheckbox value="#{do.selected}"/>
+                  <h:commandLink action="success">
+                    <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_folder.gif" alt="directory" title="directory"/>
+                    <h:outputText value=" #{do.leafname}"/>
+                    <t:updateActionListener property="#{FileBrowser.location}" value="#{do.uri}" />
+                  </h:commandLink>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{not do.directory}">
+                  <h:selectBooleanCheckbox value="#{do.selected}"/>
+                  <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+                  <h:outputText value=" #{do.leafname}"/>
+                </h:panelGroup>
+                <br/>
+                </t:dataList -->
+
+                <t:dataTable id="FileBrowserList" var="do" value="#{FileBrowser.list}">
+                
+                <h:column>
+                  <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}"/>
+                </h:column>
+                       
+                <h:column>
+                <f:facet name="header">#{res['browse_data.name']}</f:facet>
+                <h:panelGroup rendered="#{do.directory}">
+                  <h:commandLink action="success">
+                    <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_folder.gif" alt="directory" title="directory"/>
+                    <h:outputText value=" #{do.leafname}"/>
+                    <t:updateActionListener property="#{FileBrowser.location}" value="#{do.uri}" />
+                  </h:commandLink>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{not do.directory}">
+                  <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+                  <h:outputText value=" #{do.leafname}"/>
+                </h:panelGroup>
+                </h:column>
+
+                <h:column>
+                <f:facet name="header">#{res['browse_data.size']}</f:facet>
+                
+                </h:column>
+                
+                <h:column>
+                <f:facet name="header">#{res['browse_data.type']}</f:facet>
+                <h:panelGroup rendered="#{do.directory}">
+                #{res['browse_data.folder']}
+                </h:panelGroup>
+                <h:panelGroup rendered="#{not do.directory}">
+                #{res['browse_data.file']}
+                </h:panelGroup>
+                </h:column>
+                
+                <h:column>
+                <f:facet name="header">#{res['browse_data.dateAdded']}</f:facet>
+                
+                </h:column>
+                
+                <h:column>
+                <f:facet name="header">#{res['browse_data.dateModified']}</f:facet>
+                
+                </h:column>
+                
+                </t:dataTable>
+
+                
+                <h:commandButton action="#{FileBrowser.selectAll}" 
+                  value="#{res['browse_data.selectAll']}"/>
+                <h:commandButton action="#{FileBrowser.selectNone}"
+                  value="#{res['browse_data.selectNone']}"/>
+                
+                </p>
+                <h:panelGroup rendered="#{isInExperiment}">
+                <p>
+                <h:commandButton action="#{FileBrowser.addToExperiment}"
+                  value="#{res['browse_data.addToExperiment']}"/>
+                </p>
+                <p>
+                <h:commandButton action="goToStage2"
+                  value="#{res['browse_data.returnToExperiment']}"/>
+                </p>
+                </h:panelGroup>
+                
+    </div>
+   </div>
+  </div>
+  </h:form>
+  
+          
+        <p><b>This page is not fully yet operational. The following summary data is not accurate.</b></p>
+        <p>You are currently viewing <b>all available data</b>.  There are <b>826,224</b> publicly available items and a further <b>1,206</b> items that can only be viewed by your institution.</p>
+        <p>Files and folders marked with a <span style="background-color: #FDB8B8;">red background</span> can only be viewed by your institution.</p>
+        
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    
+        </div>
+        </div>
+        </div>
+        
+        
+        <div id="leftcol">
+        
+        <h3 class="leftcol">Restrict Result Set</h3>
+        <div class="innertube">
+        <form method="get" action="restrict/">
+        <p class="leftcol">The option to restrict the data based on supplied criteria will be added in a later version.</p>
+        
+        </form>
+        
+        </div>
+        </div>
+  
+  </ui:composition>
+</body>
+</html>
+    

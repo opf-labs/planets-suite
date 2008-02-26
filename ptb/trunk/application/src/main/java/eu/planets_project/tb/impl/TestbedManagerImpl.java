@@ -195,19 +195,19 @@ public class TestbedManagerImpl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#updateExperiment(eu.planets_project.tb.api.model.Experiment)
 	 */
-	public void updateExperiment(Experiment experimentBean) {
+	public void updateExperiment(Experiment experiment) {
 	    log.debug("Updating experiment.");
-		boolean bContains = this.hmAllExperiments.containsKey(experimentBean.getEntityID());
+		boolean bContains = this.hmAllExperiments.containsKey(experiment.getEntityID());
 		if(bContains){
 		  //Should this be added in a transaction?
 			ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
-			dao_r.updateExperiment(experimentBean);
-			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(experimentBean.getEntityID());
+			dao_r.updateExperiment(experiment);
+			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(experiment.getEntityID());
 			this.hmAllExperiments.put(exp.getEntityID(), exp);
 		    // Also update the Experiment backing bean to reflect the changes:
 		    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		    log.debug("Re-filling expBean from exp.");
-		    expBean.fill(experimentBean);
+		    expBean.fill(experiment);
           //End Transaction
 		}
 	}

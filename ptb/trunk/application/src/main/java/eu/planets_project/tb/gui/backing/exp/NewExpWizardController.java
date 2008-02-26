@@ -313,14 +313,12 @@ public class NewExpWizardController {
 	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
 	    	Experiment exp = testbedMan.getExperiment(expBean.getID());
-                
-                //ExperimentReportImpl rep = new ExperimentReportImpl();
-                //rep.setBodyText(ereport.getValue().toString());
-                //rep.setHeader("Report Header");
-                
-                //save the evaluation report
-                //exp.getExperimentEvaluation().setExperimentReport(rep);
-                
+
+	    	// Store the updated report:
+            exp.getExperimentEvaluation().getExperimentReport().setHeader(expBean.getReportHeader());
+            exp.getExperimentEvaluation().getExperimentReport().setBodyText(expBean.getReportBody());
+            log.debug("updateEvaluation Report Header: "+exp.getExperimentEvaluation().getExperimentReport().getHeader());
+            
 	    	// create Goal objects from Beans
 	    	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
 	    	Iterator iter = expBean.getBenchmarkBeans().iterator();
@@ -395,7 +393,6 @@ public class NewExpWizardController {
         log.debug("attempting to save finalized evaluation. "+ exp.getExperimentEvaluation().getState());
         testbedMan.updateExperiment(exp);
         log.debug("saved finalized evaluation. "+ exp.getExperimentEvaluation().getState());
-        //expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTFINALIZED);
         // And report:
         FacesMessage fmsg = new FacesMessage();
         fmsg.setDetail("Evaluation Data finalised!");
@@ -455,7 +452,7 @@ public class NewExpWizardController {
      * @param ce
      */
     public void changedSelTBServiceTemplateEvent(ValueChangeEvent ce) {
-        log.debug("changedSelTBServiceTemplateEvent: setting to "+ce.getNewValue().toString());
+        log.debug("changedSelTBServiceTemplateEvent: setting to "+ce.getNewValue());
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	//also sets the beans selectedServiceTemplate (from the registry)
     	expBean.setSelServiceTemplateID(ce.getNewValue().toString());
@@ -513,8 +510,9 @@ public class NewExpWizardController {
     	
     	//2) For the current fileRef create an GUI outputfield + a RemoveIcon+Link
     	//UIComponent panel = this.getComponent("configureExpWorkflowForm:panelAddedFiles");
-    	UIComponent panel = expBean.getPanelAddedFiles();
-    	helperCreateRemoveFileElement(panel, fileRef, position);
+    	//UIComponent panel = expBean.getPanelAddedFiles();
+    	//expBean.helperCreateRemoveFileElement(panel, fileRef, position);
+    	// FIXME Remove the above now addExperimentInputData does it automatically.
     	
     	//reload stage2 and displaying the added data items
         log.debug("commandAddInputDataItem DONE");
@@ -573,64 +571,7 @@ public class NewExpWizardController {
     	return false;
     }
     
-    
-    /**
-     * Creates the JSF Elements to render a given fileRef as CommandLink within the given UIComponent
-     * @param panel
-     * @param fileRef
-     * @param key
-     */
-    private void helperCreateRemoveFileElement(UIComponent panel, String fileRef, String key){
-		try {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			DataHandler dh = new DataHandlerImpl();
-			//file ref
-			HtmlOutputText outputText = (HtmlOutputText) facesContext
-					.getApplication().createComponent(
-							HtmlOutputText.COMPONENT_TYPE);
-			outputText.setValue(dh.getIndexFileEntryName(new File(fileRef)));
-			outputText.setId("fileName" + key);
-			//file name
-			HtmlOutputLink link_src = (HtmlOutputLink) facesContext
-					.getApplication().createComponent(
-							HtmlOutputLink.COMPONENT_TYPE);
-			link_src.setId("fileRef" + key);
-			URI URIFileRef = dh.getHttpFileRef(new File(fileRef), true);
-			link_src.setValue(URIFileRef);
-			link_src.setTarget("_new");
 
-			//CommandLink+Icon allowing to delete this entry
-			HtmlCommandLink link_remove = (HtmlCommandLink) facesContext
-					.getApplication().createComponent(
-							HtmlCommandLink.COMPONENT_TYPE);
-			//set the ActionMethod to the method: "commandRemoveAddedFileRef(ActionEvent e)"
-			Class[] parms = new Class[] { ActionEvent.class };
-			MethodBinding mb = FacesContext.getCurrentInstance()
-					.getApplication().createMethodBinding(
-							"#{NewExp_Controller.commandRemoveAddedFileRef}",
-							parms);
-			link_remove.setActionListener(mb);
-			link_remove.setId("removeLink" + key);
-			//send along an helper attribute to identify which component triggered the event
-			link_remove.getAttributes().put("IDint", key);
-			HtmlGraphicImage image = (HtmlGraphicImage) facesContext
-					.getApplication().createComponent(
-							HtmlGraphicImage.COMPONENT_TYPE);
-			image.setUrl("../graphics/button_delete.gif");
-			image.setAlt("delete-image");
-			image.setId("graphicRemove" + key);
-			link_remove.getChildren().add(image);
-
-			//add all three components
-			panel.getChildren().add(link_remove);
-			link_src.getChildren().add(outputText);
-			panel.getChildren().add(link_src);
-			
-		} catch (Exception e) {
-			log.error("error building components for file removal "+e.toString());
-		}
-    }
-    
     /**
 	 * Removes one selected file reference from the list of added file refs for Step3.
 	 * The specified file ref(s) are used as input data to invoke a given service operation. 

@@ -555,7 +555,12 @@ legend
 
 fieldset
 {
-	width:600px;
+    width:600px;
+}
+
+fieldset fieldset
+{
+    width:575px;
 }
 
 label
@@ -664,7 +669,8 @@ a.tableHeaderSel
 
 div.filepane
 {
-	width: 600px;
+	width: 100%;
+	max-width: 800px;
 	height: 600px;
 	overflow: hidden;
 	border:1px solid black;
@@ -679,6 +685,11 @@ div.filebrowse
 	border-right:1px solid black;
 	padding:2px;
 }
+
+div.filebrowse table, div.filebrowse tr, div.filebrowse td {
+  border: none;
+}
+
 div.filemain
 {
 	width: auto;
@@ -888,3 +899,11 @@ background-color:white;
 #searchBoxSidebar input[type=submit] {
   margin-top: 4px;
 }
+
+/* Data Registry interface*/
+#dataRegistryBrowser table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+

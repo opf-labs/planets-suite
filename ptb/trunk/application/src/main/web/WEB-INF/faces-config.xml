@@ -47,6 +47,11 @@
   </managed-property>
  </managed-bean>
  <managed-bean>
+  <managed-bean-name>FileBrowser</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.FileBrowser</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
   <managed-bean-name>Comment_Backing</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.backing.CommentBacking</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
@@ -186,6 +191,11 @@
   <navigation-case>
    <from-outcome>addComment</from-outcome>
    <to-view-id>/edit_comment.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>browseForData</from-outcome>
+   <to-view-id>/exp/browse_data.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
  </navigation-rule>

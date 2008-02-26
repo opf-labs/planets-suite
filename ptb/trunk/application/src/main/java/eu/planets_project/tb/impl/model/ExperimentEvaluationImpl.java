@@ -53,10 +53,6 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	private long lExperimentIDRef;
 
 	
-	/*//constructor required for EJB persistence
-	private ExperimentEvaluationImpl(){
-	}*/
-	
 	public ExperimentEvaluationImpl(){
 
 		this.experimentBenchmarkGoals = new HashMap<String, BenchmarkGoal>();

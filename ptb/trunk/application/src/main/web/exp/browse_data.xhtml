@@ -4,19 +4,21 @@
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
-        #{res.title} - #{res['browse_data.pageTitle']}
+        #{res.title} - #{res['browse_data.selectData']}
   </ui:define>
 
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/templates/header.xhtml">
-			<ui:param name="page" value="browse_data"/>
+			<ui:param name="page" value="new_exp"/>
 		</ui:include>
 	</ui:define>
 
 	<ui:define name="content">
-        
-        <ui:include src="/WEB-INF/templates/dr_browser.xhtml"/>
-        
+
+         <ui:include src="/WEB-INF/templates/dr_browser.xhtml">
+          <ui:param name="isInExperiment" value="true" />
+         </ui:include>
+
 	</ui:define>
 
 	<ui:define name="footer">

@@ -11,17 +11,16 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import javax.faces.component.UIColumn;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-import javax.faces.component.UIOutput;
 import javax.faces.component.UIPanel;
+import javax.faces.component.html.HtmlCommandLink;
+import javax.faces.component.html.HtmlGraphicImage;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
-import javax.faces.context.FacesContext;
-import javax.faces.model.ListDataModel;
+import javax.faces.el.MethodBinding;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -32,7 +31,6 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentPhase;
@@ -44,9 +42,7 @@ import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.impl.AdminManagerImpl;
-import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 
@@ -113,6 +109,9 @@ public class ExperimentBean {
     private List dtypeList = new ArrayList();
     private DigitalObjectTypesImpl dtypeImpl = new DigitalObjectTypesImpl();
     private List<String[]> fullDtypes = new ArrayList<String[]>();
+    
+    private String ereportTitle;
+    private String ereportBody;
         
     public ExperimentBean() {
     	/*benchmarks = new HashMap<String,BenchmarkBean>();
@@ -208,9 +207,11 @@ public class ExperimentBean {
         //get already added TestbedServiceTemplate data
         log.debug("fill expBean: executable = "+exp.getExperimentExecutable());
         if(exp.getExperimentExecutable()!=null){
+            this.bOperationSelectionCompleted = true;
         	ExperimentExecutable executable = exp.getExperimentExecutable();
         	this.selSerTemplate = executable.getServiceTemplate();
-        	this.sSelSerTemplateID = selSerTemplate.getUUID();
+        	if( selSerTemplate != null )
+        	    this.sSelSerTemplateID = selSerTemplate.getUUID();
         	this.sSelSerOperationName = executable.getSelectedServiceOperationName();
         	helperLoadInputData(executable.getInputData());
         	if(executable.isExecutionSuccess()){
@@ -287,6 +288,9 @@ public class ExperimentBean {
         
         this.dtype = props.getDigiTypes();
         
+        // Set the report up:
+        this.ereportTitle = exp.getExperimentEvaluation().getExperimentReport().getHeader();
+        this.ereportBody = exp.getExperimentEvaluation().getExperimentReport().getBodyText();
     }
     //END OF FILL METHOD
     
@@ -348,9 +352,13 @@ public class ExperimentBean {
     }
 
     public ServiceOperation getSelectedServiceOperation(){
-    	return this.getSelectedServiceTemplate().getServiceOperation(
+      if( this.selSerTemplate != null ) {
+      	return this.getSelectedServiceTemplate().getServiceOperation(
     			this.getSelectedServiceOperationName()
     			);
+      } else {
+        return null;
+      }
     }
     
     /**
@@ -382,8 +390,13 @@ public class ExperimentBean {
     	String key = getNextInputDataKey();
     	if(!this.inputData.values().contains(localFileRef)){
     		this.inputData.put(key, localFileRef); 
-    	}
-    	return key;
+    		// Also add to UI component:
+    		UIComponent panel = this.getPanelAddedFiles();
+    		this.helperCreateRemoveFileElement(panel, localFileRef, key);
+            return key;
+    	} else {
+    	    return null;
+        }
     }
     
     public void removeExperimentInputData(String key){
@@ -413,6 +426,13 @@ public class ExperimentBean {
                 bFound = false;
     		}
     	}
+        String nextkey = 0+"";
+    	if( this.inputData.keySet().size() > 0 ) {
+    	    String last = new java.util.TreeSet<String>(this.inputData.keySet()).last();
+            int lastval = Integer.parseInt(last);
+            nextkey = (lastval+1)+"";
+    	}
+    	log.debug("Next key is: " + nextkey );
     	log.debug("Returning input data key: "+count+" / "+inputData.size());
     	return count+"";
     }
@@ -796,8 +816,22 @@ public class ExperimentBean {
         }
     }
     
-    public ExperimentReport getReport() {
-        return exp.getExperimentEvaluation().getExperimentReport();
+    public String getReportHeader() {
+        log.debug("get Report Header: "+this.ereportTitle);
+        return this.ereportTitle;
+    }
+    
+    public void setReportHeader(String text) {
+        log.debug("set Report Header: "+text);
+        this.ereportTitle = text;
+    }
+    
+    public String getReportBody() {
+        return this.ereportBody;
+    }
+    
+    public void setReportBody(String text) {
+        this.ereportBody = text;
     }
     
     /**
@@ -806,11 +840,16 @@ public class ExperimentBean {
      * @param fileRefs
      */
     private void helperLoadInputData(Collection<String> fileRefs){
+        // Use a new, empty panel:
+        this.panelAddedFiles = new UIPanel();
     	Iterator<String> itFileRefs = fileRefs.iterator();
     	int i =0;
     	while(itFileRefs.hasNext()){
     	    log.debug("helperLoadInputData: adding file: "+i);
-    		this.inputData.put(i+"",itFileRefs.next());
+    	    String fileRef = itFileRefs.next();
+    		this.inputData.put(i+"", fileRef);
+    		// Also add an item to the panel:
+    	    helperCreateRemoveFileElement( this.panelAddedFiles, fileRef, i+"" );
     		i++;
     	}
     }
@@ -905,4 +944,61 @@ public class ExperimentBean {
     	}
     	return panel;
     }
+    
+    /**
+     * Creates the JSF Elements to render a given fileRef as CommandLink within the given UIComponent
+     * @param panel
+     * @param fileRef
+     * @param key
+     */
+    public void helperCreateRemoveFileElement(UIComponent panel, String fileRef, String key){
+        try {
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            DataHandler dh = new DataHandlerImpl();
+            //file ref
+            HtmlOutputText outputText = (HtmlOutputText) facesContext
+                    .getApplication().createComponent(
+                            HtmlOutputText.COMPONENT_TYPE);
+            outputText.setValue(dh.getIndexFileEntryName(new File(fileRef)));
+            outputText.setId("fileName" + key);
+            //file name
+            HtmlOutputLink link_src = (HtmlOutputLink) facesContext
+                    .getApplication().createComponent(
+                            HtmlOutputLink.COMPONENT_TYPE);
+            link_src.setId("fileRef" + key);
+            URI URIFileRef = dh.getHttpFileRef(new File(fileRef), true);
+            link_src.setValue("file:///" + URIFileRef);
+
+            //CommandLink+Icon allowing to delete this entry
+            HtmlCommandLink link_remove = (HtmlCommandLink) facesContext
+                    .getApplication().createComponent(
+                            HtmlCommandLink.COMPONENT_TYPE);
+            //set the ActionMethod to the method: "commandRemoveAddedFileRef(ActionEvent e)"
+            Class[] parms = new Class[] { ActionEvent.class };
+            MethodBinding mb = FacesContext.getCurrentInstance()
+                    .getApplication().createMethodBinding(
+                            "#{NewExp_Controller.commandRemoveAddedFileRef}",
+                            parms);
+            link_remove.setActionListener(mb);
+            link_remove.setId("removeLink" + key);
+            //send along an helper attribute to identify which component triggered the event
+            link_remove.getAttributes().put("IDint", key);
+            HtmlGraphicImage image = (HtmlGraphicImage) facesContext
+                    .getApplication().createComponent(
+                            HtmlGraphicImage.COMPONENT_TYPE);
+            image.setUrl("../graphics/button_delete.gif");
+            image.setAlt("delete-image");
+            image.setId("graphicRemove" + key);
+            link_remove.getChildren().add(image);
+
+            //add all three components
+            panel.getChildren().add(link_remove);
+            link_src.getChildren().add(outputText);
+            panel.getChildren().add(link_src);
+            
+        } catch (Exception e) {
+            log.error("error building components for file removal "+e.toString());
+        }
+    }
+        
 }
