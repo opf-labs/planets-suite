@@ -24,13 +24,16 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.tb.api.persistency.CommentPersistencyRemote;
 import eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 
 
 /**
  * @author alindley
- *
+ * This class handles the persistency of all TestbedServiceTemplates with the
+ * discriminator 'template'. Others as with discriminator 'experiment' are directly
+ * handled within an experiment and therefore persisted, updated and deleted with the
+ * experiment's persistency handler
  */
 @Stateless
 public class TestbedServiceTemplatePersistencyImpl implements
@@ -64,9 +67,17 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#deleteTBServiceTemplate(java.lang.String)
 	 */
 	public void deleteTBServiceTemplate(String UUID){
-		TestbedServiceTemplateImpl t_helper = manager.find(
-				TestbedServiceTemplateImpl.class, UUID);
-		manager.remove(t_helper);
+		/*TestbedServiceTemplateImpl t_helper = manager.find(
+				TestbedServiceTemplateImpl.class, UUID);*/
+		Query query = manager.createQuery("from TestbedServiceTemplateImpl where discr='template' and hashUUID='"+UUID+"'");
+		if((query!=null)&&(query.getResultList().size()==1)){
+			TestbedServiceTemplateImpl t_helper = (TestbedServiceTemplateImpl)query.getResultList().iterator().next();
+			//only delete templates that are of type "template" and not used within an expeirment
+			if(t_helper.getDiscriminator().equals(t_helper.DISCR_TEMPLATE)){
+				manager.remove(t_helper);
+			}
+		}
+		
 	}
 
 
@@ -74,8 +85,11 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#deleteTBServiceTemplate(eu.planets_project.tb.api.services.TestbedServiceTemplate)
 	 */
 	public void deleteTBServiceTemplate(TestbedServiceTemplate template){
-		TestbedServiceTemplateImpl t_helper = manager.find(TestbedServiceTemplateImpl.class, template.getUUID());
-		manager.remove(t_helper);
+		TestbedServiceTemplateImpl t_helper = manager.find(TestbedServiceTemplateImpl.class, ((TestbedServiceTemplateImpl)template).getEntityID());
+		//only delete templates that are of type "template" and not used within an expeirment
+		if(t_helper.getDiscriminator().equals(t_helper.DISCR_TEMPLATE)){
+			manager.remove(t_helper);
+		}
 	}
 
 
@@ -83,7 +97,13 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#getTBServiceTemplate(java.lang.String)
 	 */
 	public TestbedServiceTemplate getTBServiceTemplate(String UUID){
-		return manager.find(TestbedServiceTemplateImpl.class, UUID);
+		//return manager.find(TestbedServiceTemplateImpl.class, UUID);
+		Query query = manager.createQuery("from TestbedServiceTemplateImpl where discr='template' and hashUUID='"+UUID+"'");
+		if((query!=null)&&(query.getResultList().size()==1)){
+			Iterator<TestbedServiceTemplate> itTemplate = query.getResultList().iterator();
+			return itTemplate.next();
+		}
+		return null;
 	}
 
 
@@ -99,7 +119,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#getAllTBServiceTemplates()
 	 */
 	public List<TestbedServiceTemplate> getAllTBServiceTemplates(){
-		Query query = manager.createQuery("from TestbedServiceTemplateImpl");
+		Query query = manager.createQuery("from TestbedServiceTemplateImpl where discr='template'");
 		//Query query = manager.createQuery("from WorkflowImpl where DiscrCol='WorkflowTemplateImpl'");
 		return query.getResultList();
 	}
@@ -117,7 +137,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#getAllTBServiceIDAndTemplates()
 	 */
 	public Map<String, TestbedServiceTemplate> getAllTBServiceIDAndTemplates() {
-		Query query = manager.createQuery("from TestbedServiceTemplateImpl");
+		Query query = manager.createQuery("from TestbedServiceTemplateImpl where discr='template'");
 		Iterator<TestbedServiceTemplate> itTemplates = query.getResultList().iterator();
 		Map<String, TestbedServiceTemplate> ret = new HashMap<String, TestbedServiceTemplate>();
 		while(itTemplates.hasNext()){
@@ -132,7 +152,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#getAllTBServiceIDAndTags()
 	 */
 	public Map<String, List<ServiceTag>> getAllTBServiceIDAndTags() {
-		Query query = manager.createQuery("from TestbedServiceTemplateImpl");
+		Query query = manager.createQuery("from TestbedServiceTemplateImpl where discr='template'");
 		Iterator<TestbedServiceTemplate> itTemplates = query.getResultList().iterator();
 		Map<String, List<ServiceTag>> ret = new HashMap<String, List<ServiceTag>>();
 		
@@ -150,7 +170,12 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 * @see eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRemote#isServiceTemplateIDRegistered(java.lang.String)
 	 */
 	public boolean isServiceTemplateIDRegistered(String UUID) {
-		if(manager.find(TestbedServiceTemplateImpl.class, UUID)!=null){
+		/*if(manager.find(TestbedServiceTemplateImpl.class, UUID)!=null){
+			return true;
+		}
+		return false;*/
+		Query query = manager.createQuery("from TestbedServiceTemplateImpl where discr='template' and hashUUID='"+UUID+"'");
+		if((query!=null)&&(query.getResultList().size()>0)){
 			return true;
 		}
 		return false;

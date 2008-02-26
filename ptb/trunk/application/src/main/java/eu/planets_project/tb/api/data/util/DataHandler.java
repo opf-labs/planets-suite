@@ -11,7 +11,7 @@ import java.net.URISyntaxException;
  * The TB file handler has the purpose of
  *  - converting local file refs into http container exposed ones
  *    e.g. local file: IFServer/\server\default\deploy\jbossweb-tomcat55.sar\ROOT.war\planets-testbed\inputdata\Text1.doc
- *         http file: file:///http://localhost:8080/planets-testbed/inputdata/Text1.doc
+ *         http file: http://localhost:8080/planets-testbed/inputdata/Text1.doc
  * 
  *  - retrieving file specific metadata as e.g. the originally used name, etc. from the index
  *  - upload file [not yet defined]
@@ -22,7 +22,7 @@ public interface DataHandler {
 	 * Transforms a localFileRef into a publically accessible one
 	 * @param localFileRef
 	 * @param input: create httpfileRef with input (true) or output (false) data directory
-	 * e.g. if (true): file:///http://localhost:8080/planets-testbed/inputdata/RandonNumber.doc
+	 * e.g. if (true): http://localhost:8080/planets-testbed/inputdata/RandonNumber.doc
 	 * @return
 	 * @throws  
 	 */

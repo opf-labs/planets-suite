@@ -15,12 +15,13 @@ import eu.planets_project.tb.api.persistency.TestbedServiceTemplatePersistencyRe
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.persistency.TestbedServiceTemplatePersistencyImpl;
 
 /**
  * @author alindley
- *
+ * This class does only return objects of the type TestbedServiceTemplate with the descriminator
+ * field "template" and not "experiment" (which indicates that this template is part of an experiment)
  */
 public class ServiceTemplateRegistryImpl implements ServiceTemplateRegistry, java.io.Serializable{
 

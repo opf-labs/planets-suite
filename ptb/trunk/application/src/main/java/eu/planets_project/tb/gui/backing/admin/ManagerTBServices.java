@@ -19,7 +19,7 @@ import org.apache.myfaces.custom.fileupload.HtmlInputFileUploadTag;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;

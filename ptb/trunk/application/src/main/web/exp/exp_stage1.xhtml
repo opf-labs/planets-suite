@@ -167,7 +167,7 @@ function cleanForm() {
                 </t:dataList>
 
 <p style="margin-left:110px;">
-  <h:commandLink action="#{NewExp_Controller.addAnotherLitRefAction}">
+  <h:commandLink action="#{NewExp_Controller.addAnotherLitRefAction}" immediate="true">
     <h:outputText value=" #{res['new_exp.addLitRef']}" />
   </h:commandLink> 
 </p>

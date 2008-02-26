@@ -596,7 +596,8 @@ public class NewExpWizardController {
 							HtmlOutputLink.COMPONENT_TYPE);
 			link_src.setId("fileRef" + key);
 			URI URIFileRef = dh.getHttpFileRef(new File(fileRef), true);
-			link_src.setValue("file:///" + URIFileRef);
+			link_src.setValue(URIFileRef);
+			link_src.setTarget("_new");
 
 			//CommandLink+Icon allowing to delete this entry
 			HtmlCommandLink link_remove = (HtmlCommandLink) facesContext

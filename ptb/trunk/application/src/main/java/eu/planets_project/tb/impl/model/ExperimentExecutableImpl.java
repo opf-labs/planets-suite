@@ -21,7 +21,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.logging.Log;
@@ -56,7 +58,7 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	//hashmap of local file refs for input and output data of service execution
 	//note: C:/DATA/ rather than http://localhost:8080/testbed/
 	private HashMap<String,String> hmInputOutputData;
-	@OneToOne(cascade={CascadeType.PERSIST})
+	//no one-to-one annotation, as we want to persist this data by value and not per reference
 	private TestbedServiceTemplateImpl tbServiceTemplate;
 	private String sSelectedServiceOperationName="";
 	private boolean bExecutionStarted = false;
@@ -74,7 +76,10 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	public ExperimentExecutableImpl(TestbedServiceTemplate template) {
 		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 		//decouple this object
-		tbServiceTemplate = ((TestbedServiceTemplateImpl)template);
+		tbServiceTemplate = ((TestbedServiceTemplateImpl)template).clone();
+		//sets the object's discriminator value to "experiment" and not "template"
+		tbServiceTemplate.setDiscriminator(tbServiceTemplate.DISCR_EXPERIMENT);
+		
 		//Info: HashMap<InputFileRef,OutputFileRef>
 		hmInputOutputData = new HashMap<String,String>();
 	}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:element name="ServiceAnnotationTags" type="ServiceAnnotationTagsType">
+		<xs:unique name="tagID">
+			<xs:selector xpath="./tag"/>
+			<xs:field xpath="name"/>
+		</xs:unique>
+	</xs:element>
+	
+	<xs:complexType name="ServiceAnnotationTagsType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="tag" type="ServiceAnnotationTagType" minOccurs="1" maxOccurs="1"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="ServiceAnnotationTagType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string" maxOccurs="1" minOccurs="1"/>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<!--xs:element name="value" type="xs:string" maxOccurs="1" minOccurs="1"/-->
+		</xs:sequence>
+		<xs:attribute name="priority" type="tagPriorityType" use="optional" default="2"></xs:attribute>
+	</xs:complexType>
+	
+	<xs:simpleType name="tagPriorityType">
+		<xs:restriction base="xs:int">
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+			<xs:enumeration value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+</xs:schema>

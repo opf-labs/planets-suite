@@ -460,7 +460,8 @@ public class ExperimentBean {
 					.getApplication().createComponent(
 						HtmlOutputLink.COMPONENT_TYPE);
     			link_src.setId("inputFileRef" + count+"");
-    			link_src.setValue("file:///" + uriInput);	
+    			link_src.setValue(uriInput);	
+    			link_src.setTarget("_new");
     			link_src.getChildren().add(outputText);
     			//add to return
     			componentInput = link_src;
@@ -493,7 +494,8 @@ public class ExperimentBean {
     				.getApplication().createComponent(
     					HtmlOutputLink.COMPONENT_TYPE);
         		link_src.setId("outputFileRef" + count+"");
-        		link_src.setValue("file:///" + uriOutput);	
+        		link_src.setValue(uriOutput);	
+        		link_src.setTarget("_new");
         		link_src.getChildren().add(outputText);
         		//add to return
         		componentOutput = link_src;
@@ -814,7 +816,9 @@ public class ExperimentBean {
     }
     
     public boolean isOperationSelectionCompleted(){
-    	return this.bOperationSelectionCompleted;
+    	if(this.currStage <= PHASE_EXPERIMENTSETUP_2)
+    		return this.bOperationSelectionCompleted;
+    	return true;
     }
     
     /**

@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import eu.planets_project.tb.api.services.tags.ServiceTag;
+
 /**
  * @author Andrew Lindley, ARC
  * 
@@ -174,23 +176,6 @@ public interface TestbedServiceTemplate{
 		 */
 		public void setOutputObjectType(String type);
 		public String getOutputObjectType();
-	}
-	
-	
-	public interface ServiceTag{
-		/**
-		 * Allows the user to use free search-tags and values for tagging service templates.
-		 * These tags should be searchable via the web interface. 
-		 * @param sTagName: null not allowed
-		 * @param sTagValue: null not allowed
-		 * @param sDescription: null allowed
-		 */
-		public void setTag(String sTagName,String sTagValue, String sDescription);
-		public void setTag(String sTagName,String sTagValue);
-		public String getValue();
-		public String getName();
-		public void setDescription(String sDescription);
-		public String getDescription();
 	}
 
 }

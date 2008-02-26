@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.ejb.Remote;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 
 /**
  * @author alindley

@@ -18,12 +18,18 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.Vector;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Transient;
 
 import org.apache.commons.logging.Log;
@@ -31,6 +37,7 @@ import org.apache.commons.logging.Log;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 
 /**
  * @author alindley
@@ -38,9 +45,9 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperatio
  */
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="DiscrCol")
+//@DiscriminatorColumn(name="DiscrCol")
 //@Table(name="TBServiceTemplate")
-public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.io.Serializable{
+public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.io.Serializable, Cloneable{
 	
 	private String sServiceDescription, sServiceEndpoint, sServiceName, sWSDLContent;
 	private boolean bURIisWSICompliant;
@@ -51,12 +58,24 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	private Vector<String> lAllOperationNamesFromWSDL;
     //all tag names and values that have been registered for this service
 	private Vector<ServiceTag> lTags;
+
+	@Transient
+	public String DISCR_TEMPLATE = "template";
+	@Transient
+	public String DISCR_EXPERIMENT = "expeirment";
+	//discriminator can either be "template" or "experiment". later one indicates TBServiceTemplates being used within an experiment
+	@Column(name="discr")
+	private String sdiscr = DISCR_TEMPLATE;
+	
 	// This annotation specifies that the property or field is not persistent.
 	@Transient
 	private static Log log;
 	//The ServiceTemplate's UUID is used as discriminator
-	@Id
+	@Column(name="hashUUID")
 	private String sServiceID;
+	@Id
+	@GeneratedValue
+	private long lEntityID;
 	
 	public TestbedServiceTemplateImpl(){
 		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
@@ -70,6 +89,14 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 		lAllRegisteredServiceOperations = new Vector<ServiceOperation>();
 		lTags = new Vector<ServiceTag>();
 
+	}
+	
+	public long getEntityID(){
+		return this.lEntityID;
+	}
+	
+	public void setEntityID(long entityID){
+		this.lEntityID = entityID;
 	}
 	
 	/* (non-Javadoc)
@@ -485,8 +512,8 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * 2.that are registered by the admin. So if 2. gets deleted 1. must be still available
 	 * @see java.lang.Object#clone()
 	 */
-	/*public TestbedServiceTemplateImpl clone(){
-		TestbedServiceTemplateImpl template = null;
+	public TestbedServiceTemplateImpl clone(){
+		TestbedServiceTemplateImpl template = new TestbedServiceTemplateImpl();
 		try{
 			template = (TestbedServiceTemplateImpl) super.clone();
 		}catch(CloneNotSupportedException e){
@@ -494,8 +521,27 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 		}
 		
 		return template;
-	}*/
+	}
 	
+	
+	/**
+	 * Sets a discriminator to distinguish between
+	 * a) templates that are used within an experiment and therefore cannot be deleted anymore
+	 * b) templates that are displayed in the list of available TBServiceTemplates - these can also be deleted
+	 * @param discr
+	 */
+	public void setDiscriminator(String discr){
+		if((discr!=null)&&(discr.equals(this.DISCR_TEMPLATE))){
+			this.sdiscr = discr;
+		}
+		if((discr!=null)&&(discr.equals(this.DISCR_EXPERIMENT))){
+			this.sdiscr = discr;
+		}
+	}
+	
+	public String getDiscriminator(){
+		return this.sdiscr;
+	}
 	
 	
 	/**
@@ -663,68 +709,6 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 			
 		}
 
-	}
-	
-	/**
-	 * @author Andrew Lindley, ARC
-	 *
-	 */
-	@Embeddable
-	public class ServiceTagImpl implements TestbedServiceTemplate.ServiceTag, java.io.Serializable{
-		
-		String sName ="";
-		String sValue="";
-		String sDescription = "";
-
-		/* (non-Javadoc)
-		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#getName()
-		 */
-		public String getName() {
-			return this.sName;
-		}
-
-		/* (non-Javadoc)
-		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#getValue()
-		 */
-		public String getValue() {
-			return this.sValue;
-		}
-
-		/* (non-Javadoc)
-		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#setTag(java.lang.String, java.lang.String)
-		 */
-		public void setTag(String sTagName, String sTagValue) {
-			if((sTagName!=null)&&(sTagValue!=null)){
-				this.sName = sTagName;
-				this.sValue = sTagValue;
-			}
-			
-		}
-
-		/* (non-Javadoc)
-		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#getDescription()
-		 */
-		public String getDescription() {
-			return this.sDescription;
-		}
-
-		/* (non-Javadoc)
-		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#setDescription(java.lang.String)
-		 */
-		public void setDescription(String sDescription) {
-			if(sDescription!=null){
-				this.sDescription = sDescription;
-			}
-		}
-
-		/* (non-Javadoc)
-		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag#setTag(java.lang.String, java.lang.String, java.lang.String)
-		 */
-		public void setTag(String sTagName, String sTagValue, String sDescription) {
-			this.setTag(sTagName, sTagValue);
-			this.setDescription(sDescription);
-		}
-		
 	}
 
 }

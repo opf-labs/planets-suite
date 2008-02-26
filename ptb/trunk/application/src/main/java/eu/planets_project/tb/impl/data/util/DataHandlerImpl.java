@@ -26,7 +26,7 @@ import eu.planets_project.tb.impl.CommentManagerImpl;
  * The TB file handler has the purpose of
  *  - converting local file refs into http container exposed ones
  *    e.g. local file: IFServer/\server\default\deploy\jbossweb-tomcat55.sar\ROOT.war\planets-testbed\inputdata\Text1.doc
- *         http file: file:///http://localhost:8080/planets-testbed/inputdata/Text1.doc
+ *         http file: http://localhost:8080/planets-testbed/inputdata/Text1.doc
  * 
  * - retrieving file specific metadata as e.g. the originally used name, etc. from the index
  */

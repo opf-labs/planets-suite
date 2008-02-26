@@ -57,7 +57,7 @@ import org.xml.sax.SAXException;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceTag;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
@@ -65,6 +65,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
+import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
 
 /**
  * 
@@ -301,7 +302,8 @@ public class RegisterTBServices{
 				//file name
 				HtmlOutputLink link_src = (HtmlOutputLink) facesContext.getApplication().createComponent(HtmlOutputLink.COMPONENT_TYPE);
 				link_src.setId("OutputLinkStep2Refs"+id);
-				link_src.setValue("file:///"+sFileRef);
+				link_src.setValue(sFileRef);
+				link_src.setTarget("_new");
 				
 	        		//CommandLink+Icon allowing to delete this entry
 				HtmlCommandLink link_remove = (HtmlCommandLink) facesContext.getApplication().createComponent(HtmlCommandLink.COMPONENT_TYPE);
@@ -1461,11 +1463,12 @@ public class RegisterTBServices{
 					//OutputLink to view this File
 					HtmlOutputLink link_input = (HtmlOutputLink) facesContext.getApplication().createComponent(HtmlOutputLink.COMPONENT_TYPE);
 					link_input.setId("Step3OutputLinkInput"+i);
-					link_input.setValue("file:///"+input);
+					link_input.setValue(input);
+					link_input.setTarget("_new");
 					HtmlOutputText link_text = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 					link_text.setId("Step3LinkInputText"+i);
 					link_text.setValue(input);
-					link_text.setStyle("color:red");
+					//link_text.setStyle("color:red");
 					link_input.getChildren().add(link_text);
 					panel.getChildren().add(link_input);
 					addedrow++;
@@ -1475,7 +1478,7 @@ public class RegisterTBServices{
 					HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 					outputText.setId("Step3OutputTextInput"+i);
 					outputText.setValue(input);
-					outputText.setStyle("color:red");
+					//outputText.setStyle("color:red");
 					panel.getChildren().add(outputText);
 					addedrow++;
 				}
@@ -1486,7 +1489,8 @@ public class RegisterTBServices{
 						//OutputLink to view this File
 						HtmlOutputLink link_output = (HtmlOutputLink) facesContext.getApplication().createComponent(HtmlOutputLink.COMPONENT_TYPE);
 						link_output.setId("Step3OutputLinkOutput"+i);
-						link_output.setValue("file:///"+output);
+						link_output.setValue(output);
+						link_output.setTarget("_new");
 						HtmlOutputText link_text = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 		                link_text.setId("Step3LinkOutputText"+i);
 		                link_text.setValue(input);
@@ -1656,7 +1660,7 @@ public class RegisterTBServices{
 				if((sValue!=null)&&(!sValue.equals(""))){
 					
 					//add this tag to the service template
-					TestbedServiceTemplate.ServiceTag tag = tbService.new ServiceTagImpl();
+					ServiceTag tag = new ServiceTagImpl();
 					tag.setTag(sTag,sValue);
 					
 					//remove all tags because this wizard contains and adds all of them

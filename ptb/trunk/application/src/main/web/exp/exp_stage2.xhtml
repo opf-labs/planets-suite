@@ -31,7 +31,9 @@
 		</script>	
 		<!-- css popup javascript -->
 		<script type="text/javascript"
-			src="${facesContext.externalContext.requestContextPath}/js/csspopup/csspopup.js"></script>		
+			src="${facesContext.externalContext.requestContextPath}/js/csspopup/csspopup.js">
+		</script>	
+
 	</ui:define>
 
 	<ui:define name="content">
@@ -55,10 +57,12 @@
 					value="#{ExperimentBean.selectedServiceTemplateID}"
 					valueChangeListener="#{NewExp_Controller.changedSelTBServiceTemplateEvent}"
 					immediate="true"  readonly="#{ExperimentBean.approved}" 
-					disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==true)}">
+					rendered="#{ExperimentBean.operationSelectionCompleted==false}">
 						<f:selectItems value="#{NewExp_Controller.allAvailableTBServiceTemplates}" />
 					</h:selectOneMenu>
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipSelectService']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+					<!-- if ser+op selection was chosen, render an outputText instead -->
+					<h:outputText value="#{ExperimentBean.selectedServiceTemplate.name}"
+								  rendered="#{ExperimentBean.operationSelectionCompleted==true}"/>
 				</p>
 				<br/>
 					<!-- select from the available service operations -->
@@ -66,14 +70,19 @@
              		<h:selectOneMenu 
              		    value="#{ExperimentBean.selectedServiceOperationName}" 
              		    immediate="true" readonly="#{ExperimentBean.approved}" 
-             		    disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==true)}"
+             		    rendered="#{ExperimentBean.operationSelectionCompleted==false}"
              			valueChangeListener="#{NewExp_Controller.changedSelServiceOperationEvent}" 
              			onchange="submit()">
                  		<f:selectItems value="#{NewExp_Controller.allAvailableServiceOperations}" />                        
              		</h:selectOneMenu>
+             		<!-- if ser+op selection was chosen, render an outputText instead -->
+					<h:outputText value="#{ExperimentBean.selectedServiceOperationName}"
+								  rendered="#{ExperimentBean.operationSelectionCompleted==true}"/>
       		    </p>
-      		    <p><a href="#" onclick="popup('popUpDiv')">restrict by tags</a></p>
-      		    <h:panelGroup id="panelAddedTags" binding="#{ExperimentBean.addedSerTags}" />
+      		    <br/>
+      		    <h:panelGroup id="panelAddedTags" binding="#{ExperimentBean.addedSerTags}" rendered="#{ExperimentBean.operationSelectionCompleted==false}">
+      		    	<p>display all services OR<a href="#" onclick="popup('popUpDiv')"> restrict query by tags</a></p>
+      		    </h:panelGroup>
       		    </fieldset>
       		    <h:commandButton value="#{res['button.change']}"
                       				action="#{NewExp_Controller.changeAlreadySelectedSerOps}"
