@@ -429,10 +429,9 @@ public class ExperimentBean {
         String nextkey = 0+"";
     	if( this.inputData.keySet().size() > 0 ) {
     	    String last = new java.util.TreeSet<String>(this.inputData.keySet()).last();
-            int lastval = Integer.parseInt(last);
-            nextkey = (lastval+1)+"";
+            nextkey = ( Integer.parseInt(last) + 1 )+"";
     	}
-    	log.debug("Next key is: " + nextkey );
+    	log.debug("Next key, via keySet.last, is: " + nextkey );
     	log.debug("Returning input data key: "+count+" / "+inputData.size());
     	return count+"";
     }

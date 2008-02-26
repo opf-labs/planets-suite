@@ -197,8 +197,8 @@ public class UserBean
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         boolean result = false;
         result = request.isUserInRole("testbed.reader");
-        // Also add reader access for administrators:
-        if( isAdmin() ) result = true;
+        // Also add reader access for administrators and experimenters:
+        if( isAdmin() || isExperimenter() ) result = true;
         //log.debug("user " + request.getRemoteUser() +" is reader? - " + result);
         return result;  
     }  

@@ -497,6 +497,10 @@ img
 vertical-align: top;
 }
 
+img.expEditIcon {
+  margin: 0 2px 0 4px;
+}
+
 hr
 {
  	color:#006699;

@@ -195,6 +195,10 @@
 
         <h3 class="main">#{res['exp_stage6.headingData']}</h3>
 
+            <!-- display the experiment's output -->
+            <h:panelGrid id="panelInputOutputResults" binding="#{ExperimentBean.panelInputOutputResults}" border="1" columns="2">
+            </h:panelGrid>
+            
     <!-- ui:include src="/WEB-INF/templates/exp_io_table.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include -->
@@ -220,10 +224,10 @@
             </t:dataTable>
 
 
-           <h:panelGroup rendered="#{ExperimentBean.report.header != '' || ExperimentBean.report.bodyText != ''}">
+           <h:panelGroup rendered="#{ExperimentBean.reportHeader != '' || ExperimentBean.reportBody != ''}">
             <h2 class="main">#{res['exp_stage6.headingReport']}</h2>
-              <h3>#{ExperimentBean.report.header}</h3>
-              <p>#{ExperimentBean.report.bodyText}</p>
+              <h3>#{ExperimentBean.reportHeader}</h3>
+              <p>#{ExperimentBean.reportBody}</p>
            </h:panelGroup>
 
 </h:panelGroup>                

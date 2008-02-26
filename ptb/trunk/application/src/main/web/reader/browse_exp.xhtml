@@ -42,11 +42,11 @@
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
-                <h:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
+                <h:commandLink action="#{ListExp_Backing.readerExperimentAction}">
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
                 </h:commandLink>
-                <h:commandLink action="#{ListExp_Backing.readerExperimentAction}" rendered="#{UserBean.userid != exp.experimentSetup.basicProperties.experimenter}">
-                    <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+                <h:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
+                    <t:graphicImage value="/graphics/accessories-text-editor.png" border="0" alt="edit" styleClass="expEditIcon"/>
                 </h:commandLink>
         </t:column>
         <t:column>

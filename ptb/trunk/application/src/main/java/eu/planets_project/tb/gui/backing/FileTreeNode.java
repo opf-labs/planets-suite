@@ -12,7 +12,7 @@ import org.apache.myfaces.custom.tree2.TreeNodeBase;
  * @author AnJackson
  *
  */
-public class FileTreeNode extends TreeNodeBase {
+public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     static final long serialVersionUID = 82362318283823293l;
     
     static private PlanetsLogger log = PlanetsLogger.getLogger(FileTreeNode.class);

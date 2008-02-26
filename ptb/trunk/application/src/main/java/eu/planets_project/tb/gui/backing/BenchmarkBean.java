@@ -2,12 +2,17 @@ package eu.planets_project.tb.gui.backing;
 
 import java.io.Serializable;
 
+import org.apache.myfaces.custom.tree2.TreeNodeBase;
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 
 
-public class BenchmarkBean implements Serializable {
+public class BenchmarkBean extends TreeNodeBase implements Serializable {
 
-	    
+    static final long serialVersionUID = 2343216343436521112l;  
+    static private PlanetsLogger log = PlanetsLogger.getLogger(FileTreeNode.class);
+  	    
     String definition;
     String name;
     String description;
@@ -109,7 +114,7 @@ public class BenchmarkBean implements Serializable {
 		this.definition = definition;
 	}
 		
-	protected void setDescription(String description){
+	public void setDescription(String description){
 		this.description = description;
 	}
 
