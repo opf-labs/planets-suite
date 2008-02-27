@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -145,6 +146,8 @@ public class RegisterTBServices{
 	private HtmlPanelGrid panelStep4Add = new HtmlPanelGrid();
 	//The query entered by the user to point to the output-elements in the XML Responds
 	private String sXpathQueryToOutput = new String("/*//return/item");
+	//the selected service's WSDL content
+	String selServiceWSDLContent = "";
 	
 	
 //GUI Rendering settings
@@ -216,6 +219,7 @@ public class RegisterTBServices{
 	public String command_useOperation(){
 		this.setStageCompleted(1);
 		String pageNavigationRule = createXMLRequestTokensGUI();
+		this. selServiceWSDLContent = downloadSelectedServiceWSDL();
 		return pageNavigationRule;
 	}
 	
@@ -2055,6 +2059,25 @@ public class RegisterTBServices{
 		this.setSelectedJBossEndpoint(item);
 		//analyze the selected item
 		this.command_analyzeWSDL();
+	}
+	
+
+	public String getSelectedServiceWSDLContent(){
+		return this.selServiceWSDLContent;
+	}
+	
+	/**
+	 * Downloads the WSDL content from an already specified service endpoint
+	 */
+	private String downloadSelectedServiceWSDL(){
+		if((this.getEndpointURI()!=null)&&(!this.getEndpointURI().equals(""))){
+			//download the endpoint's content
+			try {
+				return this.extractWSDLContent(new URI(this.getEndpointURI()));
+			} catch (Exception e) {
+			}
+		}
+		return "";
 	}
 
 }
