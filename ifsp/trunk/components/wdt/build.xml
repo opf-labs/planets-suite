@@ -6,5 +6,5 @@
 	<property name="component.version" value="0.1"/>
 	<property name="component.dependencies" value=""/>
 	<!-- deployment.model can either be ear|war|ejb-jar|other -->
-	<property name="deployment.model" value="other"/>
+	<property name="deployment.model" value="war"/>
 </project>
