@@ -45,5 +45,35 @@ public interface DataHandler {
      * @param sFileRandomNumber the corresponding file name or its logical random number if none is available
      */
 	public String getIndexFileEntryName(File localFile);
+	
+	/**
+	 * Returns the local directory whih is used for persisting experiment's input files
+	 * This information is extracted from the BackendResources.properties
+	 * @return
+	 */
+	public String getFileInDir();
+	/**
+	 * Returns the local directory whih is used for persisting experiment's output files
+	 * This information is extracted from the BackendResources.properties
+	 * @return
+	 */
+    public String getFileOutDir();
+    
+
+    /**
+	 * copies a file from one location to another
+	 * @param src - the source file
+	 * @param dst - the destinationfile
+	 * @throws IOException
+     */
+    public void copy(File src, File dst) throws IOException;
+    
+    /**
+     * Creates a mapping between the resources's physical file name (random number) and its
+     * original logical name.
+     * @param sFileRandomNumber
+     * @param sFileName
+     */
+    public void setIndexFileEntryName(String sFileRandomNumber, String sFileName);
 
 }

@@ -8,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
@@ -202,6 +204,64 @@ public class DataHandlerImpl implements DataHandler{
     	 FileInputStream ResourceFile = new FileInputStream(f);
     	 properties.load(ResourceFile); 
     	 return properties;
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#getFileInDir()
+     */
+    public String getFileInDir(){
+    	return this.FileInDir;
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#getFileOutDir()
+     */
+    public String getFileOutDir(){
+    	return this.FileOutDir;
+    }
+    
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#copy(java.io.File, java.io.File)
+	 */
+	public void copy(File src, File dst) throws IOException {
+		InputStream in = null;
+		OutputStream out =null;
+		try{
+			in = new FileInputStream(src);
+			out = new FileOutputStream(dst);
+			// Transfer bytes from in to out
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+				out.write(buf, 0, len);
+			}
+			in.close();
+			out.close();
+		}
+		catch(IOException e){
+			throw e;
+		}finally{
+			in.close();
+			out.close();
+		}
+	}
+	
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#setIndexFileEntryName(java.lang.String, java.lang.String)
+     */
+    public void setIndexFileEntryName(String sFileRandomNumber, String sFileName){
+    	if((sFileRandomNumber!=null)&&(sFileName!=null)){
+    		try{
+    			Properties props = this.getIndex();
+    			props.put(sFileRandomNumber,sFileName);
+    	    	 File dir = new File(FileInDir);
+    			props.store(new FileOutputStream(new File(dir, "index_names.properties")), null);
+    		}catch(Exception e){
+    			//TODO: loog
+    		}
+    	}
     }
 
 }

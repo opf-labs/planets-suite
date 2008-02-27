@@ -6,6 +6,7 @@ package eu.planets_project.tb.impl.system;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,6 +130,12 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 				String key = itKeys.next();
 				executable.setOutputData(this.hmInputFiles.get(key), mapResults.get(key));
 			}
+			
+		 //6) final check for execution success
+			if (executable.getOutputData().size()<=0){
+				//in this case no outputdata at all was extracted: experiment success is not true
+				throw new InvalidInputException("Could not retireve any output data for the experiments");
+			}
 	
 			executable.setExecutionCompleted(true);
 			executable.setExecutionSuccess(true);
@@ -158,50 +165,6 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 		}
 		
 	}
-
-	/*
-		try{
-			TestbedManager manager = TestbedManagerImpl.getInstance(true);
-			manager.get
-			ExperimentWorkflow expWorkflow = exp.getExperimentSetup().getExperimentWorkflow();
-
-			if(expWorkflow!=null){
-				Collection<URI> inputData = expWorkflow.getInputData();
-			
-				if((inputData!=null)&&inputData.size()>0){
-					Iterator<URI> itURIs = inputData.iterator();
-				
-					while(itURIs.hasNext()){
-						URI inputURI = itURIs.next();
-						
-						if(fileExists(inputURI)){
-							File fInput = this.getFile(inputURI);
-							this.sOutputFileName = fInput.getName();
-							File fOutput = new File(this.sOutputDir+"/"+this.sOutputFileName);
-							
-							//create duplicate of the file
-							this.copyFile(fInput, fOutput);
-							//get the URI to the outputfile
-							URI outputURI = this.getOutputFileURI();
-							//now store results back to experiment
-							expWorkflow.setOutputData(inputURI, outputURI);
-					  
-							//Finally update the Experiment
-							manager.updateExperiment(exp);
-						}
-					
-					}
-				}
-			}
-			else{
-				System.out.println("Error while executing ExperimentWorkflow");
-			}
-		}catch(Exception e){
-			//TODO Logg statement
-			System.out.println("Error while executing ExperimentWorkflow: "+e.toString());
-		}
-		
-	}*/
 	
 	/**
 	 * Takes the information provided within the TestbedServiceTEmplate to build
@@ -254,16 +217,22 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 	/**
 	 * Take the migrated file output (produced by the ServiceRespondsBuilder) and copy the
 	 *  service's migration output to the Testbed's experiment/output direcotry. 
+	 *  
+	 * If the migration output does not correspond to a local file but rather to a URI the content is downloaded 
+	 * and copied into the Testbed's experiment/output direcotry. 
+	 *  
 	 *  This methods also calls renameOutput which produces an outpuf file with the same name as it's input file.
 	 * @return updated migrationResult with file refs to the Testbed's output dir.
 	 */
-	private Map<String,String> copyFileOutputToOutputDir(Map<String,String> migrationResults){
+	private Map<String,String> copyFileOutputToOutputDir(Map<String,String> migrationResults) throws IOException{
 		Map<String,String> ret = new HashMap<String,String>();
 		if(migrationResults!=null){
 			Iterator<String> itKeys = migrationResults.keySet().iterator();
 			while(itKeys.hasNext()){
 				String key = itKeys.next();
 				try {
+					//1)get the File ref, rename it to it's corresponding input file name and 
+					//move it within the testbed's output dir
 					String fileRef = migrationResults.get(key);
 					File fMigrationOutput = new File(fileRef);
 					//VM needs to be able to access this ref as file
@@ -280,24 +249,38 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 					//finally update the returned migration output reference
 					ret.put(key, fMovedOutput.getAbsolutePath());
 					
-				} catch (Exception e) {
-					//no valid output for this input file - no problem
-					log.debug(e.toString());
+				} catch (IOException e) {
+					//2)no valid output FILE for this input file - no problem
+					//in this case, test if it's an URI and if this is downloadable
+					FileOutputStream fos = null;
+					try{
+						String suriRef = migrationResults.get(key);
+						URI uriRef = new URI(suriRef);
+						String content = this.downloadURI(uriRef);
+						//now build the outputFile
+						//get the file's new name (same as it's input file) - input and output should have the same key
+						String newFileName = new File(this.hmInputFiles.get(key)).getName();
+						File fOutput = new File(this.sOutputDir+"/"+newFileName);
+						fos = new FileOutputStream(fOutput);
+						fos.write(content.getBytes());
+						fos.close();
+						
+						//finally update the returned migration output reference
+						ret.put(key, fOutput.getAbsolutePath());
+					}
+					catch(Exception e2){
+						//no problem - we're not able to handle this output
+						//not output for this input element
+						log.debug(e2.toString());
+					}
+					finally{
+						fos.close();
+					}
 				}
 			}
 		}
-		
 		return ret;
 	}
-	
-	/**
-	 * Rename the output file according to it's input File Name
-	 * i.e. with its math random number
-	 * @param inputFileName
-	 */
-	/*private void renameOutputFile(File outputFile, String inputFileName){
-		
-	}*/
 	
 	/**
 	 * copies a file from one location to another
@@ -359,11 +342,46 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
     }
 	
 	
-	/**
-	 * @param exec
+    /**
+	 * Takes a given http URI and tries to download its content which is returned as
+	 * File if success. If no success an Exception is thrown
+	 * @param uri
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
 	 */
-	/*private void addOutputToExperimentExecutable(ExperimentExecutable exec, Map<String,String>){
-		
-	}*/
+	private String downloadURI(URI uri)throws FileNotFoundException, IOException{
+
+		InputStream in = null;
+		try{
+			if(!uri.getScheme().equals("http")){
+				throw new FileNotFoundException("URI schema "+uri.getScheme()+" not supported");
+			}
+			in = uri.toURL().openStream();
+			boolean eof = false;
+			String content = "";
+			StringBuffer sb = new StringBuffer();
+			while(!eof){
+				int byteValue = in.read();
+				if(byteValue != -1){
+					char b = (char)byteValue;
+					sb.append(b);
+				}
+				else{
+					eof = true;
+				}
+			}
+			content = sb.toString();
+			if(content!=null){
+				return content;
+			}
+			else{
+				throw new FileNotFoundException("extracted content is null");
+			}
+		}
+		finally{
+			in.close();
+		}
+	}
 
 }

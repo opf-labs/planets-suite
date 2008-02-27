@@ -1493,7 +1493,7 @@ public class RegisterTBServices{
 						link_output.setTarget("_new");
 						HtmlOutputText link_text = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 		                link_text.setId("Step3LinkOutputText"+i);
-		                link_text.setValue(input);
+		                link_text.setValue(output);
 		                link_output.getChildren().add(link_text);
 						panel.getChildren().add(link_output);
 						addedrow++;
@@ -2022,6 +2022,10 @@ public class RegisterTBServices{
 		}
 	}
 	
+	/**
+	 * Returns a list of whistle files that are exposed on the local jboss
+	 * @return
+	 */
 	public List<SelectItem> getAllJBossEndpoints(){
 		if(lJbossEndpoints!=null){
 			return this.lJbossEndpoints;

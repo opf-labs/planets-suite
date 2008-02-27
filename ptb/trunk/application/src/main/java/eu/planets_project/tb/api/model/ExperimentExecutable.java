@@ -139,7 +139,8 @@ public interface ExperimentExecutable{
 	public void setExecutionCompleted(boolean b);
 	
 	/**
-	 * An indicator if the service invocation was completed successfully 
+	 * An indicator if the service invocation was completed successfully AND
+	 * if output could be parsed
 	 */
 	public boolean isExecutionSuccess();
 	public void setExecutionSuccess(boolean b);

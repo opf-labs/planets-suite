@@ -8,17 +8,21 @@ import java.net.URL;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.faces.context.FacesContext;
 
+import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.custom.tree2.TreeModel;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
 import org.apache.myfaces.custom.tree2.TreeNode;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.DigitalObject;
+import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 /**
  * This class is the backing bean that provides the interface to 
@@ -206,8 +210,14 @@ public class FileBrowser {
           // Only include selected items that are eligible:
           if( dob.isSelectable() && dob.isSelected() ) {
             try {
-              String fileRef = new File(dob.getUri()).getCanonicalPath();
-              expBean.addExperimentInputData(fileRef);
+            	File f = new File(dob.getUri());
+            	File fCopy = helperUploadDataForNewExperimentWizard(f);
+            	//add reference to the new experiment's backing bean
+            	//pre-condition: max. supported number of files has not been yet reached
+            	if(expBean.getSelectedServiceOperation().getMaxSupportedInputFiles()>expBean.getExperimentInputData().values().size()){
+            		//max. number not reached. Add this file ref
+            		expBean.addExperimentInputData(fCopy.getAbsolutePath());
+            	}
             } catch( IOException e ) {
               log.error("Failed to add to experiment: "+dob.getUri());
               log.equals("Exception: "+e);
@@ -216,7 +226,7 @@ public class FileBrowser {
         }
         // Clear any selection:
         FileBrowser.selectNone();
-        // Return:
+        // Return: gotoStage2 in the browse new experiment wizard
         return "goToStage2";
     }
     
@@ -228,5 +238,44 @@ public class FileBrowser {
           log.debug("Caught exception on redirectToDataRegistry: " + e );
         }
         return "success";
+    }
+    
+    
+    /**
+     * WORK AROUND - TO REMOVE WHEN FIXED
+     * Uploading single files to an experiment currently uses the JSF tomahawk inputFileUpload element to upload
+     * the data from a user into the testbed's experiment data store 
+     * i.e.../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata
+     * 
+     * Data added via this FileBrowser are local files and must be uploaded as well. As in future the data registry
+     * will hand over URLs anyway. Therefore there's a work around currently, just copying the local file input
+     * into the Testbed's experiment data repository, which only works if both are located on the same machine.
+     * 
+     * Restrictions: This currently only works if the IF Server + Testbed application are used on localhost where also 
+     * the FileBrowsers data can be accessed locally.
+     * @return the copied and renamed File
+     */
+    //TODO discuss solution for work around
+    private static File helperUploadDataForNewExperimentWizard(File file) throws IOException{
+    	//workaround: copy the local FileBrowsers file reference into
+    	//the Testbed's experiment data repository
+    	DataHandler dh = new DataHandlerImpl();
+    	//the input dir of the server where all experiment related files are stored
+    	String fileInDir = dh.getFileInDir();
+ 
+    	//if input dir does not yet exist
+    	File dir = new File(fileInDir);
+        dir.mkdirs();  
+        	
+        //@see FileUploadBean:
+        //create unique filename
+        String ext = file.getName().substring(file.getName().lastIndexOf('.'));
+    	String mathName = new UUID(20,122).randomUUID().toString() + ext;
+    	dh.setIndexFileEntryName(mathName, file.getName());
+        File fcopy = new File(fileInDir,mathName);
+        //copy the renamed file to it's new location
+    	dh.copy(file,fcopy);
+    	
+    	return fcopy;
     }
 }

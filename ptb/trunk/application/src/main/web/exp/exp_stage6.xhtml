@@ -23,16 +23,16 @@
 		<div id="maincol">
 		<div class="innertubemain">
 
-		<p>View the experiment's input and output data, evaluate the
-		outcomes of your experiment against the benchmark goals you specified
-		during Stage 3 of the experiment and supply a report about your
-		experiment. You may save and re-edit your evaluation as often as
-		required.</p>
-
-		<h2 class="main">#{res['exp_stage6.headingData']}</h2>
-		
 		<!-- A: If the execution was successfully: display the results -->
 		<h:form rendered="#{NewExp_Controller.executionSuccess}">
+			<p>View the experiment's input and output data, evaluate the
+			outcomes of your experiment against the benchmark goals you specified
+			during Stage 3 of the experiment and supply a report about your
+			experiment. You may save and re-edit your evaluation as often as
+			required.</p>
+
+			<h2 class="main">#{res['exp_stage6.headingData']}</h2>
+			
 			<!-- display the experiment's output -->
             <h:panelGrid id="panelInputOutputResults" binding="#{ExperimentBean.panelInputOutputResults}" border="1" columns="2">
             </h:panelGrid>
@@ -99,7 +99,13 @@
 		<!-- A: If the execution was NOT successfully: display an error page -->
         <h:form rendered="#{NewExp_Controller.executionSuccess==false}">
         	<h2 class="main">Error Page</h2>
-			<p>Experiment Execution failed due to the reason: </p>
+			<p>Experiment Execution failed due to malfunctioning of the underlying service!
+			   <h:commandLink immediate="true" value=" Click here " action="#{ExperimentBean.setViewXMLRespondsTrue}"/>to view more details
+        	   <h:commandLink immediate="true" value=" or here to hide details. " action="#{ExperimentBean.setViewXMLRespondsFalse}" rendered="#{ExperimentBean.viewXMLResponds}"/></p>
+        	<p>
+               <h:outputLabel value="service responds: " rendered="#{ExperimentBean.viewXMLResponds}"/>
+               <h:inputTextarea rows="10" cols="80" value="#{ExperimentBean.serviceXMLResponds}" readonly="true" rendered="#{ExperimentBean.viewXMLResponds}"/>
+            </p>
         </h:form>    
         
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">

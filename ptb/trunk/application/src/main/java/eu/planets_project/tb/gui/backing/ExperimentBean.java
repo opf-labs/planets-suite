@@ -1,7 +1,9 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,6 +43,7 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
@@ -112,6 +115,11 @@ public class ExperimentBean {
     
     private String ereportTitle;
     private String ereportBody;
+    
+    //a list of added annotationTagNames to restrict the displayed services
+    private Map<String,ServiceTag> mapAnnotTagVals = new HashMap<String,ServiceTag>();
+    //triggers the XMLResponds in case of an error for stage6
+    private boolean bRenderXMLResponds = false;
         
     public ExperimentBean() {
     	/*benchmarks = new HashMap<String,BenchmarkBean>();
@@ -207,7 +215,6 @@ public class ExperimentBean {
         //get already added TestbedServiceTemplate data
         log.debug("fill expBean: executable = "+exp.getExperimentExecutable());
         if(exp.getExperimentExecutable()!=null){
-            this.bOperationSelectionCompleted = true;
         	ExperimentExecutable executable = exp.getExperimentExecutable();
         	this.selSerTemplate = executable.getServiceTemplate();
         	if( selSerTemplate != null )
@@ -353,12 +360,20 @@ public class ExperimentBean {
 
     public ServiceOperation getSelectedServiceOperation(){
       if( this.selSerTemplate != null ) {
-      	return this.getSelectedServiceTemplate().getServiceOperation(
-    			this.getSelectedServiceOperationName()
-    			);
-      } else {
-        return null;
-      }
+    	  TestbedServiceTemplate template = this.getSelectedServiceTemplate();
+    	  List<String> allOpNames = template.getAllServiceOperationNames();
+    	  String selOpName = this.getSelectedServiceOperationName();
+    	  //template contains no operations
+    	  if(allOpNames.size()==0)
+    		  return null;
+    	  //template is being changed - select first op as selected
+    	  if(!allOpNames.contains(selOpName)){
+    		  this.setSelectedServiceOperationName(allOpNames.iterator().next());
+    	  }
+    	  
+    	  return template.getServiceOperation(this.getSelectedServiceOperationName());
+      } 
+      return null;
     }
     
     /**
@@ -377,6 +392,36 @@ public class ExperimentBean {
      */
     public Collection<String> getExperimentInputDataFiles() {
         return this.inputData.values();
+    }
+    
+    /**
+     * Returns a map containing the input data's uri as key and its corresponding
+     * original logical file name as value
+     * e.g. Collection<Map<"http://../planets-testbed/inputdata/fdsljfsdierw.doc,"data1.doc">>
+     * This is used to render as dataTable within the GUI
+     * @return
+     */
+    public Collection<Map<String,String>> getExperimentInputDataNamesAndURIs(){
+    	Collection<Map<String,String>> ret = new Vector<Map<String,String>>();
+    	DataHandler dh = new DataHandlerImpl();
+    	Iterator<String> localFileRefs = this.getExperimentInputDataFiles().iterator();
+    	while(localFileRefs.hasNext()){
+    		try {
+    			Map<String,String> map = new HashMap<String,String>();
+    			//retrieve URI
+    			File fInput = new File(localFileRefs.next());
+				URI uri = dh.getHttpFileRef(fInput, true);
+				String name = dh.getIndexFileEntryName(fInput);
+				map.put("uri", uri.toString());
+				map.put("name", name);
+				ret.add(map);
+			} catch (FileNotFoundException e) {
+				log.error(e.toString());
+			} catch (URISyntaxException e) {
+				log.error(e.toString());
+			}
+    	}
+    	return ret;
     }
         
     
@@ -418,7 +463,7 @@ public class ExperimentBean {
     	boolean bFound = true;
     	int count = 0;
     	while(bFound){
-    		// Check if the current key is already in: 
+    		// Check if the current key is already in use: 
     		if(this.inputData.containsKey(count+"")){
                 count++;
     		}
@@ -426,12 +471,6 @@ public class ExperimentBean {
                 bFound = false;
     		}
     	}
-        String nextkey = 0+"";
-    	if( this.inputData.keySet().size() > 0 ) {
-    	    String last = new java.util.TreeSet<String>(this.inputData.keySet()).last();
-            nextkey = ( Integer.parseInt(last) + 1 )+"";
-    	}
-    	log.debug("Next key, via keySet.last, is: " + nextkey );
     	log.debug("Returning input data key: "+count+" / "+inputData.size());
     	return count+"";
     }
@@ -966,7 +1005,8 @@ public class ExperimentBean {
                             HtmlOutputLink.COMPONENT_TYPE);
             link_src.setId("fileRef" + key);
             URI URIFileRef = dh.getHttpFileRef(new File(fileRef), true);
-            link_src.setValue("file:///" + URIFileRef);
+            link_src.setValue(URIFileRef);
+            link_src.setTarget("_new");
 
             //CommandLink+Icon allowing to delete this entry
             HtmlCommandLink link_remove = (HtmlCommandLink) facesContext
@@ -1000,4 +1040,69 @@ public class ExperimentBean {
         }
     }
         
+    
+    /*---------for step2 popup overlay-----------*/
+    
+    /**
+     * Method adds a given service annotation tag and its value. Tags are
+     * used to restrict the list of displayed services
+     */
+    public void addAnnotationTag(ServiceTag tag){
+    	if(tag!=null){
+    		this.mapAnnotTagVals.put(tag.getName(), tag);
+    	}
+    }
+    
+    /**
+     * Method removes a given service annotation tag and its value. Tags are
+     * used to restrict the list of displayed services
+     * @param name
+     */
+    public void removeAnnotationTag(String name){
+    	if(name!=null){
+    		if(this.mapAnnotTagVals.containsKey(name)){
+    			//remove tag
+    			this.mapAnnotTagVals.remove(name);
+    		}
+    	}
+    }
+    
+    /**
+     * Method removes all service annotation tags and their values, which are
+     * used to restrict the list of displayed services
+     */
+    public void removeAllAnnotationTags(){
+    	this.mapAnnotTagVals = new HashMap<String,ServiceTag>();
+    }
+    
+    /**
+     * Returns a list of maps containing the selected annotation tag names and values
+     * e.g. list<map<"name","author">,<"value","val1 or ""><"description","description1">..
+     * @return
+     */
+    public Collection<ServiceTag> getSelectedAnnotationTags(){
+    	Collection<ServiceTag> ret = new Vector<ServiceTag>();
+    	return this.mapAnnotTagVals.values();
+    }
+    
+    public String getServiceXMLResponds(){
+    	return this.exp.getExperimentExecutable().getServiceXMLResponds();
+    }
+    
+   
+    /**
+     * Triggers: display xml responds in case of an error on page 6
+     * @param b
+     */
+    public void setViewXMLRespondsTrue(){
+    	this.bRenderXMLResponds = true;
+    }
+    
+    public void setViewXMLRespondsFalse(){
+    	this.bRenderXMLResponds = false;
+    }
+    
+    public boolean isViewXMLResponds(){
+    	return this.bRenderXMLResponds;
+    }
 }

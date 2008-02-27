@@ -106,6 +106,7 @@
       </fileset>
       <fileset dir="${src.resources}/">
           <include name="eu/planets_project/tb/impl/BenchmarkGoals.xml"/>
+          <include name="eu/planets_project/tb/impl/ServiceAnnotationTags.xml"/>
           <include name="eu/planets_project/tb/impl/BackendResources.properties"/>
       </fileset>
      </jar>

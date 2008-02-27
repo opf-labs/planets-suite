@@ -15,6 +15,8 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
+import eu.planets_project.tb.api.services.tags.DefaultServiceTagHandler;
+import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.BenchmarkBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
@@ -37,6 +39,7 @@ import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
+import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlCommandButton;
@@ -477,10 +480,25 @@ public class NewExpWizardController {
      */
     private void reloadOperations(){
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	List<String> lNames = expBean.getSelectedServiceTemplate().getAllServiceOperationNames();
-    	if((lNames!=null)&&(lNames.size()>0)){
+    	List<ServiceOperation> lOperations = new Vector<ServiceOperation>();
+    	TestbedServiceTemplate template = expBean.getSelectedServiceTemplate();
+    	
+    	if(expBean.getEtype().equals("experimentType.simpleMigration")){
+    		//mapping between operationTypeID and experiment type ID
+    		lOperations = template.getAllServiceOperationsByType(
+    				TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_MIGRATION
+    				);
+    	}
+    	 //simple characterisation experiment
+    	if(expBean.getEtype().equals("experimentType.simpleCharacterisation")){
+    		lOperations = template.getAllServiceOperationsByType(
+    				TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_CHARACTERISATION
+    				);
+    	}
+
+    	if((lOperations!=null)&&(lOperations.size()>0)){
     		//sets the first operationname selected so that it gets displayed
-    		expBean.setSelectedServiceOperationName(lNames.iterator().next());
+    		expBean.setSelectedServiceOperationName(lOperations.iterator().next().getName());
     	}
     	else{
     		expBean.setSelectedServiceOperationName("");
@@ -548,13 +566,19 @@ public class NewExpWizardController {
     public boolean isMinReqNrOfFilesSelected(){
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	if((expBean.getSelectedServiceTemplate()!=null)&&(expBean.getSelectedServiceOperationName()!="")){
-    		ServiceOperation operation = expBean.getSelectedServiceTemplate().getServiceOperation(
+    		try{
+    			ServiceOperation operation = expBean.getSelectedServiceTemplate().getServiceOperation(
     				expBean.getSelectedServiceOperationName()
     				);
-    		int minrequ = operation.getMinRequiredInputFiles();
-    		int current = expBean.getNumberOfInputFiles();
-    		if(current>=minrequ){
-    			return true;
+    			int minrequ = operation.getMinRequiredInputFiles();
+    			int current = expBean.getNumberOfInputFiles();
+    			if(current>=minrequ){
+    				return true;
+    			}
+    		}catch(Exception e){
+    			//exception when re-initing wizard: then expBean.selectedOpName could not be contained 
+    			//in the template as the first one is selected when filling the screen
+    			return false;
     		}
     	}
     	return false;
@@ -739,10 +763,11 @@ public class NewExpWizardController {
 			ret.put(template.getName(),String.valueOf(template.getUUID()));
 		}
 		
-		//finally set an item within the list as selected for the bean
-		if(ret.size()>0)
+		//only triggered for the first time
+		if(expBean.getSelectedServiceTemplate()==null){
 			expBean.setSelServiceTemplateID(ret.values().iterator().next());
-		
+			reloadOperations();
+		}
     	return ret;
     }
     
@@ -757,7 +782,7 @@ public class NewExpWizardController {
     	TreeMap<String,String> ret = new TreeMap<String,String>();
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	TestbedServiceTemplate template = expBean.getSelectedServiceTemplate();
-    	log.debug("Looking up service operations for template: "+template);
+    	//log.debug("Looking up service operations for template: "+template);
     	if(template!=null){
             log.debug("Looking for services of type: "+expBean.getEtype());
     		List<ServiceOperation> lOperations = null;
@@ -789,7 +814,15 @@ public class NewExpWizardController {
     }
     
 
-    
+    /**
+     * Gets a list of all default Service Annotation Tags using the default tag reader class
+     * Service Annotation Tags are used to restrict the list of rendered services
+     * @return
+     */
+    public Collection<ServiceTag> getAllDefaultServiceAnnotationTags(){
+    	DefaultServiceTagHandler dth = DefaultServiceTagHandlerImpl.getInstance();
+    	return dth.getAllTags();
+    }
     
     public Map<String,String> getAvailableEvaluationValues() {
        	TreeMap<String,String> map = new TreeMap<String,String>();
