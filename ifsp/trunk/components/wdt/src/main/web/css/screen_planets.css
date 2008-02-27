@@ -1,0 +1,664 @@
+body
+{
+	text-align: center;
+	border: none; 
+	font-family: arial, helvetica, verdana, sans-serif;
+	background-color: #9CD5E8;
+}
+
+p
+{
+	font-size: 0.8em;
+}
+
+#wrapper
+{
+	position: relative;
+	margin: 0 auto;
+	text-align: left;
+	width: 750px;
+	border: 1px #000 solid;
+	background-color: #fff;
+}
+
+#wrapper .hide 
+{
+	display: none;
+	height: 0px; 
+	margin: 0px; 
+	padding: 0px; 
+	font-size: 0px;
+}
+
+.logo
+{
+	float: left;
+	text-decoration: none;
+	text-align: right;
+	padding: 3px 5px 0px 0px;
+/*	border-bottom: 1px solid #000;*/
+}
+
+/***********************
+ Language div; row 1
+***********************/
+.language
+{
+	font-size: 10px;
+	margin: 0;
+	text-align: left;
+	background-color: #fff;
+	background-color:transparent;
+}
+
+.language ul {
+	list-style: none outside;
+	margin: 0;	
+	padding: 4px 0 4px 4px;
+	}
+
+.language li {
+	display: inline;
+	}
+
+.language a, .language .spacer {
+	padding: 8px 0px 8px 5px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #000;
+	}	
+	
+.language a:link, .language a:visited {
+	color: #000;
+	}
+
+.language a:hover, .language a:active {
+	color: #000;
+	text-decoration: underline;
+	}
+
+	
+/***********************
+ Header div; row 2
+***********************/
+#header {
+	padding: 5px 10px 0px 10px;
+	margin: 0;
+	background-color: #fff;
+	background-color:transparent;
+	height: 85px;
+/*	border-bottom: 1px solid #000;*/
+	}	
+
+#header .sitetitle
+{
+	font-family: arial;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 12px;
+	letter-spacing: 0.1em;
+	padding: 18px 0 0 0; /* 12px 0 0 0; */
+	color: #1d82a4;
+	text-align: right;
+	float: right;
+	margin-right: 6px; /* 10px; */
+}
+
+
+#header h1 
+{
+	text-align: right;
+	font-size: 18px;
+	text-transform: uppercase;
+	padding: 5px 0 0 0;
+	margin: 0;
+	float: right;
+	color: #000;
+}
+	
+#header h1 a {
+	text-decoration: none;
+	color: #000;
+	}
+
+
+/***********************
+ Navigation div; row 3
+***********************/
+#headernav 
+{
+	font-size: 10px;
+	margin: 0;
+	border-top: 1px solid #000;
+	border-bottom: 1px solid #000;
+	/*border-right: 1px solid #000;*/
+	background-color: #fff; /*#700;*/
+	background-color:transparent;
+}
+
+.menu {
+	text-align: right;
+	/* ie5mac rule */
+	padding: 4px 5px 4px 0;
+	/* fix for everything else \*/
+	padding: 4px 0 4px 0;
+	/* end commented backslash hack */
+	}
+
+.menu ul {
+	list-style: none outside;
+	margin: 0;	
+	}
+			
+.menu li {
+	display: inline;
+margin: 0;
+	}
+
+.menu a {
+	padding: 4px 5px 4px 5px;
+	text-decoration: none;
+	font-weight: bold;
+	border-left: 1px solid #000;
+	}	
+	
+.menu a:link, .menu a:visited {
+	color: #000;
+	background: #fff;
+	}
+
+.menu a:hover, .menu a:active {
+	color: #000;
+	background: #dcfaff;
+	}
+
+a.menu_sel, a:link.menu_sel, a:visited.menu_sel {
+	color: #000;
+	background: #bbe0e3;
+	}
+
+a:hover.menu_sel, a:active.menu_sel {
+	color: #000;
+	background: #bbe0e3;
+	}
+
+/**********************
+ Nav Bar; Column right
+**********************/
+#navbar
+{
+	font-family: arial, helvetica, verdana, sans-serif;
+	float: right;
+	padding: 12px 2px 0 2px;
+	margin: 0 0 0 0;
+	background: #fff;
+	height: 100%;
+	width: 170px;
+	text-align: left;
+	background-color:transparent;
+}
+
+#navbar ul.primary
+{
+	border-collapse: collapse ;
+	padding: 0;
+	margin: 0;
+}
+
+#navbar ul.primary li
+{
+	list-style-type: none;
+	padding: 0px;
+	color: #1d82a4;
+}
+
+#navbar ul.primary li.subitem 
+{
+	font-weight: normal;
+	margin: 0px 0px 0px 8px;
+}
+
+#navbar ul.primary li a:link, #navbar ul.primary li a:visited
+{
+	font-size: 12px;
+	color: #000;
+	text-decoration: none ;
+	margin: 0px ;
+	padding: 1px;
+	display:block;
+	border: 1px solid #FFF;
+}
+
+#navbar ul.primary li a:hover, #navbar ul.primary li a:active
+{
+	font-size: 12px;
+	color: #000;
+	background: #dcfaff;
+	border: 1px solid #000;
+	text-decoration: none;
+	margin: 0px ;
+	padding: 1px;
+	display:block;
+}
+
+a.navbar_sel, a:link.navbar_sel, a:visited.navbar_sel
+{
+	font-size: 12px;
+	color: #000;
+	background: #bbe0e3;
+	border: 1px solid #000;
+	text-decoration: none;
+	margin: 0px ;
+	padding: 1px;
+	display:block;
+}
+
+#navbar ul.primary li .selected a
+{
+	text-decoration: underline;
+	display:block;
+	
+	/*background-color: #fff;
+	border-style: solid ;
+	border-width: 0px 0px 0px 8px ;
+	border-color: #ccc ;
+	*/
+}
+
+/********
+Secondary Navigation
+********/
+
+#navbar ul.secondary
+{
+	border-collapse: collapse ;
+	border-width: 0px ;
+	padding: 0 0 0 9px;
+	margin: 0px ;
+}
+
+#navbar ul.secondary li
+{
+	font-size: 10px;
+	list-style-type: square ;
+	border-width: 0px ;
+	padding: 0px;
+	margin: 0px ;
+	margin-left:15px;
+}
+
+#navbar ul.secondary li a:link, #navbar ul.secondary li a:visited
+{
+	font-size: 10px;
+	text-decoration: none ;
+	color: #000;
+}
+
+#navbar ul.secondary li a:hover, #navbar ul.secondary li a:active
+{
+	font-size: 10px;
+	text-decoration: none;
+	color: #000;
+}
+
+/***********************
+ Column; IST Logo
+***********************/
+
+p.istlogo {
+	text-align: center;	
+	vertical-align: middle;
+}
+
+/***********************
+ Content; column left
+***********************/
+.content {
+	float: left;
+	border-right:  1px solid #666;
+	padding: 10px 25px 10px 25px;
+	margin: 0;
+	width: 522px;
+	background-color: #fff;
+	background-color:transparent;
+	font-family: arial, helvetica, verdana, sans-serif;
+	}
+
+.content h1 
+{
+	font-size: 20px;
+	/*text-transform: lowercase;*/
+	letter-spacing: 0.4em;
+	padding: 5px 0 5px 0;
+	margin: 0;
+	color: #1d82a4;
+}
+
+.content h2
+{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.content h3
+{
+	font-size: 16px;
+	font-weight: bold;
+}
+
+
+
+.content .red
+{
+	color: #900;
+}
+
+.content .linksright
+{
+	text-align: right !important;
+}
+
+legend
+{
+	color: #1d82a4;
+}
+
+label
+{
+	cursor: pointer;
+	float: left;
+	clear: left;
+	text-align: right;
+	margin-right: 0.5em;
+	margin-bottom: 0.5em;
+	font-weight: bold;
+}
+
+ol
+{
+	font-size: 0.8em;
+}
+
+ul.main
+{
+	list-style-type: square;
+	font-size: 0.8em;
+}
+
+.crumb
+{
+	font-size: smaller;
+}
+
+
+/*****************
+* Links          *
+*****************/
+
+.content a:link {
+  color: #002bb8;
+  /*color:#358;*/ 
+  text-decoration:none;
+  /*border-bottom:1px dotted #358;*/
+  }
+.content a:visited {
+  color: #5a3696; 
+  /*color:#916483;*/
+  text-decoration:none;
+  /*border-bottom:1px dotted #916483;*/
+  }
+.content a:hover {
+  /*color:#900;*/
+  text-decoration: underline;
+  /*
+  text-decoration:none;
+  border-bottom:1px solid #600;*/
+  }
+a img {
+  border-width:0;
+  }
+
+/*****************
+* Forms          *
+*****************/
+
+form table td {
+  padding:3px 5px 3px 0;
+  font-weight:normal;
+  }
+
+form table th {
+  text-align: right;
+  padding:3px 5px 3px 0;
+  font-weight:normal;
+  }
+  
+form label {
+  cursor:pointer;
+  }
+  
+form label:hover {
+  color:#600;
+  }
+  
+form label.inline {
+  display:inline;
+  font-weight:normal;
+  }
+
+/********************
+ Item (news, staff)
+********************/
+  
+.item {
+	margin-top: 10px;
+	padding: 0 0 20px 0;
+	clear: both;
+}
+
+.item .item-header {
+	border-bottom:  1px solid #aaa;
+	margin: 0 0 5px 0;
+}
+
+.item .item-header h4 {
+	font-size: small;
+	padding: 0 0 1px 0;
+	margin: 0 0 0 5px;
+	color: #666;
+}
+
+.item .item-header h3 {
+	display: inline;
+	color: #111;	
+}
+
+.item .item-body, .item-date
+{
+	font-size: 0.8em;
+}
+
+fieldset
+{
+	margin-top: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+
+.partnerbox {
+	width: 95%;
+	float: left;
+	position: relative;
+	background: #fff;	
+	padding: 0;
+	margin: 0;
+	margin-bottom: 10px;
+	font-size: 0.95em;
+}
+
+.partnerlogo
+{
+
+	float: left;
+	padding: 0;	
+}
+
+.partnertitle 
+{
+	width: 70%;
+	float: right;
+	margin:0;
+	font-weight: bold;
+}
+
+p.thumnb
+{
+	font-size: 0.8em;
+}
+
+
+/**************************
+ Footer, include for formatting
+**************************/
+#footer 
+{
+	clear: both;
+	height: 20px;
+	position: relative;
+	margin: 0 auto;
+	font-size: 11px;
+	padding: 9px 0 0 0;
+	text-align: center;
+	background-color: #fff;
+	border-top: 1px solid #666;
+}
+
+hr
+{
+ 	color:#000000;
+	height:1px;
+	border-bottom:1px solid;
+	border-top: none ;
+	margin-top:0px;
+	margin-bottom:0px;
+	margin-left:15px;
+	margin-right:15px;
+	text-align:center;
+}
+
+hr.dotted
+{
+ 	color:#000000;
+	height:1px;
+	border-bottom:1px dashed;
+	border-top: none ;
+	margin-top:15px;
+	margin-bottom:15px;
+	margin-left:15px;
+	margin-right:15px;
+	text-align:center;
+}
+
+/*********
+* Pop-up *
+*********/
+
+#popupWrapper
+{
+	border: 1px solid #000000;
+	background: #fff;
+	margin-top: 10px;
+	margin-left: 20px;
+	padding-left:5px;
+	padding-right: 5px;
+	width: 340px;
+}
+
+#popup-masthead 
+{
+	background: #FFF6eb;
+	padding: 0 1em 0 1em;
+	margin: 1em 0 1em 0;
+	font-size: 0.95em;
+	text-align: right;
+}
+
+/*******************************
+ Some extra bits added by Graeme
+*******************************/
+/*****
+ News
+******/
+  
+.news {
+margin: 0;
+	margin-top: 10px;
+	padding: 0 0 5px 0;
+	clear: both;
+	font-size: 1.0em;
+}
+
+.news h3 {
+display: block;
+	font-size: 0.9em;
+	padding: 2px 0 0 0;
+	margin: 2px 0 5px 0;
+	letter-spacing:0.4em;
+	border-top: 3px solid #BBE0E3;
+background-color: #FFFFFF;
+color: #1d82a4;
+text-align:center;
+}
+
+.news-header {
+		margin: 5px 0 5px 0;
+}
+
+.news .news-header h4 {
+	font-size: 0.8em;
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+	color: #000;
+}
+
+.news .news-header h3 {
+	display: inline;
+	color: #111;	
+}
+
+.news-body {
+padding-bottom: 6px;
+	border-bottom: 1px solid #aaa;
+		font-size: 0.7em;
+	}
+	
+.news-date
+{
+text-decoration: none;
+	font-size: 0.7em;
+}
+
+/* added by Graeme - 2007-08-29 */
+
+.profile {
+	width: 480px;
+	float: left;
+	border: 1px solid #000000;
+	/*background: #fff6eb; */	
+	padding: 1em;
+	margin: 1em 0 1em 0;
+}
+
+.profileImage
+{
+	float: right;
+	padding: 1em 0 1em 0;	
+}
+
+.profileText 
+{
+	width: 75%;
+	float: left;
+	margin-top: -0.5em;
+}
