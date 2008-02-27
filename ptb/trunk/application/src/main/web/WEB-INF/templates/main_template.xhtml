@@ -1,7 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jstl/core">
 
 <head>
 	<link rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/ptb-screen.css" type="text/css" media="screen" />
@@ -13,11 +14,23 @@
 </head>
 
 <body>
- 	<ui:insert name="header">Placeholder Header</ui:insert>
-	<div id="subnav">
-		<h2 class="subnav"><ui:insert name="title">Placeholder Title</ui:insert></h2>
-	</div>
- 	<ui:insert name="content">Placeholder Content</ui:insert>
- 	<ui:insert name="footer">Placeholder Footer</ui:insert>
+        <ui:insert name="header">Placeholder Header</ui:insert>
+        
+        <c:if test="${page == 'help'}">
+            
+            <p><b>ARGHH!!!</b></p>
+            
+        </c:if>
+        
+        <c:if test="${page != 'help'}">
+            
+            <div id="subnav">
+                <h2 class="subnav"><ui:insert name="title">Placeholder Title</ui:insert></h2>
+            </div>
+            
+        </c:if>
+        
+        <ui:insert name="content">Placeholder Content</ui:insert>
+        <ui:insert name="footer">Placeholder Footer</ui:insert>
 </body>
 </html>

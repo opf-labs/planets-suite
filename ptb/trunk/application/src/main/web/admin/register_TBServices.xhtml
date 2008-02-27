@@ -29,22 +29,23 @@
 <!-- Step1: Enter WSDL URI and select service name + operation -->
      <h:form id="formanalyzeWSDL" rendered="#{RegisterTBServiceBean.renderedStage == 1}">
 		 <h:message id="InfoErrorMessages" for="link_byHand" errorClass="errorMessage" infoClass="infoMessage" />
-		 <p>Registration Wizard for deploying executable services within the Testbed<br />
-			Please note that currently every service that's being used within the Testbed must follow this registration process.</p>
+                        <p>This is the <b>Registration Wizard</b> for deploying executable services within the Testbed.  Every service used within the Testbed must follow this five-step registration process.  Once the process is complete the service will be available for experimenters to select during the creation of new experiments.</p>
+                        <p>For <b>Stage 1</b> you will need to find the required service endpoint on the server, either by entering a known URL by hand or by browsing the list of service endpoints that are currently registered with JBoss. 
+                    You can view a list of <a href="http://localhost:8080/jbossws/services">services registered with JBoss here</a>.</p>
+                    <p>Once you have entered a service endpoint you will then be able to select the appropriate <b>Service Name</b> and <b>Selected Operation Name</b>.</p>
 		 <fieldset>
-		 	<legend>Analyze Service Endpoint</legend>
-		 	<p>Please enter any locally available Service 
-		 		<h:commandLink id="link_byHand" immediate="true" value=" WSDL URL by hand " action="#{Manager_Backing.initRegisterTBService}"/>
+		 	<legend>#{res['reg_serv.legendAnalyze']}</legend>
+		 	<p>Please enter any locally available Service WSDL URL
+		 		<h:commandLink id="link_byHand" immediate="true" value=" by hand " action="#{Manager_Backing.initRegisterTBService}"/>
 		 		or
 		 		<h:commandLink id="link_browseJBossWS" immediate="true" value=" browse the underlying JBoss server instance." action="#{RegisterTBServiceBean.command_selectFromJBossWS}"/>
-				<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['serTempl.register.registrytip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
 		 	</p>
 		 	<!-- 1. enter WSDL by hand OR -->
 		 	<h:panelGroup rendered="#{RegisterTBServiceBean.selectFromJBossWS==false}">
          		<p><h:outputText value="Enter Service WSDL URL:" styleClass="readerLabel"/>
 		 		<!-- note: RegisterTBServiceBean is put into session by Manager.initExperimentAction() -->
 		 		<h:inputText value="#{RegisterTBServiceBean.endpointURI}" id="ServiceURI" required="true" size="80" disabled="#{RegisterTBServiceBean.stage1Completed}">
-         		</h:inputText>
+         		</h:inputText> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.byHandTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
          		</p>
          		<br/>
          		<p><h:commandButton value="Analyze" action="#{RegisterTBServiceBean.command_analyzeWSDL}" disabled="#{RegisterTBServiceBean.stage1Completed}"/></p>
@@ -56,7 +57,7 @@
              		<h:selectOneMenu id="selectOneJBossEndpoint" value="#{RegisterTBServiceBean.selectedJBossEndpoint.value}" immediate="true" 
             			 valueChangeListener="#{RegisterTBServiceBean.processJBossEndpointChange}" onchange="submit()" disabled="#{RegisterTBServiceBean.stage1Completed}">
                  		<f:selectItems value="#{RegisterTBServiceBean.allJBossEndpoints}" />                        
-            	</h:selectOneMenu>
+            	</h:selectOneMenu> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.browseTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
             	</p>
          	</h:panelGroup>
     	</fieldset>
@@ -74,13 +75,13 @@
      
      <h:form id="FormServiceSelection" rendered="#{RegisterTBServiceBean.isEndpointSelected==true and RegisterTBServiceBean.renderedStage == 1}">
     	<fieldset>
-		 	<legend>Select service and operation</legend>
+		 	<legend>#{res['reg_serv.legendService']}</legend>
     		<p><h:outputText value="Selected Service Name:" styleClass="readerLabel"/>
     		<h:selectOneMenu id="selectService" value="#{WSClientBean.serviceSelectItemValue}" immediate="true" 
                 valueChangeListener="#{WSClientBean.processServiceChange}" onchange="submit()"
                 disabled="#{RegisterTBServiceBean.stage1Completed}">
                     <f:selectItems value="#{WSClientBean.serviceSelectItems}"/>
-                </h:selectOneMenu>
+                </h:selectOneMenu> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.serviceNameTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
                 <h:message for="selectService" errorClass="errorMessage" infoClass="infoMessage"/>
       		</p>
 			<br></br>
@@ -88,7 +89,7 @@
              <h:selectOneMenu id="selectOperation" value="#{WSClientBean.operationSelectItemValue}" immediate="true" 
              valueChangeListener="#{WSClientBean.processOperationChange}" onchange="submit()" disabled="#{RegisterTBServiceBean.stage1Completed}">
                  <f:selectItems value="#{WSClientBean.operationSelectItems}" />                        
-             </h:selectOneMenu>
+             </h:selectOneMenu> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.operationNameTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
              <h:message for="selectOperation" errorClass="errorMessage" infoClass="infoMessage"/>
       		 </p>
        </fieldset>
@@ -96,20 +97,28 @@
      </h:form>
      <!--Step1 configure SampleRequest Template completed-->
       
-     <!--Step2 build XML request template-->  
+     <!--Step2 build XML request template--> 
+
      <h:form id="formXmlRequestTemplate" rendered="#{RegisterTBServiceBean.renderedStage == 2}"> 
-		 <p><b>Selected Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
-                 <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
-         </p>
+         <p><b>Stage 1 completed successfully!</b></p>
+         <p>For <b>Stage 2</b> you need to create a template for your selected service.  Select the relevant input type(s) and click on the 'Add Template' button to continue. 
+ </p>
+                 <p>If your selected service can accept an <b>array of files</b> and you select this option you will need to specify the correct tag that will be applied to each item in the array. Please ensure the selected service can accept an array of files before selecting this option. In order to find the tag used for <b>array items</b> you will need to look at the WSDL file for the selected service to find the correct tag name.  Find the service in the <a href="http://localhost:8080/jbossws/services">JBoss list of registered service endpoints</a> and click on the <b>ServiceEndpointAddress</b>.<br />  <b>Hint:</b> if the link fails to load check that the URL in the address bar starts with <i>http://localhost:8080</i>.  If it doesn't then replace the URL up to <i>:8080</i> with this.</p>
+                 <fieldset>
+                     <legend>#{res['reg_serv.legendStage2Info']}</legend>
+                     <p><b>Selected Operation Name: </b>#{WSClientBean.operationSelectItemValue}<br />
+                         <b>Required Input Type: </b>#{RegisterTBServiceBean.tagSelectItemValue}<br />
+                     </p>
+                 </fieldset>
 		 <fieldset>
-             <legend>Creating the XML Request template</legend>
+             <legend>#{res['reg_serv.legendTemplate']}</legend>
              
             <p><h:outputText value="XML Request Template:" styleClass="readerLabel"/></p>
             <h:panelGrid id="panelStep2" binding="#{RegisterTBServiceBean.componentPanelStep2}" border="2" columns="1">
             </h:panelGrid>
             <br/>   
         </fieldset>
-        <h:commandButton id="buttonAddOpp" value="add template" action="#{RegisterTBServiceBean.command_addRequestTemplate}" disabled="#{RegisterTBServiceBean.stage2Completed}"/>
+        <h:commandButton id="buttonAddOpp" value="Add Template" action="#{RegisterTBServiceBean.command_addRequestTemplate}" disabled="#{RegisterTBServiceBean.stage2Completed}"/>
               <br/>
         	 <p>&#160;</p>
         	 <p>&#160;</p>
@@ -122,15 +131,25 @@
       <!--Step2 build XML request template completed-->  
     
       <!--Step3 invoke sample request with data-->
+
       <h:form id="formXmlRequestSampleInvocation" enctype="multipart/form-data" 
       rendered="#{RegisterTBServiceBean.renderedStage == 3}">
+          <p>For <b>Stage 3</b> you need to supply <b>sample files</b> for the configuration to work with.  If you specified an array of files in Stage 2 you should enter multiple files of the relevant file type(s), otherwise supply one file.<br />
+              After entering a file into the 'Specify File' box click on the <b>blue cross</b> to add the file to the system.  Repeat this process as many times as necessary.<br />
+              To remove a file that you have previously uploaded click on the <b>red X</b> beside it.<br />
+Once you are happy with the files you have uploaded click on the 'Invoke Service' button to continue.</p>
            <h:message for="fileupload" errorClass="errorMessage" infoClass="infoMessage"/>
            <h:panelGroup id="panelStep3" binding="#{RegisterTBServiceBean.componentPanelStep3}">
-              <p><b>Selected Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
-                 <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
-             </p>
+
+          <fieldset>
+                     <legend>#{res['reg_serv.legendStage2Info']}</legend>
+                     <p><b>Selected Operation Name: </b>#{WSClientBean.operationSelectItemValue}<br />
+                         <b>Required Input Type: </b>#{RegisterTBServiceBean.tagSelectItemValue}<br />
+                     </p>
+                 </fieldset>
+               
              <fieldset>
-                   <legend>add files for sample invokation</legend>
+                   <legend>#{res['reg_serv.legendStage3']}</legend>
                    
             	   <p><h:outputText value="Specify File: " styleClass="readerLabel"/>
                 
@@ -167,29 +186,36 @@
      
      <!--Step4 build xpath to output element(s) and check: results ok?-->
      <h:form id="formXmlRespondsSampleInvocation" rendered="#{RegisterTBServiceBean.renderedStage == 4}">
+         <p>For <b>Stage 4</b> you need to tell the system where to find the data in the XML service responce.</p>
+         
+         <p>Below is an example XML service response using the sample information you supplied.  If applicable for the selected service, you should now enter the XPath query to the node where data is located. 
+         This should be visible in the XML service response.  You can test whether you've entered the correct path by clicking on the <b>Test Query</b> button.  This will call the service and display the output information in the 'Received service output' section.</p>
+     <p>You should not press the 'Continue' button until you are certain that the expected output is being displayed.</p>
+         <p>For example, if your service is a characterisation service then the file type of your sample files should be displayed alongside links to the files, whereas if you selected a migration service both input and output files should be displayed.</p>
+         
          <fieldset>
-               <legend>Mapping of results</legend>
+               <legend>#{res['reg_serv.legendStage4Results']}</legend>
                   <h:panelGroup id="panelStep4" binding="#{RegisterTBServiceBean.componentPanelStep4}">
-                      <p><h:outputText value="XML Service Responds: " styleClass="readerLabel"/>
+                      <p><h:outputText value="XML Service Response: " styleClass="readerLabel"/>
                          <h:inputTextarea id="xmlResponse" value="#{WSClientBean.xmlResponse}" cols="70" rows="20" readonly="true"/>
                     </p>
                     <br/>
                       <p><h:outputText value="XPath query to element node containing the data: " styleClass="readerLabel"/>
                          <h:inputText id="input_outputQuery" value="#{RegisterTBServiceBean.XPathToOutputQuery}" required="true"/>
-                      </p>
+                      <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.xpathTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" /></p>
                       <br/>
-                      <h:commandButton id="buttonTestParseResponds" value="test query" action="#{RegisterTBServiceBean.command_sampleRespondsQueryTest}"/>
+                      <h:commandButton id="buttonTestParseResponds" value="Test Query" action="#{RegisterTBServiceBean.command_sampleRespondsQueryTest}"/>
                   </h:panelGroup>
            </fieldset>
            <fieldset>
-                   <legend>Received service output</legend>
-                   <p>Are you  able to see the service's output? (i.e. migration/characterisation results) Then you have
-                   completed this task successfully. If not: redefine XPath statement and run "test query" again.</p>
+                   <legend>#{res['reg_serv.legendStage4Output']}</legend>
+                   <p>Are you  able to see the service's output below? If so you have
+                   completed this task successfully. If not you should redefine the XPath statement above and click on the  "Test Query" button again.</p>
                 <p><h:panelGrid id="panelStep4Add" binding="#{RegisterTBServiceBean.componentPanelStep4Add}" border="0" columns="2"/>
                 <h:outputText value="Output is of type:" styleClass="readerLabel"/>
                       <h:selectOneMenu id="selectOutputType" value="#{RegisterTBServiceBean.selectedOutputTypeValue}" disabled="#{RegisterTBServiceBean.stage4Completed}">
                         <f:selectItems value="#{RegisterTBServiceBean.selectedOutputTypeItems}" />                       
-                      </h:selectOneMenu>
+                      </h:selectOneMenu><img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.outputTypeTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
                   </p>
                   <br/>
                 <p><h:commandButton id="buttonParseResponds" value="continue" action="#{RegisterTBServiceBean.command_continueToAddServiceRegistryMetadata}"
@@ -201,17 +227,27 @@
      
       <!--Step5 add service metadata to be written into the registry-->
       <h:form id="formServiceRegistryMetadata" rendered="#{RegisterTBServiceBean.renderedStage == 5}">
-           <p><b>Selected Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
-                 <b>Required Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
-             </p>
+          
+          <p>Your service is almost ready to be deployed, but first you should add some metadata about the service and supply some tags to make it easier for experimenters to find your service.<br />
+          Note:  As with sample files in Stage 3, you can add multiple tags by entering a name and value then clicking on the <b>blue cross</b>.  You may also remove a tag you've previously added by clicking on the <b>Red X</b>. </p>
+          <p>Once you are happy with the information you have entered press the <b>Store Service</b> button to complete the registration process and deploy the service.</p>
+          
+          <fieldset>
+                     <legend>#{res['reg_serv.legendStage2Info']}</legend>
+                     <p><b>Selected Operation Name: </b>#{WSClientBean.operationSelectItemValue}<br />
+                         <b>Required Input Type: </b>#{RegisterTBServiceBean.tagSelectItemValue}<br />
+                     </p>
+                 </fieldset>
            <fieldset>
-                   <legend>Add descriptive metadata</legend>
+                   <legend>#{res['reg_serv.legendStage5Metadata']}</legend>
               <p><h:outputText value="Service description " styleClass="readerLabel"/>
               	 <h:inputTextarea id="input_serviceDescription" value="#{RegisterTBServiceBean.serviceDescription}" cols="50" rows="2"/>
+                 <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.stage5ServiceTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
               </p>
               
               <p><h:outputText value="Operation description " styleClass="readerLabel"/>
               	 <h:inputTextarea id="input_operationDescription" value="#{RegisterTBServiceBean.operationDescription}" cols="50" rows="2"/>
+                 <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.stage5OperationTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
               </p>
 
               <h:panelGroup id="panelMetadata" rendered="#{RegisterTBServiceBean.selectedTagIDArray}">
@@ -219,12 +255,14 @@
                  <h:inputText id="input_maxNR" value="#{RegisterTBServiceBean.maxAllowedNrOfInputFiles}">
                        <f:validateLongRange minimum="1" maximum="100"/>
                  </h:inputText>
+                 <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.stage5MinTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
                  <h:message for="input_maxNR" errorClass="errorMessage" infoClass="infoMessage"/>
               </p>
               <p><h:outputText value="min. required input files" styleClass="readerLabel"/>
                  <h:inputText id="input_minNR" value="#{RegisterTBServiceBean.minRequiredNrOfInputFiles}">
                       <f:validateLongRange minimum="1" maximum="100"/>
                  </h:inputText>
+                 <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.stage5MaxTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
                  <h:message for="input_minNR" errorClass="errorMessage" infoClass="infoMessage"/>
               </p>
               <br/>
@@ -233,13 +271,15 @@
                  <h:selectOneMenu id="selectServiceOperationType" value="#{RegisterTBServiceBean.serviceOperationTypeValue}">
                         <f:selectItems value="#{RegisterTBServiceBean.serviceOperationTypeItems}" />                       
                   </h:selectOneMenu>
+                  <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.stage5TypeTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
               </p>
           </fieldset>
           <fieldset>
-                   <legend>Add service tags for searchability</legend>
+                   <legend>#{res['reg_serv.legendStage5Tags']}</legend>
           	<h:panelGroup id="panelTags">
           		<p><h:outputText value="tag name: " styleClass="readerLabel"/>
              	<h:inputText id="input_tagName" value="#{RegisterTBServiceBean.currentTagName}"/>
+                <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.stage5TagTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
          		 </p>
          		 <p>
             	 <h:outputText value="tag value: " styleClass="readerLabel"/>
@@ -273,25 +313,28 @@
       <!--Final: display register service success-->
       <h:form id="formRegisterSuccess" rendered="#{RegisterTBServiceBean.renderedStage > 5}">
 		<p>
-      	  Congratulations you have successfully completed the registration wizard for this operation.
-      	  You can now use this service operation to execute Testbed experiments.
+      	  Congratulations! You have successfully completed the registration wizard for this operation.<br />
+      	  The service operation may now be selected and used by experimenters during the experiment process. 
       	  <img src="${facesContext.externalContext.requestContextPath}/graphics/state_ok.gif" alt="state-ok" title="ok"/>
       	</p>
-      		<b>Added Service Name:</b>#{WSClientBean.serviceSelectItemValue}<br/><p>
-      		<b>Added Operation Name:</b>#{WSClientBean.operationSelectItemValue}<br/>
-            <b>Input Type:</b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
-        </p>
-        <br/>
-        <b>navigation options:</b>
+          <fieldset>
+                     <legend>#{res['reg_serv.legendStage2Info']}</legend>
+                     <p><b>Selected Operation Name: </b>#{WSClientBean.operationSelectItemValue}<br />
+                         <b>Required Input Type: </b>#{RegisterTBServiceBean.tagSelectItemValue}<br />
+                         <b>Input Type: </b>#{RegisterTBServiceBean.tagSelectItemValue}<br/>
+                     </p>
+                 </fieldset>
+        <hr />
+                <p><b>What next?</b></p>
         	<ul>
         		<li>
-					<h:commandLink value="register new service operation" action="#{Manager_Backing.initRegisterTBService}"/>
+					<h:commandLink value="Register another service operation" action="#{Manager_Backing.initRegisterTBService}"/>
         		</li>
         		<li>
-					<h:commandLink value="browse registered services" action="#{Manager_Backing.initTBServiceDisplayer}"/>
+					<h:commandLink value="Browse registered services" action="#{Manager_Backing.initTBServiceDisplayer}"/>
         		</li>
         		<li>
-					<h:commandLink value="remove registered services" action="#{Manager_Backing.initTBServiceManager}"/>
+					<h:commandLink value="Remove registered services" action="#{Manager_Backing.initTBServiceManager}"/>
 				</li>
         	</ul>
         	
