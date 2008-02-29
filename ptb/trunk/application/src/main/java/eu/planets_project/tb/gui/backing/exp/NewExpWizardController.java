@@ -76,7 +76,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class NewExpWizardController {
     
-    private static Log log = PlanetsLogger.getLogger(NewExpWizardController.class, "testbed-log4j.xml");
+    private static PlanetsLogger log = PlanetsLogger.getLogger(NewExpWizardController.class, "testbed-log4j.xml");
     public NewExpWizardController() {
     }
     
@@ -836,7 +836,7 @@ public class NewExpWizardController {
     }
     
     public String getRetrieveBenchmarkBeans() {
-       	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");   	
+       	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Map<String,BenchmarkBean> availBenchmarks = new HashMap<String,BenchmarkBean>(expBean.getBenchmarks());
     	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
     	while (iter.hasNext()) {

@@ -5,6 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
 	  xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
+<f:view>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
         #{res.title} - #{res['new_exp.pageTitle']} - #{res['new_exp.stage1']}
@@ -157,11 +158,11 @@ function cleanForm() {
                 <div>
                     <p><h:outputLabel value="#{res['new_exp.litRef_Desc']}" for="litRefDesc_#{rowi}" />
                         <h:inputText  required="#{((ExperimentBean.litRefURI[rowi]!=null) and (ExperimentBean.litRefURI[rowi]!=''))}" id="litRefDesc_#{rowi}" value="#{ExperimentBean.litRefDesc[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                        <h:message for="litRefDesc" errorClass="errorMessage" />			
+                        <h:message for="litRefDesc_#{rowi}" errorClass="errorMessage" />			
                     </p>
                     <p><h:outputLabel value="#{res['new_exp.litRef_URI']}" for="litRefURI_#{rowi}" />
                         <h:inputText  required="#{((ExperimentBean.litRefDesc[rowi]!=null) and (ExperimentBean.litRefDesc[rowi]!=''))}" id="litRefURI_#{rowi}" value="#{ExperimentBean.litRefURI[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                        <h:message for="litRefURI" errorClass="errorMessage" />	
+                        <h:message for="litRefURI_#{rowi}" errorClass="errorMessage" />	
                     </p>
                 </div>
                 </t:dataList>
@@ -304,5 +305,6 @@ function cleanForm() {
 	</ui:define>
 </ui:composition>
 
+</f:view>
 </body>
 </html>

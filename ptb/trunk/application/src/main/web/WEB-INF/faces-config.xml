@@ -422,4 +422,10 @@
    <default-locale>en</default-locale>
   </locale-config>
  </application>
+ 
+ <!-- Add a phase listener to deal with expired ExperimentBean session beans. -->
+ <lifecycle>
+  <phase-listener>eu.planets_project.tb.gui.ExpDesignPhaseListener</phase-listener>
+ </lifecycle>
+ 
 </faces-config>

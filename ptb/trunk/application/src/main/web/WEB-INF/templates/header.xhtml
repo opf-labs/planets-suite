@@ -37,10 +37,14 @@
 			<ui:fragment id="userHeader" rendered="#{not empty UserBean.userid}">
 				<div id="geright">
 					<p class="glinks">${UserBean.userid}
-						<h:commandLink styleClass="glinks" action="profile">
+                        <a class="glinks" href="/admin/editProfile.html">
+                        <img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" alt="" title="" />
+                        <h:outputText value="#{res.editprofile}"/>
+                        </a>
+						<!--  h:commandLink styleClass="glinks" action="profile">
 							<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" alt="" title="" />
 							<h:outputText value="#{res.editprofile}"/>
-						</h:commandLink> | 
+						</h:commandLink--> | 
 						<h:commandLink styleClass="glinks" action="#{Login_Backing.logout}" immediate="true">
 							<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="" title="" />
 							<h:outputText value="#{res.logout}"/>
