@@ -756,18 +756,21 @@ public class NewExpWizardController {
     				TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_CHARACTERISATION
     				);
     	}
-    	//add data for rendering
-		Iterator<TestbedServiceTemplate> itTemplates = templates.iterator();
-		while(itTemplates.hasNext()){
-			TestbedServiceTemplate template = itTemplates.next();
-			ret.put(template.getName(),String.valueOf(template.getUUID()));
-		}
-		
-		//only triggered for the first time
-		if(expBean.getSelectedServiceTemplate()==null){
-			expBean.setSelServiceTemplateID(ret.values().iterator().next());
-			reloadOperations();
-		}
+    	//test if at least one template exists
+    	if((templates!=null)&&(templates.size()>0)){
+	    	//add data for rendering
+			Iterator<TestbedServiceTemplate> itTemplates = templates.iterator();
+			while(itTemplates.hasNext()){
+				TestbedServiceTemplate template = itTemplates.next();
+				ret.put(template.getName(),String.valueOf(template.getUUID()));
+			}
+			
+			//only triggered for the first time
+			if(expBean.getSelectedServiceTemplate()==null){
+				expBean.setSelServiceTemplateID(ret.values().iterator().next());
+				reloadOperations();
+			}
+    	}
     	return ret;
     }
     

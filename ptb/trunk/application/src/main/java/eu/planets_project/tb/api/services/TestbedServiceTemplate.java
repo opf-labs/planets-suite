@@ -2,6 +2,7 @@ package eu.planets_project.tb.api.services;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -115,6 +116,21 @@ public interface TestbedServiceTemplate{
 	 * @return
 	 */
 	public List<ServiceTag> getAllTags();
+	
+	
+	/**
+	 * Records the serviceTemplates deployment date i.e. when the first
+	 * service operation was registered
+	 * @param timeInMillis
+	 */
+	public void setDeploymentDate(long timeInMillis);
+
+	/**
+	 * Returns the templates deployment date
+	 * i.e. when the first service operation was registered
+	 * @return
+	 */
+	public Calendar getDeploymentDate();
 	
 	
 	/**

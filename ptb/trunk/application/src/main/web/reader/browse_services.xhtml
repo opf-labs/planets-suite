@@ -1,6 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+    
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
@@ -18,37 +23,127 @@
 	<div id="mainwrapper">
 	<div id="maincol">
 	<div class="innertubemain">
-	<p><b>This page is not yet operational.  Below is a mockup of how this page may look in later versions.</b></p>
-	<p>You are currently viewing <b>all available services</b>.  There are 123 services available.  Services 1 to 10 are listed below.</p>
+	<h:form>
+	<div class="servicepane">
+	<div class="serviceoptions">
+		<p>You are currently viewing <b>all available services</b> that are registered by the Testbed administrator for experiment execution</p>
+		<br/>
+		click here to<h:commandLink action="#{ServiceTemplateBrowser.reloadDataFromDB}" value=" refresh the table"/><br/>
+	</div>
+    <div class="servicebrowse">
+	<t:tree2 id="ServiceTemplate_tree" value="#{ServiceTemplateBrowser.treeData}" var="node"  varNodeToggler="t" showRootNode="false" showLines="true" preserveToggle="true" clientSideToggle="true">
+   		<f:facet name="root">
+            <h:panelGroup>
+               <h:outputText value="#{node.description}"/>
+            </h:panelGroup>
+         </f:facet>
+        <f:facet name="TBServiceTemplate">
+            <h:panelGroup>
+            	<h:commandLink action="success">
+            		<t:graphicImage value="/graphics/toolbar_services.gif" border="0" />
+               		<h:outputText value="#{node.description}"/>
+            		<t:updateActionListener property="#{ServiceTemplateBrowser.location}" value="#{node.identifier}" />
+            	</h:commandLink>
+            </h:panelGroup>
+          </f:facet>
+          
+          <f:facet name="Endpoint">
+       		<h:panelGroup>
+           			<h:outputText value="endpoint: "/>
+                 	<h:outputLink value="#{node.description}" target="_new" style="font-style: italic;">
+                 		#{node.description}
+                 	</h:outputLink>
+               </h:panelGroup>
+        </f:facet>
+       <f:facet name="UUID">
+            <h:panelGroup>
+            		<h:outputText value="UUID: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+            </h:panelGroup>
+       </f:facet>
+       <f:facet name="Description">
+            <h:panelGroup>
+            		<h:outputText value="description: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+            </h:panelGroup>
+       </f:facet>
+       <f:facet name="operation">
+           <h:panelGroup>
+           			<h:outputText value="operation: " style="font-weight:bold;"/>
+                    <h:outputText value="#{node.description}" style="font-size: larger;"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="OpDescription">
+           <h:panelGroup>
+                   <h:outputText value="description: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="OutputObjectType">
+           <h:panelGroup>
+           			<h:outputText value="output object type: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="ServiceOperationType">
+           <h:panelGroup>
+                    <h:outputText value="operation type: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="maxInputFiles">
+           <h:panelGroup>
+                    <h:outputText value="max supp. input files: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="minReqFiles">
+           <h:panelGroup>
+                    <h:outputText value="min requ. input files: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="Tag">
+           <h:panelGroup>
+                    <h:outputText value="annotation tag: "/>
+                  	<h:outputText value="#{node.description}"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="TagValue">
+           <h:panelGroup>
+                    <h:outputText value="value: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="TagDescription">
+           <h:panelGroup>
+                    <h:outputText value="description: "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+             </h:panelGroup>
+   		</f:facet>
+   		<f:facet name="TagPriority">
+           <h:panelGroup>
+                    <h:outputText value="priority "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+             </h:panelGroup>
+   		</f:facet>
+	</t:tree2>
+	</div>
 	
-	<div class="enav"><span style="float:left; font-size: 0.8em">&nbsp;</span><span style="float: right; font-size: 0.8em"><a class="glinks" href="#">Next &raquo;</a></span></div>	
-	<div class="clear"></div>
 	
-	<table border="1" cellspacing="0" cellpadding="2" style="border: 1px solid #579EC2;" ><tr><th>Service Name <img src="../graphics/asc.png" /></th><th>ID</th><th>Version</th><th>Deployment Date</th><th>File Type(s)</th><th>Description</th><th>&nbsp;</th></tr>
-	
-	<tr style="font-size:smaller;"><td>Service 1</td><td>2</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	<tr style="font-size:smaller;"><td>Service 2</td><td>3</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	<tr style="font-size:smaller;"><td>Service 3</td><td>4</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	<tr style="font-size:smaller;"><td>Service 4</td><td>5</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	<tr style="font-size:smaller;"><td>Service 5</td><td>6</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	<tr style="font-size:smaller;"><td>Service 1</td><td>2</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	<tr style="font-size:smaller;"><td>Service 2</td><td>3</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	<tr style="font-size:smaller;"><td>Service 3</td><td>4</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	<tr style="font-size:smaller;"><td>Service 4</td><td>5</td><td>1.5</td><td>12/05/2007</td><td>DOC, ODT, RTF</td><td>This is a test description</td><td><a href="#">View Details</a></td></tr>
-	
-	</table>
-	<p>&nbsp;</p>
-	<div class="enav"><span style="float:left; font-size: 0.8em">&nbsp;</span><span style="float: right; font-size: 0.8em"><a class="glinks" href="#">Next &raquo;</a></span></div>	
-	<div class="clear"></div>
-	
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
-	<p>&nbsp;</p>
+	<div class="servicemain">
 	</div>
 	</div>
-	</div>
+	</h:form>
+	
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+	<p>&nbsp;</p>
+    </div>
+    </div>
+    </div>
 	
 	
 	<div id="leftcol">
@@ -65,7 +160,6 @@
 	</form>
 	</div>
 	</div>
-
 
 	</ui:define>
 

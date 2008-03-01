@@ -12,7 +12,9 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -147,8 +149,8 @@ public class RegisterTBServices{
 	//The query entered by the user to point to the output-elements in the XML Responds
 	private String sXpathQueryToOutput = new String("/*//return/item");
 	//the selected service's WSDL content
-	String selServiceWSDLContent = "";
-	
+	private String selServiceWSDLContent = "";
+	private Calendar ServiceDeploymentDate = new GregorianCalendar();
 	
 //GUI Rendering settings
 	//is set to true when the first operation is added. 
@@ -1631,6 +1633,8 @@ public class RegisterTBServices{
 		
 		//description
 		tbService.setDescription(this.getServiceDescription());
+		//deployment date
+		tbService.setDeploymentDate(this.ServiceDeploymentDate.getTimeInMillis());
 		
 		//operationName
 		operation.setName(this.getCurrentOperationName());
@@ -1897,6 +1901,7 @@ public class RegisterTBServices{
 			//fetch the metadata
 			//service description
 			this.sServiceDescription = tbSerFound.getDescription();
+			this.ServiceDeploymentDate = tbSerFound.getDeploymentDate();
 			
 			//service tags
 			Iterator<ServiceTag> itTags= tbSerFound.getAllTags().iterator();

@@ -8,6 +8,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -58,6 +60,8 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	private Vector<String> lAllOperationNamesFromWSDL;
     //all tag names and values that have been registered for this service
 	private Vector<ServiceTag> lTags;
+	//records the service's first deployment data
+	private Calendar deploymentDate = new GregorianCalendar();
 
 	@Transient
 	public String DISCR_TEMPLATE = "template";
@@ -456,6 +460,21 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	}
 	
 	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#setDeploymentDate(long)
+	 */
+	public void setDeploymentDate(long timeInMillis) {
+		this.deploymentDate.setTimeInMillis(timeInMillis);
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#getDeploymentDate()
+	 */
+	public Calendar getDeploymentDate() {
+		return this.deploymentDate;
+	}
+	
+	
 	/**
 	 * UniqueIDs are created by using an MD5 hashing on the service's WSDL content. This allows to distinguish
 	 * different services with the same name and on the other hand to classify a service just on behalf of its 
@@ -542,6 +561,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	public String getDiscriminator(){
 		return this.sdiscr;
 	}
+	
 	
 	
 	/**

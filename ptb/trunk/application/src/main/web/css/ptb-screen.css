@@ -702,6 +702,47 @@ div.filemain
 	padding:2px;
 }
 
+div.servicepane
+{
+	width: 100%;
+	max-width: 800px;
+	height: 600px;
+	overflow: hidden;
+	border:none;
+}
+
+div.servicebrowse
+{
+	float:left;
+	width:100%;
+	height:595px;
+	overflow:auto;
+	border:none;
+	padding:2px;
+}
+
+div.serviceoptions
+{
+	float:left;
+	width:100%;
+	height:70px;
+	border-bottom:1px solid black;
+	padding:2px;
+}
+
+div.servicebrowse table, div.servicebrowse tr, div.servicebrowse td {
+  border: none;
+}
+
+div.servicemain
+{
+	width: auto;
+	overflow:auto;
+	height:595px;
+	padding:2px;
+	border:none;
+}
+
 div.box
 {
 	border: 2px solid #579EC2; 
