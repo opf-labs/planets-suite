@@ -27,6 +27,7 @@ public class ServiceTemplateBrowser {
 	private TreeModelBase TreeModel;
 	private String SelectedNode; 
 	private String currentNodeID;
+	private boolean displayWSDLContent=false;
  
     public ServiceTemplateBrowser() {
     	
@@ -69,6 +70,7 @@ public class ServiceTemplateBrowser {
     	return this.currentNodeID;
     }
     
+    
     /**
      * Queries the ServiceTemplateRegistry and fills up the tree's root node
      */
@@ -85,11 +87,11 @@ public class ServiceTemplateBrowser {
     			TreeNodeBase nodeServiceTemplate = new TreeNodeBase("TBServiceTemplate",template.getName(),template.getUUID(),false); 
     			
     			//addServiceTemplate properties
-    			nodeServiceTemplate.getChildren().add(new TreeNodeBase("Endpoint",template.getEndpoint(),true));
-    			nodeServiceTemplate.getChildren().add(new TreeNodeBase("UUID",template.getUUID(),true));
-    			//nodeServiceTemplate.getChildren().add(new TreeNodeBase("WSDLContent","browse WSDL Content",true));
-    			//nodeServiceTemplate.getChildren().add(new TreeNodeBase("DeploymentDate",template.getDeploymentDate().getTime()+"",true));
     			nodeServiceTemplate.getChildren().add(new TreeNodeBase("Description",template.getDescription(),true));
+    			nodeServiceTemplate.getChildren().add(new TreeNodeBase("Endpoint",template.getEndpoint(),true));
+    			nodeServiceTemplate.getChildren().add(new TreeNodeBase("WSDLContent",template.getWSDLContent(),true));
+    			nodeServiceTemplate.getChildren().add(new TreeNodeBase("UUID",template.getUUID(),true));
+    			nodeServiceTemplate.getChildren().add(new TreeNodeBase("DeploymentDate",template.getDeploymentDate().getTime()+"",true));
     			
     			Collection<ServiceTag> tags = template.getAllTags();
     			if((tags!=null)&&(tags.size()>0)){
@@ -144,5 +146,19 @@ public class ServiceTemplateBrowser {
     	return "reload-page";
     }
 
+    /**
+     * Triggers the display of WSDL content
+     */
+    public void closeWSDLContent(){
+    	this.displayWSDLContent = false;
+    }
+    
+    public void openWSDLContent(){
+    	this.displayWSDLContent = true;
+    }
+    
+    public boolean isWSDLContentOpen(){
+    	return this.displayWSDLContent;
+    }
      
 }

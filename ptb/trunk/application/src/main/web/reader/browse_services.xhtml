@@ -16,6 +16,11 @@
 		<ui:include src="/WEB-INF/templates/header.xhtml">
 			<ui:param name="page" value="browse_services"/>
 		</ui:include>
+		
+		<!-- css popup javascript -->
+		<script type="text/javascript"
+			src="${facesContext.externalContext.requestContextPath}/js/csspopup/csspopup.js">
+		</script>
 	</ui:define>
 
 	<ui:define name="content">
@@ -26,7 +31,8 @@
 	<h:form>
 	<div class="servicepane">
 	<div class="serviceoptions">
-		<p>You are currently viewing <b>all available services</b> that are registered by the Testbed administrator for experiment execution</p>
+		<p>You are currently viewing a list of <b>all available services</b> that have been registered within the Testbed application and therefore can be included within a new experiment.
+		If you are missing a certain service, please contact the Testbed administrator.</p>
 		<br/>
 		click here to<h:commandLink action="#{ServiceTemplateBrowser.reloadDataFromDB}" value=" refresh the table"/><br/>
 	</div>
@@ -55,6 +61,16 @@
                  	</h:outputLink>
                </h:panelGroup>
         </f:facet>
+        <f:facet name="WSDLContent">
+            <h:panelGroup>
+            	<h:outputText value="wsdl content: "/>
+            	<h:commandLink value="close" immediate="true" action="#{ServiceTemplateBrowser.closeWSDLContent}" rendered="#{ServiceTemplateBrowser.WSDLContentOpen==true}"/>
+            	<h:commandLink value="open" immediate="true" action="#{ServiceTemplateBrowser.openWSDLContent}" rendered="#{ServiceTemplateBrowser.WSDLContentOpen==false}"/>
+                <br/>
+                <h:inputTextarea value="#{node.description}" style="font-style: italic;" 
+                	cols="80" rows="25" readonly="true" rendered="#{ServiceTemplateBrowser.WSDLContentOpen==true}"/>
+            </h:panelGroup>
+       </f:facet>
        <f:facet name="UUID">
             <h:panelGroup>
             		<h:outputText value="UUID: "/>
@@ -67,10 +83,16 @@
                   	<h:outputText value="#{node.description}" style="font-style: italic;"/>
             </h:panelGroup>
        </f:facet>
+       <f:facet name="DeploymentDate">
+            <h:panelGroup>
+            		<h:outputText value="deployment date "/>
+                  	<h:outputText value="#{node.description}" style="font-style: italic;"/>
+            </h:panelGroup>
+       </f:facet>
        <f:facet name="operation">
            <h:panelGroup>
            			<h:outputText value="operation: " style="font-weight:bold;"/>
-                    <h:outputText value="#{node.description}" style="font-size: larger;"/>
+                    <h:outputText value="#{node.description}" style="font-size: larger; color:#579EC2"/>
              </h:panelGroup>
    		</f:facet>
    		<f:facet name="OpDescription">
@@ -160,6 +182,7 @@
 	</form>
 	</div>
 	</div>
+	
 
 	</ui:define>
 
