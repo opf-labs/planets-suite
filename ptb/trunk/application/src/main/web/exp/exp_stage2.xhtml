@@ -109,6 +109,7 @@
                       				immediate="true"/>
 
 			</h:form>
+            <h:panelGroup rendered="#{ExperimentBean.operationSelectionCompleted==true}">
                 <fieldset>
                     <legend>#{res['exp_stage2.legendThree']}</legend>
 
@@ -179,7 +180,8 @@
                             <br/>
                 </fieldset>                                    
 		</h:form>
-        </fieldset>     
+        </fieldset>
+        </h:panelGroup>
 		<h:form>
 			 <h:commandButton value="#{res['exp_stage2.proceed']}"
                                     action="#{NewExp_Controller.commandSaveStep2Substep2Action}"
