@@ -207,11 +207,12 @@
 		<fieldset>
             <legend>#{res['exp_stage6.headingData']}</legend>
             
-                        <!-- display the experiment's output -->
-            <h:dataTable id="ioData" var="data" value="#{ExperimentBean.IOTableDataForGUI}" cellpadding="2" cellspacing="0"
+            <!-- display the experiment's output -->
+            <h:dataTable var="data" value="#{ExperimentBean.IOTableDataForGUI}" cellpadding="2" cellspacing="0"
 				         border="1" rowIndexVar="row">
 				<h:column>
 			    <f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
+			    	<h:outputLink value="Service Input: "/>
 			    	<!-- check if input displayed as URI or as String -->
 					<h:outputLink value="#{data['input']}" rendered="#{not empty data['inputTypeURI']}">
 							#{data['inputName']}
@@ -220,11 +221,12 @@
 				</h:column>			        	
 				<h:column>
 			    	<f:facet name="header">#{res['exp_stage6.outputFiles']}</f:facet>
+					<h:outputLink value="Service Output: "/>
 					<!-- check if input displayed as URI or as String -->
-					<h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}}">
-							#{data['outputName']}
+					<h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}">
+							<h:outputText value="#{data['output']}" style="color:red"/>
 					</h:outputLink>
-					<h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}"/>
+					<h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}" style="color:red"/>
 				</h:column>			        	
 			</h:dataTable>
         </fieldset>
