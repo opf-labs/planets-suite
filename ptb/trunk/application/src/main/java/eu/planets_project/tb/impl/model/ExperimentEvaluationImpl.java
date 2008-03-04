@@ -466,7 +466,11 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
      * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedFileBenchmarkGoals()
      */
     public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals() {
-        return this.getEvaluatedFileBenchmarkGoals(this.fileBenchmarkGoals.keySet().iterator().next());
+        if( this.fileBenchmarkGoals.keySet().iterator().hasNext() ) {
+          return this.getEvaluatedFileBenchmarkGoals(this.fileBenchmarkGoals.keySet().iterator().next());
+        } else {
+          return this.getInputBenchmarkGoals().values();
+        }
     }
 
 
