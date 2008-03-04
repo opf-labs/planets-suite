@@ -24,12 +24,12 @@
 
 <h:form>
 	<h:panelGroup rendered="#{ExperimentBean.currentStage==5}">
-                   <h:panelGroup rendered="#{not NewExp_Controller.experimentExecutionRunning}">
+                   <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
                    		<p>Your experiment has been setup and approved successfully - you may now <b>run the experiment's executable</b>: </p>
 						<h:commandButton value="#{res['exp_stage5.button.run']}"
 						action="#{NewExp_Controller.executeExperiment}"/>
 				 	</h:panelGroup>
-					<h:panelGroup rendered="#{NewExp_Controller.experimentExecutionRunning}" >
+					<h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.executionRunning}" >
 						<p>
 							Your experiment is currently being executed. Depending on the intensity of your experiment this may take some time.
 							<br/>
@@ -38,7 +38,7 @@
 						</p>
 				   </h:panelGroup>
 	</h:panelGroup>
-	<h:panelGroup rendered="#{((NewExp_Controller.experimentExecutable.executionCompleted==true) and (NewExp_Controller.experimentExecutable.executableInvoked==true))}">
+	<h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (NewExp_Controller.experimentExecutable.executionCompleted))}">
 				<p>Experiment execution took place with the following details:</p>
 				<div class="box">
     			<!--  display some statistics -->

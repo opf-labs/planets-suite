@@ -926,19 +926,6 @@ public class NewExpWizardController {
     		return null;
     }
     
-    public boolean getExperimentExecutionRunning() {
-    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
-    	if ((exp.getExperimentExecution().isExecutionInvoked())&&(!exp.getExperimentExecution().isCompleted()))
-    		return true;
-    	else {
-      	  	//if (exp.getCurrentPhase().getPhaseName().equals(ExperimentPhase.PHASENAME_EXPERIMENTEVALUATION))
-      	  	//	expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
-    		return false;
-    	}
-    }
-    
     /**
      * Please take care as this object is null within the first and second stage
      * @return

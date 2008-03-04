@@ -147,6 +147,12 @@ public interface ExperimentExecutable{
 	public void setExecutionSuccess(boolean b);
 	
 	/**
+	 * Indicates if execution was invoked and has already terminated
+	 * @return
+	 */
+	public boolean isExecutionRunning();
+	
+	/**
 	 * To retrieve the plain text of the XML request  message that's been used for
 	 * invoking the web service
 	 * @return

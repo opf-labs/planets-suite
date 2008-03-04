@@ -31,6 +31,7 @@ import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.system.ExperimentInvocationHandlerImpl;
 import eu.planets_project.tb.api.AdminManager;
@@ -62,7 +63,7 @@ public class TestbedManagerImpl
 	 */
 	public TestbedManagerImpl(){
 		hmAllExperiments = this.queryAllExperiments();
-		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 	}
 	
 	
@@ -135,7 +136,7 @@ public class TestbedManagerImpl
 	public Experiment createNewExperiment() {
 		ExperimentImpl exp = new ExperimentImpl();
 	  //Should this be added in a transaction?
-		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 		long lExpID = dao_r.persistExperiment(exp);
 		
 		//should now already contain a container injected EntityID;
@@ -156,7 +157,7 @@ public class TestbedManagerImpl
 	public long registerExperiment(Experiment experimentBean)
 	{	
 	  //Should this be added in a transaction?
-		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 		//check if really a detached entity
 		if(experimentBean.getEntityID()!=-1){
 			//it's not possible to register a previously registered experiment
@@ -200,7 +201,7 @@ public class TestbedManagerImpl
 		boolean bContains = this.hmAllExperiments.containsKey(experiment.getEntityID());
 		if(bContains){
 		  //Should this be added in a transaction?
-			ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+			ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 			dao_r.updateExperiment(experiment);
 			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(experiment.getEntityID());
 			this.hmAllExperiments.put(exp.getEntityID(), exp);
@@ -219,7 +220,7 @@ public class TestbedManagerImpl
 		boolean bContains = this.hmAllExperiments.containsKey(expID);
 		if(bContains){
 		  //Should this be added in a transaction?
-			ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+			ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 			dao_r.deleteExperiment(expID);
 			this.hmAllExperiments.remove(expID);
 		  //End Transaction
@@ -232,24 +233,6 @@ public class TestbedManagerImpl
 	 */
 	public boolean containsExperiment(long expID) {
 		return this.hmAllExperiments.containsKey(expID);
-	}
-	
-	private ExperimentPersistencyRemote createPersistencyHandler(){
-		try{
-			Context jndiContext = getInitialContext();
-			ExperimentPersistencyRemote dao_r = (ExperimentPersistencyRemote) PortableRemoteObject.narrow(
-					jndiContext.lookup("testbed/ExperimentPersistencyImpl/remote"), ExperimentPersistencyRemote.class);
-			return dao_r;
-		}catch (NamingException e) {
-			//TODO integrate message into logging mechanism
-			System.out.println("Failure in getting PortableRemoteObject: "+e.toString());
-			return null;
-		}
-	}
-	
-	private static Context getInitialContext() throws javax.naming.NamingException
-	{
-		return new javax.naming.InitialContext();
 	}
 
 
@@ -304,7 +287,7 @@ public class TestbedManagerImpl
 	 */
 	private HashMap<Long,Experiment> queryAllExperiments(){
 		HashMap<Long,Experiment> hmRet = new HashMap<Long,Experiment>();
-		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 		List<Experiment> list = dao_r.queryAllExperiments();
 		Iterator<Experiment> itList = list.iterator();
 		while(itList.hasNext()){
@@ -319,7 +302,7 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#isExperimentNameUnique(java.lang.String)
 	 */
 	public boolean isExperimentNameUnique(String expName) {
-		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 		return dao_r.queryIsExperimentNameUnique(expName);
 	}
 
@@ -328,7 +311,7 @@ public class TestbedManagerImpl
      * @see eu.planets_project.tb.api.TestbedManager#searchAllExperiments(java.lang.String)
      */
     public List<Experiment> searchAllExperiments(String toFind) {
-        ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+        ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
         return dao_r.searchAllExperiments(toFind);
     }
 
@@ -337,7 +320,7 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#isRegistered(long)
 	 */
 	public boolean isRegistered(long expID) {
-		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 		if(dao_r.findExperiment(expID)!=null)
 			return true;
 		return false;
@@ -348,7 +331,7 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#isRegistered(eu.planets_project.tb.api.model.Experiment)
 	 */
 	public boolean isRegistered(Experiment experiment) {
-		ExperimentPersistencyRemote dao_r = this.createPersistencyHandler();
+		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 		if(dao_r.findExperiment(experiment.getEntityID())!=null)
 			return true;
 		return false;

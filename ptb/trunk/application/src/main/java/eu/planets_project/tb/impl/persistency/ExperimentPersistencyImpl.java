@@ -3,10 +3,13 @@ package eu.planets_project.tb.impl.persistency;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.naming.Context;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
+import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.CommentImpl;
@@ -72,6 +75,28 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
         Query query = manager.createQuery("FROM ExperimentImpl AS e WHERE LOWER(e.expSetup.basicProperties.sExpName) LIKE :toFind OR LOWER(e.expSetup.basicProperties.sSummary) LIKE :toFind");
         query.setParameter("toFind", toFind);
         return query.getResultList();
+	}
+	
+    /**
+     * A Factory method to build a reference to this interface.
+     * @return
+     */
+	public static ExperimentPersistencyRemote getInstance(){
+		try{
+			Context jndiContext = getInitialContext();
+			ExperimentPersistencyRemote dao_r = (ExperimentPersistencyRemote) PortableRemoteObject.narrow(
+					jndiContext.lookup("testbed/ExperimentPersistencyImpl/remote"), ExperimentPersistencyRemote.class);
+			return dao_r;
+		}catch (NamingException e) {
+			//TODO integrate message into logging mechanism
+			System.out.println("Failure in getting PortableRemoteObject: "+e.toString());
+			return null;
+		}
+	}
+	
+	private static Context getInitialContext() throws javax.naming.NamingException
+	{
+		return new javax.naming.InitialContext();
 	}
 	
 }

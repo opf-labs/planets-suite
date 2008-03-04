@@ -461,6 +461,13 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	}
 	
 	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#isExecutionRunning()
+	 */
+	public boolean isExecutionRunning(){
+		return ((isExecutableInvoked())&&(!isExecutionCompleted()));
+	}
+	
+	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#isExecutionCompleted()
 	 */
 	public boolean isExecutionCompleted(){
