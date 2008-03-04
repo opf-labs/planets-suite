@@ -140,33 +140,95 @@
 		<div class="innertube">
 		<ul class="exp">
 			<h:form>
-				<li class="exp"><h:commandLink action="goToStage1"
-					styleClass="exp_done">
-					<t:outputText value="#{res['new_exp.stage1']}" />
-				</h:commandLink></li>
-				<li class="exp"><h:commandLink action="goToStage2"
-					styleClass="exp_done">
-					<t:outputText value="#{res['new_exp.stage2']}" />
-				</h:commandLink></li>
-				<li class="exp"><h:commandLink action="goToStage3"
-					styleClass="exp_done">
-					<t:outputText value="#{res['new_exp.stage3']}" />
-				</h:commandLink></li>
-				<li class="exp"><h:commandLink action="goToStage4"
-					styleClass="exp_done">
-					<t:outputText value="#{res['new_exp.stage4']}" />
-				</h:commandLink></li>
-				<li class="exp"><h:commandLink action="goToStage5"
-					styleClass="exp_done">
-					<t:outputText value="#{res['new_exp.stage5']}" />
-				</h:commandLink></li>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
-                                    <li class="exp_sel"><a href="#" class="exp">#{res['new_exp.stage6']}</a></li>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 1}">
+					<li class="exp"><h:commandLink action="goToStage1"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage1']}" />
+					</h:commandLink></li>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
-					<li class="exp_sel"><a href="#" class="exp_done">#{res['new_exp.stage6']}</a></li>
-				</h:panelGroup>		
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 1}">
+					<li class="exp_nd">#{res['new_exp.stage1']}</li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage == 1}">
+					<li class="exp_sel"><h:commandLink action="goToStage1" styleClass="exp">
+					<t:outputText value="#{res['new_exp.stage1']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
 				
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 2}">
+					<li class="exp"><h:commandLink action="goToStage2"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage2']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
+					<li class="exp_nd">#{res['new_exp.stage2']}</li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage == 2}">
+					<li class="exp_sel"><h:commandLink action="goToStage2" styleClass="exp">
+					<t:outputText value="#{res['new_exp.stage2']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 3}">
+					<li class="exp"><h:commandLink action="goToStage3"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage3']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
+					<li class="exp_nd">#{res['new_exp.stage3']}</li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage ==3}">
+					<li class="exp_sel"><h:commandLink action="goToStage3" styleClass="exp">
+					<t:outputText value="#{res['new_exp.stage3']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 4}">
+					<li class="exp"><h:commandLink action="goToStage4"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage4']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
+					<li class="exp_nd">#{res['new_exp.stage4']}</li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage == 4}">
+					<li class="exp_sel"><h:commandLink action="goToStage4" styleClass="exp">
+					<t:outputText value="#{res['new_exp.stage4']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 5}">
+					<li class="exp"><h:commandLink action="goToStage5"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage5']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
+					<li class="exp_nd">#{res['new_exp.stage5']}</li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage == 5}">
+					<li class="exp_sel"><h:commandLink action="goToStage5" styleClass="exp">
+					<t:outputText value="#{res['new_exp.stage5']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="#{ExperimentBean.currentStage > 6}">
+					<li class="exp"><h:commandLink action="goToStage6"
+								styleClass="exp_done">
+							<t:outputText value="#{res['new_exp.stage6']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
+					<li class="exp_nd">#{res['new_exp.stage6']}</li>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{ExperimentBean.currentStage == 6}">
+					<li class="exp_sel"><h:commandLink action="goToStage6" styleClass="exp">
+					<t:outputText value="#{res['new_exp.stage6']}" />
+					</h:commandLink></li>
+				</h:panelGroup>
 			</h:form>
 		</ul>
 		</div>

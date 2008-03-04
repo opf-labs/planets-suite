@@ -140,21 +140,24 @@
             <!--  Stage 3  -->
 <h:panelGroup rendered="#{ExperimentBean.currentStage ge 3}">
 <h2 class="main">#{res['exp_stage3.pageTitle']}</h2>
-                    <h:form>
-                        <fieldset>
-                            <legend>#{res['reader_exp.stageThreeLegendOne']}</legend>
+          <h:form>
+          <fieldset>
+              <legend>#{res['reader_exp.stageThreeLegendOne']}</legend>
                     
-                                    <p><h:outputText value="#{res['exp_stage6.outputFiles']}" styleClass="readerLabel" />
-                                       #{ExperimentBean.numberOfOutput}
-                                       <h:outputText value="intensity " styleClass="readerLabel" />
-                                       <h:outputText value="standard"/>
-                                    </p>
-                                    <div class="clear"></div>
+              <p><h:outputText value="#{res['exp_stage6.outputFiles']}" styleClass="readerLabel" />
+                 #{ExperimentBean.numberOfOutput}
+              </p>
+			  <div class="clear"></div>
+			  <p>
+			  	 <h:outputText value="intensity " styleClass="readerLabel" />
+                 <h:outputText value="standard"/>
+              </p>
+              <div class="clear"></div>
                                 
-                        </fieldset>
-                        <fieldset>
-                            <legend>#{res['reader_exp.stageThreeLegendTwo']}</legend>
-                                        <t:dataTable id="dataTable" var="bm"
+          </fieldset>
+          <fieldset>
+              <legend>#{res['reader_exp.stageThreeLegendTwo']}</legend>
+              <t:dataTable id="benchmarks" var="bm"
                 value="#{ExperimentBean.benchmarkBeans}" preserveDataModel="false"
                 rows="4" rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
                 <t:column>
@@ -205,7 +208,7 @@
             <legend>#{res['exp_stage6.headingData']}</legend>
             
                         <!-- display the experiment's output -->
-            <h:dataTable id="dataTable" var="data" value="#{ExperimentBean.IOTableDataForGUI}" cellpadding="2" cellspacing="0"
+            <h:dataTable id="ioData" var="data" value="#{ExperimentBean.IOTableDataForGUI}" cellpadding="2" cellspacing="0"
 				         border="1" rowIndexVar="row">
 				<h:column>
 			    <f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
@@ -257,12 +260,15 @@
 
            <h:panelGroup rendered="#{ExperimentBean.reportHeader != '' || ExperimentBean.reportBody != ''}">
             <h2 class="main">#{res['exp_stage6.headingReport']}</h2>
-              <h3>#{ExperimentBean.reportHeader}</h3>
-              <p>#{ExperimentBean.reportBody}</p>
+            <fieldset>
+            	<legend>#{ExperimentBean.reportHeader}</legend>
+            	<p>#{ExperimentBean.reportBody}</p>
+                <div class="clear"></div>
+            </fieldset>              
            </h:panelGroup>
 
 </h:panelGroup>                
-		
+<br/>		
 <h:form>
  <p>
   <h:commandButton value="#{res['reader_exp.buttonStage6']}"
