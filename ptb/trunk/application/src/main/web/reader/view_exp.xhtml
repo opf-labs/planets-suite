@@ -126,9 +126,13 @@
                     </ul>
                     <br/>
                         <b><h:outputText value="#{res['exp_stage2.inputData']} "/></b><br/>
-                        <h:panelGroup id="panelAddedFiles" binding="#{ExperimentBean.panelAddedFiles}">
-                            <!-- display the specified input data -->
-                        </h:panelGroup>
+                        <h:panelGroup rendered="#{ExperimentBean.approved==true}">
+                            	<!-- a2 display the specified input in a data table structure when experiment is approved -->
+                            	<t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
+                            				layout="orderedList" rowIndexVar="rowi">
+                					<a href="#{filemap['uri']}">#{filemap['name']}</a>
+                				</t:dataList>
+                            </h:panelGroup>
                 </fieldset>
             </h:form>
 </h:panelGroup>
@@ -140,16 +144,13 @@
                         <fieldset>
                             <legend>#{res['reader_exp.stageThreeLegendOne']}</legend>
                     
-                                                            <p><h:outputText value="#{res['exp_stage6.outputFiles']}" styleClass="readerLabel" />
-                                                            ExperimentBean.numberOfOutputFiles
-                                                            </p>
-                                                            <div class="clear"></div>
+                                    <p><h:outputText value="#{res['exp_stage6.outputFiles']}" styleClass="readerLabel" />
+                                       #{ExperimentBean.numberOfOutput}
+                                       <h:outputText value="intensity " styleClass="readerLabel" />
+                                       <h:outputText value="standard"/>
+                                    </p>
+                                    <div class="clear"></div>
                                 
-                            <p>
-                                <h:outputText value="#{res['reader_exp.stageThreeLegendTwo']}" styleClass="readerLabel" />  
-                                                               #{ExperimentBean.intensity}
-                            </p>
-                            <div class="clear"></div>
                         </fieldset>
                         <fieldset>
                             <legend>#{res['reader_exp.stageThreeLegendTwo']}</legend>
@@ -171,37 +172,59 @@
 </h:panelGroup>
             <!--  Stage 4  -->
 <h:panelGroup rendered="#{ExperimentBean.currentStage ge 4}">
-<h2 class="main">#{res['exp_stage4.pageTitle']}</h2>
+	<h2 class="main">#{res['exp_stage4.pageTitle']}</h2>
+	<h:outputText value="Automatic approval" styleClass="readerLabel" /> 
+	<h:outputText value="successfull"/>
+ <div class="clear"></div>
 </h:panelGroup>
             <!--  Stage 5  -->
 <h:panelGroup rendered="#{ExperimentBean.currentStage ge 5}">
-<h2 class="main">#{res['exp_stage5.pageTitle']}</h2>            
-<div class="box">
-<h3 class="box">#{res['exp_stage5.statistics']}</h3>            
-<p class="box"><b>#{res['exp_stage5.started']}</b> 10:01 BST on 19th July 2007<br />
-
-<b>#{res['exp_stage5.success']}</b> 6498 our of 6500<br />
-<b>#{res['exp_stage5.errors']}</b> 2<br />
-<b>#{res['exp_stage5.estimatedCompletion']}</b> 21:00 on 19th July 2007<br />
-<b>#{res['exp_stage5.actualCompletion']}</b> 21:15 on 19th July 2007</p>
-</div>
-<h:form>
-            </h:form>
+		<h2 class="main">#{res['exp_stage5.pageTitle']}</h2>
+		<fieldset>
+            <legend>#{res['reader_exp.stageFourLegendOne']}</legend>
+			<p>Experiment execution took place with the following details:</p>
+			<div class="box">
+    			<!--  display some statistics -->
+				<h3 class="box">#{res['exp_stage5.statistics']}</h3>
+				<p class="box">
+					<b>#{res['exp_stage5.started']} </b>#{NewExp_Controller.experimentExecutable.executionStartDate.time}<br />
+					<b>#{res['exp_stage5.ended']} </b>#{NewExp_Controller.experimentExecutable.executionEndDate.time}<br />
+					<b>#{res['exp_stage5.nrOfInput']} </b>#{ExperimentBean.numberOfOutput}<br />
+					<b>#{res['exp_stage5.nrOfOutput']} </b>#{ExperimentBean.numberOfInputFiles}<br />
+					<b>#{res['exp_stage5.success']} </b>#{NewExp_Controller.experimentExecutable.executionSuccess}<br />
+				</p>
+			</div>
+		</fieldset>
 </h:panelGroup>            
             <!--  Stage 6  -->            
 <h:panelGroup rendered="#{ExperimentBean.currentStage ge 6}">
 <h2 class="main">#{res['exp_stage6.pageTitle']}</h2>
         <p>View the experiment's input and output data, the evaluation of the selected benchmark goals and read the evaluation report.</p>
 
-        <h3 class="main">#{res['exp_stage6.headingData']}</h3>
-
-            <!-- display the experiment's output -->
-            <h:panelGrid id="panelInputOutputResults" binding="#{ExperimentBean.panelInputOutputResults}" border="1" columns="2">
-            </h:panelGrid>
+		<fieldset>
+            <legend>#{res['exp_stage6.headingData']}</legend>
             
-    <!-- ui:include src="/WEB-INF/templates/exp_io_table.xhtml">
-       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-    </ui:include -->
+                        <!-- display the experiment's output -->
+            <h:dataTable id="dataTable" var="data" value="#{ExperimentBean.IOTableDataForGUI}" cellpadding="2" cellspacing="0"
+				         border="1" rowIndexVar="row">
+				<h:column>
+			    <f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
+			    	<!-- check if input displayed as URI or as String -->
+					<h:outputLink value="#{data['input']}" rendered="#{not empty data['inputTypeURI']}">
+							#{data['inputName']}
+					</h:outputLink>
+					<h:outputText value="#{data['input']}" rendered="#{data['inputTypeURI']==null}"/>
+				</h:column>			        	
+				<h:column>
+			    	<f:facet name="header">#{res['exp_stage6.outputFiles']}</f:facet>
+					<!-- check if input displayed as URI or as String -->
+					<h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}}">
+							#{data['outputName']}
+					</h:outputLink>
+					<h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}"/>
+				</h:column>			        	
+			</h:dataTable>
+        </fieldset>
 
             <h2 class="main">#{res['exp_stage6.headingBG']}</h2>
 
@@ -221,6 +244,14 @@
                     <f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
                     <h:outputText value="#{bm.evaluationValue}" />
                 </t:column>
+                <t:column>
+					<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
+                    <h:outputText value="#{bm.sourceValue}" />      
+				</t:column>
+				<t:column>
+					<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>        
+                    <h:outputText value="#{bm.targetValue}" />
+				</t:column>
             </t:dataTable>
 
 

@@ -290,8 +290,8 @@ public class NewExpWizardController {
     	testbedMan.updateExperiment(exp);
     	// if successful, set a message at top of page
         FacesMessage fmsg = new FacesMessage();
-        fmsg.setDetail("Your data have been saved successfully!");
-        fmsg.setSummary("Your data have been saved successfully!");
+        fmsg.setDetail("Your data has been saved successfully!");
+        fmsg.setSummary("Your data has been saved successfully!");
         fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
 		// add message-tag for duplicate name
         FacesContext ctx = FacesContext.getCurrentInstance();
@@ -638,8 +638,21 @@ public class NewExpWizardController {
 	 */
 	public String changeAlreadySelectedSerOps(){
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        
+        //clear the already added data in the backing bean
 		expBean.removeAllExperimentInputData();
 		expBean.setOpartionSelectionCompleted(false);
+		
+		//clear the already added data from the exp. executable
+		if(exp.getExperimentExecutable()!=null){
+			exp.getExperimentExecutable().removeAllInputData();
+			//this has a constructor which requires the ServiceTemplate to be set.
+			exp.removeExperimentExecutable();
+			testbedMan.updateExperiment(exp);
+		}
+		
 		return "goToStage2";
 	}
 	
@@ -924,6 +937,18 @@ public class NewExpWizardController {
       	  	//	expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
     		return false;
     	}
+    }
+    
+    /**
+     * Please take care as this object is null within the first and second stage
+     * @return
+     */
+    public ExperimentExecutable getExperimentExecutable(){
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+       	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
+       	
+       	return exp.getExperimentExecutable();
     }
 
     public String saveEvaluation(){

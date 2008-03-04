@@ -486,7 +486,7 @@ public class RegisterTBServices{
 						//dynamically add a InputTextField (which is only enabled for FileArray)
 						HtmlInputText arrayInputStart = (HtmlInputText) facesContext.getApplication().createComponent(HtmlInputText.COMPONENT_TYPE);
 						arrayInputStart.setId("xmlRequestArrayStart"+this.iCountNumbOfXMLRequestInputTokens);
-						arrayInputStart.setValue("<array item>");
+						arrayInputStart.setValue("<item>");
 						arrayInputStart.setRendered(false);
 							
 						//dynamically add SelectOneMenu with the possible XMLRequestInputTypes (lTagNames)
@@ -506,7 +506,7 @@ public class RegisterTBServices{
 						//dynamically add a InputTextField (which is only enabled for FileArray)
 						HtmlInputText arrayInputEnd = (HtmlInputText) facesContext.getApplication().createComponent(HtmlInputText.COMPONENT_TYPE);
 						arrayInputEnd.setId("xmlRequestArrayEnd"+this.iCountNumbOfXMLRequestInputTokens);
-						arrayInputEnd.setValue("</array item>");
+						arrayInputEnd.setValue("</item>");
 						arrayInputEnd.setRendered(false);
 							
 						this.iCountNumbOfXMLRequestInputTokens++;
@@ -1473,8 +1473,27 @@ public class RegisterTBServices{
 					link_input.setTarget("_new");
 					HtmlOutputText link_text = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 					link_text.setId("Step3LinkInputText"+i);
-					link_text.setValue(input);
-					//link_text.setStyle("color:red");
+					
+					DataHandler dh = new DataHandlerImpl();
+					//get the input file URIs original local file name
+					boolean b = false;
+					try {
+						File f = dh.getLocalFileRef(new URI(input), true);
+						if((f!=null)&&(f.canRead())){
+							//in this case let's use the original file name as Link label
+							String name = dh.getIndexFileEntryName(f);
+							if((name!=null)&&(!name.equals(""))){
+								link_text.setValue(name);
+								b=true;
+							}
+						}
+					} catch (Exception e) {} 
+					
+					if(!b){
+						//use the URI as the link's name
+						link_text.setValue(input);
+					}
+						
 					link_input.getChildren().add(link_text);
 					panel.getChildren().add(link_input);
 					addedrow++;
@@ -1484,7 +1503,6 @@ public class RegisterTBServices{
 					HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 					outputText.setId("Step3OutputTextInput"+i);
 					outputText.setValue(input);
-					//outputText.setStyle("color:red");
 					panel.getChildren().add(outputText);
 					addedrow++;
 				}
@@ -1500,6 +1518,7 @@ public class RegisterTBServices{
 						HtmlOutputText link_text = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 		                link_text.setId("Step3LinkOutputText"+i);
 		                link_text.setValue(output);
+						link_text.setStyle("color:red");
 		                link_output.getChildren().add(link_text);
 						panel.getChildren().add(link_output);
 						addedrow++;
@@ -1509,6 +1528,7 @@ public class RegisterTBServices{
 						HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 						outputText.setId("Step3OutputTextOutput"+i);
 						outputText.setValue(output);
+						outputText.setStyle("color:red");
 						panel.getChildren().add(outputText);
 						addedrow++;
 					}

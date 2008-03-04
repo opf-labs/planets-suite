@@ -27,6 +27,7 @@ public interface ExperimentExecutable{
 	public void removeInputData(String localFileRef);
 	public void removeInputData(Collection<String> localFileRefs);
 	public void setInputData(Collection<String> localFileRefs);
+	public void removeAllInputData();
 	
 	/**
 	 * Takes a local file ref and hands over its exposed http reference

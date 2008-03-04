@@ -93,8 +93,6 @@ public class ExperimentBean {
     private UIComponent panelAddedSerTags = new UIPanel();
     private UIComponent panelAddedFiles = new UIPanel();
     private boolean bOperationSelectionCompleted = false;
-    //tomahawk data table binding for input/output data table
-    private HtmlPanelGrid panelInputOutputResults;
     
     private Map<String,BenchmarkBean> benchmarks = new HashMap<String,BenchmarkBean>();
     private String intensity="0";
@@ -220,6 +218,7 @@ public class ExperimentBean {
         	if( selSerTemplate != null )
         	    this.sSelSerTemplateID = selSerTemplate.getUUID();
         	this.sSelSerOperationName = executable.getSelectedServiceOperationName();
+        	this.bOperationSelectionCompleted = true;
         	helperLoadInputData(executable.getInputData());
         	if(executable.isExecutionSuccess()){
         		//uses the executable to get the data
@@ -452,6 +451,8 @@ public class ExperimentBean {
     
     public void removeAllExperimentInputData(){
     	this.inputData = new HashMap<String,String>();
+    	//remove all added delete-link GUI elements
+    	this.getPanelAddedFiles().getChildren().clear();
     }
     
     /**
@@ -480,98 +481,56 @@ public class ExperimentBean {
     	this.outputData = data;
     }
     
+    
     /**
-     * Retrieves the URI references as UIComponents 
-     * i.e. all localFileRefs are converted to URIs and wraped within an
-     * HtmlOutputLink link. In the case of an characterisation experiment
-     * the results are put into a HtmlOutputText telement
+     * Returns the data used in the experiment's input-output data table
      * @return
      */
-    public Collection<Entry<UIComponent,UIComponent>> getOutputDataForGUI(){
+    public Collection<Map<String,String>> getIOTableDataForGUI(){
     	//Entry of inputComponent, outputComponent
-    	Collection<Entry<UIComponent,UIComponent>> ret = new Vector<Entry<UIComponent,UIComponent>>();
+    	Collection<Map<String,String>> ret = new Vector<Map<String,String>>();
     	Iterator<Entry<String,String>> itData = this.outputData.iterator();
     	
-    	FacesContext facesContext = FacesContext.getCurrentInstance();
     	DataHandler dh = new DataHandlerImpl();
-    	int count =0;
     	while(itData.hasNext()){
     		Entry<String,String> entry = itData.next();
     		String input = entry.getKey();
     		String output = entry.getValue();
-    		UIComponent componentInput = null;
-    		UIComponent componentOutput = null;
     		
+    		HashMap<String,String> hm = new HashMap<String,String>();
     	 //For the Input:
     		try{
     		//test: convert input to URI
     			URI uriInput = dh.getHttpFileRef(new File(input), true);
-    			//wrap uri as output link - get its original file name as label
-    			HtmlOutputText outputText = (HtmlOutputText) facesContext
-					.getApplication().createComponent(
-						HtmlOutputText.COMPONENT_TYPE);
-    			outputText.setValue(dh.getIndexFileEntryName(new File(input)));
-    			outputText.setId("inputFileName" + count+"");
+    			//add "inputURI" and "inputName" into ret hashmap
+    			hm.put("input", uriInput.toString());
+    			hm.put("inputName", dh.getIndexFileEntryName(new File(input)));
+    			hm.put("inputTypeURI", "URI");
     			
-    			//use its URI as file Output Link
-    			HtmlOutputLink link_src = (HtmlOutputLink) facesContext
-					.getApplication().createComponent(
-						HtmlOutputLink.COMPONENT_TYPE);
-    			link_src.setId("inputFileRef" + count+"");
-    			link_src.setValue(uriInput);	
-    			link_src.setTarget("_new");
-    			link_src.getChildren().add(outputText);
-    			//add to return
-    			componentInput = link_src;
     		}
     		catch(Exception e){
     			//this input was not a file or fileRef not readable  - display as text
-    			//wrap input as outputText
-    			HtmlOutputText outputText = (HtmlOutputText) facesContext
-					.getApplication().createComponent(
-						HtmlOutputText.COMPONENT_TYPE);
-    			outputText.setValue(dh.getIndexFileEntryName(new File(input)));
-    			outputText.setId("inputFileName" + count+"");
-    			componentInput = outputText;
+    			hm.put("input", input);
+    			hm.put("inputName", null);
+    			hm.put("inputTypeURI", null);
     		}
     		
     	 //For the Output:
     		try{
         		//test: convert output to URI
         		URI uriOutput = dh.getHttpFileRef(new File(output), false);
-        		//wrap uri as output link - get its original file name as label
-        		HtmlOutputText outputText = (HtmlOutputText) facesContext
-    				.getApplication().createComponent(
-    					HtmlOutputText.COMPONENT_TYPE);
-        		outputText.setValue(uriOutput);
-        		outputText.setStyle("color:red");
-        		outputText.setId("outputFileName" + count+"");
-        			
-        		//use its URI as file Output Link
-        		HtmlOutputLink link_src = (HtmlOutputLink) facesContext
-    				.getApplication().createComponent(
-    					HtmlOutputLink.COMPONENT_TYPE);
-        		link_src.setId("outputFileRef" + count+"");
-        		link_src.setValue(uriOutput);	
-        		link_src.setTarget("_new");
-        		link_src.getChildren().add(outputText);
-        		//add to return
-        		componentOutput = link_src;
+        		//add "outputURI" and "outputName" "outputType" into ret hashmap
+    			hm.put("output", uriOutput.toString());
+    			hm.put("outputName", dh.getIndexFileEntryName(new File(output)));
+    			hm.put("outputTypeURI", "URI");
         	}
         	catch(Exception e){
         		//this input was not a file or fileRef not readable  - display as text
-        		//wrap input as outputText
-        		HtmlOutputText outputText = (HtmlOutputText) facesContext
-    				.getApplication().createComponent(
-    					HtmlOutputText.COMPONENT_TYPE);
-        		outputText.setValue(output);
-        		outputText.setId("outputFileName" + count+"");
-        		componentOutput = outputText;
+        		hm.put("output", output);
+    			hm.put("outputName", null);
+    			hm.put("outputType", null);
         	}  
-        	HashMap<UIComponent,UIComponent> helper = new HashMap<UIComponent,UIComponent>();
-        	helper.put(componentInput, componentOutput);
-        	ret.add(helper.entrySet().iterator().next());
-        	count++;
+        	ret.add(hm);
     	}
     	return ret;
     }
@@ -932,56 +891,6 @@ public class ExperimentBean {
     	return this.panelAddedSerTags;
     }
     
-    /**
-     * Returns the binding for the input/output data panel
-     * @param table
-     */
-    public void setPanelInputOutputResults(HtmlPanelGrid panel){
-    	this.panelInputOutputResults = panel;
-    }
-    
-    public HtmlPanelGrid getPanelInputOutputResults(){
-    	if(this.panelInputOutputResults==null){
-    		this.panelInputOutputResults = buildIODataTable();
-    	}
-    	return this.panelInputOutputResults;
-    }
-    
-    /**
-     * Builds a renderer for the experiment's input and output data 
-     * @return
-     */
-    public HtmlPanelGrid buildIODataTable(){
-    	HtmlPanelGrid panel = new HtmlPanelGrid();
-    	panel.setId("panelInputOutputResults");
-    	panel.setBorder(1);
-    	panel.setColumns(2);
-    	panel.setCellpadding("2");
-    	panel.setCellspacing("0");
-    	panel.setStyle("border: 1px solid #579EC2;");
-    	
-    	Iterator<Entry<UIComponent,UIComponent>> itIO = getOutputDataForGUI().iterator();
-    	while(itIO.hasNext()){
-    		Entry<UIComponent,UIComponent> entry = itIO.next();
-    		//input
-    		try{
-    			HtmlOutputLink input = (HtmlOutputLink)entry.getKey();
-    			panel.getChildren().add(input);
-    		}catch(Exception e){
-    			HtmlOutputText input= (HtmlOutputText)entry.getKey();
-    			panel.getChildren().add(input);
-    		}
-    		//output
-    		try{
-    			HtmlOutputLink output = (HtmlOutputLink)entry.getValue();
-    			panel.getChildren().add(output);
-    		}catch(Exception e){
-    			HtmlOutputText output= (HtmlOutputText)entry.getValue();
-    			panel.getChildren().add(output);
-    		}
-    	}
-    	return panel;
-    }
     
     /**
      * Creates the JSF Elements to render a given fileRef as CommandLink within the given UIComponent

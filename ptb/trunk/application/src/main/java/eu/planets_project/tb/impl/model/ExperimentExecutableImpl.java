@@ -129,6 +129,13 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 			this.hmInputOutputData.remove(localFileRef);
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#removeAllInputData()
+	 */
+	public void removeAllInputData(){
+		this.hmInputOutputData = new HashMap<String,String>();
+	}
 
 
 	/* (non-Javadoc)
