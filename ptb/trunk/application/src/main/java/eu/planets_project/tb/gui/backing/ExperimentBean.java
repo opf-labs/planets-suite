@@ -245,7 +245,7 @@ public class ExperimentBean {
 					bmb.setWeight(String.valueOf(bm.getWeight()));
 					bmb.setSelected(true);
 		    		benchmarks.put(bm.getID(), bmb);
-                    log.debug("Filling bmg: target:" + bmb.getTargetValue());
+                    //log.debug("Filling bmg: target:" + bmb.getTargetValue());
     			}
     			//this.outputData = eworkflow.getOutputData().toArray()[0].toString();
     			/*
