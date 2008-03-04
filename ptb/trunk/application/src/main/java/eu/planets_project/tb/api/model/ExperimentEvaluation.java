@@ -52,7 +52,8 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 */
 	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException;
 	public void evaluateFileBenchmarkGoal(Entry<URI,URI> ioFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException;
-	public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile);
+    public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile);
+    public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals();
 	public BenchmarkGoal getEvaluatedFileBenchmarkGoal(URI inputFile, String sGoalXMLID);
 	/**
 	 * Takes a List of Benchmark Objects, extracts their IDs and values to create a new evaluatedFileBenchmarkGoal

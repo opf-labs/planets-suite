@@ -38,7 +38,7 @@ public class ExperimentPhaseBean {
     public ExperimentPhaseBean(ExperimentBean eb, String experimentPhaseID) {
         this.eb = eb;
         this.experimentPhaseID = experimentPhaseID;
-        log.debug("Initialised an EPB with: " + experimentPhaseID );
+        //log.debug("Initialised an EPB with: " + experimentPhaseID );
     }
     
     /**

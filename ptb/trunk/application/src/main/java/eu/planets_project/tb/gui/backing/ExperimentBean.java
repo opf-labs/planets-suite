@@ -35,6 +35,7 @@ import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
+import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
@@ -227,15 +228,14 @@ public class ExperimentBean {
         }
 
     	// set benchmarks
-    	//TODO einkommentieren
         try {
     		if (this.inputData != null) {
     			Iterator<BenchmarkGoal> iter;
-//    			if (exp.getCurrentPhase() instanceof ExperimentEvaluation) { 
-//                    iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(new URI(inputData[i])).iterator();
-//    			} else {
+    			if (exp.getCurrentPhase() instanceof ExperimentEvaluation) { 
+                    iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals().iterator();
+    			} else {
     				iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
-//    			}
+    			}
     			while (iter.hasNext()) {
 		    		BenchmarkGoal bm = iter.next();
 		    		BenchmarkBean bmb = new BenchmarkBean(bm);
@@ -245,6 +245,7 @@ public class ExperimentBean {
 					bmb.setWeight(String.valueOf(bm.getWeight()));
 					bmb.setSelected(true);
 		    		benchmarks.put(bm.getID(), bmb);
+                    log.debug("Filling bmg: target:" + bmb.getTargetValue());
     			}
     			//this.outputData = eworkflow.getOutputData().toArray()[0].toString();
     			/*
@@ -259,6 +260,7 @@ public class ExperimentBean {
         	if( log.isDebugEnabled() ) e.printStackTrace();
         }
     	// merge information to benchmark beans    	
+        /* Seems not to be needed, and overwrites the Target value data during evaluation:
     	Iterator iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
     		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
@@ -269,6 +271,7 @@ public class ExperimentBean {
     			bmb.setSelected(true);
     		}
     	}
+    	*/
     	String intensity = Integer.toString(exp.getExperimentSetup().getExperimentResources().getIntensity());
     	if (intensity != null && intensity != "-1") 
     		this.intensity = intensity;

@@ -312,6 +312,7 @@ public class NewExpWizardController {
     
 
     public String updateEvaluationAction() {
+        log.debug("In updateEvaluationAction...");
         try {
 	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
@@ -325,6 +326,7 @@ public class NewExpWizardController {
 	    	// create Goal objects from Beans
 	    	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
 	    	Iterator iter = expBean.getBenchmarkBeans().iterator();
+	    	log.debug("Found BMGS: # = " + expBean.getBenchmarkBeans().size());
 	    	while (iter.hasNext()) {
 	    		BenchmarkBean bmb = (BenchmarkBean)iter.next();
 	    		if (bmb.getSelected()) {
@@ -343,6 +345,7 @@ public class NewExpWizardController {
 		    		if (bmb.getWeight()!=null && !bmb.getWeight().equals("-1"))
 		    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
 		    		bmgoals.add(bmg);
+		    		log.debug("Got bmg: target:" + bmg.getTargetValue());
 	    		} catch (InvalidInputException e) {
 	    	        FacesMessage fmsg = new FacesMessage();
 	    	        fmsg.setDetail("Values for Benchmarkgoal are not valid!"+e.toString());

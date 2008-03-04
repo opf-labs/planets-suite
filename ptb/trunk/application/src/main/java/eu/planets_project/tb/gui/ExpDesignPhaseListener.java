@@ -63,9 +63,8 @@ public class ExpDesignPhaseListener implements PhaseListener {
      * @see javax.faces.event.PhaseListener#getPhaseId()
      */
     public PhaseId getPhaseId() {
-        // TODO Auto-generated method stub
         // Ensure this listener is called at the first step.
-        return PhaseId.ANY_PHASE;
+        return PhaseId.RESTORE_VIEW;
     }
 
 }

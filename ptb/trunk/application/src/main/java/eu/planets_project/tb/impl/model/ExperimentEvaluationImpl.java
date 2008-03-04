@@ -460,8 +460,17 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		return new Vector<BenchmarkGoal>();
 	}
 
+	
 
 	/* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedFileBenchmarkGoals()
+     */
+    public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals() {
+        return this.getEvaluatedFileBenchmarkGoals(this.fileBenchmarkGoals.keySet().iterator().next());
+    }
+
+
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getInputBenchmarkGoals()
 	 */
 	public Collection<String> getInputBenchmarkGoalIDs() {
