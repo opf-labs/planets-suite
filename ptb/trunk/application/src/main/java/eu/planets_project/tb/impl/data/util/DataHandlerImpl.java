@@ -156,17 +156,14 @@ public class DataHandlerImpl implements DataHandler{
 		return null;	
 	}
 	
-
-	
     /* (non-Javadoc)
-     * Only the input file directory is searched, as input and output file have the same physical file name
-     * @see eu.planets_project.tb.api.data.util.DataHandler#getIndexFileEntryName(java.io.File)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#getInputFileIndexEntryName(java.io.File)
      */
-    public String getIndexFileEntryName(File localFileRef){
+    public String getInputFileIndexEntryName(File localFileRef){
     	if((localFileRef!=null)&&(localFileRef.canRead())){
 			try {
 				//get the index where a mapping of stored file name - original name is stored
-				Properties props = this.getIndex();
+				Properties props = this.getInputDirIndex();
 				//fileName corresponds to a random number
 				if(props.containsKey(localFileRef.getName())){
 					//return the corresponding name from the index
@@ -181,29 +178,83 @@ public class DataHandlerImpl implements DataHandler{
 		return localFileRef.getName();
     }
     
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#getInputFileIndexEntryName(java.io.File)
+     */
+    public String getOutputFileIndexEntryName(File localFileRef){
+    	if((localFileRef!=null)&&(localFileRef.canRead())){
+			try {
+				//get the index where a mapping of stored file name - original name is stored
+				Properties props = this.getOutputDirIndex();
+				//fileName corresponds to a random number
+				if(props.containsKey(localFileRef.getName())){
+					//return the corresponding name from the index
+	    			return props.getProperty(localFileRef.getName());
+	    		}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				log.debug("index file name for "+localFileRef.getName()+" was not found");
+			}	
+    	}
+    	//else if no name was found return the physical file name
+		return localFileRef.getName();
+    }
+    
+    
     /**
-     * checks if index file exists and if not creates it. As for the input/output
+     * checks if for the input files an index file exists and if not creates it. As for the input
      * files a random number is created, the original fileName is stored within the index property file
      * @throws IOException 
      */
-    private Properties getIndex() throws IOException{
-
-    	 //check if dir was created
-    	 File dir = new File(FileInDir);
-         dir.mkdirs();    
-         
-         File f = new File(dir, "index_names.properties");
-         
-         //index does not exist
-         if(!((f.exists())&&(f.canRead()))){
-         	f.createNewFile();
-         }
-         	
-         //read properties
-         Properties properties = new Properties();
-    	 FileInputStream ResourceFile = new FileInputStream(f);
-    	 properties.load(ResourceFile); 
-    	 return properties;
+    private Properties getInputDirIndex() throws IOException{
+    	//get index from input file dir
+    	return getIndex(true);
+    }
+    
+    /**
+     * checks if for the input files an index file exists and if not creates it. As for the input
+     * files a random number is created, the original fileName is stored within the index property file
+     * @throws IOException 
+     */
+    private Properties getOutputDirIndex() throws IOException{
+    	//get index from output file dir
+    	return getIndex(false);
+    }
+    
+    /**
+     * Returns the index properties either of the input or for the output files of 
+     * and experiment
+     * @param bInputIndex
+     * @return
+     */
+    private Properties getIndex(boolean bInputIndex) throws IOException{
+    	File dir;
+    	//inputIndex
+    	if(bInputIndex){
+    		dir = new File(FileInDir);
+    	}
+    	//outputIndex
+    	else{
+    		dir = new File(FileOutDir);
+    	}
+    	
+    	//for both: check if dir was created
+        dir.mkdirs();    
+        
+        File f = new File(dir, "index_names.properties");
+        
+        //index does not exist
+        if(!((f.exists())&&(f.canRead()))){
+        	f.createNewFile();
+        }
+        	
+        //read properties
+        Properties properties = new Properties();
+   	 	FileInputStream ResourceFile = new FileInputStream(f);
+   	 	properties.load(ResourceFile); 
+   	 	
+   	 	return properties;
     }
     
     /* (non-Javadoc)
@@ -249,14 +300,39 @@ public class DataHandlerImpl implements DataHandler{
 	
 
     /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.data.util.DataHandler#setIndexFileEntryName(java.lang.String, java.lang.String)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#setInputFileIndexEntryName(java.lang.String, java.lang.String)
      */
-    public void setIndexFileEntryName(String sFileRandomNumber, String sFileName){
+    public void setInputFileIndexEntryName(String sFileRandomNumber, String sFileName){
+    	setFileEntryName(sFileRandomNumber, sFileName,true);
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#setOutputFileIndexEntryName(java.lang.String, java.lang.String)
+     */
+    public void setOutputFileIndexEntryName(String sFileRandomNumber, String sFileName){
+    	setFileEntryName(sFileRandomNumber, sFileName,false);
+    }
+    
+    /**
+     * @param sFileRandomNumber
+     * @param sFileName
+     * @param inputIndex indicates if this shall be written to the (true) inputFileIndex or (false) outputFileIndex
+     */
+    private void setFileEntryName(String sFileRandomNumber, String sFileName, boolean inputIndex){
     	if((sFileRandomNumber!=null)&&(sFileName!=null)){
     		try{
-    			Properties props = this.getIndex();
+    			Properties props;
+    			File dir;
+    			//check if written to input or output file index
+    			if(inputIndex){
+    				props = this.getInputDirIndex();
+    				dir = new File(FileInDir);
+    			}
+    			else{
+    				props = this.getOutputDirIndex();
+    				dir = new File(FileOutDir);
+    			}
     			props.put(sFileRandomNumber,sFileName);
-    	    	 File dir = new File(FileInDir);
     			props.store(new FileOutputStream(new File(dir, "index_names.properties")), null);
     		}catch(Exception e){
     			//TODO: loog

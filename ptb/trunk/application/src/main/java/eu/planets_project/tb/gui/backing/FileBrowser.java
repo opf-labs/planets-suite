@@ -271,7 +271,7 @@ public class FileBrowser {
         //create unique filename
         String ext = file.getName().substring(file.getName().lastIndexOf('.'));
     	String mathName = new UUID(20,122).randomUUID().toString() + ext;
-    	dh.setIndexFileEntryName(mathName, file.getName());
+    	dh.setInputFileIndexEntryName(mathName, file.getName());
         File fcopy = new File(fileInDir,mathName);
         //copy the renamed file to it's new location
     	dh.copy(file,fcopy);

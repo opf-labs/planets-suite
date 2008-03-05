@@ -41,10 +41,17 @@ public interface DataHandler {
 	 /**
      * Fetches for a given file (the resource's physical file name on the disk) its
      * original logical name which is stored within an index.
-     * e.g. ce37d69b-64c0-4476-9040-72512f07bb49.TIF to Test1.TIF
+     * e.g. ce37d69b-64c0-4476-9040-72512f07bb49.TIF to Test1.TIF within the input directory
      * @param sFileRandomNumber the corresponding file name or its logical random number if none is available
      */
-	public String getIndexFileEntryName(File localFile);
+	public String getInputFileIndexEntryName(File localFile);
+	 /**
+     * Fetches for a given file (the resource's physical file name on the disk) its
+     * original logical name (e.g. as received from migration service) which is stored within an index.
+     * e.g. ce37d69b-64c0-4476-9040-72512f07bb49.TIF to Test1.TIF within the output directory
+     * @param sFileRandomNumber the corresponding file name or its logical random number if none is available
+     */
+	public String getOutputFileIndexEntryName(File localFile);
 	
 	/**
 	 * Returns the local directory whih is used for persisting experiment's input files
@@ -70,10 +77,16 @@ public interface DataHandler {
     
     /**
      * Creates a mapping between the resources's physical file name (random number) and its
-     * original logical name.
+     * original logical name. within the input file storage location
      * @param sFileRandomNumber
      * @param sFileName
      */
-    public void setIndexFileEntryName(String sFileRandomNumber, String sFileName);
-
+    public void setInputFileIndexEntryName(String sFileRandomNumber, String sFileName);
+    /**
+     * Creates a mapping between the resources's physical file name (random number) and its
+     * original logical name. within the output file storage location (e.g. for migration results)
+     * @param sFileRandomNumber
+     * @param sFileName
+     */
+    public void setOutputFileIndexEntryName(String sFileRandomNumber, String sFileName);
 }

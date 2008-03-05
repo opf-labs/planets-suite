@@ -1,6 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
@@ -19,8 +23,22 @@
 		<div id="maincol">
 		<div class="innertubemain">
 		
-		<p><b>This page is not yet operational.</b></p>
-				<p>&#160;</p>
+		<p>Please have a look at the testbed release documentation or visit the project's wiki for additional information</p>
+				<p>
+				<ul><li>
+				<h:outputLink value="http://www.planets-project.eu/docs/testbed-documentation/" target="_new">
+				Testbed v0.5 user documentation
+				</h:outputLink>
+				</li><li>
+				<h:outputLink value="http://www.planets-project.eu/private/pages/wiki/index.php/Testbed" target="_new">
+				Browse the Testbed's Project Wiki
+				</h:outputLink>
+				</li>
+				<li>
+				<h:outputLink value="http://gforge.planets-project.eu/gf/project/ptb/" target="_new">
+				Software Installer and Source Code
+				</h:outputLink>
+				</li></ul></p>
 				<p>&#160;</p>
 				<p>&#160;</p>
 				<p>&#160;</p>
@@ -48,13 +66,14 @@
 		
 		
 		<div id="leftcol">
-		
-		<h3 class="leftcol"></h3>
+	
+		<h3 class="leftcol">Documentation</h3>
 		<div class="innertube">
-		
-		
+		<p class="leftcol">
+			Please see the project's website it's wiki or gforge for more details
+		</p>
 		</div>
-		</div>
+	</div>
 
 	</ui:define>
 

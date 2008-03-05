@@ -419,7 +419,7 @@ public class ExperimentBean {
     			//retrieve URI
     			File fInput = new File(localFileRefs.next());
 				URI uri = dh.getHttpFileRef(fInput, true);
-				String name = dh.getIndexFileEntryName(fInput);
+				String name = dh.getInputFileIndexEntryName(fInput);
 				map.put("uri", uri.toString());
 				map.put("name", name);
 				ret.add(map);
@@ -513,7 +513,7 @@ public class ExperimentBean {
     			URI uriInput = dh.getHttpFileRef(new File(input), true);
     			//add "inputURI" and "inputName" into ret hashmap
     			hm.put("input", uriInput.toString());
-    			hm.put("inputName", dh.getIndexFileEntryName(new File(input)));
+    			hm.put("inputName", dh.getInputFileIndexEntryName(new File(input)));
     			hm.put("inputTypeURI", "URI");
     			
     		}
@@ -530,7 +530,7 @@ public class ExperimentBean {
         		URI uriOutput = dh.getHttpFileRef(new File(output), false);
         		//add "outputURI" and "outputName" "outputType" into ret hashmap
     			hm.put("output", uriOutput.toString());
-    			hm.put("outputName", dh.getIndexFileEntryName(new File(output)));
+    			hm.put("outputName", dh.getOutputFileIndexEntryName(new File(output)));
     			hm.put("outputTypeURI", "URI");
         	}
         	catch(Exception e){
@@ -915,7 +915,7 @@ public class ExperimentBean {
             HtmlOutputText outputText = (HtmlOutputText) facesContext
                     .getApplication().createComponent(
                             HtmlOutputText.COMPONENT_TYPE);
-            outputText.setValue(dh.getIndexFileEntryName(new File(fileRef)));
+            outputText.setValue(dh.getInputFileIndexEntryName(new File(fileRef)));
             outputText.setId("fileName" + key);
             //file name
             HtmlOutputLink link_src = (HtmlOutputLink) facesContext

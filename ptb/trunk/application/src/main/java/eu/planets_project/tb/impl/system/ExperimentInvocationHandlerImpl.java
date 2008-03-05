@@ -4,14 +4,19 @@
 package eu.planets_project.tb.impl.system;
 
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -23,6 +28,8 @@ import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
@@ -32,6 +39,7 @@ import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
 import eu.planets_project.tb.api.services.util.ServiceRespondsExtractor;
 import eu.planets_project.tb.api.system.ExperimentInvocationHandler;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.exceptions.ServiceInvocationException;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
@@ -246,7 +254,8 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 					String newFileName = new File(this.hmInputFiles.get(key)).getName();
 					File fMovedOutput = new File(this.sOutputDir+"/"+newFileName);
 					//now copy its binary data
-					this.copy(fMigrationOutput, fMovedOutput);
+					DataHandler dh = new DataHandlerImpl();
+					dh.copy(fMigrationOutput, fMovedOutput);
 					
 					//finally update the returned migration output reference
 					ret.put(key, fMovedOutput.getAbsolutePath());
@@ -258,13 +267,44 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 					try{
 						String suriRef = migrationResults.get(key);
 						URI uriRef = new URI(suriRef);
-						String content = this.downloadURI(uriRef);
+						byte[] content = downloadBinaryFromURI(uriRef);
+						
 						//now build the outputFile
-						//get the file's new name (same as it's input file) - input and output should have the same key
-						String newFileName = new File(this.hmInputFiles.get(key)).getName();
+						//get the URI's file name. if it has none - use the corresponding input's file name
+						char delimP = '.';
+						char delimS = '/';
+                        int s = suriRef.lastIndexOf(delimS);
+                        int p = suriRef.lastIndexOf(delimP);
+                        String fileType;
+                        String newFileName;
+                        String origFileName;
+                        String mathRandomNr;
+                        String corrInputFileName = new File(this.hmInputFiles.get(key)).getName();
+                        //test if a file name can be extracted
+                        if((s!=-1)&&(p!=-1)){
+                        	origFileName = suriRef.substring(s+1, suriRef.length());
+                        	fileType = suriRef.substring(p,suriRef.length());
+                        	int h = corrInputFileName.indexOf(delimP);
+                        	mathRandomNr = corrInputFileName.substring(0,h);
+                        	//the nex file name is assembled from the corresponding input's file random number
+                        	//and the URI's file type e.g. .docx
+                        	newFileName = mathRandomNr+fileType;
+                            //the original file name received when calling the service is stored in the output index
+                        	DataHandler dh = new DataHandlerImpl();
+                            dh.setOutputFileIndexEntryName(newFileName, origFileName);
+                        }
+                        else{
+                        	//the file's new name will be set to the same as it's corresponding input file - input and output should have the same key
+                        	newFileName = new File(this.hmInputFiles.get(key)).getName();
+                        	
+                        	//in this case no indexFileEntryName is written
+                        }
+                        
+                        //write the file's content as read from the stream
 						File fOutput = new File(this.sOutputDir+"/"+newFileName);
 						fos = new FileOutputStream(fOutput);
-						fos.write(content.getBytes());
+						fos.write(content);
+						fos.flush();
 						fos.close();
 						
 						//finally update the returned migration output reference
@@ -276,33 +316,14 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 						log.debug(e2.toString());
 					}
 					finally{
+						fos.flush();
 						fos.close();
 					}
 				}
 			}
 		}
 		return ret;
-	}
-	
-	/**
-	 * copies a file from one location to another
-	 * @param src - the source file
-	 * @param dst - the destinationfile
-	 * @throws IOException
-	 */
-	private void copy(File src, File dst) throws IOException {
-		InputStream in = new FileInputStream(src);
-		OutputStream out = new FileOutputStream(dst);
-
-		// Transfer bytes from in to out
-		byte[] buf = new byte[1024];
-		int len;
-		while ((len = in.read(buf)) > 0) {
-			out.write(buf, 0, len);
-		}
-		in.close();
-		out.close();
-	}    
+	}   
 	
 	
 	/**
@@ -342,44 +363,34 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
     		dir.mkdirs();    
     	}
     }
-	
-	
-    /**
-	 * Takes a given http URI and tries to download its content which is returned as
-	 * File if success. If no success an Exception is thrown
+		
+
+	/**
+	 * Takes a given http URI and tries to download its binary content.
 	 * @param uri
 	 * @return
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private String downloadURI(URI uri)throws FileNotFoundException, IOException{
-
+	private byte[] downloadBinaryFromURI(URI uri)throws FileNotFoundException, IOException{
+		
 		InputStream in = null;
 		try{
 			if(!uri.getScheme().equals("http")){
 				throw new FileNotFoundException("URI schema "+uri.getScheme()+" not supported");
 			}
-			in = uri.toURL().openStream();
-			boolean eof = false;
-			String content = "";
-			StringBuffer sb = new StringBuffer();
-			while(!eof){
-				int byteValue = in.read();
-				if(byteValue != -1){
-					char b = (char)byteValue;
-					sb.append(b);
-				}
-				else{
-					eof = true;
-				}
+
+			URLConnection c = uri.toURL().openConnection();
+			in = c.getInputStream();
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+				bos.write(buf, 0, len);
 			}
-			content = sb.toString();
-			if(content!=null){
-				return content;
-			}
-			else{
-				throw new FileNotFoundException("extracted content is null");
-			}
+			byte[] data = bos.toByteArray();
+			
+			return data;
 		}
 		finally{
 			in.close();

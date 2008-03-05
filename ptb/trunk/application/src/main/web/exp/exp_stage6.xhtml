@@ -40,7 +40,7 @@
 			    <f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
 			    	<h:outputLink value="Service Input: "/>
 			    	<!-- check if input displayed as URI or as String -->
-					<h:outputLink value="#{data['input']}" rendered="#{not empty data['inputTypeURI']}">
+					<h:outputLink value="#{data['input']}" rendered="#{not empty data['inputTypeURI']}" target="_new">
 							#{data['inputName']}
 					</h:outputLink>
 					<h:outputText value="#{data['input']}" rendered="#{data['inputTypeURI']==null}"/>
@@ -49,7 +49,7 @@
 			    	<f:facet name="header">#{res['exp_stage6.outputFiles']}</f:facet>
 					<h:outputLink value="Service Output: "/>
 					<!-- check if input displayed as URI or as String -->
-					<h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}">
+					<h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}" target="_new">
 							<h:outputText value="#{data['output']}" style="color:red"/>
 					</h:outputLink>
 					<h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}" style="color:red"/>

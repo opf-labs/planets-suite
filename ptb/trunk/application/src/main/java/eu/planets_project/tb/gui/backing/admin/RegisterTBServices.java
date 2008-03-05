@@ -1481,7 +1481,7 @@ public class RegisterTBServices{
 						File f = dh.getLocalFileRef(new URI(input), true);
 						if((f!=null)&&(f.canRead())){
 							//in this case let's use the original file name as Link label
-							String name = dh.getIndexFileEntryName(f);
+							String name = dh.getInputFileIndexEntryName(f);
 							if((name!=null)&&(!name.equals(""))){
 								link_text.setValue(name);
 								b=true;
