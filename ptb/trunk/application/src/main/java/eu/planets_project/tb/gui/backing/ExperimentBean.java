@@ -359,6 +359,12 @@ public class ExperimentBean {
     public TestbedServiceTemplate getSelectedServiceTemplate(){
     	return this.selSerTemplate;
     }
+    
+    public void removeSelectedServiceTemplate(){
+    	this.selSerTemplate = null;
+    	this.sSelSerTemplateID = null;
+    	this.sSelSerOperationName = null;
+    }
 
     public ServiceOperation getSelectedServiceOperation(){
       if( this.selSerTemplate != null ) {

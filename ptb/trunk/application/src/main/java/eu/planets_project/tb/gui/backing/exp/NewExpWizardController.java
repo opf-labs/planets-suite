@@ -132,7 +132,7 @@ public class NewExpWizardController {
         // Get the Experiment description objects
 	    exp = testbedMan.getExperiment(expBean.getID());
         props = exp.getExperimentSetup().getBasicProperties();
-        log.debug("TEST: exec: "+exp.getExperimentExecutable());
+        //log.debug("TEST: exec: "+exp.getExperimentExecutable());
         // If the experiment already existed, check for valid name changes:
         if( existingExp ) {
   	      try {
@@ -191,6 +191,14 @@ public class NewExpWizardController {
         
         // Set the experiment type:
         try {
+            //check if the experiment type has changed. If yes we need to remove the already chosen
+            //selection from step2, to properly reload all available serivces + operations
+            if(!exp.getExperimentSetup().getExperimentTypeID().equals(expBean.getEtype())){
+            	//exp. type was reselected - remove all chosen template information
+            	expBean.removeSelectedServiceTemplate();
+            	//set step2 to substep1
+            	changeAlreadySelectedSerOps();
+            }
             exp.getExperimentSetup().setExperimentType(expBean.getEtype());
         } catch (InvalidInputException e) {
             FacesContext ctx = FacesContext.getCurrentInstance();
@@ -221,8 +229,9 @@ public class NewExpWizardController {
         exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
         testbedMan.updateExperiment(exp);
         expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
+        
         log.debug("Exiting in success.");
-        log.debug("TEST: exec: "+exp.getExperimentExecutable());
+        //log.debug("TEST: exec: "+exp.getExperimentExecutable());
         return "success";
 	}
     
@@ -296,6 +305,8 @@ public class NewExpWizardController {
 		// add message-tag for duplicate name
         FacesContext ctx = FacesContext.getCurrentInstance();
         ctx.addMessage("stage3form",fmsg);
+        //the current stage is 3 as the'save' button is pressed
+        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);  
         return "success";
         
 	  } catch (InvalidInputException e) {
