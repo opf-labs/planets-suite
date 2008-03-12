@@ -49,7 +49,7 @@
 		    <f:facet name="folder">
 		    	<h:panelGroup>
 		      	<h:commandLink action="success">
-		        <t:graphicImage value="/graphics/filetype_folder.gif" border="0" />
+		        <t:graphicImage value="/imgs/filetype_folder.gif" border="0" />
 		        <h:outputText value=" #{do.leafname}"/>
 		        <t:updateActionListener property="#{fileBrowser.location}" value="#{do.uri}" />
 		        </h:commandLink>
@@ -59,7 +59,7 @@
 		    <f:facet name="file">
 		    	<h:panelGroup>
 		      	<!-- ${facesContext.externalContext.requestContextPath} -->
-		      	<t:graphicImage value="/graphics/filetype_file.png" title="directory" alt="directory" border="0" />
+		      	<t:graphicImage value="/imgs/filetype_file.png" title="directory" alt="directory" border="0" />
 		      	<h:outputText value=" #{do.leafname}"/>
 		      </h:panelGroup>
 		    </f:facet>
@@ -82,7 +82,7 @@
 		    <h:panelGroup rendered="#{do.directory}">
 		      <h:commandLink action="success">
 		        <!-- #{facesContext.externalContext.requestContextPath} -->
-		        <t:graphicImage value="/graphics/filetype_folder.gif" title="directory" alt="directory"/>
+		        <t:graphicImage value="/imgs/filetype_folder.gif" title="directory" alt="directory"/>
 		        <h:outputText value=" #{do.leafname}"/>
 		        <t:updateActionListener property="#{fileBrowser.location}" value="#{do.uri}" />
 		      </h:commandLink>
@@ -90,7 +90,7 @@
 		    
 	    	<h:panelGroup rendered="#{not do.directory}">
 	      	<!-- #{facesContext.externalContext.requestContextPath} -->
-	      	<t:graphicImage value="/graphics/filetype_file.png" />
+	      	<t:graphicImage value="/imgs/filetype_file.png" />
 	      	<h:outputText value=" #{do.leafname}"/>
 	    	</h:panelGroup>
 	    	  	
