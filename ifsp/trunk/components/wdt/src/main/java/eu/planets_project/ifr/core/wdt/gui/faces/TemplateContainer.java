@@ -1,5 +1,5 @@
 package eu.planets_project.ifr.core.wdt.gui.faces;
-
+				
 import java.util.List;
 import java.util.ArrayList;
 import java.net.MalformedURLException;
@@ -11,33 +11,36 @@ import javax.xml.ws.WebServiceRef;
 import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 //import javax.faces.context.ExternalContext;
-import javax.faces.application.ViewHandler;
 import javax.faces.event.ActionEvent;
 
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.wdt.common.services.ServiceRegistryManager_Service;
-import eu.planets_project.ifr.core.wdt.common.services.ServiceRegistryManager;
-import eu.planets_project.ifr.core.wdt.common.services.JAXRException_Exception;
+import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
+import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.ServiceRegistryManager_Service;
+import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.ServiceRegistryManager;
+import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.JAXRException_Exception;
+import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
+import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
 	
 /**
  *    container for workflow templates 
  *
  * @author Rainer Schmidt, ARC
  */
-public class TemplateContainerBean 
+public class TemplateContainer 
 	// implements ValueChangeListener
 {
 	//@WebServiceRef(wsdlLocation="http://dme023:8080/registry-ifr-registry-ejb/ServiceRegistryManager?wsdl")
 	//ServiceRegistryManager_Service service;
 	//does not inject...
 
-	private Log log = PlanetsLogger.getLogger(this.getClass(), "resources/log/sample-log4j.xml");	
+	private Log log = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
 	private List<WFTemplate> templates = null;
+	private WFTemplate currentTemplate = null;
 
 
-	public TemplateContainerBean() {
+	public TemplateContainer() {
 	}
 	
 	public List<WFTemplate> getTemplates() {
@@ -48,14 +51,14 @@ public class TemplateContainerBean
 		this.templates = templates;
 	}
 	
-		/**
+	/**
 	* loads workflow templates from data storage
 	*/
 	public String loadTemplates() {
 		templates = new ArrayList<WFTemplate>();
-		templates.add(new WFTemplate("Charicterization", "/views/wf.characterization.jsp"));
-		templates.add(new WFTemplate("Tiff2jpg", "/tiff2jpg.view"));
-		templates.add(new WFTemplate("ImageMagic", "/imageMagic.view"));
+		templates.add(new WFTemplate("Charicterization", "views/wf.characterization.xhtml", "characterizationWorkflowBean"));
+		templates.add(new WFTemplate("Tiff2jpg", "views/tiff2jpg.xhtml", "tiff2jpgMigrationBean"));
+		templates.add(new WFTemplate("ImageMagic", "views/imageMagic.xhtml", "imageMagicBean"));
 		return "success-loadTemplates";
 	}
 	
@@ -64,32 +67,37 @@ public class TemplateContainerBean
  	* 
  	* @param event
  	*/
-	public void selectView(ActionEvent event) {
-		WFTemplate template = null;
+	public String selectTemplate(ActionEvent event) {
+		//WFTemplate template = null;
 		try {
 			UICommand link = (UICommand) event.getComponent();
-			template = (WFTemplate) link.getValue(); 
-			//not working internallly
-			//FacesContext context = FacesContext.getCurrentInstance();
-			//ExternalContext extContext = context.getExternalContext();
-			//extContext.dispatch(template.getView()); 
-			String viewId = template.getView();
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			String currentViewId = facesContext.getViewRoot().getViewId();
+			currentTemplate = (WFTemplate) link.getValue(); 
+			String viewId = currentTemplate.getView();
+			log.debug("current view: "+viewId);
+			/*BUG: move this to faces-config*/
+			JSFUtil.redirectToView("/displayView.xhtml");
+			//-- not shure if I need that
+			//WorkflowBean wfBean = (WorkflowBean) JSFUtil.getManagedObject(template.getBeanInstance());
+			//wfBean.setView(viewId);
 			
-			if (viewId != null && (!viewId.equals(currentViewId))) {
-				ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
-				UIViewRoot viewRoot = viewHandler.createView(facesContext, viewId);
-				facesContext.setViewRoot(viewRoot);
-				facesContext.renderResponse();
-			} 
 		} catch(Exception e) {
 			log.error("Error selecting WFTemplate View ", e);
 		}
+		return "displayView";
+	}
+	
+	public String getCurrentView() {
+		if(currentTemplate == null) return null;
+		return currentTemplate.getView();
+	}
+	
+	public WFTemplate getCurrentTemplate() {
+		return currentTemplate;
 	}
 	
 	/**
 	* tests the services registry
+	* TODO: move this into a registry backing bean
 	*/
 	public String testRegistry() {
 		templates = new ArrayList<WFTemplate>();
@@ -106,41 +114,4 @@ public class TemplateContainerBean
 
 		return "success-testRegistry";
 	}
-
-	
-	
-	public class WFTemplate {
-		
-		private String name = null;
-		private String view = null;
-		
-		public WFTemplate() {
-		}
-		
-		public WFTemplate(String name, String view) {
-			this.name = name;
-			this.view = view;
-		}
-		
-		public void setName(String name) {
-			this.name = name;
-		}
-		
-		public String getName() {
-			return name;
-		}
-		
-		public void setView(String view) {
-			this.view = view;
-		}
-		
-		public String getView() {
-			return view;
-		}
-		
-		public String toString() {
-			return "wf:"+name;
-		}		
-	}
-
 }

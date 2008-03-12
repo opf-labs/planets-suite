@@ -1,5 +1,5 @@
 
-package eu.planets_project.ifr.core.wdt.common.services;
+package eu.planets_project.ifr.core.wdt.common.services.serviceRegistry;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;

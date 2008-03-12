@@ -1,5 +1,5 @@
 
-package eu.planets_project.ifr.core.wdt.common.services;
+package eu.planets_project.ifr.core.wdt.common.services.openXMLMigration;
 
 import javax.xml.ws.WebFault;
 
@@ -7,7 +7,7 @@ import javax.xml.ws.WebFault;
 /**
  * JBossWS Generated Source
  * 
- * Generation Date: Tue Feb 12 17:07:12 CET 2008
+ * Generation Date: Fri Feb 29 10:17:05 CET 2008
  * 
  * This generated source code represents a derivative work of the input to
  * the generator that produced it. Consult the input for the copyright and
@@ -16,8 +16,8 @@ import javax.xml.ws.WebFault;
  * JAX-WS Version: 2.0
  * 
  */
-@WebFault(name = "JAXRException", targetNamespace = "http://planets-project.eu/ifr/core/registry")
-public class JAXRException_Exception
+@WebFault(name = "PlanetsServiceException", targetNamespace = "http://planets-project.eu/ifr/core/services/migration")
+public class PlanetsServiceException_Exception
     extends Exception
 {
 
@@ -25,14 +25,14 @@ public class JAXRException_Exception
      * Java type that goes as soapenv:Fault detail element.
      * 
      */
-    private JAXRException faultInfo;
+    private PlanetsServiceException faultInfo;
 
     /**
      * 
      * @param faultInfo
      * @param message
      */
-    public JAXRException_Exception(String message, JAXRException faultInfo) {
+    public PlanetsServiceException_Exception(String message, PlanetsServiceException faultInfo) {
         super(message);
         this.faultInfo = faultInfo;
     }
@@ -43,7 +43,7 @@ public class JAXRException_Exception
      * @param message
      * @param cause
      */
-    public JAXRException_Exception(String message, JAXRException faultInfo, Throwable cause) {
+    public PlanetsServiceException_Exception(String message, PlanetsServiceException faultInfo, Throwable cause) {
         super(message, cause);
         this.faultInfo = faultInfo;
     }
@@ -51,9 +51,9 @@ public class JAXRException_Exception
     /**
      * 
      * @return
-     *     returns fault bean: eu.planets_project.ifr.core.wdt.common.services.JAXRException
+     *     returns fault bean: eu.planets_project.ifr.core.services.migration.PlanetsServiceException
      */
-    public JAXRException getFaultInfo() {
+    public PlanetsServiceException getFaultInfo() {
         return faultInfo;
     }
 

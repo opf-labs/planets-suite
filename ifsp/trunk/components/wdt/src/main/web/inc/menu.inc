@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="../css/screen_planets.css" type="text/css" media="screen" />
 <link rel="stylesheet" href="../css/screen_print.css" type="text/css" media="print" />
 <link rel="stylesheet" href="../css/basic.css" type="text/css" media="print" />
+<!-- testbed-->
+<link rel="stylesheet" href="../css/ptb-screen.css" type="text/css" media="print" />
 <!--<style type="text/css" media="print">@import "/incs/print.css";</style>-->
 <!--<style type="text/css" media="screen">@import "/incs/screen.css";</style>-->
 <link rel="shortcut icon" href="http://www.planets-project.eu/graphics/planets.ico" />
@@ -40,6 +42,18 @@
     else     
         document.getElementById('undeployService.jsp').className = 'menu';                        
   }  
+	
+	//remove /views/ from href to ease referencing
+  function go(link) {
+  	if (document.location.href.indexOf('views') > -1) {
+  		var sBase = document.location.href;
+  		var aBase = sBase.split("/views/");
+  		sBase = aBase[0].concat('/');
+  		top.location.href = sBase.concat(link);
+  	}
+		else top.location.href = link;
+	}
+	
 </script>    
 </head>
 
@@ -51,7 +65,7 @@
     <span class="sitetitle">Planets - IF/5 Online Workflow Design Tool</span> </div>
   <div id="headernav">
     <div class="menu">
-      <ul><li><a href="home.jsp" title="Home" id="home.jsp">Home</a></li><li><a href="loadWF.jsp" id="loadWF.jsp" title="Load WS">Load WF</a></li><li><a href="chooseWS.jsp" id="chooseWS.jsp" title="Choose WS">Choose WS</a></li><li><a href="deployWF.jsp" id="deployWF.jsp" title="Deploy WF">Deploy</a></li><li><a href="undeployWF.jsp" id="undeployWF.jsp" title="undeploy WF">Undeploy</a></li><li><a href="executeWF.jsp" id="executeWF.jsp" title="execute WF">Execute</a></li></ul>
+      <ul><li><a href="javascript:go('home.jsp')" title="Home" id="home.jsp">Home</a></li><li><a href="javascript:go('loadWF.jsp');" id="loadWF.jsp" title="Load WS">Load WF</a></li><li><a href="javascript:go('saveWF.jsp')" id="saveWF.jsp" title="Save WF">Save WF</a></li><li><a href="javascript:go('deployWF.jsp')" id="deployWF.jsp" title="Deploy WF">Deploy</a></li><li><a href="javascript:go('undeployWF.jsp')" id="javascript:go('undeployWF.jsp')" title="javascript:go('undeploy WF')">Undeploy</a></li><li><a href="javascript:go('executeWF.jsp')" id="executeWF.jsp" title="execute WF">Execute</a></li></ul>
 
 </div>
 </div>

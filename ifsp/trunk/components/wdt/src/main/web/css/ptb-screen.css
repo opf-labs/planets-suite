@@ -1,0 +1,77 @@
+/*******************
+* Main Page Layout *
+*******************/
+
+#mainwrapper
+
+{
+	float: left;
+	width: 100%;
+	/*background-image:  url("../graphics/leftcol.gif");*/
+	background-repeat: repeat-y;
+
+}
+
+#maincol
+{
+	margin-left: 200px;
+}
+
+#leftcol
+{
+	float: left;
+	width: 200px; /*Width of left column*/
+	margin-left: -100%;
+	background:transparent;
+	border-top: 2px solid #579EC2; 
+	text-align:right;
+}
+
+.innertube
+{
+	margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+	margin-top: 0;
+}
+
+.innertubemain
+{
+	margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+	margin-top: 0;
+	padding-left: 5px;
+	border: 2px solid #579EC2; 
+	background: #FFFFFF;
+}
+
+div.filepane
+{
+	width: 100%;
+	max-width: 800px;
+	height: 600px;
+	overflow: hidden;
+	/*border:1px solid black;*/
+	border:1px solid #666;
+}
+
+div.filebrowse
+{
+	float:left;
+	width: 200px;
+	height:595px;
+	overflow: scroll;
+	/*border-right:1px solid black;*/
+	border-right:1px solid #666;
+	padding:2px;
+}
+
+div.filebrowse table, div.filebrowse tr, div.filebrowse td {
+  border: none;
+}
+
+div.filemain
+{
+	width: auto;
+	overflow: scroll;
+	height:595px;
+	padding:2px;
+}
+

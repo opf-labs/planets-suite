@@ -4,16 +4,15 @@
 <%@ taglib uri="http://myfaces.apache.org/tomahawk" prefix="t"%>
 <%@include file="inc/menu.inc" %>
 
+<%@ page import = "eu.planets_project.ifr.core.wdt.gui.faces.TemplateContainer" %>
+
 <f:view>
 
 	<!-- navibar -->
-	<%@include file="inc/navibar.load.wf.inc" %>
-	
-	<div class="content">
-	<h1>Workflow Panel</h1>
-	<br>
-	Please Choose a Workflow Template ...
-	<br><br><br>
+	<%@include file="inc/navibar.execute.wf.inc" %>
+
+	<%@include file="views/wf.characterization.jsp" %>
+		
 
 </f:view>
 

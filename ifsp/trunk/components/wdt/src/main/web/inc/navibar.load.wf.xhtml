@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+      
+<body>
+	<ui:composition>	
+
+		<!-- a form for the commandLinks -->
+		<h:form formName="navibar.form">
+
+		
+		<!-- All Navigation Stuff Here -->
+		<div id="navbar">
+			
+		<ul class="primary">
+			<li><h:commandLink value="[ refresh templates ]" action="#{templateContainer.loadTemplates}" /></li>
+			<!--li><a class="navbar" href="/about/" title="1">Charakterisation</a></li-->
+		
+			<ul class="secondary">
+				<t:dataList id="templateLinkList" var="template" value="#{templateContainer.templates}" layout="simple" rowCountVar="rowCount" rowIndexVar="rowIndex">
+					<t:htmlTag value="li">
+						 <h:commandLink value="#{template}" action="selectTemplate" actionListener="#{templateContainer.selectTemplate}"/>
+						 <!--h:outputText value=", " rendered="#{rowIndex + 1 < rowCount}" /-->
+					</t:htmlTag>
+				</t:dataList> 
+			</ul>
+		</ul>
+		
+		<ul class="primary">
+			<li><h:commandLink value="[ lookup registry ]" action="#{currentWorkflowBean.lookupServices}" /></li>
+		</ul>				
+		</div>		
+		
+	</h:form>	
+	</ui:composition>
+</body></html>
+

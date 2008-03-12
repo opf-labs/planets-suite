@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+      
+<body>
+
+  <ui:composition template="inc/header.xhtml">
+  
+  <ui:define name="header">
+  	
+  	<!-- header navigation-->
+    <ui:include src="inc/menu.xhtml">
+        <ui:param name="page" value="chooseFile"/>
+    </ui:include>
+    
+    <!-- navibar -->
+    <ui:include src="inc/navibar.filechooser.xhtml"/>
+    
+  </ui:define>
+  
+  <ui:define name="title">
+        PLANETS: Workflow Online Design Tool (file chooser)
+  </ui:define>
+  
+  <!-- CONTENT -->
+  <ui:define name="content">
+  	
+	<f:loadBundle basename="eu.planets_project.ifr.core.wdt.gui.UIResource" var="res"/>
+	
+ 	<div class="content"> 	
+ 																											
+ 		<h:form id="drBrowserForm">
+
+ 		
+ 	
+ 		<p> 
+ 			<h:outputText value="#{res['browse_data.browsing']} "/> 
+ 			<h:commandLink value="#{fileBrowser.rootUrl}" actionListener="#{fileBrowser.redirect}"/>
+ 		</p>
+             
+    <div id="mainwrapper">   
+ 		<div class="filepane">
+ 		<div class="filebrowse">
+	  	<t:tree2 id="filerTree" value="#{fileBrowser.filerTree}" var="do" varNodeToggler="t" showRootNode="true" showLines="true" preserveToggle="true" clientSideToggle="true">
+	    
+		    <f:facet name="folder">
+		    	<h:panelGroup>
+		      	<h:commandLink action="success">
+		        <t:graphicImage value="/graphics/filetype_folder.gif" border="0" />
+		        <h:outputText value=" #{do.leafname}"/>
+		        <t:updateActionListener property="#{fileBrowser.location}" value="#{do.uri}" />
+		        </h:commandLink>
+		      </h:panelGroup>
+		    </f:facet>
+		    
+		    <f:facet name="file">
+		    	<h:panelGroup>
+		      	<!-- ${facesContext.externalContext.requestContextPath} -->
+		      	<t:graphicImage value="/graphics/filetype_file.png" title="directory" alt="directory" border="0" />
+		      	<h:outputText value=" #{do.leafname}"/>
+		      </h:panelGroup>
+		    </f:facet>
+	    
+	    </t:tree2>
+  	</div>
+		<div class="filemain">
+		<!--div id="dataRegistryBrowser"-->
+		<p>
+		<!-- data table-->
+		<t:dataTable id="FileBrowserList" var="do" value="#{fileBrowser.list}">
+                
+	    <h:column>
+	      <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}"/>
+	    </h:column>
+	           
+	    <h:column>
+	    	<!--f:facet name="header">#{res['browse_data.name']}</f:facet-->
+	    
+		    <h:panelGroup rendered="#{do.directory}">
+		      <h:commandLink action="success">
+		        <!-- #{facesContext.externalContext.requestContextPath} -->
+		        <t:graphicImage value="/graphics/filetype_folder.gif" title="directory" alt="directory"/>
+		        <h:outputText value=" #{do.leafname}"/>
+		        <t:updateActionListener property="#{fileBrowser.location}" value="#{do.uri}" />
+		      </h:commandLink>
+		    </h:panelGroup>
+		    
+	    	<h:panelGroup rendered="#{not do.directory}">
+	      	<!-- #{facesContext.externalContext.requestContextPath} -->
+	      	<t:graphicImage value="/graphics/filetype_file.png" />
+	      	<h:outputText value=" #{do.leafname}"/>
+	    	</h:panelGroup>
+	    	  	
+	    </h:column>
+    
+		</t:dataTable>
+		</p>
+	
+		<h:commandButton action="#{fileBrowser.selectAll}" value="#{res['browse_data.selectAll']}"/>
+  	<h:commandButton action="#{fileBrowser.selectNone}" value="#{res['browse_data.selectNone']}"/>
+                
+                <!-- /p -->
+                <!-- h:panelGroup rendered="#{isInExperiment}"-->
+                <!--p --> 
+		<h:commandButton action="#{fileBrowser.addToExperiment}" value="#{res['browse_data.addToExperiment']}"/>
+                <!--/p-->
+                <!--p-->
+                <!--h:commandButton action="goToStage2"
+                  value="#{res['browse_data.returnToExperiment']}"/-->
+                <!--/p-->
+                <!--/h:panelGroup--> 
+                
+    </div>
+   	</div>
+   	</div>
+		<br/><br/>
+
+  	</h:form>  	
+  </div>
+  	
+  <!-- /CONTENT -->
+  </ui:define>
+  
+  
+  <ui:define name="footer">
+  	<ui:include src="inc/footer.xhtml"/>
+  </ui:define>
+
+</ui:composition>
+
+</body>
+</html>
+

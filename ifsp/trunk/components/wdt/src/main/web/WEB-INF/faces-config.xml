@@ -5,8 +5,13 @@
   "http://java.sun.com/dtd/web-facesconfig_1_1.dtd" >
 
 <faces-config>
-	
-	<!-- managed beans of the simple hello world app -->
+	<!-- include facelets-->
+	<application>
+    <view-handler>
+      com.sun.facelets.FaceletViewHandler
+    </view-handler>    
+  </application> 
+  <!-- /facelets-->
 	<managed-bean>
 		<managed-bean-name>helloWorldBacking</managed-bean-name>
 		<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.HelloWorldBacking</managed-bean-class>
@@ -14,20 +19,33 @@
 	</managed-bean>
 	<!-- managed beans of loadWF -->
  	<managed-bean>
-    <managed-bean-name>templateContainerBean</managed-bean-name>
-    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.TemplateContainerBean</managed-bean-class>
+    <managed-bean-name>templateContainer</managed-bean-name>
+    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.TemplateContainer</managed-bean-class>
     <managed-bean-scope>session</managed-bean-scope>
     <!-- managed-property>
       <property-name>workDir</property-name>
       <value>../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets/sample</value>
     </managed-property-->  
-  </managed-bean>  
+  </managed-bean>
+  <!-- generic wrapper for accessing the currently loaded workflow -->  
+  <managed-bean>
+  	<managed-bean-name>currentWorkflowBean</managed-bean-name>
+  	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.CurrentWorkflowBean</managed-bean-class>
+  	<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>  
+  <!-- managed beans of chooseFile -->  
+  <managed-bean>
+  	<managed-bean-name>fileBrowser</managed-bean-name>
+  	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.FileBrowser</managed-bean-class>
+  	<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+	<!-- put your workflow beans here -->  
   <managed-bean>
     <managed-bean-name>characterizationWorkflowBean</managed-bean-name>
     <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DemoCharacterizationWorkflowBean</managed-bean-class>                        
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
-	
+  
 	<!-- navigation rules for helloWorld.jsp -->
 	<navigation-rule>
 		<from-view-id>/hello.jsp</from-view-id>
@@ -36,7 +54,6 @@
 			<to-view-id>/page2.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	
 	<!-- navigation rules for page2.jsp -->
 	<navigation-rule>
 		<from-view-id>/page2.jsp</from-view-id>
@@ -45,17 +62,30 @@
 			<to-view-id>/hello.jsp</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-	
 	<!-- navigation rules for loadWF.jsp-->
 	<navigation-rule>
-    <from-view-id>/loadWF.jsp</from-view-id>
+    <from-view-id>/*</from-view-id>
     <navigation-case>
-      <from-outcome>success-loadTemplates</from-outcome>
-      <to-view-id>/loadWF.jsp</to-view-id>
+    	<!--from-action>#{templateContainer.selectTemplate}</from-action-->
+      <from-outcome>displayView</from-outcome>
+      <to-view-id>/displayView.xhtml</to-view-id>
+      <redirect/>
     </navigation-case>
-    <navigation-case>
-      <from-outcome>success-testRegistry</from-outcome>
-      <to-view-id>/loadWF.jsp</to-view-id>
-    </navigation-case>  
   </navigation-rule>  
+	<!-- navigation rules for executeWF.xhtml -->
+	<navigation-rule>
+		<from-view-id>/executeWF.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>fileChooser</from-outcome>
+			<to-view-id>/chooseFile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- navigation rules for fileChooser.xhtml -->
+	<navigation-rule>
+		<from-view-id>/chooseFile.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>back</from-outcome>
+			<to-view-id>/executeWF.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

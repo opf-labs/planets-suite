@@ -1,0 +1,117 @@
+body {
+	font: 12pt "Times New Roman", "TimesNR", Times, serif;
+	text-align: left;
+}
+
+* {
+	color: black !important;
+	background: white !important;
+}
+
+
+#wrapper
+{
+	border: none;
+}
+
+
+.language
+{
+	display: none;
+}
+
+#header {
+	display: none;
+	}	
+
+#headernav {
+	display: none;
+}
+
+.menu {
+	display: none;
+}
+
+#navbar
+{
+	display: none;
+}
+
+.content {
+	border: none;
+}
+
+
+.content h1 {
+	text-transform: uppercase;
+	letter-spacing: 0.4em;
+	padding: 5px 0 10px 0;
+}
+
+.item {
+	padding: 0 0 20px 0;
+	clear: both;
+}
+
+.item .item-header
+{
+	border-bottom:  1px solid #aaa;
+	margin: 0 0 5px 0;
+}
+
+.item .item-header h4
+{
+	font-size: small;
+	padding: 0 0 1px 0;
+	margin: 0 0 0 5px;
+	color: #666;
+}
+
+.item .item-header h3
+{
+	display: inline;
+	color: #111;	
+}
+
+.item .item-body
+{
+}
+
+.staff-photo
+{
+	margin-right: 10px;
+	float: left;
+}
+
+.staff-text
+{
+	padding-left: 10px;
+}
+
+.profile {
+	width: 95%;
+	float: left;
+	position: relative;
+	border: 1px solid #000000;
+	padding: 0 1em 0 1em;
+	margin: 1em 0 1em 0;
+	font-size: 0.95em;
+}
+
+.profileImage
+{
+
+	float: right;
+	padding: 1em 0 1em 0;	
+}
+
+.profileText 
+{
+	width: 75%;
+	float: left;
+	margin-top: -0.5em;
+}
+
+#footer {
+	display: none;
+}

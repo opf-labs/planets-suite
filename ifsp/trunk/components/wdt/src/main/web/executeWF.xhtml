@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jstl/core">
+      
+<body>
+
+  <ui:composition template="inc/header.xhtml">
+  
+  <ui:define name="header">
+  	
+  	<!-- header navigation-->
+    <ui:include src="inc/menu.xhtml">
+        <ui:param name="page" value="executeWF"/>
+    </ui:include>
+    
+    <!-- navibar -->
+    <ui:include src="inc/navibar.execute.wf.xhtml"/>
+    
+  </ui:define>
+  
+  <ui:define name="title">
+        PLANETS: Workflow Online Design Tool (execute WF)
+  </ui:define>
+  
+  <ui:define name="content">
+  	<div class="content">
+	  	<!-- not possible this way; produces: facelet stack overflow -->
+	  	<!--ui:fragment id="current_fw" rendered="#{not empty templateContainer.currentView}"-->
+	  	<!--/ui:fragment-->
+	  	<c:if test="${(templateContainer.currentView != null)}">
+	  		<!--p>currentView: ${templateContainer.currentView}</p-->
+	  		<ui:include src="#{templateContainer.currentView}"/>
+	  	</c:if><c:if test="${(templateContainer.currentView == null)}">
+	  		<p><center><h2>please specify a workflow for execution</h2></center></p>
+	  	</c:if>
+  	</div>
+  </ui:define>
+  
+  
+  <ui:define name="footer">
+  	<ui:include src="inc/footer.xhtml"/>
+  </ui:define>
+
+</ui:composition>
+
+</body>
+</html>

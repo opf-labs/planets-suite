@@ -1,19 +1,27 @@
 package eu.planets_project.ifr.core.wdt.gui.faces.views;
 
 import java.util.List;
+import java.util.Vector;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 //import javax.xml.namespace.QName;
-
 import javax.faces.component.*;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.common.api.PlanetsService;
+//import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
+import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
+import eu.planets_project.ifr.core.wdt.impl.registry.Service;
+import eu.planets_project.ifr.core.wdt.impl.registry.ServiceRegistry;
+import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
 	
 /**
  *    characterization workflow bean 
@@ -22,55 +30,122 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
  *
  * @author Rainer Schmidt, ARC
  */
-public class DemoCharacterizationWorkflowBean {
-
-	private Log log = PlanetsLogger.getLogger(this.getClass(), "resources/log/sample-log4j.xml");	
+public class DemoCharacterizationWorkflowBean extends AbstractWorkflowBean implements PlanetsService, WorkflowBean {
+	
+	private Log logger = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
+	
+	private String viewId = null;
 	
 	private List<SelectItem> charServices = null;
 	private List<SelectItem> migServices = null;
 	private SelectItem currentCharService = null;
 	private SelectItem currentMigService = null;
-
+	
+	private ServiceRegistry registry = null;
+	
 	public DemoCharacterizationWorkflowBean() {
-		loadServices();
+		super();
+		//get a registry url from a .properties file 
+		registry = new ServiceRegistry();
+		this.resetServices();
 	}
 
 	/**
-	* loads workflow templates from data storage
+	* loads services from a service registry 
 	*/
-	public String loadServices() {
+	public void lookupServices() {
+		
+		this.resetServices();
+		//registry lookup...
+		charServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, "char"))) );
+		migServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, "mig"))) );
+	}
+	
+	/**
+	* removes service urls
+	*/
+	public void resetServices() {
 		charServices = new ArrayList<SelectItem>();
 		charServices.add( new SelectItem("please choose a service") );
-		charServices.add( new SelectItem("http://myCharacterization.com/service1") );
-		charServices.add( new SelectItem("http://myCharacterization.com/service2") );
-		charServices.add( new SelectItem("http://myCharacterization.com/service3") );
 		currentCharService = charServices.get(0);
-		return "success-loadServices";
+		migServices = new ArrayList<SelectItem>();
+		migServices.add( new SelectItem("please choose a service") );
+		currentMigService = charServices.get(0);		
 	}
+	
+	/**
+	* adds a service for a user interface component
+	* @param uiID HTML id of a workflow view component
+	* @param endpoint Web service endpoint that should be added 
+	*/
+	//public void addService(String uiId, String endpoint) {
+	//	if(uiID.equals(CHAR_SERVICE))
+	//}
+	//...or maybe something more generic
+	//public void addService(String endpoint) 
+	//...or something like addMigService(url) that can be directly included in view
+	
+	//public void setCharServies(List services) {
+	//	this.charServices = services;
+	//}
 		
 	public List<SelectItem> getCharServices() {
 		return charServices;
 	}
 	
-	public void setCharServies(List services) {
-		this.charServices = services;
+	public String getCurrentCharService() {
+		String service = (String) currentCharService.getValue();
+		return service;
 	}	
 	
+	public void toggleCharServices(ValueChangeEvent vce) {
+		String selectedService = (String) vce.getNewValue();
+		//point currentCharService to new selection
+		for( SelectItem indexService : charServices ) {
+    	if( indexService.getValue().toString().equals(selectedService)) currentCharService = indexService;
+    }
+    logger.debug("currentCharService: " + currentCharService.getValue().toString() );
+	}
+	
+	//public void setMigServies(List services) {
+	//	this.migServices = services;
+	//}
+		
 	public List<SelectItem> getMigServices() {
 		return migServices;
 	}
 	
-	public void setLinkList(List services) {
-		this.migServices = services;
-	}
-	
-	public String getCurrentCharService() {
-		String service = (String) currentCharService.getValue();
+	public String getCurrentMigService() {
+		String service = (String) currentMigService.getValue();
 		return service;
+	}	
+	
+	public void toggleMigServices(ValueChangeEvent vce) {
+		String selectedService = (String) vce.getNewValue();
+		//point currentCharService to new selection
+		for( SelectItem indexService : migServices ) {
+    	if( indexService.getValue().toString().equals(selectedService)) currentMigService = indexService;
+    }
+    logger.debug("currentMigService: " + currentMigService.getValue().toString() );
 	}
 	
-	//public void setCurrentCharService(SelectItem charService) {
-	//	this.currentCharService = charService;
-	//}
+	/*public void addInputData(String localFileRef) {
+		super.addInputData(localFileRef);
+	}*/
+	
+	/* Interface: WorkflowBean
+	public void setView(String view) {
+		this.viewId = view;
+	}
+	
+	public String getView() {
+		return this.viewId;
+	}
+	*/
+	
+	public String invokeService(String pdm) {
+		logger.debug("charakterization workflow started with input: "+pdm);
+		return pdm;		
+	}
 	
 }

@@ -6,5 +6,16 @@
 	<property name="component.version" value="0.1"/>
 	<property name="component.dependencies" value=""/>
 	<!-- deployment.model can either be ear|war|ejb-jar|other -->
-	<property name="deployment.model" value="war"/>
+	<property name="deployment.model" value="ear"/>
+	
+	<!-- properties file -->
+	<property file="build.properties"/>
+	
+	<!-- wdt additions-->
+	<target name="build" depends="compile" description="overrides default build">
+ 			<copy file="${src.dir}/${ui.bundle}" tofile="${build.dir}/classes/${ui.bundle}"/>
+ 			<build component="${component.name}"/>
+    	<executed target="build" component="${component.name}"/>
+	</target>	
+
 </project>

@@ -1,5 +1,5 @@
 
-package eu.planets_project.ifr.core.wdt.common.services;
+package eu.planets_project.ifr.core.wdt.common.services.serviceRegistry;
 
 import java.net.MalformedURLException;
 import java.net.URL;

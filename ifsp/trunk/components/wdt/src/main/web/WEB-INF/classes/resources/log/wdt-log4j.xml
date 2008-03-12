@@ -11,7 +11,7 @@
     </appender>
 	
     <appender name="ROLLING" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="File" value="${jboss.server.log.dir}/planets-ifr-sample-gui.log"/>
+        <param name="File" value="${jboss.server.log.dir}/planets-ifr-wdt-gui.log"/>
         <layout class="org.apache.log4j.PatternLayout">
 	    <param name="ConversionPattern" value="%d %-5p [%c] - %m%n"/>
 	</layout>
