@@ -19,11 +19,22 @@ public class CurrentWorkflowBean implements WorkflowBean {
 	public CurrentWorkflowBean() {
 	}
 
+	/*
+	* returns the currently selected workflowBean implementation
+	*/
 	public WorkflowBean getCurrentWorkflowBean() {
 		TemplateContainer templateContainer = (TemplateContainer) JSFUtil.getManagedObject("templateContainer");
 		WFTemplate currentTemplate = templateContainer.getCurrentTemplate();
 		WorkflowBean wfBean = (WorkflowBean) JSFUtil.getManagedObject(currentTemplate.getBeanInstance());
 		return wfBean;
+	}
+		
+	/*
+	* Inject input data
+	*/	
+	public void addInputData(String localFileRef) {
+		WorkflowBean wfBean = getCurrentWorkflowBean();
+		wfBean.addInputData(localFileRef);
 	}
 	
 	/*
@@ -33,13 +44,12 @@ public class CurrentWorkflowBean implements WorkflowBean {
 		WorkflowBean wfBean = getCurrentWorkflowBean();
 		wfBean.lookupServices();
 	}	
-	
+
 	/*
-	* Inject input data
-	*/	
-	public void addInputData(String localFileRef) {
+	* Reset services
+	*/
+	public void resetServices() {
 		WorkflowBean wfBean = getCurrentWorkflowBean();
-		wfBean.addInputData(localFileRef);
+		wfBean.resetServices();
 	}
-	
 }

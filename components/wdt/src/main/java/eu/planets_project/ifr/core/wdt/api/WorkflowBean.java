@@ -13,6 +13,8 @@ public interface WorkflowBean {
 	
 	//this is general and can be handled by an abstract parent
 	public void addInputData(String localFileRef);
-	//this needs to be called by via a gui component
+	
+	//these need to be called via gui components
 	public void lookupServices();
+	public void resetServices();
 }
