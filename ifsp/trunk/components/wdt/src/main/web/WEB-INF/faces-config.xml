@@ -12,11 +12,6 @@
     </view-handler>    
   </application> 
   <!-- /facelets-->
-	<managed-bean>
-		<managed-bean-name>helloWorldBacking</managed-bean-name>
-		<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.HelloWorldBacking</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
 	<!-- managed beans of loadWF -->
  	<managed-bean>
     <managed-bean-name>templateContainer</managed-bean-name>
@@ -27,18 +22,25 @@
       <value>../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets/sample</value>
     </managed-property-->  
   </managed-bean>
-  <!-- generic wrapper for accessing the currently loaded workflow -->  
-  <managed-bean>
-  	<managed-bean-name>currentWorkflowBean</managed-bean-name>
-  	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.CurrentWorkflowBean</managed-bean-class>
-  	<managed-bean-scope>request</managed-bean-scope>
- 	</managed-bean>  
   <!-- managed beans of chooseFile -->  
   <managed-bean>
   	<managed-bean-name>fileBrowser</managed-bean-name>
   	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.FileBrowser</managed-bean-class>
   	<managed-bean-scope>session</managed-bean-scope>
  	</managed-bean>
+ 	<!-- managed beans for workflow execution-->
+  <managed-bean>
+  	<managed-bean-name>beanExecutor</managed-bean-name>
+  	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.BeanExecutor</managed-bean-class>  																															
+  	<managed-bean-scope>session</managed-bean-scope>
+ 	</managed-bean>
+ 	<!-- generic wrapper for accessing the currently loaded workflow -->  
+  <managed-bean>
+  	<managed-bean-name>currentWorkflowBean</managed-bean-name>
+  	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.CurrentWorkflowBean</managed-bean-class>
+  	<managed-bean-scope>request</managed-bean-scope>
+ 	</managed-bean>  
+ 	<!-- ############################ -->
 	<!-- put your workflow beans here -->  
   <managed-bean>
     <managed-bean-name>characterizationWorkflowBean</managed-bean-name>
