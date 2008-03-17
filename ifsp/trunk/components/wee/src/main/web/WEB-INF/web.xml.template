@@ -12,33 +12,6 @@
 
   <display-name>JBossWS</display-name>
 
-	<!-- Uncomment when PSSOS is available
-	       NOTE1: make sure that java keystore is set up correctly (see instructions)
-	                 in "Adding SSO to PLANETS Web Applications"
-	       NOTE2: make sure that casclient-2.1.1.jar is on classpath (should be in
-	                 server/default/lib)     -->     
-    <filter>
-        <filter-name>CAS Filter</filter-name>
-        <filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>
-        <init-param>
-            <param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
-            <param-value>https://@framework.host@:@framework.ssl.port@/security/login</param-value>
-        </init-param>
-        <init-param>
-            <param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
-            <param-value>https://@framework.host@:@framework.ssl.port@/security/serviceValidate</param-value>
-        </init-param>
-        <init-param>
-            <param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>
-            <param-value>@framework.host@:@framework.port@</param-value>
-        </init-param>
-    </filter>
- 
-    <filter-mapping>
-        <filter-name>CAS Filter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>	<!-- -->
-
   <servlet>
     <servlet-name>ContextServlet</servlet-name>
     <servlet-class>eu.planets_project.ifr.core.wee.gui.WeeContextServlet</servlet-class>
@@ -79,5 +52,24 @@
   <welcome-file-list id="WelcomeFileList">
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>PlanetsRealm</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>PlanetsRealm</realm-name>
+        <form-login-config>
+            <form-login-page>/login-redirect.jsp</form-login-page>
+            <form-error-page>/login-redirect.jsp</form-error-page>
+        </form-login-config>
+    </login-config>
 
 </web-app>
