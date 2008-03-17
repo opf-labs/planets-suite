@@ -142,10 +142,12 @@ public class DemoCharacterizationWorkflowBean extends AbstractWorkflowBean imple
 		return this.viewId;
 	}
 	*/
+
 	
-	public String invokeService(String pdm) {
-		logger.debug("charakterization workflow started with input: "+pdm);
-		return pdm;		
+	/**
+	* non-argument service interface
+	*/
+	public String invokeService() {
+		return null;
 	}
-	
 }

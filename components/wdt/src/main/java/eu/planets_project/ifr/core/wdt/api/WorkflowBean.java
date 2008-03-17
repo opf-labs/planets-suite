@@ -17,4 +17,9 @@ public interface WorkflowBean {
 	//these need to be called via gui components
 	public void lookupServices();
 	public void resetServices();
+	
+	//non-argument Planets services interface
+	//invoked via by an execution thread
+	public String invokeService();
+	
 }

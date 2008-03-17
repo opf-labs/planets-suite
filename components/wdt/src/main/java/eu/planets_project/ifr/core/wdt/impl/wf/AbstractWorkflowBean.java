@@ -22,13 +22,20 @@ public abstract class AbstractWorkflowBean {
 	
 		private Log logger = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
 		
-		protected String[] inputData = null;
+		//this will be a collection of data model instances
+		protected List<String> inputData = null;
     
     public AbstractWorkflowBean(){   
+    	inputData = new ArrayList<String>();
     }
     
-    public void addInputData(String localFileRef) {
-    	logger.debug("Experiment Input Data - added: " + localFileRef);
+    public void addInputData(String pdm) {
+    	logger.debug("Experiment Input Data - added: " + pdm);
+    	inputData.add(pdm);    	
+    }
+    
+    public String[] getInputData() {
+    	return inputData.toArray(new String[0]);
     }
     
     protected List<SelectItem> toSelectItem(List<Service> services) {   
@@ -41,4 +48,17 @@ public abstract class AbstractWorkflowBean {
     	}
     	return ret;
     }
+    
+    /**
+		* Planets Service Interface
+		*/
+		public String invokeService(String pdm) {
+			logger.debug("charakterization workflow started with input: "+pdm);
+			this.addInputData(pdm);
+			this.invokeService();
+			return pdm;		
+		}
+		
+		public abstract String invokeService();
+		
 }

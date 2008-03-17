@@ -11,6 +11,7 @@ import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
 /**
  	* @author Rainer Schmidt
  	* wrapper class providing access to the currently loaded workflow
+ 	* don't put any other logic here!
  	*/
 public class CurrentWorkflowBean implements WorkflowBean {
 	
@@ -22,7 +23,7 @@ public class CurrentWorkflowBean implements WorkflowBean {
 	/*
 	* returns the currently selected workflowBean implementation
 	*/
-	public WorkflowBean getCurrentWorkflowBean() {
+	protected WorkflowBean getCurrentWorkflowBean() {
 		TemplateContainer templateContainer = (TemplateContainer) JSFUtil.getManagedObject("templateContainer");
 		WFTemplate currentTemplate = templateContainer.getCurrentTemplate();
 		WorkflowBean wfBean = (WorkflowBean) JSFUtil.getManagedObject(currentTemplate.getBeanInstance());
@@ -51,5 +52,13 @@ public class CurrentWorkflowBean implements WorkflowBean {
 	public void resetServices() {
 		WorkflowBean wfBean = getCurrentWorkflowBean();
 		wfBean.resetServices();
+	}
+	
+	/*
+	* Execute service method
+	*/
+	public String invokeService() {
+		WorkflowBean wfBean = getCurrentWorkflowBean();
+		return wfBean.invokeService();
 	}
 }
