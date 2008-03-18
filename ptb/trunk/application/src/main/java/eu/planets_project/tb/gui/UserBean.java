@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.common.api.UserManager;
-import eu.planets_project.ifr.core.common.api.User;
+import eu.planets_project.ifr.core.security.api.model.User;
+import eu.planets_project.ifr.core.security.api.services.UserManager;
 
 /**
  * UserBean.java serves as the POJO for storing information about a Testbed User.
@@ -147,11 +147,16 @@ public class UserBean
         this.userid = userid;
         // Also, when the user ID is set, look up the user details
         UserManager um = UserBean.getUserManager();
+        if( um == null ) {
+            log.error("Could not get the User Manager!");
+            return;
+        }
         User u = null;
         try {
-            u = um.loadUserByUsername(userid);
+            u = um.getUserByUsername(userid);
         } catch( Exception e ){
-            log.error("Exception while attempting to load the User details: "+e);
+            log.error("Exception while attempting to load the User details for '"+userid+"': "+e);
+            if( log.isDebugEnabled() ) e.printStackTrace();
         }
         // If we succeeded:
         if( u != null ) {
@@ -167,6 +172,8 @@ public class UserBean
             u.getAddress().getProvince() + " " + u.getAddress().getPostalCode() + ",\n" +
             u.getAddress().getCountry();
             log.debug("User lookup succeeded: Got details for "+u.getFullName());
+        } else {
+            log.error("Username '"+userid+"' not found! Returned a null User object.");
         }
     }
 

@@ -41,33 +41,6 @@
         <param-value>TestbedData</param-value>
     </context-param>
 
-	<!-- Uncomment when PSSOS is available
-		NOTE1: make sure that java keystore is set up correctly (see instructions)
-		in "Adding SSO to PLANETS Web Applications"
-		NOTE2: make sure that casclient-2.1.1.jar is on classpath (should be in
-		server/default/lib)     -->
-	<!--
-		<filter>
-		<filter-name>CAS Filter</filter-name>
-		<filter-class>edu.yale.its.tp.cas.client.filter.CASFilter</filter-class>
-		<init-param>
-		<param-name>edu.yale.its.tp.cas.client.filter.loginUrl</param-name>
-		<param-value>https://localhost:8443/security/login</param-value>
-		</init-param>
-		<init-param>
-		<param-name>edu.yale.its.tp.cas.client.filter.validateUrl</param-name>
-		<param-value>https://localhost:8443/security/serviceValidate</param-value>
-		</init-param>
-		<init-param>
-		<param-name>edu.yale.its.tp.cas.client.filter.serverName</param-name>
-		<param-value>localhost:8080</param-value>
-		</init-param>
-		<init-param>
-		<param-name>edu.yale.its.tp.cas.client.filter.wrapRequest</param-name>
-		<param-value>true</param-value>
-		</init-param>        
-		</filter>
-	-->
   <!--Extension Filter for File Upload -->
 	<filter>
 		<filter-name>extensionsFilter</filter-name>
@@ -108,13 +81,6 @@
 		<filter-name>extensionsFilter</filter-name>
 		<url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
 	</filter-mapping>
-
-	<!-- 
-		<filter-mapping>
-		<filter-name>CAS Filter</filter-name>
-		<url-pattern>/*</url-pattern>
-		</filter-mapping>
-	-->
 
 	<listener>
 		<listener-class>
@@ -227,14 +193,12 @@
 		</auth-constraint>
 	</security-constraint>
 
-	<!--  
-	-->
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<realm-name>PlanetsRealm</realm-name>
 		<form-login-config>
-			<form-login-page>/login.faces</form-login-page>
-			<form-error-page>/error.html</form-error-page>
+			<form-login-page>/login-redirect.jsp</form-login-page>
+			<form-error-page>/login-redirect.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
 

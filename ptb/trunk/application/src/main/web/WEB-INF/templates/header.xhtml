@@ -40,15 +40,11 @@
                         <a target="_blank" class="glinks" href="/admin/editProfile.html">
                         <img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" alt="" title="" />
                         <h:outputText value="#{res.editprofile}"/>
+                        </a> |
+                        <a class="glinks" href="/testbed/logout-redirect.jsp">
+                          <img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="" title="" />
+                          <h:outputText value="#{res.logout}"/>
                         </a>
-						<!--  h:commandLink styleClass="glinks" action="profile">
-							<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" alt="" title="" />
-							<h:outputText value="#{res.editprofile}"/>
-						</h:commandLink--> | 
-						<h:commandLink styleClass="glinks" action="#{Login_Backing.logout}" immediate="true">
-							<img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="" title="" />
-							<h:outputText value="#{res.logout}"/>
-						</h:commandLink>
 					</p>
 				</div>
 			</ui:fragment>
