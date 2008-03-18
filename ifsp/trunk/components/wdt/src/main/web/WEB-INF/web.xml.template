@@ -145,8 +145,8 @@
 		<mime-type>text/plain</mime-type>
 	</mime-mapping>
 	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-		<welcome-file>index.html</welcome-file>
+		<!--welcome-file>index.jsp</welcome-file-->
+		<welcome-file>home.xhtml</welcome-file>
 	</welcome-file-list>
 	
     <security-constraint>
