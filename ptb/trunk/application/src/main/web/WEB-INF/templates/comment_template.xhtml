@@ -36,8 +36,8 @@
         </f:facet>
         <f:facet name="comment">
             <h:panelGroup styleClass="#{cmt.expPhase==ExperimentBean.phaseBeans[ExperimentPhase].experimentPhaseID ? 'commentWrapCurrent' : 'commentWrap'}">
-              <t:graphicImage value="/graphics/toolbar_user.gif" rendered="#{t.nodeExpanded}" border="0"/>
-              <t:graphicImage value="/graphics/toolbar_user.gif" rendered="#{!t.nodeExpanded}" border="0"/> 
+              <t:graphicImage value="/graphics/toolbar_user.gif" rendered="#{t.nodeExpanded}" />
+              <t:graphicImage value="/graphics/toolbar_user.gif" rendered="#{!t.nodeExpanded}" /> 
               <h:outputText value="#{cmt.title}" styleClass="commentTitle"/>
               <t:div styleClass="commentBodyWrap">
                 <h:outputText value="#{cmt.body}" styleClass="commentBody"/>

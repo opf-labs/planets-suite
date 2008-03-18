@@ -141,7 +141,7 @@ function cleanForm() {
     
 	<p>
 		<h:outputLabel value="#{res['new_exp.expIdeas']}" for="eref" />
-        <h:selectManyListbox id="expRefMulti"
+        <h:selectManyListbox id="eref"
             value="#{ExperimentBean.eref}" size="5" style="width: 23em;"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
           <f:selectItems value="#{ExperimentBean.allExperimentsSelectItems}"/>
         </h:selectManyListbox>
@@ -156,14 +156,16 @@ function cleanForm() {
                 </p>
                 <t:dataList var="refurl" value="#{ExperimentBean.litRefURI}" rowIndexVar="rowi">
                 <div>
-                    <p><h:outputLabel value="#{res['new_exp.litRef_Desc']}" for="litRefDesc_#{rowi}" />
-                        <h:inputText  required="#{((ExperimentBean.litRefURI[rowi]!=null) and (ExperimentBean.litRefURI[rowi]!=''))}" id="litRefDesc_#{rowi}" value="#{ExperimentBean.litRefDesc[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                        <h:message for="litRefDesc_#{rowi}" errorClass="errorMessage" />			
-                    </p>
-                    <p><h:outputLabel value="#{res['new_exp.litRef_URI']}" for="litRefURI_#{rowi}" />
-                        <h:inputText  required="#{((ExperimentBean.litRefDesc[rowi]!=null) and (ExperimentBean.litRefDesc[rowi]!=''))}" id="litRefURI_#{rowi}" value="#{ExperimentBean.litRefURI[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                        <h:message for="litRefURI_#{rowi}" errorClass="errorMessage" />	
-                    </p>
+                    <h:panelGroup>
+                        <h:outputLabel for="litRefDesc_#{rowi+1}" value="#{res['new_exp.litRef_Desc']}"/>
+                        <h:inputText id="litRefDesc_#{rowi+1}" required="#{((ExperimentBean.litRefURI[rowi]!=null) and (ExperimentBean.litRefURI[rowi]!=''))}" value="#{ExperimentBean.litRefDesc[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+                        <h:message for="litRefDesc_#{rowi+1}" errorClass="errorMessage" />			
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:outputLabel for="litRefURI_#{rowi+1}" value="#{res['new_exp.litRef_URI']}"/>
+                        <h:inputText id="litRefURI_#{rowi+1}" required="#{((ExperimentBean.litRefDesc[rowi]!=null) and (ExperimentBean.litRefDesc[rowi]!=''))}" value="#{ExperimentBean.litRefURI[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+                        <h:message for="litRefURI_#{rowi+1}" errorClass="errorMessage" />	
+                    </h:panelGroup>
                 </div>
                 </t:dataList>
 

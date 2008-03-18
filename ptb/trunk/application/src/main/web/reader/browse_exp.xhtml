@@ -46,7 +46,7 @@
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
                 </h:commandLink>
                 <h:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
-                    <t:graphicImage value="/graphics/accessories-text-editor.png" border="0" alt="edit" styleClass="expEditIcon"/>
+                    <t:graphicImage value="/graphics/accessories-text-editor.png" alt="edit" styleClass="expEditIcon"/>
                 </h:commandLink>
         </t:column>
         <t:column>
@@ -109,22 +109,22 @@
                         paginatorActiveColumnStyle="font-weight:bold;">
             
             <f:facet name="first" >
-                <t:graphicImage url="/graphics/arrow-first.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-first.gif" />
             </f:facet>
             <f:facet name="last">
-                <t:graphicImage url="/graphics/arrow-last.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-last.gif" />
             </f:facet>
             <f:facet name="previous">
-                <t:graphicImage url="/graphics/arrow-previous.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-previous.gif" />
             </f:facet>
             <f:facet name="next">
-                <t:graphicImage url="/graphics/arrow-next.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-next.gif" />
             </f:facet>
             <f:facet name="fastforward">
-                <t:graphicImage url="/graphics/arrow-ff.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-ff.gif" />
             </f:facet>
             <f:facet name="fastrewind">
-                <t:graphicImage url="/graphics/arrow-fr.gif" border="1" />
+                <t:graphicImage url="/graphics/arrow-fr.gif" />
             </f:facet>
         </t:dataScroller>
 
