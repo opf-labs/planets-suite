@@ -98,14 +98,14 @@ function cleanForm() {
         <p><h:outputLabel value="#{res['new_exp.expParticipants']}" for="eparticipants" />
         <h:inputText required="false" id="eparticipants" value="#{ExperimentBean.eparticipants}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipParticipants']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
-
+<!--
     <p>
 	<h:outputLabel value="#{res['new_exp.expFormalInformal']}" for="formality"  />
 	 	<h:selectBooleanCheckbox value="#{ExperimentBean.formality}" id="formality" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
 		<img src="../graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipFormalInformal']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
 	</p>
 	<div class="clear"></div>
-
+-->
 </fieldset>
 <fieldset>
     <legend>#{res['new_exp.legendContact']}</legend>
