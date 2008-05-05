@@ -47,6 +47,11 @@
     <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DemoCharacterizationWorkflowBean</managed-bean-class>                        
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
+  <managed-bean>
+    <managed-bean-name>demoSimpleConvertBean1</managed-bean-name>
+    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DemoSimpleConvertBean1</managed-bean-class>                        
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>
   
 	<!-- navigation rules for helloWorld.jsp -->
 	<navigation-rule>

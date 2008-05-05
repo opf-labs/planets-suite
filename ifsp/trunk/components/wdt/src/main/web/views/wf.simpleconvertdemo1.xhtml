@@ -1,0 +1,87 @@
+<!--  DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" -->
+<!--  %@ taglib prefix="ui2" uri="http://java.sun.com/blueprints/ui/14" % -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<f:view>
+
+<body>
+
+<ui:composition>
+	
+	<h:form formName="wf.formS1">
+	
+		<h1>Simple Workflow Exceution</h1>
+		<br />
+		<br />
+		<h:panelGrid columns="3" align="center">
+			<!--f:facet name="header"-->
+			<!-- h:outputText value="Table with numbers"/-->
+			<!-- /f:facet-->
+			<h:outputText value=" " />
+			<t:htmlTag value="center">
+				<h:outputText value="Start" />
+			</t:htmlTag>
+			<h:outputText value=" " />
+			<h:outputText value=" " />
+			<t:htmlTag value="center">
+				<h:outputText value="|" />
+			</t:htmlTag>
+			<h:outputText value=" " />
+			<h:outputText value=" " />
+			<t:htmlTag value="center">
+				<h:selectOneMenu id="first_service1" required="true" immediate="true"
+					onchange="submit()"
+					value="#{demoSimpleConvertBean1.currentFirstService}"
+					valueChangeListener="#{demoSimpleConvertBean1.toggleFirstServices}">
+					<f:selectItems value="#{demoSimpleConvertBean1.firstServices}" />
+				</h:selectOneMenu>
+			</t:htmlTag>
+			<h:outputText value=" " />
+			<h:outputText value=" " />
+			<t:htmlTag value="center">
+				<h:outputText value="|" />
+			</t:htmlTag>
+			<h:outputText value=" " />
+			<h:outputText value=" " />
+			<t:htmlTag value="center">
+				<h:selectOneMenu id="second_service1" required="true" immediate="true"
+					onchange="submit()"
+					value="#{demoSimpleConvertBean1.currentSecService}"
+					valueChangeListener="#{demoSimpleConvertBean1.toggleSecServices}">
+					<f:selectItems value="#{demoSimpleConvertBean1.secondServices}" />
+				</h:selectOneMenu>
+			</t:htmlTag>
+			<h:outputText value=" " />
+			<h:outputText value=" " />
+			<t:htmlTag value="center">
+				<h:outputText value="|" />
+			</t:htmlTag>
+			<h:outputText value=" " />
+			<h:outputText value=" " />
+			<t:htmlTag value="center">
+				<h:outputText value="End" />
+			</t:htmlTag>
+			<h:outputText value=" " />
+			
+		</h:panelGrid>
+		<br />
+		<br />
+		<br />
+		<script type="text/javascript">
+		<!--
+			var report = "#{demoSimpleConvertBean1.reportLoc}";
+			if (report != "") 
+				document.write(" <a href="+report+"> Click here to check the Report </a> ");
+		 -->
+		</script> 
+	</h:form>
+</ui:composition>
+</body>
+</f:view>
+</html>
+
