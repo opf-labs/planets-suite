@@ -18,9 +18,6 @@ import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.api.PlanetsService;
-//import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
-import eu.planets_project.ifr.core.wdt.gui.faces.FileBrowser;
-import eu.planets_project.ifr.core.wdt.gui.faces.TemplateContainer;
 import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
 import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
@@ -32,12 +29,11 @@ import eu.planets_project.ifr.core.wdt.common.services.characterisation.*;
 import eu.planets_project.ifr.core.wdt.common.services.magicTiff2Jpeg.*;
 import eu.planets_project.ifr.core.wdt.common.services.openXMLMigration.*;
 import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.*;
-import eu.planets_project.ifr.core.wdt.common.services.registry.*;
 	
 /**
  *    characterization workflow bean 
  *    demonstrates a workflow comprising a characterization followed by a migration
- * 	  @author Rainer Schmidt, ARC
+ * 	  @author Reza Rawassizadeh and Rainer Schmidt, ARC
  */
 public class DemoSimpleConvertBean1 extends AbstractWorkflowBean implements PlanetsService, WorkflowBean {
 	
@@ -74,8 +70,8 @@ public class DemoSimpleConvertBean1 extends AbstractWorkflowBean implements Plan
 		
 		this.resetServices();
 		//registry lookup...
-		firstServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, "first",null))) );
-		secondServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, "second",null))) );
+		firstServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, null, "first",null))) );
+		secondServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, null, "second",null))) );
 	}
 	
 	/**
