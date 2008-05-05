@@ -199,14 +199,19 @@ public class DemoSimpleConvertBean1 extends AbstractWorkflowBean implements Plan
 								" $DataManagerResponse.registryPath"+"</a></td></tr></table>,</fieldset>");
 					}else if(fileExtension.equalsIgnoreCase("image/tiff")){ 
 //						logger.debug("--------------------It is image/tiff: "+fileLoc);
-						tiff2jpeg.convertFile(fileLoc);
+						String location = tiff2jpeg.convertFile(fileLoc);
+						// TODO: This is hard coded
+						String newFileLoc = "http://localhost:8080/planets/migration/tiff2jpeg";
+						String result = newFileLoc+location.substring(location.lastIndexOf("/"),location.length());
 						//TODO: assign to Datamanager
 						report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i>"
 								+fileLoc+",</i></legend>" +
 								"<table><tr><td><b>File Format Information:</b>"+fileLoc+",<br>" +
 								"<b>Conversion Status: </b><font color=#00CC00>File successfuly converted</font> <br>" +
-								"<b>Converted File URI:</b><a href="+"$DataManagerResponse.registryPath"+", target=_blank>"+
-								" $DataManagerResponse.registryPath"+"</a></td></tr></table></fieldset>");
+								//"<b>Converted File URI:</b><a href="+"$DataManagerResponse.registryPath"+", target=_blank>"+
+								//" $DataManagerResponse.registryPath"+
+								"<b><a href= "+result+">Converted File URI</a></b>"+
+								"</a></td></tr></table></fieldset>");
 					}else {
 //						logger.debug("--------------------It is something else: "+fileLoc);
 						report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i>, "
