@@ -1,5 +1,7 @@
 package eu.planets_project.ifr.core.wdt.impl.registry;
 
+import javax.xml.namespace.QName;
+
 /**
 	*
 	* @author Rainer Schmidt
@@ -19,15 +21,19 @@ package eu.planets_project.ifr.core.wdt.impl.registry;
 		private String dsc = null;
 		//Planets category
 		private String category;
+		// Qualified name
+		private QName qName;
+	
 		
 		public Service() {
 		}
 		
-		public Service(String id, String name, String endpoint, String category) {
+		public Service(String id, String name, String endpoint, String category, QName qnamein) {
 			this.id = id;
 			this.name = name;
 			this.endpoint = endpoint;
 			this.category = category;
+			this.qName = qnamein;
 		}
 		
 		public void setId(String id) {
@@ -72,5 +78,13 @@ package eu.planets_project.ifr.core.wdt.impl.registry;
 		
 		public String toString() {
 			return "service ["+name+", "+endpoint+"]";
-		}		
+		}
+
+		public QName getQName() {
+			return qName;
+		}
+
+		public void setQName(QName name) {
+			qName = name;
+		}	
 	}

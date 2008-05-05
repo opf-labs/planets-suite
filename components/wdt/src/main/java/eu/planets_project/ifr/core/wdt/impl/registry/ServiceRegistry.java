@@ -7,14 +7,15 @@ import java.net.URL;
 
 import javax.faces.component.*;
 import javax.faces.event.ActionEvent;
+import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
-import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.ServiceRegistryManager_Service;
-import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.ServiceRegistryManager;
-import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.JAXRException_Exception;
+import eu.planets_project.ifr.core.wdt.common.services.registry.ServiceRegistryManager_Service;
+import eu.planets_project.ifr.core.wdt.common.services.registry.ServiceRegistryManager;
+import eu.planets_project.ifr.core.wdt.common.services.registry.JAXRException_Exception;
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 	
 /**
@@ -39,11 +40,40 @@ public class ServiceRegistry
 		
 		/*some dummy services*/
 		dummyServices = new ArrayList<Service>();
-		dummyServices.add( new Service("#fex#1", "SimpleCharacterisation@dme023", "http://dme023:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl", "a human readable description") );
-		dummyServices.add( new Service("#fex#2", "DummyCharacterisationService#1", "http://dme023:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl", "a human readable description") );
-		dummyServices.add( new Service("#fex#3", "DummyCharacterisationService#2", "http://dme023:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl", "a human readable description") );
-		dummyServices.add( new Service("#fex#4", "Tiff2Jpeg@dme023", "http://dme023:8080/ImageMagicWS/Tiff2JpegAction?wsdl", "a human readable description") );
-		dummyServices.add( new Service("#fex#5", "OpenXMLMigration@dme023", "http://dme023:8080/ifr-openXML-ejb/OpenXMLMigration?wsdl", "a human readable description") );
+//		dummyServices.add( new Service("#fex#1", "SimpleCharacterisation@dme023", "http://dme023:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl", "a human readable description") );
+//		dummyServices.add( new Service("#fex#2", "DummyCharacterisationService#1", "http://dme023:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl", "a human readable description") );
+//		dummyServices.add( new Service("#fex#3", "DummyCharacterisationService#2", "http://dme023:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl", "a human readable description") );
+//		dummyServices.add( new Service("#fex#4", "Tiff2Jpeg@dme023", "http://dme023:8080/ImageMagicWS/Tiff2JpegAction?wsdl", "a human readable description") );
+//		dummyServices.add( new Service("#fex#5", "OpenXMLMigration@dme023", "http://dme023:8080/ifr-openXML-ejb/OpenXMLMigration?wsdl", "a human readable description") );
+		QName SimpleCharQname = new QName("http://services.planets-project.eu/ifr/characterisation",
+											  "SimpleCharacterisationService") ;
+		dummyServices.add( new Service("#fex#1", "SimpleCharacterisation@localhost", 
+				   					   "http://localhost:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl", 
+		   							   "Check the file extension",SimpleCharQname) );
+		
+		QName tiff2jpegQname = new QName("http://tiff2jpg.planets.bl.uk/",
+										"Tiff2JpegActionService");
+		dummyServices.add( new Service("#fex#2", "Tiff2Jpeg@localhost", 
+				   					   "http://localhost:8080/ImageMagicWS/Tiff2JpegAction?wsdl", 
+				   					   "Convert tiff Format to jpeg",tiff2jpegQname) );
+		
+		QName openXMLQname = new QName("http://planets-project.eu/ifr/core/services/migration", 
+									   "OpenXMLMigration");
+		dummyServices.add( new Service("#fex#3", "OpenXML@localhost", 
+				   					   "http://localhost:8080/ifr-openXML-ejb/OpenXMLMigration?wsdl", 
+				   					   "Convert doc file to docx",openXMLQname) );
+		
+		QName dataManagerQname = new QName("http://localhost:8080/storage-ifr-storage-ejb/DataManager?wsdl",
+										"DataManager");
+		dummyServices.add( new Service("#fex#4", "DataManager@localhost", 
+				   					   "http://localhost:8080/storage-ifr-storage-ejb/DataManager?wsdl", 
+				   					   "Data manager",dataManagerQname) );
+		
+		QName repGeneratorQname = new QName("http://services.planets-project.eu/ifr/reporting", 
+											"ReportGenerationService");
+		dummyServices.add( new Service("#fex#5", "ReportGenerator@localhost", 
+				   					   "http://localhost:8080/ReportGenerationService/ReportGenerationService?wsdl",
+				   					   "Report generator",repGeneratorQname) );
 	}
 	
 	public void addRegistryURL(URL registry) {
@@ -62,6 +92,7 @@ public class ServiceRegistry
 			//String sLocation = registry.findServices("cService");
 			//log.debug("Found Service at:"+sLocation);
 			logger.error("this method is not implemented yet");
+			return dummyServices;
 		} catch(Exception e) {
 			logger.error("Error testing registry: ", e);
 		}
