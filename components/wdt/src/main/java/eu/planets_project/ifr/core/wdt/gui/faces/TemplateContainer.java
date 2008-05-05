@@ -17,9 +17,6 @@ import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
-import eu.planets_project.ifr.core.wdt.common.services.registry.ServiceRegistryManager_Service;
-import eu.planets_project.ifr.core.wdt.common.services.registry.ServiceRegistryManager;
-import eu.planets_project.ifr.core.wdt.common.services.registry.JAXRException_Exception;
 import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
 	
@@ -95,22 +92,4 @@ public class TemplateContainer
 		return currentTemplate;
 	}
 	
-	/**
-	* tests the services registry
-	* TODO: move this into a registry backing bean
-	*/
-	public String testRegistry() {
-		templates = new ArrayList<WFTemplate>();
-		try {
-			ServiceRegistryManager_Service service = new ServiceRegistryManager_Service(new URL("http://localhost:8080/registry-ifr-registry-ejb/ServiceRegistryManager?wsdl"), new QName("http://planets-project.eu/ifr/core/registry", "ServiceRegistryManager"));
-			ServiceRegistryManager registry = service.getServiceRegistryManagerPort();
-			//registry.configure("admin", "admin");
-			//registry.saveService("cService", "http://www.myCharacterizationService.org/?wsdl");			
-			//String sLocation = registry.findServices("cService");
-			//log.debug("Found Service at:"+sLocation);
-		} catch(Exception e) {
-			log.error("Error testing registry: ", e);
-		}
-		return "success-testRegistry";
-	}
 }
