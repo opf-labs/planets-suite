@@ -15,6 +15,8 @@ import javax.xml.namespace.QName;
 		private String id = null;
 		//display name
 		private String name = null;
+		//target namespace
+		private String namespace = null;
 		//associated endpoint url
 		private String endpoint = null;
 		//human readable description
@@ -28,9 +30,11 @@ import javax.xml.namespace.QName;
 		public Service() {
 		}
 		
-		public Service(String id, String name, String endpoint, String category, QName qnamein) {
+		public Service(String id, String name, String namespace, String endpoint, String category, QName qnamein) {
+
 			this.id = id;
 			this.name = name;
+			this.namespace = namespace;
 			this.endpoint = endpoint;
 			this.category = category;
 			this.qName = qnamein;
@@ -50,6 +54,14 @@ import javax.xml.namespace.QName;
 		
 		public String getName() {
 			return name;
+		}
+		
+		public void setNamespace(String namespace) {
+			this.namespace = namespace;
+		}
+		
+		public String getNamespace() {
+			return namespace;
 		}
 		
 		public void setEndpoint(String endpoint) {
@@ -77,7 +89,7 @@ import javax.xml.namespace.QName;
 		}
 		
 		public String toString() {
-			return "service ["+name+", "+endpoint+"]";
+			return "service [id="+id+", name="+name+", namespace="+namespace+", endpoint="+endpoint+", category="+category+"]";
 		}
 
 		public QName getQName() {
