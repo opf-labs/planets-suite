@@ -31,7 +31,7 @@
 		<param-value>/faces/extensionResource</param-value>
 	</context-param>
 	
-	<!-- Testbed context parameters for file maangement -->
+	<!-- Testbed context parameters for file management -->
     <context-param>
         <param-name>eu.planetsproject.tb.tmpDirProperty</param-name>
         <param-value>jboss.home.dir</param-value>
@@ -40,7 +40,25 @@
         <param-name>eu.planetsproject.tb.dataDir</param-name>
         <param-value>TestbedData</param-value>
     </context-param>
-
+    
+    <!-- Extension for RichFaces-JSF  -->
+ 	<context-param>
+        <param-name>org.richfaces.SKIN</param-name>
+        <param-value>blueSky</param-value>
+    </context-param>
+    <!-- Faclelet always needs to be the first View_Handler -->
+    <!-- when more than one framework (except RichFaces) is used - these param can be used to define their order  -->
+    <context-param>
+      <param-name>org.ajax4jsf.VIEW_HANDLERS</param-name>
+      <param-value>com.sun.facelets.FaceletViewHandler</param-value>
+    </context-param>
+    
+	
+	<!-- Extension for RichFaces-JSF: in combination with myFaces it must be the first one in the filter chain  -->
+	<filter>
+		<filter-name>richfaces</filter-name> 
+        <filter-class>org.ajax4jsf.Filter</filter-class> 
+    </filter>
   <!--Extension Filter for File Upload -->
 	<filter>
 		<filter-name>extensionsFilter</filter-name>
@@ -65,6 +83,12 @@
 		</init-param>
 	</filter>
 
+	<!-- Filter Mapping for RichFaces-JSF  -->
+    <filter-mapping> 
+        <filter-name>richfaces</filter-name> 
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+    
 	<filter-mapping>
 		<filter-name>extensionsFilter</filter-name>
 		<url-pattern>*.faces</url-pattern>
