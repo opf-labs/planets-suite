@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
+import eu.planets_project.ifr.core.security.api.services.UserManager.*;
 
 /**
  * UserBean.java serves as the POJO for storing information about a Testbed User.
@@ -41,102 +42,59 @@ public class UserBean
     public UserBean(String firstName, String lastName, String email, String userid, String password)
     {
         this.setUserid(userid);
-        this.setFirstname(firstName);
-        this.setLastname(lastName);
-        this.setEmail(email);
-        this.setPassword(password);
+        this.firstname = firstName;
+        this.lastname = lastName;
+        this.email = email;
     }
 
 
     public String getFirstname()
     {
+        checkUser();
         return firstname;
-    }
-
-    public void setFirstname(String firstname)
-    {
-        this.firstname = firstname;
     }
 
     public String getLastname()
     {
+        checkUser();
         return lastname;
-    }
-
-    public void setLastname(String lastname)
-    {
-        this.lastname = lastname;
     }
 
     public String getEmail()
     {
+        checkUser();
         return email;
-    }
-
-    public void setEmail(String email)
-    {
-        this.email = email;
     }
 
     public String getPassword()
     {
+        checkUser();
         return password;
     }
-
-    public void setPassword(String password)
-    {
-        this.password = password;
-    }
-
-    
 
     /**
      * @return the fullname
      */
     public String getFullname() {
+        checkUser();
         return fullname;
-    }
-
-    /**
-     * @param fullname the fullname to set
-     */
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
     }
 
     /**
      * @return the address
      */
     public String getAddress() {
+        checkUser();
         return address;
-    }
-
-    /**
-     * @param address the address to set
-     */
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     /**
      * @return the telephone
      */
     public String getTelephone() {
+        checkUser();
         return telephone;
     }
-
-    /**
-     * @param telephone the telephone to set
-     */
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
-
-    public void setIsLoggedIn(boolean isLoggedIn)
-    {
-        this.isLoggedIn = isLoggedIn;
-    }
-
 
     public boolean isIsLoggedIn()
     {
@@ -154,7 +112,7 @@ public class UserBean
         User u = null;
         try {
             u = um.getUserByUsername(userid);
-        } catch( Exception e ){
+        } catch( UserNotFoundException e ){
             log.error("Exception while attempting to load the User details for '"+userid+"': "+e);
             if( log.isDebugEnabled() ) e.printStackTrace();
         }
@@ -178,38 +136,60 @@ public class UserBean
     }
 
     public String getUserid() {
+        checkUser();
         return userid;
     }
     
     public boolean isAdmin() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         boolean result = false;
-        result = request.isUserInRole("testbed.admin");
+        result = getRequest().isUserInRole("testbed.admin");
         //log.debug("user " + request.getRemoteUser() +" is admin? - " + result);
         return result;  
     }
 
     public boolean isExperimenter() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         boolean result = false;
-        result = request.isUserInRole("testbed.experimenter");
+        result = getRequest().isUserInRole("testbed.experimenter");
         //log.debug("user " + request.getRemoteUser() + " is experimenter? - " + result);
         return result;  
     }
 
     public boolean isReader() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
         boolean result = false;
-        result = request.isUserInRole("testbed.reader");
+        result = getRequest().isUserInRole("testbed.reader");
         // Also add reader access for administrators and experimenters:
         if( isAdmin() || isExperimenter() ) result = true;
         //log.debug("user " + request.getRemoteUser() +" is reader? - " + result);
         return result;  
     }  
 
+    /**
+     * Checks if the user information is up to date.
+     */
+    private void checkUser() {
+        if( userid == null ) return;
+        // This Bean can fall out of date. So test if we are up to date:
+        if( ! userid.equals(getRequest().getRemoteUser())) {
+            if( getRequest().getRemoteUser() != null && 
+                    ! "".equals(getRequest().getRemoteUser()) ) {
+                this.setUserid(getRequest().getRemoteUser());
+            }
+        }
+    }
+    
+    /**
+     * Utility function to look up the HttpRequest
+     * @return
+     */
+    private HttpServletRequest getRequest() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        return (HttpServletRequest) context.getExternalContext().getRequest();
+    }
+    
+    /**
+     * Create a user manager:
+     * @return
+     */
     private static UserManager getUserManager(){
         try{
             Context jndiContext = getInitialContext();
@@ -222,10 +202,15 @@ public class UserBean
         }
     }
 
+    /**
+     * Get the initial context:
+     * @return
+     * @throws javax.naming.NamingException
+     */
     private static Context getInitialContext() throws javax.naming.NamingException
     {
         return new javax.naming.InitialContext();
     }
-
+    
 
 }
