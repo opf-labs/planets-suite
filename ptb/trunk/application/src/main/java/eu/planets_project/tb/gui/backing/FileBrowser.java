@@ -35,29 +35,15 @@ public class FileBrowser {
     private static PlanetsLogger log = PlanetsLogger.getLogger(FileBrowser.class, "testbed-log4j.xml");
     
     // The Data Registry:
-    // TODO This should be the real thing, provided by the If as an EJB.
     private DataRegistryManagerImpl dr = new DataRegistryManagerImpl();
 
     // The current URI/position in the DR:
-    private URI location;
+    private URI location = null;
     
     // The currently viewed DR entities
     private FileTreeNode[] currentItems;
     
     public FileBrowser() {
-        this.setLocation(dr.getDataRegistryUri());
-    }
-    
-    /**
-     * Display the root URI of the DR file system:
-     * @return The root URI of the Data Registry.
-     */
-    public URL getRootUrl() {
-        try {
-          return dr.getDataRegistryUri().toURL();
-        } catch( java.net.MalformedURLException e ) {
-          return null;
-        }
     }
     
     /**
@@ -80,14 +66,22 @@ public class FileBrowser {
      */
     public void setLocation(URI location) {
         log.debug("Setting location: "+location);
-        this.location = location.normalize();
+        if( location != null ) this.location = location.normalize();
         DigitalObject[] dobs = dr.list(this.location);
         int fileCount = 0;
         for( DigitalObject dob : dobs ) {
             if( !dob.isDirectory() ) fileCount++;
         }
-        this.currentItems = new FileTreeNode[fileCount];
+        //this.currentItems = new FileTreeNode[fileCount];
+        // Put directories first.
+        this.currentItems = new FileTreeNode[dobs.length];
         int i = 0;
+        for( DigitalObject dob : dobs ) {
+            if( dob.isDirectory() ) {
+                this.currentItems[i] = new FileTreeNode(dob);
+                i++;
+            }
+        }
         for( DigitalObject dob : dobs ) {
             if( !dob.isDirectory() ) {
                 this.currentItems[i] = new FileTreeNode(dob);
@@ -132,6 +126,7 @@ public class FileBrowser {
      * @return
      */
     public URI getParentUri() {
+        if( this.location == null ) return this.location;
         return this.location.resolve("..").normalize();
     }
     
@@ -143,20 +138,21 @@ public class FileBrowser {
     public TreeModel getFilerTree() {
         
         // Build the tree.
-        TreeNode tn = new FileTreeNode(new DigitalObject(dr.getDataRegistryUri()));
+        TreeNode tn = new FileTreeNode(dr.getRootDigitalObject());
         tn.setType("folder"); tn.setLeaf(false);
 
         // Create the tree:
         TreeModel tm = new TreeModelBase(tn);
 
         // Add child nodes:
-        this.getChildItems(tm, tn, dr.list(dr.getDataRegistryUri()));
+        this.getChildItems(tm, tn, dr.list(null));
         
         return tm;
     }
     
     private void getChildItems( TreeModel tm, TreeNode parent, DigitalObject[] dobs ) {
         // Do nothing if there are no comments.
+        if( dobs == null ) return;
         if( dobs.length == 0 ) return;
         
         // Iterate over the children:
@@ -232,11 +228,12 @@ public class FileBrowser {
     
     public static String redirectToDataRegistry() {
         FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
-        try {
+/*        try {
           FacesContext.getCurrentInstance().getExternalContext().redirect(fb.getRootUrl().toString());
         } catch( java.io.IOException e ) {
           log.debug("Caught exception on redirectToDataRegistry: " + e );
         }
+        */
         return "success";
     }
     
