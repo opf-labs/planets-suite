@@ -161,11 +161,14 @@
     <delete dir="${jboss.home}/server/default/data/hypersonic"/>
   </target>
 
-  <target name="clean">
-    <delete dir="${build.dir}"/>
-    <delete file="${jboss.home}/server/default/testbedmodel.jar"/>
- 	 <delete file="${jboss.home}/server/default/${appName}.ear"/>
- 	 <delete file="${jboss.home}/server/default/${appName}.war"/>
+  <target name="clean" depends="undeploy">
+      <delete dir="${build.dir}"/>
+  </target>
+    
+  <target name="undeploy">
+      <delete file="${jboss.home}/server/default/deploy/testbedmodel.jar"/>
+      <delete file="${jboss.home}/server/default/deploy/${appName}.ear"/>
+      <delete file="${jboss.home}/server/default/deploy/${appName}.war"/>
   </target>
 
   <!-- =================================================================== -->
@@ -228,7 +231,7 @@
   	
   </target>
   
-  <target name="deploy" depends="deploymodel,dist">
+  <target name="deploy" depends="undeploy, deploymodel, dist">
     <copy file="${build.dir}/${appName}.war" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
