@@ -30,14 +30,14 @@ import javax.xml.namespace.QName;
 		public Service() {
 		}
 		
-		public Service(String id, String name, String namespace, String endpoint, String category, QName qnamein) {
+		public Service(String id, String name, String namespace, String endpoint, String category, QName qname) {
 
 			this.id = id;
 			this.name = name;
 			this.namespace = namespace;
 			this.endpoint = endpoint;
 			this.category = category;
-			this.qName = qnamein;
+			this.qName = qname;
 		}
 		
 		public void setId(String id) {
@@ -56,13 +56,14 @@ import javax.xml.namespace.QName;
 			return name;
 		}
 		
-		public void setNamespace(String namespace) {
-			this.namespace = namespace;
-		}
+		//rs: namespace is unused
+		//public void setNamespace(String namespace) {
+		//	this.namespace = namespace;
+		//}
 		
-		public String getNamespace() {
-			return namespace;
-		}
+		//public String getNamespace() {
+		//	return namespace;
+		//}
 		
 		public void setEndpoint(String endpoint) {
 			this.endpoint = endpoint;
@@ -80,23 +81,27 @@ import javax.xml.namespace.QName;
 			return dsc;
 		}
 		
-		public void setCategory(String category) {
-			this.category = category;
-		}
+		//this is filtered through registry lookup
+		//public void setCategory(String category) {
+		//	this.category = category;
+		//}
 		
-		public String getCategory() {
-			return category;
-		}
-		
-		public String toString() {
-			return "service [id="+id+", name="+name+", namespace="+namespace+", endpoint="+endpoint+", category="+category+"]";
+		//public String getCategory() {
+		//	return category;
+		//}
+				
+		public void setQName(QName qname) {
+			this.qName = qName;
 		}
 
 		public QName getQName() {
 			return qName;
 		}
+		
+		public String toString() {
+			//return "service [id="+id+", name="+name+", namespace="+namespace+", endpoint="+endpoint+", category="+category+"]";
+			return "service [id="+id+", name="+name+", endpoint="+endpoint+", qname="+qName+"]";
+		}
 
-		public void setQName(QName name) {
-			qName = name;
-		}	
+
 	}

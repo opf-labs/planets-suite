@@ -2,20 +2,21 @@ package eu.planets_project.ifr.core.wdt.impl.registry;
 				
 import java.util.List;
 import java.util.ArrayList;
-import java.net.MalformedURLException;
 import java.net.URL;
-import javax.xml.namespace.QName;
+import java.net.MalformedURLException;
 
+import javax.xml.namespace.QName;
 import javax.faces.component.*;
 import javax.faces.event.ActionEvent;
+import com.ibm.wsdl.xml.WSDLReaderImpl;
+import javax.wsdl.xml.WSDLReader;
+import javax.wsdl.Definition;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
-
 import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.ServiceRegistryManager_Service;
 import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.ServiceRegistryManager;
 import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.PsService;
@@ -40,10 +41,9 @@ public class ServiceRegistry
 	//does not inject...
 
 	private Log logger = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
-	//reserved for future use
-	private List<URL> registries = null;
 	private ServiceRegistryManager registry = null;
 	private List<Service> dummyServices = null;
+	private List<Service> serviceList = new ArrayList<Service>();
 	
 
 	public ServiceRegistry() {
@@ -55,9 +55,7 @@ public class ServiceRegistry
 		} catch(Exception e) {
 			logger.error("Error testing registry: ", e);
 		}
-	
-		this.registries = new ArrayList<URL>();
-		
+			
 		/*some dummy services*/
 		dummyServices = new ArrayList<Service>();
 //		dummyServices.add( new Service("#fex#1", "SimpleCharacterisation@dme023", "http://dme023:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl", "a human readable description") );
@@ -111,9 +109,10 @@ public class ServiceRegistry
 				   					   repGeneratorQname) );
 	}
 	
-	public void addRegistryURL(URL registry) {
-		this.registries.add(registry);
-	}
+	//reserved for future use
+	//public void addRegistryURL(URL registry) {
+	//	this.registries.add(registry);
+	//}
 	
 	/**
 	 * sends a query string to the service registry
@@ -141,47 +140,48 @@ public class ServiceRegistry
 			
 			//TODO retrieve endpoint and qname from wsdl (wsdl4j?)
 			
+			//-> hand over dsc
+			List<PsService> psServiceList = registry.findServices("provider", "provider", "%", "").getService();
 			
-			List<PsService> serviceList = registry.findServices("provider", "provider", "%", "").getService();
-			logger.debug("Found " + serviceList.size() + "Services in Registry");
+			logger.debug("Found " + psServiceList.size() + "Services in Registry");
 			
-			for(int i = 0; i < serviceList.size(); i++) {
-				PsService psService = serviceList.get(i);
-				String id = psService.getKey();
-				String[] categories = psService.getCategory().toArray(new String[0]);
-				logger.debug("serviceID: "+id+" categories: "+categories[0]);
-				//String id = psService.getServiceId();
-				//String pCategory = psService.getParentCategory();
-				//service.setId(id);
-				//service.setCategory(pCategory);
-			}
-			
-				/*
-				List<PsBinding> bindingList = registry.findBindings("provider", "provider", id).getBinding();
-			
-				for(int j = 0; j < bindingList.size(); j++) {
-					PsBinding psBinding = bindingList.get(j);
+			for(PsService psService : psServiceList) {
+				Service service = new Service();
+				setServiceParams(psService, service);
+				//ignore cats: String[] categories = psService.getCategory().toArray(new String[0]);
+				List<PsBinding> psBindings = registry.findBindings("provider","provider", psService.getKey()).getBinding();
+				logger.debug("found serviceID: "+psService.getKey()+" #categories: "+psService.getCategory().size()+" #bindings"+psBindings.size());
+
+				
+				for(PsBinding psBinding : psBindings) {
+					//logger.debug("found binding: "+uri+" for service id: "+id);
 					String uri = psBinding.getAccessuri();
-					//PsBinding targetBinding = psBinding.getTargetbinding();
-					//String target = targetBinding.getAccessuri();
 					service.setEndpoint(uri);
-					//service.setNamespace(target);
-					//----dummyServices.add(service);
-				*/
-					//logger.debug("Found service: " +service.toString());
-				//}				
-				
-				
-			//}
-			// --
-			
-			return dummyServices;
+					WSDLReader wsdlReader = new WSDLReaderImpl();
+					Definition serviceDef = wsdlReader.readWSDL(uri);
+					service.setQName(serviceDef.getQName());
+					//String qName = serviceDef.getQName().getNamespaceURI();
+					serviceList.add(service);
+					logger.debug("WDT added: "+service);
+				}
+			}
+						
+			return serviceList;
+			//return dummyServices
 			
 		} catch(Exception e) {
 			logger.error("Error testing registry: ", e);
 		}
 		return null;
 	}
+	
+	private void setServiceParams(PsService psService, Service service) {
+		service.setId(psService.getKey());
+		service.setDescription(psService.getDescription());
+		service.setName(psService.getName());
+		//targetNamespace
+	}
+			
 	
 	
 	/**
