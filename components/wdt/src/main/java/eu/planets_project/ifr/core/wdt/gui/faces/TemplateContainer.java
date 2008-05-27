@@ -54,7 +54,7 @@ public class TemplateContainer
 	public String loadTemplates() {
 		templates = new ArrayList<WFTemplate>();
 		templates.add(new WFTemplate("Charicterization", "views/wf.characterization.xhtml", "characterizationWorkflowBean"));
-		templates.add(new WFTemplate("Simple Convert Bean1", "views/wf.simpleconvertdemo1.xhtml", "demoSimpleConvertBean1"));
+		templates.add(new WFTemplate("Simple Convertion", "views/wf.simpleconvertdemo.xhtml", "demoSimpleConvertBean"));
 //		templates.add(new WFTemplate("ImageMagic", "views/imageMagic.xhtml", "imageMagicBean"));
 		return "success-loadTemplates";
 	}
