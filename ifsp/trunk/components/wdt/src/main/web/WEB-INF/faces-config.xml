@@ -48,8 +48,8 @@
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
   <managed-bean>
-    <managed-bean-name>demoSimpleConvertBean1</managed-bean-name>
-    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DemoSimpleConvertBean1</managed-bean-class>                        
+    <managed-bean-name>demoSimpleConvertBean</managed-bean-name>
+    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DemoSimpleConvertBean</managed-bean-class>                        
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
   

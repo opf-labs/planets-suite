@@ -1,21 +1,16 @@
-<!--  DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" -->
-<!--  %@ taglib prefix="ui2" uri="http://java.sun.com/blueprints/ui/14" % -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:t="http://myfaces.apache.org/tomahawk">
 
-<f:view>
-
 <body>
-
 <ui:composition>
-	
-	<h:form formName="wf.formS1">
-	
-		<h1>Simple Workflow Exceution</h1>
+	<h:form formName="wf.form">
+
+		<h1>Characterization Workflow Template</h1>
 		<br />
 		<br />
 		<h:panelGrid columns="3" align="center">
@@ -24,64 +19,58 @@
 			<!-- /f:facet-->
 			<h:outputText value=" " />
 			<t:htmlTag value="center">
-				<h:outputText value="Start" />
+				<h:outputText value="Y" />
 			</t:htmlTag>
 			<h:outputText value=" " />
+
 			<h:outputText value=" " />
 			<t:htmlTag value="center">
-				<h:outputText value="|" />
-			</t:htmlTag>
-			<h:outputText value=" " />
-			<h:outputText value=" " />
-			<t:htmlTag value="center">
-				<h:selectOneMenu id="first_service1" required="true" immediate="true"
+				<h:selectOneMenu id="char_service1" required="true" immediate="true"
 					onchange="submit()"
-					value="#{demoSimpleConvertBean1.currentFirstService}"
-					valueChangeListener="#{demoSimpleConvertBean1.toggleFirstServices}">
-					<f:selectItems value="#{demoSimpleConvertBean1.firstServices}" />
+					value="#{demoSimpleConvertBean.currentCharServiceItem}"
+					valueChangeListener="#{demoSimpleConvertBean.toggleCharServiceItems}">
+					<f:selectItems value="#{demoSimpleConvertBean.charServiceItems}" />
 				</h:selectOneMenu>
 			</t:htmlTag>
 			<h:outputText value=" " />
+
 			<h:outputText value=" " />
 			<t:htmlTag value="center">
 				<h:outputText value="|" />
 			</t:htmlTag>
 			<h:outputText value=" " />
+
 			<h:outputText value=" " />
 			<t:htmlTag value="center">
-				<h:selectOneMenu id="second_service1" required="true" immediate="true"
+				<h:selectOneMenu id="mig_service1" required="true" immediate="true"
 					onchange="submit()"
-					value="#{demoSimpleConvertBean1.currentSecService}"
-					valueChangeListener="#{demoSimpleConvertBean1.toggleSecServices}">
-					<f:selectItems value="#{demoSimpleConvertBean1.secondServices}" />
+					value="#{demoSimpleConvertBean.currentMigServiceItem}"
+					valueChangeListener="#{demoSimpleConvertBean.toggleMigServiceItems}">
+					<f:selectItems value="#{demoSimpleConvertBean.migServiceItems}" />
 				</h:selectOneMenu>
 			</t:htmlTag>
 			<h:outputText value=" " />
+
 			<h:outputText value=" " />
 			<t:htmlTag value="center">
-				<h:outputText value="|" />
+				<h:outputText value="X" />
 			</t:htmlTag>
 			<h:outputText value=" " />
-			<h:outputText value=" " />
-			<t:htmlTag value="center">
-				<h:outputText value="End" />
-			</t:htmlTag>
-			<h:outputText value=" " />
-			
+
 		</h:panelGrid>
 		<br />
 		<br />
 		<br />
+		<!-- relict rza; move javascript to JSF style -->
 		<script type="text/javascript">
-		<!--
-			var report = "#{demoSimpleConvertBean1.reportLoc}";
+		<!-- 
+			var report = "#{demoSimpleConvertBean.reportLoc}";
 			if (report != "") 
 				document.write(" <a href="+report+"> Click here to check the Report </a> ");
-		 -->
+		-->
 		</script> 
 	</h:form>
 </ui:composition>
 </body>
-</f:view>
 </html>
 

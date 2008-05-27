@@ -49,6 +49,14 @@ public abstract class AbstractWorkflowBean {
     	return ret;
     }
     
+    protected Service getService(SelectItem item, List<Service> services) {
+    	//asdf; remember the services after lookup
+    	for( Service service : services) {
+    		if(service.getId().equals(item.getValue())) return service;
+    	}
+    	return null;
+    }
+    
     /**
 		* Planets Service Interface
 		*/
