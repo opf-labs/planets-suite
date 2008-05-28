@@ -65,6 +65,7 @@ public class DataSourceManager implements DataManagerLocal {
         dss[1] = new DataSource();
         dss[1].dm = fsdm;
         dss[1].uri = fsdm.getRootURI();
+        
     }
     
     
@@ -96,6 +97,10 @@ public class DataSourceManager implements DataManagerLocal {
     public DataManagerLocal findDataManager( URI puri ) {
         if( puri == null ) return null;
         
+        // First, normalise the URI to ensure people can't peek inside using /../../..
+        puri = puri.normalize();
+        
+        // Find the (1st) matching data registry:
         for( int i = 0; i < dss.length; i++ ) {
             if( puri.toString().startsWith(dss[i].uri.toString())) {
                 return dss[i].dm;
