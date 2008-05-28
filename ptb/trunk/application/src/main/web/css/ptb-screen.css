@@ -18,6 +18,9 @@ font-family:arial,helvetica,sans-serif;
 margin:0pt;
 padding:0pt;
 }
+#gelinks form {
+  display: inline;
+}
 #geleft {
 background:transparent url(../graphics/tab-top_l.gif) no-repeat scroll left bottom;
 float:left;
