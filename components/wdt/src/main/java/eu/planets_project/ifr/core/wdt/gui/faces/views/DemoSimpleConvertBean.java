@@ -31,7 +31,7 @@ import eu.planets_project.ifr.core.wdt.common.services.magicTiff2Jpeg.*;
 import eu.planets_project.ifr.core.wdt.common.services.openXMLMigration.*;
 import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.*;
 //new service interface - call by value
-import eu.planets_project.ifr.core.wdt.common.services.jpeg2tiff.*;
+//import eu.planets_project.ifr.core.wdt.common.services.jpeg2tiff.*;
 
 import java.io.BufferedReader;
 import java.io.File;
