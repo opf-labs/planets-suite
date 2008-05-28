@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -90,7 +92,7 @@ public class FileSystemDataManager implements DataManagerLocal {
 
     /**
      * Checks and validates the URI:
-     * TODO Should double-check that it is resolves under the localDataDir.
+     * 
      * @param puri
      * @return
      */
@@ -142,7 +144,7 @@ public class FileSystemDataManager implements DataManagerLocal {
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#read(java.net.URI)
      */
     public String read(URI pdURI) throws SOAPException {
-        // TODO Auto-generated method stub
+        // FIXME Auto-generated method stub
         return null;
     }
 
@@ -150,7 +152,7 @@ public class FileSystemDataManager implements DataManagerLocal {
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createLocalSandbox()
      */
     public URI createLocalSandbox() throws URISyntaxException {
-        // TODO Auto-generated method stub
+        // FIXME Auto-generated method stub
         return null;
     }
 
@@ -159,25 +161,83 @@ public class FileSystemDataManager implements DataManagerLocal {
      */
     public InputStream retrieve(URI pdURI) throws PathNotFoundException,
             URISyntaxException {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            return new FileInputStream( new File( pdURI ) );
+        } catch ( FileNotFoundException e ) {
+            throw new PathNotFoundException(pdURI.toString());
+        }
     }
 
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#store(java.net.URI, java.io.InputStream)
+     * TODO This should perhaps use a bigger buffer.
+     * TODO We should check whether these stream objects store the whole file in memory. Memory requirements too high?
      */
     public void store(URI pdURI, InputStream stream) throws LoginException,
             RepositoryException, URISyntaxException {
-        // TODO Auto-generated method stub
+
+        // Prepare the output stream:
+        FileOutputStream fo = null;
+        try {
+            fo = new FileOutputStream( new File( pdURI ));
+        } catch ( FileNotFoundException e ) {
+            throw new PathNotFoundException(pdURI.toString());
+        }
+        
+        // Pass to the output, currently byte-by-byte:
+        try {
+            int b;
+            while ((b = stream.read()) != -1) {
+                fo.write(b);
+            }
+        } catch (IOException e) {
+            throw new RepositoryException("Could not write to file " + pdURI);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#store(java.net.URI,
+     *      java.lang.String)
+     */
+    public void store(URI pdURI, String encodedFile) throws SOAPException {
+        // FIXME Auto-generated method stub
         
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#store(java.net.URI, java.lang.String)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#retrieveBinary(java.net.URI)
      */
-    public void store(URI pdURI, String encodedFile) throws SOAPException {
-        // TODO Auto-generated method stub
+    public byte[] retrieveBinary(URI pdURI) throws SOAPException {
+        byte[] bin  = null;
         
+        try {
+            this.retrieve(pdURI).read(bin);
+        } catch( IOException e ) {
+            log.error("Failed to list DR URI." + e);
+            bin = null;
+            throw new SOAPException(e);
+        } catch( URISyntaxException e ) {
+            log.error("Failed to list DR URI." + e);
+            bin = null;
+            throw new SOAPException(e);
+        } catch( PathNotFoundException e ) {
+            log.error("Failed to list DR URI." + e);
+            bin = null;
+            throw new SOAPException(e);
+        }
+        
+        return bin;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#storeBinary(java.net.URI, byte[])
+     */
+    public void storeBinary(URI pdURI, byte[] binary) throws LoginException,
+            RepositoryException, URISyntaxException {
+        // Store it:
+        this.store(pdURI, new ByteArrayInputStream(binary));
     }
     
 }

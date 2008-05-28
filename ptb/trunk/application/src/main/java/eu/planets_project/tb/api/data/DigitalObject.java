@@ -70,6 +70,8 @@ public class DigitalObject {
      * @return
      */
     public String getLeafname() {
+        if( puri == null ) return "";
+        
         String path = puri.getPath();
         // Trim any trailing slash:
         if( path.lastIndexOf("/") == path.length()-1 ) {

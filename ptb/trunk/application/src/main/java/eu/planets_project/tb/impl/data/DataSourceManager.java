@@ -3,6 +3,8 @@
  */
 package eu.planets_project.tb.impl.data;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.naming.Context;
@@ -13,63 +15,58 @@ import javax.rmi.PortableRemoteObject;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 
+import javax.jcr.LoginException;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
+
 /**
  * 
  * This class managers all of the Data Sources/Registries known to the Testbed.
  * 
+ * It uses the same DataManagerLocal interface as any other Data Registry, but
+ * transparently switches between different underlying DRs based on the URI.
+ * 
  * @author AnJackson
  *
  */
-public class DataSourceManager {
+public class DataSourceManager implements DataManagerLocal {
     // A logger:
     private static PlanetsLogger log = PlanetsLogger.getLogger(DataSourceManager.class, "testbed-log4j.xml");
 
-    // The Testbed's own File System data manager:
-    private URI fsdmURI = null;
-    private FileSystemDataManager fsdm = new FileSystemDataManager();
-    // The Planets data manager:
-    private URI pdmURI = null;
-    private DataManagerLocal pdm = DataSourceManager.getPlanetsDataManager();
+    // A simple class to wrap a DR with it's base URI:
+    private class DataSource {
+        URI uri = null;
+        DataManagerLocal dm = null;
+    }
+    // The array of data source:
+    private DataSource[] dss;
     
+
+    /**
+     * The constructor create the list of known DRs:
+     */
     public DataSourceManager() {
-        fsdmURI = fsdm.getRootURI();
+        // Allocate the data sources:
+        dss = new DataSource[2];
+        
+        // The Planets Data Registry:
         try {
-            pdmURI = new URI( "planets://localhost:8080/dr/jcr-local/" );
+            dss[0] = new DataSource();
+            dss[0].uri =  new URI( "planets://localhost:8080/dr/jcr-local/" );
+            dss[0].dm = DataSourceManager.getPlanetsDataManager();
         } catch( URISyntaxException e ) {
             log.error("Error creating data registry URI: " + e );
+            dss = null;
+            return;
         }
+        
+        // The File System Data Registry:
+        FileSystemDataManager fsdm = new FileSystemDataManager();
+        dss[1] = new DataSource();
+        dss[1].dm = fsdm;
+        dss[1].uri = fsdm.getRootURI();
     }
     
-    public URI[] list( URI puri ) {
-        URI[] childs = null;
-        
-        // If null, list the known DRs
-        if( puri == null ) {
-            childs = new URI[2];
-            childs[0] = pdmURI;
-            childs[1] = fsdmURI;
-            return childs;
-        }
-        
-        // Otherwise, list from the appropriate DR:
-        if( puri.toString().startsWith(pdmURI.toString())) {
-            try {
-                childs = pdm.list(puri);
-            } catch( SOAPException e ) {
-                log.error("Failed to list DR URI." + e);
-            }
-        }
-        if( puri.toString().startsWith(fsdmURI.toString())) {
-            try {
-                childs = fsdm.list(puri);
-            } catch( SOAPException e ) {
-                log.error("Failed to list file system DR URI." + e);
-            }
-        }
-        
-        // return the listing.
-        return childs;
-    }
     
     /**
      * Hook up to a local instance of the Planets Data Manager.
@@ -88,6 +85,119 @@ public class DataSourceManager {
             log.error("Failure during lookup of the local DataManager: "+e.toString());
             return null;
         }
+    }
+    
+
+    /**
+     * Retrieve the Data Manager that is responsible for the given URI.
+     * @param puri The URI of the resource of interest.
+     * @return The DataManagerLocal instance that is responsible for that URI.
+     */
+    public DataManagerLocal findDataManager( URI puri ) {
+        if( puri == null ) return null;
+        
+        for( int i = 0; i < dss.length; i++ ) {
+            if( puri.toString().startsWith(dss[i].uri.toString())) {
+                return dss[i].dm;
+            }
+        }
+        
+        return null;
+    }
+    
+    /* -----------------------------------------------------------------
+     * Overrides of the DM methods, with transparent mapping between DRs.
+     * ---------------------------------------------------------------- */
+    
+    /* 
+     * Modifies basic behaviour by listing root URIs when passed NULL.
+     * FIXME Move this behaviour up into the standard DML?
+     * 
+     * (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#list(java.net.URI)
+     */
+    public URI[] list( URI puri ) throws SOAPException {
+        // If null, list the known DRs
+        if( puri == null ) {
+            URI[] childs = new URI[dss.length];
+            for( int i = 0; i < dss.length; i++ ) {
+                childs[i] = dss[i].uri;
+            }
+            return childs;
+        }
+        
+        // Otherwise, list from the appropriate DR:
+        DataManagerLocal dm = findDataManager(puri);
+        if( dm == null ) return null;
+        
+        // return the listing.
+        return dm.list(puri);
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createLocalSandbox()
+     */
+    public URI createLocalSandbox() throws URISyntaxException {
+        return dss[0].dm.createLocalSandbox();
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#read(java.net.URI)
+     */
+    public String read(URI pdURI) throws SOAPException {
+        DataManagerLocal dm = findDataManager(pdURI);
+        if( dm == null ) return null;
+        return dm.read(pdURI);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#retrieve(java.net.URI)
+     */
+    public InputStream retrieve(URI pdURI) throws PathNotFoundException,
+            URISyntaxException {
+        DataManagerLocal dm = findDataManager(pdURI);
+        if( dm == null ) return null;
+        return dm.retrieve(pdURI);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#store(java.net.URI, java.io.InputStream)
+     */
+    public void store(URI pdURI, InputStream stream) throws LoginException,
+            RepositoryException, URISyntaxException {
+        DataManagerLocal dm = findDataManager(pdURI);
+        if( dm == null ) return;
+        dm.store(pdURI, stream);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#store(java.net.URI, java.lang.String)
+     */
+    public void store(URI pdURI, String encodedFile) throws SOAPException {
+        DataManagerLocal dm = findDataManager(pdURI);
+        if( dm == null ) return;
+        dm.store(pdURI, encodedFile);
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#retrieveBinary(java.net.URI)
+     */
+    public byte[] retrieveBinary(URI pdURI) throws SOAPException {
+        DataManagerLocal dm = findDataManager(pdURI);
+        if( dm == null ) return null;
+        return dm.retrieveBinary(pdURI);
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#storeBinary(java.net.URI, byte[])
+     */
+    public void storeBinary(URI pdURI, byte[] binary) throws LoginException,
+            RepositoryException, URISyntaxException {
+        DataManagerLocal dm = findDataManager(pdURI);
+        if( dm == null ) return;
+        dm.storeBinary(pdURI, binary);
     }
     
 }

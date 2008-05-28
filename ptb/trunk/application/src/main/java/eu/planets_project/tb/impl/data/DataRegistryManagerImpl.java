@@ -17,6 +17,7 @@ import java.io.IOException;
 import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
+import javax.xml.soap.SOAPException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.DataRegistryManager;
@@ -49,7 +50,12 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
      */
     public DigitalObject[] list( URI puri ) {
         // List from the appropriate registry.
-        URI[] childs = dsm.list(puri);
+        URI[] childs = null;
+        try {
+            childs = dsm.list(puri);
+        } catch( SOAPException e ) {
+            log.error("Exception while listing " + puri + " : " + e );
+        }
         if( childs == null ) return new DigitalObject[0];
         
         // Create a DigitalObject for each URI.
@@ -59,7 +65,13 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
             dobs[i] = new DigitalObject( childs[i] );
             
             // Mark that DigitalObject as a Directory if listing it returns NULL:
-            if( dsm.list(childs[i]) == null ) {
+            URI[] grandchilds = null;
+            try {
+                grandchilds = dsm.list(childs[i]);
+            } catch( SOAPException e ) {
+                log.error("Exception while listing " + childs[i] + " : " + e);
+            }
+            if( grandchilds == null ) {
                 dobs[i].setDirectory(false);
             } else {
                 dobs[i].setDirectory(true);
@@ -82,5 +94,6 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
         //return false;
         return true;
     }
+    
     
 }
