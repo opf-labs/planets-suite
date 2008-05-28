@@ -13,13 +13,11 @@
         <div id="maincol">
         <div class="innertubemain">
   
-  <p>#{res['browse_data.browsing']} <a href="#{FileBrowser.rootUrl}">#{FileBrowser.rootUrl}</a></p>
- 
   <h:form id="drBrowserForm">
                 
   <div class="filepane">
    <div class="filebrowse">
-    <t:tree2 id="filerTree" value="#{FileBrowser.filerTree}" var="do" varNodeToggler="t" showRootNode="true" showLines="true" preserveToggle="true" clientSideToggle="true">
+    <t:tree2 id="filerTree" value="#{FileBrowser.filerTree}" var="do" varNodeToggler="t" showRootNode="false" showLines="true" preserveToggle="true" clientSideToggle="true">
     
     <f:facet name="folder">
             <h:panelGroup>
