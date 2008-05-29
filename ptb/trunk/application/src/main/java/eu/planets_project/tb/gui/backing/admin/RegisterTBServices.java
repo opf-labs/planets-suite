@@ -94,7 +94,7 @@ public class RegisterTBServices{
 	private SelectItem selectedJBossEndpoint;
 	
 	//JSF UI containing the xmlRequestTemplate UI elements
-	private HtmlPanelGrid panelStep2 = new HtmlPanelGrid();
+	private UIComponent panelStep2 = new HtmlPanelGrid();
 	//counts how many inputText and outputText are needed to generate the required panelStep1 UI
 	private int iCountNumbOfXMLRequestInputTokens = 0;
 	private int iCountNumberOfXMLRequestOutputTokens = 0;
@@ -102,6 +102,7 @@ public class RegisterTBServices{
 	//JSF UI Step2: containing sample invocation data
 	private UIComponent panelStep3 = new UIPanel();
 	private UIComponent panelStep3Add = new UIPanel();
+	private UIComponent debug = new HtmlPanelGrid();
 	
 	
 	//a list of human readable TagNames. e.g. "File" or "FileArray"
@@ -110,12 +111,14 @@ public class RegisterTBServices{
 	//the selected TagName: i.e. "File" or "String"
 	private String sTagIDFile = "File";
 	private String sTagIDFileArray = "FileArray";
+	private String sTagIDBase64File = "Base64File";
 	private SelectItem selectedTagNameItem = new SelectItem(sTagIDFile);
 	
 	//The tokens that are used
 	private final String TAG_FILE = "@tbFile@";
 	private final String TAG_FILEARRAYLINE_START = "@tbFileArrayLineStart@";
 	private final String TAG_FILEARRAYLINE_END = "@tbFileArrayLineEnd@";
+	private final String TAG_BASE64FILE = "@Base64File";
 	
 	//Contains the registered operations (names) and their xmltemplates
 	//holding the data for the registeredOperations in Form of a List<String>: e.g. [0]xmlrequesttemplate [1]xmlrespondstemplate
@@ -269,7 +272,7 @@ public class RegisterTBServices{
 	
 	
 	/**
-	 * Addds one selected file reference from the input field to the list of added file refs for Step2.
+	 * Addds one selected file reference from the input field to the list of added file refs for Step3.
 	 * This information is rendered within the GUI by a HtmlOutputText + CommandLink&Icon (remove symbol) which are connected via the ID.
 	 * The specified file ref(s) are used as input data to invoke a given service operation. 
 	 * @return
@@ -302,17 +305,17 @@ public class RegisterTBServices{
 				//3) For the current fileRef create an GUI outputfield + a RemoveIcon+Link
 					//File Name + File Reference with HtmlOutputLink to file source
 				//file ref
-				HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
+				HtmlOutputText outputText = (HtmlOutputText) FacesContext.getCurrentInstance().getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 				outputText.setValue(sFileName);
 				outputText.setId("OutputTextStep2Refs"+id);
 				//file name
-				HtmlOutputLink link_src = (HtmlOutputLink) facesContext.getApplication().createComponent(HtmlOutputLink.COMPONENT_TYPE);
+				HtmlOutputLink link_src = (HtmlOutputLink) FacesContext.getCurrentInstance().getApplication().createComponent(HtmlOutputLink.COMPONENT_TYPE);
 				link_src.setId("OutputLinkStep2Refs"+id);
 				link_src.setValue(sFileRef);
 				link_src.setTarget("_new");
 				
 	        		//CommandLink+Icon allowing to delete this entry
-				HtmlCommandLink link_remove = (HtmlCommandLink) facesContext.getApplication().createComponent(HtmlCommandLink.COMPONENT_TYPE);
+				HtmlCommandLink link_remove = (HtmlCommandLink) FacesContext.getCurrentInstance().getApplication().createComponent(HtmlCommandLink.COMPONENT_TYPE);
 				//set the ActionMethod to the method: "command_removeFileRefFromStep2(ActionEvent e)"
 				Class[] parms = new Class[]{ActionEvent.class};
 				MethodBinding mb = FacesContext.getCurrentInstance().getApplication().createMethodBinding("#{RegisterTBServiceBean.command_removeFileRefFromStep3}", parms);
@@ -320,7 +323,7 @@ public class RegisterTBServices{
 				link_remove.setId("UICommandStep2Refs"+id);
 				//send along an helper attribute to identify which component triggered the event
 				link_remove.getAttributes().put("IDint", id);
-				HtmlGraphicImage image =  (HtmlGraphicImage)facesContext.getApplication().createComponent(HtmlGraphicImage.COMPONENT_TYPE);
+				HtmlGraphicImage image =  (HtmlGraphicImage)FacesContext.getCurrentInstance().getApplication().createComponent(HtmlGraphicImage.COMPONENT_TYPE);
 				image.setUrl("../graphics/button_delete.gif");
 				image.setAlt("delete-image");
 				image.setId("HtmlGraphicImageStep2Refs"+id);
@@ -407,7 +410,7 @@ public class RegisterTBServices{
 		//fill out already added service metadata
 		this.fillOutExistingServiceMetaDataForStep5();
 		
-		return "reload-page";
+		return "goTo_nextWizardStep";
 	}
 	
 	
@@ -459,7 +462,8 @@ public class RegisterTBServices{
 		//Split the RequestTemplate message to fill the gui elements
 		StringTokenizer templateTokenizer = new StringTokenizer(sRequestTemplate,"?",true);
 		if(templateTokenizer.countTokens()>1){
-			HtmlPanelGrid panel = (HtmlPanelGrid)getComponent("formXmlRequestTemplate:panelStep2");
+			//UIPanel panel = (UIPanel)getComponent("formXmlRequestTemplate:panelStep2");
+			UIPanel panel = (UIPanel)this.getComponentPanelStep2();
 
 			while(templateTokenizer.hasMoreTokens()){
 				//the next token to operate on
@@ -533,7 +537,7 @@ public class RegisterTBServices{
 		//UI elements will be set disabled.
 		this.bServiceSelectionDisabled = true;
 			
-		return "reload-page";
+		return "goTo_nextWizardStep";
 	}
 	
 	
@@ -558,7 +562,7 @@ public class RegisterTBServices{
 		//set the rendered wizzard stage to the next screen:
 		this.setStageCompleted(2);
 		
-		return "reload-page";
+		return "goTo_nextWizardStep";
 	}
 	
 	
@@ -1239,15 +1243,54 @@ public class RegisterTBServices{
 	 * Returns the UIComponent containing the XmlRequestTemplate Screen
 	 * @return
 	 */
-	public HtmlPanelGrid getComponentPanelStep2(){ 
+	public UIComponent getComponentPanelStep2(){ 
 		return this.panelStep2;
 	}
 	
 	/**
 	 * Returns the UIComponent containing the XmlRequestTemplate Screen
 	 */
-	public void setComponentPanelStep2(HtmlPanelGrid panel){
+	public void setComponentPanelStep2(UIComponent panel){
 		this.panelStep2 = panel;
+	}
+	
+	public UIComponent getComponentPanelDEBUG(){
+		return this.debug;
+	}
+	
+	public void setComponentPanelDEBUG(UIComponent grid){
+		this.debug = grid;
+	}
+	
+	private boolean calledADDDEBUG = false;
+	public void addTestToDEBUG(){
+		
+		try{if(!calledADDDEBUG){
+			//UIComponent panel = (UIComponent)getComponent("formXmlDebugTemplate:panelDEBUG");
+			UIComponent panel = this.getComponentPanelDEBUG();
+			String sRandom = ((int)((java.lang.Math.random()*100)))+"";
+			facesContext = FacesContext.getCurrentInstance();
+			HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
+			outputText.setValue("Test"+sRandom);
+			outputText.setId("xmlDEBUGOutputText"+sRandom);
+					
+			panel.getChildren().add(outputText);
+			
+			UIComponent panel_test = (UIComponent)getComponent("formXmlDebugTemplate:panelDEBUG");
+			panel_test.getChildCount();
+			HtmlOutputText text_test = (HtmlOutputText)getComponent("formXmlDebugTemplate:xmlDEBUGOutputText"+sRandom);
+			text_test.getValue();
+		}
+		//calledADDDEBUG = true;
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println(e.toString());
+		}
+	} 
+	
+	public String command_addDEBUGITEM(){
+		addTestToDEBUG();
+		return "reload-page";
 	}
 	
 
@@ -1257,14 +1300,6 @@ public class RegisterTBServices{
 	
 	public void setComponentPanelStep3(UIComponent panel){
 		this.panelStep3 = panel;
-	}
-	
-	/**
-	 * Returns the UIComponent containing the already added file refs for sample invocation
-	 * @return
-	 */
-	public UIComponent getComponentPanelStep3Add(){
-		return this.panelStep3Add;
 	}
 	
 	public UIComponent getComponentPanelStep4(){
@@ -1291,6 +1326,13 @@ public class RegisterTBServices{
 		this.panelStep3Add = panel;
 	}
 	
+	/**
+	 * Returns the UIComponent containing the already added file refs for sample invocation
+	 * @return
+	 */
+	public UIComponent getComponentPanelStep3Add(){
+		return this.panelStep3Add;
+	}
 	
 	/**
 	 * Get the component from the JSF view model - it's id is registered withinin the page
@@ -2104,5 +2146,6 @@ public class RegisterTBServices{
 		}
 		return "";
 	}
+
 
 }

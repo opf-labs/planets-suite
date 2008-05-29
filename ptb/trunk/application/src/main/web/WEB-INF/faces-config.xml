@@ -58,6 +58,18 @@
  </managed-bean>
 <!--End Managed Beans -->
 
+<!-- FOR TESTING -->
+<managed-bean>
+        <managed-bean-name>ajaxBean</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.AjaxDemoBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+          <property-name>text</property-name>
+          <value/>
+        </managed-property>
+      </managed-bean>
+<!-- END FOR TESTING -->
+
 <!-- Start Navigation Rules: General Navigation Rules -->
  <navigation-rule>
   <from-view-id>/*</from-view-id>
@@ -118,7 +130,7 @@
   <navigation-case>
    <!-- register_TBServices -->
    <from-action>#{Manager_Backing.initRegisterTBService}</from-action>
-   <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
+   <to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
@@ -133,6 +145,13 @@
    <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
+<!-- TEST: PROBABLY TO DELETE: From left COL Navigation -->
+  <navigation-case>
+    <from-outcome>render_TBservices</from-outcome>
+    <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+<!-- END DELETE --> 
   <navigation-case>
    <from-outcome>help</from-outcome>
    <to-view-id>/reader/help.xhtml</to-view-id>
@@ -358,48 +377,101 @@
 
 
  <!-- Navigation for Register TB Service Wizzard (Admin role)-->
+ <!-- for all wizard steps -->
  <navigation-rule>
-  <from-view-id>/admin/register_TBServices.xhtml</from-view-id>
+  <from-view-id>/admin/SerRegWizard/*</from-view-id>
   <navigation-case>
-    <from-outcome>reload-page</from-outcome>
-    <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
+    <from-outcome>error-analyze</from-outcome>
+    <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
     <redirect/>
-  </navigation-case>
-  <navigation-case>
-    <from-outcome>success-analyze</from-outcome>
-    <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-     <from-outcome>error-analyze</from-outcome>
-     <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-     <from-outcome>error-send</from-outcome>
-     <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-    <from-outcome>success-send</from-outcome>
-    <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
     <from-outcome>general-error-page</from-outcome>
     <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
+    <redirect/>
   </navigation-case>
   <navigation-case>
-     <!-- col left navigation options -->
-    <from-action>#{Manager_Backing.initTBServiceManager}</from-action>
-    <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-action>#{Manager_Backing.initRegisterTBService}</from-action>
-   <to-view-id>/admin/register_TBServices.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-    <from-outcome>render_TBservices</from-outcome>
-    <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
+    <from-outcome>error-send</from-outcome>
+    <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
+    <redirect/>
   </navigation-case>
  </navigation-rule>
+ 
+ <!-- Wizard step1 -->
+ <navigation-rule>
+  <from-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</from-view-id>
+  <navigation-case>
+    <from-outcome>reload-page</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>success-analyze</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>goTo_nextWizardStep</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ 
+  <!-- Wizard step2 -->
+ <navigation-rule>
+  <from-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</from-view-id>
+  <navigation-case>
+    <from-outcome>reload-page</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>goTo_nextWizardStep</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ 
+ <!-- Wizard step3 -->
+ <navigation-rule>
+  <from-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</from-view-id>
+  <navigation-case>
+    <from-outcome>reload-page</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>success-send</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ 
+ <!-- Wizard step4 -->
+ <navigation-rule>
+  <from-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</from-view-id>
+  <navigation-case>
+    <from-outcome>reload-page</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+  <navigation-case>
+    <from-outcome>goTo_nextWizardStep</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ 
+ <!-- Wizard step5 -->
+ <navigation-rule>
+  <from-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</from-view-id>
+  <navigation-case>
+    <from-outcome>reload-page</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</to-view-id>
+    <redirect/>
+  </navigation-case>
+ </navigation-rule>
+ <!-- End register TB Service Wizzard rules-->
  
  <!-- page: overview_registeredTBServices.xhtml -->
  <navigation-rule>

@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:c="http://java.sun.com/jstl/core">
+<body>
+<f:view>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+    Testbed : Register Services - step2
+  </ui:define>
+
+<ui:define name="header">
+	<ui:include src="/WEB-INF/templates/header.xhtml">
+		<ui:param name="page" value="register_TBservices_step2"/>
+	</ui:include>
+	
+	<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script> 
+	<!-- css popup javascript -->
+	<script type="text/javascript"
+		src="${facesContext.externalContext.requestContextPath}/js/csspopup/csspopup.js">
+	</script>	
+</ui:define>
+
+<ui:define name="content">
+
+	<div id="mainwrapper">
+	<div id="maincol">
+	<div class="innertubemain">
+     
+	<!--Step2 build XML request template--> 
+
+     <h:form id="formXmlRequestTemplate" rendered="#{RegisterTBServiceBean.renderedStage == 2}"> 
+         <p><b>Stage 1 completed successfully!</b></p>
+         <p>For <b>Stage 2</b> you need to create a template for your selected service.  Select the relevant input type(s) and click on the 'Add Template' button to continue.</p>
+         <p>If your selected service operation can accept an <b>array of files</b> and you select this option you will need to specify the correct tag that characterise an array line item. Please ensure the selected service operation can accept an array of files before selecting this option. In order to find the tag used for <b>array items</b> you will need to inspect the service's WSDL. </p>
+         <fieldset>
+             <legend>#{res['reg_serv.legendStage2Info']}</legend>
+             <p><b>Selected Operation Name: </b>#{WSClientBean.operationSelectItemValue}<br />
+                         <b>Browse WSDL: </b><a href="#" onclick="popup('popUpDiv')"> open selected service's WSDL </a> or <h:outputLink value="#{RegisterTBServiceBean.endpointURI}" target="_new"> browse externally</h:outputLink><br />
+             </p>
+         </fieldset>
+		 <fieldset>
+             <legend>#{res['reg_serv.legendTemplate']}</legend>
+             
+            <p><h:outputText value="XML Request Template:" styleClass="readerLabel"/></p>
+            <h:panelGrid id="panelStep2" binding="#{RegisterTBServiceBean.componentPanelStep2}" border="2" columns="1">
+            </h:panelGrid>
+            <br/>   
+        </fieldset>
+        
+        <h:commandButton id="buttonAddOpp" value="Add Template" action="#{RegisterTBServiceBean.command_addRequestTemplate}" disabled="#{RegisterTBServiceBean.stage2Completed}"/>
+              <br/>
+        
+      </h:form>
+      <!--Step2 build XML request template completed-->  
+</div>
+</div>
+</div>
+
+
+<div id="leftcol">
+<h3 class="leftcol">Registration Wizard Progress</h3>
+<div class="innertube">
+<ul class="exp">
+	<h:form>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage == 1}">
+			<li class="exp_sel">
+				<h:commandLink value="1. select operation" styleClass="exp" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step1" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage > 1}">
+			<li class="exp">
+				<h:commandLink value="1. select operation" styleClass="exp_done" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step1" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage lt 2}">
+			<li class="exp_nd">
+				<h:outputText value="2. add template"/>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage == 2}">
+			<li class="exp_sel">
+				<h:commandLink value="2. add template" styleClass="exp" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step2" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage > 2}">
+			<li class="exp">
+				<h:commandLink value="2. add template" styleClass="exp_done" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step2" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage lt 3}">
+			<li class="exp_nd">
+				<h:outputText value="3. invoke sample"/>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage == 3}">
+			<li class="exp_sel">
+				<h:commandLink value="3. invoke sample" styleClass="exp" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step3" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage > 3}">
+			<li class="exp">
+				<h:commandLink value="3. invoke sample" styleClass="exp_done" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step3" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage lt 4}">
+			<li class="exp_nd">
+				<h:outputText value="4. mapping of results"/>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage == 4}">
+			<li class="exp_sel">
+				<h:commandLink value="4. mapping of results" styleClass="exp" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step4" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage > 4}">
+			<li class="exp">
+				<h:commandLink value="4. mapping of results" styleClass="exp_done" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step4" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage lt 5}">
+			<li class="exp_nd">
+				<h:outputText value="5. service metadata"/>
+			</li>
+		</h:panelGroup>
+				<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage == 5}">
+			<li class="exp_sel">
+				<h:commandLink value="5. service metadata" styleClass="exp" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step5" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup rendered="#{RegisterTBServiceBean.completedStage > 5}">
+			<li class="exp">
+				<h:commandLink value="5. service metadata" styleClass="exp_done" action="#{RegisterTBServiceBean.command_renderWizzardStep}">
+					<f:param name="wizzardStep" value="step5" />
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+	</h:form>
+</ul>
+</div>
+<!-- end wizzard register Testbed service -->
+
+<h3 class="leftcol">Navigation Options</h3>
+<div class="innertube">
+<ul class="exp">
+	<h:form>
+		<h:panelGroup>
+			<li class="exp_sel">
+				<h:commandLink value="register new service operation" action="#{Manager_Backing.initRegisterTBService}">
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup>
+			<li class="exp_sel">
+				<h:commandLink value="browse registered services" action="#{Manager_Backing.initTBServiceDisplayer}">
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup>
+			<li class="exp_sel">
+				<h:commandLink value="remove registered services" action="#{Manager_Backing.initTBServiceManager}">
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+	</h:form>
+</ul>
+</div>
+</div>
+<!-- end navigation options -->
+
+<!-- the div for the popup screen -->
+<div id="blanket" style="display:none;"></div>
+<div id="popUpDiv" style="display:none;">
+
+	<div id="overlay-menu"><p><a href="#" onclick="popup('popUpDiv')"><img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="close" title="close"/></a> </p></div>
+	<div id="overlay-main">
+		<h2>Browse Service's WSDL</h2>
+		<p>Browse the service's WSDL content to inspect the required syntax for array operations</p>
+		<h:outputText value="selected service WSDL: " styleClass="readerLabel"/>
+        <h:inputTextarea value="#{RegisterTBServiceBean.selectedServiceWSDLContent}" cols="70" rows="25" readonly="true"/>
+		<p> </p>
+	</div>
+</div>
+<!-- end popup-div -->
+</ui:define>
+  
+  <ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+</f:view>
+</body>
+</html>

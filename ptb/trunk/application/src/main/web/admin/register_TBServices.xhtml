@@ -30,7 +30,7 @@
 	<div id="maincol">
 	<div class="innertubemain">
      
-<!-- Step1: Enter WSDL URI and select service name + operation -->
+	<!-- Step1: Enter WSDL URI and select service name + operation -->
      <h:form id="formanalyzeWSDL" rendered="#{RegisterTBServiceBean.renderedStage == 1}">
 		 <h:message id="InfoErrorMessages" for="link_byHand" errorClass="errorMessage" infoClass="infoMessage" />
                         <p>This is the <b>Registration Wizard</b> for deploying executable services within the Testbed.  Every service used within the Testbed must follow this five-step registration process.  Once the process is complete the service will be available for experimenters to select during the creation of new experiments.</p>
@@ -105,15 +105,14 @@
 
      <h:form id="formXmlRequestTemplate" rendered="#{RegisterTBServiceBean.renderedStage == 2}"> 
          <p><b>Stage 1 completed successfully!</b></p>
-         <p>For <b>Stage 2</b> you need to create a template for your selected service.  Select the relevant input type(s) and click on the 'Add Template' button to continue. 
- </p>
-                 <p>If your selected service operation can accept an <b>array of files</b> and you select this option you will need to specify the correct tag that characterise an array line item. Please ensure the selected service operation can accept an array of files before selecting this option. In order to find the tag used for <b>array items</b> you will need to inspect the service's WSDL. </p>
-                 <fieldset>
-                     <legend>#{res['reg_serv.legendStage2Info']}</legend>
-                     <p><b>Selected Operation Name: </b>#{WSClientBean.operationSelectItemValue}<br />
+         <p>For <b>Stage 2</b> you need to create a template for your selected service.  Select the relevant input type(s) and click on the 'Add Template' button to continue.</p>
+         <p>If your selected service operation can accept an <b>array of files</b> and you select this option you will need to specify the correct tag that characterise an array line item. Please ensure the selected service operation can accept an array of files before selecting this option. In order to find the tag used for <b>array items</b> you will need to inspect the service's WSDL. </p>
+         <fieldset>
+             <legend>#{res['reg_serv.legendStage2Info']}</legend>
+             <p><b>Selected Operation Name: </b>#{WSClientBean.operationSelectItemValue}<br />
                          <b>Browse WSDL: </b><a href="#" onclick="popup('popUpDiv')"> open selected service's WSDL </a> or <h:outputLink value="#{RegisterTBServiceBean.endpointURI}" target="_new"> browse externally</h:outputLink><br />
-                     </p>
-                 </fieldset>
+             </p>
+         </fieldset>
 		 <fieldset>
              <legend>#{res['reg_serv.legendTemplate']}</legend>
              
@@ -122,26 +121,20 @@
             </h:panelGrid>
             <br/>   
         </fieldset>
+        
         <h:commandButton id="buttonAddOpp" value="Add Template" action="#{RegisterTBServiceBean.command_addRequestTemplate}" disabled="#{RegisterTBServiceBean.stage2Completed}"/>
               <br/>
-        	 <p>&#160;</p>
-        	 <p>&#160;</p>
-       		 <p>&#160;</p>
-       		 <p>&#160;</p>
-        	 <p>&#160;</p>
-       	 	 <p>&#160;</p>
-       		 <p>&#160;</p>
+        
       </h:form>
       <!--Step2 build XML request template completed-->  
-    
+      
       <!--Step3 invoke sample request with data-->
-
       <h:form id="formXmlRequestSampleInvocation" enctype="multipart/form-data" 
       rendered="#{RegisterTBServiceBean.renderedStage == 3}">
           <p>For <b>Stage 3</b> you need to supply <b>sample files</b> for the configuration to work with.  If you specified an array of files in Stage 2 you should enter multiple files of the relevant file type(s), otherwise supply one file.<br />
               After entering a file into the 'Specify File' box click on the <b>blue cross</b> to add the file to the system.  Repeat this process as many times as necessary.<br />
               To remove a file that you have previously uploaded click on the <b>red X</b> beside it.<br />
-Once you are happy with the files you have uploaded click on the 'Invoke Service' button to continue.</p>
+			  Once you are happy with the files you have uploaded click on the 'Invoke Service' button to continue.</p>
            <h:message for="fileupload" errorClass="errorMessage" infoClass="infoMessage"/>
            <h:panelGroup id="panelStep3" binding="#{RegisterTBServiceBean.componentPanelStep3}">
 
@@ -187,7 +180,7 @@ Once you are happy with the files you have uploaded click on the 'Invoke Service
         <p>&#160;</p>
       </h:form>
       <!--Step3 invoke sample request with data completed-->
-     
+      
      <!--Step4 build xpath to output element(s) and check: results ok?-->
      <h:form id="formXmlRespondsSampleInvocation" rendered="#{RegisterTBServiceBean.renderedStage == 4}">
          <p>For <b>Stage 4</b> you need to tell the system where to find the data in the XML service responce.</p>
@@ -228,7 +221,7 @@ Once you are happy with the files you have uploaded click on the 'Invoke Service
             </fieldset>
       </h:form>
       <!--Step4 build xpath to output element(s) and check: results ok? completed-->
-     
+
       <!--Step5 add service metadata to be written into the registry-->
       <h:form id="formServiceRegistryMetadata" rendered="#{RegisterTBServiceBean.renderedStage == 5}">
           
@@ -313,7 +306,7 @@ Once you are happy with the files you have uploaded click on the 'Invoke Service
           <br/>
       </h:form>
       <!--End of Step5 add service metadata to be written into the registry-->
-      
+
       <!--Final: display register service success-->
       <h:form id="formRegisterSuccess" rendered="#{RegisterTBServiceBean.renderedStage > 5}">
 		<p>
@@ -350,8 +343,6 @@ Once you are happy with the files you have uploaded click on the 'Invoke Service
         <p>&#160;</p>
         <p>&#160;</p>
       </h:form>
-
-	  
 </div>
 </div>
 </div>
