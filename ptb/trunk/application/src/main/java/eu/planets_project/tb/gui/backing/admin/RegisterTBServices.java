@@ -102,8 +102,6 @@ public class RegisterTBServices{
 	//JSF UI Step2: containing sample invocation data
 	private UIComponent panelStep3 = new UIPanel();
 	private UIComponent panelStep3Add = new UIPanel();
-	private UIComponent debug = new HtmlPanelGrid();
-	
 	
 	//a list of human readable TagNames. e.g. "File" or "FileArray"
 	private List<SelectItem> lTagNames = new Vector<SelectItem>();
@@ -314,7 +312,7 @@ public class RegisterTBServices{
 				link_src.setValue(sFileRef);
 				link_src.setTarget("_new");
 				
-	        		//CommandLink+Icon allowing to delete this entry
+				//CommandLink+Icon allowing to delete this entry
 				HtmlCommandLink link_remove = (HtmlCommandLink) FacesContext.getCurrentInstance().getApplication().createComponent(HtmlCommandLink.COMPONENT_TYPE);
 				//set the ActionMethod to the method: "command_removeFileRefFromStep2(ActionEvent e)"
 				Class[] parms = new Class[]{ActionEvent.class};
@@ -324,7 +322,7 @@ public class RegisterTBServices{
 				//send along an helper attribute to identify which component triggered the event
 				link_remove.getAttributes().put("IDint", id);
 				HtmlGraphicImage image =  (HtmlGraphicImage)FacesContext.getCurrentInstance().getApplication().createComponent(HtmlGraphicImage.COMPONENT_TYPE);
-				image.setUrl("../graphics/button_delete.gif");
+				image.setUrl("../../graphics/button_delete.gif");
 				image.setAlt("delete-image");
 				image.setId("HtmlGraphicImageStep2Refs"+id);
 				link_remove.getChildren().add(image);
@@ -520,6 +518,7 @@ public class RegisterTBServices{
 						selectText.getChildren().add(items);
 						panel.getChildren().add(selectText);
 						panel.getChildren().add(arrayInputEnd);
+						
 					}
 			            
 			    }
@@ -563,6 +562,7 @@ public class RegisterTBServices{
 		this.setStageCompleted(2);
 		
 		return "goTo_nextWizardStep";
+		
 	}
 	
 	
@@ -822,7 +822,8 @@ public class RegisterTBServices{
 		if(requParam.equals("step5")){
 			this.setRenderedStage(5);
 		}
-		return "reload-page";
+		
+		return requParam;
 	}
 	
 	
@@ -1254,45 +1255,6 @@ public class RegisterTBServices{
 		this.panelStep2 = panel;
 	}
 	
-	public UIComponent getComponentPanelDEBUG(){
-		return this.debug;
-	}
-	
-	public void setComponentPanelDEBUG(UIComponent grid){
-		this.debug = grid;
-	}
-	
-	private boolean calledADDDEBUG = false;
-	public void addTestToDEBUG(){
-		
-		try{if(!calledADDDEBUG){
-			//UIComponent panel = (UIComponent)getComponent("formXmlDebugTemplate:panelDEBUG");
-			UIComponent panel = this.getComponentPanelDEBUG();
-			String sRandom = ((int)((java.lang.Math.random()*100)))+"";
-			facesContext = FacesContext.getCurrentInstance();
-			HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
-			outputText.setValue("Test"+sRandom);
-			outputText.setId("xmlDEBUGOutputText"+sRandom);
-					
-			panel.getChildren().add(outputText);
-			
-			UIComponent panel_test = (UIComponent)getComponent("formXmlDebugTemplate:panelDEBUG");
-			panel_test.getChildCount();
-			HtmlOutputText text_test = (HtmlOutputText)getComponent("formXmlDebugTemplate:xmlDEBUGOutputText"+sRandom);
-			text_test.getValue();
-		}
-		//calledADDDEBUG = true;
-		}catch(Exception e){
-			e.printStackTrace();
-			System.out.println(e.toString());
-		}
-	} 
-	
-	public String command_addDEBUGITEM(){
-		addTestToDEBUG();
-		return "reload-page";
-	}
-	
 
 	public UIComponent getComponentPanelStep3(){
 		return this.panelStep3;
@@ -1381,7 +1343,7 @@ public class RegisterTBServices{
 			NodeList nodes = (NodeList) xpath.evaluate(sQuery, document, XPathConstants.NODESET);
 			
 			//3) clear previous entered output information and gui renderers
-			UIComponent panel = this.getComponentPanelStep3Add();
+			UIComponent panel = this.getComponentPanelStep4Add();
 			if(panel.getChildren()!=null){
 				this.fileOutput = new HashMap<String,String>();
 				int j = panel.getChildCount();

@@ -42,7 +42,7 @@
          <fieldset>
                <legend>#{res['reg_serv.legendStage4Results']}</legend>
                   <h:panelGroup id="panelStep4" binding="#{RegisterTBServiceBean.componentPanelStep4}">
-                      <p><h:outputText value="XML Service Response: " styleClass="readerLabel"/>
+                      <p><h:outputText id="xmlServiceResponse" value="XML Service Response: " styleClass="readerLabel"/>
                          <h:inputTextarea id="xmlResponse" value="#{WSClientBean.xmlResponse}" cols="70" rows="20" readonly="true"/>
                     </p>
                     <br/>
@@ -58,9 +58,9 @@
                    <p>Are you  able to see the service's output (depicted in <span style="color:red;">red color</span>, next to the input file) below? If so you have
                    completed this task successfully. If not you should redefine the XPath statement above and click on the  "Test Query" button again.</p>
                 <p><h:panelGrid id="panelStep4Add" binding="#{RegisterTBServiceBean.componentPanelStep4Add}" border="0" columns="2"/>
-                <h:outputText value="Output is of type:" styleClass="readerLabel"/>
+                <h:outputText id="outputType" value="Output is of type:" styleClass="readerLabel"/>
                       <h:selectOneMenu id="selectOutputType" value="#{RegisterTBServiceBean.selectedOutputTypeValue}" disabled="#{RegisterTBServiceBean.stage4Completed}">
-                        <f:selectItems value="#{RegisterTBServiceBean.selectedOutputTypeItems}" />                       
+                        <f:selectItems id="outputTypeItems" value="#{RegisterTBServiceBean.selectedOutputTypeItems}" />                       
                       </h:selectOneMenu><img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.outputTypeTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
                   </p>
                   <br/>

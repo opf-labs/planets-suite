@@ -31,8 +31,7 @@
 	<div class="innertubemain">
      
 	<!--Step3 invoke sample request with data-->
-      <h:form id="formXmlRequestSampleInvocation" enctype="multipart/form-data" 
-      rendered="#{RegisterTBServiceBean.renderedStage == 3}">
+      <h:form id="formXmlRequestSampleInvocation" enctype="multipart/form-data" rendered="#{RegisterTBServiceBean.renderedStage == 3}">
           <p>For <b>Stage 3</b> you need to supply <b>sample files</b> for the configuration to work with.  If you specified an array of files in Stage 2 you should enter multiple files of the relevant file type(s), otherwise supply one file.<br />
               After entering a file into the 'Specify File' box click on the <b>blue cross</b> to add the file to the system.  Repeat this process as many times as necessary.<br />
               To remove a file that you have previously uploaded click on the <b>red X</b> beside it.<br />
@@ -68,12 +67,11 @@
              	   <!--The panel where the already added FileArrayElements get displayed -->
                    <p><h:outputText value="Added files: " styleClass="readerLabel" rendered="#{RegisterTBServiceBean.fileRefAdded}"/></p>
                    <h:panelGroup id="panelStep3add" binding="#{RegisterTBServiceBean.componentPanelStep3Add}"/>
-                   <h:panelGrid id="panelDEBUG" binding="#{RegisterTBServiceBean.componentPanelDEBUG}" border="2" columns="1">
-            	   </h:panelGrid>
+
              </fieldset>
 
-             <h:commandButton id="buttonInvokeSample" value="invoke service"
-             action="#{RegisterTBServiceBean.command_invokeSampleRequest}" disabled="#{RegisterTBServiceBean.stage3Completed||!RegisterTBServiceBean.fileRefAdded}"/>
+             <p><h:commandButton id="buttonInvokeSample" value="invoke service"
+             action="#{RegisterTBServiceBean.command_invokeSampleRequest}" disabled="#{RegisterTBServiceBean.stage3Completed||!RegisterTBServiceBean.fileRefAdded}"/></p>
           </h:panelGroup>
           <p>&#160;</p>
         <p>&#160;</p>

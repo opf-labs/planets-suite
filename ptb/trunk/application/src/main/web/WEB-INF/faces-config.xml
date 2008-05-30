@@ -56,6 +56,11 @@
   <managed-bean-class>eu.planets_project.tb.gui.backing.CommentBacking</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>RegisterTBServiceBean</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.admin.RegisterTBServices</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
 <!--End Managed Beans -->
 
 <!-- FOR TESTING -->
@@ -145,13 +150,7 @@
    <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
-<!-- TEST: PROBABLY TO DELETE: From left COL Navigation -->
-  <navigation-case>
-    <from-outcome>render_TBservices</from-outcome>
-    <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
-    <redirect/>
-  </navigation-case>
-<!-- END DELETE --> 
+
   <navigation-case>
    <from-outcome>help</from-outcome>
    <to-view-id>/reader/help.xhtml</to-view-id>
@@ -170,52 +169,42 @@
   <navigation-case>
    <from-outcome>goToStage1</from-outcome>
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage2</from-outcome>
    <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage3</from-outcome>
    <to-view-id>/exp/exp_stage3.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage4</from-outcome>
    <to-view-id>/exp/exp_stage4.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage5</from-outcome>
    <to-view-id>/exp/exp_stage5.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage6</from-outcome>
    <to-view-id>/exp/exp_stage6.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>completeExperiment</from-outcome>
    <to-view-id>/exp/my_exp.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>viewExperimentReport</from-outcome>
    <to-view-id>/reader/view_exp.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>  
   <navigation-case>
    <from-outcome>addComment</from-outcome>
    <to-view-id>/edit_comment.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>browseForData</from-outcome>
    <to-view-id>/exp/browse_data.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -224,7 +213,6 @@
   <navigation-case>
    <from-outcome>success</from-outcome>
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -235,7 +223,6 @@
    <from-action>#{NewExp_Controller.updateBasicPropsAction}</from-action>
    <from-outcome>success</from-outcome>
    <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  <!-- navigating between stages of reader's version of the experiment wizard -->
@@ -243,32 +230,26 @@
   <navigation-case>
    <from-outcome>goToReaderStage1</from-outcome>
    <to-view-id>/reader/exp_stage1.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToReaderStage2</from-outcome>
    <to-view-id>/reader/exp_stage2.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToReaderStage3</from-outcome>
    <to-view-id>/reader/exp_stage3.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToReaderStage4</from-outcome>
    <to-view-id>/reader/exp_stage4.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToReaderStage5</from-outcome>
    <to-view-id>/reader/exp_stage5.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToReaderStage6</from-outcome>
    <to-view-id>/reader/exp_stage6.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -278,7 +259,6 @@
   <navigation-case>
    <from-outcome>editExp</from-outcome>
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -287,7 +267,6 @@
   <navigation-case>
    <from-outcome>expDeleted</from-outcome>
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -296,17 +275,14 @@
   <navigation-case>
    <from-outcome>viewExp</from-outcome>
    <to-view-id>/reader/view_exp.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>editExp</from-outcome>
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>selectDelete</from-outcome>
    <to-view-id>/admin/exp_delete.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -315,27 +291,14 @@
   <navigation-case>
    <from-outcome>goToReaderStage2</from-outcome>
    <to-view-id>/reader/exp_stage2.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
- 
- <!-- TEMP AND DELETE -->
-<navigation-rule>
-  <from-view-id>/exp/exp_stage2.xhtml</from-view-id>
-  <navigation-case>
-   <from-outcome>reload-step2</from-outcome>
-   <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
- </navigation-rule>
-  <!-- TEMP AND DELETE -->
  
  <navigation-rule>
   <from-view-id>/reader/exp_stage2.xhtml</from-view-id>
   <navigation-case>
    <from-outcome>goToReaderStage3</from-outcome>
    <to-view-id>/reader/exp_stage3.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -344,7 +307,6 @@
   <navigation-case>
    <from-outcome>goToReaderStage4</from-outcome>
    <to-view-id>/reader/exp_stage4.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -353,7 +315,6 @@
   <navigation-case>
    <from-outcome>goToReaderStage5</from-outcome>
    <to-view-id>/reader/exp_stage5.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -362,7 +323,6 @@
   <navigation-case>
    <from-outcome>goToReaderStage6</from-outcome>
    <to-view-id>/reader/exp_stage6.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -371,7 +331,6 @@
   <navigation-case>
    <from-outcome>goToBrowseExperiments</from-outcome>
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
  </navigation-rule>
 
@@ -382,18 +341,46 @@
   <from-view-id>/admin/SerRegWizard/*</from-view-id>
   <navigation-case>
     <from-outcome>error-analyze</from-outcome>
-    <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
-    <redirect/>
+    <to-view-id>/admin/SerRegWizard/register_TBServices_error.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
     <from-outcome>general-error-page</from-outcome>
-    <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
-    <redirect/>
+    <to-view-id>/admin/SerRegWizard/register_TBServices_error.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
     <from-outcome>error-send</from-outcome>
-    <to-view-id>/admin/register_TBServices_error.xhtml</to-view-id>
-    <redirect/>
+    <to-view-id>/admin/SerRegWizard/register_TBServices_error.xhtml</to-view-id>
+  </navigation-case>
+  <!-- left col wizard navigation options -->
+  <navigation-case>
+	<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
+    <from-outcome>step1</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+	<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
+    <from-outcome>step2</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+	<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
+    <from-outcome>step3</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+	<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
+    <from-outcome>step3</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+	<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
+    <from-outcome>step4</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+	<from-action>#{RegisterTBServiceBean.command_renderWizzardStep}</from-action>
+    <from-outcome>step5</from-outcome>
+    <to-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
  
@@ -403,17 +390,14 @@
   <navigation-case>
     <from-outcome>reload-page</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
   <navigation-case>
     <from-outcome>success-analyze</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
   <navigation-case>
     <from-outcome>goTo_nextWizardStep</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -423,12 +407,10 @@
   <navigation-case>
     <from-outcome>reload-page</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step2.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
   <navigation-case>
     <from-outcome>goTo_nextWizardStep</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -438,12 +420,10 @@
   <navigation-case>
     <from-outcome>reload-page</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step3.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
   <navigation-case>
     <from-outcome>success-send</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -453,12 +433,10 @@
   <navigation-case>
     <from-outcome>reload-page</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step4.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
   <navigation-case>
     <from-outcome>goTo_nextWizardStep</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
  </navigation-rule>
  
@@ -468,7 +446,6 @@
   <navigation-case>
     <from-outcome>reload-page</from-outcome>
     <to-view-id>/admin/SerRegWizard/register_TBService_step5.xhtml</to-view-id>
-    <redirect/>
   </navigation-case>
  </navigation-rule>
  <!-- End register TB Service Wizzard rules-->
@@ -479,7 +456,6 @@
    <navigation-case>
      <from-outcome>reload-page</from-outcome>
      <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
-     <redirect/>
    </navigation-case>
   </navigation-rule>
   
@@ -489,9 +465,9 @@
    <navigation-case>
      <from-outcome>reload-page</from-outcome>
      <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
-     <redirect/>
    </navigation-case>
   </navigation-rule>
+  
 
  <application>
   <view-handler>com.sun.facelets.FaceletViewHandler</view-handler>
