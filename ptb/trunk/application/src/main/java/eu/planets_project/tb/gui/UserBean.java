@@ -32,6 +32,7 @@ public class UserBean
 
     public UserBean()
     {
+        this.checkUser();
     }
 
     public UserBean(String userid )
@@ -103,6 +104,13 @@ public class UserBean
 
     public void setUserid(String userid) {
         this.userid = userid;
+        
+        log.info("Looking up user details for " + userid);
+        if( userid == null ) return;
+        if( "".equals(userid) ) return;
+        log.info("Looking up user details for " + userid);
+        
+        this.userid = userid;
         // Also, when the user ID is set, look up the user details
         UserManager um = UserBean.getUserManager();
         if( um == null ) {
@@ -167,14 +175,13 @@ public class UserBean
      * Checks if the user information is up to date.
      */
     private void checkUser() {
-        if( userid == null ) return;
-        // This Bean can fall out of date. So test if we are up to date:
-        if( ! userid.equals(getRequest().getRemoteUser())) {
-            if( getRequest().getRemoteUser() != null && 
-                    ! "".equals(getRequest().getRemoteUser()) ) {
-                this.setUserid(getRequest().getRemoteUser());
-            }
+        // This Bean can fail out of date, so test if we are up to date:
+        if( getRequest().getRemoteUser() == null ) {
+            this.setUserid(null);
+            return;
         }
+        if( ! getRequest().getRemoteUser().equals(userid) )
+            this.setUserid(getRequest().getRemoteUser());
     }
     
     /**
