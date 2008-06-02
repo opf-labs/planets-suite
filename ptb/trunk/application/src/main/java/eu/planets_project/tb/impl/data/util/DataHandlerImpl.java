@@ -15,12 +15,14 @@ import java.net.URISyntaxException;
 import java.util.Properties;
 
 import javax.faces.context.FacesContext;
+import javax.jcr.PathNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
 import eu.planets_project.tb.impl.CommentManagerImpl;
 
 /**
@@ -276,28 +278,30 @@ public class DataHandlerImpl implements DataHandler{
 	 * @see eu.planets_project.tb.api.data.util.DataHandler#copy(java.io.File, java.io.File)
 	 */
 	public void copy(File src, File dst) throws IOException {
-		InputStream in = null;
-		OutputStream out =null;
-		try{
-			in = new FileInputStream(src);
-			out = new FileOutputStream(dst);
-			// Transfer bytes from in to out
-			byte[] buf = new byte[1024];
-			int len;
-			while ((len = in.read(buf)) > 0) {
-				out.write(buf, 0, len);
-			}
-			in.close();
-			out.close();
-		}
-		catch(IOException e){
-			throw e;
-		}finally{
-			in.close();
-			out.close();
-		}
+		InputStream in = new FileInputStream(src);
+		OutputStream out = new FileOutputStream(dst);
+		// Perform the copy.
+		this.copy(in, out);
 	}
-	
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#copy(eu.planets_project.tb.impl.data.DataRegistryManagerImpl, java.net.URI, java.io.File)
+     */
+    public void copy(DataRegistryManagerImpl dr, URI pduri, File dst)
+            throws IOException {
+        
+        InputStream in = null;
+        try {
+          in = dr.getDataManager(pduri).retrieve(pduri);
+        } catch ( PathNotFoundException e ) {
+            throw new IOException("Caught "+ e.getMessage()+" on " + pduri );
+        } catch ( URISyntaxException e ) {
+            throw new IOException("Caught "+ e.getMessage()+" on " + pduri );
+        }
+        OutputStream out = new FileOutputStream(dst);
+        // Perform the copy.
+        this.copy(in, out);
+    }
 
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#setInputFileIndexEntryName(java.lang.String, java.lang.String)
@@ -338,6 +342,28 @@ public class DataHandlerImpl implements DataHandler{
     			//TODO: loog
     		}
     	}
+    }
+
+    /**
+     * Private utility to raw-copy between streams.
+     */
+    private void copy(InputStream in, OutputStream out) throws IOException {
+        try{
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        }
+        catch(IOException e){
+            throw e;
+        } finally{
+            in.close();
+            out.close();
+        }
     }
 
 }

@@ -52,9 +52,9 @@ public class DataSourceManager implements DataManagerLocal {
         // The Planets Data Registry:
         try {
             dss[0] = new DataSource();
-            dss[0].uri =  new URI( "planets://localhost:8080/dr/jcr-local/" );
             dss[0].dm = DataSourceManager.getPlanetsDataManager();
-        } catch( URISyntaxException e ) {
+            dss[0].uri = dss[0].dm.list(null)[0];
+        } catch( SOAPException e ) {
             log.error("Error creating data registry URI: " + e );
             dss = null;
             return;

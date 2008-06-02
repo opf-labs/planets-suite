@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
+
+
 /**
  * @author Andrew Lindley, ARC
  * The TB file handler has the purpose of
@@ -70,10 +73,23 @@ public interface DataHandler {
     /**
 	 * copies a file from one location to another
 	 * @param src - the source file
-	 * @param dst - the destinationfile
+	 * @param dst - the destination file
 	 * @throws IOException
      */
     public void copy(File src, File dst) throws IOException;
+
+    /**
+     * Utility to copy data from the DR to the TB.
+     * 
+     * TODO Fill out this Javadoc.
+     * 
+     * @param dr
+     * @param pduri
+     * @param dst
+     * @throws IOException
+     */
+    public void copy(DataRegistryManagerImpl dr, URI pduri, File dst)
+    throws IOException;
     
     /**
      * Creates a mapping between the resources's physical file name (random number) and its
@@ -89,4 +105,5 @@ public interface DataHandler {
      * @param sFileName
      */
     public void setOutputFileIndexEntryName(String sFileRandomNumber, String sFileName);
+
 }

@@ -206,8 +206,7 @@ public class FileBrowser {
           // Only include selected items that are eligible:
           if( dob.isSelectable() && dob.isSelected() ) {
             try {
-            	File f = new File(dob.getUri());
-            	File fCopy = helperUploadDataForNewExperimentWizard(f);
+            	File fCopy = helperUploadDataForNewExperimentWizard(fb.dr , dob.getUri());
             	//add reference to the new experiment's backing bean
             	//pre-condition: max. supported number of files has not been yet reached
             	if(expBean.getSelectedServiceOperation().getMaxSupportedInputFiles()>expBean.getExperimentInputData().values().size()){
@@ -253,7 +252,7 @@ public class FileBrowser {
      * @return the copied and renamed File
      */
     //TODO discuss solution for work around
-    private static File helperUploadDataForNewExperimentWizard(File file) throws IOException{
+    private static File helperUploadDataForNewExperimentWizard( DataRegistryManagerImpl dr, URI pduri ) throws IOException{
     	//workaround: copy the local FileBrowsers file reference into
     	//the Testbed's experiment data repository
     	DataHandler dh = new DataHandlerImpl();
@@ -266,12 +265,12 @@ public class FileBrowser {
         	
         //@see FileUploadBean:
         //create unique filename
-        String ext = file.getName().substring(file.getName().lastIndexOf('.'));
-    	String mathName = new UUID(20,122).randomUUID().toString() + ext;
-    	dh.setInputFileIndexEntryName(mathName, file.getName());
+        String ext = pduri.getPath().substring(pduri.getPath().lastIndexOf('.'));
+    	String mathName = UUID.randomUUID().toString() + ext;
+    	dh.setInputFileIndexEntryName(mathName, pduri.toString());
         File fcopy = new File(fileInDir,mathName);
         //copy the renamed file to it's new location
-    	dh.copy(file,fcopy);
+    	dh.copy(dr, pduri , fcopy);
     	
     	return fcopy;
     }

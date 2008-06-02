@@ -20,6 +20,7 @@ import javax.rmi.PortableRemoteObject;
 import javax.xml.soap.SOAPException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.tb.api.data.DataRegistryManager;
 import eu.planets_project.tb.api.data.DigitalObject;
 
@@ -54,6 +55,7 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
         try {
             childs = dsm.list(puri);
         } catch( SOAPException e ) {
+            e.printStackTrace();
             log.error("Exception while listing " + puri + " : " + e );
         }
         if( childs == null ) return new DigitalObject[0];
@@ -93,6 +95,15 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
         //if( puri == this.checkURI(puri)) return true;
         //return false;
         return true;
+    }
+    
+    /**
+     * Utility to get hold of the DataManagerLocal for a URI;
+     * @param puri
+     * @return
+     */
+    public DataManagerLocal getDataManager( URI puri ) {
+        return dsm.getPlanetsDataManager();
     }
     
     
