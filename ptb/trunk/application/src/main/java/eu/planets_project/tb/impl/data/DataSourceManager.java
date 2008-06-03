@@ -115,9 +115,6 @@ public class DataSourceManager implements DataManagerLocal {
      * ---------------------------------------------------------------- */
     
     /* 
-     * Modifies basic behaviour by listing root URIs when passed NULL.
-     * FIXME Move this behaviour up into the standard DML?
-     * 
      * (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#list(java.net.URI)
      */
@@ -206,15 +203,26 @@ public class DataSourceManager implements DataManagerLocal {
     }
 
 
-	public URI[] findFilesWithExtension(String arg0) throws SOAPException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#findFilesWithExtension(java.net.URI, java.lang.String)
+     */
+    public URI[] findFilesWithExtension(URI pdURI, String ext)
+            throws SOAPException {
+        DataManagerLocal dm = findDataManager(pdURI);
+        if( dm == null ) return null;
+        return dm.findFilesWithExtension(pdURI, ext);
+    }
 
 
-	public URI[] findFilesWithNameContaining(String arg0) throws SOAPException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#findFilesWithNameContaining(java.net.URI, java.lang.String)
+     */
+    public URI[] findFilesWithNameContaining(URI pdURI, String name)
+            throws SOAPException {
+        DataManagerLocal dm = findDataManager(pdURI);
+        if( dm == null ) return null;
+        return dm.findFilesWithNameContaining(pdURI, name);
+    }
+
+
 }

@@ -240,14 +240,23 @@ public class FileSystemDataManager implements DataManagerLocal {
         this.store(pdURI, new ByteArrayInputStream(binary));
     }
 
-	public URI[] findFilesWithExtension(String arg0) throws SOAPException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#findFilesWithExtension(java.net.URI, java.lang.String)
+     */
+    public URI[] findFilesWithExtension(URI pdURI, String ext)
+            throws SOAPException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	public URI[] findFilesWithNameContaining(String arg0) throws SOAPException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#findFilesWithNameContaining(java.net.URI, java.lang.String)
+     */
+    public URI[] findFilesWithNameContaining(URI pdURI, String name)
+            throws SOAPException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     
 }

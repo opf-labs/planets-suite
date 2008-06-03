@@ -103,7 +103,7 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
      * @return
      */
     public DataManagerLocal getDataManager( URI puri ) {
-        return dsm.getPlanetsDataManager();
+        return dsm;
     }
     
     

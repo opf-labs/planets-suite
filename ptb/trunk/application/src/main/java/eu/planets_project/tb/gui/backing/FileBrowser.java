@@ -215,7 +215,7 @@ public class FileBrowser {
             	}
             } catch( IOException e ) {
               log.error("Failed to add to experiment: "+dob.getUri());
-              log.equals("Exception: "+e);
+              log.error("Exception: "+e);
             }
           }
         }
