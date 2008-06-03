@@ -59,7 +59,7 @@
                     	disabled="#{RegisterTBServiceBean.stage3Completed}"/>
                 
                 	<h:commandLink id="link_addFileInputItem" action="#{RegisterTBServiceBean.command_addFileRefToStep3}" rendered="#{RegisterTBServiceBean.addFileButtonRendered}">
-                    	<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
+                    	<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="#{res['reg_serv.addFile']}" title="#{res['reg_serv.addFile']}"/>
                 	</h:commandLink>
              	   </p>
              	   <!--The panel where the already added FileArrayElements get displayed -->
