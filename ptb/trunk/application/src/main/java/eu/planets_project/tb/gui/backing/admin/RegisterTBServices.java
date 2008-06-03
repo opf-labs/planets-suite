@@ -109,14 +109,14 @@ public class RegisterTBServices{
 	//the selected TagName: i.e. "File" or "String"
 	private String sTagIDFile = "File";
 	private String sTagIDFileArray = "FileArray";
-	private String sTagIDBase64File = "Base64File";
+	private String sTagIDBase64ByteArray = "Base64ByteArray";
 	private SelectItem selectedTagNameItem = new SelectItem(sTagIDFile);
 	
 	//The tokens that are used
 	private final String TAG_FILE = "@tbFile@";
 	private final String TAG_FILEARRAYLINE_START = "@tbFileArrayLineStart@";
 	private final String TAG_FILEARRAYLINE_END = "@tbFileArrayLineEnd@";
-	private final String TAG_BASE64FILE = "@Base64File";
+	private final String TAG_BASE64BYTEARRAY= "@Base64ByteArray@";
 	
 	//Contains the registered operations (names) and their xmltemplates
 	//holding the data for the registeredOperations in Form of a List<String>: e.g. [0]xmlrequesttemplate [1]xmlrespondstemplate
@@ -167,12 +167,15 @@ public class RegisterTBServices{
 	private Map<String,String> mapTagNamesValues = new HashMap<String,String>();
 	private String newTagName = "";
 	private String newTagValue = "";
+	//used by callByValue (e.g. base64) - e.g. .jpeg
+	private String sOutputFileType ="tif";
 	
 	
 	public RegisterTBServices(){
 		//set the Tag value and labels
 		lTagNames.add(new SelectItem(sTagIDFile));
 		lTagNames.add(new SelectItem(sTagIDFileArray,"FileArray:File"));
+		lTagNames.add(new SelectItem(sTagIDBase64ByteArray));
 		
 		//set the Tag value and labels 
 		lOutputTypes.add(new SelectItem(sOutputTypeFile,   "File"));
@@ -415,7 +418,7 @@ public class RegisterTBServices{
 	/**
 	 * Returns if the "add file button" is rendered or not
 	 *  - it is rendered for file arrays (until the max input is reached)
-	 *  - it is rendered for a single file and then removed when it was added.
+	 *  - it is rendered for a single file (file or base64) and then removed when it was added.
 	 * @return
 	 */
 	public boolean isAddFileButtonRendered(){
@@ -425,8 +428,9 @@ public class RegisterTBServices{
 			if(this.getTagSelectItemValue().equals(this.sTagIDFileArray))
 				return true;
 			
-			//When InputType File: only rendered if no file was added
-			if(this.getTagSelectItemValue().equals(this.sTagIDFile)){
+			//When InputType File or SingleBase64: only rendered if no fileref was added
+			if((this.getTagSelectItemValue().equals(this.sTagIDFile))||
+			   (this.getTagSelectItemValue().equals(this.sTagIDBase64ByteArray))){
 				if(this.getAllFileInputs().size()==0){
 					return true;
 				}
@@ -568,7 +572,7 @@ public class RegisterTBServices{
 	
 	/* 
 	 * This method is triggered by ValueChangeEvents e.g. SelectMenuOne
-	 * and is currently restricted to process operations with only one file or fileArray
+	 * and is currently restricted to process operations with one file, fileArray or base64Array
 	 * 
 	 * (non-Javadoc)
 	 * @see javax.faces.event.ValueChangeListener#processValueChange(javax.faces.event.ValueChangeEvent)
@@ -578,15 +582,16 @@ public class RegisterTBServices{
 		//selectMenuOne changed from File to FileArray or vice-versa
 		this.setTagSelectedItemValue((String)vce.getNewValue());
 		
-		//get the InputPanel and set the InputTextFields when File:disbled / FileArray:enabled
-		boolean bInputIsFile = true;
-		//determine which input we're dealing with:
-			if(((String)this.getTagSelectItemValue()).equals(sTagIDFile))
-				bInputIsFile = true;
+		//get the InputPanel and set the InputTextFields when File:disbled Base64File:disabled / FileArray:enabled
+		boolean bInputIsSingleLine = true;
+		//determine which input we're dealing with: singleLine or Arrays
+			if((((String)this.getTagSelectItemValue()).equals(sTagIDFile))||
+				((String)this.getTagSelectItemValue()).equals(sTagIDBase64ByteArray))
+				bInputIsSingleLine = true;
 			else
 				//value="FileArray"
-				bInputIsFile = false;
-		if(bInputIsFile){
+				bInputIsSingleLine = false;
+		if(bInputIsSingleLine){
 			//get the SurroundingXMLRequestInputElements and set disabled
 			((HtmlInputText)this.getComponent("xmlRequestArrayStart"+(this.iCountNumbOfXMLRequestInputTokens-1))).setRendered(false);
 			((HtmlInputText)this.getComponent("xmlRequestArrayEnd"+(this.iCountNumbOfXMLRequestInputTokens-1))).setRendered(false);
@@ -628,9 +633,11 @@ public class RegisterTBServices{
 	
 	
 	/**
-	 * A private helper method to extract the Input Values that have been set
-	 * via the dynamically created part of the UI for specifying the Testbed Tokens 
-	 * within the XML Request template.
+	 * A private helper method for 
+	 * a) extracting the Input Values of a XML Request Template
+	 * that have been set via the dynamically created part of the UI 
+ 	 * b) then taking the XML Request Template including the "?" extracted by the WSClient 
+	 * c) adding TB specific Tokens for a) within the request template
 	 * @return
 	 */
 	private String getXMLRequestTemplateInputHelper(){
@@ -654,9 +661,12 @@ public class RegisterTBServices{
 					inputCount++;
 					String sHelper =(String)input.getValue();
 					
-					//check if we're adding a File or a FileArray
-					if(sHelper.equals("File")){
+					//check if we're adding a File
+					if(sHelper.equals(sTagIDFile)){
 						sRet+=this.TAG_FILE;
+					//or a base64ByteArray
+					}else if(sHelper.equals(sTagIDBase64ByteArray)){
+						sRet+=this.TAG_BASE64BYTEARRAY;
 					}
 					else{
 						//sHelper ist "FileArray"
@@ -869,69 +879,102 @@ public class RegisterTBServices{
 		//1)parse TB tokens and inject file references instead
 		String sTokenTemplate = this.getXMLRequestTemplate(getCurrentOperationName());
 		
-	//2a) action for token FILE_ARRAY
-		boolean isFileArray = false;
-		String tokenizer[] = sTokenTemplate.split(this.TAG_FILEARRAYLINE_START);
-		if(tokenizer.length!=1){
-			isFileArray = true;
-			//this parsing procedure assumes that only one file array is being useed
-			sMessageStart = tokenizer[0];
-			String sTemp = tokenizer[1];
-			String array[] = sTemp.split(this.TAG_FILEARRAYLINE_END);
-			sFileArrayLine = array[0];
-			sMessageEnd = array[1];
+		//2A) Case for Local File refs, i.e. FILE and FILE_ARRAY[File]
+		if((getTagSelectItemValue().equals(this.sTagIDFile))||
+		  (getTagSelectItemValue().equals(this.sTagIDFileArray))){
 			
-			//there shouldn't be any more tokens:
-			if((tokenizer.length>3)||(array.length>2)){
-				//TODO: log ERROR by parsing: violating agains constraints of only one file or file array per message
-				throw new Exception("BuildingSampleRequest: Error by parsing: violating against constraints of only one file or file array per message");
-			}
-		}
-		
-	//2b) action for Token FILE
-		if(!isFileArray){
-			String fileTokens[] = sTokenTemplate.split(this.TAG_FILE);
-			sMessageStart = fileTokens[0];
-			//add file ref inbetween
-			sMessageEnd = fileTokens[1];
-			if((this.addedFileRefs.values()!=null)&&(this.addedFileRefs.values().size()==1)){
-				//get file ref
-				String sFileRef = this.addedFileRefs.values().iterator().next();
-				try{
-					File f = dh.getLocalFileRef(new URI(sFileRef), true);
-					sFileRef = f.getAbsolutePath();
-				}catch(Exception e){}	
+			//2a1) action for token FILE_ARRAY
+			boolean isFileArray = false;
+			String tokenizer[] = sTokenTemplate.split(this.TAG_FILEARRAYLINE_START);
+			if(tokenizer.length!=1){
+				isFileArray = true;
+				//this parsing procedure assumes that only one file array is being useed
+				sMessageStart = tokenizer[0];
+				String sTemp = tokenizer[1];
+				String array[] = sTemp.split(this.TAG_FILEARRAYLINE_END);
+				sFileArrayLine = array[0];
+				sMessageEnd = array[1];
 				
-				//build return String
-				sRet = sMessageStart + sFileRef + sMessageEnd;
+				//there shouldn't be any more tokens:
+				if((tokenizer.length>3)||(array.length>2)){
+					//TODO: log ERROR by parsing: violating agains constraints of only one file or file array per message
+					throw new Exception("BuildingSampleRequest: Error by parsing: violating against constraints of only one file or file array per message");
+				}
 			}
-			else{
-				//TODO: log ERROR: too many file refs are added.
-				throw new Exception("BuildingSampleRequest: Error: too many file references were added");
-			}
-		}
-		else{
-			//we're having a file array
-			String fileTokens[] = sFileArrayLine.split(this.TAG_FILE);
-			String sArrayLineStart = fileTokens[0];
-			//add file ref inbetween
-			String sArrayLineEnd = fileTokens[1];
 			
-			if(this.addedFileRefs.values()!=null){
-				int iElements = addedFileRefs.values().size();
-				//build the return String
-				sRet = sMessageStart;
-				
-				for(int i=0;i<iElements;i++){
-					//convert from URI to absolute local file reference
-					String sFileRef = this.addedFileRefs.get(i+"");
+			//2a2) action for Token FILE
+			if(!isFileArray){
+				String fileTokens[] = sTokenTemplate.split(this.TAG_FILE);
+				sMessageStart = fileTokens[0];
+				//add file ref inbetween
+				sMessageEnd = fileTokens[1];
+				if((this.addedFileRefs.values()!=null)&&(this.addedFileRefs.values().size()==1)){
+					//get file ref
+					String sFileRef = this.addedFileRefs.values().iterator().next();
 					try{
 						File f = dh.getLocalFileRef(new URI(sFileRef), true);
 						sFileRef = f.getAbsolutePath();
 					}catch(Exception e){}	
-					sRet+=sArrayLineStart + sFileRef + sArrayLineEnd;
+					
+					//build return String
+					sRet = sMessageStart + sFileRef + sMessageEnd;
 				}
-				sRet += sMessageEnd;
+				else{
+					//TODO: log ERROR: too many file refs are added.
+					throw new Exception("BuildingSampleRequest: Error: too many file references were added");
+				}
+			}
+			else{
+				//we're having a file array
+				String fileTokens[] = sFileArrayLine.split(this.TAG_FILE);
+				String sArrayLineStart = fileTokens[0];
+				//add file ref inbetween
+				String sArrayLineEnd = fileTokens[1];
+				
+				if(this.addedFileRefs.values()!=null){
+					int iElements = addedFileRefs.values().size();
+					//build the return String
+					sRet = sMessageStart;
+					
+					for(int i=0;i<iElements;i++){
+						//convert from URI to absolute local file reference
+						String sFileRef = this.addedFileRefs.get(i+"");
+						try{
+							File f = dh.getLocalFileRef(new URI(sFileRef), true);
+							sFileRef = f.getAbsolutePath();
+						}catch(Exception e){}	
+						sRet+=sArrayLineStart + sFileRef + sArrayLineEnd;
+					}
+					sRet += sMessageEnd;
+				}
+			}
+		}
+		
+		//2B) Case for base64ByteArray
+		if(getTagSelectItemValue().equals(this.sTagIDBase64ByteArray)){
+			String fileTokens[] = sTokenTemplate.split(this.TAG_BASE64BYTEARRAY);
+			sMessageStart = fileTokens[0];
+			sMessageEnd = fileTokens[1];
+			
+			//convert file ref to base64 String and add the base64byteArray inbetween
+			if((this.addedFileRefs.values()!=null)&&(this.addedFileRefs.values().size()==1)){
+
+				//get file ref
+				String sFileRef = this.addedFileRefs.values().iterator().next();
+				String sBase64File ="";
+				try{
+					File f = dh.getLocalFileRef(new URI(sFileRef), true);
+					sBase64File = dh.encodeToBase64ByteArrayString(f);
+				}catch(Exception e){
+					throw new Exception("BuildingSampleRequest: file ref cannot be encoded to base64");
+				}	
+				
+				//build return String
+				sRet = sMessageStart + sBase64File + sMessageEnd;
+			}
+			else{
+				//TODO: log ERROR: too many file refs are added.
+				throw new Exception("BuildingSampleRequest: Error: too many file references were added");
 			}
 		}
 
@@ -1676,6 +1719,10 @@ public class RegisterTBServices{
 		operation.setServiceOperationType(this.getServiceOperationTypeValue());
 		//set service output type
 		operation.setOutputObjectType(this.getSelectedOutputTypeValue());
+		//input Type: call by value or reference
+		operation.setInputTypeIsCallByValue(this.isCallByValue());
+		if(operation.isInputTypeCallByValue())
+				operation.setOutputFileType(this.getOutputFileType());
 		
 		//add the service operation
 		tbService.addServiceOperation(operation);
@@ -1741,8 +1788,9 @@ public class RegisterTBServices{
 			if(TagFileOrArray.equals(this.sTagIDFileArray))
 				return this.iFileArrayLineMaxAllowed;
 
-			//if File
-			if(TagFileOrArray.equals(this.sTagIDFile))
+			//if File or base64Array
+			if((TagFileOrArray.equals(this.sTagIDFile))||
+			   (TagFileOrArray.equals(this.sTagIDBase64ByteArray)))
 				return 1;
 		}
 		return this.iFileArrayLineMaxAllowed;
@@ -1760,8 +1808,9 @@ public class RegisterTBServices{
 			if(TagFileOrArray.equals(this.sTagIDFileArray))
 				return this.iFileArrayLineMinRequired;
 
-			//if File
-			if(TagFileOrArray.equals(this.sTagIDFileArray))
+			//if File or base64Array
+			if((TagFileOrArray.equals(this.sTagIDFile))||
+			   (TagFileOrArray.equals(this.sTagIDBase64ByteArray)))
 				return 1;
 		}
 		return this.iFileArrayLineMinRequired;
@@ -1770,10 +1819,10 @@ public class RegisterTBServices{
 	
 	/**
 	 * Returns true if the selected Tag ID in the process of building the sample
-	 * xml request template corresponds to "FileArray" and not "File";
+	 * xml request template corresponds to "FileArray" and not "File" or base64;
 	 * @return
 	 */
-	public boolean isSelectedTagIDArray(){
+	public boolean isSelectedTagIDFileArray(){
 		String TagFileOrArray = getTagSelectItemValue();
 		if((TagFileOrArray!=null)&&(TagFileOrArray!="")){
 			if(TagFileOrArray.equals(this.sTagIDFileArray))
@@ -2108,6 +2157,35 @@ public class RegisterTBServices{
 		}
 		return "";
 	}
+	
+	/**
+	 * Determines the type of the provided Input and Output of a call
+	 * i.e. if the data is passed in terms of references 
+	 * as (FILE and FILEARRAY) or by value (BASE64)
+	 * @return
+	 */
+	public boolean isCallByValue(){
+		boolean bValue = true;
+		if((this.getTagSelectItemValue().equals(sTagIDFile))||
+		   (this.getTagSelectItemValue().equals(sTagIDFileArray)))
+			bValue = false;
+		
+		if(this.getTagSelectItemValue().equals(sTagIDBase64ByteArray))
+			bValue = true;
+		
+		return bValue;
+	}
+	
+	/**
+	 * Optional - in case of CallByValue to determine the file type of the
+	 * extracted output e.g. .doc
+	 * @return
+	 */
+	public String getOutputFileType(){
+		return this.sOutputFileType;
+	}
 
-
+	public void setOutputFileType(String sFileType){
+		this.sOutputFileType = sFileType;
+	}
 }

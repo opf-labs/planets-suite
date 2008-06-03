@@ -19,9 +19,7 @@
 	
 	<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script> 
 	<!-- css popup javascript -->
-	<script type="text/javascript"
-		src="${facesContext.externalContext.requestContextPath}/js/csspopup/csspopup.js">
-	</script>	
+	
 </ui:define>
 
 <ui:define name="content">
@@ -218,21 +216,6 @@
 </div>
 </div>
 <!-- end navigation options -->
-
-<!-- the div for the popup screen -->
-<div id="blanket" style="display:none;"></div>
-<div id="popUpDiv" style="display:none;">
-
-	<div id="overlay-menu"><p><a href="#" onclick="popup('popUpDiv')"><img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="close" title="close"/></a> </p></div>
-	<div id="overlay-main">
-		<h2>Browse Service's WSDL</h2>
-		<p>Browse the service's WSDL content to inspect the required syntax for array operations</p>
-		<h:outputText value="selected service WSDL: " styleClass="readerLabel"/>
-        <h:inputTextarea value="#{RegisterTBServiceBean.selectedServiceWSDLContent}" cols="70" rows="25" readonly="true"/>
-		<p> </p>
-	</div>
-</div>
-<!-- end popup-div -->
 </ui:define>
   
   <ui:define name="footer">

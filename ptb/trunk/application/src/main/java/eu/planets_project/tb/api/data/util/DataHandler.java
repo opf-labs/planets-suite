@@ -92,6 +92,14 @@ public interface DataHandler {
     throws IOException;
     
     /**
+     * @param src - the source file as byte[]
+     * @param dst - the destination file
+     * @throws IOException
+     * @throws FileNotFoundException
+     */
+    public void copy(byte[] src, File dst) throws IOException, FileNotFoundException;
+    
+    /**
      * Creates a mapping between the resources's physical file name (random number) and its
      * original logical name. within the input file storage location
      * @param sFileRandomNumber
@@ -105,5 +113,18 @@ public interface DataHandler {
      * @param sFileName
      */
     public void setOutputFileIndexEntryName(String sFileRandomNumber, String sFileName);
-
+    
+    /**
+     * Takes a File object and returns a base64 encoded String of its byte array
+     * @param src
+     * @return
+     */
+    public String encodeToBase64ByteArrayString(File src) throws IOException;
+    
+    /**
+     * Takes a base64 encoded String of a byte array and decodes it into byte[]
+     * @param sB64ByteArrayString
+     * @return
+     */
+    public byte[] decodeToByteArray(String sBase64ByteArrayString);
 }

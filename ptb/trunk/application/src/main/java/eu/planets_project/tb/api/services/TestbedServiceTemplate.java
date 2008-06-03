@@ -192,6 +192,22 @@ public interface TestbedServiceTemplate{
 		 */
 		public void setOutputObjectType(String type);
 		public String getOutputObjectType();
+		
+		/**
+		 * Determins if the input type (e.g. file) is handed over by value (e.g. base64) or by reference (URI)
+		 * @param b
+		 */
+		public void setInputTypeIsCallByValue(boolean b);
+		public void setInputTypeIsCallByReference(boolean b);
+		public boolean isInputTypeCallByValue();
+		
+		/**
+		 * If is callByValue this method can be used to determine the file-output
+		 * type of the service e.g. "doc"
+		 * @param s
+		 */
+		public void setOutputFileType(String s);
+		public String getOutputFileType();
 	}
 
 }

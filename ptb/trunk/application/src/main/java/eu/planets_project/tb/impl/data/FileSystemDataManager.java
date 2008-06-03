@@ -239,5 +239,15 @@ public class FileSystemDataManager implements DataManagerLocal {
         // Store it:
         this.store(pdURI, new ByteArrayInputStream(binary));
     }
+
+	public URI[] findFilesWithExtension(String arg0) throws SOAPException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public URI[] findFilesWithNameContaining(String arg0) throws SOAPException {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

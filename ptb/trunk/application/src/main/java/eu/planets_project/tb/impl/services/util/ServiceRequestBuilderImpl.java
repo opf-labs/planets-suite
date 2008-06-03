@@ -1,6 +1,7 @@
 package eu.planets_project.tb.impl.services.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,13 +12,14 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 /**
  * @author Andrew Lindley, ARC
  * The following restrictions apply:
- *  - only File or FileArrays are currently supported
+ *  - File, FileArrays and Base64ByteArray are currently supported
  *  - if FileArray, it must contain the all three tokens it requires
  *  - no multiple TBTokens within a file allowed (e.g. two tbFile tokens not supported)
  */
@@ -28,6 +30,8 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 	private Map<String,String> hmLocalFileRefs = new HashMap<String,String>();
 	//A logger for this:
     private Log log = LogFactory.getLog(ServiceRequestBuilderImpl.class);
+    //DataHandler util class for e.g. base64 encoding
+    DataHandler dh = new DataHandlerImpl();
 	
 	public ServiceRequestBuilderImpl(String xmlRequestTemplate, Map<String,String> localFileRefs){
 		this.xmlRequestTemplate = xmlRequestTemplate;
@@ -57,6 +61,11 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 		//scenario2: build for FILE_ARRAY:
 		if(isFileArrayTemplate()){
 			return buildFileArrayXMLRequest();
+		}
+		
+		//scenario3: build for BASE64BYTEARRAY
+		if(isBase64ByteArrayTemplate()){
+			return buildBase64ByteArrayXMLRequest();
 		}
 		
 		return "";
@@ -142,6 +151,44 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 		return XMLRequest;
 	}
 	
+	/**
+	 * Parse through the XML, look for the token and add the base64ByteArray file
+	 * @return
+	 */
+	private String buildBase64ByteArrayXMLRequest(){
+		String XMLRequest = "";
+		String sMessageStart ="", sMessageEnd ="";
+		
+	 //1build the message parts
+		String tokenizer[] =this.xmlRequestTemplate.split(TAG_BASE64BYTEARRAY);
+		if(tokenizer.length!=1){
+			//e.g. "<item>"
+			sMessageStart = tokenizer[0];
+			sMessageEnd = tokenizer[1];
+		}
+		
+	 //2add the file ref:
+		String sFileRef ="";
+		//contains only one reference
+		Iterator<String> itLocalFileRefs = this.hmLocalFileRefs.values().iterator();
+		while(itLocalFileRefs.hasNext()){
+			sFileRef = itLocalFileRefs.next();
+		}
+		
+	 //3 encode the file to base64
+		String sBase64File = "";
+		try {
+			sBase64File = dh.encodeToBase64ByteArrayString(new File(sFileRef));
+		} catch (IOException e) {
+			log.error("Failure in encoding the provided fileReference "+sFileRef+" to a Base64ByteArray");
+		}
+
+		
+	 //4 complete the xml request message
+		XMLRequest = sMessageStart + sBase64File + sMessageEnd;
+		return XMLRequest;
+	}
+	
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.services.util.ServiceRequestBuilder#isFileTemplate()
@@ -167,7 +214,17 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 		}
 		return b1&&b2&&b3;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.util.ServiceRequestBuilder#isBase64ByteArrayTemplate()
+	 */
+	public boolean isBase64ByteArrayTemplate() {
+		boolean bFound = true;
+		if(xmlRequestTemplate!=null){
+			bFound=xmlRequestTemplate.indexOf(TAG_BASE64BYTEARRAY)>0 ? true : false;
+		}
+		return bFound;
+	}
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.services.util.ServiceRequestBuilder#getSupportedTagValues()
@@ -177,6 +234,7 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 		ret.add(TAG_FILE);
 		ret.add(TAG_FILEARRAYLINE_START);
 		ret.add(TAG_FILEARRAYLINE_END);
+		ret.add(TAG_BASE64BYTEARRAY);
 		return ret;
 	}
 	
@@ -216,4 +274,20 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 			return f.getAbsolutePath();
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.util.ServiceRequestBuilder#isCallByValue()
+	 */
+	public boolean isCallByValue() {
+		boolean bByValue = false;
+		if(this.isFileTemplate()||this.isFileArrayTemplate())
+			bByValue = false;
+		
+		if(this.isBase64ByteArrayTemplate())
+			bByValue = true;
+		
+		return bByValue;
+	}
+
+
 }

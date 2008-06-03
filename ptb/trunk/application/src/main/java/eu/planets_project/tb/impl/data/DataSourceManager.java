@@ -204,5 +204,17 @@ public class DataSourceManager implements DataManagerLocal {
         if( dm == null ) return;
         dm.storeBinary(pdURI, binary);
     }
+
+
+	public URI[] findFilesWithExtension(String arg0) throws SOAPException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public URI[] findFilesWithNameContaining(String arg0) throws SOAPException {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
 }

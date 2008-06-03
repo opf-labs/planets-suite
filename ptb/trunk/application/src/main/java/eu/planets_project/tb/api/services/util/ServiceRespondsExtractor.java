@@ -27,4 +27,6 @@ public interface ServiceRespondsExtractor {
 	 * @return String may be null
 	 */
 	public String getOutput(int position);
+	
+
 }

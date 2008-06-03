@@ -55,7 +55,7 @@
                  <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.stage5OperationTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
               </p>
 
-              <h:panelGroup id="panelMetadata" rendered="#{RegisterTBServiceBean.selectedTagIDArray}">
+              <h:panelGroup id="panelMetadata" rendered="#{RegisterTBServiceBean.selectedTagIDFileArray}">
               <p><h:outputText value="max. supported input files" styleClass="readerLabel"/>
                  <h:inputText id="input_maxNR" value="#{RegisterTBServiceBean.maxAllowedNrOfInputFiles}">
                        <f:validateLongRange minimum="1" maximum="100"/>
@@ -72,6 +72,17 @@
               </p>
               <br/>
               </h:panelGroup>
+              
+              <h:panelGroup id="panelIsCallByValue" rendered="#{RegisterTBServiceBean.callByValue}">
+              <p><h:outputText value="extracted file type:" styleClass="readerLabel"/>
+                 <h:inputText id="migration_file_type_result" value="#{RegisterTBServiceBean.outputFileType}">
+                       <f:validateLength minimum="3" maximum="3"/>
+                 </h:inputText>
+                 <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:350px;text-align:left;\'&gt;#{res['reg_serv.stage5FileTypeTip']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 350);" onmouseout="return nd();" />
+                 <h:message for="migration_file_type_result" errorClass="errorMessage" infoClass="infoMessage"/>
+              </p>
+              </h:panelGroup>
+              
               <p><h:outputText value="service operation type" styleClass="readerLabel"/>
                  <h:selectOneMenu id="selectServiceOperationType" value="#{RegisterTBServiceBean.serviceOperationTypeValue}">
                         <f:selectItems value="#{RegisterTBServiceBean.serviceOperationTypeItems}" />                       

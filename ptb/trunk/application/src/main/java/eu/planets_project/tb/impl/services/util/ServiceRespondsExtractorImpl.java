@@ -3,14 +3,12 @@
  */
 package eu.planets_project.tb.impl.services.util;
 
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
-import javax.faces.component.UIComponent;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -25,12 +23,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import eu.planets_project.tb.api.services.util.ServiceRespondsExtractor;
-import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 
 /**
  * @author Andrew Lindley, ARC
  * This util class takes a XMLServiceResponds, a list of inputFileRefs and 
- * the XPathStatement on how to query the responds output.
+ * the XPathStatement on how to query the responds output. Additionally for base64 service
+ * types or similar, where values instead of references are passed, it downloads/decodes them and
+ * provides a local file reference for them.
  * Please note: This class works with localFile references.
  */
 public class ServiceRespondsExtractorImpl implements ServiceRespondsExtractor{
@@ -115,5 +114,6 @@ public class ServiceRespondsExtractorImpl implements ServiceRespondsExtractor{
 			}
 		}
 	}
+	
 		
 }

@@ -7,17 +7,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.ejb.Stateless;
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.rmi.PortableRemoteObject;
 
 import org.apache.commons.logging.Log;
 
@@ -37,7 +29,6 @@ import eu.planets_project.tb.impl.system.ExperimentInvocationHandlerImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;

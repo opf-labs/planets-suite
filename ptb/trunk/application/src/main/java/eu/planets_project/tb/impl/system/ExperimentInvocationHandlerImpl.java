@@ -61,6 +61,8 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
     //this will only be modified once, so therefore the relative position of its elements will not change
     //which is important for mapping them to their output files.
     Map<String,String> hmInputFiles = new HashMap<String,String>();
+    //A DataHandler util class for decoding base64 or similar value (and not ref) results
+    DataHandler dh = new DataHandlerImpl();
     
     public ExperimentInvocationHandlerImpl(){
     }
@@ -79,6 +81,8 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 			}
 			executable.setExecutableInvoked(true);
 		try {
+			//set the testbed's output file directory (e.g. tomcat55..)
+			this.setDir();
 			//stores the inputFiles with a mapping Map<position i,fileRef>
 			createInputDataMap(executable.getInputData());
 			//TBServiceTemplate which is registered within the admin wizard
@@ -92,7 +96,7 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 			
 			//take the template and build the actual service request (containing file refs)
 			String serviceRequest = requBuilder.buildXMLServiceRequest();
-			
+			boolean byValueCall = requBuilder.isCallByValue();
 			
 		  //2) build the wsclient for invoking the call
 			//create the web service client
@@ -125,12 +129,16 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 					selOperation.SERVICE_OPERATION_TYPE_MIGRATION
 					);
 			if(bMigration){
-				//set the testbed's output file directory (e.g. tomcat55..)
-				this.setDir();
+				//if data was called byValue (e.g. Base64 file) and not by reference - decode the data into local file refs
+				if(byValueCall){
+					Map<String,String> createdResults = this.createFilesFromBase64Result(mapResults,selOperation.getOutputFileType());
+					mapResults = createdResults;
+				}else{
 				//take the migration output file refs and copy them into the TB's output dir
 				//this step also renames them to their input file name
 				Map<String,String> movedResults = this.copyFileOutputToOutputDir(mapResults);
 				mapResults = movedResults;
+				}
 			}
 			
 		 //5) write the characterisation results or the migration (copied and renamed) file refs
@@ -396,5 +404,53 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 			in.close();
 		}
 	}
+	
+	
+	/**
+	 * In the case of a value calls (e.g. as base64 data transmission) this method
+	 * extracts and decodes the data to a local file and provides a file reference
+	 * An output file type (e.g. doc) can be specified, which will be used as the result's file type
+	 * @return
+	 */
+	private Map<String,String> createFilesFromBase64Result(Map<String,String> migrationResults, String outputFileType){
+		Map<String,String> ret = new HashMap<String,String>();
+		if((migrationResults==null)||(migrationResults.size()<=0))
+			return ret;
+		
+		Iterator<String> itKeys = migrationResults.keySet().iterator();
+		while(itKeys.hasNext()){
+			String key = itKeys.next();
+			String sBase64value = migrationResults.get(key);
+				
+			//decode the base64 String
+			byte[] b = dh.decodeToByteArray(sBase64value);
+			try {
+				//get the file's new name (same as it's input file) - input and output should have the same key
+				String sInputFileName = new File(this.hmInputFiles.get(key)).getName();
+				String sOutputFileName ="";
+				char delimP = '.';
+				int p = sInputFileName.lastIndexOf(delimP);
+				String origInputFileMathNr = sInputFileName.substring(0, p);
+				sOutputFileName = origInputFileMathNr+"."+outputFileType;
+				File fOutputFile = new File(this.sOutputDir+"/"+sOutputFileName);
+				
+				//now copy the byteArray into the file-location
+				dh.copy(b, fOutputFile);
+				//the original file name is written into the output index
+				dh.setOutputFileIndexEntryName(sOutputFileName, sOutputFileName);
+				
+				//finally update the returned migration output reference
+				ret.put(key, fOutputFile.getAbsolutePath());
+				
+			} catch (FileNotFoundException e) {
+				System.out.println(e.toString());
+			} catch (IOException e) {
+				System.out.println(e.toString());
+			}
+		}
+		
+		return ret;
+	}
+	
 
 }

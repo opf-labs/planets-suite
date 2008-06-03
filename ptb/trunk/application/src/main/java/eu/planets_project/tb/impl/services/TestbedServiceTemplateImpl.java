@@ -580,6 +580,8 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 		private int iMinRequiredInputFiles = 1;
 		private String sServiceType="";
 		private String sOutputOjbectType="";
+		private boolean bInputTypeIsCallByValue=true;
+		private String sOutputFileType="";
 		
 		
 		public ServiceOperationImpl(String sXMLRequestTemplate, String sXPathToOutput){
@@ -727,6 +729,41 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 				this.sDescription = sDescr;
 			}
 			
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation#isInputTypeCallByValue()
+		 */
+		public boolean isInputTypeCallByValue() {
+			return this.bInputTypeIsCallByValue;
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation#setInputTypeIsCallByReference(boolean)
+		 */
+		public void setInputTypeIsCallByReference(boolean b) {
+			this.bInputTypeIsCallByValue = !b;
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation#setInputTypeIsCallByValue(boolean)
+		 */
+		public void setInputTypeIsCallByValue(boolean b) {
+			this.bInputTypeIsCallByValue = b;
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation#getOutputFileType()
+		 */
+		public String getOutputFileType() {
+			return this.sOutputFileType;
+		}
+
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation#setOutputFileType(java.lang.String)
+		 */
+		public void setOutputFileType(String s) {
+			this.sOutputFileType = s;
 		}
 
 	}

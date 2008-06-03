@@ -17,7 +17,7 @@
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="test.dir" value="${basedir}/../test/java"/>
   <property name="client.config" value="${basedir}/../test/client-config"/>
-   
+
   <!--To configure within the config.properties file-->
   <property file="config.properties"/>
   <property name="jboss.home" value="${if_server.dir}"/>
@@ -34,8 +34,8 @@
         <fileset dir="${jboss.home}/server/default/deploy/jboss-aop-jdk50.deployer">
             <include name="*.jar"/>
         </fileset>
-             <fileset dir="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar/jsf-libs">
-        		<include name="*.jar"/>
+        <fileset dir="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar">
+            <include name="**/*.jar"/>
         </fileset>
         <fileset dir="${jboss.home}/lib">
             <include name="*.jar"/>

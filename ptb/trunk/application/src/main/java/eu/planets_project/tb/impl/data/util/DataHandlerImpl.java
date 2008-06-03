@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.axis.encoding.Base64;
 
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
@@ -33,6 +34,7 @@ import eu.planets_project.tb.impl.CommentManagerImpl;
  *         http file: http://localhost:8080/planets-testbed/inputdata/Text1.doc
  * 
  * - retrieving file specific metadata as e.g. the originally used name, etc. from the index
+ * - encoding/decoding files to base64 Strings by using the AXIS libraries
  */
 public class DataHandlerImpl implements DataHandler{
 
@@ -49,6 +51,8 @@ public class DataHandlerImpl implements DataHandler{
 	private String FileOutDir = "";
 	//e.g. /planets-testbed/outputdata
 	private String FileOutSubDir = "";
+	//Apache AXIS Base64 encoder/decoder
+	Base64 base64 = new Base64();
 	
 	public DataHandlerImpl(){
 		//read the file input and output directory from the proeprties file 
@@ -365,5 +369,50 @@ public class DataHandlerImpl implements DataHandler{
             out.close();
         }
     }
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#copy(byte[], java.io.File)
+	 */
+	public void copy(byte[] src, File dst) throws IOException,
+			FileNotFoundException {
+		
+		FileOutputStream fos = null;
+		try{
+			fos = new FileOutputStream(dst);
+			fos.write(src);
+			fos.close();
+		}
+		catch(IOException e){
+			throw e;
+		}finally{
+			fos.close();
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#decodeToByteArray(java.lang.String)
+	 */
+	public byte[] decodeToByteArray(String sBase64ByteArrayString) {
+		return base64.decode(sBase64ByteArrayString);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#encodeToBase64ByteArrayString(java.io.File)
+	 */
+	public String encodeToBase64ByteArrayString(File src) throws IOException{
+		byte[] b = new byte[(int)src.length()];
+		FileInputStream fis =null;
+		try {
+			fis = new FileInputStream(src);
+			fis.read(b);
+		} catch (IOException e) {
+			throw e;
+		} finally{
+			fis.close();
+		}
+		
+		//encode String
+		return base64.encode(b);
+	}
 
 }
