@@ -4,7 +4,7 @@
 <!-- Testbed EJB deployer build file                                                       -->
 <!-- ======================================================================= -->
 
-<project name="Testbed EJB deployer" default="deployEar" basedir=".">
+<project name="Testbed EJB deployer" default="deploy:ear" basedir=".">
 
   <property environment="env"/>
   
@@ -111,11 +111,11 @@
      </jar>
   </target>
 
- <target name="deploymodel" depends="createejbjar">
+ <target name="deploy:model" depends="createejbjar">
  	<copy file="${build.dir}/testbedmodel.jar" todir="${jboss.home}/server/default/deploy"/>
   </target>
   
-  <target name="run.client" depends="deploymodel">
+  <target name="run.client" depends="deploy:model">
     <java  classname="test.eu.planets_project.tb.Client" fork="yes" dir=".">
       <classpath refid="classpath"/>
     </java>
@@ -133,7 +133,7 @@
     </java>
   </target>
   
-  <target name="run.junittests">
+  <target name="run.junittests" description="executes the included JUnit tests">
     <junit fork="yes" haltonfailure="yes">
         <!--test name="eu.planets_project.tb.unittest.model.BasicPropertiesTest" /-->
         <!--test name="eu.planets_project.tb.unittest.model.benchmark.BenchmarkGoalHandlerTest" /-->
@@ -157,24 +157,28 @@
   <!-- =================================================================== -->
   <!-- Cleans up generated stuff on JBoss                                          -->
   <!-- =================================================================== -->
-  <target name="clean.db">
-    <delete dir="${jboss.home}/server/default/data/hypersonic"/>
+  <target name="clean.db" description="deletes the testbed database">
+    <!--delete dir="${jboss.home}/server/default/data/hypersonic"/-->
+    <delete>
+        <fileset dir="${jboss.home}/server/default/data/hypersonic/">
+            <include name="testbedDB*.*" />
+        </fileset>
+    </delete>
   </target>
 
-  <target name="clean" depends="undeploy">
+  <target name="clean" depends="undeploy" description="cleans the build dir and finally undeploys the testbed application">
       <delete dir="${build.dir}"/>
   </target>
-    
-  <target name="undeploy">
-      <delete file="${jboss.home}/server/default/deploy/testbedmodel.jar"/>
+
+  <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
       <delete file="${jboss.home}/server/default/deploy/${appName}.ear"/>
-      <delete file="${jboss.home}/server/default/deploy/${appName}.war"/>
+      <delete file="${jboss.home}/server/default/deploy/${appName}-ds.xml"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Helper targets to start the JBoss in a new cmd window (on Windows)                                         -->
   <!-- =================================================================== -->
-<target name="startjboss" >
+<target name="startjboss" description="launches the Jboss application server">
   <exec dir="${jboss.home}/bin" executable="cmd.exe" spawn="true">
     <arg value="/c start run.bat"/>
   </exec>
@@ -230,15 +234,16 @@
 	 </ear>
   	
   </target>
-  
-  <target name="deploy" depends="undeploy, deploymodel, dist">
+
+  <target name="deploy:war" depends="undeploy, deploy:model, dist">
     <copy file="${build.dir}/${appName}.war" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
-  <target name="deployEar" depends="createejbjar,dist">
-  	<copy file="${build.dir}/${appName}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>	
+  <target name="deploy:ear" depends="createejbjar,dist" description="DEFAULT builds and deploy the Testbed application">
+        <copy file="${src.resources}/META-INF/testbed-ds.xml" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+        <copy file="${build.dir}/${appName}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
-  <target name="build:Ear" depends="createejbjar,dist"/>
-	
+  <target name="build:ear" depends="createejbjar,dist" description="builds the Testbed application"/>
+
 </project>
