@@ -76,9 +76,9 @@ public class CommentPersistencyImpl implements CommentPersistencyRemote {
     }
     
     public List<Comment> getComments(long experimentID, String experimentPhaseID) {        
-        // TODO Move Entity declaration us so that we access Comments not CommenImpls?
-        Query query = manager.createQuery("from CommentImpl where experimentID=:eid and parentID='-1'");
+        Query query = manager.createQuery("from CommentImpl where experimentID=:eid and parentID=:pid");
         query.setParameter("eid", experimentID);
+        query.setParameter("pid", -1);
         return (List<Comment>) query.getResultList();
     }
 
