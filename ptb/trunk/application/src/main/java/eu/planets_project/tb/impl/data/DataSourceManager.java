@@ -9,15 +9,24 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import javax.naming.Context;
 import javax.naming.NamingException;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.soap.SOAPException;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.rmi.PortableRemoteObject;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
+import eu.planets_project.ifr.core.storage.api.InvocationEvent;
+import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
+import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+
+import org.w3c.dom.Document;
 
 /**
  * 
@@ -222,6 +231,95 @@ public class DataSourceManager implements DataManagerLocal {
         DataManagerLocal dm = findDataManager(pdURI);
         if( dm == null ) return null;
         return dm.findFilesWithNameContaining(pdURI, name);
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createInvocationEvent(eu.planets_project.ifr.core.storage.api.InvocationEvent, java.lang.String)
+     */
+    public String createInvocationEvent(InvocationEvent event,
+            String workflowExecutionId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createWorkflow(eu.planets_project.ifr.core.storage.api.WorkflowDefinition)
+     */
+    public String createWorkflow(WorkflowDefinition workflow) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createWorkflowInstance(eu.planets_project.ifr.core.storage.api.WorkflowExecution)
+     */
+    public String createWorkflowInstance(WorkflowExecution workflow) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#getDocument(java.lang.String)
+     */
+    public Document getDocument(String name) throws IOException,
+            ParserConfigurationException, TransformerConfigurationException,
+            TransformerException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#getInvocationEvent(java.lang.String)
+     */
+    public InvocationEvent getInvocationEvent(String id)
+            throws ItemNotFoundException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#getWorkflow(java.lang.String)
+     */
+    public WorkflowDefinition getWorkflow(String id)
+            throws ItemNotFoundException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#getWorkflowInstance(java.lang.String)
+     */
+    public WorkflowExecution getWorkflowInstance(String id)
+            throws ItemNotFoundException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#storeDocument(java.lang.String, org.w3c.dom.Document)
+     */
+    public URI storeDocument(String name, Document doc) throws IOException,
+            LoginException, RepositoryException,
+            TransformerConfigurationException, TransformerException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DataManagerRemote#listDownladURI(java.net.URI)
+     */
+    public URI listDownladURI(URI pdURI) throws SOAPException {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 
