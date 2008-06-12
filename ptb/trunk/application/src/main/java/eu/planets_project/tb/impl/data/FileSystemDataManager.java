@@ -265,84 +265,12 @@ public class FileSystemDataManager implements DataManagerLocal {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createInvocationEvent(eu.planets_project.ifr.core.storage.api.InvocationEvent, java.lang.String)
-     */
-    public String createInvocationEvent(InvocationEvent event,
-            String workflowExecutionId) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createWorkflow(eu.planets_project.ifr.core.storage.api.WorkflowDefinition)
-     */
-    public String createWorkflow(WorkflowDefinition workflow) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#createWorkflowInstance(eu.planets_project.ifr.core.storage.api.WorkflowExecution)
-     */
-    public String createWorkflowInstance(WorkflowExecution workflow) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#getDocument(java.lang.String)
-     */
-    public Document getDocument(String name) throws IOException,
-            ParserConfigurationException, TransformerConfigurationException,
-            TransformerException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#getInvocationEvent(java.lang.String)
-     */
-    public InvocationEvent getInvocationEvent(String id)
-            throws ItemNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#getWorkflow(java.lang.String)
-     */
-    public WorkflowDefinition getWorkflow(String id)
-            throws ItemNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#getWorkflowInstance(java.lang.String)
-     */
-    public WorkflowExecution getWorkflowInstance(String id)
-            throws ItemNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#storeDocument(java.lang.String, org.w3c.dom.Document)
-     */
-    public URI storeDocument(String name, Document doc) throws IOException,
-            LoginException, RepositoryException,
-            TransformerConfigurationException, TransformerException {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DataManagerRemote#listDownladURI(java.net.URI)
      */
     public URI listDownladURI(URI pdURI) throws SOAPException {
-        // TODO Auto-generated method stub
-        return null;
+        return pdURI;
     }
 
     
