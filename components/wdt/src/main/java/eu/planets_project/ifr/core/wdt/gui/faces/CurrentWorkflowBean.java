@@ -29,6 +29,15 @@ public class CurrentWorkflowBean implements WorkflowBean {
 		WorkflowBean wfBean = (WorkflowBean) JSFUtil.getManagedObject(currentTemplate.getBeanInstance());
 		return wfBean;
 	}
+	
+	/*
+	* returns true if a workflowBean is selected
+	*/
+	public boolean isWorkflowBeanSelected() {
+		TemplateContainer templateContainer = (TemplateContainer) JSFUtil.getManagedObject("templateContainer");
+		if(templateContainer.getCurrentTemplate() == null) return false;
+		return true;
+	}
 		
 	/*
 	* Inject input data
