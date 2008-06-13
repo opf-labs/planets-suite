@@ -86,8 +86,8 @@ public class DemoSimpleConvertBean extends AbstractWorkflowBean implements Plane
 		
 		this.resetServices();
 		//registry lookup...
-		charServices = registry.lookupServices(new Service(null, null, null, null, "char",null));
-		migServices = registry.lookupServices(new Service(null, null, null, null, "mig",null));
+		charServices = registry.lookupServices(new Service(null, null, null, null, "",null));
+		migServices = registry.lookupServices(new Service(null, null, null, null, "uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/migration",null));
 		
 		charServiceItems.addAll( (Collection)toSelectItem(charServices) );
 		migServiceItems.addAll( (Collection)toSelectItem(migServices) );
@@ -145,8 +145,9 @@ public class DemoSimpleConvertBean extends AbstractWorkflowBean implements Plane
 		logger.debug("currentMigServiceItem: " + currentMigServiceItem.getValue().toString() );
 	}
 
+
 	public String invokeService() {
-		
+				
 		ReportGenerationService report = null;
 		int reportID = -1;
 		

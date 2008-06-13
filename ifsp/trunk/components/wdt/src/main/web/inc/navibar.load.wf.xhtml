@@ -30,10 +30,16 @@
 			</ul>
 		</ul>
 		
+		<!-- inject/remove services in/from workflow bean-->
 		<ul class="primary">
-			<li><h:commandLink value="[ lookup registry ]" action="#{currentWorkflowBean.lookupServices}" /></li>
-			<li><h:commandLink value="[ clear services ]" action="#{currentWorkflowBean.resetServices}" /></li>
+			<li><h:commandLink value="[ lookup registry ]" action="#{currentWorkflowBean.lookupServices}" rendered="#{currentWorkflowBean.workflowBeanSelected}"/></li>
+			<li><h:commandLink value="[ clear services ]" action="#{currentWorkflowBean.resetServices}" rendered="#{currentWorkflowBean.workflowBeanSelected}"/></li>
 		</ul>				
+		<!-- automatic tests for service registry-->
+		<ul class="primary">
+			<li><h:commandLink value="[ register services ]" action="#{serviceRegistry.registerServices}"/></li>
+		</ul>				
+
 		</div>		
 		
 	</h:form>	

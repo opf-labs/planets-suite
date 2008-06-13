@@ -81,16 +81,15 @@ import javax.xml.namespace.QName;
 			return dsc;
 		}
 		
-		//this is filtered through registry lookup
-		//public void setCategory(String category) {
-		//	this.category = category;
-		//}
+		public void setCategory(String category) {
+			this.category = category;
+		}
 		
-		//public String getCategory() {
-		//	return category;
-		//}
+		public String getCategory() {
+			return category;
+		}
 				
-		public void setQName(QName qname) {
+		public void setQName(QName qName) {
 			this.qName = qName;
 		}
 
