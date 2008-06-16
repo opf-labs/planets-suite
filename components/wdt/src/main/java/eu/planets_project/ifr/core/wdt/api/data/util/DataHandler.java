@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 
 import eu.planets_project.ifr.core.wdt.impl.data.DataRegistryManagerImpl;
 
-
 /**
  * @author Andrew Lindley, ARC
  * The TB file handler has the purpose of
