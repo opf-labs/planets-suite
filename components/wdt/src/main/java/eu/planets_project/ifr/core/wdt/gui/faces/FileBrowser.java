@@ -208,33 +208,31 @@ public class FileBrowser {
      * Controller that adds the currently selected items to the experiment.
      */
     public static String addToExperiment() {
-/*
+        
+        //for now, the user can directly browse the data registry
+  //typically, the user would browse a local dir 
+  //the import to dr should happen here
+  //after that, handles to the experiment should be added
+    
+  //TemplateContainer templateContainer = (TemplateContainer) JSFUtil.getManagedObject("templateContainer");
+  //WorkflowBean wfBean = templateContainer.getCurrentWorkflowBean();
+  
+  WorkflowBean wfBean = (WorkflowBean) JSFUtil.getManagedObject("currentWorkflowBean");
+  
+  if( wfBean == null ) return "no current workflow bean found";       
+        
         FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        if( expBean == null ) return "failure";
         // Add each of the selected items to the experiment:
         for( FileTreeNode dob: fb.getList() ) {
           // Only include selected items that are eligible:
           if( dob.isSelectable() && dob.isSelected() ) {
-            try {
-                File fCopy = helperUploadDataForNewExperimentWizard(fb.dr , dob.getUri());
-                //add reference to the new experiment's backing bean
-                //pre-condition: max. supported number of files has not been yet reached
-                if(expBean.getSelectedServiceOperation().getMaxSupportedInputFiles()>expBean.getExperimentInputData().values().size()){
-                    //max. number not reached. Add this file ref
-                    expBean.addExperimentInputData(fCopy.getAbsolutePath());
-                }
-            } catch( IOException e ) {
-              log.error("Failed to add to experiment: "+dob.getUri());
-              log.error("Exception: "+e);
-            }
+            wfBean.addInputData(dob.getUri().toString());
           }
         }
         // Clear any selection:
         FileBrowser.selectNone();
         // Return: gotoStage2 in the browse new experiment wizard
-         */
-        return "goToStage2";
+      return "back";
     }
     
     public static String redirectToDataRegistry() {
@@ -286,38 +284,5 @@ public class FileBrowser {
         
         return fcopy;
     }
-    
-    /**
-     * Controller that adds the currently selected items to the experiment.
-     */
-    public String addToExperimentWDT() {
-    		
-			//for now, the user can directly browse the data registry
-      //typically, the user would browse a local dir 
-      //the import to dr should happen here
-      //after that, handles to the experiment should be added
         
-      //TemplateContainer templateContainer = (TemplateContainer) JSFUtil.getManagedObject("templateContainer");
-      //WorkflowBean wfBean = templateContainer.getCurrentWorkflowBean();
-      
-      WorkflowBean wfBean = (WorkflowBean) JSFUtil.getManagedObject("currentWorkflowBean");
-      
-      if( wfBean == null ) return "no current workflow bean found";       
-        
-      for( FileTreeNode dob : getList() ) {
-        	
-       // Only include selected items that are eligible:
-       if( dob.isSelectable() && dob.isSelected() ) {
-      		//File f = new File(dob.getUri());
-          //upload file to dr
-          URI puri = dob.getUri();
-          wfBean.addInputData(puri.toString());
-				}
-			}
-        
-			selectNone();
-			return "back";
-    }
-
-    
 }
