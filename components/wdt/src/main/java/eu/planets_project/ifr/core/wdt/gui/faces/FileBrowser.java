@@ -31,6 +31,7 @@ import eu.planets_project.ifr.core.wdt.api.data.util.DataHandler;
 import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
 import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 import eu.planets_project.ifr.core.wdt.impl.data.DataRegistryManagerImpl;
+import eu.planets_project.ifr.core.wdt.impl.data.DataSourceManager;
 import eu.planets_project.ifr.core.wdt.impl.data.util.DataHandlerImpl;
 
 /**
@@ -41,51 +42,19 @@ import eu.planets_project.ifr.core.wdt.impl.data.util.DataHandlerImpl;
  */
 public class FileBrowser {
     // A logger for this:
-    private Log log = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
+    private static PlanetsLogger log = PlanetsLogger.getLogger(FileBrowser.class, "testbed-log4j.xml");
     
     // The Data Registry:
-    // TODO This should be the real thing, provided by the If as an EJB.
     private DataRegistryManagerImpl dr = new DataRegistryManagerImpl();
 
     // The current URI/position in the DR:
-    private URI location;
+    private URI location = null;
     
     // The currently viewed DR entities
     private FileTreeNode[] currentItems;
     
     public FileBrowser() {
-        this.setLocation(dr.getDataRegistryUri());
     }
-    
-    /**
-     * Display the root URI of the DR file system:
-     * @return The root URI of the Data Registry.
-     */
-    public URL getRootUrl() {
-        try {
-          return dr.getDataRegistryUri().toURL();
-        } catch( java.net.MalformedURLException e ) {
-          return null;
-        }
-    }
-    
-    /**
-		* Redirect to a new url
-		* @param url an external url
-		*/
-		public void redirect(ActionEvent event) throws IOException{
-			UICommand link = (UICommand) event.getComponent();
-			String url = link.getValue().toString(); 
-			//faces does not redirect to a file url;
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ExternalContext externalCtx = facesContext.getExternalContext();
-			externalCtx.redirect(externalCtx.encodeResourceURL(url));
-			//FacesContext context = FacesContext.getCurrentInstance();
-			//HttpServletResponse response = (HttpServletResponse)context.getExternalContext().getResponse();
-			//response.sendRedirect(url);
-			//context.responseComplete();
-		}
-
     
     /**
      * Sends back a list of the DOs under the current URI
@@ -107,14 +76,22 @@ public class FileBrowser {
      */
     public void setLocation(URI location) {
         log.debug("Setting location: "+location);
-        this.location = location.normalize();
+        if( location != null ) this.location = location.normalize();
         DigitalObject[] dobs = dr.list(this.location);
         int fileCount = 0;
         for( DigitalObject dob : dobs ) {
             if( !dob.isDirectory() ) fileCount++;
         }
-        this.currentItems = new FileTreeNode[fileCount];
+        //this.currentItems = new FileTreeNode[fileCount];
+        // Put directories first.
+        this.currentItems = new FileTreeNode[dobs.length];
         int i = 0;
+        for( DigitalObject dob : dobs ) {
+            if( dob.isDirectory() ) {
+                this.currentItems[i] = new FileTreeNode(dob);
+                i++;
+            }
+        }
         for( DigitalObject dob : dobs ) {
             if( !dob.isDirectory() ) {
                 this.currentItems[i] = new FileTreeNode(dob);
@@ -159,6 +136,7 @@ public class FileBrowser {
      * @return
      */
     public URI getParentUri() {
+        if( this.location == null ) return this.location;
         return this.location.resolve("..").normalize();
     }
     
@@ -170,20 +148,21 @@ public class FileBrowser {
     public TreeModel getFilerTree() {
         
         // Build the tree.
-        TreeNode tn = new FileTreeNode(new DigitalObject(dr.getDataRegistryUri()));
+        TreeNode tn = new FileTreeNode(dr.getRootDigitalObject());
         tn.setType("folder"); tn.setLeaf(false);
 
         // Create the tree:
         TreeModel tm = new TreeModelBase(tn);
 
         // Add child nodes:
-        this.getChildItems(tm, tn, dr.list(dr.getDataRegistryUri()));
+        this.getChildItems(tm, tn, dr.list(null));
         
         return tm;
     }
     
     private void getChildItems( TreeModel tm, TreeNode parent, DigitalObject[] dobs ) {
         // Do nothing if there are no comments.
+        if( dobs == null ) return;
         if( dobs.length == 0 ) return;
         
         // Iterate over the children:
@@ -206,25 +185,21 @@ public class FileBrowser {
     /**
      * Controller that selects all of the current items.
      */
-    public String selectAll() {
-    		//rainer: no idea why this method was static
-        FileTreeNode dobs[] = this.getList();
-        if (dobs != null && dobs.length > 0) {
-        	for( FileTreeNode dob : dobs ) if( dob.isSelectable() ) dob.setSelected(true);
-      	}
+    public static String selectAll() {
+        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
+        for( FileTreeNode dob: fb.getList() ) {
+            if( dob.isSelectable() ) dob.setSelected(true);
+        }
         return "success";
     }
 
     /**
      * Controller that de-selects the current items.
      */
-    public String selectNone() {
-    		//rainer: no idea why this method was static
-        //FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("fileBrowser"); 
-                
-        FileTreeNode dobs[] = this.getList();
-        if (dobs != null && dobs.length > 0) {
-        	for( FileTreeNode dob : dobs ) if( dob.isSelectable() ) dob.setSelected(false);
+    public static String selectNone() {
+        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
+        for( FileTreeNode dob: fb.getList() ) {
+            if( dob.isSelectable() ) dob.setSelected(false);
         }
         return "success";
     }
@@ -232,7 +207,90 @@ public class FileBrowser {
     /**
      * Controller that adds the currently selected items to the experiment.
      */
-    public String addToExperiment() {
+    public static String addToExperiment() {
+/*
+        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        if( expBean == null ) return "failure";
+        // Add each of the selected items to the experiment:
+        for( FileTreeNode dob: fb.getList() ) {
+          // Only include selected items that are eligible:
+          if( dob.isSelectable() && dob.isSelected() ) {
+            try {
+                File fCopy = helperUploadDataForNewExperimentWizard(fb.dr , dob.getUri());
+                //add reference to the new experiment's backing bean
+                //pre-condition: max. supported number of files has not been yet reached
+                if(expBean.getSelectedServiceOperation().getMaxSupportedInputFiles()>expBean.getExperimentInputData().values().size()){
+                    //max. number not reached. Add this file ref
+                    expBean.addExperimentInputData(fCopy.getAbsolutePath());
+                }
+            } catch( IOException e ) {
+              log.error("Failed to add to experiment: "+dob.getUri());
+              log.error("Exception: "+e);
+            }
+          }
+        }
+        // Clear any selection:
+        FileBrowser.selectNone();
+        // Return: gotoStage2 in the browse new experiment wizard
+         */
+        return "goToStage2";
+    }
+    
+    public static String redirectToDataRegistry() {
+        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
+/*        try {
+          FacesContext.getCurrentInstance().getExternalContext().redirect(fb.getRootUrl().toString());
+        } catch( java.io.IOException e ) {
+          log.debug("Caught exception on redirectToDataRegistry: " + e );
+        }
+        */
+        return "success";
+    }
+    
+    
+    /**
+     * WORK AROUND - TO REMOVE WHEN FIXED
+     * Uploading single files to an experiment currently uses the JSF tomahawk inputFileUpload element to upload
+     * the data from a user into the testbed's experiment data store 
+     * i.e.../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata
+     * 
+     * Data added via this FileBrowser are local files and must be uploaded as well. As in future the data registry
+     * will hand over URLs anyway. Therefore there's a work around currently, just copying the local file input
+     * into the Testbed's experiment data repository, which only works if both are located on the same machine.
+     * 
+     * Restrictions: This currently only works if the IF Server + Testbed application are used on localhost where also 
+     * the FileBrowsers data can be accessed locally.
+     * @return the copied and renamed File
+     */
+    //TODO discuss solution for work around
+    private static File helperUploadDataForNewExperimentWizard( DataRegistryManagerImpl dr, URI pduri ) throws IOException{
+        //workaround: copy the local FileBrowsers file reference into
+        //the Testbed's experiment data repository
+        DataHandler dh = new DataHandlerImpl();
+        //the input dir of the server where all experiment related files are stored
+        String fileInDir = dh.getFileInDir();
+ 
+        //if input dir does not yet exist
+        File dir = new File(fileInDir);
+        dir.mkdirs();  
+            
+        //@see FileUploadBean:
+        //create unique filename
+        String ext = pduri.getPath().substring(pduri.getPath().lastIndexOf('.'));
+        String mathName = UUID.randomUUID().toString() + ext;
+        dh.setInputFileIndexEntryName(mathName, pduri.toString());
+        File fcopy = new File(fileInDir,mathName);
+        //copy the renamed file to it's new location
+        dh.copy(dr, pduri , fcopy);
+        
+        return fcopy;
+    }
+    
+    /**
+     * Controller that adds the currently selected items to the experiment.
+     */
+    public String addToExperimentWDT() {
     		
 			//for now, the user can directly browse the data registry
       //typically, the user would browse a local dir 
@@ -262,44 +320,4 @@ public class FileBrowser {
     }
 
     
-    
-		//rainer: this is a tb specific thing
-    /**
-     * WORK AROUND - TO REMOVE WHEN FIXED
-     * Uploading single files to an experiment currently uses the JSF tomahawk inputFileUpload element to upload
-     * the data from a user into the testbed's experiment data store 
-     * i.e.../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata
-     * 
-     * Data added via this FileBrowser are local files and must be uploaded as well. As in future the data registry
-     * will hand over URLs anyway. Therefore there's a work around currently, just copying the local file input
-     * into the Testbed's experiment data repository, which only works if both are located on the same machine.
-     * 
-     * Restrictions: This currently only works if the IF Server + Testbed application are used on localhost where also 
-     * the FileBrowsers data can be accessed locally.
-     * @return the copied and renamed File
-     */
-    //TODO discuss solution for work around
-    private static File helperUploadDataForNewExperimentWizard(File file) throws IOException{
-    	//workaround: copy the local FileBrowsers file reference into
-    	//the Testbed's experiment data repository
-    	DataHandler dh = new DataHandlerImpl();
-    	//the input dir of the server where all experiment related files are stored
-    	String fileInDir = dh.getFileInDir();
- 
-    	//if input dir does not yet exist
-    	File dir = new File(fileInDir);
-        dir.mkdirs();  
-        	
-        //@see FileUploadBean:
-        //create unique filename
-        String ext = file.getName().substring(file.getName().lastIndexOf('.'));  
-    		String mathName = new UUID(20,122).randomUUID().toString() + ext;
-    		dh.setIndexFileEntryName(mathName, file.getName());
-    	
-        File fcopy = new File(fileInDir,mathName);
-        //copy the renamed file to it's new location
-    	dh.copy(file,fcopy);
-    	
-    	return fcopy;
-    }
 }
