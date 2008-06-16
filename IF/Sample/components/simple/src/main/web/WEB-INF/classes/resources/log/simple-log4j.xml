@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true" >
+
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <param name="Threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+	    <param name="ConversionPattern" value="%d %-5p [%c] - %m%n"/>
+	</layout>
+    </appender>
+	
+    <appender name="ROLLING" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${jboss.server.log.dir}/planets-ifr-simple-gui.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+	    <param name="ConversionPattern" value="%d %-5p [%c] - %m%n"/>
+	</layout>
+    </appender>
+	
+    <category name="eu.planets_project.ifr.core.simple.gui">
+        <priority value="DEBUG"/>
+	    <appender-ref ref="STDOUT"/>
+    </category>
+    
+    <category name="eu.planets_project.ifr.core.simple.gui.faces">
+        <priority value="DEBUG"/>
+	    <appender-ref ref="ROLLING"/>
+    </category>    
+	
+    <category name="eu.planets_project.ifr.core.simple.gui.util">
+        <priority value="DEBUG"/>
+	    <appender-ref ref="ROLLING"/>
+    </category>	
+	
+</log4j:configuration>

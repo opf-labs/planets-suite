@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="component">
+	
+    <import file="common.xml"/>    	
+    <!-- ********************************************************************************************* -->
+    <!-- *                                                                                           * -->
+    <!-- *                                      Properties                                           * -->
+    <!-- *                                                                                           * -->
+    <!-- ********************************************************************************************* -->
+	<property name="relative.build.dir" value="build"/>
+	<property name="relative.class.dir" value="${relative.build.dir}${file.separator}classes"/>
+	<property name="relative.src.dir" value="src/main/java"/>
+	<property name="relative.resources.dir" value="src/main/resources"/>		
+	<property name="relative.metadata.dir" value="src/main/metadata"/>		
+    <property name="relative.lib.dir" value="lib"/>		
+	<!--<property name="relative.build.lib.dir" value="${relative.build.dir}${file.separator}${relative.lib.dir}"/>-->
+	<property name="relative.ejb-jar.dir" value="ejb-jar"/>		
+	<property name="relative.build.ejb-jar.dir" value="${relative.build.dir}${file.separator}${relative.ejb-jar.dir}"/>		
+	<property name="relative.war.dir" value="war"/>		
+	<property name="relative.build.war.dir" value="${relative.build.dir}${file.separator}${relative.war.dir}"/>			
+	<property name="relative.ear.dir" value="ear"/>		
+	<property name="relative.build.ear.dir" value="${relative.build.dir}${file.separator}${relative.ear.dir}"/>				
+	
+	<property name="build.dir" value="${basedir}${file.separator}${relative.build.dir}"/>
+    <property name="class.dir" value="${basedir}${file.separator}${relative.class.dir}"/>
+    <property name="output.dir" value="${build.dir}${file.separator}output"/>
+    <property name="test.class.dir" value="${build.dir}/test"/>
+    <!--<property name="build.lib.dir" value="${basedir}${file.separator}${relative.build.lib.dir}"/>-->
+    <property name="build.ejb-jar.dir" value="${basedir}${file.separator}${relative.build.ejb-jar.dir}"/>
+    <property name="build.war.dir" value="${basedir}${file.separator}${relative.build.war.dir}"/>
+    <property name="build.ear.dir" value="${basedir}${file.separator}${relative.build.ear.dir}"/>
+    <property name="lib.dir" value="${basedir}${file.separator}${relative.lib.dir}"/>
+    <property name="src.dir" value="${basedir}${file.separator}${relative.src.dir}"/>
+    <property name="resources.dir" value="${basedir}${file.separator}${relative.resources.dir}"/>
+    <property name="metadata.dir" value="${basedir}${file.separator}${relative.metadata.dir}"/>
+    <property name="test.src.dir" value="${basedir}${file.separator}src/test/java"/>
+    <property name="test.resources.dir" value="${basedir}${file.separator}src/test/resources"/>
+    <property name="test.reports.dir" value="${build.dir}/reports"/>
+    <property name="web.dir" value="${basedir}${file.separator}src/main/web"/>
+    <property name="package.installer.description" value="${build.dir}${file.separator}package.xml"/>
+    <available file="${src.dir}" type="dir" property="src.exists"/>
+    <available file="${test.src.dir}" type="dir" property="test.src.exists"/>
+    <available file="${class.dir}" type="dir" property="class.exists"/>
+    <!--<available file="${build.lib.dir}" type="dir" property="build.lib.exists"/>-->
+    <available file="${build.ejb-jar.dir}" type="dir" property="build.ejb-jar.exists"/>
+    <available file="${build.war.dir}" type="dir" property="build.war.exists"/>
+    <available file="${lib.dir}" type="dir" property="lib.exists"/>
+    <available file="${lib.dir}/endorsed" type="dir" property="endorsed.exists"/>
+    <available file="${resources.dir}" type="dir" property="resources.exists"/>
+    <available file="${web.dir}" type="dir" property="web.exists"/>
+
+    <!-- ********************************************************************************************* -->
+    <!-- *                                                                                           * -->
+    <!-- *                                    Macro definitions                                      * -->
+    <!-- *                                                                                           * -->
+    <!-- ********************************************************************************************* -->
+		
+    <macrodef name="component-classpath">
+        <attribute name="component"/>
+        <attribute name="dependencies"/>
+        <sequential>
+            <if>
+                <not>
+                    <isreference refid="@{component}.component.classpath"/>
+                </not>
+                <then>
+                    <var name="jars" value="."/>
+                    <for param="c" list="@{dependencies}">
+                        <sequential>
+                            <for param="jarfile">
+                                <fileset dir="@{c}">
+                                    <include name="*lib*/**/*.jar"/>
+                                    <include name="*.jar"/>
+                                </fileset>
+                                <sequential>
+                                    <var name="jars" value="${jars}${path.separator}@{jarfile}"/>
+                                </sequential>                                
+                            </for>
+                        </sequential>
+                    </for>
+                	<mkdir dir="${components.dir}/@{component}/${relative.class.dir}"/>                	
+                    <path id="@{component}.component.classpath">
+                        <pathelement path="${components.dir}/@{component}/${relative.class.dir}"/>
+                        <pathelement path="${components.dir}/@{component}/${relative.resources.dir}"/>
+                        <pathelement path="${components.dir}/@{component}/${relative.src.dir}"/>
+                        <pathelement path="${jars}"/>
+                    		<pathelement path="${dependency.path}"/>
+                        <fileset dir="${components.dir}/@{component}">
+                            <include name="${relative.lib.dir}/**/*.jar"/>
+                        </fileset>
+                        <!--path refid="common.classpath"/-->
+                        <!--path refid="api.classpath"/-->                        
+                        <path refid="appserver.classpath"/>                        
+                        
+                    	</path>
+                </then>
+            </if>
+            <if>
+                <not>
+                    <isreference refid="test.@{component}.component.classpath"/>
+                </not>
+                <then>
+                	<mkdir dir="${test.class.dir}"/>
+                    <path id="test.@{component}.component.classpath">
+                        <pathelement path="${test.class.dir}"/>
+                        <pathelement path="${test.src.dir}"/>
+                        <pathelement path="${test.resources.dir}"/>
+                        <pathelement path="${root.lib.dir}/build/junit.org"/>
+                        <path refid="@{component}.component.classpath"/>
+                    </path>
+                </then>
+            </if>
+       </sequential>
+    </macrodef>
+    
+    <path id="appserver.classpath">
+        <fileset dir="${root.dir}${file.separator}appserver.lib">
+            <include name="**/*.jar"/>
+        </fileset>
+		</path>
+	
+    <macrodef name="compile">
+        <attribute name="component"/>
+        <attribute name="test" default="no"/>
+        <attribute name="dependency.path" default=""/>
+        <sequential>
+            
+            <if>
+                <equals arg1="@{test}" arg2="no" casesensitive="false"/>
+                <then>
+                    <mkdir dir="${class.dir}"/>
+                	<code-compile destdir="${class.dir}" 
+                		srcdir="${src.dir}" 
+                		classpathref="@{component}.component.classpath"/>
+                </then>
+                <else>
+                    <mkdir dir="${test.class.dir}"/>
+                	<code-compile destdir="${test.class.dir}" 
+                		srcdir="${test.src.dir}" 
+                		classpathref="test.@{component}.component.classpath"/>                    
+                </else>
+            </if>
+        </sequential>
+    </macrodef>
+        
+    <macrodef name="build_ejb-jar">
+        <attribute name="component"/>
+        <sequential>
+            <mkdir dir="${build.ejb-jar.dir}"/>            
+            <mkdir dir="${class.dir}"/>
+            <jar destfile="${build.ejb-jar.dir}/ifr-${component.name}-ejb.jar" >
+                <fileset dir="${class.dir}" defaultexcludes="no">
+                    <include name="eu/planets_project/ifr/core/**/${component.name}/impl/**"/>
+                    <include name="eu/planets_project/ifr/core/**/${component.name}/common/**"/>
+                    <include name="eu/planets_project/ifr/core/**/${component.name}/api/**"/>
+                </fileset>
+            </jar>
+            <jar destfile="${build.ejb-jar.dir}/ifr-${component.name}-ejb.jar" >
+                <fileset dir="${class.dir}" defaultexcludes="no">
+                    <include name="eu/planets_project/ifr/core/**/${component.name}/impl/**"/>
+                    <include name="eu/planets_project/ifr/core/**/${component.name}/common/**"/>
+                    <include name="eu/planets_project/ifr/core/**/${component.name}/api/**"/>
+                </fileset>
+            </jar>            
+            <if>
+                <available file="${resources.dir}" type="dir"/>
+                <then>
+                    <jar destfile="${build.ejb-jar.dir}/ifr-${component.name}-ejb.jar" update="yes">
+                        <fileset dir="${resources.dir}" defaultexcludes="yes">                            
+                        	<include name="**/*"/>
+                        </fileset>
+                    </jar>
+                </then>
+            </if> 
+            <jar destfile="${build.ejb-jar.dir}/ifr-${component.name}-ejb.jar" update="yes">
+                <fileset dir="${lib.dir}">
+                    <include name="**/*.jar" />
+                </fileset>   
+            </jar>                       
+        </sequential>
+    </macrodef>
+    
+	
+    <macrodef name="build">
+        <attribute name="component"/>
+        <sequential>
+            <echo>Building component ${component.name} according to deployment model '${deployment.model}'</echo>        
+            <if>
+                <equals arg1="${deployment.model}" arg2="ear" casesensitive="false"/>
+                <then>
+                    <build_ear component="${component.name}"/>
+                </then>
+                <else>                
+                    <if>
+                        <equals arg1="${deployment.model}" arg2="war" casesensitive="false"/>
+                        <then>
+                            <build_war component="${component.name}"/>
+                        </then>
+                        <else>                        
+                            <if>
+                                <equals arg1="${deployment.model}" arg2="ejb-jar" casesensitive="false"/>
+                                <then>
+                                    <build_ejb-jar component="${component.name}"/>
+                                </then>
+                                <else>
+                                    <echo>Unknown deployment model '${deployment.model}' - Nothing to build</echo>
+                                </else>
+                            </if>                                                                                
+                        </else>
+                    </if>                                
+                </else>
+            </if>
+        </sequential>
+    </macrodef>
+    
+    
+	
+    <!-- ********************************************************************************************* -->
+    <!-- *                                                                                           * -->
+    <!-- *                                       Targets                                             * -->
+    <!-- *                                                                                           * -->
+    <!-- ********************************************************************************************* -->	
+	
+    <target name="init">
+    	<is-executed component="${component.name}" target="compile"/>
+    	<property name="not.compiled" value="${is.executed}"/>
+	    <condition property="to.compile">
+	        <and>
+	            <available file="${src.dir}" type="dir"/>	            
+            	<equals arg1="${is.executed}" arg2="false" casesensitive="false"/>
+	        </and>
+	    </condition>
+    	<is-executed component="${component.name}" target="compile-test"/>    	
+	    <condition property="to.compile-test">
+	    	<and>
+	    		<isset property="test.src.exists"/>
+        		<equals arg1="${is.executed}" arg2="false" casesensitive="false"/>
+	    	</and>	
+	    </condition>
+    	<is-executed component="${component.name}" target="build"/>
+    	<condition property="to.build" value="true">
+    		<and>
+    			<isset property="src.exists"/>
+    			<equals arg1="${is.executed}" arg2="false" casesensitive="false"/>
+    		</and>	
+    	</condition>
+    	<is-executed component="${component.name}" target="deploy"/>
+    	<condition property="to.deploy" value="true">
+    		<equals arg1="${is.executed}" arg2="false" casesensitive="false"/>
+    	</condition>
+    	<is-executed component="${component.name}" target="test"/>
+    	<condition property="to.test" value="true">
+    		<and>
+    		    <isset property="test.src.exists"/>
+    			<equals arg1="${is.executed}" arg2="false" casesensitive="false"/>
+    		</and>	
+    	</condition>
+    	
+        <if>
+            <available file="src/main/web/WEB-INF" type="dir"/>
+            <then>
+                <component-classpath component="${component.name}" dependencies="${components.dir}${file.separator}${component.name}${file.separator}src${file.separator}main${file.separator}web${file.separator}WEB-INF" />
+            </then>
+            <else>
+                <component-classpath component="${component.name}" dependencies="" />
+            </else>
+        </if>                                                                                    	    	
+    	
+    </target>
+		
+    <target name="compile" depends="init" description="Compile component" if="to.compile">
+        <if>
+            <equals arg1="${component.name}" arg2="common" casesensitive="false"/>
+            <then/>
+            <else>
+                <!--echo level="info">COMPILING common classes</echo-->        
+                <!--ant antfile="${root.dir}/build.xml" target="build-common"/-->                 
+            </else>
+        </if>     
+        <if>
+            <length string="${component.dependencies}" trim="true" when="greater" length="0" />
+            <then>
+                <echo>depends on other core components => compile api ...</echo>
+                <ant antfile="${root.dir}/build.xml" target="build-api"/>
+                <echo>API compiled and added to component classpath!</echo>
+            </then>
+            <else>
+                <echo>does NOT depend on other components</echo>
+            </else>
+        </if>
+        <echo level="info">COMPILING ${component.name}</echo>        
+        <compile component="${component.name}" />
+        <property name="compiled.${component.name}" value="true"/>
+    	<executed target="compile" component="${component.name}"/>
+    </target>
+    
+    <target name="build" depends="compile" description="Build component jar" if="to.build">
+        <build component="${component.name}"/>
+    	<executed target="build" component="${component.name}"/>
+    </target>
+        
+    <target name="build:ejb-jar" depends="compile" description="Build standalone ejb-jar" if="to.build">
+        <build_ejb-jar component="${component.name}"/>
+    	<executed target="build" component="${component.name}"/>
+    </target>
+
+    <target name="clean" description="Clean component build">
+        <delete includeemptydirs="yes" dir="${build.dir}"/>
+    </target>
+	
+    	
+    <target name="about" description="help">
+        <echo level="info"> 
+
+compile - compiles all classes for this component
+build - builds this component according to its deplyoment model (ejb-jar|war|ear|other)
+build:ejb-jar - builds this component's ejb archive
+clean - deletes all build artefacts
+about - displays this info
+        </echo>
+    </target>
+	
+</project>
