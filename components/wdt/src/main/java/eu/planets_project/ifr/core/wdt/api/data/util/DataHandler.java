@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import eu.planets_project.ifr.core.wdt.impl.data.DataRegistryManagerImpl;
+import eu.planets_project.ifr.core.wdt.api.data.DataRegistryManager;
 
 /**
  * @author Andrew Lindley, ARC
@@ -87,7 +87,7 @@ public interface DataHandler {
      * @param dst
      * @throws IOException
      */
-    public void copy(DataRegistryManagerImpl dr, URI pduri, File dst)
+    public void copy(DataRegistryManager dr, URI pduri, File dst)
     throws IOException;
     
     /**

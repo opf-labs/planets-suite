@@ -23,7 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.axis.encoding.Base64;
 
 import eu.planets_project.ifr.core.wdt.api.data.util.DataHandler;
-import eu.planets_project.ifr.core.wdt.impl.data.DataRegistryManagerImpl;
+import eu.planets_project.ifr.core.wdt.api.data.DataRegistryManager;
 
 /**
  * @author Andrew Lindley, ARC
@@ -293,7 +293,7 @@ public class DataHandlerImpl implements DataHandler{
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#copy(eu.planets_project.tb.impl.data.DataRegistryManagerImpl, java.net.URI, java.io.File)
      */
-    public void copy(DataRegistryManagerImpl dr, URI pduri, File dst)
+    public void copy(DataRegistryManager dr, URI pduri, File dst)
             throws IOException {
         
         InputStream in = null;

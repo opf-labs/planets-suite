@@ -5,10 +5,19 @@
 package eu.planets_project.ifr.core.wdt.api.data;
 
 import java.net.URI;
+import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 
 /**
  * @author AnJackson
  *
  */
-public abstract class DataRegistryManager {
+public interface DataRegistryManager {
+
+    public abstract DataManagerLocal getDataManager(URI puri);
+
+    public abstract boolean canAccessURI(URI puri);
+
+    public abstract DigitalObject[] list(URI puri);
+
+    public abstract DigitalObject getRootDigitalObject();
 }
