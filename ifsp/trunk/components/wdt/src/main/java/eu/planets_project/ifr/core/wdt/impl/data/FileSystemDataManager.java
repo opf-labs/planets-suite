@@ -66,7 +66,7 @@ public class FileSystemDataManager implements DataManagerLocal {
         try {
             java.io.InputStream ResourceFile = getClass().getClassLoader()
                     .getResourceAsStream(
-                            "eu/planets_project/tb/impl/BackendResources.properties"
+                            "eu/planets_project/ifr/core/wdt/gui/UIResources.properties"
                     );
             properties.load(ResourceFile); 
             
