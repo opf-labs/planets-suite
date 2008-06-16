@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+COPYRIGHT STATEMENT:
+   © The National Archives 2005-2006.  All rights reserved.
+   See Licence.txt for full licence details.
+
+DESCRIPTION:
+	
+Controlling from the command line Help
+
+UPDATE RECORD:
+Date           		Version     	Who                        Comment
+27-Apr-2005   V1.R0.M1    M.Waller (Tessella)    Created
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<link  rel="stylesheet" href="stylesHelp.css"></link>
+		<title>Available command line options</title>
+	</head>
+	<body>
+		<h2>Available command line options</h2>
+		<p>DROID can be run in command line mode using the following arguments</p>
+		<ul>
+			<li>Display the command line options
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-H</B></li>
+			<li>Display the DROID application version
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-V</B></li>
+			<li>Display the signature file version
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-V</B><EM>xxx</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>xxx</EM> is the signature file name</li>
+			<li>Check whether the PRONOM website has a newer signature file
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-C</B><EM>xxx</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>xxx</EM> is the local signature file</li>
+			<li>Download the latest signature file from PRONOM website
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-D</B><EM>xxx</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>xxx</EM> is the name of the file to download to</li>
+			<li>Quiet mode: only print errors to the command line
+							<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-Q</B>
+			<li>Run the analysis on a comma separated list of files
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-L</B><EM>xxx</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>xxx</EM> is a comma-separated list of files
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-S</B><EM>yyy</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>yyy</EM> is the signature file
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-O</B><EM>zzz</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>zzz</EM> is the base name for the output files
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-F</B><EM>aaa</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>aaa</EM> is a comma-separated list of output formats from XML,CSV (defaults to XML only)</li>
+			<li>Run the analysis on the files in a file list file
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-A</B><EM>xxx</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>xxx</EM> is the file list file
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-S</B><EM>yyy</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>yyy</EM> is the signature file
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-O</B><EM>zzz</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>zzz</EM> is the base name for the output files
+                            <BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<B>-F</B><EM>aaa</EM>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where <EM>aaa</EM> is a comma-separated list of output formats from XML,CSV (defaults to XML only)</li>
+		</ul>
+		
+	</body>
+</html>

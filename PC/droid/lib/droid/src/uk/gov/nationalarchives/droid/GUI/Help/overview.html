@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+COPYRIGHT STATEMENT:
+   © The National Archives 2005-2006.  All rights reserved.
+   See Licence.txt for full licence details.
+
+DESCRIPTION:
+	getting started section. 
+UPDATE RECORD:
+Date           		Version     	Who                        Comment
+06-Apr-2005   V1.R0.M0    S.Malik (Tessella)    Created
+27-Apr-2005   V1.R0.M1    M.Waller (Tessella)    Review
+09-May-2005	V1.R0.M2	S.Malik	(Tessella)	Fix image paths 
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="stylesHelp.css"></link>
+    <title>Overview</title>
+</head>
+<body>
+<h2>Overview</h2>
+
+<p>The purpose of DROID is to identify file formats based on their binary signatures.
+    It is designed to be used interactively through the graphical user interface,
+    though it can also be run as a <a href="commandLineTool.html">command line tool</a>.
+    The list of file format signature defintions is continously reviewed
+    and updated by The National Archives, and can be downloaded by users of DROID.</p>
+
+<p>The main DROID user interface is described below:</p>
+<br>
+<img src="overview.JPG" alt="Screenshot of tools main screen"></img>
+
+
+<h3>File list pane</h3>
+
+<p>
+    All files that the tool can or has identified are listed here.
+    If the file has been through the identification process an icon is
+    displayed in the status column describing the result status. The options are:
+</p>
+<ul>
+    <li><img src="positive.GIF" alt="Positive hit"></img> a positive identification has been made based on the binary
+        signature of the file
+    </li>
+    <li><img src="tentitive.GIF" alt="Tentative hit"></img> a tentative identification has been made based on the file
+        extension alone because no binary signature information was available for this file format
+    </li>
+    <li><img src="noHit.GIF" alt="No hit"></img> no hits were found for this file</li>
+    <li><img src="error.GIF" alt="Error"></img> an error occurred while attempting to identify this file</li>
+</ul>
+<h3>Identification results pane</h3>
+
+<p>
+    Whenever a file is selected in the File list pane, its identification results are displayed in this pane.
+    This can be either a list of file formats identified or a description of the error if the file has an error status.
+</p>
+
+<h3>Progress bar</h3>
+
+<p>
+    Displays the progress when the file identification process is taking place.
+</p>
+
+<br>
+<br>
+</body>
+</html>
