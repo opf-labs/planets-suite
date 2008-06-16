@@ -183,7 +183,7 @@ public class ServiceRegistry
 			//PsRegistryMessage rMsg = registry.addClassificationTo("provider","provider",serviceId,catIds[0]);
 			
 			PsService service = new PsService();			
-			serviceId = registerService(service, "SimpleCharacterisation@rainer.arc.at", "Characterizes by Mime Types", org);
+			serviceId = registerService(service, "SimpleCharacterisation@localhost", "Characterizes by Mime Types", org);
 			logger.debug("registering service: "+ "name: SimpleCharacterisation@rainer.arc.at" + "dsc: Characterizes by Mime Types" + "org:"+org.getKey());
 			logger.debug("received service id: "+ serviceId);
 			service.setKey(serviceId);
@@ -193,7 +193,7 @@ public class ServiceRegistry
 			logger.debug("adding classification to service: "+serviceId+" category: "+catIds[1]);
 			
 			service = new PsService();			
-			serviceId = registerService(service, "Tiff2Jpeg@rainer.arc.at", "Converts tiff format to jpeg", org);
+			serviceId = registerService(service, "Tiff2Jpeg@localhost", "Converts tiff format to jpeg", org);
 			logger.debug("registering service: "+ "name: Tiff2Jpeg@rainer.arc.at" + "dsc: Converts tiff format to jpeg" + "org:"+org.getKey());
 			logger.debug("received service id: "+ serviceId);
 			service.setKey(serviceId);
@@ -201,6 +201,16 @@ public class ServiceRegistry
 			logger.debug("registering binding for service: "+service.getKey()+"name: local.binding2" + "dsc: binding.dsc" + "uri: http://localhost:8080/ImageMagicWS/Tiff2JpegAction?wsdl");			
 			rMsg = registry.addClassificationTo("provider","provider",serviceId,catIds[3]);			
 			logger.debug("adding classification to service: "+serviceId+" category: "+catIds[3]);
+			
+			service = new PsService();			
+			serviceId = registerService(service, "Jpeg2Tiff@level1.at", "Converts jpg format to tiff", org);
+			logger.debug("registering service: "+ "name: Jpeg2Tiff@level1.at" + "dsc: Converts jpg format to tiff" + "org:"+org.getKey());
+			logger.debug("received service id: "+ serviceId);
+			service.setKey(serviceId);
+			registerBinding(service, "local.binding3", "binding.dsc", "http://localhost:8080/ifr-jmagickconverter-ejb/JpgToTiffConverter?wsdl");
+			logger.debug("registering binding for service: "+service.getKey()+"name: local.binding3" + "dsc: binding.dsc" + "uri: http://localhost:8080/ifr-jmagickconverter-ejb/JpgToTiffConverter?wsdl");			
+			rMsg = registry.addClassificationTo("provider","provider",serviceId,catIds[3]);			
+			logger.debug("adding classification to service: "+serviceId+" category: "+catIds[3]);			
 			
 			//service = new PsService();			
 			//serviceId = registerService(service, "Doc2OpenXML@localhost", "Converts doc format to docx", org);
