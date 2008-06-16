@@ -64,18 +64,11 @@ public class FileSystemDataManager implements DataManagerLocal {
         Properties properties = new Properties();
 
         try {
-            java.io.InputStream ResourceFile = getClass().getClassLoader()
-                    .getResourceAsStream(
-                            "eu/planets_project/ifr/core/wdt/gui/UIResources.properties"
-                    );
-            properties.load(ResourceFile); 
             
             // See http://wiki.jboss.org/wiki/Wiki.jsp?page=JBossProperties for more JBoss properties.
             String localDataDir = System.getProperty("jboss.home.dir") +
                            System.getProperty("file.separator") +
-                           properties.getProperty("JBoss.LocalDataDir");
-            
-            ResourceFile.close();
+                           "PlanetsData";
             
             // Open the localDataDir
             File ldd = new File(localDataDir);
