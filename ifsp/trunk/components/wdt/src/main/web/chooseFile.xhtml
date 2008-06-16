@@ -41,7 +41,7 @@
     <f:facet name="folder">
             <h:panelGroup>
                   <h:commandLink action="success">
-                    <t:graphicImage value="/graphics/filetype_folder.gif" />
+                    <t:graphicImage value="/imgs/filetype_folder.gif" />
                     <h:outputText value=" #{do.leafname}"/>
                     <t:updateActionListener property="#{fileBrowser.location}" value="#{do.uri}" />
                   </h:commandLink>
@@ -50,7 +50,7 @@
     
     <f:facet name="file">
             <h:panelGroup>
-                  <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+                  <img src="${facesContext.externalContext.requestContextPath}/imgs/filetype_file.png" alt="directory" title="directory"/>
                   <h:outputText value=" #{do.leafname}"/>
             </h:panelGroup>
     </f:facet>
@@ -76,14 +76,14 @@
                 <h:panelGroup rendered="#{do.directory}">
                   <h:selectBooleanCheckbox value="#{do.selected}"/>
                   <h:commandLink action="success">
-                    <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_folder.gif" alt="directory" title="directory"/>
+                    <img src="${facesContext.externalContext.requestContextPath}/imgs/filetype_folder.gif" alt="directory" title="directory"/>
                     <h:outputText value=" #{do.leafname}"/>
                     <t:updateActionListener property="#{fileBrowser.location}" value="#{do.uri}" />
                   </h:commandLink>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{not do.directory}">
                   <h:selectBooleanCheckbox value="#{do.selected}"/>
-                  <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+                  <img src="${facesContext.externalContext.requestContextPath}/imgs/filetype_file.png" alt="directory" title="directory"/>
                   <h:outputText value=" #{do.leafname}"/>
                 </h:panelGroup>
                 <br/>
@@ -99,13 +99,13 @@
                 <f:facet name="header">#{res['browse_data.name']}</f:facet>
                 <h:panelGroup rendered="#{do.directory}">
                   <h:commandLink action="success">
-                    <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_folder.gif" alt="directory" title="directory"/>
+                    <img src="${facesContext.externalContext.requestContextPath}/imgs/filetype_folder.gif" alt="directory" title="directory"/>
                     <h:outputText value=" #{do.leafname}"/>
                     <t:updateActionListener property="#{fileBrowser.location}" value="#{do.uri}" />
                   </h:commandLink>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{not do.directory}">
-                  <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+                  <img src="${facesContext.externalContext.requestContextPath}/imgs/filetype_file.png" alt="directory" title="directory"/>
                   <h:outputText value=" #{do.leafname}"/>
                 </h:panelGroup>
                 </h:column>
