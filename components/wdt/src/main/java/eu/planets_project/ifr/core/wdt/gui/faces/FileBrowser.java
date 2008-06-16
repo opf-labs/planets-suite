@@ -187,7 +187,7 @@ public class FileBrowser {
      * Controller that selects all of the current items.
      */
     public static String selectAll() {
-        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
+        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("fileBrowser");
         for( FileTreeNode dob: fb.getList() ) {
             if( dob.isSelectable() ) dob.setSelected(true);
         }
@@ -198,7 +198,7 @@ public class FileBrowser {
      * Controller that de-selects the current items.
      */
     public static String selectNone() {
-        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
+        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("fileBrowser");
         for( FileTreeNode dob: fb.getList() ) {
             if( dob.isSelectable() ) dob.setSelected(false);
         }
@@ -222,7 +222,7 @@ public class FileBrowser {
   
   if( wfBean == null ) return "no current workflow bean found";       
         
-        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
+        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("fileBrowser");
         // Add each of the selected items to the experiment:
         for( FileTreeNode dob: fb.getList() ) {
           // Only include selected items that are eligible:
@@ -237,7 +237,7 @@ public class FileBrowser {
     }
     
     public static String redirectToDataRegistry() {
-        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("FileBrowser");
+        FileBrowser fb = (FileBrowser) JSFUtil.getManagedObject("fileBrowser");
 /*        try {
           FacesContext.getCurrentInstance().getExternalContext().redirect(fb.getRootUrl().toString());
         } catch( java.io.IOException e ) {
