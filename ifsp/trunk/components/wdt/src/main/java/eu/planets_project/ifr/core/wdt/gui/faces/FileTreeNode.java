@@ -54,7 +54,7 @@ public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
             this.setLeaf(true);
             this.setSelectable(true);
         }
-        this.displayName = dob.getLeafname();
+        if( dob != null ) this.displayName = dob.getLeafname();
     }
     
     /**
