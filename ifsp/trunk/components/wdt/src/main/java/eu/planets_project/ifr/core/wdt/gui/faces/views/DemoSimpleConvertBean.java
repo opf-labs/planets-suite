@@ -145,14 +145,13 @@ public class DemoSimpleConvertBean extends AbstractWorkflowBean implements Plane
 		logger.debug("currentMigServiceItem: " + currentMigServiceItem.getValue().toString() );
 	}
 
-
 	public String invokeService() {
 				
 		ReportGenerationService report = null;
 		int reportID = -1;
 		
 		try {
-			
+
 			PlanetsService pa = null;
 			
 			Service charService = this.getService(currentCharServiceItem, charServices);
@@ -224,7 +223,7 @@ public class DemoSimpleConvertBean extends AbstractWorkflowBean implements Plane
 						"</td></tr></table></fieldset>");
 				}
 			}
-			
+		
 		} catch (Exception e) {
 			logger.error("workflow bean error: "+e);
 		} finally {

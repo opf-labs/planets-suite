@@ -12,7 +12,7 @@ import javax.xml.ws.WebServiceClient;
 /**
  * JBossWS Generated Source
  * 
- * Generation Date: Fri May 30 14:32:57 CEST 2008
+ * Generation Date: Fri Jun 13 17:25:47 CEST 2008
  * 
  * This generated source code represents a derivative work of the input to
  * the generator that produced it. Consult the input for the copyright and
@@ -21,7 +21,7 @@ import javax.xml.ws.WebServiceClient;
  * JAX-WS Version: 2.0
  * 
  */
-@WebServiceClient(name = "JpgToTiffConverter", targetNamespace = "http://planets-project.eu/ifr/migration", wsdlLocation = "http://dme023:8080/ifr-jpgtotiffconverter-ejb/JpgToTiffConverter?wsdl")
+@WebServiceClient(name = "JpgToTiffConverter", targetNamespace = "http://planets-project.eu/ifr/migration", wsdlLocation = "http://planetarium.hki.uni-koeln.de:8080/ifr-jmagickconverter-ejb/JpgToTiffConverter?wsdl")
 public class JpgToTiffConverter_Service
     extends Service
 {
@@ -31,7 +31,7 @@ public class JpgToTiffConverter_Service
     static {
         URL url = null;
         try {
-            url = new URL("http://dme023:8080/ifr-jpgtotiffconverter-ejb/JpgToTiffConverter?wsdl");
+            url = new URL("http://planetarium.hki.uni-koeln.de:8080/ifr-jmagickconverter-ejb/JpgToTiffConverter?wsdl");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

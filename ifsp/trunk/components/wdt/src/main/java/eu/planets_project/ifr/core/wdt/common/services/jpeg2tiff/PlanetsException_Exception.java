@@ -7,7 +7,7 @@ import javax.xml.ws.WebFault;
 /**
  * JBossWS Generated Source
  * 
- * Generation Date: Fri May 30 14:32:57 CEST 2008
+ * Generation Date: Fri Jun 13 17:25:48 CEST 2008
  * 
  * This generated source code represents a derivative work of the input to
  * the generator that produced it. Consult the input for the copyright and
