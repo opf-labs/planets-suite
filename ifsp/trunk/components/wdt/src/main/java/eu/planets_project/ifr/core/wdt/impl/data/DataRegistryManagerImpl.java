@@ -33,7 +33,7 @@ import eu.planets_project.ifr.core.wdt.api.data.DigitalObject;
  * @author AnJackson
  *
  */
-public class DataRegistryManagerImpl extends DataRegistryManager {
+public class DataRegistryManagerImpl implements DataRegistryManager {
     private static PlanetsLogger log = PlanetsLogger.getLogger(DataRegistryManagerImpl.class, "testbed-log4j.xml");
     
     // The data sources are managed here:

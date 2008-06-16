@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.wdt.api.data.DataRegistryManager;
 import eu.planets_project.ifr.core.wdt.api.data.DigitalObject;
 import eu.planets_project.ifr.core.wdt.api.data.util.DataHandler;
 import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
@@ -45,7 +46,7 @@ public class FileBrowser {
     private static PlanetsLogger log = PlanetsLogger.getLogger(FileBrowser.class, "testbed-log4j.xml");
     
     // The Data Registry:
-    private DataRegistryManagerImpl dr = new DataRegistryManagerImpl();
+    private DataRegistryManager dr = new DataRegistryManagerImpl();
 
     // The current URI/position in the DR:
     private URI location = null;
@@ -262,7 +263,7 @@ public class FileBrowser {
      * @return the copied and renamed File
      */
     //TODO discuss solution for work around
-    private static File helperUploadDataForNewExperimentWizard( DataRegistryManagerImpl dr, URI pduri ) throws IOException{
+    private static File helperUploadDataForNewExperimentWizard( DataRegistryManager dr, URI pduri ) throws IOException{
         //workaround: copy the local FileBrowsers file reference into
         //the Testbed's experiment data repository
         DataHandler dh = new DataHandlerImpl();
