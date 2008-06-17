@@ -1008,7 +1008,7 @@ public class NewExpWizardController {
 				panel = facesContext.getViewRoot();
 			}
 			
-			Iterator<UIComponentBase> it = panel.getChildren().iterator();
+			Iterator<UIComponent> it = panel.getChildren().iterator();
 			UIComponent returnComp = null;
 			
 			while(it.hasNext()){

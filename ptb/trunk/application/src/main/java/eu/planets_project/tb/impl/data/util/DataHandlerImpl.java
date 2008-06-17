@@ -114,6 +114,7 @@ public class DataHandlerImpl implements DataHandler{
 	public File getLocalFileRef(URI uriFileRef, boolean input) throws FileNotFoundException{
 		boolean bException = false;
 		if(uriFileRef!=null){
+		    log.info("Attempting to open file: "+uriFileRef + " :: input = " + input );
 			String sFileName = "";
 			
 			HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -145,13 +146,15 @@ public class DataHandlerImpl implements DataHandler{
 		 	if(!bException){
 		 		File f;
 		 		if(input){
+		 		    log.info("Attempting to open input file: "+FileInDir+" "+sFileName);
 		 			f = new File(FileInDir,sFileName);
 		 		}
 		 		else{
+                    log.info("Attempting to open output file: "+FileOutDir+" "+sFileName);
 		 			f = new File(FileOutDir,sFileName);
 		 		}
 		 		if(!f.canRead()){
-		 			throw new FileNotFoundException(f.getName() +" not accessible");
+		 			throw new FileNotFoundException(f.getName() +" is not accessible (input="+input+").");
 		 		}
 		 		return f;
 		 	}
@@ -392,7 +395,7 @@ public class DataHandlerImpl implements DataHandler{
 	 * @see eu.planets_project.tb.api.data.util.DataHandler#decodeToByteArray(java.lang.String)
 	 */
 	public byte[] decodeToByteArray(String sBase64ByteArrayString) {
-		return base64.decode(sBase64ByteArrayString);
+		return Base64.decode(sBase64ByteArrayString);
 	}
 
 
@@ -412,7 +415,7 @@ public class DataHandlerImpl implements DataHandler{
 		}
 		
 		//encode String
-		return base64.encode(b);
+		return Base64.encode(b);
 	}
 
 }

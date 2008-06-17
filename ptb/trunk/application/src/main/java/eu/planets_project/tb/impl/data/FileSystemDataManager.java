@@ -138,9 +138,12 @@ public class FileSystemDataManager implements DataManagerLocal {
         } else {
             // If it is a directory, return the list on contents:
             String[] flist = pf.list( new LocalDirFilter() );
-            for( String pcs : flist ) {
-                File pcf = new File(pf.getAbsolutePath() + File.separator + pcs);
-                aldo.add(pcf.toURI());
+            if( flist != null ) {
+                for (String pcs : flist) {
+                    File pcf = new File(pf.getAbsolutePath() 
+                            + File.separator + pcs);
+                    aldo.add(pcf.toURI());
+                }
             }
         }
         URI ado[] = new URI[aldo.size()];

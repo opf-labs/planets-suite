@@ -73,6 +73,8 @@ public class DigitalObject {
         if( puri == null ) return "";
         
         String path = puri.getPath();
+        if( path == null ) return "";
+        
         // Trim any trailing slash:
         if( path.lastIndexOf("/") == path.length()-1 ) {
             path = path.substring(0, path.length()-1 );

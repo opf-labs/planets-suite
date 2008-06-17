@@ -57,6 +57,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
@@ -65,6 +66,7 @@ import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.data.DataSourceManager;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
@@ -83,6 +85,8 @@ import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
  *
  */
 public class RegisterTBServices{
+    // A logger:
+    private static PlanetsLogger log = PlanetsLogger.getLogger(RegisterTBServices.class, "testbed-log4j.xml");
 	
 	//FacesContext
 	FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -859,6 +863,8 @@ public class RegisterTBServices{
 			
 			return sOutcome;
 		}catch(Exception e){
+		    log.error("Exception while invoking service: "+e);
+		    e.printStackTrace();
 			return "error-send";
 		}
 	}
@@ -966,7 +972,10 @@ public class RegisterTBServices{
 					File f = dh.getLocalFileRef(new URI(sFileRef), true);
 					sBase64File = dh.encodeToBase64ByteArrayString(f);
 				}catch(Exception e){
-					throw new Exception("BuildingSampleRequest: file ref cannot be encoded to base64");
+				    log.error("Could not create the base64 encoded file: "+sFileRef);
+				    log.error("Caught exception: "+e);
+				    e.printStackTrace();
+					throw new Exception("BuildingSampleRequest: file ref cannot be encoded to base64.");
 				}	
 				
 				//build return String
@@ -1347,7 +1356,7 @@ public class RegisterTBServices{
 
 			facesContext = FacesContext.getCurrentInstance();
 			
-			Iterator<UIComponentBase> it = facesContext.getViewRoot().getChildren().iterator();
+			Iterator<UIComponent> it = facesContext.getViewRoot().getChildren().iterator();
 			UIComponent returnComp = null;
 			
 			while(it.hasNext()){

@@ -131,12 +131,34 @@ public class UserBean
             this.fullname = u.getFullName();
             this.email = u.getEmail();
             this.telephone = u.getPhoneNumber();
+            
             // For now, we must format the address manually.
             // FIXME The Address entity should do this.
-            this.address = u.getAddress().getAddress() + ",\n" + 
-            u.getAddress().getCity() + ",\n" +
-            u.getAddress().getProvince() + " " + u.getAddress().getPostalCode() + ",\n" +
-            u.getAddress().getCountry();
+            this.address = "";
+            
+            if( ! "".equals( u.getAddress().getAddress().trim() ) ) 
+                this.address += u.getAddress().getAddress() + ",\n";
+            
+            if( ! "".equals( u.getAddress().getCity().trim() ) ) 
+                this.address += u.getAddress().getCity() + ",\n";
+            
+            if( ! "".equals( u.getAddress().getProvince().trim() ) ) 
+                this.address += u.getAddress().getProvince();
+            
+            if( ! "".equals( u.getAddress().getProvince().trim() ) && 
+                ! "".equals( u.getAddress().getPostalCode().trim() ) ) 
+                this.address += " ";
+            
+            if( ! "".equals( u.getAddress().getPostalCode().trim() ) ) 
+                this.address += u.getAddress().getPostalCode();
+            
+            if( ! "".equals( u.getAddress().getProvince().trim() ) || 
+                    ! "".equals( u.getAddress().getPostalCode().trim() ) ) 
+                this.address += ",\n";
+            
+            if( ! "".equals( u.getAddress().getCountry().trim() ) )
+                this.address += u.getAddress().getCountry();
+            
             log.debug("User lookup succeeded: Got details for "+u.getFullName());
         } else {
             log.error("Username '"+userid+"' not found! Returned a null User object.");
