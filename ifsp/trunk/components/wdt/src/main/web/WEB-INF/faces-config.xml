@@ -63,6 +63,11 @@
     <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.Level1ConvertBean</managed-bean-class>                        
     <managed-bean-scope>session</managed-bean-scope>
   </managed-bean>
+  <managed-bean>
+    <managed-bean-name>droidBean</managed-bean-name>
+    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DroidBean</managed-bean-class>                        
+    <managed-bean-scope>session</managed-bean-scope>
+  </managed-bean>  
 	<!-- navigation rules for helloWorld.jsp -->
 	<navigation-rule>
 		<from-view-id>/hello.jsp</from-view-id>
