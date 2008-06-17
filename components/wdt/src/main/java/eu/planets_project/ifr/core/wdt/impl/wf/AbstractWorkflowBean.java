@@ -45,6 +45,7 @@ public abstract class AbstractWorkflowBean {
     		//value must be a string - that seems to be a bug
     		//ret.add(new SelectItem(service, "label#"+i));
 				ret.add(new SelectItem(service.getId(), service.getName(), service.getEndpoint()));
+				//logger.debug("select item for: "+service.getId()+" "+ service.getName()+" "+ service.getEndpoint());
     	}
     	return ret;
     }

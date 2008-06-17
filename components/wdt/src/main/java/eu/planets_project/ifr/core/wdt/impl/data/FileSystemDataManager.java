@@ -123,7 +123,7 @@ public class FileSystemDataManager implements DataManagerLocal {
     public URI[] list(URI pdURI) throws SOAPException {
         // Set up the uri, coping with null etc
         pdURI = checkURI(pdURI);
-        log.debug("Listing "+pdURI);
+        //log.finest("Listing "+pdURI);
         ArrayList<URI> aldo = new ArrayList<URI>();
         File pf = new File(pdURI);
         if( pf.isFile() ) {
