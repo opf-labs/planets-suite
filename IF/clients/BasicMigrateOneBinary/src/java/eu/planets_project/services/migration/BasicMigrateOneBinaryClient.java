@@ -50,9 +50,7 @@ public class BasicMigrateOneBinaryClient {
 
     public static byte[] basicMigrateOneBinaryClient(URL wsdl, byte[] input)
             throws PlanetsException {
-        Service service = Service.create(wsdl, new QName(
-                "http://planets-project.eu/ifr/migration",
-                "BasicMigrateOneBinary"));
+        Service service = Service.create(wsdl, BasicMigrateOneBinary.QNAME);
         BasicMigrateOneBinary converter = service
                 .getPort(BasicMigrateOneBinary.class);
         return converter.basicMigrateOneBinary(input);
