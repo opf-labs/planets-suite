@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="IF/|PC/droid/|PC/|PA/xena/|PA/|PC/droid/src/java/|PC/droid/src/java/|PC/droid/test/java/|PC/droid/test/java/" kind="src" path=""/>
+	<classpathentry kind="src" path="PC/droid/src/java"/>
+	<classpathentry kind="src" path="PC/droid/test/java"/>
+	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/IF_Libs"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/if_sp"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

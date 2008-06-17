@@ -24,82 +24,104 @@ import uk.gov.nationalarchives.droid.IdentificationFile;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 
+/**
+ * Droid identification service
+ * 
+ * @author Fabian Steeg, Carl Wilson
+ * 
+ */
 @WebService(name = Droid.NAME, serviceName = Droid.NAME, targetNamespace = PlanetsServices.NS)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
 @Stateless()
 public class Droid {
-
 	public static final String NAME = "Droid";
 	public static final QName QNAME = new QName(PlanetsServices.NS, Droid.NAME);
-
 	private static String SIG = "DROID_SignatureFile_Planets.xml";
-	private static final String TEMP = "/Users/fsteeg/Documents/eclipsestuff/workspace/if_sp/components/droid/temp";
-
 	private static final String CONF = "/server/default/conf/";
 	private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
-	private static final String LOCAL = "appserver";
+	private static final String LOCAL = "PC/droid/";
+	private static final String LOCAL_TEMP = LOCAL + "temp";
 
+	/**
+	 * @param byteIn
+	 *            The file to identify using Droid (as a byte array)
+	 * @return Returns the Pronom IDs found for the file
+	 * @throws Exception
+	 */
 	@WebMethod(operationName = Droid.NAME, action = PlanetsServices.NS + "/"
 			+ Droid.NAME)
 	@WebResult(name = Droid.NAME + "Result", targetNamespace = PlanetsServices.NS
 			+ "/" + Droid.NAME, partName = Droid.NAME + "Result")
 	public String[] identify(byte[] byteIn) throws Exception {
-
-		/*
-		 * If running in JBoss we use the deployment directory, else (like when
-		 * running a unit test) we use the project directory to retrieve the
-		 * concepts file:
-		 */
-		String deployed = System.getProperty(JBOSS_HOME_DIR_KEY);
-		String configFolder = (deployed != null ? deployed : LOCAL) + CONF;
-		String sigFile = configFolder + SIG;
-
+		// Determine the working directories:
+		String sigFileLocation = configFolder();
 		String tempFolder = tempFolder();
-		tempFolder = tempFolder == null ? TEMP : tempFolder;
-		// Store the byte array as a temp file:
-		FileOutputStream o = new FileOutputStream(TEMP);
-		o.write(byteIn);
-		o.close();
+		storeAsTempFile(byteIn, tempFolder);
+		// Here we start using the Droid API:
 		AnalysisController controller = new AnalysisController();
-		controller.readSigFile(sigFile);
-		// Use the temp file:
-		controller.addFile(TEMP);
-		System.out.println(controller.getFileCollection().getIterator()
-				.hasNext());
+		controller.readSigFile(sigFileLocation);
+		controller.addFile(tempFolder);
 		controller.setVerbose(false);
 		controller.runFileFormatAnalysis();
 		Iterator<IdentificationFile> iterator = controller.getFileCollection()
 				.getIterator();
 		String[] result = null;
-		while (iterator.hasNext()) {
-			IdentificationFile next = iterator.next();
-			int slept = 0;
-			while (next.getClassification() == AnalysisController.FILE_CLASSIFICATION_NOTCLASSIFIED
-					&& slept < 300) {
-				Thread.sleep(100);
-				slept++;
-			}
-			result = new String[next.getNumHits()];
-			for (int hitCounter = 0; hitCounter < next.getNumHits(); hitCounter++) {
-				FileFormatHit formatHit = next.getHit(hitCounter);
+		// We identify one file only:
+		if (iterator.hasNext()) {
+			IdentificationFile file = iterator.next();
+			waitFor(file);
+			result = new String[file.getNumHits()];
+			// Retrieve the results:
+			for (int hitCounter = 0; hitCounter < file.getNumHits(); hitCounter++) {
+				FileFormatHit formatHit = file.getHit(hitCounter);
 				result[hitCounter] = formatHit.getFileFormatPUID();
 			}
 		}
-		// In the end, delete the temp file:
-		File tempFile = new File(TEMP);
+		deleteTempFile(tempFolder);
+		return result;
+	}
+
+	private void waitFor(IdentificationFile file) throws InterruptedException {
+		int slept = 0;
+		/*
+		 * Droid runs the identification in a Thread, so we have to wait until
+		 * it finishes...
+		 */
+		while (file.getClassification() == AnalysisController.FILE_CLASSIFICATION_NOTCLASSIFIED
+				/* ...but we won't wait forever */
+				&& slept < 300) {
+			Thread.sleep(100);
+			slept++;
+		}
+	}
+
+	private void deleteTempFile(String location) {
+		File tempFile = new File(location);
 		boolean delete = tempFile.delete();
 		if (!delete) {
 			System.err.println("Could not delete: " + tempFile);
 		}
-		return result;
 	}
+
+	private void storeAsTempFile(byte[] byteIn, String tempFolder)
+			throws FileNotFoundException, IOException {
+		FileOutputStream o = new FileOutputStream(tempFolder);
+		o.write(byteIn);
+		o.close();
+	}
+
+	/**
+	 * @param fileName
+	 *            The file name of the file to identify
+	 * @return Returns an array with the Pronom IDs for the specified file
+	 */
 	@WebMethod()
-	public String[] identifyMock(String fileName){
+	public String[] identifyMock(String fileName) {
 		File file = new File(fileName);
 		FileInputStream in;
 		try {
 			in = new FileInputStream(file);
-			byte[] array = new byte[(int)in.available()];
+			byte[] array = new byte[(int) in.available()];
 			in.read(array);
 			return identify(array);
 		} catch (FileNotFoundException e) {
@@ -112,6 +134,24 @@ public class Droid {
 		return null;
 	}
 
+	/**
+	 * @return If running in JBoss, returns the deployment directory, else (like
+	 *         when running a unit test) returns the project directory to
+	 *         retrieve the concepts file
+	 */
+	private String configFolder() {
+		String deployedJBossHome = System.getProperty(JBOSS_HOME_DIR_KEY);
+		String sigFileFolder = (deployedJBossHome != null ? deployedJBossHome
+				+ CONF : LOCAL);
+		String sigFileLocation = sigFileFolder + SIG;
+		return sigFileLocation;
+	}
+
+	/**
+	 * @return If we are running in JBoss, returns a sand box from the data
+	 *         registry, else a local temp folder in the project (like for unit
+	 *         testing)
+	 */
 	String tempFolder() {
 		InitialContext ctx;
 		try {
@@ -127,7 +167,8 @@ public class Droid {
 		} catch (URISyntaxException e) {
 			System.err.println(e.getMessage());
 		}
-		return null;
+		// If that didn't work, use a local directory
+		return LOCAL_TEMP;
 	}
 
 }
