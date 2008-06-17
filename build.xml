@@ -11,6 +11,7 @@
   <!-- TODO Go into sub-directories and build. -->
   <target name="deploy:all">
       <ant dir="PA/xena" inheritAll="false"/>
+  	  <ant dir="PC/droid" inheritAll="false"/>
   </target>
     
 </project>
