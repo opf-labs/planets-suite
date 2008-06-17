@@ -58,17 +58,27 @@
             <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
         </t:column>
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.startDate']}</f:facet>
+	        <f:facet name="header">
+	          <t:commandSortHeader id="sortHeader_startDate" columnName="startDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	    	      #{res['expList.colHeader.startDate']}
+		  </t:commandSortHeader>
+			</f:facet>		      
             <h:outputText value="#{exp.startDate.time}" />
         </t:column>
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>
-            <h:outputText value="#{exp.experimentExecution.executionEndedDate.time}">
-	             <f:convertDateTime type="both" dateStyle="short"/>
-            </h:outputText>
-        </t:column>
+	        <f:facet name="header">
+	          <t:commandSortHeader id="sortHeader_exDate" columnName="exDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	    	      #{res['expList.colHeader.exDate']}
+		  </t:commandSortHeader>
+			</f:facet>		      
+            <h:outputText value="#{exp.experimentExecution.executionEndedDate.time}" />
+        </t:column>        
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.currentStage']}</f:facet>
+	        <f:facet name="header">
+	          <t:commandSortHeader id="sortHeader_currentStage" columnName="currentStage" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	    	      #{res['expList.colHeader.currentStage']}
+		  </t:commandSortHeader>
+			</f:facet>		      
             <h:outputText value="#{exp.currentPhase.phaseName}" />
         </t:column>
         <t:column>
