@@ -13,7 +13,7 @@ import eu.planets_project.ifr.core.common.api.PlanetsException;
  * Adapter Class
  * rschmidt@researchstudio.at
  */
-public class Tiff2JpegPlanetsService implements eu.planets_project.ifr.core.common.api.PlanetsService
+public class Tiff2JpegPlanetsService implements eu.planets_project.ifr.core.common.api.L2PlanetsService
 {
 	private Tiff2Jpeg t2j = null;
 	

@@ -16,7 +16,7 @@ import javax.faces.event.ValueChangeEvent;
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.common.api.PlanetsService;
+import eu.planets_project.ifr.core.common.api.L2PlanetsService;
 //import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
 import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
@@ -30,7 +30,7 @@ import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
  *
  * @author Rainer Schmidt, ARC
  */
-public class DemoCharacterizationWorkflowBean extends AbstractWorkflowBean implements PlanetsService, WorkflowBean {
+public class DemoCharacterizationWorkflowBean extends AbstractWorkflowBean implements L2PlanetsService, WorkflowBean {
 	
 	private Log logger = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
 	
