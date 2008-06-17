@@ -17,8 +17,13 @@ public class TestHelper {
 	 * received results with the expected ones.
 	 */
 	public enum File {
-		RTF("PC/droid/Licence.rtf", "info:pronom/fmt/50", "info:pronom/fmt/51"), XML(
-				"PC/droid/DROID_SignatureFile_Planets.xml", "info:pronom/fmt/101");
+		RTF(FileHelper.LOCAL + "Licence.rtf", "info:pronom/fmt/50",
+				"info:pronom/fmt/51"),
+
+		XML(FileHelper.LOCAL + "DROID_SignatureFile_Planets.xml",
+				"info:pronom/fmt/101"),
+
+		ZIP(FileHelper.LOCAL + "Licence.zip", "info:pronom/x-fmt/263");
 		String location;
 		String[] expected;
 
@@ -49,7 +54,7 @@ public class TestHelper {
 	private static String[] test(Droid droid, String location)
 			throws FileNotFoundException, IOException, Exception {
 		byte[] array = FileHelper.byteArrayForFile(location);
-		URI[] identify = droid.identifyBytes(array).getTypes();
+		URI[] identify = droid.identifyBytes(array).types;
 		String[] strings = new String[identify.length];
 		for (int _loop = 0; _loop < identify.length; _loop++) {
 			String string = identify[_loop].toASCIIString();

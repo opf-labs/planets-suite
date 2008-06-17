@@ -23,7 +23,7 @@ public class FileHelper {
 	private static String SIG = "DROID_SignatureFile_Planets.xml";
 	private static final String CONF = "/server/default/conf/";
 	private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
-	private static final String LOCAL = "PC/droid/";
+	public static final String LOCAL = "PC/droid/src/resources/";
 
 	/**
 	 * @param location
