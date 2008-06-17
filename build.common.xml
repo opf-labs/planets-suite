@@ -43,7 +43,7 @@
     </fileset>
     <!-- specific libs -->
     <fileset dir="${lib.dir}">
-      <include name="*.jar"/>
+      <include name="**/*.jar"/>
     </fileset>
     <!--include JUNIT 4.0 lib-->
     <!--fileset dir="${junit.lib}">
