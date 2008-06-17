@@ -163,6 +163,34 @@ public class ListExp extends SortableList {
 					return ascending ? c1.getExperimentSetup().getBasicProperties().getExperimenter().compareTo(c2.getExperimentSetup().getBasicProperties().getExperimenter()) : c2.getExperimentSetup().getBasicProperties().getExperimenter()
 									.compareTo(c1.getExperimentSetup().getBasicProperties().getExperimenter());
 				}
+                                if (column.equals("startDate"))
+				{
+					String c1_startDate = c1.getCurrentPhase().getStartDate().toString();
+					String c2_startDate = c2.getCurrentPhase().getStartDate().toString();
+					if (c1_startDate==null) c1_startDate="";
+					if (c2_startDate==null) c2_startDate="";
+					return ascending ? c1_startDate.compareTo(c2_startDate) : c2_startDate.compareTo(c1_startDate);
+				}
+
+                                if (column.equals("exDate"))
+				{
+                                        if ((c1.getExperimentExecution().getExecutionEndedDate() != null) && (c1.getExperimentExecution().getExecutionEndedDate() != null)) {
+                                            return ascending ? c1.getExperimentExecution().getExecutionEndedDate().compareTo(c2.getExperimentExecution().getExecutionEndedDate()) 
+                                                    : c2.getExperimentExecution().getExecutionEndedDate().compareTo(c1.getExperimentExecution().getExecutionEndedDate());
+                                        }
+                                        else
+                                            return 0;
+				}
+                                
+                                if (column.equals("currentStage"))
+				{
+                                        if ((c1.getCurrentPhase().getStartDate() != null) && (c1.getCurrentPhase().getStartDate() != null)) {
+                                            return ascending ? c1.getCurrentPhase().getPhaseName().compareTo(c2.getCurrentPhase().getPhaseName()) 
+                                                    : c2.getCurrentPhase().getPhaseName().compareTo(c1.getCurrentPhase().getPhaseName());
+                                        }
+                                        else
+                                            return 0;
+				}
 				else
 					return 0;
 			}			
