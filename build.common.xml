@@ -50,7 +50,7 @@
             <include name="*.jar"/>
         </fileset-->
     <!--include our external resources as *.xml and *.props-->
-    <pathelement location="${appDir}/resources"/>
+    <pathelement location="${src.resources}"/>
     <pathelement location="${build.classes.dir}"/>
     <!-- So that we can get jndi.properties for InitialContext -->
     <pathelement location="${client.config}"/>
@@ -106,6 +106,14 @@
     <copy toDir="${build.classes.dir}" flatten="true">
       <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+    
+    <!-- Also copy the resources into the right place -->
+    <copy toDir="${build.classes.dir}" flatten="false" overwrite="true" failonerror="false">
+      <fileset dir="${src.resources}">
+        <include name="**/*.properties" />
+        <include name="**/*.xml" />
       </fileset>
     </copy>
     
@@ -197,7 +205,7 @@
     </copy>
 
     <copy todir="${build.dir}/${appName}/WEB-INF/classes">
-      <fileset dir="${appDir}/resources">
+      <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
       </fileset>
@@ -206,7 +214,7 @@
     <jar jarfile="${build.dir}/${appName}.war" 
 	 basedir="${build.dir}/${appName}"/>
 
-    <ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">
+    <ear destfile="${build.dir}/${appName}.ear" appxml="${src.resources}/META-INF/application.xml">
       <fileset dir="${build.dir}" includes="*.jar,*.war"/>
     </ear>
 

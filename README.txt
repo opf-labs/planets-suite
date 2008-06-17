@@ -1,7 +1,7 @@
 Planets Services Project
 ------------------------
 
-Outline of build system.  build.properties required.
+A build.properties is required! Outline of build system.
 
 Source layout
 
