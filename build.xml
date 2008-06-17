@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="Planets Service Deployer" default="deploy:all" basedir=".">
+
+  <!-- TODO Add checks that the build properties have been set up. -->
+  
+  <!-- TODO Go into sub-directories and build. -->
+  <target name="deploy:all">
+      <ant dir="PA/xena" inheritAll="false"/>
+  </target>
+    
+</project>

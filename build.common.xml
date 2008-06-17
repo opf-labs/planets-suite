@@ -1,0 +1,222 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- deployer build                                                          -->
+<!-- ======================================================================= -->
+
+<project name="Planets Service Build Commons" default="deploy:ear" basedir=".">
+
+  <property file="${pserv.root.dir}/build.properties"/>
+
+  <property environment="env"/>
+
+  <property name="build.dir" value="${appDir}/build"/>
+  <property name="build.classes.dir" value="${build.dir}/classes"/>
+
+  <property name="war.base.name" value="${appName}.war"/>
+  <property name="ear.base.name" value="${appName}.ear"/>
+  <property name="ejb.jar.name" value="pserv-${appName}.jar"/>
+
+  <property name="test.dir" value="${appDir}/../test/java"/>
+  <property name="client.config" value="${appDir}/../test/client-config"/>
+
+  <!--To configure from the build.properties file-->
+  <property name="jboss.home" value="${if_server.dir}"/>
+  <property name="junit.lib" value="${junitlib.dir}"/>
+
+  <!-- Build classpath -->
+  <path id="classpath">
+    <fileset dir="${jboss.home}/server/default/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${jboss.home}/server/default/deploy/ejb3.deployer">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${jboss.home}/server/default/deploy/jboss-aop-jdk50.deployer">
+      <include name="*.jar"/>
+    </fileset>
+    <fileset dir="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar">
+      <include name="**/*.jar"/>
+    </fileset>
+    <fileset dir="${jboss.home}/lib">
+      <include name="*.jar"/>
+    </fileset>
+    <!-- specific libs -->
+    <fileset dir="${lib.dir}">
+      <include name="*.jar"/>
+    </fileset>
+    <!--include JUNIT 4.0 lib-->
+    <!--fileset dir="${junit.lib}">
+            <include name="*.jar"/>
+        </fileset-->
+    <!--include our external resources as *.xml and *.props-->
+    <pathelement location="${appDir}/resources"/>
+    <pathelement location="${build.classes.dir}"/>
+    <!-- So that we can get jndi.properties for InitialContext -->
+    <pathelement location="${client.config}"/>
+  </path>
+
+  <property name="build.classpath" refid="classpath"/>
+
+  <!-- The JAX-WS classpath -->
+  <path id="jaxwsclasspath">
+    <fileset dir="${jboss.home}/client">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <property name="jaxws.classpath" refid="jaxwsclasspath"/>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+  <target name="prepare" depends="clean">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.classes.dir}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source code                                            -->
+  <!-- =================================================================== -->
+  <target name="compile" depends="prepare">
+    <echo message="ant.java.version: ${ant.java.version}" />
+    <!--compile the model-->
+    <javac source="1.5" 
+		 srcdir="${src.dir}"
+           destdir="${build.classes.dir}"
+           debug="on"
+           deprecation="on"
+           optimize="off"
+           includes="**">
+      <classpath refid="classpath"/>
+    </javac>
+    <!-- tempory not compiling test cases - include after restructuring build.xml-->
+    <!--compile the test-classes, session beans, etc.-->
+    <!--javac source="1.5" 
+			srcdir="${test.dir}"
+           destdir="${build.classes.dir}"
+           debug="on"
+           deprecation="on"
+           optimize="off"
+           includes="**">
+            <classpath refid="classpath"/>
+    </javac-->
+  </target>
+
+  <target name="compile:ejb" depends="compile">
+    <jar jarfile="${build.dir}/${ejb.jar.name}">
+      <fileset dir="${lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="${build.classes.dir}">
+      </fileset>
+    </jar>
+  </target>
+
+  <target name="deploy:ejb" depends="compile:ejb">
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/default/deploy"/>
+  </target>
+
+  <target name="run.junittests" description="executes the included JUnit tests">
+    <junit fork="yes" haltonfailure="yes">
+      <!--test name="eu.planets_project.tb.unittest.model.BasicPropertiesTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.benchmark.BenchmarkGoalHandlerTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.benchmark.BenchmarkGoalTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.mockup.ExperimentWorkflowTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.mockup.WorkflowHandlerTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.mockup.WorkflowTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.TestbedManagerTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.AdminManagerTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.ExperimentTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.ExperimentSetupTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.ExperimentExecutionTest" /-->
+      <!--test name="eu.planets_project.tb.unittest.model.ExperimentEvaluationTest" /-->
+      <test name="eu.planets_project.tb.unittest.system.mockup.WorkflowInvokerTest" />
+      <!--test name="eu.planets_project.tb.unittest.model.CommentBrowserTest" /-->
+      <formatter type="plain" usefile="false" />
+      <classpath refid="classpath" />
+    </junit>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Cleans up generated stuff on JBoss                                          -->
+  <!-- =================================================================== -->
+
+  <target name="clean" depends="undeploy" description="cleans the build dir and finally undeploys the testbed application">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
+    <delete file="${jboss.home}/server/default/deploy/${war.base.name}"/>
+    <delete file="${jboss.home}/server/default/deploy/${ear.base.name}"/>
+    <delete file="${jboss.home}/server/default/deploy/${ejb.jar.name}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Helper targets to start the JBoss in a new cmd window (on Windows)                                         -->
+  <!-- =================================================================== -->
+  <target name="startjboss" description="launches the Jboss application server">
+    <exec dir="${jboss.home}/bin" executable="cmd.exe" spawn="true">
+      <arg value="/c start run.bat"/>
+    </exec>
+  </target>
+
+  <!-- ks -->
+
+  <target name="makeDirectories">
+    <mkdir dir="${build.dir}" />
+    <mkdir dir="${build.dir}/${appName}" />
+    <mkdir dir="${build.dir}/${appName}/WEB-INF/lib" />
+    <mkdir dir="${build.dir}/${appName}/WEB-INF/classes" />
+  </target>
+
+  <target name="populateDirectories" depends="makeDirectories">
+    <!--<copy todir="${build.dir}/${appName}/WEB-INF/lib">
+        <fileset dir="lib">
+            <include name="*.jar"/>
+        </fileset>      
+    </copy> -->
+  </target>
+
+  <target name="dist" depends="populateDirectories">
+
+    <javac source="1.5" debug="true" srcdir="java" destdir="${build.dir}/${appName}/WEB-INF/classes">
+
+      <classpath refid="classpath"/>
+
+    </javac>
+
+    <copy todir="${build.dir}/${appName}">
+      <fileset dir="web" casesensitive="yes">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+
+    <copy todir="${build.dir}/${appName}/WEB-INF/classes">
+      <fileset dir="${appDir}/resources">
+        <include name="**/*.properties" />
+        <include name="**/*.xml" />
+      </fileset>
+    </copy>
+
+    <jar jarfile="${build.dir}/${appName}.war" 
+	 basedir="${build.dir}/${appName}"/>
+
+    <ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">
+      <fileset dir="${build.dir}" includes="*.jar,*.war"/>
+    </ear>
+
+  </target>
+
+  <target name="deploy:war" depends="undeploy, deploy:ejb, dist">
+    <copy file="${build.dir}/${appName}.war" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+  </target>
+
+  <target name="deploy:ear" depends="compile:ejb,dist" 
+        description="DEFAULT builds and deploy the ear">
+    <copy file="${build.dir}/${appName}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+  </target>
+
+  <target name="build:ear" depends="compile:ejb,dist" description="builds the application"/>
+
+</project>
