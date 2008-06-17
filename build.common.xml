@@ -41,6 +41,9 @@
     <fileset dir="${jboss.home}/lib">
       <include name="*.jar"/>
     </fileset>
+    <fileset dir="${jboss.home}/client">
+      <include name="*.jar"/>
+    </fileset>
     <!-- specific libs -->
     <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
