@@ -101,15 +101,19 @@
            includes="**">
             <classpath refid="classpath"/>
     </javac-->
+    
+    <!-- Also copy the libs into the right place -->
+    <copy toDir="${build.classes.dir}" flatten="true">
+      <fileset dir="${lib.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+    
   </target>
 
-  <target name="compile:ejb" depends="compile">
+  <target name="compile:ejb" depends="clean,compile">
     <jar jarfile="${build.dir}/${ejb.jar.name}">
-      <fileset dir="${lib.dir}">
-        <include name="*.jar"/>
-      </fileset>
-      <fileset dir="${build.classes.dir}">
-      </fileset>
+      <fileset dir="${build.classes.dir}"/>
     </jar>
   </target>
 
