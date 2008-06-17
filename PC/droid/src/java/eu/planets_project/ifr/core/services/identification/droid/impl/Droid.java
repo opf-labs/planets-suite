@@ -1,5 +1,7 @@
 package eu.planets_project.ifr.core.services.identification.droid.impl;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 
 import javax.ejb.Stateless;
@@ -13,6 +15,7 @@ import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
+import eu.planets_project.ifr.core.common.services.datatypes.Types;
 
 /**
  * Droid identification service
@@ -39,7 +42,7 @@ public class Droid {
 	// name = Droid.NAME + "Result",
 	@WebResult(targetNamespace = PlanetsServices.NS + "/" + Droid.NAME, partName = Droid.NAME
 			+ "Result")
-	public String[] identifyBytes(byte[] byteIn) {
+	public Types identifyBytes(byte[] byteIn) {
 		// Determine the working directories:
 		String sigFileLocation = FileHelper.configFolder();
 		String tempFile = FileHelper.tempFolder() + "temp_droid";
@@ -56,20 +59,25 @@ public class Droid {
 		controller.runFileFormatAnalysis();
 		Iterator<IdentificationFile> iterator = controller.getFileCollection()
 				.getIterator();
-		String[] result = null;
+		Types retVal = null;
 		// We identify one file only:
 		if (iterator.hasNext()) {
 			IdentificationFile file = iterator.next();
 			waitFor(file);
-			result = new String[file.getNumHits()];
+			URI[] uris = new URI[file.getNumHits()];
 			// Retrieve the results:
-			for (int hitCounter = 0; hitCounter < file.getNumHits(); hitCounter++) {
-				FileFormatHit formatHit = file.getHit(hitCounter);
-				result[hitCounter] = formatHit.getFileFormatPUID();
+			try {
+				for (int hitCounter = 0; hitCounter < file.getNumHits(); hitCounter++) {
+					FileFormatHit formatHit = file.getHit(hitCounter);
+					uris[hitCounter] = new URI("info:pronom/" + formatHit.getFileFormatPUID());
+				}
+			} catch (URISyntaxException _excep) {
+				_excep.printStackTrace();
 			}
+			retVal = new Types(uris, file.getClassificationText());
 		}
 		FileHelper.deleteTempFile(tempFile);
-		return result;
+		return retVal;
 	}
 
 	/**
@@ -80,7 +88,7 @@ public class Droid {
 	 * @return Returns an array with the Pronom IDs for the specified file
 	 */
 	@WebMethod()
-	public String[] identifyFile(String fileName) {
+	public Types identifyFile(String fileName) {
 		byte[] array = FileHelper.byteArrayForFile(fileName);
 		return identifyBytes(array);
 	}

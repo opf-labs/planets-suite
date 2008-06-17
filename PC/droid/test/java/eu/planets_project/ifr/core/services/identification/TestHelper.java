@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 
 import eu.planets_project.ifr.core.services.identification.droid.impl.Droid;
 import eu.planets_project.ifr.core.services.identification.droid.impl.FileHelper;
@@ -16,8 +17,8 @@ public class TestHelper {
 	 * received results with the expected ones.
 	 */
 	public enum File {
-		RTF("PC/droid/Licence.rtf", "fmt/50", "fmt/51"), XML(
-				"PC/droid/DROID_SignatureFile_Planets.xml", "fmt/101");
+		RTF("PC/droid/Licence.rtf", "info:pronom/fmt/50", "info:pronom/fmt/51"), XML(
+				"PC/droid/DROID_SignatureFile_Planets.xml", "info:pronom/fmt/101");
 		String location;
 		String[] expected;
 
@@ -48,10 +49,13 @@ public class TestHelper {
 	private static String[] test(Droid droid, String location)
 			throws FileNotFoundException, IOException, Exception {
 		byte[] array = FileHelper.byteArrayForFile(location);
-		String[] identify = droid.identifyBytes(array);
-		for (String string : identify) {
+		URI[] identify = droid.identifyBytes(array).getTypes();
+		String[] strings = new String[identify.length];
+		for (int _loop = 0; _loop < identify.length; _loop++) {
+			String string = identify[_loop].toASCIIString();
 			System.out.println(string);
+			strings[_loop] = string;
 		}
-		return identify;
+		return strings;
 	}
 }
