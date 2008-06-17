@@ -17,7 +17,7 @@ import javax.xml.namespace.QName;
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.common.api.PlanetsService;
+import eu.planets_project.ifr.core.common.api.L2PlanetsService;
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
 import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
@@ -49,7 +49,7 @@ import java.net.URL;
  *    demonstrates a workflow comprising a characterization followed by a migration
  * 	  @author Reza Rawassizadeh and Rainer Schmidt, ARC
  */
-public class DemoSimpleConvertBean extends AbstractWorkflowBean implements PlanetsService, WorkflowBean {
+public class DemoSimpleConvertBean extends AbstractWorkflowBean implements L2PlanetsService, WorkflowBean {
 	
 	public static String TIFF2JPEG = "tiff2jpeg";
 	public static String DOC2OPENXML = "doc2openxml";
@@ -152,7 +152,7 @@ public class DemoSimpleConvertBean extends AbstractWorkflowBean implements Plane
 		
 		try {
 
-			PlanetsService pa = null;
+			L2PlanetsService pa = null;
 			
 			Service charService = this.getService(currentCharServiceItem, charServices);
 			Service migService = this.getService(currentMigServiceItem, migServices);

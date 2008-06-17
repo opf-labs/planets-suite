@@ -15,7 +15,7 @@ import eu.planets_project.ifr.core.common.api.PlanetsException;
  * Adapter Class
  * rschmidt@researchstudio.at
  */
-public class OpenXMLPlanetsService implements eu.planets_project.ifr.core.common.api.PlanetsService
+public class OpenXMLPlanetsService implements eu.planets_project.ifr.core.common.api.L2PlanetsService
 {
 	private Log log = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
 	private OpenXMLMigration oXML = null;
