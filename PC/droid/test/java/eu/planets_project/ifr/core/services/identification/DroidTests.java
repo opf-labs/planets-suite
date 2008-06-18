@@ -30,7 +30,7 @@ public class DroidTests {
 	public void clientTests() throws FileNotFoundException, IOException,
 			Exception {
 		Service service = Service.create(new URL(
-				"http://Pham.local:8080/pserv-pc-droid/Droid?wsdl"), new QName(
+				"http://localhost:8080/pserv-pc-droid/Droid?wsdl"), new QName(
 				PlanetsServices.NS, IdentifyOneBinary.NAME));
 		IdentifyOneBinary droid = service.getPort(IdentifyOneBinary.class);
 		TestHelper.testAllFiles(droid);
