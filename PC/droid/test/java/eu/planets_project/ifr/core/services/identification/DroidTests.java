@@ -10,8 +10,14 @@ import javax.xml.ws.Service;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
+import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 import eu.planets_project.ifr.core.services.identification.droid.impl.Droid;
 
+/**
+ * Local and client tests of the Droid functionality.
+ * 
+ * @author Fabian Steeg
+ */
 public class DroidTests {
 
 	@Test
@@ -20,13 +26,13 @@ public class DroidTests {
 		TestHelper.testAllFiles(new Droid());
 	}
 
-	//@Test Work in progress, not working yet
+	@Test
 	public void clientTests() throws FileNotFoundException, IOException,
 			Exception {
 		Service service = Service.create(new URL(
 				"http://Pham.local:8080/pserv-pc-droid/Droid?wsdl"), new QName(
-				PlanetsServices.NS, Droid.NAME));
-		Droid droid = service.getPort(Droid.class);
+				PlanetsServices.NS, IdentifyOneBinary.NAME));
+		IdentifyOneBinary droid = service.getPort(IdentifyOneBinary.class);
 		TestHelper.testAllFiles(droid);
 	}
 

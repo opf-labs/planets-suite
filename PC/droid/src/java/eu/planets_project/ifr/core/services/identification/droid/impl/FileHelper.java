@@ -5,13 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 
 /**
  * Helper class for accessing folders (in JBoss and local), storing temp files
@@ -65,13 +58,13 @@ public class FileHelper {
 	/**
 	 * @param byteIn
 	 *            The data to save to a file
-	 * @param tempFolder
+	 * @param fileLocation
 	 *            The location to store the file
 	 */
-	public static void storeAsTempFile(byte[] byteIn, String tempFolder) {
+	public static void storeAsTempFile(byte[] byteIn, String fileLocation) {
 		FileOutputStream o;
 		try {
-			o = new FileOutputStream(tempFolder);
+			o = new FileOutputStream(fileLocation);
 			o.write(byteIn);
 			o.close();
 		} catch (FileNotFoundException e) {
@@ -95,26 +88,19 @@ public class FileHelper {
 	}
 
 	/**
-	 * @return If we are running in JBoss, returns a sand box from the data
-	 *         registry, else a local temp folder in the project (like for unit
-	 *         testing)
+	 * @param name
+	 *            The name to use when generating the temp file
+	 * @return Returns a temp file using File.createTempFile
 	 */
-	public static String tempFolder() {
-		InitialContext ctx;
+	public static String tempFile(String name) {
+		File input;
 		try {
-			ctx = new InitialContext();
-			DataManagerLocal dml = (DataManagerLocal) ctx
-					.lookup("planets-project.eu/DataManager/local");
-			URI uri = dml.createLocalSandbox();
-			System.err.println("URI: " + uri.toString());
-			File _tempDir = new File(uri.toString().substring(6));
-			return _tempDir.getAbsolutePath();
-		} catch (NamingException e) {
-			System.err.println(e.getMessage());
-		} catch (URISyntaxException e) {
-			System.err.println(e.getMessage());
+			input = File.createTempFile(name, null);
+			input.deleteOnExit();
+			return input.getAbsolutePath();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		// If that didn't work, use a local directory
-		return LOCAL;
+		return LOCAL + name;
 	}
 }

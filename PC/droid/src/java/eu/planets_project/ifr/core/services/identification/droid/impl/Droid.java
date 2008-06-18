@@ -1,9 +1,12 @@
 package eu.planets_project.ifr.core.services.identification.droid.impl;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 
+import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
@@ -16,6 +19,7 @@ import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.datatypes.Types;
+import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 
 /**
  * Droid identification service
@@ -23,12 +27,16 @@ import eu.planets_project.ifr.core.common.services.datatypes.Types;
  * @author Fabian Steeg, Carl Wilson
  * 
  */
-@WebService(name = Droid.NAME, serviceName = Droid.NAME, targetNamespace = PlanetsServices.NS)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE)
+@WebService(name = Droid.NAME, serviceName = IdentifyOneBinary.NAME, targetNamespace = PlanetsServices.NS)
+@Local(IdentifyOneBinary.class)
+@Remote(IdentifyOneBinary.class)
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
-public class Droid {
+public class Droid implements IdentifyOneBinary, Serializable {
+	private static final long serialVersionUID = -7116493742376868770L;
 	public static final String NAME = "Droid";
-	public static final QName QNAME = new QName(PlanetsServices.NS, Droid.NAME);
+	public static final QName QNAME = new QName(PlanetsServices.NS,
+			IdentifyOneBinary.NAME);
 
 	/**
 	 * Identify a file represented as a byte array using Droid
@@ -37,15 +45,15 @@ public class Droid {
 	 *            The file to identify using Droid (as a byte array)
 	 * @return Returns the Pronom IDs found for the file
 	 */
-	// operationName = Droid.NAME,
-	@WebMethod(action = PlanetsServices.NS + "/" + Droid.NAME)
-	// name = Droid.NAME + "Result",
-	@WebResult(targetNamespace = PlanetsServices.NS + "/" + Droid.NAME, partName = Droid.NAME
+	@WebMethod(operationName = IdentifyOneBinary.NAME, action = PlanetsServices.NS
+			+ "/" + IdentifyOneBinary.NAME)
+	@WebResult(name = IdentifyOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
+			+ "/" + IdentifyOneBinary.NAME, partName = IdentifyOneBinary.NAME
 			+ "Result")
-	public Types identifyBytes(byte[] byteIn) {
+	public Types identifyOneBinary(byte[] byteIn) {
 		// Determine the working directories:
 		String sigFileLocation = FileHelper.configFolder();
-		String tempFile = FileHelper.tempFolder() + "temp_droid";
+		String tempFile = FileHelper.tempFile("temp_droid");
 		FileHelper.storeAsTempFile(byteIn, tempFile);
 		// Here we start using the Droid API:
 		AnalysisController controller = new AnalysisController();
@@ -69,7 +77,8 @@ public class Droid {
 			try {
 				for (int hitCounter = 0; hitCounter < file.getNumHits(); hitCounter++) {
 					FileFormatHit formatHit = file.getHit(hitCounter);
-					uris[hitCounter] = new URI("info:pronom/" + formatHit.getFileFormatPUID());
+					uris[hitCounter] = new URI("info:pronom/"
+							+ formatHit.getFileFormatPUID());
 				}
 			} catch (URISyntaxException _excep) {
 				_excep.printStackTrace();
@@ -81,16 +90,18 @@ public class Droid {
 	}
 
 	/**
-	 * Identify a file represented as a file name using Droid
+	 * Identify a file represented as a file name using Droid. This is a utility
+	 * method to enable SOAP-based testing, it converts the specified file into
+	 * a byte array and calls the actual identify method with that
 	 * 
 	 * @param fileName
 	 *            The file name of the file to identify
 	 * @return Returns an array with the Pronom IDs for the specified file
 	 */
 	@WebMethod()
-	public Types identifyFile(String fileName) {
+	public Types identifyOneFile(String fileName) {
 		byte[] array = FileHelper.byteArrayForFile(fileName);
-		return identifyBytes(array);
+		return identifyOneBinary(array);
 	}
 
 	private void waitFor(IdentificationFile file) {
