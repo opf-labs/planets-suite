@@ -1,8 +1,10 @@
-To run these tests, add the following dependencies to the project:
+To run these tests, add the following IF dependencies to the project:
 (Adding the entire IF as a project dependency causes problems)
 
-- if_sp/components/common/build/planets-ifr-common.jar
-- pserv/PC/droid/lib/droid.jar
 - if_sp/appserver/lib/endorsed/*.jar
 - if_sp/appserver/client/*.jar
 - if_sp/appserver/server/default/lib/*.jar
+- if_sp/appserver/server/default/deploy/jbossws.sar/*.jar
+
+(These should be set if you use Eclipse with the .classpath file 
+included in pserv project, where duplicate entries are removed)
