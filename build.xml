@@ -13,7 +13,6 @@
     <ant dir="PA/xena" inheritAll="false"/>
     <ant dir="PC/droid" inheritAll="false"/>
     <!--
-      <ant dir="PC/simple" inheritAll="false"/>
   	  -->
   </target>
     

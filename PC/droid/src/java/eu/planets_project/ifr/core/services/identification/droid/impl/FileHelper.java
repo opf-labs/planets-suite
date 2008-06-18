@@ -90,7 +90,7 @@ public class FileHelper {
 	/**
 	 * @param name
 	 *            The name to use when generating the temp file
-	 * @return Returns a temp file using File.createTempFile
+	 * @return Returns a temp file created using File.createTempFile
 	 */
 	public static String tempFile(String name) {
 		File input;

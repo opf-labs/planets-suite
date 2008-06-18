@@ -33,6 +33,7 @@ import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
 public class Droid implements IdentifyOneBinary, Serializable {
+	private static final String TEMP_FILE = "temp_droid";
 	private static final long serialVersionUID = -7116493742376868770L;
 	public static final String NAME = "Droid";
 	public static final QName QNAME = new QName(PlanetsServices.NS,
@@ -43,7 +44,8 @@ public class Droid implements IdentifyOneBinary, Serializable {
 	 * 
 	 * @param byteIn
 	 *            The file to identify using Droid (as a byte array)
-	 * @return Returns the Pronom IDs found for the file
+	 * @return Returns the Pronom IDs found for the file as URIs in a Types
+	 *         object
 	 */
 	@WebMethod(operationName = IdentifyOneBinary.NAME, action = PlanetsServices.NS
 			+ "/" + IdentifyOneBinary.NAME)
@@ -53,7 +55,7 @@ public class Droid implements IdentifyOneBinary, Serializable {
 	public Types identifyOneBinary(byte[] byteIn) {
 		// Determine the working directories:
 		String sigFileLocation = FileHelper.configFolder();
-		String tempFile = FileHelper.tempFile("temp_droid");
+		String tempFile = FileHelper.tempFile(TEMP_FILE);
 		FileHelper.storeAsTempFile(byteIn, tempFile);
 		// Here we start using the Droid API:
 		AnalysisController controller = new AnalysisController();
@@ -96,7 +98,8 @@ public class Droid implements IdentifyOneBinary, Serializable {
 	 * 
 	 * @param fileName
 	 *            The file name of the file to identify
-	 * @return Returns an array with the Pronom IDs for the specified file
+	 * @return Returns a Types object containing an array with the Pronom IDs as
+	 *         URIs for the specified file
 	 */
 	@WebMethod()
 	public Types identifyOneFile(String fileName) {

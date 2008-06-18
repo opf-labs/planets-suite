@@ -10,7 +10,7 @@ import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 import eu.planets_project.ifr.core.services.identification.droid.impl.FileHelper;
 
 /**
- * Helper class for testing the Droid service.
+ * Helper class for testing the Droid service
  * 
  * @author Fabian Steeg
  */
@@ -19,7 +19,7 @@ public class TestHelper {
 	 * Enum containing files to test the Droid identification with. Each entry
 	 * contains the file location and the expected results. In the tests, we
 	 * iterate over all files, identify the file at the location and compare the
-	 * received results with the expected ones.
+	 * received results with the expected ones
 	 */
 	public enum File {
 		/**
@@ -50,7 +50,7 @@ public class TestHelper {
 	 *            The Droid instance to test. Alle the files in the Files enum
 	 *            are identified using the droid instance and recieved results
 	 *            are compared to the expected results defined in the elements
-	 *            ofthe Files enum.
+	 *            ofthe Files enum
 	 */
 	public static void testAllFiles(IdentifyOneBinary droid)
 			throws FileNotFoundException, IOException, Exception {
