@@ -70,9 +70,14 @@ public class FileSystemDataManager implements DataManagerLocal {
             properties.load(ResourceFile); 
             
             // See http://wiki.jboss.org/wiki/Wiki.jsp?page=JBossProperties for more JBoss properties.
-            String localDataDir = System.getProperty("jboss.home.dir") +
-                           System.getProperty("file.separator") +
-                           properties.getProperty("JBoss.LocalDataDir");
+			if (properties.getProperty("JBoss.AltLocalDataDir")) { 
+				String localDataDir = properties.getProperty("JBoss.AltLocalDataDir");
+			}
+			else {
+				String localDataDir = System.getProperty("jboss.home.dir") +
+				System.getProperty("file.separator") +
+				properties.getProperty("JBoss.LocalDataDir");
+			}
             
             ResourceFile.close();
             
