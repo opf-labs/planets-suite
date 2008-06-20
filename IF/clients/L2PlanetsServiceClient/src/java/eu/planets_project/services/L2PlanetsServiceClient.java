@@ -51,15 +51,17 @@ public class L2PlanetsServiceClient {
 		TypePlanetsDataModel tpdm = null;
 		String xmlString = null;
 		
-		File folder = new File("C:/PLANETS/PetersDataStorage");
+		File folder = new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah");
 		List <String> uris = new ArrayList <String>();
 		File[] files = folder.listFiles();
+		System.out.println("Scanning Src-Folder...: " + folder.getAbsolutePath());
 		for (int i = 0; i < files.length; i++) {
 			if (files[i].isFile()) {
-				String currentPath = "planets://localhost:8080/dr/local/" + "PetersDataStorage/";
+				String currentPath = "planets://localhost:8080/dr/local/" + "L2JmagickConverter_INPUT/";
 				String currentName = files[i].getName();
 				String currentURIString = currentPath + currentName;
 				uris.add(i, currentURIString);
+				System.out.println("Added following URI to DataModel: " + currentURIString);
 			}
 		}
 		tpdm = creator.buildPDM(uris);
