@@ -46,6 +46,8 @@ public class TestbedManagerImpl
 	private long lTestbedManagerID;
 	private static TestbedManagerImpl instance;
 	private HashMap<Long,Experiment> hmAllExperiments;
+	//e.g. used within the serviceTemplate importer and exporter
+	private String tbVersion = "0.6";
 	
 	
 	/**
@@ -387,6 +389,10 @@ public class TestbedManagerImpl
 	public void executeExperiment(Experiment exp){
 		ExperimentInvocationHandler invoHandler = new ExperimentInvocationHandlerImpl();
 		invoHandler.executeExperiment(exp);
+	}
+	
+	public String getCurrentTBVersionNumber(){
+		return this.tbVersion;
 	}
 
 }

@@ -59,6 +59,13 @@ public interface TestbedManager {
 	 */
 	public Experiment createNewExperiment();
 	
+	/**
+	 * Returns a String of the current TB version - used e.g. by importers / exporters
+	 * as e.g. ServiceTemplateImporter to identify if the config is still valid
+	 * @return
+	 */
+	public String getCurrentTBVersionNumber();
+	
 
 	// Comment Management
 	public CommentManager getCommentManagerInstance();
@@ -72,6 +79,5 @@ public interface TestbedManager {
 	// ServiceTemplateRegistry
 	public ServiceTemplateRegistry getServiceTemplateRegistry();
 	
-	//Manages ..
 
 }

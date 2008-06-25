@@ -50,6 +50,10 @@
   <managed-bean-name>ServiceTemplateBrowser</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.backing.ServiceTemplateBrowser</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
+    <managed-property>
+   <property-name>initMode</property-name>
+   <value>0</value>
+  </managed-property>
  </managed-bean>
  <managed-bean>
   <managed-bean-name>Comment_Backing</managed-bean-name>

@@ -107,6 +107,7 @@
           <include name="eu/planets_project/tb/impl/BenchmarkGoals.xml"/>
           <include name="eu/planets_project/tb/impl/ServiceAnnotationTags.xml"/>
           <include name="eu/planets_project/tb/impl/BackendResources.properties"/>
+          <include name="eu/planets_project/tb/impl/TBServiceTemplateSchema.xsd"/>
       </fileset>
      </jar>
   </target>
@@ -226,7 +227,7 @@
   	<delete dir="${build.dir}/${appName}/WEB-INF/classes/eu/planets_project/tb/api"/>
   	<delete dir="${build.dir}/${appName}/WEB-INF/classes/eu/planets_project/tb/impl"/>
 
-    <jar jarfile="${build.dir}/${appName}.war" 
+    <jar jarfile="${build.dir}/${appName}.war"
 	 basedir="${build.dir}/${appName}"/>
 
   	<ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">

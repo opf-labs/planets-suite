@@ -6,6 +6,7 @@ package eu.planets_project.tb.gui.backing;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
 import org.apache.myfaces.custom.tree2.TreeNode;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
@@ -28,11 +29,19 @@ public class ServiceTemplateBrowser {
 	private String SelectedNode; 
 	private String currentNodeID;
 	private boolean displayWSDLContent=false;
+	
+	public static int INITMODE_DISPLAY_ALL_FROM_TEMPLATE_REGISTRY = 0;
+	public static int INITMODE_DISPLAY_SINGLE_IMPORTED_TEMPLATE = 1;
+	private int iMode =0;
  
     public ServiceTemplateBrowser() {
     	
     	treeData = new TreeNodeBase("root","Available Service Templates","IDroot",false);
-    	initTreeDataFromServiceTemplateRegistry();
+    	if(getInitMode()==INITMODE_DISPLAY_ALL_FROM_TEMPLATE_REGISTRY)
+    		initTreeDataFromServiceTemplateRegistry();
+    	
+    	if(getInitMode()==INITMODE_DISPLAY_SINGLE_IMPORTED_TEMPLATE)
+    		initTreeDataFromImportedServiceTemplate();
     }
     
     
@@ -70,13 +79,11 @@ public class ServiceTemplateBrowser {
     	return this.currentNodeID;
     }
     
-    
     /**
-     * Queries the ServiceTemplateRegistry and fills up the tree's root node
+     * Takes a set of 1..n TestbedServiceTemplates and builds the tree model
+     * for rendering them within a JSF tree2 view.
      */
-    public void initTreeDataFromServiceTemplateRegistry(){
-    	ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
-    	Collection<TestbedServiceTemplate> templates = registry.getAllServices();
+    private void initTreeData(Collection<TestbedServiceTemplate> templates){
     	if((templates!=null)&&(templates.size()>0)){
     		Iterator<TestbedServiceTemplate> itTemplates = templates.iterator();
     		//iterate over all templates
@@ -138,6 +145,20 @@ public class ServiceTemplateBrowser {
     }
     
     /**
+     * Queries the ServiceTemplateRegistry and fills up the tree's root node
+     */
+    public void initTreeDataFromServiceTemplateRegistry(){
+    	ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
+    	Collection<TestbedServiceTemplate> templates = registry.getAllServices();
+    	//now call the init to build the tree model
+    	initTreeData(templates);
+    }
+    
+    public void initTreeDataFromImportedServiceTemplate(){
+    	
+    }
+    
+    /**
      * Indicates to reload the table's source
      */
     public String reloadDataFromDB(){
@@ -159,6 +180,23 @@ public class ServiceTemplateBrowser {
     
     public boolean isWSDLContentOpen(){
     	return this.displayWSDLContent;
+    }
+    
+    /**
+     * Allows to specify different modes by using the same class for displaying
+     *  - all service templates within the registry
+     *  - preview of the imported template when using the template xml importer
+     * @param initModeType
+     */
+    public void setInitMode(int initModeType){
+    	if(initModeType==this.INITMODE_DISPLAY_ALL_FROM_TEMPLATE_REGISTRY)
+    		this.iMode = initModeType;
+    	if(initModeType==this.INITMODE_DISPLAY_SINGLE_IMPORTED_TEMPLATE)
+    		this.iMode = initModeType;
+    }
+    
+    public int getInitMode(){
+    	return this.iMode;
     }
      
 }
