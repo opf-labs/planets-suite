@@ -29,7 +29,8 @@ import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.Organizat
 import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.PsBinding;
 import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.PsCategory;
 import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.PsRegistryMessage;
-	
+import eu.planets_project.ifr.core.wdt.common.services.serviceRegistry.ServiceList;	
+
 /**
  * backing bean for service registry gui components 
  * acesses the service registry web service
@@ -92,7 +93,9 @@ public class ServiceRegistry
 			logger.error("Searching for services of category: "+dsc.getCategory());
 			
 			//-> hand over dsc
-			List<PsService> psServiceList = registry.findServices("provider", "provider", "%", dsc.getCategory()).getService();
+			ServiceList serviceList_ = registry.findServices("provider", "provider", "%", dsc.getCategory());
+			logger.debug("registry returned list:" + serviceList_);
+			List<PsService> psServiceList = serviceList_.getService();
 			
 			logger.debug("Found " + psServiceList.size() + "Services in Registry");
 			
@@ -102,7 +105,7 @@ public class ServiceRegistry
 					setServiceParams(psService, service);
 					//ignore cats: String[] categories = psService.getCategory().toArray(new String[0]);
 					List<PsBinding> psBindings = registry.findBindings("provider","provider", psService.getKey()).getBinding();
-					logger.debug("found serviceID: "+psService.getKey()+" #categories: "+psService.getCategory().size()+" #bindings"+psBindings.size());
+					logger.debug("found serviceID: "+psService.getKey()+" #categories: "+psService.getCategoryId().size()+" #bindings"+psBindings.size());
 	
 					
 					for(PsBinding psBinding : psBindings) {
@@ -198,7 +201,7 @@ public class ServiceRegistry
 			regWriter.addCategory(serviceId, regWriter.categoryIds[1]);	
 			
 			serviceId = regWriter.registerService("XenaODF2PDF@localhost", "service_dsc");
-			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "jboss.ws:context=pserv-pa-xena,endpoint=ODFToPDFXena");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://dme023:8080/pserv-pa-xena/ODFToPDFXena?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);									
 
 		} catch(Exception e) {

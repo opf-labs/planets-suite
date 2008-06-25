@@ -12,7 +12,7 @@ import javax.xml.ws.WebServiceClient;
 /**
  * JBossWS Generated Source
  * 
- * Generation Date: Thu May 22 14:03:44 CEST 2008
+ * Generation Date: Mon Jun 23 17:00:32 CEST 2008
  * 
  * This generated source code represents a derivative work of the input to
  * the generator that produced it. Consult the input for the copyright and

@@ -1,4 +1,4 @@
-	  function setSelectedMenuStyle() {
+<!--	  function setSelectedMenuStyle() {
 	    if (document.location.href.indexOf('home.xhtml') > -1)
 	        document.getElementById('home.xhtml').className = 'menu_sel';
 	    else     
@@ -28,7 +28,7 @@
 	        document.getElementById('executeWF.xhtml').className = 'menu_sel';
 	    else     
 	        document.getElementById('executeWF.xhtml').className = 'menu';                        
-	  }  
+	  }  -->
 		
 		//remove /views/ from href to ease referencing
 		//function go(link) {

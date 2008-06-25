@@ -6,8 +6,8 @@ import javax.faces.context.FacesContext;
 //import javax.faces.el.ValueBinding;
 import javax.faces.application.ViewHandler;
 import javax.faces.component.UIViewRoot;
-
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Utility class with useful methods for JSF/Web apps
@@ -57,6 +57,12 @@ public class JSFUtil
 				facesContext.renderResponse();
 			}
   }
+  
+  public static void invalidateSession() {
+  	HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		HttpSession session = request.getSession(false);
+		session.invalidate();
+	}
   
   //access to session scoped bean
   //FacesContext facesContext = FacesContext.getCurrentInstance();

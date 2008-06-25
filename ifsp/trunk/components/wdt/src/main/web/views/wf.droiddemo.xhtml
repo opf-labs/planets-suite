@@ -10,7 +10,7 @@
 <ui:composition>
 	<h:form formName="wf.form">
 
-		<h1>Characterization Workflow Template</h1>
+		<h1>Droid Identification Template</h1>
 		<br />
 		<br />
 		<h:panelGrid columns="3" align="center">
@@ -27,26 +27,9 @@
 			<t:htmlTag value="center">
 				<h:selectOneMenu id="char_service1" required="true" immediate="true"
 					onchange="submit()"
-					value="#{level1ConvertBean.currentCharServiceItem}"
-					valueChangeListener="#{level1ConvertBean.toggleCharServiceItems}">
-					<f:selectItems value="#{level1ConvertBean.charServiceItems}" />
-				</h:selectOneMenu>
-			</t:htmlTag>
-			<h:outputText value=" " />
-
-			<h:outputText value=" " />
-			<t:htmlTag value="center">
-				<h:outputText value="|" />
-			</t:htmlTag>
-			<h:outputText value=" " />
-
-			<h:outputText value=" " />
-			<t:htmlTag value="center">
-				<h:selectOneMenu id="mig_service1" required="true" immediate="true"
-					onchange="submit()"
-					value="#{level1ConvertBean.currentMigServiceItem}"
-					valueChangeListener="#{level1ConvertBean.toggleMigServiceItems}">
-					<f:selectItems value="#{level1ConvertBean.migServiceItems}" />
+					value="#{droidBean.currentCharServiceItem}"
+					valueChangeListener="#{droidBean.toggleCharServiceItems}">
+					<f:selectItems value="#{droidBean.charServiceItems}" />
 				</h:selectOneMenu>
 			</t:htmlTag>
 			<h:outputText value=" " />
@@ -61,14 +44,7 @@
 		<br />
 		<br />
 		<br />
-		<!-- relict rza; move javascript to JSF style -->
-		<script type="text/javascript">
-		<!-- 
-			var report = "#{demoSimpleConvertBean.reportLoc}";
-			if (report != "") 
-				document.write(" <a href="+report+"> Click here to check the Report </a> ");
-		-->
-		</script> 
+		<h:outputLink value="#{droidBean.reportURL}" rendered="#{droidBean.reportAvailable}">report</h:outputLink>		
 	</h:form>
 </ui:composition>
 </body>

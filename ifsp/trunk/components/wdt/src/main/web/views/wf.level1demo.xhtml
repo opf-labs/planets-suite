@@ -61,14 +61,7 @@
 		<br />
 		<br />
 		<br />
-		<!-- relict rza; move javascript to JSF style -->
-		<script type="text/javascript">
-		<!-- 
-			var report = "#{demoSimpleConvertBean.reportLoc}";
-			if (report != "") 
-				document.write(" <a href="+report+"> Click here to check the Report </a> ");
-		-->
-		</script> 
+		<h:outputLink value="#{level1ConvertBean.reportURL}" rendered="#{level1ConvertBean.reportAvailable}">report</h:outputLink>		
 	</h:form>
 </ui:composition>
 </body>

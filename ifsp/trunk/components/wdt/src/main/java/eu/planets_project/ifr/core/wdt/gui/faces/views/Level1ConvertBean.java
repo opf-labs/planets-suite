@@ -169,8 +169,20 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		}
 		logger.debug("currentMigServiceItem: " + currentMigServiceItem.getValue().toString() );
 	}
-
 	
+	public boolean isReportAvailable() {
+		if(reportLoc != null && !reportLoc.equals("")) {
+			logger.debug("report available");
+			return true;
+		}
+		logger.debug("no report available");
+		return false;
+	}
+	
+	public String getReportURL() {
+		logger.debug("returning reportURL: "+reportLoc);
+		return reportLoc;
+	}
 
 	public String invokeService() {
 				
@@ -196,7 +208,12 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 			//add the definition to data registry
 			WorkflowDefinition wfDef = new WorkflowDefinition("/wfDefs/Level1ConvertBean.def", "Rainer", /*doc*/null);
 
-	  	//already exists wfManager.createWorkflow(wfDef);
+			try {
+				//check if the template already exists in the repository
+				wfManager.createWorkflow(wfDef);
+			} catch(Exception e) {
+				logger.debug("seems that wf definition aready exists in repository");
+			}
 	  	WorkflowExecution wfExec = new WorkflowExecution(wfDef.getId(), "Rainer"); 
 	  	String workflowId = wfManager.createWorkflowInstance(wfExec);
 			logger.debug("workflowId: "+workflowId);	  	
@@ -205,16 +222,21 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 			ReportGenerationService_Service report_locator = new ReportGenerationService_Service();
 			report = report_locator.getReportGenerationServicePort();			
 			reportID = report.startReport();
+			logger.debug("reportID: "+reportID);			
 			
 			//create a characterization service
     	javax.xml.ws.Service service = javax.xml.ws.Service.create(new URL(charService.getEndpoint()), BasicIdentifyOneBinary.QNAME);
     	logger.debug("charService URL: "+charService.getEndpoint());
     	BasicIdentifyOneBinary identifier = service.getPort(BasicIdentifyOneBinary.class);
+			logger.debug("basicIdentifier: "+identifier);    	
 				
 			//create a migration service
 			//String serviceEndpoint = "http://localhost:8080/ifr-jmagickconverter-ejb/JpgToTiffConverter?wsdl";
+			logger.debug("creating service for: "+migService.getEndpoint());
 			service = javax.xml.ws.Service.create(new URL(migService.getEndpoint()), BasicMigrateOneBinary.QNAME);
+			logger.debug("mig service created: "+service);
 			BasicMigrateOneBinary converter = service.getPort(BasicMigrateOneBinary.class);
+			logger.debug("converter: "+converter);			
 			
 												
 			for (int i=0; i<inputData.size();i++) {
@@ -229,6 +251,7 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		    byte[] imageData = dataManager.retrieveBinary(new URI(pdURI));
 		    
 		    //create an event for that
+		    logger.debug("trying to invoke identifier...");
 		    URI resultType = identifier.basicIdentifyOneBinary(imageData);
 		    logger.debug("MagicIdentifier reported: "+resultType);
 		    
@@ -265,14 +288,6 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 	}
 	
 	
-	public String getReportLoc() {
-		return reportLoc;
-	}
-	
-	public void setReportLoc(String reportLoc) {
-		this.reportLoc = reportLoc;
-	}
-
 }
 
 

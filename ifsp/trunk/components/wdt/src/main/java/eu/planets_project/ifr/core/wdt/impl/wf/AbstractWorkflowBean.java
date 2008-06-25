@@ -34,12 +34,18 @@ public abstract class AbstractWorkflowBean {
     	inputData.add(pdm);    	
     }
     
+		public void resetInputData() {
+			logger.debug("trying to reset input data");    	
+			inputData = new ArrayList<String>();
+		}    
+    
     public String[] getInputData() {
     	return inputData.toArray(new String[0]);
     }
     
     protected List<SelectItem> toSelectItem(List<Service> services) {   
     	List<SelectItem> ret = new ArrayList<SelectItem>();    	
+    	logger.debug("toSelectItem services: "+services);
     	for(int i=0; i<services.size(); i++ ) {
     		Service service = services.get(i);
     		//value must be a string - that seems to be a bug

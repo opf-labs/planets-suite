@@ -18,7 +18,9 @@
 			
 		<ul class="primary">
 			<li><h:commandLink value="[ select input ]" action="fileChooser" /></li>
+			<li><h:commandLink value="[ reset input]" action="#{beanExecutor.resetInputData}" /></li>						
 			<li><h:commandLink value="[ execute workflow ]" action="#{beanExecutor.invokeService}" /></li>			
+			<li><h:commandLink value="[ reset workflow ]" action="#{beanExecutor.resetWorkflow}" /></li>						
 		</ul>																											  
 		
 		</div>		

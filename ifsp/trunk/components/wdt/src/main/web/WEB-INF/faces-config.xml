@@ -32,7 +32,7 @@
   <managed-bean>
   	<managed-bean-name>beanExecutor</managed-bean-name>
   	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.BeanExecutor</managed-bean-class>  																															
-  	<managed-bean-scope>session</managed-bean-scope>
+  	<managed-bean-scope>request</managed-bean-scope>
  	</managed-bean>
  	<!-- generic wrapper for accessing the currently loaded workflow -->  
   <managed-bean>

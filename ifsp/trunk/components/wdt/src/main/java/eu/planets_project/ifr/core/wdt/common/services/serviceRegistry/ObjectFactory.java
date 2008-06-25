@@ -27,13 +27,60 @@ public class ObjectFactory {
     private final static QName _Psservices_QNAME = new QName("http://planets-project.eu/ifr/core/registry", "psservices");
     private final static QName _JAXRException_QNAME = new QName("http://planets-project.eu/ifr/core/registry", "JAXRException");
     private final static QName _JAXRClassificationScheme_QNAME = new QName("http://planets-project.eu/ifr/core/registry", "JAXRClassificationScheme");
-    private final static QName _Psorganizations_QNAME = new QName("http://planets-project.eu/ifr/core/registry", "psorganizations");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: eu.planets_project.ifr.core.wdt.common.services.serviceRegistry
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link OrganizationList }
+     * 
+     */
+    public OrganizationList createOrganizationList() {
+        return new OrganizationList();
+    }
+
+    /**
+     * Create an instance of {@link JAXRException }
+     * 
+     */
+    public JAXRException createJAXRException() {
+        return new JAXRException();
+    }
+
+    /**
+     * Create an instance of {@link ServiceList }
+     * 
+     */
+    public ServiceList createServiceList() {
+        return new ServiceList();
+    }
+
+    /**
+     * Create an instance of {@link BindingList }
+     * 
+     */
+    public BindingList createBindingList() {
+        return new BindingList();
+    }
+
+    /**
+     * Create an instance of {@link PsCategory }
+     * 
+     */
+    public PsCategory createPsCategory() {
+        return new PsCategory();
+    }
+
+    /**
+     * Create an instance of {@link PsSchema }
+     * 
+     */
+    public PsSchema createPsSchema() {
+        return new PsSchema();
     }
 
     /**
@@ -61,59 +108,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PsSchema }
-     * 
-     */
-    public PsSchema createPsSchema() {
-        return new PsSchema();
-    }
-
-    /**
-     * Create an instance of {@link BindingList }
-     * 
-     */
-    public BindingList createBindingList() {
-        return new BindingList();
-    }
-
-    /**
      * Create an instance of {@link PsRegistryMessage }
      * 
      */
     public PsRegistryMessage createPsRegistryMessage() {
         return new PsRegistryMessage();
-    }
-
-    /**
-     * Create an instance of {@link ServiceList }
-     * 
-     */
-    public ServiceList createServiceList() {
-        return new ServiceList();
-    }
-
-    /**
-     * Create an instance of {@link JAXRException }
-     * 
-     */
-    public JAXRException createJAXRException() {
-        return new JAXRException();
-    }
-
-    /**
-     * Create an instance of {@link OrganizationList }
-     * 
-     */
-    public OrganizationList createOrganizationList() {
-        return new OrganizationList();
-    }
-
-    /**
-     * Create an instance of {@link PsCategory }
-     * 
-     */
-    public PsCategory createPsCategory() {
-        return new PsCategory();
     }
 
     /**
@@ -149,15 +148,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://planets-project.eu/ifr/core/registry", name = "JAXRClassificationScheme")
     public JAXBElement<PsSchema> createJAXRClassificationScheme(PsSchema value) {
         return new JAXBElement<PsSchema>(_JAXRClassificationScheme_QNAME, PsSchema.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link PsRegistryObject }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://planets-project.eu/ifr/core/registry", name = "psorganizations")
-    public JAXBElement<PsRegistryObject> createPsorganizations(PsRegistryObject value) {
-        return new JAXBElement<PsRegistryObject>(_Psorganizations_QNAME, PsRegistryObject.class, null, value);
     }
 
 }
