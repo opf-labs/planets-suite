@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -19,9 +18,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="category" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="categoryId" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="exceptionMessages" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="exceptionMessage" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="key" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
@@ -34,34 +33,33 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "psRegistryObject", propOrder = {
-    "category",
+    "categoryId",
     "description",
-    "exceptionMessages",
+    "exceptionMessage",
     "key",
     "name"
 })
 public class PsRegistryObject {
 
-    protected List<String> category;
+    protected List<String> categoryId;
     protected String description;
-    @XmlElement(nillable = true)
-    protected List<String> exceptionMessages;
+    protected List<String> exceptionMessage;
     protected String key;
     protected String name;
 
     /**
-     * Gets the value of the category property.
+     * Gets the value of the categoryId property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the category property.
+     * This is why there is not a <CODE>set</CODE> method for the categoryId property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getCategory().add(newItem);
+     *    getCategoryId().add(newItem);
      * </pre>
      * 
      * 
@@ -71,11 +69,11 @@ public class PsRegistryObject {
      * 
      * 
      */
-    public List<String> getCategory() {
-        if (category == null) {
-            category = new ArrayList<String>();
+    public List<String> getCategoryId() {
+        if (categoryId == null) {
+            categoryId = new ArrayList<String>();
         }
-        return this.category;
+        return this.categoryId;
     }
 
     /**
@@ -103,18 +101,18 @@ public class PsRegistryObject {
     }
 
     /**
-     * Gets the value of the exceptionMessages property.
+     * Gets the value of the exceptionMessage property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the exceptionMessages property.
+     * This is why there is not a <CODE>set</CODE> method for the exceptionMessage property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getExceptionMessages().add(newItem);
+     *    getExceptionMessage().add(newItem);
      * </pre>
      * 
      * 
@@ -124,11 +122,11 @@ public class PsRegistryObject {
      * 
      * 
      */
-    public List<String> getExceptionMessages() {
-        if (exceptionMessages == null) {
-            exceptionMessages = new ArrayList<String>();
+    public List<String> getExceptionMessage() {
+        if (exceptionMessage == null) {
+            exceptionMessage = new ArrayList<String>();
         }
-        return this.exceptionMessages;
+        return this.exceptionMessage;
     }
 
     /**

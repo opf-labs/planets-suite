@@ -24,6 +24,20 @@ import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 			return ret;
 		}
 		
+		//remove input files from bean
+		public String resetInputData() {
+			logger.debug("beanExecutor: resetInputData called");
+			if(wfBean != null) wfBean.resetInputData();			
+			return "resetInputData";
+		}
+		
+		//remove input files from bean
+		public String resetWorkflow() {
+			logger.debug("beanExecutor: resetWorkflow called");
+			JSFUtil.invalidateSession();
+			return "invalidated";
+		}
+		
 		public String getStatus() {
 			return null;
 		}

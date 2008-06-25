@@ -48,6 +48,14 @@ public class CurrentWorkflowBean implements WorkflowBean {
 	}
 	
 	/*
+	* Remove input data
+	*/	
+	public void resetInputData() {
+		WorkflowBean wfBean = getCurrentWorkflowBean();
+		wfBean.resetInputData();
+	}
+	
+	/*
 	* Inject services
 	*/
 	public void lookupServices() {
