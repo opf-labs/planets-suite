@@ -200,17 +200,26 @@ public class DroidBean extends AbstractWorkflowBean implements PlanetsService, W
 		    }
 		    	
 		    
-				//invoke the service
-		    Date d1 = new Date();
 		    //List<String> rets = droid.identifyBytes(imageData).getTypes();
-		    URI[] rets = droid.identifyOneBinary(imageData).types;
-				Date d2 = new Date();
-		    URI pronomURI = null;
-		    //todo if rets.length = 0 error
-		    for( int j=0; j<rets.length; j++) {
-		    	logger.debug("Droid reported: "+rets[j]);
-		    	pronomURI = rets[j];
+		    
+				Date d1 = new Date();
+				URI pronomURI = null;
+				//identify data
+				try {
+		    	URI[] rets = droid.identifyOneBinary(imageData).types;
+		    	//todo if rets.length = 0 error
+		    	//todo handle multiple pronom ids
+		    	for( int j=0; j<rets.length; j++) {
+		    		logger.debug("Droid reported: "+rets[j]);
+		    		pronomURI = rets[j];
+		    	}					
+				} catch(Exception e) {
+						report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
+						"<b>Status: </b><font color=#FF0000>Error could not identify data</font><br>" +
+						"</td></tr></table></fieldset>");
+		    	continue;
 		    }
+				Date d2 = new Date();
 		    
 				//create an event for this
 				InvocationEvent event = new InvocationEvent(null, new URI(charService.getEndpoint()), "identifyBytes", new URI(pdURI), pronomURI, d1, d2);      
