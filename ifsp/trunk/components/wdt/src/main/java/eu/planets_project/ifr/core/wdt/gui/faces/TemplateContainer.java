@@ -40,6 +40,9 @@ public class TemplateContainer
 	public TemplateContainer() {
 	}
 	
+	/**
+	* @retrun a list of all registered workflo templates
+	*/
 	public List<WFTemplate> getTemplates() {
 		return templates;
 	}
@@ -85,11 +88,17 @@ public class TemplateContainer
 		return "displayView";
 	}
 	
+	/**
+	* @return view page for currently selected workflow 
+	*/
 	public String getCurrentView() {
 		if(currentTemplate == null) return null;
 		return currentTemplate.getView();
 	}
 	
+	/**
+	* @return for currently selected workflow template
+	*/	
 	public WFTemplate getCurrentTemplate() {
 		return currentTemplate;
 	}

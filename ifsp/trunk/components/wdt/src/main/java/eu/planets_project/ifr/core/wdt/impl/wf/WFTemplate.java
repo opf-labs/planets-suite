@@ -1,6 +1,6 @@
 package eu.planets_project.ifr.core.wdt.impl.wf;
 
-/**
+ /**
 	* This class represents a workflow template configuration 
 	* @author Rainer Schmidt
 	*/
@@ -16,6 +16,11 @@ package eu.planets_project.ifr.core.wdt.impl.wf;
 		public WFTemplate() {
 		}
 		
+		/**
+		* @param template name
+		* @param view page, typically xhtml
+		* @param the template's backing bean
+		*/
 		public WFTemplate(String name, String view, String bean) {
 			this.name = name;
 			this.view = view;
