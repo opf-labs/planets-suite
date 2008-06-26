@@ -21,7 +21,7 @@ public class CurrentWorkflowBean implements WorkflowBean {
 	}
 
 	/*
-	* returns the currently selected workflowBean implementation
+	* @return the currently selected workflowBean implementation
 	*/
 	protected WorkflowBean getCurrentWorkflowBean() {
 		TemplateContainer templateContainer = (TemplateContainer) JSFUtil.getManagedObject("templateContainer");
@@ -31,7 +31,7 @@ public class CurrentWorkflowBean implements WorkflowBean {
 	}
 	
 	/*
-	* returns true if a workflowBean is selected
+	* @return true if a workflowBean is selected
 	*/
 	public boolean isWorkflowBeanSelected() {
 		TemplateContainer templateContainer = (TemplateContainer) JSFUtil.getManagedObject("templateContainer");

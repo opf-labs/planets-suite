@@ -57,8 +57,8 @@ public class DemoCharacterizationWorkflowBean extends AbstractWorkflowBean imple
 		
 		this.resetServices();
 		//registry lookup...
-		charServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, null, "char", null))) );
-		migServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, null, "mig", null))) );
+		charServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, null, "uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/characterisation",null))) );
+		migServices.addAll( (Collection)toSelectItem(registry.lookupServices(new Service(null, null, null, null, "uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/migration",null))) );		
 	}
 	
 	/**

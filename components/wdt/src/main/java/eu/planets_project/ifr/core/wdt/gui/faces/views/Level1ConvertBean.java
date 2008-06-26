@@ -7,6 +7,7 @@ import java.util.Properties;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.StringTokenizer;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URI;
@@ -71,14 +72,16 @@ import java.io.PrintWriter;
 import java.net.URL; 
 	
 /**
- *    characterization workflow bean 
- *    demonstrates a workflow comprising a characterization followed by a migration
+ *    characterization workflow bean <br>
+ *    demonstrates a workflow comprising a characterization followed by a migration based on level 1 services
  * 	  @author Rainer Schmidt, ARC
  */
 public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsService, WorkflowBean {
-		
+			
 	private Log logger = PlanetsLogger.getLogger(this.getClass(), "resources/log/wdt-log4j.xml");	
-	
+
+	private static String OUTPUT_DIR = "migrated_files";
+		
 	private String viewId = null;
 	
 	//backing for drop down box
@@ -129,16 +132,25 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		migServiceItems.add( new SelectItem("please choose a service") );
 		currentMigServiceItem = migServiceItems.get(0);		
 	}
-		
+
+	/**
+	* @return list of select box workflow items
+	*/		
 	public List<SelectItem> getCharServiceItems() {
 		return charServiceItems;
 	}
 	
+	/**
+	* @return value of currently selected workflow item
+	*/			
 	public String getCurrentCharServiceItem() {
 		String service = (String) currentCharServiceItem.getValue();
 		return service;
 	}	
 	
+	/**
+	* move selected characterization service on top of the item list
+	*/				
 	public void toggleCharServiceItems(ValueChangeEvent vce) {
 		String selectedService = (String) vce.getNewValue();
 		//point currentCharService to new selection
@@ -151,16 +163,25 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 	//public void setMigServies(List services) {
 	//	this.migServices = services;
 	//}
-		
+	
+	/**
+	* @return get list of migration service items
+	*/	
 	public List<SelectItem> getMigServiceItems() {
 		return migServiceItems;
 	}
 	
+	/**
+	* @return get current migration service item
+	*/
 	public String getCurrentMigServiceItem() {
 		String service = (String) currentMigServiceItem.getValue();
 		return service;
 	}	
 	
+	/**
+	* move selected migration service on top of the item list
+	*/			
 	public void toggleMigServiceItems(ValueChangeEvent vce) {
 		String selectedService = (String) vce.getNewValue();
 		//point currentCharService to new selection
@@ -170,6 +191,9 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		logger.debug("currentMigServiceItem: " + currentMigServiceItem.getValue().toString() );
 	}
 	
+	/**
+	* @return boolean is true if there is a report available
+	*/
 	public boolean isReportAvailable() {
 		if(reportLoc != null && !reportLoc.equals("")) {
 			logger.debug("report available");
@@ -179,11 +203,17 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		return false;
 	}
 	
+	/**
+	* @return execution report
+	*/
 	public String getReportURL() {
 		logger.debug("returning reportURL: "+reportLoc);
 		return reportLoc;
 	}
 
+	/**
+	* implements the workflow template exectution method
+	*/
 	public String invokeService() {
 				
 		ReportGenerationService report = null;
@@ -248,23 +278,70 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 								
 				//logger.debug("isFile: "+srcFile.isFile());
 		    //byte[] imageData = getByteArrayFromFile(srcFile);
-		    byte[] imageData = dataManager.retrieveBinary(new URI(pdURI));
 		    
-		    //create an event for that
-		    logger.debug("trying to invoke identifier...");
-		    URI resultType = identifier.basicIdentifyOneBinary(imageData);
+				byte[] imageData = null;
+
+				//retrieve binary data								
+				try {								
+					logger.debug("retrieving data for: "+pdURI);
+		    	imageData = dataManager.retrieveBinary(new URI(pdURI));
+		    } catch(Exception e) {
+					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
+						"<b>Status: </b><font color=#FF0000>Error could not retrieve binary data</font><br>" +
+						"<b>Caused by:</b>"+e.getMessage()+
+						"</td></tr></table></fieldset>");
+		    	continue;
+		    }
+
+				//identify file		    		    
+		    URI resultType = null;
+				try {								
+			    resultType = identifier.basicIdentifyOneBinary(imageData);
+		    } catch(Exception e) {
+					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
+						"<b>Status: </b><font color=#FF0000>Error could identify file</font><br>" +
+						"<b>Caused by:</b>"+e.getMessage()+
+						"</td></tr></table></fieldset>");
+		    	continue;
+		    }		    		    
 		    logger.debug("MagicIdentifier reported: "+resultType);
 		    
+		    //migrate file
 		    Date d1 = new Date();
-				byte[] out = converter.basicMigrateOneBinary(imageData);
+		    byte[] out = null;
+		    
+				try {								
+				 	out = converter.basicMigrateOneBinary(imageData);
+		    } catch(Exception e) {
+					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
+						"<b>Status: </b><font color=#FF0000>Error could migrate file</font><br>" +
+						"<b>Caused by:</b>"+e.getMessage()+
+						"</td></tr></table></fieldset>");
+		    	continue;
+		    }		    
 		    Date d2 = new Date();
-		    			
-	      URI[] list = dataManager.list(null);
-	      URI resultFile = new URI(pdURI+workflowId+"/outfile.tiff");
-	      dataManager.storeBinary(resultFile, out);
+
+				//create output uri
+	      //URI resultFile = new URI(pdURI+workflowId+"/outfile.tiff");		    			
+	      URI[] list = dataManager.list(null);	      
+	      String fileName = null;
+	      StringTokenizer st = new StringTokenizer(pdURI);
+     		while (st.hasMoreTokens()) { fileName = st.nextToken("/");}
+     		URI resultPath = new URI(list[0]+"/"+OUTPUT_DIR+"/"+fileName+"/"+workflowId+"/outfile");
+	      logger.debug("resultPath: "+resultPath);
+	      
+	      //store output file
+	      try {
+	      	dataManager.storeBinary(resultPath, out);
+	      } catch(Exception e) {
+						report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
+						"<b>Status: </b><font color=#FF0000>Error storing result file</font><br>" +
+						"<b>Location: </b><font color=#FF0000>"+resultPath+"</font><br>" +						
+						"<b>Caused by:</b>"+e.getMessage()+
+						"</td></tr></table></fieldset>");
+	      }
 	
-				//link uri with gui
-				InvocationEvent event = new InvocationEvent(null, new URI(charService.getEndpoint()), "basicMigrateBinary", new URI(pdURI), resultFile, d1, d2);      
+				InvocationEvent event = new InvocationEvent(null, new URI(charService.getEndpoint()), "basicMigrateBinary", new URI(pdURI), resultPath, d1, d2);      
 				
 				String ret = wfManager.createInvocationEvent(event, workflowId);
 				logger.debug("wfMan.createIEvent: "+ret);
@@ -274,7 +351,7 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 				report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i>"+pdURI+"</i></legend><table><tr><td>"+
 				"<b>File Format Information:</b>"+resultType+"<br>" +
 				"<b>Conversion Status: </b><font color=#00CC00>File successfuly converted</font> <br>" +
-				"<b>Converted File URI:</b><a href="+"\""+resultFile+"\""+" target=_blank>"+resultFile+"</a>" +
+				"<b>Converted File URI:</b><a href="+"\""+resultPath+"\""+" target=_blank>"+resultPath+"</a>" +
 				"</td></tr></table></fieldset>");
 			}
 		

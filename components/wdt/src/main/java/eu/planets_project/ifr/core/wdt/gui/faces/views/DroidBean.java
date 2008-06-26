@@ -90,7 +90,7 @@ public class DroidBean extends AbstractWorkflowBean implements PlanetsService, W
 		
 		this.resetServices();
 		//registry lookup...
-		charServices = registry.lookupServices(new Service(null, null, null, null, "uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/characterisation",null));
+		charServices = registry.lookupServices(new Service(null, null, null, null, "uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/identification",null));
 		charServiceItems.addAll( (Collection)toSelectItem(charServices) );
 	}
 	
@@ -186,8 +186,19 @@ public class DroidBean extends AbstractWorkflowBean implements PlanetsService, W
 			for (int i=0; i<inputData.size();i++) {
 				
 				String pdURI = inputData.get(i);
+				byte[] imageData = null;
 								
-		    byte[] imageData = dataManager.retrieveBinary(new URI(pdURI));
+				try {								
+					logger.debug("retrieving data for: "+pdURI);
+		    	imageData = dataManager.retrieveBinary(new URI(pdURI));
+		    } catch(Exception e) {
+					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
+						"<b>Status: </b><font color=#FF0000>Error could not retrieve binary data</font><br>" +
+						"<b>Caused by:</b>"+e.getMessage()+
+						"</td></tr></table></fieldset>");
+		    	continue;
+		    }
+		    	
 		    
 				//invoke the service
 		    Date d1 = new Date();
