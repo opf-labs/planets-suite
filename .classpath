@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="IF/|PC/droid/|PC/|PA/xena/|PA/|PC/droid/src/java/|PC/droid/src/java/|PC/droid/test/java/|PC/droid/test/java/" kind="src" path=""/>
+	<classpathentry excluding="IF/|PC/droid/|PC/|PA/xena/|PA/|PC/droid/src/java/|PC/droid/src/java/|PC/droid/test/java/|PC/droid/test/java/|PP/|PP/comparator/test/java/|PP/comparator/test/java/|PP/comparator/src/java/|PP/comparator/src/java/" kind="src" path=""/>
 	<classpathentry kind="src" path="PC/droid/src/java"/>
 	<classpathentry kind="src" path="PC/droid/test/java"/>
+	<classpathentry kind="src" path="PP/comparator/test/java"/>
+	<classpathentry kind="src" path="PP/comparator/src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar"/>
 	<classpathentry kind="lib" path="/if_sp/lib/build/junit-4.4.jar"/>
@@ -130,7 +132,6 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/log4j-snmp-appender.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/mail.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/mail-plugin.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/planets-ifr-common.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/properties-plugin.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/quartz-all-1.5.2.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/richfaces-api-3.1.4.GA.jar"/>
@@ -142,5 +143,6 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/xmlentitymgr.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxb-api.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="/if_sp/components/common/build/planets-ifr-common.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
