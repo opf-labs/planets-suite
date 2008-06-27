@@ -43,8 +43,6 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/client/juddisaaj.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/client/logkit.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/client/trove.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/jaxb-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/jbossws-core.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/jbossws-jboss40-integration.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/policy.jar"/>
@@ -142,5 +140,7 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/scheduler-plugin-example.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/scout-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/xmlentitymgr.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxb-impl.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
