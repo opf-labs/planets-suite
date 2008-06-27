@@ -12,6 +12,7 @@
   <target name="deploy:all">
     <ant dir="PA/xena" inheritAll="false"/>
     <ant dir="PC/droid" inheritAll="false"/>
+  	<ant dir="PP/comparator" inheritAll="false"/>
     <!--
   	  -->
   </target>
