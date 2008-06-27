@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.ejb.Local;
@@ -66,6 +67,7 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 			+ "/" + BasicCompareTwoXCDLStrings.NAME, partName = BasicCompareTwoXCDLStrings.NAME
 			+ "Result")
 	public String basicCompareTwoXCDLStrings(String xcdl1, String xcdl2) {
+
 		/* Create temp files for the XCDLs to be compared: */
 		String tempFile1 = tempFile("XCDL1");
 		String tempFile2 = tempFile("XCDL2");
@@ -73,8 +75,10 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 		save(tempFile1, xcdl1);
 		save(tempFile2, xcdl2);
 		/* Compare the temp files: */
-		ProcessRunner pr = new ProcessRunner(Arrays.asList(COMPARATOR,
-				tempFile1, tempFile2));
+		List<String> commands = Arrays.asList(COMPARATOR, tempFile1, tempFile2);
+		ProcessRunner pr = new ProcessRunner(commands);
+		pr.setStartingDir(new File(WORKING_DIR));
+		log.info("Executing: " + commands);
 		pr.run();
 		/* Print some debugging info on the call: */
 		log.info("Comparator call output: " + pr.getProcessOutputAsString());
