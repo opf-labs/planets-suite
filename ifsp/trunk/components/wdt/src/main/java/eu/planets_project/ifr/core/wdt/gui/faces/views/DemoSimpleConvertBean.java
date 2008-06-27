@@ -166,11 +166,11 @@ public class DemoSimpleConvertBean extends AbstractWorkflowBean implements Plane
 			if(migService.getName().compareToIgnoreCase(TIFF2JPEG) > -1)	{		
 				Tiff2JpegActionService tiff2jpeg_locator =
 				  new Tiff2JpegActionService(new URL(migService.getEndpoint()),migService.getQName() );
-			  pa = new Tiff2JpegPlanetsService(tiff2jpeg_locator.getTiff2JpegActionPort());
+			  pa = (PlanetsService) new Tiff2JpegPlanetsService(tiff2jpeg_locator.getTiff2JpegActionPort());
 			} else if(migService.getName().compareToIgnoreCase(DOC2OPENXML) > -1) {
 				OpenXMLMigration_Service openxml_locator = 
 				  new OpenXMLMigration_Service(new URL(migService.getEndpoint()),migService.getQName() );
-			  pa = new OpenXMLPlanetsService(openxml_locator.getOpenXMLMigrationPort());
+			  pa = (PlanetsService) new OpenXMLPlanetsService(openxml_locator.getOpenXMLMigrationPort());
 			} else {
 				throw new PlanetsException("WDT: Unable to find a service locator for service: "+migService.getName());
 			}
