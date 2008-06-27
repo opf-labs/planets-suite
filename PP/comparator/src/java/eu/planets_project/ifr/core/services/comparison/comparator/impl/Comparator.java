@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.identification.droid.impl;
+package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -93,10 +93,9 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	 * actual data. Calls the actual comparison method above.
 	 */
 	@WebMethod()
-	public String basicCompareTwoXCDLFiles(String folder, String xcdl1Name,
-			String xcdl2Name) {
-		String content1 = read(folder + xcdl1Name);
-		String content2 = read(folder + xcdl2Name);
+	public String basicCompareTwoXCDLFiles(String xcdl1Name, String xcdl2Name) {
+		String content1 = read(xcdl1Name);
+		String content2 = read(xcdl2Name);
 		return basicCompareTwoXCDLStrings(content1, content2);
 	}
 

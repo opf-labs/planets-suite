@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.identification;
+package eu.planets_project.ifr.core.services.comparison.comparator;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXCDLStrings;
-import eu.planets_project.ifr.core.services.identification.droid.impl.Comparator;
+import eu.planets_project.ifr.core.services.comparison.comparator.impl.Comparator;
 
 /**
  * Local and client tests of the Comparator functionality
