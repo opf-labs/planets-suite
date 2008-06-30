@@ -140,7 +140,6 @@
    <!-- register_TBServices -->
    <from-action>#{Manager_Backing.initRegisterTBService}</from-action>
    <to-view-id>/admin/SerRegWizard/register_TBService_step1.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
   <!-- render_TBServices -->
@@ -201,6 +200,10 @@
   <navigation-case>
    <from-outcome>viewExperimentReport</from-outcome>
    <to-view-id>/reader/view_exp.xhtml</to-view-id>
+  </navigation-case>  
+  <navigation-case>
+   <from-outcome>viewExperimentExeManager</from-outcome>
+   <to-view-id>/admin/manage_exp.xhtml</to-view-id>
   </navigation-case>  
   <navigation-case>
    <from-outcome>addComment</from-outcome>

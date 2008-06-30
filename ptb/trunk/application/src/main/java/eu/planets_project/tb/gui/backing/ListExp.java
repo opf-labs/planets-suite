@@ -7,17 +7,17 @@ import java.util.List;
 
 import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.gui.UserBean;
-import eu.planets_project.tb.gui.backing.exp.NewExpWizardController;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 
 import java.util.Collection;
 
@@ -29,10 +29,13 @@ public class ListExp extends SortableList {
 	private Collection<Experiment> myExps = new ArrayList<Experiment>();
 	private Collection<Experiment> allExps = new ArrayList<Experiment>();
 	private List<Experiment> currExps;
-	private String column = "name";
-	private boolean ascending = true;
-	private UIData myExp_data = null;
-	private UIData allExp_data = null;	
+	private static final String DEFAULT_COLUMN = "startDate";
+	private String column = DEFAULT_COLUMN;
+	private boolean ascending = false;
+    private UIData myExp_data = null;
+    private UIData allExp_data = null;
+    private UIData toAppExp_data = null;
+    private UIData toExecExp_data = null;
 	// Value to hold link ids.
 	private String linkEid = null;
 	// Value to hold the search string:
@@ -40,7 +43,8 @@ public class ListExp extends SortableList {
 
 	public ListExp()
 	{
-		super("name");
+		super(DEFAULT_COLUMN);
+		
         myExps = this.getExperimentsOfUser();
         allExps = this.getAllExperiments();
 
@@ -115,6 +119,25 @@ public class ListExp extends SortableList {
           sort(getSort(), isAscending());
           return currExps;
       }
+    
+    public Collection<Experiment> getAllExpAwaitingAuth()
+    {    
+        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+        myExps = testbedMan.getAllExperimentsAtPhase(ExperimentPhase.PHASE_EXPERIMENTAPPROVAL);
+        currExps = Collections.list(Collections.enumeration(myExps));
+        sort(getSort(), isAscending());
+        return currExps;
+    }
+    
+    public Collection<Experiment> getAllExpApproved()
+    {    
+        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+        allExps = testbedMan.getAllExperimentsAtPhase(ExperimentPhase.PHASE_EXPERIMENTEXECUTION);
+        currExps = Collections.list(Collections.enumeration(allExps));
+        sort(getSort(), isAscending());
+        return currExps;
+    }
+              
                 
       public int getNumAllExperiments()
       {
@@ -132,6 +155,7 @@ public class ListExp extends SortableList {
 
 		protected boolean isDefaultAscending(String sortColumn)
 		{
+		    if( "startDate".equals(sortColumn)) return false;
 			return true;
 		}
 		
@@ -165,8 +189,12 @@ public class ListExp extends SortableList {
 				}
                                 if (column.equals("startDate"))
 				{
-					String c1_startDate = c1.getCurrentPhase().getStartDate().toString();
-					String c2_startDate = c2.getCurrentPhase().getStartDate().toString();
+					String c1_startDate = null;
+                    if( c1.getCurrentPhase() != null && c1.getCurrentPhase().getStartDate() != null )
+                        c1_startDate = c1.getCurrentPhase().getStartDate().toString();
+					String c2_startDate = null;
+                    if( c2.getCurrentPhase() != null && c2.getCurrentPhase().getStartDate() != null )
+                        c2_startDate = c2.getCurrentPhase().getStartDate().toString();
 					if (c1_startDate==null) c1_startDate="";
 					if (c2_startDate==null) c2_startDate="";
 					return ascending ? c1_startDate.compareTo(c2_startDate) : c2_startDate.compareTo(c1_startDate);
@@ -222,22 +250,67 @@ public class ListExp extends SortableList {
 	      return "editExp";
 	    }
 	    
-	    public String readerExperimentAction()
-	    {
-	    
-	      Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
-	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
-	      FacesContext ctx = FacesContext.getCurrentInstance();
 
-	      ExperimentBean expBean = new ExperimentBean();
-	      expBean.fill(selectedExperiment);
+        public String viewExperimentToApprove()
+        {
+        
+          Experiment selectedExperiment = (Experiment) this.getToAppExp_data().getRowData();
+          FacesContext ctx = FacesContext.getCurrentInstance();
 
-	      //Store selected Experiment Row accessible later as #{Experiment} 
-	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
-	              
-	      // go to edit page
-	      return "viewExp";
-	    }
+          ExperimentBean expBean = new ExperimentBean();
+          expBean.fill(selectedExperiment);
+
+          //Store selected Experiment Row accessible later as #{Experiment} 
+          ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+                  
+          // go to edit page
+          return "viewExperimentExeManager";
+        }
+        
+        public String viewExperimentToExecute()
+        {
+        
+          Experiment selectedExperiment = (Experiment) this.getToExecExp_data().getRowData();
+          FacesContext ctx = FacesContext.getCurrentInstance();
+
+          ExperimentBean expBean = new ExperimentBean();
+          expBean.fill(selectedExperiment);
+
+          //Store selected Experiment Row accessible later as #{Experiment} 
+          ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+                  
+          // go to edit page
+          return "viewExperimentExeManager";
+        }
+        
+        public String adminApproveExperiment() {
+            ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+            AdminManagerImpl.approveExperimentManually(expBean.getExperiment());
+            return "viewExperimentExeManager";
+        }
+        
+        public String adminDenyExperiment() {
+            ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+            AdminManagerImpl.denyExperimentManually(expBean.getExperiment());
+            return "viewExperimentExeManager";
+        }
+        
+        public String readerExperimentAction()
+        {
+        
+          Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
+          System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
+          FacesContext ctx = FacesContext.getCurrentInstance();
+
+          ExperimentBean expBean = new ExperimentBean();
+          expBean.fill(selectedExperiment);
+
+          //Store selected Experiment Row accessible later as #{Experiment} 
+          ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+                  
+          // go to edit page
+          return "viewExp";
+        }
 	    
         public String readerExperimentLinkAction() {
             
@@ -286,6 +359,16 @@ public class ListExp extends SortableList {
             //go to page for confirming deletion
             return "selectDelete";
         }
+        
+        public String approveExperiment() {
+            Experiment exp = (Experiment) this.getToAppExp_data().getRowData();
+            TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+            exp.getExperimentApproval().setState(Experiment.STATE_COMPLETED);
+            exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
+            testbedMan.updateExperiment(exp);
+            return "success";
+        }
+        
 	    
         public String deleteExperimentAction()
 	    {
@@ -329,6 +412,36 @@ public class ListExp extends SortableList {
 	    {
 	      return allExp_data;
 	    }
+	    
+	    
+
+        /**
+         * @return the toAppExp_data
+         */
+        public UIData getToAppExp_data() {
+            return toAppExp_data;
+        }
+
+        /**
+         * @param toAppExp_data the toAppExp_data to set
+         */
+        public void setToAppExp_data(UIData toAppExp_data) {
+            this.toAppExp_data = toAppExp_data;
+        }
+
+        /**
+         * @return the toExecExp_data
+         */
+        public UIData getToExecExp_data() {
+            return toExecExp_data;
+        }
+
+        /**
+         * @param toExecExp_data the toExecExp_data to set
+         */
+        public void setToExecExp_data(UIData toExecExp_data) {
+            this.toExecExp_data = toExecExp_data;
+        }
 
         /**
          * @return the linkEid

@@ -25,6 +25,7 @@ public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     private String dateModified;
     private boolean selected;
     private boolean selectable;
+    private boolean expanded = false;
     
     /**
      * Constructor based on Digital Object:
@@ -105,5 +106,51 @@ public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
+
+    /**
+     * @return the expanded
+     */
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    /**
+     * @param expanded the expanded to set
+     */
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((dob == null) ? 0 : dob.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final FileTreeNode other = (FileTreeNode) obj;
+        if (dob == null) {
+            if (other.dob != null)
+                return false;
+        } else if (!dob.equals(other.dob))
+            return false;
+        return true;
+    }
  
+    
 }

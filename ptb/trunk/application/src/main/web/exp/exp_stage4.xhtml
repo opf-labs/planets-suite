@@ -25,16 +25,19 @@
 <h:form>
     <h:panelGroup rendered="#{ExperimentBean.currentStage le 4}">
 <p><b>Your experiment has been submitted for approval and execution.</b></p>
-<p>Your experiment will either be automatically approved or checked by the Testbed administrator, depending on the intensity of your experiment and the size of the experiment dataset.</p>
+<p>Your experiment will checked by the Testbed administrator, depending on the intensity of your experiment and the size of the experiment dataset.</p>
 <p>If your experiment requires manual approval the Testbed administrator may approve your experiment for immediate execution, schedule your experiment for execution at a later time or request that you make changes to your experiment before it is executed.  If changes are requested the administrator will notify you and control of the experiment will be returned to you.</p>
 <hr />
-				<fieldset>
-					<legend>#{res['exp_stage4.legend']}</legend>
-                                        <p>
-						<h:commandButton value="#{res['exp_stage4.button']}"
-						action="#{NewExp_Controller.approveExperiment}" />
-					</p>
-				</fieldset>
+
+<p>
+<h:outputText value="#{res['approve_exp.awaitApproval']}" rendered="#{ExperimentBean.experiment.experimentApproval.decision == null }"/><br/>
+<h:outputText value="#{res['approve_exp.explanation']}" /><br/>
+<h:outputText value="#{ExperimentBean.experiment.experimentApproval.explanation}" /><br/>
+<h:outputText value="#{ExperimentBean.experiment.experimentApproval.go}" /><br/>
+<h:outputText value="#{ExperimentBean.experiment.experimentApproval.go}" /><br/>
+<h:outputText value="#{ExperimentBean.experiment.experimentApproval.approvalUsersIDs}" /><br/>
+</p>
+
     </h:panelGroup>
  </h:form>
     
@@ -44,8 +47,19 @@
 <p>
 Please proceed to the next stage:<br/>
  <h:commandButton value="#{res['new_exp.stage5']}"
-                        action="#{NewExp_Controller.approveExperiment}"  disabled="#{ExperimentBean.approved}"/>
+                        action="goToStage5"/>
 </p>
+
+<p>
+<h:outputText value="#{res['approve_exp.awaitApproval']}" rendered="#{ExperimentBean.experiment.experimentApproval.decision == null }"/><br/>
+<h:outputText value="#{res['approve_exp.explanation']}" /><br/>
+<h:outputText value="#{ExperimentBean.experiment.experimentApproval.explanation}" /><br/>
+<h:outputText value="#{ExperimentBean.experiment.experimentApproval.go}" /><br/>
+<h:outputText value="#{ExperimentBean.experiment.experimentApproval.go}" /><br/>
+<h:outputText value="#{ExperimentBean.experiment.experimentApproval.approvalUsersIDs}" /><br/>
+</p>
+
+
     </h:panelGroup>
 </h:form>
 		<p>&#160;</p>

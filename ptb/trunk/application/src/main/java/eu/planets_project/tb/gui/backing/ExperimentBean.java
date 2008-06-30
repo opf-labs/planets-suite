@@ -156,7 +156,8 @@ public class ExperimentBean {
         log.debug("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName());
         log.debug("Experiment Phase Name = " + exp.getPhaseName());
         log.debug("Experiment Current Phase " + exp.getCurrentPhase());
-        log.debug("Experiment Current Phase Stage is " + exp.getCurrentPhase().getState());
+        if( exp.getCurrentPhase() != null )
+            log.debug("Experiment Current Phase Stage is " + exp.getCurrentPhase().getState());
 
         this.exp = exp; 
     	ExperimentSetup expsetup = exp.getExperimentSetup();
@@ -382,6 +383,14 @@ public class ExperimentBean {
     	  return template.getServiceOperation(this.getSelectedServiceOperationName());
       } 
       return null;
+    }
+
+    /**
+     * Get a copy of the experiment underneath this bean.
+     * @return The Experiment this Bean wraps.
+     */
+    public Experiment getExperiment() {
+        return exp;
     }
     
     /**

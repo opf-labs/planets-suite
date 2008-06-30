@@ -2,6 +2,7 @@ package eu.planets_project.tb.gui.backing.exp;
 
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -255,9 +256,14 @@ public class NewExpWizardController {
             testbedMan.updateExperiment(exp);
             expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTAPPROVAL);  
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("BenchmarkBeans"); 
-            // TODO The next line automatically submits and approves the request.  Should be temporary.
-            return approveExperiment();
-    		//return "goToStage4";
+            // Attempt to approve the experiment, and forward appropriately
+            if( ! AdminManagerImpl.experimentRequiresApproval(exp) ) {
+                autoApproveExperiment();
+                return "goToStage5";
+            }
+            // Otherwise, await approval:
+            AdminManagerImpl.requestExperimentApproval(exp);
+    		return "goToStage4";
     	} else
     		return null;    	
     }
@@ -796,8 +802,7 @@ public class NewExpWizardController {
 				//use the deployment date to extend the service name for selection
 				String format = "yyyy-MM-dd HH:mm:ss";
 				String date = doFormat(format, template.getDeploymentDate());
-				ret.put(template.getName()+" - "+date,String.valueOf(template.getUUID()));
-				
+				ret.put(template.getName()+" - "+date+" - "+template.getDescription(),String.valueOf(template.getUUID()));
 			}
 			
 			//only triggered for the first time
@@ -911,16 +916,18 @@ public class NewExpWizardController {
     }
     
        
-    public String approveExperiment(){
+    private void autoApproveExperiment(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = testbedMan.getExperiment(expBean.getID());
-    	exp.getExperimentApproval().setState(Experiment.STATE_COMPLETED);
-    	exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
+    	
+    	// Approve the experiment, automatically:
+    	AdminManagerImpl.approveExperimentAutomatically(exp);
+
+    	// Update the Experiment Bean:
         testbedMan.updateExperiment(exp);
-        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);        
+        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);
         expBean.setApproved(true);
-        return "goToStage5";
     }
     
     

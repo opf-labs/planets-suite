@@ -56,10 +56,12 @@
 	            <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
         </t:column>
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.startDate']}</f:facet>
-            <h:outputText value="#{exp.startDate.time}">
-	            <f:convertDateTime type="both" dateStyle="long" timeZone="TimeZone.getTimeZone('GMT+1').getID()"/>
-            </h:outputText>
+            <f:facet name="header">
+              <t:commandSortHeader id="sortHeader_startDate" columnName="startDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
+                  #{res['expList.colHeader.startDate']}
+          </t:commandSortHeader>
+            </f:facet>            
+            <h:outputText value="#{exp.startDate.time}" />
         </t:column>
         <t:column>
             <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>

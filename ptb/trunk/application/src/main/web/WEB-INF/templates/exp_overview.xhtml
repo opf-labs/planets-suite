@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+  <ui:composition rendered="#{ExperimentBean != null}">
+
+                <!--  Stage 1  -->
+<h2 class="main">#{res['exp_stage1.pageTitle']}</h2>
+    <h:form>
+            <fieldset><legend>#{res['new_exp.legendGeneral']}</legend>
+
+            <p><h:outputText value="#{res['new_exp.expName']}"
+                styleClass="readerLabel" /> #{ExperimentBean.ename}</p>
+            <div class="clear"></div>
+            <p><h:outputText value="#{res['new_exp.expSummary']}"
+                styleClass="readerLabel" /> #{ExperimentBean.esummary}</p>
+            <div class="clear"></div>
+
+            <p><h:outputText value="#{res['new_exp.expPurpose']}"
+                styleClass="readerLabel" /> #{ExperimentBean.epurpose}</p>
+            <div class="clear"></div>
+            <p><h:outputText value="#{res['new_exp.expFocus']}"
+                styleClass="readerLabel" /> #{ExperimentBean.efocus}</p>
+            <div class="clear"></div>
+            <p><h:outputText value="#{res['new_exp.expParticipants']}"
+                styleClass="readerLabel" /> #{ExperimentBean.eparticipants}</p>
+            <div class="clear"></div>
+            </fieldset>
+            <fieldset><legend>#{res['new_exp.legendContact']}</legend>
+            <p><h:outputText value="#{res['new_exp.expContactName']}"
+                styleClass="readerLabel" /> #{ExperimentBean.econtactname}</p>
+            <div class="clear"></div>
+
+            <p><h:outputText value="#{res['new_exp.expContactEmail']}"
+                styleClass="readerLabel" /> #{ExperimentBean.econtactemail}</p>
+            <div class="clear"></div>
+
+            <p><h:outputText value="#{res['new_exp.expContactTel']}"
+                styleClass="readerLabel" /> #{ExperimentBean.econtacttel}</p>
+            <div class="clear"></div>
+
+            <p><h:outputText value="#{res['new_exp.expContactAddress']}"
+                styleClass="readerLabel" /> #{ExperimentBean.econtactaddress}</p>
+            <div class="clear"></div>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>#{res['new_exp.legendReferences']}</legend>
+                <p>
+                    <h:outputText value="#{res['new_exp.expID']}" styleClass="readerLabel" /> 
+                    #{ExperimentBean.exid}
+                </p>
+                <div class="clear"></div>
+                <p>
+                  <h:outputText value="#{res['new_exp.litRef']}" styleClass="readerLabel" />
+                  <t:dataList var="refurl" value="#{ExperimentBean.litRefURI}" rowIndexVar="rowi">
+                    <a href="#{ExperimentBean.litRefURI[rowi]}"><h:outputText value="#{ExperimentBean.litRefDesc[rowi]}"/></a><br/>
+                  </t:dataList>
+                </p>
+                <div class="clear"></div>
+                <p>
+                  <h:outputText value="#{res['new_exp.expIdeas']}" styleClass="readerLabel" />
+                    <t:dataList var="exp" value="#{ExperimentBean.erefBeans}" rowIndexVar="rowi">
+                        <h:commandLink action="#{ListExp_Backing.readerExperimentLinkAction}" immediate="true">
+                           <f:param name="linkEid" value="#{exp.entityID}"/>
+                           <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+                        </h:commandLink>
+                        <br/>
+                    </t:dataList>
+                </p>
+                <div class="clear"></div>
+            </fieldset>
+
+            <fieldset><legend>#{res['new_exp.legendScope']}</legend>
+            <p><h:outputText value="#{res['new_exp.expScope']}"
+                styleClass="readerLabel" /> #{ExperimentBean.escope}</p>
+            <div class="clear"></div>
+            </fieldset>
+
+            <fieldset><legend>#{res['new_exp.legendConsiderations']}</legend>
+
+
+            <p><h:outputText value="#{res['new_exp.expConsiderations']}"
+                styleClass="readerLabel" /> #{ExperimentBean.econsiderations}</p>
+            <div class="clear"></div>
+            </fieldset>
+        </h:form>
+    
+             <!--  Stage 2  -->
+<h:panelGroup rendered="#{ExperimentBean.currentStage ge 2}">
+<h2 class="main">#{res['exp_stage2.pageTitle']}</h2>    
+                <fieldset>
+                    <legend>#{res['reader_exp.stageTwoLegendOne']}</legend>
+                    <p>
+                        #{ExperimentBean.etype}         </p>
+                </fieldset>
+            <h:form>
+                <fieldset>
+
+                    <legend>#{res['reader_exp.stageTwoLegendTwo']}</legend>
+                    <ul>
+                        <li><b>#{res['exp_stage2.serviceName']} </b>#{ExperimentBean.selectedServiceTemplate.name}<br/></li>
+                        <li><b>#{res['exp_stage2.serviceOperationName']} </b>#{ExperimentBean.selectedServiceOperationName}<br/></li>
+                        <li><b>#{res['exp_stage2.serviceOperationDescription']} </b>#{ExperimentBean.selectedServiceOperation.description}<br/></li>
+                        <li><b>#{res['exp_stage2.minRequiredInput']} </b>#{ExperimentBean.selectedServiceOperation.minRequiredInputFiles}<br/></li>
+                        <li><b>#{res['exp_stage2.maxSupportedInput']} </b>#{ExperimentBean.selectedServiceOperation.maxSupportedInputFiles}<br/></li>
+                    </ul>
+                    <br/>
+                        <b><h:outputText value="#{res['exp_stage2.inputData']} "/></b><br/>
+                        <h:panelGroup rendered="#{ExperimentBean.approved==true}">
+                                <!-- a2 display the specified input in a data table structure when experiment is approved -->
+                                <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
+                                            layout="orderedList" rowIndexVar="rowi">
+                                    <a href="#{filemap['uri']}">#{filemap['name']}</a>
+                                </t:dataList>
+                            </h:panelGroup>
+                </fieldset>
+            </h:form>
+</h:panelGroup>
+
+            <!--  Stage 3  -->
+<h:panelGroup rendered="#{ExperimentBean.currentStage ge 3}">
+<h2 class="main">#{res['exp_stage3.pageTitle']}</h2>
+          <h:form>
+          <!--  This is not relevant at present: 
+          <fieldset>
+              <legend>#{res['reader_exp.stageThreeLegendOne']}</legend>
+                    
+              <p><h:outputText value="#{res['exp_stage6.outputFiles']}" styleClass="readerLabel" />
+                 #{ExperimentBean.numberOfOutput}
+              </p>
+              <div class="clear"></div>
+              <p>
+                 <h:outputText value="intensity " styleClass="readerLabel" />
+                 <h:outputText value="standard"/>
+              </p>
+              <div class="clear"></div>
+                                
+          </fieldset>
+           -->
+          <fieldset>
+              <legend>#{res['reader_exp.stageThreeLegendTwo']}</legend>
+              <t:dataTable id="benchmarks" var="bm"
+                value="#{ExperimentBean.benchmarkBeans}" preserveDataModel="false"
+                rows="4" rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.criteria']}</f:facet>
+                    #{bm.name}
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
+                    #{bm.definition} <br />
+                    <i>#{bm.description}</i>
+                </t:column>
+            </t:dataTable>
+                        </fieldset>
+                    </h:form>
+</h:panelGroup>
+            <!--  Stage 4  -->
+<h:panelGroup rendered="#{ExperimentBean.currentStage ge 4}">
+    <h2 class="main">#{res['exp_stage4.pageTitle']}</h2>
+    <h:outputText value="Approval Status:" styleClass="readerLabel" /> 
+    <h:outputText value="Awaiting Approval." rendered="#{ExperimentBean.currentStage eq 4}"/>
+    <h:outputText value="Approved. (Auto/Admin ???)" rendered="#{ExperimentBean.currentStage gt 4}"/>
+    
+ <div class="clear"></div>
+</h:panelGroup>
+            <!--  Stage 5  -->
+<h:panelGroup rendered="#{ExperimentBean.currentStage ge 5}">
+        <h2 class="main">#{res['exp_stage5.pageTitle']}</h2>
+        <fieldset>
+            <legend>#{res['reader_exp.stageFourLegendOne']}</legend>
+            <p>Experiment execution took place with the following details:</p>
+            <div class="box">
+                <!--  display some statistics -->
+                <h3 class="box">#{res['exp_stage5.statistics']}</h3>
+                <p class="box">
+                    <b>#{res['exp_stage5.started']} </b>#{NewExp_Controller.experimentExecutable.executionStartDate.time}<br />
+                    <b>#{res['exp_stage5.ended']} </b>#{NewExp_Controller.experimentExecutable.executionEndDate.time}<br />
+                    <b>#{res['exp_stage5.nrOfInput']} </b>#{ExperimentBean.numberOfOutput}<br />
+                    <b>#{res['exp_stage5.nrOfOutput']} </b>#{ExperimentBean.numberOfInputFiles}<br />
+                    <b>#{res['exp_stage5.success']} </b>#{NewExp_Controller.experimentExecutable.executionSuccess}<br />
+                </p>
+            </div>
+        </fieldset>
+</h:panelGroup>            
+            <!--  Stage 6  -->            
+<h:panelGroup rendered="#{ExperimentBean.currentStage ge 6}">
+<h2 class="main">#{res['exp_stage6.pageTitle']}</h2>
+        <p>View the experiment's input and it's extracted output data, the evaluation of the selected benchmark goals and read the evaluation report.</p>
+
+        <fieldset>
+            <legend>#{res['exp_stage6.headingData']}</legend>
+            
+            <!-- display the experiment's output -->
+            <h:dataTable var="data" value="#{ExperimentBean.IOTableDataForGUI}" cellpadding="2" cellspacing="0"
+                         border="1" rowIndexVar="row">
+                <h:column>
+                <f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
+                    <h:outputLink value="Service Input: "/>
+                    <!-- check if input displayed as URI or as String -->
+                    <h:outputLink value="#{data['input']}" rendered="#{not empty data['inputTypeURI']}" target="_new">
+                            #{data['inputName']}
+                    </h:outputLink>
+                    <h:outputText value="#{data['input']}" rendered="#{data['inputTypeURI']==null}"/>
+                </h:column>                     
+                <h:column>
+                    <f:facet name="header">#{res['exp_stage6.outputFiles']}</f:facet>
+                    <h:outputLink value="Service Output: "/>
+                    <!-- check if input displayed as URI or as String -->
+                    <h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}" target="_new">
+                            <h:outputText value="#{data['output']}" style="color:red"/>
+                    </h:outputLink>
+                    <h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}" style="color:red"/>
+                </h:column>                     
+            </h:dataTable>
+        </fieldset>
+
+            <h2 class="main">#{res['exp_stage6.headingBG']}</h2>
+
+            <t:dataTable id="dataTable" var="bm"
+                value="#{ExperimentBean.benchmarkBeans}" preserveDataModel="false"
+                rows="4" rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.criteria']}</f:facet>
+                    #{bm.name}
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
+                    #{bm.definition} <br />
+                    <i>#{bm.description}</i>
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
+                    <h:outputText value="#{bm.evaluationValue}" />
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
+                    <h:outputText value="#{bm.sourceValue}" />      
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>        
+                    <h:outputText value="#{bm.targetValue}" />
+                </t:column>
+            </t:dataTable>
+
+
+           <h:panelGroup rendered="#{ExperimentBean.reportHeader != '' || ExperimentBean.reportBody != ''}">
+            <h2 class="main">#{res['exp_stage6.headingReport']}</h2>
+            <fieldset>
+                <legend>#{ExperimentBean.reportHeader}</legend>
+                <p>#{ExperimentBean.reportBody}</p>
+                <div class="clear"></div>
+            </fieldset>              
+           </h:panelGroup>
+
+</h:panelGroup>                
+<br/>       
+
+
+  </ui:composition>
+</body>
+</html>

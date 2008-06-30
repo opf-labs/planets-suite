@@ -29,6 +29,7 @@ import eu.planets_project.tb.impl.system.ExperimentInvocationHandlerImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
@@ -200,8 +201,10 @@ public class TestbedManagerImpl
 			this.hmAllExperiments.put(exp.getEntityID(), exp);
 		    // Also update the Experiment backing bean to reflect the changes:
 		    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-		    log.debug("Re-filling expBean from exp.");
-		    expBean.fill(experiment);
+		    if( expBean != null ) {
+		        log.debug("Re-filling expBean from exp.");
+		        expBean.fill(experiment);
+		    }
           //End Transaction
 		}
 	}
@@ -272,7 +275,26 @@ public class TestbedManagerImpl
 		return vRet;
 	}
 	
-	/**
+	
+	
+	/* (non-Javadoc)
+     * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentsAtPhase(int)
+     */
+    public Collection<Experiment> getAllExperimentsAtPhase(int phaseID) {
+        Vector<Experiment> vRet = new Vector<Experiment>();
+        Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
+        while(itExpIDs.hasNext()){
+            long helper = itExpIDs.next();
+            Experiment exp = this.hmAllExperiments.get(helper);
+            if (exp.getCurrentPhasePointer() == phaseID){
+                vRet.add(exp);
+            }
+        }
+        return vRet;
+    }
+
+
+    /**
 	 * This private helper method is used to query the EntityManager (via the ExperimentPersistency) interface
 	 * to retrieve all Experiments in the data store and builds up the HashMap<ExpID,Experiment> which is used due
 	 * to performance reasons within this class.

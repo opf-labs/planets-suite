@@ -71,6 +71,7 @@ import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 /**
  * 
@@ -2031,18 +2032,19 @@ public class RegisterTBServices{
 		
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	   	//e.g. localhost:8080
-		String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
+		String authority = DataHandlerImpl.getAuthority();
 		try {
 			//1) enter the jbossws/services uri
 			//URI(scheme,authority,path,query,fragement)
 			URI uriPage = new URI("http",authority,"/jbossws/services",null,null);
+			log.info("Querying JBoss @ " + uriPage);
 			//2) extract the page's content: note: not well-formed --> modifications
 			String pageContent = extractWSDLContent(uriPage);
 			//3) build a dom tree and extract the text nodes
 			//String xPath = new String("/*//fieldset/table/tbody/tr/td/a/@href");
 			ret = parseJBossWSEndpoints(pageContent);
 		} catch (Exception e) {}
-		
+				
 		return ret;
 	}
 	
@@ -2061,13 +2063,26 @@ public class RegisterTBServices{
 		String href = "<a href=";
 		String symb = ">";
 		String[] s = xhtml.split(keyword);
-		
+
+		// Extract the links from the strings.
+        String[] links = new String[s.length-1];
 		for(int k=1;k<s.length;k++){
 			String p = s[k].split(href)[1];
 			int j = p.indexOf(symb);
 			String link = p.substring(1,j-1);
-			ret.add(new SelectItem(link));
+            log.info("Found WS @ " + link);
+			links[k-1] = link;
 		}
+
+	      // Sort this string array, so it is easier to view:
+        java.util.Arrays.sort(links);
+
+        // Create a set of SelectItems for this list:
+        for(int i=1;i<links.length;i++){
+            log.info("Sorted WS > " + links[i]);
+            ret.add(new SelectItem(links[i]));
+        }
+
 		return ret;
 	}
 	

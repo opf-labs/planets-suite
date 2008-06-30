@@ -118,9 +118,16 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	public Collection<String> getInputData() {
 		return this.hmInputOutputData.keySet();
 	}
-
-
+	
 	/* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#getNumberOfInputs()
+     */
+    public int getNumberOfInputs() {
+        if( this.getInputData() == null ) return 0;
+        return this.getInputData().size();
+    }
+
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.ExperimentExecutable#removeInputData(java.lang.String)
 	 */
 	public void removeInputData(String localFileRef) {

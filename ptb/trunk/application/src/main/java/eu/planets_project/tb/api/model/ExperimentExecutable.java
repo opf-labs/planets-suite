@@ -21,7 +21,8 @@ public interface ExperimentExecutable{
 	 * Returns a List of local file refs e.g. C:/DATA/text1.dco
 	 * @return
 	 */
-	public Collection<String> getInputData();
+    public Collection<String> getInputData();
+    public int getNumberOfInputs();
 	public void addInputData(String localFileRef);
 	public void addInputData(Collection<String> localFileRefs);
 	public void removeInputData(String localFileRef);

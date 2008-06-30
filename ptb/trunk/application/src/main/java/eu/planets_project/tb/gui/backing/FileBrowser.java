@@ -43,7 +43,28 @@ public class FileBrowser {
     // The currently viewed DR entities
     private FileTreeNode[] currentItems;
     
+    // The root tree node
+    FileTreeNode tn = null;
+    
+    // The File tree model:
+    TreeModel tm;
+
+    /**
+     * Constructor to set up the initial tree model.
+     */
     public FileBrowser() {
+        // Build the tree.
+        tn = new FileTreeNode(dr.getRootDigitalObject());
+        tn.setType("folder"); 
+        tn.setLeaf(false);
+        tn.setExpanded(true);
+
+        // Create the tree:
+        tm = new TreeModelBase(tn);
+        
+        // Add child nodes:
+        this.getChildItems(tm, tn, dr.list(null), 1);
+        
     }
     
     /**
@@ -52,6 +73,14 @@ public class FileBrowser {
      */
     public FileTreeNode[] getList() {
         return this.currentItems;
+    }
+    
+    public void setDir( FileTreeNode tfn ) {
+        // Update the location:
+        setLocation(tfn.getUri());
+        // Also add childs:
+        tfn.setExpanded(true);
+        this.getChildItems(tm, tfn, dr.list(getLocation()), 1);
     }
     
     /**
@@ -136,21 +165,18 @@ public class FileBrowser {
      * @return A TreeModel holding the directory structure.
      */
     public TreeModel getFilerTree() {
-        
-        // Build the tree.
-        TreeNode tn = new FileTreeNode(dr.getRootDigitalObject());
-        tn.setType("folder"); tn.setLeaf(false);
-
-        // Create the tree:
-        TreeModel tm = new TreeModelBase(tn);
-
-        // Add child nodes:
-        this.getChildItems(tm, tn, dr.list(null));
-        
         return tm;
     }
     
-    private void getChildItems( TreeModel tm, TreeNode parent, DigitalObject[] dobs ) {
+    /**
+     * Add the childs...
+     * 
+     * @param tm
+     * @param parent
+     * @param dobs
+     * @param depth
+     */
+    private void getChildItems( TreeModel tm, TreeNode parent, DigitalObject[] dobs, int depth ) {
         // Do nothing if there are no comments.
         if( dobs == null ) return;
         if( dobs.length == 0 ) return;
@@ -163,10 +189,11 @@ public class FileBrowser {
             FileTreeNode cnode = new FileTreeNode(dob);
             // Add the child element to the tree:
             List<FileTreeNode> cchilds = (List<FileTreeNode>) parent.getChildren();
-            cchilds.add(cnode);
+            if( ! cchilds.contains(cnode) )
+                cchilds.add(cnode);
             // If there are any, add them via recursion:
-            if( dob.isDirectory() ) 
-                this.getChildItems(tm, cnode, dr.list(dob.getUri()));
+            if( dob.isDirectory() && depth > 0 ) 
+                this.getChildItems(tm, cnode, dr.list( dob.getUri()), depth - 1 );
           }
         }
         

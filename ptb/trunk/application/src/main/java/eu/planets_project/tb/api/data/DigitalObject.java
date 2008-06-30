@@ -83,4 +83,37 @@ public class DigitalObject {
         return path.substring( path.lastIndexOf('/') + 1 );
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((puri == null) ? 0 : puri.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final DigitalObject other = (DigitalObject) obj;
+        if (puri == null) {
+            if (other.puri != null)
+                return false;
+        } else if (!puri.equals(other.puri))
+            return false;
+        return true;
+    }
+
+    
+    
 }

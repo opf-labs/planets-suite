@@ -17,14 +17,14 @@
                 
   <div class="filepane">
    <div class="filebrowse">
-    <t:tree2 id="filerTree" value="#{FileBrowser.filerTree}" var="do" varNodeToggler="t" showRootNode="false" showLines="true" preserveToggle="true" clientSideToggle="true">
+    <t:tree2 id="filerTree" value="#{FileBrowser.filerTree}" var="do" varNodeToggler="t" showRootNode="false" showLines="true" preserveToggle="true" clientSideToggle="false">
     
     <f:facet name="folder">
             <h:panelGroup>
                   <h:commandLink action="success">
                     <t:graphicImage value="/graphics/filetype_folder.gif" />
                     <h:outputText value=" #{do.leafname}"/>
-                    <t:updateActionListener property="#{FileBrowser.location}" value="#{do.uri}" />
+                    <t:updateActionListener property="#{FileBrowser.dir}" value="#{do}" />
                   </h:commandLink>
             </h:panelGroup>
     </f:facet>
@@ -82,7 +82,7 @@
                   <h:commandLink action="success">
                     <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_folder.gif" alt="directory" title="directory"/>
                     <h:outputText value=" #{do.leafname}"/>
-                    <t:updateActionListener property="#{FileBrowser.location}" value="#{do.uri}" />
+                    <t:updateActionListener property="#{FileBrowser.dir}" value="#{do}" />
                   </h:commandLink>
                 </h:panelGroup>
                 <h:panelGroup rendered="#{not do.directory}">
