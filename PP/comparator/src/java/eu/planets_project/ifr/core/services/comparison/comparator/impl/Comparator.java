@@ -95,8 +95,9 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 		log.debug("Comparator call output: " + pr.getProcessOutputAsString());
 		log.debug("Comparator call error: " + pr.getProcessErrorAsString());
 		/* Read the resulting files: */
-		String result = read(tempFolder + File.separator + tempFile1.getName()
-				+ "-" + tempFile2.getName() + RESULT_ENDING);
+		String result = read(tempFolder + File.separator
+				+ tempFile1.getName().split("\\.")[0] + "-"
+				+ tempFile2.getName().split("\\.")[0] + RESULT_ENDING);
 		String logged = read(tempFolder + File.separator + LOG_TXT);
 		/* Print some debugging info on the results: */
 		log.info("Comparator result: " + result);
