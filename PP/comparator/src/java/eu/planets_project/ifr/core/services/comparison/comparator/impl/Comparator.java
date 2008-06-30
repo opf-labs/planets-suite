@@ -47,7 +47,7 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	private static final String LOG_TXT = "log.txt";
 	private static final String RESULT_ENDING = ".cpr";
 	/** The comparator executable, has to be on the path on the server */
-	private static final String COMPARATOR = "cat";
+	private static final String COMPARATOR = "comparator";
 
 	/**
 	 * @param xcdl1
@@ -64,7 +64,9 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	public String basicCompareTwoXCDLStrings(String xcdl1, String xcdl2) {
 		/* Create temp files for the XCDLs to be compared: */
 		File tempFile1 = tempFile("XCDL1");
+		log.debug("Temp file 1: " + tempFile1);
 		File tempFile2 = tempFile("XCDL2");
+		log.debug("Temp file 2: " + tempFile2);
 		/* For storing the result, we use the temp folder: */
 		String tempFolder = tempFile1.getParent();
 		/* If we can't read or write to the temp folder, cancel: */
