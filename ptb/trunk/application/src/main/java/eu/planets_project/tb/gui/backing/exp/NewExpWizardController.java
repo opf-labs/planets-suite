@@ -53,8 +53,12 @@ import javax.faces.component.html.HtmlOutputText;
 
 import java.io.File;
 import java.net.URI;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -764,7 +768,7 @@ public class NewExpWizardController {
      * @return
      */
     public Map<String,String> getAllAvailableTBServiceTemplates(){
-    	TreeMap<String,String> ret = new TreeMap<String,String>();
+    	Map<String,String> ret = new TreeMap<String,String>();
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
     	Collection<TestbedServiceTemplate> templates = new Vector<TestbedServiceTemplate>();
@@ -789,7 +793,11 @@ public class NewExpWizardController {
 			Iterator<TestbedServiceTemplate> itTemplates = templates.iterator();
 			while(itTemplates.hasNext()){
 				TestbedServiceTemplate template = itTemplates.next();
-				ret.put(template.getName(),String.valueOf(template.getUUID()));
+				//use the deployment date to extend the service name for selection
+				String format = "yyyy-MM-dd HH:mm:ss";
+				String date = doFormat(format, template.getDeploymentDate());
+				ret.put(template.getName()+" - "+date,String.valueOf(template.getUUID()));
+				
 			}
 			
 			//only triggered for the first time
@@ -800,6 +808,22 @@ public class NewExpWizardController {
     	}
     	return ret;
     }
+    
+    /**
+     * Formats a gregorian calendar according to a specified format input schema
+     * @param format
+     * @param gc
+     * @return
+     */
+    private String doFormat(String format, Calendar gc){
+    	SimpleDateFormat sdf = new SimpleDateFormat(format);
+    	FieldPosition fpos = new FieldPosition(0);
+
+    	StringBuffer b = new StringBuffer();
+    	StringBuffer sb = sdf.format(gc.getTime(), b, fpos);
+
+    	return sb.toString();
+    	}
     
     /**
      * Returns a Map of all available serviceOperations for an already selected
