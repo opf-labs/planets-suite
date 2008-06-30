@@ -24,7 +24,7 @@ import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXCDLStrings;
 
 /**
- * PP comparator service (work in progress)
+ * PP comparator service
  * 
  * @author Fabian Steeg
  * 
@@ -38,21 +38,16 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	private static final long serialVersionUID = 1238447797051780267L;
 	private static final PlanetsLogger log = PlanetsLogger
 			.getLogger(Comparator.class);
+	private static String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME")
+			+ File.separator;
 	public static final String NAME = "Comparator";
 	public static final QName QNAME = new QName(PlanetsServices.NS,
 			BasicCompareTwoXCDLStrings.NAME);
-	/**
-	 * TODO Here, we use a hard-coded string for the working directory (where
-	 * the Comparator executable and the output folder are found) on the test
-	 * server at UzK (planetarium.hki.uni-koeln.de); the output folder should be
-	 * given to the comparator as a parameter; then, we could get rid of this.
-	 */
-	private static final String WORKING_DIR = "/home/vh/Comparator/";
-	/** The locations of the result and log files: */
-	private static final String LOG_TXT = WORKING_DIR + "output/log.txt";
-	private static final String RESULT = WORKING_DIR + "output/CPR.xml";
-	/** The comparator executable */
-	private static final String COMPARATOR = WORKING_DIR + "Comparator";
+	/** The file names of the result and log files: */
+	private static final String LOG_TXT = "log.txt";
+	private static final String RESULT_ENDING = ".cpr";
+	/** The comparator executable, has to be on the path on the server */
+	private static final String COMPARATOR = "cat";
 
 	/**
 	 * @param xcdl1
@@ -67,36 +62,51 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 			+ "/" + BasicCompareTwoXCDLStrings.NAME, partName = BasicCompareTwoXCDLStrings.NAME
 			+ "Result")
 	public String basicCompareTwoXCDLStrings(String xcdl1, String xcdl2) {
-
 		/* Create temp files for the XCDLs to be compared: */
-		String tempFile1 = tempFile("XCDL1");
-		String tempFile2 = tempFile("XCDL2");
+		File tempFile1 = tempFile("XCDL1");
+		File tempFile2 = tempFile("XCDL2");
+		/* For storing the result, we use the temp folder: */
+		String tempFolder = tempFile1.getParent();
+		/* If we can't read or write to the temp folder, cancel: */
+		File f = new File(tempFolder);
+		if (!f.canRead() || !f.canWrite()) {
+			throw new IllegalStateException("Can't read from or write to: "
+					+ f.getAbsolutePath());
+		}
 		/* Store the given content in the temp files: */
-		save(tempFile1, xcdl1);
-		save(tempFile2, xcdl2);
+		save(tempFile1.getAbsolutePath(), xcdl1);
+		save(tempFile2.getAbsolutePath(), xcdl2);
 		/* Compare the temp files: */
-		List<String> commands = Arrays.asList(COMPARATOR, tempFile1, tempFile2);
+		List<String> commands = Arrays.asList(COMPARATOR, tempFile1
+				.getAbsolutePath(), tempFile2.getAbsolutePath(), tempFolder);
 		ProcessRunner pr = new ProcessRunner(commands);
-		pr.setStartingDir(new File(WORKING_DIR));
-		log.info("Executing: " + commands);
+		/* We change into the comparator home directory: */
+		File home = new File(COMPARATOR_HOME);
+		if (!home.exists()) {
+			throw new IllegalStateException("COMPARATOR_HOME does not exist: "
+					+ COMPARATOR_HOME);
+		}
+		pr.setStartingDir(home);
+		log.debug("Executing: " + commands);
 		pr.run();
 		/* Print some debugging info on the call: */
-		log.info("Comparator call output: " + pr.getProcessOutputAsString());
-		log.info("Comparator call error: " + pr.getProcessErrorAsString());
-		/* read the resulting files: */
-		String result = read(RESULT);
-		String logged = read(LOG_TXT);
+		log.debug("Comparator call output: " + pr.getProcessOutputAsString());
+		log.debug("Comparator call error: " + pr.getProcessErrorAsString());
+		/* Read the resulting files: */
+		String result = read(tempFolder + File.separator + tempFile1.getName()
+				+ "-" + tempFile2.getName() + RESULT_ENDING);
+		String logged = read(tempFolder + File.separator + LOG_TXT);
 		/* Print some debugging info on the results: */
 		log.info("Comparator result: " + result);
-		log.info("Comparator log: " + logged);
+		log.debug("Comparator log: " + logged);
 		return result;
 	}
 
 	/**
-	 * Helper/Mock method for testing, using file locations instead of the
+	 * Helper/mock method for testing, using file locations instead of the
 	 * actual data. Calls the actual comparison method above.
 	 */
-	@WebMethod()
+	@WebMethod
 	public String basicCompareTwoXCDLFiles(String xcdl1Name, String xcdl2Name) {
 		String content1 = read(xcdl1Name);
 		String content2 = read(xcdl2Name);
@@ -145,12 +155,12 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	 *            The name to use when generating the temp file
 	 * @return Returns a temp file created using File.createTempFile
 	 */
-	public static String tempFile(String name) {
+	public static File tempFile(String name) {
 		File input;
 		try {
 			input = File.createTempFile(name, null);
 			input.deleteOnExit();
-			return input.getAbsolutePath();
+			return input;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
