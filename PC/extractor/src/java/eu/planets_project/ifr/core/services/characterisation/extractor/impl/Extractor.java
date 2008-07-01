@@ -184,7 +184,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 			e.printStackTrace();
 		}
 		
-		deleteTempFiles(srcFile, xcelFile, new File(outputFilePath), extractor_in_folder, extractor_out_folder, extractor_work_folder);
+//		deleteTempFiles(srcFile, xcelFile, new File(outputFilePath), extractor_in_folder, extractor_out_folder, extractor_work_folder);
 		
 		plogger.info("Returning XCDL String.");		
 		return sb.toString();
@@ -210,14 +210,14 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		else {
 			plogger.info("File could not be deleted.");
 		}
-		plogger.info("Deleting file: " + outputFile.getName());	
-		success = outputFile.delete();
-		if(success) {
-			plogger.info("Success!");
-		}
-		else {
-			plogger.info("File could not be deleted.");
-		}
+//		plogger.info("Deleting file: " + outputFile.getName());	
+//		success = outputFile.delete();
+//		if(success) {
+//			plogger.info("Success!");
+//		}
+//		else {
+//			plogger.info("File could not be deleted.");
+//		}
 		plogger.info("Deleting folder: " + in_folder.getName());	
 		success = in_folder.delete();
 		if(success) {
