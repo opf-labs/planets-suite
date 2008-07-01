@@ -64,15 +64,24 @@
             <h:outputText value="#{exp.startDate.time}" />
         </t:column>
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.exDate']}</f:facet>
+	        <f:facet name="header">
+	          <t:commandSortHeader id="sortHeader_exDate" columnName="exDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	    	      #{res['expList.colHeader.exDate']}
+		  </t:commandSortHeader>
+			</f:facet>		      
             <h:outputText value="#{exp.experimentExecution.executionEndedDate.time}">
 	             <f:convertDateTime type="both" dateStyle="short"/>
             </h:outputText>
         </t:column>
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.currentStage']}</f:facet>
+	        <f:facet name="header">
+	          <t:commandSortHeader id="sortHeader_currentStage" columnName="currentStage" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	    	      #{res['expList.colHeader.currentStage']}
+		  </t:commandSortHeader>
+			</f:facet>		      
             <h:outputText value="#{exp.currentPhase.phaseName}" />
         </t:column>
+        <!--
         <t:column>
             <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
             <h:outputText value="" />
@@ -81,6 +90,7 @@
             <f:facet name="header">#{res['expList.colHeader.inputOutputFiles']}</f:facet>
             <h:outputText value="#{exp.experimentSetup.basicProperties.experimentedObjectTypes}" />
         </t:column> 
+        -->
     </t:dataTable>
 
     <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
