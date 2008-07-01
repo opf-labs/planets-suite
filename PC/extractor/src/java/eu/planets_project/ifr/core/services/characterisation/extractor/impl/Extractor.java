@@ -52,7 +52,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 	private final static PlanetsLogger plogger = PlanetsLogger.getLogger(Extractor.class, LOG_CONFIG_FILE);
 	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
-	private static final String EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR" + File.separator;
+	private static String EXTRACTOR_WORK = null;
 	private static final String EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
 	private static final String EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
 	/**
@@ -81,6 +81,14 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
             partName = "XCEL_String")
             String xcel
     ) throws PlanetsException {
+    	
+    	if(SYSTEM_TEMP.lastIndexOf(File.separator) == SYSTEM_TEMP.length()-1) {
+    			EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR";
+    	}
+    	else {
+    		EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR";
+    	}
+    	
     	plogger.info("Starting Extractor Service...");
     	
     	List <String> extractor_arguments = null;
@@ -172,7 +180,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 			e.printStackTrace();
 		}
 		
-//		deleteTempFiles(srcFile, xcelFile, new File(outputFilePath), extractor_in_folder, extractor_out_folder, extractor_work_folder);
+		deleteTempFiles(srcFile, xcelFile, new File(outputFilePath), extractor_in_folder, extractor_out_folder, extractor_work_folder);
 		
 		plogger.info("Returning XCDL String.");		
 		return sb.toString();
