@@ -4,7 +4,6 @@ package eu.planets_project.services.characterisation;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,7 +15,7 @@ import javax.xml.ws.Service;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCEL;
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Extractor;
+
 public class BasicCharacteriseOneBinaryXCELClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR_CLIENT_OUTPUT";
@@ -26,15 +25,18 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		
 		String wsdlLocation = 
 			
-			"http://localhost:8080/pserv-pc-extractor/Extractor?wsdl";
+			"http://planets-dev:8080/pserv-pc-extractor/Extractor?wsdl";
 		
 		QName qName = BasicCharacteriseOneBinaryXCEL.QNAME;
+		System.out.println("Creating Service...");
+		Service service = Service.create(new URL(wsdlLocation), qName);
+		System.out.println("Getting Service Port...");
+		BasicCharacteriseOneBinaryXCEL extractor = service.getPort(BasicCharacteriseOneBinaryXCEL.class);
 		
 		// Please fill in the path to your INPUT IMAGE:
 		File input_image = 
 			
 			new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah/result56727.PNG");
-		
 		
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
@@ -48,6 +50,7 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		File output_xcdl = 
 			
 			new File(outputFolder, "client_output.xcdl");
+		
 		System.out.println("Creating byte[] from image file: " + input_image.getName());
 		byte[] binary = getByteArrayFromFile(input_image);
 		System.out.println("Creating XCEL String from file: " + input_xcel.getName());
@@ -57,11 +60,11 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		while((in = br.readLine()) != null) {
 //			System.out.println("Appending: " + in);
 			sb.append(in);
+			System.out.print(".");
 		}
 				
 		String xcelString = sb.toString(); 
 		System.out.println("Creating Extractor instance...");
-		Extractor extractor = new Extractor();
 		System.out.println("Sending data to Webservice...");
 		String xcdlString = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
 		System.out.println("Success!!! Retrieved Result from Webservice!");

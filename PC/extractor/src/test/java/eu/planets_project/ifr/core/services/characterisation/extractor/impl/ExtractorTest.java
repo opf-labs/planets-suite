@@ -1,19 +1,15 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
-import static org.junit.Assert.*;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Extractor;
 
 public class ExtractorTest {
 
