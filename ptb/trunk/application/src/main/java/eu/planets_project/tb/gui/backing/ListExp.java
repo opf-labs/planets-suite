@@ -189,27 +189,28 @@ public class ListExp extends SortableList {
 				}
                                 if (column.equals("startDate"))
 				{
-					String c1_startDate = null;
-                    if( c1.getCurrentPhase() != null && c1.getCurrentPhase().getStartDate() != null )
-                        c1_startDate = c1.getCurrentPhase().getStartDate().toString();
-					String c2_startDate = null;
-                    if( c2.getCurrentPhase() != null && c2.getCurrentPhase().getStartDate() != null )
-                        c2_startDate = c2.getCurrentPhase().getStartDate().toString();
-					if (c1_startDate==null) c1_startDate="";
-					if (c2_startDate==null) c2_startDate="";
-					return ascending ? c1_startDate.compareTo(c2_startDate) : c2_startDate.compareTo(c1_startDate);
+                                    String c1_startDate = null;
+                                    if( c1.getCurrentPhase() != null && c1.getCurrentPhase().getStartDate() != null )
+                                        c1_startDate = c1.getCurrentPhase().getStartDate().toString();
+                                    String c2_startDate = null;
+                                    if( c2.getCurrentPhase() != null && c2.getCurrentPhase().getStartDate() != null )
+                                        c2_startDate = c2.getCurrentPhase().getStartDate().toString();
+                                    if (c1_startDate==null) c1_startDate="";
+                                    if (c2_startDate==null) c2_startDate="";
+                                    return ascending ? c1_startDate.compareTo(c2_startDate) : c2_startDate.compareTo(c1_startDate);
 				}
-
                                 if (column.equals("exDate"))
 				{
-                                        if ((c1.getExperimentExecution().getExecutionEndedDate() != null) && (c1.getExperimentExecution().getExecutionEndedDate() != null)) {
-                                            return ascending ? c1.getExperimentExecution().getExecutionEndedDate().compareTo(c2.getExperimentExecution().getExecutionEndedDate()) 
-                                                    : c2.getExperimentExecution().getExecutionEndedDate().compareTo(c1.getExperimentExecution().getExecutionEndedDate());
-                                        }
-                                        else
-                                            return 0;
+                                    String c1_exDate = null;
+                                    if( c1.getExperimentExecution().getExecutionEndedDate() != null )
+                                        c1_exDate = c1.getExperimentExecution().getExecutionEndedDate().toString();
+                                    String c2_exDate = null;
+                                    if( c2.getExperimentExecution().getExecutionEndedDate() != null )
+                                        c2_exDate = c2.getExperimentExecution().getExecutionEndedDate().toString();
+                                    if (c1_exDate==null) c1_exDate="";
+                                    if (c2_exDate==null) c2_exDate="";                                    
+                                    return ascending ? c1_exDate.compareTo(c2_exDate) : c2_exDate.compareTo(c1_exDate);
 				}
-                                
                                 if (column.equals("currentStage"))
 				{
                                         if ((c1.getCurrentPhase().getStartDate() != null) && (c1.getCurrentPhase().getStartDate() != null)) {
