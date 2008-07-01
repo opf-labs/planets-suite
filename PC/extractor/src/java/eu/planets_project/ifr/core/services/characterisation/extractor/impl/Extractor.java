@@ -53,8 +53,8 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static String EXTRACTOR_WORK = null;
-	private static final String EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
-	private static final String EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
+	private static String EXTRACTOR_IN = null;
+	private static String EXTRACTOR_OUT = null;
 	/**
      * 
      * @param binary a byte[] which contains the image data
@@ -83,10 +83,14 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
     ) throws PlanetsException {
     	
     	if(SYSTEM_TEMP.lastIndexOf(File.separator) == SYSTEM_TEMP.length()-1) {
-    			EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR";
+    			EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR" + File.separator;
+    			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
+    			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
     	}
-    	else if (SYSTEM_TEMP.equalsIgnoreCase("/tmp")){
-    		EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR";
+    	if (SYSTEM_TEMP.equalsIgnoreCase("/tmp")){
+    		EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR" + File.separator;
+    		EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
+			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
     	}
     	
     	plogger.info("Starting Extractor Service...");
