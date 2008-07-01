@@ -85,7 +85,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
     	if(SYSTEM_TEMP.lastIndexOf(File.separator) == SYSTEM_TEMP.length()-1) {
     			EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR";
     	}
-    	else {
+    	else if (SYSTEM_TEMP.equalsIgnoreCase("/tmp")){
     		EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR";
     	}
     	
