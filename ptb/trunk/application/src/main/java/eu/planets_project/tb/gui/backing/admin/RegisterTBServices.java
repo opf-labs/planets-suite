@@ -118,11 +118,13 @@ public class RegisterTBServices{
 	private SelectItem selectedTagNameItem = new SelectItem(sTagIDFile);
 	
 	//The tokens that are used
+	//for file references
 	private final String TAG_FILE = "@tbFile@";
 	private final String TAG_FILEARRAYLINE_START = "@tbFileArrayLineStart@";
 	private final String TAG_FILEARRAYLINE_END = "@tbFileArrayLineEnd@";
+	//for files that are decoded as base64 input
 	private final String TAG_BASE64BYTEARRAY= "@Base64ByteArray@";
-	
+
 	//Contains the registered operations (names) and their xmltemplates
 	//holding the data for the registeredOperations in Form of a List<String>: e.g. [0]xmlrequesttemplate [1]xmlrespondstemplate
 	private Map<String, List<String>> registeredOperations = new HashMap<String,List<String>>();

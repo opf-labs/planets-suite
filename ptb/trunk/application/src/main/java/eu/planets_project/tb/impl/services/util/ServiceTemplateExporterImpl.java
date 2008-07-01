@@ -3,7 +3,7 @@
  */
 package eu.planets_project.tb.impl.services.util;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.util.List;
 
@@ -33,10 +33,59 @@ import eu.planets_project.tb.api.services.util.ServiceTemplateExporter;
 public class ServiceTemplateExporterImpl implements ServiceTemplateExporter {
 	
 	
-	public void exportServiceTemplate(TestbedServiceTemplate template) throws TransformerConfigurationException,ParserConfigurationException{
-			createExportFile(buildXMLExport(template));
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.util.ServiceTemplateExporter#getExportAsStream(eu.planets_project.tb.api.services.TestbedServiceTemplate)
+	 */
+	public ByteArrayOutputStream getExportAsStream(TestbedServiceTemplate template) throws ParserConfigurationException, TransformerException{
+			Document xmlDoc = buildXMLExport(template);
+			TransformerFactory transfac = TransformerFactory.newInstance();
+			Transformer trans = transfac.newTransformer();
+			trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+		    trans.setOutputProperty(OutputKeys.INDENT, "yes");
+		 
+		    DOMSource source = new DOMSource(xmlDoc);
+		    ByteArrayOutputStream out = new ByteArrayOutputStream();
+		    StreamResult result = new StreamResult(out);
+		    trans.transform(source, result);
+		    
+		    return out;
+
 	}
 	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.services.util.ServiceTemplateExporter#getExportAsString(eu.planets_project.tb.api.services.TestbedServiceTemplate)
+	 */
+	public String getExportAsString(TestbedServiceTemplate template) throws TransformerConfigurationException, ParserConfigurationException{
+		Document xmlDoc = buildXMLExport(template);
+		//set up a transformer
+        TransformerFactory transfac = TransformerFactory.newInstance();
+        Transformer trans = transfac.newTransformer();
+        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        trans.setOutputProperty(OutputKeys.INDENT, "yes");
+
+        //create string from xml tree
+        StringWriter sw = new StringWriter();
+        StreamResult result = new StreamResult(sw);
+        DOMSource source = new DOMSource(xmlDoc);
+        try {
+			trans.transform(source, result);
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        String xmlString = sw.toString();
+        System.out.println("Here's the xml:\n\n" + xmlString);
+        return xmlString;
+
+	}
+	
+	/**
+	 * Contains the logical structure (compliant to the xml-schema) for serializing
+	 * the template to an xml structure
+	 * @param template
+	 * @return
+	 * @throws ParserConfigurationException
+	 */
 	private Document buildXMLExport(TestbedServiceTemplate template) throws ParserConfigurationException{
 	
 	    DocumentBuilderFactory dbfac = DocumentBuilderFactory.newInstance();
@@ -143,38 +192,6 @@ public class ServiceTemplateExporterImpl implements ServiceTemplateExporter {
 
 	    return doc;
 	}
-	
-	private void createExportFile(Document doc) throws TransformerConfigurationException{
-		//set up a transformer
-        TransformerFactory transfac = TransformerFactory.newInstance();
-        Transformer trans = transfac.newTransformer();
-        trans.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        trans.setOutputProperty(OutputKeys.INDENT, "yes");
 
-        //create string from xml tree
-        StringWriter sw = new StringWriter();
-        StreamResult result = new StreamResult(sw);
-        DOMSource source = new DOMSource(doc);
-        try {
-			trans.transform(source, result);
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        String xmlString = sw.toString();
-        
-        System.out.println("Here's the xml:\n\n" + xmlString);
-
-
-	}
-
-
-	/**
-	 * Validates the created xml against the TBServiceTemplateSchema
-	 * @return
-	 */
-	private boolean checkIsValid(){
-		return true;
-	}
 
 }

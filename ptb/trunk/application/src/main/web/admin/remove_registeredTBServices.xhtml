@@ -38,6 +38,7 @@
                 <img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="delete" title="delete service"/>
             </h:commandLink>
      		<h:message for="selectService"/>
+     		<h:commandButton id="exportConfig" value="export config" actionListener="#{TBServiceManager.exportConfigToFile}"/>
      	</h:form>
      	<br/>
      	<h:form id="FormOperationSelection">

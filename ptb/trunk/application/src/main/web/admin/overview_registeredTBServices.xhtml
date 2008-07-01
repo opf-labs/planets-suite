@@ -34,6 +34,7 @@
                     <f:selectItems value="#{TBServiceRenderer.serviceSelectItems}"/>
      		</h:selectOneMenu>
      		<h:message for="selectService"/>
+     		<h:commandButton id="exportConfig" value="export config" actionListener="#{TBServiceRenderer.exportConfigToFile}"/>
      	</h:form>
      	<br/>
      	<h:form id="FormOperationSelection">

@@ -1,7 +1,12 @@
 package eu.planets_project.tb.gui.backing.admin;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.text.FieldPosition;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,22 +14,21 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
-
-import org.apache.myfaces.custom.fileupload.HtmlInputFileUploadTag;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
-import eu.planets_project.tb.gui.backing.FileUploadBean;
-import eu.planets_project.tb.gui.backing.Manager;
-import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
-import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.api.services.util.ServiceTemplateExporter;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
+import eu.planets_project.tb.impl.services.util.ServiceTemplateExporterImpl;
 
 
 /**
@@ -528,5 +532,60 @@ public class ManagerTBServices implements ValueChangeListener {
 		
 		return "reload-page";
 	}
+	
+	/**
+	 * actionListener for the "browse" mode of this bean. Takes the selected service template,
+	 * creates a downloadable config file and offers it a file-download within the browser.
+	 * @return
+	 */
+	public void exportConfigToFile(ActionEvent event){
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    //Listener is creating a service template config 
+	    HttpServletResponse response = (HttpServletResponse)FacesContext.getCurrentInstance().getExternalContext().getResponse();   
+	    
+	    try {
+	    	
+	    	//loading the template to export
+		    ServiceTemplateExporter templateExporter = new ServiceTemplateExporterImpl();
+		    baos = templateExporter.getExportAsStream(this.getTBService());
+	
+		    String format = "yyyy-MM-dd_HH-mm-ss";
+			String date = doFormat(format, new GregorianCalendar());
+		    
+		    response.setContentType("application/xml");     
+		    response.setHeader("Content-Disposition", "attachment; filename=testbed_service_template-" + getTBService().getName()+ date + ".xml");
+		    response.setHeader("Cache-Control", "no-cache");  
+		    response.setContentLength(baos.size());
+		    
+		    ServletOutputStream sos = response.getOutputStream();
+	    	
+	    	
+	    	baos.writeTo(sos);
+	    	sos.flush();
+	    	
+		} catch (Exception e) {
+			// TODO: add exception to log
+		}
+	    
+		FacesContext faces = FacesContext.getCurrentInstance();
+	    faces.responseComplete();
+	}
+	
+	
+	   /**
+     * Formats a gregorian calendar according to a specified format input schema
+     * @param format
+     * @param gc
+     * @return
+     */
+    private String doFormat(String format, Calendar gc){
+    	SimpleDateFormat sdf = new SimpleDateFormat(format);
+    	FieldPosition fpos = new FieldPosition(0);
+
+    	StringBuffer b = new StringBuffer();
+    	StringBuffer sb = sdf.format(gc.getTime(), b, fpos);
+
+    	return sb.toString();
+    	}
 
 }

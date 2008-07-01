@@ -149,11 +149,11 @@ public class ComponentBuilder
 		{
 			ExtensibilityElement schemaExtElem = findExtensibilityElement(wsdlDefinition.getTypes().getExtensibilityElements(), "schema");
 
-			log.debug(schemaExtElem.getClass().getCanonicalName());
-
+			
 			//if(schemaExtElem != null && schemaExtElem instanceof UnknownExtensibilityElement)
 			if(schemaExtElem != null && schemaExtElem instanceof javax.wsdl.extensions.schema.Schema)
 			{
+				log.debug(schemaExtElem.getClass().getCanonicalName());
 				schemaElement = ((javax.wsdl.extensions.schema.Schema)schemaExtElem).getElement();
 			}
 

@@ -7,9 +7,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,7 +25,6 @@ import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.api.services.util.ServiceTemplateImporter;
-import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
