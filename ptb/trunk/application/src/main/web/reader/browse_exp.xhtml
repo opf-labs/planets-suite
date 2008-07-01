@@ -82,14 +82,6 @@
             <h:outputText value="#{exp.currentPhase.phaseName}" />
         </t:column>
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
-            <h:outputText value="" />
-        </t:column>
-        <t:column>
-            <f:facet name="header">#{res['expList.colHeader.inputOutputFiles']}</f:facet>
-            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentedObjectTypes}" />
-        </t:column>
-        <t:column>
             <f:facet name="header">
                 <t:commandSortHeader id="sortHeader_experimenter" columnName="experimenter" arrow="true" immediate="false" styleClass="tableHeaderSel">
                     #{res['expList.colHeader.experimenterName']}
