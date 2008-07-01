@@ -15,6 +15,8 @@ import javax.persistence.Transient;
 
 import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 
 
 /**

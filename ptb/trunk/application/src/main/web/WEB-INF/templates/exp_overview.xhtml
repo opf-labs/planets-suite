@@ -166,8 +166,9 @@
 <h:panelGroup rendered="#{ExperimentBean.currentStage ge 4}">
     <h2 class="main">#{res['exp_stage4.pageTitle']}</h2>
     <h:outputText value="Approval Status:" styleClass="readerLabel" /> 
-    <h:outputText value="Awaiting Approval." rendered="#{ExperimentBean.currentStage eq 4}"/>
-    <h:outputText value="Approved. (Auto/Admin ???)" rendered="#{ExperimentBean.currentStage gt 4}"/>
+    <h:outputText value="Awaiting Approval." rendered="#{ExperimentBean.experiment.awaitingApproval}"/>
+    <h:outputText value="Approved." rendered="#{ExperimentBean.experiment.approved}"/>
+    <h:outputText value="Denied." rendered="#{ExperimentBean.experiment.denied}" styleClass="#{ExperimentBean.experiment.denied ? 'approvalDenied' : ''}"/>
     
  <div class="clear"></div>
 </h:panelGroup>

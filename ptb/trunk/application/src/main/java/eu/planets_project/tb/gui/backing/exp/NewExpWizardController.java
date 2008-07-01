@@ -268,6 +268,25 @@ public class NewExpWizardController {
     		return null;    	
     }
     
+    public String unsubmitAndEdit() {
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        
+        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        AdminManagerImpl.toEditFromDenied(exp);
+        
+        testbedMan.updateExperiment(exp);
+        return "goToStage1";
+    }
+    
+    public String updateExperimentBeanState() {
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        testbedMan.updateExperiment(exp);
+        return "success";
+    }
+    
     public String updateBenchmarksAction(){
 	  try {
     	// create bm-goals    	

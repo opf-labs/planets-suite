@@ -20,6 +20,7 @@ import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
@@ -236,5 +237,35 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 		
 	}
 
+    /**
+     * Utilities for querying details about the experimental approval status
+     */
+	
+    public boolean isAwaitingApproval() {
+        if( this.getCurrentPhasePointer() != ExperimentPhase.PHASE_EXPERIMENTAPPROVAL ) return false;
+        if( AdminManagerImpl.experimentAwaitingApproval(this) ) return true;
+        return false;
+    }
+    public boolean isApproved() {
+        if( this.getCurrentPhasePointer() <= ExperimentPhase.PHASE_EXPERIMENTAPPROVAL ) return false;
+        if( isAwaitingApproval() ) return false;
+        if( AdminManagerImpl.experimentWasApproved(this)) return true;
+        if( this.getExperimentApproval().getGo() ) return true;
+        return false;
+    }
+    public boolean isDenied() {
+        if( this.getCurrentPhasePointer() != ExperimentPhase.PHASE_EXPERIMENTAPPROVAL ) return false;
+        if( isAwaitingApproval() ) return false;
+        if( AdminManagerImpl.experimentWasDenied(this)) return true;
+        if( ! this.getExperimentApproval().getGo() ) return true;
+        return false;
+    }
+    public String getUsernameOfApprover() {
+        if( ! this.isApproved() && ! this.isDenied() ) return null;
+        if( this.getExperimentApproval().getApprovalUsersIDs() == null ) return null;
+        if( this.getExperimentApproval().getApprovalUsersIDs().size() == 0 ) return null;
+        return this.getExperimentApproval().getApprovalUsersIDs().get(0);
+    }
+    
 
 }

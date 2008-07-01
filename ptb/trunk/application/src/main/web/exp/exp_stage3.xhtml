@@ -18,7 +18,7 @@
 			src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>
 	</ui:define>
 
-	<ui:define name="content">
+	<ui:define name="content" rendered="#{ExperimentBean != null}">
 #{NewExp_Controller.retrieveBenchmarkBeans}
 		<div id="mainwrapper">
 			<div id="maincol">

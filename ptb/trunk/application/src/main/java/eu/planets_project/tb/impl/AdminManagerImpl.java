@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
@@ -15,6 +16,8 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentSetup;
+import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.gui.ExpDesignPhaseListener;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -127,6 +130,7 @@ public class AdminManagerImpl implements AdminManager {
     public static final String APPROVAL_DECISION_AWAITING = null;
     public static final String APPROVAL_DECISION_APPROVED = "Approved";
     public static final String APPROVAL_DECISION_DENIED = "Denied";
+    public static final String APPROVAL_AUTOMATIC_USER = "{automatic}";
 
     /**
      * Does this experiment require administrator approval?
@@ -171,6 +175,7 @@ public class AdminManagerImpl implements AdminManager {
         exp.getExperimentApproval().setGo(true);
         exp.getExperimentApproval().setState(Experiment.STATE_COMPLETED);
         exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
+        exp.getExperimentApproval().addApprovalUser(APPROVAL_AUTOMATIC_USER);
         
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         testbedMan.updateExperiment(exp);
@@ -226,4 +231,45 @@ public class AdminManagerImpl implements AdminManager {
         log.info("The experiment '"+exp.getExperimentSetup().getBasicProperties().getExperimentName()+"' was denied approval for execution.");
     }
     
+    public static boolean experimentAwaitingApproval( Experiment exp ) {
+        if( exp.getCurrentPhasePointer() != ExperimentPhase.PHASE_EXPERIMENTAPPROVAL ) return false;
+        if( exp.getExperimentApproval().getDecision() == null ) return true;
+        if( "".equals(exp.getExperimentApproval().getDecision()) ) return true;
+        return false;
+    }
+    
+    public static boolean experimentWasApproved( Experiment exp ) {
+        if( exp.getCurrentPhasePointer() <= ExperimentPhase.PHASE_EXPERIMENTAPPROVAL ) return false;
+        if( APPROVAL_DECISION_APPROVED.equals( exp.getExperimentApproval().getDecision()) ) return true;
+        return false;
+    }
+    
+    public static boolean experimentWasDenied( Experiment exp ) {
+        if( exp.getCurrentPhasePointer() != ExperimentPhase.PHASE_EXPERIMENTAPPROVAL ) return false;
+        return !experimentWasApproved(exp);
+    }
+    
+    public static void toEditFromDenied(Experiment exp) {
+        if( exp == null ) return;
+        if( exp.getExperimentExecutable() == null );
+        
+        exp.getExperimentApproval().setExplanation("");
+        exp.getExperimentApproval().setDecision("");
+        exp.getExperimentApproval().setGo(false);
+        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
+        exp.getExperimentSetup().setSubStage(ExperimentSetup.SUBSTAGE3);
+        exp.getExperimentApproval().setState(Experiment.STATE_NOT_STARTED);
+        exp.getExperimentExecution().setState(Experiment.STATE_NOT_STARTED);
+        List<String> approvalUsers = exp.getExperimentApproval().getApprovalUsersIDs();
+        // Need to clone to avoid a 'java.util.ConcurrentModificationException':
+        List<String> usersToRemove = new ArrayList<String>();
+        for( String user : approvalUsers ) usersToRemove.add(user);
+        exp.getExperimentApproval().removeApprovalUsers(usersToRemove);
+        
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        testbedMan.updateExperiment(exp);
+        
+        log.info("The experiment '"+exp.getExperimentSetup().getBasicProperties().getExperimentName()+"' was made editable again.");
+    }
+
 }

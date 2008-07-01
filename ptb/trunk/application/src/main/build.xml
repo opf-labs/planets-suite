@@ -220,6 +220,7 @@
       <fileset dir="${basedir}/resources">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
+        <exclude name="testbed-log4j.xml" />
       </fileset>   
     </copy>
 

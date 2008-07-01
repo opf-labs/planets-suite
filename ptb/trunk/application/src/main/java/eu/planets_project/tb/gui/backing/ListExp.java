@@ -123,7 +123,7 @@ public class ListExp extends SortableList {
     public Collection<Experiment> getAllExpAwaitingAuth()
     {    
         TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-        myExps = testbedMan.getAllExperimentsAtPhase(ExperimentPhase.PHASE_EXPERIMENTAPPROVAL);
+        myExps = testbedMan.getAllExperimentsAwaitingApproval();
         currExps = Collections.list(Collections.enumeration(myExps));
         sort(getSort(), isAscending());
         return currExps;

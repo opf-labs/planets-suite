@@ -701,3 +701,11 @@ border-collapse:collapse;
 border-spacing:0pt;
 width:100%;
 }
+/* Experiment approval styles */
+.approvalDenied {
+  color: red;
+}
+.approvalDeniedHeader {
+  text-transform: uppercase;
+  font-weight: bold;
+}

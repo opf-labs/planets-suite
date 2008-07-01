@@ -1,5 +1,8 @@
 package eu.planets_project.tb.api.model;
 
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.impl.AdminManagerImpl;
+
 /**
  *
  * -Phases: Every Experiment consists out of four phases Setup, Approval, Execution and Analysis
@@ -34,4 +37,8 @@ public interface Experiment extends ExperimentPhase{
 	public ExperimentPhase getCurrentPhase();
 	public int getCurrentPhasePointer();
 	
+    public boolean isAwaitingApproval();
+    public boolean isApproved();
+    public boolean isDenied();
+    public String getUsernameOfApprover();
 }

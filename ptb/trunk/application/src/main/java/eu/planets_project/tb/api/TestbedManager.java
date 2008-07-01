@@ -37,6 +37,7 @@ public interface TestbedManager {
 	public Collection<Experiment> getAllExperimentsOfUsers(String sUserID, boolean bIsExperimenter);
     public Collection<Experiment> getAllExperimentsOfType(String sExperimentTypeID);
     public Collection<Experiment> getAllExperimentsAtPhase(int phaseID);
+    public Collection<Experiment> getAllExperimentsAwaitingApproval();
 	public Set<Long> getAllExperimentIDs();
 	public boolean containsExperiment(long expID);
 	public boolean isExperimentNameUnique(String sExpName);

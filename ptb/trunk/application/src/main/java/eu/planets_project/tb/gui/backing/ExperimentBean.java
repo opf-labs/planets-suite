@@ -186,6 +186,7 @@ public class ExperimentBean {
         
         List<Long> refs = props.getExperimentReferences();
         if (refs != null && !refs.isEmpty()) {
+            this.eref = new ArrayList<String>(refs.size());
             for( int i = 0; i < refs.size(); i++ )
                 this.eref.add(i, ""+refs.get(i) );
         }        
@@ -292,9 +293,11 @@ public class ExperimentBean {
                 this.currStage = ExperimentBean.PHASE_EXPERIMENTFINALIZED;                
             }
     	}
-	    if(currStage>ExperimentBean.PHASE_EXPERIMENTSETUP_3)
-	    	approved=true;
-	    
+	    if(currStage>ExperimentBean.PHASE_EXPERIMENTSETUP_3) {
+	        approved=true;
+	    } else {
+	        approved=false;
+	    }
         
         this.dtype = props.getDigiTypes();
         
@@ -1032,4 +1035,6 @@ public class ExperimentBean {
     public boolean isViewXMLResponds(){
     	return this.bRenderXMLResponds;
     }
+    
 }
+

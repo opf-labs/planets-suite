@@ -79,7 +79,9 @@
 	    	      #{res['expList.colHeader.currentStage']}
 		  </t:commandSortHeader>
 			</f:facet>		      
-            <h:outputText value="#{exp.currentPhase.phaseName}" />
+            <h:panelGroup styleClass="#{exp.denied ? 'approvalDenied' : ''}">
+            <h:outputText value="#{exp.currentPhase.phaseName}" /><h:panelGroup rendered="#{exp.denied}" >: <strong><h:outputText value="#{res['approve_exp.denied']}" /></strong></h:panelGroup>
+            </h:panelGroup>
         </t:column>
         <!--
         <t:column>

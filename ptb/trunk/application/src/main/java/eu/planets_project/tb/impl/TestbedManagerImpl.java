@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.faces.context.FacesContext;
+
 
 import org.apache.commons.logging.Log;
 
@@ -201,10 +203,11 @@ public class TestbedManagerImpl
 			this.hmAllExperiments.put(exp.getEntityID(), exp);
 		    // Also update the Experiment backing bean to reflect the changes:
 		    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-		    if( expBean != null ) {
-		        log.debug("Re-filling expBean from exp.");
-		        expBean.fill(experiment);
-		    }
+		    if( expBean == null ) expBean = new ExperimentBean();
+            log.debug("Re-filling expBean from exp.");
+            expBean.fill(experiment);
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
           //End Transaction
 		}
 	}
@@ -287,6 +290,23 @@ public class TestbedManagerImpl
             long helper = itExpIDs.next();
             Experiment exp = this.hmAllExperiments.get(helper);
             if (exp.getCurrentPhasePointer() == phaseID){
+                vRet.add(exp);
+            }
+        }
+        return vRet;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentsAwaitingApproval()
+     */
+    public Collection<Experiment> getAllExperimentsAwaitingApproval() {
+        Vector<Experiment> vRet = new Vector<Experiment>();
+        Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
+        while(itExpIDs.hasNext()){
+            long helper = itExpIDs.next();
+            Experiment exp = this.hmAllExperiments.get(helper);
+            if ( exp.isAwaitingApproval() ){
                 vRet.add(exp);
             }
         }

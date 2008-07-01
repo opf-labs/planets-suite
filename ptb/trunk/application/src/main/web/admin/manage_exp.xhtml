@@ -63,7 +63,7 @@
         <div class="innertube">
         
         <p style="text-align: center;">
-        <h:form>
+        <h:form rendered="#{ExperimentBean.experiment.awaitingApproval}">
           <div style="text-align: center;">
             <b><h:outputText value="#{res['approve_exp.explanation']}" />:</b>
             <br/>
@@ -78,6 +78,25 @@
                         rendered="#{ExperimentBean.currentStage eq 4}" />
           </div>
         </h:form>
+        <!--  Otherwise, just show what happened in judgement: -->
+        <h:panelGroup rendered="#{ExperimentBean.experiment.approved}">
+            <br/>
+            <b><h:outputText value="#{res['approve_exp.approved']}" /></b>
+            <br/>
+            <br/>
+            <b><h:outputText value="#{res['approve_exp.explanation']}" />:</b>
+            <br/>
+            <h:outputText value="#{ExperimentBean.experiment.experimentApproval.explanation}"/>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{ExperimentBean.experiment.denied}">
+            <br/>
+            <b><h:outputText value="#{res['approve_exp.denied']}" /></b>
+            <br/>
+            <br/>
+            <b><h:outputText value="#{res['approve_exp.explanation']}" />:</b>
+            <br/>
+            <h:outputText value="#{ExperimentBean.experiment.experimentApproval.explanation}"/>
+        </h:panelGroup>
         </p>
         
 		</div>

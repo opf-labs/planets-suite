@@ -16,6 +16,8 @@ public interface ExperimentApproval extends ExperimentPhase{
 	
 	public void setGo(boolean go);
 	public boolean getGo();
+
+	
 	
 	/**
 	 * These methods define which roles are required (a user must have) to approve this stage
