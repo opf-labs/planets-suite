@@ -169,13 +169,16 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		plogger.info(shell.getProcessOutputAsString());
 		StringBuffer sb = new StringBuffer();
 		String in = "";
+		String xcdl = null;
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(outputFilePath)));
 			
 			while((in = reader.readLine())!=null) {
 				sb.append(in);
 			}
+			xcdl = sb.toString();
 			plogger.info("XCDL String created.");
+			plogger.info("XCDL: " + xcdl);
 		} catch (FileNotFoundException e) {
 			plogger.error("File not found: " + outputFilePath);
 			e.printStackTrace();
@@ -187,7 +190,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 //		deleteTempFiles(srcFile, xcelFile, new File(outputFilePath), extractor_in_folder, extractor_out_folder, extractor_work_folder);
 		
 		plogger.info("Returning XCDL String.");		
-		return sb.toString();
+		return xcdl;
     }
     
     private void deleteTempFiles(File srcFile, File xcelFile, File outputFile, File in_folder, File out_folder, File work_folder) {
@@ -210,14 +213,14 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		else {
 			plogger.info("File could not be deleted.");
 		}
-//		plogger.info("Deleting file: " + outputFile.getName());	
-//		success = outputFile.delete();
-//		if(success) {
-//			plogger.info("Success!");
-//		}
-//		else {
-//			plogger.info("File could not be deleted.");
-//		}
+		plogger.info("Deleting file: " + outputFile.getName());	
+		success = outputFile.delete();
+		if(success) {
+			plogger.info("Success!");
+		}
+		else {
+			plogger.info("File could not be deleted.");
+		}
 		plogger.info("Deleting folder: " + in_folder.getName());	
 		success = in_folder.delete();
 		if(success) {
