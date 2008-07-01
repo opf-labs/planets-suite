@@ -89,8 +89,8 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
     	}
     	if (SYSTEM_TEMP.equalsIgnoreCase("/tmp")){
     		EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR" + File.separator;
-    		EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
-			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
+    		EXTRACTOR_IN = EXTRACTOR_WORK + File.separator + "IN" + File.separator;
+			EXTRACTOR_OUT = EXTRACTOR_WORK + File.separator + "OUT" + File.separator;
     	}
     	
     	plogger.info("Starting Extractor Service...");
