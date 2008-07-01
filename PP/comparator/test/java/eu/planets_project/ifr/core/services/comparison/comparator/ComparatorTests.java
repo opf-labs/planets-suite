@@ -1,6 +1,6 @@
 package eu.planets_project.ifr.core.services.comparison.comparator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,11 +16,16 @@ import eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXCDLSt
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.Comparator;
 
 /**
- * Local and client tests of the Comparator functionality
+ * Local and client tests of the Comparator service functionality
  * 
  * @author Fabian Steeg
  */
 public class ComparatorTests {
+
+	@Test
+	public void environment() {
+		assertNotNull("COMPARATOR_HOME is not set", Comparator.COMPARATOR_HOME);
+	}
 
 	/**
 	 * Tests PP comparator comparison using a local Comparator instance
@@ -33,14 +38,23 @@ public class ComparatorTests {
 
 	/**
 	 * Tests PP comparator comparison using a Comparator instance retrieved via
-	 * the web service running on localhost
+	 * the web service running on a remote machine (e.g. the test server at UzK)
+	 * or your local machine (see in-line comment)
 	 */
 	@Test
 	public void clientTests() throws FileNotFoundException, IOException,
 			Exception {
-		Service service = Service.create(new URL(
-				"http://localhost:8080/pserv-pp-comparator/Comparator?wsdl"),
-				new QName(PlanetsServices.NS, BasicCompareTwoXCDLStrings.NAME));
+		Service service = Service
+				.create(
+						new URL(
+						/*
+						 * Alternatives:
+						 * "http://planetarium.hki.uni-koeln.de:8080/pserv-pp-comparator/Comparator?wsdl"
+						 * "http://localhost:8080/pserv-pp-comparator/Comparator?wsdl"
+						 */
+						"http://planetarium.hki.uni-koeln.de:8080/pserv-pp-comparator/Comparator?wsdl"),
+						new QName(PlanetsServices.NS,
+								BasicCompareTwoXCDLStrings.NAME));
 		BasicCompareTwoXCDLStrings comparator = service
 				.getPort(BasicCompareTwoXCDLStrings.class);
 		test(comparator);

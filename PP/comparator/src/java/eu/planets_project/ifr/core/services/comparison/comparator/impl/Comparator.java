@@ -38,7 +38,7 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	private static final long serialVersionUID = 1238447797051780267L;
 	private static final PlanetsLogger log = PlanetsLogger
 			.getLogger(Comparator.class);
-	private static String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME")
+	public static String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME")
 			+ File.separator;
 	public static final String NAME = "Comparator";
 	public static final QName QNAME = new QName(PlanetsServices.NS,
