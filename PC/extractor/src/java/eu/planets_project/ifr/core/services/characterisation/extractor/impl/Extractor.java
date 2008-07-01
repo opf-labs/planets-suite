@@ -50,7 +50,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 	private static final long serialVersionUID = 3007130161689982082L;
 	private final static String LOG_CONFIG_FILE = "eu/planets_project/ifr/core/services/characterisation/extractor/logconfig/extractor-log4j.xml";
 	private final static PlanetsLogger plogger = PlanetsLogger.getLogger(Extractor.class, LOG_CONFIG_FILE);
-	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + "\\";
+	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR" + File.separator;
 	private static final String EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
@@ -124,7 +124,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		
 		
 		ProcessRunner shell = new ProcessRunner();
-		
+		plogger.info("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
 		plogger.info("Configuring Commandline");
 		
 		extractor_arguments = new ArrayList <String>();
