@@ -1,6 +1,5 @@
 package eu.planets_project.tb.gui.backing.exp;
 
-
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
@@ -39,6 +38,7 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
 
@@ -51,6 +51,8 @@ import javax.faces.component.html.HtmlInputTextarea;
 import javax.faces.component.html.HtmlOutputLabel;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
+import javax.faces.model.SelectItem;
+
 
 import java.io.File;
 import java.net.URI;
@@ -919,21 +921,30 @@ public class NewExpWizardController {
     	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
     		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
-    		if (availBenchmarks.containsKey(bmg.getID())) {
-    			BenchmarkBean bmb = availBenchmarks.get(bmg.getID());
-    			bmb.setSelected(true);
-    		} else {
-    			BenchmarkBean bmb = new BenchmarkBean(bmg);  			
-    			bmb.setSelected(false);
-        		availBenchmarks.put(bmg.getID(), bmb);
-    		}
+                Iterator dtypeiter = expBean.getDtype().iterator();
+                while (dtypeiter.hasNext()){
+                    String currentType = (String)dtypeiter.next();
+                    //System.out.println("Current type: "+currentType);
+                    DigitalObjectTypesImpl dtypeImpl = new DigitalObjectTypesImpl();
+                    currentType = dtypeImpl.getDtypeName(currentType);
+                    //System.out.print(" i.e. "+currentType);
+                    if (currentType.equalsIgnoreCase(bmg.getCategory())) {
+                        if (availBenchmarks.containsKey(bmg.getID())) {
+                                BenchmarkBean bmb = availBenchmarks.get(bmg.getID());
+                                bmb.setSelected(true);
+                        } else {
+                                BenchmarkBean bmb = new BenchmarkBean(bmg);  			
+                                bmb.setSelected(false);
+                                availBenchmarks.put(bmg.getID(), bmb);
+                        }
+                    }
+                }
     	}
-        // create and put BenchmarkBeans into session 
+       // create and put BenchmarkBeans into session 
         List<BenchmarkBean> bmbeans = new ArrayList<BenchmarkBean>(availBenchmarks.values());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("BenchmarkBeans",bmbeans);
         return "";
     }
-    
        
     private void autoApproveExperiment(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
