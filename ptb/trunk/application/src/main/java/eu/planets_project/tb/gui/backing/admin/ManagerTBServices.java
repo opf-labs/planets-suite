@@ -1,6 +1,10 @@
 package eu.planets_project.tb.gui.backing.admin;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
@@ -11,8 +15,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Vector;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -21,14 +27,28 @@ import javax.faces.model.SelectItem;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.fileupload.UploadedFileDefaultMemoryImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.api.services.util.ServiceTemplateExporter;
+import eu.planets_project.tb.api.services.util.ServiceTemplateImporter;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.FileUploadBean;
+import eu.planets_project.tb.gui.backing.ServiceTemplateBrowser;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.util.ServiceTemplateExporterImpl;
+import eu.planets_project.tb.impl.services.util.ServiceTemplateImporterImpl;
 
 
 /**
@@ -43,6 +63,7 @@ import eu.planets_project.tb.impl.services.util.ServiceTemplateExporterImpl;
 
 public class ManagerTBServices implements ValueChangeListener {
 	
+	private Log log = LogFactory.getLog(ManagerTBServices.class);
 	private List<SelectItem> lServiceSelectItems = new Vector<SelectItem>();
 	private List<SelectItem> lOperationSelectItems = new Vector<SelectItem>();
 	private SelectItem serviceSelectItem;
@@ -586,6 +607,86 @@ public class ManagerTBServices implements ValueChangeListener {
     	StringBuffer sb = sdf.format(gc.getTime(), b, fpos);
 
     	return sb.toString();
+    }
+    
+    //controller for handling import of config files
+    
+    private UploadedFileDefaultMemoryImpl configFile;
+    public void setUploadedConfigFile(UploadedFileDefaultMemoryImpl file){
+    	log.debug("uploading service config template xml...");
+    	this.configFile = file;
+    }
+    
+    public UploadedFileDefaultMemoryImpl getUploadedConfigFile(){
+    	return this.configFile;
+    }
+    
+    private ServiceTemplateImporter importer = null;
+    public String command_ParseUploadedConfigFile()
+    {
+       try {
+			 java.io.InputStream confFile = this.configFile.getInputStream();
+			 importer = new ServiceTemplateImporterImpl(confFile);
+			 TestbedServiceTemplate template = importer.createTemplate();
+
+			 ServiceTemplateBrowser serTempBrowser = (ServiceTemplateBrowser)JSFUtil.getManagedObject("ServiceTemplateBrowser");
+			 serTempBrowser.loadTreeDataFromImportedServiceTemplate(template);
+			 
+			 
+		} catch (Exception e) {
+			this.configFile = null;
+			importer = null;
+	        FacesMessage fmsg = new FacesMessage();
+	        fmsg.setDetail("The provided file is not compliant for this version");
+	        fmsg.setSummary("The provided file is not compliant for this version");
+	        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+	        FacesContext ctx = FacesContext.getCurrentInstance();
+	        ctx.addMessage("formUploadServiceTemplate:configfileupload",fmsg); 
+	        log.debug("The provided file is not compliant for this version");
+		}
+        return "reload-page";
+    }
+    
+    /**
+     * Checks if a service configuration file has been uploaded and should therefore
+     * be displayed.
+     * @return not boolean as this is passed as ui:param
+     */
+    public String getIsServiceConfigRendered(){
+    	if ((this.configFile!=null)&&(this.configFile.getSize()>0))
+    		return "true";
+    	return "false";
+    }
+    
+    public void setIsServiceConfigRendered(String value){
+    	//
+    }
+    
+    /**
+     * Finally imports the provided configuration as service template and 
+     * registers it within the registry
+     * @return
+     */
+    public String command_registerUploadedTemplate(){
+    	if(importer!=null){
+    		try {
+    			//register the template
+				importer.createAndRegisterTemplate();
+				
+			} catch (Exception e) {
+				this.configFile = null;
+				importer = null;
+		        FacesMessage fmsg = new FacesMessage();
+		        fmsg.setDetail("The provided file is not compliant for this version");
+		        fmsg.setSummary("The provided file is not compliant for this version");
+		        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+		        FacesContext ctx = FacesContext.getCurrentInstance();
+		        ctx.addMessage("formUploadServiceTemplate:configfileupload",fmsg); 
+		        log.error(e.toString());
+			}
     	}
+    	return "reload-page";
+    }
+    
 
 }

@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.util.Properties;
-import java.util.Random;
 import java.util.UUID;
 
 import org.apache.commons.logging.Log;
@@ -18,7 +15,6 @@ import org.apache.myfaces.custom.fileupload.UploadedFile;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 
 /**

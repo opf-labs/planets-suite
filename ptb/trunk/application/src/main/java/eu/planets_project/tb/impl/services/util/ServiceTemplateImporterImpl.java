@@ -3,10 +3,12 @@ package eu.planets_project.tb.impl.services.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -41,21 +43,25 @@ import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
 public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,ErrorHandler{
 	
 	private String xmlTemplateSchema;
-	private File xmlTemplateImportFile;
 	private Document document;
 	private Element root;
 	private boolean bEndpointReachable = false;
 	//the serviceTemplate
 	private TestbedServiceTemplateImpl tbService;
 	
-	public ServiceTemplateImporterImpl(File xmlTemplate) throws Exception{
+	/**
+	 * Takes an input stream of an uploaded config-file as input and validates it against the provided XML template schema
+	 * @param xmlTemplate
+	 * @throws Exception if the import is not schema compliant
+	 */
+	public ServiceTemplateImporterImpl(InputStream xmlTemplate) throws Exception{
 		//load serviceTemplate xsd schema - all imports have to be valid against it
 		xmlTemplateSchema = getClass().getClassLoader().getResource("eu/planets_project/tb/impl/TBServiceTemplateSchema.xsd").toExternalForm();
 		//File xmlSchema = new File("C:/DATA/Implementation/SVN_Planets/ptb/trunk/application/src/main/resources/eu/planets_project/tb/impl/TBServiceTemplateSchema.xsd");
 		//xmlTemplateSchema = xmlSchema.getAbsolutePath();
-		xmlTemplateImportFile = xmlTemplate;
+		
 		//validate xmlTemplate import file against schema and loads the Document
-		this.parseAndValidateImportFile();
+		this.parseAndValidateImportFile(xmlTemplate);
 		root = document.getDocumentElement();
 	}
 	
@@ -63,9 +69,9 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 	/**
 	 * Takes the provided importTemplate.xml file, validates it against the schema
 	 * and finally populates the Document object.
-	 * @throws Exception
+	 * @throws Exception if not a valid schema conform document
 	 */
-	private void parseAndValidateImportFile() throws Exception{
+	private void parseAndValidateImportFile(InputStream xmlTemplate) throws Exception{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(true);
 			factory.setNamespaceAware(true);
@@ -79,7 +85,7 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 			DocumentBuilder builder;
 			builder = factory.newDocumentBuilder();
 			builder.setErrorHandler(this);
-			this.document = builder.parse(this.xmlTemplateImportFile);
+			this.document = builder.parse(xmlTemplate);
 	}
 	
 	/* (non-Javadoc)
@@ -128,10 +134,10 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 				tbService = (TestbedServiceTemplateImpl)s;
 			}
 		}
-		else{
+		/*else{
 			//just create a template with the provided data when not registering
 			tbService = new TestbedServiceTemplateImpl();
-		}
+		}*/
 		
 		//description
 		tbService.setDescription(this.getServiceDescription());
@@ -182,55 +188,59 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 			//create an empty serviceOperation object
 			TestbedServiceTemplate.ServiceOperation operation = tbService.new ServiceOperationImpl();
 			//take the current serviceOperation
-			Node opNode = this.getServiceOperationNode(j);
+			NodeList opSettings = this.getServiceOperationNode(j).getChildNodes();
 			
-			//extract it's properties
-			//operationName
-			if(opNode.getNodeName().equals("operationName"))
-				operation.setName(opNode.getTextContent());
+			//extract the operation's properties
+			for(int k=0;k<opSettings.getLength();k++){
+				Node opNode = opSettings.item(k);
+				
+				//operationName
+				if(opNode.getNodeName().equals("operationName"))
+					operation.setName(opNode.getTextContent()); 
+				
+				//description
+				if(opNode.getNodeName().equals("operationDescription"))
+					operation.setDescription(opNode.getTextContent());
+				
+				//xmlRequestTemplate
+				if(opNode.getNodeName().equals("xmlRequestTemplate"))
+					operation.setXMLRequestTemplate(opNode.getTextContent());
+				
+				//xpathQueryToOutput
+				if(opNode.getNodeName().equals("xPathToOutput"))
+					operation.setXPathToOutput(opNode.getTextContent());
+				
+				//max. supported input files
+				if(opNode.getNodeName().equals("getMaxAllowedNrOfInputFiles"))
+					operation.setMaxSupportedInputFiles(Integer.valueOf(opNode.getTextContent()));
 			
-			//description
-			if(opNode.getNodeName().equals("operationDescription"))
-				operation.setDescription(opNode.getTextContent());
+				//min. required input files
+				if(opNode.getNodeName().equals("getMinRequiredNrOfInputFiles"))
+					operation.setMinRequiredInputFiles(Integer.valueOf(opNode.getTextContent()));
 			
-			//xmlRequestTemplate
-			if(opNode.getNodeName().equals("xmlRequestTemplate"))
-				operation.setXMLRequestTemplate(opNode.getTextContent());
+				//set service Operation type: e.g. PA or PC
+				if(opNode.getNodeName().equals("serviceOperationType"))
+					operation.setServiceOperationType(opNode.getTextContent());
 			
-			//xpathQueryToOutput
-			if(opNode.getNodeName().equals("xPathToOutput"))
-				operation.setXPathToOutput(opNode.getTextContent());
+				//set service output type
+				if(opNode.getNodeName().equals("selectedOutputType"))
+					operation.setOutputObjectType(opNode.getTextContent());
 			
-			//max. supported input files
-			if(opNode.getNodeName().equals("getMaxAllowedNrOfInputFiles"))
-				operation.setMaxSupportedInputFiles(Integer.valueOf(opNode.getTextContent()));
-		
-			//min. required input files
-			if(opNode.getNodeName().equals("getMinRequiredNrOfInputFiles"))
-				operation.setMinRequiredInputFiles(Integer.valueOf(opNode.getTextContent()));
-		
-			//set service Operation type: e.g. PA or PC
-			if(opNode.getNodeName().equals("serviceOperationType"))
-				operation.setServiceOperationType(opNode.getTextContent());
-		
-			//set service output type
-			if(opNode.getNodeName().equals("selectedOutputType"))
-				operation.setOutputObjectType(opNode.getTextContent());
-			
-			//input Type: call by value or reference
-			if(opNode.getNodeName().equals("callByValue")){
-				boolean byValue = Boolean.valueOf(opNode.getTextContent());
-				if(byValue){
-					operation.setInputTypeIsCallByValue(byValue);
+				//input Type: call by value or reference
+				if(opNode.getNodeName().equals("callByValue")){
+					boolean byValue = Boolean.valueOf(opNode.getTextContent());
+					if(byValue){
+						operation.setInputTypeIsCallByValue(byValue);
+					}
+					else{
+						operation.setInputTypeIsCallByValue(!byValue);
+					}	
 				}
-				else{
-					operation.setInputTypeIsCallByValue(!byValue);
-				}	
-			}
 			
-			if(opNode.getNodeName().equals("outputFileType")){
-				if(operation.isInputTypeCallByValue()){
-					operation.setOutputFileType(opNode.getTextContent());
+				if(opNode.getNodeName().equals("outputFileType")){
+					if(operation.isInputTypeCallByValue()){
+						operation.setOutputFileType(opNode.getTextContent());
+					}
 				}
 			}
 			

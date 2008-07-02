@@ -49,11 +49,7 @@
   <managed-bean>
   <managed-bean-name>ServiceTemplateBrowser</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.backing.ServiceTemplateBrowser</managed-bean-class>
-  <managed-bean-scope>session</managed-bean-scope>
-    <managed-property>
-   <property-name>initMode</property-name>
-   <value>0</value>
-  </managed-property>
+  <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
  <managed-bean>
   <managed-bean-name>Comment_Backing</managed-bean-name>
@@ -67,17 +63,7 @@
  </managed-bean>
 <!--End Managed Beans -->
 
-<!-- FOR TESTING -->
-<managed-bean>
-        <managed-bean-name>ajaxBean</managed-bean-name>
-        <managed-bean-class>eu.planets_project.tb.gui.AjaxDemoBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-        <managed-property>
-          <property-name>text</property-name>
-          <value/>
-        </managed-property>
-      </managed-bean>
-<!-- END FOR TESTING -->
+
 
 <!-- Start Navigation Rules: General Navigation Rules -->
  <navigation-rule>
@@ -145,13 +131,16 @@
   <!-- render_TBServices -->
    <from-action>#{Manager_Backing.initTBServiceDisplayer}</from-action>
    <to-view-id>/admin/overview_registeredTBServices.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
   <!-- remove_TBServices -->
    <from-action>#{Manager_Backing.initTBServiceManager}</from-action>
    <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
-   <redirect/>
+  </navigation-case>
+  <navigation-case>
+  <!-- import_TBServices through config file -->
+   <from-action>#{Manager_Backing.initTBServiceImporter}</from-action>
+   <to-view-id>/admin/import_registeredTBServices.xhtml</to-view-id>
   </navigation-case>
 
   <navigation-case>

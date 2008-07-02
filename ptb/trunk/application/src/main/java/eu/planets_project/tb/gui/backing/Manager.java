@@ -82,5 +82,21 @@ public class Manager {
 		ctx.getExternalContext().getSessionMap().put("TBServiceManager", manager);
 	    return "manage_TBservices";
     }
+    
+    /**
+     * @author alindley
+     * (re)Init and manage the content of the TBServiceRegistry for removing
+     * services and rendering their metadata on the screen
+     * remove_registeredTBServices.xhtml
+     * @return
+     */
+    public String initTBServiceImporter(){
+    	ManagerTBServices manager = new ManagerTBServices();
+		// Put Bean into Session; accessible later as #{TBServiceRenderer}
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		ctx.getExternalContext().getSessionMap().put("TBServiceManager", manager);
+	    return "import_TBservices";
+    }
+
 
 }

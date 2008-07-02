@@ -152,7 +152,9 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * admin to register this operation for you
 	 */
 	public List<String> getAllWSDLOperationNames(){
-		return this.lAllOperationNamesFromWSDL;
+		//return this.lAllOperationNamesFromWSDL;
+		//TODO: not yet implemented
+		return new Vector<String>();
 	}
 	
 	/**
@@ -161,9 +163,10 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * admin to register this operation for you
 	 */
 	public void setAllWSDLOperationNames(List<String> operationNames){
-		if(operationNames!=null){
+		/*if(operationNames!=null){
 			this.lAllOperationNamesFromWSDL = (Vector<String>)operationNames;
-		}
+		}*/
+		//TODO: not yet implemented
 	}
 	
 	

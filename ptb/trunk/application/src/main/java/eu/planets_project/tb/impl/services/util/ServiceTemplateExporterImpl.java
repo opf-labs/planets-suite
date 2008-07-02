@@ -21,10 +21,12 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.api.services.util.ServiceTemplateExporter;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
 
 /**
  * @author alindley
@@ -99,6 +101,10 @@ public class ServiceTemplateExporterImpl implements ServiceTemplateExporter {
 	    //add the MD5 attribute
 	    elServiceTemplate.setAttribute("serviceMD5id", template.getUUID());
 	    
+	    //add the TB versionID
+	    TestbedManager manager = TestbedManagerImpl.getInstance(true);
+	    elServiceTemplate.setAttribute("TBversionID", manager.getCurrentTBVersionNumber());
+	    
 	    //add the endpoint
 	    Element elEndpoint = doc.createElement("endpoint");
 	    elEndpoint.setTextContent(template.getEndpoint());
@@ -165,28 +171,31 @@ public class ServiceTemplateExporterImpl implements ServiceTemplateExporter {
 	    	
 	    }
 	    
-	    Element elTags =doc.createElement("tags");
-	    //add the tags
-	    List<ServiceTag> lTags = template.getAllTags();
-	    for(int j=0; j<lTags.size();j++){
-	    	ServiceTag tag = lTags.get(j);
-	    	Element elTag =doc.createElement("tag");
-	    	elTag.setAttribute("name", tag.getName());
-	    	Element elValue =doc.createElement("value");
-	    	elValue.setTextContent(tag.getValue());
-	    	elTag.appendChild(elValue);
+	    //add the tags - if there are any
+	    List<ServiceTag> lTags = template.getAllTags(); 
+	    if(lTags.size()>0){
+	    	Element elTags =doc.createElement("tags");
+	   
+	    	for(int j=0; j<lTags.size();j++){
+	    		ServiceTag tag = lTags.get(j);
+	    		Element elTag =doc.createElement("tag");
+	    		elTag.setAttribute("name", tag.getName());
+	    		Element elValue =doc.createElement("value");
+	    		elValue.setTextContent(tag.getValue());
+	    		elTag.appendChild(elValue);
 	    	
-	    	if(!tag.getDescription().equals("")){
-	    		Element elDescr =doc.createElement("description");
-	    		elDescr.setTextContent(tag.getDescription());
-	    		elTag.appendChild(elDescr);
+	    		if(!tag.getDescription().equals("")){
+	    			Element elDescr =doc.createElement("description");
+	    			elDescr.setTextContent(tag.getDescription());
+	    			elTag.appendChild(elDescr);
+	    		}
+	    		//append the tag to tags
+	    		elTags.appendChild(elTag);
 	    	}
-	    	//append the tag to tags
-	    	elTags.appendChild(elTag);
-	    }
 	    
-	    //append the tags to the elServiceTemplate
-	    elServiceTemplate.appendChild(elTags);
+	    	//append the tags to the elServiceTemplate
+	    	elServiceTemplate.appendChild(elTags);
+	    }
 	    
 	    doc.appendChild(elServiceTemplate);
 
