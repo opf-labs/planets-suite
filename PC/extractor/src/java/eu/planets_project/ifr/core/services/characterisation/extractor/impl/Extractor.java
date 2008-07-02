@@ -166,7 +166,10 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		plogger.info("Setting starting Dir to: " + EXTRACTOR_HOME);
 		plogger.info("Starting Extractor...");
 		shell.run();
-		plogger.info(shell.getProcessOutputAsString());
+		String processOutput = shell.getProcessOutputAsString();
+		String processError = shell.getProcessErrorAsString();
+		plogger.info("Process Output: " + processOutput);
+		plogger.info("Process Error: " + processError);
 		StringBuffer sb = new StringBuffer();
 		String in = "";
 		String xcdl = null;
@@ -178,7 +181,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 			}
 			xcdl = sb.toString();
 			plogger.info("XCDL String created.");
-			plogger.info("XCDL: " + xcdl);
+			plogger.info("XCDL: " + xcdl.substring(0, 500));
 		} catch (FileNotFoundException e) {
 			plogger.error("File not found: " + outputFilePath);
 			e.printStackTrace();
