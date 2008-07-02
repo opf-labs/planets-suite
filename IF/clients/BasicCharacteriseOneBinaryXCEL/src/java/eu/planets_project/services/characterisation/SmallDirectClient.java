@@ -34,12 +34,12 @@ public class SmallDirectClient {
 		// Please fill in the path to your INPUT IMAGE:
 		File input_image = 
 			
-			new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah/resultJpgToTiffConversionClient25583.TIF");
+			new File("/opt/extractor/res/testpng/XTOOL.tif");
 		
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
 			
-			new File("D:/Extractor/Extractor-v0.1-win32bin/Extractor0.1/res/xcl/xcel/xcel_docs/xcel_tiff.xml");
+			new File("/opt/extractor/res/xcl/xcel/xcel_docs/xcel_tiff.xml");
 		
 		// Please specify the name and the location of the OUTPUT-FILE:
 		File outputFolder = new File(CLIENT_OUTPUT_DIR);
