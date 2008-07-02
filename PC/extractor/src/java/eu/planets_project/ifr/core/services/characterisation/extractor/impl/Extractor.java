@@ -1,5 +1,6 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -183,6 +184,10 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 			plogger.info("Creating byte[] to return...");
 			binary_out = getByteArrayFromFile(new File(outputFilePath));
 			
+			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(EXTRACTOR_OUT + "test_out.xml")));
+			bos.write(binary_out);
+			bos.flush();
+			bos.close();
 //			BufferedReader reader = new BufferedReader(new FileReader(new File(outputFilePath)));
 //			
 //			while((in = reader.readLine())!=null) {
