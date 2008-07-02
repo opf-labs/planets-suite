@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -170,18 +171,20 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		String processError = shell.getProcessErrorAsString();
 		plogger.info("Process Output: " + processOutput);
 		plogger.info("Process Error: " + processError);
-		StringBuffer sb = new StringBuffer();
+		StringWriter sWriter = new StringWriter();
+//		StringBuffer sb = new StringBuffer();
+		
 		String in = "";
 		String xcdl = null;
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(new File(outputFilePath)));
 			
 			while((in = reader.readLine())!=null) {
-				sb.append(in);
+				sWriter.append(in);
 			}
-			xcdl = sb.toString();
+			xcdl = sWriter.toString();
 			plogger.info("XCDL String created.");
-			plogger.info("XCDL: " + xcdl.substring(0, 500));
+			plogger.info("XCDL: " + xcdl.substring(0, 1000));
 		} catch (FileNotFoundException e) {
 			plogger.error("File not found: " + outputFilePath);
 			e.printStackTrace();
