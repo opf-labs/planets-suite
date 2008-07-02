@@ -50,7 +50,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 
 	private static final long serialVersionUID = 3007130161689982082L;
 	private final static String LOG_CONFIG_FILE = "eu/planets_project/ifr/core/services/characterisation/extractor/logconfig/extractor-log4j.xml";
-	private final static PlanetsLogger plogger = PlanetsLogger.getLogger(Extractor.class, LOG_CONFIG_FILE);
+	private final static PlanetsLogger plogger = PlanetsLogger.getLogger(Extractor.class);
 	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static String EXTRACTOR_WORK = null;
@@ -184,7 +184,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 			}
 			xcdl = sWriter.toString();
 			plogger.info("XCDL String created.");
-			plogger.info("XCDL: " + xcdl.substring(0, 1000));
+			plogger.info("XCDL: " + xcdl.substring(0, 1000) + "...." + xcdl.substring(xcdl.length()-1001, xcdl.length()-1));
 		} catch (FileNotFoundException e) {
 			plogger.error("File not found: " + outputFilePath);
 			e.printStackTrace();

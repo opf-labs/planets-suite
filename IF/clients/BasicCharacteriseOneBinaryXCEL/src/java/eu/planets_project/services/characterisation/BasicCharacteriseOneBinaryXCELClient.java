@@ -25,7 +25,8 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		
 		String wsdlLocation = 
 			
-			"http://planets-dev:8080/pserv-pc-extractor/Extractor?wsdl";
+			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor?wsdl";
+//			"http://localhost:8080/pserv-pc-extractor/Extractor?wsdl";
 		
 		QName qName = BasicCharacteriseOneBinaryXCEL.QNAME;
 		System.out.println("Creating Service...");
@@ -64,10 +65,13 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		}
 				
 		String xcelString = sb.toString(); 
+		System.out.println();
+		System.out.println("XCEL: " + xcelString);
 		System.out.println("Creating Extractor instance...");
 		System.out.println("Sending data to Webservice...");
 		String xcdlString = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
 		System.out.println("Success!!! Retrieved Result from Webservice!");
+		System.out.println("XCDL: " + xcdlString.substring(0, 1000));
 		System.out.println("Creating output file...");
 		FileWriter writer = new FileWriter(output_xcdl);
 		writer.write(xcdlString);
