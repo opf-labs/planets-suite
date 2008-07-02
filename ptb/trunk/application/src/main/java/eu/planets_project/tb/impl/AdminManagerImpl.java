@@ -18,7 +18,7 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.ExperimentPhase;
-import eu.planets_project.tb.gui.ExpDesignPhaseListener;
+import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
@@ -36,7 +36,11 @@ public class AdminManagerImpl implements AdminManager {
 	private AdminManagerImpl(){
 		// Read properties file.
 		hmExperimentTypes = readExperimentTypes();
-	}
+		// Also read basic properties:
+		BackendProperties bp = new BackendProperties();
+		APPROVAL_THRESHOLD_NUMBER_OF_INPUTS = bp.getExpAdminNoInputs();
+		log.info("Set number of inputs before admin approval required at: "+APPROVAL_THRESHOLD_NUMBER_OF_INPUTS);
+    }
 	
 	/**
 	 * This class is implemented following the Java Singleton Pattern.
@@ -121,6 +125,7 @@ public class AdminManagerImpl implements AdminManager {
 	
     /**
      * Threshold for the number of inputs before approval is required.
+     * Can be overridden from BackendProperties. See constructor.
      */
     public static int APPROVAL_THRESHOLD_NUMBER_OF_INPUTS = 0;
     
