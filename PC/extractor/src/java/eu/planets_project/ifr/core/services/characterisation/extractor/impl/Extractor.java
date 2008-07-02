@@ -174,28 +174,39 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		String processError = shell.getProcessErrorAsString();
 		plogger.info("Process Output: " + processOutput);
 		plogger.info("Process Error: " + processError);
-		StringWriter sWriter = new StringWriter();
-//		StringBuffer sb = new StringBuffer();
+//		StringWriter sWriter = new StringWriter();
+		StringBuffer sb = new StringBuffer();
 		
 		String in = "";
 		String xcdl = null;
 		byte[] binary_out = null;
+		byte[] test = null;
 		try {
 			plogger.info("Creating byte[] to return...");
 			binary_out = getByteArrayFromFile(new File(outputFilePath));
 			
-			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(new File(EXTRACTOR_OUT + "test_out.xml")));
+			// START TESTING
+			File test_out = new File(EXTRACTOR_OUT + "test_out.xml");
+			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(test_out));
 			bos.write(binary_out);
 			bos.flush();
 			bos.close();
-//			BufferedReader reader = new BufferedReader(new FileReader(new File(outputFilePath)));
-//			
-//			while((in = reader.readLine())!=null) {
-//				sWriter.write(in);
-//			}
-//			xcdl = sWriter.toString();
-//			plogger.info("XCDL String created.");
-//			plogger.info("XCDL: " + xcdl.substring(0, 1000) + "...." + xcdl.substring(xcdl.length()-1001, xcdl.length()-1));
+			
+			BufferedReader reader = new BufferedReader(new FileReader(test_out));
+			
+			while((in = reader.readLine())!=null) {
+				sb.append(in);
+			}
+			reader.close();
+			
+			xcdl = sb.toString();
+			plogger.info("XCDL String created.");
+			plogger.info("XCDL: " + xcdl.substring(0, 1000) + "...." + xcdl.substring(xcdl.length()-1001, xcdl.length()-1));
+			test = getByteArrayFromFile(test_out);
+			
+			// END TESTING
+			
+			
 		} catch (FileNotFoundException e) {
 			plogger.error("File not found: " + outputFilePath);
 			e.printStackTrace();
@@ -207,7 +218,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 //		deleteTempFiles(srcFile, xcelFile, new File(outputFilePath), extractor_in_folder, extractor_out_folder, extractor_work_folder);
 		
 		plogger.info("Returning XCDL String.");		
-		return binary_out;
+		return test;
     }
     
     private static byte[] getByteArrayFromFile(File file) throws IOException {
