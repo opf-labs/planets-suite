@@ -2,11 +2,13 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -70,7 +72,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
             name = BasicCharacteriseOneBinaryXCEL.NAME+"Result", 
             targetNamespace = PlanetsServices.NS + "/" + BasicCharacteriseOneBinaryXCEL.NAME, 
             partName = BasicCharacteriseOneBinaryXCEL.NAME + "Result")
-    public String basicCharacteriseOneBinaryXCEL ( 
+    public byte[] basicCharacteriseOneBinaryXCEL ( 
     @WebParam(
             name = "binary", 
             targetNamespace = PlanetsServices.NS + "/" + BasicCharacteriseOneBinaryXCEL.NAME, 
@@ -176,15 +178,19 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		
 		String in = "";
 		String xcdl = null;
+		byte[] binary_out = null;
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(new File(outputFilePath)));
+			plogger.info("Creating byte[] to return...");
+			binary_out = getByteArrayFromFile(new File(outputFilePath));
 			
-			while((in = reader.readLine())!=null) {
-				sWriter.append(in);
-			}
-			xcdl = sWriter.toString();
-			plogger.info("XCDL String created.");
-			plogger.info("XCDL: " + xcdl.substring(0, 1000) + "...." + xcdl.substring(xcdl.length()-1001, xcdl.length()-1));
+//			BufferedReader reader = new BufferedReader(new FileReader(new File(outputFilePath)));
+//			
+//			while((in = reader.readLine())!=null) {
+//				sWriter.write(in);
+//			}
+//			xcdl = sWriter.toString();
+//			plogger.info("XCDL String created.");
+//			plogger.info("XCDL: " + xcdl.substring(0, 1000) + "...." + xcdl.substring(xcdl.length()-1001, xcdl.length()-1));
 		} catch (FileNotFoundException e) {
 			plogger.error("File not found: " + outputFilePath);
 			e.printStackTrace();
@@ -196,7 +202,43 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 //		deleteTempFiles(srcFile, xcelFile, new File(outputFilePath), extractor_in_folder, extractor_out_folder, extractor_work_folder);
 		
 		plogger.info("Returning XCDL String.");		
-		return xcdl;
+		return binary_out;
+    }
+    
+    private static byte[] getByteArrayFromFile(File file) throws IOException {
+        InputStream is = new FileInputStream(file);
+    
+        // Get the size of the file
+        long length = file.length();
+    
+        // You cannot create an array using a long type.
+        // It needs to be an int type.
+        // Before converting to an int type, check
+        // to ensure that file is not larger than Integer.MAX_VALUE.
+        if (length > Integer.MAX_VALUE) {
+            //throw new IllegalArgumentException("getBytesFromFile@JpgToTiffConverter:: The file is too large (i.e. larger than 2 GB!");
+        	System.out.println("Datei ist zu gross (e.g. groesser als 2GB)!");
+        }
+    
+        // Create the byte array to hold the data
+        byte[] bytes = new byte[(int)length];
+    
+        // Read in the bytes
+        int offset = 0;
+        int numRead = 0;
+        while (offset < bytes.length
+               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
+            offset += numRead;
+        }
+    
+        // Ensure all the bytes have been read in
+        if (offset < bytes.length) {
+            throw new IOException("Could not completely read file "+file.getName());
+        }
+    
+        // Close the input stream and return bytes
+        is.close();
+        return bytes;
     }
     
     private void deleteTempFiles(File srcFile, File xcelFile, File outputFile, File in_folder, File out_folder, File work_folder) {

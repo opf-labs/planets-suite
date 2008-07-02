@@ -1,9 +1,11 @@
 package eu.planets_project.services.characterisation;
 
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,7 +39,7 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		// Please fill in the path to your INPUT IMAGE:
 		File input_image = 
 			
-			new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah/result56727.PNG");
+			new File("D:/Extractor/Extractor-v0.1-win32bin/Extractor0.1/res/testpng/Characterisation.png");
 		
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
@@ -69,14 +71,18 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		System.out.println("XCEL: " + xcelString);
 		System.out.println("Creating Extractor instance...");
 		System.out.println("Sending data to Webservice...");
-		String xcdlString = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
+		byte[] xcdl = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
 		System.out.println("Success!!! Retrieved Result from Webservice!");
-		System.out.println("XCDL: " + xcdlString.substring(0, 1000));
+//		System.out.println("XCDL: " + xcdlString.substring(0, 1000) + "..." + xcdlString.substring(xcdlString.length()-1001, xcdlString.length()));
 		System.out.println("Creating output file...");
-		FileWriter writer = new FileWriter(output_xcdl);
-		writer.write(xcdlString);
-		writer.flush();
-		writer.close();
+//		FileWriter writer = new FileWriter(output_xcdl);
+//		writer.write(xcdlString);
+//		writer.flush();
+//		writer.close();
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(output_xcdl));
+		bos.write(xcdl);
+		bos.flush();
+		bos.close();
 		System.out.println("Please find the Result XCDL-File here: " + output_xcdl.getAbsolutePath());
 	}
 	
