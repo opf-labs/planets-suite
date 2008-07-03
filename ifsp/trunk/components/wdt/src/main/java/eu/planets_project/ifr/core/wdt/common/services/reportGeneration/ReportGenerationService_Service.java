@@ -21,7 +21,7 @@ import javax.xml.ws.WebServiceClient;
  * JAX-WS Version: 2.0
  * 
  */
-@WebServiceClient(name = "ReportGenerationService", targetNamespace = "http://services.planets-project.eu/ifr/reporting", wsdlLocation = "http://dme023:8080/ReportGenerationService/ReportGenerationService?wsdl")
+@WebServiceClient(name = "ReportGenerationService", targetNamespace = "http://services.planets-project.eu/ifr/reporting", wsdlLocation = "http://localhost:8080/ReportGenerationService/ReportGenerationService?wsdl")
 public class ReportGenerationService_Service
     extends Service
 {
@@ -31,7 +31,7 @@ public class ReportGenerationService_Service
     static {
         URL url = null;
         try {
-            url = new URL("http://dme023:8080/ReportGenerationService/ReportGenerationService?wsdl");
+            url = new URL("http://localhost:8080/ReportGenerationService/ReportGenerationService?wsdl");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
