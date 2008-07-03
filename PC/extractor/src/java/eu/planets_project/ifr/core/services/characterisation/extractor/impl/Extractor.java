@@ -257,7 +257,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		
 		deleteTempFiles(srcFile, xcelFile, new File(outputFilePath), extractor_in_folder, extractor_out_folder, extractor_work_folder);
 		
-		plogger.info("Returning XCDL String.");		
+		plogger.info("XCDL Outputfile stored in: " + outputURI.toASCIIString());		
 //		return test;
 		return outputURI;
     }
