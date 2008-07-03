@@ -294,13 +294,13 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 		}
 		
 		try {
-			plogger.info("Creating migratedFileURI...");
+			plogger.info("Creating File URI...");
 			plogger.info("URI will be: " + dataRegistryPath + "/" + EXTRACTOR_DR_OUT + "/" + fileName);
 			
 			// Create the new URI for storing the file to the DataRegistry.
 			fileURI = new URI(dataRegistryPath + "/" + EXTRACTOR_DR_OUT + "/" + fileName);
 			
-			plogger.info("Created migratedFileURI: " + fileURI.toASCIIString());
+			plogger.info("Created File URI: " + fileURI.toASCIIString());
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			plogger.error("Malformed URI...! " + fileURI.toASCIIString());
@@ -317,10 +317,15 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 			
 			URI[] searchResults = dataRegistry.findFilesWithNameContaining(registryRoot, fileName);
 			
+			
+			// debug output
 			StringBuffer sb = new StringBuffer();
 			for(int i=0;i<searchResults.length;i++){
 				sb = sb.append(searchResults[i].toASCIIString() + "\n");
 			}
+			// end debug output
+			
+			
 			plogger.info("Found the following hits: " + sb.toString());
 			
 			// The returned URI[] searchResults is not NULL and
@@ -357,6 +362,7 @@ public class Extractor implements BasicCharacteriseOneBinaryXCEL, Serializable {
 							// store it in the DataRegistry, using the new filename
 							dataRegistry.storeBinary(renamedFileURI, binary);
 							plogger.info("Successfully stored binary to DataRegistry: " + renamedFileName);
+							fileURI = renamedFileURI;
 						}
 						
 						// There have been hits (e.g. files with the same name), but in a different folder,
