@@ -27,6 +27,7 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
+import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.tb.impl.system.ExperimentInvocationHandlerImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
@@ -50,7 +51,9 @@ public class TestbedManagerImpl
 	private static TestbedManagerImpl instance;
 	private HashMap<Long,Experiment> hmAllExperiments;
 	//e.g. used within the serviceTemplate importer and exporter
-	private String tbVersion = "0.6";
+	
+	// The version number of the Testbed.  Can be overridden in BackendResources.properties.
+	private String tbVersion = "0.5";
 	
 	
 	/**
@@ -60,6 +63,10 @@ public class TestbedManagerImpl
 	public TestbedManagerImpl(){
 		hmAllExperiments = this.queryAllExperiments();
 		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
+		// Update the version number, if set in the properties:
+        BackendProperties bp = new BackendProperties();
+		String version = bp.getTestbedVersion();
+		if( version != null && ! "".equals(version)) tbVersion = version;
 	}
 	
 	

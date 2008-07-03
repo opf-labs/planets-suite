@@ -26,6 +26,10 @@ public class BackendProperties {
     public static final String JBOSS_FILEOUTBASE = "JBoss.FileOutDir";
     public static final String JBOSS_LOCALDATADIR = "JBoss.LocalDataDir";
     public static final String JBOSS_ALTLOCALDATADIR = "JBoss.AltLocalDataDir";
+    
+    // Testbed properties
+    public static final String TB_VERSION = "testbed.version";
+   
 
     // Experiment properties.
     // The max number of input files before admin approval is required to run the experiment.
@@ -86,6 +90,13 @@ public class BackendProperties {
     public  int getExpAdminNoInputs() {
         return Integer.valueOf( properties.getProperty(EXP_ADMIN_NOINPUTS) );
     }
-    
+
+    /**
+     * 
+     * @return
+     */
+    public String getTestbedVersion() {
+        return properties.getProperty(TB_VERSION);
+    }
     
 }
