@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
@@ -21,14 +22,15 @@ import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteris
 public class BasicCharacteriseOneBinaryXCELClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR_CLIENT_OUTPUT";
+	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME");
 	
 	public static void main(String[] args) throws IOException, PlanetsException {
 		
-		
+		System.out.println("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
 		String wsdlLocation = 
 			
-			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor?wsdl";
-//			"http://localhost:8080/pserv-pc-extractor/Extractor?wsdl";
+//			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor?wsdl";
+			"http://localhost:8080/pserv-pc-extractor/Extractor?wsdl";
 		
 		QName qName = BasicCharacteriseOneBinaryXCEL.QNAME;
 		System.out.println("Creating Service...");
@@ -39,7 +41,7 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		// Please fill in the path to your INPUT IMAGE:
 		File input_image = 
 			
-			new File("D:/Extractor/Extractor-v0.1-win32bin/Extractor0.1/res/testpng/Characterisation.png");
+			new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah/result56727.PNG");
 		
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
@@ -68,10 +70,11 @@ public class BasicCharacteriseOneBinaryXCELClient {
 				
 		String xcelString = sb.toString(); 
 		System.out.println();
-		System.out.println("XCEL: " + xcelString);
+//		System.out.println("XCEL: " + xcelString);
 		System.out.println("Creating Extractor instance...");
 		System.out.println("Sending data to Webservice...");
-		byte[] xcdl = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
+//		byte[] xcdl = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
+		URI outputFileURI = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
 		System.out.println("Success!!! Retrieved Result from Webservice!");
 //		System.out.println("XCDL: " + xcdlString.substring(0, 1000) + "..." + xcdlString.substring(xcdlString.length()-1001, xcdlString.length()));
 		System.out.println("Creating output file...");
@@ -79,11 +82,11 @@ public class BasicCharacteriseOneBinaryXCELClient {
 //		writer.write(xcdlString);
 //		writer.flush();
 //		writer.close();
-		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(output_xcdl));
-		bos.write(xcdl);
-		bos.flush();
-		bos.close();
-		System.out.println("Please find the Result XCDL-File here: " + output_xcdl.getAbsolutePath());
+//		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(output_xcdl));
+//		bos.write(xcdl);
+//		bos.flush();
+//		bos.close();
+		System.out.println("Please find the Result XCDL-File here: " + outputFileURI.toASCIIString());
 	}
 	
 	
