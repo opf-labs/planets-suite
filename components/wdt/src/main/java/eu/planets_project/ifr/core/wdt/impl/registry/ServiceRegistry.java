@@ -190,20 +190,20 @@ public class ServiceRegistry
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);
 
 			serviceId = regWriter.registerService("MagicPng2Tiff@localhost", "service_dsc");
-			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://dme023:8080/ifr-jmagickconverter-ejb/PngToTiffConverter?wsdl");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/ifr-jmagickconverter-ejb/PngToTiffConverter?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);			
 			
 			serviceId = regWriter.registerService("MagicTiff2Png@localhost", "service_dsc");
-			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://dme023:8080/ifr-jmagickconverter-ejb/TiffToPngConverter?wsdl");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/ifr-jmagickconverter-ejb/TiffToPngConverter?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);						
 			
 			serviceId = regWriter.registerService("MagicJpg2Png@localhost", "service_dsc");
-			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://dme023:8080/ifr-jmagickconverter-ejb/JpgToPngConverter?wsdl");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/ifr-jmagickconverter-ejb/JpgToPngConverter?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);						
 			
 			//cmd-line
 			serviceId = regWriter.registerService("CmdPs2Pdf@localhost", "service_dsc");
-			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://dme023:8080/ifr-ps2pdf-ejb/Ps2PdfBasicMigration?wsdl");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/ifr-ps2pdf-ejb/Ps2PdfBasicMigration?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);						
 			
 			serviceId = regWriter.registerService("MagicIdentification@localhost", "service_dsc");
@@ -216,7 +216,7 @@ public class ServiceRegistry
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);			
 						
 			serviceId = regWriter.registerService("XenaODF2PDF@localhost", "service_dsc");
-			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://dme023:8080/pserv-pa-xena/ODFToPDFXena?wsdl");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/pserv-pa-xena/ODFToPDFXena?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);									
 
 			//droid			
@@ -227,11 +227,11 @@ public class ServiceRegistry
 
 			//release 1
 			serviceId = regWriter.registerService("SimpleCharacterization@localhost", "service_dsc");
-			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://dme023:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[1]);
 			
 			serviceId = regWriter.registerService("Doc2OpenXML@localhost", "service_dsc");
-			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://dme023:8080/ifr-openXML-ejb/OpenXMLMigration?wsdl");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/ifr-openXML-ejb/OpenXMLMigration?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);
 
 		} catch(Exception e) {

@@ -21,7 +21,7 @@ import javax.xml.ws.WebServiceClient;
  * JAX-WS Version: 2.0
  * 
  */
-@WebServiceClient(name = "ServiceRegistryManager", targetNamespace = "http://planets-project.eu/ifr/core/registry", wsdlLocation = "http://dme023:8080/registry-ifr-registry-ejb/ServiceRegistryManager?wsdl")
+@WebServiceClient(name = "ServiceRegistryManager", targetNamespace = "http://planets-project.eu/ifr/core/registry", wsdlLocation = "http://localhost:8080/registry-ifr-registry-ejb/ServiceRegistryManager?wsdl")
 public class ServiceRegistryManager_Service
     extends Service
 {
@@ -31,7 +31,7 @@ public class ServiceRegistryManager_Service
     static {
         URL url = null;
         try {
-            url = new URL("http://dme023:8080/registry-ifr-registry-ejb/ServiceRegistryManager?wsdl");
+            url = new URL("http://localhost:8080/registry-ifr-registry-ejb/ServiceRegistryManager?wsdl");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
