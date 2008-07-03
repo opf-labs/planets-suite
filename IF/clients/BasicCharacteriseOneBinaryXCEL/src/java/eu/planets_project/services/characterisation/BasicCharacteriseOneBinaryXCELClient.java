@@ -10,27 +10,34 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPException;
 import javax.xml.ws.Service;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCEL;
+import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 
 public class BasicCharacteriseOneBinaryXCELClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR_CLIENT_OUTPUT";
 	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME");
 	
-	public static void main(String[] args) throws IOException, PlanetsException {
+	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception {
 		
 		System.out.println("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
 		String wsdlLocation = 
 			
-//			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor?wsdl";
-			"http://localhost:8080/pserv-pc-extractor/Extractor?wsdl";
+			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor?wsdl";
+//			"http://localhost:8080/pserv-pc-extractor/Extractor?wsdl";
 		
 		QName qName = BasicCharacteriseOneBinaryXCEL.QNAME;
 		System.out.println("Creating Service...");
@@ -78,6 +85,7 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		System.out.println("Success!!! Retrieved Result from Webservice!");
 //		System.out.println("XCDL: " + xcdlString.substring(0, 1000) + "..." + xcdlString.substring(xcdlString.length()-1001, xcdlString.length()));
 		System.out.println("Creating output file...");
+		byte[] binaryOut = getBinaryFromDataRegistry(outputFileURI.toASCIIString());
 //		FileWriter writer = new FileWriter(output_xcdl);
 //		writer.write(xcdlString);
 //		writer.flush();
@@ -86,9 +94,36 @@ public class BasicCharacteriseOneBinaryXCELClient {
 //		bos.write(xcdl);
 //		bos.flush();
 //		bos.close();
-		System.out.println("Please find the Result XCDL-File here: " + outputFileURI.toASCIIString());
+		BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(output_xcdl));
+		os.write(binaryOut);
+		os.flush();
+		os.close();
+		System.out.println("Please find the Result XCDL-File here: " + output_xcdl.getAbsolutePath());
 	}
 	
+	
+	  private static byte[] getBinaryFromDataRegistry(String fileReference) throws SOAPException_Exception, MalformedURLException{
+			System.out.println("Starting to get File from DataRegistry...");
+			
+			URI fileURI = null;
+			try {
+				fileURI = new URI(fileReference);
+			} catch (URISyntaxException e1) {
+				System.out.println("Exception: " + e1.getLocalizedMessage());
+				e1.printStackTrace();
+			}
+			String wsdl_location = 
+				
+				"http://planetarium.hki.uni-koeln.de:8080/storage-ifr-storage-ejb/DataManager?wsdl";
+			
+			DataManager_Service service = new DataManager_Service(new URL(wsdl_location), new QName("http://planets-project.eu/ifr/core/storage/data", "DataManager"));
+			
+			DataManager dataManager = service.getDataManagerPort(); 
+
+			byte[] srcFileArray = dataManager.retrieveBinary(fileReference);
+			
+			return srcFileArray; 		
+		}
 	
 	private static byte[] getByteArrayFromFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);
