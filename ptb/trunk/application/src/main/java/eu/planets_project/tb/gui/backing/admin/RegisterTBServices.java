@@ -71,7 +71,7 @@ import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
-import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 
 /**
  * 
@@ -2034,7 +2034,7 @@ public class RegisterTBServices{
 		
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	   	//e.g. localhost:8080
-		String authority = DataHandlerImpl.getAuthority();
+		String authority = AdminManagerImpl.getAuthority();
 		try {
 			//1) enter the jbossws/services uri
 			//URI(scheme,authority,path,query,fragement)

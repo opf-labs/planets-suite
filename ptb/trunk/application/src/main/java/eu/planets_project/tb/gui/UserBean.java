@@ -112,18 +112,7 @@ public class UserBean
         
         this.userid = userid;
         // Also, when the user ID is set, look up the user details
-        UserManager um = UserBean.getUserManager();
-        if( um == null ) {
-            log.error("Could not get the User Manager!");
-            return;
-        }
-        User u = null;
-        try {
-            u = um.getUserByUsername(userid);
-        } catch( UserNotFoundException e ){
-            log.error("Exception while attempting to load the User details for '"+userid+"': "+e);
-            if( log.isDebugEnabled() ) e.printStackTrace();
-        }
+        User u = getUser(userid);
         // If we succeeded:
         if( u != null ) {
             this.firstname = u.getFirstName();
@@ -229,6 +218,27 @@ public class UserBean
             log.error("Failure in getting PortableRemoteObject: "+e.toString());
             return null;
         }
+    }
+    
+    /**
+     * Look up a User, by username:
+     */
+    public static User getUser(String username) {
+        
+        UserManager um = UserBean.getUserManager();
+        if( um == null ) {
+            log.error("Could not get the User Manager!");
+            return null ;
+        }
+        User u = null;
+        try {
+            u = um.getUserByUsername(username);
+        } catch( UserNotFoundException e ){
+            log.error("Exception while attempting to load the User details for '"+username+"': "+e);
+            if( log.isDebugEnabled() ) e.printStackTrace();
+        }
+        
+        return u;
     }
 
     /**

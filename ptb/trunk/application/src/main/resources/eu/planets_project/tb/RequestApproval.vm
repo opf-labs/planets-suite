@@ -1,0 +1,11 @@
+To ${user.fullName},
+
+This experiment requires approval to execute.
+
+To approve or deny execution, go to: ${applicationURL}
+
+Regards,
+
+The Testbed Team.
+
+#set ($subject="Experiment '${expName}' requires administrator approval.")

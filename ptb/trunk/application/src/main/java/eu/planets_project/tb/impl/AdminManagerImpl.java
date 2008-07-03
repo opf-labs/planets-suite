@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,7 +13,16 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.exception.VelocityException;
+
+
+import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
+import eu.planets_project.ifr.core.common.mail.PlanetsMailer;
+import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
@@ -167,7 +177,7 @@ public class AdminManagerImpl implements AdminManager {
         testbedMan.updateExperiment(exp);
         
         // Mail the administrator:
-        // FIXME Alert the admin user.
+        sendApprovalRequest(exp);
         log.info("The experiment '"+exp.getExperimentSetup().getBasicProperties().getExperimentName()+"' requires administrator approval.");
     }
     
@@ -209,7 +219,7 @@ public class AdminManagerImpl implements AdminManager {
         testbedMan.updateExperiment(exp);
         
         // Mail the user:
-        // FIXME Alert the user.
+        sendApprovalNotice(exp);
         log.info("The experiment '"+exp.getExperimentSetup().getBasicProperties().getExperimentName()+"' was approved for execution.");
     }
     
@@ -232,7 +242,7 @@ public class AdminManagerImpl implements AdminManager {
         testbedMan.updateExperiment(exp);
         
         // Mail the user:
-        // FIXME Alert the user.
+        sendDenialNotice(exp);
         log.info("The experiment '"+exp.getExperimentSetup().getBasicProperties().getExperimentName()+"' was denied approval for execution.");
     }
     
@@ -276,5 +286,94 @@ public class AdminManagerImpl implements AdminManager {
         
         log.info("The experiment '"+exp.getExperimentSetup().getBasicProperties().getExperimentName()+"' was made editable again.");
     }
+    
+    /**
+     * Code for emails related to Approval.
+     * 
+     */
+    private static void sendNotification(String username, String templateName, Experiment exp ) {
+        
+        VelocityEngine velocityEngine = new VelocityEngine();
+        Properties props = new Properties();
+        props.setProperty("resource.loader", "class");
+        props.setProperty("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+        props.setProperty("velocimacro.library", "");
+        try {
+            velocityEngine.init(props);
+        } catch( Exception e ) {
+            log.error("Failed to initialise the Velocity engine. :: " + e );
+        }
+        
+        // Look up the user.
+        User user = UserBean.getUser(username);
+        if( user == null ) return;
+        
+        // Create a message:
+        PlanetsMailMessage message = new PlanetsMailMessage();
+        
+        // Add the recipient in properly.
+        message.addRecipient(user.getFullName() + "<" + user.getEmail() + ">");
+        
+        // Determine the Testbed URL:
+        String testbedURL = "http://"+AdminManagerImpl.getAuthority()+"/testbed/";
 
+        Map<String,Object> model = new HashMap<String,Object>();
+        model.put("user", user);
+        model.put("exp", exp);
+        model.put("expName", exp.getExperimentSetup().getBasicProperties().getExperimentName());
+        model.put("applicationURL", testbedURL);
+        
+        VelocityContext velocityContext;
+        StringWriter result = new StringWriter();
+        try {
+            velocityContext = new VelocityContext(model);
+            velocityEngine.mergeTemplate("eu/planets_project/tb/"+templateName+".vm", velocityContext, result);
+        } catch  (VelocityException ex) {
+            log.error("Mailing failed! :: "+ex);
+            return;
+        } catch  (RuntimeException ex) {
+            log.error("Mailing failed! :: "+ex);
+            return;
+        } catch  (Exception ex) {
+            log.error("Mailing failed! :: "+ex);
+            return;
+        }
+        message.setSubject(velocityContext.get("subject").toString());
+        message.setBody(result.toString());
+        
+        try {
+            message.send();
+        } catch( Exception e ) {
+            log.error("An error occured while trying to send an email to "+user.getFullName()+"! :: "+e);
+            e.printStackTrace();
+        }
+    }
+    
+    private static void sendApprovalRequest(Experiment exp) {
+        sendNotification("admin", "RequestApproval", exp);
+    }
+
+    private static void sendApprovalNotice(Experiment exp) {
+        if( exp.getExperimentSetup().getBasicProperties().getInvolvedUserIds() == null ) return;
+        String username = exp.getExperimentSetup().getBasicProperties().getInvolvedUserIds().get(0);
+        if( username == null ) return;
+        sendNotification(username, "ApprovalGranted", exp );
+    }
+
+    private static void sendDenialNotice(Experiment exp) {
+        if( exp.getExperimentSetup().getBasicProperties().getInvolvedUserIds() == null ) return;
+        String username = exp.getExperimentSetup().getBasicProperties().getInvolvedUserIds().get(0);
+        if( username == null ) return;
+        sendNotification(username, "ApprovalDenied", exp);
+    }
+
+    /**
+     * Helper function that looks up the actual authority for this server.
+     * Could also be done via the DR I think.
+     * @return The authority in the form 'server:port'.
+     */
+    public static String getAuthority() {
+        return PlanetsServerConfig.getHostname() + ":" + PlanetsServerConfig.getPort();
+    }
+    
 }

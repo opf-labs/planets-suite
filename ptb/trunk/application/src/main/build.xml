@@ -108,6 +108,7 @@
           <include name="eu/planets_project/tb/impl/ServiceAnnotationTags.xml"/>
           <include name="eu/planets_project/tb/impl/BackendResources.properties"/>
           <include name="eu/planets_project/tb/impl/TBServiceTemplateSchema.xsd"/>
+          <include name="**/*.vm"/>
       </fileset>
      </jar>
   </target>
@@ -220,6 +221,7 @@
       <fileset dir="${basedir}/resources">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
+        <include name="**/*.vm"/>
         <exclude name="testbed-log4j.xml" />
       </fileset>   
     </copy>

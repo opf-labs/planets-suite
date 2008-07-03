@@ -26,6 +26,7 @@ import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
 import eu.planets_project.tb.impl.CommentManagerImpl;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 
 /**
  * @author Andrew Lindley, ARC
@@ -84,15 +85,6 @@ public class DataHandlerImpl implements DataHandler{
 	    }
 	}
 	
-	/**
-	 * Helper function that looks up the actual authority for this server.
-	 * Could also be done via the DR I think.
-	 * @return The authority in the form 'server:port'.
-	 */
-	public static String getAuthority() {
-	    return PlanetsServerConfig.getHostname() + ":" + PlanetsServerConfig.getPort();
-	}
-	
 	/* (non-Javadoc)
 	 * Only possible as long as we're using the tomcat's \jbossweb-tomcat55.sar\ROOT.war
 	 * as location for storing files, as this is accessible from outside.
@@ -103,7 +95,7 @@ public class DataHandlerImpl implements DataHandler{
 	    	throw new FileNotFoundException(localFileRef +" not found");
 	    }
 		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-	   	String authority = getAuthority();
+	   	String authority = AdminManagerImpl.getAuthority();
 	   	//distinguish between inputdata and outputdata
 	   	if(input){
 	   		//URI input file ref to be created
@@ -128,7 +120,7 @@ public class DataHandlerImpl implements DataHandler{
 			
 			HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 			String expScheme = "http";
-			String expAuthority = getAuthority();
+			String expAuthority = AdminManagerImpl.getAuthority();
 		   
 			if(!expScheme.equalsIgnoreCase(uriFileRef.getScheme()))
 		   		bException = true;
