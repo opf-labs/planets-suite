@@ -230,9 +230,14 @@ public class ServiceRegistry
 			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[1]);
 			
-			serviceId = regWriter.registerService("Doc2OpenXML@localhost", "service_dsc");
+			serviceId = regWriter.registerService("SimpleDoc2OpenXML@localhost", "service_dsc");
 			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/ifr-openXML-ejb/OpenXMLMigration?wsdl");
 			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);
+			
+			//OXML Conversion
+			serviceId = regWriter.registerService("Doc2OpenXML@localhost", "service_dsc");
+			regWriter.registerBinding(serviceId, "local_binding", "binding_desc", "http://localhost:8080/ifr-openXML-ejb/BasicOpenXMLMigration?wsdl");
+			regWriter.addCategory(serviceId, regWriter.categoryIds[3]);									
 
 		} catch(Exception e) {
 			logger.error("Error testing registry: ", e);
