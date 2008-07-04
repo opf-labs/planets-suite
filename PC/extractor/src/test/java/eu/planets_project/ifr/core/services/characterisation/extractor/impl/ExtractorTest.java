@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 
 import org.junit.Test;
 
@@ -27,12 +28,12 @@ public class ExtractorTest {
 				
 		String xcelString = sb.toString(); 
 		Extractor extractor = new Extractor();
-		String xcdlString = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
+		URI outputFileURI = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
 //		FileWriter writer = new FileWriter(outputFile);
 //		writer.write(xcdlString);
 //		writer.flush();
 //		writer.close();
-		System.out.println("XCDL: " + xcdlString);
+		System.out.println("Please find the file here: " + outputFileURI.toASCIIString());
 	}
 	
 	
