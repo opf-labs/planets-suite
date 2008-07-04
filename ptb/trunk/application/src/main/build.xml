@@ -108,6 +108,7 @@
           <include name="eu/planets_project/tb/impl/ServiceAnnotationTags.xml"/>
           <include name="eu/planets_project/tb/impl/BackendResources.properties"/>
           <include name="eu/planets_project/tb/impl/TBServiceTemplateSchema.xsd"/>
+          <include name="eu/planets_project/tb/impl/TBEvaluationServiceTemplateSchema.xsd"/>
           <include name="**/*.vm"/>
       </fileset>
      </jar>
