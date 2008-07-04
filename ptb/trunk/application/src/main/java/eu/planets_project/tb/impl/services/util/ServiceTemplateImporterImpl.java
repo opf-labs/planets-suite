@@ -28,6 +28,7 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.api.services.util.ServiceTemplateImporter;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
@@ -42,12 +43,20 @@ import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
  */
 public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,ErrorHandler{
 	
+	//The standard schema for migration/characterisation service templates
 	private String xmlTemplateSchema;
+	//The extended schema for evaluation service templates
+	private String xmlEvaluationTemplateSchema;
 	private Document document;
 	private Element root;
 	private boolean bEndpointReachable = false;
 	//the serviceTemplate
-	private TestbedServiceTemplateImpl tbService;
+	private TestbedServiceTemplate tbService;
+	
+	private boolean bIsServiceTemplate = false;
+	private boolean bIsEvaluationServiceTemplate = false;
+	//A helper as we need to have an Impl to call .new ServiceOperationimpl();
+	TestbedServiceTemplateImpl t = new TestbedServiceTemplateImpl();
 	
 	/**
 	 * Takes an input stream of an uploaded config-file as input and validates it against the provided XML template schema
@@ -57,9 +66,9 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 	public ServiceTemplateImporterImpl(InputStream xmlTemplate) throws Exception{
 		//load serviceTemplate xsd schema - all imports have to be valid against it
 		xmlTemplateSchema = getClass().getClassLoader().getResource("eu/planets_project/tb/impl/TBServiceTemplateSchema.xsd").toExternalForm();
+		xmlEvaluationTemplateSchema = getClass().getClassLoader().getResource("eu/planets_project/tb/impl/TBEvaluationServiceTemplateSchema.xsd").toExternalForm();
 		//File xmlSchema = new File("C:/DATA/Implementation/SVN_Planets/ptb/trunk/application/src/main/resources/eu/planets_project/tb/impl/TBServiceTemplateSchema.xsd");
 		//xmlTemplateSchema = xmlSchema.getAbsolutePath();
-		
 		//validate xmlTemplate import file against schema and loads the Document
 		this.parseAndValidateImportFile(xmlTemplate);
 		root = document.getDocumentElement();
@@ -72,20 +81,47 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 	 * @throws Exception if not a valid schema conform document
 	 */
 	private void parseAndValidateImportFile(InputStream xmlTemplate) throws Exception{
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			Exception e;
+			
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			factory.setValidating(true);
 			factory.setNamespaceAware(true);
 			factory.setAttribute(
 		             "http://java.sun.com/xml/jaxp/properties/schemaLanguage",
 		             "http://www.w3.org/2001/XMLSchema");
-			factory.setAttribute(
-				      "http://java.sun.com/xml/jaxp/properties/schemaSource",
-				      xmlTemplateSchema);
-
-			DocumentBuilder builder;
-			builder = factory.newDocumentBuilder();
-			builder.setErrorHandler(this);
-			this.document = builder.parse(xmlTemplate);
+			try{
+				//1) Test if it's a valid TestbedEvaluationServiceSchema import
+				factory.setAttribute(
+					      "http://java.sun.com/xml/jaxp/properties/schemaSource",
+					      xmlEvaluationTemplateSchema);
+				DocumentBuilder builder;
+				builder = factory.newDocumentBuilder();
+				builder.setErrorHandler(this);
+				this.document = builder.parse(xmlTemplate);
+				this.bIsEvaluationServiceTemplate = true;
+				return;
+			}catch(Exception e1){
+				e=e1;
+			}
+			try{
+				//2) Test if it's a valid TestbedServiceSchema import
+				//first reset the stream
+				xmlTemplate.reset();
+				factory.setAttribute(
+					      "http://java.sun.com/xml/jaxp/properties/schemaSource",
+					      xmlTemplateSchema);
+				DocumentBuilder builder;
+				builder = factory.newDocumentBuilder();
+				builder.setErrorHandler(this);
+				this.document = builder.parse(xmlTemplate);
+				this.bIsServiceTemplate = true;
+				return;
+			}catch(Exception e1){
+				e=e1;
+			}
+			
+			throw e;
+			
 	}
 	
 	/* (non-Javadoc)
@@ -114,8 +150,23 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 		if(this.checkIsTBVersionIDcompliant()!=true)
 			throw new Exception("Imported template with version "+this.getTBVersionID()+" not compliant with the currently deployed one");
 		
-		tbService = new TestbedServiceTemplateImpl();
-		TestbedServiceTemplate.ServiceOperation operation = tbService.new ServiceOperationImpl();
+		
+		TestbedServiceTemplate.ServiceOperation o = t.new ServiceOperationImpl();
+		
+		boolean bOK = false;
+		if(this.isAValidServiceTemplate()){
+			tbService = new TestbedServiceTemplateImpl();
+			bOK = true;
+		}
+		if(this.isAValidEvaluationServiceTemplate()){
+			tbService = new EvaluationTestbedServiceTemplateImpl();
+			bOK = true;
+		}
+		if(!bOK)
+			throw new Exception("No template properly instantiated");
+		
+		
+		TestbedServiceTemplate.ServiceOperation operation = t.new ServiceOperationImpl();
 		ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
 		
 		//relevant information to build the wsclient bean: wsdlURI, servicename, opname
@@ -134,10 +185,6 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 				tbService = (TestbedServiceTemplateImpl)s;
 			}
 		}
-		/*else{
-			//just create a template with the provided data when not registering
-			tbService = new TestbedServiceTemplateImpl();
-		}*/
 		
 		//description
 		tbService.setDescription(this.getServiceDescription());
@@ -146,6 +193,11 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 		
 		//add the service operations
 		helperRegisterOperations();
+		
+		//extract the ServiceEvaluationData if it's an import from this schema
+		if(this.isAValidEvaluationServiceTemplate()){
+			helperAddEvaluationTBServiceTemplateData();
+		}
 		
 		try {
 			//register additional metadata for this service
@@ -186,7 +238,7 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 	private void helperRegisterOperations(){
 		for(int j=0;j<this.countOpNodes();j++){
 			//create an empty serviceOperation object
-			TestbedServiceTemplate.ServiceOperation operation = tbService.new ServiceOperationImpl();
+			TestbedServiceTemplate.ServiceOperation operation = t.new ServiceOperationImpl();
 			//take the current serviceOperation
 			NodeList opSettings = this.getServiceOperationNode(j).getChildNodes();
 			
@@ -218,7 +270,7 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 				if(opNode.getNodeName().equals("getMinRequiredNrOfInputFiles"))
 					operation.setMinRequiredInputFiles(Integer.valueOf(opNode.getTextContent()));
 			
-				//set service Operation type: e.g. PA or PC
+				//set service Operation type: e.g. PA or PC or EV
 				if(opNode.getNodeName().equals("serviceOperationType"))
 					operation.setServiceOperationType(opNode.getTextContent());
 			
@@ -242,11 +294,91 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 						operation.setOutputFileType(opNode.getTextContent());
 					}
 				}
+				
 			}
 			
 			//add the service operation
-			tbService.addServiceOperation(operation);
+			this.tbService.addServiceOperation(operation);
 		}	
+	}
+	
+	/**
+	 * If the imported operation is a "evaluationServiceTemplate" which extends the ServiceTemplate class
+	 * this methods parses the additional provided information.
+	 * i.e. XPathToMetricName, etc. as well as BMGoal2Property mapping
+	 * 
+	 * @param operation
+	 */
+	public void helperAddEvaluationTBServiceTemplateData(){
+		Node nodeEvalProps = this.getEvalPropertiesNode();
+		NodeList nodes = nodeEvalProps.getChildNodes();
+		
+		
+		//extract the operation's properties
+		for(int k=0;k<nodes.getLength();k++){
+			Node n = nodes.item(k);
+			
+			//XPathForBMGoalRootNodes
+			if(n.getNodeName().equals("XPathForBMGoalRootNodes")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathForBMGoalRootNodes(n.getTextContent());
+			}
+			//XPathForBMGoalRootNodes
+			if(n.getNodeName().equals("XPathForBMGoalName")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathForName(n.getTextContent());
+			}
+			//SrcXpath
+			if(n.getNodeName().equals("SrcXpath")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathForSrcValue(n.getTextContent());
+			}
+			//TarXpath
+			if(n.getNodeName().equals("TarXpath")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathForTarValue(n.getTextContent());
+			}
+			//MetricName
+			if(n.getNodeName().equals("MetricName")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathToMetricName(n.getTextContent());
+			}
+			//MetricResult
+			if(n.getNodeName().equals("MetricResult")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathToMetricValue(n.getTextContent());
+			}
+			//CompStatusSuccess
+			if(n.getNodeName().equals("CompStatusSuccess")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setStringForCompStatusSuccess(n.getTextContent());
+			}
+			//CompStatusXpath
+			if(n.getNodeName().equals("CompStatusXpath")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathToCompStatus(n.getTextContent());
+			}
+			//CompStatusXpath
+			if(n.getNodeName().equals("mappings")){
+				NodeList mappings = n.getChildNodes();
+				for (int p=0;p<mappings.getLength();p++){
+					String BMGoalName ="";
+					String BMGoalID = "";
+					String PropertyName="";
+					//Iterate over the <mapping> elements
+					Node mapping = mappings.item(p);
+					for(int l=0;l<mapping.getChildNodes().getLength();l++){
+						//BMGoalName
+						if(mapping.getChildNodes().item(l).getNodeName().equals("BMGoalName")){
+							BMGoalName = mapping.getChildNodes().item(l).getTextContent();
+						}
+						//BMGoalID
+						if(mapping.getChildNodes().item(l).getNodeName().equals("BMGoalID")){
+							BMGoalID = mapping.getChildNodes().item(l).getTextContent();
+						}
+						//PropertyName
+						if(mapping.getChildNodes().item(l).getNodeName().equals("PropertyName")){
+							PropertyName = mapping.getChildNodes().item(l).getTextContent();
+						}
+					}
+					if((!BMGoalName.equals(""))&&(!BMGoalID.equals(""))&&(!PropertyName.equals(""))){
+						((EvaluationTestbedServiceTemplateImpl) tbService).setBMGoalPropertyNameMapping(BMGoalName, BMGoalID, PropertyName);
+					}
+				}
+			}
+		}
 	}
 	
 	
@@ -347,6 +479,10 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 		return root.getElementsByTagName("endpoint").item(0).getTextContent();
 	}
 	
+	private Node getEvalPropertiesNode(){
+		return root.getElementsByTagName("evalProperties").item(0);
+	}
+	
 	/**
 	 * Contains the MD5 id of a service which is created from the wsdl content
 	 * @return
@@ -361,6 +497,22 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 	 */
 	private String getTBVersionID(){
 		return root.getAttribute("TBversionID");
+	}
+	
+	/**
+	 * Returns true if the imported config file validates against the ServiceTemplate schema
+	 * @return
+	 */
+	public boolean isAValidServiceTemplate(){
+		return this.bIsServiceTemplate;
+	}
+	
+	/**
+	 * Returns true if the imported config file validates against the ServiceTemplate schema
+	 * @return
+	 */
+	public boolean isAValidEvaluationServiceTemplate(){
+		return this.bIsEvaluationServiceTemplate;
 	}
 
 

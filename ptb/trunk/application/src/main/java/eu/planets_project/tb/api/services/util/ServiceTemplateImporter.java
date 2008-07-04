@@ -36,4 +36,16 @@ public interface ServiceTemplateImporter {
 	 * @return
 	 */
 	public boolean isImportedServiceEndpointReachable();
+	
+	/**
+	 * Returns true if the imported config file validates against the ServiceTemplate schema
+	 * @return
+	 */
+	public boolean isAValidServiceTemplate();
+	
+	/**
+	 * Returns true if the imported config file validates against the ServiceTemplate schema
+	 * @return
+	 */
+	public boolean isAValidEvaluationServiceTemplate();
 }

@@ -1,21 +1,15 @@
 package eu.planets_project.tb.gui.backing.admin;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Vector;
 
 import javax.faces.application.FacesMessage;
@@ -27,38 +21,39 @@ import javax.faces.model.SelectItem;
 import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFileDefaultMemoryImpl;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.api.services.util.ServiceTemplateExporter;
 import eu.planets_project.tb.api.services.util.ServiceTemplateImporter;
-import eu.planets_project.tb.gui.backing.ExperimentBean;
-import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.ServiceTemplateBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
+import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.util.ServiceTemplateExporterImpl;
 import eu.planets_project.tb.impl.services.util.ServiceTemplateImporterImpl;
 
 
 /**
- * This bean implements the following logic:
+ * This bean implements the following logic: controller + JSF backing
  *   (backing bean is used for render and update mode)
+ *   a)  
  *    - renderer for all registered TestbedServices and their metadata
  *    - queries Testbed's service registry
  *    - deletes existing entries from the TBServiceRegistry
+ *	 b)
+ *    - import and export service templates from/to XML from/into the application
  *
  * @author Andrew Lindley, ARC
+ *
  */
 
 public class ManagerTBServices implements ValueChangeListener {
@@ -632,17 +627,16 @@ public class ManagerTBServices implements ValueChangeListener {
 			 ServiceTemplateBrowser serTempBrowser = (ServiceTemplateBrowser)JSFUtil.getManagedObject("ServiceTemplateBrowser");
 			 serTempBrowser.loadTreeDataFromImportedServiceTemplate(template);
 			 
-			 
 		} catch (Exception e) {
 			this.configFile = null;
 			importer = null;
 	        FacesMessage fmsg = new FacesMessage();
-	        fmsg.setDetail("The provided file is not compliant for this version");
-	        fmsg.setSummary("The provided file is not compliant for this version");
+	        fmsg.setDetail("The provided file is not compliant with this version");
+	        fmsg.setSummary("The provided file is not compliant with this version");
 	        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
 	        FacesContext ctx = FacesContext.getCurrentInstance();
 	        ctx.addMessage("formUploadServiceTemplate:configfileupload",fmsg); 
-	        log.debug("The provided file is not compliant for this version");
+	        log.debug("The provided file is not compliant with this version");
 		}
         return "reload-page";
     }
@@ -688,5 +682,43 @@ public class ManagerTBServices implements ValueChangeListener {
     	return "reload-page";
     }
     
+    //TESTING FROM HERE - DELETE OR MOVE
+    TestbedServiceTemplate selAutoEvalBMGoal;
+    String sSelAutoEvalBMGoal;
+    //TODO MOVE THIS METHOD
+    public void setAutoEvalBMGoalSelectItemValue(String name){
+    	sSelAutoEvalBMGoal = name;
+    }
+    
+    public String getAutoEvalBMGoalSelectItemValue(){
+    	return this.sSelAutoEvalBMGoal;
+    }
+    
+    public List<SelectItem> getAllAutoEvalBMGoals(){
+    	List<SelectItem> lAutoEvalBMGoals = new Vector<SelectItem>();
+    	ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
+    	Collection<TestbedServiceTemplate> evalSers = registry.getAllServicesWithType(TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_EVALUATION);
+    	Iterator<TestbedServiceTemplate> it = evalSers.iterator();
+    	while(it.hasNext()){
+    		EvaluationTestbedServiceTemplateImpl template = (EvaluationTestbedServiceTemplateImpl)it.next();
+    		//get the supported BMGoals for this evaluationservice
+    		Collection<BenchmarkGoal> mappedBMGoals = template.getAllMappedBenchmarkGoals();
+    		if(mappedBMGoals.size()>0){
+    			Iterator<BenchmarkGoal> itBMGoals = mappedBMGoals.iterator();
+    			while(itBMGoals.hasNext()){
+    				BenchmarkGoal autoEvalBMGoal = itBMGoals.next();
+    				lAutoEvalBMGoals.add(new SelectItem(autoEvalBMGoal.getName()));
+    			}
+    		}
+    		
+    	}
+    	return lAutoEvalBMGoals;
+    }
+    
+    public void processAutoEvalBMGoalChange(ValueChangeEvent vce){
+		String s = (String)vce.getNewValue();
+		System.out.println("Value changed, new one is: "+s);
+	}
+    //END TESTING FROM HERE
 
 }

@@ -55,6 +55,17 @@
 		<h:commandButton action="#{TBServiceManager.command_registerUploadedTemplate}" value="register configuration" disabled="#{TBServiceManager.isServiceConfigRendered==false}"/>
      	</h:form>
      </fieldset>
+     <!-- DELETE JUST TESTING FROM HERE -->
+     <fieldset>
+     	<legend>temp DELETE</legend>
+     	<h:form>
+     		<h:selectOneMenu id="autoEvalBMGoals" value="#{TBServiceManager.autoEvalBMGoalSelectItemValue}" immediate="true" 
+             valueChangeListener="#{TBServiceManager.processAutoEvalBMGoalChange}" onchange="submit()">
+                 <f:selectItems value="#{TBServiceManager.allAutoEvalBMGoals}" />                        
+             </h:selectOneMenu>
+     	</h:form>
+     </fieldset>
+     <!-- END DELETE JUST TESTING FROM HERE -->
     <div class="servicepane">
  	<h:form>
     <ui:include src="/WEB-INF/templates/browse_servicetree_template.xhtml">
@@ -91,6 +102,12 @@
 		<h:panelGroup>
 			<li class="exp_sel">
 				<h:commandLink value="remove registered services" action="#{Manager_Backing.initTBServiceManager}">
+				</h:commandLink>
+			</li>
+		</h:panelGroup>
+		<h:panelGroup>
+			<li class="exp_sel">
+				<h:commandLink value="import service configuration" action="#{Manager_Backing.initTBServiceImporter}">
 				</h:commandLink>
 			</li>
 		</h:panelGroup>

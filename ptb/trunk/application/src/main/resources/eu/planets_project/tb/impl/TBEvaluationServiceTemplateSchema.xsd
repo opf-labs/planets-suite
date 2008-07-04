@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:redefine schemaLocation="TBServiceTemplateSchema.xsd">
+		<xs:complexType name="ServiceTemplateType">
+			<xs:complexContent>
+				<xs:extension base="ServiceTemplateType">
+					<xs:sequence>
+						<xs:element name="evalProperties" type="EvalPropsType" minOccurs="1" maxOccurs="1"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:redefine>
+	
+	<xs:complexType name="EvalPropsType">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:sequence>
+						<xs:element name="XPathForBMGoalRootNodes" type="xs:string"/>
+						<xs:element name="XPathForBMGoalName" type="xs:string"/>
+						<xs:element name="SrcXpath" type="xs:string"/>
+						<xs:element name="TarXpath" type="xs:string"/>
+						<xs:element name="MetricName" type="xs:string"/>
+						<xs:element name="MetricResult" type="xs:string"/>
+						<xs:element name="CompStatusSuccess" type="xs:string"/>
+						<xs:element name="CompStatusXpath" type="xs:string"/>
+						<xs:element name="mappings" type="TBBMGoalEvalPropMappingTypes"/>
+					</xs:sequence>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="TBBMGoalEvalPropMappingTypes">
+		<xs:sequence maxOccurs="unbounded">
+			<xs:element name="mapping" type="TBBMGoalEvalPropMappingType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="TBBMGoalEvalPropMappingType">
+		<xs:sequence>
+			<xs:element name="BMGoalName" type="xs:string"/>
+			<xs:element name="BMGoalID" type="xs:string"/>
+			<xs:element name="PropertyName" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

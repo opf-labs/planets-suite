@@ -175,6 +175,7 @@ public interface TestbedServiceTemplate{
 		
 		public final String SERVICE_OPERATION_TYPE_MIGRATION = "PA";
 		public final String SERVICE_OPERATION_TYPE_CHARACTERISATION = "PC";
+		public final String SERVICE_OPERATION_TYPE_EVALUATION = "EV";
 		/**
 		 * A service operation can be classified by a certain type 
 		 * e.g. PA or PC

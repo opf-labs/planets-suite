@@ -321,6 +321,21 @@ xsi:noNamespaceSchemaLocation="BenchmarkGoalsSchema.xsd" -->
 			<definition>Defines the smallest detail that can be distinguished in an image.</definition>
 			<description>Can be resolution in a .jpeg or .bmp image, but different for a vector image.</description>
 		</item>
+		<item id="img-gen6" type="java.lang.Integer" scale="pixel" version="1.0">
+			<name>XCDLimageHeight</name>
+			<definition>XCDL property 2</definition>
+			<description>Height of an image. Corresponds to the y-axis.</description>
+		</item>
+		<item id="img-gen7" type="java.lang.Integer" scale="pixel" version="1.0">
+			<name>XCDLimageWidth</name>
+			<definition>XCDL property 30</definition>
+			<description>Width of an image. Corresponds to the x-axis. </description>
+		</item>
+		<item id="img-gen8" type="java.lang.String" scale="undefined" version="1.0">
+			<name>XCDLnormData</name>
+			<definition>XCDL property 300</definition>
+			<description>The normalized data</description>
+		</item>
 	</category>
 	<category name="Audio">
 		<item id="audio-gen1" type="lava.lang.Long" scale="Bit per sample" version="1.0">
