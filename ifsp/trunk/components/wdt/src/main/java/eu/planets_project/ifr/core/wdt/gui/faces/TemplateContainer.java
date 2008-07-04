@@ -56,11 +56,11 @@ public class TemplateContainer
 	*/
 	public String loadTemplates() {
 		templates = new ArrayList<WFTemplate>();
-		templates.add(new WFTemplate("Charicterization", "views/wf.characterization.xhtml", "characterizationWorkflowBean"));
-		templates.add(new WFTemplate("Simple Convertion", "views/wf.simpleconvertdemo.xhtml", "demoSimpleConvertBean"));
-		templates.add(new WFTemplate("Level1 Convertion", "views/wf.level1demo.xhtml", "level1ConvertBean"));
-		templates.add(new WFTemplate("Droid Id", "views/wf.droiddemo.xhtml", "droidBean"));
-		templates.add(new WFTemplate("Review V1", "views/wf.review1.xhtml", "review1Bean"));		
+		templates.add(new WFTemplate("NOP Template", "views/wf.characterization.xhtml", "characterizationWorkflowBean"));
+		templates.add(new WFTemplate("Simple Conversion", "views/wf.simpleconvertdemo.xhtml", "demoSimpleConvertBean"));
+		templates.add(new WFTemplate("Level1 Conversion", "views/wf.level1demo.xhtml", "level1ConvertBean"));
+		templates.add(new WFTemplate("Droid Identification", "views/wf.droiddemo.xhtml", "droidBean"));
+		templates.add(new WFTemplate("Review_v1", "views/wf.review1.xhtml", "review1Bean"));		
 //		templates.add(new WFTemplate("ImageMagic", "views/imageMagic.xhtml", "imageMagicBean"));
 		return "success-loadTemplates";
 	}
