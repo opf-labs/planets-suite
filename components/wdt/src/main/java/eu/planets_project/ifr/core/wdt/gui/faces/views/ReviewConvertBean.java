@@ -312,6 +312,7 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		    
 				try {								
 				 	out = converter.basicMigrateOneBinary(imageData);
+				 	if(out == null) throw new Exception("migrated file is empty");
 		    } catch(Exception e) {
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
 						"<b>Status: </b><font color=#FF0000>Error could migrate file</font><br>" +
@@ -320,6 +321,12 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		    	continue;
 		    }		    
 		    Date d2 = new Date();
+		    
+		    report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i>"+pdURI+"</i></legend><table><tr><td>"+
+				"<b>File Format Information:</b>"+resultType+"<br>" +
+				"<b>Conversion Status: </b><font color=#00CC00>File successfuly converted</font> <br>" +
+				"<b>Converted File URI:</b><a href="+"\""+resultPath+"\""+" target=_blank>"+resultPath+"</a>" +
+				"</td></tr></table></fieldset>");
 
 				//create output uri
 	      //URI resultFile = new URI(pdURI+workflowId+"/outfile.tiff");		    			
@@ -339,20 +346,13 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
 						"<b>Location: </b><font color=#FF0000>"+resultPath+"</font><br>" +						
 						"<b>Caused by:</b>"+e.getMessage()+
 						"</td></tr></table></fieldset>");
+						continue;
 	      }
 	
 				InvocationEvent event = new InvocationEvent(null, new URI(charService.getEndpoint()), "basicMigrateBinary", new URI(pdURI), resultPath, d1, d2);      
 				
 				String ret = wfManager.createInvocationEvent(event, workflowId);
 				logger.debug("wfMan.createIEvent: "+ret);
-				
-	
-							
-				report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i>"+pdURI+"</i></legend><table><tr><td>"+
-				"<b>File Format Information:</b>"+resultType+"<br>" +
-				"<b>Conversion Status: </b><font color=#00CC00>File successfuly converted</font> <br>" +
-				"<b>Converted File URI:</b><a href="+"\""+resultPath+"\""+" target=_blank>"+resultPath+"</a>" +
-				"</td></tr></table></fieldset>");
 			}
 		
 		} catch (Exception e) {
