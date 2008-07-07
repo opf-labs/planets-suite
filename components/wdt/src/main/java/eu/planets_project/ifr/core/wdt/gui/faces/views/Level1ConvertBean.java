@@ -322,12 +322,6 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		    }		    
 		    Date d2 = new Date();
 		    
-		    report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i>"+pdURI+"</i></legend><table><tr><td>"+
-				"<b>File Format Information:</b>"+resultType+"<br>" +
-				"<b>Conversion Status: </b><font color=#00CC00>File successfuly converted</font> <br>" +
-				"<b>Converted File URI:</b><a href="+"\""+resultPath+"\""+" target=_blank>"+resultPath+"</a>" +
-				"</td></tr></table></fieldset>");
-
 				//create output uri
 	      //URI resultFile = new URI(pdURI+workflowId+"/outfile.tiff");		    			
 	      URI[] list = dataManager.list(null);	      
@@ -336,6 +330,13 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
      		while (st.hasMoreTokens()) { fileName = st.nextToken("/");}
      		URI resultPath = new URI(list[0]+"/"+OUTPUT_DIR+"/"+fileName+"/"+workflowId+"/outfile");
 	      logger.debug("resultPath: "+resultPath);
+	      
+		    report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i>"+pdURI+"</i></legend><table><tr><td>"+
+				"<b>File Format Information:</b>"+resultType+"<br>" +
+				"<b>Conversion Status: </b><font color=#00CC00>File successfuly converted</font> <br>" +
+				"<b>Converted File URI:</b><a href="+"\""+resultPath+"\""+" target=_blank>"+resultPath+"</a>" +
+				"</td></tr></table></fieldset>");
+	      
 	      
 	      //store output file
 	      try {
