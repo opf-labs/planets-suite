@@ -25,7 +25,7 @@
 <h:form>
 	<h:panelGroup rendered="#{ExperimentBean.currentStage==5}">
                    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
-                   		<p>Your experiment has been setup and approved successfully - you may now <b>run the experiment's executable</b>: </p>
+                   		<p>Your experiment has been setup and approved successfully - you may now <b>run the experiment</b>: </p>
 						<h:commandButton value="#{res['exp_stage5.button.run']}"
 						action="#{NewExp_Controller.executeExperiment}"/>
 				 	</h:panelGroup>
