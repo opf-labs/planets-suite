@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+        #{res.title} - #{res['browse_data.selectData']}
+  </ui:define>
+
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/templates/header.xhtml">
+			<ui:param name="page" value="new_exp"/>
+		</ui:include>
+	</ui:define>
+
+	<ui:define name="content">
+
+        <div id="mainwrapper">
+			<div id="maincol">
+			<div class="innertubemain">
+				<h:form>
+                <p>
+                <!-- return to the new experiment -->
+                <h:commandButton action="goToStage3"
+                  value="#{res['browse_data.returnToExperiment']}"/>
+                </p>
+				</h:form>
+			</div>
+			</div>
+		</div>
+
+	</ui:define>
+
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

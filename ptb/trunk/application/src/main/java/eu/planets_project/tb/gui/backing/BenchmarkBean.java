@@ -6,6 +6,7 @@ import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 
 
 public class BenchmarkBean extends TreeNodeBase implements Serializable {
@@ -25,6 +26,9 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
     String type = "";
     String typename;
     String scale;
+    String category;
+    boolean autoEvalServiceRegistered = false;
+    TestbedServiceTemplate autoEvalServiceTemplate;
 		
     
     public BenchmarkBean() {
@@ -40,9 +44,10 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 		this.trgValue = bm.getTargetValue();
 		this.evalValue = bm.getEvaluationValue();		
 		this.weight = String.valueOf(bm.getWeight());
-                this.type = bm.getType();
-                this.typename = this.assignTypename();
-                this.scale = "Very Good";
+        this.type = bm.getType();
+        this.typename = this.assignTypename();
+        this.scale = "Very Good";
+        this.category=bm.getCategory();
 	} 
 		
     public boolean getSelected() {
@@ -118,6 +123,10 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 		this.description = description;
 	}
 
+	public String getCategory(){
+		return this.category;
+	}
+	
 	public String getType() {            
             return type;
 	}
@@ -156,6 +165,27 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 
 	public void setScale(String scale) {
 		this.scale=scale;
+	}
+	
+	/**
+	 * Indicates if a auto evaluation service is available.
+	 * i.e. imported via the import template gui
+	 * @return
+	 */
+	public boolean isAutoEvalServiceAvailable(){
+		return this.autoEvalServiceRegistered;
+	}
+	
+	public void setAutoEvalServiceAvailable(boolean b){
+		this.autoEvalServiceRegistered = b;
+	}
+	
+	public void setAutoEvalService(TestbedServiceTemplate autoEvalTemplate){
+		this.autoEvalServiceTemplate = autoEvalTemplate;
+	}
+	
+	public TestbedServiceTemplate getAutoEvalService(){
+		return this.autoEvalServiceTemplate;
 	}
 
 }

@@ -202,6 +202,10 @@
    <from-outcome>browseForData</from-outcome>
    <to-view-id>/exp/browse_data.xhtml</to-view-id>
   </navigation-case>
+  <navigation-case>
+   <from-outcome>configAutoEvalSer</from-outcome>
+   <to-view-id>/exp/bmGoalAutoEvaluation/config_auto_eval_ser.xhtml</to-view-id>
+  </navigation-case>
  </navigation-rule>
  
  <navigation-rule>

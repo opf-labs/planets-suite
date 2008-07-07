@@ -3,7 +3,10 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
     xmlns:t="http://myfaces.apache.org/tomahawk"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
@@ -19,36 +22,61 @@
 	</ui:define>
 
 	<ui:define name="content" rendered="#{ExperimentBean != null}">
-#{NewExp_Controller.retrieveBenchmarkBeans}
 		<div id="mainwrapper">
 			<div id="maincol">
 				<div class="innertubemain">
+				  <h:form id="stage3form">
+				    <!-- puts a list of all available 'BenchmarkBeans' into the session map -->
+					#{NewExp_Controller.retrieveBenchmarkBeans}
+      
 					<p>Supply information about the estimated resources your experiment will require and the objectives you expect your experiment to meet.</p>
-					<h:form id="stage3form">
 						<h:messages for="stage3form" errorClass="errorMessage" infoClass="infoMessage"/>
 						<fieldset>
 							<legend>#{res['exp_stage3.legendOutcomes']}</legend>
-							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>		
-
+							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>	
+							<p>Highlight benchmark goals in category: 
+							<h:selectOneMenu id="filterBMCategory" value="#{ExperimentBean.BMGoalCategoryFilterValue}" immediate="true" 
+             					valueChangeListener="#{NewExp_Controller.processBMGoalCategoryFilterChange}">
+                 				<f:selectItems value="#{ExperimentBean.allBMGoalCategoriesForFilter}" />                        
+        						<a4j:support event="onchange" reRender="dataTable" />
+        					</h:selectOneMenu>	  
+        					</p>   
 						  	<h:dataTable id="dataTable" var="bm" value="#{BenchmarkBeans}"			    	              
 			        	          rowId="#{bm.ID}"
 			            	      cellpadding="2"
 			                	  cellspacing="0"
 				                  border="1">
 							        <h:column>
-									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>				            	
+									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"  readonly="#{ExperimentBean.approved}"  disabled="#{ExperimentBean.approved}" valueChangeListener="#{NewExp_Controller.processSelBMValueTicked}">	
+									    	<f:param name="bmGoalID" value="#{bm.ID}"/>
+									    	<a4j:support event="onchange"/>	
+									    </h:selectBooleanCheckbox>	            	
 						            </h:column>
 							        <h:column>
 			            				<f:facet name="header">#{res['exp_stage3.bgCriteria']}</f:facet>
-						            	#{bm.name}
+										<h:outputText value="#{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue == bm.category}" style="color:#579EC2; font-size:larger;"/>
+						            	<h:outputText value="#{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue != bm.category}"/>
 						        	</h:column>			        	
 							        <h:column>
 			            				<f:facet name="header">#{res['exp_stage3.bgExplanation']}</f:facet>
-						            	#{bm.definition} <br/>
+						            	#{bm.definition}<br/>
 						            	<i>#{bm.description}</i>
-						        	</h:column>			        	
-
+						        	</h:column>	
+						        	<h:column>
+						        		<f:facet name="header">#{res['exp_stage3.useAutoEvalSerivce']}</f:facet>
+						        		<h:panelGroup rendered="#{bm.autoEvalServiceAvailable}">
+						        		<!-- h:selectBooleanCheckbox id="useEvalService" value="true" label="use auto-evaluation" readonly="#{ExperimentBean.approved}"  disabled="#{ExperimentBean.approved}">	
+									    	<f:param name="bmGoalID" value="#{bm.ID}"/>
+									    	<a4j:support event="onchange"/>	
+									    </h:selectBooleanCheckbox-->	 
+										<a4j:commandLink action="#{NewExp_Controller.command_configureAutoEvalService}">
+                							<h:outputText value="configure" /> 
+                							<f:param value="#{bm.ID}" name="configBMGoalID"/>
+            							</a4j:commandLink>
+            							</h:panelGroup>
+						        	</h:column>     	
 							</h:dataTable>
+							
 						</fieldset>
 							<p>
 					            <h:commandButton value="#{res['button.save']}"  

@@ -39,6 +39,7 @@ import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
+import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
 
@@ -915,27 +916,45 @@ public class NewExpWizardController {
     	return map;
     }
     
+    
+    
     public String getRetrieveBenchmarkBeans() {
        	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Map<String,BenchmarkBean> availBenchmarks = new HashMap<String,BenchmarkBean>(expBean.getBenchmarks());
-    	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
+    	
+       	//the available BenchmarkGoals as BenchmarkBean (only from the selected category)
+       	Map<String,BenchmarkBean> availBenchmarks = new HashMap<String,BenchmarkBean>(expBean.getBenchmarks());
+       	//get all BenchmarkGoals
+       	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
+    	//the information if a BMGoal can be used within an autoEvaluationService
+       	//Map<BMGoalID, EvaluationTestbedServiceTemplate>
+       	Map<String,TestbedServiceTemplate> mapAutoEvalSer = this.getSupportedAutoEvaluationBMGoals();
+       	
     	while (iter.hasNext()) {
     		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
                 Iterator dtypeiter = expBean.getDtype().iterator();
                 while (dtypeiter.hasNext()){
                     String currentType = (String)dtypeiter.next();
-                    //System.out.println("Current type: "+currentType);
                     DigitalObjectTypesImpl dtypeImpl = new DigitalObjectTypesImpl();
                     currentType = dtypeImpl.getDtypeName(currentType);
-                    //System.out.print(" i.e. "+currentType);
+                    //only add the goals that match the already selected categories
                     if (currentType.equalsIgnoreCase(bmg.getCategory())) {
                         if (availBenchmarks.containsKey(bmg.getID())) {
                                 BenchmarkBean bmb = availBenchmarks.get(bmg.getID());
                                 bmb.setSelected(true);
+                                //add the autoEvaluationService Information for this goal
+                                if(mapAutoEvalSer.containsKey(bmg.getID())){
+                                	bmb.setAutoEvalServiceAvailable(true);
+                                	bmb.setAutoEvalService(mapAutoEvalSer.get(bmg.getID()));
+                                }
                         } else {
                                 BenchmarkBean bmb = new BenchmarkBean(bmg);  			
                                 bmb.setSelected(false);
                                 availBenchmarks.put(bmg.getID(), bmb);
+                                //add the autoEvaluationService Information for this goal
+                                if(mapAutoEvalSer.containsKey(bmg.getID())){
+                                	bmb.setAutoEvalServiceAvailable(true);
+                                	bmb.setAutoEvalService(mapAutoEvalSer.get(bmg.getID()));
+                                }
                         }
                     }
                 }
@@ -1046,6 +1065,77 @@ public class NewExpWizardController {
     
     public String finishReader() {
         return "goToBrowseExperiments";
+    }
+    
+    /**
+     * The filter on stage3 for selecting which BMGoal category to display
+     * Please note the selection is already pre-filtered by the
+     * experiment digital object type from page 1. 
+     * @param vce
+     */
+    public void processBMGoalCategoryFilterChange(ValueChangeEvent vce){
+		String sCatName = (String)vce.getNewValue();
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		expBean.setBMGoalCategoryFilterValue(sCatName);
+	}
+    
+    //TODO: Andrew DELETE OR CHECK IF USED
+    public void processSelBMValueTicked(ValueChangeEvent e){
+    	System.out.println(e.getNewValue());
+    	FacesContext context = FacesContext.getCurrentInstance();
+		Object o1 = context.getExternalContext().getRequestParameterMap().get("bmGoalID2");
+		Object o2 = context.getExternalContext().getRequestParameterMap().get("bmGoalID");
+		System.out.println("o1 not null "+o1!=null);
+		System.out.println("o2 not null "+o2!=null);
+    }
+    
+    public String command_configureAutoEvalService(){
+    	FacesContext context = FacesContext.getCurrentInstance();
+		Object o1 = context.getExternalContext().getRequestParameterMap().get("configBMGoalID");
+		if(o1!=null){
+			String BMGoalID = o1.toString();
+		}
+		
+		//save the current BMGoal selection
+		String success = this.updateBenchmarksAction();
+		
+		if(success.equals("success")){
+			//load screen for configuring the autoEvalSerivce
+			return "configAutoEvalSer";
+		}
+		else{
+			//an error has occured - display the page with error message
+			return success;
+		}
+    }
+    
+    /**
+     * Returns a map of all BenchmarkGoals that are registered within a
+     * EvaluationServiceTemplate and therefore can be evaluated automatically
+     * by using the corresponding EvaluationServiceTemplate
+     * @return Map<BenchmarkGoalID, EvaluationTestbedServiceTemplateImpl>
+     */
+    public Map<String, TestbedServiceTemplate> getSupportedAutoEvaluationBMGoals(){
+    	Map<String, TestbedServiceTemplate> ret = new HashMap<String, TestbedServiceTemplate>();
+    	ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
+    	Collection<TestbedServiceTemplate> evalSerTemplates = registry.getAllServicesWithType(TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_EVALUATION);
+    	if((evalSerTemplates!=null)&&(evalSerTemplates.size()>0)){
+    		Iterator<TestbedServiceTemplate> itTemplates = evalSerTemplates.iterator();
+    		//The template which registeres the BMGoal mapping
+    		EvaluationTestbedServiceTemplateImpl evalSerTemplate = (EvaluationTestbedServiceTemplateImpl) itTemplates.next();
+    		
+    		//all supported BM goals of this ServiceTemplate
+    		Collection<BenchmarkGoal> lBMGoals = evalSerTemplate.getAllMappedBenchmarkGoals();
+    		if((lBMGoals!=null)&&(lBMGoals.size()>0)){
+    			Iterator<BenchmarkGoal> itBMGoals = lBMGoals.iterator();
+    			while(itBMGoals.hasNext()){
+    				BenchmarkGoal bmGoal = itBMGoals.next();
+    				//add the bmGoal and it's template
+    				ret.put(bmGoal.getID(), evalSerTemplate);
+    			}
+    		}
+    	}
+    	return ret;
     }
 
 /*

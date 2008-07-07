@@ -1036,5 +1036,40 @@ public class ExperimentBean {
     	return this.bRenderXMLResponds;
     }
     
+    private String sSelBMGoalCategoryValueToFilter = "";
+    /**
+     * The filter on stage3 for selecting which BMGoals to display
+     * Please note the selection is already predetermined by the
+     * experiment digital object type from page 1
+     * @param catname
+     */
+    public void setBMGoalCategoryFilterValue(String catname){
+    	sSelBMGoalCategoryValueToFilter = catname;
+    }
+    
+    public String getBMGoalCategoryFilterValue(){
+    	return this.sSelBMGoalCategoryValueToFilter;
+    }
+   
+    /**
+     * Please note the selection is already predetermined by the
+     * experiment digital object type from page 1
+     * @return
+     */
+    public List<SelectItem> getAllBMGoalCategoriesForFilter(){
+    	List<SelectItem> ret = new ArrayList<SelectItem>();
+    	Iterator<String> selDigObjTypes = this.getDtype().iterator();
+    	int count=0;
+    	while(selDigObjTypes.hasNext()){
+    		String SDTypeID = selDigObjTypes.next();
+    		ret.add(new SelectItem(dtypeImpl.getDtypeName(SDTypeID)));
+    		if(count==0)
+    			this.setBMGoalCategoryFilterValue(dtypeImpl.getDtypeName(SDTypeID));
+    		count++;
+    	}
+    	ret.add(new SelectItem("disable highlighting"));
+    	return ret;
+    }
+    
 }
 
