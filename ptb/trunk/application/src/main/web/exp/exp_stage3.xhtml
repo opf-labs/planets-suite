@@ -33,7 +33,7 @@
 						<h:messages for="stage3form" errorClass="errorMessage" infoClass="infoMessage"/>
 						<fieldset>
 							<legend>#{res['exp_stage3.legendOutcomes']}</legend>
-							<p>Here you can speficy the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>	
+							<p>Here you can specify the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>	
 							<p>Highlight benchmark goals in category: 
 							<h:selectOneMenu id="filterBMCategory" value="#{ExperimentBean.BMGoalCategoryFilterValue}" immediate="true" 
              					valueChangeListener="#{NewExp_Controller.processBMGoalCategoryFilterChange}">
@@ -54,6 +54,7 @@
 						            </h:column>
 							        <h:column>
 			            				<f:facet name="header">#{res['exp_stage3.bgCriteria']}</f:facet>
+                                                                #{ExperimentBean.BGExperimentText} &nbsp; 
 										<h:outputText value="#{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue == bm.category}" style="color:#579EC2; font-size:larger;"/>
 						            	<h:outputText value="#{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue != bm.category}"/>
 						        	</h:column>			        	
