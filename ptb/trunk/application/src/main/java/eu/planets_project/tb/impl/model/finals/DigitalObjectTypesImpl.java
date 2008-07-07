@@ -35,6 +35,9 @@ public class DigitalObjectTypesImpl implements
         
         String[] type4 = {"d4","Video"};
         dTypes.add(type4);
+        
+        String[] type5 = {"d5","Database"};
+        dTypes.add(type5);
     }
 
     public List<String[]> getAlLDtypes() {
