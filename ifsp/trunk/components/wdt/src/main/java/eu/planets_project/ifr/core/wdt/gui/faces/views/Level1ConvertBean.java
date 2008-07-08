@@ -317,6 +317,7 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
 						"<b>Status: </b><font color=#FF0000>Error could migrate file</font><br>" +
 						"<b>Caused by:</b>"+e.getMessage()+
+						"<b>File Format Information:</b>"+resultType+"<br>" +				
 						"</td></tr></table></fieldset>");
 		    	continue;
 		    }		    
