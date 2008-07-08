@@ -56,7 +56,7 @@ public class Extractor2Binary implements BasicCharacteriseOneBinaryXCELtoBinary,
 	private static String EXTRACTOR_WORK = null;
 	private static String EXTRACTOR_IN = null;
 	private static String EXTRACTOR_OUT = null;
-	private static String OUTPUTFILE_NAME = "xcdl_out.xcdl";
+	private static String OUTPUTFILE_NAME = "extractor2binary_xcdl_out.xcdl";
 	
     
 	/**
@@ -92,12 +92,12 @@ public class Extractor2Binary implements BasicCharacteriseOneBinaryXCELtoBinary,
 
 	private byte[] extractXCDL (byte[] binary, String xcel) {
     	if(SYSTEM_TEMP.lastIndexOf(File.separator) == SYSTEM_TEMP.length()-1) {
-			EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR" + File.separator;
+			EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR2BINARY" + File.separator;
 			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
 			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
 		}
 		if (SYSTEM_TEMP.endsWith("/tmp")){
-			EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR" + File.separator;
+			EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR2BINARY" + File.separator;
 			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
 			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
 		}
@@ -125,13 +125,13 @@ public class Extractor2Binary implements BasicCharacteriseOneBinaryXCELtoBinary,
 			extractor_out_folder.mkdir();
 			plogger.info("Extractor2Binary output folder created: " + EXTRACTOR_OUT);
 			
-			srcFile = new File(EXTRACTOR_IN, "extractor_image_in.bin");
+			srcFile = new File(EXTRACTOR_IN, "extractor2binary_image_in.bin");
 			FileOutputStream fos = new FileOutputStream(srcFile);
 			fos.write(binary);
 			fos.flush();
 			fos.close();
 			
-			xcelFile = new File(EXTRACTOR_IN, "extractor_xcel_in.xml");
+			xcelFile = new File(EXTRACTOR_IN, "extractor2binary_xcel_in.xml");
 			FileWriter fw = new FileWriter(xcelFile);
 			fw.write(xcel);
 			fw.flush();

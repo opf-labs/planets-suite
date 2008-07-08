@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -67,7 +66,7 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
 	private static String EXTRACTOR_WORK = null;
 	private static String EXTRACTOR_IN = null;
 	private static String EXTRACTOR_OUT = null;
-	private static String EXTRACTOR_DR_OUT = "EXTRACTOR_OUT";
+	private static String EXTRACTOR_DR_OUT = "EXTRACTOR2URI_OUT";
 	private static String OUTPUTFILE_NAME = "extractor2uri_xcdl_out.xcdl";
 	
 	private static int MONTH;
@@ -119,9 +118,7 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
     	byte[] input_image = getBinaryFromDataRegistry(inputImageURI.toASCIIString());
     	byte[] input_xcel = getBinaryFromDataRegistry(inputXcelURI.toASCIIString());
     	
-    	String xcel = new String(input_xcel);
-    	
-		byte[] outputXCDL = extractXCDL(input_image, xcel);
+		byte[] outputXCDL = extractXCDL(input_image, input_xcel);
 		URI outputFileURI  =null;
 		try {
 			outputFileURI = storeBinaryInDataRegistry(outputXCDL, OUTPUTFILE_NAME);
@@ -132,14 +129,14 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
 		return outputFileURI;
 	}
 
-	private byte[] extractXCDL (byte[] binary, String xcel) {
+	private byte[] extractXCDL (byte[] binary, byte[] xcel) {
     	if(SYSTEM_TEMP.lastIndexOf(File.separator) == SYSTEM_TEMP.length()-1) {
-			EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR" + File.separator;
+			EXTRACTOR_WORK = SYSTEM_TEMP + "EXTRACTOR2URI" + File.separator;
 			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
 			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
 		}
 		if (SYSTEM_TEMP.endsWith("/tmp")){
-			EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR" + File.separator;
+			EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR2URI" + File.separator;
 			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
 			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
 		}
@@ -174,10 +171,10 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
 			fos.close();
 			
 			xcelFile = new File(EXTRACTOR_IN, "extractor_xcel_in.xml");
-			FileWriter fw = new FileWriter(xcelFile);
-			fw.write(xcel);
-			fw.flush();
-			fw.close();
+			FileOutputStream xcelOut = new FileOutputStream(xcelFile);
+			xcelOut.write(xcel);
+			xcelOut.flush();
+			xcelOut.close();
 			
 			plogger.info("System-Temp folder is: " + SYSTEM_TEMP);
 			
@@ -277,6 +274,7 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
 		}
 		
 		byte[] srcFileArray = null;
+		
 		try {
 			plogger.debug("Retrieving file from DataRegistry: " + fileURI.toASCIIString());
 			srcFileArray = dataRegistry.retrieveBinary(fileURI);

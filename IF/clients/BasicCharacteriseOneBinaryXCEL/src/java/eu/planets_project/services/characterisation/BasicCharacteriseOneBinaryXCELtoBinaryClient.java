@@ -19,7 +19,7 @@ import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteris
 
 public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
-	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR_CLIENT_OUTPUT";
+	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2BINARY_CLIENT_OUTPUT";
 	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME");
 	
 	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception {
@@ -40,12 +40,12 @@ public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 		// Please fill in the path to your INPUT IMAGE:
 		File input_image = 
 			
-			new File("D:/Extractor/Extractor_binaries/res/testpng/basn4a16.png");
+			new File(EXTRACTOR_HOME + "res/testpng/bgai4a16.png");
 		
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
 			
-			new File("D:/Extractor/Extractor-v0.1-win32bin/Extractor0.1/res/xcl/xcel/xcel_docs/xcel_png.xml");
+			new File(EXTRACTOR_HOME + "res/xcl/xcel/xcel_docs/xcel_png.xml");
 		
 		// Please specify the name and the location of the OUTPUT-FILE:
 		File outputFolder = new File(CLIENT_OUTPUT_DIR);

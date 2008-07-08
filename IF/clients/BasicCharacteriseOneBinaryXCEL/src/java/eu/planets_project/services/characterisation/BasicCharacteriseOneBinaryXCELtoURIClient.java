@@ -25,7 +25,7 @@ import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteris
 
 public class BasicCharacteriseOneBinaryXCELtoURIClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
-	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR_CLIENT_OUTPUT";
+	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2URI_CLIENT_OUTPUT";
 	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME");
     private static Calendar myCALENDAR;
 	
@@ -47,12 +47,12 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		// Please fill in the path to your INPUT IMAGE:
 		File input_image = 
 			
-			new File("D:/Extractor/Extractor_binaries/res/testpng/bgai4a16.png");
+			new File(EXTRACTOR_HOME + "res/testpng/bgai4a16.png");
 		
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
 			
-			new File("D:/Extractor/Extractor-v0.1-win32bin/Extractor0.1/res/xcl/xcel/xcel_docs/xcel_png.xml");
+			new File(EXTRACTOR_HOME + "res/xcl/xcel/xcel_docs/xcel_png.xml");
 		
 		// Please specify the name and the location of the OUTPUT-FILE:
 		File outputFolder = new File(CLIENT_OUTPUT_DIR);
@@ -62,17 +62,14 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 			
 			new File(outputFolder, "client_output.xcdl");
 		
-		System.out.println("Creating byte[] from image file: " + input_image.getName());
-		
-		
 		System.out.println("Creating Extractor instance...");
 		System.out.println("Sending data to Webservice...");
 //		URI inputImageURI = storeBinaryInDataRegistry(binary, "extractor_input_image.bin");
 //		URI inputXcelURI = storeBinaryInDataRegistry(xcelIn, "extractor_input_xcel.xml");
 		
 //		planets://localhost:8080/dr/local/EXTRACTOR_IN/bgai4a16.png
-		URI inputImageURI = new URI("planets://localhost:8080/dr/local/EXTRACTOR_IN/bgai4a16.png");
-		URI inputXcelURI = new URI("planets://localhost:8080/dr/local/EXTRACTOR_IN/xcel_png.xml");
+		URI inputImageURI = new URI("planets://localhost:8080/dr/local/EXTRACTOR_IN/" + input_image.getName());
+		URI inputXcelURI = new URI("planets://localhost:8080/dr/local/EXTRACTOR_IN/" + input_xcel.getName());
 		URI resultXCDLURI = extractor.basicCharacteriseOneBinaryXCELtoURI(inputImageURI, inputXcelURI);
 		System.out.println("Success!!! Retrieved Result from Webservice!");
 		System.out.println("Result URI: " + resultXCDLURI.toASCIIString());
@@ -96,7 +93,7 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		
 		String wsdl_location = 
 			
-			"http://planetarium.hki.uni-koeln.de:8080/storage-ifr-storage-ejb/DataManager?wsdl";
+			"http://localhost:8080/storage-ifr-storage-ejb/DataManager?wsdl";
 		
 		DataManager_Service service = new DataManager_Service(new URL(wsdl_location), new QName("http://planets-project.eu/ifr/core/storage/data", "DataManager"));
 		
