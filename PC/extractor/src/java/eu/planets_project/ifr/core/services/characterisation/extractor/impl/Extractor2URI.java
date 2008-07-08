@@ -144,7 +144,7 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
 			EXTRACTOR_HOME = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator);
 		}
 		
-		plogger.info("Starting Extractor2Binary Service...");
+		plogger.info("Starting Extractor2URI Service...");
 		
 		List <String> extractor_arguments = null;
 		File srcFile = null;
@@ -156,13 +156,13 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
 		try {
 			extractor_work_folder = new File(EXTRACTOR_WORK);
 			extractor_work_folder.mkdir();
-			plogger.info("Extractor2Binary work folder created: " + EXTRACTOR_WORK);
+			plogger.info("Extractor2URI work folder created: " + EXTRACTOR_WORK);
 			extractor_in_folder = new File(EXTRACTOR_IN);
 			extractor_in_folder.mkdir();
-			plogger.info("Extractor2Binary input folder created: " + EXTRACTOR_IN);
+			plogger.info("Extractor2URI input folder created: " + EXTRACTOR_IN);
 			extractor_out_folder = new File(EXTRACTOR_OUT);
 			extractor_out_folder.mkdir();
-			plogger.info("Extractor2Binary output folder created: " + EXTRACTOR_OUT);
+			plogger.info("Extractor2URI output folder created: " + EXTRACTOR_OUT);
 			
 			srcFile = new File(EXTRACTOR_IN, "extractor_image_in.bin");
 			FileOutputStream fos = new FileOutputStream(srcFile);
@@ -213,7 +213,7 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
 		
 		shell.setStartingDir(new File(EXTRACTOR_HOME));
 		plogger.info("Setting starting Dir to: " + EXTRACTOR_HOME);
-		plogger.info("Starting Extractor2Binary...");
+		plogger.info("Starting Extractor tool...");
 		shell.run();
 		String processOutput = shell.getProcessOutputAsString();
 		String processError = shell.getProcessErrorAsString();

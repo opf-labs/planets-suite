@@ -174,7 +174,7 @@ public class Extractor2Binary implements BasicCharacteriseOneBinaryXCELtoBinary,
 		
 		shell.setStartingDir(new File(EXTRACTOR_HOME));
 		plogger.info("Setting starting Dir to: " + EXTRACTOR_HOME);
-		plogger.info("Starting Extractor2Binary...");
+		plogger.info("Starting Extractor tool...");
 		shell.run();
 		String processOutput = shell.getProcessOutputAsString();
 		String processError = shell.getProcessErrorAsString();
