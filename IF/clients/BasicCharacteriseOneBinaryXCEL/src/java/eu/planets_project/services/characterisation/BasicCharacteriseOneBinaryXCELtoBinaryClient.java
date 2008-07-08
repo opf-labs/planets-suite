@@ -7,26 +7,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPException;
 import javax.xml.ws.Service;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCEL;
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
+import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 
-public class BasicCharacteriseOneBinaryXCELClient {
+public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR_CLIENT_OUTPUT";
 	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME");
@@ -36,19 +27,20 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		System.out.println("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
 		String wsdlLocation = 
 			
-			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor?wsdl";
-//			"http://localhost:8080/pserv-pc-extractor/Extractor?wsdl";
+//			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor2Binary?wsdl";
+			"http://localhost:8080/pserv-pc-extractor/Extractor2Binary?wsdl";
 		
-		QName qName = BasicCharacteriseOneBinaryXCEL.QNAME;
+		QName qName = BasicCharacteriseOneBinaryXCELtoBinary.QNAME;
+		
 		System.out.println("Creating Service...");
 		Service service = Service.create(new URL(wsdlLocation), qName);
 		System.out.println("Getting Service Port...");
-		BasicCharacteriseOneBinaryXCEL extractor = service.getPort(BasicCharacteriseOneBinaryXCEL.class);
+		BasicCharacteriseOneBinaryXCELtoBinary extractor = service.getPort(BasicCharacteriseOneBinaryXCELtoBinary.class);
 		
 		// Please fill in the path to your INPUT IMAGE:
 		File input_image = 
 			
-			new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah/result56727.PNG");
+			new File("D:/Extractor/Extractor_binaries/res/testpng/basn4a16.png");
 		
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
@@ -78,52 +70,21 @@ public class BasicCharacteriseOneBinaryXCELClient {
 		String xcelString = sb.toString(); 
 		System.out.println();
 //		System.out.println("XCEL: " + xcelString);
-		System.out.println("Creating Extractor instance...");
+		System.out.println("Creating Extractor2Binary instance...");
 		System.out.println("Sending data to Webservice...");
-//		byte[] xcdl = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
-		URI outputFileURI = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
+//		byte[] xcdl = extractor.BasicCharacteriseOneBinaryXCELtoBinary(binary, xcelString);
+		byte[] resultXCDL = extractor.basicCharacteriseOneBinaryXCELtoBinary(binary, xcelString);
 		System.out.println("Success!!! Retrieved Result from Webservice!");
 //		System.out.println("XCDL: " + xcdlString.substring(0, 1000) + "..." + xcdlString.substring(xcdlString.length()-1001, xcdlString.length()));
 		System.out.println("Creating output file...");
-		byte[] binaryOut = getBinaryFromDataRegistry(outputFileURI.toASCIIString());
-//		FileWriter writer = new FileWriter(output_xcdl);
-//		writer.write(xcdlString);
-//		writer.flush();
-//		writer.close();
-//		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(output_xcdl));
-//		bos.write(xcdl);
-//		bos.flush();
-//		bos.close();
-		BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(output_xcdl));
-		os.write(binaryOut);
-		os.flush();
-		os.close();
+		
+		BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(output_xcdl));
+		bos.write(resultXCDL);
+		bos.flush();
+		bos.close();
+		
 		System.out.println("Please find the Result XCDL-File here: " + output_xcdl.getAbsolutePath());
 	}
-	
-	
-	  private static byte[] getBinaryFromDataRegistry(String fileReference) throws SOAPException_Exception, MalformedURLException{
-			System.out.println("Starting to get File from DataRegistry...");
-			
-			URI fileURI = null;
-			try {
-				fileURI = new URI(fileReference);
-			} catch (URISyntaxException e1) {
-				System.out.println("Exception: " + e1.getLocalizedMessage());
-				e1.printStackTrace();
-			}
-			String wsdl_location = 
-				
-				"http://planetarium.hki.uni-koeln.de:8080/storage-ifr-storage-ejb/DataManager?wsdl";
-			
-			DataManager_Service service = new DataManager_Service(new URL(wsdl_location), new QName("http://planets-project.eu/ifr/core/storage/data", "DataManager"));
-			
-			DataManager dataManager = service.getDataManagerPort(); 
-
-			byte[] srcFileArray = dataManager.retrieveBinary(fileReference);
-			
-			return srcFileArray; 		
-		}
 	
 	private static byte[] getByteArrayFromFile(File file) throws IOException {
         InputStream is = new FileInputStream(file);
