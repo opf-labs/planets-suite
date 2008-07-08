@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="pc-pngcheck" default="deploy:ejb" basedir=".">
+ 
+  <!-- Specify configuration for this project --> 
+  <property name="appName" value="${ant.project.name}"/>
+  <property name="appDir" value="."/>
+      
+  <property name="src.dir" value="${appDir}/src/java"/>
+  <property name="lib.dir" value="${appDir}/lib"/>
+  <property name="src.resources" value="${appDir}/src/resources"/>
+  
+  <!-- Include the build targets etc -->
+  <property name="pserv.root.dir" value="../.." />
+  <import file="${pserv.root.dir}/build.common.xml"/>
+    
+</project>
