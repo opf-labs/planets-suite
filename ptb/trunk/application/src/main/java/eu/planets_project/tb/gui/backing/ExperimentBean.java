@@ -1071,5 +1071,12 @@ public class ExperimentBean {
     	return ret;
     }
     
+    public String getBGExperimentText() {
+        //would prefer to read the returned text from the backed resource file
+        if (this.etypeName.equalsIgnoreCase("simple characterisation"))
+            return "Characterisation of ";
+        if (this.etypeName.equalsIgnoreCase("simple migration"))
+            return "Migration of ";               
+        else return "";
+    }
 }
-
