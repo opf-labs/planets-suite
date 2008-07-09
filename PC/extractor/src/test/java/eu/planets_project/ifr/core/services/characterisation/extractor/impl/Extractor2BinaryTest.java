@@ -1,25 +1,47 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 
-public class ExtractorTest {
+public class Extractor2BinaryTest {
+	
+	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
+	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2BINARY_JUNIT-TEST_OUTPUT";
 
 	@Test
-	public void testBasicCharacteriseOneBinaryXCEL() throws IOException, PlanetsException {
-		File image = new File("D:/Extractor/Extractor-v0.1-win32bin/Extractor0.1/res/tiffsuit/ctzn0g04.tif");
-		File xcel = new File("D:/Extractor/Extractor-v0.1-win32bin/Extractor0.1/res/xcl/xcel/xcel_docs/xcel_tiff.xml");
-		byte[] binary = getByteArrayFromFile(image);
-		BufferedReader br = new BufferedReader(new FileReader(xcel));
+	public void testBasicCharacteriseOneBinaryXCELtoBinary() throws IOException, PlanetsException {
+		/// Please fill in the path to your INPUT IMAGE:
+		File input_image = 
+			
+			new File(EXTRACTOR_HOME + "res/testpng/bgai4a16.png");
+		
+		// Please fill in the corresponding input XCEL FILE:
+		File input_xcel = 
+			
+			new File(EXTRACTOR_HOME + "res/xcl/xcel/xcel_docs/xcel_png.xml");
+		
+		// Please specify the name and the location of the OUTPUT-FILE:
+		File outputFolder = new File(CLIENT_OUTPUT_DIR);
+		outputFolder.mkdir();
+		
+		File output_xcdl = 
+			
+			new File(outputFolder, "client_output.xcdl");
+		
+		byte[] binary = getByteArrayFromFile(input_image);
+		BufferedReader br = new BufferedReader(new FileReader(input_xcel));
 		StringBuffer sb = new StringBuffer();
 		String in = "";
 		while((in = br.readLine()) != null) {
@@ -27,13 +49,15 @@ public class ExtractorTest {
 		}
 				
 		String xcelString = sb.toString(); 
-		Extractor extractor = new Extractor();
-		URI outputFileURI = extractor.basicCharacteriseOneBinaryXCEL(binary, xcelString);
-//		FileWriter writer = new FileWriter(outputFile);
-//		writer.write(xcdlString);
-//		writer.flush();
-//		writer.close();
-		System.out.println("Please find the file here: " + outputFileURI.toASCIIString());
+		Extractor2Binary extractor = new Extractor2Binary();
+		byte[] result = extractor.basicCharacteriseOneBinaryXCELtoBinary(binary, xcelString);
+		
+		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(output_xcdl));
+		out.write(result);
+		out.flush();
+		out.close();
+		
+		System.out.println("Please find the file here: " + output_xcdl.getAbsolutePath());
 	}
 	
 	

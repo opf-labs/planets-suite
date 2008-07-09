@@ -22,6 +22,11 @@ public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2BINARY_CLIENT_OUTPUT";
 	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 	
+// Please choose the HOST you wish to test...
+	
+    private static String HOST = "localhost";
+//  private static String HOST = "planetarium.hki.uni-koeln.de";
+	
 	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception {
 		if(EXTRACTOR_HOME.endsWith(File.separator + File.separator)) {
 			EXTRACTOR_HOME = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator);
@@ -30,8 +35,7 @@ public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 		System.out.println("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
 		String wsdlLocation = 
 			
-//			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor2Binary?wsdl";
-			"http://localhost:8080/pserv-pc-extractor/Extractor2Binary?wsdl";
+			"http://" + HOST + ":8080/pserv-pc-extractor/Extractor2Binary?wsdl";
 		
 		QName qName = BasicCharacteriseOneBinaryXCELtoBinary.QNAME;
 		

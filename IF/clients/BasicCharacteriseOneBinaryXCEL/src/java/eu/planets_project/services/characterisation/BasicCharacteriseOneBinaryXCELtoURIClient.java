@@ -27,9 +27,11 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2URI_CLIENT_OUTPUT";
 	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
-    private static Calendar myCALENDAR;
-//    private static String HOST = "localhost";
-    private static String HOST = "planetarium.hki.uni-koeln.de";
+	
+	// Please choose the HOST you wish to test...
+	
+    private static String HOST = "localhost";
+//    private static String HOST = "planetarium.hki.uni-koeln.de";
 	
 	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception, SOAPException, URISyntaxException {
 		if(EXTRACTOR_HOME.endsWith(File.separator + File.separator)) {
@@ -40,7 +42,6 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		String wsdlLocation = 
 			
 			"http://" + HOST + ":8080/pserv-pc-extractor/Extractor2URI?wsdl";
-//			"http://localhost:8080/pserv-pc-extractor/Extractor2URI?wsdl";
 		
 		QName qName = BasicCharacteriseOneBinaryXCELtoURI.QNAME;
 		
@@ -49,7 +50,7 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		System.out.println("Getting Service Port...");
 		BasicCharacteriseOneBinaryXCELtoURI extractor = service.getPort(BasicCharacteriseOneBinaryXCELtoURI.class);
 		
-		// Please fill in the path to your INPUT IMAGE:
+		/// Please fill in the path to your INPUT IMAGE:
 		File input_image = 
 			
 			new File(EXTRACTOR_HOME + "res/testpng/bgai4a16.png");
@@ -67,15 +68,15 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 			
 			new File(outputFolder, "client_output.xcdl");
 		
+		System.out.println("Working with files: " + "\n"+ input_image.getName() + "\n" + input_xcel.getName());
 		System.out.println("Creating Extractor instance...");
 		System.out.println("Sending data to Webservice...");
-//		URI inputImageURI = storeBinaryInDataRegistry(binary, "extractor_input_image.bin");
-//		URI inputXcelURI = storeBinaryInDataRegistry(xcelIn, "extractor_input_xcel.xml");
 		
-//		planets://localhost:8080/dr/local/EXTRACTOR_IN/bgai4a16.png
 		URI inputImageURI = new URI("planets://localhost:8080/dr/local/EXTRACTOR_IN/" + input_image.getName());
 		URI inputXcelURI = new URI("planets://localhost:8080/dr/local/EXTRACTOR_IN/" + input_xcel.getName());
+		
 		URI resultXCDLURI = extractor.basicCharacteriseOneBinaryXCELtoURI(inputImageURI, inputXcelURI);
+		
 		System.out.println("Success!!! Retrieved Result from Webservice!");
 		System.out.println("Result URI: " + resultXCDLURI.toASCIIString());
 //		System.out.println("XCDL: " + xcdlString.substring(0, 1000) + "..." + xcdlString.substring(xcdlString.length()-1001, xcdlString.length()));
@@ -83,8 +84,8 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		
 //		planets://planetarium.hki.uni-koeln.de:8080/dr/local/EXTRACTOR_OUT/xcdl_out_03-07-2008_15-50-21_31ms.xcdl
 //		http://planetarium.hki.uni-koeln.de:8080/storage-webdav/repository/default/EXTRACTOR_OUT
-		
 //		String fileReference = planetsURI.replace("dr/", "storage-webdav/").replace("local/", "repository/default/").replace("planets://", "http://");
+		
 		byte[] resultXCDL = getBinaryFromDataRegistry(resultXCDLURI.toASCIIString());
 		FileOutputStream fileOut = new FileOutputStream(output_xcdl);
 		fileOut.write(resultXCDL);
