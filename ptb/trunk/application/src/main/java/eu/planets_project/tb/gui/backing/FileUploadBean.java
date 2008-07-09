@@ -12,6 +12,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
+import eu.planets_project.tb.impl.AdminManagerImpl;
+
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +73,7 @@ public class FileUploadBean
      */
     public URI getURI() throws Exception {
     	HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    	String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
+        String authority = AdminManagerImpl.getAuthority();
     	URI uri = new URI("http",authority,"/planets-testbed/inputdata/"+this._name,null,null);
     	return uri;
     }
