@@ -26,16 +26,21 @@ import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteris
 public class BasicCharacteriseOneBinaryXCELtoURIClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2URI_CLIENT_OUTPUT";
-	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME");
+	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
     private static Calendar myCALENDAR;
+//    private static String HOST = "localhost";
+    private static String HOST = "planetarium.hki.uni-koeln.de";
 	
 	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception, SOAPException, URISyntaxException {
+		if(EXTRACTOR_HOME.endsWith(File.separator + File.separator)) {
+			EXTRACTOR_HOME = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator);
+		}
 		
 		System.out.println("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
 		String wsdlLocation = 
 			
-//			"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor?wsdl";
-			"http://localhost:8080/pserv-pc-extractor/Extractor2URI?wsdl";
+			"http://" + HOST + ":8080/pserv-pc-extractor/Extractor2URI?wsdl";
+//			"http://localhost:8080/pserv-pc-extractor/Extractor2URI?wsdl";
 		
 		QName qName = BasicCharacteriseOneBinaryXCELtoURI.QNAME;
 		
@@ -52,7 +57,7 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
 			
-			new File(EXTRACTOR_HOME + "res/xcl/xcel/xcel_docs/xcel_png.xml");
+			new File(EXTRACTOR_HOME + "res/xcl/xcel/xcel_docs/xcel_png.xcel");
 		
 		// Please specify the name and the location of the OUTPUT-FILE:
 		File outputFolder = new File(CLIENT_OUTPUT_DIR);
@@ -93,7 +98,7 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		
 		String wsdl_location = 
 			
-			"http://localhost:8080/storage-ifr-storage-ejb/DataManager?wsdl";
+			"http://" + HOST + ":8080/storage-ifr-storage-ejb/DataManager?wsdl";
 		
 		DataManager_Service service = new DataManager_Service(new URL(wsdl_location), new QName("http://planets-project.eu/ifr/core/storage/data", "DataManager"));
 		

@@ -20,9 +20,12 @@ import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteris
 public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2BINARY_CLIENT_OUTPUT";
-	private static final String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME");
+	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 	
 	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception {
+		if(EXTRACTOR_HOME.endsWith(File.separator + File.separator)) {
+			EXTRACTOR_HOME = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator);
+		}
 		
 		System.out.println("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
 		String wsdlLocation = 
