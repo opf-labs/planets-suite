@@ -1,20 +1,13 @@
 package eu.planets_project.services.characterisation;
 
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.security.Permission;
-import java.util.Calendar;
 
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
@@ -30,8 +23,8 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 	
 	// Please choose the HOST you wish to test...
 	
-    private static String HOST = "localhost";
-//    private static String HOST = "planetarium.hki.uni-koeln.de";
+//    private static String HOST = "localhost";
+    private static String HOST = "planetarium.hki.uni-koeln.de";
 	
 	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception, SOAPException, URISyntaxException {
 		if(EXTRACTOR_HOME.endsWith(File.separator + File.separator)) {
@@ -109,70 +102,4 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		
 		return srcFileArray;
 	}	
-	  
-	  
-	  private static File getFileFromWebDav(String fileReference, File outputFolder) throws SOAPException_Exception, MalformedURLException{
-		  	URL webDavFile = new URL(fileReference);
-		  	URLConnection connection = null;
-		  	File out = new File(outputFolder, "client_output.xcdl");
-		  	
-			try {
-				connection = webDavFile.openConnection();
-				Permission permission = connection.getPermission();
-				System.out.println(permission.toString());
-				BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
-				int bytes = 0;
-				
-				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(out));
-				while((bytes = bis.read())!= -1 ) {
-					bos.write(bytes);
-				}
-				bos.flush();
-				bos.close();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return out;
-		}
-	
-	  
-	private static byte[] getByteArrayFromFile(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-    
-        // Get the size of the file
-        long length = file.length();
-    
-        // You cannot create an array using a long type.
-        // It needs to be an int type.
-        // Before converting to an int type, check
-        // to ensure that file is not larger than Integer.MAX_VALUE.
-        if (length > Integer.MAX_VALUE) {
-            //throw new IllegalArgumentException("getBytesFromFile@JpgToTiffConverter:: The file is too large (i.e. larger than 2 GB!");
-        	System.out.println("Datei ist zu gross (e.g. groesser als 2GB)!");
-        }
-    
-        // Create the byte array to hold the data
-        byte[] bytes = new byte[(int)length];
-    
-        // Read in the bytes
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
-        }
-    
-        // Ensure all the bytes have been read in
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file "+file.getName());
-        }
-    
-        // Close the input stream and return bytes
-        is.close();
-        return bytes;
-    }
-	
-    
 }
