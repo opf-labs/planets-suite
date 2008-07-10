@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -105,7 +106,7 @@ function cleanForm() {
                 fetchValue="#{result.username}"
                 border="1" width="300"
                 height="60"
-                nothingLabel="No matching users found" columnClasses="center">
+                nothingLabel="No matching users found." columnClasses="center">
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value="123"></h:outputText>
@@ -159,15 +160,41 @@ function cleanForm() {
  	</p>
 	<div class="clear"></div>
     
-	<p>
-		<h:outputLabel value="#{res['new_exp.expIdeas']}" for="eref" />
-        <h:selectManyListbox id="eref"
-            value="#{ExperimentBean.eref}" size="5" style="width: 23em;"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-          <f:selectItems value="#{ExperimentBean.allExperimentsSelectItems}"/>
-        </h:selectManyListbox>
-		<h:message for="eref" errorClass="errorMessage" />
-		<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-	</p>
+	<p>  
+        <h:outputLabel value="#{res['new_exp.expIdeas']}" for="erefFinder" />
+        <h:inputText required="false" id="erefFinder" value="#{ExperimentBean.erefFinder}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
+        <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}" immediate="true">
+            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add reference" title="add reference" style="margin-left: 5px; margin-right: 10px;"/>
+        </h:commandLink>
+        <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+        <h:message for="erefFinder" errorClass="errorMessage" />
+        <rich:suggestionbox id="suggestionERefFinder" for="erefFinder" tokens=",["
+                rules="none"
+                suggestionAction="#{ExperimentBean.autocompleteExperiments}" var="result"
+                fetchValue="#{result.experimentSetup.basicProperties.experimentName}"
+                border="1" width="300"
+                height="60"
+                nothingLabel="No matching experiments found." columnClasses="center">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="123"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{result.experimentSetup.basicProperties.experimentName}" />
+                </h:column>
+            </rich:suggestionbox>
+    </p>
+    <!--  Show the referenced experiments as a list: -->
+    <div class="clear"></div>
+    <p>
+    <rich:dataList var="exp" value="#{ExperimentBean.erefBeans}" style="list-style: none;">
+        <h:outputLabel value="#{res['new_exp.expReference']}"/>
+        <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        <h:commandLink action="#{ExperimentBean.removeExpRef}" immediate="true">
+            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="remove reference" title="remove reference" style="margin-left: 10px;"/>
+            <t:updateActionListener property="#{ExperimentBean.expToRemove}" value="#{exp}" />
+        </h:commandLink>
+    </rich:dataList>
+    </p>
   
 	<div class="clear"></div>
         

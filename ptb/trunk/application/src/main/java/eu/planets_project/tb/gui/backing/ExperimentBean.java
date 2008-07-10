@@ -81,6 +81,7 @@ public class ExperimentBean {
 
     private String exid = new String();
     private ArrayList<String> eref = new ArrayList<String>();
+    private String erefFinder = new String();
     private ArrayList<String> litrefdesc = new ArrayList<String>();
     private ArrayList<String> litrefuri = new ArrayList<String>();
 
@@ -1081,8 +1082,15 @@ public class ExperimentBean {
             return "Migration of ";               
         else return "";
     }
+
     
     /* Auto complete and ajax hooks */
+    
+    /**
+     * 
+     * @param query
+     * @return
+     */
     public List<User> autocompleteUsers( Object query ) {
         if( query == null) return null;
         // look for matching users:
@@ -1101,4 +1109,88 @@ public class ExperimentBean {
         }
         return matches;
     }
+    
+    /**
+     * 
+     * @param query
+     * @return
+     */
+    public List<Experiment> autocompleteExperiments(Object query ) {
+        if( query == null) return null;
+        // look for matching users:
+        String qs = (String) query;
+        log.debug("Looking for experiments that match " + qs );
+        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+        List<Experiment> allExps = testbedMan.searchAllExperiments(qs);
+        log.debug("Found "+allExps.size()+" matching experiment(s).");
+        return allExps;
+    }
+
+    /**
+     * @return the erefFinder
+     */
+    public String getErefFinder() {
+        return erefFinder;
+    }
+
+    /**
+     * @param erefFinder the erefFinder to set
+     */
+    public void setErefFinder(String erefFinder) {
+        this.erefFinder = erefFinder;
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public String addAnotherExpRefAction() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        log.info("Looking for matches.");
+        List<Experiment> matches = this.autocompleteExperiments(expBean.erefFinder);
+        log.info("Found "+matches.size()+" matches.");
+        if( matches != null && matches.size() == 1 ) {
+            if( ! expBean.eref.contains(""+matches.get(0).getEntityID())) {
+                expBean.eref.add(""+matches.get(0).getEntityID());
+                log.info("Added ID:"+matches.get(0).getEntityID());
+            }
+            this.erefFinder = "";
+        }
+        return "success";
+    }
+    
+    /**
+     * 
+     * @param exp
+     */
+    public String removeExpRef() {
+        log.info("Attempting to remove: "+expToRemove);
+        if( expToRemove == null ) return "success";
+        log.info("Attempting to remove: "+expToRemove.getExperimentSetup().getBasicProperties().getExperimentName());
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        if( expBean.eref.contains(""+expToRemove.getEntityID()))
+            expBean.eref.remove(""+expToRemove.getEntityID());
+        return "success";
+    }
+    
+    /**
+     * 
+     */
+    private Experiment expToRemove;
+
+    /**
+     * @return the expToRemove
+     */
+    public Experiment getExpToRemove() {
+        return expToRemove;
+    }
+
+    /**
+     * @param expToRemove the expToRemove to set
+     */
+    public void setExpToRemove(Experiment expToRemove) {
+        this.expToRemove = expToRemove;
+    }
+    
+    
 }
