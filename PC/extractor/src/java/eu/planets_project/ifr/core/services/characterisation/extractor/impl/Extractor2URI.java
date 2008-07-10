@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Calendar;
+import java.util.StringTokenizer;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -107,10 +108,18 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI, Seria
     	byte[] input_xcel = getBinaryFromDataRegistry(inputXcelURI.toASCIIString());
     	
     	CoreExtractor extractor = new CoreExtractor(CALLING_EXTRACTOR_NAME, plogger);
+
+			String fileName = "";
+    	StringTokenizer st = new StringTokenizer( inputImageURI.toASCIIString() );
+      while (st.hasMoreTokens()) { fileName = st.nextToken("/");}
+	    int k = fileName.lastIndexOf( "." );
+	    if ( k > 0 ) {
+	        OUTPUTFILE_NAME = fileName.substring( 0, k+1 ) +  "xcel";
+	    }    	
     	
-		byte[] outputXCDL = extractor.extractXCDL(input_image, input_xcel);
+			byte[] outputXCDL = extractor.extractXCDL(input_image, input_xcel);
 		
-		URI outputFileURI  = null;
+			URI outputFileURI  = null;
 		try {
 			outputFileURI = storeBinaryInDataRegistry(outputXCDL, OUTPUTFILE_NAME);
 		} catch (SOAPException e) {
