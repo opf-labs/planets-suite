@@ -34,6 +34,7 @@ public class ExpDesignPhaseListener implements PhaseListener {
         }
         if( viewId.startsWith("/reader/exp_stage") ||
             viewId.startsWith("/reader/view_exp")  ||
+            viewId.startsWith("/admin/manage_exp")  ||
             viewId.startsWith("/admin/exp_delete") ) {
             ExpDesignPhaseListener.redirectIfRequired(context, "browse_experiments");
         }
@@ -45,7 +46,7 @@ public class ExpDesignPhaseListener implements PhaseListener {
         // Redirect to experiment list if not.
         if( expBean == null ) {
             log.debug("ExperimentBean == null! Redirecting.");
-//            context.getApplication().getNavigationHandler().handleNavigation(context,"", newView);
+            context.getApplication().getNavigationHandler().handleNavigation(context,"", newView);
             //context.responseComplete();
         }
         log.debug("ExperimentBean found.");

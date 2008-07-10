@@ -3,7 +3,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:t="http://myfaces.apache.org/tomahawk">
+	  xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich">
 <body>
 <f:view>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
@@ -97,6 +99,24 @@ function cleanForm() {
 
         <p><h:outputLabel value="#{res['new_exp.expParticipants']}" for="eparticipants" />
         <h:inputText required="false" id="eparticipants" value="#{ExperimentBean.eparticipants}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipParticipants']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
+        <rich:suggestionbox id="suggestionEParticipants" for="eparticipants" tokens=",["
+                rules="none"
+                suggestionAction="#{ExperimentBean.autocompleteUsers}" var="result"
+                fetchValue="#{result.username}"
+                border="1" width="300"
+                height="60"
+                nothingLabel="No matching users found" columnClasses="center">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="123"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="#{result.username}" />
+                </h:column>
+                <h:column>
+                    <h:outputText value="#{result.fullName}" />
+                </h:column>
+            </rich:suggestionbox>
+        
 <div class="clear"></div>
     <!--
     <p>

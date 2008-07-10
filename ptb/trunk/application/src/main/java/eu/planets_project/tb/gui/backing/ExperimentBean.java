@@ -49,6 +49,8 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
+import eu.planets_project.ifr.core.security.api.model.User;
+import eu.planets_project.ifr.core.security.api.services.UserManager;
 
 
 public class ExperimentBean {
@@ -1078,5 +1080,25 @@ public class ExperimentBean {
         if (this.etypeName.equalsIgnoreCase("simple migration"))
             return "Migration of ";               
         else return "";
+    }
+    
+    /* Auto complete and ajax hooks */
+    public List<User> autocompleteUsers( Object query ) {
+        if( query == null) return null;
+        // look for matching users:
+        String qs = (String) query;
+        log.debug("Looking for users that match " + qs );
+        // Get all users:
+        UserManager um = UserBean.getUserManager();
+        // Filter this into a list of matching users:
+        ArrayList<User> matches = new ArrayList<User>();
+        for( User u : um.getUsers() ) {
+            if( u.getUsername().startsWith(qs) ||
+                u.getFirstName().startsWith(qs) ||
+                u.getLastName().startsWith(qs) ) {
+                  matches.add(u);
+            }
+        }
+        return matches;
     }
 }

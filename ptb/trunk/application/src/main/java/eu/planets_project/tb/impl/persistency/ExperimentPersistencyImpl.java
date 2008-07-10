@@ -68,12 +68,16 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 		return false;
 	}
 	
-	public List<Experiment> searchAllExperiments( String toFind ) {
+	@SuppressWarnings("unchecked")
+    public List<Experiment> searchAllExperiments( String toFind ) {
         // Not case sensitive, wildcarded:
-	    toFind = "%"+toFind.toLowerCase()+"%";
         log.debug("Searching for experiments that match: " + toFind );
-        Query query = manager.createQuery("FROM ExperimentImpl AS e WHERE LOWER(e.expSetup.basicProperties.sExpName) LIKE :toFind OR LOWER(e.expSetup.basicProperties.sSummary) LIKE :toFind");
-        query.setParameter("toFind", toFind);
+        // TODO Augment this with more fields.
+        Query query = manager.createQuery("FROM ExperimentImpl AS e WHERE LOWER(e.expSetup.basicProperties.sExpName) LIKE :toFindLike OR LOWER(e.expSetup.basicProperties.sSummary) LIKE :toFindLike");
+        // This should work, but does not.  It is unclear why. the type of the toFind should not be String.
+        // OR :toFind MEMBER OF e.expSetup.basicProperties.vInvolvedUsers");
+        //query.setParameter("toFind", toFind );
+        query.setParameter("toFindLike", "%"+toFind.toLowerCase()+"%");
         return query.getResultList();
 	}
 	

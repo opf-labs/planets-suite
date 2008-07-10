@@ -208,7 +208,7 @@ public class UserBean
      * Create a user manager:
      * @return
      */
-    private static UserManager getUserManager(){
+    public static UserManager getUserManager(){
         try{
             Context jndiContext = getInitialContext();
             UserManager um = (UserManager) PortableRemoteObject.narrow(
