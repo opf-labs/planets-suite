@@ -422,7 +422,7 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
     		    
     		    String fType = getExtensionFromType( migService2.getDescription() );
     		    logger.debug("The file type produced by the last service is: "+fType);
-    		    if ( ( fType.equals( "pdf" ) ) || ( fType.equals( "tiff" ) ) ||( fType.equals( "png" ) ) ||( fType.equals( "docx" ) ) ) {
+    		    if ( ( fType.equals( "tiff" ) ) ||( fType.equals( "png" ) ) ||( fType.equals( "docx" ) ) ) {
         		    xcelPath = new URI(list[0]+"/XCEL/xcel_"+fType+".xcel" );
         		    logger.debug( "The xcelPath URI is: " + xcelPath );
         		    d1 = new Date();
