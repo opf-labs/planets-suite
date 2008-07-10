@@ -1586,7 +1586,16 @@ public class RegisterTBServices{
 					else{
 						HtmlOutputText outputText = (HtmlOutputText) facesContext.getApplication().createComponent(HtmlOutputText.COMPONENT_TYPE);
 						outputText.setId("Step3OutputTextOutput"+i);
-						outputText.setValue(output);
+						//check if the String is too large for the OutputText element - if chars>1000 then
+						//only display the first and last 300 chars
+						if(output.length()>1000){
+							String s1 = output.substring(0, 300);
+							String s2 = output.substring(output.length()-300, output.length());
+							outputText.setValue(s1+"[...]"+s2);
+						}
+						else{
+							outputText.setValue(output);
+						}
 						outputText.setStyle("color:red");
 						panel.getChildren().add(outputText);
 						addedrow++;
