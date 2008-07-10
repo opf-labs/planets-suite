@@ -112,7 +112,7 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		
 		this.resetServices();
 		//registry lookup...
-		charServices = registry.lookupServices(new Service(null, null, null, null, "uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/characterisation",null));
+		charServices = registry.lookupServices(new Service(null, null, null, null, "uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/identification",null));
 		migServices = registry.lookupServices(new Service(null, null, null, null, "uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/migration",null));
 		
 		charServiceItems.addAll( (Collection)toSelectItem(charServices) );
