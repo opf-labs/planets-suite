@@ -37,7 +37,7 @@ public class CoreExtractor {
 			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
 		}
 		if (SYSTEM_TEMP.endsWith("/tmp")){
-			EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + "EXTRACTOR2URI" + File.separator;
+			EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + EXTRACTOR_NAME + File.separator;
 			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
 			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
 		}
