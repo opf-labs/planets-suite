@@ -174,7 +174,7 @@ function cleanForm() {
             <t:updateActionListener property="#{ExperimentBean.expToRemove}" value="#{exp}" />
         </h:commandLink>
     </rich:dataList>
-    <ul style="list-style: disc; margin-top: 0;">
+    <ul style="list-style: circle; margin-top: 0;">
     <li>
         <h:inputText required="false" id="erefFinder" value="#{ExperimentBean.erefFinder}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
         <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}">
