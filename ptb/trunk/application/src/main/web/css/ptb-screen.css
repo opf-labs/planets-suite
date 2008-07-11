@@ -136,6 +136,9 @@ color:#000000;
 font-family:Arial,Helvetica,sans-serif;
 list-style-type:square;
 }
+.rich-datalist li {
+ margin-bottom: 0.2em;
+}
 div.clear {
 clear:both;
 }

@@ -163,13 +163,27 @@ function cleanForm() {
  	</p>
 	<div class="clear"></div>
     
-	<p>  
-        <h:outputLabel value="#{res['new_exp.expIdeas']}" for="erefFinder" />
+    <p style="color:#006699;">
+      <b>#{res['new_exp.expIdeas']}</b>
+    </p>
+    <!--  Show the referenced experiments as a list: -->
+    <rich:dataList var="exp" value="#{ExperimentBean.erefBeans}" style="list-style: disc; margin-bottom: 0;">
+        <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
+        <h:commandLink action="#{ExperimentBean.removeExpRef}">
+            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="remove reference" title="remove reference" style="margin-left: 10px;"/>
+            <t:updateActionListener property="#{ExperimentBean.expToRemove}" value="#{exp}" />
+        </h:commandLink>
+    </rich:dataList>
+    <ul style="list-style: disc; margin-top: 0;">
+    <li>
         <h:inputText required="false" id="erefFinder" value="#{ExperimentBean.erefFinder}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
         <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}">
             &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add reference" title="add reference" style="margin-left: 5px; margin-right: 10px;"/>
         </h:commandLink>
         <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+        </li>
+    </ul>
+    <p>
         <h:message for="erefFinder" errorClass="errorMessage" />
         <rich:suggestionbox id="suggestionERefFinder" for="erefFinder" tokens=","
                 rules="none"
@@ -184,18 +198,6 @@ function cleanForm() {
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
                 </h:column>
             </rich:suggestionbox>
-    </p>
-    <!--  Show the referenced experiments as a list: -->
-    <div class="clear"></div>
-    <p>
-    <rich:dataList var="exp" value="#{ExperimentBean.erefBeans}" style="list-style: none;">
-        <h:outputLabel value="#{res['new_exp.expReference']}"/>
-        <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-        <h:commandLink action="#{ExperimentBean.removeExpRef}">
-            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="remove reference" title="remove reference" style="margin-left: 10px;"/>
-            <t:updateActionListener property="#{ExperimentBean.expToRemove}" value="#{exp}" />
-        </h:commandLink>
-    </rich:dataList>
     </p>
   
 	<div class="clear"></div>
