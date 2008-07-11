@@ -167,14 +167,14 @@ function cleanForm() {
       <b>#{res['new_exp.expIdeas']}</b>
     </p>
     <!--  Show the referenced experiments as a list: -->
-    <rich:dataList var="exp" value="#{ExperimentBean.erefBeans}" style="list-style: disc; margin-bottom: 0;">
+    <rich:dataList var="exp" value="#{ExperimentBean.erefBeans}" style="list-style: disc; margin-bottom: 0;margin-left:70px;">
         <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
         <h:commandLink action="#{ExperimentBean.removeExpRef}">
             &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="remove reference" title="remove reference" style="margin-left: 10px;"/>
             <t:updateActionListener property="#{ExperimentBean.expToRemove}" value="#{exp}" />
         </h:commandLink>
     </rich:dataList>
-    <ul style="list-style: circle; margin-top: 0;">
+    <ul style="list-style: circle; margin-top: 0;margin-left:70px;">
     <li>
         <h:inputText required="false" id="erefFinder" value="#{ExperimentBean.erefFinder}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
         <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}">
