@@ -31,12 +31,17 @@ public class CoreExtractor {
 	}
 
 	public byte[] extractXCDL (byte[] binary, byte[] xcel) {
-    	if(SYSTEM_TEMP.lastIndexOf(File.separator) == SYSTEM_TEMP.length()-1) {
+    	if(SYSTEM_TEMP.endsWith(File.separator)) {
 			EXTRACTOR_WORK = SYSTEM_TEMP + EXTRACTOR_NAME + File.separator;
 			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
 			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
 		}
-		if (SYSTEM_TEMP.endsWith("/tmp")){
+    	else {
+    		EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + EXTRACTOR_NAME + File.separator;
+			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
+			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
+    	}
+		if (SYSTEM_TEMP.endsWith(File.separator + "tmp")){
 			EXTRACTOR_WORK = SYSTEM_TEMP + File.separator + EXTRACTOR_NAME + File.separator;
 			EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
 			EXTRACTOR_OUT = EXTRACTOR_WORK + "OUT" + File.separator;
