@@ -100,22 +100,25 @@ function cleanForm() {
 
         <p><h:outputLabel value="#{res['new_exp.expParticipants']}" for="eparticipants" />
         <h:inputText required="false" id="eparticipants" value="#{ExperimentBean.eparticipants}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipParticipants']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-        <rich:suggestionbox id="suggestionEParticipants" for="eparticipants" tokens=",["
+        <rich:suggestionbox id="suggestionEParticipants" for="eparticipants" tokens=","
                 rules="none"
-                suggestionAction="#{ExperimentBean.autocompleteUsers}" var="result"
-                fetchValue="#{result.username}"
-                border="1" width="300"
+                suggestionAction="#{ExperimentBean.autocompleteUsers}" var="umatch"
+                border="1" width="150"
                 height="60"
                 nothingLabel="No matching users found." columnClasses="center">
                 <h:column>
                     <f:facet name="header">
                         <h:outputText value="123"></h:outputText>
                     </f:facet>
-                    <h:outputText value="#{result.username}" />
+                    <h:outputText value="#{umatch.username}" />
                 </h:column>
+                <!--  Adding this confuses the selection mechanism, sadly.
+                Probably a bug in our version of RichFaces.
+                fetchValue="#{umatch.username}"
                 <h:column>
-                    <h:outputText value="#{result.fullName}" />
+                    <h:outputText value="#{umatch.fullName}" />
                 </h:column>
+                 -->
             </rich:suggestionbox>
         
 <div class="clear"></div>
@@ -168,7 +171,7 @@ function cleanForm() {
         </h:commandLink>
         <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
         <h:message for="erefFinder" errorClass="errorMessage" />
-        <rich:suggestionbox id="suggestionERefFinder" for="erefFinder" tokens=",["
+        <rich:suggestionbox id="suggestionERefFinder" for="erefFinder" tokens=","
                 rules="none"
                 suggestionAction="#{ExperimentBean.autocompleteExperiments}" var="exp"
                 border="1" width="300"
