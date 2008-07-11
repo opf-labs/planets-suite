@@ -91,7 +91,7 @@ public class ServiceTemplateBrowser {
     			//the current template: iterate over all Serviceperations
     			TestbedServiceTemplate template = itTemplates.next();
     			//build new child node containing a serviceTemplate
-    			TreeNodeBase nodeServiceTemplate = new TreeNodeBase("TBServiceTemplate",template.getName(),template.getUUID(),false); 
+    			TreeNodeBase nodeServiceTemplate = new TreeNodeBase("TBServiceTemplate",template.getName()+": "+template.getDescription(),template.getUUID(),false); 
     			
     			//addServiceTemplate properties
     			nodeServiceTemplate.getChildren().add(new TreeNodeBase("Description",template.getDescription(),true));
