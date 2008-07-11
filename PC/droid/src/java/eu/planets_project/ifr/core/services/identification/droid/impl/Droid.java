@@ -1,5 +1,6 @@
 package eu.planets_project.ifr.core.services.identification.droid.impl;
 
+import java.io.File;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,6 +18,7 @@ import javax.xml.namespace.QName;
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
+import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.datatypes.Types;
 import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
@@ -33,17 +35,19 @@ import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
 public class Droid implements IdentifyOneBinary, Serializable {
-	private static final String TEMP_FILE = "temp_droid";
 	private static final long serialVersionUID = -7116493742376868770L;
 	public static final String NAME = "Droid";
 	public static final QName QNAME = new QName(PlanetsServices.NS,
 			IdentifyOneBinary.NAME);
+	public static final String LOCAL = "PC/droid/src/resources/";
+	private static String SIG = "DROID_SignatureFile_Planets.xml";
+	private static final String CONF = "/server/default/conf/";
+	private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
 
 	/**
 	 * Identify a file represented as a byte array using Droid
 	 * 
-	 * @param byteIn
-	 *            The file to identify using Droid (as a byte array)
+	 * @param bytes The file to identify using Droid (as a byte array)
 	 * @return Returns the Pronom IDs found for the file as URIs in a Types
 	 *         object
 	 */
@@ -52,11 +56,11 @@ public class Droid implements IdentifyOneBinary, Serializable {
 	@WebResult(name = IdentifyOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
 			+ "/" + IdentifyOneBinary.NAME, partName = IdentifyOneBinary.NAME
 			+ "Result")
-	public Types identifyOneBinary(byte[] byteIn) {
-		// Determine the working directories:
-		String sigFileLocation = FileHelper.configFolder();
-		String tempFile = FileHelper.tempFile(TEMP_FILE);
-		FileHelper.storeAsTempFile(byteIn, tempFile);
+	public Types identifyOneBinary(byte[] bytes) {
+		// Determine the config directory:
+		String sigFileLocation = configFolder();
+		// Store the bytes into a temorary folder;
+		File tempFile = ByteArrayHelper.write(bytes);
 		// Here we start using the Droid API:
 		AnalysisController controller = new AnalysisController();
 		try {
@@ -64,7 +68,7 @@ public class Droid implements IdentifyOneBinary, Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		controller.addFile(tempFile);
+		controller.addFile(tempFile.getAbsolutePath());
 		controller.setVerbose(false);
 		controller.runFileFormatAnalysis();
 		Iterator<IdentificationFile> iterator = controller.getFileCollection()
@@ -87,7 +91,6 @@ public class Droid implements IdentifyOneBinary, Serializable {
 			}
 			retVal = new Types(uris, file.getClassificationText());
 		}
-		FileHelper.deleteTempFile(tempFile);
 		return retVal;
 	}
 
@@ -96,14 +99,13 @@ public class Droid implements IdentifyOneBinary, Serializable {
 	 * method to enable SOAP-based testing, it converts the specified file into
 	 * a byte array and calls the actual identify method with that
 	 * 
-	 * @param fileName
-	 *            The file name of the file to identify
+	 * @param fileName The file name of the file to identify
 	 * @return Returns a Types object containing an array with the Pronom IDs as
 	 *         URIs for the specified file
 	 */
 	@WebMethod()
 	public Types identifyOneFile(String fileName) {
-		byte[] array = FileHelper.byteArrayForFile(fileName);
+		byte[] array = ByteArrayHelper.read(new File(fileName));
 		return identifyOneBinary(array);
 	}
 
@@ -124,4 +126,18 @@ public class Droid implements IdentifyOneBinary, Serializable {
 			slept++;
 		}
 	}
+
+	/**
+	 * @return If running in JBoss, returns the deployment directory, else (like
+	 *         when running a unit test) returns the project directory to
+	 *         retrieve the concepts file
+	 */
+	private static String configFolder() {
+		String deployedJBossHome = System.getProperty(JBOSS_HOME_DIR_KEY);
+		String sigFileFolder = (deployedJBossHome != null ? deployedJBossHome
+				+ CONF : LOCAL);
+		String sigFileLocation = sigFileFolder + SIG;
+		return sigFileLocation;
+	}
+
 }

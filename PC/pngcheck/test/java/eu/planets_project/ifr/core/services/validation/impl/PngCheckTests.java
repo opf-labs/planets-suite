@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.services.validation.impl;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -12,6 +13,7 @@ import javax.xml.ws.Service;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
+import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.validate.BasicValidateOneBinary;
 
@@ -38,13 +40,17 @@ public class PngCheckTests {
 	@Test
 	public void clientTests() throws FileNotFoundException, IOException,
 			Exception {
-		Service service = Service.create(new URL(
-		/*
-		 * "http://localhost:8080/pserv-pc-pngcheck/PngCheck?wsdl" or
-		 * "http://planetarium.hki.uni-koeln.de:8080/pserv-pc-pngcheck/PngCheck?wsdl"
-		 */
-		"http://localhost:8080/pserv-pc-pngcheck/PngCheck?wsdl"), new QName(
-				PlanetsServices.NS, BasicValidateOneBinary.NAME));
+		Service service = Service
+				.create(
+						new URL(
+						/*
+						 * "http://localhost:8080/pserv-pc-pngcheck/PngCheck?wsdl"
+						 * or
+						 * "http://planetarium.hki.uni-koeln.de:8080/pserv-pc-pngcheck/PngCheck?wsdl"
+						 */
+						"http://planetarium.hki.uni-koeln.de:8080/pserv-pc-pngcheck/PngCheck?wsdl"),
+						new QName(PlanetsServices.NS,
+								BasicValidateOneBinary.NAME));
 		BasicValidateOneBinary pngCheck = service
 				.getPort(BasicValidateOneBinary.class);
 		test(pngCheck);
@@ -60,8 +66,10 @@ public class PngCheckTests {
 	 */
 	private void test(BasicValidateOneBinary pngCheck) throws PlanetsException,
 			IOException {
-		byte[] inPng = PngCheck.bytes("PC/pngcheck/src/resources/planets.png");
-		byte[] inJpg = PngCheck.bytes("PC/pngcheck/src/resources/planets.jpg");
+		byte[] inPng = ByteArrayHelper.read(new File(
+				"PC/pngcheck/src/resources/planets.png"));
+		byte[] inJpg = ByteArrayHelper.read(new File(
+				"PC/pngcheck/src/resources/planets.jpg"));
 		assertTrue("Valid PNG was not validated;", pngCheck
 				.basicValidateOneBinary(inPng, null));
 		assertTrue("Invalid PNG was not invalidated;", !pngCheck

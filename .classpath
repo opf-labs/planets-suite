@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="IF/|PC/droid/|PC/|PA/xena/|PA/|PC/droid/src/java/|PC/droid/src/java/|PC/droid/test/java/|PC/droid/test/java/|PP/|PP/comparator/test/java/|PP/comparator/test/java/|PP/comparator/src/java/|PP/comparator/src/java/" kind="src" path=""/>
+	<classpathentry excluding="IF/|PC/droid/|PC/|PA/xena/|PA/|PC/droid/src/java/|PC/droid/src/java/|PC/droid/test/java/|PC/droid/test/java/|PP/|PP/comparator/test/java/|PP/comparator/test/java/|PP/comparator/src/java/|PP/comparator/src/java/|IF/clients/BasicMigrateOneBinary/src/java/|IF/clients/BasicMigrateOneBinary/src/java/|IF/clients/BasicIdentifyOneBinary/src/java/|IF/clients/BasicIdentifyOneBinary/src/java/|IF/clients/BasicCharacteriseOneBinaryXCEL/src/java/|IF/clients/BasicCharacteriseOneBinaryXCEL/src/java/|PC/pngcheck/test/java/|PC/pngcheck/test/java/|PC/pngcheck/src/java/|PC/pngcheck/src/java/|PA/xena/src/java/|PA/xena/src/java/|PC/jhove/src/java/|PC/jhove/src/java/|PC/jhove/test/java/|PC/jhove/test/java/" kind="src" path=""/>
 	<classpathentry kind="src" path="PC/droid/src/java"/>
 	<classpathentry kind="src" path="PC/droid/test/java"/>
 	<classpathentry kind="src" path="PP/comparator/test/java"/>
 	<classpathentry kind="src" path="PP/comparator/src/java"/>
+	<classpathentry kind="src" path="IF/clients/BasicMigrateOneBinary/src/java"/>
+	<classpathentry kind="src" path="IF/clients/BasicIdentifyOneBinary/src/java"/>
+	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
+	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
+	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
+	<classpathentry kind="src" path="PA/xena/src/java"/>
+	<classpathentry kind="src" path="PC/jhove/src/java"/>
+	<classpathentry kind="src" path="PC/jhove/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar"/>
 	<classpathentry kind="lib" path="/if_sp/lib/build/junit-4.4.jar"/>
@@ -143,6 +151,11 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/xmlentitymgr.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxb-api.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.1-office.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/JhoveApp.jar"/>
 	<classpathentry kind="lib" path="/if_sp/components/common/build/planets-ifr-common.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
