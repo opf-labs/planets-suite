@@ -163,15 +163,14 @@ function cleanForm() {
 	<p>  
         <h:outputLabel value="#{res['new_exp.expIdeas']}" for="erefFinder" />
         <h:inputText required="false" id="erefFinder" value="#{ExperimentBean.erefFinder}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
-        <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}" immediate="true">
+        <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}">
             &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add reference" title="add reference" style="margin-left: 5px; margin-right: 10px;"/>
         </h:commandLink>
         <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
         <h:message for="erefFinder" errorClass="errorMessage" />
         <rich:suggestionbox id="suggestionERefFinder" for="erefFinder" tokens=",["
                 rules="none"
-                suggestionAction="#{ExperimentBean.autocompleteExperiments}" var="result"
-                fetchValue="#{result.experimentSetup.basicProperties.experimentName}"
+                suggestionAction="#{ExperimentBean.autocompleteExperiments}" var="exp"
                 border="1" width="300"
                 height="60"
                 nothingLabel="No matching experiments found." columnClasses="center">
@@ -179,7 +178,7 @@ function cleanForm() {
                     <f:facet name="header">
                         <h:outputText value="123"></h:outputText>
                     </f:facet>
-                    <h:outputText value="#{result.experimentSetup.basicProperties.experimentName}" />
+                    <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
                 </h:column>
             </rich:suggestionbox>
     </p>
@@ -189,7 +188,7 @@ function cleanForm() {
     <rich:dataList var="exp" value="#{ExperimentBean.erefBeans}" style="list-style: none;">
         <h:outputLabel value="#{res['new_exp.expReference']}"/>
         <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-        <h:commandLink action="#{ExperimentBean.removeExpRef}" immediate="true">
+        <h:commandLink action="#{ExperimentBean.removeExpRef}">
             &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="remove reference" title="remove reference" style="margin-left: 10px;"/>
             <t:updateActionListener property="#{ExperimentBean.expToRemove}" value="#{exp}" />
         </h:commandLink>
