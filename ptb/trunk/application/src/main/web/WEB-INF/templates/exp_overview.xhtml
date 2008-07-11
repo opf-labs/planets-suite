@@ -216,9 +216,9 @@
                     <h:outputLink value="Service Output: "/>
                     <!-- check if input displayed as URI or as String -->
                     <h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}" target="_new">
-                            <h:outputText value="#{data['output']}" style="color:red"/>
+                            <h:outputText value="#{data['output']}" style="color:green"/>
                     </h:outputLink>
-                    <h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}" style="color:red"/>
+                    <h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}" style="color:green"/>
                 </h:column>                     
             </h:dataTable>
         </fieldset>
