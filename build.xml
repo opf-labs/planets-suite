@@ -16,6 +16,7 @@
   	<ant dir="PC/pngcheck" inheritAll="false"/>
   	<ant dir="PP/comparator" inheritAll="false"/>
   	<ant dir="PC/extractor" inheritAll="false"/>
+  	<ant dir="PA/msgtext" inheritAll="false"/>
     <!--
   	  -->
   </target>
