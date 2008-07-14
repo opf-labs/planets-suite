@@ -40,6 +40,8 @@ public class PngCheck implements BasicValidateOneBinary, Serializable {
 	public static final String NAME = "PngCheck";
 	public static final QName QNAME = new QName(PlanetsServices.NS,
 			BasicValidateOneBinary.NAME);
+	public static final List<String> PNG_PRONOM = Arrays.asList(
+			"info:pronom/fmt/11", "info:pronom/fmt/12", "info:pronom/fmt/13");
 	private PlanetsLogger log;
 	private byte[] bytes;
 
@@ -65,6 +67,12 @@ public class PngCheck implements BasicValidateOneBinary, Serializable {
 			@WebParam(name = "fmt", targetNamespace = PlanetsServices.NS + "/"
 					+ BasicValidateOneBinary.NAME, partName = "fmt")
 			URI fmt) throws PlanetsException {
+		/* PngCheck can only validate PNG files: */
+		if (fmt != null && !PNG_PRONOM.contains(fmt.toString())) {
+			throw new IllegalArgumentException(
+					"PngCheck can only validate PNG files, not "
+							+ fmt.toString());
+		}
 		log = PlanetsLogger.getLogger(this.getClass());
 		/* We create a temporary file and write the bytes to that file: */
 		File tempFile = ByteArrayHelper.write(binary);

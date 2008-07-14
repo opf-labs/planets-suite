@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.xml.namespace.QName;
@@ -27,7 +29,7 @@ public class PngCheckTests {
 	/**
 	 * Tests PngCheck identification using a local PngCheck instance
 	 */
-	@Test
+	@Test(expected = IllegalArgumentException.class)
 	public void localTests() throws FileNotFoundException, IOException,
 			Exception {
 		test(new PngCheck());
@@ -63,17 +65,25 @@ public class PngCheckTests {
 	 * @param pngCheck The pngCheck instance to test
 	 * @throws PlanetsException
 	 * @throws IOException
+	 * @throws URISyntaxException
 	 */
 	private void test(BasicValidateOneBinary pngCheck) throws PlanetsException,
-			IOException {
+			IOException, URISyntaxException {
 		byte[] inPng = ByteArrayHelper.read(new File(
 				"PC/pngcheck/src/resources/planets.png"));
 		byte[] inJpg = ByteArrayHelper.read(new File(
 				"PC/pngcheck/src/resources/planets.jpg"));
+		/* Check with null PRONOM URI, both with PNG and JPG */
 		assertTrue("Valid PNG was not validated;", pngCheck
 				.basicValidateOneBinary(inPng, null));
 		assertTrue("Invalid PNG was not invalidated;", !pngCheck
 				.basicValidateOneBinary(inJpg, null));
+		/* Check with valid and invalid PRONOM URI */
+		assertTrue("Valid PNG was not validated;", pngCheck
+				.basicValidateOneBinary(inPng, new URI("info:pronom/fmt/11")));
+		/* This should throw an IllegalArgumentException: */
+		assertTrue("Invalid PNG was not invalidated;", !pngCheck
+				.basicValidateOneBinary(inJpg, new URI("info:pronom/fmt/10")));
 
 	}
 
