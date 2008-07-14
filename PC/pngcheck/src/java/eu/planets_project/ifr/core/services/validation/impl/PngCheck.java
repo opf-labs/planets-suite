@@ -70,8 +70,8 @@ public class PngCheck implements BasicValidateOneBinary, Serializable {
 		/* PngCheck can only validate PNG files: */
 		if (fmt != null && !PNG_PRONOM.contains(fmt.toString())) {
 			throw new IllegalArgumentException(
-					"PngCheck can only validate PNG files, not "
-							+ fmt.toString());
+					"PngCheck can only validate PNG (" + PNG_PRONOM
+							+ ") files, not " + fmt.toString());
 		}
 		log = PlanetsLogger.getLogger(this.getClass());
 		/* We create a temporary file and write the bytes to that file: */
