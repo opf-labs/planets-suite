@@ -32,6 +32,7 @@ public class JhoveIdentificationTests {
 	@Test
 	public void localTests() throws FileNotFoundException, IOException,
 			Exception {
+		System.out.println("Local:");
 		test(new JhoveIdentification());
 	}
 
@@ -48,6 +49,7 @@ public class JhoveIdentificationTests {
 								"http://localhost:8080/pserv-pc-jhove/JhoveIdentification?wsdl"),
 						new QName(PlanetsServices.NS, IdentifyOneBinary.NAME));
 		IdentifyOneBinary jHove = service.getPort(IdentifyOneBinary.class);
+		System.out.println("Remote:");
 		test(jHove);
 	}
 
@@ -55,17 +57,17 @@ public class JhoveIdentificationTests {
 	 * Tests a JhoveIdentification instance against the enumerated file types in
 	 * FileTypes (testing sample files against their expected PRONOM IDs)
 	 * 
-	 * @param hove The JhoveIdentification instance to test
+	 * @param identification The JhoveIdentification instance to test
 	 */
-	private void test(IdentifyOneBinary hove) throws FileNotFoundException,
-			IOException, Exception {
+	private void test(IdentifyOneBinary identification)
+			throws FileNotFoundException, IOException, Exception {
 		/* We check all the enumerated file types: */
 		for (FileType type : FileType.values()) {
-			System.out.println("Testing " + type);
+			System.out.println("Testing identification of: " + type);
 			/* For each we get the sample file: */
 			String location = JhoveIdentification.RESOURCES + type.sample;
 			/* And try identifying it: */
-			Types result = hove.identifyOneBinary(ByteArrayHelper
+			Types result = identification.identifyOneBinary(ByteArrayHelper
 					.read(new File(location)));
 			assertEquals("Wrong pronom ID;", type.pronom, result.types[0]
 					.toString());
