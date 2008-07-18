@@ -18,6 +18,8 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
 
+import org.jboss.util.Base64;
+
 import eu.planets_project.ifr.core.common.cli.ProcessRunner;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
@@ -48,12 +50,11 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	private static final String RESULT_ENDING = ".cpr";
 	/** The comparator executable, has to be on the path on the server */
 	private static final String COMPARATOR = "comparator";
+	private static final String BASE64 = "Base64";
 
 	/**
-	 * @param xcdl1
-	 *            The first XCDL
-	 * @param xcdl2
-	 *            The second XCDL
+	 * @param xcdl1 The first XCDL
+	 * @param xcdl2 The second XCDL
 	 * @return Returns the result of comparing the first and the second XCDL
 	 */
 	@WebMethod(operationName = BasicCompareTwoXCDLStrings.NAME, action = PlanetsServices.NS
@@ -106,6 +107,26 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	}
 
 	/**
+	 * @param xcdl1 The first XCDL, Base64 encoded
+	 * @param xcdl2 The second XCDL, Base64 encoded
+	 * @return Returns the result of comparing the first and the second XCDL,
+	 *         Base64 encoded
+	 */
+	@WebMethod(operationName = BasicCompareTwoXCDLStrings.NAME + BASE64, action = PlanetsServices.NS
+			+ "/" + BasicCompareTwoXCDLStrings.NAME + BASE64)
+	@WebResult(name = BasicCompareTwoXCDLStrings.NAME + BASE64 + "Result", targetNamespace = PlanetsServices.NS
+			+ "/" + BasicCompareTwoXCDLStrings.NAME + BASE64, partName = BasicCompareTwoXCDLStrings.NAME
+			+ BASE64 + "Result")
+	public String basicCompareTwoXCDLBase64Strings(String xcdl1Base64,
+			String xcdl2Base64) {
+		String xcdl1 = new String(Base64.decode(xcdl1Base64));
+		String xcdl2 = new String(Base64.decode(xcdl2Base64));
+		String result = basicCompareTwoXCDLStrings(xcdl1, xcdl2);
+		String resultBase64 = Base64.encodeBytes(result.getBytes());
+		return resultBase64;
+	}
+
+	/**
 	 * Helper/mock method for testing, using file locations instead of the
 	 * actual data. Calls the actual comparison method above.
 	 */
@@ -117,8 +138,7 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	}
 
 	/**
-	 * @param location
-	 *            The location of the text file to read
+	 * @param location The location of the text file to read
 	 * @return Return the content of the file at the specified location,
 	 *         replacing line breaks with blanks
 	 */
@@ -138,10 +158,8 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	}
 
 	/**
-	 * @param fileName
-	 *            The file name to write the specified content to
-	 * @param content
-	 *            The content to write to a file with the specified name
+	 * @param fileName The file name to write the specified content to
+	 * @param content The content to write to a file with the specified name
 	 */
 	private void save(String fileName, String content) {
 		try {
@@ -154,8 +172,7 @@ public class Comparator implements BasicCompareTwoXCDLStrings, Serializable {
 	}
 
 	/**
-	 * @param name
-	 *            The name to use when generating the temp file
+	 * @param name The name to use when generating the temp file
 	 * @return Returns a temp file created using File.createTempFile
 	 */
 	public static File tempFile(String name) {

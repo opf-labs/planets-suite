@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
+import org.apache.xml.security.utils.Base64;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
@@ -22,6 +23,9 @@ import eu.planets_project.ifr.core.services.comparison.comparator.impl.Comparato
  */
 public class ComparatorTests {
 
+	private static final String XCDL2 = "PP/comparator/src/resources/xcdl2.xml";
+	private static final String XCDL1 = "PP/comparator/src/resources/xcdl1.xml";
+
 	@Test
 	public void environment() {
 		assertNotNull("COMPARATOR_HOME is not set", Comparator.COMPARATOR_HOME);
@@ -33,7 +37,9 @@ public class ComparatorTests {
 	@Test
 	public void localTests() throws FileNotFoundException, IOException,
 			Exception {
-		test(new Comparator());
+		Comparator comparator = new Comparator();
+		test(comparator);
+		testBase64(comparator);
 	}
 
 	/**
@@ -61,14 +67,26 @@ public class ComparatorTests {
 	}
 
 	/**
-	 * @param comparator
-	 *            The comparator instance to test
+	 * @param comparator The comparator instance to test
 	 * 
 	 */
 	private void test(BasicCompareTwoXCDLStrings comparator) {
 		String result = comparator.basicCompareTwoXCDLStrings(Comparator
-				.read("PP/comparator/src/resources/xcdl1.xml"), Comparator
-				.read("PP/comparator/src/resources/xcdl2.xml"));
+				.read(XCDL1), Comparator.read(XCDL2));
+		System.out.println("Result: " + result);
+		assertNotNull("Comparator returned null", result);
+	}
+
+	/**
+	 * @param comparator The comparator instance to test using Base64 encoded
+	 *        strings
+	 * 
+	 */
+	private void testBase64(BasicCompareTwoXCDLStrings comparator) {
+		Comparator c = (Comparator) comparator;
+		String result = c.basicCompareTwoXCDLBase64Strings(Base64
+				.encode(Comparator.read(XCDL1).getBytes()), Base64
+				.encode(Comparator.read(XCDL2).getBytes()));
 		System.out.println("Result: " + result);
 		assertNotNull("Comparator returned null", result);
 	}
