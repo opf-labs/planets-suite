@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="IF/|PC/droid/|PC/|PA/xena/|PA/|PC/droid/src/java/|PC/droid/src/java/|PC/droid/test/java/|PC/droid/test/java/|PP/|PP/comparator/test/java/|PP/comparator/test/java/|PP/comparator/src/java/|PP/comparator/src/java/|IF/clients/BasicMigrateOneBinary/src/java/|IF/clients/BasicMigrateOneBinary/src/java/|IF/clients/BasicIdentifyOneBinary/src/java/|IF/clients/BasicIdentifyOneBinary/src/java/|IF/clients/BasicCharacteriseOneBinaryXCEL/src/java/|IF/clients/BasicCharacteriseOneBinaryXCEL/src/java/|PC/pngcheck/test/java/|PC/pngcheck/test/java/|PC/pngcheck/src/java/|PC/pngcheck/src/java/|PA/xena/src/java/|PA/xena/src/java/|PC/jhove/src/java/|PC/jhove/src/java/|PC/jhove/test/java/|PC/jhove/test/java/|PA/msgtext/src/java/|PA/msgtext/src/java/|PA/msgtext/test/java/|PA/msgtext/test/java/|PC/metadata/src/java/|PC/metadata/src/java/|PC/metadata/src/test/java/|PC/metadata/src/test/java/|PC/metadata/src/resources/|PC/metadata/src/resources/" kind="src" path=""/>
+	<classpathentry excluding="IF/|PC/droid/|PC/|PA/xena/|PA/|PC/droid/src/java/|PC/droid/src/java/|PC/droid/test/java/|PC/droid/test/java/|PP/|PP/comparator/test/java/|PP/comparator/test/java/|PP/comparator/src/java/|PP/comparator/src/java/|IF/clients/BasicMigrateOneBinary/src/java/|IF/clients/BasicMigrateOneBinary/src/java/|IF/clients/BasicIdentifyOneBinary/src/java/|IF/clients/BasicIdentifyOneBinary/src/java/|IF/clients/BasicCharacteriseOneBinaryXCEL/src/java/|IF/clients/BasicCharacteriseOneBinaryXCEL/src/java/|PC/pngcheck/test/java/|PC/pngcheck/test/java/|PC/pngcheck/src/java/|PC/pngcheck/src/java/|PA/xena/src/java/|PA/xena/src/java/|PC/jhove/src/java/|PC/jhove/src/java/|PC/jhove/test/java/|PC/jhove/test/java/|PA/msgtext/src/java/|PA/msgtext/src/java/|PA/msgtext/test/java/|PA/msgtext/test/java/|PC/metadata/src/java/|PC/metadata/src/java/|PC/metadata/src/test/java/|PC/metadata/src/test/java/|PC/metadata/src/resources/|PC/metadata/src/resources/|IF/clients/L2PlanetsServiceClient/src/java/|IF/clients/L2PlanetsServiceClient/src/java/|IF/Sample/components/simple/src/test/java/|IF/Sample/components/simple/src/test/java/|IF/Sample/components/simple/src/main/java/|IF/Sample/components/simple/src/main/java/|PC/extractor/src/java/|PC/extractor/src/java/|PC/extractor/src/test/java/|PC/extractor/src/test/java/" kind="src" path=""/>
 	<classpathentry kind="src" path="PC/droid/src/java"/>
 	<classpathentry kind="src" path="PC/droid/test/java"/>
 	<classpathentry kind="src" path="PP/comparator/test/java"/>
@@ -18,6 +18,11 @@
 	<classpathentry kind="src" path="PC/metadata/src/java"/>
 	<classpathentry kind="src" path="PC/metadata/src/test/java"/>
 	<classpathentry kind="src" path="PC/metadata/src/resources"/>
+	<classpathentry kind="src" path="IF/clients/L2PlanetsServiceClient/src/java"/>
+	<classpathentry kind="src" path="IF/Sample/components/simple/src/test/java"/>
+	<classpathentry kind="src" path="IF/Sample/components/simple/src/main/java"/>
+	<classpathentry kind="src" path="PC/extractor/src/java"/>
+	<classpathentry kind="src" path="PC/extractor/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar"/>
 	<classpathentry kind="lib" path="/if_sp/lib/build/junit-4.4.jar"/>
