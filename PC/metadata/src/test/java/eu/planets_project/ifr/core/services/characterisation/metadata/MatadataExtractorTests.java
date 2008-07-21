@@ -32,7 +32,7 @@ public class MatadataExtractorTests {
 		GIF("gif/AA_Banner.gif", "image/gif"),
 		JPEG("jpeg/AA_Banner.jpg", "image/jpeg"),
 		TIFF("tiff/AA_Banner.tif", "image/tiff"),
-		PDF("pdf/AA.pdf", "application/pdf"),
+		PDF("pdf/AA_Banner-single.pdf", "application/pdf"),
 		WAV("wav/comet.wav", "wave"),
 		HTML("html/sample.html", "text/html"),
 		/** The OO adapter throws an exception but still works: */
