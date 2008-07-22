@@ -48,7 +48,8 @@ public class L2PlanetsServiceClient {
 		TypePlanetsDataModel tpdm = null;
 		String xmlString = null;
 		
-		File folder = new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah");
+		File folder = new File("C:/planets_ifr_server/PlanetsTestbedData");
+//		File folder = new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah");
 		List <String> uris = new ArrayList <String>();
 		File[] files = folder.listFiles();
 		System.out.println("Scanning Src-Folder...: " + folder.getAbsolutePath());

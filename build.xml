@@ -4,21 +4,52 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="Planets Service Deployer" default="deploy:all" basedir=".">
+<project name="Planets Service Deployer" default="deploy:pure-java" basedir=".">
 
-  <!-- TODO Add checks that the build properties have been set up. -->
-  
-  <!-- TODO Go into sub-directories and build. -->
-  <target name="deploy:all">
-  	<ant dir="PA/xena" inheritAll="false"/>
-    <ant dir="PC/droid" inheritAll="false"/>
-  	<ant dir="PC/jhove" inheritAll="false"/>
-  	<ant dir="PC/pngcheck" inheritAll="false"/>
-  	<ant dir="PP/comparator" inheritAll="false"/>
-  	<ant dir="PC/metadata" inheritAll="false"/>
-  	<ant dir="PA/msgtext" inheritAll="false"/>
-    <!--
-  	  -->
+  <!-- Check that the build properties have been set up. -->
+  <property file="build.properties"/>
+  <target name="props:set" unless="if_server.dir">
+    <echo level="error" message="ERROR: Please set up your build.properties file.  Read the README.txt for more information. "/>
+    <fail message="No build.properties found."/>
   </target>
-    
+
+  <!-- These services are pure java, and can be deployed automatically. -->
+  <target name="deploy:pure-java" depends="props:set">
+    <!-- Preservation Characterisation -->
+    <ant dir="PC/droid" inheritAll="false"/>
+    <ant dir="PC/jhove" inheritAll="false"/>
+    <ant dir="PC/metadata" inheritAll="false"/>
+  </target>
+
+  <!-- These services are wrappers requiring other software to be installed. 
+    Because of this, they are not deployed automatically (i.e. this target 
+    is _not_ included in the default ant target). -->
+  <target name="deploy:wrappers" depends="props:set">
+    <!-- Preservation Action -->
+    <ant dir="PA/jmagickconverter" inheritAll="false"/>
+    <ant dir="PA/msgtext" inheritAll="false"/>
+    <ant dir="PA/openXML" inheritAll="false"/>
+    <ant dir="PA/ps2pdf" inheritAll="false"/>
+    <ant dir="PA/sox" inheritAll="false"/>
+    <ant dir="PA/xena" inheritAll="false"/>
+    <!-- Preservation Characterisation -->
+    <ant dir="PC/extractor" inheritAll="false"/>
+    <!-- ant dir="PC/fpm" inheritAll="false"/ -->
+    <ant dir="PC/pngcheck" inheritAll="false"/>
+    <!-- Preservation Planning -->
+    <ant dir="PP/comparator" inheritAll="false"/>
+  </target>
+  
+  <!-- This target installs all useful services. -->
+  <target name="deploy:all" depends="deploy:pure-java, deploy:wrappers" />
+
+
+  <!-- This target installs the IF example services. -->
+  <target name="deploy:examples" >
+    <ant dir="IF/generic" inheritAll="false"/>
+    <ant dir="IF/simple" inheritAll="false"/>
+  </target>
+  
+  <!-- TODO Add a 'clean:all' target that invokes 'clean' in all sub-builds. -->
+  
 </project>
