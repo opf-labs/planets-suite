@@ -930,7 +930,7 @@ public class ExperimentBean {
             HtmlOutputText outputText = (HtmlOutputText) facesContext
                     .getApplication().createComponent(
                             HtmlOutputText.COMPONENT_TYPE);
-            outputText.setValue(dh.getInputFileIndexEntryName(new File(fileRef)));
+            outputText.setValue(" "+dh.getInputFileIndexEntryName(new File(fileRef)));
             outputText.setId("fileName" + key);
             //file name
             HtmlOutputLink link_src = (HtmlOutputLink) facesContext
@@ -953,12 +953,13 @@ public class ExperimentBean {
                             parms);
             link_remove.setActionListener(mb);
             link_remove.setId("removeLink" + key);
+            link_remove.setTitle("Remove this file."); // FIXME Localise this!
             //send along an helper attribute to identify which component triggered the event
             link_remove.getAttributes().put("IDint", key);
             HtmlGraphicImage image = (HtmlGraphicImage) facesContext
                     .getApplication().createComponent(
                             HtmlGraphicImage.COMPONENT_TYPE);
-            image.setUrl("../graphics/button_delete.gif");
+            image.setUrl("../graphics/user_trash.png");
             image.setAlt("delete-image");
             image.setId("graphicRemove" + key);
             link_remove.getChildren().add(image);
@@ -1077,9 +1078,9 @@ public class ExperimentBean {
     public String getBGExperimentText() {
         //would prefer to read the returned text from the backed resource file
         if (this.etypeName.equalsIgnoreCase("simple characterisation"))
-            return "Characterisation of ";
+            return "Correct Characterisation Of... ";
         if (this.etypeName.equalsIgnoreCase("simple migration"))
-            return "Migration of ";               
+            return "Preservation Of... ";
         else return "";
     }
 

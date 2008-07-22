@@ -35,7 +35,7 @@
                     <f:selectItems value="#{TBServiceManager.serviceSelectItems}"/>
      		</h:selectOneMenu>
      		<h:commandLink id="link_removeService" action="#{TBServiceManager.command_deleteSelectedService}" rendered="#{TBServiceManager.TBServiceSelected}">
-                <img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="delete" title="delete service"/>
+                <img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="delete" title="delete service"/>
             </h:commandLink>
      		<h:message for="selectService"/>
      		<h:commandButton id="exportConfig" value="export config" actionListener="#{TBServiceManager.exportConfigToFile}"/>

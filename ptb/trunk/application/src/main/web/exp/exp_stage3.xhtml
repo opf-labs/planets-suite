@@ -53,10 +53,10 @@
 									    </h:selectBooleanCheckbox>	            	
 						            </h:column>
 							        <h:column>
-			            				<f:facet name="header">#{res['exp_stage3.bgCriteria']}</f:facet>
-										<h:outputText value="#{ExperimentBean.BGExperimentText} &nbsp; #{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue == bm.category}" style="background-color:#FFF8C6; font-weight:bold;"/>
-						            	<h:outputText value="#{ExperimentBean.BGExperimentText} &nbsp; #{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue != bm.category}"/>
-						        	</h:column>			        	
+			            				<f:facet name="header">#{res['exp_stage3.bgCriteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
+										<h:outputText value="#{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue == bm.category}" style="background-color:#FFF8C6; font-weight:bold;"/>
+						            	<h:outputText value="#{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue != bm.category}"/>
+						        	</h:column>
 							        <h:column>
 			            				<f:facet name="header">#{res['exp_stage3.bgExplanation']}</f:facet>
 						            	#{bm.definition}<br/>

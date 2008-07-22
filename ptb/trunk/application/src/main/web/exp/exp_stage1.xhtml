@@ -169,8 +169,8 @@ function cleanForm() {
     <!--  Show the referenced experiments as a list: -->
     <rich:dataList var="exp" value="#{ExperimentBean.erefBeans}" style="list-style: disc; margin-bottom: 0;margin-left:70px;">
         <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-        <h:commandLink action="#{ExperimentBean.removeExpRef}">
-            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="remove reference" title="remove reference" style="margin-left: 10px;"/>
+        <h:commandLink action="#{ExperimentBean.removeExpRef}" title="Remove this reference.">
+            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="remove reference" title="remove reference" style="margin-left: 10px;"/>
             <t:updateActionListener property="#{ExperimentBean.expToRemove}" value="#{exp}" />
         </h:commandLink>
     </rich:dataList>
@@ -178,7 +178,7 @@ function cleanForm() {
     <li>
         <h:inputText required="false" id="erefFinder" value="#{ExperimentBean.erefFinder}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
         <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}">
-            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add reference" title="add reference" style="margin-left: 5px; margin-right: 10px;"/>
+            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/list-add.png" alt="add reference" title="add reference" style="margin-left: 5px; margin-right: 10px;"/>
         </h:commandLink>
         <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
         </li>

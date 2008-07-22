@@ -332,7 +332,7 @@ public class RegisterTBServices{
 				//send along an helper attribute to identify which component triggered the event
 				link_remove.getAttributes().put("IDint", id);
 				HtmlGraphicImage image =  (HtmlGraphicImage)FacesContext.getCurrentInstance().getApplication().createComponent(HtmlGraphicImage.COMPONENT_TYPE);
-				image.setUrl("../../graphics/button_delete.gif");
+				image.setUrl("../../graphics/user_trash.png");
 				image.setAlt("delete-image");
 				image.setId("HtmlGraphicImageStep2Refs"+id);
 				link_remove.getChildren().add(image);

@@ -102,7 +102,7 @@
             	 <h:inputText id="input_tagValue" value="#{RegisterTBServiceBean.currentTagValue}"/>
              
               	 <h:commandLink id="link_addTag" action="#{RegisterTBServiceBean.command_addTagNameAndValue}">
-               		 <img src="${facesContext.externalContext.requestContextPath}/graphics/button_plus.gif" alt="add" title="add"/>
+               		 <img src="${facesContext.externalContext.requestContextPath}/graphics/list-add.png" alt="add" title="add"/>
             	</h:commandLink>
          		</p>
           		<br/>
@@ -111,7 +111,7 @@
                		 <c:forEach var="names" items="#{RegisterTBServiceBean.printableTagNamesAndValues}">
                     <li>
                     	<h:commandLink action="#{RegisterTBServiceBean.command_removeTag}" immediate="true">
-                            <img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete.gif" alt="delete" title="delete"/>
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="delete" title="delete"/>
                         	<f:param name="tagNameToRemove" value="#{names}"/>
                         </h:commandLink>
                         #{names}
