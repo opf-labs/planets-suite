@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="deploy" basedir="." name="componentbuild">
+	<import file="..${file.separator}..${file.separator}component.xml"/>
+	<!-- this is not actually the component name.  It is quite specific.  It is the package name.
+	     The files must be at eu.planets_project.ifr.core.**.${component.name}.api
+	                          eu.planets_project.ifr.core.**.${component.name}.impl.**
+	                          eu.planets_project.ifr.core.**.${component.name}.common.**
+	     Files in the api package are not put into the deployment file; they are for use by clients
+	     of the ejb.
+	-->
+	<property name="component.name" value="generic"/>
+	<property name="component.description" value="generic-migration package"/>
+	<property name="component.version" value="0.1"/>
+	<property name="component.dependencies" value="storage"/>
+	<!-- deployment.model can either be ear|war|ejb-jar|other -->
+	<property name="deployment.model" value="ejb-jar"/>
+</project>
