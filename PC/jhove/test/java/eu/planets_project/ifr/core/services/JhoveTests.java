@@ -3,16 +3,17 @@ package eu.planets_project.ifr.core.services;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import eu.planets_project.ifr.core.services.identification.jhove.JhoveIdentificationTests;
-import eu.planets_project.ifr.core.services.validation.jhove.JhoveValidationTests;
+import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentificationTests;
+import eu.planets_project.ifr.core.services.validation.jhove.impl.JhoveValidationTests;
 
 /**
- * Suite to run all JHOVE tests
+ * Suite to run all JHOVE tests.
  * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
+
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { JhoveIdentificationTests.class,
-		JhoveValidationTests.class })
+        JhoveValidationTests.class })
 public class JhoveTests {
 }

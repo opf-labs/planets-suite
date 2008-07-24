@@ -22,14 +22,13 @@ import nz.govt.natlib.meta.config.Config;
 import nz.govt.natlib.meta.config.Configuration;
 import nz.govt.natlib.meta.config.ConfigurationException;
 import nz.govt.natlib.meta.ui.PropsManager;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinary;
 
 /**
  * Service wrapping the Metadata Extraction Tool from the National Archive of
- * New Zealand (http://meta-extractor.sourceforge.net/)
+ * New Zealand (http://meta-extractor.sourceforge.net/).
  * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
@@ -39,66 +38,73 @@ import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteris
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-public class MetadataExtractor implements BasicCharacteriseOneBinary,
-		Serializable {
-	public static final String NAME = "MetadataExtractor";
-	private static final long serialVersionUID = -1622020084969585711L;
-	public static final QName QNAME = new QName(PlanetsServices.NS,
-			BasicCharacteriseOneBinary.NAME);
-	public static final String RESOURCES = "PC/metadata/src/resources/";
+public final class MetadataExtractor implements BasicCharacteriseOneBinary,
+        Serializable {
+    /***/
+    public static final String NAME = "MetadataExtractor";
+    /***/
+    private static final long serialVersionUID = -1622020084969585711L;
+    /***/
+    public static final QName QNAME = new QName(PlanetsServices.NS,
+            BasicCharacteriseOneBinary.NAME);
+    /***/
+    static final String RESOURCES = "PC/metadata/src/resources/";
 
-	/**
-	 * @see eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinary#basicCharacteriseOneBinary(byte[])
-	 */
-	@WebMethod(operationName = BasicCharacteriseOneBinary.NAME, action = PlanetsServices.NS
-			+ "/" + BasicCharacteriseOneBinary.NAME)
-	@WebResult(name = BasicCharacteriseOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
-			+ "/" + BasicCharacteriseOneBinary.NAME, partName = BasicCharacteriseOneBinary.NAME
-			+ "Result")
-	public String basicCharacteriseOneBinary(
-			@WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-					+ "/" + BasicCharacteriseOneBinary.NAME, partName = "binary")
-			byte[] binary) throws PlanetsException {
-		File file = ByteArrayHelper.write(binary);
-		/* Create a HarvestSource of the object we want to harvest */
-		FileHarvestSource source = new FileHarvestSource(file);
-		try {
-			/* Get the native Configuration: */
-			Configuration c = Config.getInstance().getConfiguration(
-					"Extract in Native form");
-			String tempFolder = file.getParent();
-			c.setOutputDirectory(tempFolder);
-			/* Harvest the file: */
-			c.getHarvester().harvest(c, source, new PropsManager());
-			/* The resulting file is the original file plus ".xml": */
-			File result = new File(c.getOutputDirectory() + File.separator
-					+ file.getName() + ".xml");
-			result.deleteOnExit();
-			return read(result.getAbsolutePath());
-		} catch (ConfigurationException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    /**
+     * @param binary The binary file to characterize
+     * @return Returns the proprietary XML result string returned by the
+     *         extractor tool
+     * @see eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinary#basicCharacteriseOneBinary(byte[])
+     */
+    @WebMethod(operationName = BasicCharacteriseOneBinary.NAME, action = PlanetsServices.NS
+            + "/" + BasicCharacteriseOneBinary.NAME)
+    @WebResult(name = BasicCharacteriseOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
+            + "/" + BasicCharacteriseOneBinary.NAME, partName = BasicCharacteriseOneBinary.NAME
+            + "Result")
+    public String basicCharacteriseOneBinary(
+            @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
+                    + "/" + BasicCharacteriseOneBinary.NAME, partName = "binary")
+            final byte[] binary) {
+        File file = ByteArrayHelper.write(binary);
+        /* Create a HarvestSource of the object we want to harvest */
+        FileHarvestSource source = new FileHarvestSource(file);
+        try {
+            /* Get the native Configuration: */
+            Configuration c = Config.getInstance().getConfiguration(
+                    "Extract in Native form");
+            String tempFolder = file.getParent();
+            c.setOutputDirectory(tempFolder);
+            /* Harvest the file: */
+            c.getHarvester().harvest(c, source, new PropsManager());
+            /* The resulting file is the original file plus ".xml": */
+            File result = new File(c.getOutputDirectory() + File.separator
+                    + file.getName() + ".xml");
+            result.deleteOnExit();
+            return read(result.getAbsolutePath());
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	/**
-	 * @param location The location of the text file to read
-	 * @return Return the content of the file at the specified location
-	 */
-	public static String read(String location) {
-		StringBuilder builder = new StringBuilder();
-		Scanner s;
-		try {
-			s = new Scanner(new File(location));
-			while (s.hasNextLine()) {
-				builder.append(s.nextLine()).append("\n");
-			}
-			return builder.toString();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    /**
+     * @param location The location of the text file to read
+     * @return Return the content of the file at the specified location
+     */
+    public static String read(final String location) {
+        StringBuilder builder = new StringBuilder();
+        Scanner s;
+        try {
+            s = new Scanner(new File(location));
+            while (s.hasNextLine()) {
+                builder.append(s.nextLine()).append("\n");
+            }
+            return builder.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -13,14 +13,13 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.datatypes.Types;
 import eu.planets_project.ifr.core.common.services.validate.BasicValidateOneBinary;
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
 
 /**
- * JHOVE validation service
+ * JHOVE validation service.
  * 
  * @author Fabian Steeg
  */
@@ -29,34 +28,46 @@ import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdent
 @Remote(BasicValidateOneBinary.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
-public class JhoveValidation implements BasicValidateOneBinary, Serializable {
-	private static final long serialVersionUID = 2127494848765937613L;
-	public static final String NAME = "JhoveValidation";
-	public static final QName QNAME = new QName(PlanetsServices.NS,
-			BasicValidateOneBinary.NAME);
+public final class JhoveValidation implements BasicValidateOneBinary,
+        Serializable {
+    /***/
+    private static final long serialVersionUID = 2127494848765937613L;
+    /***/
+    public static final String NAME = "JhoveValidation";
+    /***/
+    public static final QName QNAME = new QName(PlanetsServices.NS,
+            BasicValidateOneBinary.NAME);
 
-	@WebMethod(operationName = BasicValidateOneBinary.NAME, action = PlanetsServices.NS
-			+ "/" + BasicValidateOneBinary.NAME)
-	@WebResult(name = BasicValidateOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
-			+ "/" + BasicValidateOneBinary.NAME, partName = BasicValidateOneBinary.NAME
-			+ "Result")
-	public boolean basicValidateOneBinary(
-			@WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-					+ "/" + BasicValidateOneBinary.NAME, partName = "binary")
-			byte[] binary,
-			@WebParam(name = "fmt", targetNamespace = PlanetsServices.NS + "/"
-					+ BasicValidateOneBinary.NAME, partName = "fmt")
-			URI fmt) throws PlanetsException {
-		/* Identify the binary: */
-		JhoveIdentification identification = new JhoveIdentification();
-		Types result = identification.identifyOneBinary(binary);
-		/* And check it it is what we expected: */
-		for (URI uri : result.types) {
-			if (uri.equals(fmt)) {
-				/* One of the identified types is the one we expected: */
-				return true;
-			}
-		}
-		return false;
-	}
+    /**
+     * @param binary The binary file to validate
+     * @param fmt The pronom URI the binary should be validated against
+     * @return Returns true if the given pronom URI describes the given binary
+     *         file, else false
+     * @see eu.planets_project.ifr.core.common.services.validate.BasicValidateOneBinary#basicValidateOneBinary(byte[],
+     *      java.net.URI)
+     */
+    @WebMethod(operationName = BasicValidateOneBinary.NAME, action = PlanetsServices.NS
+            + "/" + BasicValidateOneBinary.NAME)
+    @WebResult(name = BasicValidateOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
+            + "/" + BasicValidateOneBinary.NAME, partName = BasicValidateOneBinary.NAME
+            + "Result")
+    public boolean basicValidateOneBinary(
+            @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
+                    + "/" + BasicValidateOneBinary.NAME, partName = "binary")
+            final byte[] binary,
+            @WebParam(name = "fmt", targetNamespace = PlanetsServices.NS + "/"
+                    + BasicValidateOneBinary.NAME, partName = "fmt")
+            final URI fmt) {
+        /* Identify the binary: */
+        JhoveIdentification identification = new JhoveIdentification();
+        Types result = identification.identifyOneBinary(binary);
+        /* And check it it is what we expected: */
+        for (URI uri : result.types) {
+            if (uri.equals(fmt)) {
+                /* One of the identified types is the one we expected: */
+                return true;
+            }
+        }
+        return false;
+    }
 }
