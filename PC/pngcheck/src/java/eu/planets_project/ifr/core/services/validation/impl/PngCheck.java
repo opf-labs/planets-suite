@@ -14,7 +14,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.namespace.QName;
 
 import eu.planets_project.ifr.core.common.cli.ProcessRunner;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
@@ -37,15 +36,12 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
     /***/
     private static final long serialVersionUID = -596706737946485163L;
     /***/
-    public static final String NAME = "PngCheck";
-    /***/
-    public static final QName QNAME = new QName(PlanetsServices.NS,
-            BasicValidateOneBinary.NAME);
+    static final String NAME = "PngCheck";
     /**
      * A list of pronom URIs describing PNG files; the URI given to this service
      * must be one of these or null.
      */
-    public static final List<String> PNG_PRONOM = Arrays.asList(
+    private static final List<String> PNG_PRONOM = Arrays.asList(
             "info:pronom/fmt/11", "info:pronom/fmt/12", "info:pronom/fmt/13");
     /***/
     private static final PlanetsLogger LOG = PlanetsLogger

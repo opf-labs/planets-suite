@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.identification;
+package eu.planets_project.ifr.core.services.identification.droid.impl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
-import eu.planets_project.ifr.core.services.identification.droid.impl.Droid;
 
 /**
  * Local and client tests of the Droid functionality.

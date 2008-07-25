@@ -16,7 +16,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.namespace.QName;
 
 import org.jboss.util.Base64;
 
@@ -44,14 +43,10 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
     private static final PlanetsLogger LOG = PlanetsLogger
             .getLogger(Comparator.class);
     /***/
-    public static final String COMPARATOR_HOME = System
-            .getenv("COMPARATOR_HOME")
+    static final String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME")
             + File.separator;
     /***/
-    public static final String NAME = "Comparator";
-    /***/
-    public static final QName QNAME = new QName(PlanetsServices.NS,
-            BasicCompareTwoXCDLStrings.NAME);
+    static final String NAME = "Comparator";
     /** The file names of the result and log files. */
     private static final String LOG_TXT = "log.txt";
     /***/
@@ -157,7 +152,7 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
      * @return Return the content of the file at the specified location,
      *         replacing line breaks with blanks
      */
-    public static String read(final String location) {
+    static String read(final String location) {
         StringBuilder builder = new StringBuilder();
         Scanner s;
         try {
@@ -190,7 +185,7 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
      * @param name The name to use when generating the temp file
      * @return Returns a temp file created using File.createTempFile
      */
-    public static File tempFile(final String name) {
+    private static File tempFile(final String name) {
         File input;
         try {
             input = File.createTempFile(name, null);

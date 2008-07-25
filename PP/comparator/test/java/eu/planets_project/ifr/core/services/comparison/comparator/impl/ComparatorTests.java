@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.comparison.comparator;
+package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import static org.junit.Assert.assertNotNull;
 

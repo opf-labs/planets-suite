@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.identification;
+package eu.planets_project.ifr.core.services.identification.droid.impl;
 
 import static org.junit.Assert.assertEquals;
 

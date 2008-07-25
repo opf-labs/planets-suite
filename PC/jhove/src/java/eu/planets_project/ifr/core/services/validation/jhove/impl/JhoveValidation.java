@@ -11,7 +11,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.namespace.QName;
 
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.datatypes.Types;
@@ -33,10 +32,7 @@ public final class JhoveValidation implements BasicValidateOneBinary,
     /***/
     private static final long serialVersionUID = 2127494848765937613L;
     /***/
-    public static final String NAME = "JhoveValidation";
-    /***/
-    public static final QName QNAME = new QName(PlanetsServices.NS,
-            BasicValidateOneBinary.NAME);
+    static final String NAME = "JhoveValidation";
 
     /**
      * @param binary The binary file to validate

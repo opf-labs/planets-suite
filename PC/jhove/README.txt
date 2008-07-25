@@ -1,1 +1,1 @@
-JHOVE services use a Java API so they do not depend on any command line tools. However, a configuration file is required in the JBoss conf directory, which is deployed with the server (so if_sp needs to be updated and a fresh server deployment might be necessary).
+JHOVE services use a Java API so they do not depend on any command line tools.

@@ -13,7 +13,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.namespace.QName;
 
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
@@ -48,12 +47,9 @@ public final class Droid implements IdentifyOneBinary, Serializable {
     /***/
     private static final long serialVersionUID = -7116493742376868770L;
     /***/
-    public static final String NAME = "Droid";
+    static final String NAME = "Droid";
     /***/
-    public static final QName QNAME = new QName(PlanetsServices.NS,
-            IdentifyOneBinary.NAME);
-    /***/
-    public static final String LOCAL = "PC/droid/src/resources/";
+    static final String LOCAL = "PC/droid/src/resources/";
     /***/
     private static final String SIG = "DROID_SignatureFile_Planets.xml";
     /***/

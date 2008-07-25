@@ -1,3 +1,5 @@
+The Metadata Extractor Tool uses a pure Java API and does not depend on any command-line tools; however,
+
 1.) The metadata-extractor loads a configuration file using the class loader, so to run the test locally, 
 you should add the resources folder to the classpath in eclipse (if it is not already configured that way)
 

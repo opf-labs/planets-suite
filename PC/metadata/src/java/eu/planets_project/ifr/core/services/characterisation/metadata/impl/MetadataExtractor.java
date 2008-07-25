@@ -14,7 +14,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
 import nz.govt.natlib.meta.FileHarvestSource;
@@ -41,14 +40,9 @@ import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteris
 public final class MetadataExtractor implements BasicCharacteriseOneBinary,
         Serializable {
     /***/
-    public static final String NAME = "MetadataExtractor";
+    static final String NAME = "MetadataExtractor";
     /***/
     private static final long serialVersionUID = -1622020084969585711L;
-    /***/
-    public static final QName QNAME = new QName(PlanetsServices.NS,
-            BasicCharacteriseOneBinary.NAME);
-    /***/
-    static final String RESOURCES = "PC/metadata/src/resources/";
 
     /**
      * @param binary The binary file to characterize
@@ -93,7 +87,7 @@ public final class MetadataExtractor implements BasicCharacteriseOneBinary,
      * @param location The location of the text file to read
      * @return Return the content of the file at the specified location
      */
-    public static String read(final String location) {
+    private static String read(final String location) {
         StringBuilder builder = new StringBuilder();
         Scanner s;
         try {

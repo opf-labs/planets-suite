@@ -15,7 +15,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.namespace.QName;
 
 import edu.harvard.hul.ois.jhove.App;
 import edu.harvard.hul.ois.jhove.JhoveBase;
@@ -39,10 +38,7 @@ import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 public final class JhoveIdentification implements IdentifyOneBinary,
         Serializable {
     /***/
-    public static final String NAME = "JhoveIdentification";
-    /***/
-    public static final QName QNAME = new QName(PlanetsServices.NS,
-            IdentifyOneBinary.NAME);
+    static final String NAME = "JhoveIdentification";
     /***/
     private static final String ENCODING = "utf-8";
     /***/
