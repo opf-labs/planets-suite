@@ -26,6 +26,7 @@
     is _not_ included in the default ant target). -->
   <target name="deploy:wrappers" depends="props:set">
     <!-- Preservation Action -->
+    <ant dir="PA/dvips" inheritAll="false"/>
     <ant dir="PA/jmagickconverter" inheritAll="false"/>
     <ant dir="PA/msgtext" inheritAll="false"/>
     <ant dir="PA/openXML" inheritAll="false"/>
