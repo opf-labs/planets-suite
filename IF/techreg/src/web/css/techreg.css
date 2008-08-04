@@ -1,0 +1,92 @@
+#pl-wrapper {
+  width: 70%;
+  margin: 0 auto;
+  padding: 0.5em 1em;
+  background: transparent url('/images/white-50.png');
+  border: 1px dotted #ddd;
+  border-top: none;
+  font-size: 12px;
+}
+
+#pl-header {
+  height: auto;
+}
+
+#pl-header h1 {
+  padding-top: 0.2em !important;
+  margin-bottom: 1em;
+}
+
+.statusSearching {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: transparent url('/techreg/images/loader-tr-sml.gif') no-repeat;
+}
+
+.statusDone {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-image: none;
+}
+
+.formatTable {
+/*  border-collapse: collapse;
+  border: 1px solid #333;*/
+  margin: 0 auto;
+}
+
+.formatTable th {
+/*  border: 1px solid #333;
+  text-align: center;
+  background: #faf8cc;
+  padding: 0.2em 0.5em;*/
+}
+
+.formatTable td {
+/*  border: 1px solid #333;
+  border-top: none;
+  border-bottom: none;
+  background: #f8f8f8;
+  padding: 0.2em 0.5em;*/
+}
+
+.formatTable h3 {
+  margin: 0;
+}
+
+.formatGridCol1 {
+  vertical-align: top;
+  width: 40%;
+}
+
+.formatGridCol2 {
+  vertical-align: top;
+  width: 60%;
+}
+
+.formatListItem {
+  display: block;
+}
+
+.formatListItem:hover {
+  text-decoration: none;
+  background-color: #f0fff0;
+}
+
+.formatItemTitle {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.isCurrentFormat {
+  background-color: #FFF8C6;
+}
+
+.isNotCurrentFormat {
+}
+
+#formatDetailPanel {
+  height: 500px;
+}

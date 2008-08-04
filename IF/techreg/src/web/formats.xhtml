@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+
+  <ui:composition template="/WEB-INF/planets/page-template.xhtml">
+    <ui:param name="pagetitle" value="Format Registry"/>
+    <ui:param name="extraCSS" value="css/techreg.css" />
+    
+    <div id="trContent">
+
+    <h:form id="fmtSearchForm">
+        
+      <rich:toolBar height="34" itemSeparator="line">
+            <rich:toolBarGroup>
+              <h:graphicImage id="edit" value="/images/icons/edit.gif" />
+              <h:commandLink action="gotoList">Back</h:commandLink>
+            </rich:toolBarGroup>
+            <rich:toolBarGroup>
+              <h:graphicImage id="sort" value="/images/icons/filter.gif" />
+              <h:outputLabel value="Sort By..." for="sort" />
+            </rich:toolBarGroup>
+            <rich:toolBarGroup>                       
+              <h:graphicImage id="find" value="/images/icons/find.gif" />
+              <h:outputLabel value="Select Registry - DROID" for="find" />
+            </rich:toolBarGroup>
+            <rich:toolBarGroup location="right">
+              <h:inputText id="formatSearchInput" value="#{Registry.searchStr}">
+                <a4j:support event="onkeyup" reRender="formatResults" requestDelay="200"/>
+              </h:inputText>
+              <a4j:commandButton value="Search" reRender="formatResults"/>
+              <a4j:status startStyleClass="statusSearching" stopStyleClass="statusDone"/>
+            </rich:toolBarGroup>
+      </rich:toolBar>
+        
+      <h:panelGrid columns="2" columnClasses="formatGridCol1, formatGridCol2" width="100%">
+      
+        <rich:dataTable id="formatResults" value="#{Registry.formats}" var="fmt" styleClass="formatTable" width="100%" binding="#{Registry.formatsDataTable}">
+          <rich:column sortBy="#{fmt.summary}" styleClass="#{ ( Registry.currentFormat.typeURI == fmt.typeURI ) ? 'isCurrentFormat' : 'isNotCurrentFormat'}">
+            <f:facet name="header">
+              <h:outputText styleClass="headerText" value="Formats" />
+            </f:facet>
+            <h:commandLink action="#{Registry.selectAFormat}" styleClass="formatListItem">
+            <h:outputText value="#{fmt.summary} #{fmt.version}" styleClass="formatItemTitle"/>
+            <br/>
+            <h:outputText value="#{fmt.typeURI}"/>
+            </h:commandLink>
+          </rich:column>
+        </rich:dataTable>
+
+    <rich:tabPanel switchType="ajax" id="formatDetailPanel">
+        <rich:tab label="Format Overview">
+        <c:if test="#{Registry.currentFormat != null}">
+        <h3><h:outputText value="#{Registry.currentFormat.summary}"/></h3>
+        <ul>
+            <c:if test="#{Registry.currentFormat.version != null }">
+                <li><h:outputText value="Version #{Registry.currentFormat.version}"/></li>
+            </c:if>
+            <li><a href="#{Registry.currentFormat.registryURL}" target="_new"><h:outputText value="#{Registry.currentFormat.typeURI}"/></a></li>
+            <c:if test="#{Registry.currentFormat.extensions != null }">
+                <li><h:outputText value="#{Registry.currentFormat.extensions}"/></li>
+            </c:if>
+            <c:if test="#{Registry.currentFormat.mimeTypes != null }">
+                <li><h:outputText value="#{Registry.currentFormat.mimeTypes}"/></li>
+            </c:if>
+        </ul>
+        <p>
+        Information from the <a href="http://www.nationalarchives.gov.uk/pronom/" target="_new">PRONOM</a> technical registry.<br/>
+        Provided by <a href="http://www.nationalarchives.gov.uk/" target="_new">The National Archives (UK)</a>.
+        </p>
+        </c:if>
+        <c:if test="#{Registry.currentFormat == null}">
+        <p>Please select a format from the list.</p>
+        </c:if>
+        </rich:tab>
+        
+        <rich:tab label="Software">
+        List of software that can use PDF?  List of Viewers? Clients? Readers? ???
+        </rich:tab>
+        
+        <rich:tab label="Services">
+        List of preservation action services that take this format as input/output?
+        </rich:tab>
+        
+        <rich:tab label="Risks">
+        List of risks associated with this format, e.g. PDF can require fonts?  Embed *?
+        </rich:tab>
+        
+        <rich:tab label="More..." disabled="true">
+        More?
+        </rich:tab>
+        
+    </rich:tabPanel>
+        
+      </h:panelGrid>
+
+  </h:form>
+    
+  </div>
+</ui:composition>
+</body>
+</html>

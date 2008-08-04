@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+
+  <ui:composition template="/WEB-INF/planets/page-template.xhtml">
+    <ui:param name="pagetitle" value="Technical Registry Browser"/>
+    <ui:param name="extraCSS" value="css/techreg.css" />
+    
+    <div id="trContent">
+    <h:form>
+    
+    <h2>Planets Technical Registries</h2>
+    
+    <p>This part of the Planets Suite holds caches of information registries and makes the local copies accessible to users and to other Planets software components.</p>
+    
+    <ul>
+    <li><h:commandLink value="The Format Registry." action="gotoFormats" /></li>
+    <li><h:commandLink value="The Preservation Actions Registry." action="gotoActions" /> [TBC - The central service registry, of which the local one is a reflection?]</li>
+    <li><h:commandLink value="The Preservation Tools Registry." action="gotoTools" /> [TBC - the tools implement the actions, using the software]</li>
+    <li><h:commandLink value="The Software Registry." action="gotoSoftware" /> [TBC]</li>
+    <li><h:commandLink value="The information registries that this component draws from." action="gotoRegistries" /> [TBC]</li>
+    </ul>
+    
+    </h:form>
+    </div>
+    
+  </ui:composition>
+</body>
+</html>
