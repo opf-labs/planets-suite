@@ -12,18 +12,8 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateful;
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
 
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;

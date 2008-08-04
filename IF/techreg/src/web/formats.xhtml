@@ -70,6 +70,28 @@
                 <li><h:outputText value="#{Registry.currentFormat.mimeTypes}"/></li>
             </c:if>
         </ul>
+        
+        <c:if test="#{Registry.currentFormat.registryURL != null }">
+        <rich:modalPanel id="panel" width="700" height="500" autosized="true"> <!--  onmaskclick="javascript:Richfaces.hideModalPanel('form:panel')" -->
+        <f:facet name="header">
+            <h:panelGroup>
+                <h:outputText value="About Format #{Registry.currentFormat.typeURI}"></h:outputText>
+            </h:panelGroup>
+        </f:facet>
+        <f:facet name="controls">
+            <h:panelGroup>
+                <h:graphicImage value="/images/cross.png" style="cursor:pointer" id="hidelink"/>
+                <rich:componentControl for="panel" attachTo="hidelink" operation="hide" event="onclick"/>
+            </h:panelGroup>
+        </f:facet>
+        <iframe src="#{Registry.currentFormat.registryURL}" width="100%" height="500"/>
+        </rich:modalPanel>
+        <h:outputLink value="#" id="link">
+        Show Information Held On The External Registry.
+        <rich:componentControl for="panel" attachTo="link" operation="show" event="onclick"/>
+        </h:outputLink>
+        </c:if>
+        
         <p>
         Information from the <a href="http://www.nationalarchives.gov.uk/pronom/" target="_new">PRONOM</a> technical registry.<br/>
         Provided by <a href="http://www.nationalarchives.gov.uk/" target="_new">The National Archives (UK)</a>.

@@ -18,4 +18,7 @@
   <property name="pserv.root.dir" value="../.." />
   <import file="${pserv.root.dir}/build.common.xml"/>
     
+  <!-- Copy the config file into the server config directory -->
+  <copy file="${src.resources}/droid/DROID_SignatureFile.xml" tofile="${jboss.home}/server/default/data/DROID_SignatureFile_Planets.xml" overwrite="true" />
+  
 </project>

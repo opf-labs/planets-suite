@@ -38,7 +38,7 @@ public class DroidConfig {
         String sigFileFolder = (deployedJBossHome != null ? deployedJBossHome
                 + CONF : LOCAL);
         String sigFileLocation = sigFileFolder + SIG;
-        
+        log.info("Opening signature file: "+sigFileLocation);
         return sigFileLocation;
     }
 
