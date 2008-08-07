@@ -12,6 +12,7 @@ import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
@@ -1081,7 +1082,7 @@ public class NewExpWizardController {
     
     //TODO: Andrew DELETE OR CHECK IF USED
     public void processSelBMValueTicked(ValueChangeEvent e){
-    	System.out.println(e.getNewValue());
+    	System.out.println("Andrew to DELETE" +e.getNewValue());
     	FacesContext context = FacesContext.getCurrentInstance();
 		Object o1 = context.getExternalContext().getRequestParameterMap().get("bmGoalID2");
 		Object o2 = context.getExternalContext().getRequestParameterMap().get("bmGoalID");
@@ -1092,14 +1093,22 @@ public class NewExpWizardController {
     public String command_configureAutoEvalService(){
     	FacesContext context = FacesContext.getCurrentInstance();
 		Object o1 = context.getExternalContext().getRequestParameterMap().get("configBMGoalID");
-		if(o1!=null){
-			String BMGoalID = o1.toString();
+		Object o2 = context.getExternalContext().getRequestParameterMap().get("autoEvalSerUUID");
+		String BMGoalID="";
+		String autoEvalSerUUID="";
+		if((o1!=null)&&(o2!=null)){
+			 BMGoalID = o1.toString();
+			 autoEvalSerUUID = o2.toString();
 		}
 		
 		//save the current BMGoal selection
 		String success = this.updateBenchmarksAction();
 		
-		if(success.equals("success")){
+		if((success.equals("success"))&&(!BMGoalID.equals(""))&&(!autoEvalSerUUID.equals(""))){
+			//create the config gui backing bean
+			AutoBMGoalEvalUserConfigBean evalConfBean = (AutoBMGoalEvalUserConfigBean)JSFUtil.getManagedObject("AutoEvalSerUserConfigBean");
+			//BenchmarkBean contains the BMGoal+EvaluationSerTemplate to configure
+			evalConfBean.initBean(BMGoalID,autoEvalSerUUID);
 			//load screen for configuring the autoEvalSerivce
 			return "configAutoEvalSer";
 		}
@@ -1110,7 +1119,7 @@ public class NewExpWizardController {
     }
     
     /**
-     * Returns a map of all BenchmarkGoals that are registered within a
+     * Returns a map of ALL BenchmarkGoals that are registered within a
      * EvaluationServiceTemplate and therefore can be evaluated automatically
      * by using the corresponding EvaluationServiceTemplate
      * @return Map<BenchmarkGoalID, EvaluationTestbedServiceTemplateImpl>
@@ -1124,14 +1133,14 @@ public class NewExpWizardController {
     		//The template which registeres the BMGoal mapping
     		EvaluationTestbedServiceTemplateImpl evalSerTemplate = (EvaluationTestbedServiceTemplateImpl) itTemplates.next();
     		
-    		//all supported BM goals of this ServiceTemplate
-    		Collection<BenchmarkGoal> lBMGoals = evalSerTemplate.getAllMappedBenchmarkGoals();
-    		if((lBMGoals!=null)&&(lBMGoals.size()>0)){
-    			Iterator<BenchmarkGoal> itBMGoals = lBMGoals.iterator();
-    			while(itBMGoals.hasNext()){
-    				BenchmarkGoal bmGoal = itBMGoals.next();
+    		//all supported BM goalsIDs of this ServiceTemplate
+    		Collection<String> lBMGoalIDs = evalSerTemplate.getAllMappedBenchmarkGoalIDs();
+    		if((lBMGoalIDs!=null)&&(lBMGoalIDs.size()>0)){
+    			Iterator<String> itBMGoalIDs = lBMGoalIDs.iterator();
+    			while(itBMGoalIDs.hasNext()){
+    				String bmGoalID = itBMGoalIDs.next();
     				//add the bmGoal and it's template
-    				ret.put(bmGoal.getID(), evalSerTemplate);
+    				ret.put(bmGoalID, evalSerTemplate);
     			}
     		}
     	}

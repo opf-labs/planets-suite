@@ -219,12 +219,16 @@
     </copy>
 
     <copy todir="${build.dir}/${appName}/WEB-INF/classes">
+      <fileset dir="${basedir}/web/css">
+        <!-- richFaces skin files need to be located in WEB-INF/classes dir-->
+        <include name="richFacesTestbed.skin.properties" />
+      </fileset>  
       <fileset dir="${basedir}/resources">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
         <include name="**/*.vm"/>
         <exclude name="testbed-log4j.xml" />
-      </fileset>   
+      </fileset>
     </copy>
 
   	<!-- delete items that are in JAR file -->

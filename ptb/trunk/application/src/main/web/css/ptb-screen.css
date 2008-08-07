@@ -582,6 +582,9 @@ margin-right:0.5em;
 text-align:right;
 width:100px;
 }
+.rich-inslider-field, .rich-slider, .rich-inslider-track, .rich-inslider-right-num, .rich-inslider-left-num{
+	border-color:#FFFFFF;
+}
 .hidden {
 border:0pt none;
 margin:0pt;

@@ -61,6 +61,11 @@
   <managed-bean-class>eu.planets_project.tb.gui.backing.admin.RegisterTBServices</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>AutoEvalSerUserConfigBean</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
 <!--End Managed Beans -->
 
 
@@ -466,6 +471,15 @@
      <from-outcome>reload-page</from-outcome>
      <to-view-id>/admin/remove_registeredTBServices.xhtml</to-view-id>
    </navigation-case>
+  </navigation-rule>
+  
+  <!-- page: user settings for auto-evaluation service settings -->
+  <navigation-rule>
+  <from-view-id>/exp/bmGoalAutoEvaluation/bmGoalAutoEvalMapping.xhtml</from-view-id>
+  <navigation-case>
+    <from-outcome>reload-page</from-outcome>
+    <to-view-id>/exp/bmGoalAutoEvaluation/bmGoalAutoEvalMapping.xhtml</to-view-id>
+  </navigation-case>
   </navigation-rule>
   
 

@@ -4,7 +4,10 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:t="http://myfaces.apache.org/tomahawk"
-	xmlns:c="http://java.sun.com/jstl/core">
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	
 <body>
 <f:view>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
@@ -55,17 +58,7 @@
 		<h:commandButton action="#{TBServiceManager.command_registerUploadedTemplate}" value="register configuration" disabled="#{TBServiceManager.isServiceConfigRendered==false}"/>
      	</h:form>
      </fieldset>
-     <!-- DELETE JUST TESTING FROM HERE -->
-     <fieldset>
-     	<legend>temp DELETE</legend>
-     	<h:form>
-     		<h:selectOneMenu id="autoEvalBMGoals" value="#{TBServiceManager.autoEvalBMGoalSelectItemValue}" immediate="true" 
-             valueChangeListener="#{TBServiceManager.processAutoEvalBMGoalChange}" onchange="submit()">
-                 <f:selectItems value="#{TBServiceManager.allAutoEvalBMGoals}" />                        
-             </h:selectOneMenu>
-     	</h:form>
-     </fieldset>
-     <!-- END DELETE JUST TESTING FROM HERE -->
+     
     <div class="servicepane">
  	<h:form>
     <ui:include src="/WEB-INF/templates/browse_servicetree_template.xhtml">

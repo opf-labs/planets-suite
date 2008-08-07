@@ -187,5 +187,13 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 	public TestbedServiceTemplate getAutoEvalService(){
 		return this.autoEvalServiceTemplate;
 	}
+	
+	public String getAutoEvalServiceUUID(){
+		return this.autoEvalServiceTemplate.getUUID();
+	}
+	
+	public void setAutoEvalServiceUUID(String s){
+		//
+	}
 
 }

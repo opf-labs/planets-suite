@@ -42,6 +42,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
@@ -1074,7 +1075,7 @@ public class ExperimentBean {
     	ret.add(new SelectItem("disable highlighting"));
     	return ret;
     }
-    
+        
     public String getBGExperimentText() {
         //would prefer to read the returned text from the backed resource file
         if (this.etypeName.equalsIgnoreCase("simple characterisation"))

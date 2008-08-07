@@ -25,8 +25,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFileDefaultMemoryImpl;
+import org.richfaces.event.DropEvent;
+import org.richfaces.event.DropListener;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
@@ -35,6 +38,8 @@ import eu.planets_project.tb.api.services.util.ServiceTemplateExporter;
 import eu.planets_project.tb.api.services.util.ServiceTemplateImporter;
 import eu.planets_project.tb.gui.backing.ServiceTemplateBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
@@ -56,7 +61,7 @@ import eu.planets_project.tb.impl.services.util.ServiceTemplateImporterImpl;
  *
  */
 
-public class ManagerTBServices implements ValueChangeListener {
+public class ManagerTBServices implements ValueChangeListener, DropListener{
 	
 	private Log log = LogFactory.getLog(ManagerTBServices.class);
 	private List<SelectItem> lServiceSelectItems = new Vector<SelectItem>();
@@ -682,43 +687,4 @@ public class ManagerTBServices implements ValueChangeListener {
     	return "reload-page";
     }
     
-    //TESTING FROM HERE - DELETE OR MOVE
-    TestbedServiceTemplate selAutoEvalBMGoal;
-    String sSelAutoEvalBMGoal;
-    //TODO MOVE THIS METHOD
-    public void setAutoEvalBMGoalSelectItemValue(String name){
-    	sSelAutoEvalBMGoal = name;
-    }
-    
-    public String getAutoEvalBMGoalSelectItemValue(){
-    	return this.sSelAutoEvalBMGoal;
-    }
-    
-    public List<SelectItem> getAllAutoEvalBMGoals(){
-    	List<SelectItem> lAutoEvalBMGoals = new Vector<SelectItem>();
-    	ServiceTemplateRegistry registry = ServiceTemplateRegistryImpl.getInstance();
-    	Collection<TestbedServiceTemplate> evalSers = registry.getAllServicesWithType(TestbedServiceTemplate.ServiceOperation.SERVICE_OPERATION_TYPE_EVALUATION);
-    	Iterator<TestbedServiceTemplate> it = evalSers.iterator();
-    	while(it.hasNext()){
-    		EvaluationTestbedServiceTemplateImpl template = (EvaluationTestbedServiceTemplateImpl)it.next();
-    		//get the supported BMGoals for this evaluationservice
-    		Collection<BenchmarkGoal> mappedBMGoals = template.getAllMappedBenchmarkGoals();
-    		if(mappedBMGoals.size()>0){
-    			Iterator<BenchmarkGoal> itBMGoals = mappedBMGoals.iterator();
-    			while(itBMGoals.hasNext()){
-    				BenchmarkGoal autoEvalBMGoal = itBMGoals.next();
-    				lAutoEvalBMGoals.add(new SelectItem(autoEvalBMGoal.getName()));
-    			}
-    		}
-    		
-    	}
-    	return lAutoEvalBMGoals;
-    }
-    
-    public void processAutoEvalBMGoalChange(ValueChangeEvent vce){
-		String s = (String)vce.getNewValue();
-		System.out.println("Value changed, new one is: "+s);
-	}
-    //END TESTING FROM HERE
-
 }

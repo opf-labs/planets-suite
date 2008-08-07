@@ -44,7 +44,7 @@
     <!-- Extension for RichFaces-JSF  -->
  	<context-param>
         <param-name>org.richfaces.SKIN</param-name>
-        <param-value>blueSky</param-value>
+        <param-value>richFacesTestbed</param-value>
     </context-param>
     <!-- Faclelet always needs to be the first View_Handler -->
     <!-- when more than one framework (except RichFaces) is used - these param can be used to define their order  -->

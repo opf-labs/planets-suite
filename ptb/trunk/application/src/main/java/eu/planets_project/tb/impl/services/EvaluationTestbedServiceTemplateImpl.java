@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -28,6 +29,7 @@ import org.xml.sax.InputSource;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 
@@ -53,8 +55,8 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 @Entity
 public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplateImpl implements Serializable{
 	
-	//contains a mapping of the TB BenchmarkGoal to the ID(name) used within the service's BMGoal result
-	private HashMap<BenchmarkGoal, String> mappingGoalToPropertyID = new HashMap<BenchmarkGoal, String>(); 
+	//contains a mapping of the TB BenchmarkGoalID to the ID(name) used within the service's BMGoal result
+	private HashMap<String, String> mappingGoalIDToPropertyID = new HashMap<String, String>(); 
 	private String sXPathForBMGoalRootNodes = "/*//property";
 	//the extracted property's name
 	private String sXPathForBMGoalName = "@name";
@@ -63,6 +65,10 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	private String sMetricName = "./metric/@name";
 	private String sMetricResult = "./metric@result";
 	
+	
+	public EvaluationTestbedServiceTemplateImpl(){
+		
+	}
 	//the default (as used in XCDL) for compStatus success and failure
 	public static String sCompStatusSuccess = "complete";
 	private String sCompStatusXpath = "@compStatus";
@@ -213,12 +219,14 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	 * @param bmGoal
 	 * @return <MetricName,java type as: java.lang.Integer> 
 	 */
-	public Map<String,String> getAllAvailableMetricsForBMGoal(BenchmarkGoal bmGoal){
+	public Map<String,String> getAllAvailableMetricsForBMGoal(String bmGoalID){
 		//TODO: replace temporarily a mockup - returns a fixed list of elements
 		//TODO: read this data from a service
 		Map<String,String> ret = new HashMap<String,String>();
-		
+		BenchmarkGoalsHandler bmGoalHandler = BenchmarkGoalsHandlerImpl.getInstance();
+		BenchmarkGoal bmGoal = bmGoalHandler.getBenchmarkGoal(bmGoalID);
 		//MOCK STARTING FROM HERE - Descriptions of Metric vals given in PP5/D1
+		//Should either be provided by xml, the imported template or a service
 		if(bmGoal.getName().equals("XCDLimageHeight")){
 			ret.put("equal","java.lang.Boolean");
 			ret.put("intDiff","java.lang.Integer");
@@ -299,7 +307,7 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 			BenchmarkGoal goal = handler.getBenchmarkGoal(BMGoalID);
 			if(goal.getName().equals(BMGoalName)){
 				//now store the mapping
-				this.mappingGoalToPropertyID.put(goal, PropertyName);
+				this.mappingGoalIDToPropertyID.put(goal.getID(), PropertyName);
 			}
 			else{
 				//ignore - TB internal BM goals are different ones.
@@ -313,18 +321,22 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	}
 	
 	/**
-	 * Returns a list of all BenchmarkGoals that contain a parameter mapping
+	 * Returns a list of all BenchmarkGoalsIDs that contain a parameter mapping
 	 * within the service's output
-	 * @return
+	 * @return Collection<BenchmarkGoalID>
 	 */
-	public Collection<BenchmarkGoal> getAllMappedBenchmarkGoals(){
-		return this.mappingGoalToPropertyID.keySet();
+	public Collection<String> getAllMappedBenchmarkGoalIDs(){
+		return this.mappingGoalIDToPropertyID.keySet();
 	}
 	
 	
-	public String getMappedPropertyName(BenchmarkGoal BMGoal){
-		if(this.mappingGoalToPropertyID.containsKey(BMGoal)){
-			return this.mappingGoalToPropertyID.get(BMGoal);
+	/**
+	 * @param BMGoalID
+	 * @return
+	 */
+	public String getMappedPropertyName(String BMGoalID){
+		if(this.mappingGoalIDToPropertyID.containsKey(BMGoalID)){
+			return this.mappingGoalIDToPropertyID.get(BMGoalID);
 		}
 		return "";
 	}

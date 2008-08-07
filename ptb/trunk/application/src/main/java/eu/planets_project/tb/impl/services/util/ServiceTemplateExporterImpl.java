@@ -76,7 +76,6 @@ public class ServiceTemplateExporterImpl implements ServiceTemplateExporter {
 			e.printStackTrace();
 		}
         String xmlString = sw.toString();
-        System.out.println("Here's the xml:\n\n" + xmlString);
         return xmlString;
 
 	}
