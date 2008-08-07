@@ -5,6 +5,8 @@ package eu.planets_project.tb.impl.services.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -27,6 +29,9 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperatio
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.api.services.util.ServiceTemplateExporter;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
+import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 
 /**
  * @author alindley
@@ -195,9 +200,83 @@ public class ServiceTemplateExporterImpl implements ServiceTemplateExporter {
 	    	//append the tags to the elServiceTemplate
 	    	elServiceTemplate.appendChild(elTags);
 	    }
+	      
+	    //now the extended evaluation properties
 	    
+	    //check if we are dealing with an evaluation template
+	    boolean isEvaluationTestbedServiceTemplate = true;
+	    EvaluationTestbedServiceTemplateImpl evalTemplate = null;
+	    try {	    	
+	    	evalTemplate = (EvaluationTestbedServiceTemplateImpl) template;	    	
+	    }
+	    catch (Exception e){
+	    	isEvaluationTestbedServiceTemplate = false;
+	    }
+	        
+	    if (isEvaluationTestbedServiceTemplate) {
+	    	//this is an evaluation template
+	    	Element elEvalProperties =doc.createElement("evalProperties");
+	    	
+	    	Element elXPathForBMGoalRootNodes = doc.createElement("XPathForBMGoalRootNodes");
+	    	elXPathForBMGoalRootNodes.setTextContent(evalTemplate.getXPathForBMGoalRootNodes());
+	    	elEvalProperties.appendChild(elXPathForBMGoalRootNodes);
+	    	
+	    	Element elXPathForBMGoalName = doc.createElement("XPathForBMGoalName");
+	    	elXPathForBMGoalName.setTextContent(evalTemplate.getXPathForNameConfig());
+	    	elEvalProperties.appendChild(elXPathForBMGoalName);
+	    	
+	    	Element elSrcXpath = doc.createElement("SrcXpath");
+	    	elSrcXpath.setTextContent(evalTemplate.getXPathForSrcConfig());
+	    	elEvalProperties.appendChild(elSrcXpath);
+	    	
+	    	Element elTarXpath = doc.createElement("TarXpath");
+	    	elTarXpath.setTextContent(evalTemplate.getXPathForTarConfig());
+	    	elEvalProperties.appendChild(elTarXpath);
+	    	
+	    	Element elMetricName = doc.createElement("MetricName");
+	    	elMetricName.setTextContent(evalTemplate.getXPathToMetricNameConfig());
+	    	elEvalProperties.appendChild(elMetricName);
+	    	
+	    	Element elMetricResult = doc.createElement("MetricResult");
+	    	elMetricResult.setTextContent(evalTemplate.getXPathToMetricConfig());
+	    	elEvalProperties.appendChild(elMetricResult);
+	    	
+	    	Element elCompStatusSuccess = doc.createElement("CompStatusSuccess");
+	    	elCompStatusSuccess.setTextContent(evalTemplate.sCompStatusSuccess);
+	    	elEvalProperties.appendChild(elCompStatusSuccess);
+	    	
+	    	Element elCompStatusXpath = doc.createElement("CompStatusXpath");
+	    	elCompStatusXpath.setTextContent(evalTemplate.getXPathToCompStatus());
+	    	elEvalProperties.appendChild(elCompStatusXpath);
+	    	
+	    	//add mappings
+	    	Collection<String> mappedIDs = evalTemplate.getAllMappedBenchmarkGoalIDs();
+	    	Element elMappings = doc.createElement("mappings");
+	    	Iterator<String> iMappedIDs = mappedIDs.iterator();
+	    	BenchmarkGoalsHandlerImpl bgHandler = BenchmarkGoalsHandlerImpl.getInstance();
+	    	while (iMappedIDs.hasNext()) {
+	    		String mappedID = iMappedIDs.next();
+	    		
+	    		Element elMapping = doc.createElement("mapping");
+	    		
+	    		Element elBMGoalName = doc.createElement("BMGoalName");   		
+	    		elBMGoalName.setTextContent(bgHandler.getBenchmarkGoal(mappedID).getName());
+	    		elMapping.appendChild(elBMGoalName);
+	    		
+	    		Element elBMGoalID = doc.createElement("BMGoalID");
+	    		elBMGoalID.setTextContent(mappedID);
+	    		elMapping.appendChild(elBMGoalID);
+	    		
+	    		Element elPropertyName = doc.createElement("PropertyName");	
+	    		elPropertyName.setTextContent(evalTemplate.getMappedPropertyName(mappedID));
+	    		elMapping.appendChild(elPropertyName);
+	    		
+	    		elMappings.appendChild(elMapping);
+	    	}	
+	    	elEvalProperties.appendChild(elMappings);
+	    	elServiceTemplate.appendChild(elEvalProperties);
+	    }
 	    doc.appendChild(elServiceTemplate);
-
 	    return doc;
 	}
 

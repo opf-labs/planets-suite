@@ -83,6 +83,10 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 		this.sXPathForBMGoalRootNodes = xPath;
 	}
 	
+	public String getXPathForBMGoalRootNodes(){
+		return sXPathForBMGoalRootNodes;
+	}
+	
 	/**
 	 * Method for applying the XPathForBMGoalRootNodes on a given DOM Document
 	 * @param doc
@@ -117,6 +121,10 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 		sXPathForBMGoalName = xPath;
 	}
 	
+	public String getXPathForNameConfig(){
+		return sXPathForBMGoalName;
+	}	
+	
 	/**
 	 * @param node a Node obtained by getAllEvalResultsRootNodes()
 	 * @return
@@ -139,6 +147,10 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 		this.sSrcXpath = xPath;
 
 	}
+	
+	public String getXPathForSrcConfig(){
+		return sSrcXpath;
+	}	
 	
 	/**
 	 * @param node a Node obtained by getAllEvalResultsRootNodes()
@@ -163,6 +175,10 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 
 	}
 	
+	public String getXPathForTarConfig(){
+		return sTarXpath;
+	}	
+	
 	/**
 	 * @param node a Node obtained by getAllEvalResultsRootNodes()
 	 * @return
@@ -185,6 +201,10 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	public void setXPathToCompStatus(String xPath){
 		sCompStatusXpath = xPath;
 	}
+	
+	public String getXPathToCompStatus(){
+		return sCompStatusXpath;
+	}	
 	
 	/**
 	 * @param node a Node obtained by getAllEvalResultsRootNodes()
@@ -256,6 +276,10 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 		sMetricResult = xPath;
 	}
 	
+	public String getXPathToMetricConfig(){
+		return sMetricResult;
+	}
+	
 	/**
 	 * @param node a Node obtained by getAllEvalResultsRootNodes()
 	 * @return
@@ -277,6 +301,10 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	public void setXPathToMetricName(String xPath){
 		sMetricName = xPath;
 	}
+	
+	public String getXPathToMetricNameConfig(){
+		return sMetricName;
+	}	
 	
 	/**
 	 * @param node a Node obtained by getAllEvalResultsRootNodes()
