@@ -168,13 +168,10 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/xmlentitymgr.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxb-api.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxb-impl.jar"/>
-	<classpathentry kind="lib" path="PA/xena/lib/xena-4.1-office.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/JhoveApp.jar"/>
-	<classpathentry kind="lib" path="/if_sp/components/common/build/planets-ifr-common.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove.jar"/>
-	<classpathentry kind="lib" path="PA/xena/lib/xena.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/bcmail-jdk14-132.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/bcprov-jdk14-132.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/bfj220.jar"/>
@@ -204,6 +201,7 @@
 	<classpathentry kind="src" path="/if_sp"/>
 	<classpathentry kind="lib" path="PA/jmagickconverter/lib/jmagick.jar"/>
 	<classpathentry kind="lib" path="PA/openXML/lib/jsr173_1.0_api.jar"/>
-	<classpathentry kind="lib" path="PA/xena/lib/image.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/xena.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
