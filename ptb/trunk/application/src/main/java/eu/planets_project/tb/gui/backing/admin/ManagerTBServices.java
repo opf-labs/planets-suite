@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,11 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFileDefaultMemoryImpl;
-import org.richfaces.event.DropEvent;
-import org.richfaces.event.DropListener;
 
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
@@ -38,11 +33,7 @@ import eu.planets_project.tb.api.services.util.ServiceTemplateExporter;
 import eu.planets_project.tb.api.services.util.ServiceTemplateImporter;
 import eu.planets_project.tb.gui.backing.ServiceTemplateBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
-import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
-import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.util.ServiceTemplateExporterImpl;
 import eu.planets_project.tb.impl.services.util.ServiceTemplateImporterImpl;
 
@@ -61,7 +52,7 @@ import eu.planets_project.tb.impl.services.util.ServiceTemplateImporterImpl;
  *
  */
 
-public class ManagerTBServices implements ValueChangeListener, DropListener{
+public class ManagerTBServices implements ValueChangeListener{
 	
 	private Log log = LogFactory.getLog(ManagerTBServices.class);
 	private List<SelectItem> lServiceSelectItems = new Vector<SelectItem>();
