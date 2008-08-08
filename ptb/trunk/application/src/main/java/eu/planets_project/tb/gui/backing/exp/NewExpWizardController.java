@@ -176,12 +176,14 @@ public class NewExpWizardController {
                 
         ArrayList<String> litRefDesc = expBean.getLitRefDesc();
         ArrayList<String> litRefURI = expBean.getLitRefURI();     
+        ArrayList<String> litRefTitle = expBean.getLitRefTitle();    
+        ArrayList<String> litRefAuthor = expBean.getLitRefAuthor(); 
 	    List<String[]> refList = new ArrayList<String[]>();
         if (litRefDesc != null && !litRefDesc.equals("")) {
             for( int i = 0; i < litRefDesc.size(); i++ ) {
                 if( ! "".equals(litRefDesc.get(i).trim()) && 
-                        ! "".equals(litRefURI.get(i).trim()) )
-                    refList.add(new String[]{litRefDesc.get(i).trim(), litRefURI.get(i).trim()});
+                        ! "".equals(litRefURI.get(i).trim()) )//author etc. can be empty
+                    refList.add(new String[]{litRefDesc.get(i).trim(), litRefURI.get(i).trim(), litRefTitle.get(i).trim(), litRefAuthor.get(i).trim()});
             }
         }
         try {

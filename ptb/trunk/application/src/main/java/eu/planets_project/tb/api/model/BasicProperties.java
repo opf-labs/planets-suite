@@ -140,18 +140,20 @@ public interface BasicProperties{
 	
 	/**
 	 * If the experiment references any papers, books or web pages you can add references to them here.
-	 * @param sTitle
+	 * @param sDesc
 	 * @param URI
+	 * @param sTitle
+	 * @param sAuthor
 	 */
-	public void addLiteratureReference(String sTitle, String URI);
-	public void removeLiteratureReference(String sTitle, String URI);
+	public void addLiteratureReference(String sDesc, String URI, String sTitle, String sAuthor);
+	public void removeLiteratureReference(String sDesc, String URI);
 
 	/**
-	 * @param references String[0]=title, String[1]=URI
+	 * @param references String[0]=desc, String[1]=URI, String[2]=title, String[3]=author
 	 */
 	public void setLiteratureReferences(List<String[]> references) throws InvalidInputException;;
 	/**
-	 * @return String[0]=title, String[1]=URI
+	 * @return String[0]=desc, String[1]=URI, String[2]=title, String[3]=author
 	 */
 	public List<String[]> getAllLiteratureReferences();
 

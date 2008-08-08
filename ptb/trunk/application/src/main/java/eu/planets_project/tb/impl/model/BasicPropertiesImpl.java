@@ -611,7 +611,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		Iterator<String> itKeys = this.hmLiteratureReference.keySet().iterator();
 		while(itKeys.hasNext()){
 			Vector<String> item = this.hmLiteratureReference.get(itKeys.next());
-			String[] sRet = {item.get(0),item.get(1)};
+			String[] sRet = {item.get(0),item.get(1),item.get(2),item.get(3)};
 			vRet.add(sRet);
 		}
 		return vRet;
@@ -640,24 +640,26 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	}
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.BasicProperties#addLiteratureReference(java.lang.String, java.lang.String)
+	 * @see eu.planets_project.tb.api.model.BasicProperties#addLiteratureReference(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public void addLiteratureReference(String title, String URI) {
-		//Note: the HashMap uses the title+URI as key
-		if (!this.hmLiteratureReference.containsKey(title+URI)){
+	public void addLiteratureReference(String desc, String URI, String title, String author) {
+		//Note: the HashMap uses the desc+URI as key
+		if (!this.hmLiteratureReference.containsKey(desc+URI)){
 			Vector<String> vAdd = new Vector<String>();
-			vAdd.add(0, title);
+			vAdd.add(0, desc);
 			vAdd.add(1, URI);
-			this.hmLiteratureReference.put(title+URI, vAdd);
+			vAdd.add(2, title);
+			vAdd.add(3, author);
+			this.hmLiteratureReference.put(desc+URI, vAdd);
 		}
 	}
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#removeLiteratureReference(java.lang.String, java.lang.String)
 	 */
-	public void removeLiteratureReference(String title, String URI) {
-		if (this.hmLiteratureReference.containsKey(title+URI)){
-			this.hmLiteratureReference.remove(title+URI);
+	public void removeLiteratureReference(String desc, String URI) {
+		if (this.hmLiteratureReference.containsKey(desc+URI)){
+			this.hmLiteratureReference.remove(desc+URI);
 		}
 	}
 	
@@ -668,8 +670,8 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		this.hmLiteratureReference = new HashMap<String,Vector<String>>();
 		for(int i=0;i<references.size();i++){
 			String[] litRef= references.get(i);
-			if(litRef.length==2){
-				this.addLiteratureReference(litRef[0], litRef[1]);
+			if(litRef.length>=2){//saying that we must have a desc and URI
+				this.addLiteratureReference(litRef[0], litRef[1], litRef[2], litRef[3]);
 			}
 			else{
 				throw new InvalidInputException("LiteraturReference List not supported");

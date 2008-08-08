@@ -83,8 +83,11 @@ public class ExperimentBean {
     private String exid = new String();
     private ArrayList<String> eref = new ArrayList<String>();
     private String erefFinder = new String();
+    
     private ArrayList<String> litrefdesc = new ArrayList<String>();
     private ArrayList<String> litrefuri = new ArrayList<String>();
+    private ArrayList<String> litreftitle = new ArrayList<String>();
+    private ArrayList<String> litrefauthor = new ArrayList<String>();
 
     private String escope = new String();
     private String eapproach = new String();
@@ -154,6 +157,8 @@ public class ExperimentBean {
         // Default spaces:
         this.litrefdesc.add("");
         this.litrefuri.add("");
+        this.litreftitle.add("");
+        this.litrefauthor.add("");
     }
     
     public void fill(Experiment exp) {
@@ -182,9 +187,13 @@ public class ExperimentBean {
         if (lit != null && !lit.isEmpty()) {
             this.litrefdesc = new ArrayList<String>(lit.size());
             this.litrefuri = new ArrayList<String>(lit.size());
+            this.litreftitle = new ArrayList<String>(lit.size());
+            this.litrefauthor = new ArrayList<String>(lit.size());
             for( int i = 0; i < lit.size(); i++ ) {
         	  this.litrefdesc.add(i, lit.get(i)[0]);
         	  this.litrefuri.add(i,lit.get(i)[1]);
+        	  this.litreftitle.add(i,lit.get(i)[2]);
+        	  this.litrefauthor.add(i,lit.get(i)[3]);
             }
         }       
         
@@ -734,10 +743,28 @@ public class ExperimentBean {
     	return this.litrefuri;
     }
     
+    public void setLitRefAuthor(ArrayList<String> author) {
+    	this.litrefauthor = author;
+    }
+    
+    public ArrayList<String> getLitRefAuthor() {
+    	return this.litrefauthor;
+    }
+    
+    public void setLitRefTitle(ArrayList<String> title) {
+    	this.litreftitle = title;
+    }
+    
+    public ArrayList<String> getLitRefTitle() {
+    	return this.litreftitle;
+    }
+    
     public void addLitRefSpot() {
         // Add space for another lit ref:
         this.litrefdesc.add("");
         this.litrefuri.add("");
+        this.litrefauthor.add("");
+        this.litreftitle.add("");
     }
 
     public void setEparticipants(String eparticipants) {
@@ -1127,8 +1154,8 @@ public class ExperimentBean {
         log.debug("Found "+allExps.size()+" matching experiment(s).");
         return allExps;
     }
-
-    /**
+    
+     /**
      * @return the erefFinder
      */
     public String getErefFinder() {
