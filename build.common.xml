@@ -15,7 +15,7 @@
 
   <property name="war.base.name" value="pserv-${appName}.war"/>
   <property name="ear.base.name" value="pserv-${appName}.ear"/>
-  <property name="ejb.jar.name" value="pserv-${appName}-ejb.jar"/>
+  <property name="ejb.jar.name" value="pserv-${appName}.jar"/>
 
   <property name="test.dir" value="${appDir}/../test/java"/>
   <property name="client.config" value="${appDir}/../test/client-config"/>
@@ -29,14 +29,16 @@
     <fileset dir="${jboss.home}/server/default/lib">
       <include name="*.jar"/>
     </fileset>
+<!--
     <fileset dir="${jboss.home}/server/default/deploy/ejb3.deployer">
       <include name="*.jar"/>
     </fileset>
     <fileset dir="${jboss.home}/server/default/deploy/jboss-aop-jdk50.deployer">
       <include name="*.jar"/>
     </fileset>
-    <fileset dir="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar">
-      <include name="**/*.jar"/>
+-->
+    <fileset dir="${jboss.home}/server/default/deploy/">
+      <include name="jboss*web*/jsf-libs/*.jar"/>
     </fileset>
     <fileset dir="${jboss.home}/lib">
       <include name="*.jar"/>
@@ -201,17 +203,17 @@
         </fileset>      
     </copy> -->
   </target>
+  
+  <target name="dist:war" depends="populateDirectories">
+    <javac source="1.5" debug="true" srcdir="${src.dir}" destdir="${build.dir}/${appName}/WEB-INF/classes">
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
 
   <target name="dist" depends="populateDirectories">
 
-	  <javac source="1.5" debug="true" srcdir="${src.dir}" destdir="${build.dir}/${appName}/WEB-INF/classes">
-
-      <classpath refid="classpath"/>
-
-    </javac>
-
     <copy todir="${build.dir}/${appName}">
-	    <fileset dir="${src.web}" casesensitive="yes">
+        <fileset dir="${src.web}" casesensitive="yes">
         <include name="**/*.*" />
       </fileset>
     </copy>
@@ -224,13 +226,13 @@
     </copy>
 
     <jar jarfile="${build.dir}/${war.base.name}" 
-	 basedir="${build.dir}/${appName}"/>
+     basedir="${build.dir}/${appName}"/>
 
     <ear destfile="${build.dir}/${ear.base.name}" 
           appxml="${src.resources}/META-INF/application.xml">
       <fileset dir="${build.dir}" includes="*.jar,*.war"/>
       <fileset dir="${src.resources}">
-        <include name="META-INF/application.xml"/>
+        <!-- include name="META-INF/application.xml"/ -->
         <include name="META-INF/jboss-app.xml"/>
         <include name="META-INF/*-service.xml"/>
         <include name="META-INF/*-xmbean.xml"/>
@@ -245,7 +247,7 @@
 
   </target>
 
-  <target name="deploy:war" depends="undeploy, deploy:ejb, dist">
+  <target name="deploy:war" depends="undeploy, deploy:ejb, dist:war, dist">
 	  <copy file="${war.base.name}" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
