@@ -4,42 +4,33 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 import java.util.Vector;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
+import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
 
 /**
  * @author alindley
@@ -49,36 +40,47 @@ import eu.planets_project.tb.api.services.tags.ServiceTag;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 //@DiscriminatorColumn(name="DiscrCol")
 //@Table(name="TBServiceTemplate")
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.io.Serializable, Cloneable{
-	
-	private String sServiceDescription, sServiceEndpoint, sServiceName, sWSDLContent;
+//    private static final long serialVersionUID = 19584521347834L -4546334927373617048L;
+    
+    private String sServiceDescription, sServiceEndpoint, sServiceName;
+    @XmlTransient
+	private String sWSDLContent;
 	private boolean bURIisWSICompliant;
 	//not only the registered Service Operations - note: non registered ones cannot be invoked
-	private Vector<ServiceOperation> lAllRegisteredServiceOperations;
+	// FIXME: Should this be in the XML? Only can be if a real class (not inner).
+    @XmlTransient
+	private Vector<ServiceOperationImpl> lAllRegisteredServiceOperations;
 	//all Operation Names within the WSDL not only the registered ones that can be executed via the TB
 	//Note: to persist this object it's impl and not its interface is required here
 	private Vector<String> lAllOperationNamesFromWSDL;
     //all tag names and values that have been registered for this service
-	private Vector<ServiceTag> lTags;
+	private Vector<ServiceTagImpl> lTags;
 	//records the service's first deployment data
 	private Calendar deploymentDate = new GregorianCalendar();
 
 	@Transient
+    @XmlTransient
 	public String DISCR_TEMPLATE = "template";
 	@Transient
-	public String DISCR_EXPERIMENT = "expeirment";
+    @XmlTransient
+	public String DISCR_EXPERIMENT = "experiment";
 	//discriminator can either be "template" or "experiment". later one indicates TBServiceTemplates being used within an experiment
 	@Column(name="discr")
 	private String sdiscr = DISCR_TEMPLATE;
 	
 	// This annotation specifies that the property or field is not persistent.
 	@Transient
+    @XmlTransient
 	private static Log log;
 	//The ServiceTemplate's UUID is used as discriminator
 	@Column(name="hashUUID")
 	private String sServiceID;
+	
 	@Id
 	@GeneratedValue
+    @XmlTransient
 	private long lEntityID;
 	
 	public TestbedServiceTemplateImpl(){
@@ -90,8 +92,8 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 		sWSDLContent = "";
 		bURIisWSICompliant = false;
 		lAllOperationNamesFromWSDL = new Vector<String>();
-		lAllRegisteredServiceOperations = new Vector<ServiceOperation>();
-		lTags = new Vector<ServiceTag>();
+		lAllRegisteredServiceOperations = new Vector<ServiceOperationImpl>();
+		lTags = new Vector<ServiceTagImpl>();
 
 	}
 	
@@ -183,7 +185,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	
 	public void addServiceOperation(ServiceOperation operation){
 		if(operation!=null){
-			this.lAllRegisteredServiceOperations.add(operation);
+			this.lAllRegisteredServiceOperations.add((ServiceOperationImpl)operation);
 		}
 	}
 	
@@ -215,7 +217,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 */
 	public void setServiceOperations(List<ServiceOperation> operations){
 		if(operations!=null){
-			this.lAllRegisteredServiceOperations = new Vector<ServiceOperation>();
+			this.lAllRegisteredServiceOperations = new Vector<ServiceOperationImpl>();
 			Iterator<ServiceOperation> it = operations.iterator();
 			while(it.hasNext()){
 				addServiceOperation(it.next());
@@ -296,7 +298,10 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * @see eu.planets.test.backend.api.model.mockup.TestbedService#getAllServiceOperations()
 	 */
 	public List<ServiceOperation> getAllServiceOperations(){
-		return this.lAllRegisteredServiceOperations;
+	    Vector<ServiceOperation> sos = new Vector<ServiceOperation>();
+	    for( ServiceOperationImpl soi : this.lAllRegisteredServiceOperations )
+	        sos.add(soi);
+		return sos;
 	}
 	
 	/* (non-Javadoc)
@@ -366,7 +371,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 			this.removeTag(tag.getName());
 			
 			//add the new item
-			this.lTags.add(tag);
+			this.lTags.add((ServiceTagImpl)tag);
 		}
 	}
 
@@ -375,7 +380,10 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#getAllTags()
 	 */
 	public List<ServiceTag> getAllTags() {
-		return this.lTags;
+	    List<ServiceTag> sts = new Vector<ServiceTag>();
+	    for( ServiceTagImpl tag : this.lTags )
+	        sts.add(tag);
+		return sts;
 	}
 
 	
@@ -384,7 +392,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 */
 	public ServiceTag getTag(String sTagName) {
 		if(sTagName!=null){
-			Iterator<ServiceTag> tags = this.lTags.iterator();
+			Iterator<ServiceTagImpl> tags = this.lTags.iterator();
 
 			while(tags.hasNext()){
 				ServiceTag tagit = tags.next();
@@ -403,7 +411,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 */
 	public void removeTag(String sTagName) {
 		if(sTagName!=null){
-			Iterator<ServiceTag> tags = this.lTags.iterator();
+			Iterator<ServiceTagImpl> tags = this.lTags.iterator();
 			boolean bFound = false;
 			ServiceTag bFoundTag = null;
 			while(tags.hasNext()){
@@ -426,7 +434,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	 * @see eu.planets_project.tb.api.services.TestbedServiceTemplate#removeTags()
 	 */
 	public void removeTags() {
-		this.lTags = new Vector<ServiceTag>();
+		this.lTags = new Vector<ServiceTagImpl>();
 	}
 
 	

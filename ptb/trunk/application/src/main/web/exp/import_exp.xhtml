@@ -1,6 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
@@ -17,19 +21,28 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
-                    <p><b>This page is not yet operational.</b></p>
-		<form method="post" action="#" enctype="multipart/form-data">
-		<fieldset>
-		<legend>Attach File</legend>
-		<p>
-		<label for="exfile"><span style="color: red;">*</span>Experiment File:</label>
-		<input type="file" name="exfile" id="exfile" size="50" />
-		</p>
-		
-		</fieldset>
-		<p class="submit"><input type="submit" value="Upload" /></p>
-		</form>
-		
+
+            <h:form id="uploadExperiment" enctype="multipart/form-data">
+                <fieldset>
+
+                    <legend><h:outputText value="#{res['import_exp.uploadExpFile']}"/></legend>
+                         <p><h:outputText value="#{res['import_exp.experimentFile']}" styleClass="readerLabel"/>        
+                            <t:inputFileUpload id="fileupload"
+                                  value="#{FileUploadBean.upFile}"
+                                  storage="file"
+                                  styleClass="fileUploadInput"
+                                  required="false"
+                                  maxlength="10000000"/>
+                                  <br/>
+                        <h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>
+                        </p>
+                        <p>
+                            <h:commandButton action="#{NewExp_Controller.importUploadedExperiment}" value="#{res['import_exp.upload']}"/>
+                        </p>
+                </fieldset>
+        </h:form>
+        
+        <p>&#160;</p>
 		
 		</div>
 		</div>

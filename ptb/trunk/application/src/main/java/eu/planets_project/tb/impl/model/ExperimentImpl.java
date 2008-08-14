@@ -8,6 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
@@ -18,8 +24,6 @@ import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.gui.UserBean;
-import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
@@ -27,16 +31,22 @@ import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentPhaseImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 
-
 /**
  * @author alindley
  *
  */
 @Entity
+@XmlRootElement(name = "Experiment", namespace = "http://www.planets-project.eu/testbed/experiment")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder={"version", "expSetup", "executable" , "expApproval", "expExecution", "expEvaluation" })
 public class ExperimentImpl extends ExperimentPhaseImpl
-		implements Experiment, java.io.Serializable{
-	
-	//the EntityID and it's setter and getters are inherited from ExperimentPhase
+		implements Experiment, java.io.Serializable {
+    
+    // The version of this ExperimentImpl, used for load/store, not for the DB.
+    @Transient
+    public int version = 1;
+    
+    //the EntityID and it's setter and getters are inherited from ExperimentPhase
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentEvaluationImpl expEvaluation;
 	@OneToOne(cascade={CascadeType.ALL})
@@ -49,7 +59,11 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	private ExperimentExecutableImpl executable;
     //get's instantiated within the experimentSetup phase
 	
+    @XmlTransient
+    private static final long serialVersionUID = 123497123479L;
+    
     @Transient
+    @XmlTransient
     private static Log log = PlanetsLogger.getLogger(ExperimentImpl.class, "testbed-log4j.xml");
 	
 	public ExperimentImpl(){
@@ -58,17 +72,18 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 		expExecution = new ExperimentExecutionImpl();
 		expApproval = new ExperimentApprovalImpl();
 		expEvaluation = new ExperimentEvaluationImpl();
-		//the experiment's executable inforamtion
-		//note: executable gets instantiated within the expeirment setup phase
+		//the experiment's executable information
+		//note: executable gets instantiated within the experiment setup phase
 		//executable = null;
 		
 		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
-		
+		log.debug("ExperimentImpl initialised.");
 	}
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentAnalysis()
 	 */
+	
 	public ExperimentEvaluation getExperimentEvaluation() {
 		return this.expEvaluation;
 	}

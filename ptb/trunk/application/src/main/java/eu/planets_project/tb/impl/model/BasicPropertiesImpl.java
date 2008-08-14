@@ -17,6 +17,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
@@ -36,11 +40,13 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class BasicPropertiesImpl 
 implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable {
 	
 	@Id
 	@GeneratedValue
+    @XmlTransient
 	private long id;
 	private String sConsiderations, sContaectAddress, sContactMail, sContactName, sContactTel;
 	private String sExpName, sFocus, sIndication, sPurpose, sScope, sSummary;
@@ -57,6 +63,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 
     // This annotation specifies that the property or field is not persistent.
 	@Transient
+    @XmlTransient
 	private static Log log;
 	
 	public BasicPropertiesImpl(){
@@ -640,6 +647,13 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	}
 
 	/* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.BasicProperties#addLiteratureReference(java.lang.String, java.lang.String)
+     */
+    public void addLiteratureReference(String desc, String URI) {
+        this.addLiteratureReference(desc, URI, null, null);
+    }
+
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#addLiteratureReference(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	public void addLiteratureReference(String desc, String URI, String title, String author) {

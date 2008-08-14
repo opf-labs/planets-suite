@@ -61,7 +61,7 @@ public interface BasicProperties{
 	public String getIndication();
 	
 	/**
-	 * The Object Type  will e.g. specify a experiment on "jpeg" images – but does not contain
+	 * The Object Type  will e.g. specify a experiment on "jpeg" images ï¿½ but does not contain
 	 * any reference to the actual data which is part of the Design Experiment stage.
 	 * 
 	 * @param sMimeType: formating string/string is checked
@@ -145,7 +145,8 @@ public interface BasicProperties{
 	 * @param sTitle
 	 * @param sAuthor
 	 */
-	public void addLiteratureReference(String sDesc, String URI, String sTitle, String sAuthor);
+    public void addLiteratureReference(String sDesc, String URI, String sTitle, String sAuthor);
+    public void addLiteratureReference(String sDesc, String URI);
 	public void removeLiteratureReference(String sDesc, String URI);
 
 	/**
@@ -158,7 +159,7 @@ public interface BasicProperties{
 	public List<String[]> getAllLiteratureReferences();
 
 	
-	/**The Tool Type will specify for example a "jpeg2pdfMigration" experiment – but does not contain
+	/**The Tool Type will specify for example a "jpeg2pdfMigration" experiment ï¿½ but does not contain
 	 * any reference to actual tools instances, which is part of the Design Experiment stage.
 	 * @param toolTypes: requires to be in the format which is accepted and known by the service registry
 	 **/

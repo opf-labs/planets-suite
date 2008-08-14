@@ -46,6 +46,9 @@
             <h:commandLink action="#{ListExp_Backing.editMyExperimentAction}">
 	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
     		</h:commandLink>
+            <h:commandLink action="#{ListExp_Backing.exportMyExperimentAction}">
+                &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/go-down.png" alt="export" title="export" style="margin-left: 5px; margin-right: 10px;"/>
+            </h:commandLink>        
         </t:column>
         <t:column>
 	        <f:facet name="header">

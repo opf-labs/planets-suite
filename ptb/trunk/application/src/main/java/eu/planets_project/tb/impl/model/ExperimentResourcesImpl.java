@@ -6,12 +6,16 @@ package eu.planets_project.tb.impl.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author alindley
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentResourcesImpl implements
 		eu.planets_project.tb.api.model.ExperimentResources,
 		java.io.Serializable {

@@ -20,6 +20,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
@@ -36,27 +40,29 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentEvaluationImpl extends ExperimentPhaseImpl
 implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Serializable {
 
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
 	//Note: HashMap<BenchmarkGoalID, BenchmarkGoal>
-	private HashMap<String, BenchmarkGoal> experimentBenchmarkGoals;
+	private HashMap<String, BenchmarkGoalImpl> experimentBenchmarkGoals;
 	//Note: URI: inputFile is the key, String: BenchmarkGoalID
-	private HashMap<URI,HashMap<String,BenchmarkGoal>> fileBenchmarkGoals;
+	private HashMap<URI,HashMap<String,BenchmarkGoalImpl>> fileBenchmarkGoals;
 	//Note: HashMap<BenchmarkGoalID, BenchmarkGoal>
 
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentReportImpl report;
 	private boolean bExpSetupImputValuesSet;
 	//a helper reference pointer, for retrieving the experiment in the phase
+    @XmlTransient
 	private long lExperimentIDRef;
 
 	
 	public ExperimentEvaluationImpl(){
 
-		this.experimentBenchmarkGoals = new HashMap<String, BenchmarkGoal>();
-		this.fileBenchmarkGoals = new HashMap<URI,HashMap<String,BenchmarkGoal>>();
+		this.experimentBenchmarkGoals = new HashMap<String, BenchmarkGoalImpl>();
+		this.fileBenchmarkGoals = new HashMap<URI,HashMap<String,BenchmarkGoalImpl>>();
 		report = new ExperimentReportImpl();
 		lExperimentIDRef = -1;
 		bExpSetupImputValuesSet = false;
@@ -74,7 +80,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
         return this.lExperimentIDRef;
     }
 
-    public void setExpeirmentRefID(long lExperimentIDRef){
+    public void setExperimentRefID(long lExperimentIDRef){
         this.lExperimentIDRef = lExperimentIDRef;
     }
     
@@ -247,7 +253,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.getInputBenchmarkGoals().get(addedBenchmarkGoalID)).clone();
 			
 			//get file's BenchmarkGoalSet
-			HashMap<String,BenchmarkGoal> hmFileGoals = this.fileBenchmarkGoals.get(ioFile.getKey());
+			HashMap<String,BenchmarkGoalImpl> hmFileGoals = this.fileBenchmarkGoals.get(ioFile.getKey());
 			
 			String oldSourceValue="";
 			String oldTargetValue="";
@@ -309,12 +315,12 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 			//get the input BenchmarkGoal
 			BenchmarkGoalImpl goal = ((BenchmarkGoalImpl)this.getInputBenchmarkGoals().get(addedBenchmarkGoalID)).clone();
 			//get file's BenchmarkGoalSet
-			HashMap<String,BenchmarkGoal> hmFileGoals = this.fileBenchmarkGoals.get(inputFile);
+			HashMap<String,BenchmarkGoalImpl> hmFileGoals = this.fileBenchmarkGoals.get(inputFile);
 			
 			//checks if for this inputfile a HashMap has already been created or if it's the first time
 			boolean bMarker = false;
 			if(hmFileGoals == null){
-				hmFileGoals = new HashMap<String, BenchmarkGoal>();
+				hmFileGoals = new HashMap<String, BenchmarkGoalImpl>();
 				bMarker = true;
 			}
 			
@@ -425,10 +431,12 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedExperimentBenchmarkGoals()
 	 */
 	public Collection<BenchmarkGoal> getEvaluatedExperimentBenchmarkGoals() {
+	    Collection<BenchmarkGoal> bmgs = new Vector<BenchmarkGoal>();
 		if(this.experimentBenchmarkGoals.keySet().size()>0){
-			return this.experimentBenchmarkGoals.values();
+		    for( BenchmarkGoalImpl bg : this.experimentBenchmarkGoals.values())
+		        bmgs.add(bg);
 		}
-		return new Vector<BenchmarkGoal>();
+		return bmgs;
 	}
 
 	/* (non-Javadoc)
@@ -437,7 +445,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	public BenchmarkGoal getEvaluatedFileBenchmarkGoal(URI inputFile,
 			String goalXMLID) {
 		if(this.fileBenchmarkGoals.keySet().contains(inputFile)){
-			HashMap<String,BenchmarkGoal> fileBMGoals = this.fileBenchmarkGoals.get(inputFile);
+			HashMap<String,BenchmarkGoalImpl> fileBMGoals = this.fileBenchmarkGoals.get(inputFile);
 			if(fileBMGoals.containsKey(goalXMLID)){
 				return fileBMGoals.get(goalXMLID);
 			}	
@@ -449,15 +457,16 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getEvaluatedFileBenchmarkGoals(java.net.URI)
 	 */
 	public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile) {
+	    Collection<BenchmarkGoal> bmgs =  new Vector<BenchmarkGoal>();
 
 		if(this.fileBenchmarkGoals.keySet().contains(inputFile)){
-			HashMap<String,BenchmarkGoal> fileBMGoals = this.fileBenchmarkGoals.get(inputFile);
+			HashMap<String,BenchmarkGoalImpl> fileBMGoals = this.fileBenchmarkGoals.get(inputFile);
 			if(fileBMGoals.keySet().size()>0){
-
-				return fileBMGoals.values();
+				for( BenchmarkGoalImpl bg :  fileBMGoals.values() )
+				    bmgs.add(bg);
 			}
 		}
-		return new Vector<BenchmarkGoal>();
+		return bmgs;
 	}
 
 	

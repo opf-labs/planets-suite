@@ -8,6 +8,16 @@
   <managed-bean-scope>application</managed-bean-scope>
  </managed-bean>
  <managed-bean>
+  <managed-bean-name>DownloadManager</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.DownloadManager</managed-bean-class>
+  <managed-bean-scope>application</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>UploadManager</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.UploadManager</managed-bean-class>
+  <managed-bean-scope>application</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
   <managed-bean-name>UserBean</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.UserBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
@@ -33,23 +43,9 @@
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
  <managed-bean>
-  <managed-bean-name>FileUploadBean</managed-bean-name>
-  <managed-bean-class>eu.planets_project.tb.gui.backing.FileUploadBean</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
-  <managed-property>
-   <property-name>uploadDir</property-name>
-   <value>server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata</value>
-  </managed-property>
- </managed-bean>
- <managed-bean>
   <managed-bean-name>FileBrowser</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.backing.FileBrowser</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
- </managed-bean>
-  <managed-bean>
-  <managed-bean-name>ServiceTemplateBrowser</managed-bean-name>
-  <managed-bean-class>eu.planets_project.tb.gui.backing.ServiceTemplateBrowser</managed-bean-class>
-  <managed-bean-scope>request</managed-bean-scope>
  </managed-bean>
  <managed-bean>
   <managed-bean-name>Comment_Backing</managed-bean-name>
@@ -65,6 +61,20 @@
   <managed-bean-name>AutoEvalSerUserConfigBean</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ServiceTemplateBrowser</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.ServiceTemplateBrowser</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>FileUploadBean</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.FileUploadBean</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+  <managed-property>
+   <property-name>uploadDir</property-name>
+   <value>server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata</value>
+  </managed-property>
  </managed-bean>
 <!--End Managed Beans -->
 

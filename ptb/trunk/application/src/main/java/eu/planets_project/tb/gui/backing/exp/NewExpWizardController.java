@@ -13,6 +13,7 @@ import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
@@ -23,6 +24,7 @@ import eu.planets_project.tb.gui.backing.BenchmarkBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.ListExp;
+import eu.planets_project.tb.gui.backing.UploadManager;
 import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
 import eu.planets_project.tb.gui.backing.admin.ManagerTBServices;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
@@ -40,9 +42,11 @@ import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
+import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlCommandButton;
@@ -563,7 +567,7 @@ public class NewExpWizardController {
     public String commandAddInputDataItem(){
     	//0) upload the specified data to the Testbed's file repository
         log.debug("commandAddInputDataItem: Uploading file.");
-		FileUploadBean uploadBean = this.uploadFile();
+		FileUploadBean uploadBean = UploadManager.uploadFile();
 		if( uploadBean == null ) return "goToStage2";
 		String fileRef = uploadBean.getLocalFileRef();
 		if(!(new File(fileRef).canRead())){
@@ -716,40 +720,6 @@ public class NewExpWizardController {
 	}
     
 	/**
-	 * Helper to fetch the FileUploadBean from the request
-	 * @return
-	 */
-	private FileUploadBean getCurrentFileUploadBean(){
-		return (FileUploadBean)JSFUtil.getManagedObject("FileUploadBean");
-	}
-	
-	/**
-	 * Triggers the page's file upload element, takes the selected data and 
-	 * transfers it into the Testbed's file repository. The reference to this file
-	 * is layed into the system's application map.
-	 * @return: Returns an instance of the FileUploadBean (e.g. for additional operations as .getEntryName, etc.)
-	 * if the operation was successful or null if an error occured
-	 */
-	private FileUploadBean uploadFile(){
-		FileUploadBean file_upload = this.getCurrentFileUploadBean();
-		try{
-			//trigger the upload command
-			String result = file_upload.upload();
-			
-			if(!result.equals("success-upload")){
-				return null;
-			}
-		}
-		catch(Exception e){
-			//In this case an error occured ("error-upload"): just reload the page without adding any information
-			log.error("error uploading file to Testbed's input folder: "+e.toString());
-			return null;
-		}
-		
-		return file_upload;
-	}
-    
-    /**
      * Reacting to the "use" button, to make ServiceTemplate Selection final
      */
     /*public void commandUseSelTBServiceTemplate(){
@@ -1153,6 +1123,19 @@ public class NewExpWizardController {
  * END methods for new_experiment wizard page
  * -------------------------------------------
  */
+
+    /**
+     * Imports and experiment from an uploaded file
+     */
+    public String importUploadedExperiment() {
+        FileUploadBean uploadBean = UploadManager.uploadFile();
+        log.info("Looking for upload.");
+        if( uploadBean == null ) return "failure";
+        File uploaded = new File( uploadBean.getLocalFileRef());
+        log.info("Found upload: "+uploaded);
+        UploadManager upm = (UploadManager) JSFUtil.getManagedObject("UploadManager");
+        return upm.importExperiment(uploaded);
+    }
     
 
 	/**

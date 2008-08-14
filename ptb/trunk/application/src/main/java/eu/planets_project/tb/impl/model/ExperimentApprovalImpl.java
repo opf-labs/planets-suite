@@ -12,6 +12,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.model.ExperimentApproval;
 import eu.planets_project.tb.api.model.ExperimentSetup;
@@ -24,6 +28,7 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentApprovalImpl extends ExperimentPhaseImpl
 implements ExperimentApproval, java.io.Serializable {
 
@@ -34,9 +39,11 @@ implements ExperimentApproval, java.io.Serializable {
 	private boolean bGo;
 	
     //a helper reference pointer, for retrieving the experiment in the phase
+    @XmlTransient
     private long lExperimentIDRef;
 
 	@Transient
+    @XmlTransient
 	//This annotation specifies that the property or field is not persistent.
 	private ExperimentSetup expSetup;
 
@@ -61,7 +68,7 @@ implements ExperimentApproval, java.io.Serializable {
         return this.lExperimentIDRef;
     }
 
-    public void setExpeirmentRefID(long lExperimentIDRef){
+    public void setExperimentRefID(long lExperimentIDRef){
         this.lExperimentIDRef = lExperimentIDRef;
     }
 	

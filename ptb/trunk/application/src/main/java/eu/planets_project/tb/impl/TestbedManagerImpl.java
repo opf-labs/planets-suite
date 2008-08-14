@@ -187,10 +187,10 @@ public class TestbedManagerImpl
 	 */
 	private void setExperimentRefInPhase(Experiment exp){
 		//set the reference pointers for the stages:
-		((ExperimentSetupImpl)exp.getExperimentSetup()).setExpeirmentRefID(exp.getEntityID());
-		((ExperimentApprovalImpl)exp.getExperimentApproval()).setExpeirmentRefID(exp.getEntityID());
-		((ExperimentExecutionImpl)exp.getExperimentExecution()).setExpeirmentRefID(exp.getEntityID());
-		((ExperimentEvaluationImpl)exp.getExperimentEvaluation()).setExpeirmentRefID(exp.getEntityID());
+		((ExperimentSetupImpl)exp.getExperimentSetup()).setExperimentRefID(exp.getEntityID());
+		((ExperimentApprovalImpl)exp.getExperimentApproval()).setExperimentRefID(exp.getEntityID());
+		((ExperimentExecutionImpl)exp.getExperimentExecution()).setExperimentRefID(exp.getEntityID());
+		((ExperimentEvaluationImpl)exp.getExperimentEvaluation()).setExperimentRefID(exp.getEntityID());
 		
 		//As the Experiment's attributes have been modified we must call update
 		this.updateExperiment(exp);
@@ -223,6 +223,7 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#removeExperiment(long)
 	 */
 	public void removeExperiment(long expID) {
+	    log.info("Removing experiment "+expID);
 		boolean bContains = this.hmAllExperiments.containsKey(expID);
 		if(bContains){
 		  //Should this be added in a transaction?

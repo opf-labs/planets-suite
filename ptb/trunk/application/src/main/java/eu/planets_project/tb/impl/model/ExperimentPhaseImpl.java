@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.MappedSuperclass;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 
@@ -29,12 +32,14 @@ import eu.planets_project.tb.api.model.ExperimentPhase;
  */
 
 @MappedSuperclass
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class ExperimentPhaseImpl implements
 		eu.planets_project.tb.api.model.ExperimentPhase, java.io.Serializable {
 	
 	@Id
 	@GeneratedValue
-	private long lEntityID;
+    @XmlTransient
+	private long lEntityID = -1;
 	private Calendar endDate, startDate;
 	private int iState, iResult;
 	boolean bSuccess;
@@ -110,7 +115,7 @@ public abstract class ExperimentPhaseImpl implements
 		return this.lEntityID;
 	}
 	
-	private void setEntityID(long lEntityID){
+	public void setEntityID(long lEntityID){
 		this.lEntityID = lEntityID; 
 	}
 

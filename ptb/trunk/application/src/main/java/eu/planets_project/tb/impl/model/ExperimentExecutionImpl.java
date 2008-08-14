@@ -15,6 +15,10 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import javax.persistence.Entity;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
@@ -30,14 +34,16 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	implements ExperimentExecution, java.io.Serializable {
 
 	//the EntityID and it's setter and getters are inherited from ExperimentPhase
-	 //a helper reference pointer, for retrieving the experiment in the phase
-	 private long lExperimentIDRef;
-	 private boolean bExecutionInProgress;
-	 private boolean bExecuted;
+	//a helper reference pointer, for retrieving the experiment in the phase
+    @XmlTransient
+    private long lExperimentIDRef;
+	private boolean bExecutionInProgress;
+	private boolean bExecuted;
 	
 	public ExperimentExecutionImpl(){
 		lExperimentIDRef = -1;
@@ -59,7 +65,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
     /**
      * @param lExperimentIDRef
      */
-    public void setExpeirmentRefID(long lExperimentIDRef){
+    public void setExperimentRefID(long lExperimentIDRef){
         this.lExperimentIDRef = lExperimentIDRef;
     }
 

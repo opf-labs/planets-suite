@@ -12,6 +12,10 @@ import java.util.Vector;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.model.Comment;
 import eu.planets_project.tb.impl.model.CommentImpl;
@@ -23,6 +27,7 @@ import eu.planets_project.tb.impl.TestbedManagerImpl;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class CommentImpl implements Comment, java.io.Serializable {
 	
 	@Id

@@ -25,6 +25,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,10 +54,12 @@ import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
  * this will correspond to a String. 
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.Serializable{
 	
 	@Id
 	@GeneratedValue
+    @XmlTransient
 	private long id;
 	//hashmap of local file refs for input and output data of service execution
 	//note: C:/DATA/ rather than http://localhost:8080/testbed/
@@ -70,6 +76,7 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 	private Calendar execEndDate = new GregorianCalendar();
 	//A logger for this - transient: it's not persisted with this entity
     @Transient
+    @XmlTransient
 	private static Log log;
 	
 	

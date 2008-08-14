@@ -251,6 +251,11 @@ public class ListExp extends SortableList {
 	      return "editExp";
 	    }
 	    
+	    public String exportMyExperimentAction() {
+            Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
+	        DownloadManager dm = (DownloadManager)JSFUtil.getManagedObject("DownloadManager");
+	        return dm.downloadExperiment(selectedExperiment);
+	    }
 
         public String viewExperimentToApprove()
         {

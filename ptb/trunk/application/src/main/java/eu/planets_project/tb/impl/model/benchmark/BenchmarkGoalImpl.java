@@ -5,6 +5,9 @@ import java.util.Vector;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import java.util.List;
 
@@ -20,6 +23,8 @@ import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
  *
  */
 //@Entity
+@XmlRootElement(name = "BenchmarkGoal")
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.Serializable, Cloneable{
 	
 	//@Id

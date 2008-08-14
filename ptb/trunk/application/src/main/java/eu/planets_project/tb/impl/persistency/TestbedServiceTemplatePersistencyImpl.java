@@ -72,7 +72,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
 		Query query = manager.createQuery("from TestbedServiceTemplateImpl where discr='template' and hashUUID='"+UUID+"'");
 		if((query!=null)&&(query.getResultList().size()==1)){
 			TestbedServiceTemplateImpl t_helper = (TestbedServiceTemplateImpl)query.getResultList().iterator().next();
-			//only delete templates that are of type "template" and not used within an expeirment
+			//only delete templates that are of type "template" and not used within an experiment
 			if(t_helper.getDiscriminator().equals(t_helper.DISCR_TEMPLATE)){
 				manager.remove(t_helper);
 			}
@@ -86,7 +86,7 @@ public class TestbedServiceTemplatePersistencyImpl implements
 	 */
 	public void deleteTBServiceTemplate(TestbedServiceTemplate template){
 		TestbedServiceTemplateImpl t_helper = manager.find(TestbedServiceTemplateImpl.class, ((TestbedServiceTemplateImpl)template).getEntityID());
-		//only delete templates that are of type "template" and not used within an expeirment
+		//only delete templates that are of type "template" and not used within an experiment
 		if(t_helper.getDiscriminator().equals(t_helper.DISCR_TEMPLATE)){
 			manager.remove(t_helper);
 		}

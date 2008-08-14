@@ -9,7 +9,7 @@ import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 
 public interface TestbedManager {
 	
-	//TODO weiteren Kommentar zu registerExpeirment (in Bezug auf getExperiment) schreiben
+	//TODO weiteren Kommentar zu registerExperiment (in Bezug auf getExperiment) schreiben
 	/**
 	 * Registers an Experiment within the TestbedManager
 	 * It's not possible to register a previously registered experiment as the container cannot inject a valid ID

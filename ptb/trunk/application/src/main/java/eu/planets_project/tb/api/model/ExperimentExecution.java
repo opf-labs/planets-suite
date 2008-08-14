@@ -88,7 +88,7 @@ public interface ExperimentExecution extends ExperimentPhase{
 	public Map.Entry<URI, String> getCharacterisationOutputDataEntry(URI inputFileURI);
 	
 	/**
-	 * Returns the ServiceOperation of the expeirment's executable part
+	 * Returns the ServiceOperation of the experiment's executable part
 	 * This contains data about: operation name, max. supported files, etc.
 	 * @return
 	 */

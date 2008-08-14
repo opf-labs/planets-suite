@@ -8,6 +8,9 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import eu.planets_project.tb.api.model.ExperimentReport;
 
@@ -16,6 +19,7 @@ import eu.planets_project.tb.api.model.ExperimentReport;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentReportImpl implements ExperimentReport, java.io.Serializable {
 
 	@Id

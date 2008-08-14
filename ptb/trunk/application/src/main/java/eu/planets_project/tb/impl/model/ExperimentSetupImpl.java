@@ -11,6 +11,10 @@ import java.util.Vector;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -18,6 +22,7 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
@@ -31,6 +36,7 @@ import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		eu.planets_project.tb.api.model.ExperimentSetup,
 		java.io.Serializable{
@@ -42,11 +48,12 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	//BenchmarkGoals:
 	//private boolean bBenchmarkGoalListFinal;
 	//the structure: HashMap<BenchmarkGoal.getXMLID,BenchmarkGoal>();
-	private HashMap<String,BenchmarkGoal> hmBenchmarkGoals;
+	private HashMap<String,BenchmarkGoalImpl> hmBenchmarkGoals;
 	
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentResourcesImpl experimentResources;
 	//a helper reference pointer, for retrieving the experiment in the phase
+    @XmlTransient
 	private long lExperimentIDRef;
 	
 	//temporary helper
@@ -56,7 +63,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	public ExperimentSetupImpl(){
 		basicProperties = new BasicPropertiesImpl();
 		//bBenchmarkGoalListFinal = false;
-		hmBenchmarkGoals = new HashMap<String,BenchmarkGoal>();
+		hmBenchmarkGoals = new HashMap<String,BenchmarkGoalImpl>();
 		experimentResources = new ExperimentResourcesImpl();
 		iSubstage = -1;
 		lExperimentIDRef = -1;
@@ -74,7 +81,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		return this.lExperimentIDRef;
 	}
 
-	public void setExpeirmentRefID(long lExperimentIDRef){
+	public void setExperimentRefID(long lExperimentIDRef){
 		this.lExperimentIDRef = lExperimentIDRef;
 	}
 	
@@ -137,7 +144,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		if(this.hmBenchmarkGoals.containsKey(goal.getID()))
 			this.hmBenchmarkGoals.remove(goal.getID());
 			
-		this.hmBenchmarkGoals.put(goal.getID(), goal);
+		this.hmBenchmarkGoals.put(goal.getID(), (BenchmarkGoalImpl)goal);
 	}
 
 
@@ -156,7 +163,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 */
 	public List<BenchmarkGoal> getAllAddedBenchmarkGoals() {
 		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
-		Iterator<BenchmarkGoal> itGoals = this.hmBenchmarkGoals.values().iterator();
+		Iterator<BenchmarkGoalImpl> itGoals = this.hmBenchmarkGoals.values().iterator();
 		while(itGoals.hasNext()){
 			ret.add(itGoals.next());
 		}
@@ -193,7 +200,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#removeBenchmarkGoal(java.lang.String, java.lang.String)
 	 */
 	public void removeBenchmarkGoal(String category, String name) {
-		Iterator<BenchmarkGoal> itGoals = this.hmBenchmarkGoals.values().iterator();
+		Iterator<BenchmarkGoalImpl> itGoals = this.hmBenchmarkGoals.values().iterator();
 		while(itGoals.hasNext()){
 			BenchmarkGoal goal = itGoals.next();
 			if (goal.getCategory().equals(category)&&goal.getName().equals(name)){
@@ -226,7 +233,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 */
 	public void setBenchmarkGoals(List<BenchmarkGoal> goals) {
 		//delete old object
-		this.hmBenchmarkGoals = new HashMap<String,BenchmarkGoal>();
+		this.hmBenchmarkGoals = new HashMap<String,BenchmarkGoalImpl>();
 		this.addBenchmarkGoals(goals);
 	}
 
