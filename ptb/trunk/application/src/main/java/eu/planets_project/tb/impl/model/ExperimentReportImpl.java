@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.model.ExperimentReport;
 
@@ -24,6 +25,7 @@ public class ExperimentReportImpl implements ExperimentReport, java.io.Serializa
 
 	@Id
 	@GeneratedValue
+    @XmlTransient
 	private long id;
 	
 	private String sHeader;
