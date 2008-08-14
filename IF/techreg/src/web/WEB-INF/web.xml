@@ -16,6 +16,7 @@
         <param-name>facelets.DEVELOPMENT</param-name>
         <param-value>true</param-value>
     </context-param>
+<!--
     <context-param>
         <param-name>org.apache.myfaces.CHECK_EXTENSIONS_FILTER</param-name>
         <param-value>true</param-value>
@@ -26,7 +27,14 @@
         </param-name>
         <param-value>/faces/extensionResource</param-value>
     </context-param>
-    
+
+<context-param>
+     <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
+     <param-value>true</param-value>
+</context-param> 
+
+-->
+
     <!-- Extension for RichFaces-JSF  -->
     <context-param>
         <param-name>org.richfaces.SKIN</param-name>
@@ -91,13 +99,11 @@
         <filter-name>extensionsFilter</filter-name>
         <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
     </filter-mapping>
-
     <listener>
         <listener-class>
             org.apache.myfaces.webapp.StartupServletContextListener
         </listener-class>
     </listener>
-
     <!-- Denying Directory Browsing -->
     <servlet>
         <servlet-name>local_default</servlet-name>

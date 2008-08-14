@@ -4,7 +4,7 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="if-template" default="deploy:ejb" basedir=".">
+<project name="if-template" default="build:off" basedir=".">
 
   <property name="appName" value="${ant.project.name}"/>
   <property name="appDir" value="."/>

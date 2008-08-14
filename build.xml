@@ -1,10 +1,18 @@
 <?xml version="1.0"?>
-
 <!-- ======================================================================= -->
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
-
 <project name="Planets Service Deployer" default="deploy:pure-java" basedir=".">
+
+  <!-- =================================================================== -->
+  
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <pathelement location="lib/ant-contrib-1.0b3.jar"/>
+    </classpath>
+  </taskdef>
+
+  <!-- =================================================================== -->  
 
   <!-- Check that the build properties have been set up. -->
   <property file="build.properties"/>
@@ -15,6 +23,8 @@
 
   <!-- These services are pure java, and can be deployed automatically. -->
   <target name="deploy:pure-java" depends="props:set">
+    <!-- IF -->
+    <ant dir="IF/techreg" inheritAll="false"/>
     <!-- Preservation Characterisation -->
     <ant dir="PC/droid" inheritAll="false"/>
     <ant dir="PC/jhove" inheritAll="false"/>
@@ -41,16 +51,50 @@
     <ant dir="PP/comparator" inheritAll="false"/>
   </target>
   
-  <!-- This target installs all useful services. -->
-  <target name="deploy:all" depends="deploy:pure-java, deploy:wrappers" />
-
+  <!-- This target installs all services. -->
+  <path id="all.sub.projects">
+    <fileset dir="${basedir}" includes="*/*/build.xml" excludes="IF/Sample/*"/>
+  </path>
+  <target name="deploy:all">
+    <foreach target="deploy:sub" param="sub.build" inheritall="false">
+      <path refid="all.sub.projects"/>
+    </foreach>
+  </target>
+  <target name="deploy:sub">
+    <echo message="Building ${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false"/>
+  </target>
+  <target name="undeploy:all">
+    <foreach target="undeploy:sub" param="sub.build" inheritall="false">
+      <path refid="all.sub.projects"/>
+    </foreach>
+  </target>
+  <target name="undeploy:sub">
+    <echo message="Building ${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="undeploy"/>
+  </target>
 
   <!-- This target installs the IF example services. -->
   <target name="deploy:examples" >
     <ant dir="IF/generic" inheritAll="false"/>
     <ant dir="IF/simple" inheritAll="false"/>
   </target>
+    
+  <!-- =================================================================== -->
+    
+  <path id="all.sub.project.builds">
+    <dirset dir="${basedir}" includes="*/*/build"/>
+  </path>
   
-  <!-- TODO Add a 'clean:all' target that invokes 'clean' in all sub-builds. -->
+  <target name="clean:all">
+    <foreach target="clean:sub" param="sub.build.dir" inheritall="false">
+      <path refid="all.sub.project.builds"/>
+    </foreach>
+  </target>
+  
+  <target name="clean:sub">
+    <echo message="Got: ${sub.build.dir}"/>
+    <delete dir="${sub.build.dir}"/>
+  </target>
   
 </project>

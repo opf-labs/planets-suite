@@ -10,6 +10,8 @@ import javax.rmi.PortableRemoteObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
@@ -24,11 +26,12 @@ public class FormatRegistryFactory {
     public static FormatRegistry getFormatRegistry() {
         try{
             Context jndiContext = new javax.naming.InitialContext();
+            Object ref = jndiContext.lookup("planets-project.eu/FormatRegistry/remote");
             FormatRegistry um = (FormatRegistry) PortableRemoteObject.narrow(
-                    jndiContext.lookup("planets-project.eu/FormatRegistry/remote"), FormatRegistry.class);
+                    ref, FormatRegistry.class);
             return um;
-        }catch (NamingException e) {
-            log.error("Failure during lookup of the FormatRegistry FormatRegistry PortableRemoteObject: "+e.toString());
+        } catch (NamingException e) {
+            log.error("Failure during lookup of the FormatRegistry PortableRemoteObject: "+e.toString());
             return null;
         }
     }

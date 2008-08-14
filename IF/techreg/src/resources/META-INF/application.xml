@@ -8,6 +8,6 @@
         </web>
     </module>
     <module>
-        <java>pserv-if-techreg-ejb.jar</java> 
+        <java>pserv-if-techreg.jar</java> 
     </module>
 </application>

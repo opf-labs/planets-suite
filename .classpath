@@ -194,10 +194,7 @@
 	<classpathentry kind="lib" path="PC/metadata/lib/tiff_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/wave_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/wordperfect_adapter_1_0.jar"/>
-	<classpathentry kind="lib" path="PC/metadata/lib/xalan.jar"/>
-	<classpathentry kind="lib" path="PC/metadata/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/xml_adapter_1_0.jar"/>
-	<classpathentry kind="lib" path="PC/metadata/lib/xml-apis.jar"/>
 	<classpathentry kind="src" path="/if_sp"/>
 	<classpathentry kind="lib" path="PA/jmagickconverter/lib/jmagick.jar"/>
 	<classpathentry kind="lib" path="PA/openXML/lib/jsr173_1.0_api.jar"/>

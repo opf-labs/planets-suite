@@ -5,13 +5,15 @@
 <!-- ======================================================================= -->
 
 <project name="Planets Service Build Commons" default="deploy:ear" basedir=".">
-
+  
   <property file="${pserv.root.dir}/build.properties"/>
 
   <property environment="env"/>
 
   <property name="build.dir" value="${appDir}/build"/>
   <property name="build.classes.dir" value="${build.dir}/classes"/>
+  <property name="war.build.dir" value="${appDir}/build/war"/>
+  <property name="ear.build.dir" value="${appDir}/build/ear"/>
 
   <property name="war.base.name" value="pserv-${appName}.war"/>
   <property name="ear.base.name" value="pserv-${appName}.ear"/>
@@ -71,12 +73,19 @@
   </path>
 
   <property name="jaxws.classpath" refid="jaxwsclasspath"/>
+  
+  <!-- Do nothing -->
+  <target name="build:off">
+    <echo message="Build is switched off by default."/>
+  </target>
 
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
   <target name="prepare">
     <mkdir dir="${build.dir}"/>
+    <mkdir dir="${war.build.dir}"/>
+    <mkdir dir="${ear.build.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
   </target>
 
@@ -133,15 +142,27 @@
     
   </target>
 
+  <!-- =================================================================== -->
+  
   <target name="compile:ejb" depends="undeploy,compile">
     <jar jarfile="${build.dir}/${ejb.jar.name}">
       <fileset dir="${build.classes.dir}"/>
     </jar>
   </target>
 
+  <!-- =================================================================== -->
+
   <target name="deploy:ejb" depends="compile:ejb">
     <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/default/deploy"/>
   </target>
+
+  <!-- =================================================================== -->
+
+  <target name="deploy:jar" depends="compile:ejb">
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/lib"/>
+  </target>
+
+  <!-- =================================================================== -->
 
   <target name="run.junittests" description="executes the included JUnit tests">
     <junit fork="yes" haltonfailure="yes">
@@ -187,50 +208,64 @@
     </exec>
   </target>
 
-  <!-- ks -->
+  <!-- =================================================================== -->
 
-  <target name="makeDirectories">
-    <mkdir dir="${build.dir}" />
-    <mkdir dir="${build.dir}/${appName}" />
-    <mkdir dir="${build.dir}/${appName}/WEB-INF/lib" />
-    <mkdir dir="${build.dir}/${appName}/WEB-INF/classes" />
-  </target>
-
-  <target name="populateDirectories" depends="makeDirectories">
-    <!--<copy todir="${build.dir}/${appName}/WEB-INF/lib">
-        <fileset dir="lib">
-            <include name="*.jar"/>
-        </fileset>      
-    </copy> -->
-  </target>
-  
-  <target name="dist:war" depends="populateDirectories">
-    <javac source="1.5" debug="true" srcdir="${src.dir}" destdir="${build.dir}/${appName}/WEB-INF/classes">
+  <target name="dist:war">
+    <mkdir dir="${war.build.dir}/${appName}" />
+    <mkdir dir="${war.build.dir}/${appName}/WEB-INF/lib" />
+    <mkdir dir="${war.build.dir}/${appName}/WEB-INF/classes" />
+    
+    <javac source="1.5" debug="true" srcdir="${src.dir}" destdir="${war.build.dir}/${appName}/WEB-INF/classes">
       <classpath refid="classpath"/>
     </javac>
-  </target>
-
-  <target name="dist" depends="populateDirectories">
-
-    <copy todir="${build.dir}/${appName}">
+    
+    <copy todir="${ear.build.dir}/${appName}">
         <fileset dir="${src.web}" casesensitive="yes">
         <include name="**/*.*" />
       </fileset>
     </copy>
 
-    <copy todir="${build.dir}/${appName}/WEB-INF/classes">
+    <copy todir="${ear.build.dir}/${appName}/WEB-INF/classes">
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
       </fileset>
     </copy>
-
+    
+    <copy file="${build.dir}/${ejb.jar.name}" tofile="${war.build.dir}/${appName}/WEB-INF/lib"/>
+    
     <jar jarfile="${build.dir}/${war.base.name}" 
-     basedir="${build.dir}/${appName}"/>
+     basedir="${war.build.dir}/${appName}"/>
+  </target>
+
+  <!-- =================================================================== -->
+
+  <target name="dist:ear">
+    <mkdir dir="${ear.build.dir}/${appName}" />
+    <mkdir dir="${ear.build.dir}/${appName}/WEB-INF/lib" />
+    <mkdir dir="${ear.build.dir}/${appName}/WEB-INF/classes" />
+
+    <copy todir="${ear.build.dir}/${appName}">
+        <fileset dir="${src.web}" casesensitive="yes">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+
+    <copy todir="${ear.build.dir}/${appName}/WEB-INF/classes">
+      <fileset dir="${src.resources}">
+        <include name="**/*.properties" />
+        <include name="**/*.xml" />
+      </fileset>
+    </copy>
+    
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${ear.build.dir}" />
+
+    <jar jarfile="${ear.build.dir}/${war.base.name}" 
+     basedir="${ear.build.dir}/${appName}"/>
 
     <ear destfile="${build.dir}/${ear.base.name}" 
           appxml="${src.resources}/META-INF/application.xml">
-      <fileset dir="${build.dir}" includes="*.jar,*.war"/>
+      <fileset dir="${ear.build.dir}" includes="*.jar,*.war"/>
       <fileset dir="${src.resources}">
         <!-- include name="META-INF/application.xml"/ -->
         <include name="META-INF/jboss-app.xml"/>
@@ -247,15 +282,21 @@
 
   </target>
 
-  <target name="deploy:war" depends="undeploy, deploy:ejb, dist:war, dist">
+  <!-- =================================================================== -->
+
+  <target name="build:war" depends="compile:ejb, dist:war" description="builds the web application"/>
+
+  <target name="build:ear" depends="compile:ejb, dist:ear" description="builds the application"/>
+
+  <!-- =================================================================== -->
+
+  <target name="deploy:war" depends="undeploy, build:war">
 	  <copy file="${war.base.name}" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
-  <target name="deploy:ear" depends="compile:ejb,dist" 
+  <target name="deploy:ear" depends="undeploy, build:ear" 
         description="DEFAULT builds and deploy the ear">
 	<copy file="${build.dir}/${ear.base.name}" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
-
-  <target name="build:ear" depends="compile:ejb,dist" description="builds the application"/>
 
 </project>

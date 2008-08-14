@@ -15,6 +15,7 @@ import org.richfaces.component.html.HtmlDataTable;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.techreg.impl.formats.FormatRegistryImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -23,13 +24,20 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 public class RegistryBackingBean {
     private static Log log = LogFactory.getLog(RegistryBackingBean.class);
 
-    FormatRegistry ftr = FormatRegistryFactory.getFormatRegistry();
+    FormatRegistry ftr = null;
     
     private String searchStr = "pdf";
     
     private HtmlDataTable formatsDataTable;
     
     private Format currentFormat = null;
+    
+    /**
+     * Constructor, initialised the format registry:
+     */
+    public RegistryBackingBean() {
+        ftr = FormatRegistryFactory.getFormatRegistry();
+    }
     
     /**
      * 
