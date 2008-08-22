@@ -24,7 +24,9 @@ import org.richfaces.component.html.HtmlInputNumberSlider;
 import org.richfaces.event.DropEvent;
 
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 
@@ -55,9 +57,18 @@ public class AutoBMGoalEvalUserConfigBean{
 		this.sBMGoalID = bmGoalID;
 		registry = ServiceTemplateRegistryImpl.getInstance();
 		//load the EvaluationTBSerTemplate that contains the information about the available metrics for this goal
+		//note: currently every BMGoal is only max. backed by one auto eval service but 1..n metrics contained in it
 		evalSerTemplate = (EvaluationTestbedServiceTemplateImpl)registry.getServiceByID(autoEvalSerUUID);
 		//populates the mapMetricNameType table
 		this.getAllSupportedEvalMetrics();
+	}
+
+	/**
+	 * Returns the ID of the goal which is currently being backed by the gui
+	 * @return
+	 */
+	public String getBMGoalID(){
+		return this.sBMGoalID;
 	}
 	
     public List<MetricBean> getAllSupportedEvalMetrics(){
@@ -134,8 +145,7 @@ public class AutoBMGoalEvalUserConfigBean{
     	if(!this.mbToConfigure.isInputOK()){
     		return;
     	}
-    		
-    	
+    		   	
     	//saves the dropped and afterwards configured metricBean for the proper TB evaluation
     	//the table name the metric belongs to is provided as parameter
     	boolean bFound = false;
@@ -360,6 +370,25 @@ public class AutoBMGoalEvalUserConfigBean{
     	return this.lVeryBadMT;
     }
     
+    /**
+     * A method for exporting the beans data into the model's backend classes
+     * @param type
+     * @return
+     */
+    public List<MetricBean> getMetricConfigFor(TBEvaluationTypes evalType){
+    	List<MetricBean> metricConfig = null;
+    	if(evalType.name().equals(TBEvaluationTypes.VERYGOOD.name()))
+			metricConfig = this.getMetricTableVeryGood();
+		if(evalType.name().equals(TBEvaluationTypes.GOOD.name()))
+			metricConfig = this.getMetricTableGood();
+		if(evalType.name().equals(TBEvaluationTypes.BAD.name()))
+			metricConfig = this.getMetricTableBad();
+		if(evalType.name().equals(TBEvaluationTypes.VERYBAD.name()))
+			metricConfig = this.getMetricTableVeryBad();
+		
+		return metricConfig;
+    }
+    
     public void command_removeSelMetric(){
     	FacesContext context = FacesContext.getCurrentInstance();
 		Object o1 = context.getExternalContext().getRequestParameterMap().get("removeMetricInternalID");
@@ -560,7 +589,7 @@ public class MetricBean{
 
 	/**
 	 * @param boundary
-	 * @throws Creates an error message if the set value does not confirm to it's required type
+	 * value must be of it's expected type
 	 * e.g. "xyz" for java.lang.Integer
 	 */
 	public void setEvalBOundary(String boundary){

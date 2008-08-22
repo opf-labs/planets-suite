@@ -2,9 +2,11 @@ package eu.planets_project.tb.impl.model.benchmark;
 
 import java.util.Vector;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,8 +14,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
+import eu.planets_project.tb.impl.model.eval.AutoEvaluationSettingsImpl;
 
 
 /**
@@ -37,7 +41,9 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	//Note: a predefined set of classifiers how well this target was matched
 	private String sEvaluationValue;
 	private int iWeight;
-	private String sXMLID, sCategory;
+	private String sXMLID, sCategory; 
+	//settings for auto evaluation of THIS BMGOal through the use of metrics
+	private AutoEvaluationSettingsImpl autoEvalSettings;
 	
 	public BenchmarkGoalImpl(){
 		sName = new String();
@@ -52,6 +58,7 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 		iWeight = -1;
 		sXMLID = new String();
 		sCategory = new String();
+		autoEvalSettings = null;
 	}
 	
 	//private void setEntityID(long lEntityID){
@@ -338,6 +345,29 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 		else{
 			throw new InvalidInputException("EvaluationValue not in the range of accepted values");
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getAutoEvalSettings()
+	 */
+	public AutoEvaluationSettings getAutoEvalSettings() {
+		return this.autoEvalSettings;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#isAutoEvaluatable()
+	 */
+	public boolean isAutoEvaluatable() {
+		if(this.getAutoEvalSettings()!=null)
+			return true;
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setAutoEvalSettings(eu.planets_project.tb.api.model.eval.AutoEvaluationSettings)
+	 */
+	public void setAutoEvalSettings(AutoEvaluationSettings settings) {
+		this.autoEvalSettings = (AutoEvaluationSettingsImpl) settings;
 	}
 
 }

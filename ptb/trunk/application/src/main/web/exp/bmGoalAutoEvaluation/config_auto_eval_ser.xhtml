@@ -25,15 +25,14 @@
             <div id="maincol">
             <div class="innertubemain">
                 <fieldset>
-                    <legend>specify evaluation information</legend> 
-                    Please specify how to evaluate the the chosen BenchmarkGoal
+                    <legend>Information</legend> 
+                    Please specify how to automatically evaluate the the chosen BenchmarkGoal 
                    
                     Display BenchmarkGoalName
                 </fieldset>
     <!-- START DRAG and DROP elements -->       
     <rich:dragIndicator id="indicator" />
      <a4j:form id="formdnd">
-       
         <h:panelGrid columnClasses="panelc" columns="2">
 
             <rich:panel style="width:133px;height:300px;">
@@ -215,17 +214,17 @@
         </h:panelGrid>
     </a4j:form>
      <!-- END DRAG AND DROP -->
-                   
-                   
-                    <h:form>
-                    <p>
-                    <!-- return to the new experiment bmgoal selection-->
-                    <h:commandButton action="goToStage3"
-                      value="#{res['browse_data.returnToExperiment']}"/>
-                    </p>
-                    </h:form>
-            </div>
-            </div>
+            
+    <h:form>
+      <p>
+      <!-- return to the new experiment bmgoal selection with or without saving-->
+      <h:commandButton action="#{NewExp_Controller.saveAutoEvalConfigData}" value="#{res['button.save']}"/>
+      <h:commandButton action="goToStage3" value="#{res['button.cancel']}"/>
+      </p>
+    </h:form>
+        
+        </div>
+        </div>
         </div>
        
         <div id="leftcol">

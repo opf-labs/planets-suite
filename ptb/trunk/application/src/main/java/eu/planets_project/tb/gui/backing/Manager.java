@@ -4,11 +4,10 @@ import javax.faces.context.FacesContext;
 import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
 import eu.planets_project.tb.gui.backing.admin.ManagerTBServices;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
+import eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 
 import java.net.URI;
 
@@ -101,6 +100,16 @@ public class Manager {
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		ctx.getExternalContext().getSessionMap().put("TBServiceManager", manager);
 	    return "import_TBservices";
+    }
+    
+    /**
+     * Used to reinit the session-scoped managed object with a specific AutoBMGoalEvalUserConfigBean
+     * @param evalConfBean
+     */
+    public void reinitAutoBMGoalEvalUserConfigBean(AutoBMGoalEvalUserConfigBean evalConfBean){
+		//BenchmarkBean contains the BMGoal+EvaluationSerTemplate to configure
+		FacesContext ctx = FacesContext.getCurrentInstance();
+		ctx.getExternalContext().getSessionMap().put("AutoEvalSerUserConfigBean", evalConfBean);
     }
 
 

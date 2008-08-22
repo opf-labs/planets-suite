@@ -63,19 +63,58 @@
 						            	<i>#{bm.description}</i>
 						        	</h:column>	
 						        	<h:column>
-						        		<f:facet name="header">#{res['exp_stage3.useAutoEvalSerivce']}</f:facet>
+						        		<f:facet name="header">#{res['exp_stage3.autoEvalSerivceAvailable']}</f:facet>
 						        		<h:panelGroup rendered="#{bm.autoEvalServiceAvailable}">
 						        		<!-- h:selectBooleanCheckbox id="useEvalService" value="true" label="use auto-evaluation" readonly="#{ExperimentBean.approved}"  disabled="#{ExperimentBean.approved}">	
 									    	<f:param name="bmGoalID" value="#{bm.ID}"/>
 									    	<a4j:support event="onchange"/>	
 									    </h:selectBooleanCheckbox-->	 
 										<a4j:commandLink action="#{NewExp_Controller.command_configureAutoEvalService}">
-                							<h:outputText value="configure" /> 
+                							<h:outputText value="configure here" /> 
                 							<f:param value="#{bm.ID}" name="configBMGoalID"/>
                 							<f:param value="#{bm.autoEvalServiceUUID}" name="autoEvalSerUUID"/>
             							</a4j:commandLink>
             							</h:panelGroup>
-						        	</h:column>     	
+						        	</h:column>  
+						        	<h:column>
+						        		<f:facet name="header">#{res['exp_stage3.autoEvalSerivceConfigured']}</f:facet>
+						        		<a4j:outputPanel rendered="#{bm.autoEvalServiceConfigured}"  styleClass="tooltip-text">
+						        			<h:outputText value="settings added"/> 
+						        			<rich:toolTip direction="top-right" styleClass="tooltip">
+                            					<span style="white-space:nowrap">
+                                                The following auto evaluation rules will get applied:<br/>
+                                                evaluates as <strong>very good:</strong>
+                                                <t:dataList
+  													var="item"
+  													value="#{bm.autoEvalDataForToolTip['VERYGOOD']}"
+  													layout="unorderedList"> 
+  													<h:outputText value="#{item.value}"/>	
+  												</t:dataList>
+  												evaluates as <strong>good:</strong>		
+												<t:dataList
+  													var="item"
+  													value="#{bm.autoEvalDataForToolTip['GOOD']}"
+  													layout="unorderedList"> 
+  													<h:outputText value="#{item.value}"/>					
+												</t:dataList>
+												evaluates as <strong>bad:</strong>		
+												<t:dataList
+  													var="item"
+  													value="#{bm.autoEvalDataForToolTip['BAD']}"
+  													layout="unorderedList"> 
+  													<h:outputText value="#{item.value}"/>					
+												</t:dataList>
+												evaluates as <strong>very bad:</strong>		
+												<t:dataList
+  													var="item"
+  													value="#{bm.autoEvalDataForToolTip['VERYBAD']}"
+  													layout="unorderedList"> 
+  													<h:outputText value="#{item.value}"/>					
+												</t:dataList>
+                                                </span>
+                            				</rich:toolTip>
+						        		</a4j:outputPanel>       
+						        	</h:column>
 							</h:dataTable>
 							
 						</fieldset>

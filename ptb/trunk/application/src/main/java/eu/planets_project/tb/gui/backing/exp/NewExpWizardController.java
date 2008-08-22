@@ -13,6 +13,10 @@ import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
+import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Metric;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
@@ -24,10 +28,12 @@ import eu.planets_project.tb.gui.backing.BenchmarkBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.ListExp;
+import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.UploadManager;
 import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
 import eu.planets_project.tb.gui.backing.admin.ManagerTBServices;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
+import eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean.MetricBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
@@ -41,6 +47,7 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.eval.AutoEvaluationSettingsImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
@@ -85,6 +92,7 @@ import javax.faces.event.ValueChangeEvent;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.resource.security.ConfiguredIdentityLoginModule;
 
 
 public class NewExpWizardController {
@@ -297,6 +305,17 @@ public class NewExpWizardController {
         return "success";
     }
     
+	/**
+	 * Adds the autoEval data to the benchmark goal and finally returns to step3 of the new experiment.
+	 * @return
+	 */
+    public void saveEvalConfigData(){
+    	updateBenchmarksAction();
+    	//FIXME Andrew Set BMGoal selected when calling configure
+    	//FIXME Andrew UpdateEvaluationAction: autoEvalConfig data needs to be stored within these goals
+		//FIXME Andrew Do I need to clone the EvaluationTestbedServiceTemplate (yes?) - because of DB delete dependencies?
+    }
+    
     public String updateBenchmarksAction(){
 	  try {
     	// create bm-goals    	
@@ -306,13 +325,22 @@ public class NewExpWizardController {
     	// create Goal objects from Beans
     	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
     	List<BenchmarkBean> bmbeans = (List<BenchmarkBean>)JSFUtil.getManagedObject("BenchmarkBeans");
+    	
     	Iterator iter = bmbeans.iterator();
     	//Iterator iter = expBean.getBenchmarks().values().iterator();    	
     	while (iter.hasNext()) {
     		BenchmarkBean bmb = (BenchmarkBean)iter.next();
     		if (bmb.getSelected()) {
-	    		// method to get a new instance of BenchmarkGoal
-    			BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
+
+    			//We're having an existing bmGoal object to modify
+    			BenchmarkGoal bmg = exp.getExperimentSetup().getBenchmarkGoal(bmb.getID());
+    			if(bmg==null){
+    				//We're adding a new BMGoal from the list
+    				//method to get a new instance of BenchmarkGoal
+    				bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
+    			}
+
+    			//BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
 	    		if (bmb.getSourceValue()!=null && (!(bmb.getSourceValue().equals(""))))    			
 	    			bmg.setSourceValue(bmb.getSourceValue());
 	    		if (bmb.getTargetValue()!=null && (!(bmb.getTargetValue().equals(""))))	    		
@@ -321,9 +349,14 @@ public class NewExpWizardController {
 	    			bmg.setEvaluationValue(bmb.getEvaluationValue());
 	    		if (bmb.getWeight()!=null && (!(bmb.getWeight().equals("-1"))))
 	    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
+	    		
+	    		//check and add auto evaluation configuration data
+	    		this.addAutoEvalSettingsToBMGoal(bmb, bmg);
+	    		
 	    		bmgoals.add(bmg);
 	    		// add to experimentbean benchmarks
 	    		expBean.addBenchmarkBean(bmb);
+	    		
     		} else {
     			expBean.deleteBenchmarkBean(bmb);
     		}
@@ -359,6 +392,42 @@ public class NewExpWizardController {
 		return "failure";
 	  }
    	}
+    
+
+    /**
+     * Fetches the provided AutoBMGoalEvalUserConfigBean, extracts its information
+     * and stores it within the AutoEvaluationSettings backend object for a given BenchmarkGoal
+     * The input BenchmarkGoal object is updated and returned.
+     * @param bmb
+     * @param bmg
+     * @return
+     */
+    private BenchmarkGoal addAutoEvalSettingsToBMGoal(BenchmarkBean bmb, BenchmarkGoal bmg){
+    	AutoBMGoalEvalUserConfigBean autoEvalConfigBean = (AutoBMGoalEvalUserConfigBean)JSFUtil.getManagedObject("AutoEvalSerUserConfigBean");
+    	AutoEvaluationSettingsImpl autoEvalConfig = new AutoEvaluationSettingsImpl(bmb.getAutoEvalService());
+    	
+    	//check 1) if the bean was already configured and B) for which bmgoal the configuration was created:
+    	if(autoEvalConfigBean.getBMGoalID()==null)
+    		return bmg;
+    	if(!autoEvalConfigBean.getBMGoalID().equals(bmg.getID())){
+    		//config not for this bean - return non-modified object
+    		return bmg;
+    	}
+    	
+    	for(TBEvaluationTypes evalType: TBEvaluationTypes.values()){
+    		//add the metric evaluation configuration for all types
+    		for(MetricBean mb:autoEvalConfigBean.getMetricConfigFor(evalType)){
+    			//add all defined configurations for this type from the bean
+    			Metric m = autoEvalConfig.new MetricImpl(mb.getName(), mb.getType(), mb.getDescription());
+    			Config c = autoEvalConfig.new ConfigImpl(mb.getMathExpr(), mb.getEvalBoundary(), m);
+    			
+    			autoEvalConfig.addConfiguration(evalType, c);
+    		}
+    		
+    	}
+    	bmg.setAutoEvalSettings(autoEvalConfig);
+    	return bmg;
+    }
     
 
     public String updateEvaluationAction() {
@@ -891,6 +960,12 @@ public class NewExpWizardController {
     
     
     
+    /**
+     * Retrieves the available BenchmarkGoals and adds the data into a BenchmarkBean
+     * BMBean contains information e.g. on if it's selected, if an auto evaluation service is available etc.
+     * for backing the GUI elements. Finally a list of List<BenchmarkBean> is put into the session map as "BenchmarkBeans".
+     * @return
+     */
     public String getRetrieveBenchmarkBeans() {
        	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	
@@ -911,23 +986,22 @@ public class NewExpWizardController {
                     currentType = dtypeImpl.getDtypeName(currentType);
                     //only add the goals that match the already selected categories
                     if (currentType.equalsIgnoreCase(bmg.getCategory())) {
-                        if (availBenchmarks.containsKey(bmg.getID())) {
-                                BenchmarkBean bmb = availBenchmarks.get(bmg.getID());
+                        BenchmarkBean bmb = null;
+                    	if (availBenchmarks.containsKey(bmg.getID())) {
+                                bmb = availBenchmarks.get(bmg.getID());
                                 bmb.setSelected(true);
-                                //add the autoEvaluationService Information for this goal
-                                if(mapAutoEvalSer.containsKey(bmg.getID())){
-                                	bmb.setAutoEvalServiceAvailable(true);
-                                	bmb.setAutoEvalService(mapAutoEvalSer.get(bmg.getID()));
-                                }
+                                
                         } else {
-                                BenchmarkBean bmb = new BenchmarkBean(bmg);  			
+                                bmb = new BenchmarkBean(bmg);  			
                                 bmb.setSelected(false);
                                 availBenchmarks.put(bmg.getID(), bmb);
-                                //add the autoEvaluationService Information for this goal
-                                if(mapAutoEvalSer.containsKey(bmg.getID())){
-                                	bmb.setAutoEvalServiceAvailable(true);
-                                	bmb.setAutoEvalService(mapAutoEvalSer.get(bmg.getID()));
-                                }
+                        }
+                        
+                        //add the autoEvaluationService Information for this goal
+                        if(mapAutoEvalSer.containsKey(bmg.getID())){
+                        	bmb.setAutoEvalServiceAvailable(true);
+                        	//note: currently every BMGoal only contains max. one autoEval services behind
+                        	bmb.setAutoEvalService(mapAutoEvalSer.get(bmg.getID()));
                         }
                     }
                 }
@@ -938,6 +1012,7 @@ public class NewExpWizardController {
         return "";
     }
        
+    
     private void autoApproveExperiment(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -1078,9 +1153,12 @@ public class NewExpWizardController {
 		
 		if((success.equals("success"))&&(!BMGoalID.equals(""))&&(!autoEvalSerUUID.equals(""))){
 			//create the config gui backing bean
-			AutoBMGoalEvalUserConfigBean evalConfBean = (AutoBMGoalEvalUserConfigBean)JSFUtil.getManagedObject("AutoEvalSerUserConfigBean");
+			AutoBMGoalEvalUserConfigBean evalConfBean = new AutoBMGoalEvalUserConfigBean();
 			//BenchmarkBean contains the BMGoal+EvaluationSerTemplate to configure
 			evalConfBean.initBean(BMGoalID,autoEvalSerUUID);
+			Manager manager_backing = (Manager)JSFUtil.getManagedObject("Manager_Backing");
+			//takes the bean and puts it into the session map
+			manager_backing.reinitAutoBMGoalEvalUserConfigBean(evalConfBean);
 			//load screen for configuring the autoEvalSerivce
 			return "configAutoEvalSer";
 		}

@@ -1,5 +1,6 @@
 package eu.planets_project.tb.api.model.benchmark;
 
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 
 /**
@@ -79,5 +80,21 @@ public interface BenchmarkGoal {
 	 * @return
 	 */
 	public boolean checkValueValid(String sValue);
+	
+	/**
+	 * Indicates if this BMGoal is backed by a auto-evaluation service and a metric
+	 * TB-evaluation mapping. If it's true the BMGoal object can be casted to an AutoEvaluationBenchmarkGoal
+	 * @return
+	 */
+	public boolean isAutoEvaluatable();
+	
+	/**
+	 * Containing (for this benchmark goal) a list of metrics, boundary values, etc.
+	 * on how to evaluate the different TB evaluation criteria (e.g. 'very good') as well
+	 * as the EvaluationTestbedServiceTemplate with all the Service's information actually invoking it.
+	 * @param settings
+	 */
+	public void setAutoEvalSettings(AutoEvaluationSettings settings);
+	public AutoEvaluationSettings getAutoEvalSettings();
 
 }

@@ -322,7 +322,7 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	
 
 	/**
-	 * Specifies a mapping between a TB Benchmark Goal object (identified through it's name + id)
+	 * Specifies a mapping between a TB Benchmark Goal object (identified through it's name + id) and a PropertyName(=Metric)
 	 * Please note: the TB BMGoal must be available on this TB instance to create this mapping
 	 * @param BMGoalName
 	 * @param BMGoalID
@@ -359,6 +359,7 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	
 	
 	/**
+	 * Returns a list of all Metrics available for a certain BMGoal
 	 * @param BMGoalID
 	 * @return
 	 */

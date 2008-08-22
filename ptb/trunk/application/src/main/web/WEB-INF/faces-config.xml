@@ -483,12 +483,16 @@
    </navigation-case>
   </navigation-rule>
   
-  <!-- page: user settings for auto-evaluation service settings -->
+  <!-- page: experimenter settings for auto-evaluation service settings -->
   <navigation-rule>
   <from-view-id>/exp/bmGoalAutoEvaluation/bmGoalAutoEvalMapping.xhtml</from-view-id>
   <navigation-case>
     <from-outcome>reload-page</from-outcome>
     <to-view-id>/exp/bmGoalAutoEvaluation/bmGoalAutoEvalMapping.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-action>#{NewExp_Controller.saveEvalConfigData}</from-action>
+   <to-view-id>/exp/exp_stage3.xhtml</to-view-id>
   </navigation-case>
   </navigation-rule>
   

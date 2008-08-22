@@ -1,11 +1,19 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.faces.model.SelectItem;
 
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 
 
@@ -14,6 +22,8 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
     static final long serialVersionUID = 2343216343436521112l;  
     static private PlanetsLogger log = PlanetsLogger.getLogger(FileTreeNode.class);
   	    
+    //bm contains all data for populating the bmbean
+    BenchmarkGoal bm;
     String definition;
     String name;
     String description;
@@ -27,15 +37,18 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
     String typename;
     String scale;
     String category;
-    boolean autoEvalServiceRegistered = false;
+    //indicates if Metrics are available for configuration
+    boolean autoEvalServiceAvailable = false;
     TestbedServiceTemplate autoEvalServiceTemplate;
-		
+    //indicates if Metrics have been configured and added
+	boolean autoEvalServiceConfigured = false;
     
     public BenchmarkBean() {
     	
     }
     
 	public BenchmarkBean(BenchmarkGoal bm) {
+		this.bm = bm;
 		this.id = bm.getID();
 		this.name = bm.getName();
 		this.definition = bm.getDefinition();
@@ -48,6 +61,7 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
         this.typename = this.assignTypename();
         this.scale = "Very Good";
         this.category=bm.getCategory();
+        this.autoEvalServiceConfigured = bm.isAutoEvaluatable();
 	} 
 		
     public boolean getSelected() {
@@ -173,11 +187,11 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 	 * @return
 	 */
 	public boolean isAutoEvalServiceAvailable(){
-		return this.autoEvalServiceRegistered;
+		return this.autoEvalServiceAvailable;
 	}
 	
 	public void setAutoEvalServiceAvailable(boolean b){
-		this.autoEvalServiceRegistered = b;
+		this.autoEvalServiceAvailable = b;
 	}
 	
 	public void setAutoEvalService(TestbedServiceTemplate autoEvalTemplate){
@@ -194,6 +208,31 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 	
 	public void setAutoEvalServiceUUID(String s){
 		//
+	}
+	
+	public boolean isAutoEvalServiceConfigured(){
+		return this.autoEvalServiceConfigured;
+	}
+	
+	/**
+	 * Returns a map of all added metric evaluation configuration for displaying
+	 * the tooltip
+	 * @return
+	 */
+	public Map<String,List<SelectItem>> getAutoEvalDataForToolTip(){
+		Map<String,List<SelectItem>> ret = new HashMap<String,List<SelectItem>>();
+		for(TBEvaluationTypes type:TBEvaluationTypes.values()){
+			List<SelectItem> l = new ArrayList<SelectItem>();
+			int count =0;
+			for(Config c : this.bm.getAutoEvalSettings().getConfig(type)){
+				l.add(new SelectItem(c.getMetric().getName()+c.getMathExpr()+c.getEvalBoundary()));
+			}
+			if(count==0)
+				l.add(new SelectItem("not available, evaluation by hand"));
+			
+			ret.put(type.name(), l);
+		}
+		return ret;
 	}
 
 }

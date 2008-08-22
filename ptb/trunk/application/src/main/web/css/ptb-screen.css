@@ -715,3 +715,20 @@ width:100%;
   text-transform: uppercase;
   font-weight: bold;
 }
+
+.tooltip {
+  border-width:3px;
+  padding:10px;
+}
+.tooltip-text {
+  width:350px;
+  height:80px;
+  cursor:arrow;
+  border-width:2px;
+  text-align:left;
+  display: table-cell;
+  vertical-align: middle; 
+}
+.tooltipData {
+  font-weight: bold;
+}
