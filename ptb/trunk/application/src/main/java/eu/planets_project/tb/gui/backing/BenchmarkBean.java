@@ -226,6 +226,7 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 			int count =0;
 			for(Config c : this.bm.getAutoEvalSettings().getConfig(type)){
 				l.add(new SelectItem(c.getMetric().getName()+c.getMathExpr()+c.getEvalBoundary()));
+				count++;
 			}
 			if(count==0)
 				l.add(new SelectItem("not available, evaluation by hand"));

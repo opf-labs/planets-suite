@@ -96,5 +96,6 @@ public interface BenchmarkGoal {
 	 */
 	public void setAutoEvalSettings(AutoEvaluationSettings settings);
 	public AutoEvaluationSettings getAutoEvalSettings();
+	public void removeAutoEvalSettings();
 
 }

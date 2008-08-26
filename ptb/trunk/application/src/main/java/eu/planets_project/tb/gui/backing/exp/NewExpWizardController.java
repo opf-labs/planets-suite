@@ -309,13 +309,38 @@ public class NewExpWizardController {
 	 * Adds the autoEval data to the benchmark goal and finally returns to step3 of the new experiment.
 	 * @return
 	 */
-    public void saveEvalConfigData(){
+    public String saveAutoEvalConfigData(){
+    	//set the bmb as selected, as otherwise its auto eval settings won't get stored
+    	AutoBMGoalEvalUserConfigBean autoEvalConfigBean = (AutoBMGoalEvalUserConfigBean)JSFUtil.getManagedObject("AutoEvalSerUserConfigBean");
+    	this.setBenchmarkBeanSelected(autoEvalConfigBean.getBMGoalID(),true);
+    	//update the BenchmarkBean and all model elements
     	updateBenchmarksAction();
+    	return "return to exp_stage3";
+    	
     	//FIXME Andrew Set BMGoal selected when calling configure
     	//FIXME Andrew UpdateEvaluationAction: autoEvalConfig data needs to be stored within these goals
 		//FIXME Andrew Do I need to clone the EvaluationTestbedServiceTemplate (yes?) - because of DB delete dependencies?
     }
     
+    /**
+     * Sets a given benchmark bean's selected state as true/false
+     * @param bmGoalID
+     * @param b
+     */
+    private void setBenchmarkBeanSelected(String bmGoalID, boolean b){
+    	List<BenchmarkBean> bmbeans = (List<BenchmarkBean>)JSFUtil.getManagedObject("BenchmarkBeans");
+    	for(BenchmarkBean bmb : bmbeans){
+    		if(bmb.getID().equals(bmGoalID)){
+    			bmb.setSelected(b);
+    		}
+    	}
+    }
+    
+    /**
+     * Takes the list of selected BenchmarkBeans, and creates BenchmarkGoal objects out if its provided
+     * data which is stored as part of an experiment. Already added BenchmarkGoals get updated.
+     * @return
+     */
     public String updateBenchmarksAction(){
 	  try {
     	// create bm-goals    	
@@ -330,6 +355,7 @@ public class NewExpWizardController {
     	//Iterator iter = expBean.getBenchmarks().values().iterator();    	
     	while (iter.hasNext()) {
     		BenchmarkBean bmb = (BenchmarkBean)iter.next();
+    	
     		if (bmb.getSelected()) {
 
     			//We're having an existing bmGoal object to modify

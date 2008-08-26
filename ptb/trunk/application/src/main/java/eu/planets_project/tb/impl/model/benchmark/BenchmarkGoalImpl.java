@@ -369,5 +369,12 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	public void setAutoEvalSettings(AutoEvaluationSettings settings) {
 		this.autoEvalSettings = (AutoEvaluationSettingsImpl) settings;
 	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#removeAutoEvalSettings()
+	 */
+	public void removeAutoEvalSettings(){
+		this.autoEvalSettings = null;
+	}
 
 }
