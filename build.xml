@@ -40,6 +40,7 @@
     <ant dir="PA/jmagickconverter" inheritAll="false"/>
     <ant dir="PA/msgtext" inheritAll="false"/>
     <ant dir="PA/openXML" inheritAll="false"/>
+    <ant dir="PA/pdf2pdfa_MayComputer" inheritAll="false"/>
     <ant dir="PA/ps2pdf" inheritAll="false"/>
     <ant dir="PA/sox" inheritAll="false"/>
     <ant dir="PA/xena" inheritAll="false"/>
