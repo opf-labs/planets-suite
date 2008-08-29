@@ -45,20 +45,29 @@ public final class ComparatorTests {
 
     /**
      * Tests PP comparator comparison using a Comparator instance retrieved via
-     * the web service running on a remote machine (e.g. the test server at UzK)
-     * or your local machine (see in-line comment)
+     * the web service running on your local machine
      */
     @Test
-    public void clientTests() {
+    public void localServerTests() {
+        testService("http://localhost:8080/pserv-pp-comparator/Comparator?wsdl");
+    }
+
+    /**
+     * Tests PP comparator comparison using a Comparator instance retrieved via
+     * the web service running on a the test server at UzK
+     */
+    @Test
+    public void testServerTests() {
+        testService("http://planetarium.hki.uni-koeln.de:8080/pserv-pp-comparator/Comparator?wsdl");
+    }
+
+    /**
+     * @param location The location of the service endpoint to use for testing
+     */
+    private void testService(String location) {
         URL url = null;
         try {
-            url = new URL(
-            /*
-             * Alternatives:
-             * "http://planetarium.hki.uni-koeln.de:8080/pserv-pp-comparator/Comparator?wsdl"
-             * "http://localhost:8080/pserv-pp-comparator/Comparator?wsdl"
-             */
-            "http://planetarium.hki.uni-koeln.de:8080/pserv-pp-comparator/Comparator?wsdl");
+            url = new URL(location);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

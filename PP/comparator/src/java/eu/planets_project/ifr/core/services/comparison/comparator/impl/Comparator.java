@@ -85,8 +85,9 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
         save(tempFile1.getAbsolutePath(), xcdl1);
         save(tempFile2.getAbsolutePath(), xcdl2);
         /* Compare the temp files: */
-        List<String> commands = Arrays.asList(COMPARATOR, tempFile1
-                .getAbsolutePath(), tempFile2.getAbsolutePath(), tempFolder);
+        List<String> commands = Arrays.asList(COMPARATOR_HOME + COMPARATOR,
+                tempFile1.getAbsolutePath(), tempFile2.getAbsolutePath(),
+                tempFolder);
         ProcessRunner pr = new ProcessRunner(commands);
         /* We change into the comparator home directory: */
         File home = new File(COMPARATOR_HOME);
@@ -96,6 +97,11 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
         }
         pr.setStartingDir(home);
         LOG.debug("Executing: " + commands);
+        /* Before calling the command, check if the files exist: */
+        if (!new File(tempFile1.getAbsolutePath()).exists()
+                || !new File(tempFile2.getAbsolutePath()).exists()) {
+            throw new IllegalStateException("Temp files not accessible;");
+        }
         pr.run();
         /* Print some debugging info on the call: */
         LOG.debug("Comparator call output: " + pr.getProcessOutputAsString());
@@ -104,7 +110,7 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
         String result = read(tempFolder + File.separator
                 + tempFile1.getName().split("\\.")[0] + "-"
                 + tempFile2.getName().split("\\.")[0] + RESULT_ENDING);
-        String logged = read(tempFolder + File.separator + LOG_TXT);
+        String logged = read(COMPARATOR_HOME + LOG_TXT);
         /* Print some debugging info on the results: */
         LOG.info("Comparator result: " + result);
         LOG.debug("Comparator log: " + logged);
