@@ -52,7 +52,7 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
     /***/
     private static final String RESULT_ENDING = ".cpr";
     /** The comparator executable, has to be on the path on the server. */
-    private static final String COMPARATOR = "comparator";
+    private static String comparator = "comparator";
     /***/
     private static final String BASE64 = "Base64";
 
@@ -84,8 +84,14 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
         /* Store the given content in the temp files: */
         save(tempFile1.getAbsolutePath(), xcdl1);
         save(tempFile2.getAbsolutePath(), xcdl2);
+        /* Sometimes, on Windows an explicit mention of the suffix is required: */
+        if (System.getProperty("os.name").toLowerCase().contains("windows")
+                /* If we change it once, we might change it twice... */&& !comparator
+                        .endsWith(".exe")) {
+            comparator += ".exe";
+        }
         /* Compare the temp files: */
-        List<String> commands = Arrays.asList(COMPARATOR_HOME + COMPARATOR,
+        List<String> commands = Arrays.asList(COMPARATOR_HOME + comparator,
                 tempFile1.getAbsolutePath(), tempFile2.getAbsolutePath(),
                 tempFolder);
         ProcessRunner pr = new ProcessRunner(commands);
@@ -96,7 +102,7 @@ public final class Comparator implements BasicCompareTwoXCDLStrings,
                     + COMPARATOR_HOME);
         }
         pr.setStartingDir(home);
-        LOG.debug("Executing: " + commands);
+        LOG.info("Executing: " + commands);
         /* Before calling the command, check if the files exist: */
         if (!new File(tempFile1.getAbsolutePath()).exists()
                 || !new File(tempFile2.getAbsolutePath()).exists()) {
