@@ -34,7 +34,7 @@ import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
 import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
-import eu.planets_project.ifr.core.wdt.impl.registry.ServiceRegistry;
+import eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry;
 import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
 
 import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
@@ -74,12 +74,12 @@ public class DroidBean extends AbstractWorkflowBean implements PlanetsService, W
 	//services
 	private List<Service> charServices = null;
 	
-	private ServiceRegistry registry = null;	
+	private WorkflowServiceRegistry registry = null;	
 	private String reportLoc= "";
 	
 	public DroidBean() {
 		super();
-		registry = new ServiceRegistry();
+		registry = new WorkflowServiceRegistry();
 		this.resetServices();
 	}
 

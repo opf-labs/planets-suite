@@ -43,7 +43,7 @@
  	<!-- managed bean for service registry - exposed only for test purpose -->  
   <managed-bean>
   	<managed-bean-name>serviceRegistry</managed-bean-name>
-  	<managed-bean-class>eu.planets_project.ifr.core.wdt.impl.registry.ServiceRegistry</managed-bean-class>
+  	<managed-bean-class>eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry</managed-bean-class>
   	<managed-bean-scope>request</managed-bean-scope>
  	</managed-bean>  
  	<!-- ############################ -->
