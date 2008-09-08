@@ -15,6 +15,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -22,11 +23,13 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
@@ -53,7 +56,7 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
  * The structure should of individual BMGoals used within this class must be the same
  */
 @Entity
-public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplateImpl implements Serializable{
+public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplateImpl implements Serializable,Cloneable{
 	
 	//contains a mapping of the TB BenchmarkGoalID to the ID(name) used within the service's BMGoal result
 	private HashMap<String, String> mappingGoalIDToPropertyID = new HashMap<String, String>(); 
@@ -64,10 +67,13 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	private String sTarXpath = "./values/tar";
 	private String sMetricName = "./metric/@name";
 	private String sMetricResult = "./metric@result";
-	
+	// This annotation specifies that the property or field is not persistent.
+	@Transient
+    @XmlTransient
+	private static Log log;
 	
 	public EvaluationTestbedServiceTemplateImpl(){
-		
+		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 	}
 	//the default (as used in XCDL) for compStatus success and failure
 	public static String sCompStatusSuccess = "complete";
@@ -368,6 +374,13 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 			return this.mappingGoalIDToPropertyID.get(BMGoalID);
 		}
 		return "";
+	}
+	
+	public EvaluationTestbedServiceTemplateImpl clone(){
+		EvaluationTestbedServiceTemplateImpl template = new EvaluationTestbedServiceTemplateImpl();
+		template = (EvaluationTestbedServiceTemplateImpl) super.clone();
+		
+		return template;
 	}
 
 }

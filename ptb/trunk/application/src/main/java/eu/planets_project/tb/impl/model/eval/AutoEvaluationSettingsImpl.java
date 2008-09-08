@@ -23,7 +23,6 @@ import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
  * @author lindleya
  *
  */
-//TODO Andrew: change the class variables to the Impl classes for DB preservation
 public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serializable{
 	
 	//the evaluationTBServiceTemplate containing all information on 
@@ -34,7 +33,7 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 	
 	
 	public AutoEvaluationSettingsImpl(TestbedServiceTemplate template){
-		this.evaluationService = (EvaluationTestbedServiceTemplateImpl) template;
+		this.evaluationService = ((EvaluationTestbedServiceTemplateImpl) template).clone();
 		
 		//init the map TBTypes_Config_mapping
 		for(TBEvaluationTypes type: TBEvaluationTypes.values()){

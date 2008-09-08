@@ -82,8 +82,8 @@ public interface BenchmarkGoal {
 	public boolean checkValueValid(String sValue);
 	
 	/**
-	 * Indicates if this BMGoal is backed by a auto-evaluation service and a metric
-	 * TB-evaluation mapping. If it's true the BMGoal object can be casted to an AutoEvaluationBenchmarkGoal
+	 * Indicates if this BMGoal is backed by a valid "metric - TB evaluation mapping". i.e. an auto-evaluation servicetemplate
+	 * and a configuration on how to extract the data for the given benchmark goal 
 	 * @return
 	 */
 	public boolean isAutoEvaluatable();

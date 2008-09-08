@@ -1,10 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:t="http://myfaces.apache.org/tomahawk"
-	xmlns:c="http://java.sun.com/jstl/core">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
 <body>
 <f:view>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
@@ -24,37 +26,102 @@
 		<div class="innertubemain">
 
 		<!-- A: If the execution was successfully: display the results -->
-		<h:form rendered="#{NewExp_Controller.executionSuccess}">
+		<a4j:form id="form_results" rendered="#{NewExp_Controller.executionSuccess}">
 			<p>View the experiment's input and output data, evaluate the
 			outcomes of your experiment against the benchmark goals you specified
 			during Stage 3 of the experiment and supply a report about your
 			experiment. You may save and re-edit your evaluation as often as
 			required.</p>
-
-			<h2 class="main">#{res['exp_stage6.headingData']}</h2>
-            
-            <!-- display the experiment's output -->
-            <h:dataTable id="dataTable" var="data" value="#{ExperimentBean.IOTableDataForGUI}" cellpadding="2" cellspacing="0"
-				         border="1" rowIndexVar="row">
-				<h:column>
-			    <f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
-			    	<h:outputLink value="Service Input: "/>
-			    	<!-- check if input displayed as URI or as String -->
-					<h:outputLink value="#{data['input']}" rendered="#{not empty data['inputTypeURI']}" target="_new">
-							#{data['inputName']}
-					</h:outputLink>
-					<h:outputText value="#{data['input']}" rendered="#{data['inputTypeURI']==null}"/>
-				</h:column>			        	
-				<h:column>
-			    	<f:facet name="header">#{res['exp_stage6.outputFiles']}</f:facet>
-					<h:outputLink value="Service Output: "/>
-					<!-- check if input displayed as URI or as String -->
-					<h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}" target="_new">
-							<h:outputText value="#{data['output']}" style="color:green"/>
-					</h:outputLink>
-					<h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}" style="color:green"/>
-				</h:column>			        	
-			</h:dataTable>
+			
+			<h2 class="main">#{res['exp_stage6.headingExperimentEvaluation']}</h2>	
+                <rich:dataList id="fileBMGoalEvalList" var="data" value="#{ExperimentBean.IOTableDataForGUI}" rowIndexVar="rowi" style="border:none;width:100%;padding:0px;">
+                <rich:simpleTogglePanel id="fileBMGoalToggle" switchType="client" opened="#{data['panelOpened']}" label="Experiment Record ##{rowi+1}: #{data['input']}  -  &lt;&lt;#{data['inputName']}&gt;&gt;" style="padding:0px;">               
+               		<!-- rich:effect event="onclick" type="BlindDown" params="duration:0.5" /-->
+               		<h2 class="main">#{res['exp_stage6.headingExperimentDataRecord']}</h2>
+               		<h:panelGrid columns="2" style="border:none;width:100%;">
+	               		<rich:panel style="border:none;">
+							<f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
+				    		<h:outputLink value="Service Input: "/>
+					    		<!-- check if input displayed as URI or as String -->
+								<h:outputLink value="#{data['input']}" rendered="#{not empty data['inputTypeURI']}" target="_new">
+									#{data['inputName']}
+							</h:outputLink>
+							<h:outputText value="#{data['input']}" rendered="#{data['inputTypeURI']==null}"/>			
+	                   </rich:panel>
+	                   <rich:panel style="border:none;">
+							<f:facet name="header">#{res['exp_stage6.outputFiles']}</f:facet>
+							<h:outputLink value="Service Output: "/>
+								<!-- check if input displayed as URI or as String -->
+								<h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}" target="_new">
+									<h:outputText value="#{data['output']}" style="color:green"/>
+							</h:outputLink>
+							<h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}" style="color:green"/>
+	                   </rich:panel>
+                   </h:panelGrid>
+      			   <!-- the file benchmark goals for evaluation -->
+                   <h:panelGroup>
+                   	  <h2 class="main">#{res['exp_stage6.headingFileBG']}</h2>
+                      <rich:dataTable id="bmTableFile_#{rowi}" var="fileBMG"
+							value="#{data['fileBMGoals']}" preserveDataModel="false"
+							rowId="#{fileBMG.ID}" rowIndexVar="bmrow" cellpadding="2" cellspacing="0" border="1">
+							<t:column>
+								<f:facet name="header">#{res['exp_stage6.criteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
+			                    #{fileBMG.name}
+							</t:column>
+							<t:column>
+								<f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
+							    #{fileBMG.definition} <br />
+								<i>#{fileBMG.description}</i>
+							</t:column>
+							<t:column>
+								<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
+			                           <a4j:outputPanel ajaxRendered="true">                 
+                                       		<h:inputText value="#{fileBMG.sourceValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalSrcValueChange}" disabled="#{ExperimentBean.finished}" style="border-style: solid; border-color: red;" rendered="#{fileBMG.srcError}">
+                                           		<f:param value="#{data['input']}" name="forInputFile"/>
+                            					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
+                       							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
+                                        	</h:inputText>
+                                       		<h:inputText value="#{fileBMG.sourceValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalSrcValueChange}" disabled="#{ExperimentBean.finished}" rendered="#{not fileBMG.srcError}">
+                                           		<f:param value="#{data['input']}" name="forInputFile"/>
+                            					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
+                       							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
+                                        	</h:inputText><br/>  
+                                        	<h:outputText value="#{fileBMG.typename}" rendered="#{fileBMG.srcError}" style="font-style:italic; color:red;"/>
+                                        	<h:outputText value="#{fileBMG.typename}" rendered="#{not fileBMG.srcError}"/>
+                                        </a4j:outputPanel>
+							</t:column>
+							<t:column>
+								<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
+					                    <a4j:outputPanel ajaxRendered="true">                 
+                                       		<h:inputText value="#{fileBMG.targetValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalTargetValueChange}" disabled="#{ExperimentBean.finished}" style="border-style: solid; border-color: red;" rendered="#{fileBMG.tarError}">
+                                           		<f:param value="#{data['input']}" name="forInputFile"/>
+                            					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
+                       							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
+                                        	</h:inputText>
+                                        	<h:inputText value="#{fileBMG.targetValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalTargetValueChange}" disabled="#{ExperimentBean.finished}" rendered="#{not fileBMG.tarError}">
+                                           		<f:param value="#{data['input']}" name="forInputFile"/>
+                            					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
+                       							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
+                                       		</h:inputText><br/>  
+                                        	<h:outputText value="#{fileBMG.typename}" rendered="#{fileBMG.tarError}" style="font-style:italic; color:red;"/>
+                                        	<h:outputText value="#{fileBMG.typename}" rendered="#{not fileBMG.tarError}"/>
+                                        </a4j:outputPanel>
+							</t:column>
+							<t:column>
+								<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
+								<h:selectOneMenu id="fileEvalBmGoal_#{fileBMG.ID}" value="#{fileBMG.evaluationValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalEvalValueChange}" disabled="#{ExperimentBean.finished}">
+									<f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
+									<f:param value="#{data['input']}" name="forInputFile"/>
+                                	<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
+                                	<a4j:support event="onchange" eventsQueue="foo"/>
+								</h:selectOneMenu>
+							</t:column>
+						</rich:dataTable>
+						<h:messages errorClass="errorMessage" infoClass="infoMessage"/>
+                   </h:panelGroup>
+                <div class="clear"></div>
+                </rich:simpleTogglePanel>
+           </rich:dataList> 
 
 			<h2 class="main">#{res['exp_stage6.headingBG']}</h2>
 			<p>Below are the benchmark goals you specified during stage three
@@ -62,7 +129,7 @@
 			selecting the level of success of each goal.</p>
 
 			<t:dataTable id="bmTable" var="bm"
-				value="#{ExperimentBean.benchmarkBeans}" preserveDataModel="false"
+				value="#{ExperimentBean.experimentBenchmarkBeans}" preserveDataModel="false"
 				rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
 				<t:column>
 					<f:facet name="header">#{res['exp_stage6.criteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
@@ -74,26 +141,22 @@
 					<i>#{bm.description}</i>
 				</t:column>
 				<t:column>
+					<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
+                                            <h:inputText value="#{bm.sourceValue}" disabled="#{ExperimentBean.finished}"/> <br/>     
+                                            	<h:outputText value="#{bm.typename}" />  
+				</t:column>
+				<t:column>
+					<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
+                                            <h:inputText value="#{bm.targetValue}"  disabled="#{ExperimentBean.finished}"/><br/>          
+                                            <h:outputText value="#{bm.typename}" /> 
+				</t:column>
+				<t:column>
 					<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
 					<h:selectOneMenu value="#{bm.evaluationValue}" disabled="#{ExperimentBean.finished}">
 						<f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
 					</h:selectOneMenu>
 				</t:column>
-				<t:column>
-					<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
-                                            <h:inputText value="#{bm.sourceValue}" disabled="#{ExperimentBean.finished}"/> <br/>     
-                                            	<h:outputText value="#{bm.typename}" />      
-				</t:column>
-				<t:column>
-					<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
-                                            <h:inputText value="#{bm.targetValue}"  disabled="#{ExperimentBean.finished}"/><br/>          
-                                            	<h:outputText value="#{bm.typename}" />
-				</t:column>
 				
-				<!-- t:column>
-					<f:facet name="header">#{res['exp_stage6.requiredType']}</f:facet>
-					<h:outputText value="#{bm.typename}" />
-				</t:column -->
 			</t:dataTable>
 			<h:messages errorClass="errorMessage" infoClass="infoMessage"/>
 			
@@ -109,12 +172,50 @@
                <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
            </p>
 
-            <p><h:commandButton value="#{res['exp_stage6.button']}"
-                action="#{NewExp_Controller.updateEvaluationAction}" /></p>
+            <p><h:commandButton id="updateEval" value="#{res['exp_stage6.button']}" action="#{NewExp_Controller.updateEvaluationAction}">
+            	 <rich:componentControl for="modelpanel" attachTo="updateEval" operation="show" event="onclick" disableDefault="true"/>
+            </h:commandButton></p> 
                 
             <p><h:commandButton value="#{res['exp_stage6.finalize']}"
                 action="#{NewExp_Controller.finalizeEvaluationAction}" /></p>
-		</h:form>
+                
+                
+       <!-- testing modal panel>
+		<p><a4j:commandButton value="Testing model Panel1" action="#{NewExp_Controller.updateEvaluationAction}"
+				oncomplete="if (document.getElementById('hasMessages').value=='true') Richfaces.showModalPanel('modelpanel');"/>
+       </p>    
+       
+       <p><a4j:commandButton value="Testing model Panel2" action="#{NewExp_Controller.updateEvaluationAction}"
+				oncomplete="Richfaces.showModalPanel('modelpanel');"/>
+       </p>  
+		
+		<a4j:outputPanel ajaxRendered="true">
+				<h:inputHidden id="hasMessages" value="#{ExperimentBean.hasMessages}" />
+		</a4j:outputPanel>
+			
+			    <rich:modalPanel id="modelpanel" width="350" height="100">
+			        <f:facet name="header">
+			            <h:panelGroup>
+			                <h:outputText value="Modal Panel"></h:outputText>
+			            </h:panelGroup>
+			        </f:facet>
+			        <f:facet name="controls">
+			            <h:panelGroup>
+			             	<img id="hideOverlay" src="${facesContext.externalContext.requestContextPath}/graphics/close.png" alt="close" title="close"/>
+			                <rich:componentControl for="modelpanel" attachTo="hideOverlay" operation="hide" event="onclick"/>
+			            </h:panelGroup>
+			        </f:facet>
+			        <h:outputText value="This panel is called using Component Control Component"></h:outputText>
+			        <h:outputText value="#{ExperimentBean.popupMessage}"/>
+			        <br/>
+			        <h:outputText value="Closure link (X) works also through Component Control"></h:outputText>
+			    </rich:modalPanel>
+			    
+		<end testing modal panel -->    
+                
+                
+		</a4j:form>
+		
 		
 		<!-- A: If the execution was NOT successfully: display an error page -->
         <h:form rendered="#{NewExp_Controller.executionSuccess==false}">
@@ -242,5 +343,6 @@
 	</ui:define>
 </ui:composition>
 </f:view>
+
 </body>
 </html>

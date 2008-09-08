@@ -68,6 +68,16 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	public ExperimentReport getExperimentReport();
 	public File getExperimentReportFile();
 	
+	/**
+	 * This is the setter, handing over a list of File BMGoals, all other evaluation methods may use to evaluate
+	 * @param addedFileBMGoals
+	 */
+	public void setInputFileBenchmarkGoals(Map<URI,Collection<BenchmarkGoal>> addedFileBMGoals);
+	/**
+	 * This is the setter, handing over a list of Experiment Overall BMGoals, all other evaluation methods may use to evaluate
+	 * @param addedFileBMGoals
+	 */
+	public void setInputExperimentBenchmarkGoals(Collection<BenchmarkGoal> addedOverallBMGoals);
 	
 	/**
 	 * Returns the List of inputBenchmarkGoals which the evaluation uses as basis for the experimentBenchmarks as well as for the fileBenchmarks

@@ -37,10 +37,10 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
     String typename;
     String scale;
     String category;
-    //indicates if Metrics are available for configuration
+    //indicates if an TBautoEvalServiceTemplate is backing the bm
     boolean autoEvalServiceAvailable = false;
     TestbedServiceTemplate autoEvalServiceTemplate;
-    //indicates if Metrics have been configured and added
+    //indicates if metric configuration has been added
 	boolean autoEvalServiceConfigured = false;
     
     public BenchmarkBean() {
@@ -190,12 +190,15 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 		return this.autoEvalServiceAvailable;
 	}
 	
-	public void setAutoEvalServiceAvailable(boolean b){
-		this.autoEvalServiceAvailable = b;
-	}
-	
+	/**
+	 * Checking that the provided autoEvalTemplate is an instance of EvaluationTestbedServiceTemplate
+	 * is done by the gui controller. (only there!)
+	 * @param autoEvalTemplate
+	 */
 	public void setAutoEvalService(TestbedServiceTemplate autoEvalTemplate){
 		this.autoEvalServiceTemplate = autoEvalTemplate;
+		if(autoEvalTemplate!=null)
+			this.autoEvalServiceAvailable = true;
 	}
 	
 	public TestbedServiceTemplate getAutoEvalService(){
@@ -234,6 +237,39 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 			ret.put(type.name(), l);
 		}
 		return ret;
+	}
+	
+	/**
+	 * Checks if a given input (src, tar) value is set according to the
+	 * benchmark goal's type
+	 * @param input
+	 * @return
+	 */
+	public boolean checkInputValueValid(String input){
+		return this.bm.checkValueValid(input);
+	}
+	
+	/**
+	 * Used to display an error in new exp step6 while entering file BMGoals through Ajax
+	 * As ajax is used the JSF Render-Response life-cycle cannot be used properly - using standard text instead
+	 * @param error
+	 */
+	boolean bSrcErr =false;
+	public void setSrcError(boolean b){
+		this.bSrcErr = b;
+	}
+	
+	public boolean getSrcError(){
+		return bSrcErr;
+	}
+	
+	boolean bTarErr =false;
+	public void setTarError(boolean b){
+		this.bTarErr = b;
+	}
+	
+	public boolean getTarError(){
+		return bTarErr;
 	}
 
 }

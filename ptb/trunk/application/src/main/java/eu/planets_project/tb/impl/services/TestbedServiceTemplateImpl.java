@@ -537,7 +537,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	
 	
 	/* (non-Javadoc)
-	 * This method is required to seperate between ServiceTemplates that 
+	 * This method is required to separate between ServiceTemplates that 
 	 * 1.are stored as part of an experiment an may not be deleted and templates
 	 * 2.that are registered by the admin. So if 2. gets deleted 1. must be still available
 	 * @see java.lang.Object#clone()

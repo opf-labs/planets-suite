@@ -732,3 +732,9 @@ width:100%;
 .tooltipData {
   font-weight: bold;
 }
+.rich-datalist{
+	list-style-type:none; width:100%;
+}
+.rich-table-subheadercell{
+	color: #FFFFFF;
+}

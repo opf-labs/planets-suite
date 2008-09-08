@@ -598,5 +598,34 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		return vRet;
 		
 	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setInputExperimentBenchmarkGoals(java.util.Collection)
+	 */
+	public void setInputExperimentBenchmarkGoals(
+			Collection<BenchmarkGoal> addedOverallBMGoals) {
+		for(BenchmarkGoal bmg : addedOverallBMGoals){
+			this.experimentBenchmarkGoals.put(bmg.getID(), (BenchmarkGoalImpl)bmg);
+		}
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setInputFileBenchmarkGoals(java.util.Map)
+	 */
+	public void setInputFileBenchmarkGoals(
+			Map<URI, Collection<BenchmarkGoal>> addedFileBMGoals) {
+		for(URI inputFileURI : addedFileBMGoals.keySet()){
+			Collection<BenchmarkGoal> bmgs = addedFileBMGoals.get(inputFileURI);
+			HashMap<String,BenchmarkGoalImpl> m = new HashMap<String, BenchmarkGoalImpl>();
+			for(BenchmarkGoal bmg : bmgs){
+				m.put(bmg.getID(), (BenchmarkGoalImpl)bmg);
+			}
+			
+			this.fileBenchmarkGoals.put(inputFileURI, m);
+		}
+	}
 	
 }

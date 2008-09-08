@@ -13,18 +13,24 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIPanel;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlGraphicImage;
+import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlPanelGrid;
+import javax.faces.component.html.HtmlPanelGroup;
 import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
+import org.ajax4jsf.component.html.HtmlAjaxSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.component.html.ext.HtmlDataTable;
@@ -102,8 +108,12 @@ public class ExperimentBean {
     private UIComponent panelAddedFiles = new UIPanel();
     private boolean bOperationSelectionCompleted = false;
     
-    private Map<String,BenchmarkBean> benchmarks = new HashMap<String,BenchmarkBean>();
+    //contains the overall experiment Benchmarks. Map<BMGoal.ID, BenchmarkBean>
+    private Map<String,BenchmarkBean> experimentBenchmarks = new HashMap<String,BenchmarkBean>();
     private String intensity="0";
+    
+    //contains the benchmarks per file basis. Map<InputFileURI+BMGoalID, BenchmarkBean>
+    private Map<String, BenchmarkBean> fileBenchmarks = new HashMap<String,BenchmarkBean>();
 
     //The input file refs with Map<Position+"",localFileRef>
     private Map<String,String> inputData = new HashMap<String,String>();
@@ -241,52 +251,75 @@ public class ExperimentBean {
             	this.outputData = exp.getExperimentExecutable().getOutputDataEntries();
         	}
         }
-
-    	// set benchmarks
+     
+        //fill the file benchmarks
         try {
-    		if (this.inputData != null) {
-    			Iterator<BenchmarkGoal> iter;
-    			if (exp.getCurrentPhase() instanceof ExperimentEvaluation) { 
-                    iter = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals().iterator();
-    			} else {
-    				iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
-    			}
-    			while (iter.hasNext()) {
-		    		BenchmarkGoal bm = iter.next();
-		    		BenchmarkBean bmb = new BenchmarkBean(bm);
-					bmb.setSourceValue(bm.getSourceValue());
-					bmb.setTargetValue(bm.getTargetValue());
-					bmb.setEvaluationValue(bm.getEvaluationValue());
-					bmb.setWeight(String.valueOf(bm.getWeight()));
+        	if (exp.getCurrentPhase() instanceof ExperimentEvaluation) { 
+	        	if (this.inputData != null) {
+	        		
+	        		//iterate over all input files
+	    			for(String localFileRef : this.inputData.values()){
+	    				//store a set of file BMGoals for every record item
+	    				DataHandler dh = new DataHandlerImpl();
+	    				URI inputFileURI = dh.getHttpFileRef(new File(localFileRef), true);
+	    				Collection<BenchmarkGoal> colFileBMGoals = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(inputFileURI);
+	    				if(colFileBMGoals==null)
+	    					throw new Exception("Exception while setting file benchmarks for record: "+inputFileURI);
+	    				
+	    				for(BenchmarkGoal bmg : colFileBMGoals){
+	    					//now crate the bmb out of the bmg
+		    				BenchmarkBean bmb = new BenchmarkBean(bmg);
+							bmb.setSourceValue(bmg.getSourceValue());
+							bmb.setTargetValue(bmg.getTargetValue());
+							bmb.setEvaluationValue(bmg.getEvaluationValue());
+							bmb.setWeight(String.valueOf(bmg.getWeight()));
+							bmb.setSelected(true);
+							if((bmb.getSourceValue()==null)||(bmb.getSourceValue().equals("")))
+								bmb.setSrcError(true);
+							if((bmb.getTargetValue()==null)||(bmb.getTargetValue().equals("")))
+								bmb.setTarError(true);							
+							if(bmg.isAutoEvaluatable()){
+								//i.e. backed by a evaluation TBServiceTemplate and TBeval/metric mapping properly configured 
+								bmb.setAutoEvalService(bmg.getAutoEvalSettings().getEvaluationService());
+							}
+							
+							//now add the file bmbs for this experimentbean
+							Map<String,BenchmarkBean> m= new HashMap<String,BenchmarkBean>();
+				    		fileBenchmarks.put(inputFileURI+bmb.getID(), bmb);
+	    				}
+	    			}
+	    		}
+        	}
+        	
+        	//fill the experiment overall benchmarks
+        	Collection<BenchmarkGoal> lbmbs;
+        	if (exp.getCurrentPhase() instanceof ExperimentEvaluation){
+        		//get the data from the evaluation phase
+        		lbmbs = exp.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoals();
+        	}
+        	else{
+        		//get the data from the setup phase
+        		lbmbs = exp.getExperimentSetup().getAllAddedBenchmarkGoals();
+        	}   	
+    		for(BenchmarkGoal bmg : lbmbs){
+    	    		BenchmarkBean bmb = new BenchmarkBean(bmg);
+					bmb.setSourceValue(bmg.getSourceValue());
+					bmb.setTargetValue(bmg.getTargetValue());
+					bmb.setEvaluationValue(bmg.getEvaluationValue());
+					bmb.setWeight(String.valueOf(bmg.getWeight()));
 					bmb.setSelected(true);
-		    		benchmarks.put(bm.getID(), bmb);
-                    //log.debug("Filling bmg: target:" + bmb.getTargetValue());
-    			}
-    			//this.outputData = eworkflow.getOutputData().toArray()[0].toString();
-    			/*
-    			if( this.outputData == null ) outputData = new String[this.inputData.length];
-    			if (exp.getExperimentExecution() != null && 
-    			        exp.getExperimentExecution().getExecutionOutputData((new URI(this.inputData[i]))) != null )
-    				this.outputData[i] = (exp.getExperimentExecution().getExecutionOutputData((new URI(this.inputData[i])))).toString();
-    			*/       
-              }
-        } catch (Exception e) {
-        	log.error("Exception while setting benchmarks, during attempt to create ExperimentBean from database object: "+e.toString());
+					if(bmg.isAutoEvaluatable()){
+						//i.e. backed by a evaluation TBServiceTemplate and TBeval/metric mapping properly configured 
+						bmb.setAutoEvalService(bmg.getAutoEvalSettings().getEvaluationService());
+					}
+    	    		experimentBenchmarks.put(bmg.getID(), bmb);
+    	    }
+        }catch (Exception e) {
+        	log.error("Exception during attempt to create ExperimentBean for: "+e.toString());
         	if( log.isDebugEnabled() ) e.printStackTrace();
         }
-    	// merge information to benchmark beans    	
-        /* Seems not to be needed, and overwrites the Target value data during evaluation:
-    	Iterator iter = exp.getExperimentSetup().getAllAddedBenchmarkGoals().iterator();
-    	while (iter.hasNext()) {
-    		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
-    		if (benchmarks.containsKey(bmg.getID())) {
-    			BenchmarkBean bmb = benchmarks.get(bmg.getID());
-    			bmb.setTargetValue(bmg.getTargetValue());
-    			bmb.setWeight(String.valueOf(bmg.getWeight()));
-    			bmb.setSelected(true);
-    		}
-    	}
-    	*/
+    	
+        
     	String intensity = Integer.toString(exp.getExperimentSetup().getExperimentResources().getIntensity());
     	if (intensity != null && intensity != "-1") 
     		this.intensity = intensity;
@@ -320,24 +353,48 @@ public class ExperimentBean {
     }
     //END OF FILL METHOD
     
-    public Map<String,BenchmarkBean> getBenchmarks() {
-		return benchmarks;    	
+    public Map<String,BenchmarkBean> getExperimentBenchmarks() {
+		return experimentBenchmarks;    	
     }
     
-    public List<BenchmarkBean> getBenchmarkBeans() {
-    	return new ArrayList<BenchmarkBean>(benchmarks.values());
+    /**
+     * Please note the String (key) is composed by the Input file's URI+BMGoalID
+     * @return
+     */
+    public Map<String, BenchmarkBean> getFileBenchmarkBeans(){
+    	return this.fileBenchmarks;
     }
     
+    public List<BenchmarkBean> getExperimentBenchmarkBeans() {
+    	return new ArrayList<BenchmarkBean>(experimentBenchmarks.values());
+    }
+    
+    
+    /**
+     * It's only possible to add/remove experiment overall benchmark beans.
+     * File BMBs are identically and are cloned from them
+     * @param bmb
+     */
     public void addBenchmarkBean(BenchmarkBean bmb) {
-    	this.benchmarks.put(bmb.getID(),bmb);
+    	this.experimentBenchmarks.put(bmb.getID(),bmb);
     }
     
+    /**
+     * It's only possible to add/remove experiment overall benchmark beans.
+     * File BMBs are identically and are cloned from them
+     * @param bmb
+     */
     public void deleteBenchmarkBean(BenchmarkBean bmb) {
-    	this.benchmarks.remove(bmb.getID());
+    	this.experimentBenchmarks.remove(bmb.getID());
     }
     
+    /**
+     * It's only possible to add/remove experiment overall benchmark beans.
+     * File BMBs are identically and are cloned from them
+     * @param bmb
+     */
     public void setBenchmarks(Map<String,BenchmarkBean>bms) {
-    	this.benchmarks = bms;
+    	this.experimentBenchmarks = bms;
     }
     
     /**
@@ -520,9 +577,9 @@ public class ExperimentBean {
      * Returns the data used in the experiment's input-output data table
      * @return
      */
-    public Collection<Map<String,String>> getIOTableDataForGUI(){
+    public Collection getIOTableDataForGUI(){
     	//Entry of inputComponent, outputComponent
-    	Collection<Map<String,String>> ret = new Vector<Map<String,String>>();
+    	Collection<Map> ret = new Vector<Map>();
     	Iterator<Entry<String,String>> itData = this.outputData.iterator();
     	
     	DataHandler dh = new DataHandlerImpl();
@@ -531,7 +588,8 @@ public class ExperimentBean {
     		String input = entry.getKey();
     		String output = entry.getValue();
     		
-    		HashMap<String,String> hm = new HashMap<String,String>();
+    		//mixing different objects within this map
+    		HashMap hm = new HashMap();
     	 //For the Input:
     		try{
     		//test: convert input to URI
@@ -564,10 +622,101 @@ public class ExperimentBean {
     			hm.put("outputName", null);
     			hm.put("outputType", null);
         	}  
+        	
+        	//panel control, only first item is displayed as opened
+        	if(ret.size()<1){
+        		hm.put("panelOpened", "true");
+        	}else{
+        		hm.put("panelOpened", "false");
+        	}
+        	
+        	//add the fileBenchmarkBeans (as List) for evaluation
+        	List<BenchmarkBean> lFileBMGs = new ArrayList<BenchmarkBean>();
+        	for(String key : this.fileBenchmarks.keySet()){
+        		lFileBMGs.add(this.fileBenchmarks.get(key));
+        	}
+        	hm.put("fileBMGoals", lFileBMGs);
+        	
         	ret.add(hm);
     	}
     	return ret;
     }
+    
+    public void processFileBMGoalTargetValueChange(ValueChangeEvent vce){	
+    	processFileBMGoalValueChange(vce,"tar");
+    }
+    
+    public void processFileBMGoalSrcValueChange(ValueChangeEvent vce){	
+    	processFileBMGoalValueChange(vce,"src");
+    }
+    
+    public void processFileBMGoalEvalValueChange(ValueChangeEvent vce){
+    	processFileBMGoalValueChange(vce,"eval");
+    }
+    
+    /**
+     * Sets a new src,target or evaluation value for a given File-BenchmarkGoal 
+     * @param vce
+     */
+    private void processFileBMGoalValueChange(ValueChangeEvent vce, String sSrcOrTarget){	
+    	String sInputFile =null,sBMGoalID = null;
+    	for(UIComponent comp:((List<UIComponent>)vce.getComponent().getChildren())){
+    		try{
+    			UIParameter param = (UIParameter)comp;
+    			if(param.getName().equals("forInputFile")){
+    				sInputFile = param.getValue().toString();
+    			}
+    			if(param.getName().equals("forBMgoalID")){
+    				sBMGoalID = param.getValue().toString();
+    			}
+    		}
+    		catch(Exception ex){}
+    	}
+    	
+    	//now set the new values
+		try{
+	    	if((sInputFile!=null)&&(sBMGoalID!=null)){
+				BenchmarkBean fbmb = this.fileBenchmarks.get(sInputFile+sBMGoalID);
+				
+				if(sSrcOrTarget.equals("src")){
+					if(fbmb.checkInputValueValid(vce.getNewValue().toString())){
+						fbmb.setSourceValue(vce.getNewValue().toString());
+						fbmb.setSrcError(false);
+					}
+					else{
+						fbmb.setSrcError(true);
+						throw new Exception(vce.getNewValue().toString());
+					}
+				}
+				if(sSrcOrTarget.equals("tar")){
+					if(fbmb.checkInputValueValid(vce.getNewValue().toString())){
+						fbmb.setTargetValue(vce.getNewValue().toString());
+						fbmb.setTarError(false);
+					}
+					else{
+						fbmb.setTarError(true);
+						throw new Exception(vce.getNewValue().toString());
+					}
+				}
+				if(sSrcOrTarget.equals("eval"))
+					fbmb.setEvaluationValue(vce.getNewValue().toString());
+			}
+			else{
+				throw new Exception();
+			}
+		}
+	    catch(Exception e){
+	    	//can't use the standard renderResponse life-cycle with Ajax within a JSF Table
+	    	/*FacesMessage fmsg = new FacesMessage();
+	        fmsg.setDetail("value:"+e.toString()+" not a valid!");
+	        fmsg.setSummary("value:"+e.toString()+" not a valid!");
+	        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+	        FacesContext ctx = FacesContext.getCurrentInstance();
+	        ctx.addMessage("fileSrcBmGoal_"+sBMGoalID,fmsg);
+			log.error("entered data: "+e.toString()+" not validated properly");*/
+	    }
+    }
+    
 
 	public String getNumberOfOutput() {
 		return this.outputData.size()+"";
@@ -1221,5 +1370,20 @@ public class ExperimentBean {
         this.expToRemove = expToRemove;
     }
     
+    //TODO ANDREW: DELETE START TESTING FROM HERE
+    public String getPopupMessage(){
+    	//Before or after execution?
+    	return "This is a first test";
+    }
+    
+    public boolean isHasMessages() {
+    	return FacesContext.getCurrentInstance().getMessages().hasNext();
+    }
+
+    
+    public void setHasMessages(boolean b){
+    	//
+    }
+    //END ANDREW: DELETE END TESTING FROM HERE
     
 }

@@ -316,10 +316,6 @@ public class NewExpWizardController {
     	//update the BenchmarkBean and all model elements
     	updateBenchmarksAction();
     	return "return to exp_stage3";
-    	
-    	//FIXME Andrew Set BMGoal selected when calling configure
-    	//FIXME Andrew UpdateEvaluationAction: autoEvalConfig data needs to be stored within these goals
-		//FIXME Andrew Do I need to clone the EvaluationTestbedServiceTemplate (yes?) - because of DB delete dependencies?
     }
     
     /**
@@ -338,7 +334,8 @@ public class NewExpWizardController {
     
     /**
      * Takes the list of selected BenchmarkBeans, and creates BenchmarkGoal objects out if its provided
-     * data which is stored as part of an experiment. Already added BenchmarkGoals get updated.
+     * data which is stored as part of the experimentsetup overall BMGoals (not file bmgoals, not experimentevaluation phase). 
+     * Already added BenchmarkGoals get updated.
      * @return
      */
     public String updateBenchmarksAction(){
@@ -365,19 +362,9 @@ public class NewExpWizardController {
     				//method to get a new instance of BenchmarkGoal
     				bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
     			}
-
-    			//BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
-	    		if (bmb.getSourceValue()!=null && (!(bmb.getSourceValue().equals(""))))    			
-	    			bmg.setSourceValue(bmb.getSourceValue());
-	    		if (bmb.getTargetValue()!=null && (!(bmb.getTargetValue().equals(""))))	    		
-	    			bmg.setTargetValue(bmb.getTargetValue());
-	    		if (bmb.getEvaluationValue()!=null && (!(bmb.getEvaluationValue().equals(""))))
-	    			bmg.setEvaluationValue(bmb.getEvaluationValue());
-	    		if (bmb.getWeight()!=null && (!(bmb.getWeight().equals("-1"))))
-	    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
-	    		
-	    		//check and add auto evaluation configuration data
-	    		this.addAutoEvalSettingsToBMGoal(bmb, bmg);
+    			
+    			//update the bmg with the provided bean's data
+    			helper_addBMBSettingsToBMGoal(bmb,bmg);
 	    		
 	    		bmgoals.add(bmg);
 	    		// add to experimentbean benchmarks
@@ -419,6 +406,24 @@ public class NewExpWizardController {
 	  }
    	}
     
+    
+    private BenchmarkGoal helper_addBMBSettingsToBMGoal(BenchmarkBean bmb, BenchmarkGoal bmg) throws InvalidInputException{
+		//get a new BMGoal object: BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
+		if (bmb.getSourceValue()!=null && (!(bmb.getSourceValue().equals("")))) 			
+			bmg.setSourceValue(bmb.getSourceValue());
+		if (bmb.getTargetValue()!=null && (!(bmb.getTargetValue().equals(""))))	    		
+			bmg.setTargetValue(bmb.getTargetValue());
+		if (bmb.getEvaluationValue()!=null && (!(bmb.getEvaluationValue().equals(""))))
+			bmg.setEvaluationValue(bmb.getEvaluationValue());
+		if (bmb.getWeight()!=null && (!(bmb.getWeight().equals("-1"))))
+			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
+		
+		//check and add auto evaluation configuration data
+		this.addAutoEvalSettingsToBMGoal(bmb, bmg);
+		
+		return bmg;
+    }
+    
 
     /**
      * Fetches the provided AutoBMGoalEvalUserConfigBean, extracts its information
@@ -430,7 +435,6 @@ public class NewExpWizardController {
      */
     private BenchmarkGoal addAutoEvalSettingsToBMGoal(BenchmarkBean bmb, BenchmarkGoal bmg){
     	AutoBMGoalEvalUserConfigBean autoEvalConfigBean = (AutoBMGoalEvalUserConfigBean)JSFUtil.getManagedObject("AutoEvalSerUserConfigBean");
-    	AutoEvaluationSettingsImpl autoEvalConfig = new AutoEvaluationSettingsImpl(bmb.getAutoEvalService());
     	
     	//check 1) if the bean was already configured and B) for which bmgoal the configuration was created:
     	if(autoEvalConfigBean.getBMGoalID()==null)
@@ -439,6 +443,12 @@ public class NewExpWizardController {
     		//config not for this bean - return non-modified object
     		return bmg;
     	}
+    	if(bmb.getAutoEvalService()==null){
+    		//config not set for this bean - return non-modified object
+    		return bmg;
+    	}
+    	
+    	AutoEvaluationSettingsImpl autoEvalConfig = new AutoEvaluationSettingsImpl(bmb.getAutoEvalService());
     	
     	for(TBEvaluationTypes evalType: TBEvaluationTypes.values()){
     		//add the metric evaluation configuration for all types
@@ -463,34 +473,27 @@ public class NewExpWizardController {
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
 	    	Experiment exp = testbedMan.getExperiment(expBean.getID());
 
-	    	// Store the updated report:
+	    	// 1. Store the updated report:
             exp.getExperimentEvaluation().getExperimentReport().setHeader(expBean.getReportHeader());
             exp.getExperimentEvaluation().getExperimentReport().setBodyText(expBean.getReportBody());
             log.debug("updateEvaluation Report Header: "+exp.getExperimentEvaluation().getExperimentReport().getHeader());
             
-	    	// create Goal objects from Beans
-	    	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
-	    	Iterator iter = expBean.getBenchmarkBeans().iterator();
-	    	log.debug("Found BMGS: # = " + expBean.getBenchmarkBeans().size());
+	    	// 2. update Experiment Overall BenchmarkGoals from Bean
+	    	List<BenchmarkGoal> expBMgoals = new ArrayList<BenchmarkGoal>();
+	    	Iterator iter = expBean.getExperimentBenchmarkBeans().iterator();
+	    	log.debug("Found # of ExperimentOverall BMGS: " + expBean.getExperimentBenchmarkBeans().size());
 	    	while (iter.hasNext()) {
 	    		BenchmarkBean bmb = (BenchmarkBean)iter.next();
 	    		if (bmb.getSelected()) {
-		    		// method to get a new instance of BenchmarkGoal
-	    			BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
-		    	try {
-	    			String srcVal = bmb.getSourceValue();
-	    			if (srcVal!=null && !srcVal.equals(""))
-	    				bmg.setSourceValue(srcVal);
-	    			String trgVal = bmb.getTargetValue();
-	    			if (trgVal!=null && !trgVal.equals(""))
-	    				bmg.setTargetValue(trgVal);
-	    			String evalVal = bmb.getEvaluationValue();
-	    			if (evalVal!=null && !evalVal.equals(""))
-	    				bmg.setEvaluationValue(evalVal);
-		    		if (bmb.getWeight()!=null && !bmb.getWeight().equals("-1"))
-		    			bmg.setWeight(Integer.parseInt(bmb.getWeight()));
-		    		bmgoals.add(bmg);
-		    		log.debug("Got bmg: target:" + bmg.getTargetValue());
+		    		// get the bmgoal from the evaluation data
+	    			BenchmarkGoal bmg = exp.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(bmb.getID());
+	    		try {
+		    		//update the bmg with the provided bean's data
+		    		helper_addBMBSettingsToBMGoal(bmb,bmg);
+		    		
+		    		expBMgoals.add(bmg);
+		    		log.debug("updating bmg's target:" + bmg.getTargetValue());
+		    		
 	    		} catch (InvalidInputException e) {
 	    	        FacesMessage fmsg = new FacesMessage();
 	    	        fmsg.setDetail("Values for Benchmarkgoal are not valid!"+e.toString());
@@ -503,22 +506,41 @@ public class NewExpWizardController {
 	    		}
 	    		}
 	    	}
-	    	//fill the benchmark goals for every input file - used for evaluation
-	    	Map<URI,List<BenchmarkGoal>> bhm = new HashMap<URI,List<BenchmarkGoal>>();
+	    	
+	    	//3. fill the file benchmark goals - used for evaluation of every input file
+	    	Map<String,BenchmarkBean> mBMBs = expBean.getFileBenchmarkBeans();
+	    	Map<URI,List<BenchmarkGoal>> mFileBMGs = new HashMap<URI,List<BenchmarkGoal>>();
 	    	Iterator<String> itLocalInputFileRefs = expBean.getExperimentInputData().values().iterator();
 	    	DataHandler dh = new DataHandlerImpl();
-	    	//iterate over every input file and add it's BM goals
-	    	while(itLocalInputFileRefs.hasNext()){
-	    		String localInputFileRef = itLocalInputFileRefs.next();
-	    		URI inputURI = dh.getHttpFileRef(new File(localInputFileRef), true);
-		    	bhm.put(inputURI,bmgoals);
-	    	}
+	   
+	    	//iterate over every input file and add update their evaluation
+	    	try {
+				while(itLocalInputFileRefs.hasNext()){
+					String localInputFileRef = itLocalInputFileRefs.next();
+					URI inputURI = dh.getHttpFileRef(new File(localInputFileRef), true);
+					List<BenchmarkGoal> lbmgs = new ArrayList<BenchmarkGoal>();
+					
+					for(BenchmarkBean b : mBMBs.values()){
+						BenchmarkGoal bmg = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoal(inputURI, b.getID());
+						BenchmarkBean bmb = mBMBs.get(inputURI+b.getID());
+						this.helper_addBMBSettingsToBMGoal(bmb, bmg);
+						lbmgs.add(bmg);
+					}
+					
+					mFileBMGs.put(inputURI,lbmgs);
+				}
+			} catch (Exception e) {
+				// TODO: Andrew: Think about how to get back the failure INFO for the file BMGoal to screen
+				return "failure";
+			}
 	    	
-	    	//now write these changes back to the experiment
+	    	//4. now write these changes back to the experiment
 	    	Experiment e = testbedMan.getExperiment(exp.getEntityID());
 	    	log.debug("Exp ID: "+ exp.getEntityID() + " exp: " + e);
 	    	
-	    	exp.getExperimentEvaluation().setEvaluatedFileBenchmarkGoals(bhm);
+	    	exp.getExperimentEvaluation().setEvaluatedExperimentBenchmarkGoals(expBMgoals);
+	    	exp.getExperimentEvaluation().setEvaluatedFileBenchmarkGoals(mFileBMGs);
+	    	
 	    	testbedMan.updateExperiment(exp);
 	        FacesMessage fmsg = new FacesMessage();
 	        fmsg.setDetail("Evaluation Data saved successfully!");
@@ -996,7 +1018,7 @@ public class NewExpWizardController {
        	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	
        	//the available BenchmarkGoals as BenchmarkBean (only from the selected category)
-       	Map<String,BenchmarkBean> availBenchmarks = new HashMap<String,BenchmarkBean>(expBean.getBenchmarks());
+       	Map<String,BenchmarkBean> availBenchmarks = new HashMap<String,BenchmarkBean>(expBean.getExperimentBenchmarks());
        	//get all BenchmarkGoals
        	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
     	//the information if a BMGoal can be used within an autoEvaluationService
@@ -1025,7 +1047,6 @@ public class NewExpWizardController {
                         
                         //add the autoEvaluationService Information for this goal
                         if(mapAutoEvalSer.containsKey(bmg.getID())){
-                        	bmb.setAutoEvalServiceAvailable(true);
                         	//note: currently every BMGoal only contains max. one autoEval services behind
                         	bmb.setAutoEvalService(mapAutoEvalSer.get(bmg.getID()));
                         }
@@ -1088,10 +1109,46 @@ public class NewExpWizardController {
   	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
   	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
   	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
-  	        testbedMan.updateExperiment(exp);
+  	  		initEvaluationBenchmarks(exp);
+  	  		testbedMan.updateExperiment(exp);
     		return "goToStage6";
   	  	} else
     		return null;
+    }
+    
+    /**
+     * Takes the Benchmarks set within the Setup phase and adds them as 
+     * File Benchmarks for every input file and as experiment overall evaluation benchmarks
+     */
+    public void initEvaluationBenchmarks(Experiment exp){
+    	log.debug("In NewExpWizardControler.initEvaluationBenchmarks...");
+        try {
+
+	    	List<BenchmarkGoal> lFileEvalBMgoals = new ArrayList<BenchmarkGoal>();
+	    	List<BenchmarkGoal> lExpOverallEvalBMgoals = new ArrayList<BenchmarkGoal>();
+	    	for(BenchmarkGoal bmg : exp.getExperimentSetup().getAllAddedBenchmarkGoals()){
+	    		BenchmarkGoal bmgEval = ((BenchmarkGoalImpl)bmg).clone();
+	    		lFileEvalBMgoals.add(bmgEval);
+	    		BenchmarkGoal bmgEval2 = ((BenchmarkGoalImpl)bmg).clone();
+	    		lExpOverallEvalBMgoals.add(bmgEval2);
+	    	}
+	    	
+	    	//fill the benchmark goals for every input file - used for evaluation
+	    	Map<URI,Collection<BenchmarkGoal>> fileEvalBMGs = new HashMap<URI,Collection<BenchmarkGoal>>();
+	    	for(URI inputFileURI : exp.getExperimentExecutable().getAllInputHttpDataEntries()){
+	    		//iterate over every input file and add it's BM goals
+	    		fileEvalBMGs.put(inputFileURI,lFileEvalBMgoals);
+	    	}
+	    	
+	    	//fill the file bm goals 
+	    	exp.getExperimentEvaluation().setInputFileBenchmarkGoals(fileEvalBMGs);
+	    	//fill the benchmark goals for experiment overall evaluation
+	    	exp.getExperimentEvaluation().setInputExperimentBenchmarkGoals(lExpOverallEvalBMgoals);
+	        log.debug("Having set: # of "+exp.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoals().size()+" experiment evaluation BMGoals");
+	        log.debug("Having set: # of "+exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals()+" file evaluation BMGoals");
+        } catch (Exception e) {
+        	log.error("Exception when trying to init the experiment evaluation benchmark goals: "+e.toString());
+        }
     }
     
     /**
@@ -1155,12 +1212,10 @@ public class NewExpWizardController {
     
     //TODO: Andrew DELETE OR CHECK IF USED
     public void processSelBMValueTicked(ValueChangeEvent e){
-    	System.out.println("Andrew to DELETE" +e.getNewValue());
+    	//System.out.println("Andrew to DELETE" +e.getNewValue());
     	FacesContext context = FacesContext.getCurrentInstance();
 		Object o1 = context.getExternalContext().getRequestParameterMap().get("bmGoalID2");
 		Object o2 = context.getExternalContext().getRequestParameterMap().get("bmGoalID");
-		System.out.println("o1 not null "+o1!=null);
-		System.out.println("o2 not null "+o2!=null);
     }
     
     public String command_configureAutoEvalService(){
