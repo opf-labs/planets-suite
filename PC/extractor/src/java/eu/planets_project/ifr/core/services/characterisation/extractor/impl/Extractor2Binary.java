@@ -21,62 +21,72 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 
-
 @Stateless()
 @Local(BasicCharacteriseOneBinaryXCELtoBinary.class)
 @Remote(BasicCharacteriseOneBinaryXCELtoBinary.class)
 @LocalBinding(jndiBinding = "planets/Extractor2Binary")
 @RemoteBinding(jndiBinding = "planets-project.eu/Extractor2Binary")
-@WebService(
-        name = "Extractor2Binary", 
-//      This is not appropriate when using the endpointInterface approach.
-        serviceName= BasicCharacteriseOneBinaryXCELtoBinary.NAME, 
-        targetNamespace = PlanetsServices.NS )
-@SOAPBinding(
-        parameterStyle = SOAPBinding.ParameterStyle.BARE,
-        style = SOAPBinding.Style.RPC)
+@WebService(name = "Extractor2Binary",
+// This is not appropriate when using the endpointInterface approach.
+serviceName = BasicCharacteriseOneBinaryXCELtoBinary.NAME, targetNamespace = PlanetsServices.NS)
+@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @MTOM
-public class Extractor2Binary implements BasicCharacteriseOneBinaryXCELtoBinary, Serializable {
+public class Extractor2Binary implements
+        BasicCharacteriseOneBinaryXCELtoBinary, Serializable {
 
-	private static final long serialVersionUID = 3007130161689982082L;
-	private final static PlanetsLogger plogger = PlanetsLogger.getLogger(Extractor2Binary.class);
-	private static String CALLING_EXTRACTOR_NAME = "EXTRACTOR2BINARY";
-	
-    
-	/**
+    private static final long serialVersionUID = 3007130161689982082L;
+    private final static PlanetsLogger plogger = PlanetsLogger
+            .getLogger(Extractor2Binary.class);
+    private static final String SINGLE = "JustBinary";
+    private static String CALLING_EXTRACTOR_NAME = "EXTRACTOR2BINARY";
+
+    /**
+     * 
+     * @param binary a byte[] which contains the image data
+     * @return a String holding the contents of a XCDL file
+     * @throws PlanetsException
+     */
+    @WebMethod(operationName = BasicCharacteriseOneBinaryXCELtoBinary.NAME
+            + SINGLE, action = PlanetsServices.NS + "/"
+            + BasicCharacteriseOneBinaryXCELtoBinary.NAME)
+    @WebResult(name = BasicCharacteriseOneBinaryXCELtoBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
+            + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, partName = BasicCharacteriseOneBinaryXCELtoBinary.NAME
+            + "Result")
+    public byte[] basicCharacteriseOneBinaryXCELtoBinary(
+            @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
+                    + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, partName = "binary") byte[] binary)
+            throws PlanetsException {
+        return basicCharacteriseOneBinaryXCELtoBinary(binary, null);
+    }
+
+    /**
      * 
      * @param binary a byte[] which contains the image data
      * @param xcel a String holding the Contents of a XCEL file
      * @return a String holding the contents of a XCDL file
-     * @throws PlanetsException 
+     * @throws PlanetsException
      */
-    @WebMethod(
-            operationName = BasicCharacteriseOneBinaryXCELtoBinary.NAME, 
-            action = PlanetsServices.NS + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME)
-    @WebResult(
-            name = BasicCharacteriseOneBinaryXCELtoBinary.NAME+"Result", 
-            targetNamespace = PlanetsServices.NS + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, 
-            partName = BasicCharacteriseOneBinaryXCELtoBinary.NAME + "Result")
-    public byte[] basicCharacteriseOneBinaryXCELtoBinary ( 
-    @WebParam(
-            name = "binary", 
-            targetNamespace = PlanetsServices.NS + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, 
-            partName = "binary")     
-    byte[] binary,
-    @WebParam(
-            name = "XCEL_String", 
-            targetNamespace = PlanetsServices.NS + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, 
-            partName = "XCEL_String")
-            String xcel
-    ) throws PlanetsException {
-    	
-    	byte[] xcel_in = xcel.getBytes();
-    	
-    	CoreExtractor extractor = new CoreExtractor(CALLING_EXTRACTOR_NAME, plogger);
-    	
-    	byte[] outputXCDL = extractor.extractXCDL(binary, xcel_in);
-    	
-    	return outputXCDL;
+    @WebMethod(operationName = BasicCharacteriseOneBinaryXCELtoBinary.NAME, action = PlanetsServices.NS
+            + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME)
+    @WebResult(name = BasicCharacteriseOneBinaryXCELtoBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
+            + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, partName = BasicCharacteriseOneBinaryXCELtoBinary.NAME
+            + "Result")
+    public byte[] basicCharacteriseOneBinaryXCELtoBinary(
+            @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
+                    + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, partName = "binary") byte[] binary,
+            @WebParam(name = "XCEL_String", targetNamespace = PlanetsServices.NS
+                    + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, partName = "XCEL_String") String xcel)
+            throws PlanetsException {
+
+        // byte[] xcel_in = xcel.getBytes();
+
+        CoreExtractor extractor = new CoreExtractor(CALLING_EXTRACTOR_NAME,
+                plogger);
+
+        byte[] outputXCDL = extractor.extractXCDL(binary, xcel != null ? xcel
+                .getBytes() : null);
+
+        return outputXCDL;
     }
 }

@@ -1,100 +1,107 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
-
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 
+import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
+import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
+import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 
-public class Extractor2BinaryTest {
-	
-	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
-	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
-	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2BINARY_JUNIT-TEST_OUTPUT";
+/**
+ * Test of the extractor (local and remote) using binaries.
+ * 
+ * TODO: clean up both local and in the data registry after the tests
+ * 
+ * @author Peter Melms
+ * @author Fabian Steeg
+ */
+public final class Extractor2BinaryTest {
 
-	@Test
-	public void testBasicCharacteriseOneBinaryXCELtoBinary() throws IOException, PlanetsException {
-		/// Please fill in the path to your INPUT IMAGE:
-		File input_image = 
-			
-			new File(EXTRACTOR_HOME + "res/testpng/bgai4a16.png");
-		
-		// Please fill in the corresponding input XCEL FILE:
-		File input_xcel = 
-			
-			new File(EXTRACTOR_HOME + "res/xcl/xcel/xcel_docs/xcel_png.xml");
-		
-		// Please specify the name and the location of the OUTPUT-FILE:
-		File outputFolder = new File(CLIENT_OUTPUT_DIR);
-		outputFolder.mkdir();
-		
-		File output_xcdl = 
-			
-			new File(outputFolder, "client_output.xcdl");
-		
-		byte[] binary = getByteArrayFromFile(input_image);
-		BufferedReader br = new BufferedReader(new FileReader(input_xcel));
-		StringBuffer sb = new StringBuffer();
-		String in = "";
-		while((in = br.readLine()) != null) {
-			sb.append(in);
-		}
-				
-		String xcelString = sb.toString(); 
-		Extractor2Binary extractor = new Extractor2Binary();
-		byte[] result = extractor.basicCharacteriseOneBinaryXCELtoBinary(binary, xcelString);
-		
-		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(output_xcdl));
-		out.write(result);
-		out.flush();
-		out.close();
-		
-		System.out.println("Please find the file here: " + output_xcdl.getAbsolutePath());
-	}
-	
-	
-	private static byte[] getByteArrayFromFile(File file) throws IOException {
-        InputStream is = new FileInputStream(file);
-    
-        // Get the size of the file
-        long length = file.length();
-    
-        // You cannot create an array using a long type.
-        // It needs to be an int type.
-        // Before converting to an int type, check
-        // to ensure that file is not larger than Integer.MAX_VALUE.
-        if (length > Integer.MAX_VALUE) {
-            //throw new IllegalArgumentException("getBytesFromFile@JpgToTiffConverter:: The file is too large (i.e. larger than 2 GB!");
-        	System.out.println("Datei ist zu gross (e.g. groesser als 2GB)!");
+    /***/
+    private static final String WSDL = "/pserv-pc-extractor/Extractor2Binary?wsdl";
+    /***/
+    private String xcelString;
+    /***/
+    private File outputXcdl;
+    /***/
+    private byte[] binary;
+
+    /**
+     * Set up the testing environment: create files and directories for testing.
+     */
+    @Before
+    public void testBasicCharacteriseOneBinaryXCELtoBinary() {
+        File inputImage = new File(ExtractorTestHelper.SAMPLE_FILE);
+        File inputXcel = new File(ExtractorTestHelper.SAMPLE_XCEL);
+        File outputFolder = new File(ExtractorTestHelper.CLIENT_OUTPUT_DIR);
+        boolean made = outputFolder.mkdir();
+        if (!made && !outputFolder.exists()) {
+            fail("Could not create directory: " + outputFolder);
         }
-    
-        // Create the byte array to hold the data
-        byte[] bytes = new byte[(int)length];
-    
-        // Read in the bytes
-        int offset = 0;
-        int numRead = 0;
-        while (offset < bytes.length
-               && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-            offset += numRead;
+        outputXcdl = new File(outputFolder, "client_output.xcdl");
+        binary = ByteArrayHelper.read(inputImage);
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader(inputXcel));
+            StringBuffer sb = new StringBuffer();
+            String in = "";
+            while ((in = br.readLine()) != null) {
+                sb.append(in);
+            }
+            xcelString = sb.toString();
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    
-        // Ensure all the bytes have been read in
-        if (offset < bytes.length) {
-            throw new IOException("Could not completely read file "+file.getName());
+    }
+
+    /** Test using a local instance. */
+    @Test
+    public void testLocal() {
+        test(new Extractor2Binary());
+    }
+
+    /** Test using the web service running on local host. */
+    @Test
+    public void testRemoteLocalServer() {
+        test(ExtractorTestHelper.getRemoteInstance(
+                ExtractorTestHelper.LOCALHOST + WSDL,
+                BasicCharacteriseOneBinaryXCELtoBinary.class));
+    }
+
+    /** Test using the web service running on the test server. */
+    @Test
+    public void testRemoteTestServer() {
+        test(ExtractorTestHelper.getRemoteInstance(
+                ExtractorTestHelper.PLANETARIUM + WSDL,
+                BasicCharacteriseOneBinaryXCELtoBinary.class));
+    }
+
+    /**
+     * @param extractor The extractor instance to test
+     */
+    private void test(final BasicCharacteriseOneBinaryXCELtoBinary extractor) {
+        try {
+            /* find XCEL */
+            byte[] result = extractor.basicCharacteriseOneBinaryXCELtoBinary(
+                    binary, null);
+            /* give XCEL */
+            result = extractor.basicCharacteriseOneBinaryXCELtoBinary(binary,
+                    xcelString);
+            outputXcdl = ByteArrayHelper.write(result);
+            assertTrue("No output file written;", outputXcdl.exists());
+        } catch (PlanetsException e) {
+            e.printStackTrace();
         }
-    
-        // Close the input stream and return bytes
-        is.close();
-        return bytes;
     }
 
 }
