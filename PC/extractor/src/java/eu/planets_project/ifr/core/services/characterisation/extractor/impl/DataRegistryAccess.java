@@ -4,9 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
 
 import javax.jcr.LoginException;
 import javax.jcr.RepositoryException;
@@ -28,6 +26,16 @@ import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
  */
 public class DataRegistryAccess {
 
+    private String host;
+
+    public DataRegistryAccess(String host) {
+        this.host = host;
+    }
+
+    public DataRegistryAccess() {
+        this.host = "http://localhost:8080";
+    }
+
     private final static PlanetsLogger plogger = PlanetsLogger
             .getLogger(DataRegistryAccess.class);
     private static final String EXTRACTOR_DR_OUT = "EXTRACTOR_OUT";
@@ -39,7 +47,7 @@ public class DataRegistryAccess {
      * @param fileReference reference to the src-file in the DataRegistry
      * @return src file as byte[] for conversion
      */
-    static byte[] read(String fileReference) {
+    byte[] read(String fileReference) {
         plogger.debug("Starting to get File from DataRegistry...");
 
         URI fileURI = null;
@@ -71,7 +79,7 @@ public class DataRegistryAccess {
         return srcFileArray;
     }
 
-    static URI write(byte[] binary, String fileName) {
+    URI write(byte[] binary, String fileName) {
         plogger.info("Starting to store File in DataRegistry...");
         DataManagerLocal dataRegistry = null;
         URI fileURI = null;
@@ -251,7 +259,7 @@ public class DataRegistryAccess {
      * @return
      * @throws NamingException
      */
-    private static DataManagerLocal createDataRegistry() {
+    private DataManagerLocal createDataRegistry() {
         Context ctx;
         try {
             ctx = new InitialContext();
@@ -263,8 +271,8 @@ public class DataRegistryAccess {
                 plogger.warn("No initial context, trying via service...");
                 URL url = null;
                 try {
-                    url = new URL(
-                            "http://localhost:8080/storage-ifr-storage-ejb/DataManager?wsdl");
+                    url = new URL(this.host
+                            + "/storage-ifr-storage-ejb/DataManager?wsdl");
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
@@ -283,7 +291,7 @@ public class DataRegistryAccess {
         return null;
     }
 
-    private static String getTimeStamp() {
+    private String getTimeStamp() {
         String day, month, year, hour, minute, second, millisecond = null;
         // Creating a Calendar instance for the timestamp used in the
         // storeBinaryInDataRegistry() method.

@@ -23,11 +23,15 @@ import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteris
 public final class Extractor2URITest {
 
     /***/
-    private static final String WSDL = "/pserv-pc-extractor/Extractor2URI?wsdl";
+    private static final String EXTRACTOR_WSDL = "/pserv-pc-extractor/Extractor2URI?wsdl";
     /***/
     private URI xcel;
     /***/
     private URI input;
+    /***/
+    private File inputImage;
+    /***/
+    private File inputXcel;
 
     /**
      * Set up the testing environment: create the testing files and store them
@@ -35,58 +39,53 @@ public final class Extractor2URITest {
      */
     @Before
     public void testBasicCharacteriseOneBinaryXCELtoBinary() {
-        File inputImage = new File(ExtractorTestHelper.SAMPLE_FILE);
-        File inputXcel = new File(ExtractorTestHelper.SAMPLE_XCEL);
-        input = DataRegistryAccess.write(ByteArrayHelper.read(inputImage),
-                "Testing_Input.file");
-        xcel = DataRegistryAccess.write(ByteArrayHelper.read(inputXcel),
-                "Testing_XCEL.file");
-
-    }
-
-    /** Test with a local instance. */
-    @Test
-    public void testLocal() {
-        test(new Extractor2URI());
+        inputImage = new File(ExtractorTestHelper.SAMPLE_FILE);
+        inputXcel = new File(ExtractorTestHelper.SAMPLE_XCEL);
     }
 
     /** Test with a remote instance via web service on local host. */
     @Test
     public void testRemoteLocalServer() {
-        test(ExtractorTestHelper.getRemoteInstance(
-                ExtractorTestHelper.LOCALHOST + WSDL,
-                BasicCharacteriseOneBinaryXCELtoURI.class));
+        test(ExtractorTestHelper.LOCALHOST);
     }
 
     /** Test with a remote instance via web service on the test server. */
     @Test
     public void testRemoteTestServer() {
-        test(ExtractorTestHelper.getRemoteInstance(
-                ExtractorTestHelper.PLANETARIUM + WSDL,
-                BasicCharacteriseOneBinaryXCELtoURI.class));
+        test(ExtractorTestHelper.PLANETARIUM);
     }
 
     /**
-     * @param extractor2URI The extractor instance to test
+     * @param host The host to be used for accessing both service and data
+     *        registry
      */
-    private void test(final BasicCharacteriseOneBinaryXCELtoURI extractor2URI) {
+    private void test(final String host) {
+        BasicCharacteriseOneBinaryXCELtoURI extractor2URI = ExtractorTestHelper
+                .getRemoteInstance(host + EXTRACTOR_WSDL,
+                        BasicCharacteriseOneBinaryXCELtoURI.class);
+        DataRegistryAccess registry = new DataRegistryAccess(host);
+        input = registry.write(ByteArrayHelper.read(inputImage),
+                "Testing_Input.file");
+        xcel = registry.write(ByteArrayHelper.read(inputXcel),
+                "Testing_XCEL.file");
         try {
-            /* find XCEL */
-            check(extractor2URI
-                    .basicCharacteriseOneBinaryXCELtoURI(input, null));
             /* give XCEL */
             check(extractor2URI
-                    .basicCharacteriseOneBinaryXCELtoURI(input, xcel));
+                    .basicCharacteriseOneBinaryXCELtoURI(input, xcel), registry);
+            /* find XCEL */
+            check(extractor2URI
+                    .basicCharacteriseOneBinaryXCELtoURI(input, null), registry);
         } catch (PlanetsException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * @param uri The URI referencing a file in the data registry
+     * @param data The URI referencing a file in the data registry
+     * @param registry The registry to check for the given data
      */
-    private void check(final URI uri) {
-        byte[] result = DataRegistryAccess.read(uri.toASCIIString());
+    private void check(final URI data, final DataRegistryAccess registry) {
+        byte[] result = registry.read(data.toASCIIString());
         File file = ByteArrayHelper.write(result);
         assertTrue("We have no result file when using the data registry;", file
                 .exists());

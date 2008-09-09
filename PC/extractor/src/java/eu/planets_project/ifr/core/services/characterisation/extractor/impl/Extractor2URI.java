@@ -55,10 +55,8 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
     private static String EXTRACTOR_DR_OUT = CALLING_EXTRACTOR_NAME + "_OUT";
     private static String OUTPUTFILE_NAME = "extractor2uri_xcdl_out.xcdl";
 
-    
-
     public Extractor2URI() {
-       
+
     }
 
     /**
@@ -99,7 +97,7 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
                     + "/" + BasicCharacteriseOneBinaryXCELtoURI.NAME, partName = "input_xcel_URI") URI inputXcelURI)
             throws PlanetsException {
 
-        byte[] input_image = DataRegistryAccess.read(inputImageURI
+        byte[] input_image = new DataRegistryAccess().read(inputImageURI
                 .toASCIIString());
         // byte[] input_xcel = getBinaryFromDataRegistry(inputXcelURI
         // .toASCIIString());
@@ -118,11 +116,12 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
         }
 
         byte[] outputXCDL = extractor.extractXCDL(input_image,
-                inputXcelURI != null ? DataRegistryAccess.read(inputXcelURI
-                        .toASCIIString()) : null);
+                inputXcelURI != null ? new DataRegistryAccess()
+                        .read(inputXcelURI.toASCIIString()) : null);
 
         URI outputFileURI = null;
-        outputFileURI = DataRegistryAccess.write(outputXCDL, OUTPUTFILE_NAME);
+        outputFileURI = new DataRegistryAccess().write(outputXCDL,
+                OUTPUTFILE_NAME);
         return outputFileURI;
     }
 
@@ -360,5 +359,4 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
     // }
     // }
 
-    
 }
