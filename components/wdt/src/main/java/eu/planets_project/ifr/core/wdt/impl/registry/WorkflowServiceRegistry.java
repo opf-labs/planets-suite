@@ -37,6 +37,8 @@ public class WorkflowServiceRegistry {
     // ServiceRegistryManager_Service service;
     // does not inject...
 
+    private static final String PASSWORD = "provider";
+    private static final String USERNAME = "provider";
     private Log logger = PlanetsLogger.getLogger(this.getClass(),
             "resources/log/wdt-log4j.xml");
     private ServiceRegistry registry = null;
@@ -95,8 +97,8 @@ public class WorkflowServiceRegistry {
                     + dsc.getCategory());
 
             // -> hand over dsc
-            ServiceList serviceList_ = registry.findServices("provider",
-                    "provider", "%", dsc.getCategory());
+            ServiceList serviceList_ = registry.findServices(USERNAME,
+                    PASSWORD, "%", dsc.getCategory());
             logger.debug("registry returned list:" + serviceList_);
             List<PsService> psServiceList = serviceList_.getService();
 
@@ -110,7 +112,7 @@ public class WorkflowServiceRegistry {
                     // ignore cats: String[] categories =
                     // psService.getCategory().toArray(new String[0]);
                     List<PsBinding> psBindings = registry.findBindings(
-                            "provider", "provider", psService.getKey())
+                            USERNAME, PASSWORD, psService.getKey())
                             .getBinding();
                     logger.debug("found serviceID: " + psService.getKey()
                             + " #categories: "
@@ -164,7 +166,7 @@ public class WorkflowServiceRegistry {
             String serviceId = null;
             String[] catIds = null;
 
-            PsSchema schema = registry.getTaxonomy();
+            PsSchema schema = registry.getTaxonomy(USERNAME,PASSWORD);
             List<PsCategory> categories = schema.getCategories();
 
             String taxonomyId = schema.getId();
@@ -185,8 +187,8 @@ public class WorkflowServiceRegistry {
                                 + catIds[t]);
             }
 
-            OrganizationList orgList = registry.findOrganizations("provider",
-                    "provider", "%");
+            OrganizationList orgList = registry.findOrganizations(USERNAME,
+                    PASSWORD, "%");
             // logger.error("Orglist: "+orgList);
 
             List<PsOrganization> orgs = orgList.getOrganization();

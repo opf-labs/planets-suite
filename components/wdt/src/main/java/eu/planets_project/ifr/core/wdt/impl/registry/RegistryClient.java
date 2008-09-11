@@ -51,7 +51,7 @@ public class RegistryClient {
         String orgId = null;
 
         // find available categories
-        PsSchema schema = registry.getTaxonomy();
+        PsSchema schema = registry.getTaxonomy(USER,PWD);
         List<PsCategory> categories = schema.getCategories();
         String taxonomyId = schema.getId();
         logger.error("Schema ID: " + taxonomyId);
