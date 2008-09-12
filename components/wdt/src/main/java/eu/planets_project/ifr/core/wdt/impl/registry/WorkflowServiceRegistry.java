@@ -166,7 +166,7 @@ public class WorkflowServiceRegistry {
             String serviceId = null;
             String[] catIds = null;
 
-            PsSchema schema = registry.getTaxonomy(USERNAME,PASSWORD);
+            PsSchema schema = registry.findTaxonomy(USERNAME,PASSWORD);
             List<PsCategory> categories = schema.getCategories();
 
             String taxonomyId = schema.getId();

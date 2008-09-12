@@ -51,7 +51,7 @@ public class RegistryClient {
         String orgId = null;
 
         // find available categories
-        PsSchema schema = registry.getTaxonomy(USER,PWD);
+        PsSchema schema = registry.findTaxonomy(USER,PWD);
         List<PsCategory> categories = schema.getCategories();
         String taxonomyId = schema.getId();
         logger.error("Schema ID: " + taxonomyId);
@@ -126,7 +126,7 @@ public class RegistryClient {
         //logger.error("register binding for servicee key: "+binding.getService(
         // ).getKey());
         PsRegistryMessage rMsg = registry
-                .saveServiceBinding(USER, PWD, binding);
+                .saveBinding(USER, PWD, binding);
     }
 
     /**
@@ -138,7 +138,7 @@ public class RegistryClient {
      */
     public void addCategory(String serviceId, String categoryId)
             throws Exception {
-        registry.addClassificationTo(USER, PWD, serviceId, categoryId);
+        registry.savePredefinedClassification(USER, PWD, serviceId, categoryId);
     }
 
     public QName getQName() {
