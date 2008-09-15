@@ -19,16 +19,16 @@
         
       <rich:toolBar height="34" itemSeparator="line">
             <rich:toolBarGroup>
-              <h:graphicImage id="edit" value="/images/icons/edit.gif" />
+              <h:graphicImage id="edit" value="/images/icons/go-first.png" />
               <h:commandLink action="gotoList">Back</h:commandLink>
             </rich:toolBarGroup>
             <rich:toolBarGroup>
-              <h:graphicImage id="sort" value="/images/icons/filter.gif" />
+              <h:graphicImage id="sort" value="/images/icons/go-down.png" />
               <h:outputLabel value="Sort By..." for="sort" />
             </rich:toolBarGroup>
             <rich:toolBarGroup>                       
-              <h:graphicImage id="find" value="/images/icons/find.gif" />
-              <h:outputLabel value="Select Registry - DROID" for="find" />
+              <h:graphicImage id="select" value="/images/icons/applications-system.png" />
+              <h:outputLabel value="Select Registry - DROID" for="select" />
             </rich:toolBarGroup>
             <rich:toolBarGroup location="right">
               <h:inputText id="formatSearchInput" value="#{Registry.searchStr}">
