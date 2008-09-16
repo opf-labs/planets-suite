@@ -117,7 +117,6 @@
 								</h:selectOneMenu>
 							</t:column>
 						</rich:dataTable>
-						<h:messages errorClass="errorMessage" infoClass="infoMessage"/>
                    </h:panelGroup>
                 <div class="clear"></div>
                 </rich:simpleTogglePanel>
@@ -158,7 +157,6 @@
 				</t:column>
 				
 			</t:dataTable>
-			<h:messages errorClass="errorMessage" infoClass="infoMessage"/>
 			
            <h2 class="main">#{res['exp_stage6.report']}</h2>
            <p>
@@ -172,48 +170,46 @@
                <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
            </p>
 
-            <p><h:commandButton id="updateEval" value="#{res['exp_stage6.button']}" action="#{NewExp_Controller.updateEvaluationAction}">
-            	 <rich:componentControl for="modelpanel" attachTo="updateEval" operation="show" event="onclick" disableDefault="true"/>
-            </h:commandButton></p> 
-                
-            <p><h:commandButton value="#{res['exp_stage6.finalize']}"
-                action="#{NewExp_Controller.finalizeEvaluationAction}" /></p>
-                
-                
-       <!-- testing modal panel>
-		<p><a4j:commandButton value="Testing model Panel1" action="#{NewExp_Controller.updateEvaluationAction}"
-				oncomplete="if (document.getElementById('hasMessages').value=='true') Richfaces.showModalPanel('modelpanel');"/>
-       </p>    
-       
-       <p><a4j:commandButton value="Testing model Panel2" action="#{NewExp_Controller.updateEvaluationAction}"
-				oncomplete="Richfaces.showModalPanel('modelpanel');"/>
-       </p>  
+			<!-- demonstrates the usage of componentControl -->
+            <!-- h:commandButton id="updateEval" value="#{res['exp_stage6.button']}" action="#{NewExp_Controller.updateEvaluationAction}">
+            	 <rich:componentControl for="modelpanel_error" attachTo="updateEval" operation="show" event="onclick" disableDefault="true"/>
+            </h:commandButton-->
+            
+            <!-- please note: absolute DOM id in getElementById -->
+            <p><a4j:commandButton value="#{res['exp_stage6.button']}" action="#{NewExp_Controller.updateEvaluationAction}"
+				oncomplete="if (document.getElementById('form_results:hasErrMessages').value=='true') Richfaces.showModalPanel('modelpanel_error');"/>
+       		</p>  
+       		
+       		<p><a4j:commandButton value="#{res['exp_stage6.finalize']}" action="#{NewExp_Controller.finalizeEvaluationAction}"
+				oncomplete="if (document.getElementById('form_results:hasErrMessages').value=='true') Richfaces.showModalPanel('modelpanel_error');"/>
+       		</p>  
+                    
 		
-		<a4j:outputPanel ajaxRendered="true">
-				<h:inputHidden id="hasMessages" value="#{ExperimentBean.hasMessages}" />
-		</a4j:outputPanel>
+			<a4j:outputPanel ajaxRendered="true">
+					<h:inputHidden id="hasErrMessages" value="#{ExperimentBean.hasErrMessages}" />
+			</a4j:outputPanel>
 			
-			    <rich:modalPanel id="modelpanel" width="350" height="100">
-			        <f:facet name="header">
-			            <h:panelGroup>
-			                <h:outputText value="Modal Panel"></h:outputText>
-			            </h:panelGroup>
-			        </f:facet>
-			        <f:facet name="controls">
-			            <h:panelGroup>
-			             	<img id="hideOverlay" src="${facesContext.externalContext.requestContextPath}/graphics/close.png" alt="close" title="close"/>
-			                <rich:componentControl for="modelpanel" attachTo="hideOverlay" operation="hide" event="onclick"/>
-			            </h:panelGroup>
-			        </f:facet>
-			        <h:outputText value="This panel is called using Component Control Component"></h:outputText>
-			        <h:outputText value="#{ExperimentBean.popupMessage}"/>
-			        <br/>
-			        <h:outputText value="Closure link (X) works also through Component Control"></h:outputText>
-			    </rich:modalPanel>
-			    
-		<end testing modal panel -->    
-                
-                
+		<!--start modal panel: source/target validation error -->    
+		    <rich:modalPanel id="modelpanel_error" width="350" height="100">
+		        <f:facet name="header">
+		            <h:panelGroup>
+		                <h:outputText value="Evaluation Status: Errors Occurred"></h:outputText>
+		            </h:panelGroup>
+		        </f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		             	<img id="hideOverlay" src="${facesContext.externalContext.requestContextPath}/graphics/close.png" alt="close" title="close"/>
+		                <rich:componentControl for="modelpanel_error" attachTo="hideOverlay" operation="hide" event="onclick"/>
+		            </h:panelGroup>
+		        </f:facet>
+		        <h:outputText value="The entered Benchmark Goal Evlauation data contained some errors [todo: add a proper error message here]"></h:outputText>
+		        	<a4j:outputPanel ajaxRendered="true">
+						<h:outputText value="#{ExperimentBean.hasErrMessages}" />
+						<h:messages errorClass="errorMessage" infoClass="infoMessage"/>
+					</a4j:outputPanel>
+		    </rich:modalPanel>    
+		<!--end validation error modal panel -->    
+   
 		</a4j:form>
 		
 		

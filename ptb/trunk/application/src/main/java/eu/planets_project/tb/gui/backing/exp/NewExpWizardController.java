@@ -482,11 +482,13 @@ public class NewExpWizardController {
 	    	List<BenchmarkGoal> expBMgoals = new ArrayList<BenchmarkGoal>();
 	    	Iterator iter = expBean.getExperimentBenchmarkBeans().iterator();
 	    	log.debug("Found # of ExperimentOverall BMGS: " + expBean.getExperimentBenchmarkBeans().size());
+	    	boolean bError = false;
 	    	while (iter.hasNext()) {
 	    		BenchmarkBean bmb = (BenchmarkBean)iter.next();
+	    		BenchmarkGoal bmg;
 	    		if (bmb.getSelected()) {
 		    		// get the bmgoal from the evaluation data
-	    			BenchmarkGoal bmg = exp.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(bmb.getID());
+	    			bmg = exp.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(bmb.getID());
 	    		try {
 		    		//update the bmg with the provided bean's data
 		    		helper_addBMBSettingsToBMGoal(bmb,bmg);
@@ -495,44 +497,79 @@ public class NewExpWizardController {
 		    		log.debug("updating bmg's target:" + bmg.getTargetValue());
 		    		
 	    		} catch (InvalidInputException e) {
+	    			//create an ErrorMessage
 	    	        FacesMessage fmsg = new FacesMessage();
-	    	        fmsg.setDetail("Values for Benchmarkgoal are not valid!"+e.toString());
-	    	        fmsg.setSummary("Values for Benchmarkgoal are not valid!");
+	    	        if(bmg!=null){
+	    	        	fmsg.setSummary("Validation of "+bmg.getName()+" failed");
+	    	        	fmsg.setDetail("Validation of "+bmg.getName()+" failed");
+	    	        }
+	    	        else{
+	    	        	fmsg.setDetail("source/target value of a given file-Benchmarkgoal is not valid!"+e.toString());
+	 	    	        fmsg.setSummary("source/target value of a given file-Benchmarkgoal is not valid!");
+	    	        }
 	    	        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			        FacesContext ctx = FacesContext.getCurrentInstance();
 			        ctx.addMessage("bmTable",fmsg);
 	    			log.error(e.toString());
-		    		return "failure";
+	    			//set error true: all error messages are collected and then "failure" is returned
+	    			bError = true;
 	    		}
 	    		}
 	    	}
 	    	
 	    	//3. fill the file benchmark goals - used for evaluation of every input file
+	    	boolean bError2 = false;
 	    	Map<String,BenchmarkBean> mBMBs = expBean.getFileBenchmarkBeans();
 	    	Map<URI,List<BenchmarkGoal>> mFileBMGs = new HashMap<URI,List<BenchmarkGoal>>();
 	    	Iterator<String> itLocalInputFileRefs = expBean.getExperimentInputData().values().iterator();
 	    	DataHandler dh = new DataHandlerImpl();
 	   
 	    	//iterate over every input file and add update their evaluation
+	    	BenchmarkGoal bmg =null;
 	    	try {
-				while(itLocalInputFileRefs.hasNext()){
+	    		while(itLocalInputFileRefs.hasNext()){
 					String localInputFileRef = itLocalInputFileRefs.next();
 					URI inputURI = dh.getHttpFileRef(new File(localInputFileRef), true);
 					List<BenchmarkGoal> lbmgs = new ArrayList<BenchmarkGoal>();
 					
 					for(BenchmarkBean b : mBMBs.values()){
-						BenchmarkGoal bmg = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoal(inputURI, b.getID());
+						bmg = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoal(inputURI, b.getID());
 						BenchmarkBean bmb = mBMBs.get(inputURI+b.getID());
-						this.helper_addBMBSettingsToBMGoal(bmb, bmg);
-						lbmgs.add(bmg);
+						try{
+							this.helper_addBMBSettingsToBMGoal(bmb, bmg);
+							lbmgs.add(bmg);
+						}
+						catch(InvalidInputException e){
+							//create an ErrorMessage
+			    	        FacesMessage fmsg = new FacesMessage();
+			    	        if(bmg!=null){
+			    	        	fmsg.setSummary("Validation of "+bmg.getName()+" failed");
+			    	        	fmsg.setDetail("Validation of "+bmg.getName()+" failed");
+			    	        }
+			    	        else{
+			    	        	fmsg.setDetail("source/target value of a given file-Benchmarkgoal is not valid!"+e.toString());
+			 	    	        fmsg.setSummary("source/target value of a given file-Benchmarkgoal is not valid!");
+			    	        }
+			    	        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+					        FacesContext ctx = FacesContext.getCurrentInstance();
+					        ctx.addMessage("modelpanel_error",fmsg);
+			    			log.error(e.toString());
+				    		bError2 = true;
+						}
 					}
 					
 					mFileBMGs.put(inputURI,lbmgs);
 				}
-			} catch (Exception e) {
-				// TODO: Andrew: Think about how to get back the failure INFO for the file BMGoal to screen
+			} catch (Exception e2) {
+				//a system exception occurred:
+				log.error("Failure within filling FileBenchmarkGoals");
 				return "failure";
 			}
+			
+			//if either overall bmgoal evaluation or file bmgoal evaluation caused a validation exception
+			if((bError)||(bError2)){
+	    		return "failure";
+	    	}
 	    	
 	    	//4. now write these changes back to the experiment
 	    	Experiment e = testbedMan.getExperiment(exp.getEntityID());

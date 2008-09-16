@@ -1370,20 +1370,19 @@ public class ExperimentBean {
         this.expToRemove = expToRemove;
     }
     
-    //TODO ANDREW: DELETE START TESTING FROM HERE
-    public String getPopupMessage(){
-    	//Before or after execution?
-    	return "This is a first test";
-    }
     
-    public boolean isHasMessages() {
+    /**
+     * Indicates if an FacesMessage (e.g. error or info message) was added for the current context
+     * Used for displaying source/target validation errors
+     * @return
+     */
+    public boolean isHasErrMessages() {
     	return FacesContext.getCurrentInstance().getMessages().hasNext();
     }
-
     
-    public void setHasMessages(boolean b){
+    
+    public void setHasErrMessages(boolean b){
     	//
     }
-    //END ANDREW: DELETE END TESTING FROM HERE
     
 }
