@@ -125,8 +125,12 @@ public class CoreExtractor {
             extractor_arguments.add(xcelFilePath);
             extractor_arguments.add(outputFilePath);
         } else {
+        	 extractor_arguments.add("-o");
+        	 extractor_arguments.add(outputFilePath);
+        	
             // No XCEL -> default output location
-            outputFilePath = EXTRACTOR_HOME + "xcdlOutput.xml";
+            
+//        	outputFilePath = EXTRACTOR_HOME + "xcdlOutput.xml";
         }
 
         String line = "";

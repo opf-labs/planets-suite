@@ -27,19 +27,41 @@ import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 public class DataRegistryAccess {
 
     private String host;
+	private static int MONTH;
+    private static int DAY;
+    private static int YEAR;
+    private static int HOUR;
+    private static int MINUTE;
+    private static int SECOND;
+    private static Calendar myCALENDAR;
 
     public DataRegistryAccess(String host) {
-        this.host = host;
+       this.host = host;
+       this.createCalendar();
     }
 
     public DataRegistryAccess() {
         this.host = "http://localhost:8080";
+        this.createCalendar();
     }
 
     private final static PlanetsLogger plogger = PlanetsLogger
             .getLogger(DataRegistryAccess.class);
+    
     private static final String EXTRACTOR_DR_OUT = "EXTRACTOR_OUT";
 
+    private void createCalendar() {
+    	 // Creating a Calendar instance for the timestamp used in the
+        // write(...) method.
+        myCALENDAR = Calendar.getInstance();
+        DAY = myCALENDAR.get(Calendar.DAY_OF_MONTH);
+        MONTH = myCALENDAR.get(Calendar.MONTH) + 1;
+        YEAR = myCALENDAR.get(Calendar.YEAR);
+        HOUR = myCALENDAR.get(Calendar.HOUR_OF_DAY);
+        MINUTE = myCALENDAR.get(Calendar.MINUTE);
+        SECOND = myCALENDAR.get(Calendar.SECOND);
+    }
+    
     /**
      * get the src file from the DataRegistry using the file reference contained
      * in the XML-PDM String. The file is returned as byte[].
@@ -47,7 +69,7 @@ public class DataRegistryAccess {
      * @param fileReference reference to the src-file in the DataRegistry
      * @return src file as byte[] for conversion
      */
-    byte[] read(String fileReference) {
+    public byte[] read(String fileReference) {
         plogger.debug("Starting to get File from DataRegistry...");
 
         URI fileURI = null;
@@ -79,7 +101,7 @@ public class DataRegistryAccess {
         return srcFileArray;
     }
 
-    URI write(byte[] binary, String fileName) {
+    public URI write(byte[] binary, String fileName, String outputDir) {
         plogger.info("Starting to store File in DataRegistry...");
         DataManagerLocal dataRegistry = null;
         URI fileURI = null;
@@ -108,10 +130,10 @@ public class DataRegistryAccess {
         try {
             plogger.info("Creating File URI...");
             plogger.info("URI will be: " + dataRegistryPath + "/"
-                    + EXTRACTOR_DR_OUT + "/" + fileName);
+                    + outputDir + "/" + fileName);
 
             // Create the new URI for storing the file to the DataRegistry.
-            fileURI = new URI(dataRegistryPath + "/" + EXTRACTOR_DR_OUT + "/"
+            fileURI = new URI(dataRegistryPath + "/" + outputDir + "/"
                     + fileName);
 
             plogger.info("Created File URI: " + fileURI.toASCIIString());
@@ -127,7 +149,7 @@ public class DataRegistryAccess {
             // root when testing
             // if a file already exists.
             URI outputFolderURI = new URI(dataRegistryPath + "/"
-                    + EXTRACTOR_DR_OUT);
+                    + outputDir);
             plogger.info("Outputfolder: " + outputFolderURI.toASCIIString());
             plogger.info("Searching for duplicated files...");
 
@@ -157,9 +179,9 @@ public class DataRegistryAccess {
                         String currentURI = searchResults[i].toASCIIString();
                         // Check if there have been hits inside the
                         // OUTPUT_FOLDER
-                        if (currentURI.indexOf(EXTRACTOR_DR_OUT) != -1) {
+                        if (currentURI.indexOf(outputDir) != -1) {
                             // There is (at least) a file with the same name
-                            // inside the OUTPUT_FOLDER so...
+                            // inside the "outputDir" so...
                             plogger.info("File already exists: " + fileName
                                     + ". File will be renamed...");
 
@@ -199,12 +221,13 @@ public class DataRegistryAccess {
                                     .info("Successfully stored binary in DataRegistry: "
                                             + renamedFileName);
                             fileURI = renamedFileURI;
+                            break;
                         }
 
                         // There have been hits (e.g. files with the same name),
                         // but in a different folder,
-                        // so just store the file with its initial name in the
-                        // DataRegistry
+                        // so just store the file with its initial name in the specified 
+                        // "outputDir" inside the DataRegistry...
                         else {
                             plogger
                                     .info("Attempting to store binary in DataRegistry: "
@@ -293,15 +316,6 @@ public class DataRegistryAccess {
 
     private String getTimeStamp() {
         String day, month, year, hour, minute, second, millisecond = null;
-        // Creating a Calendar instance for the timestamp used in the
-        // storeBinaryInDataRegistry() method.
-        Calendar myCALENDAR = Calendar.getInstance();
-        int DAY = myCALENDAR.get(Calendar.DAY_OF_MONTH);
-        int MONTH = myCALENDAR.get(Calendar.MONTH) + 1;
-        int YEAR = myCALENDAR.get(Calendar.YEAR);
-        int HOUR = myCALENDAR.get(Calendar.HOUR_OF_DAY);
-        int MINUTE = myCALENDAR.get(Calendar.MINUTE);
-        int SECOND = myCALENDAR.get(Calendar.SECOND);
         if (DAY > 9) {
             day = "" + DAY;
         } else {

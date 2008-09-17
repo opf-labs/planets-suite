@@ -15,18 +15,19 @@ import javax.xml.ws.Service;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.DataRegistryAccess;
+import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
 
 public class BasicCharacteriseOneBinaryXCELtoURIClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2URI_CLIENT_OUTPUT";
+	private static final String CLIENT_DR_INPUT_DIR = "EXTRACTOR2URI_INPUT";
 	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 	
 	// Please choose the HOST you wish to test...
 	
-//    private static String HOST = "localhost";
-    private static String HOST = "planetarium.hki.uni-koeln.de";
-	
-	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception, SOAPException, URISyntaxException {
+    private static String HOST = "localhost";
+    public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception, SOAPException, URISyntaxException {
 		if(EXTRACTOR_HOME.endsWith(File.separator + File.separator)) {
 			EXTRACTOR_HOME = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator);
 		}
@@ -48,10 +49,18 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 			
 			new File(EXTRACTOR_HOME + "res/testpng/bgai4a16.png");
 		
+		String image_name = input_image.getName();
+		
 		// Please fill in the corresponding input XCEL FILE:
 		File input_xcel = 
 			
-			new File(EXTRACTOR_HOME + "res/xcl/xcel/xcel_docs/xcel_png.xcel");
+			new File(EXTRACTOR_HOME + "res/xcl/xcel/xcel_docs/xcel_png.xml");
+		
+		String xcel_name = input_xcel.getName().replace(".xml", ".xcel");
+		
+		// Storing testFiles in DataRegistry
+		URI inputImageURI = storeBinaryInDataRegistry(ByteArrayHelper.read(input_image), image_name, CLIENT_DR_INPUT_DIR);
+		URI inputXcelURI = storeBinaryInDataRegistry(ByteArrayHelper.read(input_xcel), xcel_name, CLIENT_DR_INPUT_DIR);
 		
 		// Please specify the name and the location of the OUTPUT-FILE:
 		File outputFolder = new File(CLIENT_OUTPUT_DIR);
@@ -61,12 +70,12 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 			
 			new File(outputFolder, "client_output.xcdl");
 		
-		System.out.println("Working with files: " + "\n"+ input_image.getName() + "\n" + input_xcel.getName());
+		System.out.println("Working with files: " + "\n"+ image_name + "\n" + xcel_name);
 		System.out.println("Creating Extractor instance...");
 		System.out.println("Sending data to Webservice...");
 		
-		URI inputImageURI = new URI("planets://localhost:8080/dr/local/EXTRACTOR_IN/" + input_image.getName());
-		URI inputXcelURI = new URI("planets://localhost:8080/dr/local/EXTRACTOR_IN/" + input_xcel.getName());
+//		URI inputImageURI = new URI("planets://" + HOST + ":8080/dr/local/" + CLIENT_DR_INPUT_DIR+ "/" + input_image.getName());
+//		URI inputXcelURI = new URI("planets://" + HOST + ":8080/dr/local/" + CLIENT_DR_INPUT_DIR+ "/" + input_xcel.getName());
 		
 		URI resultXCDLURI = extractor.basicCharacteriseOneBinaryXCELtoURI(inputImageURI, inputXcelURI);
 		
@@ -85,6 +94,12 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 		fileOut.flush();
 		fileOut.close();
 		System.out.println("Please find the result XCDL here: " + output_xcdl.getAbsolutePath());
+	}
+	
+	private static URI storeBinaryInDataRegistry(byte[] binary, String fileName, String outputDir) throws MalformedURLException {
+		DataRegistryAccess registry = new DataRegistryAccess();
+		URI resultURI = registry.write(binary, fileName, outputDir);
+		return resultURI;
 	}
 	
 	private static byte[] getBinaryFromDataRegistry(String fileReference) throws SOAPException_Exception, MalformedURLException{

@@ -1,25 +1,17 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+import java.io.File;
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Calendar;
-import java.util.StringTokenizer;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.jcr.LoginException;
-import javax.jcr.RepositoryException;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.xml.soap.SOAPException;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.soap.MTOM;
 
@@ -27,11 +19,9 @@ import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.datamodel.DataModelUtils;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 
 @Stateless()
 @Local(BasicCharacteriseOneBinaryXCELtoURI.class)
@@ -105,15 +95,23 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
         CoreExtractor extractor = new CoreExtractor(CALLING_EXTRACTOR_NAME,
                 plogger);
 
-        String fileName = "";
-        StringTokenizer st = new StringTokenizer(inputImageURI.toASCIIString());
-        while (st.hasMoreTokens()) {
-            fileName = st.nextToken("/");
-        }
-        int k = fileName.lastIndexOf(".");
-        if (k > 0) {
-            OUTPUTFILE_NAME = fileName.substring(0, k + 1) + "xcel";
-        }
+        String inputURIString = inputImageURI.toASCIIString(); 
+        String[] fileNameTokens = inputURIString.split("/");
+        
+        
+        // Creating the Outputfilename by using the inputImage Name and appending ".xcdl"
+        // So the Outputfile could be related to its inputfile, when more files are stored in the DataRegistry.
+    	OUTPUTFILE_NAME = "OUTPUT_" + fileNameTokens[fileNameTokens.length-1].concat(".xcdl");
+        
+//        StringTokenizer st = new StringTokenizer(inputImageURI.toASCIIString());
+//        while (st.hasMoreTokens()) {
+//            fileName = st.nextToken("/");
+//        }
+//        int k = fileName.lastIndexOf(".");
+//        if (k > 0) {
+//            OUTPUTFILE_NAME = fileName.substring(0, k + 1) + "xcdl";
+//        }
+        
 
         byte[] outputXCDL = extractor.extractXCDL(input_image,
                 inputXcelURI != null ? new DataRegistryAccess()
@@ -121,7 +119,7 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
 
         URI outputFileURI = null;
         outputFileURI = new DataRegistryAccess().write(outputXCDL,
-                OUTPUTFILE_NAME);
+                OUTPUTFILE_NAME, EXTRACTOR_DR_OUT);
         return outputFileURI;
     }
 

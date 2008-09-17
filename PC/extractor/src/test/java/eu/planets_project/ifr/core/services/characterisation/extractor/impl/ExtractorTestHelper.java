@@ -22,14 +22,14 @@ public final class ExtractorTestHelper {
     static final String PLANETARIUM = "http://planetarium.hki.uni-koeln.de:8080";
     /***/
     static final String CLIENT_OUTPUT_DIR = "PC/extractor/src/resources/"
-            .replaceAll("/", File.separator)
+            .replace("/", File.separator)
             + "output";
     /***/
     static final String SAMPLE_FILE = "PC/extractor/src/resources/basi0g08.png"
-            .replaceAll("/", File.separator);
+            .replace("/", File.separator);
     /***/
     static final String SAMPLE_XCEL = "PC/extractor/src/resources/xcel_png.xml"
-            .replaceAll("/", File.separator);
+            .replace("/", File.separator);
 
     /**
      * We enforce non-instantiability with a private constructor.

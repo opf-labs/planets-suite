@@ -24,10 +24,11 @@ public final class Extractor2URITest {
 
     /***/
     private static final String EXTRACTOR_WSDL = "/pserv-pc-extractor/Extractor2URI?wsdl";
+    private static final String INPUT_DIR = "EXTRACTOR2URI_TEST_INPUT";
     /***/
-    private URI xcel;
+    private URI xcelURI;
     /***/
-    private URI input;
+    private URI inputURI;
     /***/
     private File inputImage;
     /***/
@@ -64,17 +65,19 @@ public final class Extractor2URITest {
                 .getRemoteInstance(host + EXTRACTOR_WSDL,
                         BasicCharacteriseOneBinaryXCELtoURI.class);
         DataRegistryAccess registry = new DataRegistryAccess(host);
-        input = registry.write(ByteArrayHelper.read(inputImage),
-                "Testing_Input.file");
-        xcel = registry.write(ByteArrayHelper.read(inputXcel),
-                "Testing_XCEL.file");
+        byte[] inputImageBlob = ByteArrayHelper.read(inputImage);
+		inputURI = registry.write(inputImageBlob,
+                "Testing_Input.file", INPUT_DIR);
+        byte[] inputXcelBlob = ByteArrayHelper.read(inputXcel);
+		xcelURI = registry.write(inputXcelBlob,
+                "Testing_XCEL.file", INPUT_DIR);
         try {
             /* give XCEL */
             check(extractor2URI
-                    .basicCharacteriseOneBinaryXCELtoURI(input, xcel), registry);
+                    .basicCharacteriseOneBinaryXCELtoURI(inputURI, xcelURI), registry);
             /* find XCEL */
             check(extractor2URI
-                    .basicCharacteriseOneBinaryXCELtoURI(input, null), registry);
+                    .basicCharacteriseOneBinaryXCELtoURI(inputURI, null), registry);
         } catch (PlanetsException e) {
             e.printStackTrace();
         }
