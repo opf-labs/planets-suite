@@ -99,20 +99,10 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
         String[] fileNameTokens = inputURIString.split("/");
         
         
-        // Creating the Outputfilename by using the inputImage Name and appending ".xcdl"
+        // Creating the Outputfilename by using the inputImage Name and appending "OUTPUT_" [filename] ".xcdl"
         // So the Outputfile could be related to its inputfile, when more files are stored in the DataRegistry.
     	OUTPUTFILE_NAME = "OUTPUT_" + fileNameTokens[fileNameTokens.length-1].concat(".xcdl");
         
-//        StringTokenizer st = new StringTokenizer(inputImageURI.toASCIIString());
-//        while (st.hasMoreTokens()) {
-//            fileName = st.nextToken("/");
-//        }
-//        int k = fileName.lastIndexOf(".");
-//        if (k > 0) {
-//            OUTPUTFILE_NAME = fileName.substring(0, k + 1) + "xcdl";
-//        }
-        
-
         byte[] outputXCDL = extractor.extractXCDL(input_image,
                 inputXcelURI != null ? new DataRegistryAccess()
                         .read(inputXcelURI.toASCIIString()) : null);
