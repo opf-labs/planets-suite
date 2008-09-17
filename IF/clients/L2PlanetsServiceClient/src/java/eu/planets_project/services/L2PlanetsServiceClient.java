@@ -48,8 +48,12 @@ public class L2PlanetsServiceClient {
 		TypePlanetsDataModel tpdm = null;
 		String xmlString = null;
 		
+		// please insert your test-folder here:
 		File folder = new File("C:/planets_ifr_server/PlanetsTestbedData");
-//		File folder = new File("C:/Dokumente und Einstellungen/melmsp/Desktop/leah");
+		// this folder is scanned for images to migrate. The found images are written in a 
+		// Planets DataModel instance, which is passed over to the L2JMagickConverter.
+		
+		
 		List <String> uris = new ArrayList <String>();
 		File[] files = folder.listFiles();
 		System.out.println("Scanning Src-Folder...: " + folder.getAbsolutePath());

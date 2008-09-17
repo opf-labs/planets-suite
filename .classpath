@@ -200,5 +200,6 @@
 	<classpathentry kind="lib" path="PA/openXML/lib/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/xena.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/ejb3.deployer/jboss-ejb3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
