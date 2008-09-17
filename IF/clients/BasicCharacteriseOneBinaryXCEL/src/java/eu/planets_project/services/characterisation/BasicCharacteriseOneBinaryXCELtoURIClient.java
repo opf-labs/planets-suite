@@ -23,6 +23,7 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2URI_CLIENT_OUTPUT";
 	private static final String CLIENT_DR_INPUT_DIR = "EXTRACTOR2URI_INPUT";
 	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+	private static DataRegistryAccess registry = new DataRegistryAccess();
 	
 	// Please choose the HOST you wish to test...
 	
@@ -97,7 +98,6 @@ public class BasicCharacteriseOneBinaryXCELtoURIClient {
 	}
 	
 	private static URI storeBinaryInDataRegistry(byte[] binary, String fileName, String outputDir) throws MalformedURLException {
-		DataRegistryAccess registry = new DataRegistryAccess();
 		URI resultURI = registry.write(binary, fileName, outputDir);
 		return resultURI;
 	}
