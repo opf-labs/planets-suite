@@ -70,7 +70,7 @@ public class L2PlanetsServiceClient {
 			if (files[i].isFile()) {
 				byte[] imageData = ByteArrayHelper.read(files[i]);
 				String currentURIString = dataRegistry.write(imageData, files[i].getName(), L2CLIENT_INPUT_DIR).toASCIIString();
-				uris.add(i, currentURIString);
+				uris.add(currentURIString);
 				System.out.println("Added following URI to DataModel: " + currentURIString);
 			}
 		}

@@ -91,10 +91,16 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
     
     // a GeneralImageConverter instance to carry out the migration.
     private GeneralImageConverter converter = new GeneralImageConverter();
+    
     private MigrationResults migrationResults = new MigrationResults();
+    
+    // Target and required Src format.
     private final static String TARGET_FORMAT = "TIFF";
     private final static String REQUIRED_SRC_FORMAT = "JPEG";
+    
+    // The output folder where the migrated files will be stored in the DataRegistry
     private final static String OUTPUT_FOLDER = "L2JPGTOTIFFCONVERTER_OUTPUT";
+    
     private final static String PATHWAY_TYPE = "Preservation";
     
     private TypePlanetsDataModel inputPDM; // the Planets Data Model object
@@ -227,7 +233,7 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
 			// If migration was successful, store the migrated file to the DataRegistry
 			if(migrationResults.migrationWasSuccessful()) {
 				// store the file to the DataRegistry and get the URI to this file back.
-				plogger.debug(this.getClass().toString() + ": Trying to store file in DataRegistry...");
+				plogger.debug("Trying to store file in DataRegistry...");
 				resultURI = dataRegistry.write(migrationResults.getByteArray(), migratedFileName, OUTPUT_FOLDER);
 				
 				// Add details to TypeFile to be returned
