@@ -11,6 +11,7 @@ import org.junit.Test;
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
+import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
 
 /**
  * Test of the extractor (local and remote) using references into the data
@@ -64,7 +65,7 @@ public final class Extractor2URITest {
         BasicCharacteriseOneBinaryXCELtoURI extractor2URI = ExtractorTestHelper
                 .getRemoteInstance(host + EXTRACTOR_WSDL,
                         BasicCharacteriseOneBinaryXCELtoURI.class);
-        DataRegistryAccess registry = new DataRegistryAccess(host);
+        DataRegistryAccessHelper registry = new DataRegistryAccessHelper(host);
         byte[] inputImageBlob = ByteArrayHelper.read(inputImage);
 		inputURI = registry.write(inputImageBlob,
                 "Testing_Input.file", INPUT_DIR);
@@ -87,7 +88,7 @@ public final class Extractor2URITest {
      * @param data The URI referencing a file in the data registry
      * @param registry The registry to check for the given data
      */
-    private void check(final URI data, final DataRegistryAccess registry) {
+    private void check(final URI data, final DataRegistryAccessHelper registry) {
         byte[] result = registry.read(data.toASCIIString());
         File file = ByteArrayHelper.write(result);
         assertTrue("We have no result file when using the data registry;", file

@@ -15,15 +15,15 @@ import javax.xml.ws.Service;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.DataRegistryAccess;
 import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
+import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
 
 public class BasicCharacteriseOneBinaryXCELtoURIClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2URI_CLIENT_OUTPUT";
 	private static final String CLIENT_DR_INPUT_DIR = "EXTRACTOR2URI_INPUT";
 	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
-	private static DataRegistryAccess registry = new DataRegistryAccess();
+	private static DataRegistryAccessHelper registry = new DataRegistryAccessHelper();
 	
 	// Please choose the HOST you wish to test...
 	

@@ -22,6 +22,7 @@ import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
+import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
 
 @Stateless()
 @Local(BasicCharacteriseOneBinaryXCELtoURI.class)
@@ -87,7 +88,7 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
                     + "/" + BasicCharacteriseOneBinaryXCELtoURI.NAME, partName = "input_xcel_URI") URI inputXcelURI)
             throws PlanetsException {
 
-        byte[] input_image = new DataRegistryAccess().read(inputImageURI
+        byte[] input_image = new DataRegistryAccessHelper().read(inputImageURI
                 .toASCIIString());
         // byte[] input_xcel = getBinaryFromDataRegistry(inputXcelURI
         // .toASCIIString());
@@ -104,11 +105,11 @@ public class Extractor2URI implements BasicCharacteriseOneBinaryXCELtoURI,
     	OUTPUTFILE_NAME = "OUTPUT_" + fileNameTokens[fileNameTokens.length-1].concat(".xcdl");
         
         byte[] outputXCDL = extractor.extractXCDL(input_image,
-                inputXcelURI != null ? new DataRegistryAccess()
+                inputXcelURI != null ? new DataRegistryAccessHelper()
                         .read(inputXcelURI.toASCIIString()) : null);
 
         URI outputFileURI = null;
-        outputFileURI = new DataRegistryAccess().write(outputXCDL,
+        outputFileURI = new DataRegistryAccessHelper().write(outputXCDL,
                 OUTPUTFILE_NAME, EXTRACTOR_DR_OUT);
         return outputFileURI;
     }
