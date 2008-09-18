@@ -5,8 +5,6 @@ package eu.planets_project.ifr.core.services.migration.jmagickconverter.impl;
 //import java.io.BufferedInputStream;
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -17,16 +15,11 @@ import java.util.UUID;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.jcr.LoginException;
-import javax.jcr.RepositoryException;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.xml.bind.JAXBException;
 import javax.xml.soap.SOAPException;
 import javax.xml.ws.BindingType;
@@ -59,7 +52,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.GeneralImageConverter;
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.MigrationResults;
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
+import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
 
 
 /**
@@ -92,8 +85,8 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
 
 	private static final long serialVersionUID = -2694628997974517602L;
 
-	   // Creating a PlanetsLogger...
-    private final static String logConfigFile = "eu/planets_project/ifr/core/services/migration/jmagickconverter/logconfig/l2jpgtotiffconverter-log4j.xml";
+	// Creating a PlanetsLogger...
+	// private final static String logConfigFile = "eu/planets_project/ifr/core/services/migration/jmagickconverter/logconfig/l2jpgtotiffconverter-log4j.xml";
     private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass());
     
     // a GeneralImageConverter instance to carry out the migration.
@@ -101,33 +94,12 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
     private MigrationResults migrationResults = new MigrationResults();
     private final static String TARGET_FORMAT = "TIFF";
     private final static String REQUIRED_SRC_FORMAT = "JPEG";
-    private final static String OUTPUT_FOLDER = "L2JmagickConverter_OUTPUT";
+    private final static String OUTPUT_FOLDER = "L2JPGTOTIFFCONVERTER_OUTPUT";
     private final static String PATHWAY_TYPE = "Preservation";
-    private static int MONTH;
-    private static int DAY;
-    private static int YEAR;
-    private static int HOUR;
-    private static int MINUTE;
-    private static int SECOND;
-    private static Calendar myCALENDAR;
     
     private TypePlanetsDataModel inputPDM; // the Planets Data Model object
     private Map<String, String> newManifestationIds = new HashMap<String, String>();
     
-    /**
-     * Default Constructor.
-     * Creates some static fields, which are used for "timestamping" of duplicate files. 
-     */
-    public L2JpgToTiffConverter() {
-    	// Creating a Calendar instance for the timestamp used in the storeBinaryInDataRegistry() method.
-    	myCALENDAR = Calendar.getInstance();
-    	DAY = myCALENDAR.get(Calendar.DAY_OF_MONTH);
-    	MONTH = myCALENDAR.get(Calendar.MONTH) + 1;
-    	YEAR = myCALENDAR.get(Calendar.YEAR);
-    	HOUR = myCALENDAR.get(Calendar.HOUR_OF_DAY);
-    	MINUTE = myCALENDAR.get(Calendar.MINUTE);
-    	SECOND = myCALENDAR.get(Calendar.SECOND);
-    }
     
     /**
      * The "main" method of that level 2 service. It takes a XML-String PDM instance,
@@ -183,41 +155,6 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
      * @param fileReference reference to the src-file in the DataRegistry 
      * @return src file as byte[] for conversion
      */
-    private byte[] getBinaryFromDataRegistry(String fileReference){
-		plogger.debug("Starting to get File from DataRegistry...");
-		
-		URI fileURI = null;
-		try {
-			fileURI = new URI(fileReference);
-		} catch (URISyntaxException e1) {
-			plogger.warn("Exception: " + e1.getLocalizedMessage());
-			e1.printStackTrace();
-		}
-
-		DataManagerLocal dataRegistry = null;
-		
-		// Binding the DataManagerLocal-Interface to the local DataManager-Instance via JNDI.
-		plogger.debug("Trying to get InitialContext for JNDI-Lookup...");
-		try {
-			Context ctx = new InitialContext();
-			dataRegistry = (DataManagerLocal)ctx.lookup("planets-project.eu/DataManager/local");
-			plogger.debug("Created dataRegistry-Object...");
-		} catch (NamingException e2) {
-			plogger.error("Could not lookup local DataManager!");
-			e2.printStackTrace();
-		}
-		
-		byte[] srcFileArray = null;
-		try {
-			plogger.debug("Retrieving file from DataRegistry: " + fileURI.toASCIIString());
-			srcFileArray = dataRegistry.retrieveBinary(fileURI);
-			plogger.debug("Successfully retrieved file!");
-		} catch (SOAPException e) {
-			plogger.error("Exception: " + e.getLocalizedMessage());
-			e.printStackTrace();
-		}
-		return srcFileArray; 		
-	}
 	
 	/**
 	 * Private method to generate a timestamp, which is used, if a migrated file, meant to be stored
@@ -227,48 +164,6 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
 	 * 
 	 * @return a String containing the timestamp for this "session".
 	 */
-	private String getTimeStamp() {
-		String day, month, year, hour, minute, second, millisecond = null;
-		
-		if(DAY > 9) {
-			day = "" + DAY; 
-		}
-		else {
-			day = "0" + DAY;
-		}
-		if(MONTH > 9) {
-			month = "" + MONTH;
-		}
-		else {
-			month = "0" + MONTH;
-		}
-
-		year = "" + YEAR;
-
-		if(HOUR > 9) {
-			hour = "" + HOUR;
-		}
-		else {
-			hour = "0" + HOUR;
-		}
-		if(MINUTE > 9) {
-			minute = "" + MINUTE;
-		}
-		else {
-			minute = "0" + MINUTE;
-		}
-		if(SECOND > 9) {
-			second = "" + SECOND;
-		}
-		else {
-			second = "0" + SECOND;
-		}
-		Calendar now = Calendar.getInstance();
-		millisecond = "" + now.get(Calendar.MILLISECOND) + "ms";
-		
-		String timestamp = day + "-" + month + "-" + year + "_" + hour + "-" + minute + "-" + second + "_" + millisecond;
-		return timestamp;
-	}
 	
 	
 	/**
@@ -279,147 +174,6 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
 	 * @return the PLANETS URI to the "new"/migrated file. Using this URI the file could be retrieved from the DataRegistry. 
 	 * @throws SOAPException
 	 */
-	private URI storeBinaryInDataRegistry (byte[] binary, String fileName) throws SOAPException {
-		plogger.debug("Starting to store File in DataRegistry...");
-		DataManagerLocal dataRegistry = null;
-		URI fileURI = null;
-		URI registryRoot = null;
-		String dataRegistryPath = null;
-		
-		// Binding the DataManagerLocal-Interface to the local DataManager-Instance via JNDI.
-		plogger.debug("Trying to get InitialContext for JNDI-Lookup...");
-		try {
-			Context ctx = new InitialContext();
-			dataRegistry = (DataManagerLocal)ctx.lookup("planets-project.eu/DataManager/local");
-			plogger.debug("Created dataRegistry-Object...");
-			try {
-				// Get the root path of the DataRegistry...using an undocumented "hidden" feature of the DataManager,
-				// which is to return the root path of the DR, when "null" is passed to the list() method.
-				URI[] storagePaths = dataRegistry.list(null);
-				registryRoot = storagePaths[0];
-				dataRegistryPath = registryRoot.toASCIIString();
-				plogger.debug("Registry root: " + dataRegistryPath);		
-				
-			} catch (SOAPException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (NamingException e2) {
-			// TODO Auto-generated catch block
-			plogger.debug("Could not lookup local DataManager!");
-			e2.printStackTrace();
-		}
-		
-		try {
-			plogger.debug("Creating migratedFileURI...");
-			plogger.debug("URI will be: " + dataRegistryPath + "/" + OUTPUT_FOLDER + "/" + fileName);
-			
-			// Create the new URI for storing the file to the DataRegistry.
-			fileURI = new URI(dataRegistryPath + "/" + OUTPUT_FOLDER + "/" + fileName);
-			
-			plogger.debug("Created migratedFileURI: " + fileURI.toASCIIString());
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			plogger.error("Malformed URI...! " + fileURI.toASCIIString());
-			e.printStackTrace();
-		}
-		
-		try {
-			plogger.debug("Starting to write binary to DataRegistry...");
-			// URI of the default OUTPUT_FOLDER of this Service, used as search root when testing
-			// if a file already exists.
-			URI outputFolderURI = new URI(dataRegistryPath + "/" + OUTPUT_FOLDER);
-			plogger.debug("Outputfolder: " + outputFolderURI.toASCIIString());
-			plogger.debug("Searching for duplicated files...");
-			
-			URI[] searchResults = dataRegistry.findFilesWithNameContaining(registryRoot, fileName);
-			
-			StringBuffer sb = new StringBuffer();
-			for(int i=0;i<searchResults.length;i++){
-				sb = sb.append(searchResults[i].toASCIIString() + "\n");
-			}
-			plogger.debug("Found the following hits: " + sb.toString());
-			
-			// The returned URI[] searchResults is not NULL and
-			if(searchResults != null) {
-				// there have been some hits, e.g. files with the same filename, but maybe in a different path...
-				if(searchResults.length > 0) {
-					for(int i=0;i < searchResults.length;i++) {
-						String currentURI = searchResults[i].toASCIIString();
-						// Check if there have been hits inside the OUTPUT_FOLDER
-						if(currentURI.indexOf(OUTPUT_FOLDER)!=-1) {
-							// There is (at least) a file with the same name inside the OUTPUT_FOLDER so...
-							plogger.debug("File already exists: " + fileName + ". File will be renamed...");
-							
-							// ...get a timestamp
-							String timestamp = getTimeStamp();   
-							
-							// ...split the initial filename in a prefix and...
-							String fileNamePrefix = fileName.substring(0, fileName.lastIndexOf("."));
-					        plogger.debug("fileNamePrefix: " + fileNamePrefix);
-					        
-	//				        // ...and the postfix
-					        String fileNamePostfix = fileName.substring(fileName.lastIndexOf("."));
-					        plogger.debug("fileNamePostfix: " + fileNamePostfix);
-					        
-	//				        // and add the "_[timestamp]" to the filename
-					        plogger.debug("Adding timestamp to filename: " + timestamp);
-							String renamedFileName = fileNamePrefix + "_" + timestamp + fileNamePostfix;
-							
-						    plogger.debug("New migratedFileName: " + renamedFileName);
-						    // create a new URI for the renamed file and...
-						    URI renamedFileURI = new URI(outputFolderURI.toASCIIString() + "/" + renamedFileName);
-							plogger.debug("New migratedFileURI: " + renamedFileURI.toASCIIString());
-							plogger.debug("Storing file with new name: " + renamedFileName + " to DataRegistry...");
-							// store it in the DataRegistry, using the new filename
-							dataRegistry.storeBinary(renamedFileURI, binary);
-							plogger.debug("Successfully stored binary to DataRegistry: " + renamedFileName);
-							fileURI = renamedFileURI;
-						}
-						
-						// There have been hits (e.g. files with the same name), but in a different folder,
-						// so just store the file with its initial name to the DataRegistry
-						else {
-							plogger.debug("Attempting to store binary to DataRegistry: " + fileName);
-							// store the file...
-							dataRegistry.storeBinary(fileURI, binary);
-							plogger.debug("Successfully stored binary to DataRegistry: " + fileName);
-						}
-					}
-				}
-				// There have been NO search hits, so store the file with its initial filename, too.
-				else {
-					plogger.debug("Attempting to store binary to DataRegistry: " + fileName);
-					// store the file to the DR...
-					dataRegistry.storeBinary(fileURI, binary);
-					plogger.debug("Successfully stored binary to DataRegistry: " + fileName);
-				}
-			}
-			
-		} catch (LoginException e) {
-			plogger.error("LoginException: " + e.getLocalizedMessage());
-			e.printStackTrace();
-		} catch (RepositoryException e) {
-			plogger.error("RepositoryException: " + e.getLocalizedMessage());
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			plogger.error("URISyntaxException: " + e.getLocalizedMessage());
-			e.printStackTrace();
-		}
-		
-		// Last test if the URI created to store the file is a valid URI...
-		if(DataModelUtils.isValidReference(fileURI.toASCIIString())) {
-			// ...if yes, return it
-			plogger.debug("Validating the created file URI: " + fileURI.toASCIIString());
-			plogger.debug("Validataion result: OK!");
-			return fileURI;
-		}
-		else {
-			// ...if no, log out an error and return NULL.
-			plogger.error("The URI of the migrated file is not valid!");
-			return null;
-		}
-	}
 
 	@Override
 	public String getExportedFileSuffix() {
@@ -437,6 +191,7 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
 	 * @see eu.planets_project.ifr.core.common.datamodel.preservation.PreservationTool#export(eu.planets_project.datamodel.TypeFiles)
 	 */
 	public TypeFiles export(TypeFiles inputFiles) {
+		DataRegistryAccessHelper dataRegistry = new DataRegistryAccessHelper();
 		URI resultURI = null;
 		String migratedFileName = null;
 		TypeFiles migratedTypeFiles = new TypeFiles();
@@ -462,23 +217,18 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
 			}
 			
 			// retrieve the src-file from the DataRegistry 
-			byte[] srcBinary = getBinaryFromDataRegistry(fileRef);
+			byte[] srcBinary = dataRegistry.read(fileRef);
 			plogger.debug("Successfully retrieved files from DataRegistry!");
+			
 			// Convert the retrieved file, using a GeneralImageConverter Object, and receive the MigrationResults object
 			// from this conversion process.
 			migrationResults = converter.convertImage(srcBinary, REQUIRED_SRC_FORMAT, TARGET_FORMAT, plogger);
 			
 			// If migration was successful, store the migrated file to the DataRegistry
 			if(migrationResults.migrationWasSuccessful()) {
-				try {
-					plogger.debug(this.getClass().toString() + ": Trying to store file in DataRegistry...");
-					// store the file to the DataRegistry and get the URI to this file back.
-					resultURI = storeBinaryInDataRegistry(migrationResults.getByteArray(), migratedFileName);
-				} catch (SOAPException e) {
-					// TODO Auto-generated catch block
-					plogger.error("File could not be stored in DataRegistry!");
-					e.printStackTrace();
-				}
+				// store the file to the DataRegistry and get the URI to this file back.
+				plogger.debug(this.getClass().toString() + ": Trying to store file in DataRegistry...");
+				resultURI = dataRegistry.write(migrationResults.getByteArray(), migratedFileName, OUTPUT_FOLDER);
 				
 				// Add details to TypeFile to be returned
 				TypeFile tiffFile = new TypeFile();
