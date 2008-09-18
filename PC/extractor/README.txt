@@ -32,4 +32,13 @@ If you have questions concerning the Extractor service, please feel free to cont
 If you have any suggestions or error-reports please feel free to contact one of the above mentioned email adresses as well!
 
 
+UPDATES
+-------
+Please check: 
+
+http://planetarium.hki.uni-koeln.de/public/XCL/ --> "Extractor"
+
+for updates!
+
+
 
