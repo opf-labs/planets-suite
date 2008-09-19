@@ -38,7 +38,7 @@ public final class ComparatorWrapper {
             + (System.getenv("COMPARATOR_HOME").endsWith(File.separator) ? ""
                     : File.separator);
     /** The default config file; is used when no config is specified. */
-    private static final String DAFAULT_CONFIG = COMPARATOR_HOME
+    private static final String DEFAULT_CONFIG = COMPARATOR_HOME
             + "defaultPCR.xml";
     /** The file names of the result and log files. */
     private static final String LOG_TXT = "log.txt";
@@ -104,7 +104,7 @@ public final class ComparatorWrapper {
         /* The PCR file is optional: */
         File pcrFile = new File(COMPARATOR_HOME + "sentPCR.xml");
         if (pcr == null) {
-            pcrFile = new File(DAFAULT_CONFIG);
+            pcrFile = new File(DEFAULT_CONFIG);
         } else {
             save(pcrFile.getAbsolutePath(), pcr);
         }

@@ -21,6 +21,8 @@ public final class ComparatorWrapperTests {
     static final String XCDL1 = "PP/comparator/src/resources/COMPARATOR_HOME/XCDL1.xcdl";
     /***/
     static final String PCR_SINGLE = "PP/comparator/src/resources/COMPARATOR_HOME/defaultPCR.xml";
+    /***/
+    static final String PCR_MULTI = "PP/comparator/src/resources/COMPARATOR_HOME/defaultPCRMulti.xml";
 
     /** Tests if the required environment variable is set. */
     @Test
@@ -55,7 +57,7 @@ public final class ComparatorWrapperTests {
         String result = ComparatorWrapper.compare(
                 ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
                         .read(XCDL2), ComparatorWrapper.read(XCDL3)),
-                ComparatorWrapper.read(PCR_SINGLE));
+                ComparatorWrapper.read(PCR_MULTI));
         System.out.println("Result: " + result);
         check(result);
     }
