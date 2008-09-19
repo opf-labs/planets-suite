@@ -35,7 +35,8 @@ public final class ComparatorWrapper {
             .getLogger(ComparatorWrapper.class);
     /** The home of the comparator command-line tool. */
     static final String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME")
-            + File.separator;
+            + (System.getenv("COMPARATOR_HOME").endsWith(File.separator) ? ""
+                    : File.separator);
     /** The default config file; is used when no config is specified. */
     private static final String DAFAULT_CONFIG = COMPARATOR_HOME
             + "defaultPCR.xml";
@@ -70,7 +71,9 @@ public final class ComparatorWrapper {
         /* Call the comparator tool: */
         callComparator(tempXcdl, tempXcdls, commands);
         /* Read the resulting files: */
-        String result = read(outputFolder + RESULT_FILENAME);
+        String result = read(outputFolder.getAbsolutePath()
+                + (outputFolder.getAbsolutePath().endsWith(File.separator) ? ""
+                        : File.separator) + RESULT_FILENAME);
         String logged = read(COMPARATOR_HOME + LOG_TXT);
         /* Print some debugging info on the results: */
         LOG.info("Comparator result: " + result);
