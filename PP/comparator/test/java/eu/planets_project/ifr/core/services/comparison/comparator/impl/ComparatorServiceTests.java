@@ -62,7 +62,7 @@ public final class ComparatorServiceTests {
         byte[] data2 = ByteArrayHelper.read(new File(
                 ComparatorWrapperTests.XCDL2));
         byte[] configData = ByteArrayHelper.read(new File(
-                ComparatorWrapperTests.PCR));
+                ComparatorWrapperTests.PCR_SINGLE));
         testReferenceServices(server, data1, data2, configData);
         testValueServices(server, data1, data2, configData);
     }
@@ -127,18 +127,19 @@ public final class ComparatorServiceTests {
      */
     private void checkResult(final String result) {
         assertTrue("No result found returned after comparison!", result != null);
+        assertTrue("Comparator could not validate: " + result, !result
+                .contains("validation failed"));
     }
 
     /**
      * @param helper The data registry access helper to use for checking
-     * @param resultUri The URI of the supposed resulöt inside the IF data
+     * @param resultUri The URI of the supposed result inside the IF data
      *        registry
      */
     private void checkDataRegistryForResult(
             final DataRegistryAccessHelper helper, final URI resultUri) {
         byte[] resultData = helper.read(resultUri.toASCIIString());
-        assertTrue("No result found in the data registry after comparison!",
-                resultData != null);
+        checkResult(new String(resultData));
     }
 
     /**

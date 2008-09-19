@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -12,13 +13,14 @@ import org.junit.Test;
  * @author Fabian Steeg
  */
 public final class ComparatorWrapperTests {
-
     /***/
-    static final String XCDL2 = "PP/comparator/src/resources/xcdl2.xml";
+    static final String XCDL3 = "PP/comparator/src/resources/COMPARATOR_HOME/XCDL3.xcdl";
     /***/
-    static final String XCDL1 = "PP/comparator/src/resources/xcdl1.xml";
+    static final String XCDL2 = "PP/comparator/src/resources/COMPARATOR_HOME/XCDL2.xcdl";
     /***/
-    static final String PCR = "PP/comparator/src/resources/PCR.xml";
+    static final String XCDL1 = "PP/comparator/src/resources/COMPARATOR_HOME/XCDL1.xcdl";
+    /***/
+    static final String PCR_SINGLE = "PP/comparator/src/resources/COMPARATOR_HOME/defaultPCR.xml";
 
     /** Tests if the required environment variable is set. */
     @Test
@@ -27,20 +29,53 @@ public final class ComparatorWrapperTests {
                 ComparatorWrapper.COMPARATOR_HOME);
     }
 
-    /**
-     * Tests PP comparator comparison using the comparator wrapper utility
-     * class.
-     */
+    /** Tests basic PP comparator wrapper with two XCDLs and a given config. */
     @Test
-    public void testWrapper() {
+    public void testWrapperTwoWithConfig() {
         String result = ComparatorWrapper.compare(
                 ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
-                        .read(XCDL2)), ComparatorWrapper.read(PCR));
+                        .read(XCDL2)), ComparatorWrapper.read(PCR_SINGLE));
         System.out.println("Result: " + result);
-        assertNotNull("Comparator returned null", result);
-        result = ComparatorWrapper.compare(ComparatorWrapper.read(XCDL1),
-                Arrays.asList(ComparatorWrapper.read(XCDL2)), null);
+        check(result);
+    }
+
+    /** Tests basic PP comparator wrapper with two XCDLs and no given config. */
+    @Test
+    public void testWrapperTwoNoConfig() {
+        String result = ComparatorWrapper.compare(
+                ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
+                        .read(XCDL2)), null);
         System.out.println("Result: " + result);
+        check(result);
+    }
+
+    /** Tests PP comparator wrapper with three XCDLs and a given config. */
+    @Test
+    public void testWrapperMultiWithConfig() {
+        String result = ComparatorWrapper.compare(
+                ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
+                        .read(XCDL2), ComparatorWrapper.read(XCDL3)),
+                ComparatorWrapper.read(PCR_SINGLE));
+        System.out.println("Result: " + result);
+        check(result);
+    }
+
+    /** Tests PP comparator wrapper with three XCDLs and no given config. */
+    @Test
+    public void testWrapperMultiNoConfig() {
+        String result = ComparatorWrapper.compare(
+                ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
+                        .read(XCDL2), ComparatorWrapper.read(XCDL3)), null);
+        System.out.println("Result: " + result);
+        check(result);
+    }
+
+    /**
+     * @param result The result to check
+     */
+    private void check(final String result) {
         assertNotNull("Comparator returned null", result);
+        assertTrue("Comparator could not validate: " + result, !result
+                .contains("validation failed"));
     }
 }

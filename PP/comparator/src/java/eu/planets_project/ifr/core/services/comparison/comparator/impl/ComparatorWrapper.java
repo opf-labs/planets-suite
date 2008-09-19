@@ -62,8 +62,8 @@ public final class ComparatorWrapper {
         /* Create temp files for the XCDLs and the config: */
         File tempXcdl = createBaseXcdlFile(xcdl);
         List<File> tempXcdls = createXcdlFiles(xcdls);
-        File pcrFile = createConfigFile(pcr);
         File tempFolder = createTempFolder(tempXcdl.getParent());
+        File pcrFile = createConfigFile(pcr);
         File outputFolder = createOutputFolder(tempFolder.getAbsolutePath());
         /* Prepare the tool call: */
         List<String> commands = createCommands(tempXcdls, tempXcdl,
@@ -79,7 +79,7 @@ public final class ComparatorWrapper {
         LOG.info("Comparator result: " + result);
         LOG.debug("Comparator log: " + logged);
         /* Clean up after the work is done: */
-        delete(pcrFile, tempXcdl);
+        delete(tempXcdl);
         delete(tempXcdls.toArray(new File[] {}));
         /* And finally, return the result: */
         return result;
@@ -102,7 +102,7 @@ public final class ComparatorWrapper {
      */
     private static File createConfigFile(final String pcr) {
         /* The PCR file is optional: */
-        File pcrFile = tempFile("PCR");
+        File pcrFile = new File(COMPARATOR_HOME + "sentPCR.xml");
         if (pcr == null) {
             pcrFile = new File(DAFAULT_CONFIG);
         } else {
@@ -231,7 +231,7 @@ public final class ComparatorWrapper {
         try {
             s = new Scanner(new File(location));
             while (s.hasNextLine()) {
-                builder.append(s.nextLine()).append(" ");
+                builder.append(s.nextLine()).append(" \n");
             }
             return builder.toString();
         } catch (FileNotFoundException e) {
@@ -258,10 +258,19 @@ public final class ComparatorWrapper {
      * @param name The name to use when generating the temp file
      * @return Returns a temp file created using File.createTempFile
      */
-    static File tempFile(final String name) {
+    private static File tempFile(final String name) {
+        return tempFile(name, null);
+    }
+
+    /**
+     * @param name The name to use when generating the temp file
+     * @param suffix The suffix to use
+     * @return Returns a temp file created using File.createTempFile
+     */
+    static File tempFile(final String name, final String suffix) {
         File input;
         try {
-            input = File.createTempFile(name, null);
+            input = File.createTempFile(name, suffix);
             input.deleteOnExit();
             return input;
         } catch (IOException e) {
