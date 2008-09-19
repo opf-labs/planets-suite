@@ -34,7 +34,8 @@ public final class ComparatorWrapper {
     private static final PlanetsLogger LOG = PlanetsLogger
             .getLogger(ComparatorWrapper.class);
     /** The home of the comparator command-line tool. */
-    static final String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME");
+    static final String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME")
+            + File.separator;
     /** The default config file; is used when no config is specified. */
     private static final String DAFAULT_CONFIG = COMPARATOR_HOME
             + "defaultPCR.xml";
