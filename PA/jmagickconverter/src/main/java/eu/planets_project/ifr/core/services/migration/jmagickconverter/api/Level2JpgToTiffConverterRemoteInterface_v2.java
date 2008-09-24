@@ -4,7 +4,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 
-import eu.planets_project.datamodel.TypeFiles;
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 
 public interface Level2JpgToTiffConverterRemoteInterface_v2 {

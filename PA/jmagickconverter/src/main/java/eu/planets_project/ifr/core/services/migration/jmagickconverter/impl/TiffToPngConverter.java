@@ -18,13 +18,10 @@ import javax.xml.ws.BindingType;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.ifr.core.common.api.PlanetsBasicService;
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.services.PlanetsServices;
 import eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary;
-import eu.planets_project.ifr.core.services.migration.jmagickconverter.api.TiffToPngConverterLocalInterface;
-import eu.planets_project.ifr.core.services.migration.jmagickconverter.api.TiffToPngConverterRemoteInterface;
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.GeneralImageConverter;
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.MigrationResults;
 
@@ -59,7 +56,7 @@ public class TiffToPngConverter implements Serializable, BasicMigrateOneBinary {
 
 	private static final long serialVersionUID = 7130990234174919390L;
 	// Creating a PlanetsLogger...
-	private final static String logConfigFile = "eu/planets_project/ifr/core/services/migration/jmagickconverter/logconfig/tifftopngconverter-log4j.xml";
+//	private final static String logConfigFile = "eu/planets_project/ifr/core/services/migration/jmagickconverter/logconfig/tifftopngconverter-log4j.xml";
 	private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass());
 
 	// a GeneralImageConverter instance to carry out the migration.

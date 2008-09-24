@@ -1,41 +1,27 @@
 package eu.planets_project.ifr.core.services.migration.jmagickconverter.impl;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.UUID;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.math.BigInteger;
-import java.net.URI;
 import java.net.URISyntaxException;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import org.junit.Before;
+import java.util.ArrayList;
+import java.util.List;
+//import java.util.Properties;
+//
+//import javax.naming.Context;
+//import javax.naming.InitialContext;
+//import javax.naming.NamingException;
+//
+//import org.junit.Before;
 import org.junit.Test;
 
-// JAXB Generated classes reside here
-import eu.planets_project.datamodel.*;
+import eu.planets_project.datamodel.TypePlanetsDataModel;
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.datamodel.DataModelUtils;
-import eu.planets_project.ifr.core.common.datamodel.DocumentValidator;
+//import eu.planets_project.ifr.core.common.datamodel.DocumentValidator;
 import eu.planets_project.ifr.core.common.datamodel.MockPreservationPlanner;
-import eu.planets_project.ifr.core.common.datamodel.PlanetsDataModelException;
-import eu.planets_project.ifr.core.common.datamodel.preservation.PreservationAction;
-import eu.planets_project.ifr.core.common.datamodel.preservation.PreservationTool;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.L2JpgToTiffConverter;
 import eu.planets_project.ifr.core.common.datamodel.PDMCreator;
+import eu.planets_project.ifr.core.common.datamodel.PlanetsDataModelException;
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
 /**
  * Unit test class for the PLANETS PreservationAction class.  
@@ -50,15 +36,15 @@ public class Level2JpgToTiffConverterTest {
 	TypePlanetsDataModel tpdm;
 	PlanetsLogger logger;
 	
-	@Before
-	public void setUp() throws NamingException
-	{
-		Properties properties = new Properties();
-		 properties.put("java.naming.factory.initial","org.jnp.interfaces.NamingContextFactory");
-		 properties.put("java.naming.factory.url.pkgs","=org.jboss.naming:org.jnp.interfaces");
-		 properties.put("java.naming.provider.url","localhost:1099");
-		 Context context = new InitialContext(properties);
-	}
+//	@Before
+//	public void setUp() throws NamingException
+//	{
+//		Properties properties = new Properties();
+//		 properties.put("java.naming.factory.initial","org.jnp.interfaces.NamingContextFactory");
+//		 properties.put("java.naming.factory.url.pkgs","=org.jboss.naming:org.jnp.interfaces");
+//		 properties.put("java.naming.provider.url","localhost:1099");
+//		 Context context = new InitialContext(properties);
+//	}
 	
 	@Test
 	public void createPDM() throws URISyntaxException, IOException {
@@ -96,19 +82,20 @@ public class Level2JpgToTiffConverterTest {
 		System.out.println(updatedPdmXMLString);
 		TypePlanetsDataModel updatedTpdm = DataModelUtils.unmarshal(updatedPdmXMLString);
 		File finalXMLFile = DataModelUtils.marshal("resultXMLFile.xml", updatedTpdm);
+		System.out.println("Please find the result PDM file here: \n" + finalXMLFile.getAbsolutePath());
 	}
 	
-	private boolean validate(File schemaFile, File documentFile) {
-		
-		DocumentValidator validator = new DocumentValidator();
-		validator.setCatalog("schema-catalog.xml");
-		boolean valid = validator.validate(schemaFile, documentFile);
-		if (!valid) {
-			for (String error : validator.getValidationErrors()) {
-				System.out.println(error);
-			}
-		}
-    	return valid;
-	}
+//	private boolean validate(File schemaFile, File documentFile) {
+//		
+//		DocumentValidator validator = new DocumentValidator();
+//		validator.setCatalog("schema-catalog.xml");
+//		boolean valid = validator.validate(schemaFile, documentFile);
+//		if (!valid) {
+//			for (String error : validator.getValidationErrors()) {
+//				System.out.println(error);
+//			}
+//		}
+//    	return valid;
+//	}
 	
 }

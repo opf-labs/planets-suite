@@ -14,7 +14,7 @@ import javax.xml.ws.Service;
 
 import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary;
-import eu.planets_project.services.migration.msgtext.impl.MsgText;
+
 public class MsgTextClient {
 	
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");

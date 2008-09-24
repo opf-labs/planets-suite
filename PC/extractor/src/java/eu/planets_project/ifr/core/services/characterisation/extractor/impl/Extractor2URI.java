@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
-import java.io.File;
 import java.io.Serializable;
 import java.net.URI;
 

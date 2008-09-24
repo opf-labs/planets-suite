@@ -52,7 +52,7 @@ public class JpgToTiffConverter implements Serializable, BasicMigrateOneBinary {
 
     private static final long serialVersionUID = -8344078893579549092L;
     // Creating a PlanetsLogger...
-    private final static String logConfigFile = "eu/planets_project/ifr/core/services/migration/jmagickconverter/logconfig/jpgtotiffconverter-log4j.xml";
+//    private final static String logConfigFile = "eu/planets_project/ifr/core/services/migration/jmagickconverter/logconfig/jpgtotiffconverter-log4j.xml";
     private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass());
     
     // a GeneralImageConverter instance to carry out the migration.
