@@ -17,13 +17,13 @@ public class BasicIdentifyOneBinaryClient {
 	public static void main(String[] args) throws IOException, PlanetsException {
 		String wsdlLocation = 
 			
-			"http://localhost:8080/ifr-jmagickconverter-ejb/ImageIdentificationService?wsdl";
+			"http://localhost:8080/pserv-pa-jmagick/ImageIdentificationService?wsdl";
 		
 		QName qName = BasicIdentifyOneBinary.QNAME;
 		
 		String testFileName = 
 			
-			"C:/Dokumente und Einstellungen/melmsp/Desktop/Fussball_001.GIF";
+			"IF/clients/L2PlanetsServiceClient/src/resources/eu/planets_project/services/test_jpg/2325559127_ccbb33c982.jpg";
 		
 //		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
 		System.out.println("Trying to connect to service...");
