@@ -26,10 +26,8 @@ import javax.xml.ws.soap.SOAPBinding;
 //import org.jboss.ws.core.server.HttpContext;
 //import org.jboss.ws.core.server.HttpServer;
 
-import eu.planets_project.ifr.core.wee.api.WeeManager;
 import eu.planets_project.ifr.core.wee.api.WorkflowExecutionEngine;
 import eu.planets_project.ifr.core.wee.impl.WeeManagerImpl;
-import eu.planets_project.ifr.core.wee.impl.SimpleCharacterisationService;
 
 /**
  * 
