@@ -38,9 +38,12 @@
     <fileset dir="${jboss.home}/server/default/deploy/jboss-aop-jdk50.deployer">
       <include name="*.jar"/>
     </fileset>
--->
     <fileset dir="${jboss.home}/server/default/deploy/">
       <include name="jboss*web*/jsf-libs/*.jar"/>
+    </fileset>
+-->
+    <fileset dir="${jboss.home}/server/default/deploy/jboss-web.deployer">
+      <include name="**/*.jar"/>
     </fileset>
     <fileset dir="${jboss.home}/lib">
       <include name="*.jar"/>
@@ -51,6 +54,7 @@
     <!-- specific libs -->
     <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
+      <exclude name="lib-jee/*.jar"/>
     </fileset>
     <!--include JUNIT 4.0 lib-->
     <!--fileset dir="${junit.lib}">
@@ -120,6 +124,7 @@
     <copy toDir="${build.classes.dir}" flatten="true">
       <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
+        <exclude name="lib-jee/*.jar"/>
       </fileset>
     </copy>
     
