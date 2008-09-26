@@ -5,6 +5,7 @@ package eu.planets_project.ifr.core.techreg.impl.formats;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -121,7 +122,9 @@ public class FormatRegistryImpl implements FormatRegistry {
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#search(java.lang.String)
      */
     public List<URI> search( String query ) {
-        return new ArrayList<URI>(this.getURIsForExtension(query));
+        ArrayList<URI> found = new ArrayList<URI>(this.getURIsForExtension(query));
+        Collections.sort(found);
+        return found;
     }
     
     

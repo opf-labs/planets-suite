@@ -7,7 +7,11 @@
 <project name="Planets Service Build Commons" default="deploy:ear" basedir=".">
   
   <property file="${pserv.root.dir}/build.properties"/>
-
+  
+  <!-- Set the target JVM version -->
+  <property name="target.jvm" value="1.5" />
+  <property name="ant.build.javac.target" value="${target.jvm}" />
+  
   <property environment="env"/>
 
   <property name="build.dir" value="${appDir}/build"/>
@@ -39,6 +43,7 @@
       <include name="*.jar"/>
     </fileset>
     <fileset dir="${jboss.home}/server/default/deploy/">
+      <include name="jboss*web*/*.jar"/>
       <include name="jboss*web*/jsf-libs/*.jar"/>
     </fileset>
 -->
@@ -99,7 +104,7 @@
   <target name="compile" depends="prepare">
     <echo message="ant.java.version: ${ant.java.version}" />
     <!--compile the model-->
-    <javac source="1.5" 
+    <javac source="1.5" target="${target.jvm}" 
 		 srcdir="${src.dir}"
            destdir="${build.classes.dir}"
            debug="on"
@@ -110,7 +115,7 @@
     </javac>
     <!-- tempory not compiling test cases - include after restructuring build.xml-->
     <!--compile the test-classes, session beans, etc.-->
-    <!--javac source="1.5" 
+    <!--javac source="1.5" target="${target.jvm}"
 			srcdir="${test.dir}"
            destdir="${build.classes.dir}"
            debug="on"
@@ -220,7 +225,7 @@
     <mkdir dir="${war.build.dir}/${appName}/WEB-INF/lib" />
     <mkdir dir="${war.build.dir}/${appName}/WEB-INF/classes" />
     
-    <javac source="1.5" debug="true" srcdir="${src.dir}" destdir="${war.build.dir}/${appName}/WEB-INF/classes">
+    <javac source="1.5" target="${target.jvm}" debug="true" srcdir="${src.dir}" destdir="${war.build.dir}/${appName}/WEB-INF/classes">
       <classpath refid="classpath"/>
     </javac>
     

@@ -99,6 +99,7 @@
         <filter-name>extensionsFilter</filter-name>
         <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
     </filter-mapping>
+
 <!--
     <listener>
         <listener-class>

@@ -137,6 +137,7 @@ public class DroidFormatRegistry  {
             controller.readSigFile(sigFileLocation);
         } catch (Exception e) {
             e.printStackTrace();
+            
             return null;
         }
         return controller;
