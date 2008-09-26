@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
+import javax.management.ObjectName;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,12 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jboss.logging.Logger;
-import org.jboss.ws.core.server.ServiceEndpointDTO;
-import org.jboss.ws.core.server.ServiceEndpointManager;
-
+import org.jboss.wsf.spi.deployment.Endpoint;
+import org.jboss.wsf.spi.management.EndpointRegistry;
 
 /**
  * The servlet that is associated with context /wee-monitor
+ * 
+ * This code no longer supported by JBoss.  Use JMX instead. 
+ * 
+ * See http://jbws.dyndns.org/mediawiki/index.php?title=Endpoint_management
  *
  * @author rainer.schuster@researchstudio.at
  * @since 11-Jun-2007
@@ -28,7 +33,9 @@ public abstract class MonitoringContextServlet extends HttpServlet
    // provide logging
    protected final Logger log = Logger.getLogger(MonitoringContextServlet.class);
 
-   protected ServiceEndpointManager epManager;
+//   protected ServiceEndpointManager epManager;
+   protected EndpointRegistry epManager;
+
 
    public void init(ServletConfig config) throws ServletException
    {
@@ -64,7 +71,8 @@ public abstract class MonitoringContextServlet extends HttpServlet
       writer.print("<table>");
 
       // begin iteration
-      List<ServiceEndpointDTO> endpoints = epManager.getRegisteredEndpoints(requestURL);
+      
+      Set<ObjectName> endpoints = epManager.getEndpoints(); //getRegisteredEndpoints(requestURL);
 
       if(endpoints.isEmpty())
       {
@@ -73,12 +81,13 @@ public abstract class MonitoringContextServlet extends HttpServlet
          writer.print("</tr>");
       }
 
-      for(ServiceEndpointDTO ep : endpoints)
+      for(ObjectName on : endpoints)
       {
+    	 Endpoint ep = epManager.getEndpoint(on);
     	 if(ep.getAddress().endsWith("Workflow")){
 	         writer.print("<tr>");
 	         writer.print("	<td>ServiceEndpointID</td>");
-	         writer.print("	<td>"+ep.getSepID()+"</td>");
+	         writer.print("	<td>"+ep.getProperty(Endpoint.SEPID_DOMAIN_ENDPOINT)+"</td>");
 	         writer.print("</tr>");
 	         writer.print("<tr>");
 	         writer.print("	<td>ServiceEndpointAddress</td>");
@@ -95,9 +104,9 @@ public abstract class MonitoringContextServlet extends HttpServlet
 	         writer.print("	<td></td>");
 	         writer.print("</tr>");
 	         writer.print("<tr>");
-	         writer.print("	<td>"+ep.getSeMetrics().getStartTime()+"</td>");
+	         writer.print("	<td>"+ep.getEndpointMetrics().getStartTime()+"</td>");
 	
-	         String stopTime = ep.getSeMetrics().getStopTime() != null ? ep.getSeMetrics().getStopTime().toString() : "";
+	         String stopTime = ep.getEndpointMetrics().getStopTime() != null ? ep.getEndpointMetrics().getStopTime().toString() : "";
 	         writer.print("	<td>"+stopTime+"</td>");
 	         writer.print("	<td></td>");
 	         writer.print("</tr>");
@@ -108,9 +117,9 @@ public abstract class MonitoringContextServlet extends HttpServlet
 	         writer.print("	<td><b>FaultCount</b></td>");
 	         writer.print("</tr>");
 	         writer.print("<tr>");
-	         writer.print("	<td>"+ep.getSeMetrics().getRequestCount()+"</td>");
-	         writer.print("	<td>"+ep.getSeMetrics().getResponseCount()+"</td>");
-	         writer.print("	<td>"+ep.getSeMetrics().getFaultCount()+"</td>");
+	         writer.print("	<td>"+ep.getEndpointMetrics().getRequestCount()+"</td>");
+	         writer.print("	<td>"+ep.getEndpointMetrics().getResponseCount()+"</td>");
+	         writer.print("	<td>"+ep.getEndpointMetrics().getFaultCount()+"</td>");
 	         writer.print("</tr>");
 	         writer.print("<tr>");
 	         writer.print("	<td><b>MinProcessingTime</b></td>");
@@ -118,9 +127,9 @@ public abstract class MonitoringContextServlet extends HttpServlet
 	         writer.print("	<td><b>AvgProcessingTime</b></td>");
 	         writer.print("</tr>");
 	         writer.print("<tr>");
-	         writer.print("	<td>"+ep.getSeMetrics().getMinProcessingTime()+"</td>");
-	         writer.print("	<td>"+ep.getSeMetrics().getMaxProcessingTime()+"</td>");
-	         writer.print("	<td>"+ep.getSeMetrics().getAverageProcessingTime()+"</td>");
+	         writer.print("	<td>"+ep.getEndpointMetrics().getMinProcessingTime()+"</td>");
+	         writer.print("	<td>"+ep.getEndpointMetrics().getMaxProcessingTime()+"</td>");
+	         writer.print("	<td>"+ep.getEndpointMetrics().getAverageProcessingTime()+"</td>");
 	         writer.print("</tr>");
 	         writer.print("");
 	         writer.print("");
@@ -132,6 +141,7 @@ public abstract class MonitoringContextServlet extends HttpServlet
 	         writer.print("<tr><td colspan='3'>&nbsp;</td></tr>");
     	 }
       }
+      
       // end iteration
       writer.print("</table>");
       writer.print("");
