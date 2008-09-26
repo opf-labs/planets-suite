@@ -99,11 +99,14 @@
         <filter-name>extensionsFilter</filter-name>
         <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
     </filter-mapping>
+<!--
     <listener>
         <listener-class>
             org.apache.myfaces.webapp.StartupServletContextListener
         </listener-class>
     </listener>
+-->
+
     <!-- Denying Directory Browsing -->
     <servlet>
         <servlet-name>local_default</servlet-name>

@@ -86,6 +86,13 @@ public class Format {
     public String getSummary() {
         return summary;
     }
+    
+    /**
+     * @return the summary with the version number appended.
+     */
+    public String getSummaryAndVersion() {
+        return summary+" "+version;
+    }
 
     /**
      * @param summary the summary to set

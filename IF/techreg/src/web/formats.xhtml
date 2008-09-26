@@ -42,7 +42,7 @@
       <h:panelGrid columns="2" columnClasses="formatGridCol1, formatGridCol2" width="100%">
       
         <rich:dataTable id="formatResults" value="#{Registry.formats}" var="fmt" styleClass="formatTable" width="100%" binding="#{Registry.formatsDataTable}">
-          <rich:column sortBy="#{fmt.summary}" styleClass="#{ ( Registry.currentFormat.typeURI == fmt.typeURI ) ? 'isCurrentFormat' : 'isNotCurrentFormat'}">
+          <rich:column sortBy="#{fmt.summaryAndVersion}" sortOrder="ASCENDING" styleClass="#{ ( Registry.currentFormat.typeURI == fmt.typeURI ) ? 'isCurrentFormat' : 'isNotCurrentFormat'}">
             <f:facet name="header">
               <h:outputText styleClass="headerText" value="Formats" />
             </f:facet>
