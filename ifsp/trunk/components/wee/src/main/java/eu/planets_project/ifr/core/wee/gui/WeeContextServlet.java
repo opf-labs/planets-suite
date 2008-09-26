@@ -2,7 +2,8 @@ package eu.planets_project.ifr.core.wee.gui;
 
 
 import org.jboss.logging.Logger;
-import org.jboss.ws.core.server.ServiceEndpointManagerFactory;
+import org.jboss.wsf.spi.management.EndpointRegistryFactory;
+import org.jboss.wsf.stack.jbws.EndpointRegistryFactoryImpl;
 
 
 /**
@@ -18,7 +19,9 @@ public class WeeContextServlet extends MonitoringContextServlet
 
    protected void initServiceEndpointManager()
    {
-      ServiceEndpointManagerFactory factory = ServiceEndpointManagerFactory.getInstance();
-      epManager = factory.getServiceEndpointManager();
+//      ServiceEndpointManagerFactory factory = ServiceEndpointManagerFactory.getInstance();
+//      epManager = factory.getServiceEndpointManager();
+	   EndpointRegistryFactory factory = new EndpointRegistryFactoryImpl();
+	   epManager = factory.getEndpointRegistry();
    }
 }
