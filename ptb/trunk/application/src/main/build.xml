@@ -28,14 +28,10 @@
     <fileset dir="${jboss.home}/server/default/lib">
         <include name="*.jar"/>
     </fileset>
-    <fileset dir="${jboss.home}/server/default/deploy/ejb3.deployer">
-        <include name="*.jar"/>
-    </fileset>
-    <fileset dir="${jboss.home}/server/default/deploy/jboss-aop-jdk50.deployer">
-        <include name="*.jar"/>
-    </fileset>
-    <fileset dir="${jboss.home}/server/default/deploy/jbossweb-tomcat55.sar">
-        <include name="**/*.jar"/>
+    <fileset dir="${jboss.home}/server/default/deploy/">
+      <include name="ejb3.deployer/*.jar"/>
+      <include name="jboss*web*/jsf-libs/*.jar"/>
+      <include name="jboss*web*/*.jar"/>
     </fileset>
     <fileset dir="${jboss.home}/lib">
         <include name="*.jar"/>
