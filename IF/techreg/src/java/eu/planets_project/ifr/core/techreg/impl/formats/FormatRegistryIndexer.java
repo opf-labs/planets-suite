@@ -27,7 +27,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.Format;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class FormatRegistryIndexer extends junit.framework.TestCase {
+public class FormatRegistryIndexer {
     
     Directory directory;
     
@@ -107,12 +107,12 @@ public class FormatRegistryIndexer extends junit.framework.TestCase {
             QueryParser parser = new QueryParser("fieldname", analyzer);
             Query lquery = parser.parse(query);
             Hits hits = isearcher.search(lquery);
-            assertEquals(1, hits.length());
+            // assertEquals(1, hits.length());
             // Iterate through the results:
             for (int i = 0; i < hits.length(); i++) {
                 Document hitDoc = hits.doc(i);
                 System.out.println("HIT "+hitDoc.get("fieldname"));
-                assertEquals("This is the text to be indexed.", hitDoc.get("fieldname"));
+                // assertEquals("This is the text to be indexed.", hitDoc.get("fieldname"));
             }
             isearcher.close();
         } catch ( IOException e ) {
