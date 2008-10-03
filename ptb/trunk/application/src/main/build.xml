@@ -25,6 +25,9 @@
 
   <!-- Build classpath -->
   <path id="classpath">
+    <fileset dir="${jboss.home}/client">
+        <include name="*.jar"/>
+    </fileset>
     <fileset dir="${jboss.home}/server/default/lib">
         <include name="*.jar"/>
     </fileset>
@@ -67,7 +70,7 @@
   <target name="compile" depends="prepare">
    <echo message="ant.java.version: ${ant.java.version}" />
 	<!--compile the model-->
-    <javac source="1.5" 
+    <javac source="1.5" target="1.5"
 		 srcdir="${src.dir}"
            destdir="${build.classes.dir}"
            debug="on"
@@ -79,7 +82,7 @@
     </javac>
     <!-- tempory not compiling test cases - include after restructuring build.xml-->
 	<!--compile the test-classes, session beans, etc.-->
-        <!--javac source="1.5" 
+        <!--javac source="1.5" target="1.5"
 			srcdir="${test.dir}"
            destdir="${build.classes.dir}"
            debug="on"
@@ -202,7 +205,7 @@
 
   <target name="dist" depends="populateDirectories">
 
-    <javac source="1.5" debug="true" srcdir="java" destdir="${build.dir}/${appName}/WEB-INF/classes">
+    <javac source="1.5" target="1.5" debug="true" srcdir="java" destdir="${build.dir}/${appName}/WEB-INF/classes">
 
       <classpath refid="classpath"/>
 
