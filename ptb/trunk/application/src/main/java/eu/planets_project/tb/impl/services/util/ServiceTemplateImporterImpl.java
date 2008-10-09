@@ -334,6 +334,10 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 			if(n.getNodeName().equals("TarXpath")){
 				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathForTarValue(n.getTextContent());
 			}
+			//MetricNode
+			if(n.getNodeName().equals("XPathForMetricNode")){
+				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathToMetricNode(n.getTextContent());
+			}
 			//MetricName
 			if(n.getNodeName().equals("MetricName")){
 				((EvaluationTestbedServiceTemplateImpl) tbService).setXPathToMetricName(n.getTextContent());

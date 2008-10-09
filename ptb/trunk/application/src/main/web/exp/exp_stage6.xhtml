@@ -33,6 +33,9 @@
 			experiment. You may save and re-edit your evaluation as often as
 			required.</p>
 			
+			<p><a4j:commandButton value="auto evaluate" action="#{NewExp_Controller.executeAutoEvalWf}" rendered="#{ExperimentBean.anyAutoEvalConfigured}"/>
+       		</p>  
+			
 			<h2 class="main">#{res['exp_stage6.headingExperimentEvaluation']}</h2>	
                 <rich:dataList id="fileBMGoalEvalList" var="data" value="#{ExperimentBean.IOTableDataForGUI}" rowIndexVar="rowi" style="border:none;width:100%;padding:0px;">
                 <rich:simpleTogglePanel id="fileBMGoalToggle" switchType="client" opened="#{data['panelOpened']}" label="Experiment Record ##{rowi+1}: #{data['input']}  -  &lt;&lt;#{data['inputName']}&gt;&gt;" style="padding:0px;">               
@@ -66,7 +69,42 @@
 							rowId="#{fileBMG.ID}" rowIndexVar="bmrow" cellpadding="2" cellspacing="0" border="1">
 							<t:column>
 								<f:facet name="header">#{res['exp_stage6.criteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
-			                    #{fileBMG.name}
+			                    <a4j:outputPanel styleClass="tooltip-text">
+						        	<h:outputText value="#{fileBMG.name}"/> 
+			                    	<rich:toolTip direction="top-right" styleClass="tooltip" rendered="#{fileBMG.wasAutomaticallyEvaluated}">
+                       					<span style="white-space:nowrap">
+                                           Got extracted by applying the following rules:<br/>
+                                           evaluates as <strong>very good:</strong>
+                                           <t:dataList
+  													var="item"
+  													value="#{fileBMG.autoEvalDataForToolTip['VERYGOOD']}"
+  													layout="unorderedList"> 
+  													<h:outputText value="#{item.value}"/>	
+  												</t:dataList>
+  												evaluates as <strong>good:</strong>		
+												<t:dataList
+  													var="item"
+  													value="#{fileBMG.autoEvalDataForToolTip['GOOD']}"
+  													layout="unorderedList"> 
+  													<h:outputText value="#{item.value}"/>					
+												</t:dataList>
+												evaluates as <strong>bad:</strong>		
+												<t:dataList
+  													var="item"
+  													value="#{fileBMG.autoEvalDataForToolTip['BAD']}"
+  													layout="unorderedList"> 
+  													<h:outputText value="#{item.value}"/>					
+												</t:dataList>
+												evaluates as <strong>very bad:</strong>		
+												<t:dataList
+  													var="item"
+  													value="#{fileBMG.autoEvalDataForToolTip['VERYBAD']}"
+  													layout="unorderedList"> 
+  													<h:outputText value="#{item.value}"/>					
+												</t:dataList>
+										</span>
+  									</rich:toolTip>
+  								</a4j:outputPanel>
 							</t:column>
 							<t:column>
 								<f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
@@ -76,12 +114,12 @@
 							<t:column>
 								<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
 			                           <a4j:outputPanel ajaxRendered="true">                 
-                                       		<h:inputText value="#{fileBMG.sourceValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalSrcValueChange}" disabled="#{ExperimentBean.finished}" style="border-style: solid; border-color: red;" rendered="#{fileBMG.srcError}">
+                                       		<h:inputText value="#{fileBMG.sourceValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalSrcValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}" style="border-style: solid; border-color: red;" rendered="#{fileBMG.srcError}">
                                            		<f:param value="#{data['input']}" name="forInputFile"/>
                             					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
                        							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
                                         	</h:inputText>
-                                       		<h:inputText value="#{fileBMG.sourceValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalSrcValueChange}" disabled="#{ExperimentBean.finished}" rendered="#{not fileBMG.srcError}">
+                                       		<h:inputText value="#{fileBMG.sourceValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalSrcValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}" rendered="#{not fileBMG.srcError}">
                                            		<f:param value="#{data['input']}" name="forInputFile"/>
                             					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
                        							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
@@ -93,12 +131,12 @@
 							<t:column>
 								<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
 					                    <a4j:outputPanel ajaxRendered="true">                 
-                                       		<h:inputText value="#{fileBMG.targetValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalTargetValueChange}" disabled="#{ExperimentBean.finished}" style="border-style: solid; border-color: red;" rendered="#{fileBMG.tarError}">
+                                       		<h:inputText value="#{fileBMG.targetValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalTargetValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}" style="border-style: solid; border-color: red;" rendered="#{fileBMG.tarError}">
                                            		<f:param value="#{data['input']}" name="forInputFile"/>
                             					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
                        							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
                                         	</h:inputText>
-                                        	<h:inputText value="#{fileBMG.targetValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalTargetValueChange}" disabled="#{ExperimentBean.finished}" rendered="#{not fileBMG.tarError}">
+                                        	<h:inputText value="#{fileBMG.targetValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalTargetValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}" rendered="#{not fileBMG.tarError}">
                                            		<f:param value="#{data['input']}" name="forInputFile"/>
                             					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
                        							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
@@ -109,12 +147,12 @@
 							</t:column>
 							<t:column>
 								<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
-								<h:selectOneMenu id="fileEvalBmGoal_#{fileBMG.ID}" value="#{fileBMG.evaluationValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalEvalValueChange}" disabled="#{ExperimentBean.finished}">
-									<f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
-									<f:param value="#{data['input']}" name="forInputFile"/>
-                                	<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
+						        	<h:selectOneMenu id="fileEvalBmGoal_#{fileBMG.ID}" value="#{fileBMG.evaluationValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalEvalValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}">
+										<f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
+										<f:param value="#{data['input']}" name="forInputFile"/>
+	                                	<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
                                 	<a4j:support event="onchange" eventsQueue="foo"/>
-								</h:selectOneMenu>
+									</h:selectOneMenu>
 							</t:column>
 						</rich:dataTable>
                    </h:panelGroup>
@@ -157,7 +195,7 @@
 				</t:column>
 				
 			</t:dataTable>
-			
+
            <h2 class="main">#{res['exp_stage6.report']}</h2>
            <p>
                <h:outputLabel value="#{res['exp_stage6.reportTitle']}" for="repTitle" ></h:outputLabel>
@@ -169,21 +207,15 @@
                <h:inputTextarea rows="10" cols="80" required="false" id="repBody" value="#{ExperimentBean.reportBody}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" />
                <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
            </p>
-
-			<!-- demonstrates the usage of componentControl -->
-            <!-- h:commandButton id="updateEval" value="#{res['exp_stage6.button']}" action="#{NewExp_Controller.updateEvaluationAction}">
-            	 <rich:componentControl for="modelpanel_error" attachTo="updateEval" operation="show" event="onclick" disableDefault="true"/>
-            </h:commandButton-->
-            
+          
             <!-- please note: absolute DOM id in getElementById -->
-            <p><a4j:commandButton value="#{res['exp_stage6.button']}" action="#{NewExp_Controller.updateEvaluationAction}"
-				oncomplete="if (document.getElementById('form_results:hasErrMessages').value=='true') Richfaces.showModalPanel('modelpanel_error');"/>
-       		</p>  
-       		
-       		<p><a4j:commandButton value="#{res['exp_stage6.finalize']}" action="#{NewExp_Controller.finalizeEvaluationAction}"
-				oncomplete="if (document.getElementById('form_results:hasErrMessages').value=='true') Richfaces.showModalPanel('modelpanel_error');"/>
-       		</p>  
-                    
+            <p><a4j:commandButton value="#{res['exp_stage6.button']}" action="#{NewExp_Controller.updateBMEvaluationAction}"
+                oncomplete="if (document.getElementById('form_results:hasErrMessages').value=='true') Richfaces.showModalPanel('modelpanel_error');"/>
+               </p>
+             
+            <p><a4j:commandButton value="#{res['exp_stage6.finalize']}" action="#{NewExp_Controller.finalizeBMEvaluationAction}"
+                oncomplete="if (document.getElementById('form_results:hasErrMessages').value=='true') Richfaces.showModalPanel('modelpanel_error');"/>
+               </p>       
 		
 			<a4j:outputPanel ajaxRendered="true">
 					<h:inputHidden id="hasErrMessages" value="#{ExperimentBean.hasErrMessages}" />

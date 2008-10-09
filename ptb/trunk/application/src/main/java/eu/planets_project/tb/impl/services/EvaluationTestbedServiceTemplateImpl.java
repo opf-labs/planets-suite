@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,8 +67,9 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	private String sXPathForBMGoalName = "@name";
 	private String sSrcXpath = "./values/src";
 	private String sTarXpath = "./values/tar";
-	private String sMetricName = "./metric/@name";
-	private String sMetricResult = "./metric@result";
+	private String sMetric = "./metric";
+	private String sMetricName = "@name";
+	private String sMetricResult = "@result";
 	// This annotation specifies that the property or field is not persistent.
 	@Transient
     @XmlTransient
@@ -273,35 +276,38 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 		return ret;
 	}
 	
+	
 	/**
 	 * Defines an XPath how to look up the value of metric within the service's output.
-	 * [no absolute path, relative to the property's root node]
+	 * [no absolute path, relative to the metrics's root node]
 	 * @param xPath
 	 */
 	public void setXPathToMetricValue(String xPath){
 		sMetricResult = xPath;
 	}
 	
-	public String getXPathToMetricConfig(){
+	public String getXPathToMetricResultConfig(){
 		return sMetricResult;
 	}
 	
+	
 	/**
-	 * @param node a Node obtained by getAllEvalResultsRootNodes()
-	 * @return
-	 * @throws XPathExpressionException
+	 * Defines an XPath how to look up the metric nodes within the service's output for a given property
+	 * [no absolute path, relative to the properties's root node]
+	 * @param xPath
 	 */
-	public String getEvalResultMetricValue(Node node) throws XPathExpressionException{
-		XPath xpath = XPathFactory.newInstance().newXPath();
-		String result = (String)xpath.evaluate(sMetricResult, 
-											   node, 
-											   XPathConstants.STRING);
-		return result;
+	public void setXPathToMetricNode(String xPath){
+		sMetric = xPath;
 	}
+	
+	public String getXPathToMetricNodeConfig(){
+		return sMetric;
+	}
+	
 	
 	/**
 	 * Defines an XPath how to look up the value of metric within the service's output.
-	 * [no absolute path, relative to the property's root node]
+	 * [no absolute path, relative to the metrics's root node]
 	 * @param xPath
 	 */
 	public void setXPathToMetricName(String xPath){
@@ -314,19 +320,52 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	
 	/**
 	 * @param node a Node obtained by getAllEvalResultsRootNodes()
-	 * @return
+	 * @return LinkedHashMap<MetricName,MetricResult>
 	 * @throws XPathExpressionException
 	 */
-	public String getEvalResultMetricName(Node node) throws XPathExpressionException{
-		XPath xpath = XPathFactory.newInstance().newXPath();
-		String result = (String)xpath.evaluate(sMetricName, 
-											   node, 
-											   XPathConstants.STRING);
-		return result;
+	public Map<String,String> getEvalResultMetricNamesAndValues(Node node) throws XPathExpressionException{
+		//get all metric nodes for this property
+		NodeList metrics = getEvalResultMetricNodes(node);
+		
+		Map<String,String> ret = new LinkedHashMap<String,String>();
+		
+		if((metrics!=null)&&(metrics.getLength()>0)){
+			for(int i=0;i<metrics.getLength();i++){
+				//metric node
+				Node n = metrics.item(i);
+				
+				//query the name
+				XPath xpathName = XPathFactory.newInstance().newXPath();
+				String name = (String)xpathName.evaluate(sMetricName, 
+													   n, 
+													   XPathConstants.STRING);
+				//query the result
+				XPath xpathResult = XPathFactory.newInstance().newXPath();
+				String value = (String)xpathResult.evaluate(sMetricResult, 
+													   n, 
+													   XPathConstants.STRING);
+				ret.put(name, value);
+				
+			}
+		}
+		return ret;
 	}
 	
 	
+	/**
+	 * @param node a Node obtained by getAllEvalResultsRootNodes()
+	 * @return
+	 * @throws XPathExpressionException
+	 */
+	public NodeList getEvalResultMetricNodes(Node node) throws XPathExpressionException{
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		NodeList result = (NodeList)xpath.evaluate(sMetric,
+											   node, 
+											   XPathConstants.NODESET);
+		return result;
+	}
 
+	
 	/**
 	 * Specifies a mapping between a TB Benchmark Goal object (identified through it's name + id) and a PropertyName(=Metric)
 	 * Please note: the TB BMGoal must be available on this TB instance to create this mapping

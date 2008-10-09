@@ -50,6 +50,14 @@ public interface ExperimentSetup extends ExperimentPhase{
 	public List<BenchmarkGoal> getAllAddedBenchmarkGoals();
 	
 	/**
+	 * Returns a list of all BenchmarkGoals that are used within this Experiment and for which
+	 * a EvaluationService is deployed and a autoEvaluation setting configured
+	 * i.e. therefore delivers a subset of getAllAddedBenchmarkGoals();
+	 * @return
+	 */
+	public List<BenchmarkGoal> getAllAddedAutoEvalBenchmarkGoals();
+	
+	/**
 	 * When the BenchmarkGoalsList is set to final, it's not possible to add or remove
 	 * BenchmarkObjectives to/from the Experiment
 	 * <p>

@@ -114,7 +114,8 @@ public class ExperimentBean {
     
     //contains the benchmarks per file basis. Map<InputFileURI+BMGoalID, BenchmarkBean>
     private Map<String, BenchmarkBean> fileBenchmarks = new HashMap<String,BenchmarkBean>();
-
+    boolean bAnyAutoEvalConfigured = false;
+    
     //The input file refs with Map<Position+"",localFileRef>
     private Map<String,String> inputData = new HashMap<String,String>();
     //distinguish between migration and characterisation output results
@@ -289,6 +290,7 @@ public class ExperimentBean {
 	    				}
 	    			}
 	    		}
+	        	this.bAnyAutoEvalConfigured = checkAnyAutoEvalConfigured();
         	}
         	
         	//fill the experiment overall benchmarks
@@ -1383,6 +1385,23 @@ public class ExperimentBean {
     
     public void setHasErrMessages(boolean b){
     	//
+    }
+    
+    /**
+     * Checks if any autoEvaluation Service was configured and used.
+     * @return
+     */
+    private boolean checkAnyAutoEvalConfigured(){
+    	for(BenchmarkBean bmb : this.getFileBenchmarkBeans().values()){
+    		if((bmb.isAutoEvalServiceAvailable()) && (bmb.isAutoEvalServiceConfigured())){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    public boolean isAnyAutoEvalConfigured(){
+    	return this.bAnyAutoEvalConfigured;
     }
     
 }

@@ -217,6 +217,10 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 		return this.autoEvalServiceConfigured;
 	}
 	
+	public boolean isWasAutomaticallyEvaluated(){
+		return this.bm.isWasAutomaticallyEvaluated();
+	}
+	
 	/**
 	 * Returns a map of all added metric evaluation configuration for displaying
 	 * the tooltip

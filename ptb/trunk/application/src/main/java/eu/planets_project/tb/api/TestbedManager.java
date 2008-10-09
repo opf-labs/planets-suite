@@ -45,6 +45,7 @@ public interface TestbedManager {
 	public boolean isRegistered(long lExpID);
 	public boolean isRegistered(Experiment experiment);
 	public void executeExperiment(Experiment exp);
+	public void executeAutoEvaluationWf(Experiment exp);
 	public int getNumberOfExperiments();
 
 	/**

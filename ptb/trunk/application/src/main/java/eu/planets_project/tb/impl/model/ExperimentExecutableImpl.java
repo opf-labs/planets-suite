@@ -43,9 +43,9 @@ import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 /**
  * @author alindley
  * 
- * This class contains all information that is required for service execution. 
+ * This class contains all information that is required for the experiment's service execution. 
  * This object is handed over to the service execution and results are written 
- * back to it. i.e. corresponds to the idea of an executable part of a preservatio plan
+ * back to it. i.e. corresponds to the idea of an executable part of a preservation plan
  * 
  * Please note: As service currently aren't able to take http file references as input, this
  * class holds and takes only local file refs. 
@@ -55,25 +55,15 @@ import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
  */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.Serializable{
+public class ExperimentExecutableImpl extends ExecutableImpl implements ExperimentExecutable, java.io.Serializable{
 	
-	@Id
-	@GeneratedValue
-    @XmlTransient
-	private long id;
 	//hashmap of local file refs for input and output data of service execution
 	//note: C:/DATA/ rather than http://localhost:8080/testbed/
 	private HashMap<String,String> hmInputOutputData;
 	//no one-to-one annotation, as we want to persist this data by value and not per reference
 	private TestbedServiceTemplateImpl tbServiceTemplate;
 	private String sSelectedServiceOperationName="";
-	private boolean bExecutionStarted = false;
-	private boolean bExecutionEnded = false;
-	private boolean bExecutionSuccess = false;
-	private String sXMLRequest ="";
-	private String sXMLResponds = "";
-	private Calendar execStartDate = new GregorianCalendar();
-	private Calendar execEndDate = new GregorianCalendar();
+
 	//A logger for this - transient: it's not persisted with this entity
     @Transient
     @XmlTransient
@@ -172,22 +162,6 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 		while(itFileRefs.hasNext()){
 			this.addInputData(itFileRefs.next());
 		}
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.mockups.ExperimentExecutable#getServiceTemplate()
-	 */
-	public TestbedServiceTemplate getServiceTemplate() {
-		return this.tbServiceTemplate;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.mockups.ExperimentExecutable#setServiceTemplate(eu.planets_project.tb.api.services.TestbedServiceTemplate)
-	 */
-	public void setServiceTemplate(TestbedServiceTemplate template) {
-		this.tbServiceTemplate = (TestbedServiceTemplateImpl)template;
 	}
 
 
@@ -459,117 +433,21 @@ public class ExperimentExecutableImpl implements ExperimentExecutable, java.io.S
 		}
 		
 	}
+	
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#isExecutableInvoked()
+	 * @see eu.planets_project.tb.api.model.Executable#getServiceTemplate()
 	 */
-	public boolean isExecutableInvoked() {
-		return this.bExecutionStarted;
+	public TestbedServiceTemplate getServiceTemplate() {
+		return this.tbServiceTemplate;
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#isExecutionSuccess()
-	 */
-	public boolean isExecutionSuccess() {
-		return this.bExecutionSuccess;
-	}
 	
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#isExecutionRunning()
+	 * @see eu.planets_project.tb.api.model.Executable#setServiceTemplate(eu.planets_project.tb.api.services.TestbedServiceTemplate)
 	 */
-	public boolean isExecutionRunning(){
-		return ((isExecutableInvoked())&&(!isExecutionCompleted()));
+	public void setServiceTemplate(TestbedServiceTemplate template) {
+		this.tbServiceTemplate = (TestbedServiceTemplateImpl)template;
 	}
-	
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#isExecutionCompleted()
-	 */
-	public boolean isExecutionCompleted(){
-		return this.bExecutionEnded;
-	}
-	
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutionCompleted(boolean)
-	 */
-	public void setExecutionCompleted(boolean b){
-		this.bExecutionEnded = b;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutionSuccess(boolean)
-	 */
-	public void setExecutionSuccess(boolean b) {
-		this.bExecutionSuccess = b;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutableInvoked(boolean)
-	 */
-	public void setExecutableInvoked(boolean b) {
-		this.bExecutionStarted = b;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getServiceXMLRequest()
-	 */
-	public String getServiceXMLRequest() {
-		return this.sXMLRequest;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getServiceXMLResponds()
-	 */
-	public String getServiceXMLResponds() {
-		return this.sXMLResponds;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setServiceXMLRequest(java.lang.String)
-	 */
-	public void setServiceXMLRequest(String xmlrequest) {
-		if(xmlrequest!=null){
-			this.sXMLRequest = xmlrequest;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setServiceXMLResponds(java.lang.String)
-	 */
-	public void setServiceXMLResponds(String xmlresponds) {
-		if(xmlresponds!=null){
-			this.sXMLResponds = xmlresponds;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getExecutionEndDate()
-	 */
-	public Calendar getExecutionEndDate() {
-		return this.execEndDate;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getExecutionStartDate()
-	 */
-	public Calendar getExecutionStartDate() {
-		return this.execStartDate;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutionEndDate(long)
-	 */
-	public void setExecutionEndDate(long timeInMillis) {
-			this.execEndDate.setTimeInMillis(timeInMillis);
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutionStartDate(long)
-	 */
-	public void setExecutionStartDate(long timeInMillis) {
-		this.execStartDate.setTimeInMillis(timeInMillis);
-	}
-
-
 
 }

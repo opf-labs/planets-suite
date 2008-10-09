@@ -2,16 +2,31 @@ package eu.planets_project.tb.impl.model.eval;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Transient;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.commons.logging.Log;
+
+import bsh.Interpreter;
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
 import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
+
+//Note: lindleya: BeanShell - replace with javax.script.ScriptEngine in Java 1.6
+import bsh.Interpreter;
+import bsh.EvalError;
 
 /**
  * Contains the data and settings for automated BMGoal evaluation
@@ -30,9 +45,13 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 	// * list of all supported metrics and their BMGoal mapping
 	private EvaluationTestbedServiceTemplateImpl evaluationService;	
 	private Map<TBEvaluationTypes,List<Config>> mapTBTypesMetricConfig = new HashMap<TBEvaluationTypes,List<Config>>();
-	
+	@Transient
+    @XmlTransient
+	private static Log log;
 	
 	public AutoEvaluationSettingsImpl(TestbedServiceTemplate template){
+		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
+		
 		this.evaluationService = ((EvaluationTestbedServiceTemplateImpl) template).clone();
 		
 		//init the map TBTypes_Config_mapping
@@ -96,6 +115,92 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 			this.getConfig(type).remove(config);
 		}
 	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.eval.AutoEvaluationSettings#autoValidate(java.util.Map)
+	 */
+	public TBEvaluationTypes autoValidate(
+			Map<String, String> extractedMetricData) {
+		
+		//iterate over all types
+		for(TBEvaluationTypes type : TBEvaluationTypes.values()){
+			
+			//all settings that have been configured
+			List<Config> lc = this.getConfig(type);
+			if((lc!=null)&&(lc.size()>0)){
+				
+				//check if all conditions for a given evaluation Type
+				boolean bOK = true;
+				for(Config c : lc){
+					String sName = c.getMetric().getName();
+					if(extractedMetricData.containsKey(sName)){
+
+						String mathExpr = c.getMathExpr();
+						String boundary = c.getEvalBoundary();
+						String extractedData =  extractedMetricData.get(sName);
+						
+						//is either '<' or '>' or '='. '=' can be either be interpreted as '=' or 'equals' dependent on the metric type
+						if(c.getMetric().getNumericTypes().contains(c.getMetric().getType())){
+							//evaluate a numeric expression
+							//build the expression: e.g. 20 < 21
+							String expression = extractedData + mathExpr + boundary;
+							try {
+								//evaluate = as equals
+								if((mathExpr.equals("=")) && (!(boundary.equals(extractedData)))){
+									bOK = false;
+								}
+								if(!validateNumericExpr(expression)){
+									bOK = false;
+								}
+							} catch (EvalError e) {
+									log.error("Malformed metric evaluation expression: "+expression+" "+e);
+									bOK = false;
+							}
+						}
+						else{
+							//evaluate an textual equals expression
+							if(!(boundary.equals(extractedData))){
+								bOK = false;
+							}
+						}				
+					}
+					else
+						bOK = false;
+				}
+				
+				//check if all conditions were true
+				if(bOK)
+					return type;
+			}
+		}
+		
+		//if no type was identified, return null
+		return null;
+	}
+	
+	/**
+	 * This method uses the beanshell for validating string expressions as "(5 + 2) > 5"
+	 * @param mathExpr e.g. "5 < 4" returns false
+	 * @return
+	 * @throws EvalError wrong syntax in expression
+	 */
+	private boolean validateNumericExpr(String mathExpr)throws EvalError{
+		 // http://www.beanshell.org/javadoc/bsh/Interpreter.html
+        Interpreter interpreter = new Interpreter();
+        return (Boolean)interpreter.eval(mathExpr);
+        /*
+            interpreter.eval("n = 3 + 4");
+	        System.out.println("n = "+interpreter.get("n"));
+	        
+	        interpreter.set("a", 1);
+        	interpreter.set("b", 2);
+        	String expression = "(a + b) > 2";
+        	Object result = interpreter.eval(expression);
+        	System.out.println(expression+" ? "+result);
+         */
+	}
+	
 
 	/**
 	 * @author lindleyA
@@ -165,6 +270,7 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 		private String sName = "";
 		private String sType ="";
 		private String sDescription ="";
+		private String[] nummericTypes = new String[]{"java.lang.Integer","java.lang.Long","java.lang.Double","java.lang.Float"};
 		
 		public MetricImpl(String sName, String sType){
 			init(sName,sType,null);
@@ -209,6 +315,13 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 		 */
 		public String getType(){
 			return this.sType;
+		}
+		
+		/* (non-Javadoc)
+		 * @see eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Metric#getNumericTypes()
+		 */
+		public List<String> getNumericTypes(){
+			return Arrays.asList(this.nummericTypes);
 		}
 		
 		/* (non-Javadoc)

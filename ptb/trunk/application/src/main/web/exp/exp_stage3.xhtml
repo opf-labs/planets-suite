@@ -69,7 +69,7 @@
 									    	<f:param name="bmGoalID" value="#{bm.ID}"/>
 									    	<a4j:support event="onchange"/>	
 									    </h:selectBooleanCheckbox-->	 
-										<a4j:commandLink action="#{NewExp_Controller.command_configureAutoEvalService}">
+										<a4j:commandLink action="#{NewExp_Controller.command_configureAutoEvalService}" rendered="#{not ExperimentBean.approved}">
                 							<h:outputText value="configure here" /> 
                 							<f:param value="#{bm.ID}" name="configBMGoalID"/>
                 							<f:param value="#{bm.autoEvalServiceUUID}" name="autoEvalSerUUID"/>

@@ -28,7 +28,7 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
-import eu.planets_project.tb.impl.system.ExperimentInvocationHandlerImpl;
+import eu.planets_project.tb.impl.system.ServiceExecutionHandlerImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.model.Experiment;
@@ -36,7 +36,7 @@ import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
-import eu.planets_project.tb.api.system.ExperimentInvocationHandler;
+import eu.planets_project.tb.api.system.ServiceExecutionHandler;
 
 /**
  * @author alindley
@@ -437,12 +437,23 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.model.ExperimentExecution#executeExperiment()
 	 */
 	public void executeExperiment(Experiment exp){
-		ExperimentInvocationHandler invoHandler = new ExperimentInvocationHandlerImpl();
+		ServiceExecutionHandler invoHandler = new ServiceExecutionHandlerImpl();
 		invoHandler.executeExperiment(exp);
 	}
 	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#getCurrentTBVersionNumber()
+	 */
 	public String getCurrentTBVersionNumber(){
 		return this.tbVersion;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.TestbedManager#executeAutoEvaluationWf(eu.planets_project.tb.api.model.Experiment)
+	 */
+	public void executeAutoEvaluationWf(Experiment exp) {
+		ServiceExecutionHandler invoHandler = new ServiceExecutionHandlerImpl();
+		invoHandler.executeAutoEvalServices(exp);
 	}
 
 }

@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -53,7 +55,9 @@ public class EvaluationTestbedServiceTemplateTest extends TestCase{
 		evalSer.setXPathToCompStatus("@compStatus");
 		evalSer.setXPathForSrcValue("./values/src");
 		evalSer.setXPathForTarValue("./values/tar");
-		evalSer.setXPathToMetricName("./metric/@name");
+		evalSer.setXPathToMetricNode("./metric");
+		evalSer.setXPathToMetricName("@name");
+		evalSer.setXPathToMetricValue("@result");
 	}
 	
 	public void testXPathToRootNodes(){
@@ -147,23 +151,21 @@ public class EvaluationTestbedServiceTemplateTest extends TestCase{
 			List<String> names = new ArrayList<String>();
 			List<String> names2 = new ArrayList<String>();
 			
+			boolean bFound = false;
+			
 			if((nodes!=null)&&(nodes.getLength()>0)){
 				for(int i=0;i<nodes.getLength();i++){
 					Node node = nodes.item(i);
 					
 					//Please note: if not found, s = "";
-					String s = evalSer.getEvalResultMetricName(node);
-					String s2 = evalSer.getEvalResultMetricValue(node);
-					if(!s.equals(""))
-							names.add(s);
-					if(!s2.equals(""))
-						names2.add(s2);
-
+					Map<String,String> r = evalSer.getEvalResultMetricNamesAndValues(node);
+					if(r.containsKey("hammingDistance")){
+						bFound = true;
+						assertEquals(r.get("hammingDistance"),"0");
+					}
 				}
-				assertEquals(true, names.contains("hammingDistance"));
-				assertEquals(true, names2.contains("resolutionUnit"));
-				assertEquals(7, names.size());	
-				assertEquals(7, names2.size());	
+				if(!bFound)
+					assertEquals(true,false);
 			}
 		} catch (XPathExpressionException e) {
 		}

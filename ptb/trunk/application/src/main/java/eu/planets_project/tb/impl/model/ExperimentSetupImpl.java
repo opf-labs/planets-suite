@@ -169,6 +169,19 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		}
 		return ret;
 	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getAllAddedAutoEvalBenchmarkGoals()
+	 */
+	public List<BenchmarkGoal> getAllAddedAutoEvalBenchmarkGoals() {
+		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
+		for(BenchmarkGoal goal : this.hmBenchmarkGoals.values()){
+			if(goal.isAutoEvaluatable()){
+				ret.add(goal);
+			}
+		}
+		return ret;
+	}
 
 
 	/* (non-Javadoc)

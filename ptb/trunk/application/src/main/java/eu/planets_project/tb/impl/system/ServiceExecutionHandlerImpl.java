@@ -4,47 +4,68 @@
 package eu.planets_project.tb.impl.system;
 
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.Map.Entry;
+
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.ws.Service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
+import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
+import eu.planets_project.ifr.core.common.services.PlanetsServices;
+import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
-import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
+import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
+import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
+import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Metric;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
+import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
 import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
 import eu.planets_project.tb.api.services.util.ServiceRespondsExtractor;
-import eu.planets_project.tb.api.system.ExperimentInvocationHandler;
+import eu.planets_project.tb.api.system.ServiceExecutionHandler;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.exceptions.ServiceInvocationException;
-import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
+import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
+import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowDroidXCDLExtractorComparator;
 import eu.planets_project.tb.impl.services.util.ServiceRequestBuilderImpl;
 import eu.planets_project.tb.impl.services.util.ServiceRespondsExtractorImpl;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  * @author Andrew Lindley, ARC
@@ -53,10 +74,10 @@ import eu.planets_project.tb.impl.services.util.ServiceRespondsExtractorImpl;
  * information back to the experiment's executable
  *
  */
-public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHandler{
+public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 
 	//A logger for this - transient: it's not persisted with this entity
-    private Log log = LogFactory.getLog(ExperimentInvocationHandlerImpl.class);
+    private Log log = LogFactory.getLog(ServiceExecutionHandlerImpl.class);
     private String sOutputDir = "";
     //this will only be modified once, so therefore the relative position of its elements will not change
     //which is important for mapping them to their output files.
@@ -64,7 +85,7 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
     //A DataHandler util class for decoding base64 or similar value (and not ref) results
     DataHandler dh = new DataHandlerImpl();
     
-    public ExperimentInvocationHandlerImpl(){
+    public ServiceExecutionHandlerImpl(){
     }
 	
 	/* (non-Javadoc)
@@ -450,6 +471,158 @@ public class ExperimentInvocationHandlerImpl implements ExperimentInvocationHand
 		}
 		
 		return ret;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.system.ServiceExecutionHandler#executeAutoEvalServices(eu.planets_project.tb.api.model.Experiment)
+	 * Executable only if the current experiment phase = evaluation
+	 */
+	public void executeAutoEvalServices(Experiment exp) {	
+		
+		//a Planets IF Java Workflow instance (mockup)
+		WorkflowDroidXCDLExtractorComparator evalWorkflow = new WorkflowDroidXCDLExtractorComparator();
+		
+		//Get the experiment's data we want to add autoEval FileBMGoals for
+		Collection<Entry<String,String>> data = exp.getExperimentExecutable().getMigrationDataEntries();
+
+		//iterate over all experiemnt data entries
+		for(Entry<String,String> dataEntry : data){
+			DataHandler dh = new DataHandlerImpl();
+			try {
+				URI inputFileURI = dh.getHttpFileRef(new File(dataEntry.getKey()), true);
+				//URI outputFileURI = dh.getHttpFileRef(new File(dataEntry.getValue()), false);
+				File fInputFile = new File(dataEntry.getKey());
+				File fOutputFile = new File(dataEntry.getValue());
+				
+				//the fileBMGoals for the file to evaluate
+				Collection<BenchmarkGoal> fileBMGoals = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(inputFileURI);
+				
+				//call the workflow and extract the data from the workflow's result for every fileBMGoal
+				for(BenchmarkGoal fileBMGoal : fileBMGoals){
+					//executes the workflow, extracts the data, writes results into the objects
+					this.executeWorkflowAndExtractResults(fileBMGoal, fInputFile, fOutputFile, evalWorkflow);
+				}
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+			}			
+		}
+	}
+	
+
+	/**
+	 * This method executes a fully functional mockup of the following workflow:
+	 * In-->Takes two files as input
+	 * a) identify using Droid: to analyze a given file and to extract it's pronom Id(s)
+	 * b) extract using XCDL Extractor: to extract it's XCDL representation (if it is supported)
+	 * c) compare using XCDL Comparator: compares the two XCDL descriptions.
+	 * Out<--returns the comparator's responds 
+	 * This responds is then parsed given the XPath queries within AutoEvalServiceConfig and the BenchmarkGoal objects updated
+	 * TODO: Andrew: substitute with IF workflow 
+	 * @param bmGoal - the BM goal to evaluate
+	 * @param f1 localFile ref input file
+	 * @param f2 localFile ref output file
+	 */
+	private void executeWorkflowAndExtractResults(BenchmarkGoal bmGoal, File f1, File f2, Workflow evalWorkflow){
+		
+		//execute the Droid->XCDLExtractor->Comparator workflow
+		EvaluationExecutable evalExecutable = evalWorkflow.execute(f1, f2);
+		
+		//persist the workflow's data
+		bmGoal.setAutoEvaluationExecutable(evalExecutable);
+		
+		//in the case the evaluation workflow was successful 
+		if(evalExecutable.isExecutableInvoked()&&evalExecutable.isExecutionSuccess()){
+			
+			try {
+				AutoEvaluationSettings autoEvalSettings = bmGoal.getAutoEvalSettings();
+				EvaluationTestbedServiceTemplateImpl evalService = (EvaluationTestbedServiceTemplateImpl)autoEvalSettings.getEvaluationService();
+	
+				//fetch the XCDL comparison result
+				String wfResult = evalExecutable.getXCDLsComparisonResult();
+				
+				//try to build a w3c Document structure 
+				Document document = this.buildDOM(wfResult);
+
+			//AUSLAGERN IN EIGENE METHODE
+				//Iterate over the results and extract metric and evaluation information according to the given XPath definitions
+				NodeList nodes = evalService.getAllEvalResultsRootNodes(document);
+				if((nodes!=null)&&(nodes.getLength()>0)){
+					for(int i=0;i<nodes.getLength();i++){
+						Node node = nodes.item(i);
+						
+						//e.g. imageHeight
+						String sPropertyName = evalService.getEvalResultName(node);
+						
+						//mapping of TB BMGoalID to mappedPropertyName
+						String mappedPropName = evalService.getMappedPropertyName(bmGoal.getID());
+						
+						//check if the values belong to this BMGoal
+						if(sPropertyName.equals(mappedPropName)){
+							//e.g. complete
+							String sStatus = evalService.getEvalResultCompStatus(node);
+							//check if the metric was evaluated properly
+							if(sStatus.equals(evalService.getStringForCompStatusSuccess())){
+								//e.g. 32
+								String sSrcVal = evalService.getEvalResultSrcValue(node);
+								//e.g. 32
+								String sTarVal = evalService.getEvalResultTarValue(node);
+								//e.g. <hammingDistance,0.000000>
+								Map<String,String> metric = evalService.getEvalResultMetricNamesAndValues(node);
+								
+								TBEvaluationTypes type = autoEvalSettings.autoValidate(metric);
+								if(type!=null){
+									
+									//now write the extracted auto Eval information back to the BMGoal
+									bmGoal.setSourceValue(sSrcVal);
+									bmGoal.setTargetValue(sTarVal);
+									bmGoal.setEvaluationValue(type.screenName());
+									bmGoal.setWasAutomaticallyEvaluated(true);
+								}
+							}
+						}
+					}
+				}
+				else{
+					return;
+				}
+		//END AUSLAGERN IN EIGENE METHODE
+			} catch (Exception e) {
+				return;
+			}
+		}
+		else{
+			//in this case autoEval workflow failed (e.g. due to non supported file type) - the user must evaluate by hand
+		}
+	}
+	
+
+		
+	
+	private Document buildDOM(String input) throws ParserConfigurationException, SAXException, IOException{
+		DocumentBuilderFactory factory =   DocumentBuilderFactory.newInstance();  
+		factory.setNamespaceAware(false);
+		DocumentBuilder builder;
+
+		builder = factory.newDocumentBuilder();
+		Reader reader = new StringReader(input);
+		InputSource inputSource = new InputSource(reader);
+		Document document = builder.parse(inputSource);
+		return document;
+
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.system.ServiceExecutionHandler#executeExperimentAndAutoEvalServices(eu.planets_project.tb.api.model.Experiment)
+	 */
+	public void executeExperimentAndAutoEvalServices(Experiment exp) {
+		//execute the migration/characterisation service
+		this.executeExperiment(exp);
+		//execute the evaluation services
+		this.executeAutoEvalServices(exp);
+		
 	}
 	
 

@@ -233,12 +233,16 @@ public class ServiceTemplateExporterImpl implements ServiceTemplateExporter {
 	    	elTarXpath.setTextContent(evalTemplate.getXPathForTarConfig());
 	    	elEvalProperties.appendChild(elTarXpath);
 	    	
+	    	Element elMetricNode = doc.createElement("XPathForMetricNode");
+	    	elMetricNode.setTextContent(evalTemplate.getXPathToMetricNodeConfig());
+	    	elEvalProperties.appendChild(elMetricNode);
+	    	
 	    	Element elMetricName = doc.createElement("MetricName");
 	    	elMetricName.setTextContent(evalTemplate.getXPathToMetricNameConfig());
 	    	elEvalProperties.appendChild(elMetricName);
 	    	
 	    	Element elMetricResult = doc.createElement("MetricResult");
-	    	elMetricResult.setTextContent(evalTemplate.getXPathToMetricConfig());
+	    	elMetricResult.setTextContent(evalTemplate.getXPathToMetricResultConfig());
 	    	elEvalProperties.appendChild(elMetricResult);
 	    	
 	    	Element elCompStatusSuccess = doc.createElement("CompStatusSuccess");

@@ -1,5 +1,6 @@
 package eu.planets_project.tb.impl.model.benchmark;
 
+import java.util.Map;
 import java.util.Vector;
 
 import javax.persistence.CascadeType;
@@ -15,9 +16,11 @@ import java.util.List;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
+import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.eval.AutoEvaluationSettingsImpl;
+import eu.planets_project.tb.impl.model.eval.EvaluationExecutableImpl;
 
 
 /**
@@ -44,6 +47,10 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	private String sXMLID, sCategory; 
 	//settings for auto evaluation of THIS BMGOal through the use of metrics
 	private AutoEvaluationSettingsImpl autoEvalSettings;
+	//the results (XCDL, service execution metadata) for an auto eval service
+	private EvaluationExecutableImpl evaluationExecutable;
+	//indicator if the BMGoal has already been successfully evaluated through an eval service
+	private boolean bWasScuccAutoEvaluated;
 	
 	public BenchmarkGoalImpl(){
 		sName = new String();
@@ -59,6 +66,8 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 		sXMLID = new String();
 		sCategory = new String();
 		autoEvalSettings = null;
+		evaluationExecutable = null;
+		bWasScuccAutoEvaluated= false;
 	}
 	
 	//private void setEntityID(long lEntityID){
@@ -362,6 +371,14 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 			return true;
 		return false;
 	}
+	
+	public void setWasAutomaticallyEvaluated(boolean b){
+		this.bWasScuccAutoEvaluated = b;
+	}
+	
+	public boolean isWasAutomaticallyEvaluated(){
+		return bWasScuccAutoEvaluated;
+	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setAutoEvalSettings(eu.planets_project.tb.api.model.eval.AutoEvaluationSettings)
@@ -376,5 +393,31 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	public void removeAutoEvalSettings(){
 		this.autoEvalSettings = null;
 	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getAutoEvaluationExecutable()
+	 */
+	public EvaluationExecutable getAutoEvaluationExecutable() {
+		return this.evaluationExecutable;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#removeAutoEvaluationExecutable()
+	 */
+	public void removeAutoEvaluationExecutable() {
+		this.evaluationExecutable = null;
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setAutoEvaluationExecutable(eu.planets_project.tb.api.model.eval.EvaluationExecutable)
+	 */
+	public void setAutoEvaluationExecutable(EvaluationExecutable results) {
+		this.evaluationExecutable = (EvaluationExecutableImpl)results;
+	}
+	
 
 }

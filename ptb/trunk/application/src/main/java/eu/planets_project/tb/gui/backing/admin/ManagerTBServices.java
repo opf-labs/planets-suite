@@ -663,6 +663,13 @@ public class ManagerTBServices implements ValueChangeListener{
     			//register the template
 				importer.createAndRegisterTemplate();
 				
+				FacesMessage fmsg = new FacesMessage();
+		        fmsg.setDetail("service configuration imported successfully!");
+		        fmsg.setSummary("service configuration imported successfully!");
+		        fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
+		        FacesContext ctx = FacesContext.getCurrentInstance();
+		        ctx.addMessage("formUploadServiceTemplate:configfileupload",fmsg); 
+				
 			} catch (Exception e) {
 				this.configFile = null;
 				importer = null;

@@ -4,6 +4,7 @@
 package eu.planets_project.tb.api.model.eval;
 
 import java.util.List;
+import java.util.Map;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 
@@ -34,6 +35,18 @@ public interface AutoEvaluationSettings {
 	public void removeConfiguration(TBEvaluationTypes type, Config config);
 	public void removeAllConfigurations(TBEvaluationTypes type);
 	public void removeAllConfigurations();
+	
+	/**
+	 * This method is used for automatically validating the provided extracted metric data
+	 * according to these AutoEvaluationSettings
+	 * Please note: 
+	 * a) all metric configurations need to evaluate positively for a TBEvaluationType;
+	 * b) if the extractedMetricData does not contain all required data for reasoning then see a)
+	 * b) if no configuration evaluates positively null is returned
+	 * @param extractedMetricData
+	 * @return evaluation result: e.g. 'very good' or null if no automated result could be extracted
+	 */
+	public TBEvaluationTypes autoValidate(Map<String,String> extractedMetricData);
 	
 	/**
 	 * @author lindleyA
@@ -79,6 +92,8 @@ public interface AutoEvaluationSettings {
 
 		public void setType(String sType);
 		public String getType();
+		
+		public List<String> getNumericTypes();
 		
 		public void setDescription(String sDescr);
 		public String getDescription();

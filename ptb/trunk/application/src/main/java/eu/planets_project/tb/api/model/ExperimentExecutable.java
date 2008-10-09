@@ -11,14 +11,14 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 /**
  * @author Andrew Lindley, ARC
  * An object implementing this interface contains all bits of information that are
- * required for service execution. This object is handed over to the service execution
- * and results are written back to it. 
- * i.e. corresponds to the idea of an executable part of a preservatio plan
+ * required for migration/characterisation service execution. 
+ * This object is handed over to the service execution and results are written back to it. 
+ * i.e. corresponds to the idea of an executable part of a preservation plan
  */
-public interface ExperimentExecutable{
+public interface ExperimentExecutable extends Executable{
 	
 	/**
-	 * Returns a List of local file refs e.g. C:/DATA/text1.dco
+	 * Returns a List of local file refs e.g. C:/DATA/text1.doc
 	 * @return
 	 */
     public Collection<String> getInputData();

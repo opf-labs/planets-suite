@@ -1,6 +1,9 @@
 package eu.planets_project.tb.api.model.benchmark;
 
+import java.util.Map;
+
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
+import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 
 /**
@@ -97,5 +100,24 @@ public interface BenchmarkGoal {
 	public void setAutoEvalSettings(AutoEvaluationSettings settings);
 	public AutoEvaluationSettings getAutoEvalSettings();
 	public void removeAutoEvalSettings();
+
+	
+	/**
+	 * Contains the auto eval service extraction results, i.e. metadata on execution time,
+	 * if execution has been started, is completed, the XCDL files for source and target files
+	 * the comparator results, etc.
+	 * @param results
+	 */
+	public void setAutoEvaluationExecutable(EvaluationExecutable results);
+	public EvaluationExecutable getAutoEvaluationExecutable();
+	public void removeAutoEvaluationExecutable();
+	
+	/**
+	 * A flag giving an indication if the BMGoal was already successfully
+	 * validated with an auto evaluation workflow or service
+	 * @param b
+	 */
+	public void setWasAutomaticallyEvaluated(boolean b);
+	public boolean isWasAutomaticallyEvaluated();
 
 }

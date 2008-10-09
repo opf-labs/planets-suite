@@ -466,7 +466,7 @@ public class NewExpWizardController {
     }
     
 
-    public String updateEvaluationAction() {
+    public String updateBMEvaluationAction() {
         log.debug("In updateEvaluationAction...");
         try {
 	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -592,13 +592,13 @@ public class NewExpWizardController {
         }
     }
 
-    public String finalizeEvaluationAction() {
+    public String finalizeBMEvaluationAction() {
         // Finalise the experiment:
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");        
         Experiment exp = testbedMan.getExperiment(expBean.getID());
         // First, catch any updates.
-        updateEvaluationAction();
+        updateBMEvaluationAction();
         exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
         log.debug("attempting to save finalized evaluation. "+ exp.getExperimentEvaluation().getState());
         testbedMan.updateExperiment(exp);
@@ -1097,44 +1097,61 @@ public class NewExpWizardController {
     }
        
     
-    private void autoApproveExperiment(){
-    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Experiment exp = testbedMan.getExperiment(expBean.getID());
-    	
-    	// Approve the experiment, automatically:
-    	AdminManagerImpl.approveExperimentAutomatically(exp);
-
-    	// Update the Experiment Bean:
-        testbedMan.updateExperiment(exp);
-        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);
-        expBean.setApproved(true);
-    }
-    
-    
-   public String executeExperiment(){
-    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
-    	try {
-    		//call invocation on the experiment's executable
-    		testbedMan.executeExperiment(exp);
-        	
-    		//fill the expBean with the execution's results
-        	expBean.setOutputData(exp.getExperimentExecutable().getOutputDataEntries());
-
-	  	  	if (exp.getExperimentExecution().isExecutionInvoked()) {
-	  	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
-	  	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
-	  	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
-	  	  	}
+	    private void autoApproveExperiment(){
+	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+	        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	    	Experiment exp = testbedMan.getExperiment(expBean.getID());
+	    	
+	    	// Approve the experiment, automatically:
+	    	AdminManagerImpl.approveExperimentAutomatically(exp);
+	
+	    	// Update the Experiment Bean:
 	        testbedMan.updateExperiment(exp);
-	  	  	return null;
-    	} catch (Exception e) {
-    		log.error("Error when executing Experiment: " + e.toString());
-    		if( log.isDebugEnabled() ) e.printStackTrace();
-    		return null;
-    	}   	
+	        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);
+	        expBean.setApproved(true);
+	    }
+    
+    
+	   public String executeExperiment(){
+	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+	        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	    	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
+	    	try {
+	    		//call invocation on the experiment's executable
+	    		testbedMan.executeExperiment(exp);
+	        	
+	    		//fill the expBean with the execution's results
+	        	expBean.setOutputData(exp.getExperimentExecutable().getOutputDataEntries());
+	
+		  	  	if (exp.getExperimentExecution().isExecutionInvoked()) {
+		  	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+		  	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
+		  	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
+		  	  	}
+		        testbedMan.updateExperiment(exp);
+		  	  	return null;
+	    	} catch (Exception e) {
+	    		log.error("Error when executing Experiment: " + e.toString());
+	    		if( log.isDebugEnabled() ) e.printStackTrace();
+	    		return null;
+	    	}   	
+	    }
+		 
+	 /**
+	  * controller logic for handling the automated evaluation of an experiment
+	  * currently the workflow is hardcoded (Droid->XCDL)
+	  * @return
+	  */
+	 public String executeAutoEvalWf(){
+	   	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+	    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	   	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
+   		
+	   	//call invocation on the evaluation workflow
+   		testbedMan.executeAutoEvaluationWf(exp);
+       	
+   		testbedMan.updateExperiment(exp);
+	    return "goToStage6";  	
     }
     
     

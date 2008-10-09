@@ -25,7 +25,6 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
-import eu.planets_project.tb.api.system.ExperimentInvocationHandler;
 import eu.planets_project.tb.api.system.mockup.SystemMonitoring;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 
