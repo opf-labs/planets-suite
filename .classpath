@@ -193,7 +193,6 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-native-saaj.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-spi.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jsp-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/planets-ifr-common.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/quartz.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jsf-libs/jsf-api.jar"/>
