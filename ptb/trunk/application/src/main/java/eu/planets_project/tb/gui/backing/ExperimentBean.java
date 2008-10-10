@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1403,5 +1405,38 @@ public class ExperimentBean {
     public boolean isAnyAutoEvalConfigured(){
     	return this.bAnyAutoEvalConfigured;
     }
+    
+	private boolean bEvalWFRunning = false;
+	private Calendar cEvalWFRunningStart = new GregorianCalendar();
+	public void setExecuteAutoEvalWfRunning(boolean b){
+		this.bEvalWFRunning = b;
+		if(b)
+			cEvalWFRunningStart = new GregorianCalendar();
+		if(!b){
+			 FacesMessage fmsg = new FacesMessage();
+			 fmsg.setDetail("auto evaluation completed");
+			 fmsg.setSummary("auto evaluation completed");
+			 fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
+			 FacesContext ctx = FacesContext.getCurrentInstance();
+			 ctx.addMessage("evalWFProgress:autoEvalButton",fmsg); 
+		}
+	}
+	
+	/**
+	 * Indicates if/not an autoEvaluation workflow is within the process of execution
+	 * @return
+	 */
+	public boolean isExecuteAutoEvalWfRunning(){
+		 return this.bEvalWFRunning;
+	}
+	
+	/**
+	 * Indicates how long the autoEvalWF is already running
+	 * @return
+	 */
+	public String getAutoEvalWFRunningSeconds(){
+		Calendar cEvalWFRunningSec = new GregorianCalendar();
+		return ((cEvalWFRunningSec.getTimeInMillis() - cEvalWFRunningStart.getTimeInMillis())/1000)+"";
+	}
     
 }

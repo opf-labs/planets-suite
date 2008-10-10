@@ -1147,13 +1147,36 @@ public class NewExpWizardController {
 	    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	   	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
    		
+	    expBean.setExecuteAutoEvalWfRunning(true);
+	   	
 	   	//call invocation on the evaluation workflow
    		testbedMan.executeAutoEvaluationWf(exp);
        	
+   		//update the data
    		testbedMan.updateExperiment(exp);
-	    return "goToStage6";  	
+   		
+   	    expBean.setExecuteAutoEvalWfRunning(false);
+	    return "goToStage6";
     }
     
+	/**
+	 * Indicates if/not an autoEvaluation workflow is within execution
+	 * @return
+	 */
+	public boolean isExecuteAutoEvalWfRunning(){
+		 ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		 return expBean.isExecuteAutoEvalWfRunning();
+	}
+	
+	public String getAutoEvalWFRunningSeconds(){
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		 return expBean.getAutoEvalWFRunningSeconds();
+	}
+	
+	private String test ="A";
+	public String getTestHelper(){
+		return test+="1";
+	}
     
     public String proceedToEvaluation() {
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");

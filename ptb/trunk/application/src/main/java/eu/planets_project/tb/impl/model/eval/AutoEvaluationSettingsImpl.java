@@ -147,10 +147,13 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 							String expression = extractedData + mathExpr + boundary;
 							try {
 								//evaluate = as equals
-								if((mathExpr.equals("=")) && (!(boundary.equals(extractedData)))){
+								if(mathExpr.equals("=")){
+									if(!(boundary.equals(extractedData))){
 									bOK = false;
+									}
 								}
-								if(!validateNumericExpr(expression)){
+								//evaluate as math expression
+								else if(!validateNumericExpr(expression)){
 									bOK = false;
 								}
 							} catch (EvalError e) {

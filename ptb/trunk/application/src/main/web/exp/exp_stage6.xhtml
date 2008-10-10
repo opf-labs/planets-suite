@@ -24,18 +24,33 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
-
+    	
 		<!-- A: If the execution was successfully: display the results -->
-		<a4j:form id="form_results" rendered="#{NewExp_Controller.executionSuccess}">
+		<h:panelGroup rendered="#{NewExp_Controller.executionSuccess}">
 			<p>View the experiment's input and output data, evaluate the
 			outcomes of your experiment against the benchmark goals you specified
 			during Stage 3 of the experiment and supply a report about your
 			experiment. You may save and re-edit your evaluation as often as
 			required.</p>
-			
-			<p><a4j:commandButton value="auto evaluate" action="#{NewExp_Controller.executeAutoEvalWf}" rendered="#{ExperimentBean.anyAutoEvalConfigured}"/>
+		</h:panelGroup>	
+		
+		<a4j:region>
+        	<a4j:form>
+           		<a4j:poll id="pollAutoEvalProgress" interval="5000" reRender="evalWFProgress" enabled="#{NewExp_Controller.executeAutoEvalWfRunning}"/>
+        	</a4j:form>
+        	<a4j:form id="evalWFProgress">
+        		<p><a4j:commandButton id="autoEvalButton" value="auto evaluate" action="#{NewExp_Controller.executeAutoEvalWf}" rendered="#{ExperimentBean.anyAutoEvalConfigured}" disabled="#{NewExp_Controller.executeAutoEvalWfRunning}">
+        			<a4j:support event="onclick" reRender="pollAutoEvalProgress,evalWFProgress" />
+        		</a4j:commandButton>
+       		<h:panelGroup rendered="#{NewExp_Controller.executeAutoEvalWfRunning}">
+       		 	evaluation in progress since: <b>#{NewExp_Controller.autoEvalWFRunningSeconds}</b> Seconds
+       		</h:panelGroup>
+       		<h:message for="autoEvalButton" infoStyle="color:green" errorStyle="color:red"/>
        		</p>  
-			
+        	</a4j:form>
+    	</a4j:region>
+	
+		<a4j:form id="form_results" rendered="#{NewExp_Controller.executionSuccess}">	
 			<h2 class="main">#{res['exp_stage6.headingExperimentEvaluation']}</h2>	
                 <rich:dataList id="fileBMGoalEvalList" var="data" value="#{ExperimentBean.IOTableDataForGUI}" rowIndexVar="rowi" style="border:none;width:100%;padding:0px;">
                 <rich:simpleTogglePanel id="fileBMGoalToggle" switchType="client" opened="#{data['panelOpened']}" label="Experiment Record ##{rowi+1}: #{data['input']}  -  &lt;&lt;#{data['inputName']}&gt;&gt;" style="padding:0px;">               
@@ -73,7 +88,7 @@
 						        	<h:outputText value="#{fileBMG.name}"/> 
 			                    	<rich:toolTip direction="top-right" styleClass="tooltip" rendered="#{fileBMG.wasAutomaticallyEvaluated}">
                        					<span style="white-space:nowrap">
-                                           Got extracted by applying the following rules:<br/>
+                                           This evaluation was extracted by applying the following rules:<br/>
                                            evaluates as <strong>very good:</strong>
                                            <t:dataList
   													var="item"
