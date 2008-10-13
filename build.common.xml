@@ -283,7 +283,7 @@
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />
         <fileset dir="${test.src.dir}">
-          <include name="**/*Test.java"/>
+          <include name="**/*Test*.java"/>
         </fileset>
       </batchtest>
       
