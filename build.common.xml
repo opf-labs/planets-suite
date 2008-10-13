@@ -290,6 +290,11 @@
     </junit>
   </target>
   
+  <!-- Conditional test execution, used in the global build -->
+  <target name="test-if-testable" if="test.src.dir">
+    <ant target="test"/>
+  </target>
+  
   <!-- Check the tests are set up okay -->
   <target name="test:src-defined" unless="test.src.dir">
     <fail message="You must define 'test.src.dir' in order to run the tests."/>

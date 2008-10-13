@@ -57,10 +57,25 @@
     <ant dir="PP/comparator" inheritAll="false"/>
   </target>
   
+  <!-- ================= -->
+  
+  <!-- This target installs the IF example services. -->
+  <target name="deploy:examples" depends="props:set,deploy:common">
+    <ant dir="IF/generic" inheritAll="false"/>
+    <ant dir="IF/simple" inheritAll="false"/>
+  </target>
+    
+  <!-- =================================================================== -->
+    
   <!-- This target installs all services. -->
   <path id="all.sub.projects">
-    <fileset dir="${basedir}" includes="*/*/build.xml" excludes="IF/Sample/*"/>
+    <fileset dir="${basedir}">
+      <include name="*/*/build.xml"/>
+      <exclude name="IF/Sample/*"/>
+      <exclude name="lib/**"/>
+    </fileset>
   </path>
+  
   <target name="deploy:all" depends="props:set,deploy:common">
     <foreach target="deploy:sub" param="sub.build" inheritall="false">
       <path refid="all.sub.projects"/>
@@ -70,6 +85,21 @@
     <echo message="Building ${sub.build}"/>
     <ant antfile="${sub.build}" inheritAll="false"/>
   </target>
+  
+  <!-- ================= -->
+
+  <target name="test:all" depends="props:set,deploy:common">
+    <foreach target="test:sub" param="sub.build" inheritall="false">
+      <path refid="all.sub.projects"/>
+    </foreach>
+  </target>
+  <target name="test:sub">
+    <echo message="Building ${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="test-if-testable"/>
+  </target>
+  
+  <!-- ================= -->
+  
   <target name="undeploy:all" depends="props:set,deploy:common">
     <foreach target="undeploy:sub" param="sub.build" inheritall="false">
       <path refid="all.sub.projects"/>
@@ -80,16 +110,10 @@
     <ant antfile="${sub.build}" inheritAll="false" target="undeploy"/>
   </target>
 
-  <!-- This target installs the IF example services. -->
-  <target name="deploy:examples" depends="props:set,deploy:common">
-    <ant dir="IF/generic" inheritAll="false"/>
-    <ant dir="IF/simple" inheritAll="false"/>
-  </target>
-    
   <!-- =================================================================== -->
     
   <path id="all.sub.project.builds">
-    <dirset dir="${basedir}" includes="*/*/build"/>
+    <dirset dir="${basedir}" includes="*/*/build" excludes="lib/**"/>
   </path>
   
   <target name="clean:all">
@@ -97,7 +121,6 @@
       <path refid="all.sub.project.builds"/>
     </foreach>
   </target>
-  
   <target name="clean:sub">
     <echo message="Got: ${sub.build.dir}"/>
     <delete dir="${sub.build.dir}"/>
