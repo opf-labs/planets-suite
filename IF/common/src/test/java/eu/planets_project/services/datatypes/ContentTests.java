@@ -13,7 +13,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Tests for Content objects. Reads the same data using Content objects both by
