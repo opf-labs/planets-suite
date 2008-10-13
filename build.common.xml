@@ -5,7 +5,17 @@
 <!-- ======================================================================= -->
 
 <project name="Planets Service Build Commons" default="deploy:ear" basedir=".">
-  
+
+  <!-- =================================================================== -->
+
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+    <classpath>
+      <pathelement location="${pserv.root.dir}/lib/ant-contrib-1.0b3.jar"/>
+    </classpath>
+  </taskdef>
+
+  <!-- =================================================================== -->  
+
   <property file="${pserv.root.dir}/build.properties"/>
   
   <!-- Set the target JVM version -->
@@ -27,13 +37,27 @@
   <property name="test.dir" value="${appDir}/../test/java"/>
   <property name="client.config" value="${appDir}/../test/client-config"/>
 
-  <!--To configure from the build.properties file-->
-  <property name="jboss.home" value="${if_server.dir}"/>
-  <property name="junit.lib" value="${junitlib.dir}"/>
-  
+
+  <if>
+	<isset property="if_server.dir"/>
+	<then>
+    <property name="jboss.home" value="${if_server.dir}"/>
+    <property name="server.deploy.lib.dir" value="${if_server.dir}/server/default/lib" if="if_server.dir"/>
+    <property name="server.deploy.dir" value="${if_server.dir}/server/default/deploy" if="if_server.dir"/>
+      <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
+    </then>
+    <else>
+      <echo message="if_server.dir is NOT set - will not deploy, only build_test_classpath"/>
+	</else>
+  </if>
+
+
   <!-- The IF server classpath -->
+  <if>
+	<isset property="if_server.dir"/>
+	<then>
   <path id="server_classpath">
-    <fileset dir="${jboss.home}/server/default/lib">
+    <fileset dir="${server.deploy.lib.dir}">
       <include name="*.jar"/>
     </fileset>
     <fileset dir="${jboss.home}/server/default/deploy/jboss-web.deployer">
@@ -46,6 +70,18 @@
       <include name="*.jar"/>
     </fileset>
   </path>
+    </then>
+    <else>
+	  <!-- This is a portable server_classpath that suffices for compilation and testing of Planets web services. -->
+	  <path id="server_classpath">
+	    <fileset dir="${pserv.root.dir}/lib">
+	      <include name="jaxws-ri-2.*/lib/*.jar" />
+	      <include name="standalone/*.jar" />
+	    </fileset>
+	    <pathelement location="${pserv.root.dir}/build/pserv-if-common.jar"/>
+	  </path>
+	</else>
+  </if>
   
   <!-- The classpath elements for the current component -->
   <path id="component_classpath">
@@ -72,8 +108,6 @@
     <path refid="component_classpath"/>
   </path>
 
-  <property name="build.classpath" refid="classpath"/>
-  
   <!-- Test classpaths -->
   <path id="build_test_classpath">
     <path refid="classpath"/>
@@ -90,10 +124,10 @@
 
   <!-- The standalone (JAX-WS,) test execution classpaths -->
   <path id="standalone_classpath">
-    <fileset dir="${pserv.root.dir}/lib/jaxws-ri-2.1.4/lib">
-      <include name="*.jar" />
+    <fileset dir="${pserv.root.dir}/lib">
+      <include name="jaxws-ri-2.*/lib/*.jar"/>
+      <include name="junit-4.*.jar" />
     </fileset>
-    <pathelement location="${pserv.root.dir}/lib/junit-4.4.jar"/>
     <path refid="component_classpath"/>
     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
     <pathelement location="${pserv.root.dir}/build/pserv-if-common.jar"/>
@@ -115,7 +149,7 @@
   
   <!-- To deploy the common classes. -->
   <target name="deploy:common">
-    <ant dir="${pserv.root.dir}/IF/common" inheritAll="false"/>
+    <ant dir="${pserv.root.dir}/IF/common" inheritAll="false" target="compile:common"/>
   </target>
   
   <!-- To compile the common classes and put them in the right places. -->
@@ -146,7 +180,12 @@
     
     <!-- And deploy the common jars into the right places -->
     <copy file="${build.dir}/${ejb.jar.name}" todir="${pserv.root.dir}/build" overwrite="true"/>
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/default/lib" overwrite="true"/>
+    <if>
+	  <isset property="server.deploy.lib.dir"/>
+	  <then>
+	    <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.lib.dir}" overwrite="true"/>
+	  </then>
+	</if>
   </target>
 
   <!-- =================================================================== -->
@@ -261,19 +300,29 @@
     <jar jarfile="${build.dir}/${ejb.jar.name}">
       <fileset dir="${build.classes.dir}"/>
     </jar>
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${pserv.root.dir}/build"/>
   </target>
 
   <!-- =================================================================== -->
 
   <target name="deploy:ejb" depends="compile:ejb">
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/default/deploy"/>
+    <if>
+	  <isset property="server.deploy.dir"/>
+	  <then>
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.dir}"/>
+      </then>
+    </if>
   </target>
 
   <!-- =================================================================== -->
 
-  <target name="deploy:jar" depends="compile:jar">
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${pserv.root.dir}/build"/>
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/default/lib"/>
+  <target name="deploy:jar" depends="compile:jar" if="server.deploy.lib.dir">
+    <if>
+	  <isset property="server.deploy.lib.dir"/>
+	  <then>
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.lib.dir}"/>
+      </then>
+    </if>
   </target>
 
   <!-- =================================================================== -->
@@ -358,15 +407,20 @@
   </target>
 
   <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
-    <delete file="${jboss.home}/server/default/deploy/${war.base.name}" failonerror="false"/>
-    <delete file="${jboss.home}/server/default/deploy/${ear.base.name}" failonerror="false"/>
-    <delete file="${jboss.home}/server/default/deploy/${ejb.jar.name}" failonerror="false"/>
+    <if>
+	  <isset property="server.deploy.dir"/>
+	  <then>
+    <delete file="${server.deploy.dir}/${war.base.name}" failonerror="false"/>
+    <delete file="${server.deploy.dir}/${ear.base.name}" failonerror="false"/>
+    <delete file="${server.deploy.dir}/${ejb.jar.name}" failonerror="false"/>
+      </then>
+    </if>
   </target>
 
   <!-- =================================================================== -->
   <!-- Helper targets to start the JBoss in a new cmd window (on Windows)                                         -->
   <!-- =================================================================== -->
-  <target name="startjboss" description="launches the Jboss application server">
+  <target name="startjboss" description="launches the Jboss application server" if="jboss.home">
     <exec dir="${jboss.home}/bin" executable="cmd.exe" spawn="true">
       <arg value="/c start run.bat"/>
     </exec>
@@ -463,12 +517,22 @@
   <!-- =================================================================== -->
 
   <target name="deploy:war" depends="undeploy, build:war">
-	  <copy file="${war.base.name}" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+    <if>
+	  <isset property="server.deploy.dir"/>
+	  <then>
+	  <copy file="${war.base.name}" todir="${server.deploy.dir}" overwrite="true"/>
+      </then>
+    </if>
   </target>
 
   <target name="deploy:ear" depends="undeploy, build:ear" 
         description="DEFAULT builds and deploy the ear">
-	<copy file="${build.dir}/${ear.base.name}" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+    <if>
+	  <isset property="server.deploy.dir"/>
+	  <then>
+	<copy file="${build.dir}/${ear.base.name}" todir="${server.deploy.dir}" overwrite="true"/>
+    </then>
+  </if>
   </target>
 
 </project>
