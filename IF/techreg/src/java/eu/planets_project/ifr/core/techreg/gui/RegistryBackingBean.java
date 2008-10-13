@@ -15,7 +15,6 @@ import org.richfaces.component.html.HtmlDataTable;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
-import eu.planets_project.ifr.core.techreg.impl.formats.FormatRegistryImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -36,6 +35,7 @@ public class RegistryBackingBean {
      * Constructor, initialised the format registry:
      */
     public RegistryBackingBean() {
+    	log.debug("Instanciating the Format Registry.");
         ftr = FormatRegistryFactory.getFormatRegistry();
     }
     

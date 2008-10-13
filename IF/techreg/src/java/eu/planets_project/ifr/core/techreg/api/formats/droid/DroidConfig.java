@@ -3,14 +3,8 @@
  */
 package eu.planets_project.ifr.core.techreg.api.formats.droid;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

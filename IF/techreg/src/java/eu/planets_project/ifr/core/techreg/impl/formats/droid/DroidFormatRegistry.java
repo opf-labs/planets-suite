@@ -7,9 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.Set;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import org.apache.commons.logging.Log;
@@ -19,7 +17,6 @@ import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
 import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.droid.DroidConfig;
 
 /**
@@ -71,7 +68,8 @@ public class DroidFormatRegistry  {
      * @param puri
      * @return
      */
-    private static String URItoPUID( URI puri ) {
+    @SuppressWarnings("unused")
+	private static String URItoPUID( URI puri ) {
         if( puri == null ) return null;
         return puri.getSchemeSpecificPart().substring(INFO_PRONOM.length());
     }
