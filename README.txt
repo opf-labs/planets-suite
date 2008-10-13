@@ -64,10 +64,8 @@ How to create a new service project.
 Notes And To Dos (Andy J)
 ================
 
- * Allow sub-projects to declare pserv.ws.test.classes for the server version.
- * Add the standalone class path and use it.
- * Add server-config parameters and allow them to be invoked.
  * Allow sub-projects to define whether they are pure java etc, and pick this up automatically (no limited list, default to impure).
+ * Also allow sub-project to define their supported test enviroments (local, standalone, server) and make testing more automatic.
  
  
 Alternative build environments:
