@@ -9,8 +9,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.planets_project.ifr.core.common.cli.ProcessRunner;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.utils.ProcessRunner;
 
 public class CoreExtractor {
 

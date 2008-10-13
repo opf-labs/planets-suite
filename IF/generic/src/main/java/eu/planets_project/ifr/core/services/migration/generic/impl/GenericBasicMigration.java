@@ -13,8 +13,8 @@ import javax.xml.ws.BindingType;
 
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 
 @WebService(name = GenericBasicMigration.NAME, serviceName = BasicMigrateOneBinary.NAME, targetNamespace = PlanetsServices.NS)
 @SOAPBinding(

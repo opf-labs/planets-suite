@@ -9,8 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import eu.planets_project.ifr.core.common.cli.ProcessRunner;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.utils.ProcessRunner;
 
 /**
  * Wrapper for the comparator command-line tool. This functionality is exposed

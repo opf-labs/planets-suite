@@ -12,10 +12,10 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.datatypes.Types;
-import eu.planets_project.ifr.core.common.services.validate.BasicValidateOneBinary;
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.Types;
+import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
  * JHOVE validation service.
@@ -39,7 +39,7 @@ public final class JhoveValidation implements BasicValidateOneBinary,
      * @param fmt The pronom URI the binary should be validated against
      * @return Returns true if the given pronom URI describes the given binary
      *         file, else false
-     * @see eu.planets_project.ifr.core.common.services.validate.BasicValidateOneBinary#basicValidateOneBinary(byte[],
+     * @see eu.planets_project.services.validate.BasicValidateOneBinary#basicValidateOneBinary(byte[],
      *      java.net.URI)
      */
     @WebMethod(operationName = BasicValidateOneBinary.NAME, action = PlanetsServices.NS

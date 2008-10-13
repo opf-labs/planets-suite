@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Test of the extractor (local and remote) using binaries.

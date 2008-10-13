@@ -7,7 +7,7 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
+import eu.planets_project.services.PlanetsServices;
 
 /**
  * Utility class for the extractor tests.

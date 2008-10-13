@@ -15,12 +15,12 @@ import javax.xml.ws.BindingType;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary;
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.GeneralImageConverter;
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.MigrationResults;
+import eu.planets_project.ifr.core.common.api.PlanetsException;
+import eu.planets_project.ifr.core.common.services.PlanetsServices;
+import eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary;
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
 /**
  * The purpose of this class is the image migration from JPEG to PNG. 

@@ -14,8 +14,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 
 public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");

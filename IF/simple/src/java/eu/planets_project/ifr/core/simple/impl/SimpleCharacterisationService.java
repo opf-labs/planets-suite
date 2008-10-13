@@ -10,9 +10,9 @@ import javax.jws.soap.SOAPBinding;
 
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.simple.api.SimpleCharacterisationRemoteInterface;
 import eu.planets_project.ifr.core.simple.impl.util.FileTypeResolver;
+import eu.planets_project.services.utils.PlanetsLogger;
 
 @javax.jws.WebService(name="SimpleCharacterisationService", targetNamespace="http://services.planets-project.eu/ifr/characterisation", serviceName="SimpleCharacterisationService")
 @Stateless

@@ -21,8 +21,13 @@
     <fail message="No build.properties found."/>
   </target>
 
+  <!-- These are the shared PServ classes. -->
+  <target name="deploy:common" depends="props:set">
+    <ant dir="IF/common" inheritAll="false"/>
+  </target>
+
   <!-- These services are pure java, and can be deployed automatically. -->
-  <target name="deploy:pure-java" depends="props:set">
+  <target name="deploy:pure-java" depends="props:set,deploy:common">
     <!-- IF -->
     <ant dir="IF/techreg" inheritAll="false"/>
     <!-- Preservation Characterisation -->
@@ -34,7 +39,7 @@
   <!-- These services are wrappers requiring other software to be installed. 
     Because of this, they are not deployed automatically (i.e. this target 
     is _not_ included in the default ant target). -->
-  <target name="deploy:wrappers" depends="props:set">
+  <target name="deploy:wrappers" depends="props:set,deploy:common">
     <!-- Preservation Action -->
     <ant dir="PA/dvips" inheritAll="false"/>
     <ant dir="PA/jmagickconverter" inheritAll="false"/>
@@ -56,7 +61,7 @@
   <path id="all.sub.projects">
     <fileset dir="${basedir}" includes="*/*/build.xml" excludes="IF/Sample/*"/>
   </path>
-  <target name="deploy:all">
+  <target name="deploy:all" depends="props:set,deploy:common">
     <foreach target="deploy:sub" param="sub.build" inheritall="false">
       <path refid="all.sub.projects"/>
     </foreach>
@@ -65,7 +70,7 @@
     <echo message="Building ${sub.build}"/>
     <ant antfile="${sub.build}" inheritAll="false"/>
   </target>
-  <target name="undeploy:all">
+  <target name="undeploy:all" depends="props:set,deploy:common">
     <foreach target="undeploy:sub" param="sub.build" inheritall="false">
       <path refid="all.sub.projects"/>
     </foreach>
@@ -76,7 +81,7 @@
   </target>
 
   <!-- This target installs the IF example services. -->
-  <target name="deploy:examples" >
+  <target name="deploy:examples" depends="props:set,deploy:common">
     <ant dir="IF/generic" inheritAll="false"/>
     <ant dir="IF/simple" inheritAll="false"/>
   </target>

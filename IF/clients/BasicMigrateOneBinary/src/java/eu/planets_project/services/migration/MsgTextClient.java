@@ -12,8 +12,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 
 public class MsgTextClient {
 	

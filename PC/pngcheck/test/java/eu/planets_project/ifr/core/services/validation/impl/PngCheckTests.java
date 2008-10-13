@@ -14,10 +14,10 @@ import javax.xml.ws.soap.SOAPFaultException;
 
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.validate.BasicValidateOneBinary;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
  * Local and client tests of the PngCheck functionality.

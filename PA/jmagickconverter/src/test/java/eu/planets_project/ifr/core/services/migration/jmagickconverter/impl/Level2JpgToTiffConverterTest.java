@@ -15,12 +15,12 @@ import java.util.List;
 import org.junit.Test;
 
 import eu.planets_project.datamodel.TypePlanetsDataModel;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.datamodel.DataModelUtils;
 //import eu.planets_project.ifr.core.common.datamodel.DocumentValidator;
 import eu.planets_project.ifr.core.common.datamodel.MockPreservationPlanner;
 import eu.planets_project.ifr.core.common.datamodel.PDMCreator;
 import eu.planets_project.ifr.core.common.datamodel.PlanetsDataModelException;
+import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
 /**

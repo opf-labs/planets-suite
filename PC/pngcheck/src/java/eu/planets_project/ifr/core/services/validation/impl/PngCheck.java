@@ -15,11 +15,11 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import eu.planets_project.ifr.core.common.cli.ProcessRunner;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.validate.BasicValidateOneBinary;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.utils.ProcessRunner;
+import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
  * PngCheck validation service.

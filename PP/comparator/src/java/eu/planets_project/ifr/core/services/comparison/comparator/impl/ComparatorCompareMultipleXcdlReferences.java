@@ -14,9 +14,9 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.compare.CompareMultipleXcdlReferences;
 import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.compare.CompareMultipleXcdlReferences;
 
 /**
  * PP comparator service, comparing multiple XCDLs given as references into the
@@ -38,7 +38,7 @@ public final class ComparatorCompareMultipleXcdlReferences implements
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.common.services.compare.CompareMultipleXcdlReferences#compareMultipleXcdlReferences(java.util.List,
+     * @see eu.planets_project.services.compare.CompareMultipleXcdlReferences#compareMultipleXcdlReferences(java.util.List,
      *      java.lang.String)
      */
     @WebMethod(operationName = CompareMultipleXcdlReferences.NAME, action = PlanetsServices.NS

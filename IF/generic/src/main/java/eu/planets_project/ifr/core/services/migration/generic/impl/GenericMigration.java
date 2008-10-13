@@ -24,14 +24,14 @@ import javax.xml.ws.BindingType;
 
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.datatypes.Parameter;
-import eu.planets_project.ifr.core.common.services.datatypes.Property;
-import eu.planets_project.ifr.core.common.services.migrate.MigrateOneBinary;
-import eu.planets_project.ifr.core.common.services.migrate.MigrateOneBinaryResult;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.cli.ProcessRunner;
 import eu.planets_project.ifr.core.services.migration.generic.common.MultiProperties;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.migrate.MigrateOneBinary;
+import eu.planets_project.services.migrate.MigrateOneBinaryResult;
+import eu.planets_project.services.utils.ProcessRunner;
 
 @WebService(name = GenericMigration.NAME, serviceName = MigrateOneBinary.NAME, targetNamespace = PlanetsServices.NS)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE,
@@ -122,9 +122,8 @@ public class GenericMigration implements MigrateOneBinary, Serializable
 			result.log.error = pr.getProcessErrorAsString();
 			result.log.info = pr.getProcessOutputAsString();
 			result.log.warn = pr.getProcessOutputAsString();
-			result.log.properties = new Property[] { new Property() };
-			result.log.properties[0].name = "name";
-			result.log.properties[0].value = "value";
+			result.log.properties = new ArrayList<Property>();
+			result.log.properties.add( new Property("name", "value") );
 			return result;
 		}
 		catch(IOException e)

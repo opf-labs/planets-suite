@@ -11,11 +11,11 @@ import javax.xml.ws.Service;
 
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.datatypes.Types;
-import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.Types;
+import eu.planets_project.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Local and client tests of the JHOVE identification functionality.

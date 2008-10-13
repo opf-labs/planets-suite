@@ -1,0 +1,58 @@
+/**
+ * 
+ */
+package eu.planets_project.services.identify;
+
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
+import javax.jws.WebService;
+import javax.xml.namespace.QName;
+import javax.xml.ws.BindingType;
+
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceDescription;
+
+/**
+ * Identification of a DigitalObject, returning a
+ * types object containing the identified Pronom URIs and the status resulting
+ * from the identification
+ * 
+ * @author Fabian Steeg
+ */
+@WebService(name = Identify.NAME, serviceName = Identify.NAME, targetNamespace = PlanetsServices.NS)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+public interface Identify {
+    
+	public static final String NAME = "Identify";
+	
+	public static final QName QNAME = new QName(PlanetsServices.NS,
+			Identify.NAME);
+
+	/**
+	 * @param digitalObject 
+	 *            The Digital Object to be identified.
+	 * @return Returns a Types object containing the identification result
+	 */
+	@WebMethod(operationName = Identify.NAME, action = PlanetsServices.NS
+			+ "/" + Identify.NAME)
+	@WebResult(name = Identify.NAME + "Result", targetNamespace = PlanetsServices.NS
+			+ "/" + Identify.NAME, partName = Identify.NAME
+			+ "Result")
+	public IdentifyResult identify(
+            @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
+                    + "/" + Identify.NAME, partName = "digitalObject") 
+			DigitalObject digitalObject);
+	
+    /**
+     * A method that can be used to recover a rich service description, and thus populate a service registry.
+     * @return An ServiceDescription object that describes this service, to aid service discovery.
+     */
+    @WebMethod(operationName = Identify.NAME + "_describe", action = PlanetsServices.NS
+            + "/" + Identify.NAME + "/describe")
+    @WebResult(name = Identify.NAME + "Description", targetNamespace = PlanetsServices.NS
+            + "/" + Identify.NAME, partName = Identify.NAME
+            + "Description")
+	public ServiceDescription describe();
+}

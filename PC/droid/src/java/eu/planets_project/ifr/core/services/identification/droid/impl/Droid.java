@@ -17,10 +17,10 @@ import javax.jws.soap.SOAPBinding;
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.datatypes.Types;
-import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.Types;
+import eu.planets_project.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Droid identification service.

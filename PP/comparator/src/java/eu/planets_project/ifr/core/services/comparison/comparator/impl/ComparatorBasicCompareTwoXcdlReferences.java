@@ -13,9 +13,9 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXcdlReferences;
 import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.compare.BasicCompareTwoXcdlReferences;
 
 /**
  * PP comparator service, comparing two XCDLs given as references into the IF
@@ -37,7 +37,7 @@ public final class ComparatorBasicCompareTwoXcdlReferences implements
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXcdlReferences#basicCompareTwoXcdlReferences(java.net.URI,
+     * @see eu.planets_project.services.compare.BasicCompareTwoXcdlReferences#basicCompareTwoXcdlReferences(java.net.URI,
      *      java.net.URI)
      */
     @WebMethod(operationName = BasicCompareTwoXcdlReferences.NAME, action = PlanetsServices.NS

@@ -4,7 +4,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
+import eu.planets_project.services.PlanetsException;
 
 public interface L2JpgToTiffConverterLocalInterface {
 

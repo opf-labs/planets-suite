@@ -14,8 +14,8 @@ import javax.jws.soap.SOAPBinding;
 
 import org.jboss.util.Base64;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXcdlValues;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
 
 /**
  * PP comparator service, comparing two XCDL strings, using the default
@@ -41,7 +41,7 @@ public final class ComparatorBasicCompareTwoXcdlValues implements
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXcdlValues#basicCompareTwoXcdlValues(java.lang.String,
+     * @see eu.planets_project.services.compare.BasicCompareTwoXcdlValues#basicCompareTwoXcdlValues(java.lang.String,
      *      java.lang.String)
      */
     @WebMethod(operationName = BasicCompareTwoXcdlValues.NAME, action = PlanetsServices.NS

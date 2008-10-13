@@ -8,8 +8,8 @@ import javax.xml.ws.Service;
 
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.identify.IdentifyOneBinary;
 
 /**
  * Local and client tests of the Droid functionality.

@@ -16,6 +16,7 @@
 
   <property name="build.dir" value="${appDir}/build"/>
   <property name="build.classes.dir" value="${build.dir}/classes"/>
+  <property name="build.test.classes.dir" value="${build.dir}/test"/>
   <property name="war.build.dir" value="${appDir}/build/war"/>
   <property name="ear.build.dir" value="${appDir}/build/ear"/>
 
@@ -73,6 +74,20 @@
   </path>
 
   <property name="build.classpath" refid="classpath"/>
+  
+  <!-- Test classpaths -->
+  <path id="build_test_classpath">
+    <path refid="classpath"/>
+    <pathelement location="${build.classes.dir}"/>
+    <fileset dir="${pserv.root.dir}/lib">
+      <include name="junit*.jar" />
+    </fileset>
+  </path>
+  
+  <path id="run_test_classpath">
+    <path refid="build_test_classpath"/>
+    <pathelement location="${build.test.classes.dir}"/>
+  </path>
 
   <!-- The JAX-WS classpath -->
   <path id="jaxwsclasspath">
@@ -87,22 +102,65 @@
   <target name="build:off">
     <echo message="Build is switched off by default."/>
   </target>
+  
+  <!-- =================================================================== -->
+  <!-- Prepares the common code                                            -->
+  <!-- =================================================================== -->
+  
+  <!-- To deploy the common classes. -->
+  <target name="deploy:common">
+    <ant dir="${pserv.root.dir}/IF/common" inheritAll="false"/>
+  </target>
+  
+  <!-- To compile the common classes and put them in the right places. -->
+  <target name="compile:common" depends="prepare">
+    
+    <!--compile the model-->
+    <javac source="1.5" target="${target.jvm}" 
+         srcdir="${src.dir}"
+           destdir="${build.classes.dir}"
+           debug="on"
+           deprecation="on"
+           optimize="off"
+           includes="**">
+      <classpath refid="classpath"/>
+    </javac>
+    
+    <!-- Also copy the resources into the right place -->
+    <copy toDir="${build.classes.dir}" flatten="false" overwrite="true" failonerror="false">
+      <fileset dir="${src.resources}">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    
+    <!-- build the jar -->
+    <jar jarfile="${build.dir}/${ejb.jar.name}">
+      <fileset dir="${build.classes.dir}"/>
+    </jar>
+    
+    <!-- And deploy the common jars into the right places -->
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${pserv.root.dir}/build" overwrite="true"/>
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/default/lib" overwrite="true"/>
+  </target>
 
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
   <target name="prepare">
+    <mkdir dir="${pserv.root.dir}/build"/>
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${war.build.dir}"/>
     <mkdir dir="${ear.build.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
+    <mkdir dir="${build.test.classes.dir}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Compiles the source code                                            -->
   <!-- =================================================================== -->
-  <target name="compile" depends="prepare">
+  <target name="compile" depends="prepare, deploy:common">
     <echo message="ant.java.version: ${ant.java.version}" />
+    
     <!--compile the model-->
     <javac source="1.5" target="${target.jvm}" 
 		 srcdir="${src.dir}"
@@ -113,6 +171,7 @@
            includes="**">
       <classpath refid="classpath"/>
     </javac>
+    
     <!-- tempory not compiling test cases - include after restructuring build.xml-->
     <!--compile the test-classes, session beans, etc.-->
     <!--javac source="1.5" target="${target.jvm}"
@@ -151,10 +210,48 @@
     </copy>
     
   </target>
-
+  
+  <!-- =================================================================== -->
+    
+  <target name="compile:tests" depends="compile" if="test.src.dir">
+    <!--compile the test-classes, session beans, etc.-->
+    <javac source="1.5" target="${target.jvm}"
+           srcdir="${test.src.dir}"
+           destdir="${build.test.classes.dir}"
+           debug="on"
+           deprecation="on"
+           optimize="off"
+           includes="**">
+           <classpath refid="build_test_classpath"/>
+    </javac>
+    
+    <!-- Also copy the libs into the right place -->
+    <copy toDir="${build.test.classes.dir}" flatten="true" failonerror="false">
+      <fileset dir="${test.lib.dir}">
+        <include name="**/*.jar"/>
+      </fileset>
+    </copy>
+    
+    <!-- Also copy the resources into the right place -->
+    <copy toDir="${build.test.classes.dir}" flatten="false" overwrite="true" failonerror="false">
+      <fileset dir="${test.resources}">
+        <include name="**/*" />
+      </fileset>
+    </copy>
+    
+  </target>
+  
   <!-- =================================================================== -->
   
   <target name="compile:ejb" depends="undeploy,compile">
+    <jar jarfile="${build.dir}/${ejb.jar.name}">
+      <fileset dir="${build.classes.dir}"/>
+    </jar>
+  </target>
+
+  <!-- =================================================================== -->
+  
+  <target name="compile:jar" depends="undeploy,compile">
     <jar jarfile="${build.dir}/${ejb.jar.name}">
       <fileset dir="${build.classes.dir}"/>
     </jar>
@@ -168,33 +265,36 @@
 
   <!-- =================================================================== -->
 
-  <target name="deploy:jar" depends="compile:ejb">
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/lib"/>
+  <target name="deploy:jar" depends="compile:jar">
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${pserv.root.dir}/build"/>
+    <copy file="${build.dir}/${ejb.jar.name}" todir="${jboss.home}/server/default/lib"/>
   </target>
 
   <!-- =================================================================== -->
+  <!-- =================================================================== -->
+  <!-- =================================================================== -->
 
-  <target name="run.junittests" description="executes the included JUnit tests">
+  <target name="test" description="executes the included JUnit tests" depends="test:src-defined,compile:tests">
+    <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes">
-      <!--test name="eu.planets_project.tb.unittest.model.BasicPropertiesTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.benchmark.BenchmarkGoalHandlerTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.benchmark.BenchmarkGoalTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.mockup.ExperimentWorkflowTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.mockup.WorkflowHandlerTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.mockup.WorkflowTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.TestbedManagerTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.AdminManagerTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.ExperimentTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.ExperimentSetupTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.ExperimentExecutionTest" /-->
-      <!--test name="eu.planets_project.tb.unittest.model.ExperimentEvaluationTest" /-->
-      <test name="eu.planets_project.tb.unittest.system.mockup.WorkflowInvokerTest" />
-      <!--test name="eu.planets_project.tb.unittest.model.CommentBrowserTest" /-->
-      <formatter type="plain" usefile="false" />
-      <classpath refid="classpath" />
+      <classpath refid="run_test_classpath" />
+      <env key="pserv.ws.test.context" value="local"/>
+      
+      <batchtest fork="yes">
+        <formatter type="plain" usefile="false" />
+        <fileset dir="${test.src.dir}">
+          <include name="**/*Test.java"/>
+        </fileset>
+      </batchtest>
+      
     </junit>
   </target>
-
+  
+  <!-- Check the tests are set up okay -->
+  <target name="test:src-defined" unless="test.src.dir">
+    <fail message="You must define 'test.src.dir' in order to run the tests."/>
+  </target>
+  
   <!-- =================================================================== -->
   <!-- Cleans up generated stuff on JBoss                                          -->
   <!-- =================================================================== -->
@@ -204,9 +304,9 @@
   </target>
 
   <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
-    <delete file="${jboss.home}/server/default/deploy/${war.base.name}"/>
-    <delete file="${jboss.home}/server/default/deploy/${ear.base.name}"/>
-    <delete file="${jboss.home}/server/default/deploy/${ejb.jar.name}"/>
+    <delete file="${jboss.home}/server/default/deploy/${war.base.name}" failonerror="false"/>
+    <delete file="${jboss.home}/server/default/deploy/${ear.base.name}" failonerror="false"/>
+    <delete file="${jboss.home}/server/default/deploy/${ejb.jar.name}" failonerror="false"/>
   </target>
 
   <!-- =================================================================== -->
@@ -273,6 +373,14 @@
     <jar jarfile="${ear.build.dir}/${war.base.name}" 
      basedir="${ear.build.dir}/${appName}"/>
 
+      <!-- Also copy the libs into the right place -->
+      <copy toDir="${ear.build.dir}" flatten="true" failonerror="false">
+        <fileset dir="${ear.lib.dir}">
+          <include name="**/*.jar"/>
+          <exclude name="lib-jee/*.jar"/>
+        </fileset>
+      </copy>
+    
     <ear destfile="${build.dir}/${ear.base.name}" 
           appxml="${src.resources}/META-INF/application.xml">
       <fileset dir="${ear.build.dir}" includes="*.jar,*.war"/>

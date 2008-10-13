@@ -8,10 +8,10 @@ import java.net.URI;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
 import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Test of the extractor (local and remote) using references into the data

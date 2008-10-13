@@ -12,13 +12,13 @@ import javax.xml.ws.Service;
 
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXcdlReferences;
-import eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXcdlValues;
-import eu.planets_project.ifr.core.common.services.compare.CompareMultipleXcdlReferences;
-import eu.planets_project.ifr.core.common.services.compare.CompareMultipleXcdlValues;
 import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.compare.BasicCompareTwoXcdlReferences;
+import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
+import eu.planets_project.services.compare.CompareMultipleXcdlReferences;
+import eu.planets_project.services.compare.CompareMultipleXcdlValues;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Local and client tests of the comparator services functionality.

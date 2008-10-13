@@ -21,10 +21,10 @@ import magick.MagickImage;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.identify.BasicIdentifyOneBinary;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.identify.BasicIdentifyOneBinary;
+import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * The purpose of this class is to identify the format of a given image, passed as byte[].

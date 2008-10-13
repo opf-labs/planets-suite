@@ -5,9 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.net.URI;
 
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
 import eu.planets_project.ifr.core.services.identification.droid.impl.Droid;
+import eu.planets_project.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Helper class for testing the Droid service.

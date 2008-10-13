@@ -44,6 +44,7 @@ in PA/xena/README.txt.
 
 
 ---------------------------------------------------------------
+
 Developer Guildlines
 ====================
 
@@ -57,3 +58,24 @@ Build system.  EJB only at present.
 
 How to create a new service project.
 
+
+----------------------------------------------------------------
+
+Notes And To Dos (Andy J)
+================
+
+ * Allow sub-projects to declare pserv.ws.test.classes for the server version.
+ * Add the standalone class path and use it.
+ * Add server-config parameters and allow them to be invoked.
+ * Allow sub-projects to define whether they are pure java etc, and pick this up automatically (no limited list, default to impure).
+ 
+ 
+Alternative build environments:
+
+ * OpenEJB should work http://openejb.apache.org/
+   But at the present time (3.0 - April 12th, 2008), the JAX-WS standalone testing fails during the Endpoint.create().
+   Seems we should wait for a later version with xmlSchema 1.4 instead of 1.3.2.
+   - http://open.iona.com/forums/thread.jspa?threadID=186&tstart=0
+   - https://issues.apache.org/jira/browse/CXF-1388
+   
+   

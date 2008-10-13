@@ -21,9 +21,9 @@ import nz.govt.natlib.meta.config.Config;
 import nz.govt.natlib.meta.config.Configuration;
 import nz.govt.natlib.meta.config.ConfigurationException;
 import nz.govt.natlib.meta.ui.PropsManager;
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinary;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Service wrapping the Metadata Extraction Tool from the National Archive of
@@ -48,7 +48,7 @@ public final class MetadataExtractor implements BasicCharacteriseOneBinary,
      * @param binary The binary file to characterize
      * @return Returns the proprietary XML result string returned by the
      *         extractor tool
-     * @see eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinary#basicCharacteriseOneBinary(byte[])
+     * @see eu.planets_project.services.characterise.BasicCharacteriseOneBinary#basicCharacteriseOneBinary(byte[])
      */
     @WebMethod(operationName = BasicCharacteriseOneBinary.NAME, action = PlanetsServices.NS
             + "/" + BasicCharacteriseOneBinary.NAME)

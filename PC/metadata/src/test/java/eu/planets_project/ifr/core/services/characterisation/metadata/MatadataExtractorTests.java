@@ -11,11 +11,11 @@ import javax.xml.ws.Service;
 
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinary;
 import eu.planets_project.ifr.core.services.characterisation.metadata.impl.MetadataExtractor;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
+import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Local and client tests of the metadata extractor functionality.

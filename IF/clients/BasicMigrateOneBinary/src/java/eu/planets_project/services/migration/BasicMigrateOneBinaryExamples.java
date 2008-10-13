@@ -15,9 +15,9 @@ import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Dispatch;
 import javax.xml.ws.Response;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary;
-import eu.planets_project.ifr.core.common.services.clients.BasicMigrateOneBinaryClient;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.clients.BasicMigrateOneBinaryClient;
+import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 
 /**
  * 
