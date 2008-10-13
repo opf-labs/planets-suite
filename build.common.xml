@@ -185,6 +185,9 @@
 	  <then>
 	    <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.lib.dir}" overwrite="true"/>
 	  </then>
+      <else>
+      	<echo message="Cannot deploy, as no server lib directory is defined."/>
+      </else>
 	</if>
   </target>
 
@@ -311,6 +314,9 @@
 	  <then>
     <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.dir}"/>
       </then>
+      <else>
+    	<echo message="Cannot deploy, as no deployment directory is defined."/>
+      </else>
     </if>
   </target>
 
@@ -322,6 +328,9 @@
 	  <then>
     <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.lib.dir}"/>
       </then>
+      <else>
+      	<echo message="Cannot deploy, as no server lib directory is defined."/>
+      </else>
     </if>
   </target>
 
@@ -522,6 +531,9 @@
 	  <then>
 	  <copy file="${war.base.name}" todir="${server.deploy.dir}" overwrite="true"/>
       </then>
+      <else>
+      	<echo message="Cannot deploy, as no deployment directory is defined."/>
+      </else>
     </if>
   </target>
 
@@ -532,6 +544,9 @@
 	  <then>
 	<copy file="${build.dir}/${ear.base.name}" todir="${server.deploy.dir}" overwrite="true"/>
     </then>
+    <else>
+    	<echo message="Cannot deploy, as no deployment directory is defined."/>
+    </else>
   </if>
   </target>
 
