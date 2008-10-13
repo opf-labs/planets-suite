@@ -5,6 +5,9 @@ package eu.planets_project.services.datatypes;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  * <h2>A Planets Event</h2>
  *
@@ -34,12 +37,12 @@ public class Event {
     /** 
      * A human-readable description of the event.
      */
-    String summary;
+    @XmlAttribute String summary;
 
     /** 
      * The date and time at which this Event began.
      */
-    String datetime;
+    @XmlAttribute String datetime;
     
     /** 
      * The total duration of this event, 
@@ -53,7 +56,7 @@ public class Event {
      * Only really known to the caller, so maybe this does not belong here.
      * </p>
      */
-    double duration;
+    @XmlAttribute double duration;
 
     /** 
      * The Agent that caused this Event. 
@@ -64,7 +67,7 @@ public class Event {
      * Name-value pairs for extra properties.  
      * This is an expansion point for future functionality.
      */
-    List<Property> properties;
+    @XmlElement List<Property> properties;
 
     /**
      * 

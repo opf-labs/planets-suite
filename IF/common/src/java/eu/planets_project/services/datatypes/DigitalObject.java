@@ -7,6 +7,7 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -47,82 +48,99 @@ import javax.xml.transform.stream.StreamResult;
  * 
  * {@code DigitalObject o = DigitalObject.of(xml);} <p/>
  * 
- * For usage examples, see the tests in {@link DigitalObjectTest} and web
- * service sample usage in {@link PassThruMigrationService} (pserv/IF/simple).<p/>
+ * For usage examples, see the tests in {@link DigitalObjectTests} and web
+ * service sample usage in {@link PassThruMigrationService}
+ * (pserv/IF/simple).<p/>
  * 
  * A corresponding XML schema can be generated from this class by running this
  * class as a Java application, see {@link #main(String[])}.
  * 
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
- * @see DigitalObjectTest
+ * @see DigitalObjectTests
  * @see Migrate
  */
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public final class DigitalObject implements Comparable<DigitalObject>,
         Serializable {
-    
     /** Generated UID. */
     private static final long serialVersionUID = -893249048201058999L;
-    
     /** @See {@link #getTitle()} */
     @XmlAttribute
     private String title;
-    
     /** @See {@link #getPlanetsFormatUri()} */
     @XmlAttribute
     private URI planetsFormatUri;
-    
     /** @See {@link #getPermanentUrl()} */
     @XmlAttribute(required = true)
     private URL permanentUrl;
-    
     /** @See {@link #getManifestationOf()} */
     @XmlAttribute
     private URI manifestationOf;
-    
     /** @See {@link #getChecksum()} */
-    @XmlAttribute
-    private String checksum;
-    
+    @XmlElement
+    private Checksum checksum;
     /** @See {@link #getTaggedMetadata()} */
-    @XmlAttribute
-    private String taggedMetadata;
-    
+    @XmlElement
+    private List<Metadata> taggedMetadata;
     /** @See {@link #getContained()} */
     @XmlElement
     private List<DigitalObject> contained;
-    
     /** @See {@link #getContent()} */
     @XmlElement(required = true)
-    private Content content;
-    
+    private List<Content> content;
     /** @See {@link #getEvents()} */
     @XmlElement
-    private List<String> events;
-    
-    /** @See {@link #getFragmentIds()} */
+    private List<Event> events;
+    /** @See {@link #getFragments()} */
     @XmlElement
-    private List<String> fragmentIds;
+    private List<Fragment> fragments;
+
+    /**
+     * A digital object fragment.
+     */
+    public static final class Fragment {
+        /** The fragment ID. */
+        @XmlAttribute
+        private String id;
+
+        /** No-arg constructor for JAXB. Client should not use this. */
+        @SuppressWarnings("unused")
+        private Fragment() {}
+
+        /**
+         * @param id The ID
+         */
+        public Fragment(final String id) {
+            this.id = id;
+        }
+
+        /**
+         * @return The ID
+         */
+        public String getId() {
+            return id;
+        }
+    }
 
     /**
      * Builder for DigitalObject instances. Using a builder ensures consistent
      * object state during creation and models optional named constructor
      * parameters.
      * 
-     * @see eu.planets_project.ifr.core.common.services.datatypes.DigitalObjectTest
+     * @see eu.planets_project.ifr.core.common.services.datatypes.DigitalObjectTests
      */
     public static final class Builder {
         /* Required parameters: */
         private URL permanentUrl;
-        private Content content;
+        private List<Content> content;
         /* Optional parameters, initialized to default values: */
-        private List<String> events = new ArrayList<String>();
-        private List<String> fragmentIds = new ArrayList<String>();
+        private List<Event> events = new ArrayList<Event>();
+        private List<Fragment> fragments = new ArrayList<Fragment>();
         private List<DigitalObject> contained = new ArrayList<DigitalObject>();
         private URI manifestationOf = null;
-        private String checksum = null;
-        private String taggedMetadata = null;
+        private Checksum checksum = null;
+        private List<Metadata> taggedMetadata = null;
         private URI planetsFormatUri = null;
         private String title = null;
 
@@ -135,29 +153,30 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @param permanentUrl The unique ID for the digital object
          * @param content The content of the digital object
          */
-        public Builder(final URL permanentUrl, final Content content) {
+        public Builder(final URL permanentUrl, final Content... content) {
             this.permanentUrl = permanentUrl;
-            this.content = content;
+            this.content = new ArrayList<Content>(Arrays.asList(content));
         }
 
         /** No-arg constructor for JAXB. API clients should not use this. */
-        public Builder() {}
+        @SuppressWarnings("unused")
+        private Builder() {}
 
         /**
          * @param events The events of the digital object
          * @return The builder, for cascaded calls
          */
-        public Builder events(final List<String> events) {
-            this.events = new ArrayList<String>(events);
+        public Builder events(final Event... events) {
+            this.events = new ArrayList<Event>(Arrays.asList(events));
             return this;
         }
 
         /**
-         * @param fragmentIds The fragments the digital object is made of
+         * @param fragments The fragments the digital object is made of
          * @return The builder, for cascaded calls
          */
-        public Builder fragmentIds(final List<String> fragmentIds) {
-            this.fragmentIds = new ArrayList<String>(fragmentIds);
+        public Builder fragments(final Fragment... fragments) {
+            this.fragments = new ArrayList<Fragment>(Arrays.asList(fragments));
             return this;
         }
 
@@ -165,8 +184,9 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @param contained The contained digital objects
          * @return The builder, for cascaded calls
          */
-        public Builder contains(final List<DigitalObject> contained) {
-            this.contained = new ArrayList<DigitalObject>(contained);
+        public Builder contains(final DigitalObject... contained) {
+            this.contained = new ArrayList<DigitalObject>(Arrays
+                    .asList(contained));
             return this;
         }
 
@@ -192,17 +212,18 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @param checksum The digital object's checksum
          * @return The builder, for cascaded calls
          */
-        public Builder checksum(String checksum) {
+        public Builder checksum(Checksum checksum) {
             this.checksum = checksum;
             return this;
         }
 
         /**
-         * @param taggedMetadata Additional metadata for the digital object
+         * @param metadata Additional metadata for the digital object
          * @return The builder, for cascaded calls
          */
-        public Builder taggedMetadata(String taggedMetadata) {
-            this.taggedMetadata = taggedMetadata;
+        public Builder metadata(Metadata... metadata) {
+            this.taggedMetadata = new ArrayList<Metadata>(Arrays
+                    .asList(metadata));
             return this;
         }
 
@@ -224,7 +245,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         content = builder.content;
         contained = builder.contained;
         events = builder.events;
-        fragmentIds = builder.fragmentIds;
+        fragments = builder.fragments;
         manifestationOf = builder.manifestationOf;
         title = builder.title;
         checksum = builder.checksum;
@@ -239,7 +260,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      * {@code new DigitalObject.Builder(required args...)optional
      * args...build();}
      */
-    public DigitalObject() {}
+    private DigitalObject() {}
 
     /**
      * @param xml The XML representation of a digital object (as created from
@@ -284,17 +305,19 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      * @see java.lang.Object#toString()
      */
     public String toString() {
+        int contentSize = content == null ? 0 : content.size();
+        int containedSize = contained == null ? 0 : contained.size();
+        int eventsSize = events == null ? 0 : events.size();
+        int fragmentsSize = fragments == null ? 0 : fragments.size();
+        int metaSize = taggedMetadata == null ? 0 : taggedMetadata.size();
         return String
                 .format(
                         "DigitalObject: id '%s', title '%s'; %s content elements, "
                                 + "%s contained objects, %s events, %s fragments; "
                                 + "type '%s', manifestation of '%s', checksum '%s', metadata '%s'",
-                        permanentUrl, title, content == null ? 0 : content
-                                .isBinary(), contained == null ? 0 : contained
-                                .size(), events == null ? 0 : events.size(),
-                        fragmentIds == null ? 0 : fragmentIds.size(),
-                        planetsFormatUri, manifestationOf, checksum,
-                        taggedMetadata);
+                        permanentUrl, title, contentSize, containedSize,
+                        eventsSize, fragmentsSize, planetsFormatUri,
+                        manifestationOf, checksum, metaSize);
     }
 
     /**
@@ -315,7 +338,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     @Override
     public boolean equals(final Object obj) {
         return obj instanceof DigitalObject
-                && (this.compareTo((DigitalObject) obj) == 0);
+                && this.compareTo((DigitalObject) obj) == 0;
     }
 
     /**
@@ -359,15 +382,17 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     /**
      * @return The checksum for this digital object.
      */
-    public String getChecksum() {
+    public Checksum getChecksum() {
         return checksum;
     }
 
     /**
-     * @return Additional repository-specific metadata.
+     * @return Additional repository-specific metadata. Returns a defensive
+     *         copy, changes to the obtained list won't affect this digital
+     *         object.
      */
-    public String getTaggedMetadata() {
-        return taggedMetadata;
+    public List<Metadata> getTaggedMetadata() {
+        return new ArrayList<Metadata>(taggedMetadata);
     }
 
     /**
@@ -380,10 +405,12 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     }
 
     /**
-     * @return The actual content references. Required. 
+     * @return The actual content references. Required. Returns a defensive
+     *         copy, changes to the obtained list won't affect this digital
+     *         object.
      */
-    public Content getContent() {
-        return content;
+    public List<Content> getContent() {
+        return new ArrayList<Content>(content);
     }
 
     /**
@@ -391,8 +418,8 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      *         defensive copy, changes to the obtained list won't affect this
      *         digital object.
      */
-    public List<String> getEvents() {
-        return new ArrayList<String>(events);
+    public List<Event> getEvents() {
+        return new ArrayList<Event>(events);
     }
 
     /**
@@ -400,15 +427,15 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      *         defensive copy, changes to the obtained list won't affect this
      *         digital object.
      */
-    public List<String> getFragmentIds() {
-        return new ArrayList<String>(fragmentIds);
+    public List<Fragment> getFragments() {
+        return new ArrayList<Fragment>(fragments);
     }
 
     /* Schema generation: */
 
     /***/
     private static java.io.File baseDir = new java.io.File(
-            "components/common/src/main/resources");
+            "IF/common/src/resources");
     /***/
     private static String schemaFileName = "digital_object.xsd";
 

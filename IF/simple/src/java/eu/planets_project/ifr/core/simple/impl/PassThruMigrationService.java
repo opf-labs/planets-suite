@@ -51,8 +51,7 @@ public final class PassThruMigrationService implements Migrate,
          * We just return a new digital object with the same required arguments
          * as the given:
          */
-        DigitalObject newDO = new DigitalObject.Builder(digitalObject
-                .getPermanentUrl(), digitalObject.getContent()).build();
+        DigitalObject newDO = DigitalObject.of(digitalObject.toXml());
         ServiceReport event = new ServiceReport();
         return new MigrateResult(newDO, event);
     }

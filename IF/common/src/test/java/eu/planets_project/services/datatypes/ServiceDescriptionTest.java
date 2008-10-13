@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.service.datatypes;
+package eu.planets_project.services.datatypes;
 
 import static org.junit.Assert.*;
 
