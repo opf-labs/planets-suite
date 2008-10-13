@@ -23,6 +23,9 @@ import eu.planets_project.services.migrate.MigrateServiceDescription;
  * @author Fabian Steeg
  */
 public final class PassThruMigrationServiceTest extends TestCase {
+    
+    /* The location of this service when deployed. */
+    String wsdlLoc = "/pserv-if-simple/PassThruMigrationService?wsdl";
 
     /* A holder for the object to be tested */
     Migrate dom = null;
@@ -52,32 +55,16 @@ public final class PassThruMigrationServiceTest extends TestCase {
                 Endpoint testEndpoint = Endpoint
                         .create(new PassThruMigrationService());
                 url = new URL(
-                        "http://localhost:18367/pserv-if-simple/DigitalObjectMigration?wsdl");
+                        "http://localhost:18367" + wsdlLoc );
                 testEndpoint.publish(url.toString());
-
-                /*
-                 * Endpoint testEndpoint = Endpoint.create( new
-                 * DigitalObjectMigration() );
-                 * 
-                 * // Create and start the HTTP server SPIProvider spiProvider =
-                 * SPIProviderResolver.getInstance().getProvider(); HttpServer
-                 * httpServer =
-                 * spiProvider.getSPI(HttpServerFactory.class).getHttpServer();
-                 * httpServer.start();
-                 * 
-                 * // Create the context and publish the endpoint HttpContext
-                 * context = httpServer.createContext("/pserv-if-simple");
-                 * testEndpoint.publish(context);
-                 */
 
             }
             // In the server case, pick the server config up:
             else {
-
+                String host = System.getenv("pserv.test.host")+":"+System.getenv("pserv.test.port");
                 System.out
-                        .println("INIT: Configuring against server at localhost:8080");
-                url = new URL(
-                        "http://localhost:8080/pserv-if-simple/DigitalObjectMigration?wsdl");
+                        .println("INIT: Configuring against server at " + host );
+                url = new URL( "http://" + host + wsdlLoc );
 
             }
 

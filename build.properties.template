@@ -12,8 +12,6 @@
 # [*NOTE*] @if_server.dir_@ is used in template ONLY
 if_server.dir=@if_server.dir@
 
-# the path to find JUnit4
-# e.g. on UNIX: junitlib.dir=/home/username/Eclipse_JEE/eclipse/plugins/org.junit4_4.3.1
-# e.g. on Windows: junitlib.dir=C:/Programme/Eclipse_JEE/eclipse/plugins/org.junit4_4.3.1
-# [*NOTE*] @junitlib.dir_@ is used in template ONLY
-junitlib.dir=@junitlib.dir@
+# Also, you should set these properties to run unit tests against a running server.
+#if_server.host=localhost
+#if_server.port=8080

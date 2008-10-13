@@ -40,7 +40,7 @@
       <include name="**/*.jar"/>
     </fileset>
     <fileset dir="${jboss.home}/lib">
-      <include name="*.jar"/>
+      <include name="**/*.jar"/>
     </fileset>
     <fileset dir="${jboss.home}/client">
       <include name="*.jar"/>
@@ -297,12 +297,31 @@
     </junit>
   </target>
   
-  <target name="test:standalone" description="executes the included JUnit tests" depends="test:src-defined,compile:tests">
+  <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)" depends="test:src-defined,compile:tests">
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
       <classpath refid="standalone_test_classpath" />
       <env key="pserv.test.context" value="standalone"/>
       <env key="pserv.root.dir" value="${pserv.root.dir}"/>
+      
+      <batchtest fork="yes">
+        <formatter type="plain" usefile="false" />
+        <fileset dir="${test.src.dir}">
+          <include name="**/*Test*.java"/>
+        </fileset>
+      </batchtest>
+      
+    </junit>
+  </target>
+  
+  <target name="test:server" description="executes the included JUnit tests against a running server" depends="test:src-defined,compile:tests,test:server-defined">
+    <!-- Invoke the tests -->
+    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
+      <classpath refid="run_test_classpath" />
+      <env key="pserv.test.context" value="server"/>
+      <env key="pserv.root.dir" value="${pserv.root.dir}"/>
+      <env key="pserv.test.host" value="${if_server.host}"/>
+      <env key="pserv.test.port" value="${if_server.port}"/>
       
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />
@@ -322,6 +341,12 @@
   <!-- Check the tests are set up okay -->
   <target name="test:src-defined" unless="test.src.dir">
     <fail message="You must define 'test.src.dir' in order to run the tests."/>
+  </target>
+  
+  <!-- Check that the server has been defined if testing against a server. -->
+  <target name="test:server-defined">
+    <fail message="You must define the if_server.host and if_server.port in the build.properties in order to test against a server." unless="if_server.host"/>
+    <fail message="You must define the if_server.host and if_server.port in the build.properties in order to test against a server." unless="if_server.port"/>
   </target>
   
   <!-- =================================================================== -->

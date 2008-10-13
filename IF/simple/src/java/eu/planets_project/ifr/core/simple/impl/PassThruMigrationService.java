@@ -52,8 +52,8 @@ public final class PassThruMigrationService implements Migrate,
          * as the given:
          */
         DigitalObject newDO = DigitalObject.of(digitalObject.toXml());
-        ServiceReport event = new ServiceReport();
-        return new MigrateResult(newDO, event);
+        ServiceReport report = new ServiceReport();
+        return new MigrateResult(newDO, report);
     }
 
     
