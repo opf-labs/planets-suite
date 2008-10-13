@@ -30,24 +30,12 @@
   <!--To configure from the build.properties file-->
   <property name="jboss.home" value="${if_server.dir}"/>
   <property name="junit.lib" value="${junitlib.dir}"/>
-
-  <!-- Build classpath -->
-  <path id="classpath">
+  
+  <!-- The IF server classpath -->
+  <path id="server_classpath">
     <fileset dir="${jboss.home}/server/default/lib">
       <include name="*.jar"/>
     </fileset>
-<!--
-    <fileset dir="${jboss.home}/server/default/deploy/ejb3.deployer">
-      <include name="*.jar"/>
-    </fileset>
-    <fileset dir="${jboss.home}/server/default/deploy/jboss-aop-jdk50.deployer">
-      <include name="*.jar"/>
-    </fileset>
-    <fileset dir="${jboss.home}/server/default/deploy/">
-      <include name="jboss*web*/*.jar"/>
-      <include name="jboss*web*/jsf-libs/*.jar"/>
-    </fileset>
--->
     <fileset dir="${jboss.home}/server/default/deploy/jboss-web.deployer">
       <include name="**/*.jar"/>
     </fileset>
@@ -57,6 +45,11 @@
     <fileset dir="${jboss.home}/client">
       <include name="*.jar"/>
     </fileset>
+  </path>
+  
+  <!-- The classpath elements for the current component -->
+  <path id="component_classpath">
+    
     <!-- specific libs -->
     <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
@@ -71,6 +64,12 @@
     <pathelement location="${build.classes.dir}"/>
     <!-- So that we can get jndi.properties for InitialContext -->
     <pathelement location="${client.config}"/>
+  </path>
+
+  <!-- Build classpath -->
+  <path id="classpath">
+    <path refid="server_classpath"/>
+    <path refid="component_classpath"/>
   </path>
 
   <property name="build.classpath" refid="classpath"/>
@@ -89,14 +88,21 @@
     <pathelement location="${build.test.classes.dir}"/>
   </path>
 
-  <!-- The JAX-WS classpath -->
-  <path id="jaxwsclasspath">
-    <fileset dir="${jboss.home}/client">
+  <!-- The standalone (JAX-WS,) test execution classpaths -->
+  <path id="standalone_classpath">
+    <fileset dir="${pserv.root.dir}/lib/jaxws-ri-2.1.4/lib">
       <include name="*.jar" />
     </fileset>
+    <pathelement location="${pserv.root.dir}/lib/junit-4.4.jar"/>
+    <path refid="component_classpath"/>
+    <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
+    <pathelement location="${pserv.root.dir}/build/pserv-if-common.jar"/>
   </path>
-
-  <property name="jaxws.classpath" refid="jaxwsclasspath"/>
+  
+  <path id="standalone_test_classpath">
+    <path refid="standalone_classpath"/>
+    <pathelement location="${build.test.classes.dir}"/>
+  </path>
   
   <!-- Do nothing -->
   <target name="build:off">
@@ -276,9 +282,27 @@
 
   <target name="test" description="executes the included JUnit tests" depends="test:src-defined,compile:tests">
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="yes">
+    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
       <classpath refid="run_test_classpath" />
-      <env key="pserv.ws.test.context" value="local"/>
+      <env key="pserv.test.context" value="local"/>
+      <env key="pserv.root.dir" value="${pserv.root.dir}"/>
+      
+      <batchtest fork="yes">
+        <formatter type="plain" usefile="false" />
+        <fileset dir="${test.src.dir}">
+          <include name="**/*Test*.java"/>
+        </fileset>
+      </batchtest>
+      
+    </junit>
+  </target>
+  
+  <target name="test:standalone" description="executes the included JUnit tests" depends="test:src-defined,compile:tests">
+    <!-- Invoke the tests -->
+    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
+      <classpath refid="standalone_test_classpath" />
+      <env key="pserv.test.context" value="standalone"/>
+      <env key="pserv.root.dir" value="${pserv.root.dir}"/>
       
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />

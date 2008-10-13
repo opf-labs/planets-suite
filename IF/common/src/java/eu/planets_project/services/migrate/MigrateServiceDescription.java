@@ -38,6 +38,13 @@ public class MigrateServiceDescription extends ServiceDescription {
     
 
     /**
+     * For JAXB.
+     */
+    public MigrateServiceDescription() {
+        super();
+    }
+
+    /**
      * @param name
      * @param type
      */

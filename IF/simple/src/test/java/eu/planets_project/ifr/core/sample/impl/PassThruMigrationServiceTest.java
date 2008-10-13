@@ -39,11 +39,11 @@ public final class PassThruMigrationServiceTest extends TestCase {
         URL url = null;
 
         // Set up the remote version, if applicable:
-        if ("standalone".equals(System.getenv("pserv.ws.test.context"))
-                || "server".equals(System.getenv("pserv.ws.test.context"))) {
+        if ("standalone".equals(System.getenv("pserv.test.context"))
+                || "server".equals(System.getenv("pserv.test.context"))) {
 
             /* In the standalone case, start up the test endpoint. */
-            if (System.getenv("pserv.ws.test.context").equals("standalone")) {
+            if (System.getenv("pserv.test.context").equals("standalone")) {
 
                 System.out.println("INIT: Setting up temporary test server.");
 

@@ -22,7 +22,7 @@ import eu.planets_project.services.utils.ByteArrayHelper;
  * 
  * @author Fabian Steeg
  */
-public final class MatadataExtractorTests {
+public final class MetadataExtractorTests {
 
     /***/
     public static final String SAMPLES = "PC/metadata/src/resources/samples/";

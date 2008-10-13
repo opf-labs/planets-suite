@@ -38,7 +38,7 @@ public class ServiceDescription {
     /**
      * A brief name by which this service is known.
      */
-    @XmlElement(name="title", namespace="http://purl.org/dc/terms/")
+    @XmlElement(name="title", namespace="http://purl.org/dc/terms/", required=true)
     String name;
 
     /**
@@ -54,6 +54,7 @@ public class ServiceDescription {
     /**
      * Declared Parameters: [name, type, value (default)]*n
      */
+    @XmlElement()
     Parameters parameters;
     
     /**
@@ -90,7 +91,7 @@ public class ServiceDescription {
     String author;
     
     /**
-     * The organization that is publishing this service endpoint.
+     * The organisation that is publishing this service endpoint.
      */
     @XmlElement(name="publisher", namespace="http://purl.org/dc/terms/")
     String serviceProvider;

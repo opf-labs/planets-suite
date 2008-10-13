@@ -8,17 +8,18 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class Parameters {
 
-    List<Parameter> parameters = new ArrayList<Parameter>();
+    @XmlElement(name="parameter")
+    List<Parameter> parameters = null;
 
     /**
      * @return the parameters
@@ -40,8 +41,9 @@ public class Parameters {
      * @param value
      */
     public void add(String name, String value) {
-        Parameter p = new Parameter();
+        if( this.parameters == null ) this.parameters = new ArrayList<Parameter>();
         
+        Parameter p = new Parameter(name, value);
         this.parameters.add(p);
     }
     
