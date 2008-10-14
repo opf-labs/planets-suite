@@ -39,11 +39,11 @@ import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
 
 import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.*;
-import eu.planets_project.ifr.core.common.services.identify.BasicIdentifyOneBinary;
+import eu.planets_project.services.identify.BasicIdentifyOneBinary;
 //--
 //import eu.planets_project.ifr.core.wdt.common.services.droid.*;
-import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
-import eu.planets_project.ifr.core.common.services.datatypes.Types;
+import eu.planets_project.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.datatypes.Types;
 
 import java.io.BufferedReader;
 import java.io.File;

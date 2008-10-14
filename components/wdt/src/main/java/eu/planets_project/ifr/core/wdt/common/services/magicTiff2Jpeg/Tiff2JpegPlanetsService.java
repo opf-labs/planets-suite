@@ -1,13 +1,6 @@
 package eu.planets_project.ifr.core.wdt.common.services.magicTiff2Jpeg;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-import javax.xml.ws.WebEndpoint;
-import javax.xml.ws.WebServiceClient;
-
-import eu.planets_project.ifr.core.common.api.PlanetsException;
+import eu.planets_project.services.PlanetsException;
 
 /**
  * Adapter Class
