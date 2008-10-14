@@ -128,7 +128,7 @@ public class L2JpgToTiffConverter extends PreservationBase implements Serializab
     		@WebParam(
             name = "xmlPDMString", 
             targetNamespace = PlanetsServices.NS + "/" + L2PlanetsService.NAME, 
-            partName = "xmlPDMString")String xmlPDMString) throws PlanetsException {
+            partName = "xmlPDMString")String xmlPDMString) {
     	String updatedXmlPDM = null;
 		try {
 			plogger.debug("Unmarshalling the pdmString...");

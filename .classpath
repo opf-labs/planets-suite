@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+    <classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar"/>
+    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jaxb-api.jar"/>
+    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-jaxrpc.jar"/>
+    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-jaxws.jar"/>
+    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-saaj.jar"/>
+    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/serializer.jar"/>
+    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xalan.jar"/>
+    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xercesImpl.jar"/>
 	<classpathentry kind="src" path="PC/droid/src/java"/>
 	<classpathentry kind="src" path="IF/generic/src/test/java"/>
 	<classpathentry kind="src" path="PA/jmagickconverter/src/main/java"/>
@@ -36,9 +44,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar"/>
 	<classpathentry kind="lib" path="/if_sp/lib/build/junit-4.4.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/serializer.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xalan.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/client/concurrent.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/client/getopt.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/client/hibernate-client.jar"/>
@@ -248,6 +253,5 @@
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/wsdl4j-1.5.1.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/xmldb-common-20030701.jar"/>
 	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/xmldb-xupdate-20040205.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jaxb-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
