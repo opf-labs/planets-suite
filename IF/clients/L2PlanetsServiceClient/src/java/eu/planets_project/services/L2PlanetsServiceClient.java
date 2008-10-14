@@ -12,13 +12,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
+import eu.planets_project.services.PlanetsException;
 import eu.planets_project.datamodel.TypePlanetsDataModel;
 import eu.planets_project.ifr.core.common.datamodel.DataModelUtils;
 import eu.planets_project.ifr.core.common.datamodel.MockPreservationPlanner;
 import eu.planets_project.ifr.core.common.datamodel.PDMCreator;
 import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
 import eu.planets_project.ifr.core.common.api.L2PlanetsService;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
 import eu.planets_project.services.utils.ByteArrayHelper;
 
 public class L2PlanetsServiceClient {

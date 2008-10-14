@@ -33,7 +33,7 @@ public class ServiceDescriptionTest {
     public void setUp() throws Exception {
         
         sd = new ServiceDescription("A Test Service", "eu.planets_project.services.identify.Identify");
-        sd.setAuthor("Andrew N. Jackson &lt;Andrew.Jackson@bl.uk&gt;");
+        sd.setAuthor("Andrew N. Jackson <Andrew.Jackson@bl.uk>");
         sd.setDescription("This is just a simple test service description, used to unit test the Service Description code.");
         sd.setClassname(ServiceDescriptionTest.class.getCanonicalName());
         sd.setFurtherInfo(new URI("http://www.planets-project.eu/"));

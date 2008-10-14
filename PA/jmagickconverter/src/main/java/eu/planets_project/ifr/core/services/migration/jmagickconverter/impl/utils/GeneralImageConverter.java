@@ -4,7 +4,7 @@ import magick.ImageInfo;
 import magick.MagickException;
 import magick.MagickImage;
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.MigrationResults;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * 

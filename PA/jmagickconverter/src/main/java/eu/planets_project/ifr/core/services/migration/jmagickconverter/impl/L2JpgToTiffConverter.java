@@ -41,11 +41,11 @@ import eu.planets_project.datamodel.TypePostTransformationFileSet;
 import eu.planets_project.datamodel.TypeTransformationEvent;
 import eu.planets_project.datamodel.TypeTransformationUnit;
 
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.api.PlanetsService;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.migrate.BasicMigrateOneBinary;
+import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.ifr.core.common.api.L2PlanetsService;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.datamodel.DataModelUtils;
 import eu.planets_project.ifr.core.common.datamodel.PlanetsDataModelException;
 import eu.planets_project.ifr.core.common.datamodel.XMLUtilities;
