@@ -40,7 +40,13 @@ import bsh.EvalError;
  */
 public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serializable{
 	
-	//the evaluationTBServiceTemplate containing all information on 
+	/**
+     * A suitable version ID.
+     */
+    private static final long serialVersionUID = 5821566896694386631L;
+    
+    
+    //the evaluationTBServiceTemplate containing all information on 
 	// * executing and extracting values from the execution's result
 	// * list of all supported metrics and their BMGoal mapping
 	private EvaluationTestbedServiceTemplateImpl evaluationService;	
@@ -48,6 +54,10 @@ public class AutoEvaluationSettingsImpl implements AutoEvaluationSettings,Serial
 	@Transient
     @XmlTransient
 	private static Log log;
+	/**
+	 * A no-arg constructor for JAXB.
+	 */
+	public AutoEvaluationSettingsImpl() {};
 	
 	public AutoEvaluationSettingsImpl(TestbedServiceTemplate template){
 		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");

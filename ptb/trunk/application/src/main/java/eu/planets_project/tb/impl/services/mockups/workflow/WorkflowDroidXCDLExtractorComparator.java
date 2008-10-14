@@ -14,14 +14,14 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinary;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
-import eu.planets_project.ifr.core.common.services.compare.BasicCompareTwoXCDLStrings;
-import eu.planets_project.ifr.core.common.services.datatypes.Types;
-import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
+import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
+import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
+import eu.planets_project.services.datatypes.Types;
+import eu.planets_project.services.identify.IdentifyOneBinary;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
 import eu.planets_project.tb.impl.model.eval.EvaluationExecutableImpl;
@@ -267,11 +267,11 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	    	url = new URL(URL_XCDLCOMPARATOR);
 	    	
 	    	Service service = Service.create(url, new QName(PlanetsServices.NS,
-	    			BasicCompareTwoXCDLStrings.NAME));
-	        BasicCompareTwoXCDLStrings comparator = service.getPort(BasicCompareTwoXCDLStrings.class);
+	    			BasicCompareTwoXcdlValues.NAME));
+	    	BasicCompareTwoXcdlValues comparator = service.getPort(BasicCompareTwoXcdlValues.class);
 
 	        //the service call and it's result
-	        String result = comparator.basicCompareTwoXCDLStrings(xcdl1, xcdl2);
+	        String result = comparator.basicCompareTwoXcdlValues(xcdl1, xcdl2);
 	        
 	        if(result==null){
 	        	throw new Exception("XCDL comparison failed - please check service logs for details");

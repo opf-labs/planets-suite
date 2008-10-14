@@ -37,9 +37,9 @@ import org.apache.commons.logging.LogFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import eu.planets_project.ifr.core.common.services.ByteArrayHelper;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.identify.IdentifyOneBinary;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
