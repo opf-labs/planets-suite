@@ -1,15 +1,8 @@
 package eu.planets_project.ifr.core.wdt.common.services.openXMLMigration;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-import javax.xml.ws.WebEndpoint;
-import javax.xml.ws.WebServiceClient;
-
 import org.apache.commons.logging.Log;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * Adapter Class

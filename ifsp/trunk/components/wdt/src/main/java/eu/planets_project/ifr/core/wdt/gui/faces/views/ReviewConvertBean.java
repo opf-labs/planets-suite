@@ -58,9 +58,9 @@ import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
 import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.*;
 //new service interface - call by value
 //import eu.planets_project.ifr.core.wdt.common.services.jpeg2tiff.*;
-import eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary;
-import eu.planets_project.ifr.core.common.services.identify.BasicIdentifyOneBinary;
-import eu.planets_project.ifr.core.common.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
+import eu.planets_project.services.migrate.BasicMigrateOneBinary;
+import eu.planets_project.services.identify.BasicIdentifyOneBinary;
+import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
 
 import java.io.BufferedReader;
 import java.io.File;
