@@ -25,6 +25,9 @@
   <target name="deploy:common" depends="props:set">
     <ant dir="IF/common" inheritAll="false"/>
   </target>
+  <target name="compile:common" depends="props:set">
+    <ant dir="IF/common" inheritAll="false" target="compile:common"/>
+  </target>
 
   <!-- These services are pure java, and can be deployed automatically. -->
   <target name="deploy:pure-java" depends="props:set,deploy:common">

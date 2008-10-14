@@ -88,6 +88,21 @@ public final class Content implements Serializable {
         }
         return null;
     }
+    
+    
+    /**
+     * @return the value
+     */
+    protected byte[] getValue() {
+        return value;
+    }
+
+    /**
+     * @return the reference
+     */
+    protected URL getReference() {
+        return reference;
+    }
 
     /**
      * @return True, if this Content contains the actual value, or false if it
@@ -143,4 +158,5 @@ public final class Content implements Serializable {
         return String.format("Content by %s: %s", isByValue() ? "value"
                 : "reference", isByValue() ? value : reference);
     }
+
 }
