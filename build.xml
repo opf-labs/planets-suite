@@ -17,8 +17,8 @@
   <!-- Check that the build properties have been set up. -->
   <property file="build.properties"/>
   <target name="props:set" unless="if_server.dir">
-    <echo level="error" message="ERROR: Please set up your build.properties file.  Read the README.txt for more information. "/>
-    <fail message="No build.properties found."/>
+	  <echo level="warn" message="For full deployment on the IF, please set up your build.properties file.  Read the README.txt for more information. "/>
+    <echo message="No build.properties found."/>
   </target>
 
   <!-- These are the shared PServ classes. -->
