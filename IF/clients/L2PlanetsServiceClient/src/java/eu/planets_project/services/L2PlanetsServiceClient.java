@@ -45,11 +45,7 @@ public class L2PlanetsServiceClient {
 		String resultXMLString = null;
 		
 		System.out.println("Trying to invoke Service...");
-		try {
-            resultXMLString = converter.invokeService(L2PlanetsServiceClient.createPDM());
-        } catch (eu.planets_project.ifr.core.common.api.PlanetsException e) {
-            e.printStackTrace();
-        }
+        resultXMLString = converter.invokeService(L2PlanetsServiceClient.createPDM());
 		
 		System.out.println("Result XML: " + resultXMLString);
 	}
