@@ -42,8 +42,8 @@
 	<isset property="if_server.dir"/>
 	<then>
     <property name="jboss.home" value="${if_server.dir}"/>
-    <property name="server.deploy.lib.dir" value="${if_server.dir}/server/default/lib" if="if_server.dir"/>
-    <property name="server.deploy.dir" value="${if_server.dir}/server/default/deploy" if="if_server.dir"/>
+    <property name="server.deploy.lib.dir" value="${if_server.dir}/server/default/lib"/>
+    <property name="server.deploy.dir" value="${if_server.dir}/server/default/deploy"/>
       <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
     </then>
     <else>
