@@ -2070,7 +2070,7 @@ public class RegisterTBServices{
 	private List<SelectItem> parseJBossWSEndpoints(String xhtml){
 		List<SelectItem> ret = new Vector<SelectItem>();
 		
-		String keyword = new String("ServiceEndpointAddress");
+		String keyword = new String("Endpoint Address");
 		String href = "<a href=";
 		String symb = ">";
 		String[] s = xhtml.split(keyword);

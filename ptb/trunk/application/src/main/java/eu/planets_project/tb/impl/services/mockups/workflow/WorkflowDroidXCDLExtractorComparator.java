@@ -57,7 +57,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	
 	enum supportedTypes{
 		TIFF(new String[]{"info:pronom/fmt/7","info:pronom/fmt/8","info:pronom/fmt/9","info:pronom/fmt/10"}/*,PATH_TO_xcel_tiff*/),
-		PNG(new String[]{"info:pronom/fmt/11"}/*,PATH_TO_xcel_png*/);
+		PNG(new String[]{"info:pronom/fmt/11","info:pronom/fmt/12"}/*,PATH_TO_xcel_png*/);
 		private String[] idsForType;
 		//private String xcelPath;
 		
@@ -268,7 +268,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	    	
 	    	Service service = Service.create(url, new QName(PlanetsServices.NS,
 	    			BasicCompareTwoXcdlValues.NAME));
-	    	BasicCompareTwoXcdlValues comparator = service.getPort(BasicCompareTwoXcdlValues.class);
+	        BasicCompareTwoXcdlValues comparator = service.getPort(BasicCompareTwoXcdlValues.class);
 
 	        //the service call and it's result
 	        String result = comparator.basicCompareTwoXcdlValues(xcdl1, xcdl2);

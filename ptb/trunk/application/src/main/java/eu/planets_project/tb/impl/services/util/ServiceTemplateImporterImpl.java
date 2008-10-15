@@ -139,7 +139,7 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 	}
 	
 	/**
-	 * @param register: indicates if the template is also registered within the service tempalte registry
+	 * @param register: indicates if the template is also registered within the service template registry
 	 * @return
 	 */
 	private TestbedServiceTemplate helperCreateAndRegisterTemplate(boolean register) throws Exception{

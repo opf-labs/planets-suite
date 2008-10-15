@@ -239,6 +239,10 @@
 
   	<ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">
 	      <fileset dir="${build.dir}" includes="*.jar,*.war"/>
+	          <manifest>
+				  <attribute name="Implementation-Title" value="Planets Testbed"/>
+				  <attribute name="Class-Path" value="commons-io-1.4.jar"/>
+			  </manifest>
 	 </ear>
   	
   </target>
