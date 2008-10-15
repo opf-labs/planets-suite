@@ -13,6 +13,10 @@
 	<property name="src.dir" value="${appDir}/src/java" />
 	<property name="lib.dir" value="${appDir}/lib" />
 	<property name="src.resources" value="${appDir}/src/resources" />
+  
+    <property name="test.src.dir" value="${appDir}/test/java" />
+    <property name="test.server" value="" />
+
 
 	<!-- Include the build targets etc -->
 	<property name="pserv.root.dir" value="../.." />

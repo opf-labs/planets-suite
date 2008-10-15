@@ -39,7 +39,8 @@ public interface IdentifyOneBinary {
 	@WebResult(name = IdentifyOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
 			+ "/" + IdentifyOneBinary.NAME, partName = IdentifyOneBinary.NAME
 			+ "Result")
-	public Types identifyOneBinary(@WebParam(targetNamespace = PlanetsServices.NS + "/"
+	public Types identifyOneBinary(
+	        @WebParam(targetNamespace = PlanetsServices.NS + "/"
 			+ IdentifyOneBinary.NAME)
 	byte[] binary);
 }

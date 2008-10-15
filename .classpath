@@ -75,25 +75,6 @@
 	<classpathentry kind="lib" path="PC/metadata/lib/wave_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/wordperfect_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/xml_adapter_1_0.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/activation.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/FastInfoset.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/http.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxb-api.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxb-impl.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxb-xjc.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-api.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-rt.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-tools.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr173_api.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr181-api.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr250-api.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/mimepull.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/resolver.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-api.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-impl.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/sjsxp.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/stax-ex.jar"/>
-	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/streambuffer.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="PA/jmagickconverter/lib/jmagick.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/richfaces-api-3.2.1.GA.jar"/>
@@ -107,5 +88,71 @@
 	<classpathentry kind="lib" path="lib/standalone/jbossall-client.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-native-jaxrpc.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-native-jaxws.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-native-saaj.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/serializer.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/xalan.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/stax-api.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/stax-ex.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/streambuffer.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-common.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-framework.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-jboss422.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-native-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-native-core.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-native-jaxws-ext.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-spi.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/antlr.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/avalon-framework.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-httpclient.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/concurrent.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/FastInfoset.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/getopt.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/hibernate-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jacorb.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/javassist.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxws-rt.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxws-tools.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-aop-jdk50-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-aspect-jdk50-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-common-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-deployment.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-iiop-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-j2ee.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-jsr77-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-remoting.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-serialization.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-srp-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-system-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-transaction-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-xml-binding.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbosscx-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossha-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossjmx-ant.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossmq-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbosssx-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jettison.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jmx-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jmx-invoker-adaptor-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jnp-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/logkit.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/policy.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/scout.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/stax-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/stax-ex.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/streambuffer.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/trove.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/wstx.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/xmlsec.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -75,7 +75,6 @@
 	  <!-- This is a portable server_classpath that suffices for compilation and testing of Planets web services. -->
 	  <path id="server_classpath">
 	    <fileset dir="${pserv.root.dir}/lib">
-	      <include name="jaxws-ri-2.*/lib/*.jar" />
 	      <include name="standalone/*.jar" />
 	    </fileset>
         <fileset dir="${pserv.root.dir}/build/">
@@ -112,10 +111,16 @@
 
   <!-- Test classpaths -->
   <path id="build_test_classpath">
-    <path refid="classpath"/>
     <pathelement location="${build.classes.dir}"/>
     <fileset dir="${pserv.root.dir}/lib">
-      <include name="junit*.jar" />
+      <include name="jaxws-ri-2.*/lib/*.jar"/>
+      <include name="standalone/*.jar" />
+      <include name="junit-4.*.jar" />
+    </fileset>
+    <path refid="component_classpath"/>
+     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
+    <fileset dir="${pserv.root.dir}/build/">
+      <include name="*.jar" />
     </fileset>
   </path>
   
@@ -126,18 +131,27 @@
 
   <!-- The standalone (JAX-WS,) test execution classpaths -->
   <path id="standalone_classpath">
+    <path refid="classpath"/>
+    <!--
     <fileset dir="${pserv.root.dir}/lib">
       <include name="jaxws-ri-2.*/lib/*.jar"/>
+      <include name="standalone/*.jar" />
       <include name="junit-4.*.jar" />
     </fileset>
     <path refid="component_classpath"/>
+    -->
     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
+    <!--
     <fileset dir="${pserv.root.dir}/build/">
       <include name="*.jar" />
     </fileset>
+    -->
   </path>
   
   <path id="standalone_test_classpath">
+    <fileset dir="${pserv.root.dir}/lib">
+      <include name="jaxws-ri-2.*/lib/*.jar"/>
+    </fileset>
     <path refid="standalone_classpath"/>
     <pathelement location="${build.test.classes.dir}"/>
   </path>
@@ -340,10 +354,25 @@
   <!-- =================================================================== -->
   <!-- =================================================================== -->
 
-  <target name="test" description="executes the included JUnit tests" depends="test:src-defined,compile:tests">
+  <target name="test" description="executes the included JUnit tests" depends="deploy:ejb, test:src-defined, compile:tests">
+    <!-- Attempt all three test modes -->
+    <ant target="test:local"/>
+    <ant target="test:standalone"/>
+    <if>
+      <isset property="test.on.server"/>
+      <then>
+        <ant target="test:server"/>
+      </then>
+    </if>
+  </target>
+  
+  <property name="test.vmarg.boot.classpath" value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar"/>
+  
+  <target name="test:local" description="executes the included JUnit tests w/o a server" depends="test:src-defined,compile:tests" if="test.local">
+    <echo message="TEST:LOCAL: Testing the service code without a server."/>
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
-      <jvmarg value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar"/>
+      <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
       <env key="pserv.test.context" value="local"/>
       <env key="pserv.root.dir" value="${pserv.root.dir}"/>
@@ -358,10 +387,11 @@
     </junit>
   </target>
   
-  <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)" depends="test:src-defined,compile:tests">
+  <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)" depends="test:src-defined,compile:tests" if="test.standalone">
+    <echo message="TEST:STANDALONE: Testing the service code using a standalone server."/>
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
-      <jvmarg value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar"/>
+      <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
       <env key="pserv.test.context" value="standalone"/>
       <env key="pserv.root.dir" value="${pserv.root.dir}"/>
@@ -376,10 +406,14 @@
     </junit>
   </target>
   
-  <target name="test:server" description="executes the included JUnit tests against a running server" depends="test:src-defined,compile:tests,test:server-defined">
+  <target name="test:server" description="executes the included JUnit tests against a running server" depends="test:src-defined,compile:tests,test:server-defined" if="test.server">
+    <echo message="TEST:SERVER: Testing the service code against the server ${if_server.host}:${if_server.port}."/>
+    <!-- Emit the property to the ant console -->
+    <property name="echoclasspath" refid="run_test_classpath"/>
+    <echo message="Classpath = ${echoclasspath}"/>
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
-      <jvmarg value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar"/>
+      <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
       <env key="pserv.test.context" value="server"/>
       <env key="pserv.root.dir" value="${pserv.root.dir}"/>
