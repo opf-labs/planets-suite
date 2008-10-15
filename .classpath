@@ -12,8 +12,11 @@
 	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
 	<classpathentry kind="src" path="IF/clients/L2PlanetsServiceClient/src/java"/>
 	<classpathentry kind="src" path="PA/ps2pdf/src/main/java"/>
-	<classpathentry kind="src" path="PA/openXML/src/main/java"/>
+	<classpathentry kind="src" path="PA/dvips/src/java"/>
+	<classpathentry kind="src" path="PA/pdf2pdfa_MayComputer/src/java"/>
 	<classpathentry kind="src" path="PA/xena/src/java"/>
+	<classpathentry kind="src" path="PA/openXML/src/main/java"/>
+	<classpathentry kind="src" path="PA/openXML/src/test/java"/>
 	<classpathentry kind="src" path="PA/sox/src/java"/>
 	<classpathentry kind="src" path="PA/sox/test/java"/>
 	<classpathentry kind="src" path="PA/msgtext/src/java"/>
@@ -31,6 +34,8 @@
 	<classpathentry kind="src" path="PC/metadata/src/resources"/>
 	<classpathentry kind="src" path="PC/extractor/src/java"/>
 	<classpathentry kind="src" path="PC/extractor/src/test/java"/>
+	<classpathentry kind="src" path="PC/fpm/src/java"/>
+	<classpathentry kind="src" path="PC/fpm/src/test/java"/>
 	<classpathentry kind="src" path="PP/comparator/src/java"/>
 	<classpathentry kind="src" path="PP/comparator/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

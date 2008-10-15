@@ -12,9 +12,9 @@ import javax.xml.ws.Service;
 
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.compare.BasicCompareFormatProperties;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.compare.BasicCompareFormatProperties;
 
 public class FPMToolTest {
 

@@ -27,11 +27,11 @@ import javax.xml.ws.BindingType;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.common.cli.ProcessRunner;
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.common.services.PlanetsServices;
-import eu.planets_project.ifr.core.common.services.compare.BasicCompareFormatProperties;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.utils.ProcessRunner;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.compare.BasicCompareFormatProperties;
 
 @Stateless()
 @Local(BasicCompareFormatProperties.class)
