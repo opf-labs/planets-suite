@@ -1,7 +1,18 @@
-<?xml version="1.0"?>
-<!-- edited with XMLSpy v2007 sp1 (http://www.altova.com) by Markus Reis (Austrian Research Centers) -->
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-  "http://java.sun.com/dtd/web-app_2_3.dtd">
-<web-app>
-	<description>simple</description>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+  version="2.4">
+
+  <servlet>
+    <servlet-name>pserv-if-simple</servlet-name>
+    <servlet-class>eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>pserv-if-simple</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+
 </web-app>

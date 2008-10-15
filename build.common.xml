@@ -32,7 +32,7 @@
 
   <property name="war.base.name" value="pserv-${appName}.war"/>
   <property name="ear.base.name" value="pserv-${appName}.ear"/>
-  <property name="ejb.jar.name" value="pserv-${appName}.jar"/>
+  <property name="jar.base.name" value="pserv-${appName}.jar"/>
 
   <property name="test.dir" value="${appDir}/../test/java"/>
   <property name="client.config" value="${appDir}/../test/client-config"/>
@@ -78,7 +78,9 @@
 	      <include name="jaxws-ri-2.*/lib/*.jar" />
 	      <include name="standalone/*.jar" />
 	    </fileset>
-	    <pathelement location="${pserv.root.dir}/build/pserv-if-common.jar"/>
+        <fileset dir="${pserv.root.dir}/build/">
+          <include name="*.jar" />
+        </fileset>
 	  </path>
 	</else>
   </if>
@@ -130,7 +132,9 @@
     </fileset>
     <path refid="component_classpath"/>
     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
-    <pathelement location="${pserv.root.dir}/build/pserv-if-common.jar"/>
+    <fileset dir="${pserv.root.dir}/build/">
+      <include name="*.jar" />
+    </fileset>
   </path>
   
   <path id="standalone_test_classpath">
@@ -167,23 +171,23 @@
     </javac>
     
     <!-- Also copy the resources into the right place -->
-    <copy toDir="${build.classes.dir}" flatten="false" overwrite="true" failonerror="false">
+    <copy toDir="${build.classes.dir}" flatten="false" failonerror="false">
       <fileset dir="${src.resources}">
         <include name="**/*" />
       </fileset>
     </copy>
     
     <!-- build the jar -->
-    <jar jarfile="${build.dir}/${ejb.jar.name}">
+    <jar jarfile="${build.dir}/${jar.base.name}">
       <fileset dir="${build.classes.dir}"/>
     </jar>
     
     <!-- And deploy the common jars into the right places -->
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${pserv.root.dir}/build" overwrite="true"/>
+    <copy file="${build.dir}/${jar.base.name}" todir="${pserv.root.dir}/build"/>
     <if>
 	  <isset property="server.deploy.lib.dir"/>
 	  <then>
-	    <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.lib.dir}" overwrite="true"/>
+	    <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.lib.dir}"/>
 	  </then>
       <else>
       	<echo message="Cannot deploy, as no server lib directory is defined."/>
@@ -241,7 +245,7 @@
     </copy>
     
     <!-- Also copy the resources into the right place -->
-    <copy toDir="${build.classes.dir}" flatten="false" overwrite="true" failonerror="false">
+    <copy toDir="${build.classes.dir}" flatten="false" failonerror="false">
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
@@ -254,6 +258,7 @@
         <include name="META-INF/jboss.xml"/>
         <include name="META-INF/security-config.xml"/>
         <include name="META-INF/security-rules.drl"/>
+        <exclude name="META-INF/application.xml"/>
       </fileset>
     </copy>
     
@@ -281,7 +286,7 @@
     </copy>
     
     <!-- Also copy the resources into the right place -->
-    <copy toDir="${build.test.classes.dir}" flatten="false" overwrite="true" failonerror="false">
+    <copy toDir="${build.test.classes.dir}" flatten="false" failonerror="false">
       <fileset dir="${test.resources}">
         <include name="**/*" />
       </fileset>
@@ -291,28 +296,25 @@
   
   <!-- =================================================================== -->
   
-  <target name="compile:ejb" depends="undeploy,compile">
-    <jar jarfile="${build.dir}/${ejb.jar.name}">
+  <target name="compile:jar" depends="undeploy,compile">
+    <jar jarfile="${build.dir}/${jar.base.name}">
       <fileset dir="${build.classes.dir}"/>
     </jar>
   </target>
 
   <!-- =================================================================== -->
   
-  <target name="compile:jar" depends="undeploy,compile">
-    <jar jarfile="${build.dir}/${ejb.jar.name}">
-      <fileset dir="${build.classes.dir}"/>
-    </jar>
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${pserv.root.dir}/build"/>
+  <target name="share:jar" depends="undeploy,compile, compile:jar">
+    <copy file="${build.dir}/${jar.base.name}" todir="${pserv.root.dir}/build"/>
   </target>
 
   <!-- =================================================================== -->
 
-  <target name="deploy:ejb" depends="compile:ejb">
+  <target name="deploy:ejb" depends="compile:jar">
     <if>
 	  <isset property="server.deploy.dir"/>
 	  <then>
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.dir}"/>
+    <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.dir}"/>
       </then>
       <else>
     	<echo message="Cannot deploy, as no deployment directory is defined."/>
@@ -326,7 +328,7 @@
     <if>
 	  <isset property="server.deploy.lib.dir"/>
 	  <then>
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${server.deploy.lib.dir}"/>
+    <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.lib.dir}"/>
       </then>
       <else>
       	<echo message="Cannot deploy, as no server lib directory is defined."/>
@@ -413,6 +415,7 @@
 
   <target name="clean" depends="undeploy" description="cleans the build dir and finally undeploys the testbed application">
     <delete dir="${build.dir}"/>
+    <delete dir="${pserv.root.dir}/build"/>
   </target>
 
   <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
@@ -421,7 +424,7 @@
 	  <then>
     <delete file="${server.deploy.dir}/${war.base.name}" failonerror="false"/>
     <delete file="${server.deploy.dir}/${ear.base.name}" failonerror="false"/>
-    <delete file="${server.deploy.dir}/${ejb.jar.name}" failonerror="false"/>
+    <delete file="${server.deploy.dir}/${jar.base.name}" failonerror="false"/>
       </then>
     </if>
   </target>
@@ -459,7 +462,7 @@
       </fileset>
     </copy>
     
-    <copy file="${build.dir}/${ejb.jar.name}" tofile="${war.build.dir}/${appName}/WEB-INF/lib"/>
+    <copy file="${build.dir}/${jar.base.name}" tofile="${war.build.dir}/${appName}/WEB-INF/lib"/>
     
     <jar jarfile="${build.dir}/${war.base.name}" 
      basedir="${war.build.dir}/${appName}"/>
@@ -472,11 +475,16 @@
     <mkdir dir="${ear.build.dir}/${appName}/WEB-INF/lib" />
     <mkdir dir="${ear.build.dir}/${appName}/WEB-INF/classes" />
 
+    <if>
+      <isset property="src.web"/>
+      <then>
     <copy todir="${ear.build.dir}/${appName}">
         <fileset dir="${src.web}" casesensitive="yes">
         <include name="**/*.*" />
       </fileset>
     </copy>
+      </then>
+    </if>
 
     <copy todir="${ear.build.dir}/${appName}/WEB-INF/classes">
       <fileset dir="${src.resources}">
@@ -485,18 +493,25 @@
       </fileset>
     </copy>
     
-    <copy file="${build.dir}/${ejb.jar.name}" todir="${ear.build.dir}" />
+    <copy file="${build.dir}/${jar.base.name}" todir="${ear.build.dir}" />
+    
+    <copy file="${build.dir}/${jar.base.name}" todir="${ear.build.dir}/${appName}/WEB-INF/lib" />
 
     <jar jarfile="${ear.build.dir}/${war.base.name}" 
      basedir="${ear.build.dir}/${appName}"/>
 
       <!-- Also copy the libs into the right place -->
+    <if>
+      <isset property="ear.lib.dir"/>
+      <then>
       <copy toDir="${ear.build.dir}" flatten="true" failonerror="false">
         <fileset dir="${ear.lib.dir}">
           <include name="**/*.jar"/>
           <exclude name="lib-jee/*.jar"/>
         </fileset>
       </copy>
+        </then>
+      </if>
     
     <ear destfile="${build.dir}/${ear.base.name}" 
           appxml="${src.resources}/META-INF/application.xml">
@@ -519,9 +534,9 @@
 
   <!-- =================================================================== -->
 
-  <target name="build:war" depends="compile:ejb, dist:war" description="builds the web application"/>
+  <target name="build:war" depends="compile:jar, dist:war" description="builds the web application"/>
 
-  <target name="build:ear" depends="compile:ejb, dist:ear" description="builds the application"/>
+  <target name="build:ear" depends="compile:jar, dist:ear" description="builds the application"/>
 
   <!-- =================================================================== -->
 
@@ -529,7 +544,7 @@
     <if>
 	  <isset property="server.deploy.dir"/>
 	  <then>
-	  <copy file="${war.base.name}" todir="${server.deploy.dir}" overwrite="true"/>
+	  <copy file="${war.base.name}" todir="${server.deploy.dir}"/>
       </then>
       <else>
       	<echo message="Cannot deploy, as no deployment directory is defined."/>
@@ -542,7 +557,7 @@
     <if>
 	  <isset property="server.deploy.dir"/>
 	  <then>
-	<copy file="${build.dir}/${ear.base.name}" todir="${server.deploy.dir}" overwrite="true"/>
+	<copy file="${build.dir}/${ear.base.name}" todir="${server.deploy.dir}" />
     </then>
     <else>
     	<echo message="Cannot deploy, as no deployment directory is defined."/>

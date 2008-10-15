@@ -21,7 +21,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * 
  * @author Fabian Steeg, Andrew Jackson.
  */
-@WebService(name = Validate.NAME, serviceName = Validate.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(name = Validate.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface Validate {
     

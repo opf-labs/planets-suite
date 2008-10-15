@@ -99,7 +99,7 @@ public final class PassThruMigrationServiceTest extends TestCase {
     public void testDescribe() {
         MigrateServiceDescription desc = dom.describe();
         System.out.println("Recieved service description: " + desc);
-
+        assertTrue("The ServiceDescription should not be NULL.", desc != null );
     }
 
     /**

@@ -93,14 +93,14 @@ public final class Content implements Serializable {
     /**
      * @return the value
      */
-    protected byte[] getValue() {
+    public byte[] getValue() {
         return value;
     }
 
     /**
      * @return the reference
      */
-    protected URL getReference() {
+    public URL getReference() {
         return reference;
     }
 
@@ -108,7 +108,7 @@ public final class Content implements Serializable {
      * @return True, if this Content contains the actual value, or false if it
      *         contains a reference
      */
-    private boolean isByValue() {
+    public boolean isByValue() {
         return reference == null;
     }
 

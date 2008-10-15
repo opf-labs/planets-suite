@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -199,15 +200,24 @@ public class FileTypeResolver {
     }
 
     /**
-        @returns the mime-type for the passed filename or null if no mapping was found.
-    */
-    public String getMIMEType( String fileName ) 
-    {
-        String extension = fileName.substring( fileName.lastIndexOf('.') + 1 ); 
-        return (String) mappings.get( extension.toLowerCase() );
+     * @returns the mime-type for the passed filename or null if no mapping was
+     *          found.
+     */
+    public String getMIMEType(String fileName) {
+        String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        return (String) mappings.get(extension.toLowerCase());
     }
-    
-    
+
+    /**
+     * @returns the mime-type for the passed filename or null if no mapping was
+     *          found.
+     */
+    public String getMIMEType(URL url) {
+        String extension = url.toString().substring(url.toString().lastIndexOf('.') + 1);
+        return (String) mappings.get(extension.toLowerCase());
+    }
+
+
     /**
      @returns the pretty print mime-type for the passed mime-type or the passed mimetype if no mapping was found.
      */

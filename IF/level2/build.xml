@@ -4,17 +4,19 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="if-simple" default="deploy:ejb" basedir=".">
-  
+<project name="if-level2" default="build:off" basedir=".">
+
   <property name="appName" value="${ant.project.name}"/>
   <property name="appDir" value="."/>
       
   <property name="src.dir" value="${appDir}/src/java"/>
   <property name="lib.dir" value="${appDir}/lib"/>
+  <!-- property name="ear.lib.dir" value="${appDir}/lib-ear"/ -->
   <property name="src.resources" value="${appDir}/src/resources"/>
-  <property name="src.web" value="${appDir}/src/web"/>
-
-  <property name="test.src.dir" value="${appDir}/src/test/java"/>
+  <!-- property name="src.web" value="${appDir}/src/web"/ -->
+  <!-- Optional Data Source descriptor -->
+  <!-- property name="src.resources.datasource" value="${src.resources}/blog-ds.xml"/ -->
+  
 
   <property name="pserv.root.dir" value="../.." />
   <import file="${pserv.root.dir}/build.common.xml"/>

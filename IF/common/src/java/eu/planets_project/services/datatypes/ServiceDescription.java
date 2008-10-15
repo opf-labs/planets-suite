@@ -3,6 +3,7 @@
  */
 package eu.planets_project.services.datatypes;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
@@ -11,11 +12,14 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * A entity to hold metadata about services.  The content of this object was first 
@@ -403,4 +407,45 @@ public class ServiceDescription {
     }
 
     
+    /***/
+    private static java.io.File baseDir = new java.io.File(
+            "IF/common/src/resources");
+    /***/
+    private static String schemaFileName = "service_description.xsd";
+
+    /** Resolver for schema generation. */
+    static class Resolver extends SchemaOutputResolver {
+        /**
+         * {@inheritDoc}
+         * 
+         * @see javax.xml.bind.SchemaOutputResolver#createOutput(java.lang.String,
+         *      java.lang.String)
+         */
+        public Result createOutput(final String namespaceUri,
+                final String suggestedFileName) throws IOException {
+            return new StreamResult(new java.io.File(baseDir, schemaFileName+"_"+suggestedFileName));
+        }
+    }
+
+    /**
+     * Generates the XML schema for this class.
+     * 
+     * @param args Ignored
+     */
+    public static void main(final String[] args) {
+        try {
+            Class<ServiceDescription> clazz = ServiceDescription.class;
+            JAXBContext context = JAXBContext.newInstance(clazz);
+            context.generateSchema(new Resolver());
+            System.out.println("Generated XML schema for "
+                    + clazz.getSimpleName()
+                    + " at "
+                    + new java.io.File(baseDir, schemaFileName)
+                            .getAbsolutePath());
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

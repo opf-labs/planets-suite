@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar"/>
-    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jaxb-api.jar"/>
-    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-jaxrpc.jar"/>
-    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-jaxws.jar"/>
-    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-saaj.jar"/>
-    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/serializer.jar"/>
-    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xalan.jar"/>
-    <classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-jaxrpc.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-jaxws.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-saaj.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/serializer.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xalan.jar"/>
+	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xercesImpl.jar"/>
 	<classpathentry kind="src" path="PC/droid/src/java"/>
 	<classpathentry kind="src" path="IF/generic/src/test/java"/>
 	<classpathentry kind="src" path="PA/jmagickconverter/src/main/java"/>
@@ -171,7 +171,6 @@
 	<classpathentry kind="lib" path="PC/metadata/lib/wordperfect_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/xml_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="IF/techreg/lib/lucene-core-2.3.2.jar"/>
-	<classpathentry kind="src" path="/if_sp"/>
 	<classpathentry kind="lib" path="PA/jmagickconverter/lib/jmagick.jar"/>
 	<classpathentry kind="lib" path="PA/openXML/lib/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>

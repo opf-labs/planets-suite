@@ -19,9 +19,9 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * types object containing the identified Pronom URIs and the status resulting
  * from the identification
  * 
- * @author Fabian Steeg
+ * @author Fabian Steeg, Andrew Jackson
  */
-@WebService(name = Identify.NAME, serviceName = Identify.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(name = Identify.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface Identify {
     

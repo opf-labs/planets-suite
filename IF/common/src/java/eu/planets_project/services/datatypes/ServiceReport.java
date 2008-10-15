@@ -64,6 +64,107 @@ public class ServiceReport {
      * 
      */
     public ServiceReport() {
-    }    
+    }
+
+    /**
+     * @return the info
+     */
+    public String getInfo() {
+        return info;
+    }
+
+    /**
+     * @param info the info to set
+     */
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    /**
+     * @return the warn
+     */
+    public String getWarn() {
+        return warn;
+    }
+
+    /**
+     * @param warn the warn to set
+     */
+    public void setWarn(String warn) {
+        this.warn = warn;
+    }
+
+    /**
+     * @return the error
+     */
+    public String getError() {
+        return error;
+    }
+
+    /**
+     * @param error the error to set
+     */
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    /**
+     * @return the error_state
+     */
+    public int getErrorState() {
+        return error_state;
+    }
+
+    /**
+     * @param error_state the error_state to set
+     */
+    public void setErrorState(int error_state) {
+        this.error_state = error_state;
+    }
+
+    /**
+     * @return the properties
+     */
+    public List<Property> getProperties() {
+        return properties;
+    }
+
+    /**
+     * @param properties the properties to set
+     */
+    public void setProperties(List<Property> properties) {
+        this.properties = properties;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuffer rep;
+        if( this.error_state == 0 ) {
+            rep = new StringBuffer("Service Executed Successfully.\n");
+        } else {
+            rep = new StringBuffer("Service Failed With Error State: "+this.error_state+"\n");
+        }
+        if( this.error != null ) {
+            rep.append("ERROR: "+this.error+"\n");
+        }
+        if( this.warn != null ) {
+            rep.append("WARN: "+this.warn+"\n");
+        }
+        if( this.info != null ) {
+            rep.append("INFO: "+this.info+"\n");
+        }
+        // Properties?
+        if( this.properties != null ) {
+            for( Property p : this.properties ) {
+                rep.append("PROPERTY: "+p.getName()+" = "+p.getValue()+"\n");
+            }
+        }
+        return rep.toString();
+    }
+    
+    
     
 }
