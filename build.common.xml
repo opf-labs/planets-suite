@@ -54,7 +54,7 @@
 
   <!-- The IF server classpath -->
   <if>
-	<isset property="if_server.dir"/>
+	<isset property="use.if.classpath"/>
 	<then>
   <path id="server_classpath">
     <fileset dir="${server.deploy.lib.dir}">
