@@ -19,7 +19,11 @@
 	<import file="${pserv.root.dir}/build.common.xml" />
 
 	<!-- Copy the config file into the server config directory -->
+	<if>
+	<isset property="jboss.home"/>
+	<then>
 	<copy file="${src.resources}/DROID_SignatureFile_Planets.xml" todir="${jboss.home}/server/default/conf/" overwrite="true" />
-
+	</then>
+	</if>
 
 </project>
