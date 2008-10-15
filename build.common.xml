@@ -343,6 +343,7 @@
   <target name="test" description="executes the included JUnit tests" depends="test:src-defined,compile:tests">
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
+      <jvmarg value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar"/>
       <classpath refid="run_test_classpath" />
       <env key="pserv.test.context" value="local"/>
       <env key="pserv.root.dir" value="${pserv.root.dir}"/>
@@ -360,6 +361,7 @@
   <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)" depends="test:src-defined,compile:tests">
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
+      <jvmarg value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar"/>
       <classpath refid="standalone_test_classpath" />
       <env key="pserv.test.context" value="standalone"/>
       <env key="pserv.root.dir" value="${pserv.root.dir}"/>
@@ -377,6 +379,7 @@
   <target name="test:server" description="executes the included JUnit tests against a running server" depends="test:src-defined,compile:tests,test:server-defined">
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
+      <jvmarg value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar"/>
       <classpath refid="run_test_classpath" />
       <env key="pserv.test.context" value="server"/>
       <env key="pserv.root.dir" value="${pserv.root.dir}"/>
