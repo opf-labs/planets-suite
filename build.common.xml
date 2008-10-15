@@ -151,6 +151,7 @@
   <path id="standalone_test_classpath">
     <fileset dir="${pserv.root.dir}/lib">
       <include name="jaxws-ri-2.*/lib/*.jar"/>
+      <include name="junit-4.*.jar" />
     </fileset>
     <path refid="standalone_classpath"/>
     <pathelement location="${build.test.classes.dir}"/>
