@@ -12,6 +12,10 @@
 # [*NOTE*] @if_server.dir_@ is used in template ONLY
 if_server.dir=@if_server.dir@
 
+# Alternatively, you can just define the deployment server's library directory and deployment directory.
+#server.deploy.dir=
+#server.deploy.lib.dir=
+
 # Also, you should set these properties to run unit tests against a running server.
 #if_server.host=localhost
 #if_server.port=8080
