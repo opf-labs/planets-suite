@@ -1,8 +1,0 @@
-#Ant properties
-#Fri Mar 14 14:22:57 CET 2008
-already.executed.build=simple
-already.executed.clean=simple
-already.executed.compile=simple
-already.executed.compile-test=
-already.executed.deploy=
-already.executed.test=

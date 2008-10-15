@@ -12,7 +12,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.jboss.util.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
@@ -88,11 +88,11 @@ public final class ComparatorBasicCompareTwoXcdlValues implements
             @WebParam(name = "xcdl1Base64") final String xcdl1Base64,
             @WebParam(name = "xcdl2Base64") final String xcdl2Base64,
             @WebParam(name = "configBase64") final String configBase64) {
-        String xcdl1 = new String(Base64.decode(xcdl1Base64));
-        String xcdl2 = new String(Base64.decode(xcdl2Base64));
-        String config = new String(Base64.decode(configBase64));
+        String xcdl1 = new String(Base64.decodeBase64(xcdl1Base64.getBytes()));
+        String xcdl2 = new String(Base64.decodeBase64(xcdl2Base64.getBytes()));
+        String config = new String(Base64.decodeBase64(configBase64.getBytes()));
         String result = compareTwoXcdlValues(xcdl1, xcdl2, config);
-        String resultBase64 = Base64.encodeBytes(result.getBytes());
+        String resultBase64 = new String( Base64.encodeBase64(result.getBytes()) );
         return resultBase64;
     }
 
@@ -107,10 +107,10 @@ public final class ComparatorBasicCompareTwoXcdlValues implements
     public String basicCompareTwoXcdlValuesBase64(
             @WebParam(name = "xcdl1Base64") final String xcdl1Base64,
             @WebParam(name = "xcdl2Base64") final String xcdl2Base64) {
-        String xcdl1 = new String(Base64.decode(xcdl1Base64));
-        String xcdl2 = new String(Base64.decode(xcdl2Base64));
+        String xcdl1 = new String(Base64.decodeBase64(xcdl1Base64.getBytes()));
+        String xcdl2 = new String(Base64.decodeBase64(xcdl2Base64.getBytes()));
         String result = basicCompareTwoXcdlValues(xcdl1, xcdl2);
-        String resultBase64 = Base64.encodeBytes(result.getBytes());
+        String resultBase64 = new String( Base64.encodeBase64(result.getBytes()) );
         return resultBase64;
     }
 

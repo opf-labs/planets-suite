@@ -1,152 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jaxb-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-jaxrpc.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-jaxws.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/jbossws-native-saaj.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/serializer.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xalan.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/lib/endorsed/xercesImpl.jar"/>
-	<classpathentry kind="src" path="PC/droid/src/java"/>
+	<classpathentry kind="src" path="IF/common/src/java"/>
+	<classpathentry kind="src" path="IF/common/src/test/java"/>
 	<classpathentry kind="src" path="IF/generic/src/test/java"/>
-	<classpathentry kind="src" path="PA/jmagickconverter/src/main/java"/>
-	<classpathentry kind="src" path="PA/sox/src/java"/>
-	<classpathentry kind="src" path="IF/simple/src/java"/>
-	<classpathentry kind="src" path="PA/ps2pdf/src/main/java"/>
-	<classpathentry kind="src" path="PA/openXML/src/main/java"/>
 	<classpathentry kind="src" path="IF/simple/src/test/java"/>
-	<classpathentry kind="src" path="PA/sox/test/java"/>
-	<classpathentry kind="src" path="PA/jmagickconverter/src/test/java"/>
+	<classpathentry kind="src" path="IF/simple/src/java"/>
 	<classpathentry kind="src" path="IF/generic/src/main/java"/>
-	<classpathentry kind="src" path="PC/droid/test/java"/>
-	<classpathentry kind="src" path="PP/comparator/test/java"/>
-	<classpathentry kind="src" path="PP/comparator/src/java"/>
+	<classpathentry kind="src" path="IF/techreg/src/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicMigrateOneBinary/src/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicIdentifyOneBinary/src/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
-	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
-	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
+	<classpathentry kind="src" path="IF/clients/L2PlanetsServiceClient/src/java"/>
+	<classpathentry kind="src" path="PA/ps2pdf/src/main/java"/>
+	<classpathentry kind="src" path="PA/openXML/src/main/java"/>
 	<classpathentry kind="src" path="PA/xena/src/java"/>
-	<classpathentry kind="src" path="PC/jhove/src/java"/>
-	<classpathentry kind="src" path="PC/jhove/test/java"/>
+	<classpathentry kind="src" path="PA/sox/src/java"/>
+	<classpathentry kind="src" path="PA/sox/test/java"/>
 	<classpathentry kind="src" path="PA/msgtext/src/java"/>
 	<classpathentry kind="src" path="PA/msgtext/test/java"/>
+	<classpathentry kind="src" path="PA/jmagickconverter/src/main/java"/>
+	<classpathentry kind="src" path="PA/jmagickconverter/src/test/java"/>
+	<classpathentry kind="src" path="PC/droid/src/java"/>
+	<classpathentry kind="src" path="PC/droid/test/java"/>
+	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
+	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
+	<classpathentry kind="src" path="PC/jhove/src/java"/>
+	<classpathentry kind="src" path="PC/jhove/test/java"/>
 	<classpathentry kind="src" path="PC/metadata/src/java"/>
 	<classpathentry kind="src" path="PC/metadata/src/test/java"/>
 	<classpathentry kind="src" path="PC/metadata/src/resources"/>
-	<classpathentry kind="src" path="IF/clients/L2PlanetsServiceClient/src/java"/>
 	<classpathentry kind="src" path="PC/extractor/src/java"/>
 	<classpathentry kind="src" path="PC/extractor/src/test/java"/>
-	<classpathentry kind="src" path="IF/techreg/src/java"/>
-	<classpathentry kind="src" path="IF/common/src/java"/>
-	<classpathentry kind="src" path="IF/common/src/test/java"/>
+	<classpathentry kind="src" path="PP/comparator/src/java"/>
+	<classpathentry kind="src" path="PP/comparator/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/standalone/activation.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-j2ee.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-jaxws.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-saaj.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/log4j.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/image.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/xena.jar"/>
 	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar"/>
-	<classpathentry kind="lib" path="/if_sp/lib/build/junit-4.4.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/concurrent.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/getopt.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/hibernate-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jaxb-xjc.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jbossall-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-annotations-ejb3.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-aop-jdk50-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-aspect-jdk50-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-common-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jbosscx-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-deployment.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-ejb3-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-ejb3x.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jbossha-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-iiop-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jbossjmx-ant.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-jsr77-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jbossmq-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-srp-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jbosssx-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-system-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-transaction-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jboss-xml-binding.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jmx-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jmx-invoker-adaptor-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/jnp-client.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/logkit.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/client/trove.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/policy.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/stax-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/wsdl4j.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jbossws.sar/xmlsec.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/activation.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/bcel.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/bindingservice-plugin.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/bsh-deployer.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/cglib.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/commons-httpclient.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derby.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyclient.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_cs.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_de_DE.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_es.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_fr.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_hu.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_it.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_ja_JP.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_ko_KR.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_pl.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_pt_BR.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_ru.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_zh_CN.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyLocale_zh_TW.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbynet.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbyrun.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/derbytools.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/dom4j.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/ejb3-persistence.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/hibernate3.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/hibernate-annotations.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/hibernate-entitymanager.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/hsqldb.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/hsqldb-plugin.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/javassist.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jaxen.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss.jdbc.derby.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-common-jdbc-wrapper.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-hibernate.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-j2ee.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-jca.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-jsr77.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-jsr88.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-management.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-monitoring.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossmq.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-remoting.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-remoting-int.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-serialization.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-srp.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbosssx.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-transaction.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jcr-1.0.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jdom-1.0.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jmx-adaptor-plugin.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jnpserver.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/joesnmp.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jpl-pattern.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jpl-util.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/log4j.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/log4j-snmp-appender.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/mail.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/mail-plugin.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/properties-plugin.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/scheduler-plugin.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/scheduler-plugin-example.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/xmlentitymgr.jar"/>
-	<classpathentry kind="lib" path="PC/jhove/lib/JhoveApp.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/JhoveApp.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/bcmail-jdk14-132.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/bcprov-jdk14-132.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/bfj220.jar"/>
@@ -170,87 +76,34 @@
 	<classpathentry kind="lib" path="PC/metadata/lib/wave_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/wordperfect_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/xml_adapter_1_0.jar"/>
-	<classpathentry kind="lib" path="IF/techreg/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/activation.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/FastInfoset.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/http.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-rt.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jaxws-tools.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr173_api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr181-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/jsr250-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/mimepull.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/resolver.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/saaj-impl.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/sjsxp.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/stax-ex.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-ri-2.1.4/lib/streambuffer.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
 	<classpathentry kind="lib" path="PA/jmagickconverter/lib/jmagick.jar"/>
-	<classpathentry kind="lib" path="PA/openXML/lib/jsr173_1.0_api.jar"/>
-	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
-	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/xena.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/ejb3.deployer/jboss-ejb3.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/antlr.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/autonumber-plugin.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/bsf.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/bsh.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/commons-codec.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/commons-collections.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/el-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jackrabbit-core-1.4.5.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-cache-jdk50.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-ejb3x.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jboss-vfs.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossjta-integration.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossjta.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossts-common.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-common.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-framework.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-jboss422.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-native-jaxrpc.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-native-jaxws-ext.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-native-jaxws.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-native-saaj.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jbossws-spi.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/jsp-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/quartz.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jsf-libs/jsf-api.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/acegi-security-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/aopalliance.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/aspectjrt.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/aspectjweaver.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/axis.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-codec-1.2.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-collections-3.1.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-configuration-1.1.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-digester.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-httpclient-3.0-rc2.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-lang-2.0.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-logging.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/commons-modeler.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/ehcache-1.2.3.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jasper-jdt.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jbossweb-extras.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jbossweb-service.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jbossweb.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/josso-1.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/josso-common-1.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/josso-jboss42-plugin-1.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/josso-tomcat55-plugin-1.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jsf-facelets.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/jstl.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-api-3.2.1.GA.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-impl-3.2.1.GA.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/richfaces-ui-3.2.1.GA.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/saaj.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-aop-2.0.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-aspects.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-beans-2.0.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-context-2.0.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-core-2.0.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-dao.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-hibernate3.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-jdbc.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-jdo.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-jmx-2.0.7.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-mock.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-support.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/spring-web.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/struts.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/tk-facelets-taglib.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/tomahawk-1.1.6.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/wsdl4j-1.5.1.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/xmldb-common-20030701.jar"/>
-	<classpathentry kind="lib" path="/if_sp/appserver/server/default/deploy/jboss-web.deployer/xmldb-xupdate-20040205.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-api-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-impl-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-ui-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jsf-api.jar"/>
+	<classpathentry kind="lib" path="IF/techreg/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-codec.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/hibernate-annotations.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
