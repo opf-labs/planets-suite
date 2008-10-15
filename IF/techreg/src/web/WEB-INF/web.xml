@@ -17,16 +17,6 @@
         <param-value>true</param-value>
     </context-param>
 <!--
-    <context-param>
-        <param-name>org.apache.myfaces.CHECK_EXTENSIONS_FILTER</param-name>
-        <param-value>true</param-value>
-    </context-param>
-    <context-param>
-        <param-name>
-            org.apache.myfaces.RESOURCE_VIRTUAL_PATH
-        </param-name>
-        <param-value>/faces/extensionResource</param-value>
-    </context-param>
 
 <context-param>
      <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
@@ -53,29 +43,6 @@
         <filter-name>richfaces</filter-name> 
         <filter-class>org.ajax4jsf.Filter</filter-class> 
     </filter>
-  <!--Extension Filter for File Upload -->
-    <filter>
-        <filter-name>extensionsFilter</filter-name>
-        <filter-class>
-            org.apache.myfaces.webapp.filter.ExtensionsFilter
-        </filter-class>
-        <init-param>
-            <param-name>uploadMaxFileSize</param-name>
-            <param-value>100m</param-value>
-        </init-param>
-        <init-param>
-            <param-name>uploadThresholdSize</param-name>
-            <param-value>100m</param-value>
-        </init-param>
-        <init-param>
-            <param-name>uploadRepositoryPath</param-name>
-            <param-value>/tmp</param-value>
-            <description>
-                Set the path where the intermediary files will be
-                stored.
-            </description>
-        </init-param>
-    </filter>
 
     <!-- Filter Mapping for RichFaces-JSF  -->
     <filter-mapping> 
@@ -83,31 +50,6 @@
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
     
-    <filter-mapping>
-        <filter-name>extensionsFilter</filter-name>
-        <url-pattern>*.faces</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>extensionsFilter</filter-name>
-        <url-pattern>/faces/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>extensionsFilter</filter-name>
-        <url-pattern>*.xhtml</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>extensionsFilter</filter-name>
-        <url-pattern>/faces/myFacesExtensionResource/*</url-pattern>
-    </filter-mapping>
-
-<!--
-    <listener>
-        <listener-class>
-            org.apache.myfaces.webapp.StartupServletContextListener
-        </listener-class>
-    </listener>
--->
-
     <!-- Denying Directory Browsing -->
     <servlet>
         <servlet-name>local_default</servlet-name>

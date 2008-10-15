@@ -42,12 +42,6 @@
 	<classpathentry kind="lib" path="lib/standalone/activation.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jboss-j2ee.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jboss-jaxws.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jboss-saaj.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-client.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/log4j.jar"/>
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/image.jar"/>
@@ -110,5 +104,8 @@
 	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-codec.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossall-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

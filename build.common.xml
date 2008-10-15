@@ -498,8 +498,6 @@
     
     <copy file="${build.dir}/${jar.base.name}" todir="${ear.build.dir}" />
     
-    <copy file="${build.dir}/${jar.base.name}" todir="${ear.build.dir}/${appName}/WEB-INF/lib" />
-
     <jar jarfile="${ear.build.dir}/${war.base.name}" 
      basedir="${ear.build.dir}/${appName}"/>
 
