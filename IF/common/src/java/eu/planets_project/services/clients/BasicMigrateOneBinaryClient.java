@@ -26,6 +26,8 @@ import eu.planets_project.services.migrate.BasicMigrateOneBinary;
  */
 public class BasicMigrateOneBinaryClient {
 
+	 private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir") + File.separator;
+	 private static String RESULT_FOLDER = null;
     /**
      * This shows how to invoke the client, but the details will depend upon your 
      * local configuration.
@@ -38,18 +40,31 @@ public class BasicMigrateOneBinaryClient {
         // BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         // PrintWriter out = new PrintWriter(new
         // OutputStreamWriter(System.out));
-        System.out.println("Bitte geben Sie den Dateipfad an: ");
+    	
+    	if(SYSTEM_TEMP.endsWith(File.separator+File.separator)) {
+    		RESULT_FOLDER = SYSTEM_TEMP.replace(File.separator + File.separator, File.separator) + "BasicMigrateOneBinaryClient_OUT" + File.separator;
+    	}
+    	
+    	else if(!SYSTEM_TEMP.endsWith(File.separator)){
+    		RESULT_FOLDER = SYSTEM_TEMP + File.separator + "BasicMigrateOneBinaryClient_OUT" + File.separator;
+    	}
+    	else {
+    		RESULT_FOLDER = SYSTEM_TEMP + "BasicMigrateOneBinaryClient_OUT" + File.separator;
+    	}
 
         URL wsdl = new URL(
-                "http://localhost:8080/ifr-jmagickconverter-ejb/JpgToTiffConverter?wsdl");
+                "http://localhost:8080/pserv-pa-jmagick/JpgToTiffConverter?wsdl");
 
-        String line = null;
+        File srcFile = new File("IF/clients/L2PlanetsServiceClient/src/resources/eu/planets_project/services/test_jpg/2325559127_ccbb33c982.jpg");
+        
+        File resultFolder = new File(RESULT_FOLDER);
+        boolean mkDir = resultFolder.mkdir();
+        
+        if(!mkDir && !resultFolder.exists()) {
+        	System.out.println("Error: Could not create Folder: " + RESULT_FOLDER);
+        }
 
-        line = "C:/PLANETS/SimpleWebserviceClients/SimpleWebserviceClient/Fussball-wago.jpg";
-        File srcFile = new File(line);
-
-        File resultFile = File.createTempFile(
-                "resultJpgToTiffConversionClient", ".tiff");
+        File resultFile = new File(RESULT_FOLDER, "BasicMigrateOneBinaryClient_Result.tiff");
         
         BasicMigrateOneBinaryClient.basicMigrateOneBinaryF2FClient(wsdl, srcFile, resultFile);
 
