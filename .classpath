@@ -2,10 +2,10 @@
 <classpath>
 	<classpathentry kind="src" path="IF/common/src/java"/>
 	<classpathentry kind="src" path="IF/common/src/test/java"/>
-	<classpathentry kind="src" path="IF/generic/src/test/java"/>
-	<classpathentry kind="src" path="IF/simple/src/test/java"/>
 	<classpathentry kind="src" path="IF/simple/src/java"/>
+	<classpathentry kind="src" path="IF/simple/src/test/java"/>
 	<classpathentry kind="src" path="IF/generic/src/main/java"/>
+	<classpathentry kind="src" path="IF/generic/src/test/java"/>
 	<classpathentry kind="src" path="IF/techreg/src/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicMigrateOneBinary/src/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicIdentifyOneBinary/src/java"/>
@@ -39,7 +39,6 @@
 	<classpathentry kind="src" path="PP/comparator/src/java"/>
 	<classpathentry kind="src" path="PP/comparator/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/standalone/activation.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar"/>
@@ -89,21 +88,12 @@
 	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxb-api.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-native-jaxrpc.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-native-jaxws.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-native-saaj.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/serializer.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/xalan.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="IF/common/lib/stax-api.jar"/>
 	<classpathentry kind="lib" path="IF/common/lib/stax-ex.jar"/>
 	<classpathentry kind="lib" path="IF/common/lib/streambuffer.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-common.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-framework.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-jboss422.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-native-client.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-native-core.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jbossws-native-jaxws-ext.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jbossws-spi.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/avalon-framework.jar"/>
@@ -117,8 +107,6 @@
 	<classpathentry kind="lib" path="lib/standalone/javassist.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxb-impl.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxb-xjc.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jaxws-rt.jar"/>
-	<classpathentry kind="lib" path="lib/standalone/jaxws-tools.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jboss-aop-jdk50-client.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jboss-aspect-jdk50-client.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jboss-client.jar"/>
@@ -154,5 +142,15 @@
 	<classpathentry kind="lib" path="lib/standalone/wsdl4j.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/wstx.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/xmlsec.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/activation.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-common.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-framework.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-jboss422.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-client.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-core.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxrpc.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxws-ext.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxws.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-saaj.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -76,6 +76,7 @@
 	  <path id="server_classpath">
 	    <fileset dir="${pserv.root.dir}/lib">
 	      <include name="standalone/*.jar" />
+	      <include name="jaxws-jboss-native/*.jar"/>
 	    </fileset>
         <fileset dir="${pserv.root.dir}/build/">
           <include name="*.jar" />
@@ -111,16 +112,15 @@
 
   <!-- Test classpaths -->
   <path id="build_test_classpath">
-    <pathelement location="${build.classes.dir}"/>
-    <fileset dir="${pserv.root.dir}/lib">
-      <include name="jaxws-ri-2.*/lib/*.jar"/>
-      <include name="standalone/*.jar" />
-      <include name="junit-4.*.jar" />
-    </fileset>
+    <path refid="server_classpath"/>
     <path refid="component_classpath"/>
-     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
+    <pathelement location="${build.classes.dir}"/>
+    <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
     <fileset dir="${pserv.root.dir}/build/">
-      <include name="*.jar" />
+       <include name="*.jar" />
+    </fileset>
+    <fileset dir="${pserv.root.dir}/lib">
+      <include name="junit-4.*.jar" />
     </fileset>
   </path>
   
@@ -131,21 +131,16 @@
 
   <!-- The standalone (JAX-WS,) test execution classpaths -->
   <path id="standalone_classpath">
-    <path refid="classpath"/>
-    <!--
     <fileset dir="${pserv.root.dir}/lib">
       <include name="jaxws-ri-2.*/lib/*.jar"/>
       <include name="standalone/*.jar" />
       <include name="junit-4.*.jar" />
     </fileset>
     <path refid="component_classpath"/>
-    -->
     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
-    <!--
     <fileset dir="${pserv.root.dir}/build/">
       <include name="*.jar" />
     </fileset>
-    -->
   </path>
   
   <path id="standalone_test_classpath">
@@ -290,7 +285,16 @@
            deprecation="on"
            optimize="off"
            includes="**">
-           <classpath refid="build_test_classpath"/>
+           <classpath refid="standalone_test_classpath"/>
+    </javac>
+    <javac source="1.5" target="${target.jvm}"
+           srcdir="${src.dir}"
+           destdir="${build.test.classes.dir}"
+           debug="on"
+           deprecation="on"
+           optimize="off"
+           includes="**">
+           <classpath refid="standalone_test_classpath"/>
     </javac>
     
     <!-- Also copy the libs into the right place -->
@@ -367,7 +371,7 @@
     </if>
   </target>
   
-  <property name="test.vmarg.boot.classpath" value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar"/>
+  <property name="test.vmarg.boot.classpath" value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar;lib/endorsed/activation.jar;lib/endorsed/stax-ex.jar;lib/endorsed/jsr173_api.jar"/>
   
   <target name="test:local" description="executes the included JUnit tests w/o a server" depends="test:src-defined,compile:tests" if="test.local">
     <echo message="TEST:LOCAL: Testing the service code without a server."/>
@@ -415,7 +419,7 @@
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
-      <classpath refid="run_test_classpath" />
+      <classpath refid="standalone_test_classpath" />
       <env key="pserv.test.context" value="server"/>
       <env key="pserv.root.dir" value="${pserv.root.dir}"/>
       <env key="pserv.test.host" value="${if_server.host}"/>
