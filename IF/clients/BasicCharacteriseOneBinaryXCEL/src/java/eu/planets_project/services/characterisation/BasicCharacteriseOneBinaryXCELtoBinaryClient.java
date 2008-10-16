@@ -24,8 +24,8 @@ public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 	
 // Please choose the HOST you wish to test...
 	
-//    private static String HOST = "localhost";
-  private static String HOST = "planetarium.hki.uni-koeln.de";
+    private static String HOST = "localhost";
+//  private static String HOST = "planetarium.hki.uni-koeln.de";
 	
 	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception {
 		if(EXTRACTOR_HOME.endsWith(File.separator + File.separator)) {

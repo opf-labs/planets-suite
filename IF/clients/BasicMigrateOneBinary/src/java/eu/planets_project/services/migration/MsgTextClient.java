@@ -39,7 +39,7 @@ public class MsgTextClient {
 		
 		File msgFile = 
 			
-			new File("C:/Dokumente und Einstellungen/Oberster Herrscher/Desktop/verschachtelte_nachricht.msg");
+			new File("PA/msgtext/test/resources/eu/planets_project/services/migration/msgtext/test3.msg");
 		
 		byte[] inputMsg = getByteArrayFromFile(msgFile);
 		

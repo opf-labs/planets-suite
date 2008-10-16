@@ -34,7 +34,7 @@ public class BasicMigrateOneBinaryExamples {
 
         String wsdlLocation = 
 
-            "http://localhost:8080/ifr-jmagickconverter-ejb/JpgToTiffConverter?wsdl";
+        	"http://localhost:8080/pserv-pa-jmagick/JpgToTiffConverter?wsdl";
 
         QName qName = BasicMigrateOneBinary.QNAME;
         System.out.println("Starting conversion process...");
@@ -45,7 +45,7 @@ public class BasicMigrateOneBinaryExamples {
 
         String fileName = 
 
-            "C:/PLANETS/16-06-2008/WSTestCLients/WSClientProject/resultJpgToTiffConversionClient63036.jpg";
+            "IF/clients/L2PlanetsServiceClient/src/resources/eu/planets_project/services/test_jpg/2325559127_ccbb33c982.jpg";
 
         File srcFile = new File(fileName);
         System.out.println("creating Byte[]");

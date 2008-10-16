@@ -20,16 +20,24 @@ public final class ExtractorTestHelper {
     static final String LOCALHOST = "http://localhost:8080";
     /** Test server address of the JBoss instance. */
     static final String PLANETARIUM = "http://planetarium.hki.uni-koeln.de:8080";
+    /** System Temp folder */
+    private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
+    
+    private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+    
     /***/
-    static final String CLIENT_OUTPUT_DIR = "PC/extractor/src/resources/"
-            .replace("/", File.separator)
-            + "output";
+    static final String EXTRACTOR2BINARY_OUTPUT_DIR = SYSTEM_TEMP + File.separator + "EXTRACTOR2BINARY_TEST_OUT";
+    
+    static final String EXTRACTOR2URI_OUTPUT_DIR = SYSTEM_TEMP + File.separator + "EXTRACTOR2URI_TEST_OUT";
+           
+    
     /***/
-    static final String SAMPLE_FILE = "PC/extractor/src/resources/basi0g08.png"
-            .replace("/", File.separator);
+    // TODO: Add if clause before replacing File.separators
+    static final String SAMPLE_FILE = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator) + "res/testpng/bgai4a16.png".replace("/", File.separator);
+
     /***/
-    static final String SAMPLE_XCEL = "PC/extractor/src/resources/xcel_png.xml"
-            .replace("/", File.separator);
+    // TODO: Add if clause before replacing File.separators
+    static final String SAMPLE_XCEL = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator) + "res/xcl/xcel/xcel_docs/xcel_png.xml".replace("/", File.separator);
 
     /**
      * We enforce non-instantiability with a private constructor.
@@ -57,3 +65,4 @@ public final class ExtractorTestHelper {
     }
 
 }
+
