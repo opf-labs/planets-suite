@@ -4,10 +4,12 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="if-techreg" default="deploy:ear" basedir=".">
+<project name="if-techreg" default="deploy" basedir=".">
 
   <property name="appName" value="${ant.project.name}"/>
   <property name="appDir" value="."/>
+  <!-- Specify the build type: ejb, war or ear. -->
+  <property name="pserv.app.build.type" value="ear"/>
       
   <property name="src.dir" value="${appDir}/src/java"/>
   <property name="lib.dir" value="${appDir}/lib"/>

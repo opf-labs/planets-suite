@@ -47,7 +47,7 @@
       <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
     </then>
     <else>
-      <echo message="if_server.dir is NOT set - will not deploy, only build_test_classpath"/>
+      <echo message="if_server.dir is NOT set - will not deploy, only build."/>
 	</else>
   </if>
 
@@ -324,44 +324,10 @@
   </target>
 
   <!-- =================================================================== -->
-  
-  <target name="share:jar" depends="undeploy,compile, compile:jar">
-    <copy file="${build.dir}/${jar.base.name}" todir="${pserv.root.dir}/build"/>
-  </target>
-
-  <!-- =================================================================== -->
-
-  <target name="deploy:ejb" depends="compile:jar">
-    <if>
-	  <isset property="server.deploy.dir"/>
-	  <then>
-    <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.dir}"/>
-      </then>
-      <else>
-    	<echo message="Cannot deploy, as no deployment directory is defined."/>
-      </else>
-    </if>
-  </target>
-
-  <!-- =================================================================== -->
-
-  <target name="deploy:jar" depends="compile:jar" if="server.deploy.lib.dir">
-    <if>
-	  <isset property="server.deploy.lib.dir"/>
-	  <then>
-    <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.lib.dir}"/>
-      </then>
-      <else>
-      	<echo message="Cannot deploy, as no server lib directory is defined."/>
-      </else>
-    </if>
-  </target>
-
-  <!-- =================================================================== -->
   <!-- =================================================================== -->
   <!-- =================================================================== -->
 
-  <target name="test" description="executes the included JUnit tests" depends="deploy:ejb, test:src-defined, compile:tests">
+  <target name="test" description="executes the included JUnit tests" depends="test:src-defined, compile:tests">
     <!-- Attempt all three test modes -->
     <ant target="test:local"/>
     <ant target="test:standalone"/>
@@ -373,7 +339,8 @@
     </if>
   </target>
   
-  <property name="test.vmarg.boot.classpath" value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar;lib/endorsed/activation.jar;lib/endorsed/stax-ex.jar;lib/endorsed/jsr173_api.jar"/>
+  <!-- This is required for Java 6, which ships with JAXB 2.0 not 2.1. -->
+  <property name="test.vmarg.boot.classpath" value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar;lib/endorsed/activation.jar;lib/endorsed/stax-ex.jar;lib/endorsed/jsr173_api.jar;lib/endorsed/jboss-native-saaj.jar"/>
   
   <target name="test:local" description="executes the included JUnit tests w/o a server" depends="test:src-defined,compile:tests" if="test.local">
     <echo message="TEST:LOCAL: Testing the service code without a server."/>
@@ -581,6 +548,75 @@
   <target name="build:ear" depends="compile:jar, dist:ear" description="builds the application"/>
 
   <!-- =================================================================== -->
+  
+  <target name="share:jar" depends="undeploy,compile, compile:jar">
+    <copy file="${build.dir}/${jar.base.name}" todir="${pserv.root.dir}/build"/>
+  </target>
+
+  <!-- =================================================================== -->
+
+  <target name="deploy" depends="check-build-type-set">
+    <if>
+      <equals arg1="${pserv.app.build.type}" arg2="ejb"/>
+      <then>
+        <echo message="Deploying as an EJB."/>
+        <ant target="deploy:ejb"/>
+      </then>
+    </if>
+    <if>
+      <equals arg1="${pserv.app.build.type}" arg2="war"/>
+      <then>
+        <echo message="Deploying as a WAR."/>
+        <ant target="deploy:war"/>
+      </then>
+    </if>
+    <if>
+      <equals arg1="${pserv.app.build.type}" arg2="ear"/>
+      <then>
+        <echo message="Deploying as an EAR."/>
+        <ant target="deploy:ear"/>
+      </then>
+    </if>
+    <if>
+      <equals arg1="${pserv.app.build.type}" arg2="jar"/>
+      <then>
+        <echo message="Deploying as a JAR."/>
+        <ant target="deploy:jar"/>
+      </then>
+    </if>
+  </target>
+
+  <target name="check-build-type-set" unless="pserv.app.build.type">
+    <fail message="You must define the component build type 'pserv.app.build.type' in order compile it (ejb, war, ear)."/>
+  </target>
+  
+  <!-- =================================================================== -->
+
+  <target name="deploy:ejb" depends="compile:jar">
+    <if>
+      <isset property="server.deploy.dir"/>
+      <then>
+    <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.dir}"/>
+      </then>
+      <else>
+        <echo message="Cannot deploy, as no deployment directory is defined."/>
+      </else>
+    </if>
+  </target>
+
+  <!-- =================================================================== -->
+
+  <target name="deploy:jar" depends="compile:jar" if="server.deploy.lib.dir">
+    <if>
+      <isset property="server.deploy.lib.dir"/>
+      <then>
+    <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.lib.dir}"/>
+      </then>
+      <else>
+        <echo message="Cannot deploy, as no server lib directory is defined."/>
+      </else>
+    </if>
+  </target>
 
   <target name="deploy:war" depends="undeploy, build:war">
     <if>

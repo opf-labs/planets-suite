@@ -4,10 +4,12 @@
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
 
-<project name="if-simple" default="deploy:ejb" basedir=".">
+<project name="if-simple" default="deploy" basedir=".">
   
   <property name="appName" value="${ant.project.name}"/>
   <property name="appDir" value="."/>
+  <!-- Specify the build type: ejb, war or ear. -->
+  <property name="pserv.app.build.type" value="ejb"/>
       
   <property name="src.dir" value="${appDir}/src/java"/>
   <property name="lib.dir" value="${appDir}/lib"/>
