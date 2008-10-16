@@ -14,9 +14,9 @@ import eu.planets_project.services.utils.ByteArrayHelper;
  * 
  * @author Fabian Steeg
  */
-public final class TestHelper {
+public final class DroidUnittestHelper {
     /** Enforce non-instanitability with a private constructor. */
-    private TestHelper() {
+    private DroidUnittestHelper() {
     }
 
     /**

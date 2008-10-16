@@ -23,7 +23,7 @@ public final class DroidTests {
      */
     @Test
     public void localTests() {
-        TestHelper.testAllFiles(new Droid());
+        DroidUnittestHelper.testAllFiles(new Droid());
     }
 
     /**
@@ -41,7 +41,7 @@ public final class DroidTests {
         Service service = Service.create(url, new QName(PlanetsServices.NS,
                 IdentifyOneBinary.NAME));
         IdentifyOneBinary droid = service.getPort(IdentifyOneBinary.class);
-        TestHelper.testAllFiles(droid);
+        DroidUnittestHelper.testAllFiles(droid);
     }
 
 }
