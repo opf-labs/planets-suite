@@ -10,6 +10,7 @@ import javax.faces.event.PhaseListener;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
 
 /**
  * TODO This is rather awkward, and should really be handled by the faces-config navigation. But, I don't know how else to deal with the ExperimentBean that is placed in the session manually.
@@ -42,7 +43,7 @@ public class ExpDesignPhaseListener implements PhaseListener {
     
     private static void redirectIfRequired(FacesContext context, String newView ) {
         // Check if there is an ExperimentBean in the session.
-        ExperimentBean expBean = (ExperimentBean)context.getApplication().getVariableResolver().resolveVariable(context, "ExperimentBean");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         // Redirect to experiment list if not.
         if( expBean == null ) {
             log.debug("ExperimentBean == null! Redirecting.");

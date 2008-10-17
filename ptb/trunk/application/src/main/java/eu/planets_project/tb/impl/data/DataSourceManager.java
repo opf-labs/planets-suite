@@ -158,7 +158,8 @@ public class DataSourceManager implements DataManagerLocal {
     public String read(URI pdURI) throws SOAPException {
         DataManagerLocal dm = findDataManager(pdURI);
         if( dm == null ) return null;
-        return dm.read(pdURI);
+        //return dm.read(pdURI);
+        return dm.retrieveBinary(pdURI).toString();
     }
 
     /* (non-Javadoc)
@@ -168,7 +169,9 @@ public class DataSourceManager implements DataManagerLocal {
             URISyntaxException {
         DataManagerLocal dm = findDataManager(pdURI);
         if( dm == null ) return null;
-        return dm.retrieve(pdURI);
+        //return dm.retrieve(pdURI);
+        log.error("Used unsupported deprecated method, retrieve InputStream.");
+        return null;
     }
 
     /* (non-Javadoc)
@@ -178,7 +181,8 @@ public class DataSourceManager implements DataManagerLocal {
             RepositoryException, URISyntaxException {
         DataManagerLocal dm = findDataManager(pdURI);
         if( dm == null ) return;
-        dm.store(pdURI, stream);
+        //dm.store(pdURI, stream);
+        log.error("Used unsupported deprecated method, store InputStream.");
     }
 
     /* (non-Javadoc)
@@ -187,7 +191,15 @@ public class DataSourceManager implements DataManagerLocal {
     public void store(URI pdURI, String encodedFile) throws SOAPException {
         DataManagerLocal dm = findDataManager(pdURI);
         if( dm == null ) return;
-        dm.store(pdURI, encodedFile);
+        try {
+            dm.storeBinary(pdURI, encodedFile.getBytes());
+        } catch (LoginException e) {
+            throw new SOAPException("Caught "+ e.getMessage()+" on " + pdURI );
+        } catch (RepositoryException e) {
+            throw new SOAPException("Caught "+ e.getMessage()+" on " + pdURI );
+        } catch (URISyntaxException e) {
+            throw new SOAPException("Caught "+ e.getMessage()+" on " + pdURI );
+        }
     }
 
 

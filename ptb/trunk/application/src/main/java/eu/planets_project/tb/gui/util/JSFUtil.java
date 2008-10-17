@@ -2,8 +2,8 @@ package eu.planets_project.tb.gui.util;
 
 import java.util.Map;
 
+import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
-import javax.faces.el.ValueBinding;
 
 
 /**
@@ -14,26 +14,11 @@ import javax.faces.el.ValueBinding;
 public class JSFUtil 
 {
   
-  
-  public static ValueBinding getValueBinding(String expression)
-  {
-    FacesContext context = FacesContext.getCurrentInstance();
-    return context.getApplication().createValueBinding(expression);
-  }
-  
-  public static String getValueBindingString(String expression)
-  {
-    FacesContext context = FacesContext.getCurrentInstance();
-    ValueBinding currentBinding =  context.getApplication().createValueBinding(expression);
-    return (String) currentBinding.getValue(context);
-    
-  }
-  
-  
     public static Object getManagedObject(String objectName)
   {
     FacesContext context = FacesContext.getCurrentInstance();
-    Object requestedObject =  context.getApplication().getVariableResolver().resolveVariable(context, objectName);
+    ELResolver resolver = context.getApplication().getELResolver();
+    Object requestedObject =  resolver.getValue(context.getELContext(), null, objectName);
     return  requestedObject;
   }
   

@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.component.UISelectItems;
@@ -14,8 +16,9 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.MethodExpressionActionListener;
+import javax.faces.event.MethodExpressionValueChangeListener;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
@@ -231,8 +234,11 @@ public class AutoBMGoalEvalUserConfigBean{
 		items2.setId("mathvals"+metric.getInternalID()); 
 	    items2.setValue(metric.getAllAvailableTypes());
 		Class[] parms2 = new Class[]{ValueChangeEvent.class};
- 		MethodBinding mb2 = FacesContext.getCurrentInstance().getApplication().createMethodBinding("#{AutoEvalSerUserConfigBean.processMathExprChange}", parms2);
- 		select2.setValueChangeListener(mb2);
+        ExpressionFactory ef = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
+        MethodExpression mb = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
+                "#{AutoEvalSerUserConfigBean.processMathExprChange}", null, parms2);
+        MethodExpressionValueChangeListener vcl = new MethodExpressionValueChangeListener(mb);
+ 		select2.addValueChangeListener(vcl);
 		select2.getChildren().add(items2);
 		select2.setImmediate(true);
  		
@@ -257,8 +263,10 @@ public class AutoBMGoalEvalUserConfigBean{
 	 		inputText.setValue(metric.getEvalBoundary());
 	 		inputText.setSize(10);
 	 		Class[] parms = new Class[]{ValueChangeEvent.class};
-	 		MethodBinding mb = FacesContext.getCurrentInstance().getApplication().createMethodBinding("#{AutoEvalSerUserConfigBean.processMetricBoundaryValueChange}", parms);
-	 		inputText.setValueChangeListener(mb);
+	        MethodExpression mb2 = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
+	                "#{AutoEvalSerUserConfigBean.processMetricBoundaryValueChange}", null, parms);
+	        MethodExpressionValueChangeListener vcl2 = new MethodExpressionValueChangeListener(mb2);
+	 		inputText.addValueChangeListener(vcl2);
 	 		inputText.setImmediate(true);
 	 		
 	 		//place an ajax support on the InputText field
@@ -285,8 +293,10 @@ public class AutoBMGoalEvalUserConfigBean{
     	        l.add(new SelectItem("false")); 
     	    items.setValue(l);
     		Class[] parms = new Class[]{ValueChangeEvent.class};
-	 		MethodBinding mb = FacesContext.getCurrentInstance().getApplication().createMethodBinding("#{AutoEvalSerUserConfigBean.processMetricBoundaryValueChange}", parms);
-	 		select.setValueChangeListener(mb);
+            MethodExpression mb3 = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
+                    "#{AutoEvalSerUserConfigBean.processMetricBoundaryValueChange}", null, parms);
+            MethodExpressionValueChangeListener vcl3 = new MethodExpressionValueChangeListener(mb3);
+            select.addValueChangeListener(vcl3);
     		select.getChildren().add(items);
     		select.setImmediate(true);
 	 		
@@ -309,8 +319,10 @@ public class AutoBMGoalEvalUserConfigBean{
  		button_save.setId("buttonSave"+metric.getInternalID());
  		button_save.setValue("add config");
  		Class[] parms3 = new Class[]{ActionEvent.class};
- 		MethodBinding mb3 = FacesContext.getCurrentInstance().getApplication().createMethodBinding("#{AutoEvalSerUserConfigBean.command_saveMetricConfiguration}", parms3);
- 		button_save.setActionListener(mb3);
+        MethodExpression mb4 = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
+                "#{AutoEvalSerUserConfigBean.processMetricBoundaryValueChange}", null, parms3);
+        MethodExpressionActionListener vcl4 = new MethodExpressionActionListener(mb4);
+        button_save.addActionListener(vcl4);
  		UIParameter p = new UIParameter();
  		p.setId("param_save_button"+metric.getInternalID());
  		p.setName("pConfigPanel");

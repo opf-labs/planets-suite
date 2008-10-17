@@ -23,6 +23,8 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
@@ -38,8 +40,8 @@ import javax.faces.component.html.HtmlOutputText;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.component.html.HtmlPanelGrid;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.MethodExpressionValueChangeListener;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
@@ -326,8 +328,10 @@ public class RegisterTBServices{
 				HtmlCommandLink link_remove = (HtmlCommandLink) FacesContext.getCurrentInstance().getApplication().createComponent(HtmlCommandLink.COMPONENT_TYPE);
 				//set the ActionMethod to the method: "command_removeFileRefFromStep2(ActionEvent e)"
 				Class[] parms = new Class[]{ActionEvent.class};
-				MethodBinding mb = FacesContext.getCurrentInstance().getApplication().createMethodBinding("#{RegisterTBServiceBean.command_removeFileRefFromStep3}", parms);
-				link_remove.setActionListener(mb);
+	            ExpressionFactory ef = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
+	            MethodExpression mb = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
+	                    "#{RegisterTBServiceBean.command_removeFileRefFromStep3}", null, parms);
+	            link_remove.setActionExpression(mb);
 				link_remove.setId("UICommandStep2Refs"+id);
 				//send along an helper attribute to identify which component triggered the event
 				link_remove.getAttributes().put("IDint", id);
@@ -508,8 +512,11 @@ public class RegisterTBServices{
 						selectText.setId("xmlRequestInputSelect"+this.iCountNumbOfXMLRequestInputTokens);
 						//set the ValueChangeListener to the method: "processTokenValueChange(vce)"
 						Class[] parms = new Class[]{ValueChangeEvent.class};
-						MethodBinding mb = FacesContext.getCurrentInstance().getApplication().createMethodBinding("#{RegisterTBServiceBean.processTokenValueChange}", parms);
-						selectText.setValueChangeListener(mb);
+		                ExpressionFactory ef = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
+		                MethodExpression mb = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
+		                        "#{RegisterTBServiceBean.processTokenValueChange}", null, parms);
+		                MethodExpressionValueChangeListener vcl = new MethodExpressionValueChangeListener(mb);
+						selectText.addValueChangeListener(vcl);
 						//add a onChangeMethod
 						selectText.setOnchange("submit()");
 						UISelectItems items = new UISelectItems();

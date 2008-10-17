@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
+import javax.el.ExpressionFactory;
+import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -22,26 +24,18 @@ import javax.faces.context.FacesContext;
 import javax.faces.component.UIPanel;
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlGraphicImage;
-import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
-import javax.faces.component.html.HtmlPanelGrid;
-import javax.faces.component.html.HtmlPanelGroup;
-import javax.faces.el.MethodBinding;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
-import org.ajax4jsf.component.html.HtmlAjaxSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.component.html.ext.HtmlDataTable;
-//import org.apache.myfaces.component.html.ext.HtmlDataTable;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentPhase;
@@ -50,7 +44,6 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.UserBean;
-import eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
@@ -1128,11 +1121,10 @@ public class ExperimentBean {
                             HtmlCommandLink.COMPONENT_TYPE);
             //set the ActionMethod to the method: "commandRemoveAddedFileRef(ActionEvent e)"
             Class[] parms = new Class[] { ActionEvent.class };
-            MethodBinding mb = FacesContext.getCurrentInstance()
-                    .getApplication().createMethodBinding(
-                            "#{NewExp_Controller.commandRemoveAddedFileRef}",
-                            parms);
-            link_remove.setActionListener(mb);
+            ExpressionFactory ef = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
+            MethodExpression mb = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
+                    "#{NewExp_Controller.commandRemoveAddedFileRef}", null, parms);
+            link_remove.setActionExpression(mb);
             link_remove.setId("removeLink" + key);
             link_remove.setTitle("Remove this file."); // FIXME Localise this!
             //send along an helper attribute to identify which component triggered the event

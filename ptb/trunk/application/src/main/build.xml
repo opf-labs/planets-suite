@@ -76,7 +76,6 @@
            debug="on"
            deprecation="on"
            optimize="off"
-           excludes="eu/planets_project/tb/gui/**"
            includes="**">
             <classpath refid="classpath"/>
     </javac>
@@ -96,8 +95,7 @@
   <target name="createejbjar" depends="compile">
     <jar jarfile="${build.dir}/testbedmodel.jar">
       <fileset dir="${build.classes.dir}">
-      	  <!--include name="com/titan/domain/*.class"/>
-      	  <include name="com/titan/travelagent/*.class"/-->
+        <include name="**"/>
       </fileset>
       <fileset dir="${src.resources}/">
           <include name="META-INF/persistence.xml"/>
@@ -205,12 +203,6 @@
 
   <target name="dist" depends="populateDirectories">
 
-    <javac source="1.5" target="1.5" debug="true" srcdir="java" destdir="${build.dir}/${appName}/WEB-INF/classes">
-
-      <classpath refid="classpath"/>
-
-    </javac>
-
     <copy todir="${build.dir}/${appName}">
       <fileset dir="web" casesensitive="yes">
         <include name="**/*.*" />
@@ -230,12 +222,9 @@
       </fileset>
     </copy>
 
-  	<!-- delete items that are in JAR file -->
-  	<delete dir="${build.dir}/${appName}/WEB-INF/classes/eu/planets_project/tb/api"/>
-  	<delete dir="${build.dir}/${appName}/WEB-INF/classes/eu/planets_project/tb/impl"/>
-
     <jar jarfile="${build.dir}/${appName}.war"
-	 basedir="${build.dir}/${appName}"/>
+	 basedir="${build.dir}/${appName}">
+    </jar>
 
   	<ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">
 	      <fileset dir="${build.dir}" includes="*.jar,*.war"/>

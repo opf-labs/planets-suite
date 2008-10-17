@@ -3,6 +3,7 @@
  */
 package eu.planets_project.tb.impl.data.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,6 +18,7 @@ import java.util.Properties;
 import javax.faces.context.FacesContext;
 import javax.jcr.PathNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.soap.SOAPException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -300,10 +302,8 @@ public class DataHandlerImpl implements DataHandler{
         
         InputStream in = null;
         try {
-          in = dr.getDataManager(pduri).retrieve(pduri);
-        } catch ( PathNotFoundException e ) {
-            throw new IOException("Caught "+ e.getMessage()+" on " + pduri );
-        } catch ( URISyntaxException e ) {
+            in = new ByteArrayInputStream( dr.getDataManager(pduri).retrieveBinary(pduri) );
+        } catch (SOAPException e) {
             throw new IOException("Caught "+ e.getMessage()+" on " + pduri );
         }
         OutputStream out = new FileOutputStream(dst);
