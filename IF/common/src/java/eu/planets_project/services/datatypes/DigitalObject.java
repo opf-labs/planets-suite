@@ -65,33 +65,43 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         Serializable {
     /** Generated UID. */
     private static final long serialVersionUID = -893249048201058999L;
+    
     /** @See {@link #getTitle()} */
     @XmlAttribute
     private String title;
+    
     /** @See {@link #getPlanetsFormatUri()} */
     @XmlAttribute
     private URI planetsFormatUri;
+    
     /** @See {@link #getPermanentUrl()} */
     @XmlAttribute(required = true)
     private URL permanentUrl;
+    
     /** @See {@link #getManifestationOf()} */
     @XmlAttribute
     private URI manifestationOf;
+    
     /** @See {@link #getChecksum()} */
     @XmlElement
     private Checksum checksum;
+    
     /** @See {@link #getTaggedMetadata()} */
     @XmlElement
     private List<Metadata> taggedMetadata;
+    
     /** @See {@link #getContained()} */
     @XmlElement
     private List<DigitalObject> contained;
+    
     /** @See {@link #getContent()} */
     @XmlElement(required = true)
     private List<Content> content;
+    
     /** @See {@link #getEvents()} */
     @XmlElement
     private List<Event> events;
+    
     /** @See {@link #getFragments()} */
     @XmlElement
     private List<Fragment> fragments;

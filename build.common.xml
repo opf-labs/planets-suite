@@ -27,12 +27,14 @@
   <property name="build.dir" value="${appDir}/build"/>
   <property name="build.classes.dir" value="${build.dir}/classes"/>
   <property name="build.test.classes.dir" value="${build.dir}/test"/>
+  <property name="build.api.classes.dir" value="${build.dir}/api"/>
   <property name="war.build.dir" value="${appDir}/build/war"/>
   <property name="ear.build.dir" value="${appDir}/build/ear"/>
 
   <property name="war.base.name" value="pserv-${appName}.war"/>
   <property name="ear.base.name" value="pserv-${appName}.ear"/>
   <property name="jar.base.name" value="pserv-${appName}.jar"/>
+  <property name="api.base.name" value="pserv-${appName}-api.jar"/>
 
   <property name="test.dir" value="${appDir}/../test/java"/>
   <property name="client.config" value="${appDir}/../test/client-config"/>
@@ -44,13 +46,8 @@
     <property name="jboss.home" value="${if_server.dir}"/>
     <property name="server.deploy.lib.dir" value="${if_server.dir}/server/default/lib"/>
     <property name="server.deploy.dir" value="${if_server.dir}/server/default/deploy"/>
-      <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
     </then>
-    <else>
-      <echo message="if_server.dir is NOT set - will not deploy, only build."/>
-	</else>
   </if>
-
 
   <!-- The IF server classpath -->
   <if>
@@ -217,13 +214,38 @@
     <mkdir dir="${ear.build.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
     <mkdir dir="${build.test.classes.dir}"/>
+    <mkdir dir="${build.api.classes.dir}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Compiles the source code                                            -->
   <!-- =================================================================== -->
-  <target name="compile" depends="prepare, deploy:common">
+  <target name="build:api" depends="prepare" if="src.api.includes">
+    <javac source="1.5" target="${target.jvm}" 
+         srcdir="${src.dir}"
+           destdir="${build.api.classes.dir}"
+           debug="on"
+           deprecation="on"
+           optimize="off"
+           includes="${src.api.includes}">
+      <classpath refid="classpath"/>
+    </javac>
+    <!-- And package into place -->
+    <jar jarfile="${build.dir}/${api.base.name}">
+      <fileset dir="${build.api.classes.dir}"/>
+    </jar>
+    <copy file="${build.dir}/${api.base.name}" todir="${pserv.root.dir}/build"/>    
+    <if>
+      <isset property="server.deploy.lib.dir"/>
+      <then>
+        <copy file="${build.dir}/${api.base.name}" todir="${server.deploy.lib.dir}"/>
+      </then>
+    </if>
+  </target>
+  
+  <target name="compile" depends="prepare, build:api, deploy:common">
     <echo message="ant.java.version: ${ant.java.version}" />
+    <echo message="target.java.version: ${target.jvm}" />
     
     <!--compile the model-->
     <javac source="1.5" target="${target.jvm}" 
@@ -232,7 +254,8 @@
            debug="on"
            deprecation="on"
            optimize="off"
-           includes="**">
+           includes="**"
+           excludes="${src.api.includes}">
       <classpath refid="classpath"/>
     </javac>
     
@@ -433,9 +456,10 @@
     <if>
 	  <isset property="server.deploy.dir"/>
 	  <then>
-    <delete file="${server.deploy.dir}/${war.base.name}" failonerror="false"/>
-    <delete file="${server.deploy.dir}/${ear.base.name}" failonerror="false"/>
-    <delete file="${server.deploy.dir}/${jar.base.name}" failonerror="false"/>
+        <delete file="${server.deploy.dir}/${war.base.name}" failonerror="false"/>
+        <delete file="${server.deploy.dir}/${ear.base.name}" failonerror="false"/>
+        <delete file="${server.deploy.dir}/${jar.base.name}" failonerror="false"/>
+        <delete file="${server.deploy.lib.dir}/${api.base.name}" failonerror="false"/>
       </then>
     </if>
   </target>
@@ -551,6 +575,17 @@
   
   <target name="share:jar" depends="undeploy,compile, compile:jar">
     <copy file="${build.dir}/${jar.base.name}" todir="${pserv.root.dir}/build"/>
+  </target>
+
+  <!-- =================================================================== -->
+  
+  <target name="deploy:pure-java">
+    <if>
+      <equals arg1="${pserv.app.deploy.mode}" arg2="pure-java"/>
+      <then>
+        <ant target="deploy"/>
+      </then>
+    </if>
   </target>
 
   <!-- =================================================================== -->

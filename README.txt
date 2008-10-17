@@ -3,15 +3,38 @@ Planets Services Project
 
 Homepage: http://gforge.planets-project.eu/gf/pserv/
 
+Service Development Guidelines
+------------------------------
+Go to this URL to get full details on developing Planets Services.
+
+http://www.planets-project.eu/private/pages/wiki/index.php/Service_Developers_Guidelines
 
 Prerequisites
 -------------
+
+The Planets Services can be built without installing any further 
+software, and services can be tested without an application server.
+However, an application server is required in order to deploy
+these services properly.
 
 The Planets Services project is designed to be deployed against 
 an instance of the Planets IF. To install the IF and its dependencies
 please follow the instructions shown here:
   - http://gforge.planets-project.eu/svn/if_sp/trunk/INSTALL_IF.txt
-  
+
+It should be possible to deploy the Planets Services against another 
+J5EE application server, and you can try this by setting the 
+server.deploy.dir and server.deploy.lib.dir properties in 
+build.properties.  However, other application servers are not 
+supported by the IF team at present, due to the complexity and
+degree of variation between platforms.
+
+As a particular example, if you want to use Metro-on-Tomcat, please be 
+aware that this requires a very different deployment model to 
+the one we've been using up to now.  Instead of deploying the 
+endpoints as EJBs, you would need to repackage them as a WAR 
+so that the services can be deployed as servlets. 
+
 
 Using the Planets Services project
 ----------------------------------
@@ -35,7 +58,10 @@ Once this is done, you should be able to build and deploy the services using
 % ant deploy:all
 
 This does not mean that all services will work, as many of them require 
-individual configuration.
+individual configuration.  You can deploy only those service that do not 
+have external dependancies using
+
+% ant deploy:pure-java
 
 Therefore, each service project may have its own installation notes. 
 For example, the Xena services require OpenOffice to be installed, 
@@ -61,13 +87,11 @@ How to create a new service project.
 
 ----------------------------------------------------------------
 
-Notes And To Dos (Andy J)
+Notes And To Dos
 ================
 
- * Allow sub-projects to define whether they are pure java etc, and pick this up automatically (no limited list, default to impure).
- * Also allow sub-project to define their supported test enviroments (local, standalone, server) and make testing more automatic.
- 
- 
+ * Should exclude API jar from EAR?  Seems not to matter for TechReg, even on hot redeploy.
+
 Alternative build environments:
 
  * OpenEJB should work http://openejb.apache.org/

@@ -14,6 +14,16 @@
 
   <!-- =================================================================== -->  
 
+  <if>
+    <isset property="if_server.dir"/>
+    <then>
+      <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
+    </then>
+    <else>
+      <echo message="if_server.dir is NOT set - will not deploy, only build."/>
+    </else>
+  </if>
+
   <!-- Check that the build properties have been set up. -->
   <property file="build.properties"/>
   <target name="props:set" unless="if_server.dir">
@@ -30,7 +40,7 @@
   </target>
 
   <!-- These services are pure java, and can be deployed automatically. -->
-  <target name="deploy:pure-java" depends="props:set,deploy:common">
+  <target name="deploy:pure-java-old" depends="props:set,deploy:common">
     <!-- IF -->
     <ant dir="IF/techreg" inheritAll="false"/>
     <!-- Preservation Characterisation -->
@@ -39,26 +49,6 @@
     <ant dir="PC/metadata" inheritAll="false"/>
   </target>
 
-  <!-- These services are wrappers requiring other software to be installed. 
-    Because of this, they are not deployed automatically (i.e. this target 
-    is _not_ included in the default ant target). -->
-  <target name="deploy:wrappers" depends="props:set,deploy:common">
-    <!-- Preservation Action -->
-    <ant dir="PA/dvips" inheritAll="false"/>
-    <ant dir="PA/jmagickconverter" inheritAll="false"/>
-    <ant dir="PA/msgtext" inheritAll="false"/>
-    <ant dir="PA/openXML" inheritAll="false"/>
-    <ant dir="PA/pdf2pdfa_MayComputer" inheritAll="false"/>
-    <ant dir="PA/ps2pdf" inheritAll="false"/>
-    <ant dir="PA/sox" inheritAll="false"/>
-    <ant dir="PA/xena" inheritAll="false"/>
-    <!-- Preservation Characterisation -->
-    <ant dir="PC/extractor" inheritAll="false"/>
-    <!-- ant dir="PC/fpm" inheritAll="false"/ -->
-    <ant dir="PC/pngcheck" inheritAll="false"/>
-    <!-- Preservation Planning -->
-    <ant dir="PP/comparator" inheritAll="false"/>
-  </target>
   
   <!-- ================= -->
   
@@ -85,8 +75,20 @@
     </foreach>
   </target>
   <target name="deploy:sub">
-    <echo message="Building ${sub.build}"/>
+    <echo message="In ${sub.build}"/>
     <ant antfile="${sub.build}" inheritAll="false"/>
+  </target>
+  
+  <!-- ================= -->
+
+  <target name="deploy:pure-java" depends="props:set,deploy:common">
+    <foreach target="deploy:sub:pure-java" param="sub.build" inheritall="false">
+      <path refid="all.sub.projects"/>
+    </foreach>
+  </target>
+  <target name="deploy:sub:pure-java">
+    <echo message="In ${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="deploy:pure-java"/>
   </target>
   
   <!-- ================= -->
@@ -97,7 +99,7 @@
     </foreach>
   </target>
   <target name="test:sub">
-    <echo message="Building ${sub.build}"/>
+    <echo message="In ${sub.build}"/>
     <ant antfile="${sub.build}" inheritAll="false" target="test-if-testable"/>
   </target>
   
@@ -109,7 +111,7 @@
     </foreach>
   </target>
   <target name="undeploy:sub">
-    <echo message="Building ${sub.build}"/>
+    <echo message="In ${sub.build}"/>
     <ant antfile="${sub.build}" inheritAll="false" target="undeploy"/>
   </target>
 
