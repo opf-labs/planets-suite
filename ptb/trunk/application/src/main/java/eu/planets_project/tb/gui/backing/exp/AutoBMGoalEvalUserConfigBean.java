@@ -320,7 +320,7 @@ public class AutoBMGoalEvalUserConfigBean{
  		button_save.setValue("add config");
  		Class[] parms3 = new Class[]{ActionEvent.class};
         MethodExpression mb4 = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
-                "#{AutoEvalSerUserConfigBean.processMetricBoundaryValueChange}", null, parms3);
+                "#{AutoEvalSerUserConfigBean.command_saveMetricConfiguration}", null, parms3);
         MethodExpressionActionListener vcl4 = new MethodExpressionActionListener(mb4);
         button_save.addActionListener(vcl4);
  		UIParameter p = new UIParameter();
