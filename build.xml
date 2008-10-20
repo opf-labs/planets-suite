@@ -14,6 +14,14 @@
 
   <!-- =================================================================== -->  
 
+  
+  <!-- Check that the build properties have been set up. -->
+  <property file="build.properties"/>
+  <target name="props:set" unless="if_server.dir">
+	  <echo level="warn" message="For full deployment on the IF, please set up your build.properties file.  Read the README.txt for more information. "/>
+    <echo message="No build.properties found."/>
+  </target>
+	
   <if>
     <isset property="if_server.dir"/>
     <then>
@@ -23,13 +31,6 @@
       <echo message="if_server.dir is NOT set - will not deploy, only build."/>
     </else>
   </if>
-
-  <!-- Check that the build properties have been set up. -->
-  <property file="build.properties"/>
-  <target name="props:set" unless="if_server.dir">
-	  <echo level="warn" message="For full deployment on the IF, please set up your build.properties file.  Read the README.txt for more information. "/>
-    <echo message="No build.properties found."/>
-  </target>
 
   <!-- These are the shared PServ classes. -->
   <target name="deploy:common" depends="props:set">
