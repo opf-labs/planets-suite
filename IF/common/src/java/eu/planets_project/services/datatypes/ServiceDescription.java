@@ -65,6 +65,11 @@ public class ServiceDescription {
      *  The link to the Tool registry.
      */
     URI tool;
+    
+    /**
+     * The license of the Tool.
+     */
+    String license;
 
     /**
      * Human readable description of the service.

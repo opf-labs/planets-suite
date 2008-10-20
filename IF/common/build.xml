@@ -3,23 +3,32 @@
 <!-- ======================================================================= -->
 <!-- Planets Services deployer build file                                    -->
 <!-- ======================================================================= -->
-
 <project name="if-common" default="compile:common" basedir=".">
-
-  <property name="appName" value="${ant.project.name}"/>
-  <property name="appDir" value="."/>
-      
-  <property name="src.dir" value="${appDir}/src/java"/>
-  <property name="lib.dir" value="${appDir}/lib"/>
-  <property name="src.resources" value="${appDir}/src/resources"/>
-  <property name="src.web" value="${appDir}/src/web"/>
-  
-  <property name="test.src.dir" value="${appDir}/src/test/java"/>
-  <property name="test.local" value="" />
-  <property name="test.standalone" value="" />
-  <property name="test.server" value="" />
-
-  <property name="pserv.root.dir" value="../.." />
-  <import file="${pserv.root.dir}/build.common.xml"/>
+    <property name="appName" value="${ant.project.name}"/>
+    <property name="appDir" value="."/>
+    <property name="src.dir" value="${appDir}/src/java"/>
+    <property name="lib.dir" value="${appDir}/lib"/>
+    <property name="src.resources" value="${appDir}/src/resources"/>
+    <property name="src.web" value="${appDir}/src/web"/>
+    <property name="test.src.dir" value="${appDir}/src/test/java"/>
+    <property name="test.local" value="" />
+    <property name="test.standalone" value="" />
+    <property name="test.server" value="" />
+    <property name="pserv.root.dir" value="../.." />
+    <import file="${pserv.root.dir}/build.common.xml"/>
     
+    <taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
+        <classpath>
+            <fileset dir="${pserv.root.dir}/lib/standalone" includes="*.jar" />
+        </classpath>
+    </taskdef>
+    
+    <target name="gen:SDschema">
+        <schemagen srcdir="${src.dir}/eu/planets_project/services/datatypes" destdir="${appDir}/src/resources">
+		<exclude name="DigitalObject.java"/>        
+		<schema namespace="http://www.planets-project.eu/services" file="service_description.xsd"/>
+		<schema namespace="http://purl.org/dc/terms/" file="dcterms.xsd"/>
+		<schema namespace="" file="nonamespace.xsd"/>
+	</schemagen>
+    </target>
 </project>
