@@ -441,7 +441,7 @@ public class TestbedServiceTemplateImpl implements TestbedServiceTemplate, java.
 	/* (non-Javadoc)
 	 * @see eu.planets.test.backend.api.model.mockup.TestbedService#extractWSDLContent(java.lang.String)
 	 */
-	public void extractWSDLContent(String sURL)throws FileNotFoundException, IOException{
+	public void extractWSDLContent(String sURL)throws FileNotFoundException, IOException, NullPointerException{
 
 		InputStream in = null;
 		try{

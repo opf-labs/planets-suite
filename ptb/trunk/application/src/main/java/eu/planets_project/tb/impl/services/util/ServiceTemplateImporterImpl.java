@@ -428,12 +428,14 @@ public class ServiceTemplateImporterImpl implements ServiceTemplateImporter,Erro
 		TestbedServiceTemplateImpl tbService = new TestbedServiceTemplateImpl();
 		try {
 			tbService.extractWSDLContent(this.getEndpointURI());
+			bEndpointReachable= true;
 		} catch (FileNotFoundException e) {
 			bEndpointReachable= false;
 		} catch (IOException e) {
 			bEndpointReachable= false;
+		} catch (NullPointerException e){
+			bEndpointReachable= false;
 		}
-		bEndpointReachable= true;
 	}
 	
 	private boolean checkIsTBVersionIDcompliant(){

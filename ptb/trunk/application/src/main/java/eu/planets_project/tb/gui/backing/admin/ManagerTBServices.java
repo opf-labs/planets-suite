@@ -627,12 +627,12 @@ public class ManagerTBServices implements ValueChangeListener{
 			this.configFile = null;
 			importer = null;
 	        FacesMessage fmsg = new FacesMessage();
-	        fmsg.setDetail("The provided file is not compliant with this version " +e);
-	        fmsg.setSummary("The provided file is not compliant with this version "+e);
+	        fmsg.setDetail(e.toString());
+	        fmsg.setSummary(e.toString());
 	        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
 	        FacesContext ctx = FacesContext.getCurrentInstance();
 	        ctx.addMessage("formUploadServiceTemplate:configfileupload",fmsg); 
-	        log.debug("The provided file is not compliant with this version");
+	        log.debug("The provided file is not compliant with this version "+e.toString());
 		}
         return "reload-page";
     }

@@ -49,7 +49,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	
 	private static final String URL_DROID = "http://localhost:8080/pserv-pc-droid/Droid?wsdl";
 	private static final String URL_XCDLEXTRACTOR = "http://localhost:8080/pserv-pc-extractor/Extractor2Binary?wsdl";
-	private static final String URL_XCDLCOMPARATOR = "http://localhost:8080/pserv-pp-comparator/Comparator?wsdl";
+	private static final String URL_XCDLCOMPARATOR = "http://localhost:8080/pserv-pp-comparator/ComparatorBasicCompareTwoXcdlValues?wsdl";
 	
 	//the new extractor interface does not require to hand over the xcel anymore
 	//private static final String PATH_TO_xcel_tiff = "Planets_XCEL_Exctractor/res/xcl/xcel/xcel_docs/xcel_tiff.xml";

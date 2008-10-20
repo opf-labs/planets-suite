@@ -222,15 +222,16 @@
       </fileset>
     </copy>
 
-    <jar jarfile="${build.dir}/${appName}.war"
-	 basedir="${build.dir}/${appName}">
+    <jar jarfile="${build.dir}/${appName}.war" basedir="${build.dir}/${appName}">
+    	<manifest>
+			<attribute name="Class-Path" value="commons-io-1.4.jar"/>
+		</manifest>
     </jar>
 
   	<ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">
 	      <fileset dir="${build.dir}" includes="*.jar,*.war"/>
 	          <manifest>
 				  <attribute name="Implementation-Title" value="Planets Testbed"/>
-				  <attribute name="Class-Path" value="commons-io-1.4.jar"/>
 			  </manifest>
 	 </ear>
   	
