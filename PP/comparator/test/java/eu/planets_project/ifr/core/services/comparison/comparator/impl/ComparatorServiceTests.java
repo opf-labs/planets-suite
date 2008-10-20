@@ -1,7 +1,5 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,9 +16,10 @@ import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Local and client tests of the comparator services by value functionality.
+ * 
  * @author Fabian Steeg
  */
-public class ComparatorServiceTests {
+public final class ComparatorServiceTests {
 
     /***/
     private static final String COMPARATOR_SUFFIX = "/pserv-pp-comparator/Comparator";
@@ -64,6 +63,7 @@ public class ComparatorServiceTests {
 
     /**
      * Tests the services that use the actual value strings.
+     * 
      * @param server The server to use
      * @param data1 The XCDL1 data
      * @param data2 The XCDL2 data
@@ -78,27 +78,19 @@ public class ComparatorServiceTests {
         BasicCompareTwoXcdlValues c1 = serviceFrom(server,
                 BasicCompareTwoXcdlValues.class);
         String result = c1.basicCompareTwoXcdlValues(xcdl1, xcdl2);
-        checkResult(result);
+        ComparatorWrapperTests.check(result);
         /* Test of the MULTI VALUES service: */
         CompareMultipleXcdlValues c2 = serviceFrom(server,
                 CompareMultipleXcdlValues.class);
         result = c2.compareMultipleXcdlValues(new String[] { xcdl1, xcdl2 },
                 config);
-        checkResult(result);
-    }
-
-    /**
-     * @param result The result string returned from a value service
-     */
-    protected void checkResult(final String result) {
-        assertTrue("No result found returned after comparison!", result != null);
-        assertTrue("Comparator could not validate: " + result, !result
-                .contains("validation failed"));
+        ComparatorWrapperTests.check(result);
     }
 
     /**
      * Creates an instance from a web service running on the given host of the
      * given type.
+     * 
      * @param <T> The interface type
      * @param host The host
      * @param interfaze The interface to intantiate

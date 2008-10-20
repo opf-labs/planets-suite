@@ -10,19 +10,20 @@ import org.junit.Test;
 /**
  * Tests of the comparator wrapper functionality, which is used by the different
  * comparator services.
+ * 
  * @author Fabian Steeg
  */
 public final class ComparatorWrapperTests {
     /***/
-    static final String XCDL3 = "PP/comparator/src/resources/COMPARATOR_HOME/XCDL3.xcdl";
+    static final String XCDL3 = "PP/comparator/src/resources/XCDL3.xcdl";
     /***/
-    static final String XCDL2 = "PP/comparator/src/resources/COMPARATOR_HOME/XCDL2.xcdl";
+    static final String XCDL2 = "PP/comparator/src/resources/XCDL2.xcdl";
     /***/
-    static final String XCDL1 = "PP/comparator/src/resources/COMPARATOR_HOME/XCDL1.xcdl";
+    static final String XCDL1 = "PP/comparator/src/resources/XCDL1.xcdl";
     /***/
-    static final String PCR_SINGLE = "PP/comparator/src/resources/COMPARATOR_HOME/defaultPCR.xml";
+    static final String PCR_SINGLE = "PP/comparator/src/resources/defaultPCR.xml";
     /***/
-    static final String PCR_MULTI = "PP/comparator/src/resources/COMPARATOR_HOME/defaultPCRMulti.xml";
+    static final String PCR_MULTI = "PP/comparator/src/resources/defaultPCRMulti.xml";
 
     /** Tests if the required environment variable is set. */
     @Test
@@ -58,7 +59,6 @@ public final class ComparatorWrapperTests {
                 ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
                         .read(XCDL2), ComparatorWrapper.read(XCDL3)),
                 ComparatorWrapper.read(PCR_MULTI));
-        System.out.println("Result: " + result);
         check(result);
     }
 
@@ -68,16 +68,18 @@ public final class ComparatorWrapperTests {
         String result = ComparatorWrapper.compare(
                 ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
                         .read(XCDL2), ComparatorWrapper.read(XCDL3)), null);
-        System.out.println("Result: " + result);
         check(result);
     }
 
     /**
      * @param result The result to check
      */
-    private void check(final String result) {
-        assertNotNull("Comparator returned null", result);
+    static void check(final String result) {
+        System.out.println("Comparator result: " + result);
+        assertTrue("No result found returned after comparison!", result != null);
         assertTrue("Comparator could not validate: " + result, !result
                 .contains("validation failed"));
+        assertTrue("Comparator result contains an error: " + result, !result
+                .contains("<error>"));
     }
 }
