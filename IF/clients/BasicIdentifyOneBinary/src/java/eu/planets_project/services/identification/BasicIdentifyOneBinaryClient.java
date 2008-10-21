@@ -21,11 +21,17 @@ public class BasicIdentifyOneBinaryClient {
 		
 		QName qName = BasicIdentifyOneBinary.QNAME;
 		
+		
+		/* Please comment in/out the file of the format you wish to test... */
 		String testFileName = 
 			
-			"IF/clients/L2PlanetsServiceClient/src/resources/eu/planets_project/services/test_jpg/2325559127_ccbb33c982.jpg";
+				"PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg";
+	        
+//	        	"PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png";
+	        
+//	        	"PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif";
 		
-//		PrintWriter out = new PrintWriter(new OutputStreamWriter(System.out));
+		
 		System.out.println("Trying to connect to service...");
 		System.out.println("Creating Service...");
 		Service service = Service.create(new URL(wsdlLocation), qName);

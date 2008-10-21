@@ -55,7 +55,7 @@ public class BasicMigrateOneBinaryClient {
         URL wsdl = new URL(
                 "http://localhost:8080/pserv-pa-jmagick/JpgToTiffConverter?wsdl");
 
-        File srcFile = new File("IF/clients/L2PlanetsServiceClient/src/resources/eu/planets_project/services/test_jpg/2325559127_ccbb33c982.jpg");
+        File srcFile = new File("PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg");
         
         File resultFolder = new File(RESULT_FOLDER);
         boolean mkDir = resultFolder.mkdir();

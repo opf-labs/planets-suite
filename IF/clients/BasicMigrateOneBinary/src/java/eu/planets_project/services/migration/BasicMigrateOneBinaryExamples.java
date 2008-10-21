@@ -31,33 +31,65 @@ import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 public class BasicMigrateOneBinaryExamples {
 
     public static void main(String[] args) throws IOException, PlanetsException {
-
+    	
+    	/* Please comment out/in the wsdl-location of the service you wish to test: */
         String wsdlLocation = 
 
-        	"http://localhost:8080/pserv-pa-jmagick/JpgToTiffConverter?wsdl";
-
-        QName qName = BasicMigrateOneBinary.QNAME;
-        System.out.println("Starting conversion process...");
-        System.out.println("Creating Service...");
-        Service service = Service.create(new URL(wsdlLocation), qName);
-        System.out.println("getting Port...");
-        BasicMigrateOneBinary converter = service.getPort(BasicMigrateOneBinary.class);
-
+//        	"http://localhost:8080/pserv-pa-jmagick/JpgToTiffConverter?wsdl";
+//        	"http://localhost:8080/pserv-pa-jmagick/JpgToPngConverter?wsdl";
+//    		"http://localhost:8080/pserv-pa-jmagick/TiffToPngConverter?wsdl";        
+			"http://localhost:8080/pserv-pa-jmagick/PngToTiffConverter?wsdl";  
+        
+        
+        /* Please comment out/in the corresponding test_image for the service chosen above! 
+         * E.g. if you have chosen the TifftoPngConverter --> choose *.tif file as input ... *
+         * Or if you have chosen the PngToTiffConverter   --> choose *.png file as input     *
+         * Default is: 				 JpgToTiffConverter   --> *.jpg is chosen as input file  */
+        
         String fileName = 
 
-            "IF/clients/L2PlanetsServiceClient/src/resources/eu/planets_project/services/test_jpg/2325559127_ccbb33c982.jpg";
+			// Comment that in for use with JpgToTiffConverter or JpgToPngConverter (Default)
+//			"PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg";
+        
+        	// Comment that in for use with PngToTiffConverter       
+        	"PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png";
+        
+        	// Comment that in for use with TiffToPngConverter        
+//        	"PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif";
+        
+        String resultFileExt = null;
+        if(wsdlLocation.contains("JpgToTiffConverter?wsdl") || wsdlLocation.contains("PngToTiffConverter?wsdl")) {
+        	resultFileExt = ".tif";
+        }
+        if(wsdlLocation.contains("JpgToPngConverter?wsdl") || wsdlLocation.contains("TiffToPngConverter?wsdl")) {
+        	resultFileExt = ".png";
+        }
+        
+        QName qName = BasicMigrateOneBinary.QNAME;
+        String serviceName = wsdlLocation.substring(wsdlLocation.lastIndexOf("/") + 1, wsdlLocation.lastIndexOf("?"));
+        
+        System.out.println("Starting conversion process..." + "\n");
+        System.out.println("Creating Service instance of: " + serviceName + "\n");
+        Service service = Service.create(new URL(wsdlLocation), qName);
+        System.out.println("getting Port for " + serviceName + " service." + "\n");
+        BasicMigrateOneBinary converter = service.getPort(BasicMigrateOneBinary.class);
 
+        
         File srcFile = new File(fileName);
-        System.out.println("creating Byte[]");
+        System.out.println("creating Byte[] from input file: " + fileName.substring(fileName.lastIndexOf("/") + 1) + "\n");
         byte[] imageData = getByteArrayFromFile(srcFile);
-        System.out.println("Sending image data...");
+        System.out.println("Sending image data to " + serviceName + "\n");
         byte[] out = converter.basicMigrateOneBinary(imageData);
-        System.out.println("Creating result file...");
-        File resultFile = File.createTempFile("resultBasicMigrateOneBinaryClient", ".tiff");
+        System.out.println("Received Result from Webservice: " + serviceName + "\n");
+        System.out.println("Creating result file..." + "\n");
+
+        
+        File resultFile = File.createTempFile(serviceName + "Result", resultFileExt);
         FileOutputStream fos = new FileOutputStream(resultFile);
         fos.write(out);
         fos.flush();
         fos.close(); 
+        System.out.println("Please find the result file here:");
         System.out.println(resultFile.getAbsolutePath());
     }
 
