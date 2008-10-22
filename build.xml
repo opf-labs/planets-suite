@@ -31,7 +31,6 @@
       <echo message="if_server.dir is NOT set - will not deploy, only build."/>
     </else>
   </if>
-
   <!-- These are the shared PServ classes. -->
   <target name="deploy:common" depends="props:set">
     <ant dir="IF/common" inheritAll="false"/>
@@ -39,17 +38,6 @@
   <target name="compile:common" depends="props:set">
     <ant dir="IF/common" inheritAll="false" target="compile:common"/>
   </target>
-
-  <!-- These services are pure java, and can be deployed automatically. -->
-  <target name="deploy:pure-java-old" depends="props:set,deploy:common">
-    <!-- IF -->
-    <ant dir="IF/techreg" inheritAll="false"/>
-    <!-- Preservation Characterisation -->
-    <ant dir="PC/droid" inheritAll="false"/>
-    <ant dir="PC/jhove" inheritAll="false"/>
-    <ant dir="PC/metadata" inheritAll="false"/>
-  </target>
-
   
   <!-- ================= -->
   
@@ -77,7 +65,8 @@
   </target>
   <target name="deploy:sub">
     <echo message="In ${sub.build}"/>
-    <ant antfile="${sub.build}" inheritAll="false"/>
+    <dirname property="sub.build.dir" file="${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" dir="${sub.build.dir}"/>
   </target>
   
   <!-- ================= -->
@@ -89,7 +78,8 @@
   </target>
   <target name="deploy:sub:pure-java">
     <echo message="In ${sub.build}"/>
-    <ant antfile="${sub.build}" inheritAll="false" target="deploy:pure-java"/>
+    <dirname property="sub.build.dir" file="${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="deploy:pure-java" dir="${sub.build.dir}"/>
   </target>
   
   <!-- ================= -->
@@ -101,7 +91,8 @@
   </target>
   <target name="test:sub">
     <echo message="In ${sub.build}"/>
-    <ant antfile="${sub.build}" inheritAll="false" target="test-if-testable"/>
+    <dirname property="sub.build.dir" file="${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="test-if-testable" dir="${sub.build.dir}"/>
   </target>
   
   <!-- ================= -->
@@ -113,7 +104,8 @@
   </target>
   <target name="undeploy:sub">
     <echo message="In ${sub.build}"/>
-    <ant antfile="${sub.build}" inheritAll="false" target="undeploy"/>
+    <dirname property="sub.build.dir" file="${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="undeploy" dir="${sub.build.dir}"/>
   </target>
 
   <!-- =================================================================== -->
