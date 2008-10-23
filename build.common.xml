@@ -354,8 +354,16 @@
     <!-- Attempt all three test modes -->
     <ant target="test:local"/>
     <ant target="test:standalone"/>
+    <!-- default to tests ON -->
     <if>
       <isset property="test.on.server"/>
+      <else>
+        <property name="test.on.server" value="true"/>
+      </else>
+    </if>
+    <!-- run with server if you want -->
+    <if>
+      <equals arg1="${test.on.server}" arg2="true"/>
       <then>
         <ant target="test:server"/>
       </then>
