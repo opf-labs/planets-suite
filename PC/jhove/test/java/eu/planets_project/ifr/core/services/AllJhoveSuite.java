@@ -7,7 +7,7 @@ import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdent
 import eu.planets_project.ifr.core.services.validation.jhove.impl.JhoveValidationTests;
 
 /**
- * Suite to run all JHOVE tests.
+ * Main test suite to run all JHOVE tests.
  * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
@@ -15,5 +15,5 @@ import eu.planets_project.ifr.core.services.validation.jhove.impl.JhoveValidatio
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { JhoveIdentificationTests.class,
         JhoveValidationTests.class })
-public class JhoveTests {
+public class AllJhoveSuite {
 }

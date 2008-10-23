@@ -31,4 +31,8 @@
 		<schema namespace="" file="nonamespace.xsd"/>
 	</schemagen>
     </target>
+	
+    <!-- Unit testing definitions -->
+    <property name="test.src.dir" value="${appDir}/test/java" />
+    <property name="test.server" value="" />
 </project>

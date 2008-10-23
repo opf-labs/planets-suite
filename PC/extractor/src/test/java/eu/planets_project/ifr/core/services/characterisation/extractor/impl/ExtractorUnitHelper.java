@@ -15,7 +15,7 @@ import eu.planets_project.services.PlanetsServices;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * 
  */
-public final class ExtractorTestHelper {
+public final class ExtractorUnitHelper {
     /** Local host address of the JBoss instance. */
     static final String LOCALHOST = "http://localhost:8080";
     /** Test server address of the JBoss instance. */
@@ -42,7 +42,7 @@ public final class ExtractorTestHelper {
     /**
      * We enforce non-instantiability with a private constructor.
      */
-    private ExtractorTestHelper() {}
+    private ExtractorUnitHelper() {}
 
     /**
      * @param <T> The interface type of the instance to retrieve

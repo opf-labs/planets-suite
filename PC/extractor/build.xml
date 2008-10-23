@@ -19,5 +19,9 @@
   <!-- Include the build targets etc -->
   <property name="pserv.root.dir" value="../.." />
   <import file="${pserv.root.dir}/build.common.xml"/>
+	
+  <!-- Unit testing definitions -->
+  <property name="test.src.dir" value="${appDir}/src/test/java" />
+  <property name="test.server" value="" />
     
 </project>

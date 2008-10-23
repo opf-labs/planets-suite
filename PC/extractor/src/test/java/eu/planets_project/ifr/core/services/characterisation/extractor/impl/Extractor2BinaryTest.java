@@ -38,9 +38,9 @@ public final class Extractor2BinaryTest {
      */
     @Before
     public void testBasicCharacteriseOneBinaryXCELtoBinary() {
-        File inputImage = new File(ExtractorTestHelper.SAMPLE_FILE);
-        File inputXcel = new File(ExtractorTestHelper.SAMPLE_XCEL);
-        File outputFolder = new File(ExtractorTestHelper.EXTRACTOR2BINARY_OUTPUT_DIR);
+        File inputImage = new File(ExtractorUnitHelper.SAMPLE_FILE);
+        File inputXcel = new File(ExtractorUnitHelper.SAMPLE_XCEL);
+        File outputFolder = new File(ExtractorUnitHelper.EXTRACTOR2BINARY_OUTPUT_DIR);
         boolean made = outputFolder.mkdir();
         if (!made && !outputFolder.exists()) {
             fail("Could not create directory: " + outputFolder);
@@ -73,16 +73,16 @@ public final class Extractor2BinaryTest {
     /** Test using the web service running on local host. */
     @Test
     public void testRemoteLocalServer() {
-        test(ExtractorTestHelper.getRemoteInstance(
-                ExtractorTestHelper.LOCALHOST + WSDL,
+        test(ExtractorUnitHelper.getRemoteInstance(
+                ExtractorUnitHelper.LOCALHOST + WSDL,
                 BasicCharacteriseOneBinaryXCELtoBinary.class));
     }
 
     /** Test using the web service running on the test server. */
     @Test
     public void testRemoteTestServer() {
-        test(ExtractorTestHelper.getRemoteInstance(
-                ExtractorTestHelper.PLANETARIUM + WSDL,
+        test(ExtractorUnitHelper.getRemoteInstance(
+                ExtractorUnitHelper.PLANETARIUM + WSDL,
                 BasicCharacteriseOneBinaryXCELtoBinary.class));
     }
 

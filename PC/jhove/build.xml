@@ -30,5 +30,9 @@
 	<copy file="${src.resources}/jhove.conf" todir="${jboss.home}/server/default/conf/" overwrite="true" />
         </then>
 	</if>
+	
+	<!-- Unit testing definitions -->
+	<property name="test.src.dir" value="${appDir}/test/java" />
+	<property name="test.server" value="" />
 
 </project>
