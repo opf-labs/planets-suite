@@ -221,18 +221,27 @@
         <exclude name="testbed-log4j.xml" />
       </fileset>
     </copy>
+    
+    <!-- moves libs for the .ear into the lib directory as e.g. commons-io.jar-->
+    <move todir="${build.dir}/lib">
+		<fileset dir="${build.dir}/${appName}/WEB-INF/lib">
+			<include name="commons-io-1.4.jar" />
+		</fileset>
+	</move>
 
     <jar jarfile="${build.dir}/${appName}.war" basedir="${build.dir}/${appName}">
-    	<manifest>
-			<attribute name="Class-Path" value="commons-io-1.4.jar"/>
-		</manifest>
     </jar>
 
   	<ear destfile="${build.dir}/${appName}.ear" appxml="resources/META-INF/application.xml">
-	      <fileset dir="${build.dir}" includes="*.jar,*.war"/>
-	          <manifest>
-				  <attribute name="Implementation-Title" value="Planets Testbed"/>
-			  </manifest>
+			  <fileset dir="${build.dir}" includes="*.jar,*.war"/>
+			  <manifest>
+				 <attribute name="Implementation-Title" value="Planets Testbed"/>
+				 <attribute name="Class-Path" value="lib/commons-io-1.4.jar"/>
+			</manifest>
+			<!-- includes libs for the ear-->
+			<fileset dir="${build.dir}">
+				<include name="lib/*.*"/>
+			</fileset>
 	 </ear>
   	
   </target>
