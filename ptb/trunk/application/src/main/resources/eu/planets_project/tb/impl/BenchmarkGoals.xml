@@ -324,17 +324,62 @@ xsi:noNamespaceSchemaLocation="BenchmarkGoalsSchema.xsd" -->
 		<item id="img-gen6" type="java.lang.Integer" scale="pixel" version="1.0">
 			<name>XCDLimageHeight</name>
 			<definition>XCDL property 2</definition>
-			<description>Height of an image. Corresponds to the y-axis.</description>
+			<description>Height of an image. Corresponds to the y-axis of a Cartesian coordinate system. Measured in pixel. XCDL property 2</description>
 		</item>
 		<item id="img-gen7" type="java.lang.Integer" scale="pixel" version="1.0">
 			<name>XCDLimageWidth</name>
 			<definition>XCDL property 30</definition>
-			<description>Width of an image. Corresponds to the x-axis. </description>
+			<description>Width of an image. Corresponds to the x-axis. Measured in pixel. XCDL property 30</description>
 		</item>
 		<item id="img-gen8" type="java.lang.String" scale="undefined" version="1.0">
 			<name>XCDLnormData</name>
 			<definition>XCDL property 300</definition>
-			<description>The normalized data</description>
+			<description>XCL specific data. The normalized data as hex String. XCDL property 300</description>
+		</item>
+		<item id="img-gen9" type="java.lang.Integer" scale="bit" version="1.0">
+			<name>XCDLbitsPerSample</name>
+			<definition>XCDL property 151</definition>
+			<description>Number of bits per sample component. Measured in bit. XCDL property 151</description>
+		</item>
+		<item id="img-gen10" type="java.lang.String" scale="undefined" version="1.0">
+			<name>XCDLcompression</name>
+			<definition>XCDL property 18</definition>
+			<description>algorithm applied to image data for the purpose of minimizing storage size as XCLLabel. XCDL property 18</description>
+		</item>
+		<item id="img-gen11" type="java.lang.String" scale="undefined" version="1.0">
+			<name>XCDLimageType</name>
+			<definition>XCDL property 20</definition>
+			<description>Interpretation of image pixels representing the colour type of an image as XCLLabel. XCDL property 20</description>
+		</item>
+		<item id="img-gen12" type="java.lang.String" scale="undefined" version="1.0">
+			<name>XCDLorientation</name>
+			<definition>XCDL property 9</definition>
+			<description>The orientation of the image with respect to the rows and columns as XCLLabel. XCDL property 9</description>
+		</item>
+		<item id="img-gen13" type="java.lang.String" scale="undefined" version="1.0">
+			<name>XCDLplanarConfiguration</name>
+			<definition>XCDL property 49</definition>
+			<description>How the components of each pixel are stored as XCLLabel. XCDL property 49</description>
+		</item>
+		<item id="img-gen14" type="java.lang.String" scale="undefined" version="1.0">
+			<name>XCDLresolutionUnit</name>
+			<definition>XCDL property 22</definition>
+			<description>measure unit for measuring resolution as XCLLabel. XCDL property 22</description>
+		</item>
+		<item id="img-gen15" type="java.lang.Float" scale="undefined" version="1.0">
+			<name>XCDLresolutionX</name>
+			<definition>XCDL property 23</definition>
+			<description>number of pixels per resolution unit in horizontal direction. XCDL property 23</description>
+		</item>
+		<item id="img-gen16" type="java.lang.Float" scale="undefined" version="1.0">
+			<name>XCDLresolutionY</name>
+			<definition>XCDL property 24</definition>
+			<description>number of pixels per resolution unit in vertical direction. XCDL property 24</description>
+		</item>
+		<item id="img-gen17" type="java.lang.String" scale="undefined" version="1.0">
+			<name>XCDLscanDocName</name>
+			<definition>XCDL property 144</definition>
+			<description>The name of the document from which this image was scanned as String. XCDL property 144</description>
 		</item>
 	</category>
 	<category name="Audio">

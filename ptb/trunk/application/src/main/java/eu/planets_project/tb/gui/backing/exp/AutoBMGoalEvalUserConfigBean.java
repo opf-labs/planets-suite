@@ -27,9 +27,12 @@ import org.richfaces.component.html.HtmlInputNumberSlider;
 import org.richfaces.event.DropEvent;
 
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 
@@ -73,26 +76,37 @@ public class AutoBMGoalEvalUserConfigBean{
 	public String getBMGoalID(){
 		return this.sBMGoalID;
 	}
+
+	public String getBMGoalName(){
+		BenchmarkGoalsHandler bmGoalHandler = BenchmarkGoalsHandlerImpl.getInstance();
+		return bmGoalHandler.getBenchmarkGoal(this.getBMGoalID()).getName();
+	}
 	
     public List<MetricBean> getAllSupportedEvalMetrics(){
     	List<MetricBean> lret = new ArrayList<MetricBean>();
     	if(evalSerTemplate!=null){
-    		Map<String,String> mapMetricType = evalSerTemplate.getAllAvailableMetricsForBMGoal(sBMGoalID);
-    		if((mapMetricType!=null)&&(mapMetricType.size()>0)){
-    			Iterator<String> itKeys = mapMetricType.keySet().iterator();
+    		Map<String,List<Map<String,String>>> mapMetricInfo = evalSerTemplate.getAllAvailableMetricsForBMGoal(sBMGoalID);
+    		if((mapMetricInfo!=null)&&(mapMetricInfo.size()>0)){
+    			Iterator<String> itKeys = mapMetricInfo.keySet().iterator();
+    			//iterate over all parameter names e.g. imageWidth
     			while(itKeys.hasNext()){
-    				String metricName = itKeys.next();
-    				String metricType = mapMetricType.get(metricName);
-    				//create metricbean object and add into the return list
-    				MetricBean mb = new MetricBean(metricName,metricType);
-    				mapMetricNameType.put(metricName, metricType);
-    				lret.add(mb);
-    			}
-    			
+    				List<Map<String,String>> l = mapMetricInfo.get(itKeys.next());
+    				for(Map<String,String> m : l){
+	    				String sMname = m.get("metricName");
+	    				String sMDescr = m.get("metricDescription");
+	    				String sMretType = m.get("javaobjecttype");
+	    				//create metricbean object and add into the return list
+	    				MetricBean mb = new MetricBean(sMname,sMDescr);
+	    				mb.setDescription(sMDescr);
+	    				this.mapMetricNameType.put(sMname, sMretType);
+	    				lret.add(mb);
+    				}
+    			}    			
     		}
     	}
     	return lret;
     }
+    
     
     //this bean stores the information which metric is contained in the table 'very good'
     private List<MetricBean> lVeryGoodMT = new ArrayList<MetricBean>();

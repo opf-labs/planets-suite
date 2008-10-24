@@ -3,6 +3,7 @@ package eu.planets_project.tb.impl.services;
 import java.io.Reader;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -36,6 +37,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
+import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 
 
@@ -243,41 +245,6 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	
 	
 	/**
-	 * NOTE: This is currently a mock implementation --> replace by a service or file
-	 * Returns a list of all available metrics for a specified bmGoal
-	 * @param bmGoal
-	 * @return <MetricName,java type as: java.lang.Integer> 
-	 */
-	public Map<String,String> getAllAvailableMetricsForBMGoal(String bmGoalID){
-		//TODO: replace temporarily a mockup - returns a fixed list of elements
-		//TODO: read this data from a service
-		Map<String,String> ret = new HashMap<String,String>();
-		BenchmarkGoalsHandler bmGoalHandler = BenchmarkGoalsHandlerImpl.getInstance();
-		BenchmarkGoal bmGoal = bmGoalHandler.getBenchmarkGoal(bmGoalID);
-		//MOCK STARTING FROM HERE - Descriptions of Metric vals given in PP5/D1
-		//Should either be provided by xml, the imported template or a service
-		if(bmGoal.getName().equals("XCDLimageHeight")){
-			ret.put("equal","java.lang.Boolean");
-			ret.put("intDiff","java.lang.Integer");
-			ret.put("percDev","java.lang.Double");
-		}
-		
-		if(bmGoal.getName().equals("XCDLimageWidth")){
-			ret.put("equal","java.lang.Boolean");
-			ret.put("intDiff","java.lang.Integer");
-			ret.put("percDev","java.lang.Double");
-		}
-		
-		if(bmGoal.getName().equals("XCDLnormData")){
-			ret.put("hammingDistance","java.lang.Integer");
-			ret.put("RMSE","java.lang.Double");
-		}
-		
-		return ret;
-	}
-	
-	
-	/**
 	 * Defines an XPath how to look up the value of metric within the service's output.
 	 * [no absolute path, relative to the metrics's root node]
 	 * @param xPath
@@ -400,6 +367,54 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	 */
 	public Collection<String> getAllMappedBenchmarkGoalIDs(){
 		return this.mappingGoalIDToPropertyID.keySet();
+	}
+	
+	/**
+	 * Returns a list of all available metrics for a specified bmGoal
+	 * NOTE: This is currently uses a mock implementation of the tec.registry to query parameters and values
+	 * e.g. xcdl properties, their metrics and fully qualified names of their return types
+	 * @param bmGoalID
+	 * @return <PropertyName,List<Map<keyword,value>>> 
+	 */
+	private static final String URIXCDLPropertyRoot = "planets:pc/xcdl/property/";
+	private static final String URIXCDLMetricRoot = "planets:pc/xcdl/metric/";
+	public Map<String,List<Map<String,String>>> getAllAvailableMetricsForBMGoal(String bmGoalID){
+
+		Map<String,List<Map<String,String>>> ret = new HashMap<String,List<Map<String,String>>>();
+		BenchmarkGoalsHandler bmGoalHandler = BenchmarkGoalsHandlerImpl.getInstance();
+		BenchmarkGoal bmGoal = bmGoalHandler.getBenchmarkGoal(bmGoalID);
+
+		//e.g. the xcdl property name
+		String sPropName = this.getMappedPropertyName(bmGoalID);
+		List<Map<String,String>> l = new ArrayList<Map<String,String>>();
+		if(!sPropName.equals("")){
+			
+			//now query the technical registry for all details on this property
+			TecRegMockup tecReg = TecRegMockup.getInstance();
+			String[] sMetricNames = (String[])tecReg.getParameterVal(URIXCDLPropertyRoot+sPropName+"/metrics");
+			
+			if(sMetricNames!=null){
+				for(String sMname : sMetricNames){
+					Map<String,String> m = new HashMap<String,String>();
+					String retType = (String)tecReg.getParameterVal(URIXCDLMetricRoot+sMname+"/returndatatype/javaobjecttype");
+					String descr = (String)tecReg.getParameterVal(URIXCDLMetricRoot+sMname+"/description");
+					if(retType!=null){
+						//e.g. "equal"
+						m.put("metricName", sMname);
+						m.put("javaobjecttype", retType);
+						if(descr!=null){
+							//the metric's description
+							m.put("metricDescription", descr);
+						}
+					}
+					l.add(m);
+				}
+				ret.put(sPropName, l);
+			}
+		}
+		//else - don't add any information - e.g. registry broken, wrong bmGoal mapping, etc.
+
+		return ret;
 	}
 	
 	

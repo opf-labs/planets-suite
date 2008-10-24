@@ -26,9 +26,9 @@
             <div class="innertubemain">
                 <fieldset>
                     <legend>Information</legend> 
-                    Please specify how to automatically evaluate the the chosen BenchmarkGoal 
+                    Please specify how to automatically evaluate the the chosen BenchmarkGoal: 
                    
-                    Display BenchmarkGoalName
+                    <b><h:outputText value="#{AutoEvalSerUserConfigBean.BMGoalName}"></h:outputText></b>
                 </fieldset>
     <!-- START DRAG and DROP elements -->       
     <rich:dragIndicator id="indicator" />
@@ -48,11 +48,11 @@
                                 <rich:dndParam name="label" value="#{metric.name}" />
                                 <a4j:actionparam value="#{metric.name}" name="droppedMetricName"/>
                             </rich:dragSupport>
-                            <rich:toolTip direction="top-right">
-                            	<span style="white-space:nowrap">
-                					<h:outputText value="#{metric.description}"/>
+	                        <rich:toolTip direction="top-right" style="width:500px;">
+                            	<span>
+                					<h:outputText value="#{metric.description}" style="width:500px;"/>
             					</span>
-                            </rich:toolTip>
+	                        </rich:toolTip>
                             <h:outputText value="#{metric.name}"></h:outputText>
                         </a4j:outputPanel>
                     </h:column>
