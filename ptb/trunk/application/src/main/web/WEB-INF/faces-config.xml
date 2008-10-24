@@ -73,7 +73,7 @@
   <managed-bean-scope>request</managed-bean-scope>
   <managed-property>
    <property-name>uploadDir</property-name>
-   <value>server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata</value>
+   <value>server/default/deploy/jboss-web.deployer/ROOT.war/planets-testbed/inputdata</value>
   </managed-property>
  </managed-bean>
 <!--End Managed Beans -->
