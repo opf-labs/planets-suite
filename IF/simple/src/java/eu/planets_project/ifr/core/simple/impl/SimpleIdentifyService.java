@@ -64,6 +64,7 @@ public class SimpleIdentifyService implements Identify {
         try {
             ftr = FileTypeResolver.instantiate();
         } catch (Exception e) {
+            e.printStackTrace();
             return this.returnWithErrorMessage("Could not instanciate the file type resolver.");
         }
         // Can only cope if the object is 'simple':

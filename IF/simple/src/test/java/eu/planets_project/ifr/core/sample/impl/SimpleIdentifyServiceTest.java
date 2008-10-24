@@ -124,7 +124,8 @@ public class SimpleIdentifyServiceTest {
         /* Check the result */
         System.out.println("Recieved type: " + ir.getType() );
         System.out.println("Recieved service report: " + ir.getReport() );
-        assertTrue("The returned type did not match the expected '"+type+"'.", type.equals(ir.getType()));
+        assertEquals("The returned type did not match the expected;", type, ir
+                .getType());
         
     }
 

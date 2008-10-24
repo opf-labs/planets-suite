@@ -54,10 +54,10 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
      * PngCheck.
      * 
      * @param binary The file to verify being a PNG using PngCheck (as a byte
-     *        array)
+     *            array)
      * @param fmt Not required in this service (as it only identifies PNG
-     *        files), so can be null; if it is not null and not one of the PNG
-     *        pronom URIs however, an IllegalArgumentExcpetion is thrown
+     *            files), so can be null; if it is not null and not one of the
+     *            PNG pronom URIs however, an IllegalArgumentExcpetion is thrown
      * @return Returns true if the given file is a valid PNG file, else false
      */
     @WebMethod(operationName = BasicValidateOneBinary.NAME, action = PlanetsServices.NS
@@ -67,11 +67,9 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
             + "Result")
     public boolean basicValidateOneBinary(
             @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicValidateOneBinary.NAME, partName = "binary")
-            final byte[] binary,
+                    + "/" + BasicValidateOneBinary.NAME, partName = "binary") final byte[] binary,
             @WebParam(name = "fmt", targetNamespace = PlanetsServices.NS + "/"
-                    + BasicValidateOneBinary.NAME, partName = "fmt")
-            final URI fmt) {
+                    + BasicValidateOneBinary.NAME, partName = "fmt") final URI fmt) {
         /* PngCheck can only validate PNG files: */
         if (fmt != null && !PNG_PRONOM.contains(fmt.toString())) {
             throw new IllegalArgumentException(
@@ -90,7 +88,7 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
         String output = pr.getProcessOutputAsString();
         LOG.debug("PngCheck call output: " + output);
         LOG.debug("PngCheck call error: " + pr.getProcessErrorAsString());
-        return output.startsWith("OK");
+        return output.contains("OK:");
     }
 
     /**
@@ -99,7 +97,7 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
      * method with that array.
      * 
      * @param fileName The local (where the service is running) location of the
-     *        PNG file to validate
+     *            PNG file to validate
      * @return Returns true if the file with the given name is a PNG file, else
      *         false
      */
