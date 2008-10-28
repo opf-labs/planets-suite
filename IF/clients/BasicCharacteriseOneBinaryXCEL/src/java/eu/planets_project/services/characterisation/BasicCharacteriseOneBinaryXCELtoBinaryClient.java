@@ -18,9 +18,12 @@ import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 
 public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
+	
+	
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String CLIENT_OUTPUT_DIR = SYSTEM_TEMP + "EXTRACTOR2BINARY_CLIENT_OUTPUT";
 	private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+	private static String OPERATING_SYSTEM = System.getProperty("os.name"); 
 	
 // Please choose the HOST you wish to test...
 	
@@ -33,6 +36,8 @@ public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 		}
 		
 		System.out.println("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
+		System.out.println("OPERATING_SYSTEM = " + OPERATING_SYSTEM);
+
 		String wsdlLocation = 
 			
 			"http://" + HOST + ":8080/pserv-pc-extractor/Extractor2Binary?wsdl";

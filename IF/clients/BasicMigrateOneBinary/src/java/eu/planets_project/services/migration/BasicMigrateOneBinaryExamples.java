@@ -36,9 +36,9 @@ public class BasicMigrateOneBinaryExamples {
         String wsdlLocation = 
 
 //        	"http://localhost:8080/pserv-pa-jmagick/JpgToTiffConverter?wsdl";
-//        	"http://localhost:8080/pserv-pa-jmagick/JpgToPngConverter?wsdl";
+        	"http://localhost:8080/pserv-pa-jmagick/JpgToPngConverter?wsdl";
 //    		"http://localhost:8080/pserv-pa-jmagick/TiffToPngConverter?wsdl";        
-			"http://localhost:8080/pserv-pa-jmagick/PngToTiffConverter?wsdl";  
+//			"http://localhost:8080/pserv-pa-jmagick/PngToTiffConverter?wsdl";  
         
         
         /* Please comment out/in the corresponding test_image for the service chosen above! 
@@ -49,10 +49,10 @@ public class BasicMigrateOneBinaryExamples {
         String fileName = 
 
 			// Comment that in for use with JpgToTiffConverter or JpgToPngConverter (Default)
-//			"PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg";
+			"PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg";
         
         	// Comment that in for use with PngToTiffConverter       
-        	"PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png";
+//        	"PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png";
         
         	// Comment that in for use with TiffToPngConverter        
 //        	"PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif";
