@@ -23,14 +23,13 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.migrate.Migrate;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@Local(Migrate.class)
-@Remote(Migrate.class)
+@Local(Identify.class)
+@Remote(Identify.class)
 @Stateless
 
 @WebService(name = SimpleIdentifyService.NAME, 
@@ -40,7 +39,7 @@ import eu.planets_project.services.migrate.Migrate;
         
 public class SimpleIdentifyService implements Identify {
 
-    private static final String NAME="SimpleIdentifyService";
+    public static final String NAME="SimpleIdentifyService";
     
     private static Log log = LogFactory.getLog(SimpleIdentifyService.class);
 

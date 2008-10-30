@@ -20,7 +20,7 @@ public class ValidateResult {
     /**
      * A description of the validity of the object.
      */
-    enum Validity { 
+    public enum Validity { 
         /** 'Invalid' means that the digital object does not appear to be in the proposed format. */
         INVALID, 
         

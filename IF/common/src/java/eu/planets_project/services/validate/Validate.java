@@ -40,7 +40,7 @@ public interface Validate {
 	@WebResult(name = Validate.NAME + "Result", targetNamespace = PlanetsServices.NS
 			+ "/" + Validate.NAME, partName = Validate.NAME
 			+ "Result")
-	public ValidateResult identify(
+	public ValidateResult validate(
             @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
                     + "/" + Validate.NAME, partName = "digitalObject") 
 			DigitalObject digitalObject,
