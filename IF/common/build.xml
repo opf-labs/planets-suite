@@ -16,7 +16,7 @@
     <property name="test.server" value="" />
     <property name="pserv.root.dir" value="../.." />
     <import file="${pserv.root.dir}/build.common.xml"/>
-    
+  
     <taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
         <classpath>
             <fileset dir="${pserv.root.dir}/lib/standalone" includes="*.jar" />

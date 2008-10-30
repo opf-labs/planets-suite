@@ -36,9 +36,10 @@ import eu.planets_project.services.migrate.MigrateServiceDescription;
 public final class PassThruMigrationService implements Migrate,
         Serializable {
     /***/
-    private static final long serialVersionUID = 2127494848765937613L;
+    static final String NAME = "PassThruMigrationService";
+    
     /***/
-    static final String NAME = "DigitalObjectMigration";
+    private static final long serialVersionUID = 2127494848765937613L;
 
     /**
      * {@inheritDoc}

@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="IF/common/src/test/java"/>
 	<classpathentry kind="src" path="IF/simple/src/java"/>
 	<classpathentry kind="src" path="IF/simple/src/test/java"/>
+	<classpathentry kind="src" path="IF/simple/src/resources"/>
 	<classpathentry kind="src" path="IF/generic/src/main/java"/>
 	<classpathentry kind="src" path="IF/generic/src/test/java"/>
 	<classpathentry kind="src" path="IF/techreg/src/java"/>
@@ -18,10 +19,13 @@
 	<classpathentry kind="src" path="PA/openXML/src/test/java"/>
 	<classpathentry kind="src" path="PA/sox/src/java"/>
 	<classpathentry kind="src" path="PA/sox/test/java"/>
+	<classpathentry kind="src" path="PA/sox/src/resources"/>
 	<classpathentry kind="src" path="PA/msgtext/src/java"/>
 	<classpathentry kind="src" path="PA/msgtext/test/java"/>
 	<classpathentry kind="src" path="PA/jmagickconverter/src/main/java"/>
 	<classpathentry kind="src" path="PA/jmagickconverter/src/test/java"/>
+	<classpathentry kind="src" path="PA/sanselan/src/java"/>
+	<classpathentry kind="src" path="PA/sanselan/test/java"/>
 	<classpathentry kind="src" path="PC/droid/src/java"/>
 	<classpathentry kind="src" path="PC/droid/test/java"/>
 	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
@@ -38,8 +42,6 @@
 	<classpathentry kind="src" path="PP/comparator/src/java"/>
 	<classpathentry kind="src" path="PP/comparator/test/java"/>
 	<classpathentry kind="src" path="tests"/>
-	<classpathentry kind="src" path="IF/simple/src/resources"/>
-	<classpathentry kind="src" path="PA/sox/src/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
@@ -154,5 +156,6 @@
 	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxws-ext.jar"/>
 	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxws.jar"/>
 	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-saaj.jar"/>
+	<classpathentry kind="lib" path="PA/sanselan/lib/sanselan-0.94-incubator.jar" sourcepath="PA/sanselan/lib/apache-sanselan-incubating-0.94-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

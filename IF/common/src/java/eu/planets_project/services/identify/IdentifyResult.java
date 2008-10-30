@@ -4,6 +4,7 @@
 package eu.planets_project.services.identify;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -19,7 +20,34 @@ import eu.planets_project.services.datatypes.ServiceReport;
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class IdentifyResult {
 
-    URI type;
+    List<URI> types;
+    
+    /**
+     *  The Method enumeration is intended to allow you state what kind of evidence was used to create this identification result.
+     *
+     */
+    public enum Method { 
+        
+        /** 'Extension' means that this identification was based purely on the filename extension of the supplied digital object. */
+        EXTENSION, 
+        
+        /** 'Metadata' means that this identification was based on other metadata supplied with the digital object, but the objects bytes were not inspected.*/
+        METADATA, 
+        
+        /** 'Magic' means that this identification was based on matching the digital object bytes against a bytestream signature, a.k.a. a 'file Magic number'. In this case, a small set of bytes from the file has been inspected, and in general the inspection does not depend on the file size. */
+        MAGIC, 
+        
+        /** 'Partial Parse' means that this identification was based on a detailed inspection of the digital object bytestreams, and a significant proportion of the objects bytes were used to reach this conclusion. */
+        PARTIAL_PARSE,
+        
+        /** 'Full Parse' means that this identification was based on a detailed inspection of the digital object bytestream, and every single bit was 'touched'. */
+        FULL_PARSE, 
+        
+        /** Means that this identification was based on some other evidence.  Please contact the IF so that more Methods can be added. */
+        OTHER 
+        
+    };
+    Method method;
     
     ServiceReport report;
 
@@ -30,19 +58,29 @@ public class IdentifyResult {
 
     /**
      * @param types
+     * @param method
      * @param report
      */
-    public IdentifyResult(URI type, ServiceReport report) {
+    public IdentifyResult(List<URI> types, Method method, ServiceReport report) {
         super();
-        this.type = type;
+        this.types = types;
+        this.method = method;
         this.report = report;
     }
 
     /**
      * @return the type
      */
-    public URI getType() {
-        return type;
+    public List<URI> getTypes() {
+        return types;
+    }
+    
+    
+    /**
+     * @return the method
+     */
+    public Method getMethod() {
+        return method;
     }
 
     /**
@@ -51,7 +89,6 @@ public class IdentifyResult {
     public ServiceReport getReport() {
         return report;
     }
-
 
     
 }

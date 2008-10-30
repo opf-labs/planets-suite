@@ -19,9 +19,7 @@ import org.junit.Test;
 import eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.DigitalObject;
 
@@ -122,10 +120,10 @@ public class SimpleIdentifyServiceTest {
         IdentifyResult ir = ids.identify(object);
         
         /* Check the result */
-        System.out.println("Recieved type: " + ir.getType() );
+        System.out.println("Recieved type: " + ir.getTypes() );
         System.out.println("Recieved service report: " + ir.getReport() );
         assertEquals("The returned type did not match the expected;", type, ir
-                .getType());
+                .getTypes().get(0));
         
     }
 

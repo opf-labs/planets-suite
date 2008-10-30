@@ -3,9 +3,9 @@
  */
 package eu.planets_project.ifr.core.simple.impl;
 
-import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.simple.impl.util.FileTypeResolver;
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -39,6 +40,8 @@ import eu.planets_project.services.migrate.Migrate;
         
 public class SimpleIdentifyService implements Identify {
 
+    private static final String NAME="SimpleIdentifyService";
+    
     private static Log log = LogFactory.getLog(SimpleIdentifyService.class);
 
     /* (non-Javadoc)
@@ -81,24 +84,22 @@ public class SimpleIdentifyService implements Identify {
             // URL, can deal with this:
             String type = ftr.getMIMEType( dob.getContent().get(0).getReference() );
             ServiceReport rep = new ServiceReport();
-            rep.setErrorState(0);
-            URI typeURI = null;
-            try {
-                typeURI = new URI("planets:fmt/mime/"+type);
-            } catch (URISyntaxException e) {
-                return this.returnWithErrorMessage("Failed to parse type identifier '"+type+"' as a URI.");
-            }
-            return new IdentifyResult(typeURI, rep);
+            rep.setErrorState(ServiceReport.SUCCESS);
+            
+            List<URI> types = new ArrayList<URI>();
+            types.add( Format.mimeToURI(type) );
+            
+            return new IdentifyResult(types, IdentifyResult.Method.EXTENSION, rep);
         }
     }
     
     private IdentifyResult returnWithErrorMessage(String message) {
         ServiceReport rep = new ServiceReport();
-        URI type = null;
+        List<URI> type = null;
         log.error(message);
-        rep.setErrorState(1);
+        rep.setErrorState(ServiceReport.ERROR);
         rep.setError("message");
-        return new IdentifyResult(type, rep);
+        return new IdentifyResult(type, null, rep);
     }
 
 }

@@ -5,6 +5,7 @@ package eu.planets_project.ifr.core.techreg.api.formats;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Set;
 
@@ -141,6 +142,38 @@ public class Format {
      */
     public void setExtensions(Set<String> extensions) {
         this.extensions = extensions;
+    }
+    
+    /* ========================================================================================== */
+    /* ========================================================================================== */
+    /* ========================================================================================== */
+
+    /**
+     * Static helper to construct appropriate URIs for file-extensions format specifiers.
+     * 
+     * @param ext
+     * @return
+     */
+    public static URI extensionToURI(String ext) {
+        try {
+            return new URI("planets:fmt/ext/"+ext.toLowerCase());
+        } catch (URISyntaxException e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Static helper to construct appropriate URIs for mime-type format specifiers.
+     * 
+     * @param ext
+     * @return
+     */
+    public static URI mimeToURI(String mime) {
+        try {
+            return new URI("planets:fmt/mime/"+mime.toLowerCase());
+        } catch (URISyntaxException e) {
+            return null;
+        }
     }
     
     

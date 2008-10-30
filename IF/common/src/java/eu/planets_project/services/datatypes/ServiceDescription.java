@@ -360,6 +360,14 @@ public class ServiceDescription {
             return false;
         return true;
     }
+    
+    /**
+     * A protected method for sub-classes to manage the identifier.
+     * @param identifier
+     */
+    protected void setIdentifier( String identifier ) {
+        this.identifier = identifier;
+    }
         
     /* --------------------------------------------------------------------------------------------- */
     

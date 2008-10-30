@@ -53,6 +53,8 @@ public class ServiceReport {
      * 
      * {@link http://en.wikipedia.org/wiki/Exit_status}
      */
+    public static final int SUCCESS = 0;
+    public static final int ERROR = 1;
     public int error_state;
     
     /**
