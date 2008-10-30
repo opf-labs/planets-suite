@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.sample;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import eu.planets_project.ifr.core.sample.impl.AlwaysSaysValidServiceTest;
 import eu.planets_project.ifr.core.sample.impl.PassThruMigrationServiceTest;
 import eu.planets_project.ifr.core.sample.impl.SimpleIdentifyServiceTest;
 
@@ -14,5 +15,5 @@ import eu.planets_project.ifr.core.sample.impl.SimpleIdentifyServiceTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { PassThruMigrationServiceTest.class,
-        SimpleIdentifyServiceTest.class })
+        SimpleIdentifyServiceTest.class, AlwaysSaysValidServiceTest.class })
 public class AllSimpleSuite {}
