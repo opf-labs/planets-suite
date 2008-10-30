@@ -22,17 +22,17 @@
     <echo message="No build.properties found."/>
   </target>
 	
-  <if>
-    <isset property="if_server.dir"/>
-    <then>
-      <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
-    </then>
-    <else>
-      <echo message="if_server.dir is NOT set - will not deploy, only build."/>
-    </else>
-  </if>
   <!-- These are the shared PServ classes. -->
   <target name="deploy:common" depends="props:set">
+    <if>
+      <isset property="if_server.dir"/>
+      <then>
+        <echo message="if_server.dir is set - will deploy to ${if_server.dir}"/>
+      </then>
+      <else>
+        <echo message="if_server.dir is NOT set - will not deploy, only build."/>
+      </else>
+    </if>
     <ant dir="IF/common" inheritAll="false"/>
   </target>
   <target name="compile:common" depends="props:set">
@@ -80,6 +80,19 @@
     <echo message="In ${sub.build}"/>
     <dirname property="sub.build.dir" file="${sub.build}"/>
     <ant antfile="${sub.build}" inheritAll="false" target="deploy:pure-java" dir="${sub.build.dir}"/>
+  </target>
+  
+  <!-- ================= -->
+
+  <target name="deploy:api">
+    <foreach target="deploy:sub:api" param="sub.build" inheritall="false">
+      <path refid="all.sub.projects"/>
+    </foreach>
+  </target>
+  <target name="deploy:sub:api">
+    <!-- echo message="In ${sub.build}"/ -->
+    <dirname property="sub.build.dir" file="${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="build:api" dir="${sub.build.dir}"/>
   </target>
   
   <!-- ================= -->

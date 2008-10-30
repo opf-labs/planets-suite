@@ -163,6 +163,7 @@
   <!-- To deploy the common classes. -->
   <target name="deploy:common">
     <ant dir="${pserv.root.dir}/IF/common" inheritAll="false" target="compile:common"/>
+    <ant dir="${pserv.root.dir}" inheritAll="false" target="deploy:api"/>
   </target>
   
   <!-- To compile the common classes and put them in the right places. -->
@@ -220,7 +221,7 @@
   <!-- =================================================================== -->
   <!-- Compiles the source code                                            -->
   <!-- =================================================================== -->
-  <target name="build:api" depends="prepare" if="src.api.includes">
+  <target name="build:api" if="src.api.includes">
     <javac source="1.5" target="${target.jvm}" 
          srcdir="${src.dir}"
            destdir="${build.api.classes.dir}"
