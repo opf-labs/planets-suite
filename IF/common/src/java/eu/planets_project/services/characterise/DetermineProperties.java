@@ -46,11 +46,11 @@ public interface DetermineProperties extends PlanetsService {
      * @param format
      * @return A Result object containing the list of available properties.
      */
-    @WebMethod(operationName = DetermineProperties.NAME, action = PlanetsServices.NS
+    @WebMethod(operationName = DetermineProperties.NAME + "_get_measureable_properties", action = PlanetsServices.NS
             + "/" + DetermineProperties.NAME + "/get_measurable_properties")
-    @WebResult(name = DetermineProperties.NAME + "Properties", targetNamespace = PlanetsServices.NS
+    @WebResult(name = DetermineProperties.NAME + "MeasurableProperties", targetNamespace = PlanetsServices.NS
             + "/" + DetermineProperties.NAME, partName = DetermineProperties.NAME
-            + "Properties")
+            + "MeasurableProperties")
     public Properties getMeasurableProperties( 
             @WebParam(name = "format", targetNamespace = PlanetsServices.NS
                     + "/" + DetermineProperties.NAME, partName = "format") 
@@ -72,7 +72,7 @@ public interface DetermineProperties extends PlanetsService {
             @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
                     + "/" + DetermineProperties.NAME, partName = "digitalObject") 
             DigitalObject digitalObject, 
-            @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
+            @WebParam(name = "properties", targetNamespace = PlanetsServices.NS
                     + "/" + DetermineProperties.NAME, partName = "properties") 
             Properties properties,
             @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS

@@ -10,6 +10,9 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Service creation utilities for use when using testing.
  * 
@@ -37,6 +40,8 @@ public class ServiceCreator {
             throws MalformedURLException, InstantiationException, IllegalAccessException {
         URL url = null;
         T ids = null;
+        Log log = LogFactory.getLog(ServiceCreator.class.getName());
+        
         
         // Set up the remote version, if applicable:
         if ("standalone".equals(System.getenv("pserv.test.context"))
@@ -45,7 +50,7 @@ public class ServiceCreator {
             /* In the standalone case, start up the test endpoint. */
             if (System.getenv("pserv.test.context").equals("standalone")) {
 
-                System.out.println("INIT: Setting up temporary test server.");
+                log.info("INIT: Setting up temporary test server.");
 
                 // Set up a temporary service with the code deployed at the
                 // specified address:
@@ -65,14 +70,14 @@ public class ServiceCreator {
 
             }
 
-            System.out.println("INIT: Creating the proxied service class.");
+            log.info("INIT: Creating the proxied service class.");
             Service service = Service.create( url, qname );
             ids = (T) service.getPort(so.getInterfaces()[0]);
-            System.out.println("INIT: Created proxy class for service " + service.getServiceName() );
+            log.info("INIT: Created proxy class for service " + service.getServiceName() );
         }
         // If no remote context is configured, invoke locally:
         else {
-            System.out.println("INIT: Creating a local instance.");
+            log.info("INIT: Creating a local instance.");
             ids = so.newInstance();
         }
         return ids;

@@ -3,6 +3,9 @@
  */
 package eu.planets_project.services.characterise;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+
 import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.ServiceReport;
 
@@ -10,6 +13,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
+@XmlAccessorType(value = XmlAccessType.FIELD)
 public class DeterminePropertiesResult {
 
     Properties properties;

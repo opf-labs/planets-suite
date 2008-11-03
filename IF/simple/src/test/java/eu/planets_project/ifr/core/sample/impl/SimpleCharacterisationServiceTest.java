@@ -102,6 +102,9 @@ public class SimpleCharacterisationServiceTest {
         
         /* Now pass this to the service */
         DeterminePropertiesResult ir = ids.measure(object, properties, null);
+        System.out.println("Got report: "+ir.getReport());
+        System.out.println("Got properties: "+ir.getProperties());
+        System.out.println("Got properties.size(): "+ir.getProperties().size());
         
         /* Check the result */
         int mSize = Integer.parseInt( ir.getProperties().get( SimpleCharacterisationService.MIME_PROP_URI ) );

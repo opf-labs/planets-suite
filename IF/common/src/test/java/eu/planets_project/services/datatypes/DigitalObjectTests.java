@@ -57,10 +57,10 @@ public final class DigitalObjectTests {
         /* For a more complex sample, we set up a few things we need: */
         URL purl = new URL("http://id");
         URL data1 = new URL("http://some.reference");
-        byte[] data2 = new byte[] {};// see ContentTests for a real sample
+        //byte[] data2 = new byte[] {};// see ContentTests for a real sample
         /* Create the content: */
         Content c1 = Content.byReference(data1);
-        Content c2 = Content.byValue(data2);
+        //Content c2 = Content.byValue(data2);
         /* Create some optional metadata: */
         URI type = URI.create("meta:/data.type");
         String metaContent = "the meta data";
@@ -70,6 +70,7 @@ public final class DigitalObjectTests {
         String value = "the checksum data";
         Checksum checksum = new Checksum(algorithm, value);
         /* Given these, we can instantiate our object: */
+        @SuppressWarnings("unused")
         DigitalObject object = new DigitalObject.Builder(purl, c1)
                 .metadata(meta).checksum(checksum).build();
 

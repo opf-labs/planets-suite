@@ -7,6 +7,9 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.DetermineProperties;
 import eu.planets_project.services.characterise.DeterminePropertiesResult;
@@ -35,6 +38,8 @@ import eu.planets_project.services.utils.ServiceUtils;
         endpointInterface = "eu.planets_project.services.characterise.DetermineProperties" )
 public class SimpleCharacterisationService implements DetermineProperties
 {
+    private final Log log = LogFactory.getLog(getClass().getName());
+    
     /** A unique name for this service. */
     static final String NAME = "SimpleCharacterisationService";
     
@@ -64,20 +69,24 @@ public class SimpleCharacterisationService implements DetermineProperties
      */
     public DeterminePropertiesResult measure(DigitalObject digitalObject,
             Properties properties, Parameters parameters) {
+        log.info("Start...");
         // Set up property list:
         Properties measured = new Properties();
         ServiceReport sr = new ServiceReport();
         // Loop through properties:
         for( Property prop : properties.getProperties() ) {
+            log.info("Parsing property = "+prop.getName());
             // Attempt to measure:
             if( prop.getName().equals(MIME_PROP_URI)) {
                 if( digitalObject.getContent() != null ) {
                     if( digitalObject.getContent().isByValue() ) {
                         measured.add( MIME_PROP_URI, ""+digitalObject.getContent().getValue().length);
+                        log.info("Added for val.");
                     } else {
                         try {
                             measured.add( MIME_PROP_URI, 
                                     ""+digitalObject.getContent().getReference().openStream().available() );
+                            log.info("Added for ref.");
                         } catch (IOException e) {
                             sr = ServiceUtils.createExceptionErrorReport("Could not inspect "+digitalObject.getContent().getReference(), e);
                         }
