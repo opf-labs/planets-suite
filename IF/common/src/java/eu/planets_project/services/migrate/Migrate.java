@@ -4,7 +4,6 @@
 package eu.planets_project.services.migrate;
 
 import java.net.URI;
-import java.net.URL;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -13,16 +12,16 @@ import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
+import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
- * Migration of one digital object. Currently, this is for testing purpose only.
+ * Migration of one digital object.
  * 
  * This is intended to become the generic migration interface for complex migration services.
- * 
- * ******************* NOT IN SERVICE AT PRESENT **************************
  * 
  * It should:
  *  - Support service description to facilitate discovery.
@@ -30,15 +29,14 @@ import eu.planets_project.services.datatypes.Parameters;
  *  - Allow parameters to be discovered and submitted to control the migration.
  *  - Allow digital objects composed of more than one file/bitstream.
  *  - Allow Files/bitstreams passed by value OR by reference.
- *  - Provide for asynchronous invocation.
  *  
- * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
+ * @author Fabian Steeg (fabian.steeg@uni-koeln.de), Andrew Jackson <Andrew.Jackson@bl.uk>
  */
 @WebService(
         name = Migrate.NAME, 
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-public interface Migrate {
+public interface Migrate extends PlanetsService {
     /***/
     String NAME = "Migrate";
     /***/
@@ -64,9 +62,6 @@ public interface Migrate {
             @WebParam(name = "outoutFormat", targetNamespace = PlanetsServices.NS
                     + "/" + Migrate.NAME, partName = "outputFormat") 
                 URI outputFormat,
-            @WebParam(name = "writeLocation", targetNamespace = PlanetsServices.NS
-                    + "/" + Migrate.NAME, partName = "writeLocation") 
-                URL writeLocation,
             @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
                     + "/" + Migrate.NAME, partName = "parameters") 
                 Parameters parameters );
@@ -81,6 +76,6 @@ public interface Migrate {
     @WebResult(name = Migrate.NAME + "Description", targetNamespace = PlanetsServices.NS
             + "/" + Migrate.NAME, partName = Migrate.NAME
             + "Description")
-    public MigrateServiceDescription describe();
+    public ServiceDescription describe();
     
 }

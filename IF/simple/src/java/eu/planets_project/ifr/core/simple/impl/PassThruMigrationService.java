@@ -13,9 +13,9 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.migrate.MigrateServiceDescription;
 
 /**
  * PassThruMigrationService testing service. This service does nothing except to
@@ -47,7 +47,7 @@ public final class PassThruMigrationService implements Migrate,
      * @see eu.planets_project.ifr.core.common.services.migrate.MigrateOneDigitalObject#migrate(eu.planets_project.ifr.core.common.services.datatypes.DigitalObject)
      */
     public MigrateResult migrate( final DigitalObject digitalObject, URI inputFormat,
-            URI outputFormat, URL writeLocation, Parameters parameters) {
+            URI outputFormat, Parameters parameters) {
         /*
          * We just return a new digital object with the same required arguments
          * as the given:
@@ -61,8 +61,8 @@ public final class PassThruMigrationService implements Migrate,
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.common.services.migrate.MigrateOneDigitalObject#describe()
      */
-    public MigrateServiceDescription describe() {
-        MigrateServiceDescription mds = new MigrateServiceDescription("Pass-thru non-migration migration service.", "");
+    public ServiceDescription describe() {
+        ServiceDescription mds = new ServiceDescription("Pass-thru non-migration migration service.", "");
         mds.setDescription("A test service, that simply passes data through.");
         mds.setAuthor("Fabian Steeg <fabian.steeg@uni-koeln.de>, Andrew Jackson <Andrew.Jackson@bl.uk>");
         mds.setClassname(this.getClass().getCanonicalName());

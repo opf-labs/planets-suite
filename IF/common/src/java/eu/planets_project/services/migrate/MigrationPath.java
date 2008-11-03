@@ -13,11 +13,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
- * Simple class to build path matricies from.  
+ * Simple class to build path matrices from.  
+ * 
  * Contains the input and outputs of the path, and allows for parameters for that mapping.
  * 
  * @author  <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
+@XmlRootElement(name = "path")
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class MigrationPath {
     /**
@@ -36,9 +38,7 @@ public class MigrationPath {
     /**
      * 
      */
-    @SuppressWarnings("unused")
-    private MigrationPath() {
-    }
+    protected MigrationPath() { }
     
     /**
      * 

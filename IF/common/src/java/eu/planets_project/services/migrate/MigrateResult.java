@@ -22,12 +22,11 @@ public class MigrateResult {
 
     private ServiceReport report;
     
+    
     /**
      *  For JAXB.
      */
-    public MigrateResult() {
-        super();
-    }
+    public MigrateResult() { }
 
     /**
      * @param digitalObject

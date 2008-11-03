@@ -1,7 +1,9 @@
 /**
  * 
  */
-package eu.planets_project.services.migrate;
+package eu.planets_project.services.view;
+
+import java.net.URL;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,33 +17,32 @@ import eu.planets_project.services.datatypes.ServiceReport;
  */
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class MigrateOneBinaryResult {
+public class CreateViewResult {
 
-    private byte[] binary;
+    private URL viewURL;
     
     private ServiceReport report;
-    
 
     /**
      * For JAXB:
      */
-    protected MigrateOneBinaryResult() {}
+    protected CreateViewResult() { }
 
     /**
-     * @param binary
+     * @param viewURL
      * @param report
      */
-    public MigrateOneBinaryResult(byte[] binary, ServiceReport report) {
+    public CreateViewResult(URL viewURL, ServiceReport report) {
         super();
-        this.binary = binary;
+        this.viewURL = viewURL;
         this.report = report;
     }
 
     /**
-     * @return the binary
+     * @return the viewURL
      */
-    public byte[] getBinary() {
-        return binary;
+    public URL getViewURL() {
+        return viewURL;
     }
 
     /**

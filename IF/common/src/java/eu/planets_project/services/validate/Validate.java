@@ -12,6 +12,7 @@ import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
+import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -23,7 +24,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 @WebService(name = Validate.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-public interface Validate {
+public interface Validate extends PlanetsService {
     
 	public static final String NAME = "Validate";
 	

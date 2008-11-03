@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
@@ -15,50 +16,47 @@ import java.util.Properties;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.ws.BindingType;
 
-import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.ifr.core.services.migration.generic.common.MultiProperties;
-import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.MigrateOneBinary;
 import eu.planets_project.services.migrate.MigrateOneBinaryResult;
 import eu.planets_project.services.utils.ProcessRunner;
+import eu.planets_project.services.utils.ServiceUtils;
 
-@WebService(name = GenericMigration.NAME, serviceName = MigrateOneBinary.NAME, targetNamespace = PlanetsServices.NS)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE,
-             style = SOAPBinding.Style.RPC)
 @Stateless
 @Remote(MigrateOneBinary.class)
-@RemoteBinding(jndiBinding="planets-project.eu/GenericMigrationServiceRemote")
-@BindingType(value="http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@WebService(
+        name = GenericMigration.NAME, 
+        serviceName = MigrateOneBinary.NAME,
+        targetNamespace = PlanetsServices.NS,
+        endpointInterface = "eu.planets_project.services.migrate.MigrateOneBinary" )
 public class GenericMigration implements MigrateOneBinary, Serializable
 {
 	private static final long serialVersionUID = -2186431821310098736L;
 
 	public static final String NAME = "GenericMigration";
 
-	@WebMethod(operationName = MigrateOneBinary.NAME,
-	           action = PlanetsServices.NS + "/" + MigrateOneBinary.NAME)
-	@WebResult(name = MigrateOneBinary.NAME + "Result",
-	           targetNamespace = PlanetsServices.NS + "/" + MigrateOneBinary.NAME,
-	           partName = MigrateOneBinary.NAME + "Result")
-	public MigrateOneBinaryResult migrateOneBinary(
-	        @WebParam(name = "binary",
-	                  targetNamespace = PlanetsServices.NS + "/" + MigrateOneBinary.NAME, partName = "binary")
-	        byte[] binary,
-	        @WebParam(name = "parameters",
-	                  targetNamespace = PlanetsServices.NS + "/" + MigrateOneBinary.NAME, partName = "parameters")
-	        Parameter[] parameters) throws PlanetsException
-	{
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.migrate.MigrateOneBinary#describe()
+     */
+    public ServiceDescription describe() {
+        return new ServiceDescription("Generic Command Wrapper Service", MigrateOneBinary.class.getCanonicalName());
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.migrate.MigrateOneBinary#migrate(byte[], java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)
+     */
+    public MigrateOneBinaryResult migrate(byte[] binary, URI inputFormat,
+            URI outputFormat, Parameters parameters) 
+    {
 		// yes yes, this probably ought to be a bunch of methods
 		Properties p = new Properties();
 		try
@@ -67,19 +65,22 @@ public class GenericMigration implements MigrateOneBinary, Serializable
 		}
 		catch(InvalidPropertiesFormatException e)
 		{
-			throw new PlanetsException(e);
+			return new MigrateOneBinaryResult( null, 
+			        ServiceUtils.createExceptionErrorReport("Could not load commands.xml", e) );
 		}
 		catch(FileNotFoundException e)
 		{
-			throw new PlanetsException(e);
+            return new MigrateOneBinaryResult( null, 
+                    ServiceUtils.createExceptionErrorReport("Could not load commands.xml", e) );
 		}
 		catch(IOException e)
 		{
-			throw new PlanetsException(e);
+            return new MigrateOneBinaryResult( null, 
+                    ServiceUtils.createExceptionErrorReport("Could not load commands.xml", e) );
 		}
 		MultiProperties mp = MultiProperties.load(p);
 		Map<String, String> params = new HashMap<String, String>();
-		for(Parameter param : parameters)
+		for(Parameter param : parameters.getParameters())
 		{
 			params.put(param.name, param.value);
 		}
@@ -110,25 +111,19 @@ public class GenericMigration implements MigrateOneBinary, Serializable
 			inputFile.delete();
 			outputFile.delete();
 			
-			MigrateOneBinaryResult result = new MigrateOneBinaryResult();
-			try
-			{
-				result.binary = readDestination(outputFile);
-			}
-			catch(FileNotFoundException fnfe)
-			{
-			}
-			result.log.error_state = pr.getReturnCode();
-			result.log.error = pr.getProcessErrorAsString();
-			result.log.info = pr.getProcessOutputAsString();
-			result.log.warn = pr.getProcessOutputAsString();
-			result.log.properties = new ArrayList<Property>();
-			result.log.properties.add( new Property("name", "value") );
-			return result;
+			ServiceReport log = new ServiceReport();
+			log.error_state = pr.getReturnCode();
+			log.error = pr.getProcessErrorAsString();
+			log.info = pr.getProcessOutputAsString();
+			log.warn = pr.getProcessOutputAsString();
+			log.properties = new ArrayList<Property>();
+			log.properties.add( new Property("name", "value") );
+			return new MigrateOneBinaryResult(readDestination(outputFile), log);
 		}
 		catch(IOException e)
 		{
-			throw new PlanetsException(e);
+            return new MigrateOneBinaryResult( null, 
+                    ServiceUtils.createExceptionErrorReport("Could not execute command using tool "+params.get("tool-name"), e) );
 		}
 	}
 
@@ -147,4 +142,5 @@ public class GenericMigration implements MigrateOneBinary, Serializable
 		fos.write(binary);
 		fos.close();
 	}
+
 }

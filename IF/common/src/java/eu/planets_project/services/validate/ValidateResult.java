@@ -40,7 +40,7 @@ public class ValidateResult {
     /**
      * No-args constructor required by JAXB
      */
-    private ValidateResult() {}
+    protected ValidateResult() {}
     
     /**
      * Creates a new validation result, containing a description of the Validity and a Service Report.

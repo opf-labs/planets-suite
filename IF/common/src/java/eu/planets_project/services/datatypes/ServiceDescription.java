@@ -21,6 +21,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
+import eu.planets_project.services.migrate.MigrationPath;
+
 /**
  * A entity to hold metadata about services.  The content of this object was first 
  * defined at the IF meeting in September 2008.
@@ -117,6 +119,11 @@ public class ServiceDescription {
     URI furtherInfo;
     
     /**
+     * A link to a web-browsable logo for this service.  Used when presenting the service to the user.
+     */
+    URI logo;
+    
+    /**
      *  Services may specify what types they can take as inputs. [input]*n
      *  This is particularly useful for Validate and Characterise.
      */
@@ -124,11 +131,19 @@ public class ServiceDescription {
     List<URI> inputFormats;
     
     /**
-     * Name-value pairs for extra properties.  
-     * This is an expansion point for future functionality.
+     * Name-value pairs for service properties. For characterisation services, this should list all 
+     * the digital object properties that the service can deal with.
+     * 
      */
     @XmlElement(name = "property", required = false)
     List<Property> properties;
+    
+    /**
+     *  If this service performs migrations, they can be listed herein:
+     *  
+     *  Migration Matrix: [input, output]*n
+     */
+    List<MigrationPath> paths;    
     
     /* --------------------------------------------------------------------------------------------- */
 
@@ -280,6 +295,20 @@ public class ServiceDescription {
     }
 
     /**
+     * @return the logo
+     */
+    public URI getLogo() {
+        return logo;
+    }
+
+    /**
+     * @param logo the logo to set
+     */
+    public void setLogo(URI logo) {
+        this.logo = logo;
+    }
+
+    /**
      * @return the inputFormats
      */
     public List<URI> getInputFormats() {
@@ -305,6 +334,20 @@ public class ServiceDescription {
      */
     public void setProperties(List<Property> properties) {
         this.properties = properties;
+    }
+    
+    /**
+     * @return the paths
+     */
+    public List<MigrationPath> getPaths() {
+        return paths;
+    }
+
+    /**
+     * @param paths the paths to set
+     */
+    public void setPaths(List<MigrationPath> paths) {
+        this.paths = paths;
     }
     
     /* --------------------------------------------------------------------------------------------- */

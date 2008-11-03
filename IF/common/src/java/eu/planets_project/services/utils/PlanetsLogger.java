@@ -48,7 +48,7 @@ public class PlanetsLogger implements Log
 	* @param clazz Name of the logger instance. 
 	* @return PlanetsLogger
 	*/
-	public static PlanetsLogger getLogger(Class clazz)
+	public static PlanetsLogger getLogger(Class<?> clazz)
 	{
 		if(clazz == null)
 			getRootLogger();
@@ -76,7 +76,7 @@ public class PlanetsLogger implements Log
 	* @param config Log4J xml configuration file. 	
 	* @return PlanetsLogger
 	*/
-	public static PlanetsLogger getLogger(Class clazz, String config)
+	public static PlanetsLogger getLogger(Class<?> clazz, String config)
 	{
 		if(clazz == null)
 			getRootLogger();
@@ -122,7 +122,7 @@ public class PlanetsLogger implements Log
 	* @param pass messages to ancestors.
 	* @return PlanetsLogger
 	*/
-	public static PlanetsLogger getLogger(Class clazz, String config, boolean pass)
+	public static PlanetsLogger getLogger(Class<?> clazz, String config, boolean pass)
 	{
 		if(clazz == null)
 			return getRootLogger();

@@ -456,7 +456,7 @@
   <!-- Cleans up generated stuff on JBoss                                          -->
   <!-- =================================================================== -->
 
-  <target name="clean" depends="undeploy" description="cleans the build dir and finally undeploys the testbed application">
+  <target name="clean" description="cleans the build dir">
     <delete dir="${build.dir}"/>
     <delete dir="${pserv.root.dir}/build"/>
   </target>

@@ -1,8 +1,6 @@
 package eu.planets_project.services.characterise;
 
 
-import java.net.URI;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;

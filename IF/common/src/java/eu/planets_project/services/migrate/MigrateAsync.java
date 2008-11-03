@@ -5,22 +5,18 @@ package eu.planets_project.services.migrate;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.Set;
 
-import javax.activation.DataHandler;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.xml.bind.annotation.XmlMimeType;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
 
+import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Event;
-import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
@@ -44,7 +40,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
         name = MigrateAsync.NAME, 
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-public interface MigrateAsync {
+public interface MigrateAsync extends PlanetsService {
     /***/
     String NAME = "MigrateAsync";
     /***/
@@ -122,6 +118,6 @@ public interface MigrateAsync {
     @WebResult(name = MigrateAsync.NAME + "Description", targetNamespace = PlanetsServices.NS
             + "/" + MigrateAsync.NAME, partName = MigrateAsync.NAME
             + "Description")
-    public MigrateServiceDescription describe();
+    public ServiceDescription describe();
     
 }
