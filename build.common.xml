@@ -221,7 +221,7 @@
   <!-- =================================================================== -->
   <!-- Compiles the source code                                            -->
   <!-- =================================================================== -->
-  <target name="build:api" if="src.api.includes">
+  <target name="build:api" depends="prepare" if="src.api.includes">
     <javac source="1.5" target="${target.jvm}" 
          srcdir="${src.dir}"
            destdir="${build.api.classes.dir}"
@@ -324,18 +324,28 @@
     </javac>
     
     <!-- Also copy the libs into the right place -->
+    <if>
+      <isset property="test.lib.dir"/>
+      <then>
     <copy toDir="${build.test.classes.dir}" flatten="true" failonerror="false">
       <fileset dir="${test.lib.dir}">
         <include name="**/*.jar"/>
       </fileset>
     </copy>
+      </then>
+    </if>
     
     <!-- Also copy the resources into the right place -->
+    <if>
+      <isset property="test.resources"/>
+      <then>
     <copy toDir="${build.test.classes.dir}" flatten="false" failonerror="false">
       <fileset dir="${test.resources}">
         <include name="**/*" />
       </fileset>
     </copy>
+        </then>
+      </if>
     
   </target>
   
