@@ -70,9 +70,9 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     @XmlAttribute
     private String title;
     
-    /** @See {@link #getPlanetsFormatUri()} */
+    /** @See {@link #getFormat()} */
     @XmlAttribute
-    private URI planetsFormatUri;
+    private URI format;
     
     /** @See {@link #getPermanentUrl()} */
     @XmlAttribute(required = true)
@@ -86,9 +86,9 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     @XmlElement
     private Checksum checksum;
     
-    /** @See {@link #getTaggedMetadata()} */
+    /** @See {@link #getMetadata()} */
     @XmlElement
-    private List<Metadata> taggedMetadata;
+    private List<Metadata> metadata;
     
     /** @See {@link #getContained()} */
     @XmlElement
@@ -96,7 +96,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     
     /** @See {@link #getContent()} */
     @XmlElement(required = true)
-    private List<Content> content;
+    private Content content;
     
     /** @See {@link #getEvents()} */
     @XmlElement
@@ -143,15 +143,15 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     public static final class Builder {
         /* Required parameters: */
         private URL permanentUrl;
-        private List<Content> content;
+        private Content content;
         /* Optional parameters, initialized to default values: */
         private List<Event> events = new ArrayList<Event>();
         private List<Fragment> fragments = new ArrayList<Fragment>();
         private List<DigitalObject> contained = new ArrayList<DigitalObject>();
         private URI manifestationOf = null;
         private Checksum checksum = null;
-        private List<Metadata> taggedMetadata = null;
-        private URI planetsFormatUri = null;
+        private List<Metadata> metadata = null;
+        private URI format = null;
         private String title = null;
 
         /** @return The instance created using this builder. */
@@ -163,9 +163,16 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @param permanentUrl The unique ID for the digital object
          * @param content The content of the digital object
          */
-        public Builder(final URL permanentUrl, final Content... content) {
+        public Builder(final URL permanentUrl, final Content content) {
             this.permanentUrl = permanentUrl;
-            this.content = new ArrayList<Content>(Arrays.asList(content));
+            this.content = content;
+        }
+
+        /**
+         * @param content The content of the digital object
+         */
+        public Builder(final Content content) {
+            this.content = content;
         }
 
         /** No-arg constructor for JAXB. API clients should not use this. */
@@ -232,17 +239,17 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @return The builder, for cascaded calls
          */
         public Builder metadata(Metadata... metadata) {
-            this.taggedMetadata = new ArrayList<Metadata>(Arrays
+            this.metadata = new ArrayList<Metadata>(Arrays
                     .asList(metadata));
             return this;
         }
 
         /**
-         * @param planetsFormatUri The type of the digital object
+         * @param format The type of the digital object
          * @return The builder, for cascaded calls
          */
-        public Builder planetsFormatUri(URI planetsFormatUri) {
-            this.planetsFormatUri = planetsFormatUri;
+        public Builder format(URI format) {
+            this.format = format;
             return this;
         }
     }
@@ -259,8 +266,8 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         manifestationOf = builder.manifestationOf;
         title = builder.title;
         checksum = builder.checksum;
-        taggedMetadata = builder.taggedMetadata;
-        planetsFormatUri = builder.planetsFormatUri;
+        metadata = builder.metadata;
+        format = builder.format;
     }
 
     /**
@@ -315,18 +322,18 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        int contentSize = content == null ? 0 : content.size();
+        int contentSize = content == null ? 0 : 1;
         int containedSize = contained == null ? 0 : contained.size();
         int eventsSize = events == null ? 0 : events.size();
         int fragmentsSize = fragments == null ? 0 : fragments.size();
-        int metaSize = taggedMetadata == null ? 0 : taggedMetadata.size();
+        int metaSize = metadata == null ? 0 : metadata.size();
         return String
                 .format(
                         "DigitalObject: id '%s', title '%s'; %s content elements, "
                                 + "%s contained objects, %s events, %s fragments; "
                                 + "type '%s', manifestation of '%s', checksum '%s', metadata '%s'",
                         permanentUrl, title, contentSize, containedSize,
-                        eventsSize, fragmentsSize, planetsFormatUri,
+                        eventsSize, fragmentsSize, format,
                         manifestationOf, checksum, metaSize);
     }
 
@@ -371,8 +378,8 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     /**
      * @return The type of this digital object.
      */
-    public URI getPlanetsFormatUri() {
-        return planetsFormatUri;
+    public URI getFormat() {
+        return format;
     }
 
     /**
@@ -401,8 +408,8 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      *         copy, changes to the obtained list won't affect this digital
      *         object.
      */
-    public List<Metadata> getTaggedMetadata() {
-        return new ArrayList<Metadata>(taggedMetadata);
+    public List<Metadata> getMetadata() {
+        return new ArrayList<Metadata>(metadata);
     }
 
     /**
@@ -419,8 +426,8 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      *         copy, changes to the obtained list won't affect this digital
      *         object.
      */
-    public List<Content> getContent() {
-        return new ArrayList<Content>(content);
+    public Content getContent() {
+        return content;
     }
 
     /**

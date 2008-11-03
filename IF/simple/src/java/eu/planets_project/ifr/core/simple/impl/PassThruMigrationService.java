@@ -2,7 +2,6 @@ package eu.planets_project.ifr.core.simple.impl;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URL;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;

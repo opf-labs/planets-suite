@@ -1,84 +1,91 @@
 package eu.planets_project.ifr.core.simple.impl;
 
-import java.net.URL;
+import java.io.IOException;
+import java.net.URI;
 
-import javax.activation.DataHandler;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.xml.ws.BindingType;
-import javax.jws.soap.SOAPBinding;
+import javax.jws.WebService;
 
-import org.jboss.annotation.ejb.RemoteBinding;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.characterise.DetermineProperties;
+import eu.planets_project.services.characterise.DeterminePropertiesResult;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Properties;
+import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.utils.ServiceUtils;
 
-import eu.planets_project.ifr.core.simple.api.SimpleCharacterisationRemoteInterface;
-import eu.planets_project.ifr.core.simple.impl.util.FileTypeResolver;
-import eu.planets_project.services.utils.PlanetsLogger;
-
-@javax.jws.WebService(name="SimpleCharacterisationService", targetNamespace="http://services.planets-project.eu/ifr/characterisation", serviceName="SimpleCharacterisationService")
-@Stateless
-@Remote(SimpleCharacterisationRemoteInterface.class)
-@RemoteBinding(jndiBinding = "planets-project.eu/SimpleCharacterisationRemoteInterface")
-@BindingType(value="http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-@SOAPBinding(style = SOAPBinding.Style.RPC)
 /**
  * A simple characterisation service.
+ * 
+ * This just measures the size of the byte array associated with this Digital Object, in bytes.
  *
- * @author Reis Markus, ARC
+ * @author Andrew Jackson <Andrew.Jackson@bl.uk>
  *
  */
-public class SimpleCharacterisationService implements SimpleCharacterisationRemoteInterface
+@Stateless
+@Remote(DetermineProperties.class)
+
+@WebService(name = SimpleCharacterisationService.NAME, 
+        serviceName = DetermineProperties.NAME, 
+        targetNamespace = PlanetsServices.NS,
+        endpointInterface = "eu.planets_project.services.characterise.DetermineProperties" )
+public class SimpleCharacterisationService implements DetermineProperties
 {
+    /** A unique name for this service. */
+    static final String NAME = "SimpleCharacterisationService";
+    
+    /** The Planets Property ID for the size of the object. */
+    public static String MIME_PROP_URI = "planets:pc/basic/bytestream/size";
 
-    private final static String logConfigFile = "eu/planets_project/ifr/core/simple/scs-log4j.xml";
-
-	@javax.jws.WebMethod()
-	public String characteriseFile(String fileURL) {
-		PlanetsLogger.getLogger(this.getClass(), logConfigFile).debug("Computing mime-type for: " + fileURL);
-		try {
-			FileTypeResolver ftr = FileTypeResolver.instantiate();
-			return ftr.getMIMEType(fileURL);
-		} catch (Exception e) {
-			PlanetsLogger.getLogger(this.getClass(), logConfigFile).error("[WARN] Problems getting MIMEType for " + fileURL);
-			return "application/octet-stream";
-		}
-	}
-
-	@javax.jws.WebMethod()
-	public String[] characteriseFiles(String[] fileURLs) {
-		String[] result = new String[fileURLs.length];
-		for (int i = 0; i < fileURLs.length; i++)
-			result[i] = characteriseFile(fileURLs[i]);
-        return result;
-	}
-
-	@javax.jws.WebMethod()
-	public String characteriseFileURL(URL fileURL) {
-		return characteriseFile(fileURL.toString());
-		//DataHandler dh = new DataHandler(fileURL);
-		//return dh.getContentType();
-	}
-
-	@javax.jws.WebMethod()
-	public String[] characteriseFileURLs(URL[] fileURLs) {
-		String[] fileURLStrings = new String[fileURLs.length];
-		for (int i = 0; i < fileURLs.length; i++)
-			fileURLStrings[i] = fileURLs[i].toString();
-		return characteriseFiles(fileURLStrings);
-	}
-
-	@javax.jws.WebMethod()
-	public String characteriseFileDH(DataHandler fileData){
-		try {
-			PlanetsLogger.getLogger(this.getClass(), logConfigFile).debug("content.length = " + fileData.getInputStream().available());
-		} catch (Exception e) { e.printStackTrace();}
-		return fileData.getContentType();
-	}
-
-	@javax.jws.WebMethod()
-	public String[] characteriseFileDHs(DataHandler[] files) {
-		String[] result = new String[files.length];
-		for (int i = 0; i < files.length; i++)
-			result[i] = files[i].getContentType();
-        return result;
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.characterise.DetermineProperties#describe()
+     */
+    public ServiceDescription describe() {
+        ServiceDescription sd = new ServiceDescription( NAME, DetermineProperties.class.getCanonicalName() );
+        sd.setDescription("A simple example characterization service, which just measures the size of single-binary digital objects.");
+        return sd;
     }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.characterise.DetermineProperties#getMeasurableProperties(java.net.URI)
+     */
+    public Properties getMeasurableProperties(URI format) {
+        Properties props = new Properties();
+        props.add(MIME_PROP_URI, null);
+        return props;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
+     */
+    public DeterminePropertiesResult measure(DigitalObject digitalObject,
+            Properties properties, Parameters parameters) {
+        // Set up property list:
+        Properties measured = new Properties();
+        ServiceReport sr = new ServiceReport();
+        // Loop through properties:
+        for( Property prop : properties.getProperties() ) {
+            // Attempt to measure:
+            if( prop.getName().equals(MIME_PROP_URI)) {
+                if( digitalObject.getContent() != null ) {
+                    if( digitalObject.getContent().isByValue() ) {
+                        measured.add( MIME_PROP_URI, ""+digitalObject.getContent().getValue().length);
+                    } else {
+                        try {
+                            measured.add( MIME_PROP_URI, 
+                                    ""+digitalObject.getContent().getReference().openStream().available() );
+                        } catch (IOException e) {
+                            sr = ServiceUtils.createExceptionErrorReport("Could not inspect "+digitalObject.getContent().getReference(), e);
+                        }
+                    }
+                }
+            }
+        }
+        return new DeterminePropertiesResult(measured, sr);
+    }
+
 }

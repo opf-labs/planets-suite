@@ -73,15 +73,12 @@ public class SimpleIdentifyService implements Identify {
         if( dob.getContent() == null ) {
             return this.returnWithErrorMessage("The Content of the DigitalObject should not be NULL.");
         }
-        if( dob.getContent().size() != 1 ) {
-            return this.returnWithErrorMessage("Cannot identify digital objects with anything other than 1 Content item.");
-        }
         // If this is an embedded binary:
-        if( dob.getContent().get(0).isByValue() ) {
+        if( dob.getContent().isByValue() ) {
             return this.returnWithErrorMessage("Cannot identify digital objects that are passed by value.");
         } else {
             // URL, can deal with this:
-            String type = ftr.getMIMEType( dob.getContent().get(0).getReference() );
+            String type = ftr.getMIMEType( dob.getContent().getReference() );
             ServiceReport rep = new ServiceReport();
             rep.setErrorState(ServiceReport.SUCCESS);
             

@@ -39,8 +39,7 @@ public final class DigitalObjectTests {
         /* A simple example with only required values: */
         URL id = new URL("http://id");
         DigitalObject o = new DigitalObject.Builder(id, Content
-                .byReference(new URL("http://some.reference")), Content
-                .byReference(new URL("http://another.reference"))).build();
+                .byReference(new URL("http://some.reference"))).build();
         /*
          * These objects can be serialized to XML and instantiated from that
          * form:
@@ -71,7 +70,7 @@ public final class DigitalObjectTests {
         String value = "the checksum data";
         Checksum checksum = new Checksum(algorithm, value);
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(purl, c1, c2)
+        DigitalObject object = new DigitalObject.Builder(purl, c1)
                 .metadata(meta).checksum(checksum).build();
 
     }
@@ -105,7 +104,7 @@ public final class DigitalObjectTests {
             digitalObject1 = new DigitalObject.Builder(permanentUrl, Content
                     .byReference(permanentUrl)).checksum(CHECKSUM).events(EVENT)
                     .fragments(FRAGMENT).manifestationOf(manifestationOf)
-                    .planetsFormatUri(planetsFormatUri).metadata(META).title(
+                    .format(planetsFormatUri).metadata(META).title(
                             TITLE).contains(digitalObject2).build();
         } catch (MalformedURLException e) {
             e.printStackTrace();

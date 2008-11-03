@@ -17,6 +17,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import eu.planets_project.services.PlanetsService;
+import eu.planets_project.services.characterise.DetermineProperties;
 import eu.planets_project.services.identify.BasicIdentifyOneBinary;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.BasicMigrateOneBinary;
@@ -24,6 +25,7 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateOneBinary;
 import eu.planets_project.services.validate.BasicValidateOneBinary;
 import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.view.CreateView;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -78,6 +80,10 @@ public class PlanetsServiceExplorer {
         } else if (qName.equals(Validate.QNAME)
                 || qName.equals(BasicValidateOneBinary.QNAME)) {
             return Validate.class;
+        } else if (qName.equals(DetermineProperties.QNAME) ) {
+            return DetermineProperties.class;
+        } else if (qName.equals(CreateView.QNAME) ) {
+            return CreateView.class;
         }
 
         // Otherwise, this is and unrecognised service:
