@@ -33,6 +33,13 @@ public class CoreExtractor {
     }
 
     public byte[] extractXCDL(byte[] binary, byte[] xcel) {
+    	if(EXTRACTOR_HOME==null){
+    		System.err.println("EXTRACTOR_HOME is not set! Please create an system variable\n" +
+    				"and point it to the Extractor installation folder!");
+    		plogger.error("EXTRACTOR_HOME is not set! Please create an system variable\n" +
+    				"and point it to the Extractor installation folder!");
+    	}
+    	
         if (SYSTEM_TEMP.endsWith(File.separator)) {
             EXTRACTOR_WORK = SYSTEM_TEMP + EXTRACTOR_NAME + File.separator;
             EXTRACTOR_IN = EXTRACTOR_WORK + "IN" + File.separator;
