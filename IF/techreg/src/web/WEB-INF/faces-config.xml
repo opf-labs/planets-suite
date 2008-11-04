@@ -15,6 +15,12 @@
         <managed-bean-scope>session</managed-bean-scope>
         <!-- managed-bean-scope>application</managed-bean-scope -->
 	</managed-bean>
+
+    <managed-bean>
+        <managed-bean-name>PlanetsSharedBean</managed-bean-name>
+        <managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
 	
 	<navigation-rule>
 		<from-view-id>*</from-view-id>

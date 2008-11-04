@@ -11,6 +11,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.ResponseWrapper;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
@@ -52,6 +54,8 @@ public interface Migrate extends PlanetsService {
     @WebResult(name = Migrate.NAME + "Result", targetNamespace = PlanetsServices.NS
             + "/" + Migrate.NAME, partName = Migrate.NAME
             + "Result")
+    @RequestWrapper(className="eu.planets_project.services.migrate."+Migrate.NAME+"Migrate")
+    @ResponseWrapper(className="eu.planets_project.services.migrate."+Migrate.NAME+"MigrateResponse")
     public MigrateResult migrate(
             @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
                     + "/" + Migrate.NAME, partName = "digitalObject") 
@@ -76,6 +80,7 @@ public interface Migrate extends PlanetsService {
     @WebResult(name = Migrate.NAME + "Description", targetNamespace = PlanetsServices.NS
             + "/" + Migrate.NAME, partName = Migrate.NAME
             + "Description")
+    @ResponseWrapper(className="eu.planets_project.services.migrate."+Migrate.NAME+"DescribeResponse")
     public ServiceDescription describe();
     
 }

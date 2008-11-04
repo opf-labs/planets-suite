@@ -66,7 +66,9 @@
   <target name="deploy:sub">
     <echo message="In ${sub.build}"/>
     <dirname property="sub.build.dir" file="${sub.build}"/>
-    <ant antfile="${sub.build}" inheritAll="false" dir="${sub.build.dir}"/>
+    <ant antfile="${sub.build}" inheritAll="false" dir="${sub.build.dir}">
+      <property name="have.deployed.common" value="true"/>
+    </ant>
   </target>
   
   <!-- ================= -->
@@ -79,7 +81,9 @@
   <target name="deploy:sub:pure-java">
     <echo message="In ${sub.build}"/>
     <dirname property="sub.build.dir" file="${sub.build}"/>
-    <ant antfile="${sub.build}" inheritAll="false" target="deploy:pure-java" dir="${sub.build.dir}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="deploy:pure-java" dir="${sub.build.dir}">
+      <property name="have.deployed.common" value="true"/>
+    </ant>
   </target>
   
   <!-- ================= -->
@@ -105,7 +109,9 @@
   <target name="test:sub">
     <echo message="In ${sub.build}"/>
     <dirname property="sub.build.dir" file="${sub.build}"/>
-    <ant antfile="${sub.build}" inheritAll="false" target="test-if-testable" dir="${sub.build.dir}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="test-if-testable" dir="${sub.build.dir}">
+      <property name="have.deployed.common" value="true"/>
+    </ant>
   </target>
   
   <!-- ================= -->
@@ -118,7 +124,9 @@
   <target name="undeploy:sub">
     <echo message="In ${sub.build}"/>
     <dirname property="sub.build.dir" file="${sub.build}"/>
-    <ant antfile="${sub.build}" inheritAll="false" target="undeploy" dir="${sub.build.dir}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="undeploy" dir="${sub.build.dir}">
+      <property name="have.deployed.common" value="true"/>
+    </ant>
   </target>
 
   <!-- =================================================================== -->

@@ -12,6 +12,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.ResponseWrapper;
 
 
 import eu.planets_project.services.PlanetsService;
@@ -118,6 +119,7 @@ public interface MigrateAsync extends PlanetsService {
     @WebResult(name = MigrateAsync.NAME + "Description", targetNamespace = PlanetsServices.NS
             + "/" + MigrateAsync.NAME, partName = MigrateAsync.NAME
             + "Description")
+    @ResponseWrapper(className="eu.planets_project.services.migrate."+MigrateAsync.NAME+"DescribeResponse")
     public ServiceDescription describe();
     
 }

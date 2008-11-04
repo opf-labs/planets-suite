@@ -9,6 +9,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.ResponseWrapper;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
@@ -58,5 +59,6 @@ public interface CreateView extends PlanetsService {
     @WebResult(name = CreateView.NAME + "Description", targetNamespace = PlanetsServices.NS
             + "/" + CreateView.NAME, partName = CreateView.NAME
             + "Description")
+    @ResponseWrapper(className="eu.planets_project.services.view."+CreateView.NAME+"DescribeResponse")
     public ServiceDescription describe();
 }

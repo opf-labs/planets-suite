@@ -11,6 +11,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.ResponseWrapper;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
@@ -58,5 +59,6 @@ public interface Validate extends PlanetsService {
     @WebResult(name = Validate.NAME + "Description", targetNamespace = PlanetsServices.NS
             + "/" + Validate.NAME, partName = Validate.NAME
             + "Description")
+    @ResponseWrapper(className="eu.planets_project.services.validate."+Validate.NAME+"DescribeResponse")
 	public ServiceDescription describe();
 }
