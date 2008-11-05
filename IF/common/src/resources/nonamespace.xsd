@@ -1,47 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema version="1.0" xmlns:ns1="http://purl.org/dc/terms/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema version="1.0" xmlns:ns2="http://www.planets-project.eu/services" xmlns:ns1="http://purl.org/dc/terms/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="dcterms.xsd"/>
 
+  <xs:import namespace="http://www.planets-project.eu/services" schemaLocation="service_description.xsd"/>
+
+  <xs:element name="path" type="migrationPath"/>
+
   <xs:element name="types" type="types"/>
 
-  <xs:complexType name="agent">
-    <xs:sequence/>
-  </xs:complexType>
-
-  <xs:complexType name="checksum" final="extension restriction">
-    <xs:sequence/>
-    <xs:attribute name="algorithm" type="xs:string"/>
-    <xs:attribute name="value" type="xs:string"/>
-  </xs:complexType>
-
-  <xs:complexType name="content" final="extension restriction">
+  <xs:complexType name="migrationPath">
     <xs:sequence>
-      <xs:element name="value" type="xs:base64Binary" minOccurs="0"/>
+      <xs:element name="inputFormat" type="xs:string" minOccurs="0"/>
+      <xs:element name="outputFormat" type="xs:string" minOccurs="0"/>
+      <xs:element name="parameters" type="parameter" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
-    <xs:attribute name="reference" type="xs:anyURI"/>
-  </xs:complexType>
-
-  <xs:complexType name="event">
-    <xs:sequence>
-      <xs:element name="properties" type="property" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-    <xs:attribute name="summary" type="xs:string"/>
-    <xs:attribute name="datetime" type="xs:string"/>
-    <xs:attribute name="duration" type="xs:double" use="required"/>
-  </xs:complexType>
-
-  <xs:complexType name="property">
-    <xs:sequence>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="value" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="metadata" final="extension restriction">
-    <xs:sequence/>
-    <xs:attribute name="content" type="xs:string"/>
-    <xs:attribute name="type" type="xs:string"/>
   </xs:complexType>
 
   <xs:complexType name="parameter">
@@ -55,6 +28,13 @@
   <xs:complexType name="parameters">
     <xs:sequence>
       <xs:element name="parameter" type="parameter" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="property">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string" minOccurs="0"/>
+      <xs:element name="value" type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 
@@ -73,20 +53,21 @@
   <xs:complexType name="serviceDescription">
     <xs:sequence>
       <xs:element ref="ns1:title"/>
-      <xs:element name="classname" type="xs:string" minOccurs="0"/>
-      <xs:element name="type" type="xs:string" minOccurs="0"/>
-      <xs:element name="parameters" type="parameters" minOccurs="0"/>
-      <xs:element name="tool" type="xs:string" minOccurs="0"/>
-      <xs:element name="license" type="xs:string" minOccurs="0"/>
+      <xs:element ref="ns2:classname" minOccurs="0"/>
+      <xs:element ref="ns2:type" minOccurs="0"/>
+      <xs:element ref="ns2:parameters" minOccurs="0"/>
+      <xs:element ref="ns2:tool" minOccurs="0"/>
       <xs:element ref="ns1:description" minOccurs="0"/>
-      <xs:element name="version" type="xs:string" minOccurs="0"/>
+      <xs:element ref="ns2:version" minOccurs="0"/>
       <xs:element ref="ns1:identifier" minOccurs="0"/>
       <xs:element ref="ns1:creator" minOccurs="0"/>
       <xs:element ref="ns1:publisher" minOccurs="0"/>
-      <xs:element name="instructions" type="xs:string" minOccurs="0"/>
-      <xs:element name="furtherInfo" type="xs:string" minOccurs="0"/>
-      <xs:element name="inputFormat" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="property" type="property" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="ns2:instructions" minOccurs="0"/>
+      <xs:element ref="ns2:furtherInfo" minOccurs="0"/>
+      <xs:element ref="ns2:logo" minOccurs="0"/>
+      <xs:element ref="ns2:inputFormat" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="ns2:property" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element ref="ns2:migrationPath" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 

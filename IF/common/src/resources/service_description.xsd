@@ -5,5 +5,27 @@
 
   <xs:element name="ServiceDescription" type="serviceDescription"/>
 
+  <xs:element name="classname" type="xs:string"/>
+
+  <xs:element name="furtherInfo" type="xs:string"/>
+
+  <xs:element name="inputFormat" type="xs:string"/>
+
+  <xs:element name="instructions" type="xs:string"/>
+
+  <xs:element name="logo" type="xs:string"/>
+
+  <xs:element name="migrationPath" type="migrationPath"/>
+
+  <xs:element name="parameters" type="parameters"/>
+
+  <xs:element name="property" type="property"/>
+
+  <xs:element name="tool" type="xs:string"/>
+
+  <xs:element name="type" type="xs:string"/>
+
+  <xs:element name="version" type="xs:string"/>
+
 </xs:schema>
 
