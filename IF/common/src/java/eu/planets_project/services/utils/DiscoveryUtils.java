@@ -33,6 +33,7 @@ public class DiscoveryUtils {
     public static ServiceDescription getServiceDescription( URL wsdlLocation ) {
         PlanetsServiceExplorer se = new PlanetsServiceExplorer(wsdlLocation);
         PlanetsService s = (PlanetsService) createServiceObject(se.getServiceClass(), wsdlLocation);
+        if( s == null ) return null;
         return s.describe();
     }
     
@@ -53,13 +54,14 @@ public class DiscoveryUtils {
     public static <T> T createServiceObject( Class<T> serviceClass, URL wsdlLocation ) {
         PlanetsServiceExplorer se = new PlanetsServiceExplorer(wsdlLocation);
         Service service;
+        if( serviceClass == null || wsdlLocation == null ) return null;
         if( se.isDeprecated() ) {
             if( se.getServiceClass().equals(Migrate.class)) {
                 return (T) new BasicMigrateWrapper(se);
             } else if( se.getServiceClass().equals(Identify.class)) {
-                
+                return null;
             } else if( se.getServiceClass().equals(Validate.class)) {
-                
+                return null;
             }
             // Otherwise, unrecognised.
             return null;
