@@ -349,9 +349,9 @@ public class ServiceDescription {
     /**
      * @param paths the paths to set
      */
-    /*public void setPaths(List<MigrationPath> paths) {
+    public void setPaths(List<MigrationPath> paths) {
         this.paths = paths;
-    }*/
+    }
     
     /* --------------------------------------------------------------------------------------------- */
     
