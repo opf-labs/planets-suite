@@ -54,10 +54,11 @@ public class WorkflowServiceRegistry {
             // registryUrl = new URL(
             // "http://planetarium.hki.uni-koeln.de:8080/registry-ifr-registry-ejb/ServiceRegistryManager?wsdl"
             // ;
-//            ServiceRegistryManager_Service locator = new ServiceRegistryManager_Service(
-//                    registryUrl, new QName(
-//                            "http://planets-project.eu/ifr/core/registry",
-//                            "ServiceRegistryManager"));
+            // ServiceRegistryManager_Service locator = new
+            // ServiceRegistryManager_Service(
+            // registryUrl, new QName(
+            // "http://planets-project.eu/ifr/core/registry",
+            // "ServiceRegistryManager"));
             registry = ServiceRegistryFactory.getInstance();// locator.
             // getServiceRegistryManagerPort
             // ();
@@ -100,7 +101,7 @@ public class WorkflowServiceRegistry {
             ServiceList serviceList_ = registry.findServices(USERNAME,
                     PASSWORD, "%", dsc.getCategory());
             logger.debug("registry returned list:" + serviceList_);
-            List<PsService> psServiceList = serviceList_.getService();
+            List<PsService> psServiceList = serviceList_.services;
 
             logger.debug("Found " + psServiceList.size()
                     + "Services in Registry");
@@ -112,15 +113,13 @@ public class WorkflowServiceRegistry {
                     // ignore cats: String[] categories =
                     // psService.getCategory().toArray(new String[0]);
                     List<PsBinding> psBindings = registry.findBindings(
-                            USERNAME, PASSWORD, psService.getKey())
-                            .getBinding();
+                            USERNAME, PASSWORD, psService.getKey()).bindings;
                     logger.debug("found serviceID: " + psService.getKey()
-                            + " #categories: "
-                            + psService.getCategories().size() + " #bindings"
-                            + psBindings.size());
+                            + " #categories: " + psService.getCategories().size()
+                            + " #bindings" + psBindings.size());
 
                     for (PsBinding psBinding : psBindings) {
-                        String uri = psBinding.getAccessuri();
+                        String uri = psBinding.getAccessURI();
                         logger.debug("found binding: " + uri
                                 + " for service id: " + service.getId());
                         service.setEndpoint(uri);
@@ -166,10 +165,11 @@ public class WorkflowServiceRegistry {
             String serviceId = null;
             String[] catIds = null;
 
-            PsSchema schema = registry.findTaxonomy(USERNAME,PASSWORD);
-            List<PsCategory> categories = schema.getCategories();
+            PsSchema schema = registry.findTaxonomy(USERNAME, PASSWORD)
+                    .getPsSchema();
+            List<PsCategory> categories = schema.categories;
 
-            String taxonomyId = schema.getId();
+            String taxonomyId = schema.schemaId;
             logger.error("Schema ID: " + taxonomyId);
 
             // planetsservice[0], characterisation[1], emulation[2],
@@ -180,8 +180,8 @@ public class WorkflowServiceRegistry {
             // find Taxonomies
             for (int t = 0; t < categories.size(); t++) {
                 PsCategory category = categories.get(t);
-                String catCode = category.getCode();
-                catIds[t] = category.getId();
+                String catCode = category.code;
+                catIds[t] = category.id;
                 logger
                         .error("found cat Code: " + catCode + " id: "
                                 + catIds[t]);
@@ -191,7 +191,7 @@ public class WorkflowServiceRegistry {
                     PASSWORD, "%");
             // logger.error("Orglist: "+orgList);
 
-            List<PsOrganization> orgs = orgList.getOrganization();
+            List<PsOrganization> orgs = orgList.organizations;
 
             // find Organization
             for (int k = 0; k < orgs.size(); k++) {

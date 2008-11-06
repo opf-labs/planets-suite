@@ -51,9 +51,9 @@ public class RegistryClient {
         String orgId = null;
 
         // find available categories
-        PsSchema schema = registry.findTaxonomy(USER,PWD);
-        List<PsCategory> categories = schema.getCategories();
-        String taxonomyId = schema.getId();
+        PsSchema schema = registry.findTaxonomy(USER, PWD).getPsSchema();
+        List<PsCategory> categories = schema.categories;
+        String taxonomyId = schema.schemaId;
         logger.error("Schema ID: " + taxonomyId);
 
         categoryIds = new String[categories.size()];
@@ -61,15 +61,15 @@ public class RegistryClient {
         // populate category array
         for (int t = 0; t < categories.size(); t++) {
             PsCategory category = categories.get(t);
-            String catCode = category.getCode();
-            categoryIds[t] = category.getId();
+            String catCode = category.code;
+            categoryIds[t] = category.id;
             logger.error("found category code: " + catCode + " id: "
                     + categoryIds[t]);
         }
 
         // init organization
         OrganizationList orgList = registry.findOrganizations(USER, PWD, "%");
-        List<PsOrganization> orgs = orgList.getOrganization();
+        List<PsOrganization> orgs = orgList.organizations;
 
         // find organization
         for (int k = 0; k < orgs.size(); k++) {
@@ -92,13 +92,13 @@ public class RegistryClient {
 
         service.setName(name);
         service.setDescription(dsc);
-        service.setOrganization(org);
+        service.setOrganization((org));
 
         PsRegistryMessage rMsg = registry.saveService(USER, PWD, service);
 
         // String msg = rMsg.getMessage();
         // logger.error("saved service message: "+msg);
-        List<String> operands = rMsg.getOperands();
+        List<String> operands = rMsg.operands;
         // find ServiceId
         for (int y = 0; y < operands.size(); y++) {
             serviceId = operands.get(y);
@@ -122,11 +122,10 @@ public class RegistryClient {
         binding.setService(service);
         binding.setName(name);
         binding.setDescription(dsc);
-        binding.setAccessuri(url);
-        //logger.error("register binding for servicee key: "+binding.getService(
+        binding.setAccessURI(url);
+        // logger.error("register binding for servicee key: "+binding.getService(
         // ).getKey());
-        PsRegistryMessage rMsg = registry
-                .saveBinding(USER, PWD, binding);
+        PsRegistryMessage rMsg = registry.saveBinding(USER, PWD, binding);
     }
 
     /**
