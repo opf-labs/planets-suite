@@ -25,8 +25,15 @@
     
     <target name="gen:SDschema">
         <schemagen srcdir="${src.dir}/eu/planets_project/services/datatypes" destdir="${appDir}/src/resources">
-		<exclude name="DigitalObject.java"/>        
-		<schema namespace="http://www.planets-project.eu/services" file="service_description.xsd"/>
+		<exclude name="DigitalObject.java"/>
+                <exclude name="Agent.java"/>  
+                <exclude name="Checksum.java"/>  
+                <exclude name="Content.java"/>
+                <exclude name="Event.java"/>
+                <exclude name="Metadata.java"/>
+                <exclude name="Properties.java"/>
+                
+                <schema namespace="http://www.planets-project.eu/services" file="service_description.xsd"/>
 		<schema namespace="http://purl.org/dc/terms/" file="dcterms.xsd"/>
 		<schema namespace="" file="nonamespace.xsd"/>
 	</schemagen>

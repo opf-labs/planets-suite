@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.services.migrate;
+package eu.planets_project.services.datatypes;
 
 import java.net.URI;
 import java.util.List;
@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Simple class to build path matrices from.  

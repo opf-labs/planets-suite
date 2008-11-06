@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-import eu.planets_project.services.migrate.MigrationPath;
+//import eu.planets_project.services.migrate.MigrationPath;
 
 /**
  * A entity to hold metadata about services.  The content of this object was first 
@@ -50,28 +50,26 @@ public class ServiceDescription {
     /**
      * The name of the concrete implementation class.
      */
+    @XmlElement(namespace="http://www.planets-project.eu/services")
     String classname;
     
     /**
      * The type of the service, which is the fully qualified name of the service interface.
      */
+    @XmlElement(namespace="http://www.planets-project.eu/services")
     String type;
     
     /**
      * Declared Parameters: [name, type, value (default)]*n
      */
-    @XmlElement()
+    @XmlElement(namespace="http://www.planets-project.eu/services")
     Parameters parameters;
     
     /**
      *  The link to the Tool registry.
      */
+    @XmlElement(namespace="http://www.planets-project.eu/services")
     URI tool;
-    
-    /**
-     * The license of the Tool.
-     */
-    String license;
 
     /**
      * Human readable description of the service.
@@ -83,6 +81,7 @@ public class ServiceDescription {
     /**
      * Wrapper version.
      */
+    @XmlElement(namespace="http://www.planets-project.eu/services")
     String version;
     
     /**
@@ -111,23 +110,26 @@ public class ServiceDescription {
      * Installation instructions. Properties to be set, or s/w to be installed. 
      * Allow to be HTML, using non-parsed embedding, like this: <![CDATA[ <b>Hi</b> ]]>. JAXB should handle this.
      */
+    @XmlElement(namespace="http://www.planets-project.eu/services")
     String instructions;
     
     /**
      * Link to further information about this service wrapper.
      */
+    @XmlElement(namespace="http://www.planets-project.eu/services")
     URI furtherInfo;
     
     /**
      * A link to a web-browsable logo for this service.  Used when presenting the service to the user.
      */
+    @XmlElement(namespace="http://www.planets-project.eu/services")
     URI logo;
     
     /**
      *  Services may specify what types they can take as inputs. [input]*n
      *  This is particularly useful for Validate and Characterise.
      */
-    @XmlElement(name = "inputFormat", required = false)
+    @XmlElement(name = "inputFormat", required = false, namespace="http://www.planets-project.eu/services")
     List<URI> inputFormats;
     
     /**
@@ -135,7 +137,7 @@ public class ServiceDescription {
      * the digital object properties that the service can deal with.
      * 
      */
-    @XmlElement(name = "property", required = false)
+    @XmlElement(name = "property", required = false, namespace="http://www.planets-project.eu/services")
     List<Property> properties;
     
     /**
@@ -143,6 +145,7 @@ public class ServiceDescription {
      *  
      *  Migration Matrix: [input, output]*n
      */
+    @XmlElement(name = "migrationPath", required = false, namespace="http://www.planets-project.eu/services")
     List<MigrationPath> paths;    
     
     /* --------------------------------------------------------------------------------------------- */
@@ -339,16 +342,16 @@ public class ServiceDescription {
     /**
      * @return the paths
      */
-    public List<MigrationPath> getPaths() {
+    /*public List<MigrationPath> getPaths() {
         return paths;
-    }
+    }*/
 
     /**
      * @param paths the paths to set
      */
-    public void setPaths(List<MigrationPath> paths) {
+    /*public void setPaths(List<MigrationPath> paths) {
         this.paths = paths;
-    }
+    }*/
     
     /* --------------------------------------------------------------------------------------------- */
     
