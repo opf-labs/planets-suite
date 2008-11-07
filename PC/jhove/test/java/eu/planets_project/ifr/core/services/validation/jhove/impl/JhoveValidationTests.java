@@ -3,20 +3,15 @@ package eu.planets_project.ifr.core.services.validation.jhove.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
 
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
@@ -41,20 +36,11 @@ public final class JhoveValidationTests {
      */
     @Test
     public void clientTests() {
-        URL url = null;
-        try {
-            url = new URL(
-                    "http://localhost:8080/pserv-pc-jhove/JhoveValidation?wsdl");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Service service = Service.create(url, new QName(PlanetsServices.NS,
-                BasicValidateOneBinary.NAME));
-
-        BasicValidateOneBinary jHove = service
-                .getPort(BasicValidateOneBinary.class);
+        BasicValidateOneBinary jhove = ServiceCreator.createTestService(
+                BasicValidateOneBinary.QNAME, JhoveValidation.class,
+                "/pserv-pc-jhove/JhoveValidation?wsdl");
         System.out.println("Remote:");
-        test(jHove);
+        test(jhove);
     }
 
     /**

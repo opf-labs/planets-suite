@@ -7,7 +7,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
@@ -17,12 +16,13 @@ import eu.planets_project.services.datatypes.Types;
 /**
  * Identification of a single binary represented as a byte array, returning a
  * types object containing the identified Pronom URIs and the status resulting
- * from the identification
+ * from the identification.
  * 
  * @author Fabian Steeg
  */
-@WebService(name = IdentifyOneBinary.NAME, serviceName = IdentifyOneBinary.NAME, targetNamespace = PlanetsServices.NS)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
+@WebService(
+        name = IdentifyOneBinary.NAME, 
+        targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface IdentifyOneBinary {
 	public static final String NAME = "IdentifyOneBinary";

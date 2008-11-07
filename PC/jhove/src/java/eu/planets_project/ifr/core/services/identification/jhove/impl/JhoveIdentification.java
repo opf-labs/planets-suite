@@ -30,7 +30,8 @@ import eu.planets_project.services.utils.ByteArrayHelper;
  * 
  * @author Fabian Steeg
  */
-@WebService(name = JhoveIdentification.NAME, serviceName = IdentifyOneBinary.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(name = JhoveIdentification.NAME, serviceName = IdentifyOneBinary.NAME, 
+        targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.IdentifyOneBinary")
 @Local(IdentifyOneBinary.class)
 @Remote(IdentifyOneBinary.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)

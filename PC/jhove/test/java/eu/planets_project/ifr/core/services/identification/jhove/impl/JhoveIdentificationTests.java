@@ -3,23 +3,17 @@ package eu.planets_project.ifr.core.services.identification.jhove.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
 
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
-import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.identify.IdentifyOneBinary;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Local and client tests of the JHOVE identification functionality.
- * 
  * @author Fabian Steeg
  */
 public final class JhoveIdentificationTests {
@@ -39,24 +33,16 @@ public final class JhoveIdentificationTests {
      */
     @Test
     public void clientTests() {
-        URL url = null;
-        try {
-            url = new URL(
-                    "http://localhost:8080/pserv-pc-jhove/JhoveIdentification?wsdl");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Service service = Service.create(url, new QName(PlanetsServices.NS,
-                IdentifyOneBinary.NAME));
-        IdentifyOneBinary jHove = service.getPort(IdentifyOneBinary.class);
+        IdentifyOneBinary jhove = ServiceCreator.createTestService(
+                IdentifyOneBinary.QNAME, JhoveIdentification.class,
+                "/pserv-pc-jhove/JhoveIdentification?wsdl");
         System.out.println("Remote:");
-        test(jHove);
+        test(jhove);
     }
 
     /**
      * Tests a JhoveIdentification instance against the enumerated file types in
      * FileTypes (testing sample files against their expected PRONOM IDs).
-     * 
      * @param identification The JhoveIdentification instance to test
      */
     private void test(final IdentifyOneBinary identification) {

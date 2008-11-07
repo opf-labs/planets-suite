@@ -24,11 +24,10 @@ import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Droid identification service.
- * 
  * @author Fabian Steeg, Carl Wilson
- * 
  */
-@WebService(name = Droid.NAME, serviceName = IdentifyOneBinary.NAME, targetNamespace = PlanetsServices.NS)
+ @WebService(name = Droid.NAME, serviceName = IdentifyOneBinary.NAME,
+ targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.IdentifyOneBinary")
 @Local(IdentifyOneBinary.class)
 @Remote(IdentifyOneBinary.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
@@ -59,7 +58,6 @@ public final class Droid implements IdentifyOneBinary, Serializable {
 
     /**
      * Identify a file represented as a byte array using Droid.
-     * 
      * @param bytes The file to identify using Droid (as a byte array)
      * @return Returns the Pronom IDs found for the file as URIs in a Types
      *         object
@@ -111,7 +109,6 @@ public final class Droid implements IdentifyOneBinary, Serializable {
      * Identify a file represented as a file name using Droid. This is a utility
      * method to enable SOAP-based testing, it converts the specified file into
      * a byte array and calls the actual identify method with that
-     * 
      * @param fileName The file name of the file to identify
      * @return Returns a Types object containing an array with the Pronom IDs as
      *         URIs for the specified file

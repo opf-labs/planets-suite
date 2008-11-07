@@ -1,19 +1,12 @@
 package eu.planets_project.ifr.core.services.identification.droid.impl;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
-
 import org.junit.Test;
 
-import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Local and client tests of the Droid functionality.
- * 
  * @author Fabian Steeg
  */
 public final class DroidTests {
@@ -32,16 +25,9 @@ public final class DroidTests {
      */
     @Test
     public void clientTests() {
-        URL url = null;
-        try {
-            url = new URL("http://localhost:8080/pserv-pc-droid/Droid?wsdl");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Service service = Service.create(url, new QName(PlanetsServices.NS,
-                IdentifyOneBinary.NAME));
-        IdentifyOneBinary droid = service.getPort(IdentifyOneBinary.class);
+        IdentifyOneBinary droid = ServiceCreator.createTestService(
+                IdentifyOneBinary.QNAME, Droid.class,
+                "/pserv-pc-droid/Droid?wsdl");
         DroidUnittestHelper.testAllFiles(droid);
     }
-
 }

@@ -19,10 +19,11 @@ import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
  * JHOVE validation service.
- * 
  * @author Fabian Steeg
  */
-@WebService(name = JhoveValidation.NAME, serviceName = BasicValidateOneBinary.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(name = JhoveValidation.NAME, serviceName = BasicValidateOneBinary.NAME, 
+        targetNamespace = PlanetsServices.NS, 
+        endpointInterface = "eu.planets_project.services.validate.BasicValidateOneBinary")
 @Local(BasicValidateOneBinary.class)
 @Remote(BasicValidateOneBinary.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
@@ -49,11 +50,9 @@ public final class JhoveValidation implements BasicValidateOneBinary,
             + "Result")
     public boolean basicValidateOneBinary(
             @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicValidateOneBinary.NAME, partName = "binary")
-            final byte[] binary,
+                    + "/" + BasicValidateOneBinary.NAME, partName = "binary") final byte[] binary,
             @WebParam(name = "fmt", targetNamespace = PlanetsServices.NS + "/"
-                    + BasicValidateOneBinary.NAME, partName = "fmt")
-            final URI fmt) {
+                    + BasicValidateOneBinary.NAME, partName = "fmt") final URI fmt) {
         /* Identify the binary: */
         JhoveIdentification identification = new JhoveIdentification();
         Types result = identification.identifyOneBinary(binary);
