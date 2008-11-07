@@ -4,59 +4,97 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
 import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.identify.IdentifyOneBinary;
 import eu.planets_project.services.utils.ByteArrayHelper;
-import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
- * Local and client tests of the JHOVE identification functionality.
+ * Tests of the JHOVE identification functionality.
  * @author Fabian Steeg
  */
-public final class JhoveIdentificationTests {
+public class JhoveIdentificationTests {
+    static IdentifyOneBinary jhove;
 
     /**
      * Tests JHOVE identification using a local JhoveIdentification instance.
      */
-    @Test
-    public void localTests() {
+    @BeforeClass
+    public static void setup() {
         System.out.println("Local:");
-        test(new JhoveIdentification());
+        jhove = new JhoveIdentification();
     }
 
-    /**
-     * Tests JHOVE identification using a JhoveIdentification instance retrieved
-     * via the web service running on localhost.
-     */
     @Test
-    public void clientTests() {
-        IdentifyOneBinary jhove = ServiceCreator.createTestService(
-                IdentifyOneBinary.QNAME, JhoveIdentification.class,
-                "/pserv-pc-jhove/JhoveIdentification?wsdl");
-        System.out.println("Remote:");
-        test(jhove);
+    public void testAiff() {
+        test(FileType.AIFF);
+    }
+
+    @Test
+    public void testAscii() {
+        test(FileType.ASCII);
+    }
+
+    @Test
+    public void testGif() {
+        test(FileType.GIF);
+    }
+
+    @Test
+    public void testHtml() {
+        test(FileType.HTML);
+    }
+
+    @Test
+    public void testJpeg() {
+        test(FileType.JPEG);
+    }
+
+    @Test
+    public void testPdf() {
+        test(FileType.PDF);
+    }
+
+    @Test
+    public void testTiff() {
+        test(FileType.TIFF);
+    }
+
+    @Test
+    public void testWave() {
+        test(FileType.WAVE);
+    }
+
+    @Test
+    public void testXml() {
+        test(FileType.XML);
     }
 
     /**
-     * Tests a JhoveIdentification instance against the enumerated file types in
-     * FileTypes (testing sample files against their expected PRONOM IDs).
-     * @param identification The JhoveIdentification instance to test
+     * The old approach: iterate over the enum types...
      */
-    private void test(final IdentifyOneBinary identification) {
+    private void test() {
         /* We check all the enumerated file types: */
         for (FileType type : FileType.values()) {
-            System.out.println("Testing identification of: " + type);
-            /* For each we get the sample file: */
-            String location = type.getSample();
-            /* And try identifying it: */
-            Types result = identification.identifyOneBinary(ByteArrayHelper
-                    .read(new File(location)));
-            assertEquals("Wrong pronom ID;", type.getPronom(), result.types[0]
-                    .toString());
+            test(type);
         }
+    }
+
+    /**
+     * @param type The enum type to test
+     */
+    private void test(FileType type) {
+        System.out.println("Testing identification of: " + type);
+        /* For each we get the sample file: */
+        String location = type.getSample();
+        /* And try identifying it: */
+        Types result = jhove.identifyOneBinary(ByteArrayHelper.read(new File(
+                location)));
+        assertEquals("Wrong pronom ID;", type.getPronom(), result.types[0]
+                .toString());
     }
 
 }

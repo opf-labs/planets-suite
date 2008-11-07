@@ -7,7 +7,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
@@ -18,8 +17,7 @@ import eu.planets_project.services.PlanetsServices;
  * configuration string and returning a result string for the comparison.
  * @author Fabian Steeg
  */
-@WebService(name = CompareMultipleXcdlValues.NAME, serviceName = CompareMultipleXcdlValues.NAME, targetNamespace = PlanetsServices.NS)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
+@WebService(name = CompareMultipleXcdlValues.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface CompareMultipleXcdlValues {
     /***/

@@ -5,16 +5,12 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
 
 import org.junit.Test;
 
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.BasicCompareFormatProperties;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 public class FPMToolTest {
 
@@ -25,20 +21,10 @@ public class FPMToolTest {
 
     @Test
     public void clientTests() {
-        try {
-
-            Service service = Service.create(new URL(
-                    "http://localhost:8080/pserv-pc-fpmtool/FPMTool?wsdl"),
-                    new QName(PlanetsServices.NS,
-                            BasicCompareFormatProperties.NAME));
-
-            BasicCompareFormatProperties bcfp = service
-                    .getPort(BasicCompareFormatProperties.class);
-            test(bcfp);
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail(e.getMessage());
-        }
+        BasicCompareFormatProperties bcfp = ServiceCreator.createTestService(
+                BasicCompareFormatProperties.QNAME, FPMTool.class,
+                "/pserv-pc-fpmtool/FPMTool?wsdl");
+        test(bcfp);
     }
 
     public void test(BasicCompareFormatProperties fpmt) {

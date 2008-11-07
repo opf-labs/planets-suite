@@ -28,10 +28,8 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @RemoteBinding(jndiBinding = "planets-project.eu/Extractor2Binary")
 @WebService(name = "Extractor2Binary",
 // This is not appropriate when using the endpointInterface approach.
-serviceName = BasicCharacteriseOneBinaryXCELtoBinary.NAME, targetNamespace = PlanetsServices.NS)
+serviceName = BasicCharacteriseOneBinaryXCELtoBinary.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary")
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-@MTOM
 public class Extractor2Binary implements
         BasicCharacteriseOneBinaryXCELtoBinary, Serializable {
 
@@ -42,7 +40,6 @@ public class Extractor2Binary implements
     private static String CALLING_EXTRACTOR_NAME = "EXTRACTOR2BINARY";
 
     /**
-     * 
      * @param binary a byte[] which contains the image data
      * @return a String holding the contents of a XCDL file
      * @throws PlanetsException
@@ -61,7 +58,6 @@ public class Extractor2Binary implements
     }
 
     /**
-     * 
      * @param binary a byte[] which contains the image data
      * @param xcel a String holding the Contents of a XCEL file
      * @return a String holding the contents of a XCDL file
@@ -76,8 +72,7 @@ public class Extractor2Binary implements
             @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
                     + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, partName = "binary") byte[] binary,
             @WebParam(name = "XCEL_String", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, partName = "XCEL_String") String xcel)
-            throws PlanetsException {
+                    + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME, partName = "XCEL_String") String xcel) {
 
         // byte[] xcel_in = xcel.getBytes();
 

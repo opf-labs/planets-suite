@@ -9,7 +9,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
@@ -24,9 +23,7 @@ import eu.planets_project.services.PlanetsServices;
  */
 
 @WebService(name = BasicCompareFormatProperties.NAME,
-//		serviceName = BasicCompareFormatProperties.NAME,
 		targetNamespace = PlanetsServices.NS)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface BasicCompareFormatProperties {
 	public static final String NAME = "BasicCompareFormatProperties";

@@ -22,7 +22,8 @@ import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
  * configuration and returning a result string for the comparison.
  * @author Fabian Steeg
  */
-@WebService(name = ComparatorBasicCompareTwoXcdlValues.NAME, serviceName = BasicCompareTwoXcdlValues.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(name = ComparatorBasicCompareTwoXcdlValues.NAME, serviceName = BasicCompareTwoXcdlValues.NAME, 
+        targetNamespace = PlanetsServices.NS, endpointInterface="eu.planets_project.services.compare.BasicCompareTwoXcdlValues")
 @Local(BasicCompareTwoXcdlValues.class)
 @Remote(BasicCompareTwoXcdlValues.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)

@@ -20,7 +20,8 @@ import eu.planets_project.services.compare.CompareMultipleXcdlValues;
  * configuration string and returning a result string for the comparison.
  * @author Fabian Steeg
  */
-@WebService(name = ComparatorCompareMultipleXcdlValues.NAME, serviceName = CompareMultipleXcdlValues.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(name = ComparatorCompareMultipleXcdlValues.NAME, serviceName = CompareMultipleXcdlValues.NAME, 
+        targetNamespace = PlanetsServices.NS, endpointInterface="eu.planets_project.services.compare.CompareMultipleXcdlValues")
 @Local(CompareMultipleXcdlValues.class)
 @Remote(CompareMultipleXcdlValues.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)

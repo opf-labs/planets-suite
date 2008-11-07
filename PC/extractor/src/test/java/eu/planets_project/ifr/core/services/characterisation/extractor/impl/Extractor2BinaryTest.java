@@ -13,12 +13,11 @@ import static org.junit.Assert.*;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
- * Test of the extractor (local and remote) using binaries.
- * 
- * TODO: clean up both local and in the data registry after the tests
- * 
+ * Test of the extractor (local and remote) using binaries. TODO: clean up both
+ * local and in the data registry after the tests
  * @author Peter Melms
  * @author Fabian Steeg
  */
@@ -40,7 +39,8 @@ public final class Extractor2BinaryTest {
     public void testBasicCharacteriseOneBinaryXCELtoBinary() {
         File inputImage = new File(ExtractorUnitHelper.SAMPLE_FILE);
         File inputXcel = new File(ExtractorUnitHelper.SAMPLE_XCEL);
-        File outputFolder = new File(ExtractorUnitHelper.EXTRACTOR2BINARY_OUTPUT_DIR);
+        File outputFolder = new File(
+                ExtractorUnitHelper.EXTRACTOR2BINARY_OUTPUT_DIR);
         boolean made = outputFolder.mkdir();
         if (!made && !outputFolder.exists()) {
             fail("Could not create directory: " + outputFolder);
@@ -72,36 +72,25 @@ public final class Extractor2BinaryTest {
 
     /** Test using the web service running on local host. */
     @Test
-    public void testRemoteLocalServer() {
-        test(ExtractorUnitHelper.getRemoteInstance(
-                ExtractorUnitHelper.LOCALHOST + WSDL,
-                BasicCharacteriseOneBinaryXCELtoBinary.class));
-    }
-
-    /** Test using the web service running on the test server. */
-    @Test
-    public void testRemoteTestServer() {
-        test(ExtractorUnitHelper.getRemoteInstance(
-                ExtractorUnitHelper.PLANETARIUM + WSDL,
-                BasicCharacteriseOneBinaryXCELtoBinary.class));
+    public void testRemote() {
+        BasicCharacteriseOneBinaryXCELtoBinary characterise = ServiceCreator
+                .createTestService(
+                        BasicCharacteriseOneBinaryXCELtoBinary.QNAME,
+                        Extractor2Binary.class, WSDL);
+        test(characterise);
     }
 
     /**
      * @param extractor The extractor instance to test
      */
     private void test(final BasicCharacteriseOneBinaryXCELtoBinary extractor) {
-        try {
-            /* find XCEL */
-            byte[] result = extractor.basicCharacteriseOneBinaryXCELtoBinary(
-                    binary, null);
-            /* give XCEL */
-            result = extractor.basicCharacteriseOneBinaryXCELtoBinary(binary,
-                    xcelString);
-            outputXcdl = ByteArrayHelper.write(result);
-            assertTrue("No output file written;", outputXcdl.exists());
-        } catch (PlanetsException e) {
-            e.printStackTrace();
-        }
+        /* find XCEL */
+        byte[] result = extractor.basicCharacteriseOneBinaryXCELtoBinary(
+                binary, null);
+        /* give XCEL */
+        result = extractor.basicCharacteriseOneBinaryXCELtoBinary(binary,
+                xcelString);
+        outputXcdl = ByteArrayHelper.write(result);
+        assertTrue("No output file written;", outputXcdl.exists());
     }
-
 }

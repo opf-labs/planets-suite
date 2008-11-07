@@ -13,10 +13,10 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
 import eu.planets_project.services.compare.CompareMultipleXcdlValues;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Local and client tests of the comparator services by value functionality.
- * 
  * @author Fabian Steeg
  */
 public final class ComparatorServiceTests {
@@ -43,7 +43,7 @@ public final class ComparatorServiceTests {
      * Tests PP comparator comparison using comparator instances retrieved via
      * the web services running on a the test server.
      */
-    @Test
+    // @Test
     public void testServerTests() {
         testServicesOn(TEST_SERVER);
     }
@@ -63,7 +63,6 @@ public final class ComparatorServiceTests {
 
     /**
      * Tests the services that use the actual value strings.
-     * 
      * @param server The server to use
      * @param data1 The XCDL1 data
      * @param data2 The XCDL2 data
@@ -75,13 +74,19 @@ public final class ComparatorServiceTests {
         String xcdl2 = new String(data2);
         String config = new String(configData);
         /* Test of the TWO VALUES service: */
-        BasicCompareTwoXcdlValues c1 = serviceFrom(server,
-                BasicCompareTwoXcdlValues.class);
+        BasicCompareTwoXcdlValues c1 = ServiceCreator
+                .createTestService(BasicCompareTwoXcdlValues.QNAME,
+                        ComparatorBasicCompareTwoXcdlValues.class,
+                        "/pserv-pp-comparator/ComparatorBasicCompareTwoXcdlValues?wsdl");// serviceFrom(server,
+        // BasicCompareTwoXcdlValues.class);
         String result = c1.basicCompareTwoXcdlValues(xcdl1, xcdl2);
         ComparatorWrapperTests.check(result);
         /* Test of the MULTI VALUES service: */
-        CompareMultipleXcdlValues c2 = serviceFrom(server,
-                CompareMultipleXcdlValues.class);
+        CompareMultipleXcdlValues c2 = ServiceCreator
+                .createTestService(CompareMultipleXcdlValues.QNAME,
+                        ComparatorCompareMultipleXcdlValues.class,
+                        "/pserv-pp-comparator/ComparatorCompareMultipleXcdlValues?wsdl");// serviceFrom(server,
+        // CompareMultipleXcdlValues.class);
         result = c2.compareMultipleXcdlValues(new String[] { xcdl1, xcdl2 },
                 config);
         ComparatorWrapperTests.check(result);
@@ -90,7 +95,6 @@ public final class ComparatorServiceTests {
     /**
      * Creates an instance from a web service running on the given host of the
      * given type.
-     * 
      * @param <T> The interface type
      * @param host The host
      * @param interfaze The interface to intantiate
