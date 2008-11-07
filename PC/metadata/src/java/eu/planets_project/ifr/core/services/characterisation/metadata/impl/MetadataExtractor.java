@@ -31,7 +31,8 @@ import eu.planets_project.services.utils.ByteArrayHelper;
  * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = MetadataExtractor.NAME, serviceName = BasicCharacteriseOneBinary.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(name = MetadataExtractor.NAME, serviceName = BasicCharacteriseOneBinary.NAME, 
+        targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.BasicCharacteriseOneBinary")
 @Local(BasicCharacteriseOneBinary.class)
 @Remote(BasicCharacteriseOneBinary.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)

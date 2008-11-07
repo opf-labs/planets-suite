@@ -27,7 +27,8 @@ import eu.planets_project.services.validate.BasicValidateOneBinary;
  * @author Fabian Steeg
  * 
  */
-@WebService(name = PngCheck.NAME, serviceName = BasicValidateOneBinary.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(name = PngCheck.NAME, serviceName = BasicValidateOneBinary.NAME, 
+        targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.BasicValidateOneBinary")
 @Local(BasicValidateOneBinary.class)
 @Remote(BasicValidateOneBinary.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)

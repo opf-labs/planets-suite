@@ -110,7 +110,7 @@ public class BasicMigrateWrapper implements Migrate {
                         .getPermanentUrl(), Content.byValue(bresult)).build();
 
                 return new MigrateResult(ndo, new ServiceReport());
-            } catch (PlanetsException e) {
+            } catch (Exception e) {
                 return new MigrateResult(null, ServiceUtils
                         .createExceptionErrorReport("Binary migration failed.",
                                 e));

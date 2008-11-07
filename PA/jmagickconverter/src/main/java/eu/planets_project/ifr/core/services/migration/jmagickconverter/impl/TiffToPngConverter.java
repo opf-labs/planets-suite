@@ -82,7 +82,7 @@ public class TiffToPngConverter implements Serializable, BasicMigrateOneBinary {
             partName = BasicMigrateOneBinary.NAME + "Result")
     public byte[] basicMigrateOneBinary ( 
             @WebParam(name = "binary", targetNamespace = PlanetsServices.NS + "/" + BasicMigrateOneBinary.NAME, partName = "binary")
-            byte[] binary ) throws PlanetsException {
+            byte[] binary ) {
 		MigrationResults migrationResults = new MigrationResults();
 		migrationResults = converter.convertImage(binary, "TIFF", "PNG", plogger);
 		if (migrationResults.migrationWasSuccessful()) {
@@ -90,8 +90,8 @@ public class TiffToPngConverter implements Serializable, BasicMigrateOneBinary {
 		    return migrationResults.getByteArray();
 		} else {
 			plogger.warn(migrationResults.getMessage());		
-		    throw new PlanetsException(migrationResults.getMessage());
 		}
+		return null;
     }
 }
 

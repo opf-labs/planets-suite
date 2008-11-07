@@ -13,6 +13,7 @@ import javax.xml.ws.BindingType;
 
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.identify.IdentifyOneBinary;
 
 /**
  * This is a basic migration service, with no parameters or metadata.
@@ -26,13 +27,7 @@ import eu.planets_project.services.PlanetsServices;
  */
 @WebService(
         name = BasicMigrateOneBinary.NAME, 
-// This is not appropriate on the Interface when using the endpointInterface approach.
-// However, every concrete Service will be required to use this serviceName.
-//        serviceName= BasicMigrateOneBinary.NAME, 
-        targetNamespace = PlanetsServices.NS )
-@SOAPBinding(
-        parameterStyle = SOAPBinding.ParameterStyle.BARE,
-        style = SOAPBinding.Style.RPC)
+        targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface BasicMigrateOneBinary {
     public static final String NAME = "BasicMigrateOneBinary";
@@ -56,5 +51,5 @@ public interface BasicMigrateOneBinary {
                     name = "binary", 
                     targetNamespace = PlanetsServices.NS + "/" + BasicMigrateOneBinary.NAME, 
                     partName = "binary")
-            byte[] binary ) throws PlanetsException;    
+            byte[] binary );    
 }

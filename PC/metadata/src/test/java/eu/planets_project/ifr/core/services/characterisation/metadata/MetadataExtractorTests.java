@@ -3,23 +3,17 @@ package eu.planets_project.ifr.core.services.characterisation.metadata;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-import javax.xml.ws.Service;
 
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.characterisation.metadata.impl.MetadataExtractor;
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Local and client tests of the metadata extractor functionality.
- * 
  * @author Fabian Steeg
  */
 public final class MetadataExtractorTests {
@@ -44,23 +38,15 @@ public final class MetadataExtractorTests {
     @Test
     public void clientTests() {
         System.out.println("Remote:");
-        URL url = null;
-        try {
-            url = new URL(
-                    "http://localhost:8080/pserv-pc-metadata/MetadataExtractor?wsdl");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Service service = Service.create(url, new QName(PlanetsServices.NS,
-                BasicCharacteriseOneBinary.NAME));
-        BasicCharacteriseOneBinary characterise = service
-                .getPort(BasicCharacteriseOneBinary.class);
+        BasicCharacteriseOneBinary characterise = ServiceCreator
+                .createTestService(BasicCharacteriseOneBinary.QNAME,
+                        MetadataExtractor.class,
+                        "/pserv-pc-metadata/MetadataExtractor?wsdl");
         test(characterise);
     }
 
     /**
      * Test a BasicValidateOneBinary instance.
-     * 
      * @param characterise The BasicCharacteriseOneBinary instance to test
      */
     private void test(final BasicCharacteriseOneBinary characterise) {

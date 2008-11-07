@@ -116,7 +116,7 @@ public class Pdf2pPdfa_MayComputer implements BasicMigrateOneBinary {
      * @see eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary#basicMigrateOneBinary(byte[])
      */
     public byte[] basicMigrateOneBinary ( 
-            byte[] binary ) throws PlanetsException {
+            byte[] binary ) {
         try {
             
             // write binary array to temporary file

@@ -76,7 +76,7 @@ public class JpgToPngConverter implements Serializable, BasicMigrateOneBinary {
             partName = BasicMigrateOneBinary.NAME + "Result")
     public byte[] basicMigrateOneBinary ( 
             @WebParam(name = "binary", targetNamespace = PlanetsServices.NS + "/" + BasicMigrateOneBinary.NAME, partName = "binary")
-            byte[] binary ) throws PlanetsException {
+            byte[] binary ) {
 		MigrationResults migrationResults = new MigrationResults();
 		migrationResults = converter.convertImage(binary, "JPEG", "PNG", plogger);
 		if (migrationResults.migrationWasSuccessful()) {
@@ -84,7 +84,7 @@ public class JpgToPngConverter implements Serializable, BasicMigrateOneBinary {
 		    return migrationResults.getByteArray();
 		} else {
 			plogger.warn(migrationResults.getMessage());		
-		    throw new PlanetsException(migrationResults.getMessage());
 		}
+		return null;
     }
 }
