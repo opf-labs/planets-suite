@@ -13,7 +13,7 @@ import eu.planets_project.ifr.core.registry.api.OrganizationList;
 import eu.planets_project.ifr.core.registry.api.PsBinding;
 import eu.planets_project.ifr.core.registry.api.PsCategory;
 import eu.planets_project.ifr.core.registry.api.PsOrganization;
-import eu.planets_project.ifr.core.registry.api.PsRegistryMessage;
+import eu.planets_project.ifr.core.registry.api.ServiceRegistryMessage;
 import eu.planets_project.ifr.core.registry.api.PsRegistryObject;
 import eu.planets_project.ifr.core.registry.api.PsSchema;
 import eu.planets_project.ifr.core.registry.api.PsService;
@@ -94,7 +94,7 @@ public class RegistryClient {
         service.setDescription(dsc);
         service.setOrganization((org));
 
-        PsRegistryMessage rMsg = registry.saveService(USER, PWD, service);
+        ServiceRegistryMessage rMsg = registry.saveService(USER, PWD, service);
 
         // String msg = rMsg.getMessage();
         // logger.error("saved service message: "+msg);
@@ -125,7 +125,7 @@ public class RegistryClient {
         binding.setAccessURI(url);
         // logger.error("register binding for servicee key: "+binding.getService(
         // ).getKey());
-        PsRegistryMessage rMsg = registry.saveBinding(USER, PWD, binding);
+        ServiceRegistryMessage rMsg = registry.saveBinding(USER, PWD, binding);
     }
 
     /**
