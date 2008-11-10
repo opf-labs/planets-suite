@@ -177,6 +177,13 @@ public class ServiceDescription {
     public String getClassname() {
         return classname;
     }
+    
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
 
     /**
      * @param classname the classname to set
