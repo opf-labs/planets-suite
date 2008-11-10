@@ -26,7 +26,7 @@ import eu.planets_project.services.identify.IdentifyOneBinary;
  *
  */
 @WebService(
-        name = BasicMigrateOneBinary.NAME, 
+//        name = BasicMigrateOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface BasicMigrateOneBinary {
