@@ -391,8 +391,8 @@
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
-      <env key="pserv.test.context" value="local"/>
-      <env key="pserv.root.dir" value="${pserv.root.dir}"/>
+      <sysproperty key="pserv.test.context" value="local"/>
+      <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />
@@ -410,8 +410,8 @@
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
-      <env key="pserv.test.context" value="standalone"/>
-      <env key="pserv.root.dir" value="${pserv.root.dir}"/>
+      <sysproperty key="pserv.test.context" value="standalone"/>
+      <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />
@@ -432,10 +432,10 @@
     <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
-      <env key="pserv.test.context" value="server"/>
-      <env key="pserv.root.dir" value="${pserv.root.dir}"/>
-      <env key="pserv.test.host" value="${if_server.host}"/>
-      <env key="pserv.test.port" value="${if_server.port}"/>
+      <sysproperty key="pserv.test.context" value="server"/>
+      <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
+      <sysproperty key="pserv.test.host" value="${if_server.host}"/>
+      <sysproperty key="pserv.test.port" value="${if_server.port}"/>
       
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />
