@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import magick.ImageInfo;
@@ -14,6 +15,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
@@ -26,6 +28,11 @@ public class ImageMagickMigrations implements Migrate {
 	public static String[] compressionTypes = new String[11];
 	private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass());
 	public ServiceDescription serviceDescription = new ServiceDescription();
+	private static final int COMPRESSION_TYPE_DEFAULT = 1; 
+	private static final String IMAGEMAGICK_TEMP = "ImageMagickService";
+	private static final String OUT_FOLDER = "output";
+	private static final String INPUT_FILE_NAME = "imageMagickInput";
+	private static final String OUTPUT_FILE_NAME = "imageMagickOutput";
 	
 	public ImageMagickMigrations() {
 		System.setProperty("jmagick.systemclassloader","no"); // Use the JBoss-Classloader, instead of the Systemclassloader.
@@ -43,13 +50,11 @@ public class ImageMagickMigrations implements Migrate {
 		compressionTypes[10] = "Zip Compression";
 	}
 
-	@Override
 	public ServiceDescription describe() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, Parameters parameters) {
 		
@@ -87,7 +92,7 @@ public class ImageMagickMigrations implements Migrate {
 		
 		InputStream inputStream = digitalObject.getContent().read();
 		
-		File inputFile = FileUtils.writeInputStreamToTmpFile(inputStream, "imageMagickInput", inputExt);
+		File inputFile = FileUtils.writeInputStreamToTmpFile(inputStream, INPUT_FILE_NAME, inputExt);
 		
 		plogger.info("Starting ImageMagick Migration from " + inputExt + " to " + outputExt + "...");
 		
@@ -104,12 +109,49 @@ public class ImageMagickMigrations implements Migrate {
 				return migrateResult;
 			}
 			
+			if(parameters != null) {
+				int compressionType;
+				List<Parameter> parameterList = parameters.getParameters();
+				for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
+					Parameter parameter = (Parameter) iterator.next();
+					String name = parameter.name;
+					if(name.equalsIgnoreCase("compressionType")) {
+						compressionType = Integer.parseInt(parameter.value);
+						image.setCompression(compressionType);
+					}
+					else {
+						image.setCompression(COMPRESSION_TYPE_DEFAULT);
+					}
+				}
+			}
+			else {
+				image.setCompression(COMPRESSION_TYPE_DEFAULT);
+			}
+			
+			image.setMagick(outputExt);
+			
+			File imageMagickTmpFolder = FileUtils.createWorkFolderInSysTemp(IMAGEMAGICK_TEMP);
+			File outputFolder = FileUtils.createFolderInWorkFolder(imageMagickTmpFolder, OUT_FOLDER); 
+			
+			image.setFileName(outputFolder.getAbsolutePath() + File.separator + OUTPUT_FILE_NAME + "." + outputExt);
+			image.writeImage(imageInfo);
+			
+			/** 
+			 * QUESTIONS:
+			 * 
+			 * 1) What should i do now? 
+			 * 2) where should the new created file be placed?
+			 * 3) how should the result be returned?
+			 * 4) What about the service description? How to set up etc...?
+			 * 5) Do i have to create a new DigitalObject for the new file?
+			 * 
+			 */
+			
+			
 		} catch (MagickException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	   
-		
 		// TODO Auto-generated method stub
 		return null;
 	}
