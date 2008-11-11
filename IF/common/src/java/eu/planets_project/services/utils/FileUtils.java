@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *  @author: Thomas Kraemer thomas.kraemer@uni-koeln.de
@@ -132,6 +133,35 @@ public class FileUtils {
 				return false;
 			}
 		}
+	}
+	
+	public static File writeInputStreamToTmpFile(InputStream inputStream,String fileName, String suffix) {
+		File file = getTempFile(fileName, suffix);
+		FileOutputStream fileOutStream = null;
+		try {
+			fileOutStream = new FileOutputStream(file);
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		if(!suffix.startsWith(".")) {
+			suffix = "." + suffix;
+		}
+		try {
+			int dataBit;
+			
+			while((dataBit = inputStream.read())!=-1) {
+				fileOutStream.write(dataBit);
+			}
+			fileOutStream.flush();
+			fileOutStream.close();
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return file;
 	}
 
 }
