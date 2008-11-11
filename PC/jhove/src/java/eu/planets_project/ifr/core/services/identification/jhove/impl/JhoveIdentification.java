@@ -21,6 +21,7 @@ import edu.harvard.hul.ois.jhove.JhoveBase;
 import edu.harvard.hul.ois.jhove.JhoveException;
 import edu.harvard.hul.ois.jhove.handler.TextHandler;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.identify.IdentifyOneBinary;
 import eu.planets_project.services.utils.ByteArrayHelper;
@@ -34,7 +35,6 @@ import eu.planets_project.services.utils.ByteArrayHelper;
         targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.IdentifyOneBinary")
 @Local(IdentifyOneBinary.class)
 @Remote(IdentifyOneBinary.class)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
 public final class JhoveIdentification implements IdentifyOneBinary,
         Serializable {
@@ -249,4 +249,14 @@ public final class JhoveIdentification implements IdentifyOneBinary,
                 : RESOURCES);
         return folder;
     }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.identify.IdentifyOneBinary#describe()
+     */
+    public ServiceDescription describe() {
+        ServiceDescription sd = new ServiceDescription(NAME,this.getClass().getCanonicalName());
+        sd.setDescription("Identification service using JHOVE.");
+        return sd;
+    }
+    
 }

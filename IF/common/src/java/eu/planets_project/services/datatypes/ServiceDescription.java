@@ -172,19 +172,26 @@ public class ServiceDescription {
     /* --------------------------------------------------------------------------------------------- */
 
     /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+    
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * @return the classname
      */
     public String getClassname() {
         return classname;
     }
     
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
     /**
      * @param classname the classname to set
      */
@@ -274,6 +281,20 @@ public class ServiceDescription {
      */
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    /**
+     * @return the serviceProvider
+     */
+    public String getServiceProvider() {
+        return serviceProvider;
+    }
+
+    /**
+     * @param serviceProvider the serviceProvider to set
+     */
+    public void setServiceProvider(String serviceProvider) {
+        this.serviceProvider = serviceProvider;
     }
 
     /**

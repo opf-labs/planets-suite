@@ -47,11 +47,10 @@ public class SimpleIdentifyService implements Identify {
      * @see eu.planets_project.services.identify.Identify#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription mds = new ServiceDescription("A Simple DigitalObject Identification Service.", "");
+        ServiceDescription mds = new ServiceDescription(NAME, Identify.class.getCanonicalName());
         mds.setDescription("A simple identification service that can determine the mime-type of simple (single-file) digital objects. Only looks at the file extension, so can only work on by-reference objects.");
         mds.setAuthor("Andrew Jackson <Andrew.Jackson@bl.uk>");
         mds.setClassname(this.getClass().getCanonicalName());
-        mds.setType(Identify.class.getCanonicalName());
         return mds;
     }
 

@@ -7,11 +7,7 @@ import java.net.URISyntaxException;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.BindingType;
 
 import magick.ImageInfo;
@@ -21,7 +17,6 @@ import magick.MagickImage;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.identify.BasicIdentifyOneBinary;
 import eu.planets_project.services.utils.PlanetsLogger;
@@ -42,14 +37,13 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @Remote(BasicIdentifyOneBinary.class)
 @LocalBinding(jndiBinding = "planets/ImageIdentificationService")
 @RemoteBinding(jndiBinding = "planets-project.eu/ImageIdentificationService")
+
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @WebService(
         name = "ImageIdentificationService", 
         serviceName = BasicIdentifyOneBinary.NAME, 
-        targetNamespace = PlanetsServices.NS )
-@SOAPBinding(
-        parameterStyle = SOAPBinding.ParameterStyle.BARE,
-        style = SOAPBinding.Style.RPC)
+        targetNamespace = PlanetsServices.NS,
+        endpointInterface = "eu.planets_project.services.identify.BasicIdentifyOneBinary" )
 public class ImageIdentificationService implements Serializable, BasicIdentifyOneBinary {
 
 	// Default Constructor, setting the System.property to tell Jboss to use its own Classloader...
@@ -63,16 +57,8 @@ public class ImageIdentificationService implements Serializable, BasicIdentifyOn
     private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass(), logConfigFile);
     
 
-    @WebMethod(
-            operationName = BasicIdentifyOneBinary.NAME, 
-            action = PlanetsServices.NS + "/" + BasicIdentifyOneBinary.NAME)
-    @WebResult(
-            name = BasicIdentifyOneBinary.NAME+"Result", 
-            targetNamespace = PlanetsServices.NS + "/" + BasicIdentifyOneBinary.NAME, 
-            partName = BasicIdentifyOneBinary.NAME + "Result")
     public URI basicIdentifyOneBinary ( 
-            @WebParam(name = "binary", targetNamespace = PlanetsServices.NS + "/" + BasicIdentifyOneBinary.NAME, partName = "binary")
-            byte[] binary ) throws PlanetsException {
+            byte[] binary ) {
     		
     		URI planetsFormatURI = null;
 			

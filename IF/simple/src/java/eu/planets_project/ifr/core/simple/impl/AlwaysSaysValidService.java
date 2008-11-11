@@ -44,11 +44,10 @@ public class AlwaysSaysValidService implements Validate {
      * @see eu.planets_project.services.validate.Validate#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription mds = new ServiceDescription("A DigitalObject Validation service, that always says yes.", "");
+        ServiceDescription mds = new ServiceDescription(NAME, Validate.class.getCanonicalName());
         mds.setDescription("A simple simple example of a Validation service, but one that always says yes, unless the digital object is null.");
         mds.setAuthor("Andrew Jackson <Andrew.Jackson@bl.uk>");
         mds.setClassname(this.getClass().getCanonicalName());
-        mds.setType(Validate.class.getCanonicalName());
         return mds;
     }
 

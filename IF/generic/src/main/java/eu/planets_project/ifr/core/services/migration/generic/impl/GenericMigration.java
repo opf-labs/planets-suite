@@ -33,11 +33,13 @@ import eu.planets_project.services.utils.ServiceUtils;
 
 @Stateless
 @Remote(MigrateOneBinary.class)
+
 @WebService(
         name = GenericMigration.NAME, 
         serviceName = MigrateOneBinary.NAME,
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.migrate.MigrateOneBinary" )
+        
 public class GenericMigration implements MigrateOneBinary, Serializable
 {
 	private static final long serialVersionUID = -2186431821310098736L;

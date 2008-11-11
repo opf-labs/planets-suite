@@ -15,6 +15,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.validate.Validate;
 
 /**
  * PassThruMigrationService testing service. This service does nothing except to
@@ -61,11 +62,10 @@ public final class PassThruMigrationService implements Migrate,
      * @see eu.planets_project.ifr.core.common.services.migrate.MigrateOneDigitalObject#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription mds = new ServiceDescription("Pass-thru non-migration migration service.", "");
-        mds.setDescription("A test service, that simply passes data through.");
+        ServiceDescription mds = new ServiceDescription(NAME, Migrate.class.getCanonicalName());
+        mds.setDescription("A pass-thru test service, that simply clones and passes data through unchanged.");
         mds.setAuthor("Fabian Steeg <fabian.steeg@uni-koeln.de>, Andrew Jackson <Andrew.Jackson@bl.uk>");
         mds.setClassname(this.getClass().getCanonicalName());
-        mds.setType(Migrate.class.getCanonicalName());
         return mds;
     }
 

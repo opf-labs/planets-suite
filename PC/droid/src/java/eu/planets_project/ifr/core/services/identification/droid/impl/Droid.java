@@ -9,15 +9,13 @@ import java.util.Iterator;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.identify.IdentifyOneBinary;
 import eu.planets_project.services.utils.ByteArrayHelper;
@@ -26,12 +24,14 @@ import eu.planets_project.services.utils.ByteArrayHelper;
  * Droid identification service.
  * @author Fabian Steeg, Carl Wilson
  */
- @WebService(name = Droid.NAME, serviceName = IdentifyOneBinary.NAME,
- targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.IdentifyOneBinary")
 @Local(IdentifyOneBinary.class)
 @Remote(IdentifyOneBinary.class)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
+@WebService(
+        name = Droid.NAME, 
+        serviceName = IdentifyOneBinary.NAME, 
+        targetNamespace = PlanetsServices.NS,
+        endpointInterface = "eu.planets_project.services.identify.IdentifyOneBinary" )
 public final class Droid implements IdentifyOneBinary, Serializable {
     /**
      * The e number of ms. we want to wait in one waiting step for the
@@ -42,7 +42,7 @@ public final class Droid implements IdentifyOneBinary, Serializable {
      * The maximum times we want to sleep for WAIT_INTERVAL ms. to wait for the
      * identification to finish
      */
-    private static final int WAIT_MAX = 300;
+    private static final int WAIT_MAX = 3000;
     /***/
     private static final long serialVersionUID = -7116493742376868770L;
     /***/
@@ -62,11 +62,6 @@ public final class Droid implements IdentifyOneBinary, Serializable {
      * @return Returns the Pronom IDs found for the file as URIs in a Types
      *         object
      */
-    @WebMethod(operationName = IdentifyOneBinary.NAME, action = PlanetsServices.NS
-            + "/" + IdentifyOneBinary.NAME)
-    @WebResult(name = IdentifyOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
-            + "/" + IdentifyOneBinary.NAME, partName = IdentifyOneBinary.NAME
-            + "Result")
     public Types identifyOneBinary(final byte[] bytes) {
         // Determine the config directory:
         String sigFileLocation = configFolder();
@@ -113,7 +108,6 @@ public final class Droid implements IdentifyOneBinary, Serializable {
      * @return Returns a Types object containing an array with the Pronom IDs as
      *         URIs for the specified file
      */
-    @WebMethod()
     public Types identifyOneFile(final String fileName) {
         byte[] array = ByteArrayHelper.read(new File(fileName));
         return identifyOneBinary(array);
@@ -153,4 +147,12 @@ public final class Droid implements IdentifyOneBinary, Serializable {
         return sigFileLocation;
     }
 
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.identify.IdentifyOneBinary#describe()
+     */
+    public ServiceDescription describe() {
+        ServiceDescription sd = new ServiceDescription(NAME,this.getClass().getCanonicalName());
+        sd.setDescription("Identification service based on Droid.");
+        return sd;
+    }
 }

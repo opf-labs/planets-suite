@@ -9,8 +9,10 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
+import javax.xml.ws.ResponseWrapper;
 
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Types;
 
 /**
@@ -25,7 +27,9 @@ import eu.planets_project.services.datatypes.Types;
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface IdentifyOneBinary {
-	public static final String NAME = "IdentifyOneBinary";
+	
+    public static final String NAME = "IdentifyOneBinary";
+	
 	public static final QName QNAME = new QName(PlanetsServices.NS,
 			IdentifyOneBinary.NAME);
 
@@ -42,5 +46,18 @@ public interface IdentifyOneBinary {
 	public Types identifyOneBinary(
 	        @WebParam(targetNamespace = PlanetsServices.NS + "/"
 			+ IdentifyOneBinary.NAME)
-	byte[] binary);
+	byte[] binary );
+
+    /**
+     * A method that can be used to recover a rich service description, and thus populate a service registry.
+     * @return An ServiceDescription object that describes this service, to aid service discovery.
+     */
+    @WebMethod(operationName = IdentifyOneBinary.NAME + "_describe", action = PlanetsServices.NS
+            + "/" + IdentifyOneBinary.NAME + "/describe")
+    @WebResult(name = IdentifyOneBinary.NAME + "Description", targetNamespace = PlanetsServices.NS
+            + "/" + IdentifyOneBinary.NAME, partName = IdentifyOneBinary.NAME
+            + "Description")
+    @ResponseWrapper(className="eu.planets_project.services.identify."+IdentifyOneBinary.NAME+"DescribeResponse")
+    public ServiceDescription describe();
+
 }

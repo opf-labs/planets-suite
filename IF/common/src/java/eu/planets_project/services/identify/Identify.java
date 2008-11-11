@@ -57,5 +57,6 @@ public interface Identify extends PlanetsService {
             + "/" + Identify.NAME, partName = Identify.NAME
             + "Description")
     @ResponseWrapper(className="eu.planets_project.services.identify."+Identify.NAME+"DescribeResponse")
-	public ServiceDescription describe();
+    public ServiceDescription describe();
+    
 }
