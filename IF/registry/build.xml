@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="if-registry" default="deploy" basedir=".">
+
+	<!-- Define the project name and directory, based on the project name specified above. -->
+	<property name="appName" value="${ant.project.name}" />
+	<property name="appDir" value="." />
+
+	<!-- Specify the build type: ejb, war or ear. -->
+	<property name="pserv.app.build.type" value="ejb" />
+
+	<!-- Specify how this application should be deployed -->
+	<property name="pserv.app.deploy.mode" value="none" />
+
+	<!-- Specify the source directories for this component -->
+	<property name="src.dir" value="${appDir}/src/main/java" />
+	<property name="lib.dir" value="${appDir}/lib" />
+	<property name="src.resources" value="${appDir}/src/main/resources" />
+	<property name="src.web" value="${appDir}/src/web" />
+	
+	<!-- Define the API part-->
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/registry/api/**"/>
+
+	<!-- Unit testing definitions -->
+	<property name="test.src.dir" value="${appDir}/src/test/java" />
+	<property name="test.local" value="" />
+	<property name="test.server" value="" />
+
+	<!-- Reference to the main build file -->
+	<property name="pserv.root.dir" value="../.." />
+	<import file="${pserv.root.dir}/build.common.xml" />
+
+	<!-- Copy the config files into the server config directory -->
+	<copy todir="${if_server.dir}/server/default/conf/" overwrite="true">
+		<fileset dir="src/main/resources/eu/planets_project/ifr/core/registry/">
+			<include name="registryconcepts.xml" />
+			<include name="jaxrconcepts.xsd" />
+		</fileset>
+	</copy>
+</project>

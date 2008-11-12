@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Planets Service Registry Classification Scheme v 0.1-->
+<PredefinedConcepts	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="jaxrconcepts.xsd">
+	<JAXRClassificationScheme
+		id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66" name="planets-eu:2008"
+		description="Digital Preservation Services Taxonomy: PLANETS(2008 Release)">
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/planetsservice"
+			name="PlanetsService"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66"
+			code="planetsservice" />
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/emulation"
+			name="Emulation"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/planetsservice"
+			code="emulation" />
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/migration"
+			name="Migration"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/planetsservice"
+			code="migration" />
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/characterisation"
+			name="Characterisation"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/planetsservice"
+			code="characterisation" />
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/identification"
+			name="Identification"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/characterisation"
+			code="identification" />
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/validation"
+			name="Validation"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/characterisation"
+			code="validation" />
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/metadataextraction"
+			name="MetadataExtraction"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/characterisation"
+			code="metadataextraction" />
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/composite"
+			name="Composite"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/planetsservice"
+			code="composite" />
+		<JAXRConcept
+			id="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/comparison"
+			name="Comparison"
+			parent="uuid:253246f0-ff2f-11dc-95ff-0800200c9a66/planetsservice"
+			code="comparison" />
+	</JAXRClassificationScheme>
+</PredefinedConcepts>
