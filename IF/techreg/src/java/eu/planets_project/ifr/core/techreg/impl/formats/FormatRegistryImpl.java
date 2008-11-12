@@ -79,8 +79,10 @@ public class FormatRegistryImpl implements FormatRegistry {
                     Set<URI> mimeSet = mimeMap.get(mimeType);
                     if( mimeSet == null ) mimeSet = new HashSet<URI>();
                     mimeSet.add(ff.getTypeURI());
-                    for( URI furi : ff.getAliases()) 
+                    if( ff.getAliases() != null ) {
+                      for( URI furi : ff.getAliases()) 
                         mimeSet.add(furi);
+                    }
                     mimeMap.put(mimeType, mimeSet);
                     //log.debug("Referenced under MIME: "+mimeType);
                 }
@@ -91,8 +93,10 @@ public class FormatRegistryImpl implements FormatRegistry {
                     Set<URI> extSet = extMap.get(ext);
                     if( extSet == null ) extSet = new HashSet<URI>();
                     extSet.add(ff.getTypeURI());
-                    for( URI furi : ff.getAliases()) 
+                    if( ff.getAliases() != null ) {
+                      for( URI furi : ff.getAliases()) 
                         extSet.add(furi);
+                    }
                     extMap.put(ext, extSet);
                     //log.debug("Referenced under extension: "+ext);
                 }
@@ -136,9 +140,9 @@ public class FormatRegistryImpl implements FormatRegistry {
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatAliases(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatURIAliases(java.net.URI)
      */
-    public List<URI> getFormatAliases(URI typeURI) {
+    public List<URI> getFormatURIAliases(URI typeURI) {
         Set<URI> turis = new HashSet<URI>();
         turis.add(typeURI);
         
@@ -166,7 +170,18 @@ public class FormatRegistryImpl implements FormatRegistry {
                 turis.add(Format.mimeToURI(mime));
             }
         }
-        return null;
+        return new ArrayList<URI>(turis);
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatAliases(java.net.URI)
+     */
+    public List<Format> getFormatAliases(URI typeURI) {
+        List<Format> fmts = new ArrayList<Format>();
+        for( URI furi : getFormatURIAliases(typeURI)) {
+           fmts.add(getFormatForURI(furi));
+        }
+        return fmts;
     }
 
 }

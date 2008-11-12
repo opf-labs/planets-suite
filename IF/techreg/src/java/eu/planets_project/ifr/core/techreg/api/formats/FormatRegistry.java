@@ -47,6 +47,13 @@ public interface FormatRegistry {
      * @param typeURI
      * @return
      */
-    public abstract List<URI> getFormatAliases( URI typeURI );
+    public abstract List<URI> getFormatURIAliases( URI typeURI );
 
+    /**
+     * 
+     * @param typeURI
+     * @return
+     */
+    public abstract List<Format> getFormatAliases( URI typeURI );
+    
 }

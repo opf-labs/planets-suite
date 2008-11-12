@@ -8,7 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,7 +37,7 @@ public class Format {
 
     private URI typeURI;
     
-    private List<URI> aliases;
+    private Set<URI> aliases = new HashSet<URI>();
     
     private URL registryURL;
 
@@ -46,9 +45,9 @@ public class Format {
     
     private String version;
     
-    private Set<String> mimeTypes;
+    private Set<String> mimeTypes = new HashSet<String>();
     
-    private Set<String> extensions;
+    private Set<String> extensions = new HashSet<String>();
 
     /**
      * 
@@ -84,14 +83,14 @@ public class Format {
     /**
      * @return the aliases
      */
-    public List<URI> getAliases() {
+    public Set<URI> getAliases() {
         return aliases;
     }
 
     /**
      * @param aliases the aliases to set
      */
-    public void setAliases(List<URI> aliases) {
+    public void setAliases(Set<URI> aliases) {
         this.aliases = aliases;
     }
 
