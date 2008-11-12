@@ -77,12 +77,17 @@
           <exclude name="jaxws-jboss-native/jaxws-rt.jar"/>
           <exclude name="jaxws-jboss-native/jaxws-tools.jar"/>
 	    </fileset>
-        <fileset dir="${pserv.root.dir}/build/">
-          <include name="*.jar" />
-        </fileset>
+	    <path refid="pserv_common_classpath"/>
 	  </path>
 	</else>
   </if>
+
+  <!-- The classpath corresponding to the shared artefacts. -->
+  <path id="pserv_common_classpath">
+    <fileset dir="${pserv.root.dir}/build/">
+      <include name="*.jar" />
+    </fileset>
+  </path>    
   
   <!-- The classpath elements for the current component -->
   <path id="component_classpath">
@@ -115,9 +120,7 @@
     <path refid="component_classpath"/>
     <pathelement location="${build.classes.dir}"/>
     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
-    <fileset dir="${pserv.root.dir}/build/">
-       <include name="*.jar" />
-    </fileset>
+    <path refid="pserv_common_classpath"/>
     <fileset dir="${pserv.root.dir}/lib">
       <include name="junit-4.*.jar" />
     </fileset>
@@ -137,9 +140,7 @@
     </fileset>
     <path refid="component_classpath"/>
     <!-- Also include the standard (common) classes .: Not sensible to use this target on IF/common -->
-    <fileset dir="${pserv.root.dir}/build/">
-      <include name="*.jar" />
-    </fileset>
+    <path refid="pserv_common_classpath"/>
   </path>
   
   <path id="standalone_test_classpath">
@@ -164,6 +165,13 @@
   <target name="deploy:common" unless="have.deployed.common">
     <ant dir="${pserv.root.dir}/IF/common" inheritAll="false" target="compile:common"/>
     <ant dir="${pserv.root.dir}" inheritAll="false" target="deploy:api"/>
+    <!-- Ensure any new jars are added to the classpath? -->
+    <path id="pserv_common_classpath">
+      <fileset dir="${pserv.root.dir}/build/">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+    <echo message="Common code, and APIs, have been deployed."/>
   </target>
   
   <!-- To compile the common classes and put them in the right places. -->
@@ -425,6 +433,18 @@
   
   <target name="test:server" description="executes the included JUnit tests against a running server" depends="test:src-defined,compile:tests,test:server-defined" if="test.server">
     <echo message="TEST:SERVER: Testing the service code against the server ${if_server.host}:${if_server.port}."/>
+    <if>
+      <isset property="if_server.host"/>
+      <else>
+        <fail message="You must set the if_server.host and if_server.port properties to specifyt the server to be tested."/>
+      </else>
+    </if>
+    <if>
+      <isset property="if_server.port"/>
+      <else>
+        <fail message="You must set the if_server.host and if_server.port properties to specifyt the server to be tested."/>
+      </else>
+    </if>
     <!-- Emit the property to the ant console -->
     <property name="echoclasspath" refid="standalone_test_classpath"/>
     <!-- echo message="Classpath = ${echoclasspath}"/ -->
@@ -504,11 +524,16 @@
       <classpath refid="classpath"/>
     </javac>
     
-    <copy todir="${ear.build.dir}/${appName}">
-        <fileset dir="${src.web}" casesensitive="yes">
-        <include name="**/*.*" />
-      </fileset>
-    </copy>
+    <if>
+      <isset property="src.web"/>
+      <then>
+        <copy todir="${war.build.dir}/${appName}">
+         <fileset dir="${src.web}" casesensitive="yes">
+          <include name="**/*.*" />
+         </fileset>
+        </copy>
+      </then>
+    </if>
 
     <copy todir="${ear.build.dir}/${appName}/WEB-INF/classes">
       <fileset dir="${src.resources}">
@@ -677,7 +702,7 @@
     <if>
 	  <isset property="server.deploy.dir"/>
 	  <then>
-	  <copy file="${war.base.name}" todir="${server.deploy.dir}"/>
+	  <copy file="${build.dir}/${war.base.name}" todir="${server.deploy.dir}"/>
       </then>
       <else>
       	<echo message="Cannot deploy, as no deployment directory is defined."/>

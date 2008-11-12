@@ -15,12 +15,12 @@ import eu.planets_project.services.datatypes.ServiceReport;
  */
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
+@Deprecated
 public class MigrateOneBinaryResult {
 
     private byte[] binary;
     
     private ServiceReport report;
-    
 
     /**
      * For JAXB:

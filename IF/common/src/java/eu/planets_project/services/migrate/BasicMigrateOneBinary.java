@@ -13,7 +13,6 @@ import javax.xml.ws.BindingType;
 
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.identify.IdentifyOneBinary;
 
 /**
  * This is a basic migration service, with no parameters or metadata.
@@ -29,6 +28,7 @@ import eu.planets_project.services.identify.IdentifyOneBinary;
 //        name = BasicMigrateOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS )
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@Deprecated
 public interface BasicMigrateOneBinary {
     public static final String NAME = "BasicMigrateOneBinary";
     public static final QName QNAME = new QName(PlanetsServices.NS, BasicMigrateOneBinary.NAME );

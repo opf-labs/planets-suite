@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -36,6 +38,8 @@ public class Format {
 
     private URI typeURI;
     
+    private List<URI> aliases;
+    
     private URL registryURL;
 
     private String summary;
@@ -45,6 +49,23 @@ public class Format {
     private Set<String> mimeTypes;
     
     private Set<String> extensions;
+
+    /**
+     * 
+     * @param typeURI
+     */
+    public Format( URI typeURI ) {
+        this.typeURI = typeURI;
+        if( Format.isThisAMimeURI(typeURI) ) {
+            String mime = typeURI.toString().replace(MIME_URI_PREFIX, "");
+            this.mimeTypes = new HashSet<String>();
+            this.mimeTypes.add(mime);
+        } else if( Format.isThisAnExtensionURI(typeURI)) {
+            String ext = typeURI.toString().replace(EXT_URI_PREFIX, "");
+            this.extensions = new HashSet<String>();
+            this.extensions.add(ext);
+        }
+    }
     
     /**
      * @return the typeURI
@@ -58,6 +79,20 @@ public class Format {
      */
     public void setTypeURI(URI typeURI) {
         this.typeURI = typeURI;
+    }
+    
+    /**
+     * @return the aliases
+     */
+    public List<URI> getAliases() {
+        return aliases;
+    }
+
+    /**
+     * @param aliases the aliases to set
+     */
+    public void setAliases(List<URI> aliases) {
+        this.aliases = aliases;
     }
 
     /**
@@ -147,6 +182,9 @@ public class Format {
     /* ========================================================================================== */
     /* ========================================================================================== */
     /* ========================================================================================== */
+    
+    public static final String MIME_URI_PREFIX="planets:fmt/mime/";
+    public static final String EXT_URI_PREFIX="planets:fmt/ext/";
 
     /**
      * Static helper to construct appropriate URIs for file-extensions format specifiers.
@@ -156,7 +194,7 @@ public class Format {
      */
     public static URI extensionToURI(String ext) {
         try {
-            return new URI("planets:fmt/ext/"+ext.toLowerCase());
+            return new URI(EXT_URI_PREFIX+ext.toLowerCase());
         } catch (URISyntaxException e) {
             return null;
         }
@@ -170,11 +208,28 @@ public class Format {
      */
     public static URI mimeToURI(String mime) {
         try {
-            return new URI("planets:fmt/mime/"+mime.toLowerCase());
+            return new URI(MIME_URI_PREFIX+mime.toLowerCase());
         } catch (URISyntaxException e) {
             return null;
         }
     }
-    
+
+    /**
+     * 
+     * @param typeURI
+     * @return
+     */
+    public static boolean isThisAMimeURI( URI typeURI ) {
+        return typeURI.toString().startsWith(MIME_URI_PREFIX); 
+    }
+
+    /**
+     * 
+     * @param typeURI
+     * @return
+     */
+    public static boolean isThisAnExtensionURI( URI typeURI ) {
+        return typeURI.toString().startsWith(EXT_URI_PREFIX); 
+    }
     
 }

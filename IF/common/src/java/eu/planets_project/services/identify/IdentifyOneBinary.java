@@ -26,6 +26,7 @@ import eu.planets_project.services.datatypes.Types;
         name = IdentifyOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@Deprecated
 public interface IdentifyOneBinary {
 	
     public static final String NAME = "IdentifyOneBinary";

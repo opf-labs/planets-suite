@@ -21,26 +21,29 @@ import javax.jws.WebService;
 
 import eu.planets_project.ifr.core.services.migration.generic.common.MultiProperties;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.migrate.MigrateOneBinary;
-import eu.planets_project.services.migrate.MigrateOneBinaryResult;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
 
 @Stateless
-@Remote(MigrateOneBinary.class)
+@Remote(Migrate.class)
 
 @WebService(
         name = GenericMigration.NAME, 
-        serviceName = MigrateOneBinary.NAME,
+        serviceName = Migrate.NAME,
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.migrate.MigrateOneBinary" )
         
-public class GenericMigration implements MigrateOneBinary, Serializable
+public class GenericMigration implements Migrate, Serializable
 {
 	private static final long serialVersionUID = -2186431821310098736L;
 
@@ -50,13 +53,13 @@ public class GenericMigration implements MigrateOneBinary, Serializable
      * @see eu.planets_project.services.migrate.MigrateOneBinary#describe()
      */
     public ServiceDescription describe() {
-        return new ServiceDescription("Generic Command Wrapper Service", MigrateOneBinary.class.getCanonicalName());
+        return new ServiceDescription("Generic Command Wrapper Service", Migrate.class.getCanonicalName());
     }
 
     /* (non-Javadoc)
      * @see eu.planets_project.services.migrate.MigrateOneBinary#migrate(byte[], java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)
      */
-    public MigrateOneBinaryResult migrate(byte[] binary, URI inputFormat,
+    public MigrateResult migrate( DigitalObject dob , URI inputFormat,
             URI outputFormat, Parameters parameters) 
     {
 		// yes yes, this probably ought to be a bunch of methods
@@ -67,17 +70,17 @@ public class GenericMigration implements MigrateOneBinary, Serializable
 		}
 		catch(InvalidPropertiesFormatException e)
 		{
-			return new MigrateOneBinaryResult( null, 
+			return new MigrateResult( null, 
 			        ServiceUtils.createExceptionErrorReport("Could not load commands.xml", e) );
 		}
 		catch(FileNotFoundException e)
 		{
-            return new MigrateOneBinaryResult( null, 
+            return new MigrateResult( null, 
                     ServiceUtils.createExceptionErrorReport("Could not load commands.xml", e) );
 		}
 		catch(IOException e)
 		{
-            return new MigrateOneBinaryResult( null, 
+            return new MigrateResult( null, 
                     ServiceUtils.createExceptionErrorReport("Could not load commands.xml", e) );
 		}
 		MultiProperties mp = MultiProperties.load(p);
@@ -89,8 +92,7 @@ public class GenericMigration implements MigrateOneBinary, Serializable
 		Map<String, String> toolParams = mp.get(params.get("tool-name"));
 		try
 		{
-			File inputFile = File.createTempFile("generic-input", "tmp");
-			createSource(binary, inputFile);
+			File inputFile = FileUtils.writeInputStreamToTmpFile( dob.getContent().read(), "generic-input", "tmp");
 
 			File outputFile = File.createTempFile("generic-output", "tmp");
 			outputFile.delete();
@@ -120,29 +122,23 @@ public class GenericMigration implements MigrateOneBinary, Serializable
 			log.warn = pr.getProcessOutputAsString();
 			log.properties = new ArrayList<Property>();
 			log.properties.add( new Property("name", "value") );
-			return new MigrateOneBinaryResult(readDestination(outputFile), log);
+			return new MigrateResult(readDestination(outputFile), log);
 		}
 		catch(IOException e)
 		{
-            return new MigrateOneBinaryResult( null, 
+            return new MigrateResult( null, 
                     ServiceUtils.createExceptionErrorReport("Could not execute command using tool "+params.get("tool-name"), e) );
 		}
 	}
 
-	private byte[] readDestination(File outputFile) throws FileNotFoundException, IOException
+	private DigitalObject readDestination(File outputFile) throws FileNotFoundException, IOException
 	{
 		FileInputStream fis = new FileInputStream(outputFile);
 		byte[] output = new byte[(int)outputFile.length()];
 		fis.read(output);
 		fis.close();
-		return output;
-	}
-
-	private void createSource(byte[] binary, File inputFile) throws FileNotFoundException, IOException
-	{
-		FileOutputStream fos = new FileOutputStream(inputFile);
-		fos.write(binary);
-		fos.close();
+		DigitalObject ndo = new DigitalObject.Builder(Content.byValue(output)).build();
+		return ndo;
 	}
 
 }

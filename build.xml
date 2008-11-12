@@ -34,6 +34,7 @@
       </else>
     </if>
     <ant dir="IF/common" inheritAll="false"/>
+    <ant target="deploy:api"/>
   </target>
   <target name="compile:common" depends="props:set">
     <ant dir="IF/common" inheritAll="false" target="compile:common"/>
@@ -136,6 +137,7 @@
   </path>
   
   <target name="clean:all">
+    <delete dir="build"/>
     <foreach target="clean:sub" param="sub.build.dir" inheritall="false">
       <path refid="all.sub.project.builds"/>
     </foreach>

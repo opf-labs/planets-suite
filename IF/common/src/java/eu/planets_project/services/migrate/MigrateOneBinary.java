@@ -19,6 +19,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 @WebService(name = MigrateOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@Deprecated
 public interface MigrateOneBinary extends PlanetsService
 {
 	public static final String NAME = "MigrateOneBinary";

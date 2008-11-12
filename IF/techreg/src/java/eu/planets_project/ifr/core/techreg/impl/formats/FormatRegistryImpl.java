@@ -79,6 +79,8 @@ public class FormatRegistryImpl implements FormatRegistry {
                     Set<URI> mimeSet = mimeMap.get(mimeType);
                     if( mimeSet == null ) mimeSet = new HashSet<URI>();
                     mimeSet.add(ff.getTypeURI());
+                    for( URI furi : ff.getAliases()) 
+                        mimeSet.add(furi);
                     mimeMap.put(mimeType, mimeSet);
                     //log.debug("Referenced under MIME: "+mimeType);
                 }
@@ -89,6 +91,8 @@ public class FormatRegistryImpl implements FormatRegistry {
                     Set<URI> extSet = extMap.get(ext);
                     if( extSet == null ) extSet = new HashSet<URI>();
                     extSet.add(ff.getTypeURI());
+                    for( URI furi : ff.getAliases()) 
+                        extSet.add(furi);
                     extMap.put(ext, extSet);
                     //log.debug("Referenced under extension: "+ext);
                 }
@@ -101,7 +105,11 @@ public class FormatRegistryImpl implements FormatRegistry {
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatForURI(java.net.URI)
      */
     public Format getFormatForURI(URI puri) {
-        return uriMap.get(puri);
+        if( Format.isThisAMimeURI(puri) ||  Format.isThisAnExtensionURI(puri)) {
+            return new Format(puri);
+        } else {
+            return uriMap.get(puri);
+        }
     }
 
     /* (non-Javadoc)
@@ -126,7 +134,39 @@ public class FormatRegistryImpl implements FormatRegistry {
         Collections.sort(found);
         return found;
     }
-    
-    
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatAliases(java.net.URI)
+     */
+    public List<URI> getFormatAliases(URI typeURI) {
+        Set<URI> turis = new HashSet<URI>();
+        turis.add(typeURI);
+        
+        if( Format.isThisAMimeURI(typeURI) ) {
+            Format ext = new Format(typeURI);
+            Set<URI> furis = getURIsForExtension(ext.getExtensions().iterator().next());
+            turis.addAll(furis);
+        } else if( Format.isThisAnExtensionURI(typeURI)) {
+            Format mime = new Format(typeURI);
+            Set<URI> furis = getURIsForMimeType(mime.getMimeTypes().iterator().next());
+            turis.addAll(furis);
+        } else {
+            // This is a known format, ID, so add it, any aliases, and the ext and mime forms:
+            Format f = uriMap.get(typeURI);
+            // Aliases:
+            for( URI uri : f.getAliases() ) {
+                turis.add(uri);
+            }
+            // Ext:
+            for( String ext : f.getExtensions() ) {
+                turis.add(Format.extensionToURI(ext));
+            }
+            // Mime:
+            for( String mime : f.getMimeTypes() ) {
+                turis.add(Format.mimeToURI(mime));
+            }
+        }
+        return null;
+    }
 
 }

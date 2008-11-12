@@ -19,7 +19,7 @@ public interface FormatRegistry {
      * @return
      */
     public abstract Format getFormatForURI(URI puri);
-
+    
     /**
      * 
      * @param ext
@@ -40,5 +40,13 @@ public interface FormatRegistry {
      * @return
      */
     public abstract List<URI> search( String query );
+
+    /**
+     * This class looks up the different Format URIs consistent wit the given URI.
+     * 
+     * @param typeURI
+     * @return
+     */
+    public abstract List<URI> getFormatAliases( URI typeURI );
 
 }

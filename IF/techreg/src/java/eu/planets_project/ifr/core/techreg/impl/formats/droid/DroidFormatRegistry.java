@@ -80,11 +80,10 @@ public class DroidFormatRegistry  {
      * @return
      */
     private Format fillFormatFromPRONOM( FileFormat ff ) {
-        Format fmt  = new Format();
-        if( ff == null ) return fmt;
+        if( ff == null ) return null;
         
         // Store the unique id and the description
-        fmt.setTypeURI( PUIDtoURI(ff.getPUID()) );
+        Format fmt  = new Format( PUIDtoURI(ff.getPUID()) );
         try {
             fmt.setRegistryURL( new URL("http://www.nationalarchives.gov.uk/PRONOM/Format/proFormatSearch.aspx?status=detailReport&id=" + ff.getID()) );
         } catch (MalformedURLException e) {
