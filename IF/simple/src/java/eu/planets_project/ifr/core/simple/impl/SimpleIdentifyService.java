@@ -94,7 +94,7 @@ public class SimpleIdentifyService implements Identify {
         log.error(message);
         rep.setErrorState(ServiceReport.ERROR);
         rep.setError("message");
-        return new IdentifyResult(type, null, rep);
+        return new IdentifyResult(type, rep);
     }
 
 }

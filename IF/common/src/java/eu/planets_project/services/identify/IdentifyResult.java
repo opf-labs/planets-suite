@@ -4,6 +4,7 @@
 package eu.planets_project.services.identify;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -47,7 +48,7 @@ public class IdentifyResult {
         OTHER 
         
     };
-    Method method;
+    List<Method> methods;
     
     ServiceReport report;
 
@@ -64,7 +65,32 @@ public class IdentifyResult {
     public IdentifyResult(List<URI> types, Method method, ServiceReport report) {
         super();
         this.types = types;
-        this.method = method;
+        this.methods = new ArrayList<Method>();
+        this.methods.add(method);
+        this.report = report;
+    }
+
+    /**
+     * @param types
+     * @param method
+     * @param report
+     */
+    public IdentifyResult(List<URI> types, List<Method> methods, ServiceReport report) {
+        super();
+        this.types = types;
+        this.methods = methods;
+        this.report = report;
+    }
+
+    /**
+     * 
+     * @param types
+     * @param report
+     */
+    public IdentifyResult( List<URI> types, ServiceReport report ) {
+        super();
+        this.types = types;
+        this.methods = null;
         this.report = report;
     }
 
@@ -79,8 +105,8 @@ public class IdentifyResult {
     /**
      * @return the method
      */
-    public Method getMethod() {
-        return method;
+    public List<Method> getMethods() {
+        return methods;
     }
 
     /**

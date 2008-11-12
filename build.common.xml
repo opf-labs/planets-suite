@@ -535,7 +535,7 @@
       </then>
     </if>
 
-    <copy todir="${ear.build.dir}/${appName}/WEB-INF/classes">
+    <copy todir="${war.build.dir}/${appName}/WEB-INF/classes">
       <fileset dir="${src.resources}">
         <include name="**/*.properties" />
         <include name="**/*.xml" />
@@ -637,6 +637,13 @@
 
   <target name="deploy" depends="check-build-type-set">
     <if>
+      <equals arg1="${pserv.app.deploy.mode}" arg2="none"/>
+      <then>
+        <echo message="This component is not set to be deployed by default, and must be deployed manually, e.g. deploy:war."/>
+      </then>
+      <else>
+    <!-- Then choose the deploy type -->
+    <if>
       <equals arg1="${pserv.app.build.type}" arg2="ejb"/>
       <then>
         <echo message="Deploying as an EJB."/>
@@ -663,6 +670,9 @@
         <echo message="Deploying as a JAR."/>
         <ant target="deploy:jar"/>
       </then>
+    </if>
+        
+      </else>
     </if>
   </target>
 

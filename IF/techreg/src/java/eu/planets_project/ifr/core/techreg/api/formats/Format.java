@@ -3,6 +3,7 @@
  */
 package eu.planets_project.ifr.core.techreg.api.formats;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -33,7 +34,7 @@ import java.util.Set;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class Format {
+public class Format implements Serializable {
 
     private URI typeURI;
     
