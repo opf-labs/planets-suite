@@ -9,15 +9,15 @@ import javax.xml.ws.Service;
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.registry.api.OrganizationList;
-import eu.planets_project.ifr.core.registry.api.PsBinding;
-import eu.planets_project.ifr.core.registry.api.PsCategory;
-import eu.planets_project.ifr.core.registry.api.PsOrganization;
-import eu.planets_project.ifr.core.registry.api.ServiceRegistryMessage;
-import eu.planets_project.ifr.core.registry.api.PsRegistryObject;
-import eu.planets_project.ifr.core.registry.api.PsSchema;
-import eu.planets_project.ifr.core.registry.api.PsService;
 import eu.planets_project.ifr.core.registry.api.ServiceRegistry;
+import eu.planets_project.ifr.core.registry.api.model.OrganizationList;
+import eu.planets_project.ifr.core.registry.api.model.PsBinding;
+import eu.planets_project.ifr.core.registry.api.model.PsCategory;
+import eu.planets_project.ifr.core.registry.api.model.PsOrganization;
+import eu.planets_project.ifr.core.registry.api.model.PsRegistryObject;
+import eu.planets_project.ifr.core.registry.api.model.PsSchema;
+import eu.planets_project.ifr.core.registry.api.model.PsService;
+import eu.planets_project.ifr.core.registry.api.model.ServiceRegistryMessage;
 
 public class RegistryClient {
 
