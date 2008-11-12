@@ -14,7 +14,6 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 
 import edu.harvard.hul.ois.jhove.App;
 import edu.harvard.hul.ois.jhove.JhoveBase;
@@ -254,9 +253,9 @@ public final class JhoveIdentification implements IdentifyOneBinary,
      * @see eu.planets_project.services.identify.IdentifyOneBinary#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription sd = new ServiceDescription(NAME,this.getClass().getCanonicalName());
-        sd.setDescription("Identification service using JHOVE.");
-        return sd;
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,this.getClass().getCanonicalName());
+        sd.description("Identification service using JHOVE.");
+        return sd.build();
     }
     
 }

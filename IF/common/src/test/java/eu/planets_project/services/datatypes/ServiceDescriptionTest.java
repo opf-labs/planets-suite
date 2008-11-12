@@ -3,20 +3,15 @@
  */
 package eu.planets_project.services.datatypes;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -32,20 +27,17 @@ public class ServiceDescriptionTest {
     @Before
     public void setUp() throws Exception {
         
-        sd = new ServiceDescription("A Test Service", "eu.planets_project.services.identify.Identify");
-        sd.setAuthor("Andrew N. Jackson <Andrew.Jackson@bl.uk>");
-        sd.setDescription("This is just a simple test service description, used to unit test the Service Description code.");
-        sd.setClassname(ServiceDescriptionTest.class.getCanonicalName());
-        sd.setFurtherInfo(new URI("http://www.planets-project.eu/"));
-        List<URI> inputFormats = new ArrayList<URI>();
-        inputFormats.add(new URI("planets:fmt/ext/jpg"));
-        inputFormats.add(new URI("planets:fmt/ext/jpeg"));
-        sd.setInputFormats(inputFormats);
-        sd.setInstructions("There are not special instructions for this service.");
+        ServiceDescription.Builder builder = new ServiceDescription.Builder("A Test Service", "eu.planets_project.services.identify.Identify");
+        builder.author("Andrew N. Jackson <Andrew.Jackson@bl.uk>");
+        builder.description("This is just a simple test service description, used to unit test the Service Description code.");
+        builder.classname(ServiceDescriptionTest.class.getCanonicalName());
+        builder.furtherInfo(new URI("http://www.planets-project.eu/"));
+        builder.inputFormats(new URI("planets:fmt/ext/jpg"),new URI("planets:fmt/ext/jpeg"));
+        builder.instructions("There are not special instructions for this service.");
         Parameters pars = new Parameters();
         pars.add("planets:srv/par/test", "true");
-        sd.setParameters(pars);
-        
+        builder.parameters(pars);
+        sd=builder.build();
     }
 
     /**

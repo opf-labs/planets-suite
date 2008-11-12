@@ -50,9 +50,9 @@ public class SimpleCharacterisationService implements DetermineProperties
      * @see eu.planets_project.services.characterise.DetermineProperties#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription sd = new ServiceDescription( NAME, DetermineProperties.class.getCanonicalName() );
-        sd.setDescription("A simple example characterization service, which just measures the size of single-binary digital objects.");
-        return sd;
+        ServiceDescription.Builder sd = new ServiceDescription.Builder( NAME, DetermineProperties.class.getCanonicalName() );
+        sd.description("A simple example characterization service, which just measures the size of single-binary digital objects.");
+        return sd.build();
     }
 
     /* (non-Javadoc)

@@ -53,7 +53,7 @@ public class GenericMigration implements Migrate, Serializable
      * @see eu.planets_project.services.migrate.MigrateOneBinary#describe()
      */
     public ServiceDescription describe() {
-        return new ServiceDescription("Generic Command Wrapper Service", Migrate.class.getCanonicalName());
+        return new ServiceDescription.Builder("Generic Command Wrapper Service", Migrate.class.getCanonicalName()).build();
     }
 
     /* (non-Javadoc)

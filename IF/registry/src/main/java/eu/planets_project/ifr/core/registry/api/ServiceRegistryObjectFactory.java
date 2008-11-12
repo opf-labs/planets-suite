@@ -165,9 +165,9 @@ public final class ServiceRegistryObjectFactory {
     public static ServiceDescription descriptionOf(PsService psService) {
         // TODO what about the rest?
         // TODO how to map classifications and types
-        ServiceDescription sd = new ServiceDescription(psService.getName(), null);
-        sd.setDescription(psService.getDescription());
-        return sd;
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(psService.getName(), null);
+        sd.description(psService.getDescription());
+        return sd.build();
     }
 
 }

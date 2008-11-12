@@ -27,7 +27,6 @@ public class ImageMagickMigrations implements Migrate {
 	
 	public static String[] compressionTypes = new String[11];
 	private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass());
-	public ServiceDescription serviceDescription = new ServiceDescription();
 	private static final int COMPRESSION_TYPE_DEFAULT = 1; 
 	private static final String IMAGEMAGICK_TEMP = "ImageMagickService";
 	private static final String OUT_FOLDER = "output";

@@ -9,17 +9,30 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+
 //import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
  */
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class Parameters {
 
-    @XmlElement(name="parameter")
+    @XmlElement(name = "parameter")
     List<Parameter> parameters = null;
+
+    /**
+     * No-arg constructor
+     */
+    public Parameters() {
+    }
+
+    /**
+     * @param parameters The parameters to copy
+     */
+    public Parameters(Parameters parameters) {
+        this.parameters = parameters.parameters;
+    }
 
     /**
      * @return the parameters
@@ -36,16 +49,15 @@ public class Parameters {
     }
 
     /**
-     * 
      * @param name
      * @param value
      */
     public void add(String name, String value) {
-        if( this.parameters == null ) this.parameters = new ArrayList<Parameter>();
-        
+        if (this.parameters == null)
+            this.parameters = new ArrayList<Parameter>();
+
         Parameter p = new Parameter(name, value);
         this.parameters.add(p);
     }
-    
-    
+
 }

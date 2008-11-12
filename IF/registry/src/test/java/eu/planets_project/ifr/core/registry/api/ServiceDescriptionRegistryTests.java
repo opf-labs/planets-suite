@@ -30,9 +30,10 @@ public class ServiceDescriptionRegistryTests {
         registry.clear();
         String name = "name";
         String type = "type";
-        d = new ServiceDescription(name, type);
+        ServiceDescription.Builder b = new ServiceDescription.Builder(name, type);
         String description = "description";
-        d.setDescription(description);
+        b.description(description);
+        d = b.build();
     }
 
     @Test

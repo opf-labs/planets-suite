@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -21,155 +24,356 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-//import eu.planets_project.services.migrate.MigrationPath;
-
 /**
- * A entity to hold metadata about services.  The content of this object was first 
- * defined at the IF meeting in September 2008.
- *  
- * This is intended to be used primarily as an XML schema, 
- * but is defined in Java to make reading/writing easier.
- *  
- * See also, DOAP: http://trac.usefulinc.com/doap
- * 
- * ******************* NOT IN SERVICE AT PRESENT **************************
- * 
- * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
+ * A entity to hold metadata about services. The content of this object was
+ * first defined at the IF meeting in September 2008. This is intended to be
+ * used primarily as an XML schema, but is defined in Java to make
+ * reading/writing easier. See also, DOAP: http://trac.usefulinc.com/doap
+ * <p/>
+ * This class is immutable in practice; its instances can therefore be shared
+ * freely and concurrently. Instances are created using a builder to allow
+ * optional named constructor parameters and ensure consistent state during
+ * creation. E.g. to create a service description with only the required
+ * arguments, you'd use:
+ * <p/>
+ * {@code ServiceDescription d = new ServiceDescription.Builder(name,
+ * type).build();}
+ * <p/>
+ * You can cascade additional calls for optional arguments:
+ * <p/>
+ * {@code ServiceDescription d = new ServiceDescription.Builder(name,
+ * type).paths(path1,path2).logo(logo).build();}
+ * <p/>
+ * ServiceDescription instances can be serialized to XML. Given such an XML
+ * representation, a service description can be instantiated using a static
+ * factory method:
+ * <p/>
+ * {@code ServiceDescription d = ServiceDescription.of(xml);}
+ * <p/>
+ * To use a given service description (either as an object or as XML) as a
+ * template for your service description, you can give it to the builder and add
+ * or override values:
+ * <p/>
+ * {@code ServiceDescription d = new
+ * ServiceDescription.Builder(xml).paths(path1, path2).logo(logo).build();}
+ * <p/>
+ * A corresponding XML schema can be generated from this class by running this
+ * class as a Java application, see {@link #main(String[])}.
+ * <p/>
+ * For usage examples, see the tests in {@link ServiceDescriptionTest}.
+ * @see ServiceDescriptionTest
+ * @see AlwaysSaysValidService
+ * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>, <a
+ *         href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  */
-@XmlRootElement(name="ServiceDescription", namespace="http://www.planets-project.eu/services")
+@XmlRootElement(name = "ServiceDescription", namespace = "http://www.planets-project.eu/services")
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class ServiceDescription {
+public final class ServiceDescription {
+
+    private static final String TERMS_NS = "http://purl.org/dc/terms/";
+
+    private static final String SERVICES_NS = "http://www.planets-project.eu/services";
 
     /**
      * A brief name by which this service is known.
      */
-    @XmlElement(name="title", namespace="http://purl.org/dc/terms/", required=true)
+    @XmlElement(name = "title", namespace = TERMS_NS, required = true)
     String name;
 
     /**
      * The name of the concrete implementation class.
      */
-    @XmlElement(namespace="http://www.planets-project.eu/services")
+    @XmlElement(namespace = SERVICES_NS)
     String classname;
-    
+
     /**
-     * The type of the service, which is the fully qualified name of the service interface.
+     * The type of the service, which is the fully qualified name of the service
+     * interface.
      */
-    @XmlElement(namespace="http://www.planets-project.eu/services")
+    @XmlElement(namespace = SERVICES_NS)
     String type;
-    
+
     /**
-     * Declared Parameters: [name, type, value (default)]*n
+     * Declared Parameters: [name, type, value (default)]*n.
      */
-    @XmlElement(namespace="http://www.planets-project.eu/services")
+    @XmlElement(namespace = SERVICES_NS)
     Parameters parameters;
-    
+
     /**
-     *  The link to the Tool registry.
+     * The link to the Tool registry.
      */
-    @XmlElement(namespace="http://www.planets-project.eu/services")
+    @XmlElement(namespace = SERVICES_NS)
     URI tool;
 
     /**
-     * Human readable description of the service.
-     * Allow to be HTML, using a <![CDATA[ <b>Hi</b> ]]>
+     * Human readable description of the service. Allow to be HTML, using a
+     * <![CDATA[ <b>Hi</b> ]]>
      */
-    @XmlElement(name="description", namespace="http://purl.org/dc/terms/")
+    @XmlElement(name = "description", namespace = TERMS_NS)
     String description;
 
     /**
      * Wrapper version.
      */
-    @XmlElement(namespace="http://www.planets-project.eu/services")
+    @XmlElement(namespace = SERVICES_NS)
     String version;
-    
+
     /**
-     * Identifier - A unique identifier for this service.
-     *  "We need a unique id for every service; Andrew Lindley is using a MD5 hash to identify a service. This 
-     *  is a brilliant idea. I would say this field summarizes Name of class impl service, Version of service 
-     *  and ID of Tool (URI) or makes them unnecessary."
+     * Identifier - A unique identifier for this service. "We need a unique id
+     * for every service; Andrew Lindley is using a MD5 hash to identify a
+     * service. This is a brilliant idea. I would say this field summarizes Name
+     * of class impl service, Version of service and ID of Tool (URI) or makes
+     * them unnecessary."
      */
-    @XmlElement(name="identifier", namespace="http://purl.org/dc/terms/")
+    @XmlElement(name = "identifier", namespace = TERMS_NS)
     String identifier;
-    
+
     /**
-     * Who wrote the wrapper.
-     * Preferred form would be a URI or a full email address, like: "Full Name <fullname@server.com>".
+     * Who wrote the wrapper. Preferred form would be a URI or a full email
+     * address, like: "Full Name <fullname@server.com>".
      */
-    @XmlElement(name="creator", namespace="http://purl.org/dc/terms/")
+    @XmlElement(name = "creator", namespace = TERMS_NS)
     String author;
-    
+
     /**
      * The organisation that is publishing this service endpoint.
      */
-    @XmlElement(name="publisher", namespace="http://purl.org/dc/terms/")
+    @XmlElement(name = "publisher", namespace = TERMS_NS)
     String serviceProvider;
-    
+
     /**
-     * Installation instructions. Properties to be set, or s/w to be installed. 
-     * Allow to be HTML, using non-parsed embedding, like this: <![CDATA[ <b>Hi</b> ]]>. JAXB should handle this.
+     * Installation instructions. Properties to be set, or s/w to be installed.
+     * Allow to be HTML, using non-parsed embedding, like this: <![CDATA[
+     * <b>Hi</b> ]]>. JAXB should handle this.
      */
-    @XmlElement(namespace="http://www.planets-project.eu/services")
+    @XmlElement(namespace = SERVICES_NS)
     String instructions;
-    
+
     /**
      * Link to further information about this service wrapper.
      */
-    @XmlElement(namespace="http://www.planets-project.eu/services")
+    @XmlElement(namespace = SERVICES_NS)
     URI furtherInfo;
-    
+
     /**
-     * A link to a web-browsable logo for this service.  Used when presenting the service to the user.
+     * A link to a web-browsable logo for this service. Used when presenting the
+     * service to the user.
      */
-    @XmlElement(namespace="http://www.planets-project.eu/services")
+    @XmlElement(namespace = SERVICES_NS)
     URI logo;
-    
+
     /**
-     *  Services may specify what types they can take as inputs. [input]*n
-     *  This is particularly useful for Validate and Characterise.
+     * Services may specify what types they can take as inputs. [input]*n This
+     * is particularly useful for Validate and Characterise.
      */
-    @XmlElement(name = "inputFormat", required = false, namespace="http://www.planets-project.eu/services")
+    @XmlElement(name = "inputFormat", required = false, namespace = SERVICES_NS)
     List<URI> inputFormats;
-    
+
     /**
-     * Name-value pairs for service properties. For characterisation services, this should list all 
-     * the digital object properties that the service can deal with.
-     * 
+     * Name-value pairs for service properties. For characterisation services,
+     * this should list all the digital object properties that the service can
+     * deal with.
      */
-    @XmlElement(name = "property", required = false, namespace="http://www.planets-project.eu/services")
+    @XmlElement(name = "property", required = false, namespace = SERVICES_NS)
     List<Property> properties;
-    
-    /**
-     *  If this service performs migrations, they can be listed herein:
-     *  
-     *  Migration Matrix: [input, output]*n
-     */
-    @XmlElement(name = "migrationPath", required = false, namespace="http://www.planets-project.eu/services")
-    List<MigrationPath> paths;    
-    
-    /* --------------------------------------------------------------------------------------------- */
 
     /**
-     * 
+     * If this service performs migrations, they can be listed herein: Migration
+     * Matrix: [input, output]*n.
      */
-    public ServiceDescription() {
-        super();
+    @XmlElement(name = "migrationPath", required = false, namespace = SERVICES_NS)
+    List<MigrationPath> paths;
+
+    /**
+     * @param builder The builder to construct a service description from
+     */
+    private ServiceDescription(final Builder builder) {
+        name = builder.name;
+        type = builder.type;
+        paths = builder.paths;
+        properties = builder.properties;
+        inputFormats = builder.inputFormats;
+        logo = builder.logo;
+        furtherInfo = builder.furtherInfo;
+        instructions = builder.instructions;
+        serviceProvider = builder.serviceProvider;
+        author = builder.author;
+        identifier = builder.identifier;
+        version = builder.version;
+        description = builder.description;
+        tool = builder.tool;
+        parameters = builder.parameters;
+        classname = builder.classname;
     }
 
     /**
-     * @param name
-     * @param type
+     * Builder for ServiceDescription instances. Using a builder ensures
+     * consistent object state during creation and models optional named
+     * constructor parameters while allowing immutable objects.
+     * @see eu.planets_project.ifr.core.common.services.datatypes.ServiceDescriptionTests
      */
-    public ServiceDescription(String name, String type) {
-        super();
-        this.name = name;
-        this.type = type;
+    public static final class Builder {
+
+        /** No-arg constructor for JAXB. API clients should not use this. */
+        @SuppressWarnings("unused")
+        private Builder() {
+        }
+
+        /* Required parameters: */
+        private String name;
+        private String type;
+        /* Optional parameters, initialized to default values: */
+        private List<MigrationPath> paths = new ArrayList<MigrationPath>();
+        private List<Property> properties = new ArrayList<Property>();
+        private List<URI> inputFormats = new ArrayList<URI>();
+        private URI logo = null;
+        private URI furtherInfo = null;
+        private String instructions = null;
+        private String serviceProvider = null;
+        private String author = null;
+        private String identifier = null;
+        private String version = null;
+        private String description = null;
+        private URI tool = null;
+        private Parameters parameters = null;
+        private String classname = null;
+
+        /** @return The instance created using this builder. */
+        public ServiceDescription build() {
+            return new ServiceDescription(this);
+        }
+
+        /**
+         * @param name The name
+         * @param type The type
+         */
+        public Builder(final String name, final String type) {
+            this.name = name;
+            this.type = type;
+        }
+
+        /**
+         * @param xml The XML of a service description to use as a template for
+         *        creating a new service description
+         */
+        public Builder(final String xml) {
+            ServiceDescription d = ServiceDescription.of(xml);
+            initialize(d);
+        }
+
+        /**
+         * @param serviceDescription The service description to use as a
+         *        template for creating a new service description
+         */
+        public Builder(final ServiceDescription serviceDescription) {
+            initialize(serviceDescription);
+        }
+
+        private void initialize(ServiceDescription serviceDescription) {
+            name = serviceDescription.name;
+            type = serviceDescription.type;
+            paths = serviceDescription.paths;
+            properties = serviceDescription.properties;
+            inputFormats = serviceDescription.inputFormats;
+            logo = serviceDescription.logo;
+            furtherInfo = serviceDescription.furtherInfo;
+            instructions = serviceDescription.instructions;
+            serviceProvider = serviceDescription.serviceProvider;
+            author = serviceDescription.author;
+            identifier = serviceDescription.identifier;
+            version = serviceDescription.version;
+            description = serviceDescription.description;
+            tool = serviceDescription.tool;
+            parameters = serviceDescription.parameters;
+            classname = serviceDescription.classname;
+        }
+
+        public Builder name(final String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder type(final String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Builder paths(final MigrationPath... paths) {
+            this.paths = new ArrayList<MigrationPath>(Arrays.asList(paths));
+            return this;
+        }
+
+        public Builder properties(final Property... properties) {
+            this.properties = new ArrayList<Property>(Arrays.asList(properties));
+            return this;
+        }
+
+        public Builder inputFormats(final URI... inputFormats) {
+            this.inputFormats = new ArrayList<URI>(Arrays.asList(inputFormats));
+            return this;
+        }
+
+        public Builder logo(final URI logo) {
+            this.logo = logo;
+            return this;
+        }
+
+        public Builder furtherInfo(final URI furtherInfo) {
+            this.furtherInfo = furtherInfo;
+            return this;
+        }
+
+        public Builder instructions(final String instructions) {
+            this.instructions = instructions;
+            return this;
+        }
+
+        public Builder serviceProvider(final String serviceProvider) {
+            this.serviceProvider = serviceProvider;
+            return this;
+        }
+
+        public Builder author(final String author) {
+            this.author = author;
+            return this;
+        }
+
+        public Builder identifier(final String identifier) {
+            this.identifier = identifier;
+            return this;
+        }
+
+        public Builder version(final String version) {
+            this.version = version;
+            return this;
+        }
+
+        public Builder description(final String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder classname(final String classname) {
+            this.classname = classname;
+            return this;
+        }
+
+        public Builder parameters(final Parameters parameters) {
+            this.parameters = parameters;
+            return this;
+        }
+
+        public Builder tool(final URI tool) {
+            this.tool = tool;
+            return this;
+        }
+
     }
 
-
-
-    /* --------------------------------------------------------------------------------------------- */
+    /** For JAXB. */
+    private ServiceDescription() {
+        super();
+    }
 
     /**
      * @return the name
@@ -177,26 +381,12 @@ public class ServiceDescription {
     public String getName() {
         return name;
     }
-    
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
 
     /**
      * @return the classname
      */
     public String getClassname() {
         return classname;
-    }
-    
-    /**
-     * @param classname the classname to set
-     */
-    public void setClassname(String classname) {
-        this.classname = classname;
     }
 
     /**
@@ -207,24 +397,10 @@ public class ServiceDescription {
     }
 
     /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    /**
-     * @return the parameters
+     * @return a copy of the parameters
      */
     public Parameters getParameters() {
-        return parameters;
-    }
-
-    /**
-     * @param parameters the parameters to set
-     */
-    public void setParameters(Parameters parameters) {
-        this.parameters = parameters;
+        return new Parameters(parameters);
     }
 
     /**
@@ -235,24 +411,10 @@ public class ServiceDescription {
     }
 
     /**
-     * @param tool the tool to set
-     */
-    public void setTool(URI tool) {
-        this.tool = tool;
-    }
-
-    /**
      * @return the description
      */
     public String getDescription() {
         return description;
-    }
-
-    /**
-     * @param description the description to set
-     */
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**
@@ -263,24 +425,10 @@ public class ServiceDescription {
     }
 
     /**
-     * @param version the version to set
-     */
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    /**
      * @return the author
      */
     public String getAuthor() {
         return author;
-    }
-
-    /**
-     * @param author the author to set
-     */
-    public void setAuthor(String author) {
-        this.author = author;
     }
 
     /**
@@ -291,24 +439,10 @@ public class ServiceDescription {
     }
 
     /**
-     * @param serviceProvider the serviceProvider to set
-     */
-    public void setServiceProvider(String serviceProvider) {
-        this.serviceProvider = serviceProvider;
-    }
-
-    /**
      * @return the instructions
      */
     public String getInstructions() {
         return instructions;
-    }
-
-    /**
-     * @param instructions the instructions to set
-     */
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
     }
 
     /**
@@ -319,13 +453,6 @@ public class ServiceDescription {
     }
 
     /**
-     * @param furtherInfo the furtherInfo to set
-     */
-    public void setFurtherInfo(URI furtherInfo) {
-        this.furtherInfo = furtherInfo;
-    }
-
-    /**
      * @return the logo
      */
     public URI getLogo() {
@@ -333,59 +460,37 @@ public class ServiceDescription {
     }
 
     /**
-     * @param logo the logo to set
+     * @return the identifier
      */
-    public void setLogo(URI logo) {
-        this.logo = logo;
+    public String getIdentifier() {
+        return identifier;
     }
 
     /**
-     * @return the inputFormats
+     * @return the paths (unmodifiable)
+     */
+    public List<MigrationPath> getPaths() {
+        return Collections.unmodifiableList(paths);
+    }
+
+    /**
+     * @return the inputFormats (unmodifiable)
      */
     public List<URI> getInputFormats() {
-        return inputFormats;
+        return Collections.unmodifiableList(inputFormats);
     }
 
     /**
-     * @param inputFormats the inputFormats to set
-     */
-    public void setInputFormats(List<URI> inputFormats) {
-        this.inputFormats = inputFormats;
-    }
-
-    /**
-     * @return the properties
+     * @return the properties (unmodifiable)
      */
     public List<Property> getProperties() {
-        return properties;
+        return Collections.unmodifiableList(properties);
     }
 
-    /**
-     * @param properties the properties to set
-     */
-    public void setProperties(List<Property> properties) {
-        this.properties = properties;
-    }
-    
-    /**
-     * @return the paths
-     */
-    /*public List<MigrationPath> getPaths() {
-        return paths;
-    }*/
-
-    /**
-     * @param paths the paths to set
-     */
-    public void setPaths(List<MigrationPath> paths) {
-        this.paths = paths;
-    }
-    
-    /* --------------------------------------------------------------------------------------------- */
-    
     /* Proposed hashing and equality methods, generated using Eclipse */
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -400,7 +505,8 @@ public class ServiceDescription {
         return result;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -434,26 +540,17 @@ public class ServiceDescription {
             return false;
         return true;
     }
-    
+
     /**
-     * A protected method for sub-classes to manage the identifier.
-     * @param identifier
-     */
-    protected void setIdentifier( String identifier ) {
-        this.identifier = identifier;
-    }
-        
-    /* --------------------------------------------------------------------------------------------- */
-    
-    /**
-     * @param xml The XML representation of a service description (as created from
-     *        calling toXml)
+     * @param xml The XML representation of a service description (as created
+     *        from calling toXml)
      * @return A digital object instance created from the given XML
      */
     public static ServiceDescription of(final String xml) {
         try {
             /* Unmarshall with JAXB: */
-            JAXBContext context = JAXBContext.newInstance(ServiceDescription.class);
+            JAXBContext context = JAXBContext
+                    .newInstance(ServiceDescription.class);
             Unmarshaller unmarshaller = context.createUnmarshaller();
             Object object = unmarshaller.unmarshal(new StringReader(xml));
             ServiceDescription unmarshalled = (ServiceDescription) object;
@@ -468,12 +565,13 @@ public class ServiceDescription {
      * @return An XML representation of this service description (can be used to
      *         instantiate an object using the static factory method)
      */
-    public String toXml( boolean formatted ) {
+    public String toXml(boolean formatted) {
         // Update the identifier using the hash code
-        this.identifier = ""+this.hashCode();
+        this.identifier = "" + this.hashCode();
         try {
             /* Marshall with JAXB: */
-            JAXBContext context = JAXBContext.newInstance(ServiceDescription.class);
+            JAXBContext context = JAXBContext
+                    .newInstance(ServiceDescription.class);
             Marshaller marshaller = context.createMarshaller();
             StringWriter writer = new StringWriter();
             marshaller.setProperty("jaxb.formatted.output", formatted);
@@ -485,7 +583,8 @@ public class ServiceDescription {
         return null;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     @Override
@@ -493,7 +592,6 @@ public class ServiceDescription {
         return this.name + " : " + this.type + " : " + this.getDescription();
     }
 
-    
     /***/
     private static java.io.File baseDir = new java.io.File(
             "IF/common/src/resources");
@@ -504,19 +602,18 @@ public class ServiceDescription {
     static class Resolver extends SchemaOutputResolver {
         /**
          * {@inheritDoc}
-         * 
          * @see javax.xml.bind.SchemaOutputResolver#createOutput(java.lang.String,
          *      java.lang.String)
          */
         public Result createOutput(final String namespaceUri,
                 final String suggestedFileName) throws IOException {
-            return new StreamResult(new java.io.File(baseDir, schemaFileName+"_"+suggestedFileName));
+            return new StreamResult(new java.io.File(baseDir, schemaFileName
+                    + "_" + suggestedFileName));
         }
     }
 
     /**
      * Generates the XML schema for this class.
-     * 
      * @param args Ignored
      */
     public static void main(final String[] args) {

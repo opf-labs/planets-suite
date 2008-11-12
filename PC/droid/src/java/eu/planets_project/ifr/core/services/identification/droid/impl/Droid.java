@@ -151,8 +151,8 @@ public final class Droid implements IdentifyOneBinary, Serializable {
      * @see eu.planets_project.services.identify.IdentifyOneBinary#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription sd = new ServiceDescription(NAME,this.getClass().getCanonicalName());
-        sd.setDescription("Identification service based on Droid.");
-        return sd;
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,this.getClass().getCanonicalName());
+        sd.description("Identification service based on Droid.");
+        return sd.build();
     }
 }

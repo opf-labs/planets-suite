@@ -23,12 +23,9 @@ import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
  * PngCheck validation service.
- * 
  * @author Fabian Steeg
- * 
  */
-@WebService(name = PngCheck.NAME, serviceName = BasicValidateOneBinary.NAME, 
-        targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.BasicValidateOneBinary")
+@WebService(name = PngCheck.NAME, serviceName = BasicValidateOneBinary.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.BasicValidateOneBinary")
 @Local(BasicValidateOneBinary.class)
 @Remote(BasicValidateOneBinary.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
@@ -53,12 +50,11 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
     /**
      * Validates that a file (represented as a byte array) is a PNG using
      * PngCheck.
-     * 
      * @param binary The file to verify being a PNG using PngCheck (as a byte
-     *            array)
+     *        array)
      * @param fmt Not required in this service (as it only identifies PNG
-     *            files), so can be null; if it is not null and not one of the
-     *            PNG pronom URIs however, an IllegalArgumentExcpetion is thrown
+     *        files), so can be null; if it is not null and not one of the PNG
+     *        pronom URIs however, an IllegalArgumentExcpetion is thrown
      * @return Returns true if the given file is a valid PNG file, else false
      */
     @WebMethod(operationName = BasicValidateOneBinary.NAME, action = PlanetsServices.NS
@@ -68,9 +64,11 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
             + "Result")
     public boolean basicValidateOneBinary(
             @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicValidateOneBinary.NAME, partName = "binary") final byte[] binary,
+                    + "/" + BasicValidateOneBinary.NAME, partName = "binary")
+            final byte[] binary,
             @WebParam(name = "fmt", targetNamespace = PlanetsServices.NS + "/"
-                    + BasicValidateOneBinary.NAME, partName = "fmt") final URI fmt) {
+                    + BasicValidateOneBinary.NAME, partName = "fmt")
+            final URI fmt) {
         /* PngCheck can only validate PNG files: */
         if (fmt != null && !PNG_PRONOM.contains(fmt.toString())) {
             throw new IllegalArgumentException(
@@ -96,9 +94,8 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
      * Method for testing purpose: takes a file name as the only parameter,
      * converts the file into a byte array and calls the actual identification
      * method with that array.
-     * 
      * @param fileName The local (where the service is running) location of the
-     *            PNG file to validate
+     *        PNG file to validate
      * @return Returns true if the file with the given name is a PNG file, else
      *         false
      */
