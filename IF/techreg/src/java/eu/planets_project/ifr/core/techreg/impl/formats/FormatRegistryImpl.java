@@ -120,6 +120,7 @@ public class FormatRegistryImpl implements FormatRegistry {
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getURIsForExtension(java.lang.String)
      */
     public Set<URI> getURIsForExtension(String ext) {
+    	ext = ext.toLowerCase();
         return extMap.get(ext);
     }
 

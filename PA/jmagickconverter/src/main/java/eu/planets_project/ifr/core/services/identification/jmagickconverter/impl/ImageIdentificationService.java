@@ -41,7 +41,6 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @WebService(
         name = "ImageIdentificationService", 
-        serviceName = BasicIdentifyOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.identify.BasicIdentifyOneBinary" )
 public class ImageIdentificationService implements Serializable, BasicIdentifyOneBinary {
