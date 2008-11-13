@@ -269,7 +269,11 @@ public final class ServiceDescription {
             initialize(serviceDescription);
         }
 
-        private void initialize(ServiceDescription serviceDescription) {
+        /**
+         * @param serviceDescription The description to use as a template for
+         *        creating a new description
+         */
+        private void initialize(final ServiceDescription serviceDescription) {
             name = serviceDescription.name;
             type = serviceDescription.type;
             paths = serviceDescription.paths;
@@ -288,81 +292,145 @@ public final class ServiceDescription {
             classname = serviceDescription.classname;
         }
 
+        /**
+         * @param name The service name
+         * @return The builder, for cascaded calls
+         */
         public Builder name(final String name) {
             this.name = name;
             return this;
         }
 
+        /**
+         * @param type The service type, i.e. the interface implemented
+         * @return The builder, for cascaded calls
+         */
         public Builder type(final String type) {
             this.type = type;
             return this;
         }
 
+        /**
+         * @param paths The migration paths supported by the service
+         * @return The builder, for cascaded calls
+         */
         public Builder paths(final MigrationPath... paths) {
             this.paths = new ArrayList<MigrationPath>(Arrays.asList(paths));
             return this;
         }
 
+        /**
+         * @param properties Properties for the service
+         * @return The builder, for cascaded calls
+         */
         public Builder properties(final Property... properties) {
             this.properties = new ArrayList<Property>(Arrays.asList(properties));
             return this;
         }
 
+        /**
+         * @param inputFormats The input formats supported by the service
+         * @return The builder, for cascaded calls
+         */
         public Builder inputFormats(final URI... inputFormats) {
             this.inputFormats = new ArrayList<URI>(Arrays.asList(inputFormats));
             return this;
         }
 
+        /**
+         * @param logo The logo
+         * @return The builder, for cascaded calls
+         */
         public Builder logo(final URI logo) {
             this.logo = logo;
             return this;
         }
 
+        /**
+         * @param furtherInfo Further infor on the service
+         * @return The builder, for cascaded calls
+         */
         public Builder furtherInfo(final URI furtherInfo) {
             this.furtherInfo = furtherInfo;
             return this;
         }
 
+        /**
+         * @param instructions The service instructions
+         * @return The builder, for cascaded calls
+         */
         public Builder instructions(final String instructions) {
             this.instructions = instructions;
             return this;
         }
 
+        /**
+         * @param serviceProvider The providing organization
+         * @return The builder, for cascaded calls
+         */
         public Builder serviceProvider(final String serviceProvider) {
             this.serviceProvider = serviceProvider;
             return this;
         }
 
+        /**
+         * @param author The service author
+         * @return The builder, for cascaded calls
+         */
         public Builder author(final String author) {
             this.author = author;
             return this;
         }
 
+        /**
+         * @param identifier An identifier for the service
+         * @return The builder, for cascaded calls
+         */
         public Builder identifier(final String identifier) {
             this.identifier = identifier;
             return this;
         }
 
+        /**
+         * @param version The service version
+         * @return The builder, for cascaded calls
+         */
         public Builder version(final String version) {
             this.version = version;
             return this;
         }
 
+        /**
+         * @param description A description of the service
+         * @return The builder, for cascaded calls
+         */
         public Builder description(final String description) {
             this.description = description;
             return this;
         }
 
+        /**
+         * @param classname The name of the class implementing the service
+         * @return The builder, for cascaded calls
+         */
         public Builder classname(final String classname) {
             this.classname = classname;
             return this;
         }
 
+        /**
+         * @param parameters The service parameters
+         * @return The builder, for cascaded calls
+         */
         public Builder parameters(final Parameters parameters) {
             this.parameters = parameters;
             return this;
         }
 
+        /**
+         * @param tool The tool the service uses
+         * @return The builder, for cascaded calls
+         */
         public Builder tool(final URI tool) {
             this.tool = tool;
             return this;
@@ -565,7 +633,18 @@ public final class ServiceDescription {
      * @return An XML representation of this service description (can be used to
      *         instantiate an object using the static factory method)
      */
-    public String toXml(boolean formatted) {
+    public String toXml() {
+        return toXml(false);
+    }
+
+    /**
+     * @return A formatted (pretty-printed) XML representation of this service description
+     */
+    public String toXmlFormatted() {
+        return toXml(true);
+    }
+
+    private String toXml(boolean formatted) {
         // Update the identifier using the hash code
         this.identifier = "" + this.hashCode();
         try {
@@ -583,8 +662,8 @@ public final class ServiceDescription {
         return null;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see java.lang.Object#toString()
      */
     @Override
