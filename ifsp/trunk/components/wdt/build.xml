@@ -17,5 +17,89 @@
  			<build component="${component.name}"/>
     	<executed target="build" component="${component.name}"/>
 	</target>	
+	
+	<!-- JUNIT -->
+	<!-- Test classpaths -->
+	<!--property name="pserv-if-common.libpath" value="${framework.test.dir}/server/default/lib/pserv-if-common.jar" / -->
+	<!--property name="wd.class.dir" value="build/classes"/-->	
+	
+	<path id="standalone_classpath">
+  	<path refid="build.classpath"/>
+  	<path refid="appserver.classpath"/>  	
+  	<path refid="common.classpath"/>
+  	<path refid="api.classpath"/>
+  	<path refid="appserver.classpath"/>
+  </path>
+  
+  <path id="wdt_classpath">
+		<dirset dir="build">
+			<include name="classes"/>
+		</dirset>
+	</path>
+	
+	<path id="standalone_test_classpath">
+    <fileset dir="${relative.lib.dir}">
+      <include name="jaxws-ri-2.*/lib/*.jar"/>
+      <include name="junit-4.*.jar" />
+    </fileset>    
+    <fileset dir="${framework.test.dir}">
+      <include name="/server/default/lib/pserv-if-common.jar"/>
+    </fileset>    
+    <path refid="standalone_classpath"/>
+    <path refid="wdt_classpath"/>
+    <pathelement location="${test.class.dir}"/>
+  </path>
+	
+	<target name="compile:tests">
+	  <!--compile the test-classes, session beans, etc.-->
+	  <javac source="1.5" target="${target.jvm}"
+	  	srcdir="${test.src.dir}"
+	    destdir="${test.class.dir}"
+	    debug="on"
+	    deprecation="on"
+	    optimize="off"
+	    includes="**">
+	    <classpath refid="standalone_test_classpath"/>
+	  </javac>
+    <!-- Also copy the libs into the right place -->
+    <!-- Todo -->
+    <!-- Also copy the resources into the right place -->
+    <!-- Todo -->
+  </target>
+  
+  <target name="test:local" description="executes the included JUnit tests w/o a server">
+    <echo message="TEST:LOCAL: Testing the service code without a server."/>
+    <!-- Invoke the tests -->
+    <!-- dir="${pserv.root.dir}"><jvmarg value="${test.vmarg.boot.classpath}"/> -->
+    <junit fork="yes" haltonfailure="yes">
+      <classpath refid="standalone_test_classpath" />
+      <!--sysproperty key="pserv.test.context" value="local"/-->
+      <!--sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/-->      
+      <batchtest fork="yes">
+        <formatter type="plain" usefile="false" />
+        <fileset dir="${test.src.dir}">
+          <include name="**/*Test*.java"/>
+        </fileset>
+      </batchtest>      
+    </junit>
+  </target>
+  
+  <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)">
+    <echo message="TEST:STANDALONE: Testing the service code using a standalone server."/>
+    <!-- Invoke the tests -->
+    <junit fork="yes" haltonfailure="yes">
+      <classpath refid="standalone_test_classpath" />
+      <sysproperty key="pserv.test.context" value="standalone"/>
+      <sysproperty key="pserv.root.dir" value="${basedir}"/>
+      
+      <batchtest fork="yes">
+        <formatter type="plain" usefile="false" />
+        <fileset dir="${test.src.dir}">
+          <include name="**/*Test*.java"/>
+        </fileset>
+      </batchtest>
+      
+    </junit>
+  </target>
 
 </project>
