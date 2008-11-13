@@ -14,7 +14,7 @@
 	<property name="pserv.app.build.type" value="ejb" />
 
 	<!-- Specify how this application should be deployed -->
-	<property name="pserv.app.deploy.mode" value="none" />
+	<property name="pserv.app.deploy.mode" value="pure-java" />
 
 	<!-- Specify the source directories for this component -->
 	<property name="src.dir" value="${appDir}/src/main/java" />
