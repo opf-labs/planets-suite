@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,7 +24,6 @@ import eu.planets_project.ifr.core.registry.api.model.ServiceRegistryMessage;
 /**
  * Local tests of the service registry. Each test is atomic and represents a use
  * case for the service registry.
- * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public class ServiceRegistryTests {
@@ -266,6 +266,54 @@ public class ServiceRegistryTests {
                 WILDCARD, "");
         assertEquals("Query for all returned less than all;", 2,
                 allServices.services.size());
+    }
+
+    @Test
+    public void testMultipleClassification() {
+        PsSchema schema = registry.findTaxonomy(USERNAME, PASSWORD)
+                .getPsSchema();
+        String id1 = schema.getId("identification");
+        String id2 = schema.getId("migration");
+        String id3 = schema.getId("characterisation");
+
+        Assert.assertNotNull(id1);
+        Assert.assertNotNull(id2);
+        Assert.assertNotNull(id3);
+
+        /* for each category, we register two services: */
+        PsOrganization organization = mock.createOrganization();
+
+        PsService s1 = mock.createService(organization);
+        PsService s2 = mock.createService(organization);
+        registry.savePredefinedClassification(USERNAME, PASSWORD, s1.getKey(),
+                id1);
+        registry.savePredefinedClassification(USERNAME, PASSWORD, s2.getKey(),
+                id1);
+
+        PsService s3 = mock.createService(organization);
+        PsService s4 = mock.createService(organization);
+        registry.savePredefinedClassification(USERNAME, PASSWORD, s3.getKey(),
+                id2);
+        registry.savePredefinedClassification(USERNAME, PASSWORD, s4.getKey(),
+                id2);
+
+        PsService s5 = mock.createService(organization);
+        PsService s6 = mock.createService(organization);
+        registry.savePredefinedClassification(USERNAME, PASSWORD, s5.getKey(),
+                id3);
+        registry.savePredefinedClassification(USERNAME, PASSWORD, s6.getKey(),
+                id3);
+
+        ServiceList services1 = registry.findServices(USERNAME, PASSWORD,
+                WILDCARD, id1);
+        ServiceList services2 = registry.findServices(USERNAME, PASSWORD,
+                WILDCARD, id2);
+        ServiceList services3 = registry.findServices(USERNAME, PASSWORD,
+                WILDCARD, id3);
+
+        Assert.assertEquals(2, services1.services.size());
+        Assert.assertEquals(2, services2.services.size());
+        Assert.assertEquals(2, services3.services.size());
     }
 
     private void compareRegistryObjects(PsRegistryObject expected,

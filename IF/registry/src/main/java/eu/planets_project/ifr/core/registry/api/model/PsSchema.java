@@ -21,7 +21,8 @@ public class PsSchema {
     public ArrayList<PsCategory> categories = new ArrayList<PsCategory>();
     public String errorMessage;
 
-    public PsSchema() {}
+    public PsSchema() {
+    }
 
     /**
      * @param jaxrscheme
@@ -47,5 +48,18 @@ public class PsSchema {
     public String toString() {
         return "PsSchema : " + schemaId + " name: " + schemaName + " :  "
                 + " descr  " + schemaDescription;
+    }
+
+    /**
+     * @param name The name of the category (e.g. migration)
+     * @return The ID of a classification containing the name, or null
+     */
+    public String getId(String name) {
+        for (PsCategory c : categories) {
+            if (c.id.toLowerCase().contains(name)) {
+                return c.id;
+            }
+        }
+        return null;
     }
 }
