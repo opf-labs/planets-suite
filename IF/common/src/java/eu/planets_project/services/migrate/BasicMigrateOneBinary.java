@@ -25,7 +25,7 @@ import eu.planets_project.services.PlanetsServices;
  *
  */
 @WebService(
-//        name = BasicMigrateOneBinary.NAME, 
+        name = BasicMigrateOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS )
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @Deprecated

@@ -28,7 +28,6 @@ import eu.planets_project.services.PlanetsServices;
  */
 @WebService(
         name = BasicIdentifyOneBinary.NAME, 
-        serviceName= BasicIdentifyOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS )
 @SOAPBinding(
         parameterStyle = SOAPBinding.ParameterStyle.BARE,

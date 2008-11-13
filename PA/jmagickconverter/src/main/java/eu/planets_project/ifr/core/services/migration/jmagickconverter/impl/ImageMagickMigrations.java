@@ -139,17 +139,26 @@ public class ImageMagickMigrations implements Migrate {
 		String inputError = null;
 		String outputError = null;
 		String outputFilePath = null;
+		
+		File imageMagickTmpFolder = FileUtils.createWorkFolderInSysTemp(IMAGEMAGICK_TEMP);
+		plogger.info("Created tmp folder: " + imageMagickTmpFolder.getAbsolutePath());
+		
+		File outputFolder = FileUtils.createFolderInWorkFolder(imageMagickTmpFolder, OUT_FOLDER); 
+		plogger.info("Created output folder: " + outputFolder.getAbsolutePath());
 
+		// test if the wanted migrationpath is supported by this service...for the input file
 		if(inputExt == null){
 			plogger.error("The Format: " + inputFormat.toASCIIString() + " is NOT supported by this ImageMagick-Service!");
 			inputError = "The Format: " + inputFormat.toASCIIString() + " is NOT supported by this ImageMagick-Service!";
 		}
 		
+		// test if the wanted migrationpath is supported by this service...for the output file
 		if(outputExt == null) {
 			plogger.error("The Format: " + outputFormat.toASCIIString() + " is NOT supported by this ImageMagick-Service!");
 			outputError = "The Format: " + outputFormat.toASCIIString() + " is NOT supported by this ImageMagick-Service!";
 		}
 		
+		// src and target format aren't supported by this service...
 		if((inputError != null) && (outputError != null)) {
 			StringBuffer allError = new StringBuffer();
 			allError.append(inputError);
@@ -158,64 +167,68 @@ public class ImageMagickMigrations implements Migrate {
 			return this.returnWithErrorMessage(allError.toString(), null);
 		}
 		
+		// only the input format is not supported...
 		if((inputError != null) && (outputError == null)) {
 			return this.returnWithErrorMessage(inputError, null);
 		}
 		
+		// only the target format isn't supported...
 		if((inputError == null) && (outputError != null)) {
 			return this.returnWithErrorMessage(outputError, null);
 		}
 		
+		plogger.info("Getting content from DigitalObject as InputStream...");
 		InputStream inputStream = digitalObject.getContent().read();
 		
+		plogger.info("Writing content to tmp file.");
 		File inputFile = FileUtils.writeInputStreamToTmpFile(inputStream, INPUT_FILE_NAME, inputExt);
 		
 		plogger.info("Temp file created for input: " + inputFile.getAbsolutePath());
-		System.out.println("Temp file created for input: " + inputFile.getAbsolutePath());
 		
 		plogger.info("Starting ImageMagick Migration from " + inputExt + " to " + outputExt + "...");
-		System.out.println("Starting ImageMagick Migration from " + inputExt + " to " + outputExt + "...");
 		
 		plogger.debug("Initialising ImageInfo Object");
-		System.out.println("Initialising ImageInfo Object");
 				
 	    try {
 			ImageInfo imageInfo = new ImageInfo(inputFile.getAbsolutePath());
 			MagickImage image = new MagickImage(imageInfo);
-			System.out.println("ImageInfo object created for file: " + inputFile.getAbsolutePath());
+			plogger.info("ImageInfo object created for file: " + inputFile.getAbsolutePath());
 			String actualSrcFormat = image.getMagick();
-			System.out.println("ImageMagickMigrations: Given src file format extension is: " + inputExt);
-			System.out.println("ImageMagickMigrations: Actual src format is: " + actualSrcFormat);
+			plogger.info("ImageMagickMigrations: Given src file format extension is: " + inputExt);
+			plogger.info("ImageMagickMigrations: Actual src format is: " + actualSrcFormat);
 			
+			// Has the input file the format it claims it has?
 			if(compareExtensions(inputExt, actualSrcFormat) == false) {
+				// if NOT just return without doing anything...
 				return this.returnWithErrorMessage("The passed input file format does not match the actual format of the file!\n" +
 						"This could cause unpredictable behaviour. Nothing has been done!", null);
 			}
 			
+			// Are there any additional parameters for us?
 			if(parameters != null) {
-				System.out.println("Got additional parameters:");
+				plogger.info("Got additional parameters:");
 				int compressionType;
 				List<Parameter> parameterList = parameters.getParameters();
 				for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
 					Parameter parameter = (Parameter) iterator.next();
 					String name = parameter.name;
-					System.out.println("Got parameter: " + name + " with value: " + parameter.value);
+					plogger.info("Got parameter: " + name + " with value: " + parameter.value);
 					
 					if(name.equalsIgnoreCase(COMPRESSION_TYPE_PARAM)) {
 						compressionType = Integer.parseInt(parameter.value);
 						if(compressionType >= 0 && compressionType <= 10) {
-							System.out.println("Trying to set Compression type to: " + compressionTypes[compressionType]);
+							plogger.info("Trying to set Compression type to: " + compressionTypes[compressionType]);
 							image.setCompression(compressionType);
 						}
 						else {
-							System.out.println("Invalid value for Compression type: " + parameter.value);
-							System.out.println("Setting Compression Type to Default value: " + COMPRESSION_TYPE_PARAM_DEFAULT + compressionTypes[COMPRESSION_TYPE_PARAM_DEFAULT]);
+							plogger.info("Invalid value for Compression type: " + parameter.value);
+							plogger.info("Setting Compression Type to Default value: " + COMPRESSION_TYPE_PARAM_DEFAULT + compressionTypes[COMPRESSION_TYPE_PARAM_DEFAULT]);
 							image.setCompression(COMPRESSION_TYPE_PARAM_DEFAULT);
 						}
 					}
 					else {
-						System.out.println("Invalid parameter with name: " + parameter.name);
-						System.out.println("Setting Compression Type to Default value: " + COMPRESSION_TYPE_PARAM_DEFAULT + compressionTypes[COMPRESSION_TYPE_PARAM_DEFAULT]);
+						plogger.info("Invalid parameter with name: " + parameter.name);
+						plogger.info("Setting Compression Type to Default value: " + COMPRESSION_TYPE_PARAM_DEFAULT + compressionTypes[COMPRESSION_TYPE_PARAM_DEFAULT]);
 						image.setCompression(COMPRESSION_TYPE_PARAM_DEFAULT);
 					}
 				}
@@ -225,24 +238,31 @@ public class ImageMagickMigrations implements Migrate {
 			}
 			
 			image.setMagick(outputExt);
+			plogger.info("Setting new file format for output file to: " + outputExt);
 			
-			File imageMagickTmpFolder = FileUtils.createWorkFolderInSysTemp(IMAGEMAGICK_TEMP);
-			File outputFolder = FileUtils.createFolderInWorkFolder(imageMagickTmpFolder, OUT_FOLDER); 
+			outputFilePath = outputFolder.getAbsolutePath() + File.separator + OUTPUT_FILE_NAME + "." + outputExt;
+			plogger.info("Starting to write result file to: " + outputFilePath);
 			
-			outputFilePath = outputFolder.getAbsolutePath() + File.separator + OUTPUT_FILE_NAME + "." + outputExt; 
 			image.setFileName(outputFilePath);
 			image.writeImage(imageInfo);
+			plogger.info("Successfully created result file at: " + outputFilePath);
 			
 		} catch (MagickException e) {
 			return this.returnWithErrorMessage("Something went terribly wrong with ImageMagick: ", e);
 		}
 		
 		byte[] bytes = ByteArrayHelper.read(new File(outputFilePath));
+		plogger.info("Created byte[] from result file...");
 		
 		DigitalObject newDigObj = this.createDigitalObject(null, bytes);
+		plogger.info("Created new DigitalObject for result file...");
 		
 		ServiceReport report = new ServiceReport();
 		report.setErrorState(0);
+		plogger.info("Created Service report...");
+		plogger.info("Success!! Returning results!");
+		
+		FileUtils.deleteTempFiles(imageMagickTmpFolder, plogger);
 		
 		return new MigrateResult(newDigObj, report);
 	}
@@ -264,49 +284,65 @@ public class ImageMagickMigrations implements Migrate {
 	}
 	
 	private boolean compareExtensions (String extension1, String extension2) {
-		System.out.println("Starting to compare these two extensions: " + extension1 + " and " + extension2);
+		plogger.info("Starting to compare these two extensions: " + extension1 + " and " + extension2);
 		FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
 		
 		Set <URI> ext1FormatURIs = formatRegistry.getURIsForExtension(extension1.toLowerCase());
-		System.out.println("Got list of URIs for " + extension1);
+		plogger.info("Got list of URIs for " + extension1);
 		for (Iterator iterator = ext1FormatURIs.iterator(); iterator.hasNext();) {
 			URI uri = (URI) iterator.next();
-			System.out.println("Got: " + uri.toASCIIString());
+			plogger.info("Got: " + uri.toASCIIString());
 		}
 		
 		Set <URI> ext2FormatURIs = formatRegistry.getURIsForExtension(extension2.toLowerCase());
-		System.out.println("Got list of URIs for " + extension2);
+		plogger.info("Got list of URIs for " + extension2);
 		for (Iterator iterator = ext2FormatURIs.iterator(); iterator.hasNext();) {
 			URI uri = (URI) iterator.next();
-			System.out.println("Got: " + uri.toASCIIString());
+			plogger.info("Got: " + uri.toASCIIString());
 		}
 		
 		boolean success = false;
 		
-		System.out.println("Trying to match URIs...");
+		plogger.info("Trying to match URIs...");
 		for(URI currentUri: ext1FormatURIs) {
-			System.out.println("current URI: " + currentUri.toASCIIString());
+			plogger.info("current URI: " + currentUri.toASCIIString());
 			if(ext2FormatURIs.contains(currentUri)) {
 				success = true;
+				break;
 			}
 			else {
 				success = false;
 			}
 		}
+		if(success) {
+			plogger.info("Success!");
+		}
+		else {
+			plogger.info("No success.");
+		}
+		
 		return success;
 	}
 	
 	private String getFormatExtension (URI formatURI) {
+		plogger.info("Getting extension for given format URI: " + formatURI.toASCIIString());
 		Format f = new Format(formatURI);
-		Format.isThisAnExtensionURI(formatURI);
-		f.getExtensions().iterator().next();
 		String extension = null;
-		FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
-		Format fileFormat = formatRegistry.getFormatForURI(formatURI);
-		Set <String> extensions = fileFormat.getExtensions();
-		if(extensions != null){
-			Iterator <String> iterator = extensions.iterator();
-			extension = iterator.next();
+		if(Format.isThisAnExtensionURI(formatURI)) {
+			plogger.info("URI is an Extension-URI.");
+			extension = f.getExtensions().iterator().next(); 
+			plogger.info("Got Extension for format URI: " + formatURI.toASCIIString() + "--> " + extension );
+		}
+		else {
+			plogger.info("URI is of another supported type.");
+			FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
+			Format fileFormat = formatRegistry.getFormatForURI(formatURI);
+			Set <String> extensions = fileFormat.getExtensions();
+			if(extensions != null){
+				Iterator <String> iterator = extensions.iterator();
+				extension = iterator.next();
+				plogger.info("Got Extension for format URI: " + formatURI.toASCIIString() + "--> " + extension );
+			}
 		}
 		return extension;
 	}

@@ -42,7 +42,7 @@ public class ImageMagickMigrationsTest {
 
 
     @BeforeClass
-    public static void testLocal() {
+    public static void setup() {
     	System.setProperty("pserv.test.context", "server");
         System.setProperty("pserv.test.host", "localhost");
         System.setProperty("pserv.test.port", "8080");
@@ -59,38 +59,169 @@ public class ImageMagickMigrationsTest {
         System.out.println("Recieved service description: " + desc.toXml(true));
         assertTrue("The ServiceDescription should not be NULL.", desc != null );
     }
+    
+    @Test
+    public void testJpgToTiff () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg");
+    	
+    	String inputFormatExt = "jpg";
+        String outputFormatExt = "tif";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testJpgToPng () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg");
+    	
+    	String inputFormatExt = "jpg";
+        String outputFormatExt = "png";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testJpgToGif () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg");
+    	
+    	String inputFormatExt = "jpg";
+        String outputFormatExt = "gif";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testPngToTiff () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png");
+    	
+    	String inputFormatExt = "png";
+        String outputFormatExt = "tiff";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testPngToJpg () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png");
+    	
+    	String inputFormatExt = "png";
+        String outputFormatExt = "jpeg";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testPngToGif () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png");
+    	
+    	String inputFormatExt = "png";
+        String outputFormatExt = "gif";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testTiffToJpg () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
+    	
+    	String inputFormatExt = "tif";
+        String outputFormatExt = "jpg";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+
+    @Test
+    public void testTiffToPng () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
+    	
+    	String inputFormatExt = "tiff";
+        String outputFormatExt = "png";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testTiffToGif () throws IOException {
+    	File inputFile = 
+    		
+    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
+    	
+    	String inputFormatExt = "tiff";
+        String outputFormatExt = "gif";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", "1"));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+    }
+
 
     /**
      * Test the pass-thru migration.
      * @throws IOException 
      */
-    @Test
-    public void testMigrate() throws IOException {
+    public void testMigrate(File inputFile, String srcExtension, String targetExtension, Parameters parameters) throws IOException {
         try {
             /*
              * To test usability of the digital object instance in web services,
              * we simply pass one into the service and expect one back:
              */
         	
-        	File inputFile = 
-        		
-        		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
-        	
             DigitalObject input = new DigitalObject.Builder(new URL(
                     "http://somePermanentURL"), Content.byReference(inputFile.toURL()))
                     .build();
             System.out.println("Input: " + input);
             
-            String inputFormatExt = "tiff";
-            String outputFormatExt = "png";
-            
-            List<Parameter> parameterList = new ArrayList<Parameter>();
-            parameterList.add(new Parameter("compressionType", "10"));
-            
-            Parameters parameters = new Parameters();
-            parameters.setParameters(parameterList);
-            
-            MigrateResult mr = imageMagick.migrate(input, Format.extensionToURI(inputFormatExt), Format.extensionToURI(outputFormatExt), parameters);
+            MigrateResult mr = imageMagick.migrate(input, Format.extensionToURI(srcExtension), Format.extensionToURI(targetExtension), parameters);
             
             ServiceReport sr = mr.getReport();
             System.out.println("Got Report: "+sr);
@@ -106,7 +237,7 @@ public class ImageMagickMigrationsTest {
             System.out.println("Output.content.getReference: " + doOut.getContent().getReference());
             
             File outFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT);
-            File outFile = new File(outFolder, "test_out" + "." + outputFormatExt);
+            File outFile = new File(outFolder, "test_out" + "." + targetExtension);
             
             ByteArrayHelper.writeToDestFile(doOut.getContent().getValue(), outFile.getAbsolutePath());
             
