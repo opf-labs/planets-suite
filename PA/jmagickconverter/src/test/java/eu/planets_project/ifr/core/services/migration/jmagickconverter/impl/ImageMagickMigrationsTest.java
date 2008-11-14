@@ -56,7 +56,7 @@ public class ImageMagickMigrationsTest {
     @Test
     public void testDescribe() {
         ServiceDescription desc = imageMagick.describe();
-        System.out.println("Recieved service description: " + desc.toXml(true));
+        System.out.println("Recieved service description: " + desc.toXmlFormatted());
         assertTrue("The ServiceDescription should not be NULL.", desc != null );
     }
     
