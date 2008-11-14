@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.ws.Endpoint;
@@ -39,6 +40,7 @@ public class ImageMagickMigrationsTest {
 	
 	static String wsdlLocation = "/pserv-pa-jmagick/ImageMagickMigrations?wsdl";
 	static String TEST_OUT = "IMAGE_MAGICK_MIGRATIONS_TEST_OUT/OUT";
+	static String[] compressionTypes = new String[11];
 
 
     @BeforeClass
@@ -47,6 +49,17 @@ public class ImageMagickMigrationsTest {
         System.setProperty("pserv.test.host", "localhost");
         System.setProperty("pserv.test.port", "8080");
     	imageMagick = ServiceCreator.createTestService(Migrate.QNAME, ImageMagickMigrations.class, wsdlLocation);
+    	compressionTypes[0] = "Undefined Compression";
+		compressionTypes[1] = "No Compression";
+		compressionTypes[2] = "BZip Compression";
+		compressionTypes[3] = "Fax Compression";
+		compressionTypes[4] = "Group4 Compression";
+		compressionTypes[5] = "JPEG Compression";
+		compressionTypes[6] = "JPEG2000 Compression";
+		compressionTypes[7] = "LosslessJPEG Compression";
+		compressionTypes[8] = "LZW Compression";
+		compressionTypes[9] = "RLE Compression";
+		compressionTypes[10] = "Zip Compression";
     }
     
     
@@ -70,7 +83,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "tif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", "3"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
@@ -102,7 +115,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "gif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", "2"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
@@ -118,7 +131,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "tiff";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", "6"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
@@ -134,7 +147,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "jpeg";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", "5"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
@@ -150,7 +163,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "gif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", "8"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
@@ -166,7 +179,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "jpg";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", "9"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
@@ -182,7 +195,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "png";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", "10"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
@@ -198,7 +211,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "gif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", "3"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
@@ -236,8 +249,32 @@ public class ImageMagickMigrationsTest {
             System.out.println("Output.content.getValue: " + doOut.getContent().getValue());
             System.out.println("Output.content.getReference: " + doOut.getContent().getReference());
             
+            List<Parameter> parameterList = parameters.getParameters();
+            int compressionType = 1;
+            
+			for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
+				Parameter parameter = (Parameter) iterator.next();
+				String name = parameter.name;
+				if(name.equalsIgnoreCase("compressionType")) {
+					compressionType = Integer.parseInt(parameter.value);
+				}
+			}
+            
+			String compressionTypeStr = "-" + compressionTypes[compressionType].replace(" ", "_");
+			
             File outFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT);
-            File outFile = new File(outFolder, "test_out" + "." + targetExtension);
+            File outFile = 
+            	
+            	new File(outFolder, 
+            		
+            		"test_out" 
+            		+ "_" 
+            		+ srcExtension 
+            		+ "_To_" 
+            		+ targetExtension 
+            		+ compressionTypeStr
+            		+ "." 
+            		+ targetExtension);
             
             ByteArrayHelper.writeToDestFile(doOut.getContent().getValue(), outFile.getAbsolutePath());
             
