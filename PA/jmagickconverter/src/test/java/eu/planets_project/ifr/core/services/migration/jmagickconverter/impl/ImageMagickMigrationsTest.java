@@ -39,7 +39,7 @@ public class ImageMagickMigrationsTest {
     /* The location of this service when deployed. */
 	
 	static String wsdlLocation = "/pserv-pa-jmagick/ImageMagickMigrations?wsdl";
-	static String TEST_OUT = "IMAGE_MAGICK_MIGRATIONS_TEST_OUT/OUT";
+	static String TEST_OUT = "IMAGE_MAGICK_MIGRATIONS_TEST_OUT";
 	static String[] compressionTypes = new String[11];
 
 
