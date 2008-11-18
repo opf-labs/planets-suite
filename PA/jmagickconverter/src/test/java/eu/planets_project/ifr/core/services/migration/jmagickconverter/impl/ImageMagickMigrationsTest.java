@@ -166,7 +166,7 @@ public class ImageMagickMigrationsTest {
         String outputFormatExt = "tif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "5"));
+        parameterList.add(new Parameter("compressionType", "8"));
         parameterList.add(new Parameter("compressionQuality", "10"));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
@@ -356,7 +356,7 @@ public class ImageMagickMigrationsTest {
             
 			String compressionTypeStr = "-" + compressionTypes[compressionType].replace(" ", "_");
 			
-            File outFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT + File.separator + targetExtension.toUpperCase());
+            File outFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT + File.separator + srcExtension + "-" + targetExtension.toUpperCase());
             File outFile = 
             	
             	new File(outFolder, 
