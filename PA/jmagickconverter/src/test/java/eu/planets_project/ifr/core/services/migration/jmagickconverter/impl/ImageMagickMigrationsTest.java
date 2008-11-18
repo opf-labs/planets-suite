@@ -39,8 +39,27 @@ public class ImageMagickMigrationsTest {
     /* The location of this service when deployed. */
 	
 	static String wsdlLocation = "/pserv-pa-jmagick/ImageMagickMigrations?wsdl";
+	
 	static String TEST_OUT = "IMAGE_MAGICK_MIGRATIONS_TEST_OUT";
+	
 	static String[] compressionTypes = new String[11];
+	
+	static int COMPRESSION_QUALITY_25 = 25;
+	static int COMPRESSION_QUALITY_50 = 50;
+	static int COMPRESSION_QUALITY_75 = 75;
+	static int COMPRESSION_QUALITY_100 = 100;
+	
+	static int COMPRESSION_TYPE_UNDEF = 0;
+	static int COMPRESSION_TYPE_NO = 1;
+	static int COMPRESSION_TYPE_BZIP = 2;
+	static int COMPRESSION_TYPE_FAX = 3;
+	static int COMPRESSION_TYPE_GROUP4 = 4;
+	static int COMPRESSION_TYPE_JPEG = 5;
+	static int COMPRESSION_TYPE_JPEG2000 = 6;
+	static int COMPRESSION_TYPE_JPEG_LOSSLESS = 7;
+	static int COMPRESSION_TYPE_LZW = 8;
+	static int COMPRESSION_TYPE_RLE = 9;
+	static int COMPRESSION_TYPE_ZIP = 10;
 
 
     @BeforeClass
@@ -76,235 +95,485 @@ public class ImageMagickMigrationsTest {
     
     @Test
     public void testJpgCompression () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
-    	
     	String inputFormatExt = "TIFF";
         String outputFormatExt = "JPEG";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "5"));
-        parameterList.add(new Parameter("compressionQuality", "25"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
         
-        File inputFile1 = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
-    	
-    	String inputFormatExt1 = "TIFF";
-        String outputFormatExt1 = "JPEG";
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
         
-        List<Parameter> parameterList1 = new ArrayList<Parameter>();
-        parameterList1.add(new Parameter("compressionType", "5"));
-        parameterList1.add(new Parameter("compressionQuality", "50"));
-        Parameters parameters1 = new Parameters();
-        parameters1.setParameters(parameterList1);
-        testMigrate(inputFile1, inputFormatExt1, outputFormatExt1, parameters1);
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
         
-        File inputFile2 = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
-    	
-    	String inputFormatExt2 = "TIFF";
-        String outputFormatExt2 = "JPEG";
-        
-        List<Parameter> parameterList2 = new ArrayList<Parameter>();
-        parameterList2.add(new Parameter("compressionType", "5"));
-        parameterList2.add(new Parameter("compressionQuality", "100"));
-        Parameters parameters2 = new Parameters();
-        parameters2.setParameters(parameterList2);
-        testMigrate(inputFile2, inputFormatExt2, outputFormatExt2, parameters2);
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testPngCompression () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
     	
     	String inputFormatExt = "TIFF";
         String outputFormatExt = "PNG";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "8"));
-        parameterList.add(new Parameter("compressionQuality", "25"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
         
-    	String inputFormatExt1 = "TIFF";
-        String outputFormatExt1 = "PNG";
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
         
-        List<Parameter> parameterList1 = new ArrayList<Parameter>();
-        parameterList1.add(new Parameter("compressionType", "8"));
-        parameterList1.add(new Parameter("compressionQuality", "50"));
-        Parameters parameters1 = new Parameters();
-        parameters1.setParameters(parameterList1);
-        testMigrate(inputFile, inputFormatExt1, outputFormatExt1, parameters1);
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
         
-    	String inputFormatExt2 = "TIFF";
-        String outputFormatExt2 = "PNG";
-        
-        List<Parameter> parameterList2 = new ArrayList<Parameter>();
-        parameterList2.add(new Parameter("compressionType", "8"));
-        parameterList2.add(new Parameter("compressionQuality", "75"));
-        Parameters parameters2 = new Parameters();
-        parameters2.setParameters(parameterList2);
-        testMigrate(inputFile, inputFormatExt2, outputFormatExt2, parameters2);
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testJpgToTiff () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg");
-    	
-    	String inputFormatExt = "jpg";
+    	String inputFormatExt = "jpeg";
         String outputFormatExt = "tif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "8"));
-        parameterList.add(new Parameter("compressionQuality", "10"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testJpgToPng () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg");
-    	
-    	String inputFormatExt = "jpg";
+    	String inputFormatExt = "jpeg";
         String outputFormatExt = "png";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "8"));
-        parameterList.add(new Parameter("compressionQuality", "75"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testJpgToGif () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_jpg/2325559127_ccbb33c982.jpg");
-    	
-    	String inputFormatExt = "jpg";
+    	String inputFormatExt = "jpeg";
         String outputFormatExt = "gif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "8"));
-        parameterList.add(new Parameter("compressionQuality", "50"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testPngToTiff () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png");
-    	
     	String inputFormatExt = "png";
         String outputFormatExt = "tiff";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "8"));
-        parameterList.add(new Parameter("compressionQuality", "100"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testPngToJpg () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png");
-    	
     	String inputFormatExt = "png";
         String outputFormatExt = "jpeg";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "5"));
-        parameterList.add(new Parameter("compressionQuality", "25"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testPngToGif () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_png/2325559127_ccbb33c982.png");
-    	
     	String inputFormatExt = "png";
         String outputFormatExt = "gif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
-        parameterList.add(new Parameter("compressionQuality", "100"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testTiffToJpg () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
-    	
-    	String inputFormatExt = "tif";
-        String outputFormatExt = "jpg";
+    	String inputFormatExt = "tiff";
+        String outputFormatExt = "jpeg";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "5"));
-        parameterList.add(new Parameter("compressionQuality", "60"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
 
     @Test
     public void testTiffToPng () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
-    	
     	String inputFormatExt = "tiff";
         String outputFormatExt = "png";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
     
     @Test
     public void testTiffToGif () throws IOException {
-    	File inputFile = 
-    		
-    		new File("PA/jmagickconverter/src/main/resources/test_images/test_tiff/2325559127_ccbb33c982.tif");
-    	
     	String inputFormatExt = "tiff";
         String outputFormatExt = "gif";
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "1"));
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
-        testMigrate(inputFile, inputFormatExt, outputFormatExt, parameters);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testTiffToTga () throws IOException {
+    	String inputFormatExt = "tiff";
+        String outputFormatExt = "tga";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_RLE)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_RLE)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testTgaToTiff () throws IOException {
+    	String inputFormatExt = "tga";
+        String outputFormatExt = "tiff";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_RLE)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_RLE)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_75)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+    }
+    
+/* **************************************************************************************************    
+ * RAW to TIFF and TIFF to RAW doesn't work properly at the moment, so tests are disabled for now... *
+ * **************************************************************************************************/
+    
+//    @Test
+//    public void testTiffToRaw () throws IOException {
+//    	String inputFormatExt = "tiff";
+//        String outputFormatExt = "raw";
+//        
+//        List<Parameter> parameterList = new ArrayList<Parameter>();
+//        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_NO)));
+////        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+//        Parameters parameters = new Parameters();
+//        parameters.setParameters(parameterList);
+//        testMigrate(inputFormatExt, outputFormatExt, parameters);
+//    }
+    
+//    @Test
+//    public void testRawToTiff () throws IOException {
+//    	String inputFormatExt = "raw";
+//        String outputFormatExt = "tiff";
+//        
+//        List<Parameter> parameterList = new ArrayList<Parameter>();
+//        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+//        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
+//        Parameters parameters = new Parameters();
+//        parameters.setParameters(parameterList);
+//        testMigrate(inputFormatExt, outputFormatExt, parameters);
+//        
+//        parameterList = new ArrayList<Parameter>();
+//        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+//        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+//        parameters = new Parameters();
+//        parameters.setParameters(parameterList);
+//        testMigrate(inputFormatExt, outputFormatExt, parameters);
+//    }
+    
+    @Test
+    public void testTiffToPcx () throws IOException {
+    	String inputFormatExt = "tiff";
+        String outputFormatExt = "pcx";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_RLE)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_RLE)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testPcxToTiff () throws IOException {
+    	String inputFormatExt = "pcx";
+        String outputFormatExt = "tiff";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+    }
+//    
+    @Test
+    public void testPdfToTiff () throws IOException {
+    	String inputFormatExt = "pdf";
+        String outputFormatExt = "tiff";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_LZW)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+    }
+    
+    @Test
+    public void testTiffToPdf () throws IOException {
+    	String inputFormatExt = "tiff";
+        String outputFormatExt = "pdf";
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_25)));
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
+        
+        parameterList = new ArrayList<Parameter>();
+        parameterList.add(new Parameter("compressionType", Integer.toString(COMPRESSION_TYPE_JPEG)));
+        parameterList.add(new Parameter("compressionQuality", Integer.toString(COMPRESSION_QUALITY_100)));
+        parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        testMigrate(inputFormatExt, outputFormatExt, parameters);
     }
 
 
@@ -312,12 +581,51 @@ public class ImageMagickMigrationsTest {
      * Test the pass-thru migration.
      * @throws IOException 
      */
-    public void testMigrate(File inputFile, String srcExtension, String targetExtension, Parameters parameters) throws IOException {
+    public void testMigrate(String srcExtension, String targetExtension, Parameters parameters) throws IOException {
         try {
             /*
              * To test usability of the digital object instance in web services,
              * we simply pass one into the service and expect one back:
              */
+        	
+        	File inputFile = null;
+        	
+        	if (srcExtension.equalsIgnoreCase("BMP")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.BMP_TEST_FILE);
+			}
+        	
+        	if (srcExtension.equalsIgnoreCase("GIF")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.GIF_TEST_FILE);
+			}
+        	
+        	if(srcExtension.equalsIgnoreCase("JPG") || srcExtension.equalsIgnoreCase("JPEG")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.JPG_TEST_FILE);
+        	}
+        	
+        	if (srcExtension.equalsIgnoreCase("PCX")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.PCX_TEST_FILE);
+			}
+        	
+        	if (srcExtension.equalsIgnoreCase("PDF")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.PDF_TEST_FILE);
+			}
+        	
+        	if (srcExtension.equalsIgnoreCase("PNG")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.PNG_TEST_FILE);
+			}
+        	
+        	if (srcExtension.equalsIgnoreCase("RAW")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.RAW_TEST_FILE);
+			}
+        	
+        	if (srcExtension.equalsIgnoreCase("TGA")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.TGA_TEST_FILE);
+			}
+        	
+        	if (srcExtension.equalsIgnoreCase("TIF") || srcExtension.equalsIgnoreCase("TIFF")) {
+        		inputFile = new File(ImageMagickMigrationsTestHelper.TIFF_TEST_FILE);
+			}
+        	
         	
             DigitalObject input = new DigitalObject.Builder(new URL(
                     "http://somePermanentURL"), Content.byReference(inputFile.toURL()))
@@ -356,7 +664,7 @@ public class ImageMagickMigrationsTest {
             
 			String compressionTypeStr = "-" + compressionTypes[compressionType].replace(" ", "_");
 			
-            File outFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT + File.separator + srcExtension + "-" + targetExtension.toUpperCase());
+            File outFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT + File.separator + srcExtension.toUpperCase() + "-" + targetExtension.toUpperCase());
             File outFile = 
             	
             	new File(outFolder, 
@@ -374,7 +682,7 @@ public class ImageMagickMigrationsTest {
             
             ByteArrayHelper.writeToDestFile(doOut.getContent().getValue(), outFile.getAbsolutePath());
             
-            System.out.println("Please find the result file here: " + outFile.getAbsolutePath());
+            System.out.println("Please find the result file here: " + outFile.getAbsolutePath() + "\n\n");
             assertTrue("Result file created?", outFile.canRead());
             
         } catch (MalformedURLException e) {

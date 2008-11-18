@@ -111,45 +111,7 @@ public class ImageMagickMigrations implements Migrate {
 			plogger.error("Erroneous URI: " + IMAGE_MAGICK_URI, e);
 		}
         
-        // Migration Paths: List all combinations:
-//        List<MigrationPath> paths = new ArrayList<MigrationPath>();
-//        
-//        paths.add(new MigrationPath(Format.extensionToURI("JPEG"), Format.extensionToURI("TIFF"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("JPEG"), Format.extensionToURI("PNG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("JPEG"), Format.extensionToURI("GIF"), null));
-//        
-//        paths.add(new MigrationPath(Format.extensionToURI("PNG"), Format.extensionToURI("TIFF"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("PNG"), Format.extensionToURI("JPEG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("PNG"), Format.extensionToURI("GIF"), null));
-//        
-//        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("PNG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("JPEG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("GIF"), null));
-//        
-//        paths.add(new MigrationPath(Format.extensionToURI("GIF"), Format.extensionToURI("PNG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("GIF"), Format.extensionToURI("TIFF"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("GIF"), Format.extensionToURI("JPEG"), null));
-//        
-//        paths.add(new MigrationPath(Format.extensionToURI("BMP"), Format.extensionToURI("TIFF"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("BMP"), Format.extensionToURI("JPEG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("BMP"), Format.extensionToURI("PNG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("BMP"), Format.extensionToURI("GIF"), null));
-//        
-//        paths.add(new MigrationPath(Format.extensionToURI("PCX"), Format.extensionToURI("TIFF"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("PCX"), Format.extensionToURI("JPEG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("PCX"), Format.extensionToURI("PNG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("PCX"), Format.extensionToURI("GIF"), null));
-//        
-//        paths.add(new MigrationPath(Format.extensionToURI("TGA"), Format.extensionToURI("TIFF"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("TGA"), Format.extensionToURI("JPEG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("TGA"), Format.extensionToURI("PNG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("TGA"), Format.extensionToURI("GIF"), null));
-//        
-//        paths.add(new MigrationPath(Format.extensionToURI("PCD"), Format.extensionToURI("TIFF"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("PCD"), Format.extensionToURI("JPEG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("PCD"), Format.extensionToURI("PNG"), null));
-//        paths.add(new MigrationPath(Format.extensionToURI("PCD"), Format.extensionToURI("GIF"), null));
-		
+		// Migration Paths: List all combinations:
 		List<String> inputFormats = new ArrayList<String> ();
 		
 		inputFormats.add("JPEG");
@@ -157,10 +119,9 @@ public class ImageMagickMigrations implements Migrate {
 		inputFormats.add("GIF");
 		inputFormats.add("PNG");
 		inputFormats.add("BMP");
-		inputFormats.add("RAW");
+//		inputFormats.add("RAW");
 		inputFormats.add("PCX");
 		inputFormats.add("TGA");
-		inputFormats.add("PCD");
 		inputFormats.add("PDF");
 		
 		List<String> outputFormats = new ArrayList<String> ();
@@ -170,6 +131,10 @@ public class ImageMagickMigrations implements Migrate {
 		outputFormats.add("JPEG");
 		outputFormats.add("GIF");
 		outputFormats.add("PDF");
+//		outputFormats.add("RAW");
+		outputFormats.add("PCX");
+		outputFormats.add("TGA");
+		outputFormats.add("BMP");
         
         sd.paths(createMigrationPathwayMatrix(inputFormats, outputFormats));
         
@@ -324,15 +289,18 @@ public class ImageMagickMigrations implements Migrate {
 				imageInfo.setQuality(COMPRESSION_QUALITY_LEVEL_DEFAULT);
 			}
 			
-			image.setMagick(outputExt);
+			image.setImageFormat(outputExt);
 			plogger.info("Setting new file format for output file to: " + outputExt);
 			
 			outputFilePath = outputFolder.getAbsolutePath() + File.separator + OUTPUT_FILE_NAME + "." + outputExt;
 			plogger.info("Starting to write result file to: " + outputFilePath);
 			
 			image.setFileName(outputFilePath);
-			image.writeImage(imageInfo);
-			plogger.info("Successfully created result file at: " + outputFilePath);
+			boolean imageMagickSuccess = image.writeImage(imageInfo);
+			if(imageMagickSuccess)
+				plogger.info("Successfully created result file at: " + outputFilePath);
+			else 
+				return this.returnWithErrorMessage("Something went terribly wrong with ImageMagick: No output file created!!!", null);
 			
 		} catch (MagickException e) {
 			return this.returnWithErrorMessage("Something went terribly wrong with ImageMagick: ", e);
@@ -371,22 +339,23 @@ public class ImageMagickMigrations implements Migrate {
 	}
 	
 	private boolean compareExtensions (String extension1, String extension2) {
+		
 		plogger.info("Starting to compare these two extensions: " + extension1 + " and " + extension2);
 		FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
 		
 		Set <URI> ext1FormatURIs = formatRegistry.getURIsForExtension(extension1.toLowerCase());
 		plogger.info("Got list of URIs for " + extension1);
-		for (Iterator iterator = ext1FormatURIs.iterator(); iterator.hasNext();) {
-			URI uri = (URI) iterator.next();
-			plogger.info("Got: " + uri.toASCIIString());
-		}
+//		for (Iterator iterator = ext1FormatURIs.iterator(); iterator.hasNext();) {
+//			URI uri = (URI) iterator.next();
+//			plogger.info("Got: " + uri.toASCIIString());
+//		}
 		
 		Set <URI> ext2FormatURIs = formatRegistry.getURIsForExtension(extension2.toLowerCase());
 		plogger.info("Got list of URIs for " + extension2);
-		for (Iterator iterator = ext2FormatURIs.iterator(); iterator.hasNext();) {
-			URI uri = (URI) iterator.next();
-			plogger.info("Got: " + uri.toASCIIString());
-		}
+//		for (Iterator iterator = ext2FormatURIs.iterator(); iterator.hasNext();) {
+//			URI uri = (URI) iterator.next();
+//			plogger.info("Got: " + uri.toASCIIString());
+//		}
 		
 		boolean success = false;
 		
