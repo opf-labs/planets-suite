@@ -19,7 +19,7 @@ import eu.planets_project.services.identify.IdentifyOneBinary;
  * least some of this information.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>.
  */
-@WebService(name = BasicCharacteriseOneBinaryXCELtoBinary.NAME, targetNamespace = PlanetsServices.NS)
+@WebService(targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface BasicCharacteriseOneBinaryXCELtoBinary {
 
@@ -30,8 +30,7 @@ public interface BasicCharacteriseOneBinaryXCELtoBinary {
     /**
      * @param binary
      * @param xcel a String holding the Contents of a XCEL file
-     * @return an URI indicating the location of the XCDL-file in the
-     *         DataRegistry
+     * @return an byte[] containing the created XCDL file
      * @throws PlanetsException
      */
     @WebMethod(operationName = BasicCharacteriseOneBinaryXCELtoBinary.NAME, action = PlanetsServices.NS

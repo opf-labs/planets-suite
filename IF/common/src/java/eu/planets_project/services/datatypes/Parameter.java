@@ -33,15 +33,32 @@ public class Parameter {
      * In the future, we might add limits/validation?  XSD-style?
      */
     public String type;
+    
+    /**
+     * the description of this parameter/value pair. Might be used to give further
+     * information on the possible values and their meaning.
+     */
+    public String description;
 
     /* ------------------------------------------------------------------------- */
     
-    /**
+    
+
+	/**
      * 
      */
     public Parameter() {
     }
+    
 
+    /**
+     * @param name
+     * @param value
+     * @param type
+     * @param description the description of this parameter/value pair. Might be used to give further
+     *                    information on the possible values and their meaning.
+     */
+    
     /**
      * @param name
      * @param value
@@ -93,6 +110,15 @@ public class Parameter {
     protected String getType() {
         return type;
     }
+    
+    
+    public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
     
     
     

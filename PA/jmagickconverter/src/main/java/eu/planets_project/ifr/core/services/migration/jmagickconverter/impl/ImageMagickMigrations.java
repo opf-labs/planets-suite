@@ -58,8 +58,10 @@ public class ImageMagickMigrations implements Migrate {
 	
 	public static String[] compressionTypes = new String[11];
 	private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass());
-	private static final String COMPRESSION_TYPE_PARAM = "compressionType";
+	private static final String COMPRESSION_TYPE = "compressionType";
 	private static final int COMPRESSION_TYPE_PARAM_DEFAULT = 1; 
+	private static final String COMPRESSION_QUALITY_LEVEL = "compressionQuality";
+	private static final int COMPRESSION_QUALITY_LEVEL_DEFAULT = 100;
 	private static final String IMAGEMAGICK_TEMP = "ImageMagickService";
 	private static final String OUT_FOLDER = "output";
 	private static final String INPUT_FILE_NAME = "imageMagickInput";
@@ -90,17 +92,13 @@ public class ImageMagickMigrations implements Migrate {
         sd.version("0.1");
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(new Parameter("compressionType", "0"));
-        parameterList.add(new Parameter("compressionType", "1"));
-        parameterList.add(new Parameter("compressionType", "2"));
-        parameterList.add(new Parameter("compressionType", "3"));
-        parameterList.add(new Parameter("compressionType", "4"));
-        parameterList.add(new Parameter("compressionType", "5"));
-        parameterList.add(new Parameter("compressionType", "6"));
-        parameterList.add(new Parameter("compressionType", "7"));
-        parameterList.add(new Parameter("compressionType", "8"));
-        parameterList.add(new Parameter("compressionType", "9"));
-        parameterList.add(new Parameter("compressionType", "10"));
+        Parameter compressionTypeParam = new Parameter("compressionType", "0-10");
+        compressionTypeParam.setDescription("Allowed int values: 0 - 10");
+        parameterList.add(compressionTypeParam);
+        
+        Parameter compressionLevelParam = new Parameter("compressionQuality", "0-100");
+        compressionLevelParam.setDescription("This should be an int value between: 0 - 100, representing the compression quality in percent.");
+        parameterList.add(compressionLevelParam);
         
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
@@ -114,20 +112,87 @@ public class ImageMagickMigrations implements Migrate {
 		}
         
         // Migration Paths: List all combinations:
-        List<MigrationPath> paths = new ArrayList<MigrationPath>();
+//        List<MigrationPath> paths = new ArrayList<MigrationPath>();
+//        
+//        paths.add(new MigrationPath(Format.extensionToURI("JPEG"), Format.extensionToURI("TIFF"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("JPEG"), Format.extensionToURI("PNG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("JPEG"), Format.extensionToURI("GIF"), null));
+//        
+//        paths.add(new MigrationPath(Format.extensionToURI("PNG"), Format.extensionToURI("TIFF"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("PNG"), Format.extensionToURI("JPEG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("PNG"), Format.extensionToURI("GIF"), null));
+//        
+//        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("PNG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("JPEG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("GIF"), null));
+//        
+//        paths.add(new MigrationPath(Format.extensionToURI("GIF"), Format.extensionToURI("PNG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("GIF"), Format.extensionToURI("TIFF"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("GIF"), Format.extensionToURI("JPEG"), null));
+//        
+//        paths.add(new MigrationPath(Format.extensionToURI("BMP"), Format.extensionToURI("TIFF"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("BMP"), Format.extensionToURI("JPEG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("BMP"), Format.extensionToURI("PNG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("BMP"), Format.extensionToURI("GIF"), null));
+//        
+//        paths.add(new MigrationPath(Format.extensionToURI("PCX"), Format.extensionToURI("TIFF"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("PCX"), Format.extensionToURI("JPEG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("PCX"), Format.extensionToURI("PNG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("PCX"), Format.extensionToURI("GIF"), null));
+//        
+//        paths.add(new MigrationPath(Format.extensionToURI("TGA"), Format.extensionToURI("TIFF"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("TGA"), Format.extensionToURI("JPEG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("TGA"), Format.extensionToURI("PNG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("TGA"), Format.extensionToURI("GIF"), null));
+//        
+//        paths.add(new MigrationPath(Format.extensionToURI("PCD"), Format.extensionToURI("TIFF"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("PCD"), Format.extensionToURI("JPEG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("PCD"), Format.extensionToURI("PNG"), null));
+//        paths.add(new MigrationPath(Format.extensionToURI("PCD"), Format.extensionToURI("GIF"), null));
+		
+		List<String> inputFormats = new ArrayList<String> ();
+		
+		inputFormats.add("JPEG");
+		inputFormats.add("TIFF");
+		inputFormats.add("GIF");
+		inputFormats.add("PNG");
+		inputFormats.add("BMP");
+		inputFormats.add("RAW");
+		inputFormats.add("PCX");
+		inputFormats.add("TGA");
+		inputFormats.add("PCD");
+		inputFormats.add("PDF");
+		
+		List<String> outputFormats = new ArrayList<String> ();
+		
+		outputFormats.add("TIFF");
+		outputFormats.add("PNG");
+		outputFormats.add("JPEG");
+		outputFormats.add("GIF");
+		outputFormats.add("PDF");
         
-        paths.add(new MigrationPath(Format.extensionToURI("JPEG"), Format.extensionToURI("TIFF"), null));
-        paths.add(new MigrationPath(Format.extensionToURI("PNG"), Format.extensionToURI("TIFF"), null));
-        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("PNG"), null));
-        paths.add(new MigrationPath(Format.extensionToURI("JPEG"), Format.extensionToURI("PNG"), null));
-        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("JPEG"), null));
-        paths.add(new MigrationPath(Format.extensionToURI("GIF"), Format.extensionToURI("PNG"), null));
-        paths.add(new MigrationPath(Format.extensionToURI("GIF"), Format.extensionToURI("TIFF"), null));
-        paths.add(new MigrationPath(Format.extensionToURI("TIFF"), Format.extensionToURI("GIF"), null));
-        
-        sd.paths(paths.toArray(new MigrationPath[]{}));
+        sd.paths(createMigrationPathwayMatrix(inputFormats, outputFormats));
         
         return sd.build();
+	}
+	
+	private MigrationPath[] createMigrationPathwayMatrix (List<String> inputFormats, List<String> outputFormats) {
+		List<MigrationPath> paths = new ArrayList<MigrationPath>();
+
+		for (Iterator iterator = inputFormats.iterator(); iterator.hasNext();) {
+			String input = (String) iterator.next();
+			
+			for (Iterator iterator2 = outputFormats.iterator(); iterator2.hasNext();) {
+				String output = (String) iterator2.next();
+				MigrationPath path = new MigrationPath(Format.extensionToURI(input), Format.extensionToURI(output), null);
+				// Debug...
+//				System.out.println(path.getInputFormat() + " --> " + path.getOutputFormat());
+				paths.add(path);
+			}
+			
+		}
+		
+		return paths.toArray(new MigrationPath[]{});
 	}
 
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
@@ -208,13 +273,38 @@ public class ImageMagickMigrations implements Migrate {
 			if(parameters != null) {
 				plogger.info("Got additional parameters:");
 				int compressionType;
+				int compressionQuality; 
 				List<Parameter> parameterList = parameters.getParameters();
 				for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
 					Parameter parameter = (Parameter) iterator.next();
 					String name = parameter.name;
 					plogger.info("Got parameter: " + name + " with value: " + parameter.value);
+					if(!name.equalsIgnoreCase(COMPRESSION_QUALITY_LEVEL) && !name.equalsIgnoreCase(COMPRESSION_TYPE)) {
+						plogger.info("Invalid parameter with name: " + parameter.name);
+						
+						plogger.info("Setting compressionQualilty to Default value: " + COMPRESSION_QUALITY_LEVEL_DEFAULT);
+						imageInfo.setQuality(COMPRESSION_QUALITY_LEVEL_DEFAULT);
+						
+						plogger.info("Setting Compression Type to Default value: " + COMPRESSION_TYPE_PARAM_DEFAULT + compressionTypes[COMPRESSION_TYPE_PARAM_DEFAULT]);
+						image.setCompression(COMPRESSION_TYPE_PARAM_DEFAULT);
+					}
 					
-					if(name.equalsIgnoreCase(COMPRESSION_TYPE_PARAM)) {
+					
+					if(name.equalsIgnoreCase(COMPRESSION_QUALITY_LEVEL)) {
+						compressionQuality = Integer.parseInt(parameter.value);
+						if(compressionQuality >=0 && compressionQuality <=100) {
+							plogger.info("Setting compressionQualilty to: " + compressionQuality);
+							imageInfo.setQuality(compressionQuality);
+						}
+						else {
+							plogger.info("Invalid value for compressionQualilty: " + parameter.value);
+							plogger.info("Setting compressionQualilty to Default value: " + COMPRESSION_QUALITY_LEVEL_DEFAULT);
+							imageInfo.setQuality(COMPRESSION_QUALITY_LEVEL_DEFAULT);
+						}
+						
+					}
+					
+					if(name.equalsIgnoreCase(COMPRESSION_TYPE)) {
 						compressionType = Integer.parseInt(parameter.value);
 						if(compressionType >= 0 && compressionType <= 10) {
 							plogger.info("Trying to set Compression type to: " + compressionTypes[compressionType]);
@@ -226,15 +316,12 @@ public class ImageMagickMigrations implements Migrate {
 							image.setCompression(COMPRESSION_TYPE_PARAM_DEFAULT);
 						}
 					}
-					else {
-						plogger.info("Invalid parameter with name: " + parameter.name);
-						plogger.info("Setting Compression Type to Default value: " + COMPRESSION_TYPE_PARAM_DEFAULT + compressionTypes[COMPRESSION_TYPE_PARAM_DEFAULT]);
-						image.setCompression(COMPRESSION_TYPE_PARAM_DEFAULT);
-					}
 				}
 			}
 			else {
+				plogger.info("No parameters passed! Setting default values for compressionType and compressionQuality");
 				image.setCompression(COMPRESSION_TYPE_PARAM_DEFAULT);
+				imageInfo.setQuality(COMPRESSION_QUALITY_LEVEL_DEFAULT);
 			}
 			
 			image.setMagick(outputExt);
