@@ -45,24 +45,6 @@ public class ImageMagickMigrationsLocalTest {
 	
 	static String[] compressionTypes = new String[11];
 	
-//	static String COMPRESSION_QUALITY_25 = "25";
-//	static String COMPRESSION_QUALITY_50 = "50";
-//	static String COMPRESSION_QUALITY_75 = "75";
-//	static String COMPRESSION_QUALITY_100 = "100";
-//	
-//	static String COMPRESSION_TYPE_UNDEF = "0";
-//	static String COMPRESSION_TYPE_NO = "1";
-//	static String COMPRESSION_TYPE_BZIP = "2";
-//	static String COMPRESSION_TYPE_FAX = "3";
-//	static String COMPRESSION_TYPE_GROUP4 = "4";
-//	static String COMPRESSION_TYPE_JPEG = "5";
-//	static String COMPRESSION_TYPE_JPEG2000 = "6";
-//	static String COMPRESSION_TYPE_JPEG_LOSSLESS = "7";
-//	static String COMPRESSION_TYPE_LZW = "8";
-//	static String COMPRESSION_TYPE_RLE = "9";
-//	static String COMPRESSION_TYPE_ZIP = "10";
-
-
     @BeforeClass
     public static void setup() {
     	System.out.println("Running ImageMagickMigrations LOCAL tests...");
@@ -105,10 +87,6 @@ public class ImageMagickMigrationsLocalTest {
         String outputFormatExt = "JPEG";
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
         
-        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_75));
-        
-        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
-        
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_NO, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
     }
     
@@ -119,8 +97,6 @@ public class ImageMagickMigrationsLocalTest {
         String outputFormatExt = "PNG";
         
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
-        
-        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_75));
         
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
         
@@ -134,7 +110,7 @@ public class ImageMagickMigrationsLocalTest {
         
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
 
-        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_75));
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_50));
         
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
@@ -182,7 +158,7 @@ public class ImageMagickMigrationsLocalTest {
         
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
         
-        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_75));
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_50));
         
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
@@ -303,7 +279,9 @@ public class ImageMagickMigrationsLocalTest {
         
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_RLE, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
         
-        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_RLE, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_RLE, ImageMagickMigrationsTestHelper.COMP_QUAL_50));
+        
+        testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
     @Test
@@ -313,7 +291,9 @@ public class ImageMagickMigrationsLocalTest {
         
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
         
-        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_50));
+        
+        testMigrate(inputFormatExt, outputFormatExt, null);
     }
 
 //    @Test
@@ -343,7 +323,9 @@ public class ImageMagickMigrationsLocalTest {
         
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
         
-        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG, ImageMagickMigrationsTestHelper.COMP_QUAL_50));
+        
+        testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
     private Parameters createParameters(String compressionType, String compressionQuality) {

@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.services.migration.generic.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
@@ -17,7 +16,6 @@ import java.util.Properties;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-
 
 import eu.planets_project.ifr.core.services.migration.generic.common.MultiProperties;
 import eu.planets_project.services.PlanetsServices;
@@ -41,7 +39,7 @@ import eu.planets_project.services.utils.ServiceUtils;
         name = GenericMigration.NAME, 
         serviceName = Migrate.NAME,
         targetNamespace = PlanetsServices.NS,
-        endpointInterface = "eu.planets_project.services.migrate.MigrateOneBinary" )
+        endpointInterface = "eu.planets_project.services.migrate.Migrate" )
         
 public class GenericMigration implements Migrate, Serializable
 {
