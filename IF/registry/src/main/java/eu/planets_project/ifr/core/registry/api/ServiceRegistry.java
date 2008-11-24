@@ -7,6 +7,8 @@
  */
 package eu.planets_project.ifr.core.registry.api;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -22,7 +24,6 @@ import eu.planets_project.ifr.core.registry.api.model.ServiceRegistryMessage;
 
 /**
  * Interface for the service registry web service.
- * 
  * @author Thomas Krämer (thomas.kraemer@uni-koeln.de)
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
@@ -41,7 +42,8 @@ public interface ServiceRegistry {
      */
     @WebMethod
     @WebResult
-    ServiceRegistryMessage saveService(@WebParam(name = "username") String username,
+    ServiceRegistryMessage saveService(
+            @WebParam(name = "username") String username,
             @WebParam(name = "password") String password,
             @WebParam(name = "service") PsService service);
 
@@ -53,13 +55,13 @@ public interface ServiceRegistry {
      */
     @WebMethod
     @WebResult
-    ServiceRegistryMessage saveBinding(@WebParam(name = "username") String username,
+    ServiceRegistryMessage saveBinding(
+            @WebParam(name = "username") String username,
             @WebParam(name = "password") String password,
             @WebParam(name = "binding") PsBinding binding);
 
     /**
      * Create a new organization in the registry.
-     * 
      * @param username The username
      * @param password The password
      * @param organization The org
@@ -91,7 +93,6 @@ public interface ServiceRegistry {
     /**
      * <br/>
      * Used to add a free classification (any String) to an registry object.
-     * 
      * @param username The username
      * @param password The password
      * @param serviceId The ID
@@ -141,7 +142,6 @@ public interface ServiceRegistry {
     /**
      * In this PLANETS IF release, most of the services are atomic, i.e. one
      * servicebinding per service.
-     * 
      * @param username The username
      * @param password The password
      * @param serviceKey key of a service in question
@@ -156,7 +156,6 @@ public interface ServiceRegistry {
     /**
      * In this PLANETS IF release, most of the services are atomic, i.e. one
      * servicebinding per service.
-     * 
      * @param username The username
      * @param password The password
      * @param query a key of a service in question
@@ -171,7 +170,6 @@ public interface ServiceRegistry {
 
     /**
      * Removes all registered services and organizations from the registry.
-     * 
      * @param username The username
      * @param password The password
      * @return a status message
@@ -219,5 +217,20 @@ public interface ServiceRegistry {
             @WebParam(name = "username") String username,
             @WebParam(name = "password") String password,
             @WebParam(name = "binding") PsBinding serviceBinding);
+
+    /**
+     * @param username The username
+     * @param password The password
+     * @param type The type of the service to find (e.g. "Migration",
+     *        "Identification"); pass null you you want to find all
+     * @param inputFormats The input formats the services should support; pass
+     *        null or omit if you want to find all
+     * @return The matching services
+     */
+    ServiceList findServicesForInputFormats(
+            @WebParam(name = "username") String username,
+            @WebParam(name = "password") String password,
+            @WebParam(name = "type") String type,
+            @WebParam(name = "inputFormats") String... inputFormats);
 
 }

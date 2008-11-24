@@ -483,12 +483,11 @@ public final class ServiceTaxonomy {
                          */
                         String[] queries = f.split(ConfigStrings.AND.val);
                         for (String q : queries) {
-                            if (!value.toLowerCase().contains(
+                            if (value.toLowerCase().contains(
                                     q.toLowerCase().trim())) {
-                                return false;
+                                return true;
                             }
                         }
-                        return true;
                     }
                 }
             }

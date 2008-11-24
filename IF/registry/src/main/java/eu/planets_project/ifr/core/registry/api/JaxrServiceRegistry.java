@@ -42,6 +42,7 @@ import org.jboss.wsf.common.ObjectNameFactory;
 import eu.planets_project.ifr.core.registry.api.model.BindingList;
 import eu.planets_project.ifr.core.registry.api.model.OrganizationList;
 import eu.planets_project.ifr.core.registry.api.model.PsBinding;
+import eu.planets_project.ifr.core.registry.api.model.PsCategory;
 import eu.planets_project.ifr.core.registry.api.model.PsOrganization;
 import eu.planets_project.ifr.core.registry.api.model.PsSchema;
 import eu.planets_project.ifr.core.registry.api.model.PsService;
@@ -112,15 +113,11 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
                 .getProperty("jaxr.publish.url",
                         "http://localhost:8080/juddi/publish")),
         /***/
-        FACTORY_CLASS(
-                "javax.xml.registry.ConnectionFactoryClass",
-                "org.apache.ws.scout.registry.ConnectionFactoryImpl"),
+        FACTORY_CLASS("javax.xml.registry.ConnectionFactoryClass", "org.apache.ws.scout.registry.ConnectionFactoryImpl"),
         // com.sun.xml.registry.uddi.ConnectionFactoryImpl
         // org.apache.ws.scout.registry.ConnectionFactoryImpl
         /***/
-        TRANSPORT_CLASS(
-                "juddi.proxy.transportClass",
-                "org.jboss.jaxr.juddi.transport.SaajTransport"),
+        TRANSPORT_CLASS("juddi.proxy.transportClass", "org.jboss.jaxr.juddi.transport.SaajTransport"),
         /***/
         TAXONOMY_PATH_0("com.sun.xml.registry.userTaxonomyFilenames", System
                 .getProperty("jboss.home.dir")
@@ -247,8 +244,8 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
             final String classificationString) {
         BulkResponse response = null;
         try {
-            Service service = JaxrServiceRegistryHelper.findServiceByKey(serviceId,
-                    bqm);
+            Service service = JaxrServiceRegistryHelper.findServiceByKey(
+                    serviceId, bqm);
             ServiceTaxonomy stax = new ServiceTaxonomy(blcm, bqm);
             PsService s = new PsService(service.getName().getValue(), service
                     .getDescription().getValue());
@@ -271,8 +268,8 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
     BulkResponse savePredefinedClassification(final String serviceId,
             final String classificationId) {
         try {
-            Service service = JaxrServiceRegistryHelper.findServiceByKey(serviceId,
-                    bqm);
+            Service service = JaxrServiceRegistryHelper.findServiceByKey(
+                    serviceId, bqm);
             ServiceTaxonomy stax = new ServiceTaxonomy(blcm, bqm);
             PsService s = PsService.of(service);
             stax.addClassification(s, classificationId);
@@ -411,7 +408,6 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
             } else {
                 LOG.info("Service selection by name: " + queryStr);
                 filtered = new ArrayList<Service>(services);
-                ;
             }
             br.getCollection().clear();
             br.getCollection().addAll(filtered);
@@ -712,8 +708,8 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
         }
         ServiceRegistryMessage message = new ServiceRegistryMessage();
         ServiceBinding jaxrBinding = binding.toJaxrBinding(blcm);
-        Service s = JaxrServiceRegistryHelper.findServiceByKey(binding.getService()
-                .getKey(), bqm);
+        Service s = JaxrServiceRegistryHelper.findServiceByKey(binding
+                .getService().getKey(), bqm);
         try {
             s.addServiceBinding(jaxrBinding);
             BulkResponse response = blcm.saveServiceBindings(Arrays
@@ -937,5 +933,37 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
     public ServiceRegistryMessage clear() {
         ServiceRegistryMessage clear = this.clear(username, password);
         return clear;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#findServicesForInputFormats(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String[])
+     */
+    public ServiceList findServicesForInputFormats(String username,
+            String password, String type, String... inputFormats) {
+        ServiceList services = findServices(username, password, "%",
+                type == null ? "" : findTaxonomy().getPsSchema().getId(type));
+        List<PsService> result = new ArrayList<PsService>();
+        if (inputFormats == null || inputFormats.length == 0) {
+            return services;
+        }
+        for (PsService psService : services.services) {
+            List<PsCategory> categories = psService.getCategories();
+            for (PsCategory psCategory : categories) {
+                String code = psCategory.code;
+                String[] split = code.substring(1, code.length() - 1)
+                        .split(",");
+                List<String> formats = new ArrayList<String>();
+                for (String string : split) {
+                    formats.add(string.trim());
+                }
+                if (formats.containsAll(Arrays.asList(inputFormats))) {
+                    result.add(psService);
+                }
+            }
+        }
+        services.services = result;
+        return services;
     }
 }

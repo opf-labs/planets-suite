@@ -1,5 +1,7 @@
 package eu.planets_project.ifr.core.registry.api;
 
+import java.util.Arrays;
+
 import eu.planets_project.ifr.core.registry.api.model.PsBinding;
 import eu.planets_project.ifr.core.registry.api.model.PsOrganization;
 import eu.planets_project.ifr.core.registry.api.model.PsService;
@@ -65,8 +67,8 @@ public final class ServiceRegistryObjectFactory {
         service.setName(name);
         service.setDescription(description);
         service.setOrganization(organization);
-        ServiceRegistryMessage message = registry.saveService(username, password,
-                service);
+        ServiceRegistryMessage message = registry.saveService(username,
+                password, service);
         service.setKey(message.registryObject.getKey());
         return service;
     }
@@ -124,7 +126,8 @@ public final class ServiceRegistryObjectFactory {
         b.setAccessURI(endpoint);
         b.setDescription(description);
         b.setService(service);
-        ServiceRegistryMessage message = registry.saveBinding(username, password, b);
+        ServiceRegistryMessage message = registry.saveBinding(username,
+                password, b);
         b.setKey(message.registryObject.getKey());
         return b;
     }
@@ -165,9 +168,33 @@ public final class ServiceRegistryObjectFactory {
     public static ServiceDescription descriptionOf(PsService psService) {
         // TODO what about the rest?
         // TODO how to map classifications and types
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(psService.getName(), null);
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(
+                psService.getName(), null);
         sd.description(psService.getDescription());
         return sd.build();
     }
 
+    /**
+     * @param name The service name
+     * @param description The service description
+     * @param type The service type (e.g. "Identification", "Migration")
+     * @param organization The organization providing the service
+     * @return The registered service
+     */
+    public PsService createService(String name, String description,
+            PsOrganization organization, String type, String... inputFormats) {
+        String id = registry.findTaxonomy(username, password).getPsSchema()
+                .getId(type);
+        if (id == null) {
+            throw new IllegalArgumentException("Unknown service type: " + type);
+        }
+        PsService service = createService(name, description, organization);
+        ServiceRegistryMessage message = registry.savePredefinedClassification(
+                username, password, service.getKey(), id);
+        System.out.println("Registered type: " + message);
+        message = registry.saveFreeClassification(username, password, service
+                .getKey(), Arrays.asList(inputFormats).toString());
+        System.out.println("Registered input formats: " + message);
+        return service;
+    }
 }

@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.registry.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -28,7 +29,6 @@ import eu.planets_project.ifr.core.registry.api.model.ServiceRegistryMessage;
 
 /**
  * This class exposes the IF service registry as a web service.
- * 
  * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry
  * @see eu.planets_project.ifr.core.registry.api.ServiceRegistryFactory
  * @see eu.planets_project.ifr.core.registry.impl.JaxrServiceRegistry
@@ -49,11 +49,11 @@ public final class ServiceRegistryManager implements Serializable,
     /***/
     private static final String LOG_CONFIG_FILE = "eu/planets_project/ifr/core/registry/servreg-log4j.xml";
     /***/
-    private static Log log = LogFactory.getLog(ServiceRegistryManager.class.getName());
+    private static Log log = LogFactory.getLog(ServiceRegistryManager.class
+            .getName());
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#saveFreeClassification(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String)
      */
@@ -70,7 +70,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#savePredefinedClassification(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String)
      */
@@ -87,7 +86,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#saveService(java.lang.String,
      *      java.lang.String,
      *      eu.planets_project.ifr.core.registry.api.model.PsService)
@@ -103,7 +101,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#saveBinding(java.lang.String,
      *      java.lang.String,
      *      eu.planets_project.ifr.core.registry.api.model.PsBinding)
@@ -119,7 +116,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#findTaxonomy(java.lang.String,
      *      java.lang.String)
      */
@@ -133,7 +129,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#findOrganizations(java.lang.String,
      *      java.lang.String, java.lang.String)
      */
@@ -148,7 +143,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#findServices(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String)
      */
@@ -164,7 +158,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#findBindings(java.lang.String,
      *      java.lang.String, java.lang.String)
      */
@@ -179,7 +172,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#clear(java.lang.String,
      *      java.lang.String)
      */
@@ -193,7 +185,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#saveOrganization(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String,
      *      java.lang.String, java.lang.String)
@@ -211,7 +202,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#deleteBinding(eu.planets_project.ifr.core.registry.api.model.PsBinding)
      */
     @WebMethod
@@ -225,7 +215,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#deleteOrganization(eu.planets_project.ifr.core.registry.api.model.PsOrganization)
      */
     @WebMethod
@@ -239,7 +228,6 @@ public final class ServiceRegistryManager implements Serializable,
 
     /**
      * {@inheritDoc}
-     * 
      * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#deleteService(eu.planets_project.ifr.core.registry.api.model.PsService)
      */
     @WebMethod
@@ -249,5 +237,19 @@ public final class ServiceRegistryManager implements Serializable,
             @WebParam(name = "password") final String password,
             @WebParam(name = "service") final PsService service) {
         return registry.deleteService(username, password, service);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.ServiceRegistry#findServicesForInputFormats(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String[])
+     */
+    public ServiceList findServicesForInputFormats(
+            @WebParam(name = "username") final String username,
+            @WebParam(name = "password") final String password,
+            @WebParam(name = "type") final String type,
+            @WebParam(name = "inputFormats") final String... inputFormats) {
+        return registry.findServicesForInputFormats(username, password, type,
+                inputFormats);
     }
 }

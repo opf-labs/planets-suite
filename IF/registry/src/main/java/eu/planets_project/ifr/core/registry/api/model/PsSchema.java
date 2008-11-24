@@ -56,7 +56,7 @@ public class PsSchema {
      */
     public String getId(String name) {
         for (PsCategory c : categories) {
-            if (c.id.toLowerCase().contains(name)) {
+            if (c.id.toLowerCase().contains(name.toLowerCase())) {
                 return c.id;
             }
         }

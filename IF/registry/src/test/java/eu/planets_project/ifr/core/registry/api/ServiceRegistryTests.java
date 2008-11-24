@@ -1,7 +1,6 @@
 package eu.planets_project.ifr.core.registry.api;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -28,44 +27,84 @@ import eu.planets_project.ifr.core.registry.api.model.ServiceRegistryMessage;
  */
 public class ServiceRegistryTests {
 
-    /** Brief registry sample usage. */
+    /**
+     * Registry sample usage: register services, query by type and input format.
+     */
     @Test
-    public void usage() {
+    public void sampleUsage() {
         /* First, we create a registry instance: */
         ServiceRegistry registry = ServiceRegistryFactory.getInstance();
         /* Then create an object factory for the registry: */
         ServiceRegistryObjectFactory factory = new ServiceRegistryObjectFactory(
                 USERNAME, PASSWORD, registry);
-        /* With that, we create an organization, a service and a binding: */
+        /* With that, we create an organization: */
         PsOrganization organization = factory.createOrganization("Planets",
                 "Preservation and Long-Term Access via Networked Services",
                 "Planets Info", "info@planets-project.eu");
+        /*
+         * Create a registered service with name, description, type,
+         * organization and supported input formats (as a string):
+         */
         PsService service = factory.createService("Droid",
-                "Droid Identification Service", organization);
+                "Droid Identification Service", organization, "Identification",
+                "PDF", "PNG", "info:pronom/fmt/51");
+        /* And another one (for the query tests below): */
+        factory.createService("Jhove", "Jhove Characterisation Service",
+                organization, "Characterisation", "PDF", "PNG");
+        /* And create a binding for that service: */
         PsBinding binding = factory.createBinding("Universal Droid Endpoint",
                 "http://127.0.0.1:8080/pserv-pc-droid/Droid?wsdl", service);
-        /* Now, the registry can be queried for these: */
+        /* Now, the registry can be queried for the bindings of a service: */
         List<PsBinding> bindings = registry.findBindings(USERNAME, PASSWORD,
                 service.getKey()).bindings;
         assertEquals(binding.getDescription(), bindings.get(0).getDescription());
         /*
-         * For further details (e.g. setting classifications etc., see the tests
-         * further below)
+         * Or for services of a specified type and supporting a specified input
+         * format:
          */
+        List<PsService> services = registry.findServicesForInputFormats(
+                USERNAME, PASSWORD, "Identification", "info:pronom/fmt/51").services;
+        assertEquals(1, services.size());
         /*
-         * TODO: The ServiceRegistry Interface should probably only offer write
-         * access for ServiceDescription objects, and some flexible query
-         * methods (Services for organization, for name, for category, etc.),
-         * and the ServiceRegistryObjectFactory should probably be hidden
-         * completely, as well as all those PsObjects.
+         * If the format is supported, but it is the wrong type, we don't want
+         * it:
+         */
+        services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
+                "Migration", "PNG").services;
+        assertEquals(0, services.size());
+        /* And if a required input format is not supported too: */
+        services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
+                "Identification", "PNG", "WAV").services;
+        assertEquals(0, services.size());
+        /*
+         * And vice versa (wrong format):
+         */
+        services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
+                "Identification", "WAV").services;
+        assertEquals(0, services.size());
+        /*
+         * But if the format is supported, and we don't care about the type, we
+         * want it:
+         */
+        services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
+                null, "PNG", "PDF").services;
+        assertEquals(2, services.size());
+        /*
+         * And vice versa (only type specified):
+         */
+        services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
+                "Identification").services;
+        assertEquals(1, services.size());
+        /*
+         * For further details see the tests below.
          */
     }
 
     protected static final String USERNAME = "provider";
     protected static final String PASSWORD = "provider";
     private static final String WILDCARD = "%";
-    protected static ServiceRegistry registry;
-    protected static ServiceRegistryObjectFactory mock;
+    static ServiceRegistry registry;
+    static ServiceRegistryObjectFactory mock;
 
     /** Create a registry and a mock object factory once for all tests. */
     @BeforeClass
