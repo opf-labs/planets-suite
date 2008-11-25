@@ -54,7 +54,7 @@ public final class TiffCheckTests
 		byte[] inPng = ByteArrayHelper.read(
 			new File("PC/libtiff/src/resources/image01.png"));
 		byte[] inTiff = ByteArrayHelper.read(
-			new File("PC/pngcheck/src/resources/planets.jpg"));
+			new File("PC/libtiff/src/resources/image01.tif"));
 
 		boolean result;
 		/* Check with null PRONOM URI, both with PNG and TIFF */
