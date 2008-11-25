@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.validation.libtiff.impl;
+package eu.planets_project.ifr.core.services.validation.impl;
 
 import java.io.Serializable;
 import java.net.URI;
