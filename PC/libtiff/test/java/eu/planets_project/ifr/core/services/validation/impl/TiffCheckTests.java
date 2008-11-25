@@ -49,7 +49,6 @@ public final class TiffCheckTests
 	 * trying to invalidate a PNG file.
 	 * @param tiffCheck The tiffCheck instance to test
 	 */
-	@Test(expected = AssertionError.class)
 	private void test(final BasicValidateOneBinary tiffCheck) 
 	{
 		byte[] inPng = ByteArrayHelper.read(
