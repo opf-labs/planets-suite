@@ -3,15 +3,18 @@ package eu.planets_project.ifr.core.services.validation.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import org.junit.Test;
 
-import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.utils.test.ServiceCreator;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
+import eu.planets_project.services.utils.test.ServiceCreator.Mode;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult.Validity;
 
 /**
  * Local and client tests of the PngCheck functionality.
@@ -37,9 +40,9 @@ public final class PngCheckTests {
      * in a SOAPFaultExcpetion, so we expect an Exception
      */
     public void clientTests() {
-        BasicValidateOneBinary pngCheck = ServiceCreator.createTestService(
-                BasicValidateOneBinary.QNAME, PngCheck.class,
-                "/pserv-pc-pngcheck/PngCheck?wsdl");
+        Validate pngCheck = ServiceCreator
+                .createTestService(Validate.QNAME, PngCheck.class,
+                        "/pserv-pc-pngcheck/PngCheck?wsdl", Mode.SERVER);
         test(pngCheck);
     }
 
@@ -48,26 +51,30 @@ public final class PngCheckTests {
      * trying to invalidate a JPG file.
      * @param pngCheck The pngCheck instance to test
      */
-    private void test(final BasicValidateOneBinary pngCheck) {
-        byte[] inPng = ByteArrayHelper.read(new File(
-                "PC/pngcheck/src/resources/planets.png"));
-        byte[] inJpg = ByteArrayHelper.read(new File(
-                "PC/pngcheck/src/resources/planets.jpg"));
-        /* Check with null PRONOM URI, both with PNG and JPG */
+    private void test(final Validate pngCheck) {
         try {
-            assertTrue("Valid PNG was not validated;", pngCheck
-                    .basicValidateOneBinary(inPng, null));
-            assertTrue("Invalid PNG was not invalidated;", !pngCheck
-                    .basicValidateOneBinary(inJpg, null));
+            DigitalObject inPng = new DigitalObject.Builder(Content
+                    .byReference(new File(
+                            "PC/pngcheck/src/resources/planets.png").toURL()))
+                    .build();
+            DigitalObject inJpg = new DigitalObject.Builder(Content
+                    .byReference(new File(
+                            "PC/pngcheck/src/resources/planets.jpg").toURL()))
+                    .build();
+            /* Check with null PRONOM URI, both with PNG and JPG */
+            assertTrue("Valid PNG was not validated;", pngCheck.validate(inPng,
+                    null).getValidity().equals(Validity.VALID));
+            assertTrue("Invalid PNG was not invalidated;", !pngCheck.validate(
+                    inJpg, null).getValidity().equals(Validity.VALID));
             /* Check with valid and invalid PRONOM URI */
-            assertTrue("Valid PNG was not validated;", pngCheck
-                    .basicValidateOneBinary(inPng,
-                            new URI("info:pronom/fmt/11")));
+            assertTrue("Valid PNG was not validated;", pngCheck.validate(inPng,
+                    new URI("info:pronom/fmt/11")).getValidity().equals(
+                    Validity.VALID));
             /* This should throw an IllegalArgumentException: */
-            assertTrue("Invalid PNG was not invalidated;", !pngCheck
-                    .basicValidateOneBinary(inJpg,
-                            new URI("info:pronom/fmt/10")));
-        } catch (PlanetsException e) {
+            assertTrue("Invalid PNG was not invalidated;", !pngCheck.validate(
+                    inJpg, new URI("info:pronom/fmt/10")).getValidity().equals(
+                    Validity.VALID));
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();

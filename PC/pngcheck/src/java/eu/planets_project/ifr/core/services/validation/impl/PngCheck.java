@@ -10,27 +10,31 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
+import eu.planets_project.services.validate.ValidateResult.Validity;
 
 /**
  * PngCheck validation service.
  * @author Fabian Steeg
  */
-@WebService(name = PngCheck.NAME, serviceName = BasicValidateOneBinary.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.BasicValidateOneBinary")
-@Local(BasicValidateOneBinary.class)
-@Remote(BasicValidateOneBinary.class)
+@WebService(name = PngCheck.NAME, serviceName = Validate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.Validate")
+@Local(Validate.class)
+@Remote(Validate.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
-public final class PngCheck implements BasicValidateOneBinary, Serializable {
+public final class PngCheck implements Validate, Serializable {
     /***/
     private static final long serialVersionUID = -596706737946485163L;
     /***/
@@ -48,36 +52,21 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
     private byte[] bytes;
 
     /**
-     * Validates that a file (represented as a byte array) is a PNG using
-     * PngCheck.
-     * @param binary The file to verify being a PNG using PngCheck (as a byte
-     *        array)
+     * Validates that a file is a PNG using PngCheck.
+     * @param tempFile The file to verify being a PNG using PngCheck
      * @param fmt Not required in this service (as it only identifies PNG
      *        files), so can be null; if it is not null and not one of the PNG
      *        pronom URIs however, an IllegalArgumentExcpetion is thrown
      * @return Returns true if the given file is a valid PNG file, else false
      */
-    @WebMethod(operationName = BasicValidateOneBinary.NAME, action = PlanetsServices.NS
-            + "/" + BasicValidateOneBinary.NAME)
-    @WebResult(name = BasicValidateOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
-            + "/" + BasicValidateOneBinary.NAME, partName = BasicValidateOneBinary.NAME
-            + "Result")
-    public boolean basicValidateOneBinary(
-            @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicValidateOneBinary.NAME, partName = "binary")
-            final byte[] binary,
-            @WebParam(name = "fmt", targetNamespace = PlanetsServices.NS + "/"
-                    + BasicValidateOneBinary.NAME, partName = "fmt")
-            final URI fmt) {
+    private boolean basicValidateOneBinary(final File tempFile, final URI fmt) {
         /* PngCheck can only validate PNG files: */
         if (fmt != null && !PNG_PRONOM.contains(fmt.toString())) {
             throw new IllegalArgumentException(
                     "PngCheck can only validate PNG (" + PNG_PRONOM
                             + ") files, not " + fmt.toString());
         }
-        /* We create a temporary file and write the bytes to that file: */
-        File tempFile = ByteArrayHelper.write(binary);
-        /* Then we call pngcheck with that temporary file: */
+        /* We call pngcheck with that temporary file: */
         List<String> commands = Arrays.asList("pngcheck", tempFile
                 .getAbsolutePath());
         ProcessRunner pr = new ProcessRunner(commands);
@@ -101,7 +90,32 @@ public final class PngCheck implements BasicValidateOneBinary, Serializable {
      */
     @WebMethod
     public boolean basicValidateOneBinary(final String fileName) {
-        bytes = ByteArrayHelper.read(new File(fileName));
-        return basicValidateOneBinary(bytes, null);
+        return basicValidateOneBinary(new File(fileName), null);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.validate.Validate#describe()
+     */
+    public ServiceDescription describe() {
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
+                this.getClass().getCanonicalName());
+        sd.description("Validation service based on PngCheck.");
+        return sd.build();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject,
+     *      java.net.URI)
+     */
+    public ValidateResult validate(final DigitalObject digitalObject,
+            final URI format) {
+        File file = FileUtils.writeInputStreamToTmpFile(digitalObject
+                .getContent().read(), "pngcheck-temp", "bin");
+        boolean valid = basicValidateOneBinary(file, format);
+        ValidateResult result = new ValidateResult(valid ? Validity.VALID
+                : Validity.INVALID, new ServiceReport());
+        return result;
     }
 }
