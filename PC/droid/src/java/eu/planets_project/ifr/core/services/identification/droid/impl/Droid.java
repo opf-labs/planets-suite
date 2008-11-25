@@ -1,9 +1,11 @@
 package eu.planets_project.ifr.core.services.identification.droid.impl;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.ejb.Local;
@@ -15,24 +17,23 @@ import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Types;
-import eu.planets_project.services.identify.IdentifyOneBinary;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Droid identification service.
  * @author Fabian Steeg, Carl Wilson
  */
-@Local(IdentifyOneBinary.class)
-@Remote(IdentifyOneBinary.class)
+@Local(Identify.class)
+@Remote(Identify.class)
 @Stateless()
-@WebService(
-        name = Droid.NAME, 
-        serviceName = IdentifyOneBinary.NAME, 
-        targetNamespace = PlanetsServices.NS,
-        endpointInterface = "eu.planets_project.services.identify.IdentifyOneBinary" )
-public final class Droid implements IdentifyOneBinary, Serializable {
+@WebService(name = Droid.NAME, serviceName = Identify.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.Identify")
+public final class Droid implements Identify, Serializable {
     /**
      * The e number of ms. we want to wait in one waiting step for the
      * identification to finish
@@ -57,16 +58,41 @@ public final class Droid implements IdentifyOneBinary, Serializable {
     private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
 
     /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public IdentifyResult identify(final DigitalObject digitalObject) {
+        InputStream stream = digitalObject.getContent().read();
+        File file = FileUtils.writeInputStreamToTmpFile(stream, "droid-temp",
+                "bin");
+        Types types = identifyOneBinary(file);
+        ServiceReport report = new ServiceReport();
+        report.setInfo(types.status);
+        IdentifyResult result = new IdentifyResult(Arrays.asList(types.types),
+                report);
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.identify.Identify#describe()
+     */
+    public ServiceDescription describe() {
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
+                this.getClass().getCanonicalName());
+        sd.description("Identification service based on Droid.");
+        return sd.build();
+    }
+
+    /**
      * Identify a file represented as a byte array using Droid.
-     * @param bytes The file to identify using Droid (as a byte array)
+     * @param tempFile The file to identify using Droid
      * @return Returns the Pronom IDs found for the file as URIs in a Types
      *         object
      */
-    public Types identifyOneBinary(final byte[] bytes) {
+    private Types identifyOneBinary(final File tempFile) {
         // Determine the config directory:
         String sigFileLocation = configFolder();
-        // Store the bytes into a temorary folder;
-        File tempFile = ByteArrayHelper.write(bytes);
         // Here we start using the Droid API:
         AnalysisController controller = new AnalysisController();
         try {
@@ -109,8 +135,7 @@ public final class Droid implements IdentifyOneBinary, Serializable {
      *         URIs for the specified file
      */
     public Types identifyOneFile(final String fileName) {
-        byte[] array = ByteArrayHelper.read(new File(fileName));
-        return identifyOneBinary(array);
+        return identifyOneBinary(new File(fileName));
     }
 
     /**
@@ -147,12 +172,4 @@ public final class Droid implements IdentifyOneBinary, Serializable {
         return sigFileLocation;
     }
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.IdentifyOneBinary#describe()
-     */
-    public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,this.getClass().getCanonicalName());
-        sd.description("Identification service based on Droid.");
-        return sd.build();
-    }
 }

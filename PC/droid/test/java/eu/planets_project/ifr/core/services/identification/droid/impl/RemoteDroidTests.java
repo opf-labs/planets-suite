@@ -2,8 +2,9 @@ package eu.planets_project.ifr.core.services.identification.droid.impl;
 
 import org.junit.BeforeClass;
 
-import eu.planets_project.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.utils.test.ServiceCreator;
+import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 
 /**
  * Client tests of the Droid functionality.
@@ -16,7 +17,7 @@ public final class RemoteDroidTests extends DroidTests {
      */
     @BeforeClass
     public static void localTests() {
-        droid = ServiceCreator.createTestService(IdentifyOneBinary.QNAME,
-                Droid.class, "/pserv-pc-droid/Droid?wsdl");
+        droid = ServiceCreator.createTestService(Identify.QNAME,
+                Droid.class, "/pserv-pc-droid/Droid?wsdl", Mode.SERVER);
     }
 }

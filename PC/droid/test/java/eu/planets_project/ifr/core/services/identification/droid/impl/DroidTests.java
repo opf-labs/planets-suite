@@ -3,14 +3,15 @@ package eu.planets_project.ifr.core.services.identification.droid.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.net.URI;
+import java.net.MalformedURLException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.services.identify.IdentifyOneBinary;
-import eu.planets_project.services.utils.ByteArrayHelper;
-import eu.planets_project.services.utils.test.ServiceCreator;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
 
 /**
  * Tests of the Droid functionality.
@@ -18,7 +19,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  */
 public class DroidTests {
 
-    static IdentifyOneBinary droid;
+    static Identify droid;
 
     /**
      * Tests Droid identification using a local Droid instance.
@@ -92,7 +93,11 @@ public class DroidTests {
     private static void test(TestFile f) {
         System.out.println("Testing " + f);
         String[] identify = null;
-        identify = test(droid, f.location);
+        try {
+            identify = test(droid, f.location);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         if (identify != null) {
             for (int i = 0; i < identify.length; i++) {
                 assertEquals("Identification failed for " + f.location,
@@ -105,14 +110,15 @@ public class DroidTests {
      * @param identify The IdentifyOneBinary instance to test
      * @param location The location of the file to test with the instance
      * @return Returns the resulting URI as ASCII strings
+     * @throws MalformedURLException
      */
-    private static String[] test(final IdentifyOneBinary identify,
-            final String location) {
-        byte[] array = ByteArrayHelper.read(new File(location));
-        URI[] result = identify.identifyOneBinary(array).types;
-        String[] strings = new String[result.length];
-        for (int i = 0; i < result.length; i++) {
-            String string = result[i].toASCIIString();
+    private static String[] test(final Identify identify, final String location)
+            throws MalformedURLException {
+        IdentifyResult result = identify.identify(new DigitalObject.Builder(
+                Content.byReference(new File(location).toURL())).build());
+        String[] strings = new String[result.getTypes().size()];
+        for (int i = 0; i < result.getTypes().size(); i++) {
+            String string = result.getTypes().get(i).toASCIIString();
             System.out.println(string);
             strings[i] = string;
         }
