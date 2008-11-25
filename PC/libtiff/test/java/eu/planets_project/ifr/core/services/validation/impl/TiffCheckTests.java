@@ -60,21 +60,21 @@ public final class TiffCheckTests
 		/* Check with null PRONOM URI, both with PNG and TIFF */
 		try {
 			result = tiffCheck.basicValidateOneBinary(inTiff, null);
-			// assertTrue("Valid TIFF was not validated;", result);
+			assertTrue("Valid TIFF was not validated;", result);
 
 			result = !tiffCheck.basicValidateOneBinary(inPng, null);
-			// assertTrue("Invalid TIFF was not invalidated;", result);
+			assertTrue("Invalid TIFF was not invalidated;", result);
 
 
 			/* Check with valid and invalid PRONOM URI */
 			URI uri = new URI("info:pronom/fmt/7");
 			result = tiffCheck.basicValidateOneBinary(inTiff, uri);
-			// assertTrue("Valid TIFF with URI was not validated;", result);
+			assertTrue("Valid TIFF with URI was not validated;", result);
 
 			/* This should throw an IllegalArgumentException: */
 			uri = new URI("info:pronom/fmt/11");
 			result = !tiffCheck.basicValidateOneBinary(inTiff, uri);
-			// assertTrue("Valid TIFF with invalid URI not invalidated;", result);
+			assertTrue("Valid TIFF with invalid URI not invalidated;", result);
 
 		} catch (PlanetsException e) {
 			e.printStackTrace();
