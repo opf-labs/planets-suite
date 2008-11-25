@@ -35,12 +35,13 @@ import javax.xml.transform.stream.StreamResult;
  * creation. E.g. to create a digital object with only the required arguments,
  * you'd use:
  * <p/>
- * {@code DigitalObject o = new DigitalObject.Builder(id, content).build();}
+ * {@code DigitalObject o = new DigitalObject.Builder(content).build();}
  * <p/>
  * You can cascade additional calls for optional arguments:
  * <p/>
- * {@code DigitalObject o = new DigitalObject.Builder(id,
- * content).manifestationOf(abstraction).title(title).build();}
+ * {@code DigitalObject o = new
+ * DigitalObject.Builder(content).manifestationOf(abstraction
+ * ).title(title).build();}
  * <p/>
  * DigitalObject instances can be serialized to XML. Given such an XML
  * representation, a digital object can be instantiated using a static factory
@@ -64,42 +65,42 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     /** Generated UID. */
     private static final long serialVersionUID = -893249048201058999L;
 
-    /** @See {@link #getTitle()} */
+    /** @see {@link #getTitle()} */
     @XmlAttribute
     private String title;
 
-    /** @See {@link #getFormat()} */
+    /** @see {@link #getFormat()} */
     @XmlAttribute
     private URI format;
 
-    /** @See {@link #getPermanentUrl()} */
+    /** @see {@link #getPermanentUrl()} */
     private URL permanentUrl;
 
-    /** @See {@link #getManifestationOf()} */
+    /** @see {@link #getManifestationOf()} */
     @XmlAttribute
     private URI manifestationOf;
 
-    /** @See {@link #getChecksum()} */
+    /** @see {@link #getChecksum()} */
     @XmlElement
     private Checksum checksum;
 
-    /** @See {@link #getMetadata()} */
+    /** @see {@link #getMetadata()} */
     @XmlElement
     private List<Metadata> metadata;
 
-    /** @See {@link #getContained()} */
+    /** @see {@link #getContained()} */
     @XmlElement
     private List<DigitalObject> contained;
 
-    /** @See {@link #getContent()} */
+    /** @see {@link #getContent()} */
     @XmlElement(required = true)
     private Content content;
 
-    /** @See {@link #getEvents()} */
+    /** @see {@link #getEvents()} */
     @XmlElement
     private List<Event> events;
 
-    /** @See {@link #getFragments()} */
+    /** @see {@link #getFragments()} */
     @XmlElement
     private List<Fragment> fragments;
 
