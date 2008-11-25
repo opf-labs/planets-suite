@@ -397,8 +397,8 @@ public class ImageMagickMigrationsLocalTest {
 			}
         	
         	
-            DigitalObject input = new DigitalObject.Builder(new URL(
-                    "http://somePermanentURL"), Content.byReference(inputFile.toURL()))
+            DigitalObject input = new DigitalObject.Builder(Content.byReference(inputFile.toURL())).permanentUrl(new URL(
+                    "http://somePermanentURL"))
                     .build();
             System.out.println("Input: " + input);
             

@@ -27,34 +27,32 @@ import javax.xml.transform.stream.StreamResult;
  * Representation of a concrete digital object, to be passed through web
  * services. As the other planets data types, it uses XmlAccessType.FIELD
  * instead of getters and setters. This allows for proper encapsulation on the
- * API side while remaining JAXB-serializable. <p/>
- * 
+ * API side while remaining JAXB-serializable.
+ * <p/>
  * This class is immutable in practice; its instances can therefore be shared
  * freely and concurrently. Instances are created using a builder to allow
  * optional named constructor parameters and ensure consistent state during
  * creation. E.g. to create a digital object with only the required arguments,
- * you'd use:<p/>
- * 
- * {@code DigitalObject o = new DigitalObject.Builder(id, content).build();}<p/>
- * 
- * You can cascade additional calls for optional arguments:<p/>
- * 
+ * you'd use:
+ * <p/>
+ * {@code DigitalObject o = new DigitalObject.Builder(id, content).build();}
+ * <p/>
+ * You can cascade additional calls for optional arguments:
+ * <p/>
  * {@code DigitalObject o = new DigitalObject.Builder(id,
- * content).manifestationOf(abstraction).title(title).build();}<p/>
- * 
+ * content).manifestationOf(abstraction).title(title).build();}
+ * <p/>
  * DigitalObject instances can be serialized to XML. Given such an XML
  * representation, a digital object can be instantiated using a static factory
- * method:<p/>
- * 
- * {@code DigitalObject o = DigitalObject.of(xml);} <p/>
- * 
+ * method:
+ * <p/>
+ * {@code DigitalObject o = DigitalObject.of(xml);}
+ * <p/>
  * For usage examples, see the tests in {@link DigitalObjectTests} and web
- * service sample usage in {@link PassThruMigrationService}
- * (pserv/IF/simple).<p/>
- * 
+ * service sample usage in {@link PassThruMigrationService} (pserv/IF/simple).
+ * <p/>
  * A corresponding XML schema can be generated from this class by running this
  * class as a Java application, see {@link #main(String[])}.
- * 
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  * @see DigitalObjectTests
  * @see Migrate
@@ -65,43 +63,42 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         Serializable {
     /** Generated UID. */
     private static final long serialVersionUID = -893249048201058999L;
-    
+
     /** @See {@link #getTitle()} */
     @XmlAttribute
     private String title;
-    
+
     /** @See {@link #getFormat()} */
     @XmlAttribute
     private URI format;
-    
+
     /** @See {@link #getPermanentUrl()} */
-    @XmlAttribute(required = true)
     private URL permanentUrl;
-    
+
     /** @See {@link #getManifestationOf()} */
     @XmlAttribute
     private URI manifestationOf;
-    
+
     /** @See {@link #getChecksum()} */
     @XmlElement
     private Checksum checksum;
-    
+
     /** @See {@link #getMetadata()} */
     @XmlElement
     private List<Metadata> metadata;
-    
+
     /** @See {@link #getContained()} */
     @XmlElement
     private List<DigitalObject> contained;
-    
+
     /** @See {@link #getContent()} */
     @XmlElement(required = true)
     private Content content;
-    
+
     /** @See {@link #getEvents()} */
     @XmlElement
     private List<Event> events;
-    
+
     /** @See {@link #getFragments()} */
     @XmlElement
     private List<Fragment> fragments;
@@ -137,14 +134,13 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      * Builder for DigitalObject instances. Using a builder ensures consistent
      * object state during creation and models optional named constructor
      * parameters.
-     * 
      * @see eu.planets_project.ifr.core.common.services.datatypes.DigitalObjectTests
      */
     public static final class Builder {
-        /* Required parameters: */
-        private URL permanentUrl;
+        /* Required parameter: */
         private Content content;
         /* Optional parameters, initialized to default values: */
+        private URL permanentUrl = null;
         private List<Event> events = new ArrayList<Event>();
         private List<Fragment> fragments = new ArrayList<Fragment>();
         private List<DigitalObject> contained = new ArrayList<DigitalObject>();
@@ -160,15 +156,6 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         }
 
         /**
-         * @param permanentUrl The unique ID for the digital object
-         * @param content The content of the digital object
-         */
-        public Builder(final URL permanentUrl, final Content content) {
-            this.permanentUrl = permanentUrl;
-            this.content = content;
-        }
-
-        /**
          * @param content The content of the digital object
          */
         public Builder(final Content content) {
@@ -178,6 +165,15 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         /** No-arg constructor for JAXB. API clients should not use this. */
         @SuppressWarnings("unused")
         private Builder() {}
+
+        /**
+         * @param permanentUrl The permanent URL, an ID
+         * @return The builder, for cascaded calls
+         */
+        public Builder permanentUrl(final URL permanentUrl) {
+            this.permanentUrl = permanentUrl;
+            return this;
+        }
 
         /**
          * @param events The events of the digital object
@@ -239,8 +235,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @return The builder, for cascaded calls
          */
         public Builder metadata(Metadata... metadata) {
-            this.metadata = new ArrayList<Metadata>(Arrays
-                    .asList(metadata));
+            this.metadata = new ArrayList<Metadata>(Arrays.asList(metadata));
             return this;
         }
 
@@ -272,8 +267,8 @@ public final class DigitalObject implements Comparable<DigitalObject>,
 
     /**
      * No-args constructor for JAXB serialization. Should not be called by an
-     * API client. Clients should use: <p/>
-     * 
+     * API client. Clients should use:
+     * <p/>
      * {@code new DigitalObject.Builder(required args...)optional
      * args...build();}
      */
@@ -318,7 +313,6 @@ public final class DigitalObject implements Comparable<DigitalObject>,
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -333,13 +327,12 @@ public final class DigitalObject implements Comparable<DigitalObject>,
                                 + "%s contained objects, %s events, %s fragments; "
                                 + "type '%s', manifestation of '%s', checksum '%s', metadata '%s'",
                         permanentUrl, title, contentSize, containedSize,
-                        eventsSize, fragmentsSize, format,
-                        manifestationOf, checksum, metaSize);
+                        eventsSize, fragmentsSize, format, manifestationOf,
+                        checksum, metaSize);
     }
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(final DigitalObject o) {
@@ -349,7 +342,6 @@ public final class DigitalObject implements Comparable<DigitalObject>,
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -360,7 +352,6 @@ public final class DigitalObject implements Comparable<DigitalObject>,
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -460,7 +451,6 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     static class Resolver extends SchemaOutputResolver {
         /**
          * {@inheritDoc}
-         * 
          * @see javax.xml.bind.SchemaOutputResolver#createOutput(java.lang.String,
          *      java.lang.String)
          */
@@ -472,7 +462,6 @@ public final class DigitalObject implements Comparable<DigitalObject>,
 
     /**
      * Generates the XML schema for this class.
-     * 
      * @param args Ignored
      */
     public static void main(final String[] args) {

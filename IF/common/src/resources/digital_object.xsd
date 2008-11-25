@@ -5,16 +5,16 @@
 
   <xs:complexType name="digitalObject" final="extension restriction">
     <xs:sequence>
+      <xs:element name="permanentUrl" type="xs:anyURI" minOccurs="0"/>
       <xs:element name="checksum" type="checksum" minOccurs="0"/>
-      <xs:element name="taggedMetadata" type="metadata" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="metadata" type="metadata" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="contained" type="digitalObject" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="content" type="content" maxOccurs="unbounded"/>
+      <xs:element name="content" type="content"/>
       <xs:element name="events" type="event" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="fragments" type="fragment" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="title" type="xs:string"/>
-    <xs:attribute name="planetsFormatUri" type="xs:string"/>
-    <xs:attribute name="permanentUrl" type="xs:anyURI" use="required"/>
+    <xs:attribute name="format" type="xs:string"/>
     <xs:attribute name="manifestationOf" type="xs:string"/>
   </xs:complexType>
 

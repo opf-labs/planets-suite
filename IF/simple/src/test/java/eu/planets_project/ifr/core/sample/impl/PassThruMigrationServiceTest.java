@@ -17,11 +17,10 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Local and client tests of the digital object migration functionality.
- * 
  * @author Fabian Steeg
  */
 public final class PassThruMigrationServiceTest extends TestCase {
-    
+
     /* The location of this service when deployed. */
     String wsdlLoc = "/pserv-if-simple/PassThruMigrationService?wsdl";
 
@@ -30,17 +29,16 @@ public final class PassThruMigrationServiceTest extends TestCase {
 
     /*
      * (non-Javadoc)
-     * 
      * @see junit.framework.TestCase#setUp()
      */
     @Override
     protected void setUp() throws Exception {
-        dom = ServiceCreator.createTestService(Migrate.QNAME, PassThruMigrationService.class, wsdlLoc );
+        dom = ServiceCreator.createTestService(Migrate.QNAME,
+                PassThruMigrationService.class, wsdlLoc);
     }
 
     /*
      * (non-Javadoc)
-     * 
      * @see junit.framework.TestCase#tearDown()
      */
     @Override
@@ -56,7 +54,7 @@ public final class PassThruMigrationServiceTest extends TestCase {
     public void testDescribe() {
         ServiceDescription desc = dom.describe();
         System.out.println("Recieved service description: " + desc);
-        assertTrue("The ServiceDescription should not be NULL.", desc != null );
+        assertTrue("The ServiceDescription should not be NULL.", desc != null);
     }
 
     /**
@@ -69,9 +67,9 @@ public final class PassThruMigrationServiceTest extends TestCase {
              * To test usability of the digital object instance in web services,
              * we simply pass one into the service and expect one back:
              */
-            DigitalObject input = new DigitalObject.Builder(new URL(
-                    "http://some"), Content.byReference(new URL("http://some")))
-                    .build();
+            DigitalObject input = new DigitalObject.Builder(Content
+                    .byReference(new URL("http://some"))).permanentUrl(
+                    new URL("http://some")).build();
             System.out.println("Input: " + input);
 
             MigrateResult mr = dom.migrate(input, null, null, null);

@@ -25,7 +25,6 @@ import org.junit.Test;
 
 /**
  * Tests for digital objects.
- * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * @see DigitalObject
  */
@@ -38,8 +37,9 @@ public final class DigitalObjectTests {
     public void usage1() throws MalformedURLException {
         /* A simple example with only required values: */
         URL id = new URL("http://id");
-        DigitalObject o = new DigitalObject.Builder(id, Content
-                .byReference(new URL("http://some.reference"))).build();
+        DigitalObject o = new DigitalObject.Builder(Content
+                .byReference(new URL("http://some.reference")))
+                .permanentUrl(id).build();
         /*
          * These objects can be serialized to XML and instantiated from that
          * form:
@@ -57,10 +57,10 @@ public final class DigitalObjectTests {
         /* For a more complex sample, we set up a few things we need: */
         URL purl = new URL("http://id");
         URL data1 = new URL("http://some.reference");
-        //byte[] data2 = new byte[] {};// see ContentTests for a real sample
+        // byte[] data2 = new byte[] {};// see ContentTests for a real sample
         /* Create the content: */
         Content c1 = Content.byReference(data1);
-        //Content c2 = Content.byValue(data2);
+        // Content c2 = Content.byValue(data2);
         /* Create some optional metadata: */
         URI type = URI.create("meta:/data.type");
         String metaContent = "the meta data";
@@ -70,9 +70,9 @@ public final class DigitalObjectTests {
         String value = "the checksum data";
         Checksum checksum = new Checksum(algorithm, value);
         /* Given these, we can instantiate our object: */
-        @SuppressWarnings("unused")
-        DigitalObject object = new DigitalObject.Builder(purl, c1)
+        DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl)
                 .metadata(meta).checksum(checksum).build();
+        System.out.println("Created: " + object);
 
     }
 
@@ -99,14 +99,16 @@ public final class DigitalObjectTests {
             URI manifestationOf = URI.create(SOME_URL_1);
             URI planetsFormatUri = URI.create(SOME_URL_1);
             /* Creation with only required arguments: */
-            digitalObject2 = new DigitalObject.Builder(new URL(SOME_URL_2),
-                    Content.byReference(new URL(SOME_URL_2))).build();
+            digitalObject2 = new DigitalObject.Builder(Content
+                    .byReference(new URL(SOME_URL_2))).permanentUrl(
+                    new URL(SOME_URL_2)).build();
             /* Creation with all optional arguments: */
-            digitalObject1 = new DigitalObject.Builder(permanentUrl, Content
-                    .byReference(permanentUrl)).checksum(CHECKSUM).events(EVENT)
-                    .fragments(FRAGMENT).manifestationOf(manifestationOf)
-                    .format(planetsFormatUri).metadata(META).title(
-                            TITLE).contains(digitalObject2).build();
+            digitalObject1 = new DigitalObject.Builder(Content
+                    .byReference(permanentUrl)).permanentUrl(permanentUrl)
+                    .checksum(CHECKSUM).events(EVENT).fragments(FRAGMENT)
+                    .manifestationOf(manifestationOf).format(planetsFormatUri)
+                    .metadata(META).title(TITLE).contains(digitalObject2)
+                    .build();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

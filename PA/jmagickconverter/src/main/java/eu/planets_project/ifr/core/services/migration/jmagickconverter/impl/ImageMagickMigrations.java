@@ -337,7 +337,7 @@ public class ImageMagickMigrations implements Migrate {
 	
 	
 	private DigitalObject createDigitalObject(URL permanentURL, byte[] resultFileBlob) {
-		DigitalObject digObj =  new DigitalObject.Builder(null, Content.byValue(resultFileBlob)).build();
+		DigitalObject digObj =  new DigitalObject.Builder(Content.byValue(resultFileBlob)).build();
 		return digObj;
 	}
 	

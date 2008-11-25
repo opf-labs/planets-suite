@@ -23,10 +23,9 @@ import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
  */
 public class SimpleIdentifyServiceTest {
-    
+
     /* The location of this service when deployed. */
     String wsdlLoc = "/pserv-if-simple/SimpleIdentifyService?wsdl";
 
@@ -39,52 +38,61 @@ public class SimpleIdentifyServiceTest {
     @Before
     public void setUp() throws Exception {
 
-        ids = ServiceCreator.createTestService(Identify.QNAME, SimpleIdentifyService.class, wsdlLoc );
+        ids = ServiceCreator.createTestService(Identify.QNAME,
+                SimpleIdentifyService.class, wsdlLoc);
 
     }
 
     /**
-     * Test method for {@link eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService#describe()}.
+     * Test method for
+     * {@link eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService#describe()}
+     * .
      */
     @Test
     public void testDescribe() {
         ServiceDescription desc = ids.describe();
         System.out.println("Recieved service description: " + desc);
-        assertTrue("The ServiceDescription should not be NULL.", desc != null );
+        assertTrue("The ServiceDescription should not be NULL.", desc != null);
     }
 
     /**
-     * Test method for {@link eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService#identify(eu.planets_project.services.datatypes.DigitalObject)}.
-     * @throws MalformedURLException 
-     * @throws URISyntaxException 
+     * Test method for
+     * {@link eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService#identify(eu.planets_project.services.datatypes.DigitalObject)}
+     * .
+     * @throws MalformedURLException
+     * @throws URISyntaxException
      */
     @Test
     public void testIdentify() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
-        testIdentifyThis(new URL("http://www.planets-project.eu/fake/adocument.pdf"), new URI("planets:fmt/mime/application/pdf"));
-        testIdentifyThis(new URL("http://www.planets-project.eu/fake/image.png"), new URI("planets:fmt/mime/image/png"));
+        testIdentifyThis(new URL(
+                "http://www.planets-project.eu/fake/adocument.pdf"), new URI(
+                "planets:fmt/mime/application/pdf"));
+        testIdentifyThis(
+                new URL("http://www.planets-project.eu/fake/image.png"),
+                new URI("planets:fmt/mime/image/png"));
     }
-    
+
     /**
-     * 
      * @param purl
      * @param type
      */
-    private void testIdentifyThis( URL purl, URI type ) {
+    private void testIdentifyThis(URL purl, URI type) {
         /* Create the content: */
         Content c1 = Content.byReference(purl);
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(purl, c1).build();
-        
+        DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl)
+                .build();
+
         /* Now pass this to the service */
         IdentifyResult ir = ids.identify(object);
-        
+
         /* Check the result */
-        System.out.println("Recieved type: " + ir.getTypes() );
-        System.out.println("Recieved service report: " + ir.getReport() );
+        System.out.println("Recieved type: " + ir.getTypes());
+        System.out.println("Recieved service report: " + ir.getReport());
         assertEquals("The returned type did not match the expected;", type, ir
                 .getTypes().get(0));
-        
+
     }
 
 }
