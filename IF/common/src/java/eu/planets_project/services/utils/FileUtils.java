@@ -5,9 +5,13 @@
  */
 package eu.planets_project.services.utils;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -101,6 +105,45 @@ public class FileUtils {
 				e.printStackTrace();
 			}
 			return input;
+	}
+	
+	public static String readTxtFileIntoString(File textFile) {
+		String resultString = null;
+		StringBuffer buffer = new StringBuffer();
+		String line = null;
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(textFile));
+			
+			while((line = reader.readLine())!=null) {
+				buffer.append(line);
+			}
+			reader.close();
+			resultString = buffer.toString();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultString;
+	}
+	
+	public static File writeStringToFile (String toWriteToFile, String destinationFilePath) {
+		File result = new File(destinationFilePath);
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(result));
+			writer.write(toWriteToFile);
+			writer.flush();
+			writer.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 	/**
