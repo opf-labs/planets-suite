@@ -3,21 +3,23 @@ package eu.planets_project.ifr.core.services.identification.jhove.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
-import eu.planets_project.services.datatypes.Types;
-import eu.planets_project.services.identify.IdentifyOneBinary;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.identify.Identify;
 
 /**
  * Tests of the JHOVE identification functionality.
  * @author Fabian Steeg
  */
 public class JhoveIdentificationTests {
-    static IdentifyOneBinary jhove;
+    static Identify jhove;
 
     /**
      * Tests JHOVE identification using a local JhoveIdentification instance.
@@ -91,10 +93,15 @@ public class JhoveIdentificationTests {
         /* For each we get the sample file: */
         String location = type.getSample();
         /* And try identifying it: */
-        Types result = jhove.identifyOneBinary(ByteArrayHelper.read(new File(
-                location)));
-        assertEquals("Wrong pronom ID;", type.getPronom(), result.types[0]
-                .toString());
+        URI result = null;
+        try {
+            result = jhove.identify(
+                    new DigitalObject.Builder(Content.byReference(new File(
+                            location).toURL())).build()).getTypes().get(0);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        assertEquals("Wrong pronom ID;", type.getPronom(), result.toString());
     }
 
 }

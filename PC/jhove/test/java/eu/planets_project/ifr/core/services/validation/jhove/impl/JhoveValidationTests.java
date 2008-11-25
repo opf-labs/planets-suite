@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.services.validation.jhove.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -10,16 +11,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
-import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.utils.ByteArrayHelper;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult.Validity;
 
 /**
  * Tests of the JHOVE validation functionality.
  * @author Fabian Steeg
  */
 public class JhoveValidationTests {
-    protected static BasicValidateOneBinary jhove;
+    static Validate jhove;
 
     /**
      * Tests JHOVE validation using a local JhoveValidation instance.
@@ -95,9 +97,12 @@ public class JhoveValidationTests {
         /* And try validating it: */
         boolean result = false;
         try {
-            result = jhove.basicValidateOneBinary(ByteArrayHelper
-                    .read(new File(location)), new URI(type.getPronom()));
-        } catch (PlanetsException e) {
+            result = jhove.validate(
+                    new DigitalObject.Builder(Content.byReference(new File(
+                            location).toURL())).build(),
+                    new URI(type.getPronom())).getValidity().equals(
+                    Validity.VALID);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();

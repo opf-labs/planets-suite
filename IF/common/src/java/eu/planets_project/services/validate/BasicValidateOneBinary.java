@@ -19,6 +19,7 @@ import eu.planets_project.services.PlanetsServices;
         name = BasicValidateOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@Deprecated
 public interface BasicValidateOneBinary {
     public static final String NAME = "BasicValidateOneBinary";
     public static final QName QNAME = new QName(PlanetsServices.NS, BasicValidateOneBinary.NAME );

@@ -2,8 +2,9 @@ package eu.planets_project.ifr.core.services.identification.jhove.impl;
 
 import org.junit.BeforeClass;
 
-import eu.planets_project.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.utils.test.ServiceCreator;
+import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 
 /**
  * Client tests of the JHOVE identification functionality.
@@ -19,8 +20,8 @@ public final class RemoteJhoveIdentificationTests extends
     @BeforeClass
     public static void setup() {
         System.out.println("Remote:");
-        jhove = ServiceCreator.createTestService(IdentifyOneBinary.QNAME,
+        jhove = ServiceCreator.createTestService(Identify.QNAME,
                 JhoveIdentification.class,
-                "/pserv-pc-jhove/JhoveIdentification?wsdl");
+                "/pserv-pc-jhove/JhoveIdentification?wsdl", Mode.SERVER);
     }
 }

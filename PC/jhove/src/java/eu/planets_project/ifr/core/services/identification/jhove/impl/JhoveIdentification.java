@@ -5,14 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Scanner;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import edu.harvard.hul.ois.jhove.App;
@@ -20,23 +19,23 @@ import edu.harvard.hul.ois.jhove.JhoveBase;
 import edu.harvard.hul.ois.jhove.JhoveException;
 import edu.harvard.hul.ois.jhove.handler.TextHandler;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Types;
-import eu.planets_project.services.identify.IdentifyOneBinary;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.utils.FileUtils;
 
 /**
  * JHOVE identification service.
- * 
  * @author Fabian Steeg
  */
-@WebService(name = JhoveIdentification.NAME, serviceName = IdentifyOneBinary.NAME, 
-        targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.IdentifyOneBinary")
-@Local(IdentifyOneBinary.class)
-@Remote(IdentifyOneBinary.class)
+@WebService(name = JhoveIdentification.NAME, serviceName = Identify.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.Identify")
+@Local(Identify.class)
+@Remote(Identify.class)
 @Stateless()
-public final class JhoveIdentification implements IdentifyOneBinary,
-        Serializable {
+public final class JhoveIdentification implements Identify, Serializable {
     /***/
     static final String NAME = "JhoveIdentification";
     /***/
@@ -55,6 +54,30 @@ public final class JhoveIdentification implements IdentifyOneBinary,
     private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
     /***/
     private static final String OUTPUT = "planets-jhove-output";
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public IdentifyResult identify(final DigitalObject digitalObject) {
+        File file = FileUtils.writeInputStreamToTmpFile(digitalObject
+                .getContent().read(), "jhove-temp", "bin");
+        Types types = identifyOneBinary(file);
+        ServiceReport report = new ServiceReport();
+        report.setInfo(types.status);
+        return new IdentifyResult(Arrays.asList(types.types), report);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.identify.Identify#describe()
+     */
+    public ServiceDescription describe() {
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
+                this.getClass().getCanonicalName());
+        sd.description("Identification service using JHOVE.");
+        return sd.build();
+    }
 
     /**
      * Simple enumeration of MIME types, PRONOM IDs and sample file locations
@@ -118,20 +141,12 @@ public final class JhoveIdentification implements IdentifyOneBinary,
 
     /**
      * The actual JHOVE identification method.
-     * 
-     * @param binary The file to be identified, as a byte array
+     * @param temporary The file to be identified
      * @return Returns a Types object containing the result of the JHOVE
      *         identification
      */
-    @WebMethod(operationName = IdentifyOneBinary.NAME, action = PlanetsServices.NS
-            + "/" + IdentifyOneBinary.NAME)
-    @WebResult(name = IdentifyOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
-            + "/" + IdentifyOneBinary.NAME, partName = IdentifyOneBinary.NAME
-            + "Result")
-    public Types identifyOneBinary(final byte[] binary) {
+    private Types identifyOneBinary(final File temporary) {
         try {
-            /* We store the bytes in a temporary file: */
-            File temporary = ByteArrayHelper.write(binary);
             /* And use the JHOVE API to identify it: */
             JhoveBase base = new JhoveBase();
             base.setEncoding(ENCODING);
@@ -158,23 +173,9 @@ public final class JhoveIdentification implements IdentifyOneBinary,
     }
 
     /**
-     * Method for simpler SOAP-based testing.
-     * 
-     * @param fileName The name of the local (on the server) file to identify
-     * @return Returns a Types object, resulting from calling the actual
-     *         identification method
-     */
-    @WebMethod
-    public Types identifyOneFile(final String fileName) {
-        byte[] bytes = ByteArrayHelper.read(new File(fileName));
-        return identifyOneBinary(bytes);
-    }
-
-    /**
      * Retrieves the results of a JhoveBase (by extracting from the resulting
      * text file, I have no idea how to get it straight from the JhoveBase,
      * there is no API for this).
-     * 
      * @param base The JhoveBase to get the results from
      * @return Returns a Types object with the result for the JhoveBase
      */
@@ -248,14 +249,4 @@ public final class JhoveIdentification implements IdentifyOneBinary,
                 : RESOURCES);
         return folder;
     }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.IdentifyOneBinary#describe()
-     */
-    public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,this.getClass().getCanonicalName());
-        sd.description("Identification service using JHOVE.");
-        return sd.build();
-    }
-    
 }

@@ -33,6 +33,7 @@ import eu.planets_project.services.PlanetsServices;
         parameterStyle = SOAPBinding.ParameterStyle.BARE,
         style = SOAPBinding.Style.RPC)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@Deprecated
 public interface BasicIdentifyOneBinary {
     public static final String NAME = "BasicIdentifyOneBinary";
     public static final QName QNAME = new QName(PlanetsServices.NS, BasicIdentifyOneBinary.NAME );

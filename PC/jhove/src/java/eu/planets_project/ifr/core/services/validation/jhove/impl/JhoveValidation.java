@@ -6,58 +6,73 @@ import java.net.URI;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.Types;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
+import eu.planets_project.services.validate.ValidateResult.Validity;
 
 /**
  * JHOVE validation service.
  * @author Fabian Steeg
  */
-@WebService(name = JhoveValidation.NAME, serviceName = BasicValidateOneBinary.NAME, 
-        targetNamespace = PlanetsServices.NS, 
-        endpointInterface = "eu.planets_project.services.validate.BasicValidateOneBinary")
-@Local(BasicValidateOneBinary.class)
-@Remote(BasicValidateOneBinary.class)
+@WebService(name = JhoveValidation.NAME, serviceName = Validate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.Validate")
+@Local(Validate.class)
+@Remote(Validate.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
-public final class JhoveValidation implements BasicValidateOneBinary,
-        Serializable {
+public final class JhoveValidation implements Validate, Serializable {
     /***/
     private static final long serialVersionUID = 2127494848765937613L;
     /***/
     static final String NAME = "JhoveValidation";
 
     /**
-     * @param binary The binary file to validate
+     * {@inheritDoc}
+     * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject,
+     *      java.net.URI)
+     */
+    public ValidateResult validate(final DigitalObject digitalObject,
+            final URI format) {
+        boolean valid = basicValidateOneBinary(digitalObject, format);
+        ValidateResult result = new ValidateResult(valid ? Validity.VALID
+                : Validity.INVALID, new ServiceReport());
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.validate.Validate#describe()
+     */
+    public ServiceDescription describe() {
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
+                this.getClass().getCanonicalName());
+        sd.description("Validation service using JHOVE.");
+        return sd.build();
+    }
+
+    /**
+     * @param digitalObject The digital object file to validate
      * @param fmt The pronom URI the binary should be validated against
      * @return Returns true if the given pronom URI describes the given binary
      *         file, else false
      * @see eu.planets_project.services.validate.BasicValidateOneBinary#basicValidateOneBinary(byte[],
      *      java.net.URI)
      */
-    @WebMethod(operationName = BasicValidateOneBinary.NAME, action = PlanetsServices.NS
-            + "/" + BasicValidateOneBinary.NAME)
-    @WebResult(name = BasicValidateOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
-            + "/" + BasicValidateOneBinary.NAME, partName = BasicValidateOneBinary.NAME
-            + "Result")
-    public boolean basicValidateOneBinary(
-            @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicValidateOneBinary.NAME, partName = "binary") final byte[] binary,
-            @WebParam(name = "fmt", targetNamespace = PlanetsServices.NS + "/"
-                    + BasicValidateOneBinary.NAME, partName = "fmt") final URI fmt) {
+    private boolean basicValidateOneBinary(final DigitalObject digitalObject,
+            final URI fmt) {
         /* Identify the binary: */
         JhoveIdentification identification = new JhoveIdentification();
-        Types result = identification.identifyOneBinary(binary);
+        IdentifyResult identify = identification.identify(digitalObject);
         /* And check it it is what we expected: */
-        for (URI uri : result.types) {
+        for (URI uri : identify.getTypes()) {
             if (uri.equals(fmt)) {
                 /* One of the identified types is the one we expected: */
                 return true;
@@ -65,4 +80,5 @@ public final class JhoveValidation implements BasicValidateOneBinary,
         }
         return false;
     }
+
 }
