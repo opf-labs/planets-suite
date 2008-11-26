@@ -1,5 +1,7 @@
 package eu.planets_project.services.datatypes;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -9,24 +11,18 @@ public class FileFormatProperty extends Property {
 	private String id;
 	private String unit;
 	private String description;
-	private Metric metric;
+	private String type;
+	private List<Metric> metrics;
 	
 	
 	
 	public FileFormatProperty() {
+		super(null, null);
 		this.id = null;
 		this.unit = null;
+		this.type = null;
 		this.description = null;
-		this.metric = null;
-	}
-	
-	
-	
-	public FileFormatProperty (String id, String unit, String description, Metric metric) {
-		this.id = id;
-		this.unit = unit;
-		this.description = description;
-		this.metric = metric;
+		this.metrics = null;
 	}
 	
 	
@@ -82,16 +78,68 @@ public class FileFormatProperty extends Property {
 	/**
 	 * @return the metric
 	 */
-	public Metric getMetric() {
-		return metric;
+	public List<Metric> getMetrics() {
+		return metrics;
 	}
 	
 	
 	/**
 	 * @param metric the metric to set
 	 */
-	public void setMetric(Metric metric) {
-		this.metric = metric;
+	public void setMetrics(List<Metric> metrics) {
+		this.metrics = metrics;
 	}
+	
+	public void setName(String name) {
+		super.setName(name);
+	}
+	
+	public String getName() {
+		return super.getName();
+	}
+	
+	public void setValue(String value) {
+		super.setValue(value);
+	}
+	
+	public String getValue() {
+		return super.getValue();
+	}
+
+
+
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+
+
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public String toString() {
+		
+		String toString = "Property id: " + id + "\n" + 
+				"Property name: " + super.getName() + "=" + super.getValue() + "\n" + 
+				"Property description: " + description + "\n" + 
+				"Property unit: " + unit + "\n" + 
+				"Property type: " + type + "\n"; 
+				if(metrics!=null) {
+					toString = toString + "Property metrics count: " + metrics.size() + "\n\n";
+				}
+				else {
+					toString = toString + "Property metrics count: " + 0 + "\n\n";
+				}
+				return toString;
+				
+	}
+	
 	
 }

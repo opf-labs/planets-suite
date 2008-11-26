@@ -24,7 +24,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 public final class Extractor2BinaryTest {
 
     /***/
-    private static final String WSDL = "/pserv-pc-extractor/Extractor2Binary?wsdl";
+    private static final String WSDL = "/pserv-pc-extractor/BasicExtractor2Binary?wsdl";
     /***/
     private String xcelString;
     /***/
@@ -67,7 +67,7 @@ public final class Extractor2BinaryTest {
     /** Test using a local instance. */
     @Test
     public void testLocal() {
-        test(new Extractor2Binary());
+        test(new BasicExtractor2Binary());
     }
 
     /** Test using the web service running on local host. */
@@ -76,7 +76,7 @@ public final class Extractor2BinaryTest {
         BasicCharacteriseOneBinaryXCELtoBinary characterise = ServiceCreator
                 .createTestService(
                         BasicCharacteriseOneBinaryXCELtoBinary.QNAME,
-                        Extractor2Binary.class, WSDL);
+                        BasicExtractor2Binary.class, WSDL);
         test(characterise);
     }
 

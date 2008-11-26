@@ -60,5 +60,11 @@ public class Metric {
 		this.id = id;
 	}
 	
+	public String toString() {
+		return ("Metric id: " + id+ "\n" +
+				"Metric name: " + name + "\n" + 
+				"Metric description: " + description); 
+	}
+	
 	
 }
