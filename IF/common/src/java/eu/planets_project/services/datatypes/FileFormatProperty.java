@@ -126,16 +126,29 @@ public class FileFormatProperty extends Property {
 	
 	public String toString() {
 		
-		String toString = "Property id: " + id + "\n" + 
-				"Property name: " + super.getName() + "=" + super.getValue() + "\n" + 
-				"Property description: " + description + "\n" + 
-				"Property unit: " + unit + "\n" + 
-				"Property type: " + type + "\n"; 
-				if(metrics!=null) {
-					toString = toString + "Property metrics count: " + metrics.size() + "\n\n";
+		StringBuffer buf = new StringBuffer();
+		
+		String toString = 
+				"----------------------------------\r\n" + 
+			    "Property name: " + super.getName() + "\r\n" + 
+				"         id: " + id + "\r\n" + 
+				"         description: " + description + "\r\n" + 
+				"         unit: " + unit + "\r\n" + 
+				"         type: " + type + "\r\n\r\n";
+		
+				if(metrics.size()>0) {
+					int i = 1;
+					for (Metric metric : metrics) {
+						buf.append("\r\n" + i + ") " + metric.getName() + "\r\n");
+						buf.append("   " + metric.getDescription() + "\r\n");
+						i++;
+					}
+					toString = toString + "Property metrics: " + buf.toString() + "\r\n" + 
+					"----------------------------------\r\n\r\n";
 				}
 				else {
-					toString = toString + "Property metrics count: " + 0 + "\n\n";
+					toString = toString + "Property metrics count: " + 0 + "\r\n" + 
+					"----------------------------------\r\n\r\n";
 				}
 				return toString;
 				

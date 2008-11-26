@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,9 +31,16 @@ public class FPMParsingTool {
 	
 	public static String FPM_HOME = System.getenv("FPM_HOME") + File.separator;
 	public static String FPM_TOOL = FPM_HOME + "FPMTool.exe";
+	public static PrintStream out;
 	
 	
 	public static boolean generatePropertiesFile (String pronomID) {
+		try {
+			out = new PrintStream(new File("PC/extractor/src/resources/fpm_files/" + "outputLog.txt"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		boolean success = false;
 		ProcessRunner shell = new ProcessRunner();
 		
@@ -48,7 +56,7 @@ public class FPMParsingTool {
 		String processOutput = shell.getProcessOutputAsString();
 		String processError = shell.getProcessErrorAsString();
 		
-		System.out.println("Process output: " + processOutput);
+		out.println("Process output: " + processOutput);
 		System.err.println("Process error: " + processError);
 		
 		File resultFPM = new File(FPM_HOME + "fpm.fpm");
@@ -83,6 +91,8 @@ public class FPMParsingTool {
 			Element format = orgRoot.getChild("format");
 			
 			String puid = format.getAttributeValue("puid");
+			out.println("Format: " + puid);
+			out.println("***********************************************************");
 			
 			for (Element element : content) {
 				List <Element> level1Elements = element.getChildren();
@@ -149,11 +159,7 @@ public class FPMParsingTool {
 					
 					formatProperty.setMetrics(metrics);
 					fileFormatProperties.add(formatProperty);
-					
-				}
-				for (Iterator iterator = fileFormatProperties.iterator(); iterator.hasNext();) {
-					FileFormatProperty ffproperty = (FileFormatProperty) iterator.next();
-					System.out.println(ffproperty.toString());
+					metrics = null;
 				}
 			}
 			Element xclProperties = new Element("XCLProperties");
@@ -173,7 +179,7 @@ public class FPMParsingTool {
 				Element type = new Element("type").setText(ffproperty.getType());
 				Element new_metrics_top = new Element("metrics");
 				
-				for (Metric metric : metrics) {
+				for (Metric metric : ffproperty.getMetrics()) {
 					Element mName = new Element("mName").setText(metric.getName());
 					new_metrics_top.addContent(mName);
 					Element mId = new Element("mId").setText(metric.getId());
@@ -194,6 +200,10 @@ public class FPMParsingTool {
 				xmlWriter = new BufferedWriter(new FileWriter(formattedFPM));
 				xmlOut.output(newDoc, xmlWriter);
 				
+				for (Iterator iterator = fileFormatProperties.iterator(); iterator.hasNext();) {
+					FileFormatProperty testOutProp = (FileFormatProperty) iterator.next();
+					out.println(testOutProp.toString());
+				}
 			}
 			
 		} catch (JDOMException e) {
@@ -205,6 +215,7 @@ public class FPMParsingTool {
 		}
 		boolean deleted = fpmTempFile.delete();
 		success = true;
+		out.println("***********************************************************");
 		return success;
 	}
 }

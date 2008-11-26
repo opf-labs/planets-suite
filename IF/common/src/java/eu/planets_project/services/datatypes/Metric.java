@@ -61,9 +61,33 @@ public class Metric {
 	}
 	
 	public String toString() {
-		return ("Metric id: " + id+ "\n" +
-				"Metric name: " + name + "\n" + 
-				"Metric description: " + description); 
+		String nameOut;
+		String idOut;
+		String descriptionOut;
+		
+		if(name==null) {
+			nameOut = "";
+		}
+		else {
+			nameOut = name;
+		}
+		if(id==null) {
+			idOut = "";
+		}
+		else {
+			idOut = id;
+		}
+		
+		if(description==null) {
+			descriptionOut = "";
+		}
+		else {
+			descriptionOut = description;
+		}
+		
+		return "Metric name: " + nameOut + "\r\n" +
+				"Metric id: " + idOut + "\r\n" +
+				"Metric description: " + descriptionOut; 
 	}
 	
 	
