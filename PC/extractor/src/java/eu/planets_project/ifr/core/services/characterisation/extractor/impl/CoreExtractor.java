@@ -1,20 +1,18 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
-public class BasicCoreExtractor {
+public class CoreExtractor {
 
     private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
     private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
@@ -25,14 +23,15 @@ public class BasicCoreExtractor {
     private static String EXTRACTOR_NAME;
     private PlanetsLogger plogger;
 
-    public BasicCoreExtractor(String extractorName, PlanetsLogger logger) {
+    public CoreExtractor(String extractorName, PlanetsLogger logger) {
         this.plogger = logger;
         EXTRACTOR_NAME = extractorName;
         OUTPUTFILE_NAME = EXTRACTOR_NAME.toLowerCase() + "_xcdl_out.xcdl";
         EXTRACTOR_WORK = extractorName.toUpperCase();
     }
 
-    public byte[] extractXCDL(byte[] binary, byte[] xcel) {
+    public byte[] extractXCDL(byte[] binary, byte[] xcel, Parameters parameters) {
+    	
     	if(EXTRACTOR_HOME==null){
     		System.err.println("EXTRACTOR_HOME is not set! Please create an system variable\n" +
     				"and point it to the Extractor installation folder!");

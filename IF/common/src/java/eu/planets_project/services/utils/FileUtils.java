@@ -7,6 +7,7 @@ package eu.planets_project.services.utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -176,6 +177,28 @@ public class FileUtils {
 				return false;
 			}
 		}
+	}
+	
+	public static byte[] writeInputStreamToBinary(InputStream inputStream) {
+		ByteArrayOutputStream boStream = new ByteArrayOutputStream();
+		int in;
+		try {
+			while((in = inputStream.read())!= -1) {
+				boStream.write(in);
+			}
+			
+			boStream.flush();
+			boStream.close();
+			
+			byte[] data = boStream.toByteArray();
+			
+			return data;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public static File writeInputStreamToTmpFile(InputStream inputStream,String fileName, String suffix) {

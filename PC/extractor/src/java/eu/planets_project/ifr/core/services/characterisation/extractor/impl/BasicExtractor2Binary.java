@@ -1,5 +1,6 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+import java.io.File;
 import java.io.Serializable;
 
 import javax.ejb.Local;
@@ -10,8 +11,6 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-import javax.xml.ws.BindingType;
-import javax.xml.ws.soap.MTOM;
 
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
@@ -19,6 +18,7 @@ import org.jboss.annotation.ejb.RemoteBinding;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
+import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 @Stateless()
@@ -76,11 +76,13 @@ public class BasicExtractor2Binary implements
 
         // byte[] xcel_in = xcel.getBytes();
 
-        BasicCoreExtractor extractor = new BasicCoreExtractor(CALLING_EXTRACTOR_NAME,
+        CoreExtractor extractor = new CoreExtractor(CALLING_EXTRACTOR_NAME,
                 plogger);
+        
+        File inputImage = ByteArrayHelper.write(binary);
 
         byte[] outputXCDL = extractor.extractXCDL(binary, xcel != null ? xcel
-                .getBytes() : null);
+                .getBytes() : null, null);
 
         return outputXCDL;
     }
