@@ -6,13 +6,24 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.ImageMagickMigrations;
+import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.ImageMagickMigrationsTestHelper;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.compare.BasicCompareFormatProperties;
+import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 public class FPMToolTest {
+	
+//	@BeforeClass
+//    public static void setup() {
+//    	System.setProperty("pserv.test.context", "server");
+//        System.setProperty("pserv.test.host", "planetarium.hki.uni-koeln.de");
+//        System.setProperty("pserv.test.port", "8080");
+//    }
 
     @Test
     public void localTests() {
@@ -30,7 +41,7 @@ public class FPMToolTest {
     public void test(BasicCompareFormatProperties fpmt) {
 
         try {
-            String parameters = "fmt_10:fmt_13:";
+            String parameters = "fmt/10:fmt/13:";
             String result = null;
             result = fpmt.basicCompareFormatProperties(parameters);
             assertNotNull("response was null", result);
@@ -49,8 +60,8 @@ public class FPMToolTest {
     public void testBasicCompareFormatProperties() throws IOException,
             PlanetsException {
         String FPMTOOL_HOME = System.getenv("FPMTOOL_HOME");
-        System.out.println(FPMTOOL_HOME);
-        String parameters = "fmt_10:fmt_13:";
+        System.out.println("testBasicCompareFormatProperties: " + FPMTOOL_HOME);
+        String parameters = "fmt/10:fmt/13:";
         FPMTool fpmtool = new FPMTool();
         String result = null;
         result = fpmtool.basicCompareFormatProperties(parameters);

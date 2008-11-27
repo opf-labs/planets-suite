@@ -54,6 +54,7 @@ public class FPMTool implements BasicCompareFormatProperties, Serializable {
         try {
             FPMTOOL_WORK = null;
             plogger.info("FPMTOOL_HOME = " + FPMTOOL_HOME);
+            System.out.println("FPMTOOL_HOME = " + FPMTOOL_HOME);
             plogger.info("FPMTOOL_WORK= " + FPMTOOL_WORK);
             plogger.info("FPMTOOL_OUT = " + FPMTOOL_OUT);
 
@@ -66,7 +67,7 @@ public class FPMTool implements BasicCompareFormatProperties, Serializable {
                 FPMTOOL_OUT = FPMTOOL_WORK + FPMTOOL_OUT;
             }
             plogger.info("FPMTOOL_HOME = " + FPMTOOL_HOME);
-            plogger.info("FPMTOOL_WORK= " + FPMTOOL_WORK);
+            plogger.info("FPMTOOL_WORK = " + FPMTOOL_WORK);
             plogger.info("FPMTOOL_OUT = " + FPMTOOL_OUT);
             File tmpworkdir = new File(FPMTOOL_WORK);
             if (!tmpworkdir.exists()) {

@@ -19,7 +19,7 @@ public class FPMParsingToolTest {
 	
 	@BeforeClass
 	public static void setup() {
-		File puidFile = new File(System.getenv("FPM_HOME") + File.separator + "res" + File.separator + "PUIDList.txt");
+		File puidFile = new File(System.getenv("FPMTOOL_HOME") + File.separator + "res" + File.separator + "PUIDList.txt");
 		formatIDs = new File("PC/extractor/src/resources/fpm_files/" + "formatIDs.txt");
 		
 		System.setProperty("pserv.test.context", "local");
