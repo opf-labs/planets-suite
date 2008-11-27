@@ -216,8 +216,7 @@ public final class ServiceDescription {
 
         /** No-arg constructor for JAXB. API clients should not use this. */
         @SuppressWarnings("unused")
-        private Builder() {
-        }
+        private Builder() {}
 
         /* Required parameters: */
         private String name;
@@ -446,6 +445,7 @@ public final class ServiceDescription {
     /**
      * @return the name
      */
+    @Queryable
     public String getName() {
         return name;
     }
@@ -453,6 +453,7 @@ public final class ServiceDescription {
     /**
      * @return the classname
      */
+    @Queryable
     public String getClassname() {
         return classname;
     }
@@ -460,6 +461,7 @@ public final class ServiceDescription {
     /**
      * @return the type
      */
+    @Queryable
     public String getType() {
         return type;
     }
@@ -467,13 +469,15 @@ public final class ServiceDescription {
     /**
      * @return a copy of the parameters
      */
+    @Queryable
     public Parameters getParameters() {
-        return new Parameters(parameters);
+        return parameters == null ? null : new Parameters(parameters);
     }
 
     /**
      * @return the tool
      */
+    @Queryable
     public URI getTool() {
         return tool;
     }
@@ -481,6 +485,7 @@ public final class ServiceDescription {
     /**
      * @return the description
      */
+    @Queryable
     public String getDescription() {
         return description;
     }
@@ -488,6 +493,7 @@ public final class ServiceDescription {
     /**
      * @return the version
      */
+    @Queryable
     public String getVersion() {
         return version;
     }
@@ -495,6 +501,7 @@ public final class ServiceDescription {
     /**
      * @return the author
      */
+    @Queryable
     public String getAuthor() {
         return author;
     }
@@ -502,6 +509,7 @@ public final class ServiceDescription {
     /**
      * @return the serviceProvider
      */
+    @Queryable
     public String getServiceProvider() {
         return serviceProvider;
     }
@@ -509,6 +517,7 @@ public final class ServiceDescription {
     /**
      * @return the instructions
      */
+    @Queryable
     public String getInstructions() {
         return instructions;
     }
@@ -516,6 +525,7 @@ public final class ServiceDescription {
     /**
      * @return the furtherInfo
      */
+    @Queryable
     public URI getFurtherInfo() {
         return furtherInfo;
     }
@@ -523,6 +533,7 @@ public final class ServiceDescription {
     /**
      * @return the logo
      */
+    @Queryable
     public URI getLogo() {
         return logo;
     }
@@ -530,6 +541,7 @@ public final class ServiceDescription {
     /**
      * @return the identifier
      */
+    @Queryable
     public String getIdentifier() {
         return identifier;
     }
@@ -537,6 +549,7 @@ public final class ServiceDescription {
     /**
      * @return the paths (unmodifiable)
      */
+    @Queryable
     public List<MigrationPath> getPaths() {
         return Collections.unmodifiableList(paths);
     }
@@ -544,6 +557,7 @@ public final class ServiceDescription {
     /**
      * @return the inputFormats (unmodifiable)
      */
+    @Queryable
     public List<URI> getInputFormats() {
         return Collections.unmodifiableList(inputFormats);
     }
@@ -551,6 +565,7 @@ public final class ServiceDescription {
     /**
      * @return the properties (unmodifiable)
      */
+    @Queryable
     public List<Property> getProperties() {
         return Collections.unmodifiableList(properties);
     }
@@ -638,7 +653,8 @@ public final class ServiceDescription {
     }
 
     /**
-     * @return A formatted (pretty-printed) XML representation of this service description
+     * @return A formatted (pretty-printed) XML representation of this service
+     *         description
      */
     public String toXmlFormatted() {
         return toXml(true);

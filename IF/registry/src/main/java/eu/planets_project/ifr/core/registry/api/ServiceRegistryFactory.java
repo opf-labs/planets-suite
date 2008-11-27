@@ -33,14 +33,13 @@ public final class ServiceRegistryFactory {
     }
 
     /**
+     * This is incomplete work-in-progress, which is why it currently is package
+     * private (aka default visibility).
      * @return A service registry instance
      */
-    public static ServiceDescriptionRegistry getServiceDescriptionRegistryInstance() {
-        /*
-         * FIXME OK for now, as the interface methods require authentication,
-         * but no permanent solution
-         */
-        return JaxrServiceRegistry.getInstance("provider", "provider");
+    static ServiceDescriptionRegistry getServiceDescriptionRegistryInstance() {
+        return PersistentServiceDescriptionRegistry
+                .getInstance(CoreServiceDescriptionRegistry.getInstance());
     }
 
     /**

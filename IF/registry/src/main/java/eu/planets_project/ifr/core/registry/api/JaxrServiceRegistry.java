@@ -898,12 +898,13 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
     }
 
     /**
+     * ATTENTION: This is draft/work in progress and not yet reliable.
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.ServiceDescriptionRegistry#find(java.lang.String)
+     * @see eu.planets_project.ifr.core.registry.api.ServiceDescriptionRegistry#query(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public List<ServiceDescription> find(final String serviceName) {
-        ServiceList found = this.findServices(username, password, serviceName,
-                "");
+    public List<ServiceDescription> query(final ServiceDescription sample) {
+        ServiceList found = this.findServices(username, password, sample
+                .getName(), "");
         List<ServiceDescription> descriptions = new ArrayList<ServiceDescription>();
         List<PsService> list = found.services;
         for (PsService psService : list) {
@@ -914,6 +915,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
     }
 
     /**
+     * ATTENTION: This is draft/work in progress and not yet reliable.
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.ServiceDescriptionRegistry#register(eu.planets_project.services.datatypes.ServiceDescription)
      */
@@ -927,6 +929,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
     }
 
     /**
+     * ATTENTION: This is draft/work in progress and not yet reliable.
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.ServiceDescriptionRegistry#clear()
      */
@@ -966,4 +969,5 @@ public final class JaxrServiceRegistry implements ServiceRegistry,
         services.services = result;
         return services;
     }
+
 }
