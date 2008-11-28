@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:ServiceDescription xmlns:ns3="http://purl.org/dc/terms/"
+	xmlns:ns2="http://www.planets-project.eu/services">
+	<ns3:title>JhoveIdentification</ns3:title>
+	<ns2:type>eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification</ns2:type>
+	<ns3:description>Identification service using JHOVE.</ns3:description>
+	<ns3:identifier>-1463799772</ns3:identifier>
+</ns2:ServiceDescription>
