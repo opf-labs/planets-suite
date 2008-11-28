@@ -10,17 +10,13 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
-import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.ImageMagickMigrations;
-import eu.planets_project.ifr.core.storage.api.DataRegistryAccessHelper;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 
@@ -64,9 +60,9 @@ public class Extractor implements Characterise {
 			result = coreExtractor.extractXCDL(inputImageData, null, parameters);
 		}
 		
-		DataRegistryAccessHelper storage = new DataRegistryAccessHelper();
+//		DataRegistryAccessHelper storage = new DataRegistryAccessHelper();
 		
-		storage.write(result, "extractor.xcdl", OUT_DIR);
+//		storage.write(result, "extractor.xcdl", OUT_DIR);
 		
 		
 //		DigitalObject resultDigOb = new DigitalObject.Builder(Content.byReference((resultFileBlob)).build();
