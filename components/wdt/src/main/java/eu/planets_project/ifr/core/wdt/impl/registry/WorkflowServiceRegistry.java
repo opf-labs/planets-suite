@@ -11,14 +11,14 @@ import org.apache.commons.logging.Log;
 import com.ibm.wsdl.xml.WSDLReaderImpl;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.registry.api.ServiceRegistry;
-import eu.planets_project.ifr.core.registry.api.ServiceRegistryFactory;
-import eu.planets_project.ifr.core.registry.api.ServiceRegistryObjectFactory;
-import eu.planets_project.ifr.core.registry.api.model.OrganizationList;
-import eu.planets_project.ifr.core.registry.api.model.PsBinding;
-import eu.planets_project.ifr.core.registry.api.model.PsOrganization;
-import eu.planets_project.ifr.core.registry.api.model.PsService;
-import eu.planets_project.ifr.core.registry.api.model.ServiceList;
+import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry;
+import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryFactory;
+import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryObjectFactory;
+import eu.planets_project.ifr.core.registry.api.jaxr.model.OrganizationList;
+import eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding;
+import eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization;
+import eu.planets_project.ifr.core.registry.api.jaxr.model.PsService;
+import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceList;
 
 /**
  * backing bean for service registry gui components acesses the service registry
