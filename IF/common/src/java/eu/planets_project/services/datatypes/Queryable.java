@@ -5,8 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import eu.planets_project.ifr.core.registry.api.QueryServiceDescriptions;
-
 /**
  * Marker annotation for methods to be queryable (e.g. when using query by
  * example in the registry component).
