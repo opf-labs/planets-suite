@@ -56,6 +56,10 @@ public final class Query {
      */
     private static boolean matches(final ServiceDescription candidate,
             final ServiceDescription sample) {
+        if (candidate == null) {
+            throw new IllegalArgumentException(
+                    "Candidate service description is null!");
+        }
         /* If no sample is given any description matches: */
         if (sample == null) {
             return true;

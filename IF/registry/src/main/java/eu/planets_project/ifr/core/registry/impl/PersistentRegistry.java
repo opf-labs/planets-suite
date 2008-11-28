@@ -23,6 +23,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class PersistentRegistry implements Registry {
+    private static final String SUFFIX = ".xml";
     private static Log log = LogFactory.getLog(PersistentRegistry.class
             .getName());
     private static final String DESCRIPTION_REGISTRY = "service-description-registry";
@@ -91,10 +92,12 @@ public final class PersistentRegistry implements Registry {
         String[] list = root.list();
         for (String name : list) {
             File file = new File(root, name);
-            boolean delete = file.delete();
-            if (file.exists() && !delete) {
-                throw new IllegalStateException(
-                        "Could not delete registry root: " + file);
+            if (!file.isHidden() && file.getName().endsWith(SUFFIX)) {
+                boolean delete = file.delete();
+                if (file.exists() && !delete) {
+                    throw new IllegalStateException(
+                            "Could not delete registry root: " + file);
+                }
             }
         }
         return registry.clear();
@@ -107,7 +110,7 @@ public final class PersistentRegistry implements Registry {
     private String filename(final ServiceDescription serviceDescription) {
         String prefix = serviceDescription.getName() == null ? "unnamed"
                 : serviceDescription.getName();
-        return prefix + serviceDescription.hashCode() + ".xml";
+        return prefix + serviceDescription.hashCode() + SUFFIX;
     }
 
     private PersistentRegistry(Registry registry) {
@@ -126,8 +129,10 @@ public final class PersistentRegistry implements Registry {
         String[] list = root.list();
         for (String string : list) {
             File f = new File(root, string);
-            String xml = readFrom(f);
-            this.registry.register(ServiceDescription.of(xml));
+            if (!f.isHidden() && f.getName().endsWith(SUFFIX)) {
+                String xml = readFrom(f);
+                this.registry.register(ServiceDescription.of(xml));
+            }
         }
     }
 
