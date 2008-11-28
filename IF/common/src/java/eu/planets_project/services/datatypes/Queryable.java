@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Marker annotation for methods to be queryable (e.g. when using query by
  * example in the registry component).
- * @see QueryServiceDescriptions
+ * @see Query
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @Target(ElementType.METHOD)

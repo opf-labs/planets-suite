@@ -551,7 +551,8 @@ public final class ServiceDescription {
      */
     @Queryable
     public List<MigrationPath> getPaths() {
-        return Collections.unmodifiableList(paths);
+        return paths == null ? new ArrayList<MigrationPath>() : Collections
+                .unmodifiableList(paths);
     }
 
     /**
@@ -559,7 +560,8 @@ public final class ServiceDescription {
      */
     @Queryable
     public List<URI> getInputFormats() {
-        return Collections.unmodifiableList(inputFormats);
+        return inputFormats == null ? new ArrayList<URI>() : Collections
+                .unmodifiableList(inputFormats);
     }
 
     /**
@@ -567,7 +569,8 @@ public final class ServiceDescription {
      */
     @Queryable
     public List<Property> getProperties() {
-        return Collections.unmodifiableList(properties);
+        return properties == null ? new ArrayList<Property>() : Collections
+                .unmodifiableList(properties);
     }
 
     /* Proposed hashing and equality methods, generated using Eclipse */
