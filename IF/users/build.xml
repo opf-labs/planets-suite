@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file                                    -->
+<!-- ======================================================================= -->
+
+<project name="if-users" default="deploy" basedir=".">
+
+    <property name="appName" value="${ant.project.name}"/>
+  <property name="appDir" value="."/>
+  <!-- Specify the build type: ejb, war or ear. -->
+  <property name="pserv.app.build.type" value="ear"/>
+      
+  <property name="src.dir" value="${appDir}/src/java"/>
+  <property name="lib.dir" value="${appDir}/lib"/>
+  <property name="src.resources" value="${appDir}/src/resources"/>
+  <property name="src.web" value="${appDir}/src/web"/>
+  
+
+  <property name="pserv.root.dir" value="../.." />
+  <import file="${pserv.root.dir}/build.common.xml"/>
+    
+</project>
