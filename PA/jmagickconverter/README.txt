@@ -10,6 +10,9 @@ INSTALL JMAGICK:
 To install JMagick on your system, just place the included "jmagick.dll" in the [ImageMagick install folder], to make sure it could be found by the System. 
 (--> By default, the ImageMagick install folder is put on the PATH of your system by the installer, so using this folder should work!)
 
+Mac OS: After installing ImageMagick (e.g. via MacPorts): Download source for JMagick from: 
+http://joggame.com/software/jmagick.html and use: ./configure --with-shared-lib-ext=.dylib
+
 
 
 FURTHER INFORMATION:
