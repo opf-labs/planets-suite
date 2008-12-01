@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "=//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http//www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+	  <head>
+	  	<title><ui:insert name="title">Planets IF Page</ui:insert></title>
+  	    <link rel="stylesheet" href="/css/planets.css" type="text/css" media="screen" />
+	    <link rel="stylesheet" href="/css/planets_print.css" type="text/css" media="print" />
+		<link rel="stylesheet" href="#{PlanetsSharedBean.sharedFileContext}css/planets-top-nav.css" type="text/css" media="screen" />
+	  	<!-- link rel="stylesheet" type="text/css" href="/users/css/reset.css" -->
+	  	<link rel="stylesheet" type="text/css" href="/users/css/user.css"/>
+	  </head>
+	  <body>
+		<ui:include src="#{PlanetsSharedBean.sharedFileBasePath}WEB-INF/templates/planets-header.xhtml">
+		  <ui:param name="loginUrl" value="login-redirect.jsp" />
+		  <ui:param name="logoutUrl" value="logout-redirect.jsp" />
+		</ui:include>
+	  	<div id="pl-wrapper">
+	  		OOPS, NOT AUTHORISED.
+	  	</div>
+	  </body>
+</html>

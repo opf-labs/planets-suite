@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:define name="title">Planets User Welcome Page</ui:define>
+	<ui:define name="content">
+    <h:form>
+  	  <rich:dataTable rows="0" value="#{UserBackingBean.allUsers}" var="user">
+  	    <rich:column sortBy="#{user.username}">
+	  	  <f:facet name="header">User Name</f:facet>
+    		<h:commandLink  action="#{UserBackingBean.editUserByName}" value="#{user.username}">
+	           <f:param name="userToEdit" value="#{user.username}"/>
+	      	</h:commandLink>
+  	    </rich:column>
+  	    <rich:column sortBy="#{user.fullName}">
+	  	  <f:facet name="header">Full Name</f:facet>
+	  	  <h:outputText value="#{user.fullName}"/>
+  	    </rich:column>
+  	    <rich:column>
+	  	  <f:facet name="header">Email</f:facet>
+          <h:outputLink value="mailto:#{user.email}">
+            <h:outputText value="#{user.email}" />
+          </h:outputLink>
+  	    </rich:column>
+  	    <rich:column sortBy="#{user.accountEnabled}">
+  	  	  <f:facet name="header">Enabled</f:facet>
+		  <h:selectBooleanCheckbox value="#{user.accountEnabled}" disabled="true"/>
+  	    </rich:column>
+  	    <rich:column sortBy="#{user.accountLocked}">
+  	  	  <f:facet name="header">Locked</f:facet>
+		  <h:selectBooleanCheckbox value="#{user.accountLocked}" disabled="true"/>
+  	    </rich:column>
+  	  </rich:dataTable>
+  	  <h:commandButton id="add" action="#{UserBackingBean.prepareNewUser}" value="Add" immediate="true" styleClass="button"/>
+  	</h:form>
+	</ui:define>
+</ui:composition>
+</html>
