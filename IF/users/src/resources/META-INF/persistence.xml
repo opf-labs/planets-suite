@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence>
+   <persistence-unit name="planetsAdmin" transaction-type="JTA">
+      <jta-data-source>java:/DerbyDS</jta-data-source>
+      <!-- jar-file>jar-file>pserv-if-common.jar</jar-file-->
+      <class>eu.planets_project.ifr.core.security.impl.model.UserImpl</class>
+      <class>eu.planets_project.ifr.core.security.impl.model.RoleImpl</class>
+      <class>eu.planets_project.ifr.core.security.impl.model.AddressImpl</class>
+      <properties>
+         <property name="hibernate.hbm2ddl.auto" value="update"/>
+      </properties>
+   </persistence-unit>
+</persistence>
