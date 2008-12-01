@@ -1,0 +1,75 @@
+@CHARSET "ISO-8859-1";
+#pl-wrapper {
+  width: 70%;
+  margin: 0 auto;
+  padding: 0.5em 1em;
+  background: transparent url('/images/white-50.png');
+  border: 1px dotted #ddd;
+  border-top: none;
+}
+
+div.validmessage {
+    display:inline;
+    color:red;
+    text-decoration:underline;
+}
+
+fieldset input {
+   width: 180px;
+    font-size: 1em;
+}
+
+form.userform {
+    font-size: 0.8em;
+    color: #333;
+}
+
+form.userform fieldset {
+  margin-bottom: 10px;
+  width: 500px;
+}
+
+form.userform fieldset legend {
+    margin: 0 0 0 0.5em;
+  font-weight: bold;
+}
+
+form.userform label {
+  display: inline-block;
+  vertical-align: top;
+}
+
+form.userform ol {
+  margin: 0;
+  padding: 0;
+}
+
+form.userform li {
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+}
+
+form.userform fieldset fieldset {
+    border: none;
+    border-top: 1px solid #C9DCA6;
+    padding: 3px 0 0 1em;
+}
+
+form.userform fieldset fieldset label {
+  display: inline-block;
+}
+
+form.userform fieldset fieldset legend {
+  padding: 0.5em 0 0;
+}
+
+form.userform fieldset label {
+  width: 110px; /* Width of labels */
+}
+
+form.userform em {
+  font-weight: bold;
+  font-style: normal;
+  color: #f00;
+}
