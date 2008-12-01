@@ -46,6 +46,8 @@
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="PA/gimp/test"/>
 	<classpathentry kind="src" path="PA/gimp/src/java"/>
+	<classpathentry kind="src" path="PC/libtiff/src/java"/>
+	<classpathentry kind="src" path="PC/libtiff/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
@@ -167,5 +169,6 @@
 	<classpathentry kind="lib" path="IF/registry/lib/juddi.jar"/>
 	<classpathentry kind="lib" path="IF/registry/lib/scout-1.0rc2.jar"/>
 	<classpathentry kind="lib" path="IF/registry/lib/xbean.jar"/>
+	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

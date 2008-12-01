@@ -11,6 +11,7 @@ import org.junit.Test;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.test.ServiceCreator;
+import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
@@ -40,7 +41,7 @@ public final class TiffCheckTests
 	{
 		BasicValidateOneBinary tiffCheck = ServiceCreator.createTestService(
 			BasicValidateOneBinary.QNAME, TiffValidation.class,
-			"/pserv-pc-libtiff/TiffValidation?wsdl");
+			"/pserv-pc-libtiff/TiffValidation?wsdl", Mode.SERVER);
 		test(tiffCheck);
 	}
 
