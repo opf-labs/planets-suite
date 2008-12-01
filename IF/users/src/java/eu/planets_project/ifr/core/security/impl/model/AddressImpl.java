@@ -39,18 +39,20 @@ public class AddressImpl implements Address, Serializable {
      * @param address
      */
     public AddressImpl(Address address) {
+        if( address != null ) {
     	this.address = address.getAddress();
     	this.city = address.getCity();
     	this.province = address.getProvince();
     	this.country = address.getCountry();
     	this.postalCode = address.getPostalCode();
+        }
     }
     
     /**
      * Get the first portion of the full address.
      * @return The first portion of the full address, e.g. number and street name.
      */
-    @Column(length=150, nullable=false)
+    @Column(length=150, nullable=true)
     public String getAddress() {
         return address;
     }
@@ -59,7 +61,7 @@ public class AddressImpl implements Address, Serializable {
      * Get the name of the city.
      * @return The city name.
      */
-    @Column(length=50, nullable=false)
+    @Column(length=50, nullable=true)
     public String getCity() {
         return city;
     }
@@ -86,7 +88,7 @@ public class AddressImpl implements Address, Serializable {
      * Get the post code.
      * @return The postal code.
      */
-    @Column(name="postal_code", length=15, nullable=false)
+    @Column(name="postal_code", length=15, nullable=true)
     public String getPostalCode() {
         return postalCode;
     }
