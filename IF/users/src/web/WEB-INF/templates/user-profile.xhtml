@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:jsp="http://java.sun.com/JSP/Page"
+  xmlns:c="http://java.sun.com/jstl/core" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:t="http://myfaces.apache.org/tomahawk">
+  <ui:composition>
+    <h:inputHidden value="#{UserBackingBean.user.id}" id="id" />
+    <h:inputHidden value="#{UserBackingBean.user.version}" id="version" />
+    <h:inputHidden value="#{UserBackingBean.originalPassword}" id="originalPassword" />
+    <fieldset>
+      <legend>User Profile</legend>
+      <fieldset>
+        <legend>User Details</legend>
+        <ol>
+          <li>
+            <label for="username">
+              <h:outputText value="User Name" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputText id="username" disabled="#{UserBackingBean.disableEditName}" required="true" validator="#{UserBackingBean.validateUsername}" value="#{UserBackingBean.user.username}">
+            	<f:validateLength minimum="4" maximum="50"/>            
+            </h:inputText>
+            <div class="validmessage"><h:message for="username"/></div>
+          </li>
+          <li>
+            <label for="firstname">
+              <h:outputText value="First Name" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputText id="firstname" required="true" value="#{UserBackingBean.user.firstName}">
+            	<f:validateLength minimum="1" maximum="50"/>            
+            </h:inputText>
+            <div class="validmessage"><h:message for="firstname"/></div>
+          </li>
+          <li>
+            <label for="lastname">
+              <h:outputText value="Last Name" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputText id="lastname" required="true" value="#{UserBackingBean.user.lastName}">
+            	<f:validateLength minimum="1" maximum="50"/>            
+            </h:inputText>
+            <div class="validmessage"><h:message for="lastname"/></div>
+          </li>
+          <li>
+            <label for="email">
+              <h:outputText value="Email" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputText id="email" required="true"  validator="#{UserBackingBean.validateEmail}" value="#{UserBackingBean.user.email}"/>
+            <div class="validmessage"><h:message for="email"/></div>
+          </li>
+          <li>
+            <label for="phonenumber">
+              <h:outputText value="Phone Number" />
+            </label>
+            <h:inputText value="#{UserBackingBean.user.phoneNumber}" />
+          </li>
+          <li>
+            <label for="website">
+              <h:outputText value="Website" />
+            </label>
+            <h:inputText value="#{UserBackingBean.user.website}" />
+          </li>
+        </ol>
+      </fieldset>
+      <fieldset>
+        <legend>Password Details</legend>
+        <ol>
+          <li>
+            <label for="userpassword">
+              <h:outputText value="Password" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputSecret id="password" redisplay="true" required="true" value="#{UserBackingBean.userPassword}">
+            </h:inputSecret>
+            <div class="validmessage"><h:message for="password"/></div>
+          </li>
+          <li>
+            <label for="confirmpassword">
+              <h:outputText value="Confirm" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputSecret id="confirmpassword" redisplay="true" required="true"
+              value="#{UserBackingBean.confirmPassword}">
+            </h:inputSecret>
+            <div class="validmessage"><h:message for="confirmpassword"/></div>
+          </li>
+          <li>
+            <label for="passwordhint">
+              <h:outputText value="Hint" />
+            </label>
+            <h:inputText value="#{UserBackingBean.user.passwordHint}" />
+          </li>
+        </ol>
+      </fieldset>
+      <fieldset>
+        <legend>Address Details</legend>
+        <ol>
+          <li>
+            <label for="addressfirst">
+              <h:outputText value="First Line" />
+            </label>
+            <h:inputText value="#{UserBackingBean.user.address.address}" />
+          </li>
+          <li>
+            <label for="city">
+              <h:outputText value="City" />
+            </label>
+            <h:inputText value="#{UserBackingBean.user.address.city}" />
+          </li>
+          <li>
+            <label for="province">
+              <h:outputText value="Province" />
+            </label>
+            <h:inputText value="#{UserBackingBean.user.address.province}" />
+          </li>
+          <li>
+            <label for="postalcode">
+              <h:outputText value="Postal Code" />
+            </label>
+            <h:inputText value="#{UserBackingBean.user.address.postalCode}" />
+          </li>
+          <li>
+            <label for="country">
+              <h:outputText value="Country" />
+            </label>
+            <h:inputText value="#{UserBackingBean.user.address.country}" />
+          </li>
+        </ol>
+      </fieldset>
+      <ul>
+        <c:forEach var="role" items="#{UserBackingBean.user.roles}">
+          <li>${role.name}&nbsp;</li>
+        </c:forEach>
+      </ul>
+    </fieldset>
+   </ui:composition>
+</html>
