@@ -306,6 +306,7 @@ public class ImageMagickMigrations implements Migrate {
 				return this.returnWithErrorMessage("Something went terribly wrong with ImageMagick: No output file created!!!", null);
 			
 		} catch (MagickException e) {
+		    e.printStackTrace();
 			return this.returnWithErrorMessage("Something went terribly wrong with ImageMagick: ", e);
 		}
 		

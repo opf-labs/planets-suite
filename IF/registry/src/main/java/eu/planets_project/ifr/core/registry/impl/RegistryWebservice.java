@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.api.Response;
-import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.ServiceDescription;
 

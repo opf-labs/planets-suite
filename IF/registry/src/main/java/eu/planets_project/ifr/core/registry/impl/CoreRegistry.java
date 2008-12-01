@@ -5,7 +5,6 @@ import java.util.List;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.api.Response;
-import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**

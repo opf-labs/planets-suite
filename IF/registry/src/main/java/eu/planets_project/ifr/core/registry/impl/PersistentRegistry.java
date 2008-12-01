@@ -113,7 +113,10 @@ public final class PersistentRegistry implements Registry {
         return prefix + serviceDescription.hashCode() + SUFFIX;
     }
 
-    private PersistentRegistry(Registry registry) {
+    /**
+     * @param registry The backing registry instance
+     */
+    private PersistentRegistry(final Registry registry) {
         log.debug("Using registry root: " + rootLocation);
         root = new File(rootLocation);
         this.registry = registry;
@@ -136,32 +139,52 @@ public final class PersistentRegistry implements Registry {
         }
     }
 
-    private String readFrom(File f) {
-        if (!f.exists()) {
+    /**
+     * @param file The file to read from
+     * @return The contents of the file
+     */
+    private String readFrom(final File file) {
+        if (!file.exists()) {
             throw new IllegalArgumentException(String.format(
-                    "File %s does not exist!", f.getAbsolutePath()));
+                    "File %s does not exist!", file.getAbsolutePath()));
         }
         StringBuilder builder = new StringBuilder();
+        Scanner s = null;
         try {
-            Scanner s = new Scanner(new BufferedInputStream(
-                    new FileInputStream(f)));
+            s = new Scanner(new BufferedInputStream(new FileInputStream(file)));
             while (s.hasNextLine()) {
                 builder.append(s.nextLine()).append(" ");
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            if (s != null) {
+                s.close();
+            }
         }
         return builder.toString();
     }
 
-    private void writeTo(String xml, File f) {
+    /**
+     * @param content The string to write
+     * @param file The file to store the string in
+     */
+    private void writeTo(final String content, final File file) {
+        BufferedWriter writer = null;
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(f));
-            writer.write(xml);
-            writer.flush();
-            writer.close();
+            writer = new BufferedWriter(new FileWriter(file));
+            writer.write(content);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.flush();
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

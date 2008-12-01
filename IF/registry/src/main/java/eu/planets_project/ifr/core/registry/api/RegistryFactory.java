@@ -36,5 +36,4 @@ public final class RegistryFactory {
         Registry registryService = service.getPort(Registry.class);
         return registryService;
     }
-
 }

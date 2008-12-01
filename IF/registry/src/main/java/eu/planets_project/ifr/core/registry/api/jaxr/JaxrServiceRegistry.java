@@ -39,8 +39,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.wsf.common.ObjectNameFactory;
 
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.Response;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.BindingList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.OrganizationList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding;
@@ -50,18 +48,15 @@ import eu.planets_project.ifr.core.registry.api.jaxr.model.PsSchema;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsService;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;
-import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * API access to the IF service registry via JAXR.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
+public final class JaxrServiceRegistry implements ServiceRegistry {
 
     /***/
-    private static final String LOG_CONFIG_FILE = "eu/planets_project/ifr/core/registry/servreg-log4j.xml";
-    /***/
-    private static Log LOG = LogFactory.getLog(JaxrServiceRegistry.class
+    private static Log log = LogFactory.getLog(JaxrServiceRegistry.class
             .getName());
     /** The managed instances. */
     private static Map<String, JaxrServiceRegistry> instances = new HashMap<String, JaxrServiceRegistry>();
@@ -69,8 +64,6 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
     private BusinessLifeCycleManager blcm;
     /** Query access to the actual registry. */
     private BusinessQueryManager bqm;
-    private String password;
-    private String username;
 
     /**
      * We enforce factory usage with a private constructor.
@@ -78,8 +71,6 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
      * @param password The password
      */
     private JaxrServiceRegistry(final String username, final String password) {
-        this.username = username;
-        this.password = password;
         RegistryService service = configure(username, password);
         try {
             this.bqm = service.getBusinessQueryManager();
@@ -181,13 +172,13 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
                 connection.setCredentials(creds);
                 rs = connection.getRegistryService();
                 if (rs.getBusinessLifeCycleManager() != null) {
-                    LOG
+                    log
                             .debug("Both username & pass given, publish api will be accessible via business lifecycle manager");
                 }
             } else {
                 Connection connection = factory.createConnection();
                 rs = connection.getRegistryService();
-                LOG
+                log
                         .debug("No username & pass given, only inquiry api will be accessible via business query manager");
             }
         } catch (JAXRException e) {
@@ -401,13 +392,13 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
                  */
                 List<String> list = Arrays.asList(categoryId.split(","));
                 for (Service service : services) {
-                    LOG.info("Service selection by category: " + categoryId);
+                    log.info("Service selection by category: " + categoryId);
                     if (stax.included(service, list)) {
                         filtered.add(service);
                     }
                 }
             } else {
-                LOG.info("Service selection by name: " + queryStr);
+                log.info("Service selection by name: " + queryStr);
                 filtered = new ArrayList<Service>(services);
             }
             br.getCollection().clear();
@@ -614,7 +605,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
         } catch (JAXRException e) {
             e.printStackTrace();
         }
-        LOG.info(message);
+        log.info(message);
         return bindingsList;
     }
 
@@ -644,7 +635,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
         } catch (JAXRException e) {
             e.printStackTrace();
         }
-        LOG.info(message);
+        log.info(message);
         return resultList;
     }
 
@@ -673,7 +664,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
         } catch (JAXRException e) {
             e.printStackTrace();
         }
-        LOG.info(message);
+        log.info(message);
         return psServiceList;
     }
 
@@ -687,7 +678,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
         String message = "Getting taxonomy; ";
         PsSchema planetsServiceScheme = new PsSchema();
         ServiceTaxonomy st = findTaxonomy();
-        LOG.info(message);
+        log.info(message);
         return st;
     }
 
@@ -720,7 +711,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
             binding.setKey(jaxrBinding.getKey().getId());
             message.registryObject = binding;
             message.message = JaxrServiceRegistryHelper.check(response, string);
-            LOG.info(message);
+            log.info(message);
         } catch (JAXRException e1) {
             e1.printStackTrace();
         }
@@ -734,7 +725,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
         } else {
             message.message = ("No success in saving service binding.");
         }
-        LOG.info(message.message);
+        log.info(message.message);
         return message;
     }
 
@@ -750,7 +741,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
                 classificationString);
         String message = "Set free classification; ";
         message = JaxrServiceRegistryHelper.check(response, message);
-        LOG.info(message);
+        log.info(message);
         return new ServiceRegistryMessage(message);
     }
 
@@ -775,7 +766,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
             psRegistryMessage.message = message;
             psRegistryMessage.operands.add(id);
             psRegistryMessage.registryObject = organization;
-            LOG.info(message);
+            log.info(message);
         } catch (JAXRException e) {
             e.printStackTrace();
         }
@@ -794,7 +785,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
                 classificationId);
         String message = "Adding classification; ";
         message = JaxrServiceRegistryHelper.check(response, message);
-        LOG.info(message);
+        log.info(message);
         return new ServiceRegistryMessage(message);
     }
 
@@ -819,7 +810,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
             BulkResponse saveServices = blcm.saveServices(Arrays
                     .asList(service));
             if (saveServices.getStatus() == JAXRResponse.STATUS_SUCCESS) {
-                LOG.info("Success: " + saveServices.toString());
+                log.info("Success: " + saveServices.toString());
             } else {
                 throw new IllegalStateException("Failed to save service "
                         + service.getKey() + " with response: "
@@ -841,7 +832,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
             }
         }
         message.message = (messageText);
-        LOG.info(message.message);
+        log.info(message.message);
         return message;
     }
 
@@ -899,47 +890,6 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
     }
 
     /**
-     * ATTENTION: This is draft/work in progress and not yet reliable.
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.Registry#query(eu.planets_project.services.datatypes.ServiceDescription)
-     */
-    public List<ServiceDescription> query(final ServiceDescription sample) {
-        ServiceList found = this.findServices(username, password, sample
-                .getName(), "");
-        List<ServiceDescription> descriptions = new ArrayList<ServiceDescription>();
-        List<PsService> list = found.services;
-        for (PsService psService : list) {
-            descriptions.add(ServiceRegistryObjectFactory
-                    .descriptionOf(psService));
-        }
-        return descriptions;
-    }
-
-    /**
-     * ATTENTION: This is draft/work in progress and not yet reliable.
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.Registry#register(eu.planets_project.services.datatypes.ServiceDescription)
-     */
-    public Response register(final ServiceDescription service) {
-        ServiceRegistryObjectFactory factory = new ServiceRegistryObjectFactory(
-                username, password, this);
-        PsService psService = factory.serviceOf(service);
-        ServiceRegistryMessage message = new ServiceRegistryMessage();
-        message.registryObject = psService;
-        return new Response(message.message);
-    }
-
-    /**
-     * ATTENTION: This is draft/work in progress and not yet reliable.
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.Registry#clear()
-     */
-    public Response clear() {
-        ServiceRegistryMessage clear = this.clear(username, password);
-        return new Response(clear.message);
-    }
-
-    /**
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#findServicesForInputFormats(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String[])
@@ -971,4 +921,47 @@ public final class JaxrServiceRegistry implements ServiceRegistry, Registry {
         return services;
     }
 
+    // /////////////////////////////////////////////////////////////////////////
+    /**************************************************************************/
+    /* Registry implementation on top of the JAXR stuff; makes no sense... */
+    /**
+     * ATTENTION: This is draft/work in progress and not yet reliable.
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#query(eu.planets_project.services.datatypes.ServiceDescription)
+     */
+    /*
+     * public List<ServiceDescription> query(final ServiceDescription sample) {
+     * ServiceList found = this.findServices(username, password, sample
+     * .getName(), ""); List<ServiceDescription> descriptions = new
+     * ArrayList<ServiceDescription>(); List<PsService> list = found.services;
+     * for (PsService psService : list) {
+     * descriptions.add(ServiceRegistryObjectFactory .descriptionOf(psService));
+     * } return descriptions; }
+     */
+
+    /**
+     * ATTENTION: This is draft/work in progress and not yet reliable.
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#register(eu.planets_project.services.datatypes.ServiceDescription)
+     */
+    /*
+     * public Response register(final ServiceDescription service) {
+     * ServiceRegistryObjectFactory factory = new ServiceRegistryObjectFactory(
+     * username, password, this); PsService psService =
+     * factory.serviceOf(service); ServiceRegistryMessage message = new
+     * ServiceRegistryMessage(); message.registryObject = psService; return new
+     * Response(message.message); }
+     */
+
+    /**
+     * ATTENTION: This is draft/work in progress and not yet reliable.
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#clear()
+     */
+    /*
+     * public Response clear() { ServiceRegistryMessage clear =
+     * this.clear(username, password); return new Response(clear.message); }
+     */
+    /**************************************************************************/
+    // /////////////////////////////////////////////////////////////////////////
 }
