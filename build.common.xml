@@ -405,7 +405,8 @@
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />
         <fileset dir="${test.src.dir}">
-          <include name="**/*Test*.java"/>
+          <include name="**/*Suite*.java"/>
+          <include name="**/*Testsuite*.java"/>
         </fileset>
       </batchtest>
       
@@ -424,7 +425,8 @@
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />
         <fileset dir="${test.src.dir}">
-          <include name="**/*Test*.java"/>
+          <include name="**/*Suite*.java"/>
+          <include name="**/*Testsuite*.java"/>
         </fileset>
       </batchtest>
       
@@ -460,7 +462,8 @@
       <batchtest fork="yes">
         <formatter type="plain" usefile="false" />
         <fileset dir="${test.src.dir}">
-          <include name="**/*Test*.java"/>
+          <include name="**/*Suite*.java"/>
+          <include name="**/*Testsuite*.java"/>
         </fileset>
       </batchtest>
       

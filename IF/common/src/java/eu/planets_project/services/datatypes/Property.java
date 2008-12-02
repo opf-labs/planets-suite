@@ -17,6 +17,12 @@ public class Property {
     
     private String value;
 
+    protected String unit;
+
+    protected String description;
+
+    protected String type;
+
     /**
      * @param name
      * @param value
@@ -62,5 +68,47 @@ public class Property {
 	public void setValue(String value) {
 		this.value = value;
 	}
+
+    /**
+     * @return the unit
+     */
+    public String getUnit() {
+    	return unit;
+    }
+
+    /**
+     * @param unit the unit to set
+     */
+    public void setUnit(String unit) {
+    	this.unit = unit;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+    	return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+    	this.description = description;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+    	return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+    	this.type = type;
+    }
 
 }

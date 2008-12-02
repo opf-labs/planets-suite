@@ -9,12 +9,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public class FileFormatProperty extends Property {
 	
 	private String id;
-	private String unit;
-	private String description;
-	private String type;
 	private Metrics metrics = new Metrics();
-	
-	
 	
 	public FileFormatProperty() {
 		super(null, null);
@@ -49,38 +44,6 @@ public class FileFormatProperty extends Property {
 	 */
 	public void setId(String id) {
 		this.id = id;
-	}
-	
-	
-	/**
-	 * @return the unit
-	 */
-	public String getUnit() {
-		return unit;
-	}
-	
-	
-	/**
-	 * @param unit the unit to set
-	 */
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
-	
-	
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-	
-	
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
 	}
 	
 	
@@ -127,22 +90,6 @@ public class FileFormatProperty extends Property {
 
 
 
-	/**
-	 * @return the type
-	 */
-	public String getType() {
-		return type;
-	}
-
-
-
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(String type) {
-		this.type = type;
-	}
-	
 	public String toString() {
 		
 		StringBuffer buf = new StringBuffer();

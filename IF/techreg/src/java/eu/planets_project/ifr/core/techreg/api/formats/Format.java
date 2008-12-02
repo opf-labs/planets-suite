@@ -185,6 +185,7 @@ public class Format implements Serializable {
     
     public static final String MIME_URI_PREFIX="planets:fmt/mime/";
     public static final String EXT_URI_PREFIX="planets:fmt/ext/";
+    public static final String PRONOM_URI_PREFIX="info:pronom";
 
     /**
      * Static helper to construct appropriate URIs for file-extensions format specifiers.
@@ -231,5 +232,13 @@ public class Format implements Serializable {
     public static boolean isThisAnExtensionURI( URI typeURI ) {
         return typeURI.toString().startsWith(EXT_URI_PREFIX); 
     }
-    
+
+    /**
+     * 
+     * @param typeURI
+     * @return
+     */
+    public static boolean isThisAPronomURI( URI typeURI ) {
+        return typeURI.toString().startsWith(PRONOM_URI_PREFIX); 
+    }
 }

@@ -84,9 +84,9 @@ public final class Content implements Serializable {
                 return reference.openStream();
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }
-        return null;
     }
     
     

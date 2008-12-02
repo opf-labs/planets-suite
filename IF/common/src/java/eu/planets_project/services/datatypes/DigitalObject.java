@@ -157,10 +157,45 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         }
 
         /**
-         * @param content The content of the digital object
+         * @param permanentUrl The globally unique locator and identifier for this digital object.
+         * @param content The content of the digital object.
+         */
+        public Builder(final URL permanentUrl, final Content content ) {
+            this.permanentUrl = permanentUrl;
+            this.content = content;
+        }
+
+        /**
+         * Constructs an anonymous (permanentUrl == null) digital object.
+         * 
+         * @param content The content of the digital object.
          */
         public Builder(final Content content) {
             this.content = content;
+        }
+
+        /**
+         * @param permanentUrl The globally unique locator and identifier for this digital object.
+         * @param digitalObject An existing DigitalObject to clone into a new Builder with a new permanentUrl.
+         */
+        public Builder(final URL permanentUrl, final DigitalObject digitalObject) {
+            this.permanentUrl = permanentUrl;
+            content = digitalObject.content;
+            contained = digitalObject.contained;
+            events = digitalObject.events;
+            fragments = digitalObject.fragments;
+            manifestationOf = digitalObject.manifestationOf;
+            title = digitalObject.title;
+            checksum = digitalObject.checksum;
+            metadata = digitalObject.metadata;
+            format = digitalObject.format;
+        }
+
+        /**
+         * @param digitalObject An existing DigitalObject to clone into a new Builder with a new permanentUrl.
+         */
+        public Builder(final DigitalObject digitalObject) {
+            this(null, digitalObject);
         }
 
         /** No-arg constructor for JAXB. API clients should not use this. */

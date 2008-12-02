@@ -140,6 +140,8 @@ public final class ServiceDescription {
      */
     @XmlElement(name = "publisher", namespace = TERMS_NS)
     String serviceProvider;
+    
+    // FIXME Add service status....???
 
     /**
      * Installation instructions. Properties to be set, or s/w to be installed.

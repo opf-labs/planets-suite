@@ -118,6 +118,7 @@ public class ImageMagickMigrations implements Migrate {
 		List<String> inputFormats = new ArrayList<String> ();
 		
 		inputFormats.add("JPEG");
+        inputFormats.add("JP2");
 		inputFormats.add("TIFF");
 		inputFormats.add("GIF");
 		inputFormats.add("PNG");
@@ -131,7 +132,8 @@ public class ImageMagickMigrations implements Migrate {
 		
 		outputFormats.add("TIFF");
 		outputFormats.add("PNG");
-		outputFormats.add("JPEG");
+        outputFormats.add("JPEG");
+        outputFormats.add("JP2");
 		outputFormats.add("GIF");
 		outputFormats.add("PDF");
 //		outputFormats.add("RAW");

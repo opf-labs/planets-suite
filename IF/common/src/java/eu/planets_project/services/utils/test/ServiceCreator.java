@@ -199,6 +199,7 @@ public final class ServiceCreator {
         Endpoint testEndpoint = Endpoint.create(serviceImplementation
                 .newInstance());
         url = new URL("http://localhost:18367" + wsdlLoc);
+        System.out.println("INIT: Configuring standalone server at " + url);
         testEndpoint.publish(url.toString());
         return url;
     }

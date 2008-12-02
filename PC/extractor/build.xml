@@ -23,5 +23,5 @@
   <!-- Unit testing definitions -->
   <property name="test.src.dir" value="${appDir}/src/test/java" />
   <property name="test.server" value="" />
-    
+
 </project>
