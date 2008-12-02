@@ -157,17 +157,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         }
 
         /**
-         * @param permanentUrl The globally unique locator and identifier for this digital object.
-         * @param content The content of the digital object.
-         */
-        public Builder(final URL permanentUrl, final Content content ) {
-            this.permanentUrl = permanentUrl;
-            this.content = content;
-        }
-
-        /**
          * Constructs an anonymous (permanentUrl == null) digital object.
-         * 
          * @param content The content of the digital object.
          */
         public Builder(final Content content) {
@@ -175,11 +165,10 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         }
 
         /**
-         * @param permanentUrl The globally unique locator and identifier for this digital object.
-         * @param digitalObject An existing DigitalObject to clone into a new Builder with a new permanentUrl.
+         * @param digitalObject An existing digital object to copy into an new
+         *        anonymous (permanentUrl == null) digital object.
          */
-        public Builder(final URL permanentUrl, final DigitalObject digitalObject) {
-            this.permanentUrl = permanentUrl;
+        public Builder(final DigitalObject digitalObject) {
             content = digitalObject.content;
             contained = digitalObject.contained;
             events = digitalObject.events;
@@ -191,19 +180,13 @@ public final class DigitalObject implements Comparable<DigitalObject>,
             format = digitalObject.format;
         }
 
-        /**
-         * @param digitalObject An existing DigitalObject to clone into a new Builder with a new permanentUrl.
-         */
-        public Builder(final DigitalObject digitalObject) {
-            this(null, digitalObject);
-        }
-
         /** No-arg constructor for JAXB. API clients should not use this. */
         @SuppressWarnings("unused")
         private Builder() {}
 
         /**
-         * @param permanentUrl The permanent URL, an ID
+         * @param permanentUrl The globally unique locator and identifier for
+         *        this digital object.
          * @return The builder, for cascaded calls
          */
         public Builder permanentUrl(final URL permanentUrl) {

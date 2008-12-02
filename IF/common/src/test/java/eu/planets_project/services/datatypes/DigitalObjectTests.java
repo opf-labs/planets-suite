@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -37,15 +38,18 @@ public final class DigitalObjectTests {
     public void usage1() throws MalformedURLException {
         /* A simple example with only required values: */
         URL id = new URL("http://id");
+        /* Either by reference: */
         DigitalObject o = new DigitalObject.Builder(Content
                 .byReference(new URL("http://some.reference")))
+                .permanentUrl(id).build();
+        /* Or by value: */
+        o = new DigitalObject.Builder(Content.byValue(new File("build.xml")))
                 .permanentUrl(id).build();
         /*
          * These objects can be serialized to XML and instantiated from that
          * form:
          */
         assertEquals(o, DigitalObject.of(o.toXml()));
-
     }
 
     /**

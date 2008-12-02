@@ -1,6 +1,7 @@
 package eu.planets_project.services.datatypes;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -9,17 +10,17 @@ import java.net.URL;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
+import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
+
 /**
  * Content for digital objects, either by reference or by value. Create content
  * by reference or value: {@code Content c = Content.reference(url);} or {@code
  * Content c = Content.value(bytes); } However created, you can read the content
  * form the instance: {@code InputStream s = c.read();}
- * 
  * @see ContentTests
- * 
  * @author Asger Blekinge-Rasmussen (abr@statsbiblioteket.dk)
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
- * 
  */
 public final class Content implements Serializable {
     /** Generated UID. */
@@ -36,7 +37,6 @@ public final class Content implements Serializable {
 
     /**
      * Create content by reference.
-     * 
      * @param reference The reference to the actual content value
      * @return A content instance referencing the given location
      */
@@ -46,12 +46,20 @@ public final class Content implements Serializable {
 
     /**
      * Create content by value.
-     * 
      * @param value The value for the content
      * @return A content instance with the specified value
      */
     public static Content byValue(final byte[] value) {
         return new Content(value);
+    }
+
+    /**
+     * Create content by value.
+     * @param file The value for the content
+     * @return A content instance with the specified value
+     */
+    public static Content byValue(final File file) {
+        return new Content(ByteArrayHelper.read(file));
     }
 
     /**
@@ -69,6 +77,7 @@ public final class Content implements Serializable {
     }
 
     /** No-args constructor for JAXB. Clients should not use this. */
+    @SuppressWarnings("unused")
     private Content() {}
 
     /**
@@ -88,8 +97,7 @@ public final class Content implements Serializable {
             }
         }
     }
-    
-    
+
     /**
      * @return the value
      */
@@ -114,7 +122,6 @@ public final class Content implements Serializable {
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -140,7 +147,6 @@ public final class Content implements Serializable {
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -150,7 +156,6 @@ public final class Content implements Serializable {
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
