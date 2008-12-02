@@ -49,11 +49,11 @@ public class ServiceRegistryTests {
          * organization and supported input formats (as a string):
          */
         PsService service = factory.createService("Droid",
-                "Droid Identification Service", organization, "Identification",
+                "Droid Identification Service", organization, "Identify",
                 "PDF", "PNG", "info:pronom/fmt/51");
         /* And another one (for the query tests below): */
         factory.createService("Jhove", "Jhove Characterisation Service",
-                organization, "Characterisation", "PDF", "PNG");
+                organization, "Characterise", "PDF", "PNG");
         /* And create a binding for that service: */
         PsBinding binding = factory.createBinding("Universal Droid Endpoint",
                 "http://127.0.0.1:8080/pserv-pc-droid/Droid?wsdl", service);
@@ -66,24 +66,24 @@ public class ServiceRegistryTests {
          * format:
          */
         List<PsService> services = registry.findServicesForInputFormats(
-                USERNAME, PASSWORD, "Identification", "info:pronom/fmt/51").services;
+                USERNAME, PASSWORD, "Identify", "info:pronom/fmt/51").services;
         assertEquals(1, services.size());
         /*
          * If the format is supported, but it is the wrong type, we don't want
          * it:
          */
         services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
-                "Migration", "PNG").services;
+                "Migrate", "PNG").services;
         assertEquals(0, services.size());
         /* And if a required input format is not supported too: */
         services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
-                "Identification", "PNG", "WAV").services;
+                "Identify", "PNG", "WAV").services;
         assertEquals(0, services.size());
         /*
          * And vice versa (wrong format):
          */
         services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
-                "Identification", "WAV").services;
+                "Identify", "WAV").services;
         assertEquals(0, services.size());
         /*
          * But if the format is supported, and we don't care about the type, we
@@ -96,7 +96,7 @@ public class ServiceRegistryTests {
          * And vice versa (only type specified):
          */
         services = registry.findServicesForInputFormats(USERNAME, PASSWORD,
-                "Identification").services;
+                "Identify").services;
         assertEquals(1, services.size());
         /*
          * For further details see the tests below.
@@ -314,9 +314,9 @@ public class ServiceRegistryTests {
     public void testMultipleClassification() {
         PsSchema schema = registry.findTaxonomy(USERNAME, PASSWORD)
                 .getPsSchema();
-        String id1 = schema.getId("identification");
-        String id2 = schema.getId("migration");
-        String id3 = schema.getId("characterisation");
+        String id1 = schema.getId("identify");
+        String id2 = schema.getId("migrate");
+        String id3 = schema.getId("characterise");
 
         Assert.assertNotNull(id1);
         Assert.assertNotNull(id2);
