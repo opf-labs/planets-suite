@@ -133,43 +133,43 @@ public class WorkflowServiceRegistry {
             // image magick
 
             register(org, "MagicJpg2Tiff@localhost", "jpg-migrate-tiff",
-                    "Migration",
+                    "Migrate",
                     "http://localhost:8080/pserv-pa-jmagick/JpgToTiffConverter?wsdl");
 
             register(org, "MagicPng2Tiff@localhost", "png-migrate-tiff",
-                    "Migration",
+                    "Migrate",
                     "http://localhost:8080/pserv-pa-jmagick/PngToTiffConverter?wsdl");
 
             register(org, "MagicTiff2Png@localhost", "tiff-migrate-png",
-                    "Migration",
+                    "Migrate",
                     "http://localhost:8080/pserv-pa-jmagick/TiffToPngConverter?wsdl");
 
             register(org, "MagicJpg2Png@localhost", "jpg-migrate-png",
-                    "Migration",
+                    "Migrate",
                     "http://localhost:8080/pserv-pa-jmagick/JpgToPngConverter?wsdl");
 
             // cmd-line
 
-            register(org, "CmdPs2Pdf@localhost", "ps-migrate-pdf", "Migration",
+            register(org, "CmdPs2Pdf@localhost", "ps-migrate-pdf", "Migrate",
                     "http://localhost:8080/pserv-pa-ps2pdf/Ps2PdfBasicMigration?wsdl");
 
             register(org, "MagicIdentification@localhost", "indentify-image",
-                    "Identification",
+                    "Identify",
                     "http://localhost:8080/pserv-pa-jmagick/ImageIdentificationService?wsdl");
 
             // xena
 
             register(org, "XenaDoc2ODF@localhost", "doc-migrate-odf",
-                    "Migration",
+                    "Migrate",
                     "http://localhost:8080/pserv-pa-xena/DocToODFXena?wsdl");
 
             register(org, "XenaODF2PDF@localhost", "odf-migrate-pdf",
-                    "Migration",
+                    "Migrate",
                     "http://localhost:8080/pserv-pa-xena/ODFToPDFXena?wsdl");
 
             // droid
 
-            register(org, "Droid@localhost", "identify-file", "Identification",
+            register(org, "Droid@localhost", "identify-file", "Identify",
                     "http://localhost:8080/pserv-pc-droid/Droid?wsdl");
 
             // release 1
@@ -178,22 +178,22 @@ public class WorkflowServiceRegistry {
                     org,
                     "SimpleCharacterization@localhost",
                     "identify-file",
-                    "Identification",
+                    "Identify",
                     "http://localhost:8080/sample-ifr-sample-ejb/SimpleCharacterisationService?wsdl");
 
             register(org, "Doc2OpenXML@localhost", "doc-migrate-docx",
-                    "Migration",
+                    "Migrate",
                     "http://localhost:8080/pserv-pa-openxml/BasicOpenXMLMigration?wsdl");
 
             register(org, "XCLExtractor2Bin@localhost", "pdf-extract-xcdl",
-                    "MetadataExtraction",
+                    "Characterise",
                     "http://localhost:8080/pserv-pc-extractor/Extractor2Binary?wsdl");
 
             register(
                     org,
                     "XCLComparator@localhost",
                     "compare XCL files",
-                    "Comparison",
+                    "Compare",
                     "http://localhost:8080/pserv-pp-comparator/ComparatorBasicCompareTwoXcdlValues?wsdl");
         } catch (Exception e) {
             logger.error("Error testing registry: ", e);
