@@ -3,8 +3,10 @@
     xmlns:c="http://java.sun.com/jsp/jstl/core" 
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
@@ -26,8 +28,9 @@
                 <p>If you require any assistance or have any questions or comments about the Planets Testbed please contact the Testbed Helpdesk at <a href="mailto:helpdesktb@planets-project.eu">helpdesktb@planets-project.eu</a>.</p>
                     
 		<p>Please have a look at the testbed release documentation or visit the project's wiki for additional information</p>
-				<p>
-				<ul><li>
+	    <p>
+	    <ul>
+                <li>
 				<h:outputLink value="http://www.planets-project.eu/docs/testbed-documentation/" target="_new">
 				Testbed v0.5 user documentation
 				</h:outputLink>
@@ -40,7 +43,16 @@
 				<h:outputLink value="http://gforge.planets-project.eu/gf/project/ptb/" target="_new">
 				Software Installer and Source Code
 				</h:outputLink>
-				</li></ul></p>
+				</li>
+                <li>
+                <h:outputLink value="${facesContext.externalContext.requestContextPath}/static/help-webdav.html" target="_new">
+                Help on uploading data via the WebDAV interface.
+                </h:outputLink>
+                </li>
+        </ul>
+        </p>
+        
+        
 				<p>&#160;</p>
 				<p>&#160;</p>
 				<p>&#160;</p>
