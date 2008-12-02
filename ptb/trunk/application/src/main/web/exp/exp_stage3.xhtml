@@ -31,20 +31,20 @@
       <h2><h:outputText value="#{res['new_exp.stage3']}"/></h2>
       </td>
       <td class="headerButtons">
-        <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
-              action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
         <h:commandButton value="#{res['button.save']}"
                                     action="#{NewExp_Controller.commandSaveExperiment}"
                                     disabled="#{ExperimentBean.approved}" />
+        <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
+              action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
       </td>
       </tr>
       </table>
-</h:form>
+
+      <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
 
 <rich:simpleTogglePanel label="#{res['exp_stage3.automaticProps']}" opened="true" switchType="server">
 <p>These are properties that the Testbed can automatically measure during your experiment.</p>
 
-<h:form>
         <rich:dataTable value="#{NewExp_Controller.observables}" var="prop" rows="25" 
         reRender="prop_ds" styleClass="tbTable" binding="#{NewExp_Controller.obsTable}">
         <!-- 
@@ -107,7 +107,6 @@
          <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
               action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
        </p>
-    </h:form>
 
 </rich:simpleTogglePanel>
 
@@ -116,9 +115,6 @@
     
 <p>These are properties that the Testbed <b>cannot</b> automatically measure during your experiment, and so must be measured manually instead.</p>
 
-    <h:form id="stage3form">
-
-    <h:messages for="stage3form" errorClass="errorMessage" infoClass="infoMessage"/>
 
 <h:panelGroup rendered="#{ExperimentBean.dtype != ''}">
 
@@ -183,10 +179,28 @@
 					            action="#{NewExp_Controller.updateBenchmarksAndSubmitAction}" disabled="#{ExperimentBean.approved}"/>										
 							</p>
 							<p><b>#{res['exp_stage3.warning']}</b></p>
-					</h:form>
 
 </rich:simpleTogglePanel>
 
+      <table id="expFooterTable"><tr>
+      <td class="headerText">
+      </td>
+      <td class="headerButtons">
+        <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveExperiment}"
+                                    disabled="#{ExperimentBean.approved}" />
+        <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
+              action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
+      </td>
+      </tr>
+      </table>
+</h:form>
+
+    <ui:include src="/WEB-INF/templates/comment_template.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+       <ui:param name="ExperimentPhase" value="3" />
+    </ui:include>
+                
             <p>&#160;</p>
         <p>&#160;</p>
 
@@ -200,11 +214,6 @@
         <p>&#160;</p>
 
             
-    <ui:include src="/WEB-INF/templates/comment_template.xhtml">
-       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-       <ui:param name="ExperimentPhase" value="3" />
-    </ui:include>
-                
 				</div>
 			</div>
 		</div>

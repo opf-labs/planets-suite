@@ -120,6 +120,7 @@ public class NewExpWizardController {
     	Experiment exp = null;
 		BasicProperties props = null;
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        log.info("ExpBean: "+expBean.getEname()+" : "+expBean.getEsummary());
         // create message for duplicate name error message
         FacesMessage fmsg = new FacesMessage();
         fmsg.setDetail("Experiment name already in use! - Please specify a unique name.");
@@ -156,13 +157,13 @@ public class NewExpWizardController {
         }
         log.debug("Created experiment, now retrieving it.");
         // Get the Experiment description objects
-	    exp = testbedMan.getExperiment(expBean.getID());
+        exp = testbedMan.getExperiment(expBean.getID());
         props = exp.getExperimentSetup().getBasicProperties();
-        //log.debug("TEST: exec: "+exp.getExperimentExecutable());
+        log.info("Setting the experimental properties, "+props.getExperimentName()+" : "+props.getSummary());
         // If the experiment already existed, check for valid name changes:
         if( existingExp ) {
   	      try {
-            log.debug("Existing experiment, setting name: " + expBean.getEname() );
+            log.info("Existing experiment, setting name from expBean: " + expBean.getEname() );
 	        props.setExperimentName(expBean.getEname());        
 	      } catch (InvalidInputException e) {
     		// add message-tag for duplicate name
@@ -172,7 +173,6 @@ public class NewExpWizardController {
     	 }
         }
         //set the experiment information
-        log.debug("Setting the experimental properties.");
         props.setSummary(expBean.getEsummary());
         props.setConsiderations(expBean.getEconsiderations());
         props.setPurpose(expBean.getEpurpose());
@@ -180,6 +180,7 @@ public class NewExpWizardController {
         props.setScope(expBean.getEscope());
         props.setContact(expBean.getEcontactname(),expBean.getEcontactemail(),expBean.getEcontacttel(),expBean.getEcontactaddress());       
         props.setExperimentFormal(expBean.getFormality());
+        log.info("Set the experimental properties, "+props.getExperimentName()+" : "+props.getSummary());
 
         String partpnts = expBean.getEparticipants();
         String[] partpntlist = partpnts.split(",");
@@ -252,7 +253,7 @@ public class NewExpWizardController {
         
         // Exit with failure condition if the form submission was not valid.
         exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
-        testbedMan.updateExperiment(exp);
+        //testbedMan.updateExperiment(exp);
         if( validForm ) {
             expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
             log.debug("Exiting in success.");
@@ -360,6 +361,7 @@ public class NewExpWizardController {
     	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
     	List<BenchmarkBean> bmbeans = (List<BenchmarkBean>)JSFUtil.getManagedObject("BenchmarkBeans");
     	
+    	if( bmbeans != null ) {
     	Iterator iter = bmbeans.iterator();
     	//Iterator iter = expBean.getBenchmarks().values().iterator();    	
     	while (iter.hasNext()) {
@@ -388,6 +390,7 @@ public class NewExpWizardController {
     			expBean.deleteBenchmarkBean(bmb);
     		}
     	}
+    	}
     	exp.getExperimentSetup().setBenchmarkGoals(bmgoals);
     	ExperimentResources expRes = exp.getExperimentSetup().getExperimentResources();
     	if (expRes == null)
@@ -395,15 +398,7 @@ public class NewExpWizardController {
     	expRes.setIntensity(Integer.parseInt(expBean.getIntensity()));
     	expRes.setNumberOfOutputFiles(Integer.parseInt(expBean.getNumberOfOutput()));
     	exp.getExperimentSetup().setExperimentResources(expRes);
-    	testbedMan.updateExperiment(exp);
-    	// if successful, set a message at top of page
-        FacesMessage fmsg = new FacesMessage();
-        fmsg.setDetail("Your data has been saved successfully!");
-        fmsg.setSummary("Your data has been saved successfully!");
-        fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
-		// add message-tag for duplicate name
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        ctx.addMessage("stage3form",fmsg);
+    	//testbedMan.updateExperiment(exp);
         //the current stage is 3 as the'save' button is pressed
         expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);  
         return "success";
@@ -415,7 +410,7 @@ public class NewExpWizardController {
         fmsg.setSummary("Problem saving data!");
         fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
         FacesContext ctx = FacesContext.getCurrentInstance();
-        ctx.addMessage("stage3form",fmsg);
+        ctx.addMessage(null,fmsg);
 		return "failure";
 	  }
         */
@@ -650,22 +645,13 @@ public class NewExpWizardController {
 	        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
 	        Experiment exp = testbedMan.getExperiment(expBean.getID());
 	        
-	        // create the experiment's executable - the constructor takes the ServiceTemplate
-	        ExperimentExecutable executable = exp.getExperimentExecutable();
-	        // store the provided input data
-	        executable.setInputData(expBean.getExperimentInputData().values());	        
-	        // store all other metadata
-	        executable.setSelectedServiceOperationName(expBean.getSelectedServiceOperationName());
-	        
 	        //modify the experiment's stage information
 	        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
 	        exp.setState(Experiment.STATE_IN_PROGRESS);
-	        testbedMan.updateExperiment(exp);
+	        //testbedMan.updateExperiment(exp);
 	        
-	        //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow");   
-	        
-	        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);	        	        
-	    	return "goToStage3";
+	        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);	
+	    	return "success";
         } catch (Exception e) {
         	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
         	e.printStackTrace();
@@ -770,10 +756,64 @@ public class NewExpWizardController {
         log.info("Attempting to save this experiment.");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-        Experiment exp = expBean.getExperiment();
-        // Commit the changes:
-        testbedMan.updateExperiment(exp);
-        return "success";
+        log.info("commandSaveExperiment: ExpBean: "+expBean.getEname()+" : "+expBean.getEsummary());
+        
+        // This saves the first three pages in turn, and redirects appropriately if there are any problems.
+        String destination = "success";
+        // Page 1
+        String result = this.updateBasicPropsAction();
+        if( "failure".equals(result) ) { 
+            destination = "goToStage1";
+            //expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);  
+        }
+        // Page 2
+        result = this.commandSaveStep2Substep2Action();
+        if( "failure".equals(result) ) {
+            destination = "goToStage2";
+            //expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);
+        }
+        // Page 3
+        result = this.updateBenchmarksAction();
+        if( "failure".equals(result) ) destination = "goToStage3";
+        log.info("Heading to destination: "+destination);
+        
+        // Add a message:
+        FacesMessage fmsg = new FacesMessage();
+        if( "success".equals(destination)) {
+            // Now save any updates.
+            Experiment exp = expBean.getExperiment();
+            // Commit the changes:
+            testbedMan.updateExperiment(exp);
+            // Tell them it went well:
+            fmsg.setSummary("Your data has been saved successfully.");
+            fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
+        } else {
+            fmsg.setSummary("Your data could not be saved, as there is an error in your experiment.");
+            fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+        }
+        // add message-tag for duplicate name
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        // Add a Global message:
+        ctx.addMessage(null,fmsg);        
+        return destination;
+    }
+    
+    public String commandSaveExperimentAndGotoStage2() {
+        String result = commandSaveExperiment();
+        if( "success".equals(result)) {
+            return "goToStage2";
+        } else {
+            return result;
+        }
+    }
+
+    public String commandSaveExperimentAndGotoStage3() {
+        String result = commandSaveExperiment();
+        if( "success".equals(result)) {
+            return "goToStage3";
+        } else {
+            return result;
+        }
     }
 
     /**
@@ -781,8 +821,12 @@ public class NewExpWizardController {
      * @return
      */
     public String commandSaveExperimentAndSubmit() {
-        commandSaveExperiment();
-        return submitForApproval();
+        String result = commandSaveExperiment();
+        if( "success".equals(result)) {
+            return submitForApproval();
+        } else {
+            return result;
+        }
     }
     
     /**

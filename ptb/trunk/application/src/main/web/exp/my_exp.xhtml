@@ -80,8 +80,8 @@
 		  </t:commandSortHeader>
 			</f:facet>		      
             <h:panelGroup styleClass="#{exp.denied ? 'approvalDenied' : ''}">
-            <t:graphicImage value="/graphics/state/tb-hex-#{exp.currentPhaseIndex}.png" title="Experiment Stage Icon" 
-            alt="Experiment Stage Icon" style="float: right; padding: 1px 5px;" />
+            <t:graphicImage value="/graphics/state/tb-hex-#{exp.currentPhaseIndex}.png" title="Experiment Stage #{exp.currentPhaseIndex}/7" 
+            alt="Experiment Stage #{exp.currentPhaseIndex}/7" style="float: right; padding: 1px 5px;" />
             <h:outputText value="#{exp.currentPhase.phaseName}" /><h:panelGroup rendered="#{exp.denied}" >: <strong><h:outputText value="#{res['approve_exp.denied']}" /></strong></h:panelGroup>
             </h:panelGroup>
         </t:column>

@@ -72,34 +72,40 @@ function cleanForm() {
 <div id="mainwrapper">
 <div id="maincol">
 <div class="innertubemain">
-    <h:form>
+
+<h:form>
+
       <table id="expHeaderTable"><tr>
       <td class="headerText">
       <h2><h:outputText value="#{res['new_exp.stage1']}"/></h2>
       </td>
       <td class="headerButtons">
+      <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveExperiment}"
+                                    disabled="#{ExperimentBean.approved}" />
       <h:commandButton value="#{res['new_exp.saveStage1']}" 
-            action="#{NewExp_Controller.updateBasicPropsAction}" disabled="#{ExperimentBean.approved}"/>
+            action="#{NewExp_Controller.commandSaveExperimentAndGotoStage2}" disabled="#{ExperimentBean.approved}"/>
       </td>
       </tr>
       </table>
-    
+
+      <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
+  
         <p>Create a new experiment using the form below.  Once you have supplied the required information and have submitted the form the experiment will be added to your list of experiments as found in the             
             <h:commandLink action="my_experiments">
                 <h:outputText value=" #{res['my_exp.pageTitle']}" />
         </h:commandLink> section.</p>
-    </h:form>
-<h:form>
+
+
 	<fieldset>
 		<legend>#{res['new_exp.legendGeneral']}</legend>
-			<p><h:messages errorClass="errorMessage" infoClass="infoMessage"/>
+			<p>
 		    	<h:outputLabel value="#{res['new_exp.expName']}" for="ename" ><span style='color:red;font-weight:bold;'> *</span></h:outputLabel>
 	        	<h:inputText required="true" id="ename" value="#{ExperimentBean.ename}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
 	        	<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipName']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
         		<h:message for="ename" errorClass="errorMessage" infoClass="infoMessage"/>
 			</p>
 	<div class="clear"></div>
-	
 				
 
         <p><h:outputLabel value="#{res['new_exp.expSummary']}" for="esummary" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
@@ -275,10 +281,21 @@ function cleanForm() {
 <h:inputTextarea rows="2" cols="50" required="false" id="econsiderations" value="#{ExperimentBean.econsiderations}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipConsiderations']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
 <div class="clear"></div>
 </fieldset>
-		<p>
-            <h:commandButton value="#{res['new_exp.saveStage1']}" 
-            action="#{NewExp_Controller.updateBasicPropsAction}" disabled="#{ExperimentBean.approved}"/>
-		</p>
+    
+      <table id="expFooterTable"><tr>
+      <td class="headerText">
+      </td>
+      <td class="headerButtons">
+      <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveExperiment}"
+                                    disabled="#{ExperimentBean.approved}" />
+      <h:commandButton value="#{res['new_exp.saveStage1']}" 
+            action="#{NewExp_Controller.commandSaveExperimentAndGotoStage2}" disabled="#{ExperimentBean.approved}"/>
+      </td>
+      </tr>
+      </table>
+    
+    
 </h:form>
 
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">

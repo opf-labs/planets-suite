@@ -789,25 +789,41 @@ width:100%;
 }
 
 /* Experiment Designer 2.0 */
-#expHeaderTable {
+.globalMessageBox  {
+  background: #eeffff;
+  padding: 0 10px;
+  display: block;
+  float: right !important;
+  width: 250px;
+  margin-right: 20px;
+  position: absolute;
+  right: 0;
+}
+.globalMessageBox table{
+  margin: 0 auto;
+}
+#expHeaderTable, #expFooterTable {
   color:#FFFFFF;
   font-size:1.1em;
   background-color:#579EC2;
   width: 100%;
   margin: 0px 0px 10px -5px;
 }
-#expHeaderTable tr {
+#expFooterTable {
+  margin-top: 20px;
+}
+#expHeaderTable tr, #expFooterTable tr {
   vertical-align: middle;
 }
-#expHeaderTable h2 {
+#expHeaderTable h2, #expFooterTable h2 {
   margin: 0;
   padding: 0;
   font-size: 1.15em;
 }
-#expHeaderTable td.headerButtons {
+#expHeaderTable td.headerButtons, #expFooterTable td.headerButtons {
   text-align: right;
 }
-#expHeaderTable input {
+#expHeaderTable input, #expFooterTable input {
   margin: 0px 5px;
 }
 .expDesignerPanel tr {
@@ -846,3 +862,8 @@ width:100%;
   border: 2px solid #888;
   font-weight: bold;
 }
+.rich-tool-tip{
+    background-color: #eef2f8;
+    border-color:#579EC2;
+}
+

@@ -116,7 +116,7 @@ public class FileUploadBean
      * @param file the _upFile to set
      */
     public void setUpFile(UploadedFile file) {
-        log.info("Setting uploaded file to: "+file.getName());
+        if( file != null ) log.info("Setting uploaded file to: "+file.getName());
         _upFile = file;
     }
     

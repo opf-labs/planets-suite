@@ -16,7 +16,7 @@
                 <f:facet name="header">
                 Experiment Design
                 </f:facet>
-<h:form>
+
 
 <fieldset>
     <legend>#{res['new_exp.legendTypes']}</legend>
@@ -57,7 +57,6 @@
                 
 </fieldset>
 
-</h:form>
             </rich:panel>
             
             <rich:panel styleClass="doListPanel">
@@ -66,7 +65,7 @@
                 </f:facet>
 
                 <fieldset>
-<h:form>
+                
                     <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
                     <p>The list of Digital Object to experiment upon.</p>
                     <h:panelGroup id="addedFileInfoPanel">
@@ -79,7 +78,7 @@
                                  <a href="#{filemap['uri']}">#{filemap['name']}</a>
                            </t:dataList>
                     </h:panelGroup>
-</h:form>
+
                 </fieldset>
 
                 <fieldset>
@@ -89,18 +88,18 @@
                             
                 <fieldset>
                         <legend>The Testbed Data Registry</legend>
-<h:form>
+
                          <p class="center">
                           <h:commandButton value="#{res['browse_data.selectData']}"
                            action="browseForData"
                            disabled="#{ExperimentBean.approved}"
                            readonly="#{ExperimentBean.approved}"/>
                          </p>
-</h:form>
+
                 </fieldset>
                 <fieldset>
                         <legend>#{res['exp_stage3.uploadFile']}</legend>
-<h:form enctype="multipart/form-data">
+                        
                          <p class="center">        
                             <t:inputFileUpload id="fileupload"
                                   value="#{FileUploadBean.upFile}"
@@ -119,7 +118,7 @@
                             </h:commandLink>
                             <h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>                            
                         </p>
-</h:form>
+                        
               </fieldset>
               
 <!-- 
