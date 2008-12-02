@@ -3,7 +3,6 @@
  */
 package eu.planets_project.tb.impl;
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,7 +20,6 @@ import org.apache.velocity.exception.VelocityException;
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
-import eu.planets_project.ifr.core.common.mail.PlanetsMailer;
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
@@ -40,12 +38,31 @@ public class AdminManagerImpl implements AdminManager {
     private static PlanetsLogger log = PlanetsLogger.getLogger(AdminManagerImpl.class, "testbed-log4j.xml");
 
 	private static AdminManagerImpl instance;
-	//e.g. key:"experimentType.simpleMigration" value:"simple migration"
-	private HashMap<String,String> hmExperimentTypes;
 	
+    public static final String IDENTIFY = "identify";
+    public static final String VALIDATE = "validate";
+    public static final String CHARACTERISE = "characterise";
+    public static final String MIGRATE = "migrate";
+	
+	//e.g. key:"experimentType.simpleMigration" value:"simple migration"
+	private static HashMap<String,String> hmExperimentTypes;
+	// No longer read from XML, by statically coded:
+	static {
+	    hmExperimentTypes = new HashMap<String,String>();
+        hmExperimentTypes.put(IDENTIFY, "Identify");
+        hmExperimentTypes.put(VALIDATE, "Validate");
+        hmExperimentTypes.put(CHARACTERISE, "Characterise");
+        hmExperimentTypes.put(MIGRATE, "Migrate");
+	}
+
+    private static HashMap<String,String> hmOldExperimentTypes;
+    static {
+        hmOldExperimentTypes = new HashMap<String,String>();
+        hmOldExperimentTypes.put("experimentType.simpleMigration","simple migration");
+        hmOldExperimentTypes.put("experimentType.simpleCharacterisation", "simple characterisation");
+    }
+
 	private AdminManagerImpl(){
-		// Read properties file.
-		hmExperimentTypes = readExperimentTypes();
 		// Also read basic properties:
 		BackendProperties bp = new BackendProperties();
 		APPROVAL_THRESHOLD_NUMBER_OF_INPUTS = bp.getExpAdminNoInputs();
@@ -64,70 +81,63 @@ public class AdminManagerImpl implements AdminManager {
 		return instance;
 	}
 	
+	/* ----------------------------------------------------------- */
 	
-	/**
-	 * Fetches the BackendResources.properties file to read all supported "ExperimentTypes".
-	 * @return
-	 */
-	private HashMap<String,String> readExperimentTypes(){
-		HashMap<String,String> hmRet = new HashMap<String,String>();
-		Properties properties = new Properties();
-	    try {
-	        java.io.InputStream ResourceFile = getClass().getClassLoader().getResourceAsStream("eu/planets_project/tb/impl/BackendResources.properties");
-	        properties.load(ResourceFile); 
-	        
-	        Iterator<Object> itKeys = properties.keySet().iterator();
-	        while(itKeys.hasNext()){
-	        	String key = (String)itKeys.next();
-	        	if(key.startsWith("experimentType")){
-	        		//e.g. key: "experimentType.simpleMigration" value: "simple migration"
-	        		hmRet.put(key, properties.getProperty(key));
-	        	}
-	        }
-	        
-	        ResourceFile.close();
-	        
-	    } catch (IOException e) {
-	    	//TODO add logg statement
-	    	System.out.println("readExperimentTypes BackendResources failed!");
-	    }
-	    return hmRet;
-	}
-
 	public Collection<String> getExperimentTypeIDs() {
-		return this.hmExperimentTypes.keySet();
+		return hmExperimentTypes.keySet();
 	}
 
 	public Collection<String> getExperimentTypesNames() {
-		return this.hmExperimentTypes.values();
+		return hmExperimentTypes.values();
 	}
+	
+    public Map<String, String> getExperimentTypeIDsandNames() {
+        return hmExperimentTypes;
+    }
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.AdminManager#getExperimentTypeID(java.lang.String)
-	 */
 	public String getExperimentTypeID(String expTypeName) {
-		if(this.hmExperimentTypes.containsValue(expTypeName)){
-			Iterator<String> itKeys = this.hmExperimentTypes.keySet().iterator();
-			while(itKeys.hasNext()){
-				String sKey = itKeys.next();
-				if(this.hmExperimentTypes.get(sKey).equals(expTypeName)){
-					return sKey;
-				}
-			}
-		}
+        if(hmExperimentTypes.containsValue(expTypeName)) {
+            return getKeyFromHashMap(expTypeName, hmExperimentTypes);
+        }
+        if(hmOldExperimentTypes.containsValue(expTypeName)) {
+            return getKeyFromHashMap(expTypeName, hmOldExperimentTypes);
+        }
 		return null;
 	}
-
+	
 	public String getExperimentTypeName(String typeID) {
-		if(this.hmExperimentTypes.containsKey(typeID)){
-			return this.hmExperimentTypes.get(typeID);
-		}
+        if(hmExperimentTypes.containsKey(typeID)){
+            return hmExperimentTypes.get(typeID);
+        }
+        if(hmOldExperimentTypes.containsKey(typeID)){
+            return hmOldExperimentTypes.get(typeID);
+        }
 		return null;
 	}
 
-	public Map<String, String> getExperimentTypeIDsandNames() {
-		return this.hmExperimentTypes;
-	}
+    private String getKeyFromHashMap( String expTypeName, HashMap<String,String> experimentTypes ) {
+        Iterator<String> itKeys = experimentTypes.keySet().iterator();
+        while(itKeys.hasNext()){
+            String sKey = itKeys.next();
+            if(experimentTypes.get(sKey).equals(expTypeName)){
+                return sKey;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * @param etype
+     * @return
+     */
+    public boolean isDeprecated(String typeID) {
+        if(hmOldExperimentTypes.containsKey(typeID)){
+            return true;
+        }
+        return false;
+    }
+    
+
 
 	/**
 	 * Code for Experiment Approval:
@@ -375,5 +385,5 @@ public class AdminManagerImpl implements AdminManager {
     public static String getAuthority() {
         return PlanetsServerConfig.getHostname() + ":" + PlanetsServerConfig.getPort();
     }
-    
+
 }

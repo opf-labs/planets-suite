@@ -21,14 +21,14 @@
 	<div id="mainwrapper">
 	<div id="maincol">
 	<div class="innertubemain">
-	<p>You have #{ListExp_Backing.numExperimentsOfUser} experiments listed in the testbed.  Experiments 1 to 10 are listed below.</p>
 		
 	<h:form>
      <t:dataTable id="dataTable_myExp"
+                  styleClass="tbTable"
                   var="exp"
                   value="#{ListExp_Backing.experimentsOfUser}"
                   preserveDataModel="false"
-                  rows="10"
+                  rows="#{ListExp_Backing.myExpPageSize}"
                   rowId="#{exp.experimentSetup.basicProperties.experimentName}"
                   sortColumn="#{ListExp_Backing.sort}"
                   sortAscending="#{ListExp_Backing.ascending}"
@@ -46,9 +46,6 @@
             <h:commandLink action="#{ListExp_Backing.editMyExperimentAction}">
 	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
     		</h:commandLink>
-            <h:commandLink action="#{ListExp_Backing.exportMyExperimentAction}">
-                &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/go-down.png" alt="export" title="export" style="margin-left: 5px; margin-right: 10px;"/>
-            </h:commandLink>        
         </t:column>
         <t:column>
 	        <f:facet name="header">
@@ -83,12 +80,14 @@
 		  </t:commandSortHeader>
 			</f:facet>		      
             <h:panelGroup styleClass="#{exp.denied ? 'approvalDenied' : ''}">
+            <t:graphicImage value="/graphics/state/tb-hex-#{exp.currentPhaseIndex}.png" title="Experiment Stage Icon" 
+            alt="Experiment Stage Icon" style="float: right; padding: 1px 5px;" />
             <h:outputText value="#{exp.currentPhase.phaseName}" /><h:panelGroup rendered="#{exp.denied}" >: <strong><h:outputText value="#{res['approve_exp.denied']}" /></strong></h:panelGroup>
             </h:panelGroup>
         </t:column>
         <!--
         <t:column>
-            <f:facet name="header">#{res['expList.colHeader.lastUpdateDate']}</f:facet>
+            expList.colHeader.download#{res['expList.colHeader.lastUpdateDate']}</f:facet>
             <h:outputText value="" />
         </t:column>
         <t:column>
@@ -96,6 +95,12 @@
             <h:outputText value="#{exp.experimentSetup.basicProperties.experimentedObjectTypes}" />
         </t:column> 
         -->
+        <t:column style="text-align: center;">
+            <f:facet name="header">#{res['expList.colHeader.download']}</f:facet>
+            <h:commandLink action="#{ListExp_Backing.exportMyExperimentAction}">
+                &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/go-down.png" alt="#{res['expList.colHeader.download']}" title="#{res['expList.colHeader.download']}"/>
+            </h:commandLink>        
+        </t:column>
     </t:dataTable>
 
     <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
@@ -106,7 +111,7 @@
                         pageIndexVar="pageIndex"
                         styleClass="scroller"
                         paginator="true"
-                        paginatorMaxPages="9"
+                        paginatorMaxPages="10"
                         paginatorTableClass="paginator"
                         paginatorActiveColumnStyle="font-weight:bold;">
             
@@ -133,7 +138,6 @@
     </h:panelGrid>
     </h:form>
 	
-
 	<div class="clear"></div>
 	</div>
 	</div>
@@ -142,11 +146,34 @@
 	
 	<div id="leftcol">
 	
+    <h:form>
+     
 	<h3 class="leftcol">Listing Options</h3>
 	<div class="innertube">
-	<p class="leftcol">Options allowing you to change the number of files displayed per page will appear here in later versions.</p>
+	<p class="center">
+     No. experiments per page:
+      <h:selectOneMenu value="#{ListExp_Backing.myExpPageSize}" onchange="submit();">
+        <f:selectItem itemLabel="10" itemValue="10" />
+        <f:selectItem itemLabel="20" itemValue="20" />
+        <f:selectItem itemLabel="30" itemValue="30" />
+        <f:selectItem itemLabel="40" itemValue="40" />
+      </h:selectOneMenu>
+      <h:commandButton value="Set" action="success"/>
+    </p>
+    <p class="center">You have #{ListExp_Backing.numExperimentsOfUser} experiments<br/>in the Planets Testbed.</p>
+    </div>
 	
+    <h3 class="leftcol"><h:outputText value="#{res['import_exp.pageTitle']}"/></h3>
+    <div class="innertube">
+    <p class="center">
+      <h:commandLink action="import_experiment" rendered="#{UserBean.experimenter}">
+        <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_import.gif" class="toolbar"/>
+        <h:outputText value="#{res['import_exp.pageTitle']}"/>
+      </h:commandLink>
+    </p>
+            
 	</div>
+    </h:form>
 	</div>
 
 

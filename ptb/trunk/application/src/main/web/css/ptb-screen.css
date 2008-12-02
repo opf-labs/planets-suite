@@ -411,7 +411,7 @@ fieldset {
 width:600px;
 }
 fieldset fieldset {
-width:575px;
+width:auto;
 }
 label {
 clear:left;
@@ -456,26 +456,26 @@ overflow:hidden;
 padding:3px 5px;
 text-align:left;
 }
-table {
+table.tbTable {
 border:1px solid #BFDEEB;
 }
-td {
+table.tbTable td {
 border:1px solid #BFDEEB;
 }
-td.passive {
+table.tbTable td.passive {
 background-color:#579EC2;
 border:1px solid #BFDEEB;
 color:#FFFFFF;
 font-weight:bold;
 text-align:right;
 }
-tr.blue {
+table.tbTable tr.blue {
 background-color:#C8E3ED;
 }
-tr {
+table.tbTable tr {
 font-size:smaller;
 }
-th {
+table.tbTable th {
 background-color:#579EC2;
 border:1px solid #BFDEEB;
 color:#FFFFFF;
@@ -737,4 +737,112 @@ width:100%;
 }
 .rich-table-subheadercell{
 	color: #FFFFFF;
+}
+.statusSearching {
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 5px auto;
+  background: transparent url('/techreg/images/loader-tr-sml.gif') no-repeat;
+}
+
+.statusDone {
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 5px auto;
+  background-image: none;
+}
+
+/* Service Browser */
+.sbtTable {
+  table-layout: fixed;
+  width: 100%;
+}
+.sbtcol1 {
+  width: 30%;
+  vertical-align: top;
+  overflow: hidden;
+  border-right: 1px dotted #008;
+  padding: 0 10px;
+}
+.sbtcol2 {
+  width: 70%;
+  vertical-align: top;
+  overflow: scroll;
+  padding: 0 10px;
+}
+
+/* Login Box */
+#bigLoginBox {
+  margin: 2em auto;
+  padding: 1em;
+  background-color: #eeffff;
+  border: 1px solid #ddeeff;
+  width: 80%;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+#bigLoginBox a {
+  text-decoration: underline;
+}
+
+/* Experiment Designer 2.0 */
+#expHeaderTable {
+  color:#FFFFFF;
+  font-size:1.1em;
+  background-color:#579EC2;
+  width: 100%;
+  margin: 0px 0px 10px -5px;
+}
+#expHeaderTable tr {
+  vertical-align: middle;
+}
+#expHeaderTable h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1.15em;
+}
+#expHeaderTable td.headerButtons {
+  text-align: right;
+}
+#expHeaderTable input {
+  margin: 0px 5px;
+}
+.expDesignerPanel tr {
+  vertical-align: top;
+}
+.expDesignerPanel fieldset {
+  width: auto;
+}
+.expDesignColumn {
+    width: 66%;
+}
+.doListColumn {
+    width: 33%;
+}
+.expStartDO, .expSimpleStep, .expChooseService, .expResultBox {
+  display: block;
+  text-align: center;
+  background-color: #ffffd0;
+  border: 1px solid #888;
+  padding: 1em;
+  width: 60%;
+  margin: 0 auto;
+}
+.expSimpleStep {
+  background: none;
+  border: none;
+}
+.expChooseService {
+  width: 70%;
+  background-color: #f8ffff;
+  background-color: #ffffd0;
+}
+.expResultBox {
+  margin-bottom: 2em;
+  background-color: #ffffd0;
+  border: 2px solid #888;
+  font-weight: bold;
 }

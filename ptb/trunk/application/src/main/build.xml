@@ -59,7 +59,7 @@
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
-  <target name="prepare" depends="clean">
+  <target name="prepare">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes.dir}"/>
   </target>
@@ -225,7 +225,8 @@
     <!-- moves libs for the .ear into the lib directory as e.g. commons-io.jar-->
     <move todir="${build.dir}/lib">
 		<fileset dir="${build.dir}/${appName}/WEB-INF/lib">
-			<include name="commons-io-1.4.jar" />
+          <include name="commons-io-1.4.jar" />
+          <include name="castor-xml.jar" />
 		</fileset>
 	</move>
 
@@ -236,7 +237,7 @@
 			  <fileset dir="${build.dir}" includes="*.jar,*.war"/>
 			  <manifest>
 				 <attribute name="Implementation-Title" value="Planets Testbed"/>
-				 <attribute name="Class-Path" value="lib/commons-io-1.4.jar"/>
+				 <attribute name="Class-Path" value="lib/commons-io-1.4.jar lib/castor-xml.jar"/>
 			</manifest>
 			<!-- includes libs for the ear-->
 			<fileset dir="${build.dir}">
@@ -250,7 +251,7 @@
     <copy file="${build.dir}/${appName}.war" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
-  <target name="deploy:ear" depends="createejbjar,dist" description="DEFAULT builds and deploy the Testbed application">
+  <target name="deploy:ear" depends="undeploy, createejbjar, dist" description="DEFAULT builds and deploy the Testbed application">
         <copy file="${src.resources}/META-INF/testbed-ds.xml" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
         <copy file="${build.dir}/${appName}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>

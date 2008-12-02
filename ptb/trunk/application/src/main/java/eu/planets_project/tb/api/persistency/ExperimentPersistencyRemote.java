@@ -26,4 +26,7 @@ public interface ExperimentPersistencyRemote {
 	public boolean queryIsExperimentNameUnique(String sExpName);
 	public List<Experiment> searchAllExperiments(String toFind);
 	
+	public List<Experiment> getPagedExperiments(int firstRow, int numberOfRows, String sortField, boolean descending);
+	
+	public int getNumberOfExperiments();
 }

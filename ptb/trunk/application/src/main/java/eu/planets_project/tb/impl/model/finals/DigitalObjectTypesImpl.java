@@ -27,7 +27,7 @@ public class DigitalObjectTypesImpl implements
         String[] type = {"d1","Image"};
         dTypes.add(type);
         
-        String[] type2 = {"d2","Sound"};
+        String[] type2 = {"d2","Audio"};
         dTypes.add(type2);
         
         String[] type3 = {"d3","Text"};

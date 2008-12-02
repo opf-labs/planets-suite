@@ -40,153 +40,37 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
-            <fieldset>
-                 <legend>#{res['exp_stage2.legendOne']}</legend>
-                 <p>#{ExperimentBean.etypeName}</p>
-                 </fieldset>
-			<h:form id="selectWorkflowForm" rendered="#{not empty ExperimentBean.etype}">
-				<fieldset>
-					<!-- step1: select available service + serviceoperation -->
-					<legend>#{res['exp_stage2.legendTwo']}</legend>
-					<p>#{res['exp_stage2.legendOneText']}</p>
-				 	<p><h:outputText value="Available Services for type:" styleClass="readerLabel"/>#{ExperimentBean.etypeName}</p>
-			     	<br/>
-			     	<p><h:outputText value="Selected Service Name:" styleClass="readerLabel"/>
-					<h:selectOneMenu
-					onchange="this.form.submit()"
-					value="#{ExperimentBean.selectedServiceTemplateID}"
-					valueChangeListener="#{NewExp_Controller.changedSelTBServiceTemplateEvent}"
-					immediate="true"  readonly="#{ExperimentBean.approved}" 
-					rendered="#{ExperimentBean.operationSelectionCompleted==false}">
-						<f:selectItems value="#{NewExp_Controller.allAvailableTBServiceTemplates}" />
-					</h:selectOneMenu>
-					<!-- if ser+op selection was chosen, render an outputText instead -->
-					<h:outputText value="#{ExperimentBean.selectedServiceTemplate.name}"
-								  rendered="#{ExperimentBean.operationSelectionCompleted==true}"/>
-				</p>
-				<br/>
-					<!-- select from the available service operations -->
-				 <p><h:outputText value="Selected Operation Name:" styleClass="readerLabel"/>
-             		<h:selectOneMenu 
-             		    value="#{ExperimentBean.selectedServiceOperationName}" 
-             		    immediate="true" readonly="#{ExperimentBean.approved}" 
-             		    rendered="#{ExperimentBean.operationSelectionCompleted==false}"
-             			valueChangeListener="#{NewExp_Controller.changedSelServiceOperationEvent}" 
-             			onchange="submit()">
-                 		<f:selectItems value="#{NewExp_Controller.allAvailableServiceOperations}" />                        
-             		</h:selectOneMenu>
-             		<!-- if ser+op selection was chosen, render an outputText instead -->
-					<h:outputText value="#{ExperimentBean.selectedServiceOperationName}"
-								  rendered="#{ExperimentBean.operationSelectionCompleted==true}"/>
-      		    </p>
-                <br/>
-                <h:panelGroup rendered="#{ExperimentBean.operationSelectionCompleted==false}">
-                	<p>display all services OR<a href="#" onclick="popup('popUpDiv')"> restrict query by tags</a></p>
-                </h:panelGroup>
-                <div>
-                    <ul>
-                        <li><b>#{res['exp_stage2.serviceDescription']} </b>#{ExperimentBean.selectedServiceTemplate.description}<br/></li>
-                        <li><b>#{res['exp_stage2.serviceOperationDescription']} </b>#{ExperimentBean.selectedServiceOperation.description}<br/></li>
-                    	<li><b>#{res['exp_stage2.maxSupportedInput']} </b>#{ExperimentBean.selectedServiceOperation.maxSupportedInputFiles}<br/></li>
-                    </ul>
-                </div>
-                <h:panelGroup id="panelAddedTags" binding="#{ExperimentBean.addedSerTags}" rendered="#{ExperimentBean.operationSelectionCompleted==false}">
-                </h:panelGroup>
-                
-      		    </fieldset>
-              
-      		    <h:commandButton value="#{res['button.change']}"
-                      				action="#{NewExp_Controller.changeAlreadySelectedSerOps}"
-                      				disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==false)}"
-                      				rendered="#{ExperimentBean.operationSelectionCompleted}"
-                      				readonly="#{ExperimentBean.approved}"
-                      				immediate="true" />
-               <h:commandButton value="#{res['button.select']}"
-                      				action="#{NewExp_Controller.completeSerOpsSelection}"
-                      				disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==true)}"
-                      				rendered="#{ExperimentBean.operationSelectionCompleted==false}"
-                      				readonly="#{ExperimentBean.approved}"
-                      				immediate="true"/>
+<h:form>
+      <table id="expHeaderTable"><tr>
+      <td class="headerText">
+      <h2><h:outputText value="#{res['new_exp.stage2']}"/></h2>
+      </td>
+      <td class="headerButtons">
+      <h:commandButton value="OLD #{res['exp_stage2.proceed']}"
+                                    action="#{NewExp_Controller.commandSaveStep2Substep2Action}"/>
+      <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveExperiment}"
+                                    disabled="#{ExperimentBean.approved}" />
+      </td>
+      </tr></table>
+</h:form>
+     
+        <c:if test="#{ExperimentBean.oldExperiment}">
 
-			</h:form>
-            <h:panelGroup rendered="#{ExperimentBean.operationSelectionCompleted==true}">
-                <fieldset>
-                    <legend>#{res['exp_stage2.legendThree']}</legend>
+    <ui:include src="/WEB-INF/templates/old-exps/stage2_body.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+    </ui:include>
+        
+        </c:if>
+        <c:if test="#{ ! ExperimentBean.oldExperiment}">
+        
+    <ui:include src="/WEB-INF/templates/exp-types/stage2.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+    </ui:include>
+        
+        </c:if>
 
-					<h:panelGroup rendered="#{ExperimentBean.operationSelectionCompleted}">
-                 		#{res['exp_stage2.legendTwoText']} 
-                 		<div>
-                    	<ul>
-                        	<li><b>#{res['exp_stage2.minRequiredInput']} </b>#{ExperimentBean.selectedServiceOperation.minRequiredInputFiles}<br/></li>
-                        	<li><b>#{res['exp_stage2.maxSupportedInput']} </b>#{ExperimentBean.selectedServiceOperation.maxSupportedInputFiles}<br/></li>
-                    	</ul>
-                  		</div>
-               		</h:panelGroup>
-        			<fieldset>
-         				<legend>#{res['browse_data.selectData']}</legend>
-         
-         				<h:form>
-          				<h:commandButton value="#{res['browse_data.browseForData']}"
-                           action="browseForData"
-                           disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==false)}"
-                           rendered="#{ExperimentBean.operationSelectionCompleted==true}"
-                           readonly="#{ExperimentBean.approved}"
-                           immediate="true"/>
-        				 </h:form>
-         
-        			</fieldset>
-
-            <h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{ExperimentBean.operationSelectionCompleted}">
-                <fieldset>
-
-                    <legend>#{res['exp_stage3.uploadFile']}</legend>
-                         <p><h:outputText value="Specify Input: " styleClass="readerLabel"/>        
-                            <t:inputFileUpload id="fileupload"
-                                  value="#{FileUploadBean.upFile}"
-                                  storage="file"
-                                  styleClass="fileUploadInput"
-                                  required="false"
-                                  maxlength="10000000"  
-                                  readonly="#{ExperimentBean.approved}" 
-                                  disabled="#{ExperimentBean.approved}"/>
-                                  
-                            <h:commandLink id="link_addFileInputItem" 
-                                action="#{NewExp_Controller.commandAddInputDataItem}" 
-                                rendered="#{NewExp_Controller.addFileButtonRendered}"
-                                disabled="#{ExperimentBean.approved}"
-                                readonly="#{ExperimentBean.approved}">
-                                <img src="${facesContext.externalContext.requestContextPath}/graphics/list-add.png" alt="add" title="add"/>
-                            </h:commandLink>
-          					<h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>
-                        </p>
-                </fieldset>
-        </h:form>
-
-        <h:form>
-                <fieldset>
-                    <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
-							<h:panelGroup id="panelAddedFiles" binding="#{ExperimentBean.panelAddedFiles}"
-										  rendered="#{ExperimentBean.approved==false}">
-                                <!-- a1 display the specified input data - when experiment is not approved-->
-                            </h:panelGroup>
-                            <h:panelGroup rendered="#{ExperimentBean.approved==true}">
-                            	<!-- a2 display the specified input in a data table structure when experiment is approved -->
-                            	<t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
-                            				layout="orderedList" rowIndexVar="rowi">
-                					<a href="#{filemap['uri']}">#{filemap['name']}</a>
-                				</t:dataList>
-                            </h:panelGroup>
-                            
-                            <br/>
-                </fieldset>                                    
-		</h:form>
-        </fieldset>
-        </h:panelGroup>
-		<h:form>
-			 <h:commandButton value="#{res['exp_stage2.proceed']}"
-                                    action="#{NewExp_Controller.commandSaveStep2Substep2Action}"
-                                    disabled="#{(NewExp_Controller.minReqNrOfFilesSelected==false)||(ExperimentBean.approved)}" />
-		</h:form>
+    
 		<p>&#160;</p>
 		<p>&#160;</p>
 
@@ -210,142 +94,17 @@
 		</div>
 
 
+        <!-- The Left Column -->
 		<div id="leftcol">
+    
+        <!-- Include the standard experiment builder sidebar. -->
+        <ui:include src="/WEB-INF/templates/exp_sidebar.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+           <ui:param name="ExperimentPhase" value="2" />
+        </ui:include>
 
-		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
-		<div class="innertube">
-			<ul class="exp"><h:form>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 1}">
-					<li class="exp"><h:commandLink action="goToStage1"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 1}">
-					<li class="exp_nd">#{res['new_exp.stage1']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 1}">
-					<li class="exp_sel"><h:commandLink action="goToStage1" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 2}">
-					<li class="exp"><h:commandLink action="goToStage2"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
-					<li class="exp_nd">#{res['new_exp.stage2']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 2}">
-					<li class="exp_sel"><h:commandLink action="goToStage2" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 3}">
-					<li class="exp"><h:commandLink action="goToStage3"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
-					<li class="exp_nd">#{res['new_exp.stage3']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage ==3}">
-					<li class="exp_sel"><h:commandLink action="goToStage3" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 4}">
-					<li class="exp"><h:commandLink action="goToStage4"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
-					<li class="exp_nd">#{res['new_exp.stage4']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 4}">
-					<li class="exp_sel"><h:commandLink action="goToStage4" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 5}">
-					<li class="exp"><h:commandLink action="goToStage5"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
-					<li class="exp_nd">#{res['new_exp.stage5']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 5}">
-					<li class="exp_sel"><h:commandLink action="goToStage5" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 6}">
-					<li class="exp"><h:commandLink action="goToStage6"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
-					<li class="exp_nd">#{res['new_exp.stage6']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 6}">
-					<li class="exp_sel"><h:commandLink action="goToStage6" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				</h:form>
-			</ul>
-		</div>
 		</div>
 		
-		<!-- the div for the popup screen -->
-			<div id="blanket" style="display:none;"></div>
-			<div id="popUpDiv" style="display:none;">
-
-			<div id="overlay-menu"><p><a href="#" onclick="popup('popUpDiv')"><img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="close" title="close"/></a> </p></div>
-				<div id="overlay-main">
-				<h2>Predefined Service Annotation Tags</h2>
-				<p>Please select from the provided list of predefined service annotation tags</p>
-				<h:form>
-					<h:panelGroup>           		
-                		<t:dataTable var="tag"
-							value="#{NewExp_Controller.allDefaultServiceAnnotationTags}" preserveDataModel="false"
-							cellpadding="2" cellspacing="0" border="1">
-							<t:column>
-								<f:facet name="header">tag name</f:facet>
-				   				 #{tag.name}<br/>
-							</t:column>
-							<t:column>
-								<f:facet name="header">characteristics</f:facet>
-				   				 <i>#{tag.description}</i><br/>
-				   				 <i>priority:#{tag.priority}</i>
-							</t:column>
-							<t:column>
-								<f:facet name="header">enter value</f:facet>
-				    			
-							</t:column>
-						</t:dataTable>
-					</h:panelGroup>
-				</h:form>
-				<p> </p>
-				<p> </p>
-				<p> This features is under construction </p>
-				<p> </p>
-				<p> </p>
-				<p> </p>
-				</div>
-			</div>
 	</ui:define>
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/templates/footer.xhtml" />

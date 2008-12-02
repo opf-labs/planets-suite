@@ -1,13 +1,5 @@
 package eu.planets_project.tb.impl.model.benchmark;
 
-import java.util.Map;
-import java.util.Vector;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -45,12 +37,6 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 	private String sEvaluationValue;
 	private int iWeight;
 	private String sXMLID, sCategory; 
-	//settings for auto evaluation of THIS BMGOal through the use of metrics
-	private AutoEvaluationSettingsImpl autoEvalSettings;
-	//the results (XCDL, service execution metadata) for an auto eval service
-	private EvaluationExecutableImpl evaluationExecutable;
-	//indicator if the BMGoal has already been successfully evaluated through an eval service
-	private boolean bWasScuccAutoEvaluated;
 	
 	public BenchmarkGoalImpl(){
 		sName = new String();
@@ -65,9 +51,6 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 		iWeight = -1;
 		sXMLID = new String();
 		sCategory = new String();
-		autoEvalSettings = null;
-		evaluationExecutable = null;
-		bWasScuccAutoEvaluated= false;
 	}
 	
 	//private void setEntityID(long lEntityID){
@@ -355,69 +338,5 @@ public class BenchmarkGoalImpl extends Object implements BenchmarkGoal, java.io.
 			throw new InvalidInputException("EvaluationValue not in the range of accepted values");
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getAutoEvalSettings()
-	 */
-	public AutoEvaluationSettings getAutoEvalSettings() {
-		return this.autoEvalSettings;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#isAutoEvaluatable()
-	 */
-	public boolean isAutoEvaluatable() {
-		if(this.getAutoEvalSettings()!=null)
-			return true;
-		return false;
-	}
-	
-	public void setWasAutomaticallyEvaluated(boolean b){
-		this.bWasScuccAutoEvaluated = b;
-	}
-	
-	public boolean isWasAutomaticallyEvaluated(){
-		return bWasScuccAutoEvaluated;
-	}
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setAutoEvalSettings(eu.planets_project.tb.api.model.eval.AutoEvaluationSettings)
-	 */
-	public void setAutoEvalSettings(AutoEvaluationSettings settings) {
-		this.autoEvalSettings = (AutoEvaluationSettingsImpl) settings;
-	}
-	
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#removeAutoEvalSettings()
-	 */
-	public void removeAutoEvalSettings(){
-		this.autoEvalSettings = null;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#getAutoEvaluationExecutable()
-	 */
-	public EvaluationExecutable getAutoEvaluationExecutable() {
-		return this.evaluationExecutable;
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#removeAutoEvaluationExecutable()
-	 */
-	public void removeAutoEvaluationExecutable() {
-		this.evaluationExecutable = null;
-		
-	}
-
-
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.benchmark.BenchmarkGoal#setAutoEvaluationExecutable(eu.planets_project.tb.api.model.eval.EvaluationExecutable)
-	 */
-	public void setAutoEvaluationExecutable(EvaluationExecutable results) {
-		this.evaluationExecutable = (EvaluationExecutableImpl)results;
-	}
-	
 
 }

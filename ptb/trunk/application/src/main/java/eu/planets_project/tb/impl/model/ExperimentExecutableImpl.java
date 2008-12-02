@@ -56,10 +56,18 @@ import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentExecutableImpl extends ExecutableImpl implements ExperimentExecutable, java.io.Serializable{
-	
+
+    /** A hashmap for the parameters */
+    private HashMap<String,String> parameters = new HashMap<String,String>();
+    
 	//hashmap of local file refs for input and output data of service execution
 	//note: C:/DATA/ rather than http://localhost:8080/testbed/
-	private HashMap<String,String> hmInputOutputData;
+	private HashMap<String,String> hmInputOutputData = new HashMap<String,String>();
+	
+	
+    // The list of automatically measurable properties that should be measured during the experiment.
+    private Vector<String> properties = new Vector<String>();
+	
 	//no one-to-one annotation, as we want to persist this data by value and not per reference
 	private TestbedServiceTemplateImpl tbServiceTemplate;
 	private String sSelectedServiceOperationName="";
@@ -67,26 +75,53 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	//A logger for this - transient: it's not persisted with this entity
     @Transient
     @XmlTransient
-	private static Log log;
+	private static Log log = PlanetsLogger.getLogger(ExperimentExecutableImpl.class,"testbed-log4j.xml");
 	
-	
+/*	
 	public ExperimentExecutableImpl(TestbedServiceTemplate template) {
-		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 		//decouple this object
 		tbServiceTemplate = ((TestbedServiceTemplateImpl)template).clone();
 		//sets the object's discriminator value to "experiment" and not "template"
 		tbServiceTemplate.setDiscriminator(tbServiceTemplate.DISCR_EXPERIMENT);
 		
-		//Info: HashMap<InputFileRef,OutputFileRef>
-		hmInputOutputData = new HashMap<String,String>();
 	}
+	*/
 	
 	//Default Constructor required for Entity Annotation
 	public ExperimentExecutableImpl(){
 	}
 	
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#getParameters()
+     */
+    public HashMap<String, String> getParameters() {
+        if( parameters == null )
+            parameters = new HashMap<String,String>();
+        return parameters;
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#setParameters(java.util.HashMap)
+     */
+    public void setParameters(HashMap<String, String> pars) {
+        parameters = pars;
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#getProperties()
+     */
+    public Vector<String> getProperties() {
+        return properties;
+    }
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#setProperties(java.util.Vector)
+     */
+    public void setProperties(Vector<String> props) {
+        properties = props;
+    }
+
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.mockups.ExperimentExecutable#addInputData(java.lang.String)
 	 */
 	public void addInputData(String localFileRef) {
@@ -220,10 +255,9 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 		DataHandler dh = new DataHandlerImpl();
 		if(localFileRef!=null){
 			try {
-				return dh.getHttpFileRef(new File(localFileRef), true);
+				return dh.getDownloadURI(localFileRef);
 				
 			} catch (FileNotFoundException e) {
-			} catch (URISyntaxException e) {
 				log.debug("Exception while building URI for InputFile");
 			}
 		}
@@ -240,12 +274,11 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 		Iterator<String> itInputData =  this.getInputData().iterator();
 		while(itInputData.hasNext()){
 			try {
-				URI uri = dh.getHttpFileRef(new File(itInputData.next()), true);
+				URI uri = dh.getDownloadURI(itInputData.next());
 				if(uri!=null){
 					ret.add(uri);
 				}
 			} catch (FileNotFoundException e) {
-			} catch (URISyntaxException e) {
 				log.debug("Exception while building URI for all Input data");
 			}
 			
@@ -261,10 +294,9 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 		DataHandler dh = new DataHandlerImpl();
 		if(localFileRef!=null){
 			try {
-				return dh.getHttpFileRef(new File(localFileRef), false);
+				return dh.getDownloadURI(localFileRef);
 				
 			} catch (FileNotFoundException e) {
-			} catch (URISyntaxException e) {
 				log.debug("Exception while building URI for OutputFile");
 			}
 		}
@@ -281,12 +313,11 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 		Iterator<String> itOutputData =  this.getOutputData().iterator();
 		while(itOutputData.hasNext()){
 			try {
-				URI uri = dh.getHttpFileRef(new File(itOutputData.next()), false);
+				URI uri = dh.getDownloadURI(itOutputData.next());
 				if(uri!=null){
 					ret.add(uri);
 				}
 			} catch (FileNotFoundException e) {
-			} catch (URISyntaxException e) {
 				log.debug("Exception while building URI for all output data");
 			}
 			

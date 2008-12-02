@@ -48,7 +48,6 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 		lExperimentIDRef = -1;
 		bExecutionInProgress = false;
 		bExecuted = false;
-		
 		setPhasePointer(PHASE_EXPERIMENTEXECUTION);
 	}
 	

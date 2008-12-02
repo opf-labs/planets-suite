@@ -35,7 +35,17 @@ public interface Experiment extends ExperimentPhase{
 	public void removeExperimentExecutable();
 	
 	public ExperimentPhase getCurrentPhase();
-	public int getCurrentPhasePointer();
+    public int getCurrentPhasePointer();
+    
+    /**
+     * This returns the six-stage version of the phase index.
+     *  - 0 means not-yet-started at all (may never happen!).
+     *  - 1, 2, 3 mean Phase 1 (Setup), sub-stages 1, 2 and 3.
+     *  - 4, 5, 6 mean Experiment phases 2, 3 and 4, as defined herein.
+     *  - 7 means finalised.
+     * @return An integer from 0 to 7, depending on the phase.
+     */
+    public int getCurrentPhaseIndex();
 	
     public boolean isAwaitingApproval();
     public boolean isApproved();

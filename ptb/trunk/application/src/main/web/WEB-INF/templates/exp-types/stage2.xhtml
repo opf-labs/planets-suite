@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition rendered="#{ExperimentBean != null}">
+
+        <h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="expDesignColumn,doListColumn">
+            <rich:panel styleClass="expTypePanel">
+                <f:facet name="header">
+                Experiment Design
+                </f:facet>
+<h:form>
+
+<fieldset>
+    <legend>#{res['new_exp.legendTypes']}</legend>
+     
+
+<p>
+    <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
+        <h:selectOneMenu id="etype" onchange="submit();"
+        value="#{ExperimentBean.etype}"  style="width: 23em;"
+ readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
+                <f:selectItem itemValue="[default]" itemLabel="Select..."/>
+                <f:selectItems value="#{NewExp_Controller.availableExperimentTypes}" />
+        </h:selectOneMenu>
+
+    <h:commandButton value="#{res['button.select']}"
+             action="success"
+             disabled="#{ExperimentBean.approved}" rendered="#{ExperimentBean.etype == ''}"/>
+
+    <h:commandButton value="#{res['button.change']}"
+             action="success"
+             disabled="#{ExperimentBean.approved}" rendered="#{ExperimentBean.etype != ''}"/>
+
+   <t:graphicImage value="/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipExperimentType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+             
+</p>
+
+
+<div class="clear"></div>
+
+
+        <c:if test="#{ExperimentBean.etype == 'identify'}">
+        
+    <ui:include src="/WEB-INF/templates/exp-types/stage2_identify.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+    </ui:include>
+        
+        </c:if>
+                
+</fieldset>
+
+</h:form>
+            </rich:panel>
+            
+            <rich:panel styleClass="doListPanel">
+                <f:facet name="header" >
+                    Digital Objects
+                </f:facet>
+
+                <fieldset>
+<h:form>
+                    <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
+                    <p>The list of Digital Object to experiment upon.</p>
+                    <h:panelGroup id="addedFileInfoPanel">
+                           <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
+                                         layout="unorderedList" rowIndexVar="rowi">
+                                 <h:commandLink title="Remove this Digital Object." rendered="#{ExperimentBean.approved==false}">
+                                   <f:actionListener type="eu.planets_project.tb.gui.backing.exp.RemoveDigitalObjectActionListener"/>
+                                   <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
+                                 </h:commandLink>
+                                 <a href="#{filemap['uri']}">#{filemap['name']}</a>
+                           </t:dataList>
+                    </h:panelGroup>
+</h:form>
+                </fieldset>
+
+                <fieldset>
+                        <legend>#{res['exp_stage2.addDOs']}</legend>
+         
+                        <p>Use the buttons below to add more Digital Objects to this experiment.</p>
+                            
+                <fieldset>
+                        <legend>The Testbed Data Registry</legend>
+<h:form>
+                         <p class="center">
+                          <h:commandButton value="#{res['browse_data.selectData']}"
+                           action="browseForData"
+                           disabled="#{ExperimentBean.approved}"
+                           readonly="#{ExperimentBean.approved}"/>
+                         </p>
+</h:form>
+                </fieldset>
+                <fieldset>
+                        <legend>#{res['exp_stage3.uploadFile']}</legend>
+<h:form enctype="multipart/form-data">
+                         <p class="center">        
+                            <t:inputFileUpload id="fileupload"
+                                  value="#{FileUploadBean.upFile}"
+                                  storage="file"
+                                  styleClass="fileUploadInput"
+                                  required="false"
+                                  maxlength="10000000"  
+                                  readonly="#{ExperimentBean.approved}" 
+                                  disabled="#{ExperimentBean.approved}"/>
+                                  
+                            <h:commandLink id="link_addFileInputItem" 
+                                action="#{NewExp_Controller.commandAddInputDataItem}" 
+                                disabled="#{ExperimentBean.approved}"
+                                readonly="#{ExperimentBean.approved}">
+                                <t:graphicImage value="/graphics/list-add.png" alt="Add" title="Add"/> #{res['button.add']}
+                            </h:commandLink>
+                            <h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>                            
+                        </p>
+</h:form>
+              </fieldset>
+              
+<!-- 
+            <rich:fileUpload fileUploadListener="# {richFileUploadBean.listener}"
+                maxFilesQuantity="# {richFileUploadBean.maxFiles}"
+                id="richUpload" immediateUpload="false" width="90%"
+                acceptedTypes="# {richFileUploadBean.fileTypes}" allowFlash="true">
+                <a4j:support event="onuploadcomplete" reRender="addedFileInfoPanel" />
+            </rich:fileUpload>
+ -->                        
+ 
+                </fieldset>
+            </rich:panel>
+        </h:panelGrid>
+
+
+  </ui:composition>
+</body>
+</html>

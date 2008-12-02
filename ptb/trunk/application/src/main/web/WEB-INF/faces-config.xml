@@ -38,8 +38,18 @@
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
  <managed-bean>
+  <managed-bean-name>ExpTypeIdentify</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.exp.ExpTypeIdentify</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
   <managed-bean-name>ListExp_Backing</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.backing.ListExp</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>pageAllExps</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.PaginatingAllExperiments</managed-bean-class>
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
  <managed-bean>
@@ -71,10 +81,21 @@
   <managed-bean-name>FileUploadBean</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.backing.FileUploadBean</managed-bean-class>
   <managed-bean-scope>request</managed-bean-scope>
-  <managed-property>
-   <property-name>uploadDir</property-name>
-   <value>server/default/deploy/jboss-web.deployer/ROOT.war/planets-testbed/inputdata</value>
-  </managed-property>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>richFileUploadBean</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.RichFileUploadBean</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>ServiceBrowser</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.ServiceBrowser</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
+  <managed-bean-name>PlanetsSharedBean</managed-bean-name>
+  <managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
+  <managed-bean-scope>application</managed-bean-scope>
  </managed-bean>
 <!--End Managed Beans -->
 
@@ -176,30 +197,37 @@
   <navigation-case>
    <from-outcome>goToStage1</from-outcome>
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage2</from-outcome>
    <to-view-id>/exp/exp_stage2.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage3</from-outcome>
    <to-view-id>/exp/exp_stage3.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage4</from-outcome>
    <to-view-id>/exp/exp_stage4.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage5</from-outcome>
    <to-view-id>/exp/exp_stage5.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>goToStage6</from-outcome>
    <to-view-id>/exp/exp_stage6.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>completeExperiment</from-outcome>
    <to-view-id>/exp/my_exp.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>viewExperimentReport</from-outcome>
@@ -274,6 +302,7 @@
   <navigation-case>
    <from-outcome>editExp</from-outcome>
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>
+   <redirect/>
   </navigation-case>
  </navigation-rule>
  

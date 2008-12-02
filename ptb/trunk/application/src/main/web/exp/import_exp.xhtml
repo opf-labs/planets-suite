@@ -37,10 +37,12 @@
                         <h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>
                         </p>
                         <p>
-                            <h:commandButton action="#{NewExp_Controller.importUploadedExperiment}" value="#{res['import_exp.upload']}"/>
+                            <h:commandButton action="#{NewExp_Controller.importUploadedExperiment}" value="#{res['import_exp.upload']}" disabled="#{true}"/>
                         </p>
+        <p>It is not possible to upload Testbed experiments at the present time.</p>
                 </fieldset>
         </h:form>
+        
         
         <p>&#160;</p>
 		

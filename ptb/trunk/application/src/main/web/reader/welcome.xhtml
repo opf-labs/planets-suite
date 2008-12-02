@@ -1,5 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
@@ -17,7 +19,7 @@
 	<div id="mainwrapper">
 		<div id="maincol">
 			<div class="innertubemain">
-
+      
 				<p><b>#{res['welcome.header']}</b></p>
         
                                 <p>There are countless approaches to digital preservation available, making use of a variety of 
@@ -26,7 +28,7 @@
                         <b>data</b> can be experimented upon, results can be evaluated and outcomes shared with the wider community.  
                         By providing a dedicated hardware and software environment the Testbed allows different approaches to be 
                         analysed systematically, so that results can be <b>benchmarked</b> and outcomes can be <b>empirically compared</b>.</p>
-                            <p><b>Log into the Testbed by clicking on the 'Login' button in the top right corner of the screen.</b></p>
+                        
                             <hr />
                             
                             <div style="text-align:center;margin-top:20px;">
@@ -39,10 +41,21 @@
 
 
 	<div id="leftcol">
-		<h3 class="leftcol">The Testbed and You</h3>
-		<div class="innertube">
+        <ui:fragment id="bigLoginBoxFragment" rendered="#{empty UserBean.userid}">
+        <h3 class="leftcol">Log into the Testbed</h3>
+        <div class="innertube">
+          <p class="center">
+             <div id="bigLoginBox">
+               <h:outputLink value="#{facesContext.externalContext.requestContextPath}/login-redirect.jsp">Click here to log into the Testbed.</h:outputLink>
+             </div>
+         </p>
+        </div>
+        </ui:fragment>
+        
+        <h3 class="leftcol">The Testbed and You</h3>
+        <div class="innertube">
                         <p class="leftcol"><img src="${facesContext.externalContext.requestContextPath}/graphics/tb-you.png" alt="" title="" style="float:left;" />Log into the Testbed and test tools and services against benchmark content or your own data.  If you have any interest in which digital preservation tools and approaches perform the best in a variety of situations you can browse through the experiments database and learn from the successes and failures of other experiments.  You may even choose to replicate earlier experiments to validate the outcomes that were noted.  By making experiment results available the testbed will provide scientific value to the broader community of content owners and memory institutions.</p>
-		</div>
+        </div>
 	</div>
   </ui:define>
   <ui:define name="footer">

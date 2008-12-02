@@ -14,9 +14,9 @@ import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
+import eu.planets_project.tb.api.model.eval.Metric;
 import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Metric;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
@@ -48,6 +48,8 @@ import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.AutoEvaluationSettingsImpl;
+import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.eval.MetricImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
@@ -84,7 +86,6 @@ import java.util.Vector;
 
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIComponentBase;
-import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -92,6 +93,7 @@ import javax.faces.event.ValueChangeEvent;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.resource.security.ConfiguredIdentityLoginModule;
+import org.richfaces.component.html.HtmlDataTable;
 
 
 public class NewExpWizardController {
@@ -108,6 +110,8 @@ public class NewExpWizardController {
     public String updateBasicPropsAction(){
         // Flag to indicate validity of submission:
         boolean validForm = true;
+        // Flag to indicate that the experiment definition is not valid and cannot be constructed
+        boolean validExperiment = true;
         
         // remove workflow object from session, if still available from previously viewed experiment
     	//FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
@@ -142,6 +146,7 @@ public class NewExpWizardController {
 		        FacesContext ctx = FacesContext.getCurrentInstance();
 		        ctx.addMessage("ename",fmsg);
 	    		validForm = false;
+	    		validExperiment = false;
 	    	}
 	        ExperimentSetup expSetup = new ExperimentSetupImpl();
 	        expSetup.setBasicProperties(props);       
@@ -149,6 +154,7 @@ public class NewExpWizardController {
             long expId = testbedMan.registerExperiment(exp);            
             expBean.setID(expId);
         }
+        log.debug("Created experiment, now retrieving it.");
         // Get the Experiment description objects
 	    exp = testbedMan.getExperiment(expBean.getID());
         props = exp.getExperimentSetup().getBasicProperties();
@@ -209,11 +215,14 @@ public class NewExpWizardController {
         }
         props.setExperimentReferences(refs);
         
+        /*
         props.setDigiTypes(expBean.getDtype());
         
+        log.debug("Checking the experiment type.");
         // Set the experiment type:
         try {
             //check if the experiment type has changed. If yes we need to remove the already chosen
+            log.info("Current type: '"+exp.getExperimentSetup().getExperimentTypeID()+"' versus '"+expBean.getEtype()+"'.");
             //selection from step2, to properly reload all available serivces + operations
             if(!exp.getExperimentSetup().getExperimentTypeID().equals(expBean.getEtype())){
             	//exp. type was reselected - remove all chosen template information
@@ -221,40 +230,38 @@ public class NewExpWizardController {
             	//set step2 to substep1
             	changeAlreadySelectedSerOps();
             }
+            // This is what throws the error:
             exp.getExperimentSetup().setExperimentType(expBean.getEtype());
         } catch (InvalidInputException e) {
             FacesContext ctx = FacesContext.getCurrentInstance();
             FacesMessage tfmsg = new FacesMessage();
             tfmsg.setSummary("No experiment type specified!");
-            tfmsg.setDetail("You must select and experiment type.");
+            tfmsg.setDetail("You must select an experiment type.");
             tfmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
             ctx.addMessage("etype",tfmsg);
             validForm = false;
+            log.error("Got error on Etype: "+e);
         }
+        */
         
-        log.debug("Updating...");
-        // Workaround
-        // update in cached lists
-        ListExp listExp_Backing = (ListExp)JSFUtil.getManagedObject("ListExp_Backing");
-        listExp_Backing.getExperimentsOfUser();
-        listExp_Backing.getAllExperiments();
-        
-        // Exit with failure condition if the form submission was not valid.
-        if( ! validForm ) {
+        // Exit with failure condition if no valid experiment could be constructed.
+        if( ! validForm && ! validExperiment ) {
             log.debug("Exiting with failure.");
             return "failure";
         }
         
-        // Put updated Bean into Session; accessible later as #{ExperimentBean}
-        //FacesContext ctx = FacesContext.getCurrentInstance();
-	    //ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+        // Exit with failure condition if the form submission was not valid.
         exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
         testbedMan.updateExperiment(exp);
-        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
+        if( validForm ) {
+            expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
+            log.debug("Exiting in success.");
+            return "success";
+        } else {
+            log.debug("Exiting in failure - invalid form.");
+            return "failure";
+        }
         
-        log.debug("Exiting in success.");
-        //log.debug("TEST: exec: "+exp.getExperimentExecutable());
-        return "success";
 	}
     
     public String addAnotherLitRefAction() {
@@ -265,24 +272,28 @@ public class NewExpWizardController {
     
     public String updateBenchmarksAndSubmitAction() {
     	if (this.updateBenchmarksAction() == "success") {
-        	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-            ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        	Experiment exp = testbedMan.getExperiment(expBean.getID());
-            exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
-            exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
-            testbedMan.updateExperiment(exp);
-            expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTAPPROVAL);  
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("BenchmarkBeans"); 
-            // Attempt to approve the experiment, and forward appropriately
-            if( ! AdminManagerImpl.experimentRequiresApproval(exp) ) {
-                autoApproveExperiment();
-                return "goToStage5";
-            }
-            // Otherwise, await approval:
-            AdminManagerImpl.requestExperimentApproval(exp);
-    		return "goToStage4";
+    	    return submitForApproval();
     	} else
     		return null;    	
+    }
+    
+    private String submitForApproval() {
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
+        exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
+        testbedMan.updateExperiment(exp);
+        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTAPPROVAL);  
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("BenchmarkBeans"); 
+        // Attempt to approve the experiment, and forward appropriately
+        if( ! AdminManagerImpl.experimentRequiresApproval(exp) ) {
+            autoApproveExperiment();
+            return "goToStage5";
+        }
+        // Otherwise, await approval:
+        AdminManagerImpl.requestExperimentApproval(exp);
+        return "goToStage4";
     }
     
     public String unsubmitAndEdit() {
@@ -338,7 +349,9 @@ public class NewExpWizardController {
      * @return
      */
     public String updateBenchmarksAction(){
+    /* FIXME ANJ Clean this up:
 	  try {
+	  */
     	// create bm-goals    	
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -363,8 +376,10 @@ public class NewExpWizardController {
     			}
     			
     			//update the bmg with the provided bean's data
+    			/* FIXME ANJ Clean this up
     			helper_addBMBSettingsToBMGoal(bmb,bmg);
-	    		
+	    		*/
+    			
 	    		bmgoals.add(bmg);
 	    		// add to experimentbean benchmarks
 	    		expBean.addBenchmarkBean(bmb);
@@ -392,7 +407,7 @@ public class NewExpWizardController {
         //the current stage is 3 as the'save' button is pressed
         expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);  
         return "success";
-        
+        /* FIXME ANJ Clean this up
 	  } catch (InvalidInputException e) {
 		log.error(e.toString());
         FacesMessage fmsg = new FacesMessage();
@@ -403,9 +418,10 @@ public class NewExpWizardController {
         ctx.addMessage("stage3form",fmsg);
 		return "failure";
 	  }
+        */
    	}
     
-    
+    /* FIXME ANJ Clean this up
     private BenchmarkGoal helper_addBMBSettingsToBMGoal(BenchmarkBean bmb, BenchmarkGoal bmg) throws InvalidInputException{
 		//get a new BMGoal object: BenchmarkGoal bmg = BenchmarkGoalsHandlerImpl.getInstance().getBenchmarkGoal(bmb.getID());
 		if (bmb.getSourceValue()!=null && (!(bmb.getSourceValue().equals("")))) 			
@@ -422,7 +438,7 @@ public class NewExpWizardController {
 		
 		return bmg;
     }
-    
+    */
 
     /**
      * Fetches the provided AutoBMGoalEvalUserConfigBean, extracts its information
@@ -432,6 +448,7 @@ public class NewExpWizardController {
      * @param bmg
      * @return
      */
+    /* FIXME ANJ Clean this up
     private BenchmarkGoal addAutoEvalSettingsToBMGoal(BenchmarkBean bmb, BenchmarkGoal bmg){
     	AutoBMGoalEvalUserConfigBean autoEvalConfigBean = (AutoBMGoalEvalUserConfigBean)JSFUtil.getManagedObject("AutoEvalSerUserConfigBean");
     	
@@ -453,7 +470,7 @@ public class NewExpWizardController {
     		//add the metric evaluation configuration for all types
     		for(MetricBean mb:autoEvalConfigBean.getMetricConfigFor(evalType)){
     			//add all defined configurations for this type from the bean
-    			Metric m = autoEvalConfig.new MetricImpl(mb.getName(), mb.getType(), mb.getDescription());
+    			Metric m = new MetricImpl(mb.getName(), mb.getType(), mb.getDescription());
     			Config c = autoEvalConfig.new ConfigImpl(mb.getMathExpr(), mb.getEvalBoundary(), m);
     			
     			autoEvalConfig.addConfiguration(evalType, c);
@@ -463,7 +480,7 @@ public class NewExpWizardController {
     	bmg.setAutoEvalSettings(autoEvalConfig);
     	return bmg;
     }
-    
+*/    
 
     public String updateBMEvaluationAction() {
         log.debug("In updateEvaluationAction...");
@@ -488,6 +505,8 @@ public class NewExpWizardController {
 	    		if (bmb.getSelected()) {
 		    		// get the bmgoal from the evaluation data
 	    			bmg = exp.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoal(bmb.getID());
+                    expBMgoals.add(bmg);
+                    /* FIXME ANJ Clean this up:
 	    		try {
 		    		//update the bmg with the provided bean's data
 		    		helper_addBMBSettingsToBMGoal(bmb,bmg);
@@ -513,6 +532,7 @@ public class NewExpWizardController {
 	    			//set error true: all error messages are collected and then "failure" is returned
 	    			bError = true;
 	    		}
+                    */
 	    		}
 	    	}
 	    	
@@ -528,12 +548,14 @@ public class NewExpWizardController {
 	    	try {
 	    		while(itLocalInputFileRefs.hasNext()){
 					String localInputFileRef = itLocalInputFileRefs.next();
-					URI inputURI = dh.getHttpFileRef(new File(localInputFileRef), true);
+					URI inputURI = dh.getDownloadURI(localInputFileRef);
 					List<BenchmarkGoal> lbmgs = new ArrayList<BenchmarkGoal>();
 					
 					for(BenchmarkBean b : mBMBs.values()){
 						bmg = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoal(inputURI, b.getID());
 						BenchmarkBean bmb = mBMBs.get(inputURI+b.getID());
+                        lbmgs.add(bmg);
+                        /* FIXME ANJ Clean this up:
 						try{
 							this.helper_addBMBSettingsToBMGoal(bmb, bmg);
 							lbmgs.add(bmg);
@@ -555,6 +577,7 @@ public class NewExpWizardController {
 			    			log.error(e.toString());
 				    		bError2 = true;
 						}
+						*/
 					}
 					
 					mFileBMGs.put(inputURI,lbmgs);
@@ -629,11 +652,6 @@ public class NewExpWizardController {
 	        
 	        // create the experiment's executable - the constructor takes the ServiceTemplate
 	        ExperimentExecutable executable = exp.getExperimentExecutable();
-	        if (executable == null) {
-	        	executable = new ExperimentExecutableImpl(expBean.getSelectedServiceTemplate());
-	        	exp.setExperimentExecutable(executable);
-	        	log.debug("save: Created a new executable: "+executable);
-	        }
 	        // store the provided input data
 	        executable.setInputData(expBean.getExperimentInputData().values());	        
 	        // store all other metadata
@@ -654,6 +672,7 @@ public class NewExpWizardController {
         	return "failure";
         }
     }
+    
     
     /**
      * In the process of selecting the proper TBServiceTemplate to work with
@@ -719,30 +738,52 @@ public class NewExpWizardController {
      */
     public String commandAddInputDataItem(){
     	//0) upload the specified data to the Testbed's file repository
-        log.debug("commandAddInputDataItem: Uploading file.");
-		FileUploadBean uploadBean = UploadManager.uploadFile();
-		if( uploadBean == null ) return "goToStage2";
-		String fileRef = uploadBean.getLocalFileRef();
+        log.info("commandAddInputDataItem: Uploading file.");
+		FileUploadBean uploadBean = UploadManager.uploadFile(true);
+		if( uploadBean == null ) {
+	        log.warn("commandAddInputDataItem: Uploaded file was null.");
+		    return "goToStage2";
+		}
+		String fileRef = uploadBean.getUniqueFileName();
 		if(!(new File(fileRef).canRead())){
-			log.debug("Added file reference not correct or reachable by the VM "+fileRef);
+			log.error("Added file reference not correct or reachable by the VM "+fileRef);
 		}
     	
     	//1) Add the file reference to the expBean
-		log.debug("Adding file to Experiment Bean.");
+        log.info("Adding file to Experiment Bean.");
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	String position = expBean.addExperimentInputData(fileRef);
-    	
-    	//2) For the current fileRef create an GUI outputfield + a RemoveIcon+Link
-    	//UIComponent panel = this.getComponent("configureExpWorkflowForm:panelAddedFiles");
-    	//UIComponent panel = expBean.getPanelAddedFiles();
-    	//expBean.helperCreateRemoveFileElement(panel, fileRef, position);
-    	// FIXME Remove the above now addExperimentInputData does it automatically.
+        log.info("Adding file to Experiment Bean at position "+position);
     	
     	//reload stage2 and displaying the added data items
-        log.debug("commandAddInputDataItem DONE");
+        log.info("commandAddInputDataItem DONE");
     	return "goToStage2";
     }
-    
+
+    /**
+     * A simple Save-Changes action, that just tries to save the current state.
+     * 
+     * FIXME This needs to do the proper storage stuff, like in updateBasicPropsAction, and it current fails if pressed on page one.
+     * @return "success" upon success.
+     */
+    public String commandSaveExperiment() {
+        log.info("Attempting to save this experiment.");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        Experiment exp = expBean.getExperiment();
+        // Commit the changes:
+        testbedMan.updateExperiment(exp);
+        return "success";
+    }
+
+    /**
+     * This one saves and attempts to submit.
+     * @return
+     */
+    public String commandSaveExperimentAndSubmit() {
+        commandSaveExperiment();
+        return submitForApproval();
+    }
     
     /**
      * checks for the max supported and min required number of input files and triggers
@@ -837,7 +878,8 @@ public class NewExpWizardController {
 		return "goToStage2";
 	}
 	
-	/**
+	    
+    /**
 	 * Undo the process of selecting service and operation to pick another one.
 	 * Note: this leads to losing already uploaded input data - warn the user
 	 * @return
@@ -909,7 +951,6 @@ public class NewExpWizardController {
     
     public String getExperimentTypeName(String ID) {
         String name = AdminManagerImpl.getInstance().getExperimentTypeName(ID);
-        
         return name;
     }
     
@@ -1084,7 +1125,9 @@ public class NewExpWizardController {
                         //add the autoEvaluationService Information for this goal
                         if(mapAutoEvalSer.containsKey(bmg.getID())){
                         	//note: currently every BMGoal only contains max. one autoEval services behind
+                            /* FIXME ANJ Clean this up:
                         	bmb.setAutoEvalService(mapAutoEvalSer.get(bmg.getID()));
+                        	*/
                         }
                     }
                 }
@@ -1363,10 +1406,10 @@ public class NewExpWizardController {
      * Imports and experiment from an uploaded file
      */
     public String importUploadedExperiment() {
-        FileUploadBean uploadBean = UploadManager.uploadFile();
+        FileUploadBean uploadBean = UploadManager.uploadFile(false);
         log.info("Looking for upload.");
         if( uploadBean == null ) return "failure";
-        File uploaded = new File( uploadBean.getLocalFileRef());
+        File uploaded = uploadBean.getTemporaryFile();
         log.info("Found upload: "+uploaded);
         UploadManager upm = (UploadManager) JSFUtil.getManagedObject("UploadManager");
         return upm.importExperiment(uploaded);
@@ -1402,5 +1445,98 @@ public class NewExpWizardController {
 			return returnComp;
 	  }
     
+	/* ------------------------------------------------------------------------------- */
+	/* The observables list */
+	
+	HtmlDataTable obsTable = new HtmlDataTable();
+	String obsEType = null;
+    List<MeasurementImpl> obs = null;
+	
+    /**
+     * @return the obsTable
+     */
+    public HtmlDataTable getObsTable() {
+        return obsTable;
+    }
+
+    /**
+     * @param obsTable the obsTable to set
+     */
+    public void setObsTable(HtmlDataTable obsTable) {
+        this.obsTable = obsTable;
+    }
+
+    /**
+     * @return The list of measurable properties, depending on the experiment type.
+     */
+    public List<MeasurementImpl> getObservables() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        this.chooseObservablesForEtype(expBean.getEtype(), expBean.getExperiment());
+        return obs;
+    }
+    
+    /**
+     * 
+     * @param obs
+     */
+    public void setObservables( List<MeasurementImpl> obs ) {
+        this.obs = obs;
+    }
+    
+
+    /**
+     * 
+     * @param etype
+     * @param exp
+     */
+    private void chooseObservablesForEtype(String etype, Experiment exp) {
+        boolean refresh = false;
+        if(this.obsEType != etype ) {
+           this.obsEType = etype;
+           refresh = true;
+           
+           if( etype.equals( AdminManagerImpl.IDENTIFY ) ) {
+               ExpTypeIdentify exptype = (ExpTypeIdentify)JSFUtil.getManagedObject("ExpTypeIdentify");
+               obs = new ArrayList<MeasurementImpl>(exptype.getObservables());
+           } else {
+               // For unrecognised experiment types, set to NULL:
+               obs = null;
+           }
+           
+        }
+        Vector<String> props = exp.getExperimentExecutable().getProperties();
+        for( MeasurementImpl m : obs ) {
+            if( props.contains(m.getIdentifier().toString()) ) {
+                m.setSelected(true);
+            } else {
+                m.setSelected(false);
+            }
+            // FIXME Temporary fix to make defaults TRUE
+            if( refresh == true ) {
+                m.setSelected(true);
+            }
+        }
+    }
+    
+    /**
+     * 
+     * @param valueChangedEvent
+     */
+    public void handleObsSelectChangeListener(ValueChangeEvent valueChangedEvent) {
+        log.info("Handling event in handleObsSelectChangeListener.");
+        
+        MeasurementImpl targetBean = (MeasurementImpl) this.getObsTable().getRowData();
+        
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        Vector<String> props = expBean.getExperiment().getExperimentExecutable().getProperties();
+        if( props.contains(targetBean.getIdentifier()) ) {
+            props.remove(targetBean.getIdentifier().toString());
+            log.info("Removed: "+targetBean.getIdentifier());
+        } else {
+            props.add(targetBean.getIdentifier().toString());
+            log.info("Added: "+targetBean.getIdentifier());
+        }
+        
+    }
 
 }

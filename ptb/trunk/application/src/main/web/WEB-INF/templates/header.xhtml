@@ -17,9 +17,9 @@
 	<div id="banner">
 
 		<a name="top"></a>
-        <h:form><h:commandLink action="home">
+        <h:outputLink value="#{facesContext.externalContext.requestContextPath}/">
           <img src="${facesContext.externalContext.requestContextPath}/graphics/PlanetsLogo.gif" alt="PLANETS: Testbed" title="PLANETS: Testbed" />
-        </h:commandLink></h:form>
+        </h:outputLink>
 	</div>
 	<div id="gelinks">
 		<div id="geleft"> &#160;</div>
@@ -59,18 +59,18 @@
 		<ul>
 			<c:if test="${(empty page) or (page == 'home')}">
 				<li id="current">
-				<h:commandLink action="home">
+				<h:outputLink value="#{facesContext.externalContext.requestContextPath}/">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_home.gif" class="toolbar"/>
 					<h:outputText value="#{res.home}"/>
-				</h:commandLink>
+				</h:outputLink>
 				</li>
 			</c:if>
 			<c:if test="${(!empty page) and (page != 'home')}">
 				<li>
-				<h:commandLink action="home">
+                <h:outputLink value="#{facesContext.externalContext.requestContextPath}/">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_home.gif" class="toolbar"/>
 					<h:outputText value="#{res.home}"/>
-				</h:commandLink>
+				</h:outputLink>
 				</li>
 			</c:if>
 			
@@ -92,23 +92,7 @@
                             </li>
 			
 			</c:if>
-			<c:if test="${page == 'import_exp'}">
-				<li id="current">
-				<h:commandLink action="import_experiment" rendered="#{UserBean.experimenter}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_import.gif" class="toolbar"/>
-					<h:outputText value="#{res['import_exp.pageTitle']}"/>
-				</h:commandLink>
-				</li>
-			</c:if>
-			<c:if test="${page != 'import_exp' and UserBean.experimenter == true}">
-				<li>
-				<h:commandLink action="import_experiment" rendered="#{UserBean.experimenter}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_import.gif" class="toolbar"/>
-					<h:outputText value="#{res['import_exp.pageTitle']}"/>
-				</h:commandLink>
-			</li>
-			</c:if>
-			<c:if test="${page == 'my_exp'}">
+			<c:if test="${page == 'my_exp' || page == 'import_exp'}">
 				<li id="current">
 				<h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_my.gif" class="toolbar"/>

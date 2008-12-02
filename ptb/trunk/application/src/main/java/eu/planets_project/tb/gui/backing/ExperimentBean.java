@@ -1,9 +1,7 @@
 package eu.planets_project.tb.gui.backing;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -49,6 +47,7 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperatio
 import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -93,8 +92,6 @@ public class ExperimentBean {
     private String escope = new String();
     private String eapproach = new String();
     private String econsiderations = new String();
-    private String etype;
-    private String etypeName;  
     //the selected TBServiceTemplate's ID
     private TestbedServiceTemplate selSerTemplate;
     private String sSelSerTemplateID="";
@@ -120,8 +117,8 @@ public class ExperimentBean {
     private int currStage = ExperimentBean.PHASE_EXPERIMENTSETUP_1;
     private boolean approved = false;
     
-    private List dtype = new ArrayList();
-    private List dtypeList = new ArrayList();
+    private List<String> dtype = new ArrayList<String>();
+    private List<SelectItem> dtypeList = new ArrayList<SelectItem>();
     private DigitalObjectTypesImpl dtypeImpl = new DigitalObjectTypesImpl();
     private List<String[]> fullDtypes = new ArrayList<String[]>();
     
@@ -134,11 +131,11 @@ public class ExperimentBean {
     private boolean bRenderXMLResponds = false;
         
     public ExperimentBean() {
-    	/*benchmarks = new HashMap<String,BenchmarkBean>();
+    	/*experimentBenchmarks = new HashMap<String,BenchmarkBean>();
     	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
     	while (iter.hasNext()) {
     		BenchmarkGoal bm = (BenchmarkGoal)iter.next();
-    		benchmarks.put(bm.getID(), new BenchmarkBean(bm));
+    		experimentBenchmarks.put(bm.getID(), new BenchmarkBean(bm));
     	}*/
         
         fullDtypes = dtypeImpl.getAlLDtypes();
@@ -168,7 +165,7 @@ public class ExperimentBean {
     }
     
     public void fill(Experiment exp) {
-        log.debug("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName());
+        log.info("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName());
         log.debug("Experiment Phase Name = " + exp.getPhaseName());
         log.debug("Experiment Current Phase " + exp.getCurrentPhase());
         if( exp.getCurrentPhase() != null )
@@ -229,8 +226,6 @@ public class ExperimentBean {
     	this.epurpose=(props.getPurpose());
     	this.esummary=(props.getSummary());
     	this.formality = props.isExperimentFormal();    	
-    	this.etype = String.valueOf(expsetup.getExperimentTypeID());
-        this.etypeName = AdminManagerImpl.getInstance().getExperimentTypeName(this.etype);
     	
         //get already added TestbedServiceTemplate data
         log.debug("fill expBean: executable = "+exp.getExperimentExecutable());
@@ -249,20 +244,24 @@ public class ExperimentBean {
         }
      
         //fill the file benchmarks
+        log.info("Looking for BMGs... ");
         try {
         	if (exp.getCurrentPhase() instanceof ExperimentEvaluation) { 
 	        	if (this.inputData != null) {
 	        		
 	        		//iterate over all input files
-	    			for(String localFileRef : this.inputData.values()){
+	    			for(String localFileRef : this.inputData.values()) {
+	    			    // Clean up the localFileRef, so that the TB can cope with it's data store being moved.
 	    				//store a set of file BMGoals for every record item
 	    				DataHandler dh = new DataHandlerImpl();
-	    				URI inputFileURI = dh.getHttpFileRef(new File(localFileRef), true);
+	    				URI inputFileURI = dh.getDownloadURI(localFileRef);
 	    				Collection<BenchmarkGoal> colFileBMGoals = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(inputFileURI);
 	    				if(colFileBMGoals==null)
 	    					throw new Exception("Exception while setting file benchmarks for record: "+inputFileURI);
 	    				
 	    				for(BenchmarkGoal bmg : colFileBMGoals){
+	    	                log.info("Found fileBMG: " + bmg.getName());
+	    	                log.info("Found fileBMG.id: " + bmg.getID());
 	    					//now crate the bmb out of the bmg
 		    				BenchmarkBean bmb = new BenchmarkBean(bmg);
 							bmb.setSourceValue(bmg.getSourceValue());
@@ -274,18 +273,12 @@ public class ExperimentBean {
 								bmb.setSrcError(true);
 							if((bmb.getTargetValue()==null)||(bmb.getTargetValue().equals("")))
 								bmb.setTarError(true);							
-							if(bmg.isAutoEvaluatable()){
-								//i.e. backed by a evaluation TBServiceTemplate and TBeval/metric mapping properly configured 
-								bmb.setAutoEvalService(bmg.getAutoEvalSettings().getEvaluationService());
-							}
 							
 							//now add the file bmbs for this experimentbean
-							Map<String,BenchmarkBean> m= new HashMap<String,BenchmarkBean>();
 				    		fileBenchmarks.put(inputFileURI+bmb.getID(), bmb);
 	    				}
 	    			}
 	    		}
-	        	this.bAnyAutoEvalConfigured = checkAnyAutoEvalConfigured();
         	}
         	
         	//fill the experiment overall benchmarks
@@ -293,23 +286,27 @@ public class ExperimentBean {
         	if (exp.getCurrentPhase() instanceof ExperimentEvaluation){
         		//get the data from the evaluation phase
         		lbmbs = exp.getExperimentEvaluation().getEvaluatedExperimentBenchmarkGoals();
+                log.info("Found eval #BMGs = " + lbmbs.size());
+                log.info("Found pre-eval #BMGs = " + exp.getExperimentSetup().getAllAddedBenchmarkGoals().size());
+                // if none, get the data from the setup phase
+                if( lbmbs.size() == 0 )
+                    lbmbs = exp.getExperimentSetup().getAllAddedBenchmarkGoals();
         	}
         	else{
         		//get the data from the setup phase
         		lbmbs = exp.getExperimentSetup().getAllAddedBenchmarkGoals();
+                log.info("Found pre-eval #BMGs = " + lbmbs.size());
         	}   	
     		for(BenchmarkGoal bmg : lbmbs){
-    	    		BenchmarkBean bmb = new BenchmarkBean(bmg);
-					bmb.setSourceValue(bmg.getSourceValue());
-					bmb.setTargetValue(bmg.getTargetValue());
-					bmb.setEvaluationValue(bmg.getEvaluationValue());
-					bmb.setWeight(String.valueOf(bmg.getWeight()));
-					bmb.setSelected(true);
-					if(bmg.isAutoEvaluatable()){
-						//i.e. backed by a evaluation TBServiceTemplate and TBeval/metric mapping properly configured 
-						bmb.setAutoEvalService(bmg.getAutoEvalSettings().getEvaluationService());
-					}
-    	    		experimentBenchmarks.put(bmg.getID(), bmb);
+                log.info("Found BMG: " + bmg.getName());
+                log.info("Found BMG.id: " + bmg.getID());
+    		    BenchmarkBean bmb = new BenchmarkBean(bmg);
+    		    bmb.setSourceValue(bmg.getSourceValue());
+    		    bmb.setTargetValue(bmg.getTargetValue());
+    		    bmb.setEvaluationValue(bmg.getEvaluationValue());
+    		    bmb.setWeight(String.valueOf(bmg.getWeight()));
+    		    bmb.setSelected(true);
+    		    experimentBenchmarks.put(bmg.getID(), bmb);
     	    }
         }catch (Exception e) {
         	log.error("Exception during attempt to create ExperimentBean for: "+e.toString());
@@ -462,7 +459,7 @@ public class ExperimentBean {
     public Experiment getExperiment() {
         return exp;
     }
-    
+
     /**
      * Returns a Map of added file Refs
      * Map<position+"",fileRef>
@@ -491,20 +488,19 @@ public class ExperimentBean {
     public Collection<Map<String,String>> getExperimentInputDataNamesAndURIs(){
     	Collection<Map<String,String>> ret = new Vector<Map<String,String>>();
     	DataHandler dh = new DataHandlerImpl();
-    	Iterator<String> localFileRefs = this.getExperimentInputDataFiles().iterator();
-    	while(localFileRefs.hasNext()){
+    	Map<String, String> localFileRefs = this.getExperimentInputData();
+    	for( String key : localFileRefs.keySet() ) {
     		try {
     			Map<String,String> map = new HashMap<String,String>();
     			//retrieve URI
-    			File fInput = new File(localFileRefs.next());
-				URI uri = dh.getHttpFileRef(fInput, true);
-				String name = dh.getInputFileIndexEntryName(fInput);
+    		    String fInput = localFileRefs.get(key);
+				URI uri = dh.getDownloadURI(fInput);
+				String name = dh.getName(fInput);
 				map.put("uri", uri.toString());
 				map.put("name", name);
+				map.put("inputID", key);
 				ret.add(map);
 			} catch (FileNotFoundException e) {
-				log.error(e.toString());
-			} catch (URISyntaxException e) {
 				log.error(e.toString());
 			}
     	}
@@ -521,7 +517,8 @@ public class ExperimentBean {
         log.debug("Adding input file: "+localFileRef);
     	String key = getNextInputDataKey();
     	if(!this.inputData.values().contains(localFileRef)){
-    		this.inputData.put(key, localFileRef); 
+    		this.inputData.put(key, localFileRef);
+    		this.exp.getExperimentExecutable().addInputData(localFileRef);
     		// Also add to UI component:
     		UIComponent panel = this.getPanelAddedFiles();
     		this.helperCreateRemoveFileElement(panel, localFileRef, key);
@@ -533,7 +530,11 @@ public class ExperimentBean {
     
     public void removeExperimentInputData(String key){
     	if(this.inputData.containsKey(key)){
-    		this.inputData.remove(key);
+            this.exp.getExperimentExecutable().removeInputData(this.inputData.get(key));
+            log.info("Removed input data matching key: "+key+" : "+this.inputData.get(key));
+            this.inputData.remove(key);
+    	} else {
+    	    log.warn("Could not remove input data, no matching key for "+key);
     	}
     }
     
@@ -574,9 +575,9 @@ public class ExperimentBean {
      * Returns the data used in the experiment's input-output data table
      * @return
      */
-    public Collection getIOTableDataForGUI(){
+    public Collection<Map<String,Object>> getIOTableDataForGUI(){
     	//Entry of inputComponent, outputComponent
-    	Collection<Map> ret = new Vector<Map>();
+    	Collection<Map<String,Object>> ret = new Vector<Map<String,Object>>();
     	Iterator<Entry<String,String>> itData = this.outputData.iterator();
     	
     	DataHandler dh = new DataHandlerImpl();
@@ -586,14 +587,14 @@ public class ExperimentBean {
     		String output = entry.getValue();
     		
     		//mixing different objects within this map
-    		HashMap hm = new HashMap();
+    		HashMap<String,Object> hm = new HashMap<String,Object>();
     	 //For the Input:
     		try{
     		//test: convert input to URI
-    			URI uriInput = dh.getHttpFileRef(new File(input), true);
+    			URI uriInput = dh.getDownloadURI(input);
     			//add "inputURI" and "inputName" into ret hashmap
     			hm.put("input", uriInput.toString());
-    			hm.put("inputName", dh.getInputFileIndexEntryName(new File(input)));
+    			hm.put("inputName", dh.getName(input));
     			hm.put("inputTypeURI", "URI");
     			
     		}
@@ -607,10 +608,10 @@ public class ExperimentBean {
     	 //For the Output:
     		try{
         		//test: convert output to URI
-        		URI uriOutput = dh.getHttpFileRef(new File(output), false);
+        		URI uriOutput = dh.getDownloadURI(output);
         		//add "outputURI" and "outputName" "outputType" into ret hashmap
     			hm.put("output", uriOutput.toString());
-    			hm.put("outputName", dh.getOutputFileIndexEntryName(new File(output)));
+    			hm.put("outputName", dh.getName(output));
     			hm.put("outputTypeURI", "URI");
         	}
         	catch(Exception e){
@@ -836,17 +837,20 @@ public class ExperimentBean {
     }
   
     public void setEtype(String type) {
-    	this.etype = type;
+        log.info("Setting experiment types to: "+type);
+        try {
+            this.exp.getExperimentSetup().setExperimentType(type);
+        } catch (InvalidInputException e) {
+            e.printStackTrace();
+        }
     }
     
     public String getEtype() {
-    	return this.etype;
+    	return this.exp.getExperimentSetup().getExperimentTypeID();
     }
     
     public String getEtypeName() {
-        if (etype != null) 
-        	return AdminManagerImpl.getInstance().getExperimentTypeName(etype);
-        return null;
+        return this.exp.getExperimentSetup().getExperimentTypeName();
     }
     
     public int getCurrentStage() {
@@ -941,10 +945,10 @@ public class ExperimentBean {
     }
     
     public Collection<SelectItem> getAllExperimentsSelectItems() {
-        ListExp listExp = (ListExp)JSFUtil.getManagedObject("ListExp_Backing");
+        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
         
         ArrayList<SelectItem> expList = new ArrayList<SelectItem>();
-        Collection<Experiment> allExps = listExp.getAllExperiments();
+        Collection<Experiment> allExps = testbedMan.getAllExperiments();
         for( Experiment exp : allExps ) {
             SelectItem item = new SelectItem();
             item.setValue( ""+exp.getEntityID() );
@@ -955,20 +959,20 @@ public class ExperimentBean {
         return expList;
     }    
     
-    public List getDtype() {
+    public List<String> getDtype() {
         return dtype;
     }
     
-    public void setDtype(List dtype) {
+    public void setDtype(List<String> dtype) {
     	this.dtype = dtype;
     }
     
-    public List getDtypeList() {
-        if( dtypeList == null ) return new ArrayList();
+    public List<SelectItem> getDtypeList() {
+        if( dtypeList == null ) return new ArrayList<SelectItem>();
         return dtypeList;
     }
    
-    public void setDtypeList(List dtypeList) {
+    public void setDtypeList(List<SelectItem> dtypeList) {
     	this.dtypeList = dtypeList;
     }
 
@@ -1097,6 +1101,7 @@ public class ExperimentBean {
      * @param key
      */
     public void helperCreateRemoveFileElement(UIComponent panel, String fileRef, String key){
+        log.info("Looking for fileRef: "+fileRef+" w/ key: "+key);
         try {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             DataHandler dh = new DataHandlerImpl();
@@ -1104,14 +1109,14 @@ public class ExperimentBean {
             HtmlOutputText outputText = (HtmlOutputText) facesContext
                     .getApplication().createComponent(
                             HtmlOutputText.COMPONENT_TYPE);
-            outputText.setValue(" "+dh.getInputFileIndexEntryName(new File(fileRef)));
+            outputText.setValue(" "+dh.getName(fileRef));
             outputText.setId("fileName" + key);
             //file name
             HtmlOutputLink link_src = (HtmlOutputLink) facesContext
                     .getApplication().createComponent(
                             HtmlOutputLink.COMPONENT_TYPE);
             link_src.setId("fileRef" + key);
-            URI URIFileRef = dh.getHttpFileRef(new File(fileRef), true);
+            URI URIFileRef = dh.getDownloadURI(fileRef);
             link_src.setValue(URIFileRef);
             link_src.setTarget("_new");
 
@@ -1120,7 +1125,7 @@ public class ExperimentBean {
                     .getApplication().createComponent(
                             HtmlCommandLink.COMPONENT_TYPE);
             //set the ActionMethod to the method: "commandRemoveAddedFileRef(ActionEvent e)"
-            Class[] parms = new Class[] { ActionEvent.class };
+            Class<?>[] parms = new Class<?>[] { ActionEvent.class };
             ExpressionFactory ef = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
             MethodExpression mb = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
                     "#{NewExp_Controller.commandRemoveAddedFileRef}", null, parms);
@@ -1188,7 +1193,6 @@ public class ExperimentBean {
      * @return
      */
     public Collection<ServiceTag> getSelectedAnnotationTags(){
-    	Collection<ServiceTag> ret = new Vector<ServiceTag>();
     	return this.mapAnnotTagVals.values();
     }
     
@@ -1247,12 +1251,22 @@ public class ExperimentBean {
     	ret.add(new SelectItem("disable highlighting"));
     	return ret;
     }
-        
+    
+    public boolean isOldExperiment() {
+        if( AdminManagerImpl.getInstance().isDeprecated( this.getEtype() )) {
+            return true;
+        } else {
+           return false;
+       }
+    }
+
     public String getBGExperimentText() {
+        if( this.getEtypeName() == null ) return "";
+        
         //would prefer to read the returned text from the backed resource file
-        if (this.etypeName.equalsIgnoreCase("simple characterisation"))
+        if (this.getEtypeName().equalsIgnoreCase("simple characterisation"))
             return "Correct Characterisation Of... ";
-        if (this.etypeName.equalsIgnoreCase("simple migration"))
+        if (this.getEtypeName().equalsIgnoreCase("simple migration"))
             return "Preservation Of... ";
         else return "";
     }
@@ -1381,22 +1395,6 @@ public class ExperimentBean {
     	//
     }
     
-    /**
-     * Checks if any autoEvaluation Service was configured and used.
-     * @return
-     */
-    private boolean checkAnyAutoEvalConfigured(){
-    	for(BenchmarkBean bmb : this.getFileBenchmarkBeans().values()){
-    		if((bmb.isAutoEvalServiceAvailable()) && (bmb.isAutoEvalServiceConfigured())){
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-    
-    public boolean isAnyAutoEvalConfigured(){
-    	return this.bAnyAutoEvalConfigured;
-    }
     
 	private boolean bEvalWFRunning = false;
 	private Calendar cEvalWFRunningStart = new GregorianCalendar();

@@ -73,6 +73,7 @@ import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
+import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 
 /**
@@ -246,11 +247,11 @@ public class RegisterTBServices{
 	 * @return: Returns an instance of the FileUploadBean (e.g. for additional operations as .getEntryName, etc.)
 	 * if the operation was successful or null if an error occured
 	 */
-	public FileUploadBean uploadFile(){
+	public FileUploadBean uploadFile(boolean keep){
 		FileUploadBean file_upload = this.getCurrentFileUploadBean();
 		try{
 			//trigger the upload command
-			String result = file_upload.upload();
+			String result = file_upload.upload(keep);
 			
 			if(result.equals("success-upload")){
 				//1) retrieve the file
@@ -294,14 +295,14 @@ public class RegisterTBServices{
 			facesContext = FacesContext.getCurrentInstance();
 			
 			//0) upload the specified data to the Testbed's file repository
-			FileUploadBean uploadBean = this.uploadFile();
+			FileUploadBean uploadBean = this.uploadFile(true);
 			
 			//1) Get the InputFileRef data from uploaded data
 			String sFileRef = "";
 			String sFileName ="";
 			if(uploadBean!=null){
-				sFileRef = uploadBean.getURI().toString();
-				sFileName = uploadBean.getIndexFileEntryName(uploadBean.getName());
+				sFileRef = uploadBean.getUniqueFileName();
+				sFileName = uploadBean.getName();
 			}else{
 				throw new IOException("No file was specified or uploaded");
 			}
@@ -928,7 +929,7 @@ public class RegisterTBServices{
 					//get file ref
 					String sFileRef = this.addedFileRefs.values().iterator().next();
 					try{
-						File f = dh.getLocalFileRef(new URI(sFileRef), true);
+						File f = dh.getFile(sFileRef);
 						sFileRef = f.getAbsolutePath();
 					}catch(Exception e){}	
 					
@@ -956,7 +957,7 @@ public class RegisterTBServices{
 						//convert from URI to absolute local file reference
 						String sFileRef = this.addedFileRefs.get(i+"");
 						try{
-							File f = dh.getLocalFileRef(new URI(sFileRef), true);
+							File f = dh.getFile(sFileRef);
 							sFileRef = f.getAbsolutePath();
 						}catch(Exception e){}	
 						sRet+=sArrayLineStart + sFileRef + sArrayLineEnd;
@@ -979,8 +980,8 @@ public class RegisterTBServices{
 				String sFileRef = this.addedFileRefs.values().iterator().next();
 				String sBase64File ="";
 				try{
-					File f = dh.getLocalFileRef(new URI(sFileRef), true);
-					sBase64File = dh.encodeToBase64ByteArrayString(f);
+					File f = dh.getFile(sFileRef);
+					sBase64File = DataHandlerImpl.encodeToBase64ByteArrayString(f);
 				}catch(Exception e){
 				    log.error("Could not create the base64 encoded file: "+sFileRef);
 				    log.error("Caught exception: "+e);
@@ -1054,7 +1055,7 @@ public class RegisterTBServices{
 	        properties.load(ResourceFile); 
 
 	        //Note: sFileDirBase = ifr_server/bin/../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war
-	        String sFileDirBase = properties.getProperty("Jboss.FiledirBase");
+	        String sFileDirBase = BackendProperties.getTBFileDir();
 	        ResourceFile.close();
 
 	        WSClientBean wcb = new WSClientBean();
@@ -1544,10 +1545,10 @@ public class RegisterTBServices{
 					//get the input file URIs original local file name
 					boolean b = false;
 					try {
-						File f = dh.getLocalFileRef(new URI(input), true);
+						File f = dh.getFile(input);
 						if((f!=null)&&(f.canRead())){
 							//in this case let's use the original file name as Link label
-							String name = dh.getInputFileIndexEntryName(f);
+							String name = dh.getName(input);
 							if((name!=null)&&(!name.equals(""))){
 								link_text.setValue(name);
 								b=true;
@@ -2048,7 +2049,7 @@ public class RegisterTBServices{
 	public List<SelectItem> buildAllJBossWSEndpoints(){
 		List<SelectItem> ret = new Vector<SelectItem>();
 		
-		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		//HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	   	//e.g. localhost:8080
 		String authority = AdminManagerImpl.getAuthority();
 		try {

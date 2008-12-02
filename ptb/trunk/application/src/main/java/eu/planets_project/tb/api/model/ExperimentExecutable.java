@@ -3,7 +3,9 @@ package eu.planets_project.tb.api.model;
 import java.net.URI;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 import java.util.Map.Entry;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
@@ -30,6 +32,17 @@ public interface ExperimentExecutable extends Executable{
 	public void setInputData(Collection<String> localFileRefs);
 	public void removeAllInputData();
 	
+	/**
+	 * Executable parameters
+	 */
+    public HashMap<String,String> getParameters();
+    public void setParameters(HashMap<String,String> pars);
+	
+    /**
+     * Executable measurable properties
+     */
+    public Vector<String> getProperties();
+    public void setProperties(Vector<String> props);
 	/**
 	 * Takes a local file ref and hands over its exposed http reference
 	 * @param localFileRef

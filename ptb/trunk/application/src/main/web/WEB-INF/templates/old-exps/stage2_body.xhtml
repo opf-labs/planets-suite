@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+  <ui:composition rendered="#{ExperimentBean != null}">
+
+            <fieldset>
+                 <legend>#{res['exp_stage2.legendOne']}</legend>
+                 <p>#{ExperimentBean.etypeName}</p>
+                 </fieldset>
+            <h:form id="selectWorkflowForm" rendered="#{not empty ExperimentBean.etype}">
+                <fieldset>
+                    <!-- step1: select available service + serviceoperation -->
+                    <legend>#{res['exp_stage2.legendTwo']}</legend>
+                    <p>#{res['exp_stage2.legendOneText']}</p>
+                    <p><h:outputText value="Available Services for type:" styleClass="readerLabel"/>#{ExperimentBean.etypeName}</p>
+                    <br/>
+                    <p><h:outputText value="Selected Service Name:" styleClass="readerLabel"/>
+                    <h:selectOneMenu
+                    onchange="this.form.submit()"
+                    value="#{ExperimentBean.selectedServiceTemplateID}"
+                    valueChangeListener="#{NewExp_Controller.changedSelTBServiceTemplateEvent}"
+                    immediate="true"  readonly="#{ExperimentBean.approved}" 
+                    rendered="#{ExperimentBean.operationSelectionCompleted==false}">
+                        <f:selectItems value="#{NewExp_Controller.allAvailableTBServiceTemplates}" />
+                    </h:selectOneMenu>
+                    <!-- if ser+op selection was chosen, render an outputText instead -->
+                    <h:outputText value="#{ExperimentBean.selectedServiceTemplate.name}"
+                                  rendered="#{ExperimentBean.operationSelectionCompleted==true}"/>
+                </p>
+                <br/>
+                    <!-- select from the available service operations -->
+                 <p><h:outputText value="Selected Operation Name:" styleClass="readerLabel"/>
+                    <h:selectOneMenu 
+                        value="#{ExperimentBean.selectedServiceOperationName}" 
+                        immediate="true" readonly="#{ExperimentBean.approved}" 
+                        rendered="#{ExperimentBean.operationSelectionCompleted==false}"
+                        valueChangeListener="#{NewExp_Controller.changedSelServiceOperationEvent}" 
+                        onchange="submit()">
+                        <f:selectItems value="#{NewExp_Controller.allAvailableServiceOperations}" />                        
+                    </h:selectOneMenu>
+                    <!-- if ser+op selection was chosen, render an outputText instead -->
+                    <h:outputText value="#{ExperimentBean.selectedServiceOperationName}"
+                                  rendered="#{ExperimentBean.operationSelectionCompleted==true}"/>
+                </p>
+                <br/>
+                <h:panelGroup rendered="#{ExperimentBean.operationSelectionCompleted==false}">
+                    <p>display all services OR<a href="#" onclick="popup('popUpDiv')"> restrict query by tags</a></p>
+                </h:panelGroup>
+                <div>
+                    <ul>
+                        <li><b>#{res['exp_stage2.serviceDescription']} </b>#{ExperimentBean.selectedServiceTemplate.description}<br/></li>
+                        <li><b>#{res['exp_stage2.serviceOperationDescription']} </b>#{ExperimentBean.selectedServiceOperation.description}<br/></li>
+                        <li><b>#{res['exp_stage2.maxSupportedInput']} </b>#{ExperimentBean.selectedServiceOperation.maxSupportedInputFiles}<br/></li>
+                    </ul>
+                </div>
+                <h:panelGroup id="panelAddedTags" binding="#{ExperimentBean.addedSerTags}" rendered="#{ExperimentBean.operationSelectionCompleted==false}">
+                </h:panelGroup>
+                
+                </fieldset>
+              
+                <h:commandButton value="#{res['button.change']}"
+                                    action="#{NewExp_Controller.changeAlreadySelectedSerOps}"
+                                    disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==false)}"
+                                    rendered="#{ExperimentBean.operationSelectionCompleted}"
+                                    readonly="#{ExperimentBean.approved}"
+                                    immediate="true" />
+               <h:commandButton value="#{res['button.select']}"
+                                    action="#{NewExp_Controller.completeSerOpsSelection}"
+                                    disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==true)}"
+                                    rendered="#{ExperimentBean.operationSelectionCompleted==false}"
+                                    readonly="#{ExperimentBean.approved}"
+                                    immediate="true"/>
+
+            </h:form>
+            <h:panelGroup rendered="#{ExperimentBean.operationSelectionCompleted==true}">
+                <fieldset>
+                    <legend>#{res['exp_stage2.legendThree']}</legend>
+
+                    <h:panelGroup rendered="#{ExperimentBean.operationSelectionCompleted}">
+                        #{res['exp_stage2.legendTwoText']} 
+                        <div>
+                        <ul>
+                            <li><b>#{res['exp_stage2.minRequiredInput']} </b>#{ExperimentBean.selectedServiceOperation.minRequiredInputFiles}<br/></li>
+                            <li><b>#{res['exp_stage2.maxSupportedInput']} </b>#{ExperimentBean.selectedServiceOperation.maxSupportedInputFiles}<br/></li>
+                        </ul>
+                        </div>
+                    </h:panelGroup>
+                    <fieldset>
+                        <legend>#{res['browse_data.selectData']}</legend>
+         
+                        <h:form>
+                        <h:commandButton value="#{res['browse_data.browseForData']}"
+                           action="browseForData"
+                           disabled="#{(ExperimentBean.approved==true)||(ExperimentBean.operationSelectionCompleted==false)}"
+                           rendered="#{ExperimentBean.operationSelectionCompleted==true}"
+                           readonly="#{ExperimentBean.approved}"
+                           immediate="true"/>
+                         </h:form>
+         
+                    </fieldset>
+
+            <h:form id="configureExpWorkflowForm" enctype="multipart/form-data" rendered="#{ExperimentBean.operationSelectionCompleted}">
+                <fieldset>
+
+                    <legend>#{res['exp_stage3.uploadFile']}</legend>
+                         <p><h:outputText value="Specify Input: " styleClass="readerLabel"/>        
+                            <t:inputFileUpload id="fileupload"
+                                  value="#{FileUploadBean.upFile}"
+                                  storage="file"
+                                  styleClass="fileUploadInput"
+                                  required="false"
+                                  maxlength="10000000"  
+                                  readonly="#{ExperimentBean.approved}" 
+                                  disabled="#{ExperimentBean.approved}"/>
+                                  
+                            <h:commandLink id="link_addFileInputItem" 
+                                action="#{NewExp_Controller.commandAddInputDataItem}" 
+                                rendered="#{NewExp_Controller.addFileButtonRendered}"
+                                disabled="#{ExperimentBean.approved}"
+                                readonly="#{ExperimentBean.approved}">
+                                <img src="${facesContext.externalContext.requestContextPath}/graphics/list-add.png" alt="add" title="add"/>
+                            </h:commandLink>
+                            <h:message for="fileupload" rendered="#{ExperimentBean.numberOfInputFiles gt 0}"/>
+                        </p>
+                </fieldset>
+        </h:form>
+
+        <h:form>
+                <fieldset>
+                    <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
+                            <h:panelGroup>
+                                <!-- a2 display the specified input in a data table structure when experiment is approved -->
+                                <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
+                                            layout="unorderedList" rowIndexVar="rowi">
+                                    <a href="#{filemap['uri']}">#{filemap['name']}</a>
+                                </t:dataList>
+                            </h:panelGroup>
+                            
+                            <br/>
+                </fieldset>                                    
+        </h:form>
+        </fieldset>
+        </h:panelGroup>
+        <h:form>
+             <h:commandButton value="#{res['exp_stage2.proceed']}"
+                                    action="#{NewExp_Controller.commandSaveStep2Substep2Action}"
+                                    disabled="#{(NewExp_Controller.minReqNrOfFilesSelected==false)||(ExperimentBean.approved)}" />
+        </h:form>
+
+        <!-- the div for the popup screen -->
+            <div id="blanket" style="display:none;"></div>
+            <div id="popUpDiv" style="display:none;">
+
+            <div id="overlay-menu"><p><a href="#" onclick="popup('popUpDiv')"><img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="close" title="close"/></a> </p></div>
+                <div id="overlay-main">
+                <h2>Predefined Service Annotation Tags</h2>
+                <p>Please select from the provided list of predefined service annotation tags</p>
+                <h:form>
+                    <h:panelGroup>                  
+                        <t:dataTable var="tag"
+                            value="#{NewExp_Controller.allDefaultServiceAnnotationTags}" preserveDataModel="false"
+                            cellpadding="2" cellspacing="0" border="1">
+                            <t:column>
+                                <f:facet name="header">tag name</f:facet>
+                                 #{tag.name}<br/>
+                            </t:column>
+                            <t:column>
+                                <f:facet name="header">characteristics</f:facet>
+                                 <i>#{tag.description}</i><br/>
+                                 <i>priority:#{tag.priority}</i>
+                            </t:column>
+                            <t:column>
+                                <f:facet name="header">enter value</f:facet>
+                                
+                            </t:column>
+                        </t:dataTable>
+                    </h:panelGroup>
+                </h:form>
+                <p> </p>
+                <p> </p>
+                <p> This features is under construction </p>
+                <p> </p>
+                <p> </p>
+                <p> </p>
+                </div>
+            </div>
+            
+  </ui:composition>
+</body>
+</html>

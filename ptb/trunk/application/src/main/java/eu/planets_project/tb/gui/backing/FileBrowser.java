@@ -233,13 +233,10 @@ public class FileBrowser {
           // Only include selected items that are eligible:
           if( dob.isSelectable() && dob.isSelected() ) {
             try {
-            	File fCopy = helperUploadDataForNewExperimentWizard(fb.dr , dob.getUri());
+                DataHandler dh = new DataHandlerImpl();
+            	String ref = dh.addFromDataRegistry(fb.dr , dob.getUri());
             	//add reference to the new experiment's backing bean
-            	//pre-condition: max. supported number of files has not been yet reached
-            	if(expBean.getSelectedServiceOperation().getMaxSupportedInputFiles()>expBean.getExperimentInputData().values().size()){
-            		//max. number not reached. Add this file ref
-            		expBean.addExperimentInputData(fCopy.getAbsolutePath());
-            	}
+          		expBean.addExperimentInputData(ref);
             } catch( IOException e ) {
               log.error("Failed to add to experiment: "+dob.getUri());
               log.error("Exception: "+e);
@@ -263,42 +260,4 @@ public class FileBrowser {
         return "success";
     }
     
-    
-    /**
-     * WORK AROUND - TO REMOVE WHEN FIXED
-     * Uploading single files to an experiment currently uses the JSF tomahawk inputFileUpload element to upload
-     * the data from a user into the testbed's experiment data store 
-     * i.e.../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata
-     * 
-     * Data added via this FileBrowser are local files and must be uploaded as well. As in future the data registry
-     * will hand over URLs anyway. Therefore there's a work around currently, just copying the local file input
-     * into the Testbed's experiment data repository, which only works if both are located on the same machine.
-     * 
-     * Restrictions: This currently only works if the IF Server + Testbed application are used on localhost where also 
-     * the FileBrowsers data can be accessed locally.
-     * @return the copied and renamed File
-     */
-    //TODO discuss solution for work around
-    private static File helperUploadDataForNewExperimentWizard( DataRegistryManagerImpl dr, URI pduri ) throws IOException{
-    	//workaround: copy the local FileBrowsers file reference into
-    	//the Testbed's experiment data repository
-    	DataHandler dh = new DataHandlerImpl();
-    	//the input dir of the server where all experiment related files are stored
-    	String fileInDir = dh.getFileInDir();
- 
-    	//if input dir does not yet exist
-    	File dir = new File(fileInDir);
-        dir.mkdirs();  
-        	
-        //@see FileUploadBean:
-        //create unique filename
-        String ext = pduri.getPath().substring(pduri.getPath().lastIndexOf('.'));
-    	String mathName = UUID.randomUUID().toString() + ext;
-    	dh.setInputFileIndexEntryName(mathName, pduri.toString());
-        File fcopy = new File(fileInDir,mathName);
-        //copy the renamed file to it's new location
-    	dh.copy(dr, pduri , fcopy);
-    	
-    	return fcopy;
-    }
 }

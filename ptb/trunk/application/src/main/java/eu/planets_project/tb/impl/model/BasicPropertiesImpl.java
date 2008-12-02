@@ -250,6 +250,8 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 			//required by the frontend, as when editing an experiment the same existing name is used
 		}
 		else{
+            this.sExpName = name;
+            /*
 			//standard procedure for new experiments
 			if(this.checkExperimentNameUnique(name)){
 				this.sExpName = name;
@@ -257,6 +259,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 			else{
 				throw new InvalidInputException("ExperimentName "+name+" not unique");
 			}
+			*/
 		}
 	  }
 	}

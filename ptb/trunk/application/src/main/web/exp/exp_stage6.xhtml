@@ -24,6 +24,17 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
+
+<h:form>    
+      <table id="expHeaderTable"><tr>
+      <td class="headerText">
+      <h2><h:outputText value="#{res['new_exp.stage6']}"/></h2>
+      </td>
+      <td class="headerButtons">
+      </td>
+      </tr>
+      </table>
+</h:form>
     	
 		<!-- A: If the execution was successfully: display the results -->
 		<h:panelGroup rendered="#{NewExp_Controller.executionSuccess}">
@@ -34,146 +45,7 @@
 			required.</p>
 		</h:panelGroup>	
 		
-		<a4j:region>
-        	<a4j:form>
-           		<a4j:poll id="pollAutoEvalProgress" interval="5000" reRender="evalWFProgress" enabled="#{NewExp_Controller.executeAutoEvalWfRunning}"/>
-        	</a4j:form>
-        	<a4j:form id="evalWFProgress">
-        		<p><a4j:commandButton id="autoEvalButton" value="auto evaluate" action="#{NewExp_Controller.executeAutoEvalWf}" rendered="#{ExperimentBean.anyAutoEvalConfigured}" disabled="#{NewExp_Controller.executeAutoEvalWfRunning}">
-        			<a4j:support event="onclick" reRender="pollAutoEvalProgress,evalWFProgress" />
-        		</a4j:commandButton>
-       		<h:panelGroup rendered="#{NewExp_Controller.executeAutoEvalWfRunning}">
-       		 	evaluation in progress since: <b>#{NewExp_Controller.autoEvalWFRunningSeconds}</b> Seconds
-       		</h:panelGroup>
-       		<h:message for="autoEvalButton" infoStyle="color:green" errorStyle="color:red"/>
-       		</p>  
-        	</a4j:form>
-    	</a4j:region>
-	
 		<a4j:form id="form_results" rendered="#{NewExp_Controller.executionSuccess}">	
-			<h2 class="main">#{res['exp_stage6.headingExperimentEvaluation']}</h2>	
-                <rich:dataList id="fileBMGoalEvalList" var="data" value="#{ExperimentBean.IOTableDataForGUI}" rowIndexVar="rowi" style="border:none;width:100%;padding:0px;">
-                <rich:simpleTogglePanel id="fileBMGoalToggle" switchType="client" opened="#{data['panelOpened']}" label="Experiment Record ##{rowi+1}: #{data['input']}  -  &lt;&lt;#{data['inputName']}&gt;&gt;" style="padding:0px;">               
-               		<!-- rich:effect event="onclick" type="BlindDown" params="duration:0.5" /-->
-               		<h2 class="main">#{res['exp_stage6.headingExperimentDataRecord']}</h2>
-               		<h:panelGrid columns="2" style="border:none;width:100%;">
-	               		<rich:panel style="border:none;">
-							<f:facet name="header">#{res['exp_stage6.inputFiles']}</f:facet>
-				    		<h:outputLink value="Service Input: "/>
-					    		<!-- check if input displayed as URI or as String -->
-								<h:outputLink value="#{data['input']}" rendered="#{not empty data['inputTypeURI']}" target="_new">
-									#{data['inputName']}
-							</h:outputLink>
-							<h:outputText value="#{data['input']}" rendered="#{data['inputTypeURI']==null}"/>			
-	                   </rich:panel>
-	                   <rich:panel style="border:none;">
-							<f:facet name="header">#{res['exp_stage6.outputFiles']}</f:facet>
-							<h:outputLink value="Service Output: "/>
-								<!-- check if input displayed as URI or as String -->
-								<h:outputLink value="#{data['output']}" rendered="#{not empty data['outputTypeURI']}" target="_new">
-									<h:outputText value="#{data['output']}" style="color:green"/>
-							</h:outputLink>
-							<h:outputText value="#{data['output']}" rendered="#{data['outputTypeURI']==null}" style="color:green"/>
-	                   </rich:panel>
-                   </h:panelGrid>
-      			   <!-- the file benchmark goals for evaluation -->
-                   <h:panelGroup>
-                   	  <h2 class="main">#{res['exp_stage6.headingFileBG']}</h2>
-                      <rich:dataTable id="bmTableFile_#{rowi}" var="fileBMG"
-							value="#{data['fileBMGoals']}" preserveDataModel="false"
-							rowId="#{fileBMG.ID}" rowIndexVar="bmrow" cellpadding="2" cellspacing="0" border="1">
-							<t:column>
-								<f:facet name="header">#{res['exp_stage6.criteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
-			                    <a4j:outputPanel styleClass="tooltip-text">
-						        	<h:outputText value="#{fileBMG.name}"/> 
-			                    	<rich:toolTip direction="top-right" styleClass="tooltip" rendered="#{fileBMG.wasAutomaticallyEvaluated}">
-                       					<span style="white-space:nowrap">
-                                           This evaluation was extracted by applying the following rules:<br/>
-                                           evaluates as <strong>very good:</strong>
-                                           <t:dataList
-  													var="item"
-  													value="#{fileBMG.autoEvalDataForToolTip['VERYGOOD']}"
-  													layout="unorderedList"> 
-  													<h:outputText value="#{item.value}"/>	
-  												</t:dataList>
-  												evaluates as <strong>good:</strong>		
-												<t:dataList
-  													var="item"
-  													value="#{fileBMG.autoEvalDataForToolTip['GOOD']}"
-  													layout="unorderedList"> 
-  													<h:outputText value="#{item.value}"/>					
-												</t:dataList>
-												evaluates as <strong>bad:</strong>		
-												<t:dataList
-  													var="item"
-  													value="#{fileBMG.autoEvalDataForToolTip['BAD']}"
-  													layout="unorderedList"> 
-  													<h:outputText value="#{item.value}"/>					
-												</t:dataList>
-												evaluates as <strong>very bad:</strong>		
-												<t:dataList
-  													var="item"
-  													value="#{fileBMG.autoEvalDataForToolTip['VERYBAD']}"
-  													layout="unorderedList"> 
-  													<h:outputText value="#{item.value}"/>					
-												</t:dataList>
-										</span>
-  									</rich:toolTip>
-  								</a4j:outputPanel>
-							</t:column>
-							<t:column>
-								<f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
-							    #{fileBMG.definition} <br />
-								<i>#{fileBMG.description}</i>
-							</t:column>
-							<t:column>
-								<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
-			                           <a4j:outputPanel ajaxRendered="true">                 
-                                       		<h:inputText value="#{fileBMG.sourceValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalSrcValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}" style="border-style: solid; border-color: red;" rendered="#{fileBMG.srcError}">
-                                           		<f:param value="#{data['input']}" name="forInputFile"/>
-                            					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
-                       							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
-                                        	</h:inputText>
-                                       		<h:inputText value="#{fileBMG.sourceValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalSrcValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}" rendered="#{not fileBMG.srcError}">
-                                           		<f:param value="#{data['input']}" name="forInputFile"/>
-                            					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
-                       							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
-                                        	</h:inputText><br/>  
-                                        	<h:outputText value="#{fileBMG.typename}" rendered="#{fileBMG.srcError}" style="font-style:italic; color:red;"/>
-                                        	<h:outputText value="#{fileBMG.typename}" rendered="#{not fileBMG.srcError}"/>
-                                        </a4j:outputPanel>
-							</t:column>
-							<t:column>
-								<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
-					                    <a4j:outputPanel ajaxRendered="true">                 
-                                       		<h:inputText value="#{fileBMG.targetValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalTargetValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}" style="border-style: solid; border-color: red;" rendered="#{fileBMG.tarError}">
-                                           		<f:param value="#{data['input']}" name="forInputFile"/>
-                            					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
-                       							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
-                                        	</h:inputText>
-                                        	<h:inputText value="#{fileBMG.targetValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalTargetValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}" rendered="#{not fileBMG.tarError}">
-                                           		<f:param value="#{data['input']}" name="forInputFile"/>
-                            					<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
-                       							<a4j:support event="onchange" eventsQueue="foo" reRender="fileBMGoalEvalList"/>
-                                       		</h:inputText><br/>  
-                                        	<h:outputText value="#{fileBMG.typename}" rendered="#{fileBMG.tarError}" style="font-style:italic; color:red;"/>
-                                        	<h:outputText value="#{fileBMG.typename}" rendered="#{not fileBMG.tarError}"/>
-                                        </a4j:outputPanel>
-							</t:column>
-							<t:column>
-								<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
-						        	<h:selectOneMenu id="fileEvalBmGoal_#{fileBMG.ID}" value="#{fileBMG.evaluationValue}" valueChangeListener="#{ExperimentBean.processFileBMGoalEvalValueChange}" disabled="#{ExperimentBean.finished || fileBMG.wasAutomaticallyEvaluated}">
-										<f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
-										<f:param value="#{data['input']}" name="forInputFile"/>
-	                                	<f:param value="#{fileBMG.ID}" name="forBMgoalID"/>
-                                	<a4j:support event="onchange" eventsQueue="foo"/>
-									</h:selectOneMenu>
-							</t:column>
-						</rich:dataTable>
-                   </h:panelGroup>
-                <div class="clear"></div>
-                </rich:simpleTogglePanel>
-           </rich:dataList> 
 
 			<h2 class="main">#{res['exp_stage6.headingBG']}</h2>
 			<p>Below are the benchmark goals you specified during stage three
@@ -280,104 +152,15 @@
 		</div>
 		</div>
 		</div>
+    
 		<div id="leftcol">
 
-		<h3 class="leftcol">Experiment Progress</h3>
-		<div class="innertube">
-		<ul class="exp">
-			<h:form>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 1}">
-					<li class="exp"><h:commandLink action="goToStage1"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 1}">
-					<li class="exp_nd">#{res['new_exp.stage1']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 1}">
-					<li class="exp_sel"><h:commandLink action="goToStage1" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 2}">
-					<li class="exp"><h:commandLink action="goToStage2"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
-					<li class="exp_nd">#{res['new_exp.stage2']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 2}">
-					<li class="exp_sel"><h:commandLink action="goToStage2" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 3}">
-					<li class="exp"><h:commandLink action="goToStage3"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
-					<li class="exp_nd">#{res['new_exp.stage3']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage ==3}">
-					<li class="exp_sel"><h:commandLink action="goToStage3" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 4}">
-					<li class="exp"><h:commandLink action="goToStage4"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
-					<li class="exp_nd">#{res['new_exp.stage4']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 4}">
-					<li class="exp_sel"><h:commandLink action="goToStage4" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 5}">
-					<li class="exp"><h:commandLink action="goToStage5"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
-					<li class="exp_nd">#{res['new_exp.stage5']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 5}">
-					<li class="exp_sel"><h:commandLink action="goToStage5" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 6}">
-					<li class="exp"><h:commandLink action="goToStage6"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
-					<li class="exp_nd">#{res['new_exp.stage6']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 6}">
-					<li class="exp_sel"><h:commandLink action="goToStage6" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-			</h:form>
-		</ul>
-		</div>
+        <!-- Include the standard experiment builder sidebar. -->
+        <ui:include src="/WEB-INF/templates/exp_sidebar.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+           <ui:param name="ExperimentPhase" value="6" />
+        </ui:include>
+
 		</div>
 
 	</ui:define>

@@ -170,20 +170,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		return ret;
 	}
 	
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getAllAddedAutoEvalBenchmarkGoals()
-	 */
-	public List<BenchmarkGoal> getAllAddedAutoEvalBenchmarkGoals() {
-		List<BenchmarkGoal> ret = new Vector<BenchmarkGoal>();
-		for(BenchmarkGoal goal : this.hmBenchmarkGoals.values()){
-			if(goal.isAutoEvaluatable()){
-				ret.add(goal);
-			}
-		}
-		return ret;
-	}
-
-
+	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getBenchmarkGoal(java.lang.String)
 	 */
@@ -309,7 +296,8 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		
 		//ExperimentExecutable is set and initialized for this experiment
 		if( thisExperiment.getExperimentExecutable() == null ) {
-		  ExperimentExecutable executable = new ExperimentExecutableImpl(template);
+		  ExperimentExecutable executable = new ExperimentExecutableImpl();
+		  executable.setServiceTemplate(template);
 		  thisExperiment.setExperimentExecutable(executable);
 		}
 	}

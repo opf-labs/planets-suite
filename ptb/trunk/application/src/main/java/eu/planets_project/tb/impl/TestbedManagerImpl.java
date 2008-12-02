@@ -31,6 +31,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.tb.impl.system.ServiceExecutionHandlerImpl;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
+import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
@@ -49,8 +50,8 @@ public class TestbedManagerImpl
 	
 	private long lTestbedManagerID;
 	private static TestbedManagerImpl instance;
-	private HashMap<Long,Experiment> hmAllExperiments;
 	//e.g. used within the serviceTemplate importer and exporter
+	ExperimentPersistencyRemote edao;
 	
 	// The version number of the Testbed.  Can be overridden in BackendResources.properties.
 	private String tbVersion = "0.5";
@@ -61,12 +62,14 @@ public class TestbedManagerImpl
 	 * However due to requirements of JSF managed beans it is set public (at the moment).
 	 */
 	public TestbedManagerImpl(){
-		hmAllExperiments = this.queryAllExperiments();
-		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
+	    log.info("Constructing...");
+	    // Look up the experiment persistency handler:
+	    edao = ExperimentPersistencyImpl.getInstance();
 		// Update the version number, if set in the properties:
         BackendProperties bp = new BackendProperties();
 		String version = bp.getTestbedVersion();
 		if( version != null && ! "".equals(version)) tbVersion = version;
+        log.info("Constructed.");
 	}
 	
 	
@@ -77,7 +80,7 @@ public class TestbedManagerImpl
 	 */
 	public static synchronized TestbedManagerImpl getInstance(){
 		if (instance == null){
-			instance = new TestbedManagerImpl();
+			instance = (TestbedManagerImpl) JSFUtil.getManagedObject("TestbedManager");
 		}
 		return instance;
 	}
@@ -92,7 +95,7 @@ public class TestbedManagerImpl
 		if (!bUpdate){
 			return getInstance();
 		}else{
-			instance = new TestbedManagerImpl();
+			instance = (TestbedManagerImpl) JSFUtil.getManagedObject("TestbedManager");
 			return instance;
 		}
 	}
@@ -102,14 +105,14 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentIDs()
 	 */
 	public Set<Long> getAllExperimentIDs() {
-		return this.hmAllExperiments.keySet();
+		return this.queryAllExperiments().keySet();
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperiments()
 	 */
 	public Collection<Experiment> getAllExperiments() {
-		return this.hmAllExperiments.values();
+		return this.queryAllExperiments().values();
 	}
 
 	/* (non-Javadoc)
@@ -129,7 +132,7 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#getExperiment(long)
 	 */
 	public Experiment getExperiment(long expID) {
-		return this.hmAllExperiments.get(expID);
+		return this.edao.findExperiment(expID);
 
 	}
 
@@ -139,17 +142,14 @@ public class TestbedManagerImpl
 	public Experiment createNewExperiment() {
 		ExperimentImpl exp = new ExperimentImpl();
 	  //Should this be added in a transaction?
-		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
-		long lExpID = dao_r.persistExperiment(exp);
+		long lExpID = edao.persistExperiment(exp);
 		
 		//should now already contain a container injected EntityID;
-		exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
+		exp = (ExperimentImpl)edao.findExperiment(lExpID);
 
 		//now register experimentRefID in Phases
 		this.setExperimentRefInPhase(exp);
 
-		this.hmAllExperiments.put(exp.getEntityID(), exp);
-		
 	  //End Transaction
 		return exp;
 	}
@@ -160,20 +160,17 @@ public class TestbedManagerImpl
 	public long registerExperiment(Experiment experimentBean)
 	{	
 	  //Should this be added in a transaction?
-		ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
 		//check if really a detached entity
 		if(experimentBean.getEntityID()!=-1){
 			//it's not possible to register a previously registered experiment
 			//as the container cannot inject a valid ID
 			return -1;
 		}else{
-			long lExpID = dao_r.persistExperiment(experimentBean);
-			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(lExpID);
+			long lExpID = edao.persistExperiment(experimentBean);
+			ExperimentImpl exp = (ExperimentImpl)edao.findExperiment(lExpID);
 			
 			//now register experimentRefID in Phases
 			this.setExperimentRefInPhase(exp);
-			
-			this.hmAllExperiments.put(exp.getEntityID(), exp);
 			
 			//finally return the entityID
 			return exp.getEntityID();
@@ -191,9 +188,6 @@ public class TestbedManagerImpl
 		((ExperimentApprovalImpl)exp.getExperimentApproval()).setExperimentRefID(exp.getEntityID());
 		((ExperimentExecutionImpl)exp.getExperimentExecution()).setExperimentRefID(exp.getEntityID());
 		((ExperimentEvaluationImpl)exp.getExperimentEvaluation()).setExperimentRefID(exp.getEntityID());
-		
-		//As the Experiment's attributes have been modified we must call update
-		this.updateExperiment(exp);
 	}
 	
 	/* (non-Javadoc)
@@ -201,13 +195,10 @@ public class TestbedManagerImpl
 	 */
 	public void updateExperiment(Experiment experiment) {
 	    log.debug("Updating experiment.");
-		boolean bContains = this.hmAllExperiments.containsKey(experiment.getEntityID());
-		if(bContains){
+		if( edao.findExperiment(experiment.getEntityID()) != null ){
 		  //Should this be added in a transaction?
-			ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
-			dao_r.updateExperiment(experiment);
-			ExperimentImpl exp = (ExperimentImpl)dao_r.findExperiment(experiment.getEntityID());
-			this.hmAllExperiments.put(exp.getEntityID(), exp);
+		    edao.updateExperiment(experiment);
+			ExperimentImpl exp = (ExperimentImpl)edao.findExperiment(experiment.getEntityID());
 		    // Also update the Experiment backing bean to reflect the changes:
 		    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		    if( expBean == null ) expBean = new ExperimentBean();
@@ -224,13 +215,8 @@ public class TestbedManagerImpl
 	 */
 	public void removeExperiment(long expID) {
 	    log.info("Removing experiment "+expID);
-		boolean bContains = this.hmAllExperiments.containsKey(expID);
-		if(bContains){
-		  //Should this be added in a transaction?
-			ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
-			dao_r.deleteExperiment(expID);
-			this.hmAllExperiments.remove(expID);
-		  //End Transaction
+        if( edao.findExperiment(expID) != null ){
+			edao.deleteExperiment(expID);
 		}
 	}
 
@@ -239,7 +225,7 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#containsExperiment(long)
 	 */
 	public boolean containsExperiment(long expID) {
-		return this.hmAllExperiments.containsKey(expID);
+		return ( edao.findExperiment(expID) != null );
 	}
 
 
@@ -248,10 +234,8 @@ public class TestbedManagerImpl
 	 */
 	public Collection<Experiment> getAllExperimentsOfType(String sExperimentTypeID) {
 		Vector<Experiment> vRet = new Vector<Experiment>();
-		Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
-		while(itExpIDs.hasNext()){
-			long helper = itExpIDs.next();
-			Experiment exp = this.hmAllExperiments.get(helper);
+		Collection<Experiment> itExpIDs = this.getAllExperiments();
+		for(Experiment exp : itExpIDs ){
 			if (exp.getExperimentSetup().getExperimentTypeID().equals(sExperimentTypeID)){
 				vRet.add(exp);
 			}
@@ -265,10 +249,9 @@ public class TestbedManagerImpl
 	 */
 	public Collection<Experiment> getAllExperimentsOfUsers(String userID, boolean bIsExperimenter) {
 		Vector<Experiment> vRet = new Vector<Experiment>();
-		Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
-
-		while(itExpIDs.hasNext()){
-			Experiment exp = this.hmAllExperiments.get(itExpIDs.next());
+        Collection<Experiment> itExpIDs = this.getAllExperiments();
+        
+        for(Experiment exp : itExpIDs ){
 			//if type involved user (bIsExperimenter=false) is requested
 			if(!bIsExperimenter){
 				List<String> involvedUsers = exp.getExperimentSetup().getBasicProperties().getInvolvedUserIds();
@@ -293,10 +276,8 @@ public class TestbedManagerImpl
      */
     public Collection<Experiment> getAllExperimentsAtPhase(int phaseID) {
         Vector<Experiment> vRet = new Vector<Experiment>();
-        Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
-        while(itExpIDs.hasNext()){
-            long helper = itExpIDs.next();
-            Experiment exp = this.hmAllExperiments.get(helper);
+        Collection<Experiment> itExpIDs = this.getAllExperiments();
+        for(Experiment exp : itExpIDs ){
             if (exp.getCurrentPhasePointer() == phaseID){
                 vRet.add(exp);
             }
@@ -310,10 +291,8 @@ public class TestbedManagerImpl
      */
     public Collection<Experiment> getAllExperimentsAwaitingApproval() {
         Vector<Experiment> vRet = new Vector<Experiment>();
-        Iterator<Long> itExpIDs = this.hmAllExperiments.keySet().iterator();
-        while(itExpIDs.hasNext()){
-            long helper = itExpIDs.next();
-            Experiment exp = this.hmAllExperiments.get(helper);
+        Collection<Experiment> itExpIDs = this.getAllExperiments();
+        for(Experiment exp : itExpIDs ){
             if ( exp.isAwaitingApproval() ){
                 vRet.add(exp);
             }
@@ -385,7 +364,7 @@ public class TestbedManagerImpl
 	 * @see eu.planets_project.tb.api.TestbedManager#getNumberOfExperiments()
 	 */
 	public int getNumberOfExperiments() {
-		return this.hmAllExperiments.size();
+		return this.edao.getNumberOfExperiments();
 	}
 
 
@@ -394,9 +373,8 @@ public class TestbedManagerImpl
 	 */
 	public int getNumberOfExperiments(String userID, boolean bWhereExperimenter) {
 		int iCount = 0;
-		Iterator<Long> itKeys = this.hmAllExperiments.keySet().iterator();
-		while(itKeys.hasNext()){
-			Experiment exp = this.hmAllExperiments.get(itKeys.next());
+        Collection<Experiment> itExpIDs = this.getAllExperiments();
+        for(Experiment exp : itExpIDs ){
 			
 			//a)check bWhereExperimenter=true=Experimenter
 			if(bWhereExperimenter){
@@ -455,5 +433,13 @@ public class TestbedManagerImpl
 		ServiceExecutionHandler invoHandler = new ServiceExecutionHandlerImpl();
 		invoHandler.executeAutoEvalServices(exp);
 	}
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.TestbedManager#getPagedExperiments()
+     */
+    public List<Experiment> getPagedExperiments( int firstRow, int numberOfRows, String sortField, boolean descending ) {
+        return edao.getPagedExperiments(firstRow, numberOfRows, sortField, descending);
+    }
 
 }

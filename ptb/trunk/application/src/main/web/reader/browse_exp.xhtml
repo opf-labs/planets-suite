@@ -1,10 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:c="http://java.sun.com/jstl/core">
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
@@ -24,10 +26,11 @@
 
 <h:form>
     <t:dataTable id="dataTable_allExp"
+                 styleClass="tbTable"
                  var="exp"
-                 value="#{ListExp_Backing.allMatchingExperiments}"
+                 value="#{ListExp_Backing.allExperiments}"
                  preserveDataModel="false"
-                 rows="10"
+                 rows="#{ListExp_Backing.allExpPageSize}"
                  rowId="#{exp.experimentSetup.basicProperties.experimentName}"
                  sortColumn="#{ListExp_Backing.sort}"
                  sortAscending="#{ListExp_Backing.ascending}"
@@ -67,7 +70,7 @@
         </t:column>
         <t:column>
 	        <f:facet name="header">
-	          <t:commandSortHeader id="sortHeader_exDate" columnName="exDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
+	          <t:commandSortHeader id="sortHeader_execDate" columnName="execDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
 	    	      #{res['expList.colHeader.exDate']}
 		  </t:commandSortHeader>
 			</f:facet>		      
@@ -106,7 +109,7 @@
                         pageIndexVar="pageIndex"
                         styleClass="scroller"
                         paginator="true"
-                        paginatorMaxPages="9"
+                        paginatorMaxPages="10"
                         paginatorTableClass="paginator"
                         paginatorActiveColumnStyle="font-weight:bold;">
             
@@ -132,6 +135,8 @@
 
     </h:panelGrid>
     
+    
+    
 </h:form>
     <p>&#160;</p>
     <p>&#160;</p>
@@ -149,7 +154,8 @@
 
 
 <div id="leftcol">
-<h3 class="leftcol">Your Search:</h3>
+
+<h3 class="leftcol">Search</h3>
 <div class="innertube">
   <p class="center">You can search the titles and summaries of all the experiments using this form.</p>
   <h:form id="searchBoxSidebar">
@@ -158,14 +164,29 @@
     <h:commandButton action="#{ListExp_Backing.clearSearchStringAction}" value="Clear" disabled="#{ListExp_Backing.toFind == ''}"/>
   </h:form>
 </div>
- 
+
 <h3 class="leftcol">Listing Options</h3>
 <div class="innertube">
-<p class="leftcol">
-    Options allowing you to change the number of files displayed per page will appear here in later versions.
-</p>
+    <h:form>
+    <p class="center">
+     No. experiments per page:
+      <h:selectOneMenu value="#{ListExp_Backing.allExpPageSize}" onchange="submit();">
+        <f:selectItem itemLabel="10" itemValue="10" />
+        <f:selectItem itemLabel="20" itemValue="20" />
+        <f:selectItem itemLabel="30" itemValue="30" />
+        <f:selectItem itemLabel="40" itemValue="40" />
+      </h:selectOneMenu>
+      <h:commandButton value="Set" action="success"/>
+    </p>
+    </h:form>
 
 </div>
+
+<h3 class="leftcol">Statistics</h3>
+<div class="innertube">
+  <p class="center">There are currently #{ListExp_Backing.numAllExperiments} experiments in the Testbed.</p>
+</div>
+
 </div>
   </ui:define>
   <ui:define name="footer">

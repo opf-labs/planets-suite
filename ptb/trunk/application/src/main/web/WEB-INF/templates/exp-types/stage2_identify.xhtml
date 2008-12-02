@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition rendered="#{ExperimentBean != null}">
+
+<fieldset>
+    <legend>Identification Experiment</legend>
+    
+    <div class="expStartDO">
+    For each Digital Object...
+    </div>
+    
+    <div class="expSimpleStep">
+      <t:graphicImage value="/graphics/go-down.png" alt="...then..."/>
+    </div>
+    
+    <div class="expChooseService">
+    Pass Through This Identification Service:<br/>
+    
+    <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeIdentify.identifyService}" onchange="submit();"
+            readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
+         <f:selectItem itemValue="[default]" itemLabel="Select..."/>
+         <f:selectItems value="#{ServiceBrowser.identifyServicesSelectList}" />
+    </h:selectOneMenu>
+    <h:commandButton value="#{res['button.select']}"
+             action="success"
+             disabled="#{ExperimentBean.approved}"/>
+    <br/>
+    
+    </div>
+    
+    <div class="expSimpleStep">
+      <t:graphicImage value="/graphics/go-down.png" alt="...then..."/>
+    </div>
+    
+    <div class="expResultBox">
+    Result: The format of the Digital Object.    
+    </div>
+    
+</fieldset>
+
+  </ui:composition>
+</body>
+</html>

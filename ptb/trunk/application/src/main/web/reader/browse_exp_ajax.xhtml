@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+        #{res.title} - #{res['browse_exp.pageTitle']}
+  </ui:define>
+
+<ui:define name="header">
+	<ui:include src="/WEB-INF/templates/header.xhtml">
+		<ui:param name="page" value="browse_exp"/>
+	</ui:include>
+</ui:define>
+
+  <ui:define name="content">
+<div id="mainwrapper">
+<div id="maincol">
+<div class="innertubemain">
+
+<h:form>
+
+<rich:dataTable id="allexps" value="#{pageAllExps}" headerClass="tableHeaderSel"
+columnClasses="col1,col2,col3" var="exp" rows="20" width="100%">
+    <rich:column>
+        <f:facet name="header">
+            <a4j:commandLink value="Name" reRender="allexps" styleClass="tableHeaderSel">
+                <a4j:actionparam name="sortField" value="name" />
+            </a4j:commandLink>
+        </f:facet>
+        <h:outputText
+            value="#{exp.experimentSetup.basicProperties.experimentName}" />
+    </rich:column>
+    
+    <rich:column>
+        <f:facet name="header">
+            <a4j:commandLink value="Type" reRender="allexps" styleClass="tableHeaderSel">
+                <a4j:actionparam name="sortField" value="type" />
+            </a4j:commandLink>
+        </f:facet>
+        <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
+    </rich:column>
+
+    <rich:column>
+        <f:facet name="header">
+            <a4j:commandLink value="Start Date" reRender="allexps" styleClass="tableHeaderSel">
+                <a4j:actionparam name="sortField" value="startDate" />
+            </a4j:commandLink>
+        </f:facet>
+            <h:outputText value="#{exp.startDate.time}" />
+    </rich:column>
+    
+    <rich:column>
+        <f:facet name="header">
+            <a4j:commandLink value="Exec Date" reRender="allexps" styleClass="tableHeaderSel">
+                <a4j:actionparam name="sortField" value="execDate" />
+            </a4j:commandLink>
+        </f:facet>
+            <h:outputText value="#{exp.experimentExecution.executionEndedDate.time}" />
+    </rich:column>
+
+    <rich:column>
+        <f:facet name="header">
+            <a4j:commandLink value="Phase" reRender="allexps" styleClass="tableHeaderSel">
+                <a4j:actionparam name="sortField" value="phase" />
+            </a4j:commandLink>
+        </f:facet>
+            <h:outputText value="#{exp.currentPhase.phaseName}" />    
+    </rich:column>
+            
+    <rich:column>
+        <f:facet name="header">
+            <a4j:commandLink value="Experimenter" reRender="allexps" styleClass="tableHeaderSel">
+                <a4j:actionparam name="sortField" value="experimenter" />
+            </a4j:commandLink>
+        </f:facet>
+        <h:outputText id="experimenter" value="#{exp.experimentSetup.basicProperties.experimenter}">
+        </h:outputText>
+    </rich:column>
+    
+</rich:dataTable>
+
+<rich:datascroller for="allexps" maxPages="7" />
+
+    
+</h:form>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+    <p>&#160;</p>
+</div>
+</div>
+</div>
+
+
+<div id="leftcol">
+<h3 class="leftcol">Your Search:</h3>
+<div class="innertube">
+  <p class="center">You can search the titles and summaries of all <h:outputText value=" #{pageAllExps.numRecords}"/> experiments using this form.</p>
+  <h:form id="searchBoxSidebar">
+    <h:inputText value="#{ListExp_Backing.toFind}"/>
+    <h:commandButton action="browse_experiments" value="Search"/>
+    <h:commandButton action="#{ListExp_Backing.clearSearchStringAction}" value="Clear" disabled="#{ListExp_Backing.toFind == ''}"/>
+  </h:form>
+
+<a4j:status startStyleClass="statusSearching" stopStyleClass="statusDone"/>
+
+</div>
+ 
+<h3 class="leftcol">Listing Options</h3>
+<div class="innertube">
+<p class="leftcol">
+    Options allowing you to change the number of files displayed per page will appear here in later versions.
+</p>
+
+</div>
+</div>
+  </ui:define>
+  <ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

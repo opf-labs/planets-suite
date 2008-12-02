@@ -31,11 +31,12 @@ public class UploadManager {
      * @return: Returns an instance of the FileUploadBean (e.g. for additional operations as .getEntryName, etc.)
      * if the operation was successful or null if an error occured
      */
-    public static FileUploadBean uploadFile(){
+    public static FileUploadBean uploadFile(boolean keep){
     	FileUploadBean file_upload = getCurrentFileUploadBean();
     	try{
     		//trigger the upload command
-    		String result = file_upload.upload();
+    		String result = file_upload.upload(keep);
+    		log.info("Got result: "+result);
     		
     		if(!result.equals("success-upload")){
     			return null;

@@ -1,26 +1,16 @@
 package eu.planets_project.tb.impl.services;
 
-import java.io.Reader;
 import java.io.Serializable;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
@@ -30,15 +20,12 @@ import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
-import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
-import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 
 
 /**
@@ -62,7 +49,10 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 @Entity
 public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplateImpl implements Serializable,Cloneable{
 	
-	//contains a mapping of the TB BenchmarkGoalID to the ID(name) used within the service's BMGoal result
+	/** */
+    private static final long serialVersionUID = 6394812915770350751L;
+    
+    //contains a mapping of the TB BenchmarkGoalID to the ID(name) used within the service's BMGoal result
 	private HashMap<String, String> mappingGoalIDToPropertyID = new HashMap<String, String>(); 
 	private String sXPathForBMGoalRootNodes = "/*//property";
 	//the extracted property's name
@@ -75,11 +65,12 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 	// This annotation specifies that the property or field is not persistent.
 	@Transient
     @XmlTransient
-	private static Log log;
+	private static Log log = PlanetsLogger.getLogger(EvaluationTestbedServiceTemplateImpl.class,"testbed-log4j.xml");
 	
+	/** */
 	public EvaluationTestbedServiceTemplateImpl(){
-		log = PlanetsLogger.getLogger(this.getClass(),"testbed-log4j.xml");
 	}
+	
 	//the default (as used in XCDL) for compStatus success and failure
 	public static String sCompStatusSuccess = "complete";
 	private String sCompStatusXpath = "@compStatus";
@@ -369,35 +360,33 @@ public class EvaluationTestbedServiceTemplateImpl extends TestbedServiceTemplate
 		return this.mappingGoalIDToPropertyID.keySet();
 	}
 	
-	/**
-	 * Returns a list of all available metrics for a specified bmGoal
-	 * NOTE: This is currently uses a mock implementation of the tec.registry to query parameters and values
-	 * e.g. xcdl properties, their metrics and fully qualified names of their return types
-	 * @param bmGoalID
-	 * @return <PropertyName,List<Map<keyword,value>>> 
-	 */
-	private static final String URIXCDLPropertyRoot = "planets:pc/xcdl/property/";
-	private static final String URIXCDLMetricRoot = "planets:pc/xcdl/metric/";
+    /**
+     * Returns a list of all available metrics for a specified bmGoal
+     * NOTE: This is currently uses a mock implementation of the tec.registry to query parameters and values
+     * e.g. xcdl properties, their metrics and fully qualified names of their return types
+     * @param bmGoalID
+     * @return <PropertyName,List<Map<keyword,value>>> 
+     */
 	public Map<String,List<Map<String,String>>> getAllAvailableMetricsForBMGoal(String bmGoalID){
 
 		Map<String,List<Map<String,String>>> ret = new HashMap<String,List<Map<String,String>>>();
-		BenchmarkGoalsHandler bmGoalHandler = BenchmarkGoalsHandlerImpl.getInstance();
-		BenchmarkGoal bmGoal = bmGoalHandler.getBenchmarkGoal(bmGoalID);
+		//BenchmarkGoalsHandler bmGoalHandler = BenchmarkGoalsHandlerImpl.getInstance();
+		//BenchmarkGoal bmGoal = bmGoalHandler.getBenchmarkGoal(bmGoalID);
 
 		//e.g. the xcdl property name
 		String sPropName = this.getMappedPropertyName(bmGoalID);
 		List<Map<String,String>> l = new ArrayList<Map<String,String>>();
 		if(!sPropName.equals("")){
+	        log.info("Looking for property: "+sPropName);
 			
 			//now query the technical registry for all details on this property
-			TecRegMockup tecReg = TecRegMockup.getInstance();
-			String[] sMetricNames = (String[])tecReg.getParameterVal(URIXCDLPropertyRoot+sPropName+"/metrics");
+			String[] sMetricNames = (String[])TecRegMockup.getParameterVal(TecRegMockup.URIXCDLPropertyRoot+sPropName+"/metrics");
 			
 			if(sMetricNames!=null){
 				for(String sMname : sMetricNames){
 					Map<String,String> m = new HashMap<String,String>();
-					String retType = (String)tecReg.getParameterVal(URIXCDLMetricRoot+sMname+"/returndatatype/javaobjecttype");
-					String descr = (String)tecReg.getParameterVal(URIXCDLMetricRoot+sMname+"/description");
+					String retType = (String)TecRegMockup.getParameterVal(TecRegMockup.URIXCDLMetricRoot+sMname+"/returndatatype/javaobjecttype");
+					String descr = (String)TecRegMockup.getParameterVal(TecRegMockup.URIXCDLMetricRoot+sMname+"/description");
 					if(retType!=null){
 						//e.g. "equal"
 						m.put("metricName", sMname);

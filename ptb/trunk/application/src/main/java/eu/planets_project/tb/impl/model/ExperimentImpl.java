@@ -72,10 +72,8 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 		expExecution = new ExperimentExecutionImpl();
 		expApproval = new ExperimentApprovalImpl();
 		expEvaluation = new ExperimentEvaluationImpl();
-		//the experiment's executable information
-		//note: executable gets instantiated within the experiment setup phase
-		//executable = null;
-		
+		executable = new ExperimentExecutableImpl();
+//		this.getExperimentSetup().getBasicProperties().getExperimenter();
 		expSetup.setState(ExperimentSetup.STATE_IN_PROGRESS);
 		log.debug("ExperimentImpl initialised.");
 	}
@@ -192,8 +190,20 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 		return ret;
 	}
 	
-	
-	/**
+	/* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.Experiment#getCurrentPhaseIndex()
+     */
+    public int getCurrentPhaseIndex() {
+        int index = this.getCurrentPhasePointer() + 1;
+        if( index >= 2 ) index += 2;
+        // Patch in the early phases
+        if( index == 1 && this.getExperimentSetup().getSubStage() > 0 ) {
+            index = this.getExperimentSetup().getSubStage();
+        }
+        return index;
+    }
+
+    /**
 	 * @param iPhaseNr may reach from 0..3, representing 
 	 * 0=ExperimentSetup, 1=ExperimentApproval, 2=ExperimentExecution, 3=ExperimentEvaluation
 	 * @return
@@ -233,6 +243,8 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentExecutable()
 	 */
 	public ExperimentExecutable getExperimentExecutable() {
+	    if( this.executable == null )
+	        this.executable = new ExperimentExecutableImpl();
 		return this.executable;
 	}
 

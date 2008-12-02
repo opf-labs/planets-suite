@@ -73,6 +73,17 @@ function cleanForm() {
 <div id="maincol">
 <div class="innertubemain">
     <h:form>
+      <table id="expHeaderTable"><tr>
+      <td class="headerText">
+      <h2><h:outputText value="#{res['new_exp.stage1']}"/></h2>
+      </td>
+      <td class="headerButtons">
+      <h:commandButton value="#{res['new_exp.saveStage1']}" 
+            action="#{NewExp_Controller.updateBasicPropsAction}" disabled="#{ExperimentBean.approved}"/>
+      </td>
+      </tr>
+      </table>
+    
         <p>Create a new experiment using the form below.  Once you have supplied the required information and have submitted the form the experiment will be added to your list of experiments as found in the             
             <h:commandLink action="my_experiments">
                 <h:outputText value=" #{res['my_exp.pageTitle']}" />
@@ -245,32 +256,6 @@ function cleanForm() {
 </fieldset>
 
 <fieldset>
-    <legend>#{res['new_exp.legendTypes']}</legend>
-    
-    <p><h:outputLabel value="#{res['new_exp.expDigiType']}" for="dtype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-    
-    <h:selectManyListbox
- id="dtype" required="true" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"
-  value="#{ExperimentBean.dtype}" style="width: 23em;">
-   <f:selectItems
-    value="#{ExperimentBean.dtypeList}"/>
-</h:selectManyListbox> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipObjectType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
-<div class="clear"></div>
-    
-<p>
-    <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-        <h:selectOneMenu id="etype"
-        value="#{ExperimentBean.etype}"  style="width: 23em;"
- readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-                <f:selectItems value="#{NewExp_Controller.availableExperimentTypes}" />
-        </h:selectOneMenu>
-        <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipExperimentType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-</p>
-<div class="clear"></div>
-
-</fieldset>
-
-<fieldset>
 <legend>#{res['new_exp.legendFurtherInfo']}</legend>
 <p><h:outputLabel value="#{res['new_exp.expPurpose']}" for="epurpose" ></h:outputLabel>
 <h:inputTextarea rows="2" cols="50" required="false" id="epurpose" value="#{ExperimentBean.epurpose}" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipPurpose']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" /></p>
@@ -308,101 +293,12 @@ function cleanForm() {
 
 <div id="leftcol">
 
-<h3 class="leftcol">#{res['new_exp.progress']}</h3>
-<div class="innertube">
-<ul class="exp"><h:form>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 1}">
-					<li class="exp"><h:commandLink action="goToStage1"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 1}">
-					<li class="exp_nd">#{res['new_exp.stage1']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 1}">
-					<li class="exp_sel"><h:commandLink action="goToStage1" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 2}">
-					<li class="exp"><h:commandLink action="goToStage2"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
-					<li class="exp_nd">#{res['new_exp.stage2']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 2}">
-					<li class="exp_sel"><h:commandLink action="goToStage2" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 3}">
-					<li class="exp"><h:commandLink action="goToStage3"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
-					<li class="exp_nd">#{res['new_exp.stage3']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage ==3}">
-					<li class="exp_sel"><h:commandLink action="goToStage3" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 4}">
-					<li class="exp"><h:commandLink action="goToStage4"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
-					<li class="exp_nd">#{res['new_exp.stage4']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 4}">
-					<li class="exp_sel"><h:commandLink action="goToStage4" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 5}">
-					<li class="exp"><h:commandLink action="goToStage5"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
-					<li class="exp_nd">#{res['new_exp.stage5']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 5}">
-					<li class="exp_sel"><h:commandLink action="goToStage5" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 6}">
-					<li class="exp"><h:commandLink action="goToStage6"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
-					<li class="exp_nd">#{res['new_exp.stage6']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 6}">
-					<li class="exp_sel"><h:commandLink action="goToStage6" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-	</h:form>
-</ul>
-</div>
+        <!-- Include the standard experiment builder sidebar. -->
+        <ui:include src="/WEB-INF/templates/exp_sidebar.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+           <ui:param name="ExperimentPhase" value="1" />
+        </ui:include>
+
 </div>
 
   </ui:define>

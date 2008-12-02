@@ -1,12 +1,11 @@
 package eu.planets_project.tb.gui.backing;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.faces.component.UIData;
 import javax.faces.context.FacesContext;
+import javax.faces.component.html.HtmlDataTable;
 
 import org.apache.commons.logging.Log;
 
@@ -26,28 +25,26 @@ public class ListExp extends SortableList {
     
     private static Log log = PlanetsLogger.getLogger(ListExp.class, "testbed-log4j.xml");
 
-	private Collection<Experiment> myExps = new ArrayList<Experiment>();
-	private Collection<Experiment> allExps = new ArrayList<Experiment>();
-	private List<Experiment> currExps;
+    private List<Experiment> currExps;
 	private static final String DEFAULT_COLUMN = "startDate";
 	private String column = DEFAULT_COLUMN;
 	private boolean ascending = false;
-    private UIData myExp_data = null;
-    private UIData allExp_data = null;
-    private UIData toAppExp_data = null;
-    private UIData toExecExp_data = null;
+    private HtmlDataTable myExp_data = null;
+    private HtmlDataTable allExp_data = null;
+    private HtmlDataTable toAppExp_data = null;
+    private HtmlDataTable toExecExp_data = null;
 	// Value to hold link ids.
 	private String linkEid = null;
 	// Value to hold the search string:
 	private String toFind = "";
+	// Paging table sizes:
+    private int myExpPageSize = 20;
+    private int allExpPageSize = 20;
+	
 
 	public ListExp()
 	{
 		super(DEFAULT_COLUMN);
-		
-        myExps = this.getExperimentsOfUser();
-        allExps = this.getAllExperiments();
-
 	}
 	
 	  public Collection<Experiment> getExperimentsOfUser()
@@ -66,7 +63,7 @@ public class ListExp extends SortableList {
 				  usersExpList.add(exp);
 		  }
 		  myExps = usersExpList; */
-		  myExps = testbedMan.getAllExperimentsOfUsers(userid, true);
+		  Collection<Experiment> myExps = testbedMan.getAllExperimentsOfUsers(userid, true);
 		  currExps = Collections.list(Collections.enumeration(myExps));
 		  sort(getSort(), isAscending());
 		  return currExps;
@@ -74,17 +71,18 @@ public class ListExp extends SortableList {
           
       public int getNumExperimentsOfUser()
       {
-          int num = myExps.size();              
+          UserBean managedUserBean = (UserBean)JSFUtil.getManagedObject("UserBean");    
+          String userid = managedUserBean.getUserid();       
+          TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");         
+          int num = testbedMan.getNumberOfExperiments(userid, true);   
           return num; 
       }
           
-      public Collection<Experiment> getAllExperiments()
+      public PagedListDataModel getAllExperiments()
       {    
           TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-          allExps = testbedMan.getAllExperiments();
-          currExps = Collections.list(Collections.enumeration(allExps));
-          sort(getSort(), isAscending());
-          return currExps;
+          List exps = testbedMan.getPagedExperiments(allExp_data.getFirst(), allExp_data.getRows(), getSort(), !isAscending() );
+          return new PagedListDataModel( exps, testbedMan.getNumberOfExperiments(), allExp_data.getRows());
       }
                 
     /**
@@ -108,14 +106,14 @@ public class ListExp extends SortableList {
 
     public Collection<Experiment> getAllMatchingExperiments()
       {
-          // Only go if there is a string to search for:
-          if( toFind == null || "".equals(toFind)) return getAllExperiments();
           // Otherwise, search for the string toFind:
           log.debug("Searching experiments for: " + toFind );
           TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-          allExps = testbedMan.searchAllExperiments(toFind);
+          // Only go if there is a string to search for:
+          if( toFind == null || "".equals(toFind)) return testbedMan.getAllExperiments();
+          Collection<Experiment> allExps = testbedMan.searchAllExperiments(toFind);
           log.debug("Found "+allExps.size()+" matching experiment(s).");
-          currExps = Collections.list(Collections.enumeration(allExps));
+           currExps = Collections.list(Collections.enumeration(allExps));
           sort(getSort(), isAscending());
           return currExps;
       }
@@ -123,8 +121,8 @@ public class ListExp extends SortableList {
     public Collection<Experiment> getAllExpAwaitingAuth()
     {    
         TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-        myExps = testbedMan.getAllExperimentsAwaitingApproval();
-        currExps = Collections.list(Collections.enumeration(myExps));
+        Collection<Experiment> myExps = testbedMan.getAllExperimentsAwaitingApproval();
+         currExps = Collections.list(Collections.enumeration(myExps));
         sort(getSort(), isAscending());
         return currExps;
     }
@@ -132,7 +130,7 @@ public class ListExp extends SortableList {
     public Collection<Experiment> getAllExpApproved()
     {    
         TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-        allExps = testbedMan.getAllExperimentsAtPhase(ExperimentPhase.PHASE_EXPERIMENTEXECUTION);
+        Collection<Experiment> allExps = testbedMan.getAllExperimentsAtPhase(ExperimentPhase.PHASE_EXPERIMENTEXECUTION);
         currExps = Collections.list(Collections.enumeration(allExps));
         sort(getSort(), isAscending());
         return currExps;
@@ -141,7 +139,8 @@ public class ListExp extends SortableList {
                 
       public int getNumAllExperiments()
       {
-          int num = allExps.size();              
+          TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+          int num = testbedMan.getNumberOfExperiments();
           return num; 
       }
 	  
@@ -213,7 +212,7 @@ public class ListExp extends SortableList {
 				}
                                 if (column.equals("currentStage"))
 				{
-                                        if ((c1.getCurrentPhase().getStartDate() != null) && (c1.getCurrentPhase().getStartDate() != null)) {
+                                        if ((c1.getCurrentPhase() != null) && (c2.getCurrentPhase() != null)) {
                                             return ascending ? c1.getCurrentPhase().getPhaseName().compareTo(c2.getCurrentPhase().getPhaseName()) 
                                                     : c2.getCurrentPhase().getPhaseName().compareTo(c1.getCurrentPhase().getPhaseName());
                                         }
@@ -397,24 +396,24 @@ public class ListExp extends SortableList {
 	    
 //	  Property getters - setters
 
-	    public void setMyExp_data(UIData data)
+	    public void setMyExp_data(HtmlDataTable data)
 	    {
 	      this.myExp_data = data;
 	    }
 
 
-	    public UIData getMyExp_data()
+	    public HtmlDataTable getMyExp_data()
 	    {
 	      return myExp_data;
 	    }
 
-	    public void setAllExp_data(UIData data)
+	    public void setAllExp_data(HtmlDataTable data)
 	    {
 	      this.allExp_data = data;
 	    }
 
 
-	    public UIData getAllExp_data()
+	    public HtmlDataTable getAllExp_data()
 	    {
 	      return allExp_data;
 	    }
@@ -424,28 +423,28 @@ public class ListExp extends SortableList {
         /**
          * @return the toAppExp_data
          */
-        public UIData getToAppExp_data() {
+        public HtmlDataTable getToAppExp_data() {
             return toAppExp_data;
         }
 
         /**
          * @param toAppExp_data the toAppExp_data to set
          */
-        public void setToAppExp_data(UIData toAppExp_data) {
+        public void setToAppExp_data(HtmlDataTable toAppExp_data) {
             this.toAppExp_data = toAppExp_data;
         }
 
         /**
          * @return the toExecExp_data
          */
-        public UIData getToExecExp_data() {
+        public HtmlDataTable getToExecExp_data() {
             return toExecExp_data;
         }
 
         /**
          * @param toExecExp_data the toExecExp_data to set
          */
-        public void setToExecExp_data(UIData toExecExp_data) {
+        public void setToExecExp_data(HtmlDataTable toExecExp_data) {
             this.toExecExp_data = toExecExp_data;
         }
 
@@ -461,6 +460,35 @@ public class ListExp extends SortableList {
          */
         public void setLinkEid(String linkEid) {
             this.linkEid = linkEid;
+        }
+        
+
+        /**
+         * @return the myExpPageSize
+         */
+        public int getMyExpPageSize() {
+            return myExpPageSize;
+        }
+
+        /**
+         * @param myExpPageSize the myExpPageSize to set
+         */
+        public void setMyExpPageSize(int myExpPageSize) {
+            this.myExpPageSize = myExpPageSize;
+        }
+
+        /**
+         * @return the allExpPageSize
+         */
+        public int getAllExpPageSize() {
+            return allExpPageSize;
+        }
+
+        /**
+         * @param allExpPageSize the allExpPageSize to set
+         */
+        public void setAllExpPageSize(int allExpPageSize) {
+            this.allExpPageSize = allExpPageSize;
         }
 
 }

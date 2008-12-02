@@ -24,16 +24,122 @@
 	<ui:define name="content" rendered="#{ExperimentBean != null}">
 		<div id="mainwrapper">
 			<div id="maincol">
-				<div class="innertubemain">
-				  <h:form id="stage3form">
-				    <!-- puts a list of all available Experiment 'BenchmarkBeans' into the session map -->
-					#{NewExp_Controller.retrieveBenchmarkBeans}
-      
-					<p>Supply information about the estimated resources your experiment will require and the objectives you expect your experiment to meet.</p>
-						<h:messages for="stage3form" errorClass="errorMessage" infoClass="infoMessage"/>
+				<div class="innertubemain">        
+<h:form>
+      <table id="expHeaderTable"><tr>
+      <td class="headerText">
+      <h2><h:outputText value="#{res['new_exp.stage3']}"/></h2>
+      </td>
+      <td class="headerButtons">
+        <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
+              action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
+        <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveExperiment}"
+                                    disabled="#{ExperimentBean.approved}" />
+      </td>
+      </tr>
+      </table>
+</h:form>
+
+<rich:simpleTogglePanel label="#{res['exp_stage3.automaticProps']}" opened="true" switchType="server">
+<p>These are properties that the Testbed can automatically measure during your experiment.</p>
+
+<h:form>
+        <rich:dataTable value="#{NewExp_Controller.observables}" var="prop" rows="25" 
+        reRender="prop_ds" styleClass="tbTable" binding="#{NewExp_Controller.obsTable}">
+        <!-- 
+            <f:facet name="header">
+                <h:outputText value="Observable Properties"/>
+            </f:facet>
+         -->
+            
+            <rich:column sortBy="#{prop.stage}" sortOrder="DESCENDING"> 
+                <f:facet name="header">
+                    <h:outputText value="Experiment Stage"/>
+                </f:facet>
+                <h:outputText value="#{prop.stage}"/>
+            </rich:column>
+            
+            <rich:column> 
+                <f:facet name="header">
+                    <h:outputText value="Measure"/>
+                </f:facet>
+                <h:selectBooleanCheckbox value="#{prop.selected}"  readonly="#{ExperimentBean.approved}" valueChangeListener="#{NewExp_Controller.handleObsSelectChangeListener}"/>
+            </rich:column>
+            
+            <rich:column sortBy="#{prop.type}">
+                <f:facet name="header">
+                    <h:outputText value="Type"/>
+                </f:facet>
+                <h:outputText value="#{prop.type}"/> 
+            </rich:column>
+            
+            <rich:column sortBy="#{prop.name}">
+                <f:facet name="header">
+                    <h:outputText value="Name"/>
+                </f:facet>
+                <t:graphicImage value="/graphics/help.gif" style="float: right; padding: 1px 5px;"/>
+                <h:outputText value="#{prop.name}"/>
+                <rich:toolTip>
+                  <h:outputText value="#{prop.description}"/>
+                  <h:outputText value=" (#{prop.identifier})" rendered="#{prop.identifier != null}"/>
+                </rich:toolTip>
+            </rich:column>
+            
+            <rich:column sortBy="#{prop.unit}">
+                <f:facet name="header">
+                    <h:outputText value="Unit"/>
+                </f:facet>
+                <h:outputText value="#{prop.unit}"/> 
+            </rich:column>
+            
+            <f:facet name="footer">
+                <rich:datascroller id="prop_ds"></rich:datascroller>
+            </f:facet>
+        </rich:dataTable>
+
+        <p>        
+        <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveExperiment}"
+                                    disabled="#{ExperimentBean.approved}" />
+        </p>
+        <p>
+         <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
+              action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
+       </p>
+    </h:form>
+
+</rich:simpleTogglePanel>
+
+
+<rich:simpleTogglePanel label="#{res['exp_stage3.optionalManualBMGs']}" opened="false" switchType="server">
+    
+<p>These are properties that the Testbed <b>cannot</b> automatically measure during your experiment, and so must be measured manually instead.</p>
+
+    <h:form id="stage3form">
+
+    <h:messages for="stage3form" errorClass="errorMessage" infoClass="infoMessage"/>
+
+<h:panelGroup rendered="#{ExperimentBean.dtype != ''}">
+
 						<fieldset>
 							<legend>#{res['exp_stage3.legendOutcomes']}</legend>
+              
 							<p>Here you can specify the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>	
+
+<p>
+<h:outputLabel value="#{res['new_exp.expDigiType']}" for="dtype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
+<h:selectManyListbox id="dtype" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"
+  value="#{ExperimentBean.dtype}" style="width: 23em;" onchange="submit();">
+   <f:selectItems
+    value="#{ExperimentBean.dtypeList}"/>
+</h:selectManyListbox> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipObjectType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+</p>
+<div class="clear"></div>
+
+                    <!-- puts a list of all available Experiment 'BenchmarkBeans' into the session map -->
+                    #{NewExp_Controller.retrieveBenchmarkBeans}      
+              
 							<p>Highlight benchmark goals in category: 
 							<h:selectOneMenu id="filterBMCategory" value="#{ExperimentBean.BMGoalCategoryFilterValue}" immediate="true" 
              					valueChangeListener="#{NewExp_Controller.processBMGoalCategoryFilterChange}">
@@ -62,62 +168,12 @@
 						            	#{bm.definition}<br/>
 						            	<i>#{bm.description}</i>
 						        	</h:column>	
-						        	<h:column>
-						        		<f:facet name="header">#{res['exp_stage3.autoEvalSerivceAvailable']}</f:facet>
-						        		<h:panelGroup rendered="#{bm.autoEvalServiceAvailable}">
-						        		<!-- h:selectBooleanCheckbox id="useEvalService" value="true" label="use auto-evaluation" readonly="#{ExperimentBean.approved}"  disabled="#{ExperimentBean.approved}">	
-									    	<f:param name="bmGoalID" value="#{bm.ID}"/>
-									    	<a4j:support event="onchange"/>	
-									    </h:selectBooleanCheckbox-->	 
-										<a4j:commandLink action="#{NewExp_Controller.command_configureAutoEvalService}" rendered="#{not ExperimentBean.approved}">
-                							<h:outputText value="configure here" /> 
-                							<f:param value="#{bm.ID}" name="configBMGoalID"/>
-                							<f:param value="#{bm.autoEvalServiceUUID}" name="autoEvalSerUUID"/>
-            							</a4j:commandLink>
-            							</h:panelGroup>
-						        	</h:column>  
-						        	<h:column>
-						        		<f:facet name="header">#{res['exp_stage3.autoEvalSerivceConfigured']}</f:facet>
-						        		<a4j:outputPanel rendered="#{bm.autoEvalServiceConfigured}"  styleClass="tooltip-text">
-						        			<h:outputText value="browse added settings"/> 
-						        			<rich:toolTip direction="top-right" styleClass="tooltip">
-                            					<span style="white-space:nowrap">
-                                                The following auto evaluation rules will get applied:<br/>
-                                                evaluates as <strong>very good:</strong>
-                                                <t:dataList
-  													var="item"
-  													value="#{bm.autoEvalDataForToolTip['VERYGOOD']}"
-  													layout="unorderedList"> 
-  													<h:outputText value="#{item.value}"/>	
-  												</t:dataList>
-  												evaluates as <strong>good:</strong>		
-												<t:dataList
-  													var="item"
-  													value="#{bm.autoEvalDataForToolTip['GOOD']}"
-  													layout="unorderedList"> 
-  													<h:outputText value="#{item.value}"/>					
-												</t:dataList>
-												evaluates as <strong>bad:</strong>		
-												<t:dataList
-  													var="item"
-  													value="#{bm.autoEvalDataForToolTip['BAD']}"
-  													layout="unorderedList"> 
-  													<h:outputText value="#{item.value}"/>					
-												</t:dataList>
-												evaluates as <strong>very bad:</strong>		
-												<t:dataList
-  													var="item"
-  													value="#{bm.autoEvalDataForToolTip['VERYBAD']}"
-  													layout="unorderedList"> 
-  													<h:outputText value="#{item.value}"/>					
-												</t:dataList>
-                                                </span>
-                            				</rich:toolTip>
-						        		</a4j:outputPanel>       
-						        	</h:column>
 							</h:dataTable>
 							
 						</fieldset>
+</h:panelGroup>
+
+          
 							<p>
 					            <h:commandButton value="#{res['button.save']}"  
 					            action="#{NewExp_Controller.updateBenchmarksAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>		
@@ -126,115 +182,41 @@
 					            <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
 					            action="#{NewExp_Controller.updateBenchmarksAndSubmitAction}" disabled="#{ExperimentBean.approved}"/>										
 							</p>
-							<p><b>#{res['exp_stage3.warning']}</b></p>		
+							<p><b>#{res['exp_stage3.warning']}</b></p>
 					</h:form>
+
+</rich:simpleTogglePanel>
+
+            <p>&#160;</p>
+        <p>&#160;</p>
+
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+        <p>&#160;</p>
+
             
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
        <ui:param name="ExperimentPhase" value="3" />
     </ui:include>
-            
+                
 				</div>
 			</div>
 		</div>
 
 		<div id="leftcol">
 
-		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
-		<div class="innertube">
-			<ul class="exp"><h:form>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 1}">
-					<li class="exp"><h:commandLink action="goToStage1"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 1}">
-					<li class="exp_nd">#{res['new_exp.stage1']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 1}">
-					<li class="exp_sel"><h:commandLink action="goToStage1" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 2}">
-					<li class="exp"><h:commandLink action="goToStage2"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
-					<li class="exp_nd">#{res['new_exp.stage2']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 2}">
-					<li class="exp_sel"><h:commandLink action="goToStage2" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 3}">
-					<li class="exp"><h:commandLink action="goToStage3"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
-					<li class="exp_nd">#{res['new_exp.stage3']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage ==3}">
-					<li class="exp_sel"><h:commandLink action="goToStage3" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 4}">
-					<li class="exp"><h:commandLink action="goToStage4"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
-					<li class="exp_nd">#{res['new_exp.stage4']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 4}">
-					<li class="exp_sel"><h:commandLink action="goToStage4" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 5}">
-					<li class="exp"><h:commandLink action="goToStage5"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
-					<li class="exp_nd">#{res['new_exp.stage5']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 5}">
-					<li class="exp_sel"><h:commandLink action="goToStage5" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 6}">
-					<li class="exp"><h:commandLink action="goToStage6"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
-					<li class="exp_nd">#{res['new_exp.stage6']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 6}">
-					<li class="exp_sel"><h:commandLink action="goToStage6" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				</h:form>
-			</ul>			
-		</div>
+        <!-- Include the standard experiment builder sidebar. -->
+        <ui:include src="/WEB-INF/templates/exp_sidebar.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+           <ui:param name="ExperimentPhase" value="3" />
+        </ui:include>
+        
 		</div>
 
 	</ui:define>

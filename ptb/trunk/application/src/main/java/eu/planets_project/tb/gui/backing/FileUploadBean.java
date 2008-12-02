@@ -1,23 +1,17 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Properties;
-import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 
-import eu.planets_project.tb.impl.AdminManagerImpl;
-
+import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletRequest;
-
 
 /**
  * This bean handles file upload from the local FS
@@ -26,45 +20,37 @@ public class FileUploadBean
 {
 	
 	private Log log = LogFactory.getLog(FileUploadBean.class);
-	private String uploadDir = "";
     private UploadedFile _upFile;
     private String _name = "";
     private String originalName ="";
+    private File tmpFile;
+    private DataHandler dh;
     
     public FileUploadBean() {
+        dh = new DataHandlerImpl();
     }
-    
-    public void setUploadDir(String dir) {
- 	   uploadDir = System.getProperty("jboss.home.dir") + "/" + dir;
-    }
-    
-    
-    public String getUploadDir() {
- 	   return uploadDir;
-    }    
-    
-    
-    public UploadedFile getUpFile()
-    {
-        return _upFile;
+        
+    /**
+     * @return the _name
+     */
+    public String getName() {
+        return originalName;
     }
 
-    public void setUpFile(UploadedFile upFile)
-    {
-        _upFile = upFile;
-    }
-
-    public String getName()
-    {
+    /**
+     * @return
+     */
+    public String getUniqueFileName() {
         return _name;
     }
 
-    public void setName(String name)
-    {
-        _name = name;
-        originalName = name;
+    /**
+     * @return
+     */
+    public File getTemporaryFile() {
+        return tmpFile;
     }
-    
+
     /**
      * Returns a URI reference to this uploaded file.
      * e.g. http://localhost:8080/planets-testbed/inputdata/213fsz9432ljl324.doc
@@ -72,25 +58,18 @@ public class FileUploadBean
      * @throws Exception
      */
     public URI getURI() throws Exception {
-    	HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        String authority = AdminManagerImpl.getAuthority();
-    	URI uri = new URI("http",authority,"/planets-testbed/inputdata/"+this._name,null,null);
-    	return uri;
+    	return dh.getDownloadURI(this._name);
     }
-    
     
     /**
-     * Returns a localFile reference to this uploaded file.
-     * ../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets-testbed/inputdata/213fsz9432ljl324.doc
+     * This is the main method, that is used to organise an upload.
      * @return
+     * @param keep
+     * @throws IOException
      */
-    public String getLocalFileRef(){
-    	return this.uploadDir+"/"+this._name;
-    }
-
-    public String upload() throws IOException
+    public String upload(boolean keep) throws IOException
     {
-    	log.debug("Uploading...");
+    	log.info("Uploading...");
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (_upFile == null)
         	return "error-deploy";
@@ -106,45 +85,45 @@ public class FileUploadBean
         	return "error-upload";
         else ;        
         
-        try {        	
-        	File dir = new File(uploadDir);
-        	dir.mkdirs();    
-        	
-        	originalName = _upFile.getName();
-        	 
-        	// create unique filename
-        	String ext = _upFile.getName().substring(_upFile.getName().lastIndexOf('.'));
-        	
-        	//Use java.util.UUID to create unique file name for uploaded file
-        	/*Version 4 UUIDs are generated from a large random number and do 
-    		 *not include the MAC address. The implementation of java.util.UUID
-    		 * creates version 4 UUIDs.
-    		 * There are 122 significant bits in a type 4 UUID. 2^122 is a *very* 
-    		 * large number. Assuming a random distribution of these bits, the 
-    		 * probability of collission is *very* low.
-    		 */
-        	this._name = new UUID(20,122).randomUUID().toString() + ext;
-        	
-        	File f = new File(dir, this._name );
-        	f.createNewFile();
-        	log.debug("Writing byte[] to file: " + f.getCanonicalPath());
-        	FileOutputStream fos = new FileOutputStream(f);
-        	fos.write(_upFile.getBytes());
-        	fos.flush();
-        	fos.close();
-        	log.debug("Writing byte[] to file: DONE");
-        	
-        	//create an index entry mapping the logical to the physical file name
-        	this.setIndexFileEntryName(this._name,this.originalName);
-        	
-        } catch (IOException e) {e.printStackTrace(); return "error-upload";}
-        
-        log.debug("Uploading DONE");
+        // Store the original name of the file.
+        originalName = _upFile.getName();
+        // If keeping, submit to the data handler.
+        if( keep ) {
+          try {        	
+            this._name = dh.addBytestream(_upFile.getInputStream(), _upFile.getName());
+          } catch (IOException e) {e.printStackTrace(); return "error-upload";}
+
+        } else {
+           // If not keeping, create a temporary file and store it there.
+            this.tmpFile = DataHandlerImpl.createTemporaryFile();
+            DataHandlerImpl.storeStreamInFile(_upFile.getInputStream(), this.tmpFile);
+            this._name = tmpFile.getAbsolutePath();
+        }
+        log.info("Uploading DONE");
         
         return "success-upload";
     }
-
     
+    
+    /**
+     * @return the _upFile
+     */
+    public UploadedFile getUpFile() {
+        return _upFile;
+    }
+
+    /**
+     * @param file the _upFile to set
+     */
+    public void setUpFile(UploadedFile file) {
+        log.info("Setting uploaded file to: "+file.getName());
+        _upFile = file;
+    }
+    
+    /**
+     * 
+     * @return
+     */
     public boolean isUploaded()
     {
     	if (getUpFile() != null) {    		
@@ -159,72 +138,5 @@ public class FileUploadBean
         //return facesContext.getExternalContext().getApplicationMap().get("fileupload_bytes")!=null;
     }
     
-    /**
-     * checks if index file exists and if not creates it. As for the input/output
-     * files a random number is created, the original fileName is stored within the index property file
-     * @throws IOException 
-     */
-    public Properties getIndex() throws IOException{
-
-    	 //check if dir was created
-    	 File dir = new File(uploadDir);
-         dir.mkdirs();    
-         
-         File f = new File(dir, "index_names.properties");
-         
-         //index does not exist
-         if(!((f.exists())&&(f.canRead()))){
-         	f.createNewFile();
-         }
-         	
-         //read properties
-         Properties properties = new Properties();
-    	 FileInputStream ResourceFile = new FileInputStream(f);
-    	 properties.load(ResourceFile); 
-    	 return properties;
-    }
-    
-    /**
-     * Creates a mapping between the resources's physical file name (random number) and its
-     * original logical name.
-     * @param sFileRandomNumber
-     * @param sFileName
-     */
-    public void setIndexFileEntryName(String sFileRandomNumber, String sFileName){
-    	if((sFileRandomNumber!=null)&&(sFileName!=null)){
-    		try{
-    			Properties props = this.getIndex();
-    			props.put(sFileRandomNumber,sFileName);
-    	    	 File dir = new File(uploadDir);
-    			props.store(new FileOutputStream(new File(dir, "index_names.properties")), null);
-    		}catch(Exception e){
-    			//TODO: loog
-    		}
-    	}
-    }
-    
-    /**
-     * Fetches for a given file (the resource's physical file name on the disk) its
-     * original logical name which is stored within an index.
-     * e.g. ce37d69b-64c0-4476-9040-72512f07bb49.TIF to Test1.TIF
-     * @param sFileRandomNumber the corresponding file name or its logical random number if none is available
-     */
-    public String getIndexFileEntryName(String sFileRandomNumber){
-    	if(sFileRandomNumber!=null){
-			try {
-				Properties props = this.getIndex();
-				if(props.containsKey(sFileRandomNumber)){
-					//return the corresponding name from the index
-	    			return props.getProperty(sFileRandomNumber);
-	    		}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-    	}
-    	//else return the physical file name
-		return sFileRandomNumber;
-    }
-
 }
 

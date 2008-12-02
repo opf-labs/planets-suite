@@ -6,6 +6,7 @@ package eu.planets_project.tb.impl.system;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -48,7 +49,6 @@ import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
 import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Metric;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
@@ -101,6 +101,9 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 			    return;
 			}
 			executable.setExecutableInvoked(true);
+			
+			// FIXME clean this is and make it invoke depending on Experiment Type.
+			
 		try {
 			//set the testbed's output file directory (e.g. tomcat55..)
 			this.setDir();
@@ -238,7 +241,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 			properties.load(ResourceFile); 
 
 		    //Note: sFileDirBase = ifr_server/bin/../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war
-		    String sFileDirBase = properties.getProperty("Jboss.FiledirBase");
+		    String sFileDirBase = BackendProperties.getTBFileDir();
 		    ResourceFile.close();
 
 		    //create a new client bean
@@ -279,15 +282,11 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 						//this item did not produce a valid migration output
 						throw new IOException("Error reading migration output file from file ref for key: "+key);
 					}
-					//get the file's new name (same as it's input file) - input and output should have the same key
-					String newFileName = new File(this.hmInputFiles.get(key)).getName();
-					File fMovedOutput = new File(this.sOutputDir+"/"+newFileName);
 					//now copy its binary data
-					DataHandler dh = new DataHandlerImpl();
-					dh.copy(fMigrationOutput, fMovedOutput);
+					String ref  = dh.addFile(fMigrationOutput);
 					
 					//finally update the returned migration output reference
-					ret.put(key, fMovedOutput.getAbsolutePath());
+					ret.put(key, ref);
 					
 				} catch (IOException e) {
 					//2)no valid output FILE for this input file - no problem
@@ -296,48 +295,12 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 					try{
 						String suriRef = migrationResults.get(key);
 						URI uriRef = new URI(suriRef);
-						byte[] content = downloadBinaryFromURI(uriRef);
 						
-						//now build the outputFile
-						//get the URI's file name. if it has none - use the corresponding input's file name
-						char delimP = '.';
-						char delimS = '/';
-                        int s = suriRef.lastIndexOf(delimS);
-                        int p = suriRef.lastIndexOf(delimP);
-                        String fileType;
-                        String newFileName;
-                        String origFileName;
-                        String mathRandomNr;
-                        String corrInputFileName = new File(this.hmInputFiles.get(key)).getName();
-                        //test if a file name can be extracted
-                        if((s!=-1)&&(p!=-1)){
-                        	origFileName = suriRef.substring(s+1, suriRef.length());
-                        	fileType = suriRef.substring(p,suriRef.length());
-                        	int h = corrInputFileName.indexOf(delimP);
-                        	mathRandomNr = corrInputFileName.substring(0,h);
-                        	//the nex file name is assembled from the corresponding input's file random number
-                        	//and the URI's file type e.g. .docx
-                        	newFileName = mathRandomNr+fileType;
-                            //the original file name received when calling the service is stored in the output index
-                        	DataHandler dh = new DataHandlerImpl();
-                            dh.setOutputFileIndexEntryName(newFileName, origFileName);
-                        }
-                        else{
-                        	//the file's new name will be set to the same as it's corresponding input file - input and output should have the same key
-                        	newFileName = new File(this.hmInputFiles.get(key)).getName();
-                        	
-                        	//in this case no indexFileEntryName is written
-                        }
-                        
                         //write the file's content as read from the stream
-						File fOutput = new File(this.sOutputDir+"/"+newFileName);
-						fos = new FileOutputStream(fOutput);
-						fos.write(content);
-						fos.flush();
-						fos.close();
+                        String newFileName = dh.addByURI(uriRef);
 						
 						//finally update the returned migration output reference
-						ret.put(key, fOutput.getAbsolutePath());
+						ret.put(key, newFileName);
 					}
 					catch(Exception e2){
 						//no problem - we're not able to handle this output
@@ -366,7 +329,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	        properties.load(ResourceFile); 
 	        
 	        //Note: sFileDirBaase = ifr_server/bin/../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war
-	        String sFileDirBase = properties.getProperty("Jboss.FiledirBase");
+	        String sFileDirBase = BackendProperties.getTBFileDir();
 	        sOutputDir = sFileDirBase+properties.getProperty("JBoss.FileOutDir");
 	        
 	        ResourceFile.close();
@@ -444,7 +407,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 			String sBase64value = migrationResults.get(key);
 				
 			//decode the base64 String
-			byte[] b = dh.decodeToByteArray(sBase64value);
+			byte[] b = DataHandlerImpl.decodeToByteArray(sBase64value);
 			try {
 				//get the file's new name (same as it's input file) - input and output should have the same key
 				String sInputFileName = new File(this.hmInputFiles.get(key)).getName();
@@ -453,15 +416,12 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 				int p = sInputFileName.lastIndexOf(delimP);
 				String origInputFileMathNr = sInputFileName.substring(0, p);
 				sOutputFileName = origInputFileMathNr+"."+outputFileType;
-				File fOutputFile = new File(this.sOutputDir+"/"+sOutputFileName);
 				
 				//now copy the byteArray into the file-location
-				dh.copy(b, fOutputFile);
-				//the original file name is written into the output index
-				dh.setOutputFileIndexEntryName(sOutputFileName, sOutputFileName);
+				String ref = dh.addBytearray(b, sOutputFileName);
 				
 				//finally update the returned migration output reference
-				ret.put(key, fOutputFile.getAbsolutePath());
+				ret.put(key, ref);
 				
 			} catch (FileNotFoundException e) {
 				System.out.println(e.toString());
@@ -478,7 +438,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	 * Executable only if the current experiment phase = evaluation
 	 */
 	public void executeAutoEvalServices(Experiment exp) {	
-		
+		log.info("Attempting to execute the Auto Eval services.");
 		//a Planets IF Java Workflow instance (mockup)
 		WorkflowDroidXCDLExtractorComparator evalWorkflow = new WorkflowDroidXCDLExtractorComparator();
 		
@@ -489,7 +449,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 		for(Entry<String,String> dataEntry : data){
 			DataHandler dh = new DataHandlerImpl();
 			try {
-				URI inputFileURI = dh.getHttpFileRef(new File(dataEntry.getKey()), true);
+				URI inputFileURI = dh.getDownloadURI(dataEntry.getKey());
 				//URI outputFileURI = dh.getHttpFileRef(new File(dataEntry.getValue()), false);
 				File fInputFile = new File(dataEntry.getKey());
 				File fOutputFile = new File(dataEntry.getValue());
@@ -503,8 +463,6 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 					this.executeWorkflowAndExtractResults(fileBMGoal, fInputFile, fOutputFile, evalWorkflow);
 				}
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 			}			
 		}
@@ -525,7 +483,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 	 * @param f2 localFile ref output file
 	 */
 	private void executeWorkflowAndExtractResults(BenchmarkGoal bmGoal, File f1, File f2, Workflow evalWorkflow){
-		
+/*		FIXME ANJ Clear this up.
 		//execute the Droid->XCDLExtractor->Comparator workflow
 		EvaluationExecutable evalExecutable = evalWorkflow.execute(f1, f2);
 		
@@ -595,6 +553,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 		else{
 			//in this case autoEval workflow failed (e.g. due to non supported file type) - the user must evaluate by hand
 		}
+		*/
 	}
 	
 

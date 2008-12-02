@@ -36,7 +36,7 @@ public class BackendProperties {
     public static final String EXP_ADMIN_NOINPUTS = "experiment.adminThreshold.noInputs";
 
     //Note: sFileDirBase = ifr_server/bin/../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war
-    String sFileDirBase = properties.getProperty("Jboss.FiledirBase");
+    String sFileDirBase = null;
 
     // Constructor reads the properties.
     public BackendProperties() {
@@ -47,6 +47,24 @@ public class BackendProperties {
         } catch (IOException e) {
             log.error("read BackendResources.properties failed!"+e.toString());
         }
+        // This defines the location of the directory:
+        this.sFileDirBase = System.getProperty("jboss.server.home.dir")+"/"+properties.getProperty("Jboss.FiledirBase");
+    }
+
+    /**
+     * @return
+     */
+    public static String getTBFileDir() {
+        BackendProperties bp = new BackendProperties();
+        return bp.sFileDirBase;
+    }
+
+    /**
+     * @param string
+     * @return
+     */
+    public String getProperty(String key) {
+        return properties.getProperty(key);
     }
 
     /**
@@ -65,7 +83,7 @@ public class BackendProperties {
 
     /**
      * @return the JBOSS_FILEOUTBASE
-     *.
+     */
     public String getJbossFileOutBase() {
         return properties.getProperty(JBOSS_FILEOUTBASE);
     }

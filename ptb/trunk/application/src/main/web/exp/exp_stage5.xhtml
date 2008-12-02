@@ -22,13 +22,29 @@
 		<div id="maincol">
 		<div class="innertubemain">
 
+<h:form>    
+      <table id="expHeaderTable"><tr>
+      <td class="headerText">
+      <h2><h:outputText value="#{res['new_exp.stage5']}"/></h2>
+      </td>
+      <td class="headerButtons">
+      </td>
+      </tr>
+      </table>
+</h:form>
+      
 <h:form>
 	<h:panelGroup rendered="#{ExperimentBean.currentStage==5}">
                    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
-                   		<p>Your experiment has been setup and approved successfully - you may now <b>run the experiment</b>: </p>
-						<h:commandButton value="#{res['exp_stage5.button.run']}"
-						action="#{NewExp_Controller.executeExperiment}"/>
-				 	</h:panelGroup>
+                        <p>Your experiment has been setup and approved successfully - you may now <b>run the experiment</b>: </p>
+                        <h:commandButton value="#{res['exp_stage5.button.run']}"
+                        action="#{NewExp_Controller.executeExperiment}"/>
+                    </h:panelGroup>
+                   <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
+                        <p><br/><br/>If you have made an error, and wish to make further alterations before running your experiment, you can go back to the editing stage:</p>
+                        <h:commandButton value="#{res['button.edit']}"
+                        action="#{NewExp_Controller.unsubmitAndEdit}"/>
+                    </h:panelGroup>
 					<h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.executionRunning}" >
 						<p>
 							Your experiment is currently being executed. Depending on the intensity of your experiment this may take some time.
@@ -85,101 +101,12 @@
 
 		<div id="leftcol">
 
-		<h3 class="leftcol">#{res['new_exp.progress']}</h3>
-		<div class="innertube">
-			<ul class="exp"><h:form>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 1}">
-					<li class="exp"><h:commandLink action="goToStage1"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 1}">
-					<li class="exp_nd">#{res['new_exp.stage1']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 1}">
-					<li class="exp_sel"><h:commandLink action="goToStage1" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage1']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 2}">
-					<li class="exp"><h:commandLink action="goToStage2"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
-					<li class="exp_nd">#{res['new_exp.stage2']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 2}">
-					<li class="exp_sel"><h:commandLink action="goToStage2" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage2']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 3}">
-					<li class="exp"><h:commandLink action="goToStage3"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
-					<li class="exp_nd">#{res['new_exp.stage3']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage ==3}">
-					<li class="exp_sel"><h:commandLink action="goToStage3" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage3']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 4}">
-					<li class="exp"><h:commandLink action="goToStage4"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
-					<li class="exp_nd">#{res['new_exp.stage4']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 4}">
-					<li class="exp_sel"><h:commandLink action="goToStage4" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage4']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 5}">
-					<li class="exp"><h:commandLink action="goToStage5"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
-					<li class="exp_nd">#{res['new_exp.stage5']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 5}">
-					<li class="exp_sel"><h:commandLink action="goToStage5" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage5']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				
-				<h:panelGroup rendered="#{ExperimentBean.currentStage > 6}">
-					<li class="exp"><h:commandLink action="goToStage6"
-								styleClass="exp_done">
-							<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
-					<li class="exp_nd">#{res['new_exp.stage6']}</li>
-				</h:panelGroup>
-				<h:panelGroup rendered="#{ExperimentBean.currentStage == 6}">
-					<li class="exp_sel"><h:commandLink action="goToStage6" styleClass="exp">
-					<t:outputText value="#{res['new_exp.stage6']}" />
-					</h:commandLink></li>
-				</h:panelGroup>
-				</h:form>
-			</ul>											
-		</div>
+        <!-- Include the standard experiment builder sidebar. -->
+        <ui:include src="/WEB-INF/templates/exp_sidebar.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+           <ui:param name="ExperimentPhase" value="5" />
+        </ui:include>
+
 		</div>
 
 	</ui:define>

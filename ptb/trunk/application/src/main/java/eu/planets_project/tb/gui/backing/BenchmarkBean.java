@@ -37,11 +37,6 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
     String typename;
     String scale;
     String category;
-    //indicates if an TBautoEvalServiceTemplate is backing the bm
-    boolean autoEvalServiceAvailable = false;
-    TestbedServiceTemplate autoEvalServiceTemplate;
-    //indicates if metric configuration has been added
-	boolean autoEvalServiceConfigured = false;
     
     public BenchmarkBean() {
     	
@@ -61,7 +56,6 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
         this.typename = this.assignTypename();
         this.scale = "Very Good";
         this.category=bm.getCategory();
-        this.autoEvalServiceConfigured = bm.isAutoEvaluatable();
 	} 
 		
     public boolean getSelected() {
@@ -180,69 +174,7 @@ public class BenchmarkBean extends TreeNodeBase implements Serializable {
 	public void setScale(String scale) {
 		this.scale=scale;
 	}
-	
-	/**
-	 * Indicates if a auto evaluation service is available.
-	 * i.e. imported via the import template gui
-	 * @return
-	 */
-	public boolean isAutoEvalServiceAvailable(){
-		return this.autoEvalServiceAvailable;
-	}
-	
-	/**
-	 * Checking that the provided autoEvalTemplate is an instance of EvaluationTestbedServiceTemplate
-	 * is done by the gui controller. (only there!)
-	 * @param autoEvalTemplate
-	 */
-	public void setAutoEvalService(TestbedServiceTemplate autoEvalTemplate){
-		this.autoEvalServiceTemplate = autoEvalTemplate;
-		if(autoEvalTemplate!=null)
-			this.autoEvalServiceAvailable = true;
-	}
-	
-	public TestbedServiceTemplate getAutoEvalService(){
-		return this.autoEvalServiceTemplate;
-	}
-	
-	public String getAutoEvalServiceUUID(){
-		return this.autoEvalServiceTemplate.getUUID();
-	}
-	
-	public void setAutoEvalServiceUUID(String s){
-		//
-	}
-	
-	public boolean isAutoEvalServiceConfigured(){
-		return this.autoEvalServiceConfigured;
-	}
-	
-	public boolean isWasAutomaticallyEvaluated(){
-		return this.bm.isWasAutomaticallyEvaluated();
-	}
-	
-	/**
-	 * Returns a map of all added metric evaluation configuration for displaying
-	 * the tooltip
-	 * @return
-	 */
-	public Map<String,List<SelectItem>> getAutoEvalDataForToolTip(){
-		Map<String,List<SelectItem>> ret = new HashMap<String,List<SelectItem>>();
-		for(TBEvaluationTypes type:TBEvaluationTypes.values()){
-			List<SelectItem> l = new ArrayList<SelectItem>();
-			int count =0;
-			for(Config c : this.bm.getAutoEvalSettings().getConfig(type)){
-				l.add(new SelectItem(c.getMetric().getName()+c.getMathExpr()+c.getEvalBoundary()));
-				count++;
-			}
-			if(count==0)
-				l.add(new SelectItem("not available, evaluation by hand"));
-			
-			ret.put(type.name(), l);
-		}
-		return ret;
-	}
-	
+		
 	/**
 	 * Checks if a given input (src, tar) value is set according to the
 	 * benchmark goal's type

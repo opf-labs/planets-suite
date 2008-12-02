@@ -8,11 +8,20 @@
     <link rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/ptb-screen.css" type="text/css" media="screen" />
     <link rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/ptb-print.css" type="text/css" media="print" />
     <link rel="icon" href="${facesContext.externalContext.requestContextPath}/graphics/plavicon.png"/>
+    <link rel="stylesheet" href="#{PlanetsSharedBean.sharedFileContext}css/planets-top-nav.css" type="text/css" media="screen" />
 	<title><ui:insert name="title">Placeholder Title</ui:insert></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 
 <body>
+        <ui:include src="#{PlanetsSharedBean.sharedFileBasePath}WEB-INF/templates/planets-header.xhtml">
+                <ui:param name="homeUrl" value="/testbed/"/>
+                <ui:param name="loginUrl" value="/testbed/login-redirect.jsp"/>
+                <ui:param name="logoutUrl" value="/testbed/logout-redirect.jsp"/>
+                <ui:param name="helpUrl" value="/testbed/reader/help.faces"/>
+                <ui:param name="contactUrl" value="mailto:helpdesktb@planets-project.eu"/>
+        </ui:include>
+
         <ui:insert name="header">Placeholder Header</ui:insert>
         
         <c:if test="${page == 'help'}">

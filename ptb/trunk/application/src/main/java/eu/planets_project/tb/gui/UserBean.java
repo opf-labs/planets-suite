@@ -125,27 +125,26 @@ public class UserBean
             // FIXME The Address entity should do this.
             this.address = "";
             
-            if( ! "".equals( u.getAddress().getAddress().trim() ) ) 
+            if( u.getAddress().getAddress() != null && ! "".equals( u.getAddress().getAddress().trim() ) ) 
                 this.address += u.getAddress().getAddress() + ",\n";
             
-            if( ! "".equals( u.getAddress().getCity().trim() ) ) 
+            if( u.getAddress().getCity() != null && ! "".equals( u.getAddress().getCity().trim() ) ) 
                 this.address += u.getAddress().getCity() + ",\n";
             
-            if( ! "".equals( u.getAddress().getProvince().trim() ) ) 
+            if( u.getAddress().getProvince() != null && ! "".equals( u.getAddress().getProvince().trim() ) ) {
                 this.address += u.getAddress().getProvince();
+                if( u.getAddress().getPostalCode() != null && ! "".equals( u.getAddress().getPostalCode().trim() ) )
+                    this.address += " ";
+            }
             
-            if( ! "".equals( u.getAddress().getProvince().trim() ) && 
-                ! "".equals( u.getAddress().getPostalCode().trim() ) ) 
-                this.address += " ";
-            
-            if( ! "".equals( u.getAddress().getPostalCode().trim() ) ) 
+            if( u.getAddress().getPostalCode() != null && ! "".equals( u.getAddress().getPostalCode().trim() ) ) 
                 this.address += u.getAddress().getPostalCode();
             
-            if( ! "".equals( u.getAddress().getProvince().trim() ) || 
-                    ! "".equals( u.getAddress().getPostalCode().trim() ) ) 
+            if( (u.getAddress().getProvince() != null && ! "".equals( u.getAddress().getProvince().trim() )) || 
+                   (u.getAddress().getPostalCode() != null && ! "".equals( u.getAddress().getPostalCode().trim() ) ) ) 
                 this.address += ",\n";
             
-            if( ! "".equals( u.getAddress().getCountry().trim() ) )
+            if( u.getAddress().getCountry() != null && ! "".equals( u.getAddress().getCountry().trim() ) )
                 this.address += u.getAddress().getCountry();
             
             log.debug("User lookup succeeded: Got details for "+u.getFullName());

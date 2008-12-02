@@ -11,8 +11,6 @@ import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.rmi.PortableRemoteObject;
 
-import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
-import eu.planets_project.tb.impl.model.CommentImpl;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
@@ -52,13 +50,18 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 		manager.merge(experiment);
 	}
 
-	public List<Experiment> queryAllExperiments() {
+	@SuppressWarnings("unchecked")
+    public List<Experiment> queryAllExperiments() {
+        log.info("Looking up all experiments.");
+        Exception e = new Exception("All Experiments.");
+        e.printStackTrace();
 		Query query = manager.createQuery("from ExperimentImpl");
 		return query.getResultList();
 	}
 
-	public boolean queryIsExperimentNameUnique(String expName) {
-	    log.debug("Checking uniqueness of exp. name: " + expName );
+	@SuppressWarnings("unchecked")
+    public boolean queryIsExperimentNameUnique(String expName) {
+	    log.info("Checking uniqueness of exp. name: " + expName );
 		Query query = manager.createQuery("SELECT sExpName FROM BasicPropertiesImpl WHERE LOWER(sExpName)=LOWER(:expname)");
 		query.setParameter("expname", expName);
 		List<String> results = (List<String>) query.getResultList();
@@ -71,7 +74,7 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 	@SuppressWarnings("unchecked")
     public List<Experiment> searchAllExperiments( String toFind ) {
         // Not case sensitive, wildcarded:
-        log.debug("Searching for experiments that match: " + toFind );
+        log.info("Searching for experiments that match: " + toFind );
         // TODO Augment this with more fields.
         Query query = manager.createQuery("FROM ExperimentImpl AS e WHERE LOWER(e.expSetup.basicProperties.sExpName) LIKE :toFindLike OR LOWER(e.expSetup.basicProperties.sSummary) LIKE :toFindLike");
         // This should work, but does not.  It is unclear why. the type of the toFind should not be String.
@@ -102,5 +105,88 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
 	{
 		return new javax.naming.InitialContext();
 	}
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote#getPagedExperiments(int, int, java.lang.String, boolean)
+     */
+    @SuppressWarnings("unchecked")
+    public List<Experiment> getPagedExperiments(int firstRow, int numberOfRows,
+            String sortField, boolean descending) {
+        log.info("Searching for experiments that match: " +firstRow+","+numberOfRows+" : "+sortField+" : "+descending );
+        // Execute the query:
+        Query query = manager.createQuery("FROM ExperimentImpl AS e " + createOrderBy(sortField, descending));
+        query.setFirstResult(firstRow);
+        query.setMaxResults(numberOfRows);
+        List<Experiment> resultList = query.getResultList();
+        log.info("Search complete.");
+        return resultList;
+        
+        /*
+        String propertyName;
+        if( "experimenter".equals(sortField) ) {
+//            this.findExperiment(1).getExperimentSetup().getBasicProperties().getExperimenter();
+            propertyName = "expSetup.basicProperties.sExpName";
+        } else {
+//          this.findExperiment(1).getExperimentSetup().getBasicProperties().getExperimentName();
+            propertyName = "expSetup.basicProperties.sExpName";
+        }
+        Order order;
+        if( descending ) {
+        //    query.setParameter("deasc", "descending");
+            order = Order.asc(propertyName);
+        } else {
+        //    query.setParameter("deasc", "ascending");
+            order = Order.desc(propertyName);
+        }
+        
+        Session hibernateSession = null;
+        if (manager.getDelegate() instanceof org.hibernate.ejb.HibernateEntityManager) {
+            hibernateSession = ((org.hibernate.ejb.HibernateEntityManager) manager
+                    .getDelegate()).getSession();
+        } else {
+            hibernateSession = (org.hibernate.Session) manager.getDelegate();
+        }
+
+        return hibernateSession.createCriteria(ExperimentImpl.class)
+        .addOrder( order )
+        .setFirstResult(firstRow)
+        .setMaxResults(numberOfRows)
+        .list();
+        */
+    }
+    
+    private String createOrderBy( String sortField, boolean descending ) {
+        String orderby, deasc;
+        if( "experimenter".equals(sortField) ) {
+            orderby = "e.expSetup.basicProperties.sExperimenterID";
+        } else if( "type".equals(sortField) ) {
+            orderby = "e.expSetup.basicProperties.sExperimentApproach";
+        } else if( "startDate".equals(sortField) ) {
+            orderby = "e.startDate";
+        } else if( "execDate".equals(sortField) ) {
+            orderby = "e.executable.execEndDate";
+//        } else if( "currentStage".equals(sortField) ) {  // FIXME Current stage NOT STORED IN DATABASE!
+//            orderby = "e.???";
+        } else {
+            orderby = "e.expSetup.basicProperties.sExpName";
+        }
+        if( descending ) {
+          deasc = "DESC";
+        } else {
+          deasc = "ASC";
+        }
+        return "ORDER BY "+orderby+" "+deasc;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote#getNumberOfExperiments()
+     */
+    public int getNumberOfExperiments() {
+        log.info("Counting the experiments...");
+        int ne = ( (Long) manager.createQuery("SELECT COUNT(e.id) FROM ExperimentImpl AS e").getSingleResult() ).intValue();
+        log.info("There are "+ne+" experiments.");
+        return ne;
+    }
 	
+    
 }

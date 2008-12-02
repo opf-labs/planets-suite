@@ -1,6 +1,7 @@
 package eu.planets_project.tb.impl.services.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,7 +46,11 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 	 */
 	public ServiceRequestBuilderImpl(String xmlRequestTemplate, String localFileRef){
 		this.xmlRequestTemplate = xmlRequestTemplate;
-		this.hmLocalFileRefs.put("0", this.convertToAbsoluteFileRef(localFileRef));
+		try {
+            this.hmLocalFileRefs.put("0", this.convertToAbsoluteFileRef(localFileRef));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 	}
 	
 	/* (non-Javadoc)
@@ -178,7 +183,7 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 	 //3 encode the file to base64
 		String sBase64File = "";
 		try {
-			sBase64File = dh.encodeToBase64ByteArrayString(new File(sFileRef));
+			sBase64File = DataHandlerImpl.encodeToBase64ByteArrayString(new File(sFileRef));
 		} catch (IOException e) {
 			log.error("Failure in encoding the provided fileReference "+sFileRef+" to a Base64ByteArray");
 		}
@@ -251,7 +256,11 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 		while(sKeys.hasNext()){
 			String key = sKeys.next();
 			String fileRef = refs.get(key);
-			ret.put(key, convertToAbsoluteFileRef(fileRef));
+			try {
+                ret.put(key, convertToAbsoluteFileRef(fileRef));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
 		}
 		return ret;
 	}
@@ -262,9 +271,10 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 	 * e.g. ../data/file1.doc --> C:/input/data/file1.doc
 	 * @param localFileRef
 	 * @return
+	 * @throws FileNotFoundException 
 	 */
-	private String convertToAbsoluteFileRef(String localFileRef){
-		File f = new File(localFileRef);
+	private String convertToAbsoluteFileRef(String localFileRef) throws FileNotFoundException{
+		File f = dh.getFile(localFileRef);
 		if(!f.canRead()){
 			log.error("error retrieving file ref "+localFileRef+" to absolute path");
 			//in this case add the non-absolut path

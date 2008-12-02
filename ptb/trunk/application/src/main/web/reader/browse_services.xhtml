@@ -19,11 +19,6 @@
 		<ui:include src="/WEB-INF/templates/header.xhtml">
 			<ui:param name="page" value="browse_services"/>
 		</ui:include>
-		
-		<!-- css popup javascript -->
-		<script type="text/javascript"
-			src="${facesContext.externalContext.requestContextPath}/js/csspopup/csspopup.js">
-		</script>
 	</ui:define>
 
 	<ui:define name="content">
@@ -32,6 +27,47 @@
 	<div id="maincol">
 	<div class="innertubemain">
 	<h:form>
+  
+      <rich:panel style="padding:0; min-height: 400px;" headerClass="outpanelHeader">
+        <f:facet name="header">
+            Service Browser
+        </f:facet>
+        <h:panelGrid columns="2" class="sbtTable" columnClasses="sbtcol1, sbtcol2">
+        
+    <h:panelGroup>
+    <rich:tree nodeSelectListener="#{ServiceBrowser.processSelection}" 
+        reRender="selectedService" ajaxSubmitSelection="true"  switchType="ajax" 
+        value="#{ServiceBrowser.treeNode}" var="item" nodeFace="#{item.type}" toggleOnClick="true">
+        
+      <h:outputText value="#{item.type}"/>
+      
+      <rich:treeNode type="category">
+        <h:outputText value="#{item.category}"/>
+      </rich:treeNode>
+      <rich:treeNode type="service" iconLeaf="/graphics/toolbar_services.gif" icon="/graphics/toolbar_services.gif">
+        <h:outputText value="#{item.service.name}"/>
+      </rich:treeNode>
+      
+    </rich:tree>
+    </h:panelGroup>
+                
+    <h:panelGroup id="selectedService">
+        <h2><h:outputText escape="false" value="#{ServiceBrowser.nodeTitle}"  /><h:outputLink value="#{ServiceBrowser.selectedService.endpoint}" target="_new"> [wsdl<t:graphicImage value="/graphics/external-link.png"/>]</h:outputLink></h2>
+        <h:outputText escape="false" value="#{ServiceBrowser.selectedService.type}"  /><br/>
+        <h:outputText escape="false" value="#{ServiceBrowser.selectedService.dateOfUseString}"  /><br/>
+        <br/>
+        <h:outputText escape="false" value="#{ServiceBrowser.selectedService.serviceDescription.description}"  /><br/>
+        <h:outputText escape="false" value="#{ServiceBrowser.selectedService.serviceDescription.author}"  /><br/>
+        <h:outputText escape="false" value="#{ServiceBrowser.selectedService.serviceDescription.serviceProvider}"  /><br/>
+        
+        <a4j:status startStyleClass="statusSearching" stopStyleClass="statusDone"/>
+        
+    </h:panelGroup>
+    
+        </h:panelGrid>
+    </rich:panel>
+
+    
 	<div class="servicepane">
 	<div class="serviceoptions">
 		<p>You are currently viewing a list of <b>all available services</b> that have been registered within the Testbed application and therefore can be included within a new experiment.
@@ -39,7 +75,7 @@
 		<br/>
 		click here to<h:commandLink action="#{ServiceTemplateBrowser.reloadDataFromDB}" value=" refresh the table"/><br/>
 	</div>
-    
+  
     <ui:include src="/WEB-INF/templates/browse_servicetree_template.xhtml">
     	<ui:param name="renderList" value="true" />
     </ui:include>

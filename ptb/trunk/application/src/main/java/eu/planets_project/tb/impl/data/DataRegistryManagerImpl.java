@@ -4,19 +4,7 @@
 package eu.planets_project.tb.impl.data;
 
 import java.net.URI;
-import java.util.Properties;
-import java.util.ArrayList;
-import java.io.File;
-import java.io.FilenameFilter;
 
-import org.w3c.dom.Document;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
 import javax.xml.soap.SOAPException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;

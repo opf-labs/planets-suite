@@ -84,40 +84,5 @@ public interface BenchmarkGoal {
 	 */
 	public boolean checkValueValid(String sValue);
 	
-	/**
-	 * Indicates if this BMGoal is backed by a valid "metric - TB evaluation mapping". i.e. an auto-evaluation servicetemplate
-	 * and a configuration on how to extract the data for the given benchmark goal 
-	 * @return
-	 */
-	public boolean isAutoEvaluatable();
-	
-	/**
-	 * Containing (for this benchmark goal) a list of metrics, boundary values, etc.
-	 * on how to evaluate the different TB evaluation criteria (e.g. 'very good') as well
-	 * as the EvaluationTestbedServiceTemplate with all the Service's information actually invoking it.
-	 * @param settings
-	 */
-	public void setAutoEvalSettings(AutoEvaluationSettings settings);
-	public AutoEvaluationSettings getAutoEvalSettings();
-	public void removeAutoEvalSettings();
-
-	
-	/**
-	 * Contains the auto eval service extraction results, i.e. metadata on execution time,
-	 * if execution has been started, is completed, the XCDL files for source and target files
-	 * the comparator results, etc.
-	 * @param results
-	 */
-	public void setAutoEvaluationExecutable(EvaluationExecutable results);
-	public EvaluationExecutable getAutoEvaluationExecutable();
-	public void removeAutoEvaluationExecutable();
-	
-	/**
-	 * A flag giving an indication if the BMGoal was already successfully
-	 * validated with an auto evaluation workflow or service
-	 * @param b
-	 */
-	public void setWasAutomaticallyEvaluated(boolean b);
-	public boolean isWasAutomaticallyEvaluated();
 
 }

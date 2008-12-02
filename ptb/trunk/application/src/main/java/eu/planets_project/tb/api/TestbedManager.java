@@ -38,6 +38,7 @@ public interface TestbedManager {
     public Collection<Experiment> getAllExperimentsOfType(String sExperimentTypeID);
     public Collection<Experiment> getAllExperimentsAtPhase(int phaseID);
     public Collection<Experiment> getAllExperimentsAwaitingApproval();
+    public List<Experiment> getPagedExperiments( int firstRow, int numberOfRows, String sortField, boolean descending );
 	public Set<Long> getAllExperimentIDs();
 	public boolean containsExperiment(long expID);
 	public boolean isExperimentNameUnique(String sExpName);
