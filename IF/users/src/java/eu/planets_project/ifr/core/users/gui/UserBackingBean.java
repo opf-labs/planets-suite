@@ -3,9 +3,7 @@ package eu.planets_project.ifr.core.users.gui;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -72,7 +70,7 @@ public class UserBackingBean {
 			this.loadUser(username);
 			// If it's an admin user we may need all of the roles
 			if (this.getIsAdmin()) {
-				this.allRoles = userManager.getAllRoles();
+				this.allRoles = roleManager.getAllRoles();
 				this.availableRoles.clear();
 				for (Role role : this.allRoles) {
 					this.availableRoles.add(new SelectItem(role.getName(), role.getName()));
