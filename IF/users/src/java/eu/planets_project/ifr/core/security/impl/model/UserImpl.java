@@ -76,19 +76,22 @@ public class UserImpl implements User, Serializable {
     private boolean accountLocked;
     private boolean credentialsExpired;
     private boolean appliesAsProvider = false;
-    private String firstrole;
-
+    /**
+     * Default no arg constructor
+     */
     public UserImpl() {
-    	log.info("UserImpl::UserImpl()");
-    }
-
-    public UserImpl(String username) {
-    	log.info("UserImpl::UserImpl(String username)");
-        this.username = username;
     }
 
     /**
-     * @return
+     * Basic constructor sets username only
+     * @param username used to set username property
+     */
+    public UserImpl(String username) {
+       this.username = username;
+    }
+
+    /**
+     * @return the id of the user, its unique key
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -98,7 +101,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @return the java.lang.Integer version of the user
      */
     @Version
     public Integer getVersion() {
@@ -106,7 +109,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @return the username as a java.lang.String
      */
     @Column(name = "username", length = 50, nullable = false, unique = true)
     public String getUsername() {
@@ -114,7 +117,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @return the password as java.lang.String
      */
     @Column(name = "password", nullable = false)
     public String getPassword() {
@@ -284,7 +287,6 @@ public class UserImpl implements User, Serializable {
      * @param firstrole
      */
     public void firstRole(String firstrole) {
-        this.firstrole = firstrole;
     }
 
     /**
@@ -298,7 +300,7 @@ public class UserImpl implements User, Serializable {
      * @param role
      */
     public void removeRole(Role role) {
-        getRoles().remove(role);
+        roles.remove(role);
     }
 
     /**
@@ -382,7 +384,6 @@ public class UserImpl implements User, Serializable {
      * @param address
      */
     public void setAddress(Address address) {
-    	log.info("UserImpl.setAddress(Address address)");
     	this.address = new AddressImpl(address);
     }
 
