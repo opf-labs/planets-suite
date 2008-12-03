@@ -1,10 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
     xmlns:t="http://myfaces.apache.org/tomahawk"
-    xmlns:c="http://java.sun.com/jstl/core">
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
@@ -33,12 +35,15 @@
       </table>
 </h:form>
       
-<h:form>
+<a4j:form id="runExperimentForm">
+
 	<h:panelGroup rendered="#{ExperimentBean.currentStage==5}">
                    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
                         <p>Your experiment has been setup and approved successfully - you may now <b>run the experiment</b>: </p>
-                        <h:commandButton value="#{res['exp_stage5.button.run']}"
-                        action="#{NewExp_Controller.executeExperiment}"/>
+                <a4j:commandButton id="executeExperimentButton" value="#{res['exp_stage5.button.run']}" 
+                action="#{NewExp_Controller.executeExperiment}" disabled="#{NewExp_Controller.experimentExecutable.executionRunning}">
+                    <a4j:support event="onclick" reRender="runExperimentForm" />
+                </a4j:commandButton>                        
                     </h:panelGroup>
                    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
                         <p><br/><br/>If you have made an error, and wish to make further alterations before running your experiment, you can go back to the editing stage:</p>
@@ -68,12 +73,17 @@
 				</p>
 				</div>
 				<p>
-				<h:commandButton value="#{res['exp_stage5.button.proceed']}"
-				action="#{NewExp_Controller.proceedToEvaluation}" rendered="#{ExperimentBean.currentStage==5}"/>
+                <h:commandButton value="#{res['button.edit']}"
+                action="#{NewExp_Controller.commandResetAfterFailure}" /> <!-- rendered="#{ ! NewExp_Controller.experimentExecutable.executionSuccess}" -->
+                <h:commandButton value="#{res['exp_stage5.button.proceed']}"
+                action="#{NewExp_Controller.proceedToEvaluation}"/>
 				</p>   
 	</h:panelGroup>   
+
+    <a4j:poll id="poll" interval="500" enabled="#{NewExp_Controller.experimentExecutable.executionRunning}"
+                reRender="runExperimentForm" />
     
-</h:form>
+</a4j:form>
 		<p>&#160;</p>
 		<p>&#160;</p>
 

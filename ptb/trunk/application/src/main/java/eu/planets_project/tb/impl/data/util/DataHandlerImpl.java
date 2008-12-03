@@ -548,8 +548,9 @@ public class DataHandlerImpl implements DataHandler {
         f.createNewFile();
         FileOutputStream fos = new FileOutputStream(f);
         byte[] b = new byte[1024];
-        while( in.read(b) != -1) {
-            fos.write(b);
+        int read_size;
+        while( (read_size = in.read(b)) != -1) {
+            fos.write(b, 0, read_size);
             fos.flush();
         }
         fos.close();

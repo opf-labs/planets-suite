@@ -23,7 +23,7 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.validate.BasicValidateOneBinary;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.view.CreateView;
-import eu.planets_project.tb.impl.services.wrappers.BasicMigrateWrapper;
+import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
 
 /**
  * This class provides some utilities for those who wish to consume Planets Service.
@@ -76,7 +76,7 @@ public class DiscoveryUtils {
             
             if( getServiceWrapperClass(se.getQName()).equals(Migrate.class)) {
                 log.info("Wrapping up to Migrate: "+wsdlLocation);
-                return (T) new BasicMigrateWrapper(se);
+                return (T) new MigrateWrapper(se);
                 
             } else if( getServiceWrapperClass(se.getQName()).equals(Identify.class)) {
                 log.info("Wrapping up to Identify: "+wsdlLocation);

@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl.services.wrappers;
 
 import java.net.URI;
+import java.net.URL;
 
 import javax.xml.ws.Service;
 
@@ -29,22 +30,35 @@ import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
  * 
  */
 @SuppressWarnings("deprecation")
-public class BasicMigrateWrapper implements Migrate {
+public class MigrateWrapper implements Migrate {
     /** */
-    private static final Log log = LogFactory.getLog(BasicMigrateWrapper.class);
+    private static final Log log = LogFactory.getLog(MigrateWrapper.class);
 
     PlanetsServiceExplorer pse = null;
     Service service = null;
     Migrate m = null;
     BasicMigrateOneBinary bmob = null;
+    
+    /**
+     * @param wsdl The WSDL to wrap as a service.
+     */
+    public MigrateWrapper( URL wsdl ) {
+        this.pse = new PlanetsServiceExplorer(wsdl);
+        this.init();
+    }
 
     /**
-     * Construct based on a service explorer.
-     * 
-     * @param pse
+     * @param pse Construct based on a service explorer.
      */
-    public BasicMigrateWrapper(PlanetsServiceExplorer pse) {
+    public MigrateWrapper(PlanetsServiceExplorer pse) {
         this.pse = pse;
+        this.init();
+    }
+
+    /**
+     * 
+     */
+    private void init() {
         service = Service.create(pse.getWsdlLocation(), pse.getQName());
         try {
             if (pse.getQName().equals(BasicMigrateOneBinary.QNAME)) {

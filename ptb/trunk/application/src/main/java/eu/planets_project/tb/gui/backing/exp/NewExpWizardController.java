@@ -1211,7 +1211,7 @@ public class NewExpWizardController {
 	   public String executeExperiment(){
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
 	        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-	    	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
+	    	Experiment exp = expBean.getExperiment();
 	    	try {
 	    		//call invocation on the experiment's executable
 	    		testbedMan.executeExperiment(exp);
@@ -1231,7 +1231,24 @@ public class NewExpWizardController {
 	    		if( log.isDebugEnabled() ) e.printStackTrace();
 	    		return null;
 	    	}   	
-	    }
+	  }
+	  
+	  /*
+	   * This is a debug option, allowing experiments to be reset and re-run if they fail.
+	   */
+	  public String commandResetAfterFailure() {
+          TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+          ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+          Experiment exp = expBean.getExperiment();
+          exp.getExperimentExecutable().setExecutableInvoked(false);
+          exp.getExperimentExecutable().setExecutionCompleted(false);
+          exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
+          exp.getExperimentEvaluation().setState(Experiment.STATE_NOT_STARTED);       
+          expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);
+          // Save these changes:
+          testbedMan.updateExperiment(exp);
+	      return "success";
+	  }
 		 
 	 /**
 	  * controller logic for handling the automated evaluation of an experiment

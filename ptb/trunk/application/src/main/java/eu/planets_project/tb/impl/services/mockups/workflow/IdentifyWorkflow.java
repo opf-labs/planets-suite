@@ -17,6 +17,7 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
 /**
  * This is the class that carries the code specific to invoking an Identify experiment.
@@ -78,8 +79,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     
     /** Parameters for the workflow execution etc */
     HashMap<String, String> parameters = new HashMap<String,String>();
-    /** The stub for the identifier service. */
-    Service service = null;
+    /** The holder for the identifier service. */
     Identify identifier = null;
 
     /* ------------------------------------------------------------- */
@@ -98,8 +98,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
             throws Exception {
         this.parameters = parameters;
         // Attempt to connect to the Identify service.
-        service = Service.create(new URL(this.parameters.get(PARAM_SERVICE)), Identify.QNAME);
-        identifier = service.getPort(Identify.class);
+        identifier = new IdentifyWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
     }
 
     /* (non-Javadoc)
@@ -123,7 +122,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         // Now prepare the result:
         WorkflowResult wr = null;
         HashMap<String,MeasurementImpl> measurements = (HashMap<String, MeasurementImpl>) observables.clone();
-        if( success ) {
+        if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
             URI format_uri = identify.getTypes().get(0);
             
             observables.get(IDENTIFY_SUCCESS).setValue("true");
