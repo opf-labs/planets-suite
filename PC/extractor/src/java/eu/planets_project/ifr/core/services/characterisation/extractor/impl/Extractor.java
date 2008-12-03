@@ -1,7 +1,9 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -13,12 +15,16 @@ import javax.xml.ws.BindingType;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.FileFormatProperty;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.utils.ServiceUtils;
 
 
 @Stateless()
@@ -26,59 +32,114 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @Remote(Characterise.class)
 
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+//@MTOM
+//@BindingType(value=SOAPBinding.SOAP12HTTP_MTOM_BINDING)
+//@StreamingAttachment(parseEagerly=true, memoryThreshold=5000000L)
 @WebService(
         name = Extractor.NAME, 
         serviceName = Characterise.NAME,
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.characterise.Characterise")
+
 public class Extractor implements Characterise {
 	
 	public static final String NAME = "Extractor";
 	public static final String OUT_DIR = NAME.toUpperCase() + "_OUT" + File.separator;
 	public static final PlanetsLogger LOG = PlanetsLogger.getLogger(Extractor.class);
+	public static final int MAX_FILE_SIZE = 10240;
 
 	public CharacteriseResult characterise(DigitalObject digitalObject,
 			String optionalFormatXCEL, Parameters parameters) {
 		
+		DigitalObject resultDigOb = null;
+		ServiceReport sReport = new ServiceReport();
+		CharacteriseResult characteriseResult = null;
+		
 		CoreExtractor coreExtractor = new CoreExtractor(Extractor.NAME, LOG);
 		
-		byte[] inputImageData = null;
+		byte[] inputData = null;
 		
 		if(digitalObject.getContent().isByValue()) {
-			inputImageData = digitalObject.getContent().getValue();
+			inputData = digitalObject.getContent().getValue();
 		}
 		else {
-			inputImageData = FileUtils.writeInputStreamToBinary(digitalObject.getContent().read());
+			inputData = FileUtils.writeInputStreamToBinary(digitalObject.getContent().read());
 		}
 		
 		byte[] result = null;
 		
 		if(optionalFormatXCEL!=null) {
-			result = coreExtractor.extractXCDL(inputImageData, optionalFormatXCEL.getBytes(), parameters);
+			result = coreExtractor.extractXCDL(inputData, optionalFormatXCEL.getBytes(), parameters);
 		}
 		else {
-			result = coreExtractor.extractXCDL(inputImageData, null, parameters);
+			result = coreExtractor.extractXCDL(inputData, null, parameters);
 		}
 		
-//		DataRegistryAccessHelper storage = new DataRegistryAccessHelper();
+		int sizeInKB = 0;
 		
-//		storage.write(result, "extractor.xcdl", OUT_DIR);
+		if(result!=null) {
+			sizeInKB = result.length/1024;
+			
+			// output Files smaller than 10Mb
+			if(sizeInKB < MAX_FILE_SIZE) {
+				resultDigOb = new DigitalObject.Builder(Content.byValue(result)).build();
+				sReport.setInfo("Success!!! Extracted XCDL from ");
+				sReport.setErrorState(0);
+				characteriseResult = new CharacteriseResult(resultDigOb, sReport);
+			}
+			else {
+				File tmpResult = FileUtils.getTempFile(result, "tmpResult", "tmp"); 
+				try {
+					resultDigOb = new DigitalObject.Builder(Content.byReference(tmpResult.toURL())).build();
+					sReport.setInfo("Success!!!");
+					sReport.setErrorState(0);
+					characteriseResult = new CharacteriseResult(resultDigOb, sReport);
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else {
+			this.returnWithErrorMessage("ERROR: No XCDL created!", null);
+		}
 		
-		
-//		DigitalObject resultDigOb = new DigitalObject.Builder(Content.byReference((resultFileBlob)).build();
-		
-		
-		return null;
+		return characteriseResult;
 	}
+	
+	
+	private CharacteriseResult returnWithErrorMessage(String message, Exception e ) {
+        if( e == null ) {
+            return new CharacteriseResult(null, ServiceUtils.createErrorReport(message));
+        } else {
+            return new CharacteriseResult(null, ServiceUtils.createExceptionErrorReport(message, e));
+        }
+    }
+	
 
 	public ServiceDescription describe() {
-		// TODO Auto-generated method stub
-		return null;
+		ServiceDescription.Builder sd = new ServiceDescription.Builder(Extractor.NAME, Characterise.class.getCanonicalName());
+        sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
+        sd.description("A wrapper for the Extractor tool. The tool returns the extracted properties\n" +
+        		"in a XCDL file");        
+        sd.classname(this.getClass().getCanonicalName());
+        sd.version("0.1");
+        
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        Parameter normDataFlag = new Parameter("disableNormDataInXCDL", "-n");
+        normDataFlag.setDescription("Allowed values: -n");
+        parameterList.add(normDataFlag);
+        
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        
+        sd.parameters(parameters);
+        
+		return sd.build();
 	}
 
-	public List<Property> listProperties(URI formatURI) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<FileFormatProperty> listProperties(URI formatURI) {
+		return FPMParsingTool.getFileFormatProperties(formatURI).getProperties();
 	}
 
 }

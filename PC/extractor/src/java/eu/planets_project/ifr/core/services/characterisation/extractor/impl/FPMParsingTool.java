@@ -2,10 +2,9 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +33,130 @@ public class FPMParsingTool {
 	public static String FPMTOOL_HOME = System.getenv("FPMTOOL_HOME") + File.separator;
 	public static String FPM_TOOL = FPMTOOL_HOME + "fpmTool";
 	public static BufferedWriter out;
+	
+	
+	
+	public static FileFormatProperties getFileFormatProperties(URI formatURI) {
+		String pronomID = formatURI.toASCIIString();
+		
+		if(!pronomID.contains("fmt/")) {
+			System.err.println(pronomID + " is not a valid PRONOM ID!");
+			return null;
+		}
+		else {
+			if(pronomID.contains("x-fmt/")) {
+				pronomID = pronomID.substring(pronomID.indexOf("x-fmt/"));
+			}
+			else {
+				pronomID = pronomID.substring(pronomID.indexOf("fmt/"));
+			}
+		}
+		
+		String fileNamePronomID = pronomID.replace("/", "_"); 
+		
+		String inputFpmFilePath = "PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".fpm";  
+		
+		File inputFpmFile = new File(inputFpmFilePath);
+		
+		SAXBuilder saxBuilder = new SAXBuilder();
+		FileFormatProperties fileFormatProperties = new FileFormatProperties();
+		
+		Document orgDoc;
+		try {
+//			List <FileFormatProperty> fileFormatProperties = new ArrayList<FileFormatProperty>();
+			
+			orgDoc = saxBuilder.build(inputFpmFile);
+		
+			Element orgRoot = orgDoc.getRootElement();
+			
+			List <Element> content = orgRoot.getChildren();
+			
+			FileFormatProperty formatProperty = null;
+//			List <Metric> metrics = null;
+			Metrics metrics = null;
+			
+			Element format = orgRoot.getChild("format");
+			
+			String puid = format.getAttributeValue("puid");
+			
+			for (Element element : content) {
+				List <Element> level1Elements = element.getChildren();
+				
+				for (Element propertyTopLevel : level1Elements) {
+					List <Element> level2Elements = propertyTopLevel.getChildren();
+					formatProperty = new FileFormatProperty();
+					
+					for (Element property : level2Elements) {
+						
+						if(property.getName().equalsIgnoreCase("id")) {
+							formatProperty.setId(property.getTextTrim());
+							continue;
+						}
+						
+						if(property.getName().equalsIgnoreCase("name")) {
+							formatProperty.setName(property.getTextTrim());
+							continue;
+						}
+						
+						if(property.getName().equalsIgnoreCase("description")) {
+							formatProperty.setDescription(property.getTextTrim());
+							continue;
+						}
+						
+						if(property.getName().equalsIgnoreCase("unit")) {
+							formatProperty.setUnit(property.getTextTrim());
+							continue;
+						}
+						
+						if(property.getName().equalsIgnoreCase("type")) {
+							formatProperty.setType(property.getTextTrim());
+							continue;
+						}
+						
+						if(property.getName().equalsIgnoreCase("metrics")) {
+							metrics = new Metrics();
+							List <Element> level3Elements = property.getChildren();
+							
+							for (Element m : level3Elements) {
+								List <Element> level4Elements = m.getChildren();
+								Metric pMetric = new Metric();
+								
+								for (Element metric : level4Elements) {
+									if(metric.getName().equalsIgnoreCase("mId")) {
+										pMetric.setId(metric.getTextTrim());
+										continue;
+									}
+									
+									if(metric.getName().equalsIgnoreCase("mName")) {
+										pMetric.setName(metric.getTextTrim());
+										continue;
+									}
+									
+									if(metric.getName().equalsIgnoreCase("mDescription")) {
+										pMetric.setDescription(metric.getTextTrim());
+										continue;
+									}
+								}
+								metrics.add(pMetric);
+							}
+						}
+					}
+					
+					formatProperty.setMetrics(metrics);
+					fileFormatProperties.add(formatProperty);
+					metrics = null;
+				}
+			}
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		boolean deleted = fpmTempFile.delete();
+		return fileFormatProperties;
+	}
 	
 	
 	public static boolean generatePropertiesFile (String pronomID) {
@@ -74,10 +197,10 @@ public class FPMParsingTool {
 		
 		String fileNamePronomID = pronomID.substring(0, pronomID.indexOf(":")).replace("/", "_"); 
 		
-		String newOutputFilePath = "PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".temp";  
+		String newOutputFilePath = "PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".fpm";  
 		
 		File fpmTempFile = ByteArrayHelper.writeToDestFile(resultFPMArray, newOutputFilePath);
-		File formattedFPM = new File("PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".fpm");
+		File formattedFPM = new File("PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".xml");
 		
 		SAXBuilder saxBuilder = new SAXBuilder();
 		XMLOutputter xmlOut = new XMLOutputter();
@@ -232,7 +355,7 @@ public class FPMParsingTool {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		boolean deleted = fpmTempFile.delete();
+//		boolean deleted = fpmTempFile.delete();
 		success = true;
 		System.out.println("***********************************************************");
 		try {
