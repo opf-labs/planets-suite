@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
@@ -41,7 +42,9 @@ import eu.planets_project.services.utils.ServiceUtils;
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.characterise.Characterise")
 
-public class Extractor implements Characterise {
+public class Extractor implements Characterise, Serializable {
+	
+	private static final long serialVersionUID = -8537596616209516979L;
 	
 	public static final String NAME = "Extractor";
 	public static final String OUT_DIR = NAME.toUpperCase() + "_OUT" + File.separator;
@@ -127,7 +130,7 @@ public class Extractor implements Characterise {
         
         List<Parameter> parameterList = new ArrayList<Parameter>();
         Parameter normDataFlag = new Parameter("disableNormDataInXCDL", "-n");
-        normDataFlag.setDescription("Allowed values: -n");
+        normDataFlag.setDescription("Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
         parameterList.add(normDataFlag);
         
         Parameters parameters = new Parameters();
@@ -139,7 +142,7 @@ public class Extractor implements Characterise {
 	}
 
 	public List<FileFormatProperty> listProperties(URI formatURI) {
-		return FPMParsingTool.getFileFormatProperties(formatURI).getProperties();
+		return ExtractorPropertiesLister.getFileFormatProperties(formatURI).getProperties();
 	}
 
 }

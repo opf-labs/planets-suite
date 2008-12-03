@@ -36,20 +36,20 @@ public final class ExtractorTest {
     /***/
     private static final String WSDL = "/pserv-pc-extractor/Extractor?wsdl";
     /***/
-    private String xcelString;
+    private static String xcelString;
     /***/
-    private File outputXcdl;
+    private static File outputXcdl;
     /***/
-    private byte[] binary;
+    private static byte[] binary;
 
     /**
      * Set up the testing environment: create files and directories for testing.
      */
     @BeforeClass
-    public void testCharacterise() {
-    	System.setProperty("pserv.test.context", "Standalone");
-//        System.setProperty("pserv.test.host", "localhost");
-//        System.setProperty("pserv.test.port", "8080");
+    public static void testCharacterise() {
+    	System.setProperty("pserv.test.context", "server");
+        System.setProperty("pserv.test.host", "localhost");
+        System.setProperty("pserv.test.port", "8080");
         
         File inputImage = new File(ExtractorUnitHelper.SAMPLE_FILE);
         File inputXcel = new File(ExtractorUnitHelper.SAMPLE_XCEL);
@@ -82,10 +82,10 @@ public final class ExtractorTest {
 
     /** Test using a local instance. 
      * @throws MalformedURLException */
-//    @Test
-//    public void testLocal() throws MalformedURLException {
-//        test(new Extractor());
-//    }
+    @Test
+    public void testLocal() throws MalformedURLException {
+        test(new Extractor());
+    }
 
     /** Test using the web service running on local host. 
      * @throws MalformedURLException */

@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
@@ -15,16 +17,19 @@ import eu.planets_project.services.utils.ProcessRunner;
 public class CoreExtractor {
 
     private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
-    private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
+//    private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
+//    private static final String SYSTEM_TEMP = null;
     private static String EXTRACTOR_WORK = null;
     private static String EXTRACTOR_IN = "INPUT";
     private static String EXTRACTOR_OUT = "OUTPUT";
     private static String OUTPUTFILE_NAME;
     private static String EXTRACTOR_NAME;
     private PlanetsLogger plogger;
+    private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
 
     public CoreExtractor(String extractorName, PlanetsLogger logger) {
         this.plogger = logger;
+//        SYSTEM_TEMP = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
         EXTRACTOR_NAME = extractorName;
         OUTPUTFILE_NAME = EXTRACTOR_NAME.toLowerCase() + "_xcdl_out.xcdl";
         EXTRACTOR_WORK = extractorName.toUpperCase();
@@ -52,17 +57,14 @@ public class CoreExtractor {
         try {
             extractor_work_folder = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
             
-//          extractor_work_folder.mkdir();
             plogger.info(EXTRACTOR_NAME + " work folder created: "
                     + EXTRACTOR_WORK);
             
             extractor_in_folder = FileUtils.createFolderInWorkFolder(extractor_work_folder, EXTRACTOR_IN);
-//          extractor_in_folder.mkdir();
             plogger.info(EXTRACTOR_NAME + " input folder created: "
                     + EXTRACTOR_IN);
             
             extractor_out_folder = FileUtils.createFolderInWorkFolder(extractor_work_folder, EXTRACTOR_OUT);
-//          extractor_out_folder.mkdir();
             plogger.info(EXTRACTOR_NAME + " output folder created: "
                     + EXTRACTOR_OUT);
 
@@ -84,7 +86,7 @@ public class CoreExtractor {
                 xcelOut.close();
             }
 
-            plogger.info("System-Temp folder is: " + SYSTEM_TEMP);
+//            plogger.info("System-Temp folder is: " + SYSTEM_TEMP);
 
         } catch (IOException e) {
             plogger.error("Could not create Temp-file!");
@@ -94,14 +96,14 @@ public class CoreExtractor {
         ProcessRunner shell = new ProcessRunner();
         plogger.info("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
         plogger.info("Configuring Commandline");
-
+        
         extractor_arguments = new ArrayList<String>();
         extractor_arguments.add(EXTRACTOR_HOME + "extractor");
         String srcFilePath = srcFile.getAbsolutePath().replace('\\', '/');
         // System.out.println("Src-file path: " + srcFilePath);
         plogger.info("Input-Image file path: " + srcFilePath);
         extractor_arguments.add(srcFilePath);
-
+        
         String outputFilePath = extractor_out_folder.getAbsolutePath() + File.separator + OUTPUTFILE_NAME;
         outputFilePath = outputFilePath.replace('\\', '/');
         // System.out.println("Output-file path: " + outputFilePath);
@@ -121,6 +123,24 @@ public class CoreExtractor {
             
 //        	outputFilePath = EXTRACTOR_HOME + "xcdlOutput.xml";
         }
+        
+        // Got Parameters???
+        if(parameters!=null) {
+        	List <Parameter> parameterList = parameters.getParameters();
+        	for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
+				Parameter parameter = (Parameter) iterator.next();
+				String name = parameter.name;
+				if(!name.equalsIgnoreCase(NO_NORM_DATA_FLAG)) {
+					plogger.warn("Invalid parameter: " + name + " = " + parameter.value + "Ignoring parameter...!");
+				}
+				else {
+					plogger.info("Got Parameter: " + name + " = " + parameter.value);
+					plogger.info("Configuring Extractor to skip NormData!");
+					extractor_arguments.add(parameter.value);
+				}
+        	}
+        }
+        
 
         String line = "";
         for (String argument : extractor_arguments) {

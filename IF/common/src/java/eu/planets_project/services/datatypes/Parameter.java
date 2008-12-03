@@ -119,6 +119,12 @@ public class Parameter {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public String toString() {
+		String toPrint = this.name + " = " + this.value + "\r\n" + 
+						 this.description;
+		return toPrint;
+	}
     
     
     

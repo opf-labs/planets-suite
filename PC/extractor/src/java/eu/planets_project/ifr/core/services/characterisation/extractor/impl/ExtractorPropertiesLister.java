@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,13 +29,10 @@ import eu.planets_project.services.utils.ProcessRunner;
  *
  */
 
-public class FPMParsingTool {
+public class ExtractorPropertiesLister {
 	
-	public static String FPMTOOL_HOME = System.getenv("FPMTOOL_HOME") + File.separator;
-	public static String FPM_TOOL = FPMTOOL_HOME + "fpmTool";
-	public static BufferedWriter out;
-	
-	
+	public static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+	public static String FPM_TOOL = EXTRACTOR_HOME + "fpmTool";
 	
 	public static FileFormatProperties getFileFormatProperties(URI formatURI) {
 		String pronomID = formatURI.toASCIIString();
@@ -54,18 +52,38 @@ public class FPMParsingTool {
 		
 		String fileNamePronomID = pronomID.replace("/", "_"); 
 		
-		String inputFpmFilePath = "PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".fpm";  
+		ProcessRunner shell = new ProcessRunner();
 		
-		File inputFpmFile = new File(inputFpmFilePath);
+		shell.setStartingDir(new File(EXTRACTOR_HOME));
+		
+		List<String> shellCommands = new ArrayList <String>();
+		shellCommands.add(FPM_TOOL);
+		shellCommands.add(pronomID + ":");
+		
+		shell.setCommand(shellCommands);
+		shell.run();
+		
+		String processOutput = shell.getProcessOutputAsString();
+		String processError = shell.getProcessErrorAsString();
+		
+		File resultFPM = new File(EXTRACTOR_HOME + "fpm.fpm");
+		
+//		byte[] resultFPMArray = ByteArrayHelper.read(resultFPM);
+		
+//		String inputFpmFilePath = "PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".fpm";
+//		String inputFpmFilePath = resultFPM.getAbsolutePath();  
+		
+//		File inputFpmFile = new File(inputFpmFilePath);
 		
 		SAXBuilder saxBuilder = new SAXBuilder();
 		FileFormatProperties fileFormatProperties = new FileFormatProperties();
 		
 		Document orgDoc;
+		
 		try {
 //			List <FileFormatProperty> fileFormatProperties = new ArrayList<FileFormatProperty>();
 			
-			orgDoc = saxBuilder.build(inputFpmFile);
+			orgDoc = saxBuilder.build(resultFPM);
 		
 			Element orgRoot = orgDoc.getRootElement();
 			
@@ -159,21 +177,36 @@ public class FPMParsingTool {
 	}
 	
 	
-	public static boolean generatePropertiesFile (String pronomID) {
-		try {
-			out = new BufferedWriter(new FileWriter(new File("PC/extractor/src/resources/fpm_files/" + "parsingOutputLog.txt"), true));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+	public static boolean generatePropertiesFile (URI formatURI) {
+		
+		String formatString = formatURI.toASCIIString();
+		
+		if(!formatString.contains("fmt/")) {
+			System.err.println(formatString + " is not a valid PRONOM ID!");
+			return false;
 		}
+		else {
+			if(formatString.contains("x-fmt/")) {
+				formatString = formatString.substring(formatString.indexOf("x-fmt/"));
+			}
+			else {
+				formatString = formatString.substring(formatString.indexOf("fmt/"));
+			}
+		}
+		
+		String puid = formatString.replace("/", "_");
+		
+		System.out.println("***********************************************************");
+		System.out.println("Property list for PronomID: " + formatString);
+		
 		boolean success = false;
 		ProcessRunner shell = new ProcessRunner();
 		
-		shell.setStartingDir(new File(FPMTOOL_HOME));
+		shell.setStartingDir(new File(EXTRACTOR_HOME));
 		
 		List<String> shellCommands = new ArrayList <String>();
 		shellCommands.add(FPM_TOOL);
-		shellCommands.add(pronomID);
+		shellCommands.add(formatString + ":");
 		
 		shell.setCommand(shellCommands);
 		shell.run();
@@ -181,127 +214,24 @@ public class FPMParsingTool {
 		String processOutput = shell.getProcessOutputAsString();
 		String processError = shell.getProcessErrorAsString();
 		
-		System.out.println("Process output: " + processOutput);
-		try {
-			out.append("Process output: " + processOutput);
-			out.newLine();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		System.err.println("Process error: " + processError);
-		
-		File resultFPM = new File(FPMTOOL_HOME + "fpm.fpm");
+		File resultFPM = new File(EXTRACTOR_HOME + "fpm.fpm");
 		
 		byte[] resultFPMArray = ByteArrayHelper.read(resultFPM);
 		
-		String fileNamePronomID = pronomID.substring(0, pronomID.indexOf(":")).replace("/", "_"); 
-		
-		String newOutputFilePath = "PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".fpm";  
+		String newOutputFilePath = "PC/extractor/src/resources/fpm_files/" + puid + ".fpm";  
 		
 		File fpmTempFile = ByteArrayHelper.writeToDestFile(resultFPMArray, newOutputFilePath);
-		File formattedFPM = new File("PC/extractor/src/resources/fpm_files/" + fileNamePronomID + ".xml");
+		File formattedFPM = new File("PC/extractor/src/resources/fpm_files/" + puid + ".xml");
 		
-		SAXBuilder saxBuilder = new SAXBuilder();
+		FileFormatProperties fileFormatProperties = getFileFormatProperties(formatURI);
+		
 		XMLOutputter xmlOut = new XMLOutputter();
 		BufferedWriter xmlWriter;
 		String deletedFile;
 		
 		Document orgDoc;
 		try {
-//			List <FileFormatProperty> fileFormatProperties = new ArrayList<FileFormatProperty>();
-			FileFormatProperties fileFormatProperties = new FileFormatProperties();
 			
-			orgDoc = saxBuilder.build(fpmTempFile);
-		
-			Element orgRoot = orgDoc.getRootElement();
-			
-			List <Element> content = orgRoot.getChildren();
-			
-			FileFormatProperty formatProperty = null;
-//			List <Metric> metrics = null;
-			Metrics metrics = null;
-			
-			Element format = orgRoot.getChild("format");
-			
-			String puid = format.getAttributeValue("puid");
-			System.out.println("Format: " + puid);
-			System.out.println("***********************************************************");
-			out.append("Format: " + puid);
-			out.newLine();
-			out.append("***********************************************************");
-			out.newLine();
-			
-			
-			
-			for (Element element : content) {
-				List <Element> level1Elements = element.getChildren();
-				
-				for (Element propertyTopLevel : level1Elements) {
-					List <Element> level2Elements = propertyTopLevel.getChildren();
-					formatProperty = new FileFormatProperty();
-					
-					for (Element property : level2Elements) {
-						
-						if(property.getName().equalsIgnoreCase("id")) {
-							formatProperty.setId(property.getTextTrim());
-							continue;
-						}
-						
-						if(property.getName().equalsIgnoreCase("name")) {
-							formatProperty.setName(property.getTextTrim());
-							continue;
-						}
-						
-						if(property.getName().equalsIgnoreCase("description")) {
-							formatProperty.setDescription(property.getTextTrim());
-							continue;
-						}
-						
-						if(property.getName().equalsIgnoreCase("unit")) {
-							formatProperty.setUnit(property.getTextTrim());
-							continue;
-						}
-						
-						if(property.getName().equalsIgnoreCase("type")) {
-							formatProperty.setType(property.getTextTrim());
-							continue;
-						}
-						
-						if(property.getName().equalsIgnoreCase("metrics")) {
-							metrics = new Metrics();
-							List <Element> level3Elements = property.getChildren();
-							
-							for (Element m : level3Elements) {
-								List <Element> level4Elements = m.getChildren();
-								Metric pMetric = new Metric();
-								
-								for (Element metric : level4Elements) {
-									if(metric.getName().equalsIgnoreCase("mId")) {
-										pMetric.setId(metric.getTextTrim());
-										continue;
-									}
-									
-									if(metric.getName().equalsIgnoreCase("mName")) {
-										pMetric.setName(metric.getTextTrim());
-										continue;
-									}
-									
-									if(metric.getName().equalsIgnoreCase("mDescription")) {
-										pMetric.setDescription(metric.getTextTrim());
-										continue;
-									}
-								}
-								metrics.add(pMetric);
-							}
-						}
-					}
-					
-					formatProperty.setMetrics(metrics);
-					fileFormatProperties.add(formatProperty);
-					metrics = null;
-				}
-			}
 			Element xclProperties = new Element("XCLProperties");
 			xclProperties.setAttribute("formatPUID", puid);
 			
@@ -339,34 +269,14 @@ public class FPMParsingTool {
 				
 				xmlWriter = new BufferedWriter(new FileWriter(formattedFPM));
 				xmlOut.output(newDoc, xmlWriter);
-				
-				for (Iterator iterator = fileFormatProperties.getProperties().iterator(); iterator.hasNext();) {
-					FileFormatProperty testOutProp = (FileFormatProperty) iterator.next();
-					System.out.println(testOutProp.toString());
-					out.append(testOutProp.toString());
-					out.newLine();
-				}
 			}
 			
-		} catch (JDOMException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		boolean deleted = fpmTempFile.delete();
 		success = true;
 		System.out.println("***********************************************************");
-		try {
-			out.append("***********************************************************");
-			out.newLine();
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return success;
 	}
 }
