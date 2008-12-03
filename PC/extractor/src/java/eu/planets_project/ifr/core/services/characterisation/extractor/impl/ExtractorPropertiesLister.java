@@ -50,8 +50,6 @@ public class ExtractorPropertiesLister {
 			}
 		}
 		
-		String fileNamePronomID = pronomID.replace("/", "_"); 
-		
 		ProcessRunner shell = new ProcessRunner();
 		
 		shell.setStartingDir(new File(EXTRACTOR_HOME));

@@ -114,8 +114,13 @@ public final class ExtractorTest {
         Parameters parameters = new Parameters();
         parameters.add("disableNormDataInXCDL", "-n");
         parameters.add("enableNormData", "-e"); // wrong parameter for testing
+        parameters.add("enableRawDataInXCDL", "-r");
         characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
         outputXcdl = ByteArrayHelper.write(characteriseResult.getDigitalObject().getContent().getValue());
+        System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        byte[] resultData = characteriseResult.getDigitalObject().getContent().getValue();
+        int fileSize = resultData.length / 1024;
+        System.out.println("XCDL file size: " + fileSize + " KB");
         assertTrue("No output file written;", outputXcdl.exists());
     }
     

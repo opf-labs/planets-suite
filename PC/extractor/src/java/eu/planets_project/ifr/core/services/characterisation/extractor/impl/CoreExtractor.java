@@ -26,6 +26,7 @@ public class CoreExtractor {
     private static String EXTRACTOR_NAME;
     private PlanetsLogger plogger;
     private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
+    private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
 
     public CoreExtractor(String extractorName, PlanetsLogger logger) {
         this.plogger = logger;
@@ -130,13 +131,21 @@ public class CoreExtractor {
         	for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
 				Parameter parameter = (Parameter) iterator.next();
 				String name = parameter.name;
-				if(!name.equalsIgnoreCase(NO_NORM_DATA_FLAG)) {
-					plogger.warn("Invalid parameter: " + name + " = " + parameter.value + "Ignoring parameter...!");
+				if(name.equalsIgnoreCase(RAW_DATA_FLAG)) {
+					plogger.info("Got Parameter: " + name + " = " + parameter.value);
+					plogger.info("Configuring Extractor to write RAW data!");
+					extractor_arguments.add(parameter.value);
+					continue;
 				}
-				else {
+				else if(name.equalsIgnoreCase(NO_NORM_DATA_FLAG)) {
 					plogger.info("Got Parameter: " + name + " = " + parameter.value);
 					plogger.info("Configuring Extractor to skip NormData!");
 					extractor_arguments.add(parameter.value);
+					continue;
+				}
+				else {
+					plogger.warn("Invalid parameter: " + name + " = '" + parameter.value + "'. Ignoring parameter...!");
+					continue;
 				}
         	}
         }

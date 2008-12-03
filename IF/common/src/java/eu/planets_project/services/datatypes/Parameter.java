@@ -121,8 +121,7 @@ public class Parameter {
 	}
 	
 	public String toString() {
-		String toPrint = this.name + " = " + this.value + "\r\n" + 
-						 this.description;
+		String toPrint = this.name + " = " + this.value;
 		return toPrint;
 	}
     

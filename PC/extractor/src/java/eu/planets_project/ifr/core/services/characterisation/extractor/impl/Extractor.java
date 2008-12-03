@@ -133,6 +133,10 @@ public class Extractor implements Characterise, Serializable {
         normDataFlag.setDescription("Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
         parameterList.add(normDataFlag);
         
+        Parameter enableRawData = new Parameter("enableRawDataInXCDL", "-r");
+        enableRawData.setDescription("Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
+        parameterList.add(enableRawData);
+        
         Parameters parameters = new Parameters();
         parameters.setParameters(parameterList);
         
