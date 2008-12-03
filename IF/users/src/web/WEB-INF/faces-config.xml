@@ -30,24 +30,6 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/editprofile.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>saveuser</from-outcome>
-			<to-view-id>/editprofile.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
-		<from-view-id>/editprofile.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>canceluser</from-outcome>
-			<to-view-id>/editprofile.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
-	</navigation-rule>
-
-	<navigation-rule>
 		<from-view-id>/list.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>newuser</from-outcome>
@@ -55,7 +37,6 @@
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
-
 	<navigation-rule>
 		<from-view-id>/list.xhtml</from-view-id>
 		<navigation-case>
@@ -66,10 +47,19 @@
 	</navigation-rule>
 
 	<navigation-rule>
-		<from-view-id>/newuser.xhtml</from-view-id>
+		<from-view-id>/editprofile.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>cancelNewUser</from-outcome>
-			<to-view-id>/newuser.xhtml</to-view-id>
+			<from-outcome>savedotherprofile</from-outcome>
+			<to-view-id>/list.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/editprofile.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>deleteuser</from-outcome>
+			<to-view-id>/list.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
@@ -77,7 +67,16 @@
 	<navigation-rule>
 		<from-view-id>/newuser.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>adduser</from-outcome>
+			<from-outcome>savedotherprofile</from-outcome>
+			<to-view-id>/list.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
+		<from-view-id>/newuser.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancelnewuser</from-outcome>
 			<to-view-id>/list.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>

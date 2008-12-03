@@ -129,11 +129,23 @@
           </li>
         </ol>
       </fieldset>
-      <ul>
-        <c:forEach var="role" items="#{UserBackingBean.user.roles}">
-          <li>${role.name}&nbsp;</li>
-        </c:forEach>
-      </ul>
+      	<fieldset>
+      		<legend>Roles</legend>
+	        <c:choose>
+	          <c:when test="#{PlanetsSharedBean.isAdmin}">
+	            <h:selectManyCheckbox layout="pageDirection" value="#{UserBackingBean.userRoles}">
+                  <f:selectItems value="#{UserBackingBean.availableRoles}" />
+                </h:selectManyCheckbox>
+	          </c:when>
+	          <c:otherwise>
+	            <ol>
+		        <c:forEach var="role" items="#{UserBackingBean.user.roles}">
+		          <li>${role.name}</li>
+		        </c:forEach>
+		        </ol>
+	          </c:otherwise>
+	        </c:choose>
+      	</fieldset>
     </fieldset>
    </ui:composition>
 </html>

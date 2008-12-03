@@ -73,3 +73,10 @@ form.userform em {
   font-style: normal;
   color: #f00;
 }
+
+
+td input {
+display: inline;
+margin :0 10px;
+width: 10px;
+}

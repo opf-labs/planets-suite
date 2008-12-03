@@ -11,7 +11,7 @@
 	<ui:define name="title">Planets Create New User</ui:define>
 	<ui:define name="content">
 		<h:form id="UserEntryForm" styleClass="userform">
-		    <h:inputHidden value="#{UserBackingBean.newUser}" id="editprof" />
+    		<h:inputHidden value="#{UserBackingBean.checkUser}" id="checkUser" />
 			<ui:include src="/WEB-INF/templates/user-profile.xhtml"/>
 			<h:commandButton value="Add" action="#{UserBackingBean.addUser}" styleClass="button" />
 			<h:commandButton value="Cancel" action="#{UserBackingBean.cancelNewUser}" styleClass="button" />

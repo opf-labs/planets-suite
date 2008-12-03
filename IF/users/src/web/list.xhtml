@@ -11,6 +11,7 @@
 	<ui:define name="title">Planets User Welcome Page</ui:define>
 	<ui:define name="content">
     <h:form>
+    <h:inputHidden value="#{UserBackingBean.refreshUserList}" id="refreshUserList" />
   	  <rich:dataTable rows="0" value="#{UserBackingBean.allUsers}" var="user">
   	    <rich:column sortBy="#{user.username}">
 	  	  <f:facet name="header">User Name</f:facet>
