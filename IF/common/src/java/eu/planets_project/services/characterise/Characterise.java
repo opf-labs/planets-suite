@@ -14,8 +14,8 @@ import javax.xml.ws.ResponseWrapper;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 
@@ -57,7 +57,7 @@ public interface Characterise {
 	            + "/" + Characterise.NAME, partName = Characterise.NAME
 	            + "Result")
 	    @RequestWrapper(className="eu.planets_project.services.characterise."+Characterise.NAME+"Characterise")
-	    @ResponseWrapper(className="eu.planets_project.services.characterise."+Characterise.NAME+"MigrateResponse")
+	    @ResponseWrapper(className="eu.planets_project.services.characterise."+Characterise.NAME+"CharacteriseResponse")
 	    public CharacteriseResult characterise(
 	            @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
 	                    + "/" + Characterise.NAME, partName = "digitalObject") 
@@ -91,5 +91,5 @@ public interface Characterise {
 	            + "/" + Characterise.NAME, partName = Characterise.NAME
 	            + "Property_List")
 	    @ResponseWrapper(className="eu.planets_project.services.characterise."+Characterise.NAME+"listPropertiesResponse")
-	    public List<Property> listProperties(URI formatURI);
+	    public List<FileFormatProperty> listProperties(URI formatURI);
 }
