@@ -13,7 +13,7 @@
 
  <div id="globalMessageDiv">      
   <rich:panel id="globalMessageBox" styleClass="globalMessageBox" rendered="#{! empty facesContext.maximumSeverity}">    
-    <h:messages errorClass="errorMessage" infoClass="infoMessage" layout="table" globalOnly="true" showDetail="false" showSummary="true"/>
+    <h:messages errorClass="errorMessage" infoClass="infoMessage" layout="table" globalOnly="false" showDetail="false" showSummary="true"/>
     <rich:effect event="onclick" type="Fade" />
   </rich:panel>
 </div>

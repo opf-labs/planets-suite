@@ -68,7 +68,7 @@ public class BasicMigrateWrapper implements Migrate {
         if ( pse.getQName().equals(BasicMigrateOneBinary.QNAME)) {
             ServiceDescription.Builder sd = new ServiceDescription.Builder(
                     pse.getWsdlLocation().getPath(), pse
-                            .getServiceClass().getCanonicalName());
+                            .getServiceClass().getCanonicalName() );
             sd.description("This is a basic migration service with no service description or other metadata.");
             sd.author("[unknown]");
             sd.serviceProvider(pse.getWsdlLocation().getAuthority());
@@ -102,8 +102,8 @@ public class BasicMigrateWrapper implements Migrate {
             // Basic Migrate One Binary:
             byte[] bresult = bmob.basicMigrateOneBinary(binary);
 
-            DigitalObject ndo = new DigitalObject.Builder(digitalObject
-                        .getPermanentUrl(), Content.byValue(bresult)).build();
+            DigitalObject ndo = new DigitalObject.Builder( Content.byValue(bresult) )
+                .permanentUrl( digitalObject.getPermanentUrl() ).build();
 
             return new MigrateResult(ndo, new ServiceReport());
 

@@ -1,23 +1,15 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
-import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
-import eu.planets_project.tb.api.model.eval.Metric;
-import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
-import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
@@ -27,47 +19,26 @@ import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.BenchmarkBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
-import eu.planets_project.tb.gui.backing.ListExp;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.UploadManager;
-import eu.planets_project.tb.gui.backing.admin.RegisterTBServices;
-import eu.planets_project.tb.gui.backing.admin.ManagerTBServices;
-import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
-import eu.planets_project.tb.gui.backing.exp.AutoBMGoalEvalUserConfigBean.MetricBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
-import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
-import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
-import eu.planets_project.tb.impl.model.eval.AutoEvaluationSettingsImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
-import eu.planets_project.tb.impl.model.eval.MetricImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
-import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
-import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.component.html.HtmlCommandButton;
-import javax.faces.component.html.HtmlCommandLink;
-import javax.faces.component.html.HtmlForm;
-import javax.faces.component.html.HtmlGraphicImage;
-import javax.faces.component.html.HtmlInputTextarea;
-import javax.faces.component.html.HtmlOutputLabel;
-import javax.faces.component.html.HtmlOutputLink;
-import javax.faces.component.html.HtmlOutputText;
-import javax.faces.model.SelectItem;
-
 
 import java.io.File;
 import java.net.URI;
@@ -76,7 +47,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -85,16 +55,11 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIComponentBase;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jboss.resource.security.ConfiguredIdentityLoginModule;
 import org.richfaces.component.html.HtmlDataTable;
-
 
 public class NewExpWizardController {
     
@@ -113,9 +78,6 @@ public class NewExpWizardController {
         // Flag to indicate that the experiment definition is not valid and cannot be constructed
         boolean validExperiment = true;
         
-        // remove workflow object from session, if still available from previously viewed experiment
-    	//FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("Workflow"); 
-    	
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
     	Experiment exp = null;
 		BasicProperties props = null;
@@ -152,12 +114,14 @@ public class NewExpWizardController {
 	        ExperimentSetup expSetup = new ExperimentSetupImpl();
 	        expSetup.setBasicProperties(props);       
 	        exp.setExperimentSetup(expSetup);
+	        log.info("Creating a new experiment.");
             long expId = testbedMan.registerExperiment(exp);            
             expBean.setID(expId);
+            expBean.setExperiment(exp);
         }
         log.debug("Created experiment, now retrieving it.");
         // Get the Experiment description objects
-        exp = testbedMan.getExperiment(expBean.getID());
+        exp = expBean.getExperiment();
         props = exp.getExperimentSetup().getBasicProperties();
         log.info("Setting the experimental properties, "+props.getExperimentName()+" : "+props.getSummary());
         // If the experiment already existed, check for valid name changes:
@@ -253,8 +217,10 @@ public class NewExpWizardController {
         
         // Exit with failure condition if the form submission was not valid.
         exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
+        exp.getExperimentSetup().setSubStage(1);
         //testbedMan.updateExperiment(exp);
         if( validForm ) {
+            exp.getExperimentSetup().setSubStage(2);
             expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);
             log.debug("Exiting in success.");
             return "success";
@@ -334,6 +300,7 @@ public class NewExpWizardController {
      * @param bmGoalID
      * @param b
      */
+    @SuppressWarnings("unchecked")
     private void setBenchmarkBeanSelected(String bmGoalID, boolean b){
     	List<BenchmarkBean> bmbeans = (List<BenchmarkBean>)JSFUtil.getManagedObject("BenchmarkBeans");
     	for(BenchmarkBean bmb : bmbeans){
@@ -349,23 +316,23 @@ public class NewExpWizardController {
      * Already added BenchmarkGoals get updated.
      * @return
      */
+    @SuppressWarnings("unchecked")
     public String updateBenchmarksAction(){
     /* FIXME ANJ Clean this up:
 	  try {
 	  */
     	// create bm-goals    	
-    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Experiment exp = testbedMan.getExperiment(expBean.getID());
+    	Experiment exp = expBean.getExperiment();
     	// create Goal objects from Beans
     	List<BenchmarkGoal> bmgoals = new ArrayList<BenchmarkGoal>();
     	List<BenchmarkBean> bmbeans = (List<BenchmarkBean>)JSFUtil.getManagedObject("BenchmarkBeans");
     	
     	if( bmbeans != null ) {
-    	Iterator iter = bmbeans.iterator();
+    	Iterator<BenchmarkBean> iter = bmbeans.iterator();
     	//Iterator iter = expBean.getBenchmarks().values().iterator();    	
     	while (iter.hasNext()) {
-    		BenchmarkBean bmb = (BenchmarkBean)iter.next();
+    		BenchmarkBean bmb = iter.next();
     	
     		if (bmb.getSelected()) {
 
@@ -491,11 +458,11 @@ public class NewExpWizardController {
             
 	    	// 2. update Experiment Overall BenchmarkGoals from Bean
 	    	List<BenchmarkGoal> expBMgoals = new ArrayList<BenchmarkGoal>();
-	    	Iterator iter = expBean.getExperimentBenchmarkBeans().iterator();
+	    	Iterator<BenchmarkBean> iter = expBean.getExperimentBenchmarkBeans().iterator();
 	    	log.debug("Found # of ExperimentOverall BMGS: " + expBean.getExperimentBenchmarkBeans().size());
 	    	boolean bError = false;
 	    	while (iter.hasNext()) {
-	    		BenchmarkBean bmb = (BenchmarkBean)iter.next();
+	    		BenchmarkBean bmb = iter.next();
 	    		BenchmarkGoal bmg;
 	    		if (bmb.getSelected()) {
 		    		// get the bmgoal from the evaluation data
@@ -548,7 +515,7 @@ public class NewExpWizardController {
 					
 					for(BenchmarkBean b : mBMBs.values()){
 						bmg = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoal(inputURI, b.getID());
-						BenchmarkBean bmb = mBMBs.get(inputURI+b.getID());
+						//BenchmarkBean bmb = mBMBs.get(inputURI+b.getID());
                         lbmgs.add(bmg);
                         /* FIXME ANJ Clean this up:
 						try{
@@ -640,23 +607,48 @@ public class NewExpWizardController {
      * @return
      */
     public String commandSaveStep2Substep2Action()  {
-        try {
-	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-	        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-	        Experiment exp = testbedMan.getExperiment(expBean.getID());
-	        
-	        //modify the experiment's stage information
-	        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
-	        exp.setState(Experiment.STATE_IN_PROGRESS);
-	        //testbedMan.updateExperiment(exp);
-	        
-	        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);	
-	    	return "success";
-        } catch (Exception e) {
-        	log.error("Exception when trying to create/update ExperimentWorkflow: "+e.toString());
-        	e.printStackTrace();
-        	return "failure";
+	    ExperimentBean expBean = (ExperimentBean) JSFUtil.getManagedObject("ExperimentBean");
+        Experiment exp = expBean.getExperiment();
+
+        // modify the experiment's stage information
+        exp.getExperimentSetup().setState(Experiment.STATE_IN_PROGRESS);
+        exp.setState(Experiment.STATE_IN_PROGRESS);
+        // testbedMan.updateExperiment(exp);
+
+        exp.getExperimentSetup().setSubStage(2);
+        String result  ="success";
+        
+        // Verify that there is at least on DO:
+        log.info("Checking for digital objects...");
+        if( exp.getExperimentExecutable().getInputData().size() == 0 ) {
+            FacesMessage fmsg = new FacesMessage();
+            fmsg.setSummary("No input files specified!");
+            fmsg.setDetail("You must specify at least one Digital Object to experiment upon.");
+            fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("addedFileInfoPanel",fmsg);
+            log.info("Not enough digital objects.");
+            result = "failure";
         }
+        
+        // Verify that the experiment type is set:
+        log.info("Checking that the experiment type is set.");
+        if( exp.getExperimentSetup().getExperimentTypeID() == null 
+                || "".equals(exp.getExperimentSetup().getExperimentTypeID()) ) {
+            FacesMessage fmsg = new FacesMessage();
+            fmsg.setSummary("No experiment type set!");
+            fmsg.setDetail("Please choose an experiment type.");
+            fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("etype",fmsg);
+            log.info("Not set the type.");
+            result = "failure";
+        }
+        
+        if( "success".equals(result)) {
+            exp.getExperimentSetup().setSubStage(3);
+        }
+        return result;
     }
     
     
@@ -747,81 +739,99 @@ public class NewExpWizardController {
     }
 
     /**
-     * A simple Save-Changes action, that just tries to save the current state.
+     * The Stage 1-3 Save-Changes action, that just tries to save the current state.
      * 
-     * FIXME This needs to do the proper storage stuff, like in updateBasicPropsAction, and it current fails if pressed on page one.
+     * Attempts to store the data for each page, and redirects the user to the first page with errors.
+     * 
      * @return "success" upon success.
      */
-    public String commandSaveExperiment() {
+    private String commandSaveExperiment(int stage ) {
         log.info("Attempting to save this experiment.");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         log.info("commandSaveExperiment: ExpBean: "+expBean.getEname()+" : "+expBean.getEsummary());
         
         // This saves the first three pages in turn, and redirects appropriately if there are any problems.
-        String destination = "success";
-        // Page 1
-        String result = this.updateBasicPropsAction();
-        if( "failure".equals(result) ) { 
-            destination = "goToStage1";
-            //expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_2);  
+        String result = null;
+        if( stage == 1 ) {
+            // Page 1
+            result = this.updateBasicPropsAction();
+        } else if( stage == 2 ) {
+            // Page 2
+            result = this.commandSaveStep2Substep2Action();
+        } else if( stage == 3 ) {
+            // Page 3
+            result = this.updateBenchmarksAction();
+        } else {
+            result = "success";
         }
-        // Page 2
-        result = this.commandSaveStep2Substep2Action();
-        if( "failure".equals(result) ) {
-            destination = "goToStage2";
-            //expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);
-        }
-        // Page 3
-        result = this.updateBenchmarksAction();
-        if( "failure".equals(result) ) destination = "goToStage3";
-        log.info("Heading to destination: "+destination);
         
-        // Add a message:
-        FacesMessage fmsg = new FacesMessage();
-        if( "success".equals(destination)) {
+        // Now save any updates, if stage 1 was okay:
+        if( stage != 1 || ( stage == 1 && "success".equals(result) ) ) {
             // Now save any updates.
             Experiment exp = expBean.getExperiment();
+            log.info("Saving the bean: "+exp.getExperimentSetup().getExperimentTypeID());
             // Commit the changes:
             testbedMan.updateExperiment(exp);
-            // Tell them it went well:
-            fmsg.setSummary("Your data has been saved successfully.");
-            fmsg.setSeverity(FacesMessage.SEVERITY_INFO);
         } else {
-            fmsg.setSummary("Your data could not be saved, as there is an error in your experiment.");
-            fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            log.warn("Did not save update.");
         }
-        // add message-tag for duplicate name
+        
         FacesContext ctx = FacesContext.getCurrentInstance();
-        // Add a Global message:
-        ctx.addMessage(null,fmsg);        
-        return destination;
+        // Add a message:
+        FacesMessage fmsg = null;
+        if( "success".equals(result)) {
+            // Tell them it went well:
+            fmsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your data has been saved successfully.","Saved.");
+            log.info("Message: Edit Succeeded.");
+            // Add a Global message:
+            ctx.addMessage(null,fmsg);
+        } else {
+            fmsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "There were problems with your experiment.","Save failed.");
+            log.info("Message: Edit Failed.");
+            // Add a Global message:
+            ctx.addMessage(null,fmsg);
+            return "failure";
+        }
+
+        // Pop to the destination:
+        return result;
+    }
+    private String commandSaveExperimentAndGoto(int stage, String destination ) {
+        String result = commandSaveExperiment(1);
+        if( "success".equals(result)) {
+            return destination;
+        } else {
+            return result;
+        }
     }
     
-    public String commandSaveExperimentAndGotoStage2() {
-        String result = commandSaveExperiment();
-        if( "success".equals(result)) {
-            return "goToStage2";
-        } else {
-            return result;
-        }
+    public String commandSaveStage1() {
+        return this.commandSaveExperiment(1);
+    }
+    
+    public String commandSaveStage1AndGotoStage2() {
+        return this.commandSaveExperimentAndGoto(1, "goToStage2");
     }
 
-    public String commandSaveExperimentAndGotoStage3() {
-        String result = commandSaveExperiment();
-        if( "success".equals(result)) {
-            return "goToStage3";
-        } else {
-            return result;
-        }
+    public String commandSaveStage2() {
+        return this.commandSaveExperiment(2);
+    }
+    
+    public String commandSaveStage2AndGotoStage3() {
+        return this.commandSaveExperimentAndGoto(2, "goToStage3");
     }
 
+    public String commandSaveStage3() {
+        return this.commandSaveExperiment(1);
+    }
+    
     /**
      * This one saves and attempts to submit.
      * @return
      */
-    public String commandSaveExperimentAndSubmit() {
-        String result = commandSaveExperiment();
+    public String commandSaveStage3AndSubmit() {
+        String result = this.commandSaveExperiment(3);
         if( "success".equals(result)) {
             return submitForApproval();
         } else {
@@ -895,7 +905,7 @@ public class NewExpWizardController {
 	public String commandRemoveAddedFileRef(ActionEvent event){
 		
 		try {
-			FacesContext facesContext = FacesContext.getCurrentInstance();
+			//FacesContext facesContext = FacesContext.getCurrentInstance();
 			
 			//1)get the passed Attribute "IDint", which is the counting number of the component
 			String IDnr = event.getComponent().getAttributes().get("IDint").toString();
@@ -983,11 +993,11 @@ public class NewExpWizardController {
 
     public Map<String,String> getAvailableExperimentTypes() {
         // for display with selectonemenu-component, we have to flip key and value of map
-    	Map oriMap = AdminManagerImpl.getInstance().getExperimentTypeIDsandNames();
+    	Map<String,String> oriMap = AdminManagerImpl.getInstance().getExperimentTypeIDsandNames();
     	Map<String,String> expTypeMap = new HashMap<String,String>();
-    	Iterator iter = oriMap.keySet().iterator();
+    	Iterator<String> iter = oriMap.keySet().iterator();
     	while(iter.hasNext()){
-    		String key = (String)iter.next();
+    		String key = iter.next();
     		expTypeMap.put((String)oriMap.get(key), key);
     	}
     	return expTypeMap;
@@ -1119,9 +1129,9 @@ public class NewExpWizardController {
     public Map<String,String> getAvailableEvaluationValues() {
        	TreeMap<String,String> map = new TreeMap<String,String>();
     	ExperimentEvaluation ev = new ExperimentEvaluationImpl();
-    	Iterator iter = ev.getAllAcceptedEvaluationValues().iterator();
+    	Iterator<String> iter = ev.getAllAcceptedEvaluationValues().iterator();
     	while (iter.hasNext()) {
-    		String v = (String)iter.next();
+    		String v = iter.next();
     		map.put(v, v);
     	}       	
     	return map;
@@ -1141,16 +1151,16 @@ public class NewExpWizardController {
        	//the available BenchmarkGoals as BenchmarkBean (only from the selected category)
        	Map<String,BenchmarkBean> availBenchmarks = new HashMap<String,BenchmarkBean>(expBean.getExperimentBenchmarks());
        	//get all BenchmarkGoals
-       	Iterator iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
+       	Iterator<BenchmarkGoal> iter = BenchmarkGoalsHandlerImpl.getInstance().getAllBenchmarkGoals().iterator();
     	//the information if a BMGoal can be used within an autoEvaluationService
        	//Map<BMGoalID, EvaluationTestbedServiceTemplate>
        	Map<String,TestbedServiceTemplate> mapAutoEvalSer = this.getSupportedAutoEvaluationBMGoals();
        	
     	while (iter.hasNext()) {
-    		BenchmarkGoal bmg = (BenchmarkGoal)iter.next();
-                Iterator dtypeiter = expBean.getDtype().iterator();
+    		BenchmarkGoal bmg = iter.next();
+                Iterator<String> dtypeiter = expBean.getDtype().iterator();
                 while (dtypeiter.hasNext()){
-                    String currentType = (String)dtypeiter.next();
+                    String currentType = dtypeiter.next();
                     DigitalObjectTypesImpl dtypeImpl = new DigitalObjectTypesImpl();
                     currentType = dtypeImpl.getDtypeName(currentType);
                     //only add the goals that match the already selected categories
@@ -1376,9 +1386,9 @@ public class NewExpWizardController {
     //TODO: Andrew DELETE OR CHECK IF USED
     public void processSelBMValueTicked(ValueChangeEvent e){
     	//System.out.println("Andrew to DELETE" +e.getNewValue());
-    	FacesContext context = FacesContext.getCurrentInstance();
-		Object o1 = context.getExternalContext().getRequestParameterMap().get("bmGoalID2");
-		Object o2 = context.getExternalContext().getRequestParameterMap().get("bmGoalID");
+    	//FacesContext context = FacesContext.getCurrentInstance();
+		//Object o1 = context.getExternalContext().getRequestParameterMap().get("bmGoalID2");
+		//Object o2 = context.getExternalContext().getRequestParameterMap().get("bmGoalID");
     }
     
     public String command_configureAutoEvalService(){

@@ -230,10 +230,12 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 	public void setExperimentApproach(String sExperimentTypeID) throws InvalidInputException{
 		AdminManager manager = AdminManagerImpl.getInstance();
 		//check ExperimentApproach valid?
+        log.info("Setting Experiment Approach to: " + sExperimentTypeID);
 		if(manager.getExperimentTypeIDs().contains(sExperimentTypeID)){
 			this.sExperimentApproach = sExperimentTypeID;
 		}
 		else{
+            log.error("Could not set Experiment Approach to: " + sExperimentTypeID );
 			throw new InvalidInputException("Unsupported ExperimentTypeID "+sExperimentTypeID);
 		}
 	}

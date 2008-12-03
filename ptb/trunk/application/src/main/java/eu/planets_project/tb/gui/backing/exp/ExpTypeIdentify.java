@@ -24,8 +24,8 @@ public class ExpTypeIdentify {
      */
     public String getIdentifyService() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        log.info("Got: "+expBean.getExperiment().getExperimentExecutable().getParameters() );
-        log.info("Got: "+expBean.getExperiment().getExperimentExecutable().getParameters().get(IdentifyWorkflow.PARAM_SERVICE) );
+        log.info("Got params: "+expBean.getExperiment().getExperimentExecutable().getParameters() );
+        log.info("Got param: "+expBean.getExperiment().getExperimentExecutable().getParameters().get(IdentifyWorkflow.PARAM_SERVICE) );
         return expBean.getExperiment().getExperimentExecutable().getParameters().get(IdentifyWorkflow.PARAM_SERVICE);
     }
 

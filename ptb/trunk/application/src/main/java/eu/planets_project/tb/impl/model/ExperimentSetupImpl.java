@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.tb.api.TestbedManager;
@@ -35,6 +34,7 @@ import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
  * Please not the BenchmarkGoalList does hold the the BenchmarkGoal object itself
  *
  */
+@SuppressWarnings("serial")
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
@@ -242,6 +242,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getSubStage()
 	 */
 	public int getSubStage() {
+	    log.info("Getting iSubstage "+this.iSubstage);
 		return this.iSubstage;
 	}
 
@@ -250,6 +251,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setSubStage(int)
 	 */
 	public void setSubStage(int subStage) {
+        log.info("Setting iSubstage ("+this.iSubstage+") to "+subStage);
 		this.iSubstage = subStage;
 	}
 

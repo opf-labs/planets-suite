@@ -213,8 +213,8 @@ public class ListExp extends SortableList {
                                 if (column.equals("currentStage"))
 				{
                                         if ((c1.getCurrentPhase() != null) && (c2.getCurrentPhase() != null)) {
-                                            return ascending ? c1.getCurrentPhase().getPhaseName().compareTo(c2.getCurrentPhase().getPhaseName()) 
-                                                    : c2.getCurrentPhase().getPhaseName().compareTo(c1.getCurrentPhase().getPhaseName());
+                                            return ascending ? new Integer(c1.getCurrentPhaseIndex()).compareTo(new Integer(c2.getCurrentPhaseIndex())) 
+                                                    : new Integer(c2.getCurrentPhaseIndex()).compareTo(new Integer(c1.getCurrentPhaseIndex()));
                                         }
                                         else
                                             return 0;

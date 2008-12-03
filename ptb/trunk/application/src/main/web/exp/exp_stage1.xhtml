@@ -75,19 +75,10 @@ function cleanForm() {
 
 <h:form>
 
-      <table id="expHeaderTable"><tr>
-      <td class="headerText">
-      <h2><h:outputText value="#{res['new_exp.stage1']}"/></h2>
-      </td>
-      <td class="headerButtons">
-      <h:commandButton value="#{res['button.save']}"
-                                    action="#{NewExp_Controller.commandSaveExperiment}"
-                                    disabled="#{ExperimentBean.approved}" />
-      <h:commandButton value="#{res['new_exp.saveStage1']}" 
-            action="#{NewExp_Controller.commandSaveExperimentAndGotoStage2}" disabled="#{ExperimentBean.approved}"/>
-      </td>
-      </tr>
-      </table>
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="1" />
+       <ui:param name="PlaceBandAsHeader" value="true" />
+    </ui:include>
 
       <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
   
@@ -282,19 +273,10 @@ function cleanForm() {
 <div class="clear"></div>
 </fieldset>
     
-      <table id="expFooterTable"><tr>
-      <td class="headerText">
-      </td>
-      <td class="headerButtons">
-      <h:commandButton value="#{res['button.save']}"
-                                    action="#{NewExp_Controller.commandSaveExperiment}"
-                                    disabled="#{ExperimentBean.approved}" />
-      <h:commandButton value="#{res['new_exp.saveStage1']}" 
-            action="#{NewExp_Controller.commandSaveExperimentAndGotoStage2}" disabled="#{ExperimentBean.approved}"/>
-      </td>
-      </tr>
-      </table>
-    
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="1" />
+       <ui:param name="PlaceBandAsHeader" value="false" />
+    </ui:include>    
     
 </h:form>
 

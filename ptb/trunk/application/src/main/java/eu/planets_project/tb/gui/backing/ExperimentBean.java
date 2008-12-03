@@ -459,6 +459,9 @@ public class ExperimentBean {
     public Experiment getExperiment() {
         return exp;
     }
+    public void setExperiment(Experiment exp) {
+        this.exp = exp;
+    }
 
     /**
      * Returns a Map of added file Refs
@@ -846,7 +849,9 @@ public class ExperimentBean {
     }
     
     public String getEtype() {
-    	return this.exp.getExperimentSetup().getExperimentTypeID();
+        log.info("Getting EtypeID:"+ this.exp.getExperimentSetup().getExperimentTypeID() );
+        log.info("Also EtypeName:"+ this.exp.getExperimentSetup().getExperimentTypeName());
+        return this.exp.getExperimentSetup().getExperimentTypeID();
     }
     
     public String getEtypeName() {

@@ -24,7 +24,7 @@
 
 <p>
     <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-        <h:selectOneMenu id="etype" onchange="submit();"
+        <h:selectOneMenu id="etype" onchange="submit();" required="true"
         value="#{ExperimentBean.etype}"  style="width: 23em;"
  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
                 <f:selectItem itemValue="[default]" itemLabel="Select..."/>
@@ -42,6 +42,8 @@
    <t:graphicImage value="/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipExperimentType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
              
 </p>
+
+  <h:message for="etype" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
 
 
 <div class="clear"></div>
@@ -68,6 +70,8 @@
                 
                     <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
                     <p>The list of Digital Object to experiment upon.</p>
+                    <h:message for="addedFileInfoPanel" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
+                    
                     <h:panelGroup id="addedFileInfoPanel">
                            <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
                                          layout="unorderedList" rowIndexVar="rowi">

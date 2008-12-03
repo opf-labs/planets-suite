@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition>
+
+
+      <table id="#{PlaceBandAsHeader ? 'expHeaderTable' : 'expFooterTable'}"><tr>
+      <td class="headerText">
+      
+      <c:if test="#{PlaceBandAsHeader}">
+      <c:if test="#{ExperimentPhase == 1}">
+      <h2><h:outputText value="#{res['new_exp.stage1']}"/></h2>
+      </c:if>
+      <c:if test="#{ExperimentPhase == 2}">
+      <h2><h:outputText value="#{res['new_exp.stage2']}"/></h2>
+      </c:if>
+      <c:if test="#{ExperimentPhase == 3}">
+      <h2><h:outputText value="#{res['new_exp.stage3']}"/></h2>
+      </c:if>
+      <c:if test="#{ExperimentPhase == 4}">
+      <h2><h:outputText value="#{res['new_exp.stage4']}"/></h2>
+      </c:if>
+      <c:if test="#{ExperimentPhase == 5}">
+      <h2><h:outputText value="#{res['new_exp.stage5']}"/></h2>
+      </c:if>
+      <c:if test="#{ExperimentPhase == 6}">
+      <h2><h:outputText value="#{res['new_exp.stage6']}"/></h2>
+      </c:if>
+      </c:if>
+      
+      </td>
+      <td class="headerButtons">
+
+      <c:if test="#{ExperimentPhase == 1}">
+      <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveStage1}"
+                                    rendered="#{! ExperimentBean.approved}" />
+      <h:commandButton value="#{res['new_exp.saveStage1']}" 
+            action="#{NewExp_Controller.commandSaveStage1AndGotoStage2}" rendered="#{! ExperimentBean.approved}"/>
+        <h:commandButton value="#{res['reader_exp.buttonStage1']}" 
+              action="goToStage2" rendered="#{ExperimentBean.approved}"/>
+      </c:if>
+      <c:if test="#{ExperimentPhase == 2}">
+        <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveStage2}"
+                                    rendered="#{! ExperimentBean.approved}" />
+        <h:commandButton value="#{res['new_exp.saveStage2']}"
+                                    action="#{NewExp_Controller.commandSaveStage2AndGotoStage3}"
+                                    rendered="#{! ExperimentBean.approved}" />
+        <h:commandButton value="#{res['reader_exp.buttonStage2']}" 
+              action="goToStage3" rendered="#{ExperimentBean.approved}"/>
+      </c:if>
+      <c:if test="#{ExperimentPhase == 3}">
+        <h:commandButton value="#{res['button.save']}"
+                                    action="#{NewExp_Controller.commandSaveStage3}"
+                                    rendered="#{! ExperimentBean.approved}" />
+        <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
+              action="#{NewExp_Controller.commandSaveStage3AndSubmit}" rendered="#{! ExperimentBean.approved}"/>
+        <h:commandButton value="#{res['reader_exp.buttonStage3']}" 
+              action="goToStage4" rendered="#{ExperimentBean.approved}"/>
+      </c:if>
+      <c:if test="#{ExperimentPhase == 4}">
+      </c:if>
+      <c:if test="#{ExperimentPhase == 5}">
+      </c:if>
+      <c:if test="#{ExperimentPhase == 6}">
+      </c:if>
+      
+      </td>
+      </tr>
+      </table>
+        
+  </ui:composition>
+</body>
+</html>

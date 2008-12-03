@@ -26,19 +26,11 @@
 			<div id="maincol">
 				<div class="innertubemain">        
 <h:form>
-      <table id="expHeaderTable"><tr>
-      <td class="headerText">
-      <h2><h:outputText value="#{res['new_exp.stage3']}"/></h2>
-      </td>
-      <td class="headerButtons">
-        <h:commandButton value="#{res['button.save']}"
-                                    action="#{NewExp_Controller.commandSaveExperiment}"
-                                    disabled="#{ExperimentBean.approved}" />
-        <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
-              action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
-      </td>
-      </tr>
-      </table>
+
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="3" />
+       <ui:param name="PlaceBandAsHeader" value="true" />
+    </ui:include>
 
       <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
 
@@ -64,7 +56,7 @@
                 <f:facet name="header">
                     <h:outputText value="Measure"/>
                 </f:facet>
-                <h:selectBooleanCheckbox value="#{prop.selected}"  readonly="#{ExperimentBean.approved}" valueChangeListener="#{NewExp_Controller.handleObsSelectChangeListener}"/>
+                <h:selectBooleanCheckbox value="#{prop.selected}"  disabled="#{ExperimentBean.approved}" valueChangeListener="#{NewExp_Controller.handleObsSelectChangeListener}"/>
             </rich:column>
             
             <rich:column sortBy="#{prop.type}">
@@ -97,16 +89,6 @@
                 <rich:datascroller id="prop_ds"></rich:datascroller>
             </f:facet>
         </rich:dataTable>
-
-        <p>        
-        <h:commandButton value="#{res['button.save']}"
-                                    action="#{NewExp_Controller.commandSaveExperiment}"
-                                    disabled="#{ExperimentBean.approved}" />
-        </p>
-        <p>
-         <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
-              action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
-       </p>
 
 </rich:simpleTogglePanel>
 
@@ -169,31 +151,15 @@
 						</fieldset>
 </h:panelGroup>
 
-          
-							<p>
-					            <h:commandButton value="#{res['button.save']}"  
-					            action="#{NewExp_Controller.updateBenchmarksAction}"  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>		
-							</p>
-							<p>
-					            <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
-					            action="#{NewExp_Controller.updateBenchmarksAndSubmitAction}" disabled="#{ExperimentBean.approved}"/>										
-							</p>
 							<p><b>#{res['exp_stage3.warning']}</b></p>
 
 </rich:simpleTogglePanel>
 
-      <table id="expFooterTable"><tr>
-      <td class="headerText">
-      </td>
-      <td class="headerButtons">
-        <h:commandButton value="#{res['button.save']}"
-                                    action="#{NewExp_Controller.commandSaveExperiment}"
-                                    disabled="#{ExperimentBean.approved}" />
-        <h:commandButton value="#{res['exp_stage3.saveSubmit']}" 
-              action="#{NewExp_Controller.commandSaveExperimentAndSubmit}" disabled="#{ExperimentBean.approved}"/>
-      </td>
-      </tr>
-      </table>
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="3" />
+       <ui:param name="PlaceBandAsHeader" value="false" />
+    </ui:include>
+
 </h:form>
 
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
@@ -201,9 +167,8 @@
        <ui:param name="ExperimentPhase" value="3" />
     </ui:include>
                 
-            <p>&#160;</p>
         <p>&#160;</p>
-
+        <p>&#160;</p>
         <p>&#160;</p>
         <p>&#160;</p>
         <p>&#160;</p>

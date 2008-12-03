@@ -11,7 +11,7 @@
 <f:view>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
 	<ui:define name="title">
-        #{res.title} - <h:outputText value="#{ExperimentBean.ename}"/> : #{res['exp_stage2.pageTitle']}
+        #{res.title} - '<h:outputText value="#{ExperimentBean.ename}"/>' : #{res['exp_stage2.pageTitle']}
   </ui:define>
 
 	<ui:define name="header">
@@ -43,20 +43,12 @@
 		<div id="maincol">
 		<div class="innertubemain">
 <h:form enctype="multipart/form-data">
-      <table id="expHeaderTable"><tr>
-      <td class="headerText">
-      <h2><h:outputText value="#{res['new_exp.stage2']}"/></h2>
-      </td>
-      <td class="headerButtons">
-        <h:commandButton value="#{res['button.save']}"
-                                    action="#{NewExp_Controller.commandSaveExperiment}"
-                                    disabled="#{ExperimentBean.approved}" />
-      <h:commandButton value="#{res['new_exp.saveStage2']}"
-                                    action="#{NewExp_Controller.commandSaveExperimentAndGotoStage3}"
-                                    disabled="#{ExperimentBean.approved}" />
-      </td>
-      </tr></table>
-      
+
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="2" />
+       <ui:param name="PlaceBandAsHeader" value="true" />
+    </ui:include>
+
       <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
   
         <c:if test="#{ExperimentBean.oldExperiment}">
@@ -74,18 +66,11 @@
         
         </c:if>
 
-      <table id="expFooterTable"><tr>
-      <td class="headerText">
-      </td>
-      <td class="headerButtons">
-        <h:commandButton value="#{res['button.save']}"
-                                    action="#{NewExp_Controller.commandSaveExperiment}"
-                                    disabled="#{ExperimentBean.approved}" />
-      <h:commandButton value="#{res['new_exp.saveStage2']}"
-                                    action="#{NewExp_Controller.commandSaveExperimentAndGotoStage3}"
-                                    disabled="#{ExperimentBean.approved}" />
-      </td>
-      </tr></table>
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="2" />
+       <ui:param name="PlaceBandAsHeader" value="false" />
+    </ui:include>
+
 </h:form>
     
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
