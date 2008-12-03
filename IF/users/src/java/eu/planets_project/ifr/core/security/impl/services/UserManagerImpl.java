@@ -298,10 +298,14 @@ public class UserManagerImpl implements UserManager {
 	@PermitAll
 	@SuppressWarnings("unchecked")
 	public String[] listRoles() {
-		Query query = manager.createQuery("from Role");
+		Query query = manager.createQuery("from RoleImpl");
 		List<Role> roles = (List<Role>) query.getResultList();
 		String[] rolestr = new String[roles.size()];
-		return roles.toArray(rolestr);
+		int index = 0;
+		for (Role role : roles) {
+			rolestr[index++] = role.getName();
+		}
+		return rolestr;
 	}
 
 	/* (non-Javadoc)
