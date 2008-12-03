@@ -1,11 +1,19 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.XMLOutputter;
 
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
@@ -26,6 +34,7 @@ public class CoreExtractor {
     private static String EXTRACTOR_NAME;
     private PlanetsLogger plogger;
     private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
+    private static boolean NORM_DATA_DISABLED = false;
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
 
     public CoreExtractor(String extractorName, PlanetsLogger logger) {
@@ -34,6 +43,54 @@ public class CoreExtractor {
         EXTRACTOR_NAME = extractorName;
         OUTPUTFILE_NAME = EXTRACTOR_NAME.toLowerCase() + "_xcdl_out.xcdl";
         EXTRACTOR_WORK = extractorName.toUpperCase();
+    }
+    
+    // this is a work around to disable norm data output in XCDL, 
+    // as long as flag in extractor does not work
+    private byte[] removeNormData(byte[] XCDLtoRemoveNormDataFrom) {
+    	SAXBuilder saxBuilder = new SAXBuilder();
+    	Document xcdlDoc;
+    	
+    	XMLOutputter xmlOut = new XMLOutputter();
+		BufferedWriter xmlWriter;
+    	
+    	File xcdlTmp = ByteArrayHelper.write(XCDLtoRemoveNormDataFrom);
+    	File cleanedXCDL = FileUtils.getTempFile("cleanedXCDL", "xcdl");
+    	byte[] result = null;
+    	
+    	try {
+			xcdlDoc = saxBuilder.build(xcdlTmp);
+			
+			Element rootXCDL = xcdlDoc.getRootElement();
+			
+			List<Element> content = rootXCDL.getChildren();
+			
+			for (Element objectElement : content) {
+				String object = objectElement.getName();
+				List<Element>  objectChildren = objectElement.getChildren();
+				for (Element level2Element : objectChildren) {
+					String normDataName = level2Element.getQualifiedName();
+					Element parent = level2Element.getParentElement();
+					if(level2Element.getName().equalsIgnoreCase("normData")) {
+						level2Element.detach();
+						break;
+					}
+					
+				}
+			}
+			xmlWriter = new BufferedWriter(new FileWriter(cleanedXCDL));
+			xmlOut.output(xcdlDoc, xmlWriter);
+			result = ByteArrayHelper.read(cleanedXCDL);
+			
+		} catch (JDOMException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		NORM_DATA_DISABLED = false;
+		return result;
     }
 
     public byte[] extractXCDL(byte[] binary, byte[] xcel, Parameters parameters) {
@@ -112,7 +169,7 @@ public class CoreExtractor {
         /* If we have no XCEL, let the extracto find the appropriate one: */
         if (xcel != null) {
             String xcelFilePath = xcelFile.getAbsolutePath().replace('\\', '/');
-            System.out.println("XCEL-file path: " + xcelFilePath);
+//            System.out.println("XCEL-file path: " + xcelFilePath);
             plogger.info("Input-XCEL file path: " + xcelFilePath);
             extractor_arguments.add(xcelFilePath);
             extractor_arguments.add(outputFilePath);
@@ -141,6 +198,7 @@ public class CoreExtractor {
 					plogger.info("Got Parameter: " + name + " = " + parameter.value);
 					plogger.info("Configuring Extractor to skip NormData!");
 					extractor_arguments.add(parameter.value);
+					NORM_DATA_DISABLED = true;
 					continue;
 				}
 				else {
@@ -171,11 +229,19 @@ public class CoreExtractor {
 
         byte[] binary_out = null;
         plogger.info("Creating byte[] to return...");
-		binary_out = ByteArrayHelper.read(new File(outputFilePath));
+		
+        binary_out = ByteArrayHelper.read(new File(outputFilePath));
+        
+        byte[] cleanedXCDL = null;
+        
+        if(NORM_DATA_DISABLED) {
+        	cleanedXCDL = removeNormData(binary_out);
+        	binary_out = cleanedXCDL;
+        }
 
         boolean successfullyDeleted = FileUtils.deleteTempFiles(extractor_work_folder, plogger);
         plogger.info("Deleted all temp files = " + successfullyDeleted);
-        System.out.println("Deleted all temp files = " + successfullyDeleted);
+//        System.out.println("Deleted all temp files = " + successfullyDeleted);
 
         return binary_out;
     }

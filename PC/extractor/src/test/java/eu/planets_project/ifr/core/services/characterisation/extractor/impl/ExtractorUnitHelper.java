@@ -30,7 +30,7 @@ public final class ExtractorUnitHelper {
     
     static final String EXTRACTOR2URI_OUTPUT_DIR = SYSTEM_TEMP + File.separator + "EXTRACTOR2URI_TEST_OUT";
     
-    static final String EXTRACTOR_OUTPUT_DIR = SYSTEM_TEMP + File.separator + "EXTRACTOR_TEST_OUT";
+    static final String EXTRACTOR_OUTPUT_DIR = "EXTRACTOR_TEST_OUT";
            
     
     /***/

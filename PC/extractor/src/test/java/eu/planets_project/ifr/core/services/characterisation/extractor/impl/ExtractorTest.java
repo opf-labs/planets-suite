@@ -23,6 +23,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -47,9 +48,9 @@ public final class ExtractorTest {
      */
     @BeforeClass
     public static void testCharacterise() {
-    	System.setProperty("pserv.test.context", "server");
-        System.setProperty("pserv.test.host", "localhost");
-        System.setProperty("pserv.test.port", "8080");
+    	System.setProperty("pserv.test.context", "Standalone");
+//        System.setProperty("pserv.test.host", "localhost");
+//        System.setProperty("pserv.test.port", "8080");
         
         File inputImage = new File(ExtractorUnitHelper.SAMPLE_FILE);
         File inputXcel = new File(ExtractorUnitHelper.SAMPLE_XCEL);
@@ -60,7 +61,7 @@ public final class ExtractorTest {
             fail("Could not create directory: " + outputFolder);
         }
         
-        outputXcdl = new File(outputFolder, "client_output.xcdl");
+//        outputXcdl = new File(outputFolder, "client_output.xcdl");
         binary = ByteArrayHelper.read(inputImage);
         
         BufferedReader br;
@@ -100,27 +101,67 @@ public final class ExtractorTest {
      * @throws MalformedURLException 
      */
     private void test(final Characterise extractor) throws MalformedURLException {
+    	File testTmpFolder = FileUtils.createWorkFolderInSysTemp(ExtractorUnitHelper.EXTRACTOR_OUTPUT_DIR);
+    	String outputFilePath = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput.xcdl";
+    	String outputFilePath1 = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput1.xcdl";
+    	String outputFilePath2 = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput2.xcdl";
+    	String outputFilePath3 = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput3.xcdl";
+    	String outputFilePath4 = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput4.xcdl";
+    	
     	DigitalObject digitalObject = createDigitalObjectByValue(new URL("http://somePermamentURL"), binary);
     	
         /* find XCEL, no parameters*/
+    	System.out.println("find XCEL, no parameters:");
         CharacteriseResult characteriseResult = extractor.characterise(digitalObject, null, null);
-        outputXcdl = ByteArrayHelper.write(characteriseResult.getDigitalObject().getContent().getValue());
-        
-        /* give XCEL, no parameters*/
-        characteriseResult = extractor.characterise(digitalObject, xcelString, null);
-        outputXcdl = ByteArrayHelper.write(characteriseResult.getDigitalObject().getContent().getValue());
-        
-        /*give XCEL, give Parameters */
-        Parameters parameters = new Parameters();
-        parameters.add("disableNormDataInXCDL", "-n");
-        parameters.add("enableNormData", "-e"); // wrong parameter for testing
-        parameters.add("enableRawDataInXCDL", "-r");
-        characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
-        outputXcdl = ByteArrayHelper.write(characteriseResult.getDigitalObject().getContent().getValue());
-        System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), outputFilePath);
         byte[] resultData = characteriseResult.getDigitalObject().getContent().getValue();
         int fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
+        System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        System.out.println();
+        System.out.println();
+        assertTrue("No output file written;", outputXcdl.exists());
+        
+        /* give XCEL, no parameters*/
+        System.out.println("give XCEL, no parameters:");
+        characteriseResult = extractor.characterise(digitalObject, xcelString, null);
+        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), outputFilePath1);
+        resultData = characteriseResult.getDigitalObject().getContent().getValue();
+        fileSize = resultData.length / 1024;
+        System.out.println("XCDL file size: " + fileSize + " KB");
+        System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        System.out.println();
+        System.out.println();
+        assertTrue("No output file written;", outputXcdl.exists());
+        
+        /*give XCEL, give Parameter -r */
+        System.out.println("find XCEL, give parameter: -r");
+        Parameters parameters = new Parameters();
+        parameters.add("enableRawDataInXCDL", "-r");
+        characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
+        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), outputFilePath2);
+        resultData = characteriseResult.getDigitalObject().getContent().getValue();
+        fileSize = resultData.length / 1024;
+        System.out.println("XCDL file size: " + fileSize + " KB");
+        System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        System.out.println();
+        System.out.println();
+        assertTrue("No output file written;", outputXcdl.exists());
+        
+        
+        /*give XCEL, give Parameters */
+        System.out.println("give XCEL, parameters: -n, -r");
+        parameters = new Parameters();
+        parameters.add("disableNormDataInXCDL", "-n");
+        parameters.add("enableRawDataInXCDL", "-r");
+        characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
+        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), outputFilePath3);
+        resultData = characteriseResult.getDigitalObject().getContent().getValue();
+        fileSize = resultData.length / 1024;
+        System.out.println("XCDL file size: " + fileSize + " KB");
+        System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        System.out.println();
+        System.out.println();
         assertTrue("No output file written;", outputXcdl.exists());
     }
     
