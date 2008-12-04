@@ -160,7 +160,9 @@ public class TiffValidation implements BasicValidateOneBinary, Serializable
 	public interface TiffLibrary extends Library 
 	{
 		TiffLibrary INSTANCE = 
-			(TiffLibrary)Native.loadLibrary("tiff", TiffLibrary.class);
+			(TiffLibrary)Native.loadLibrary(
+				(Platform.isWindows() ? "libtiff3" : "tiff"), 
+				TiffLibrary.class);
 	
 		Pointer TIFFOpen(String file, String mode);
 		void TIFFClose(Pointer p);
