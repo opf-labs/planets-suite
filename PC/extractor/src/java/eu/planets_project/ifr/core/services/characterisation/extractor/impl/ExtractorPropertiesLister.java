@@ -228,7 +228,6 @@ public class ExtractorPropertiesLister {
 		BufferedWriter xmlWriter;
 		String deletedFile;
 		
-		Document orgDoc;
 		try {
 			
 			Element xclProperties = new Element("XCLProperties");

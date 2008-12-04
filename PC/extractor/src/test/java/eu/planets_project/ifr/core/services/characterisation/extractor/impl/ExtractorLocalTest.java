@@ -1,7 +1,6 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,19 +8,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.util.List;
+import java.util.Set;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -32,36 +35,36 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * @author Peter Melms
  * @author Fabian Steeg
  */
-public final class ExtractorTest {
+public class ExtractorLocalTest {
 
     /***/
-    private static final String WSDL = "/pserv-pc-extractor/Extractor?wsdl";
+    static final String WSDL = "/pserv-pc-extractor/Extractor?wsdl";
     /***/
-    private static String xcelString;
+    static String xcelString;
     /***/
-    private static File outputXcdl;
+    static File outputXcdl;
     /***/
-    private static byte[] binary;
+    static byte[] binary;
+    
+    public static Characterise extractor;
+    static String TEST_OUT  = null;
 
     /**
      * Set up the testing environment: create files and directories for testing.
      */
     @BeforeClass
-    public static void testCharacterise() {
-    	System.setProperty("pserv.test.context", "Standalone");
-//        System.setProperty("pserv.test.host", "localhost");
-//        System.setProperty("pserv.test.port", "8080");
+    public static void setup() {
+    	System.out.println("************************");
+    	System.out.println("* Running LOCAL tests: *");
+    	System.out.println("************************");
+    	System.out.println();
+    	System.setProperty("pserv.test.context", "local");
+    	
+    	TEST_OUT = ExtractorUnitHelper.EXTRACTOR_LOCAL_TEST_OUT;
         
         File inputImage = new File(ExtractorUnitHelper.SAMPLE_FILE);
         File inputXcel = new File(ExtractorUnitHelper.SAMPLE_XCEL);
-        File outputFolder = new File(ExtractorUnitHelper.EXTRACTOR_OUTPUT_DIR);
         
-        boolean made = outputFolder.mkdir();
-        if (!made && !outputFolder.exists()) {
-            fail("Could not create directory: " + outputFolder);
-        }
-        
-//        outputXcdl = new File(outputFolder, "client_output.xcdl");
         binary = ByteArrayHelper.read(inputImage);
         
         BufferedReader br;
@@ -79,92 +82,128 @@ public final class ExtractorTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        extractor = ServiceCreator.createTestService(Characterise.QNAME, Extractor.class, WSDL);
     }
-
-    /** Test using a local instance. 
-     * @throws MalformedURLException */
+    
     @Test
-    public void testLocal() throws MalformedURLException {
-        test(new Extractor());
+    public void testDescribe() {
+    	ServiceDescription sd = extractor.describe();
+    	System.out.println("test: describe()");
+    	System.out.println("--------------------------------------------------------------------");
+    	System.out.println();
+    	System.out.println("Received ServiceDescription from: " + extractor.getClass().getName());
+    	System.out.println(sd.toXmlFormatted());
+    	System.out.println("--------------------------------------------------------------------");
+    	assertTrue("The ServiceDescription should not be NULL.", sd != null );
     }
-
-    /** Test using the web service running on local host. 
-     * @throws MalformedURLException */
+    
+    
+    
     @Test
-    public void testRemote() throws MalformedURLException {
-        Characterise characterise = ServiceCreator.createTestService(Characterise.QNAME, Extractor.class, WSDL);
-        test(characterise);
+    public void testListProperties() {
+    	File testFile = new File(ExtractorUnitHelper.SAMPLE_FILE);
+    	System.out.println("test: listProperties()");
+    	System.out.println("--------------------------------------------------------------------");
+    	System.out.println();
+    	System.out.println("Received list of FileFormatProperty objects for file: " + testFile.getName());
+    	
+    	List<FileFormatProperty> properties = extractor.listProperties(getUriForFile(testFile));
+    	for (FileFormatProperty fileFormatProperty : properties) {
+			System.out.println(fileFormatProperty.toString());
+		}
+    	System.out.println("--------------------------------------------------------------------");
     }
-
-    /**
-     * @param extractor The extractor instance to test
-     * @throws MalformedURLException 
-     */
-    private void test(final Characterise extractor) throws MalformedURLException {
-    	File testTmpFolder = FileUtils.createWorkFolderInSysTemp(ExtractorUnitHelper.EXTRACTOR_OUTPUT_DIR);
-    	String outputFilePath = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput.xcdl";
-    	String outputFilePath1 = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput1.xcdl";
-    	String outputFilePath2 = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput2.xcdl";
-    	String outputFilePath3 = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput3.xcdl";
-    	String outputFilePath4 = testTmpFolder.getAbsolutePath() + File.separator + "extractorTestOutput4.xcdl";
+    
+    @Test
+    public void testCharacterise() throws MalformedURLException {
+    	File outputFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT);
+    	String test1Out = outputFolder.getAbsolutePath() + File.separator + "test1Out.xcdl";
+    	String test2Out = outputFolder.getAbsolutePath() + File.separator + "test2Out.xcdl";
+    	String test3Out = outputFolder.getAbsolutePath() + File.separator + "test3Out.xcdl";
+    	String test4Out = outputFolder.getAbsolutePath() + File.separator + "test4Out.xcdl";
+    	String test5Out = outputFolder.getAbsolutePath() + File.separator + "test5Out.xcdl";
     	
     	DigitalObject digitalObject = createDigitalObjectByValue(new URL("http://somePermamentURL"), binary);
     	
-        /* find XCEL, no parameters*/
-    	System.out.println("find XCEL, no parameters:");
+    	/* find XCEL, no parameters*/
+    	System.out.println("test1: find XCEL, no parameters:");
+    	System.out.println("--------------------------------");
         CharacteriseResult characteriseResult = extractor.characterise(digitalObject, null, null);
-        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), outputFilePath);
+        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), test1Out);
         byte[] resultData = characteriseResult.getDigitalObject().getContent().getValue();
         int fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
         System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        System.out.println("--------------------------------");
         System.out.println();
         System.out.println();
         assertTrue("No output file written;", outputXcdl.exists());
         
         /* give XCEL, no parameters*/
-        System.out.println("give XCEL, no parameters:");
+        System.out.println("test2: give XCEL, no parameters:");
+        System.out.println("--------------------------------");
         characteriseResult = extractor.characterise(digitalObject, xcelString, null);
-        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), outputFilePath1);
+        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), test2Out);
         resultData = characteriseResult.getDigitalObject().getContent().getValue();
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
         System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        System.out.println("--------------------------------");
         System.out.println();
         System.out.println();
         assertTrue("No output file written;", outputXcdl.exists());
         
         /*give XCEL, give Parameter -r */
-        System.out.println("find XCEL, give parameter: -r");
+        System.out.println("test3: find XCEL, give parameter: -r");
+        System.out.println("--------------------------------");
         Parameters parameters = new Parameters();
         parameters.add("enableRawDataInXCDL", "-r");
         characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
-        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), outputFilePath2);
+        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), test3Out);
         resultData = characteriseResult.getDigitalObject().getContent().getValue();
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
         System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        System.out.println("--------------------------------");
         System.out.println();
         System.out.println();
         assertTrue("No output file written;", outputXcdl.exists());
         
         
         /*give XCEL, give Parameters */
-        System.out.println("give XCEL, parameters: -n, -r");
+        System.out.println("test4: give XCEL, parameters: -n, -r");
+        System.out.println("--------------------------------");
         parameters = new Parameters();
         parameters.add("disableNormDataInXCDL", "-n");
         parameters.add("enableRawDataInXCDL", "-r");
         characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
-        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), outputFilePath3);
+        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), test4Out);
         resultData = characteriseResult.getDigitalObject().getContent().getValue();
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
         System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
+        System.out.println("--------------------------------");
         System.out.println();
         System.out.println();
         assertTrue("No output file written;", outputXcdl.exists());
     }
     
+    private URI getUriForFile (File testFile) {
+    	String fileName = testFile.getAbsolutePath();
+    	String testFileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+    	FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
+    	Set<URI> uriSet = formatRegistry.getURIsForExtension(testFileExtension);
+    	URI fileFormatURI = null;
+    	
+    	if(uriSet != null ) {
+    		if(!uriSet.isEmpty()) {
+    			fileFormatURI = uriSet.iterator().next();
+        	}
+    	}
+    	return fileFormatURI;
+    }
+
     private DigitalObject createDigitalObjectByReference(URL permanentURL, URL reference) {
 		DigitalObject digObj =  new DigitalObject.Builder(Content.byReference(reference)).build();
 		return digObj;

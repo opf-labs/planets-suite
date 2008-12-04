@@ -26,11 +26,15 @@ public final class ExtractorUnitHelper {
     private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
     
     /***/
-    static final String EXTRACTOR2BINARY_OUTPUT_DIR = SYSTEM_TEMP + File.separator + "EXTRACTOR2BINARY_TEST_OUT";
+    static final String BASIC_EXTRACTOR2BINARY_TEST_OUT = SYSTEM_TEMP + File.separator + "BASIC_EXTRACTOR2BINARY_TEST_OUT";
     
     static final String EXTRACTOR2URI_OUTPUT_DIR = SYSTEM_TEMP + File.separator + "EXTRACTOR2URI_TEST_OUT";
     
-    static final String EXTRACTOR_OUTPUT_DIR = "EXTRACTOR_TEST_OUT";
+    static final String EXTRACTOR_LOCAL_TEST_OUT = "EXTRACTOR_LOCAL_TEST_OUT";
+    
+    static final String EXTRACTOR_SERVER_TEST_OUT = "EXTRACTOR_SERVER_TEST_OUT";
+    
+    static final String EXTRACTOR_STANDALONE_TEST_OUT = "EXTRACTOR_STANDALONE_TEST_OUT";
            
     
     /***/

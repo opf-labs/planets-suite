@@ -40,7 +40,7 @@ public final class Extractor2BinaryTest {
         File inputImage = new File(ExtractorUnitHelper.SAMPLE_FILE);
         File inputXcel = new File(ExtractorUnitHelper.SAMPLE_XCEL);
         File outputFolder = new File(
-                ExtractorUnitHelper.EXTRACTOR2BINARY_OUTPUT_DIR);
+                ExtractorUnitHelper.BASIC_EXTRACTOR2BINARY_TEST_OUT);
         boolean made = outputFolder.mkdir();
         if (!made && !outputFolder.exists()) {
             fail("Could not create directory: " + outputFolder);
