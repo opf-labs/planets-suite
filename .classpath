@@ -50,6 +50,8 @@
 	<classpathentry kind="src" path="PC/libtiff/test/java"/>
 	<classpathentry kind="src" path="IF/users/src/java"/>
 	<classpathentry kind="src" path="IF/users/src/test/java"/>
+	<classpathentry kind="src" path="IF/admin/src/java"/>
+	<classpathentry kind="src" path="IF/admin/src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
