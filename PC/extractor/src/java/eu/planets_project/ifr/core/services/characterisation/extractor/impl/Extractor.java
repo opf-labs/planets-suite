@@ -18,6 +18,7 @@ import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.FileFormatProperties;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
@@ -146,7 +147,9 @@ public class Extractor implements Characterise, Serializable {
 	}
 
 	public List<FileFormatProperty> listProperties(URI formatURI) {
-		return ExtractorPropertiesLister.getFileFormatProperties(formatURI).getProperties();
+		FileFormatProperties fileFormatProperties = ExtractorPropertiesLister.getFileFormatProperties(formatURI);
+		List<FileFormatProperty> properties = fileFormatProperties.getProperties();
+		return properties;
 	}
 
 }

@@ -110,9 +110,11 @@ public class ExtractorLocalTest {
     	URI formatURI = getUriForFile(testFile);
     	if(formatURI!=null) {
     		List<FileFormatProperty> properties = extractor.listProperties(formatURI);
+    		
     		System.out.println("Received list of FileFormatProperty objects for file: " + testFile.getName());
         	
         	for (FileFormatProperty fileFormatProperty : properties) {
+        		assertTrue("No metrics!",fileFormatProperty.getMetrics().getList().size()>0);
     			System.out.println(fileFormatProperty.toString());
     		}
         	System.out.println("--------------------------------------------------------------------");

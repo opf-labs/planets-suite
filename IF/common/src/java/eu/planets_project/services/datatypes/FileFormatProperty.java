@@ -2,10 +2,6 @@ package eu.planets_project.services.datatypes;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-
-@XmlAccessorType(XmlAccessType.FIELD)
 public class FileFormatProperty extends Property {
 	
 	private String id;

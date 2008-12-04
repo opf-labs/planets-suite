@@ -53,7 +53,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
-	<classpathentry kind="lib" path="PC/extractor/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="PC/extractor/lib/jdom.jar" sourcepath="D:/04-11-2008/JDom/src"/>
 	<classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/log4j.jar"/>
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/image.jar"/>

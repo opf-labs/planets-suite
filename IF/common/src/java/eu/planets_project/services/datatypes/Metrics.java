@@ -1,7 +1,6 @@
 package eu.planets_project.services.datatypes;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Metrics {
@@ -20,6 +19,10 @@ public class Metrics {
 		this.metrics = metricsToSet;
 	}
 	
+	public List<Metric> getMetrics() {
+		return this.metrics;
+	}
+
 	public void add(Metric metric) {
 		if(this.metrics == null) {
 			this.metrics = new ArrayList<Metric>();

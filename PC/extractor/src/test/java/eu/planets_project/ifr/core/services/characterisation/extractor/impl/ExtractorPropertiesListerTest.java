@@ -26,7 +26,10 @@ public class ExtractorPropertiesListerTest {
 		File puidFile = new File(System.getenv("EXTRACTOR_HOME") + File.separator + "res" + File.separator + "PUIDList.txt");
 		formatIDs = new File("PC/extractor/src/resources/fpm_files/" + "formatIDs.txt");
 		
-		System.setProperty("pserv.test.context", "local");
+		System.setProperty("pserv.test.context", "server");
+        System.setProperty("pserv.test.host", "localhost");
+        System.setProperty("pserv.test.port", "8080");
+		
 		
 		listOfPronomIDs = new ArrayList <String> ();
 		
