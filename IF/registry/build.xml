@@ -21,13 +21,14 @@
 	<property name="lib.dir" value="${appDir}/lib" />
 	<property name="src.resources" value="${appDir}/src/main/resources" />
 	<property name="src.web" value="${appDir}/src/web" />
-	
+
 	<!-- Define the API part-->
-	<property name="src.api.includes" value="eu/planets_project/ifr/core/registry/api/**"/>
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/registry/api/**" />
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />
 	<property name="test.local" value="" />
+	<property name="test.standalone" value="" />
 	<property name="test.server" value="" />
 
 	<!-- Reference to the main build file -->
@@ -41,11 +42,11 @@
 			<include name="jaxrconcepts.xsd" />
 		</fileset>
 	</copy>
-	
+
 	<!-- Copy the registered services into the server config directory -->
-    <copy todir="${if_server.dir}/server/default/conf/service-description-registry/" overwrite="true">
-        <fileset dir="src/main/resources/service-description-registry/">
-            <include name="*" />
-        </fileset>
-    </copy>
+	<copy todir="${if_server.dir}/server/default/conf/service-description-registry/" overwrite="true">
+		<fileset dir="src/main/resources/service-description-registry/">
+			<include name="*" />
+		</fileset>
+	</copy>
 </project>

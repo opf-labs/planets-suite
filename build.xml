@@ -116,6 +116,23 @@
   </target>
   
   <!-- ================= -->
+
+  <target name="test:pure-java" depends="props:set,deploy:common">
+        <foreach target="test:sub:pure-java" param="sub.build"
+            inheritall="false">
+            <path refid="all.sub.projects" />
+        </foreach>
+  </target>
+  <target name="test:sub:pure-java">
+        <echo message="Test in ${sub.build}" />
+        <dirname property="sub.build.dir" file="${sub.build}" />
+        <ant antfile="${sub.build}" inheritAll="false" target="test:pure-java"
+            dir="${sub.build.dir}">
+            <property name="have.deployed.common" value="true" />
+        </ant>
+  </target>
+  
+  <!-- ================= -->
   
   <target name="undeploy:all" depends="props:set,deploy:common">
     <foreach target="undeploy:sub" param="sub.build" inheritall="false">

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
-import java.util.Map.Entry;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -83,11 +82,9 @@ public final class ServiceTaxonomy {
         /***/
         JBOSS_HOME_DIR_KEY("jboss.home.dir"),
         /***/
-        LOCAL(
-                "IF/registry/src/main/resources/eu/planets_project/ifr/core/registry/"),
+        LOCAL("IF/registry/src/main/resources/eu/planets_project/ifr/core/registry/"),
         /***/
-        DESTINATION_PACKAGE(
-                "eu.planets_project.ifr.core.registry.api.jaxr.jaxb.concepts"),
+        DESTINATION_PACKAGE("eu.planets_project.ifr.core.registry.api.jaxr.jaxb.concepts"),
         /***/
         FACES_CATEGORY("category"),
         /***/
@@ -261,8 +258,8 @@ public final class ServiceTaxonomy {
             Classification classification = getClassification(id);
             s.getCategories().add(PsCategory.of(classification));
             try {
-                Service service = JaxrServiceRegistryHelper.findServiceByKey(s.getKey(),
-                        bqm);
+                Service service = JaxrServiceRegistryHelper.findServiceByKey(s
+                        .getKey(), bqm);
                 service.addClassification(classification);
                 blcm.saveObjects(Arrays.asList(service));
             } catch (JAXRException e) {
@@ -311,9 +308,13 @@ public final class ServiceTaxonomy {
                         .getValue());
                 classification.id = (c.getKey().getId());
                 s.getCategories().add(classification);
-                Service service = JaxrServiceRegistryHelper.findServiceByKey(s.getKey(),
-                        bqm);
+                Service service = JaxrServiceRegistryHelper.findServiceByKey(s
+                        .getKey(), bqm);
                 service.addClassification(c);
+                if (service.getProvidingOrganization() == null) {
+                    throw new IllegalStateException(
+                            "Service has no organization!");
+                }
                 blcm.saveObjects(Arrays.asList(service));
             }
             /* But in any case, store the change in the properties file: */

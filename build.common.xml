@@ -635,6 +635,17 @@
       </then>
     </if>
   </target>
+  
+  <!-- =================================================================== -->
+
+  <target name="test:pure-java">
+    <if>
+      <equals arg1="${pserv.app.deploy.mode}" arg2="pure-java" />
+        <then>
+          <ant target="test-if-testable" />
+        </then>
+    </if>
+  </target>
 
   <!-- =================================================================== -->
 

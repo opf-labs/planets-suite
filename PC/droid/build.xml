@@ -20,6 +20,7 @@
 	<property name="src.resources" value="${appDir}/src/resources" />
   
     <property name="test.src.dir" value="${appDir}/test/java" />
+	<property name="test.local" value="" />
     <property name="test.server" value="" />
 
 
