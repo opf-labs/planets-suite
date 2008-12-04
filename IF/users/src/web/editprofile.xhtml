@@ -8,10 +8,11 @@
     xmlns:rich="http://richfaces.org/rich"
     xmlns:t="http://myfaces.apache.org/tomahawk">
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
-	<ui:define name="title">Planets User Profile Edit</ui:define>
+	<ui:define name="title">IF Administration Edit User Profile</ui:define>
 	<ui:define name="content">
+	    <h1><h:outputText value="Editing User #{UserBackingBean.user.username}'s Profile"/></h1>
+	    <p>Or click <a href="/users/list.faces">here</a> to return to View Users page.</p>
 		<h:form id="UserEntryForm" styleClass="userform">
-    		<h:inputHidden value="#{UserBackingBean.checkUser}" id="checkUser" />
 			<ui:include src="/WEB-INF/templates/user-profile.xhtml"/>
 			<h:commandButton value="Save" action="#{UserBackingBean.saveUser}" styleClass="button" />
 			<h:commandButton value="Delete" action="#{UserBackingBean.deleteUser}" rendered="#{PlanetsSharedBean.isAdmin}" styleClass="button"/>

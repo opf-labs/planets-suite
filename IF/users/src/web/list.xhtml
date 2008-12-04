@@ -8,8 +8,11 @@
     xmlns:rich="http://richfaces.org/rich"
     xmlns:t="http://myfaces.apache.org/tomahawk">
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
-	<ui:define name="title">Planets User Welcome Page</ui:define>
+	<ui:define name="title">IF Administration View Users</ui:define>
 	<ui:define name="content">
+	<h1>View &amp; Edit IF Users</h1>
+	<p>Click on a users name to edit or delete their profile</p>
+	<p>Click on the Add User button to create a new user profile</p>
     <h:form>
     <h:inputHidden value="#{UserBackingBean.refreshUserList}" id="refreshUserList" />
   	  <rich:dataTable rows="0" value="#{UserBackingBean.allUsers}" var="user">
@@ -38,7 +41,7 @@
 		  <h:selectBooleanCheckbox value="#{user.accountLocked}" disabled="true"/>
   	    </rich:column>
   	  </rich:dataTable>
-  	  <h:commandButton id="add" action="#{UserBackingBean.prepareNewUser}" value="Add" immediate="true" styleClass="button"/>
+  	  <h:commandButton id="add" action="#{UserBackingBean.prepareNewUser}" value="Add User" immediate="true" styleClass="button"/>
   	</h:form>
 	</ui:define>
 </ui:composition>

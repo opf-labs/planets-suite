@@ -38,30 +38,34 @@ import eu.planets_project.ifr.core.security.impl.services.UserManagerImpl;
  */
 public class UserBackingBean {
 	private static Log log = LogFactory.getLog(UserBackingBean.class);
+	private enum Context { MYPROFILE, OTHERPROFILE, NEWUSER, LIST };
 
+	private Context _context;
 	// The name of the currently logged in user, taken from session
 	private String username;
 	// The user profile to edit
 	private User user = null;
 	// A list of all if users used by the admin list page
 	private List<User> allUsers = null;
+	private List<Role> allRoles = new ArrayList<Role>();
+
 	private String originalPassword = null;
 	private String userPassword = null;
 	private String confirmPassword = null;
-	private boolean disableEditName = false;
-	private boolean checkUser = false;
-	private List<Role> allRoles = new ArrayList<Role>();
+	
 	private List<SelectItem> availableRoles = new ArrayList<SelectItem>();
 	private String[] userRoles = null;
-	private UserManager userManager = UserManagerImpl.getPlanetsUserManager();
+	
 	private RoleManager roleManager = RoleManagerImpl.getPlanetsRoleManager();
+	private UserManager userManager = UserManagerImpl.getPlanetsUserManager();
 
 	/**
 	 * Constructor for the UseBackingBean, this populates the user manager and user members
-	 * 
-	 * @throws UserNotFoundException When the user is not in the database.
 	 */
 	public UserBackingBean() {
+		// Assume context is editing own profile
+		this._context = UserBackingBean.Context.MYPROFILE;
+		
 		// We'll get the remote username, this doesn't change and we assume
 		// it remains the same for the session
 		if (null != this.getExternalContext().getRemoteUser()) {
@@ -117,23 +121,29 @@ public class UserBackingBean {
 	/**
 	 * The cancel method simply handles the pressing of the cancel button by the user
 	 * when editing a profile.  We simply reload the user and redisplay
+	 * @return the canceledit JSF outcome
 	 * 
 	 * @throws UserNotFoundException When the user cannot be found in the database
 	 */
 	public String cancelEdit() throws UserNotFoundException {
+		log.info("CANCEL EDIT");
 		this.loadUser(this.user.getUsername());
-		return "canceledit";
+		String retVal = "canceledit";
+		log.info("Outcome " + retVal);
+		return retVal;
 	}
 
 	/**
 	 * 
 	 * @return the cancelnewuser status
 	 */
-	public String cancelNewUser() {
-		this.user = new UserImpl();
-		this.user.setAddress(new AddressImpl());
-		return "cancelnewuser";
-	}
+//	public String cancelNewUser() {
+//		log.info("CANCEL NEW USER");
+//		this.loadUser(username);
+//		String retVal = "cancelnewuser";
+//		log.info("Outcome " + retVal);
+//		return retVal;
+//	}
 
 	/**
 	 * Getter for the original password
@@ -196,8 +206,11 @@ public class UserBackingBean {
 		return this.getExternalContext().isUserInRole("admin");
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean getDisableEditName() {
-		return this.disableEditName;
+		return !(this._context == UserBackingBean.Context.NEWUSER);
 	}
 	/**
 	 * Method to save the user details
@@ -209,6 +222,7 @@ public class UserBackingBean {
 	 * @throws  UserNotFoundException
 	 */
 	public String saveUser() throws NoSuchAlgorithmException, UserNotFoundException {
+		log.info("SAVE USER");
 		// The user has changed the password so we need to change the user bean 
 		// password with the hashed password value
 		if (this.passwordChanged()) {
@@ -223,6 +237,13 @@ public class UserBackingBean {
 			this.userPassword = this.user.getPassword();
 			this.confirmPassword = this.userPassword;
 			this.originalPassword = this.userPassword;
+		}
+
+		try {
+			
+		} catch (Exception e) {
+			log.info("SaveUser Exception caught");
+			e.printStackTrace();
 		}
 		this.arrangeUserRoles();
 		userManager.saveUser(this.user);
@@ -267,7 +288,9 @@ public class UserBackingBean {
 		this.loadUser(this.user.getUsername());
 		// Now copy back and return the roles then save the user
 		this.userRoles = roleCopy.clone();
-		return this.saveUser();
+		String retVal = this.saveUser();
+		log.info("Outcome " + retVal);
+		return retVal;
 	}
 
 	private boolean passwordChanged() {
@@ -296,10 +319,10 @@ public class UserBackingBean {
 		}
 		this.userPassword = this.confirmPassword = this.originalPassword = this.user.getPassword();
 		this.userRoles = this.user.rolesAsStrings();
-		this.disableEditName = true;
 	}
 	
 	public boolean getRefreshUserList() {
+		this._context = UserBackingBean.Context.LIST;
 		this.loadAllUsers();
 		return true;
 	}
@@ -315,13 +338,12 @@ public class UserBackingBean {
 	 * @return
 	 */
 	public String prepareNewUser() {
+		this._context = UserBackingBean.Context.NEWUSER;
 		this.user = new UserImpl("");
 		this.user.setAddress(new AddressImpl());
 		this.user.setAccountEnabled(true);
 		this.userRoles = new String[1];
 		this.userRoles[0] = "user";
-		this.disableEditName = false;
-		this.checkUser = true;
 		return "newuser";
 	}
 
@@ -331,10 +353,10 @@ public class UserBackingBean {
 	 * @throws UserNotFoundException
 	 */
 	public String editUserByName() throws UserNotFoundException {
+		this._context = UserBackingBean.Context.OTHERPROFILE;
 		Object value = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("userToEdit");
 		String userToEdit = value.toString();
 		this.loadUser(userToEdit);
-		this.checkUser = true;
 		return "editexistinguser";
 	}
 
@@ -494,33 +516,14 @@ public class UserBackingBean {
 			return "deleteself";
 		}
 		// OK lets use the user manager to remove this user
-		this.userManager.removeUser(this.user.getId());
+		userManager.removeUser(this.user.getId());
 
 		this.loadUser(username);
+		log.info("deleteuser");
 		return "deleteuser";
 	}
 	
 	private boolean isEditingSelf() {
-		// Check to see if the user is editing their own profile
-		return this.user.getUsername().equals(this.username);
-	}
-
-	/**
-	 * @param checkUser the checkUser to set
-	 */
-	public void setCheckUser(boolean checkUser) {
-		this.checkUser = checkUser;
-	}
-
-	/**
-	 * @return the checkUser
-	 */
-	public boolean isCheckUser() {
-		if ((!this.checkUser) && (!this.isEditingSelf())) {
-			this.loadUser(username);
-		} else {
-			this.checkUser = false;
-		}
-		return checkUser;
+		return (this._context == UserBackingBean.Context.MYPROFILE);
 	}
 }

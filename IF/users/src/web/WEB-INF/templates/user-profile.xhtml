@@ -127,6 +127,12 @@
             </label>
             <h:inputText value="#{UserBackingBean.user.address.country}" />
           </li>
+      	  <c:if test="#{PlanetsSharedBean.isAdmin}">
+      	  <li>
+      	  	<label for="enabled"><h:outputText value="Enabled"/></label>
+      	  	<h:selectBooleanCheckbox value="#{UserBackingBean.user.accountEnabled}"/>
+      	  </li>
+          </c:if>
         </ol>
       </fieldset>
       	<fieldset>
@@ -134,7 +140,7 @@
 	        <c:choose>
 	          <c:when test="#{PlanetsSharedBean.isAdmin}">
 	            <h:selectManyCheckbox layout="pageDirection" value="#{UserBackingBean.userRoles}">
-                  <f:selectItems value="#{UserBackingBean.availableRoles}" />
+                  <f:selectItems style="checkbox" value="#{UserBackingBean.availableRoles}" />
                 </h:selectManyCheckbox>
 	          </c:when>
 	          <c:otherwise>
