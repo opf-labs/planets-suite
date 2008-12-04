@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "=//W3C//DTD XHTML 1.0 Transitional//EN"
+		"http//www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:define name="title">IF Administration View Users</ui:define>
+	<ui:define name="content">
+	  	<div id="pl-wrapper">
+	  		<h1>Planets IF Administration Resources</h1>
+	  		<div>
+	  			<h2>User Administration Resources</h2>
+	  			<ul>
+	  				<li><h:outputLink alt="User Administration" value="/users/list.faces">View &amp; Edit Users</h:outputLink></li>
+	  			</ul>
+	  		</div>
+	  		<div>
+	  			<h2>Service Registry Administration Resources</h2>
+	  			<ul>
+	  				<li><h:outputLink alt="Browse Service Registry" value="/registry/browseservices.faces">Browse The Service Registry</h:outputLink></li>
+	  				<li><h:outputLink alt="Browse Service Registry" value="/registry/organizations.faces">Browse Service Registry Organizations</h:outputLink></li>
+	  				<li>
+	  					<h:outputLink alt="Browse Unregistered Services" value="/registry/welcome.faces">Browse Unregistered Services</h:outputLink>
+	  					<p>Look for unregistered Planets services deployed on this IF server</p>
+	  				</li>
+	  			</ul>
+	  		</div>
+	  	</div>
+	  </ui:define>
+	</ui:composition>
+</html>

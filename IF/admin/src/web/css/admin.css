@@ -1,0 +1,95 @@
+@CHARSET "ISO-8859-1";
+#pl-wrapper {
+  width: 70%;
+  margin: 0 auto;
+  padding: 0.5em 1em;
+  background: transparent url('/images/white-50.png');
+  border: 1px dotted #ddd;
+  border-top: none;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+p {
+  font-size: 0.8em;
+  margin: 0.5em 1em;
+}
+
+input.button {
+  margin: 1em;
+  font-size: 0.8em;
+}
+
+input:focus {
+  background-color : #efa;
+  }
+div.validmessage {
+    display:inline;
+    color:red;
+    text-decoration:underline;
+}
+
+fieldset input {
+   width: 20em;
+    font-size: 1em;
+}
+
+form.planetsform {
+    color: #333;
+}
+
+form.planetsform fieldset {
+    font-size: 0.8em;
+    width: 450px;
+}
+
+fieldset legend {
+  margin: 0 0 0 0.5em;
+  padding: 0 0 0.3em;
+  font-weight: bold;
+}
+
+form.planetsform label {
+  display: inline-block;
+  vertical-align: top;
+}
+
+form.planetsform ol {
+  margin: 0;
+  padding: 0;
+}
+
+form.planetsform li {
+  list-style: none;
+  padding: 0.2em;
+  margin: 0;
+}
+
+form.planetsform fieldset fieldset {
+    border: none;
+    border-top: 1px solid #C9DCA6;
+    padding: 0.5em 0 0 0.5em;
+}
+
+form.planetsform fieldset fieldset label {
+  display: inline-block;
+}
+
+form.planetsform fieldset label {
+  width: 11em; /* Width of labels */
+}
+
+form.planetsform em {
+  font-weight: bold;
+  font-style: normal;
+  color: #f00;
+}
+
+
+td input {
+display: inline;
+margin :0 1em;
+width: 1em;
+}
