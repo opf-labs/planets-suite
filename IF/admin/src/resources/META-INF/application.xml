@@ -7,7 +7,4 @@
             <context-root>admin</context-root> 
         </web>
     </module>
-    <module>
-        <java>pserv-if-admin.jar</java> 
-    </module>
 </application>
