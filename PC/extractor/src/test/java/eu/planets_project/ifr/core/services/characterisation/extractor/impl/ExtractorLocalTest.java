@@ -106,13 +106,21 @@ public class ExtractorLocalTest {
     	System.out.println("test: listProperties()");
     	System.out.println("--------------------------------------------------------------------");
     	System.out.println();
-    	System.out.println("Received list of FileFormatProperty objects for file: " + testFile.getName());
     	
-    	List<FileFormatProperty> properties = extractor.listProperties(getUriForFile(testFile));
-    	for (FileFormatProperty fileFormatProperty : properties) {
-			System.out.println(fileFormatProperty.toString());
-		}
-    	System.out.println("--------------------------------------------------------------------");
+    	URI formatURI = getUriForFile(testFile);
+    	if(formatURI!=null) {
+    		List<FileFormatProperty> properties = extractor.listProperties(formatURI);
+    		System.out.println("Received list of FileFormatProperty objects for file: " + testFile.getName());
+        	
+        	for (FileFormatProperty fileFormatProperty : properties) {
+    			System.out.println(fileFormatProperty.toString());
+    		}
+        	System.out.println("--------------------------------------------------------------------");
+    	}
+    	else {
+    		System.err.println("Could not get URI for file: No file extension found!");
+    		assertTrue(formatURI != null);
+    	}
     }
     
     @Test
@@ -191,7 +199,15 @@ public class ExtractorLocalTest {
     
     private URI getUriForFile (File testFile) {
     	String fileName = testFile.getAbsolutePath();
-    	String testFileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+    	String testFileExtension = null;
+    	if(fileName.contains(".")) {
+    		testFileExtension = fileName.substring(fileName.lastIndexOf(".") + 1);
+    	}
+    	else {
+    		System.err.println("Could not find file extension!!!");
+    		return null;
+    	}
+    			
     	FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
     	Set<URI> uriSet = formatRegistry.getURIsForExtension(testFileExtension);
     	URI fileFormatURI = null;
