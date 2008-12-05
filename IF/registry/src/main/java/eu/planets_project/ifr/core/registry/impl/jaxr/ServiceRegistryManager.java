@@ -243,6 +243,8 @@ public final class ServiceRegistryManager implements Serializable,
      * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#findServicesForInputFormats(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String[])
      */
+    @WebMethod
+    @WebResult
     public ServiceList findServicesForInputFormats(
             @WebParam(name = "username") final String username,
             @WebParam(name = "password") final String password,

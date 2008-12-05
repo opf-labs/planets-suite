@@ -18,6 +18,6 @@ public final class RemoteDroidTests extends DroidTests {
     @BeforeClass
     public static void localTests() {
         droid = ServiceCreator.createTestService(Identify.QNAME,
-                Droid.class, "/pserv-pc-droid/Droid?wsdl", Mode.SERVER);
+                Droid.class, "/pserv-pc-droid/Droid?wsdl");
     }
 }

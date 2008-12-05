@@ -7,20 +7,20 @@
  */
 package eu.planets_project.ifr.core.registry.api.jaxr;
 
-import java.util.List;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.xml.namespace.QName;
 
 import eu.planets_project.ifr.core.registry.api.jaxr.model.BindingList;
-import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.OrganizationList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsService;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceList;
+import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;
+import eu.planets_project.services.PlanetsServices;
 
 /**
  * Interface for the service registry web service.
@@ -227,6 +227,8 @@ public interface ServiceRegistry {
      *        null or omit if you want to find all
      * @return The matching services
      */
+    @WebMethod
+    @WebResult
     ServiceList findServicesForInputFormats(
             @WebParam(name = "username") String username,
             @WebParam(name = "password") String password,

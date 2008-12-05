@@ -19,3 +19,6 @@ if_server.dir=@if_server.dir@
 # Also, you should set these properties to run unit tests against a running server.
 #if_server.host=localhost
 #if_server.port=8080
+
+# Test against a running server (default is true):
+test.on.server=false

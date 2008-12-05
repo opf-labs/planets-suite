@@ -22,6 +22,6 @@ public final class RemoteJhoveIdentificationTests extends
         System.out.println("Remote:");
         jhove = ServiceCreator.createTestService(Identify.QNAME,
                 JhoveIdentification.class,
-                "/pserv-pc-jhove/JhoveIdentification?wsdl", Mode.SERVER);
+                "/pserv-pc-jhove/JhoveIdentification?wsdl");
     }
 }

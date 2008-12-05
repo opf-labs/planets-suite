@@ -27,7 +27,7 @@
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />
-	<property name="test.local" value="" />
+	<property name="test.server" value="" />
 
 	<!-- Reference to the main build file -->
 	<property name="pserv.root.dir" value="../.." />

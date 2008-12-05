@@ -3,10 +3,10 @@ package eu.planets_project.ifr.core.registry;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import eu.planets_project.ifr.core.registry.api.CoreRegistryTests;
 import eu.planets_project.ifr.core.registry.api.FactoryLocalTests;
 import eu.planets_project.ifr.core.registry.api.FactoryRemoteTests;
 import eu.planets_project.ifr.core.registry.api.PersistentRegistryTests;
-import eu.planets_project.ifr.core.registry.api.CoreRegistryTests;
 import eu.planets_project.ifr.core.registry.api.RegistryWebserviceTests;
 import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryManagerTests;
 import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryTests;

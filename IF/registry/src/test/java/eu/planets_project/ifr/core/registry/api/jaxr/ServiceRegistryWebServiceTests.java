@@ -2,9 +2,6 @@ package eu.planets_project.ifr.core.registry.api.jaxr;
 
 import org.junit.BeforeClass;
 
-import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryFactory;
-import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryObjectFactory;
-
 
 /**
  * Tests of the web service version of the service registry.

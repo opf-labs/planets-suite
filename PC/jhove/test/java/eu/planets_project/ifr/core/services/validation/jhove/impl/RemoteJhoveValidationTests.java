@@ -20,8 +20,7 @@ public final class RemoteJhoveValidationTests extends JhoveValidationTests {
     public static void setup() {
         System.out.println("Remote:");
         jhove = ServiceCreator.createTestService(Validate.QNAME,
-                JhoveValidation.class, "/pserv-pc-jhove/JhoveValidation?wsdl",
-                Mode.SERVER);
+                JhoveValidation.class, "/pserv-pc-jhove/JhoveValidation?wsdl");
     }
 
 }
