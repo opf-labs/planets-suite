@@ -1,15 +1,24 @@
 package eu.planets_project.ifr.core.registry.api.jaxr;
 
+import java.io.IOException;
 import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanException;
+import javax.management.MBeanServerConnection;
+import javax.management.ObjectName;
+import javax.management.ReflectionException;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.xml.registry.BulkResponse;
 import javax.xml.registry.BusinessLifeCycleManager;
 import javax.xml.registry.BusinessQueryManager;
@@ -28,6 +37,7 @@ import javax.xml.registry.infomodel.ServiceBinding;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jboss.wsf.common.ObjectNameFactory;
 
 import eu.planets_project.ifr.core.registry.api.jaxr.model.BindingList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.OrganizationList;
@@ -186,38 +196,38 @@ public final class JaxrServiceRegistry implements ServiceRegistry {
      */
     private static void initJuddiService() {
 
-//        try {
-//            final ObjectName objectName = ObjectNameFactory
-//                    .create("jboss:service=juddi");
-//            Hashtable<String, String> table = new Hashtable<String, String>();
-//            /*
-//             * TODO this should probably go into the jndi.properties file in
-//             * server/default/conf, which then needs to be on the classpath
-//             */
-//            table.put("java.naming.factory.initial",
-//                    "org.jnp.interfaces.NamingContextFactory");
-//            table.put("java.naming.factory.url.pkgs",
-//                    "org.jboss.naming:org.jnp.interfaces");
-//            table.put("java.naming.provider.url", "jnp://localhost:1099");
-//            InitialContext iniCtx = new InitialContext(table);
-//            MBeanServerConnection server = (MBeanServerConnection) iniCtx
-//                    .lookup("jmx/invoker/RMIAdaptor");
-//            server.invoke(objectName, "setCreateOnStart",
-//                    new Object[] { Boolean.TRUE }, new String[] { Boolean.TYPE
-//                            .getName() });
-//            server.invoke(objectName, "stop", null, null);
-//            server.invoke(objectName, "start", null, null);
-//        } catch (InstanceNotFoundException e1) {
-//            e1.printStackTrace();
-//        } catch (MBeanException e1) {
-//            e1.printStackTrace();
-//        } catch (ReflectionException e1) {
-//            e1.printStackTrace();
-//        } catch (NamingException e1) {
-//            e1.printStackTrace();
-//        } catch (IOException e1) {
-//            e1.printStackTrace();
-//        }
+        try {
+            final ObjectName objectName = ObjectNameFactory
+                    .create("jboss:service=juddi");
+            Hashtable<String, String> table = new Hashtable<String, String>();
+            /*
+             * TODO this should probably go into the jndi.properties file in
+             * server/default/conf, which then needs to be on the classpath
+             */
+            table.put("java.naming.factory.initial",
+                    "org.jnp.interfaces.NamingContextFactory");
+            table.put("java.naming.factory.url.pkgs",
+                    "org.jboss.naming:org.jnp.interfaces");
+            table.put("java.naming.provider.url", "jnp://localhost:1099");
+            InitialContext iniCtx = new InitialContext(table);
+            MBeanServerConnection server = (MBeanServerConnection) iniCtx
+                    .lookup("jmx/invoker/RMIAdaptor");
+            server.invoke(objectName, "setCreateOnStart",
+                    new Object[] { Boolean.TRUE }, new String[] { Boolean.TYPE
+                            .getName() });
+            server.invoke(objectName, "stop", null, null);
+            server.invoke(objectName, "start", null, null);
+        } catch (InstanceNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (MBeanException e1) {
+            e1.printStackTrace();
+        } catch (ReflectionException e1) {
+            e1.printStackTrace();
+        } catch (NamingException e1) {
+            e1.printStackTrace();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
     /**
