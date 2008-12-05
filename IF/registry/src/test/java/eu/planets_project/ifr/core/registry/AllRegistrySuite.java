@@ -30,4 +30,4 @@ ServiceTaxonomyTests.class, ServiceRegistryTests.class,
         FactoryRemoteTests.class,
         /* And the sample usage: */
         RegistrySampleUsage.class })
-public class AllRegistryTests {}
+public class AllRegistrySuite {}

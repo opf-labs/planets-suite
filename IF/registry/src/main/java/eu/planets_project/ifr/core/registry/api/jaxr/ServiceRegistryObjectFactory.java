@@ -188,7 +188,14 @@ public final class ServiceRegistryObjectFactory {
         if (id == null) {
             throw new IllegalArgumentException("Unknown service type: " + type);
         }
+        if (organization == null) {
+            throw new IllegalArgumentException(
+                    "Can't create a service with a null organization");
+        }
         PsService service = createService(name, description, organization);
+        if (service.getOrganization() == null) {
+            throw new IllegalStateException("Service lost its organization!");
+        }
         ServiceRegistryMessage message = registry.savePredefinedClassification(
                 username, password, service.getKey(), id);
         System.out.println("Registered type: " + message);

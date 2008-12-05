@@ -8,10 +8,14 @@ import javax.xml.registry.BusinessLifeCycleManager;
 import javax.xml.registry.BusinessQueryManager;
 import javax.xml.registry.JAXRException;
 import javax.xml.registry.infomodel.EmailAddress;
+import javax.xml.registry.infomodel.InternationalString;
 import javax.xml.registry.infomodel.Organization;
 import javax.xml.registry.infomodel.User;
 
+import sun.rmi.runtime.Log;
+
 import eu.planets_project.ifr.core.registry.api.jaxr.JaxrServiceRegistryHelper;
+import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * Planets organization.
@@ -50,12 +54,20 @@ public class PsOrganization extends PsRegistryObject {
      * @return A planets organization
      */
     public static PsOrganization of(Organization o) {
-
+        if (o == null) {
+            throw new IllegalArgumentException(
+                    "Can't convert a null organization");
+        }
         try {
-            PsOrganization org = new PsOrganization(o.getName().getValue(), o
-                    .getDescription().getValue(), o.getPrimaryContact()
-                    .getPersonName().getFullName(), o.getPrimaryContact()
-                    .getEmailAddresses().iterator().next().toString());
+            InternationalString internationalString = o.getName();
+            String value = internationalString.getValue();
+            String description = o.getDescription().getValue();
+            String fullName = o.getPrimaryContact().getPersonName()
+                    .getFullName();
+            String contact = o.getPrimaryContact().getEmailAddresses()
+                    .iterator().next().toString();
+            PsOrganization org = new PsOrganization(value, description,
+                    fullName, contact);
             org.key = o.getKey().getId();
             return org;
         } catch (JAXRException e) {

@@ -20,7 +20,6 @@ import eu.planets_project.ifr.core.registry.api.jaxr.model.PsCategory;
 
 /**
  * Static helper class for the service registry manager.
- * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class JaxrServiceRegistryHelper {
@@ -29,12 +28,12 @@ public final class JaxrServiceRegistryHelper {
     private JaxrServiceRegistryHelper() {}
 
     /***/
-    private static Log LOG = LogFactory.getLog(JaxrServiceRegistryHelper.class.getName());
+    private static Log LOG = LogFactory.getLog(JaxrServiceRegistryHelper.class
+            .getName());
 
     /**
      * internal method to retrieve service details after a list of services has
      * been returned in another query.
-     * 
      * @param key of the service
      * @param bqm The query manager
      * @return a Service Object
@@ -48,11 +47,29 @@ public final class JaxrServiceRegistryHelper {
             BulkResponse br = bqm.findServices(null, Arrays
                     .asList(FindQualifier.SORT_BY_NAME_DESC), Arrays
                     .asList("%"), null, null);
+            BulkResponse brO = bqm.findOrganizations(Arrays
+                    .asList(FindQualifier.SORT_BY_NAME_DESC), Arrays
+                    .asList("%"), null, null, null, null);
+            Collection<?> collection = brO.getCollection();
+            if (collection.size() == 0) {
+                throw new IllegalStateException(
+                        "JAXR business query manager knows no organizations!");
+            }
+            for (Object object : collection) {
+                System.out.println("ORGANIZATION FOUND:" + object);
+            }
             Collection<Service> services = br.getCollection();
             // FIXME this is awful... fix when green
             for (Service service : services) {
                 if (service.getKey() != null
                         && service.getKey().getId().compareTo(key) == 0) {
+                    if (service.getProvidingOrganization() == null) {
+                        // FIXME like this, we can have only one organization,
+                        // but this is just a fix for when things go wrong...
+                        service
+                                .setProvidingOrganization((Organization) collection
+                                        .iterator().next());
+                    }
                     return service;
                 }
             }
@@ -67,7 +84,6 @@ public final class JaxrServiceRegistryHelper {
      * As the service registry manager bean is a stateless bean, the
      * organization that owns a service has to be prefetched and set for the
      * saveService method call.
-     * 
      * @param key The org key
      * @param bqm The query manager
      * @return Returns an organization with the given key, or null

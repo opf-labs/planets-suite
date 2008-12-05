@@ -186,38 +186,38 @@ public final class JaxrServiceRegistry implements ServiceRegistry {
      */
     private static void initJuddiService() {
 
-    // try {
-    // final ObjectName objectName = ObjectNameFactory
-    // .create("jboss:service=juddi");
-    // Hashtable<String, String> table = new Hashtable<String, String>();
-    // /*
-    // * TODO this should probably go into the jndi.properties file in
-    // * server/default/conf, which then needs to be on the classpath
-    // */
-    // table.put("java.naming.factory.initial",
-    // "org.jnp.interfaces.NamingContextFactory");
-    // table.put("java.naming.factory.url.pkgs",
-    // "org.jboss.naming:org.jnp.interfaces");
-    // table.put("java.naming.provider.url", "jnp://localhost:1099");
-    // InitialContext iniCtx = new InitialContext(table);
-    // MBeanServerConnection server = (MBeanServerConnection) iniCtx
-    // .lookup("jmx/invoker/RMIAdaptor");
-    // server.invoke(objectName, "setCreateOnStart",
-    // new Object[] { Boolean.TRUE }, new String[] { Boolean.TYPE
-    // .getName() });
-    // server.invoke(objectName, "stop", null, null);
-    // server.invoke(objectName, "start", null, null);
-    // } catch (InstanceNotFoundException e1) {
-    // e1.printStackTrace();
-    // } catch (MBeanException e1) {
-    // e1.printStackTrace();
-    // } catch (ReflectionException e1) {
-    // e1.printStackTrace();
-    // } catch (NamingException e1) {
-    // e1.printStackTrace();
-    // } catch (IOException e1) {
-    // e1.printStackTrace();
-    // }
+//        try {
+//            final ObjectName objectName = ObjectNameFactory
+//                    .create("jboss:service=juddi");
+//            Hashtable<String, String> table = new Hashtable<String, String>();
+//            /*
+//             * TODO this should probably go into the jndi.properties file in
+//             * server/default/conf, which then needs to be on the classpath
+//             */
+//            table.put("java.naming.factory.initial",
+//                    "org.jnp.interfaces.NamingContextFactory");
+//            table.put("java.naming.factory.url.pkgs",
+//                    "org.jboss.naming:org.jnp.interfaces");
+//            table.put("java.naming.provider.url", "jnp://localhost:1099");
+//            InitialContext iniCtx = new InitialContext(table);
+//            MBeanServerConnection server = (MBeanServerConnection) iniCtx
+//                    .lookup("jmx/invoker/RMIAdaptor");
+//            server.invoke(objectName, "setCreateOnStart",
+//                    new Object[] { Boolean.TRUE }, new String[] { Boolean.TYPE
+//                            .getName() });
+//            server.invoke(objectName, "stop", null, null);
+//            server.invoke(objectName, "start", null, null);
+//        } catch (InstanceNotFoundException e1) {
+//            e1.printStackTrace();
+//        } catch (MBeanException e1) {
+//            e1.printStackTrace();
+//        } catch (ReflectionException e1) {
+//            e1.printStackTrace();
+//        } catch (NamingException e1) {
+//            e1.printStackTrace();
+//        } catch (IOException e1) {
+//            e1.printStackTrace();
+//        }
     }
 
     /**
@@ -255,6 +255,10 @@ public final class JaxrServiceRegistry implements ServiceRegistry {
         try {
             Service service = JaxrServiceRegistryHelper.findServiceByKey(
                     serviceId, bqm);
+            if (service.getProvidingOrganization() == null) {
+                throw new IllegalStateException(
+                        "Service returned from JAXR query manager has no organization!");
+            }
             ServiceTaxonomy stax = new ServiceTaxonomy(blcm, bqm);
             PsService s = PsService.of(service);
             stax.addClassification(s, classificationId);

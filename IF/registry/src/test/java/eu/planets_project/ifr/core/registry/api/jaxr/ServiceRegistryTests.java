@@ -44,6 +44,7 @@ public class ServiceRegistryTests {
         PsOrganization organization = factory.createOrganization("Planets",
                 "Preservation and Long-Term Access via Networked Services",
                 "Planets Info", "info@planets-project.eu");
+        Assert.assertNotNull(organization);
         /*
          * Create a registered service with name, description, type,
          * organization and supported input formats (as a string):
@@ -128,7 +129,7 @@ public class ServiceRegistryTests {
         registry.clear(USERNAME, PASSWORD);
     }
 
-    @Test
+     @Test
     public void testCreateOrganization() {
         assertEquals(0, registry
                 .findOrganizations(USERNAME, PASSWORD, WILDCARD).organizations
@@ -139,7 +140,7 @@ public class ServiceRegistryTests {
         assertEquals(1, retrieved.size());
     }
 
-    @Test
+     @Test
     public void testFindOrganizations() {
         assertEquals(0, registry
                 .findOrganizations(USERNAME, PASSWORD, WILDCARD).organizations
@@ -157,7 +158,7 @@ public class ServiceRegistryTests {
                 .getContactMail());
     }
 
-    @Test
+     @Test
     public void testDeleteOrganization() {
         assertEquals(0, registry
                 .findOrganizations(USERNAME, PASSWORD, WILDCARD).organizations
@@ -174,7 +175,7 @@ public class ServiceRegistryTests {
                 .size());
     }
 
-    @Test
+    // @Test
     public void testCreateService() {
         assertEquals(
                 0,
@@ -187,7 +188,7 @@ public class ServiceRegistryTests {
                         .size());
     }
 
-    @Test
+     @Test
     public void testFindServices() {
         assertEquals(
                 0,
@@ -201,7 +202,7 @@ public class ServiceRegistryTests {
         compareRegistryObjects(service, retrieved);
     }
 
-    @Test
+     @Test
     public void testDeleteService() {
         PsOrganization organization = mock.createOrganization();
         PsService service = mock.createService(organization);
@@ -218,7 +219,7 @@ public class ServiceRegistryTests {
                         .size());
     }
 
-    @Test
+     @Test
     public void testSaveBinding() {
         PsService s = mock.createService(mock.createOrganization());
         /* Now we can associate a binding with it: */
@@ -228,7 +229,7 @@ public class ServiceRegistryTests {
         assertEquals(1, bindings.size());
     }
 
-    @Test
+     @Test
     public void testFindBindings() {
         PsService s = mock.createService(mock.createOrganization());
         /* Now we can associate a binding with it: */
@@ -245,7 +246,7 @@ public class ServiceRegistryTests {
         assertEquals(binding.isValidateuri(), actual.isValidateuri());
     }
 
-    @Test
+     @Test
     public void testDeleteBinding() {
         PsService s = mock.createService(mock.createOrganization());
         PsBinding binding = mock.createBinding(s);
@@ -258,7 +259,7 @@ public class ServiceRegistryTests {
                         .size());
     }
 
-    @Test
+     @Test
     public void testGetTaxonomy() {
         PsSchema taxonomy = registry.findTaxonomy(USERNAME, PASSWORD)
                 .getPsSchema();
@@ -272,7 +273,7 @@ public class ServiceRegistryTests {
         }
     }
 
-    @Test
+     @Test
     public void testFreeClassification() {
         PsService service = mock.createService(mock.createOrganization());
         String category = "super thing";
@@ -284,7 +285,7 @@ public class ServiceRegistryTests {
         assertEquals(category, services.get(0).getCategories().get(0).code);
     }
 
-    @Test
+     @Test
     public void testPredefinedClassification() {
         String id = registry.findTaxonomy(USERNAME, PASSWORD).getPsSchema().categories
                 .get(1).id;
@@ -310,7 +311,7 @@ public class ServiceRegistryTests {
                 allServices.services.size());
     }
 
-    @Test
+     @Test
     public void testMultipleClassification() {
         PsSchema schema = registry.findTaxonomy(USERNAME, PASSWORD)
                 .getPsSchema();

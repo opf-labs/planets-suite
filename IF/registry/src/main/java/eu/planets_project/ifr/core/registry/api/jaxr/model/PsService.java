@@ -51,7 +51,14 @@ public class PsService extends PsRegistryObject {
      * @return A planets service
      */
     public static PsService of(Service service) {
+        if (service == null) {
+            throw new IllegalArgumentException("Can't convert a null service");
+        }
         try {
+            if (service.getProvidingOrganization() == null) {
+                throw new IllegalArgumentException(
+                        "Can't convert a service with a null organization");
+            }
             PsService s = new PsService(service.getName().getValue(), service
                     .getDescription().getValue());
             for (Object o : service.getClassifications()) {
@@ -109,7 +116,8 @@ public class PsService extends PsRegistryObject {
             Service service = null;
             /* If its there, retrieve it: */
             if (this.key != null) {
-                service = JaxrServiceRegistryHelper.findServiceByKey(this.key, bqm);
+                service = JaxrServiceRegistryHelper.findServiceByKey(this.key,
+                        bqm);
                 if (service == null) {
                     throw new IllegalStateException(
                             String
