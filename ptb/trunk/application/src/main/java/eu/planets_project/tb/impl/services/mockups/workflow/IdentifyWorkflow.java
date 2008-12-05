@@ -8,9 +8,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-
-import javax.xml.ws.Service;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.identify.Identify;

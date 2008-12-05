@@ -27,7 +27,7 @@
     
     <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeIdentify.identifyService}" onchange="submit();"
             readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-         <f:selectItem itemValue="[default]" itemLabel="Select..."/>
+         <f:selectItem itemValue="" itemLabel="Select..."/>
          <f:selectItems value="#{ServiceBrowser.identifyServicesSelectList}" />
     </h:selectOneMenu>
     <h:commandButton value="#{res['button.select']}"

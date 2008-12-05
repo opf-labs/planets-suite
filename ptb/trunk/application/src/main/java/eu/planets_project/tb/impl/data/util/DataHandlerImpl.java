@@ -4,18 +4,15 @@
 package eu.planets_project.tb.impl.data.util;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
 import java.util.UUID;
@@ -28,12 +25,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
-import eu.planets_project.tb.impl.CommentManagerImpl;
-import eu.planets_project.tb.impl.AdminManagerImpl;
 
 /**
  * The TB file handler has the purpose of

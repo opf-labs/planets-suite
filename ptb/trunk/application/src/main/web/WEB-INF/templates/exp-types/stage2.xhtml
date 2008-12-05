@@ -27,7 +27,7 @@
         <h:selectOneMenu id="etype" onchange="submit();" required="true"
         value="#{ExperimentBean.etype}"  style="width: 23em;"
  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
-                <f:selectItem itemValue="[default]" itemLabel="Select..."/>
+                <f:selectItem itemValue="" itemLabel="Select..."/>
                 <f:selectItems value="#{NewExp_Controller.availableExperimentTypes}" />
         </h:selectOneMenu>
 

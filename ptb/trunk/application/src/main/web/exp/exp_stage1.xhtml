@@ -19,52 +19,6 @@
 		<ui:param name="page" value="new_exp"/>
 	</ui:include>
         	<script type="text/javascript" src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>	
-        		<script type="text/javascript">
-		<!--
-		function toggleRequired(evt) {
-	evt = (evt) ? evt: event;
-	var target = (evt.target) ? evt.target : evt.srcElement;
-	
-	for(var i=1;i<7;i++) {
-	var block = document.getElementById("asterisk["+i+"]");
-	
-	if(target.id == "true") {
-		block.style.display = "";
-		}
-	
-	else {
-		block.style.display = "none";
-		}
-	}
-	
-	}
-        
-function countLines(strtocount, cols) {
-    var hard_lines = 1;
-    var last = 0;
-    while ( true ) {
-        last = strtocount.indexOf("\n", last+1);
-        hard_lines ++;
-        if ( last == -1 ) break;
-    }
-    var soft_lines = Math.round(strtocount.length / (cols-1));
-    var hard = eval("hard_lines  " + unescape("%3e") + "soft_lines;");
-    if ( hard ) soft_lines = hard_lines;
-    return soft_lines;
-}
-function cleanForm() {
-    var the_form = document.forms[3];
-    for ( var x in the_form ) {
-        if ( ! the_form[x] ) continue;
-        if( typeof the_form[x].rows != "number" ) continue;
-        the_form[x].rows = countLines(the_form[x].value,the_form[x].cols) +1;
-    }
-    setTimeout("cleanForm();", 300);
-}
-
-    window.onload = cleanForm();
-	//-->
-	</script>
         
 </ui:define>
 

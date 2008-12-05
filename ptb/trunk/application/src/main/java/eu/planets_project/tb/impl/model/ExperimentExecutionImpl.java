@@ -41,6 +41,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
 	//a helper reference pointer, for retrieving the experiment in the phase
     @XmlTransient
     private long lExperimentIDRef;
+    // These don't seem to be used anywhere, but removing them will break the Hibernate mapping.
 	private boolean bExecutionInProgress;
 	private boolean bExecuted;
 	
@@ -66,8 +67,7 @@ public class ExperimentExecutionImpl extends ExperimentPhaseImpl
     public void setExperimentRefID(long lExperimentIDRef){
         this.lExperimentIDRef = lExperimentIDRef;
     }
-
-
+    
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ExperimentExecution#getMigrationOutputDataEntries()
      */

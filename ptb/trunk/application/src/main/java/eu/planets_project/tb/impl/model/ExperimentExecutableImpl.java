@@ -3,13 +3,9 @@
  */
 package eu.planets_project.tb.impl.model;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,28 +13,28 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
+import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
+import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 
 /**
  * @author alindley
@@ -53,6 +49,7 @@ import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
  * Beware: OutputFileRef must not always be the pointer to a file. e.g. for characterisation services
  * this will correspond to a String. 
  */
+@SuppressWarnings("serial")
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExperimentExecutableImpl extends ExecutableImpl implements ExperimentExecutable, java.io.Serializable{
@@ -64,10 +61,16 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	//note: C:/DATA/ rather than http://localhost:8080/testbed/
 	private HashMap<String,String> hmInputOutputData = new HashMap<String,String>();
 	
-	
-    // The list of automatically measurable properties that should be measured during the experiment.
+    /** The list of automatically measurable properties that should be measured during the experiment. */
     private Vector<String> properties = new Vector<String>();
-	
+
+    /** The log of executed experiment results */
+    @OneToMany(mappedBy="experimentExecution")
+    private Collection<ExecutionRecordImpl> executionRecords;
+    
+    /** The workflow-type is also stored here. */
+    private String workflowType;
+    
 	//no one-to-one annotation, as we want to persist this data by value and not per reference
 	private TestbedServiceTemplateImpl tbServiceTemplate;
 	private String sSelectedServiceOperationName="";
@@ -119,6 +122,20 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
      */
     public void setProperties(Vector<String> props) {
         properties = props;
+    }
+    
+    /**
+     * @return the executionRecords
+     */
+    public Collection<ExecutionRecordImpl> getExecutionRecords() {
+        return executionRecords;
+    }
+
+    /**
+     * @param executionRecords the executionRecords to set
+     */
+    public void setExecutionRecords(Collection<ExecutionRecordImpl> executionRecords) {
+        this.executionRecords = executionRecords;
     }
 
     /* (non-Javadoc)
@@ -480,5 +497,59 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	public void setServiceTemplate(TestbedServiceTemplate template) {
 		this.tbServiceTemplate = (TestbedServiceTemplateImpl)template;
 	}
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#getWorkflow(String expType)
+     */
+	public ExperimentWorkflow getWorkflow() {
+	    //The Workflow is transient, and so must be possible to configure on demand.
+	    try {
+	        return this.buildWorkflow();
+	    } catch (Exception e) {
+	        log.error("Error while building workflow: "+e);
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+
+    /**
+     * 
+     * @param expType
+     * @throws Exception
+     */
+    public void setWorkflowType( String expType ) throws Exception {
+        this.workflowType = expType;
+        this.buildWorkflow();
+    }
+
+    /**
+     * 
+     * @throws Exception
+     */
+    private ExperimentWorkflow buildWorkflow() throws Exception {
+        if( this.workflowType == null ) {
+            log.error("Workflow Type is null!");
+            ExperimentBean expBean = (ExperimentBean) JSFUtil.getManagedObject("ExperimentBean");
+            Experiment exp = expBean.getExperiment();
+            this.workflowType = exp.getExperimentSetup().getExperimentTypeID();
+            log.info("Set workflow type to: " + this.workflowType);
+            if( this.workflowType == null ) return null;
+        }
+        // Invoke, depending on the experiment type:
+        if( AdminManagerImpl.IDENTIFY.equals(this.workflowType)) {
+            log.info("Running an Identify experiment.");
+            ExperimentWorkflow expwf = new IdentifyWorkflow();
+            expwf.setParameters(getParameters());
+            return expwf;
+
+        } else if( this.workflowType.startsWith("simple ")) {
+            log.error("Executing old-style experiment - Should Not Happen!");
+            throw new Exception( "Executing old-style experiment - Should Not Happen! "+this.workflowType);
+            
+        } else {
+            log.error("Unknown experiment type: "+this.workflowType);
+            throw new Exception( "Unknown experiment type: "+this.workflowType );
+        }
+    }
 
 }

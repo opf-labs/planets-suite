@@ -30,9 +30,9 @@ public interface Experiment extends ExperimentPhase{
 	public void setExperimentEvaluation(ExperimentEvaluation analysisPhase);
 	public ExperimentEvaluation getExperimentEvaluation();
 	
-	public void setExperimentExecutable(ExperimentExecutable executable);
+//	public void setExperimentExecutable(ExperimentExecutable executable);
 	public ExperimentExecutable getExperimentExecutable();
-	public void removeExperimentExecutable();
+//	public void removeExperimentExecutable();
 	
 	public ExperimentPhase getCurrentPhase();
     public int getCurrentPhasePointer();

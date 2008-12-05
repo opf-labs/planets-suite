@@ -285,7 +285,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
 		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
 		
-		thisExperiment.removeExperimentExecutable();
+//		thisExperiment.removeExperimentExecutable();
 	}
 
 
@@ -300,7 +300,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		if( thisExperiment.getExperimentExecutable() == null ) {
 		  ExperimentExecutable executable = new ExperimentExecutableImpl();
 		  executable.setServiceTemplate(template);
-		  thisExperiment.setExperimentExecutable(executable);
+//		  thisExperiment.setExperimentExecutable(executable);
 		}
 	}
 	

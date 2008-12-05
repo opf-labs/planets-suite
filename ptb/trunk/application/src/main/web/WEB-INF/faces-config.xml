@@ -8,6 +8,11 @@
   <managed-bean-scope>application</managed-bean-scope>
  </managed-bean>
  <managed-bean>
+  <managed-bean-name>TestbedBatchProcessor</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.impl.system.TestbedBatchProcessor</managed-bean-class>
+  <managed-bean-scope>application</managed-bean-scope>
+ </managed-bean>
+ <managed-bean>
   <managed-bean-name>DownloadManager</managed-bean-name>
   <managed-bean-class>eu.planets_project.tb.gui.backing.DownloadManager</managed-bean-class>
   <managed-bean-scope>application</managed-bean-scope>

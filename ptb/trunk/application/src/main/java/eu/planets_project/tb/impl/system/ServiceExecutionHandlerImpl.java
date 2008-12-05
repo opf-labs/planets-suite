@@ -6,32 +6,25 @@ package eu.planets_project.tb.impl.system;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
 
-import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.ws.Service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,18 +32,12 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import eu.planets_project.services.utils.ByteArrayHelper;
-import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.identify.IdentifyOneBinary;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings;
-import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
-import eu.planets_project.tb.api.model.eval.TBEvaluationTypes;
-import eu.planets_project.tb.api.model.eval.AutoEvaluationSettings.Config;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
@@ -58,11 +45,11 @@ import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
 import eu.planets_project.tb.api.services.util.ServiceRespondsExtractor;
 import eu.planets_project.tb.api.system.ServiceExecutionHandler;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.exceptions.ServiceInvocationException;
-import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowDroidXCDLExtractorComparator;
@@ -70,8 +57,6 @@ import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 import eu.planets_project.tb.impl.services.util.ServiceRequestBuilderImpl;
 import eu.planets_project.tb.impl.services.util.ServiceRespondsExtractorImpl;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * @author Andrew Lindley, ARC
@@ -106,49 +91,19 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 			    log.error("executeExperiment: executable is null!");
 			    return;
 			}
-			executable.setExecutableInvoked(true);
-			
-			// Set up the basics:
-			DataHandler dh = new DataHandlerImpl();
+			// Look for the batch system... 
+			TestbedBatchProcessor tbp = (TestbedBatchProcessor)JSFUtil.getManagedObject("TestbedBatchProcessor");
 
 			// Invoke, depending on the experiment type:
-			String expType = exp.getExperimentSetup().getExperimentTypeID();
-			try {
-			    if( AdminManagerImpl.IDENTIFY.equals(expType)) {
-			        log.info("Running an Identify experiment: "+exp.getExperimentSetup().getBasicProperties().getExperimentName());
-			        ExperimentWorkflow expwf = new IdentifyWorkflow();
-			        expwf.setParameters(executable.getParameters());
-			        for( String filename : executable.getInputData() ) {
-			            File file = dh.getFile(filename);
-			            DigitalObject dob = new DigitalObject.Builder( Content.byValue(ByteArrayHelper.read(file)) ).build();
-			            WorkflowResult wfr = expwf.execute(dob);
-			            // Report:
-                        if( wfr.getReport() != null ) {
-                            log.info("Got report: " + wfr.getReport().toString());
-                        }
-                        // Is there a result?
-			            if( wfr.getResult() != null ) {
-			                log.info("Got result: "+wfr.getResult().toString());
-			            }
-			        }
-			    } else if( expType.startsWith("simple ")) {
-			        log.error("Executing old-style experiment - Should Not Happen!");
-                    this.executeOldExperiment(exp);
-			    } else {
-			        log.error("Unknown experiment type: "+expType);
-			        throw new Exception( "Unknown experiment type: "+expType );
-			    }
-            } catch (Exception e) {
-                log.error("Experiment execution failed - setting state: failure within the experiment's executable"+e);
-                executable.setExecutionCompleted(true);
-                executable.setExecutionSuccess(false);
-                e.printStackTrace();
-                return;
-            }
+			ExperimentWorkflow ewf = executable.getWorkflow();
+			log.info("Submitting workflow: "+ewf);
+			log.info("Got inputs #"+executable.getInputData().size());
+			String queue_key = tbp.submitBatch( ewf , executable.getInputData());
+			executable.setBatchQueueIdentifier("TB#LOCAL");
+			executable.setBatchExecutionIdentifier(queue_key);
+            executable.setExecutableInvoked(true);
+            executable.setExecutionCompleted(false);
             
-            // If we got here, then log that all went well...
-            executable.setExecutionCompleted(true);
-            executable.setExecutionSuccess(true);
 	}
 	
 	

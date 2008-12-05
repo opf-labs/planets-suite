@@ -9,6 +9,7 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 
 /**
  * @author Andrew Lindley, ARC
@@ -194,5 +195,12 @@ public interface ExperimentExecutable extends Executable{
 	public void setExecutionEndDate(long timeInMillis);
 	public Calendar getExecutionEndDate();
 	
+	/**
+	 * Define the workflow to execute.
+	 * @return The experiment type to invoke.
+	 * @throws Exception 
+	 */
+	public ExperimentWorkflow getWorkflow();
+    public void setWorkflowType( String expType ) throws Exception;
 
 }

@@ -29,7 +29,10 @@ public abstract class ExecutableImpl implements Executable, java.io.Serializable
 	private String sXMLResponds = "";
 	private Calendar execStartDate = new GregorianCalendar();
 	private Calendar execEndDate = new GregorianCalendar();
-	
+    /** This is a string that identifies which batch system we are running on. */
+    private String batchQueueIdentifier;
+    /** This is the batch-processing job identifier from whatever the batch handler is. */
+    private String batchExecutionIdentifier;
 	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getExecutionEndDate()
@@ -140,4 +143,32 @@ public abstract class ExecutableImpl implements Executable, java.io.Serializable
 		return ((isExecutableInvoked())&&(!isExecutionCompleted()));
 	}
 
+    /**
+     * @return the batchExecutionIdentifier
+     */
+    public String getBatchExecutionIdentifier() {
+        return batchExecutionIdentifier;
+    }
+
+    /**
+     * @param batchExecutionIdentifier the batchExecutionIdentifier to set
+     */
+    public void setBatchExecutionIdentifier(String batchExecutionIdentifier) {
+        this.batchExecutionIdentifier = batchExecutionIdentifier;
+    }
+    
+    /**
+     * @return the batchQueueIdentifier
+     */
+    public String getBatchQueueIdentifier() {
+        return batchQueueIdentifier;
+    }
+
+    /**
+     * @param batchQueueIdentifier the batchQueueIdentifier to set
+     */
+    public void setBatchQueueIdentifier(String batchQueueIdentifier) {
+        this.batchQueueIdentifier = batchQueueIdentifier;
+    }
+    
 }

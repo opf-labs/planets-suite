@@ -37,6 +37,8 @@ import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
+import eu.planets_project.tb.impl.system.TestbedBatchJob;
+import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
 
 import javax.faces.application.FacesMessage;
 
@@ -645,6 +647,23 @@ public class NewExpWizardController {
             result = "failure";
         }
         
+        // Verify that the experiment is configured correctly...
+        
+        // Get the workflow, to force the workflow to be configured based on the parameters.
+        String expType = exp.getExperimentSetup().getExperimentTypeID();
+        try {
+            log.info("Setting experiment type to:" + expType);
+            exp.getExperimentExecutable().setWorkflowType(expType);
+        } catch( Exception e ) {
+            FacesMessage fmsg = new FacesMessage();
+            fmsg.setSummary("There was an error when configuring your experiment.");
+            fmsg.setDetail("ERROR: " + e );
+            fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("etype",fmsg);
+            result = "failed";
+        }
+
         if( "success".equals(result)) {
             exp.getExperimentSetup().setSubStage(3);
         }
@@ -823,7 +842,7 @@ public class NewExpWizardController {
     }
 
     public String commandSaveStage3() {
-        return this.commandSaveExperiment(1);
+        return this.commandSaveExperiment(3);
     }
     
     /**
@@ -949,9 +968,9 @@ public class NewExpWizardController {
 		
 		//clear the already added data from the exp. executable
 		if(exp.getExperimentExecutable()!=null){
-			exp.getExperimentExecutable().removeAllInputData();
+//			exp.getExperimentExecutable().removeAllInputData();
 			//this has a constructor which requires the ServiceTemplate to be set.
-			exp.removeExperimentExecutable();
+//			exp.removeExperimentExecutable();
 			testbedMan.updateExperiment(exp);
 		}
 		
@@ -1207,30 +1226,108 @@ public class NewExpWizardController {
 	        expBean.setApproved(true);
 	    }
     
-    
-	   public String executeExperiment(){
+
+	   /**
+	    * 
+	    * @return
+	    */
+	   public void executeExperiment(){
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
 	        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	    	Experiment exp = expBean.getExperiment();
+	    	
+	    	// NOT if already running.
+	    	if( exp.getExperimentExecutable().isExecutionRunning() ) return;
+	    	
 	    	try {
 	    		//call invocation on the experiment's executable
 	    		testbedMan.executeExperiment(exp);
-	        	
-	    		//fill the expBean with the execution's results
-	        	expBean.setOutputData(exp.getExperimentExecutable().getOutputDataEntries());
-	
-		  	  	if (exp.getExperimentExecution().isExecutionInvoked()) {
-		  	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
-		  	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
-		  	  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
-		  	  	}
-		        testbedMan.updateExperiment(exp);
-		  	  	return null;
 	    	} catch (Exception e) {
 	    		log.error("Error when executing Experiment: " + e.toString());
 	    		if( log.isDebugEnabled() ) e.printStackTrace();
-	    		return null;
-	    	}   	
+	    	}
+            log.info("Status: Invoked = "+exp.getExperimentExecutable().isExecutableInvoked());
+            log.info("Status: Invoked = "+exp.getExperimentExecution().isExecutionInvoked());
+            exp.getExperimentExecutable().setExecutableInvoked(true);
+            exp.getExperimentExecutable().setExecutionCompleted(false);
+            // Store any changes:
+            testbedMan.updateExperiment(exp);
+            log.info("Status: Invoked = "+exp.getExperimentExecutable().isExecutableInvoked());
+            log.info("Status: Invoked = "+exp.getExperimentExecution().isExecutionInvoked());
+	  }
+
+	  public void executeExperimentStart() {
+              this.executeExperiment();
+	  }
+	  public boolean getExecuteExperimentIsRunning() {
+	      // Return:
+          ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+          Experiment exp = expBean.getExperiment();
+          boolean running = exp.getExperimentExecutable().isExecutionRunning();
+          return running;
+	  }
+	  public int getExecuteExperimentProgress() {
+          ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+          Experiment exp = expBean.getExperiment();
+          boolean running = exp.getExperimentExecutable().isExecutionRunning();
+          
+          if( running == false ) {
+              if( exp.getExperimentExecutable().isExecutionCompleted() ) return 101;
+              return -1;
+          }
+          
+          log.info("Looking for experiment status... "+exp.getExperimentExecutable().getBatchExecutionIdentifier());
+          
+          TestbedBatchProcessor tbp = (TestbedBatchProcessor)JSFUtil.getManagedObject("TestbedBatchProcessor");
+          String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
+          log.info("Looking for experiment status under job key: "+job_key+" : " + tbp.getJobStatus(job_key));
+
+          if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.NO_SUCH_JOB ) ) {
+              log.info("Got No Such Job.");
+              return -1;
+          } else if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.NOT_STARTED) ) {
+              log.info("Got NOT STARTED.");
+              return 0;
+          } else if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.RUNNING) ) {
+              int percent = tbp.getJobPercentComplete(job_key);
+              log.info("Got percent complete:" + percent);
+              return percent;
+
+          } else {
+              log.info("Got job complete.");
+              this.recordExperimentCompleted(tbp.getJob(job_key));
+              return 101;
+          }
+	  }
+	  private void recordExperimentCompleted(TestbedBatchJob job ) {
+          TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+          ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+          Experiment exp = expBean.getExperiment();
+ 
+          log.info("Recording result of experiment. "+exp.getExperimentExecution().isExecutionInvoked()+" ; "+exp.getExperimentExecution().isExecutionCompleted());
+          if (exp.getExperimentExecutable().isExecutableInvoked() && 
+                  ! exp.getExperimentExecutable().isExecutionCompleted() ) {
+              if( TestbedBatchJob.DONE.equals(job.getStatus()) ) {
+                  // If we got here, then log that all went well...
+                  log.info("Status: DONE - All went well.");
+                  exp.getExperimentExecutable().setExecutionCompleted(true);
+                  exp.getExperimentExecutable().setExecutionSuccess(true);
+              } else {
+                  log.error("Experiment execution failed - setting state: failure within the experiment's executable: ");
+                  exp.getExperimentExecutable().setExecutionCompleted(true);
+                  exp.getExperimentExecutable().setExecutionSuccess(false);
+              }
+              // FIXME Grab all the results:
+              
+              //fill the expBean with the execution's results
+              expBean.setOutputData(exp.getExperimentExecutable().getOutputDataEntries());
+              // General State Update:
+              exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+              exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);       
+              expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
+          }
+          // Store:
+          testbedMan.updateExperiment(exp);
 	  }
 	  
 	  /*
@@ -1521,7 +1618,7 @@ public class NewExpWizardController {
 	
 	HtmlDataTable obsTable = new HtmlDataTable();
 	String obsEType = null;
-    List<MeasurementImpl> obs = null;
+    List<MeasurementBean> obs = null;
 	
     /**
      * @return the obsTable
@@ -1540,7 +1637,7 @@ public class NewExpWizardController {
     /**
      * @return The list of measurable properties, depending on the experiment type.
      */
-    public List<MeasurementImpl> getObservables() {
+    public List<MeasurementBean> getObservables() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         this.chooseObservablesForEtype(expBean.getEtype(), expBean.getExperiment());
         return obs;
@@ -1550,7 +1647,7 @@ public class NewExpWizardController {
      * 
      * @param obs
      */
-    public void setObservables( List<MeasurementImpl> obs ) {
+    public void setObservables( List<MeasurementBean> obs ) {
         this.obs = obs;
     }
     
@@ -1568,7 +1665,13 @@ public class NewExpWizardController {
            
            if( etype.equals( AdminManagerImpl.IDENTIFY ) ) {
                ExpTypeIdentify exptype = (ExpTypeIdentify)JSFUtil.getManagedObject("ExpTypeIdentify");
-               obs = new ArrayList<MeasurementImpl>(exptype.getObservables());
+               Collection<MeasurementImpl> measurements = exptype.getObservables();
+               obs = new ArrayList<MeasurementBean>();
+               for( MeasurementImpl measurement : measurements ) {
+                   MeasurementBean measurebean =  new MeasurementBean(measurement);
+                   measurebean.setSelected(true);
+                   obs.add(measurebean);
+               }
            } else {
                // For unrecognised experiment types, set to NULL:
                obs = null;
@@ -1576,7 +1679,7 @@ public class NewExpWizardController {
            
         }
         Vector<String> props = exp.getExperimentExecutable().getProperties();
-        for( MeasurementImpl m : obs ) {
+        for( MeasurementBean m : obs ) {
             if( props.contains(m.getIdentifier().toString()) ) {
                 m.setSelected(true);
             } else {

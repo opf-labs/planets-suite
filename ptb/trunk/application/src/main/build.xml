@@ -225,7 +225,7 @@
     <!-- moves libs for the .ear into the lib directory as e.g. commons-io.jar-->
     <move todir="${build.dir}/lib">
 		<fileset dir="${build.dir}/${appName}/WEB-INF/lib">
-          <include name="commons-io-1.4.jar" />
+          <include name="commons-*.jar" />
           <include name="castor-xml.jar" />
 		</fileset>
 	</move>

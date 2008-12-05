@@ -71,5 +71,10 @@ public interface Executable {
 	 */
 	public TestbedServiceTemplate getServiceTemplate();
 	public void setServiceTemplate(TestbedServiceTemplate template);
+	
+    public void setBatchQueueIdentifier(String batchQueueIdentifier);
+    public String getBatchQueueIdentifier();
+    public void setBatchExecutionIdentifier(String batchExecutionIdentifier);
+    public String getBatchExecutionIdentifier();
 
 }
