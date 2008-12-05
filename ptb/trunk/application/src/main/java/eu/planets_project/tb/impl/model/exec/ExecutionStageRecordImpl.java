@@ -3,8 +3,11 @@
  */
 package eu.planets_project.tb.impl.model.exec;
 
-import java.util.Collection;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Vector;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,28 +25,26 @@ import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@Entity
+//@Entity
 @XmlRootElement(name = "ExecutionStage")
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class ExecutionStageRecordImpl {
-    @Id
-    @GeneratedValue
+public class ExecutionStageRecordImpl implements Serializable {
+//    @Id
+//    @GeneratedValue
     @XmlTransient
     private long id;
     
     // The name of this stage:
     private String stage;
 
-    @ManyToOne
-    protected ExecutionRecordImpl executionRecord;
-    
     /** The record of the service description at this time */
-    @OneToOne
+//   @OneToOne(cascade={CascadeType.ALL})
     private ServiceRecordImpl serviceRecord;
     
     // The set of measured properties.
-    @OneToMany(mappedBy="executionStageRecord")
-    private Collection<MeasurementImpl> measurements;
+//    @OneToMany(mappedBy="executionStageRecord",cascade={CascadeType.ALL})
+//    private List<MeasurementImpl> measurements;
+    private Vector<MeasurementImpl> measurements;
     
     // The 'Result'
     private String resultType;
@@ -98,15 +99,15 @@ public class ExecutionStageRecordImpl {
     /**
      * @return the measurements
      */
-    public Collection<MeasurementImpl> getMeasurements() {
+    public List<MeasurementImpl> getMeasurements() {
         return measurements;
     }
 
     /**
      * @param measurements the measurements to set
      */
-    public void setMeasurements(Collection<MeasurementImpl> measurements) {
-        this.measurements = measurements;
+    public void setMeasurements(List<MeasurementImpl> measurements) {
+        this.measurements = new Vector(measurements);
     }
 
     /**

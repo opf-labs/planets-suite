@@ -48,6 +48,7 @@ import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -122,6 +123,8 @@ public class ExperimentBean {
     private DigitalObjectTypesImpl dtypeImpl = new DigitalObjectTypesImpl();
     private List<String[]> fullDtypes = new ArrayList<String[]>();
     
+    private ExecutionRecordImpl selectedExecutionRecord = null;
+    
     private String ereportTitle;
     private String ereportBody;
     
@@ -165,7 +168,7 @@ public class ExperimentBean {
     }
     
     public void fill(Experiment exp) {
-        log.info("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName());
+        log.info("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName() + " ID:"+exp.getEntityID());
         log.debug("Experiment Phase Name = " + exp.getPhaseName());
         log.debug("Experiment Current Phase " + exp.getCurrentPhase());
         if( exp.getCurrentPhase() != null )
@@ -1433,5 +1436,20 @@ public class ExperimentBean {
 		Calendar cEvalWFRunningSec = new GregorianCalendar();
 		return ((cEvalWFRunningSec.getTimeInMillis() - cEvalWFRunningStart.getTimeInMillis())/1000)+"";
 	}
+
+    /**
+     * @return the selectedExecutionRecord
+     */
+    public ExecutionRecordImpl getSelectedExecutionRecord() {
+        return selectedExecutionRecord;
+    }
+
+    /**
+     * @param selectedExecutionRecord the selectedExecutionRecord to set
+     */
+    public void setSelectedExecutionRecord(
+            ExecutionRecordImpl selectedExecutionRecord) {
+        this.selectedExecutionRecord = selectedExecutionRecord;
+    }
     
 }

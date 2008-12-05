@@ -23,15 +23,12 @@
 		<div class="innertubemain">
 
 <h:form>    
-      <table id="expHeaderTable"><tr>
-      <td class="headerText">
-      <h2><h:outputText value="#{res['new_exp.stage4']}"/></h2>
-      </td>
-      <td class="headerButtons">
-      </td>
-      </tr>
-      </table>
-</h:form>
+
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="4" />
+       <ui:param name="PlaceBandAsHeader" value="true" />
+    </ui:include>
+
 
     <!--  Title, containing the status or result: -->    
     <h2 class="main">
@@ -43,7 +40,6 @@
     
     <!-- AWAITING APPROVAL -->
 
-<h:form>
     <h:panelGroup rendered="#{ExperimentBean.experiment.awaitingApproval}">
 <p><b>Your experiment has been submitted for approval and execution.</b></p>
 <p>Your experiment will checked by the Testbed administrator, depending on the intensity of your experiment and the size of the experiment dataset.</p>
@@ -52,11 +48,9 @@
     <h:commandButton value="#{res['approve_exp.checkStatus']}"
                         action="#{NewExp_Controller.updateExperimentBeanState}"/>
     </h:panelGroup>
- </h:form>
 
 <!-- APPROVED -->
     
-<h:form>
     <h:panelGroup rendered="#{ExperimentBean.experiment.approved}">
 <p><b>Your experiment has been approved for execution.</b></p>
 <fieldset>
@@ -76,17 +70,10 @@
 </p>
 </fieldset>
 
-<p>
-Please proceed to the next stage:<br/>
- <h:commandButton value="#{res['new_exp.stage5']}"
-                        action="goToStage5"/>
-</p>
     </h:panelGroup>
-</h:form>
 
 <!--  DENIED  -->
 
-<h:form>
     <h:panelGroup rendered="#{ExperimentBean.experiment.denied}">
 <p><b>Your experiment has NOT been approved for execution.</b></p>
 <fieldset>
@@ -112,28 +99,31 @@ Please modify your experiment:<br/>
                         action="#{NewExp_Controller.unsubmitAndEdit}"/>
 </p>
     </h:panelGroup>
+
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="4" />
+       <ui:param name="PlaceBandAsHeader" value="false" />
+    </ui:include>
+
 </h:form>
-
-
-
-
-		<p>&#160;</p>
-		<p>&#160;</p>
-
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
-		<p>&#160;</p>
 
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
        <ui:param name="ExperimentPhase" value="4" />
     </ui:include>
-        
+
+		<p>&#160;</p>
+		<p>&#160;</p>
+
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+		<p>&#160;</p>
+
 		</div>
 		</div>
 		</div>

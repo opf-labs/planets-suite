@@ -3,6 +3,7 @@
  */
 package eu.planets_project.tb.impl.model.eval;
 
+import java.io.Serializable;
 import java.net.URI;
 
 import javax.persistence.Entity;
@@ -22,17 +23,17 @@ import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@Entity
-@XmlRootElement(name = "ExecutionRecord")
+//@Entity
+@XmlRootElement(name = "Measurement")
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class MeasurementImpl {
-    @Id
-    @GeneratedValue
+public class MeasurementImpl implements Serializable {
+//    @Id
+//    @GeneratedValue
     @XmlTransient
     private long id;
     
-    @ManyToOne
-    protected ExecutionStageRecordImpl executionStageRecord;
+//    @ManyToOne
+//    protected ExecutionStageRecordImpl executionStageRecord;
 
 /*
     
@@ -62,7 +63,8 @@ public class MeasurementImpl {
     protected String type;
     public static final String TYPE_SERVICE = "Service";
     public static final String TYPE_DIGITALOBJECT = "Digital Object";
-    
+
+//    this should be an identifer uri and a value, and possibly a stage.  That is all!
     
     /** */
     public MeasurementImpl() { }
@@ -85,6 +87,15 @@ public class MeasurementImpl {
         this.type = type;
         this.description = description;
     }
+
+    /**
+     * Copy constructor
+     * @param m
+     */
+    public MeasurementImpl( MeasurementImpl m ) {
+        this(m.identifier, m.name, m.unit, m.description, m.stage, m.type);
+    }
+    
 
 
     /**

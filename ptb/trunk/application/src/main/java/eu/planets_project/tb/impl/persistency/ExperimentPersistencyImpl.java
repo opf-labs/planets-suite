@@ -18,7 +18,7 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
 @Stateless
-public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote{
+public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
 	
     private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentPersistencyImpl.class);
     

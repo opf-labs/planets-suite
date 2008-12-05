@@ -25,43 +25,34 @@
 		<div class="innertubemain">
 
 <h:form>    
-      <table id="expHeaderTable"><tr>
-      <td class="headerText">
-      <h2><h:outputText value="#{res['new_exp.stage5']}"/></h2>
-      </td>
-      <td class="headerButtons">
-      </td>
-      </tr>
-      </table>
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="5" />
+       <ui:param name="PlaceBandAsHeader" value="true" />
+    </ui:include>
       
     <a4j:outputPanel id="progressPanel">
+                <!-- #{NewExp_Controller.executeExperimentIsRunning} -->
             <rich:progressBar value="#{NewExp_Controller.executeExperimentProgress}"
                 interval="500" label="#{NewExp_Controller.executeExperimentProgress} %"
-                enabled="#{NewExp_Controller.executeExperimentIsRunning}" minValue="0" maxValue="100"
-                reRenderAfterComplete="progressPanel,runExperimentForm" reRender="runExperimentForm">
+                enabled="true" minValue="0" maxValue="100"
+                reRenderAfterComplete="progressPanel,runExperimentForm,executedResults" reRender="runExperimentForm,executedResults">
                 <f:facet name="initial"> 
-                <!-- #{NewExp_Controller.executeExperimentIsRunning} -->
-                    <br />
                     <h:outputText value="Process doesn't started yet" />
                     <a4j:commandButton action="#{NewExp_Controller.executeExperimentStart}"
-                        value="Start Process" reRender="progressPanel,runExperimentForm"
-                        rendered="true"
-                        style="margin: 9px 0px 5px;" />
+                        value="Run Experiment" reRender="progressPanel"
+                        rendered="true" />
                 </f:facet>
                 <f:facet name="complete">
-                    <br />
-                    <h:outputText value="Process Done" />
+                    <h:outputText value="Re-run Experiment" />
                     <a4j:commandButton action="#{NewExp_Controller.executeExperimentStart}"
-                        value="Restart Process" reRender="progressPanel,runExperimentForm"
-                        rendered="true"
-                        style="margin: 9px 0px 5px;" />
+                        value="Restart Process" reRender="progressPanel"
+                        rendered="true" />
                 </f:facet>
         
             </rich:progressBar>
     </a4j:outputPanel>
         
 <a4j:outputPanel id="runExperimentForm">
-     #{NewExp_Controller.executeExperimentIsRunning}, and #{TestbedBatchProcessor.daemon.secs}
     <h:panelGroup rendered="#{ExperimentBean.currentStage==5}">
                    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
                         <p>Your experiment has been setup and approved successfully - you may now <b>run the experiment</b>: </p>
@@ -81,11 +72,111 @@
                             <h:commandButton value="Refresh"
                             action="goToStage5" />
                         </p>
-                        <p>
-                <h:commandButton value="FAILURE? #{res['button.edit']}" action="#{NewExp_Controller.commandResetAfterFailure}" />
-                        </p>
                    </h:panelGroup>
     </h:panelGroup>
+
+</a4j:outputPanel>
+
+
+<a4j:outputPanel id="executedResults" rendered="#{NewExp_Controller.experimentExecutable.numExecutionRecords > 0 }">
+
+    <h2 class="main">Results</h2>
+
+    <rich:tabPanel width="100%">
+        <rich:tab label="Raw Experiment Execution Log">
+            
+<h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="expDesignColumn">
+            <rich:panel styleClass="expExecLogPanel">
+                <f:facet name="header">Execution Log</f:facet>
+                
+     <rich:dataTable value="#{NewExp_Controller.experimentExecutable.executionRecords}" 
+         var="erec" styleClass="tbTable" reRender="prop_ds" rows="10">
+      <rich:column sortBy="#{erec.digitalObjectSource}">
+        <f:facet name="header">Digital Object</f:facet>
+        <h:commandLink>
+          <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectExecutionRecordActionListener"/>
+          <h:outputText value="#{erec.digitalObjectSource}"/>
+        </h:commandLink>
+      </rich:column>
+      <rich:column sortBy="#{erec.date}" sortOrder="DESCENDING">
+        <f:facet name="header">Execution Date</f:facet>
+        <h:commandLink>
+          <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectExecutionRecordActionListener"/>
+        <h:outputText value="#{erec.date.time}">
+          <f:convertDateTime type="both" dateStyle="short"/>
+        </h:outputText>
+        </h:commandLink>
+      </rich:column>
+      <rich:column>
+        <f:facet name="header">Execution Success</f:facet>
+        <h:commandLink>
+          <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectExecutionRecordActionListener"/>
+        [To Add Success State]
+        </h:commandLink>
+      </rich:column>
+      
+      <f:facet name="footer">
+         <rich:datascroller id="exelog_ds"></rich:datascroller>
+      </f:facet>
+      
+    </rich:dataTable>
+    <p>
+    The experiment has been executed #{NewExp_Controller.experimentExecutable.numExecutionRecords/NewExp_Controller.experimentExecutable.numberOfInputs} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects, leading to #{NewExp_Controller.experimentExecutable.numExecutionRecords} sets of results.
+    </p>
+    
+    </rich:panel>
+    <rich:panel styleClass="expMeasurementPanel">
+                <f:facet name="header">
+                Execution Results In Detail
+                </f:facet>
+                
+         <h:panelGroup rendered="#{ExperimentBean.selectedExecutionRecord != null}">
+
+         <a4j:repeat value="#{ExperimentBean.selectedExecutionRecord.stages}" var="stage">
+        
+          <rich:dataTable value="#{stage.measurements}" var="m" styleClass="tbTable">
+                <f:facet name="header">#{stage.stage}</f:facet>
+            <rich:column>
+            <f:facet name="header">Measurement</f:facet>
+            <h:outputText value="#{m.name}"/>
+            </rich:column>
+            <rich:column>
+            <f:facet name="header">Value</f:facet>
+            <h:outputText value="#{m.value}"/><h:outputText value=" #{m.unit}" rendered="#{m.unit != null}"/>
+            </rich:column>
+          </rich:dataTable>
+          
+         </a4j:repeat>
+         
+         </h:panelGroup>
+                
+    </rich:panel>
+    
+    </h:panelGrid>
+
+        </rich:tab>
+        
+        <rich:tab label="Service Statistics">
+            Runtime statistics here. e.g. execution time of each service/stage, versus (exec, type, size).
+
+        </rich:tab>
+        
+        <rich:tab label="Digital Object Properties">
+            Comparisons of the measured digital object properties. Cross-comparisons, etc.
+
+        </rich:tab>
+        
+        <rich:tab label="Result Comparison & Evaluation">
+            Difference displays, comparator configuration, depending on experiment type.
+        
+        </rich:tab>
+        
+        <rich:tab label="Hacky Development And Debug Options">
+         <p>
+       #{NewExp_Controller.executeExperimentIsRunning}, and #{TestbedBatchProcessor.daemon.secs}
+       <h:commandButton value="HACK! Click to abort runningness." action="#{NewExp_Controller.commandResetAfterFailure}" />
+         </p>
+
     <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (NewExp_Controller.experimentExecutable.executionCompleted))}">
                 <p>Experiment execution took place with the following details:</p>
                 <div class="box">
@@ -99,14 +190,18 @@
                     <b>#{res['exp_stage5.success']} </b>#{NewExp_Controller.experimentExecutable.executionSuccess}<br />
                 </p>
                 </div>
-                <p>
-                <h:commandButton value="#{res['button.edit']}"
-                action="#{NewExp_Controller.commandResetAfterFailure}" /> <!-- rendered="#{ ! NewExp_Controller.experimentExecutable.executionSuccess}" -->
-                <h:commandButton value="#{res['exp_stage5.button.proceed']}"
-                action="#{NewExp_Controller.proceedToEvaluation}"/>
-                </p>   
-    </h:panelGroup>   
+    </h:panelGroup>
+        
+        </rich:tab>
+    </rich:tabPanel>
+
+     
 </a4j:outputPanel>
+    
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="5" />
+       <ui:param name="PlaceBandAsHeader" value="false" />
+    </ui:include>
 
 </h:form>
 		<p>&#160;</p>

@@ -33,9 +33,13 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
+import eu.planets_project.tb.impl.persistency.ExecutionRecordPersistency;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
+import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
 import eu.planets_project.tb.impl.system.TestbedBatchJob;
 import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
@@ -43,6 +47,7 @@ import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
 import javax.faces.application.FacesMessage;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
@@ -50,9 +55,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -117,9 +125,9 @@ public class NewExpWizardController {
 	        expSetup.setBasicProperties(props);       
 	        exp.setExperimentSetup(expSetup);
 	        log.info("Creating a new experiment.");
-            long expId = testbedMan.registerExperiment(exp);            
+            long expId = testbedMan.registerExperiment(exp);
             expBean.setID(expId);
-            expBean.setExperiment(exp);
+            expBean.setExperiment(testbedMan.getExperiment(expId));
         }
         log.debug("Created experiment, now retrieving it.");
         // Get the Experiment description objects
@@ -249,7 +257,7 @@ public class NewExpWizardController {
     private String submitForApproval() {
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        Experiment exp = expBean.getExperiment();
         exp.getExperimentSetup().setState(Experiment.STATE_COMPLETED);
         exp.getExperimentApproval().setState(Experiment.STATE_IN_PROGRESS);
         testbedMan.updateExperiment(exp);
@@ -269,7 +277,7 @@ public class NewExpWizardController {
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         
-        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        Experiment exp = expBean.getExperiment();
         AdminManagerImpl.toEditFromDenied(exp);
         
         testbedMan.updateExperiment(exp);
@@ -279,7 +287,7 @@ public class NewExpWizardController {
     public String updateExperimentBeanState() {
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        Experiment exp = expBean.getExperiment();
         testbedMan.updateExperiment(exp);
         return "success";
     }
@@ -451,7 +459,7 @@ public class NewExpWizardController {
         try {
 	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");    	
-	    	Experiment exp = testbedMan.getExperiment(expBean.getID());
+	    	Experiment exp = expBean.getExperiment();
 
 	    	// 1. Store the updated report:
             exp.getExperimentEvaluation().getExperimentReport().setHeader(expBean.getReportHeader());
@@ -558,7 +566,7 @@ public class NewExpWizardController {
 	    	}
 	    	
 	    	//4. now write these changes back to the experiment
-	    	Experiment e = testbedMan.getExperiment(exp.getEntityID());
+	    	Experiment e = expBean.getExperiment();
 	    	log.debug("Exp ID: "+ exp.getEntityID() + " exp: " + e);
 	    	
 	    	exp.getExperimentEvaluation().setEvaluatedExperimentBenchmarkGoals(expBMgoals);
@@ -582,7 +590,7 @@ public class NewExpWizardController {
         // Finalise the experiment:
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");        
-        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        Experiment exp = expBean.getExperiment();
         // First, catch any updates.
         updateBMEvaluationAction();
         exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
@@ -906,9 +914,8 @@ public class NewExpWizardController {
     
     
     public boolean isExecutionSuccess(){
-    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");   
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Experiment exp = testbedMan.getExperiment(expBean.getID());   	
+    	Experiment exp = expBean.getExperiment();   	
     	if(exp.getExperimentExecutable()!=null){
     		return exp.getExperimentExecutable().isExecutionSuccess();
     	} 
@@ -960,7 +967,7 @@ public class NewExpWizardController {
 	public String changeAlreadySelectedSerOps(){
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-        Experiment exp = testbedMan.getExperiment(expBean.getID());
+        Experiment exp = expBean.getExperiment();
         
         //clear the already added data in the backing bean
 		expBean.removeAllExperimentInputData();
@@ -1215,7 +1222,7 @@ public class NewExpWizardController {
 	    private void autoApproveExperiment(){
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
 	        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-	    	Experiment exp = testbedMan.getExperiment(expBean.getID());
+	    	Experiment exp = expBean.getExperiment();
 	    	
 	    	// Approve the experiment, automatically:
 	    	AdminManagerImpl.approveExperimentAutomatically(exp);
@@ -1267,6 +1274,7 @@ public class NewExpWizardController {
           return running;
 	  }
 	  public int getExecuteExperimentProgress() {
+          TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
           Experiment exp = expBean.getExperiment();
           boolean running = exp.getExperimentExecutable().isExecutionRunning();
@@ -1284,6 +1292,9 @@ public class NewExpWizardController {
 
           if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.NO_SUCH_JOB ) ) {
               log.info("Got No Such Job.");
+              exp.getExperimentExecutable().setExecutionSuccess(false);
+              exp.getExperimentExecutable().setExecutionCompleted(true);
+              testbedMan.updateExperiment(exp);
               return -1;
           } else if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.NOT_STARTED) ) {
               log.info("Got NOT STARTED.");
@@ -1307,24 +1318,63 @@ public class NewExpWizardController {
           log.info("Recording result of experiment. "+exp.getExperimentExecution().isExecutionInvoked()+" ; "+exp.getExperimentExecution().isExecutionCompleted());
           if (exp.getExperimentExecutable().isExecutableInvoked() && 
                   ! exp.getExperimentExecutable().isExecutionCompleted() ) {
+              // Grab all the results:
+              DataHandler dh = new DataHandlerImpl();
+              List<ExecutionRecordImpl> recs = exp.getExperimentExecutable().getExecutionRecords();
+              ExecutionRecordPersistency erp = eu.planets_project.tb.impl.persistency.ExecutionRecordPersistencyImpl.getInstance();
+              log.info("Got the recs: "+recs.size());
+              for( String filename : job.getDigitalObjects()) {
+                  ExecutionRecordImpl rec = new ExecutionRecordImpl();
+                  rec.setDigitalObjectReferenceCopy(filename);
+                  try {
+                      rec.setDigitalObjectSource(dh.getName(filename));
+                  } catch (FileNotFoundException e) {
+                      rec.setDigitalObjectSource(filename);
+                  }
+                  // FIXME Set this in the job somewhere:
+                  rec.setDate(Calendar.getInstance());
+                  Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
+                  WorkflowResult wrf = job.getWorkflowResult(filename);
+                  // FIXME This reflects other problems!
+                  if( wrf != null && wrf.getMeasurements() != null ) {
+                      Set<String> stagenames = new HashSet<String>();
+                      for( MeasurementImpl m : wrf.getMeasurements() ) {
+                          stagenames.add(m.getStage());
+                      }
+                      for( String stagename : stagenames ) {
+                          ExecutionStageRecordImpl stage = new ExecutionStageRecordImpl();
+                          stage.setStage(stagename);
+                          log.info("Looking for stage: "+stagename);
+                          // Now loop over measurement, recording ones taken at this stage.
+                          List<MeasurementImpl> sms = new LinkedList<MeasurementImpl>();
+                          for( MeasurementImpl m : wrf.getMeasurements() ) {
+                              if( m.getStage().equals(stagename)) sms.add(m);
+                          }
+                          stage.setMeasurements(sms);
+                          // FIXME The current Workflow Execution system needs Stages so I can get the service records!                      
+                          //                      stage.setServiceRecord(serviceRecord);
+                          stages.add(stage);
+                      }
+                  }
+                  rec.setStages(stages);
+                  if( erp != null )
+                      erp.persistExecutionRecordImpl(rec);
+                  recs.add(rec);
+                  log.info("Added record for "+rec.getDigitalObjectSource());
+              }
+              // General State Update:
               if( TestbedBatchJob.DONE.equals(job.getStatus()) ) {
                   // If we got here, then log that all went well...
                   log.info("Status: DONE - All went well.");
-                  exp.getExperimentExecutable().setExecutionCompleted(true);
                   exp.getExperimentExecutable().setExecutionSuccess(true);
               } else {
                   log.error("Experiment execution failed - setting state: failure within the experiment's executable: ");
-                  exp.getExperimentExecutable().setExecutionCompleted(true);
                   exp.getExperimentExecutable().setExecutionSuccess(false);
               }
-              // FIXME Grab all the results:
-              
-              //fill the expBean with the execution's results
-              expBean.setOutputData(exp.getExperimentExecutable().getOutputDataEntries());
-              // General State Update:
+              exp.getExperimentExecutable().setExecutableInvoked(true);
+              exp.getExperimentExecutable().setExecutionCompleted(true);
               exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
               exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);       
-              expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
           }
           // Store:
           testbedMan.updateExperiment(exp);
@@ -1355,7 +1405,7 @@ public class NewExpWizardController {
 	 public String executeAutoEvalWf(){
 	   	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
 	    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-	   	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
+	   	Experiment exp = expBean.getExperiment(); 
    		
 	    expBean.setExecuteAutoEvalWfRunning(true);
 	   	
@@ -1391,7 +1441,7 @@ public class NewExpWizardController {
     public String proceedToEvaluation() {
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
+    	Experiment exp = expBean.getExperiment(); 
   	  	if (exp.getExperimentExecution().isExecutionCompleted()) {
   	    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
   	    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
@@ -1443,17 +1493,15 @@ public class NewExpWizardController {
      * @return
      */
     public ExperimentExecutable getExperimentExecutable(){
-    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-       	Experiment exp = testbedMan.getExperiment(expBean.getID()); 
-       	
+       	Experiment exp = expBean.getExperiment();
        	return exp.getExperimentExecutable();
     }
 
     public String saveEvaluation(){
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-    	Experiment exp = testbedMan.getExperiment(expBean.getID());    	
+    	Experiment exp = expBean.getExperiment();
     	//exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
     	//exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
     	exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
@@ -1640,18 +1688,12 @@ public class NewExpWizardController {
     public List<MeasurementBean> getObservables() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         this.chooseObservablesForEtype(expBean.getEtype(), expBean.getExperiment());
+        if( obs == null ) {
+            return new ArrayList<MeasurementBean>();
+        }
         return obs;
     }
     
-    /**
-     * 
-     * @param obs
-     */
-    public void setObservables( List<MeasurementBean> obs ) {
-        this.obs = obs;
-    }
-    
-
     /**
      * 
      * @param etype

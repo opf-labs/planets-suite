@@ -3,8 +3,12 @@
  */
 package eu.planets_project.tb.impl.model.exec;
 
-import java.util.Collection;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Vector;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,24 +19,24 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@Entity
+//@Entity
 @XmlRootElement(name = "ExecutionRecord")
 @XmlAccessorType(XmlAccessType.FIELD) 
-public class ExecutionRecordImpl {
-    @Id
-    @GeneratedValue
+public class ExecutionRecordImpl implements Serializable {
+//    @Id
+//    @GeneratedValue
     @XmlTransient
     private long id;
     
     /** The experiment this belongs to */
-    @ManyToOne
-    private ExperimentExecutionImpl experimentExecution;
+//    @ManyToOne
+    private ExperimentExecutableImpl experimentExecutable;
     
     // The source Digital Object - original URL.
     private String digitalObjectSource;
@@ -40,9 +44,11 @@ public class ExecutionRecordImpl {
     // The identity of the internally cached copy (from the DataHandler)
     private String digitalObjectReferenceCopy;
     
+    // The date of this invocation:
+    private Calendar date;
+    
     /** The sequence of stages of this experiment. */
-    @OneToMany(mappedBy="executionRecord")
-    private Collection<ExecutionStageRecordImpl> stages;
+    private Vector<ExecutionStageRecordImpl> stages;
     
     /**
      * @return the id
@@ -59,17 +65,17 @@ public class ExecutionRecordImpl {
     }
 
     /**
-     * @return the experimentExecution
+     * @return the experimentExecutable
      */
-    public ExperimentExecutionImpl getExperimentExecution() {
-        return experimentExecution;
+    public ExperimentExecutableImpl getExperimentExecutable() {
+        return experimentExecutable;
     }
 
     /**
-     * @param experimentExecution the experimentExecution to set
+     * @param experimentExecutable the experimentExecutable to set
      */
-    public void setExperimentExecution(ExperimentExecutionImpl experimentExecution) {
-        this.experimentExecution = experimentExecution;
+    public void setExperimentExecutable(ExperimentExecutableImpl experimentExecutable) {
+        this.experimentExecutable = experimentExecutable;
     }
 
     /**
@@ -103,15 +109,29 @@ public class ExecutionRecordImpl {
     /**
      * @return the stages
      */
-    public Collection<ExecutionStageRecordImpl> getStages() {
+    public Vector<ExecutionStageRecordImpl> getStages() {
         return stages;
     }
 
     /**
      * @param stages the stages to set
      */
-    public void setStages(Collection<ExecutionStageRecordImpl> stages) {
+    public void setStages(Vector<ExecutionStageRecordImpl> stages) {
         this.stages = stages;
+    }
+
+    /**
+     * @return the date
+     */
+    public Calendar getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(Calendar date) {
+        this.date = date;
     }
     
 }

@@ -243,8 +243,9 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentExecutable()
 	 */
 	public ExperimentExecutable getExperimentExecutable() {
-	    if( this.executable == null )
-	        this.executable = new ExperimentExecutableImpl();
+//	    if( this.executable == null ) {
+//            this.executable = new ExperimentExecutableImpl();
+//	    }
 		return this.executable;
 	}
 

@@ -8,12 +8,15 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -65,8 +68,9 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
     private Vector<String> properties = new Vector<String>();
 
     /** The log of executed experiment results */
-    @OneToMany(mappedBy="experimentExecution")
-    private Collection<ExecutionRecordImpl> executionRecords;
+//    @OneToMany(mappedBy="experimentExecutable", fetch=FetchType.EAGER)
+//    private List<ExecutionRecordImpl> executionRecords;
+    private Vector<ExecutionRecordImpl> executionRecords;
     
     /** The workflow-type is also stored here. */
     private String workflowType;
@@ -92,6 +96,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	
 	//Default Constructor required for Entity Annotation
 	public ExperimentExecutableImpl(){
+	    executionRecords = new Vector<ExecutionRecordImpl>();
 	}
 	
     /* (non-Javadoc)
@@ -127,15 +132,30 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
     /**
      * @return the executionRecords
      */
-    public Collection<ExecutionRecordImpl> getExecutionRecords() {
+    public List<ExecutionRecordImpl> getExecutionRecords() {
+        log.info("Getting ExecutionRecords #"+executionRecords.size());
         return executionRecords;
+    }
+    
+    
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#getNumExecutionRecords()
+     */
+    public int getNumExecutionRecords() {
+        if( this.getExecutionRecords() == null ) {
+            return 0;
+        } else {
+            return this.getExecutionRecords().size();
+        }
     }
 
     /**
      * @param executionRecords the executionRecords to set
      */
-    public void setExecutionRecords(Collection<ExecutionRecordImpl> executionRecords) {
-        this.executionRecords = executionRecords;
+    public void setExecutionRecords(List<ExecutionRecordImpl> executionRecords) {
+        log.info("Setting ExecutionRecords #"+executionRecords.size());
+        this.executionRecords = new Vector<ExecutionRecordImpl>(executionRecords);
     }
 
     /* (non-Javadoc)

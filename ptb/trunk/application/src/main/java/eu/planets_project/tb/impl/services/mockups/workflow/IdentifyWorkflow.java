@@ -9,12 +9,16 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
+import eu.planets_project.tb.impl.system.TestbedBatchProcessDaemon;
 
 /**
  * This is the class that carries the code specific to invoking an Identify experiment.
@@ -23,7 +27,8 @@ import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
  *
  */
 public class IdentifyWorkflow implements ExperimentWorkflow {
-    
+    private static Log log = LogFactory.getLog(IdentifyWorkflow.class);
+
     /** External property keys */
     public static final String PARAM_SERVICE = "identify.service";
     
@@ -118,18 +123,24 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         
         // Now prepare the result:
         WorkflowResult wr = null;
-        HashMap<String,MeasurementImpl> measurements = (HashMap<String, MeasurementImpl>) observables.clone();
+        HashMap<String,MeasurementImpl> measurements = new HashMap<String, MeasurementImpl>();
+        // Deep copy:
+        for( String key : observables.keySet()) {
+            measurements.put(key, new MeasurementImpl(observables.get(key)) );
+        }
+        // Now record
         if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
             URI format_uri = identify.getTypes().get(0);
             
-            observables.get(IDENTIFY_SUCCESS).setValue("true");
-            observables.get(IDENTIFY_SERVICE_TIME).setValue(""+((msAfter-msBefore)/1000.0));
-            observables.get(IDENTIFY_FORMAT).setValue(format_uri.toString());
+            measurements.get(IDENTIFY_SUCCESS).setValue("true");
+            measurements.get(IDENTIFY_SERVICE_TIME).setValue(""+((msAfter-msBefore)/1000.0));
+            log.info("Got timing: "+((msAfter-msBefore)/1000.0));
+            measurements.get(IDENTIFY_FORMAT).setValue(format_uri.toString());
             
             wr = new WorkflowResult(measurements.values(), WorkflowResult.RESULT_URI, format_uri, identify.getReport() );
         } else {
             // FIXME Build in a 'service success' property.
-            observables.get(IDENTIFY_SUCCESS).setValue("false");
+            measurements.get(IDENTIFY_SUCCESS).setValue("false");
             // FIXME Create a ServiceReport from the exception.
             wr = new WorkflowResult(null,null,null,null);
         }

@@ -68,8 +68,12 @@
               action="goToStage4" rendered="#{ExperimentBean.approved}"/>
       </c:if>
       <c:if test="#{ExperimentPhase == 4}">
+        <h:commandButton value="#{res['exp_stage4.button.proceed']}"
+                action="goToStage5" disabled="#{ ! ExperimentBean.experiment.approved}"/>
       </c:if>
       <c:if test="#{ExperimentPhase == 5}">
+         <h:commandButton value="#{res['exp_stage5.button.proceed']}"
+                action="goToStage6"/>
       </c:if>
       <c:if test="#{ExperimentPhase == 6}">
       </c:if>

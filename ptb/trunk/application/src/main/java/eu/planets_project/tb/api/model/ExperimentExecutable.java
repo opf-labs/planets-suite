@@ -4,11 +4,13 @@ import java.net.URI;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 
 /**
@@ -202,5 +204,10 @@ public interface ExperimentExecutable extends Executable{
 	 */
 	public ExperimentWorkflow getWorkflow();
     public void setWorkflowType( String expType ) throws Exception;
+    
+    /** The results */
+    public void setExecutionRecords(List<ExecutionRecordImpl> executionRecords);
+    public List<ExecutionRecordImpl> getExecutionRecords();
+    public int getNumExecutionRecords();
 
 }

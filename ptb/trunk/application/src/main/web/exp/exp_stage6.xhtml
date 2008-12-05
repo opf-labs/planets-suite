@@ -26,14 +26,12 @@
 		<div class="innertubemain">
 
 <h:form>    
-      <table id="expHeaderTable"><tr>
-      <td class="headerText">
-      <h2><h:outputText value="#{res['new_exp.stage6']}"/></h2>
-      </td>
-      <td class="headerButtons">
-      </td>
-      </tr>
-      </table>
+
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="6" />
+       <ui:param name="PlaceBandAsHeader" value="true" />
+    </ui:include>
+
 </h:form>
     	
 		<!-- A: If the execution was successfully: display the results -->
@@ -46,42 +44,6 @@
 		</h:panelGroup>	
 		
 		<a4j:form id="form_results" rendered="#{NewExp_Controller.executionSuccess}">	
-
-			<h2 class="main">#{res['exp_stage6.headingBG']}</h2>
-			<p>Below are the benchmark goals you specified during stage three
-			of the experiment design. Evaluate the success of your experiment by
-			selecting the level of success of each goal.</p>
-
-			<t:dataTable id="bmTable" var="bm"
-				value="#{ExperimentBean.experimentBenchmarkBeans}" preserveDataModel="false"
-				rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
-				<t:column>
-					<f:facet name="header">#{res['exp_stage6.criteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
-                    #{bm.name}
-				</t:column>
-				<t:column>
-					<f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
-				    #{bm.definition} <br />
-					<i>#{bm.description}</i>
-				</t:column>
-				<t:column>
-					<f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
-                                            <h:inputText value="#{bm.sourceValue}" disabled="#{ExperimentBean.finished}"/> <br/>     
-                                            	<h:outputText value="#{bm.typename}" />  
-				</t:column>
-				<t:column>
-					<f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
-                                            <h:inputText value="#{bm.targetValue}"  disabled="#{ExperimentBean.finished}"/><br/>          
-                                            <h:outputText value="#{bm.typename}" /> 
-				</t:column>
-				<t:column>
-					<f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
-					<h:selectOneMenu value="#{bm.evaluationValue}" disabled="#{ExperimentBean.finished}">
-						<f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
-					</h:selectOneMenu>
-				</t:column>
-				
-			</t:dataTable>
 
            <h2 class="main">#{res['exp_stage6.report']}</h2>
            <p>
@@ -129,6 +91,42 @@
 		    </rich:modalPanel>    
 		<!--end validation error modal panel -->    
    
+            <h2 class="main">#{res['exp_stage6.headingBG']}</h2>
+            <p>Below are the benchmark goals you specified during stage three
+            of the experiment design. Evaluate the success of your experiment by
+            selecting the level of success of each goal.</p>
+
+            <t:dataTable id="bmTable" var="bm"
+                value="#{ExperimentBean.experimentBenchmarkBeans}" preserveDataModel="false"
+                rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.criteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
+                    #{bm.name}
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
+                    #{bm.definition} <br />
+                    <i>#{bm.description}</i>
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
+                                            <h:inputText value="#{bm.sourceValue}" disabled="#{ExperimentBean.finished}"/> <br/>     
+                                                <h:outputText value="#{bm.typename}" />  
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
+                                            <h:inputText value="#{bm.targetValue}"  disabled="#{ExperimentBean.finished}"/><br/>          
+                                            <h:outputText value="#{bm.typename}" /> 
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
+                    <h:selectOneMenu value="#{bm.evaluationValue}" disabled="#{ExperimentBean.finished}">
+                        <f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
+                    </h:selectOneMenu>
+                </t:column>
+                
+            </t:dataTable>
+
 		</a4j:form>
 		
 		
@@ -143,6 +141,13 @@
                <h:inputTextarea rows="10" cols="80" value="#{ExperimentBean.serviceXMLResponds}" readonly="true" rendered="#{ExperimentBean.viewXMLResponds}"/>
             </p>
         </h:form>    
+
+<h:form>
+    <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
+       <ui:param name="ExperimentPhase" value="6" />
+       <ui:param name="PlaceBandAsHeader" value="false" />
+    </ui:include>
+</h:form>
         
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />

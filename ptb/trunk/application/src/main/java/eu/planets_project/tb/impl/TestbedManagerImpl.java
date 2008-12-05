@@ -197,20 +197,22 @@ public class TestbedManagerImpl
 	    log.debug("Updating experiment.");
 		if( edao.findExperiment(experiment.getEntityID()) != null ){
 		  //Should this be added in a transaction?
-            log.info("Phase Index - 1 - " + experiment.getCurrentPhaseIndex());
+            log.info("Phase Index - 1 - #" + experiment.getExperimentExecutable().getExecutionRecords().size());
 		    edao.updateExperiment(experiment);
-            log.info("Phase Index - 2 - " + experiment.getCurrentPhaseIndex());
+            log.info("Phase Index - 2 - #" + experiment.getExperimentExecutable().getExecutionRecords().size());
 			ExperimentImpl exp = (ExperimentImpl)edao.findExperiment(experiment.getEntityID());
-            log.info("Phase Index - 3 - " + exp.getCurrentPhaseIndex());
+            log.info("Phase Index - 3 - #" + exp.getExperimentExecutable().getExecutionRecords().size());
 		    // Also update the Experiment backing bean to reflect the changes:
 		    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 		    if( expBean == null ) expBean = new ExperimentBean();
             log.debug("Re-filling expBean from exp.");
-            expBean.fill(experiment);
-            log.info("Phase Index - 4 - " + exp.getCurrentPhaseIndex());
+            expBean.fill(exp);
+            log.info("Phase Index - 4 - #" + exp.getExperimentExecutable().getExecutionRecords().size());
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
           //End Transaction
+		} else {
+		    log.error("updateExperiment Failed: No Entity ID for experiment: "+experiment.getExperimentSetup().getBasicProperties().getExperimentName());
 		}
 	}
 
