@@ -13,8 +13,8 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
- * Draft/Work-in-progress: Registry interface based on the new
- * ServiceDescription objects, supporting query by example.
+ * Registry interface based on the new ServiceDescription objects, supporting
+ * query by example.
  * @see ServiceDescription
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
