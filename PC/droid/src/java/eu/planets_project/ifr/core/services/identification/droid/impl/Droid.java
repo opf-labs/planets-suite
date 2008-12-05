@@ -13,6 +13,9 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
@@ -34,6 +37,8 @@ import eu.planets_project.services.utils.FileUtils;
 @Stateless()
 @WebService(name = Droid.NAME, serviceName = Identify.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.Identify")
 public final class Droid implements Identify, Serializable {
+    private static Log log = LogFactory.getLog(Droid.class);
+    
     /**
      * The e number of ms. we want to wait in one waiting step for the
      * identification to finish
@@ -99,7 +104,10 @@ public final class Droid implements Identify, Serializable {
             controller.readSigFile(sigFileLocation);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error("Failed to read sig file");
         }
+        log.info("Attempting to identify "+tempFile.getAbsolutePath());
+        log.info("File is of length "+tempFile.length());
         controller.addFile(tempFile.getAbsolutePath());
         controller.setVerbose(false);
         controller.runFileFormatAnalysis();
@@ -111,6 +119,7 @@ public final class Droid implements Identify, Serializable {
             IdentificationFile file = iterator.next();
             waitFor(file);
             URI[] uris = new URI[file.getNumHits()];
+            log.info("Looking at results: #"+file.getNumHits());
             // Retrieve the results:
             try {
                 for (int hitCounter = 0; hitCounter < file.getNumHits(); hitCounter++) {
