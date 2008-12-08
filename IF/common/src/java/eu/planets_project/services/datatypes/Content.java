@@ -77,7 +77,6 @@ public final class Content implements Serializable {
     }
 
     /** No-args constructor for JAXB. Clients should not use this. */
-    @SuppressWarnings("unused")
     private Content() {}
 
     /**
@@ -99,14 +98,18 @@ public final class Content implements Serializable {
     }
 
     /**
-     * @return the value
+     * @return The value of this content.
      */
     public byte[] getValue() {
-        return value;
+        /* Should work for both content by reference and by value: */
+        return FileUtils.writeInputStreamToBinary(read());
     }
 
     /**
-     * @return the reference
+     * @return The reference, if any (might be null). Clients should not use
+     *         this method to access the actual data, but {@link #read()} or
+     *         {@link #getValue()}, which will always return the actual content,
+     *         no matter how it was created (by value or by reference).
      */
     public URL getReference() {
         return reference;
