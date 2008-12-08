@@ -30,27 +30,54 @@
                         analysed systematically, so that results can be <b>benchmarked</b> and outcomes can be <b>empirically compared</b>.</p>
                         
                             <hr />
-                            
+                            <h:form styleClass="hidden">							
                             <div style="text-align:center;margin-top:20px;">
-                                 <p><img src="${facesContext.externalContext.requestContextPath}/graphics/tb-info.png" alt="About the Planets Testbed" title="About the Planets Testbed" /></p>
-                                <p><img src="${facesContext.externalContext.requestContextPath}/graphics/tb-science.png" alt="Scientific Approach" title="Scientific Approach" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/tb-share.png" alt="Sharing Results" title="Sharing Results" /></p>   	
+							<h:commandLink action="home" rendered="#{empty UserBean.userid}">
+								<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_login.gif" 
+                            	alt="#{res['welcome.login.login']}" title="#{res['login.login']}" style="margin:5px 5px 5px 5px;" />
+							</h:commandLink>
+							<h:commandLink action="browse_services" rendered="#{UserBean.reader}">
+                            <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_services.gif" 
+                            	alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" style="margin:5px 5px 5px 5px;" />
+							</h:commandLink>
+							<h:commandLink action="browse_experiments" rendered="#{UserBean.reader}">
+							<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_exps.gif" 
+                            	alt="#{res['welcome.browse_exps']}" title="#{res['welcome.browse_exps']}" style="margin:5px 5px 5px 5px;" />
+							</h:commandLink>
+							<h:commandLink action="browse_data"  rendered="#{UserBean.reader}">
+							<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_corpora.gif" 
+                            	alt="#{res['welcome.browse_corpora']}" title="#{res['welcome.browse_corpora']}" style="margin:5px 5px 5px 5px;" />
+							</h:commandLink>
+							<h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
+							<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_perform_exp.gif" 
+                            	alt="#{res['welcome.perform_exp']}" title="#{res['welcome.perform_exp']}" style="margin:5px 5px 5px 5px;" />
+							</h:commandLink>
+							<br />
+														
+							<h:commandLink action="help"  rendered="#{UserBean.reader}">
+							<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_help.gif" 
+                            	alt="#{res['welcome.help']}" title="#{res['welcome.help']}" style="margin:5px 5px 5px 5px;" />
+							</h:commandLink>
+							<h:commandLink action="about"  rendered="#{UserBean.reader}">
+							<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_about.gif" 
+                            	alt="#{res['welcome.about']}" title="#{res['welcome.about']}" style="margin:5px 5px 5px 5px;" />
+							</h:commandLink>
                             </div>
+							
+							</h:form>
+						<p>&#160;</p>
+						<p>&#160;</p>
+						<p>&#160;</p>
+						<p>&#160;</p>
+						<p>&#160;</p>
+						<p>&#160;</p>
 			</div>
 		</div>
 	</div>
 
 
 	<div id="leftcol">
-        <ui:fragment id="bigLoginBoxFragment" rendered="#{empty UserBean.userid}">
-        <h3 class="leftcol">Log into the Testbed</h3>
-        <div class="innertube">
-          <p class="center">
-             <div id="bigLoginBox">
-               <h:outputLink value="#{facesContext.externalContext.requestContextPath}/login-redirect.jsp">Click here to log into the Testbed.</h:outputLink>
-             </div>
-         </p>
-        </div>
-        </ui:fragment>
+        
         
         <h3 class="leftcol">The Testbed and You</h3>
         <div class="innertube">
