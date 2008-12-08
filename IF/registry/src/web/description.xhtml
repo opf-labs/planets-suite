@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+
+  <ui:composition template="/WEB-INF/planets/page-template.xhtml">
+    <ui:param name="pagetitle" value="Edit Service Description"/>
+    <ui:param name="extraCSS" value="css/registry.css" />
+    
+    <div id="trContent">
+    <h:form>
+    
+    <h2><h:outputText value="Check &amp; Edit the #{EndpointBean.currentEndpoint.name} Service Description"/></h2>
+    
+   </h:form>
+    </div>
+    
+  </ui:composition>
+</body>
+</html>

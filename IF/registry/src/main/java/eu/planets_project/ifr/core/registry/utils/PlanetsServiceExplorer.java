@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import eu.planets_project.ifr.core.registry.gui.RegistryBean;
+import eu.planets_project.ifr.core.registry.gui.old.RegistryBeanOld;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
@@ -37,7 +37,6 @@ import eu.planets_project.services.view.CreateView;
 /**
  * 
  * @author <a href="mailto:andrew.jackson@bl.uk">Andy Jackson</a>
- * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  *
  */
 @SuppressWarnings("deprecation")

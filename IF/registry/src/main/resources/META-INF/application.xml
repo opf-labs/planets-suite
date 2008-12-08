@@ -7,7 +7,7 @@
     <module>
         <web>
             <web-uri>pserv-if-registry.war</web-uri>
-            <context-root>registry</context-root>
+            <context-root>/registry</context-root>
         </web>
     </module>
     <module>

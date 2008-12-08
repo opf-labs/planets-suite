@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+
+  <ui:composition template="/WEB-INF/planets/page-template.xhtml">
+    <ui:param name="pagetitle" value="Service Registry"/>
+    <ui:param name="extraCSS" value="css/registry.css" />
+    
+    <div id="content">
+    <h:form>
+
+      <c:choose>
+      	<c:when test="#{RegistryBean.registeredCount > 0}">
+	 	    <rich:dataTable id="serviceResults" rows="0" width="100%"
+	 	    value="#{RegistryBean.services}" var="info" styleClass="endpointTable">
+	  	      <rich:column sortBy="#{info.description.name}" sortOrder="ASCENDING"
+	  	      	 styleClass="isNotCurrent">
+		  	    <f:facet name="header">Name</f:facet>
+  	            <h:outputText value="#{info.description.name}" styleClass="endpointItemTitle" />
+	  	      </rich:column>
+	  	      <rich:column sortBy="#{info.category}" sortOrder="ASCENDING">
+		  	    <f:facet name="header">Category</f:facet>
+  	            <h:outputText value="#{info.category}"/>
+	  	      </rich:column>
+	  	      <rich:column styleClass="isNotCurrent" width="35%">
+		  	    <f:facet name="header">Description</f:facet>
+  	            <h:outputText value="#{info.description.description}"/>
+	  	      </rich:column>
+	  	      <rich:column sortBy="#{info.description.endpoint}" sortOrder="ASCENDING"
+	  	      	 styleClass="isNotCurrent">
+		  	    <f:facet name="header">Endpoint</f:facet>
+  	            <h:outputText value="#{info.description.endpoint}"/>
+	  	      </rich:column>
+	  	  </rich:dataTable>
+      	</c:when>
+      	<c:when test="#{RegistryBean.canRegisterServices}">
+      	  <h3>Empty Service Registry</h3>
+      	  <p>There are currently no services registered with this Planets Service Registry.</p>
+      	  <p>Hopefully this is a new installation and you're here to register some services. If that's the
+      	  case then visit the <h:commandLink value="endpoint browser" action="gotoEndpoints" />.
+      	   This will help you find and register Planets services deployed on this server.</p>
+      	   <p>If you want to register services running on other servers then you should use 
+      	   the <h:commandLink value=" manual registration" action="gotoManual" /> page.</p>
+      	  <p>If you've read down to here then either:</p>
+      	  <p>
+      	    <ul>
+      	      <li>Something is currently broken.</li>
+      	      <li>You or someone has cleared this Service Registry.</li>
+      	    </ul>
+      	  </p>
+      	  <p>You should check the server logs for errors or rebuild your registry from scratch.</p>
+      	  <p>We plan to provide some extra help here in the next release of the IF.</p>
+      	</c:when>
+      	<c:otherwise>
+      	  <h3>Empty Service Registry</h3>
+      	  <p>There are currently no services registered with this Planets Service Registry.</p>
+      	  <p>If this is a recent installation of the Planets Interoperability Framework 
+      	  then the administrator probably needs to register some services.</p>
+      	  <p>If you've previously successfully used the Service Registry on this server then either:
+      	    <ul>
+      	      <li>Something is currently broken.</li>
+      	      <li>Someone has cleared this Service Registry.</li>
+      	    </ul>
+      	    In either case you should contact the administrator for this IF instance.
+      	  </p>
+      	</c:otherwise>
+      </c:choose>
+   
+    </h:form>
+    </div>
+    
+  </ui:composition>
+</body>
+</html>

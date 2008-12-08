@@ -1,0 +1,93 @@
+@CHARSET "ISO-8859-1";
+#pl-wrapper {
+  width: 70%;
+  margin: 0 auto;
+  padding: 0.5em 1em;
+  background: transparent url('/images/white-50.png');
+  border: 1px dotted #ddd;
+  border-top: none;
+  font-size: 12px;
+}
+
+#pl-header {
+  height: auto;
+}
+
+#pl-header h1 {
+  padding-top: 0.2em !important;
+  margin-bottom: 1em;
+}
+
+.statusSearching {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background: transparent url('/techreg/images/loader-tr-sml.gif') no-repeat;
+}
+
+.statusDone {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-image: none;
+}
+
+.endpointTable {
+/*  border-collapse: collapse;
+  border: 1px solid #333;*/
+  margin: 0 auto;
+}
+
+.endpointTable th {
+/*  border: 1px solid #333;
+  text-align: center;
+  background: #faf8cc;
+  padding: 0.2em 0.5em;*/
+}
+
+.endpointTable td {
+/*  border: 1px solid #333;
+  border-top: none;
+  border-bottom: none;
+  background: #f8f8f8;
+  padding: 0.2em 0.5em;*/
+}
+
+.endpointTable h3 {
+  margin: 0;
+}
+
+.isCurrent {
+  background-color: #FFF8C6;
+}
+
+.isNotCurrent {
+}
+
+.endpointItemTitle {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.endpointGridCol1 {
+  vertical-align: top;
+  width: 40%;
+}
+
+.endpointGridCol2 {
+  vertical-align: top;
+  width: 60%;
+}
+
+.endpointListItem {
+  display: block;
+}
+
+.endpointListItem:hover {
+  text-decoration: none;
+  background-color: #f0fff0;
+}
+
+#endpointDetailPanel {
+  height: 500px;
+}
