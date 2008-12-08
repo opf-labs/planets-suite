@@ -10,12 +10,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 public class Response {
 
     public String message;
+    public boolean success = false;
 
     /**
      * @param message The response message
      */
-    public Response(final String message) {
+    public Response(final String message, boolean success) {
         this.message = message;
+        this.success = success;
     }
 
     /**
@@ -24,4 +26,12 @@ public class Response {
     @SuppressWarnings("unused")
     private Response() {}
 
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return message;
+    }
 }

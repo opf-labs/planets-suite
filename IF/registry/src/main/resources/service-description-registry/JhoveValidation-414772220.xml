@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<ns2:ServiceDescription xmlns:ns3="http://purl.org/dc/terms/"
-	xmlns:ns2="http://www.planets-project.eu/services">
-	<ns3:title>JhoveValidation</ns3:title>
-	<ns2:type>eu.planets_project.ifr.core.services.validation.jhove.impl.JhoveValidation</ns2:type>
-	<ns3:description>Validation service using JHOVE.</ns3:description>
-	<ns3:identifier>-414772220</ns3:identifier>
-</ns2:ServiceDescription>

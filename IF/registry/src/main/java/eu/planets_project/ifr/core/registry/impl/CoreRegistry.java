@@ -14,8 +14,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @see PersistentRegistry
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public final class CoreRegistry implements
-        Registry {
+public final class CoreRegistry implements Registry {
 
     private List<ServiceDescription> descriptions = null;
 
@@ -37,7 +36,7 @@ public final class CoreRegistry implements
      */
     public Response clear() {
         descriptions.clear();
-        return new Response("Cleared in-memory registry.");
+        return new Response("Cleared in-memory registry.", true);
     }
 
     /**
@@ -52,12 +51,19 @@ public final class CoreRegistry implements
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#register(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public Response register(
-            final ServiceDescription serviceDescription) {
+    public Response register(final ServiceDescription serviceDescription) {
+        if (serviceDescription.getEndpoint() == null) {
+            return new Response(
+                    String
+                            .format(
+                                    "Could not add service description %s, as it has no endpoint",
+                                    serviceDescription), false);
+        }
         if (!descriptions.contains(serviceDescription)) {
             descriptions.add(serviceDescription);
+            return new Response("Registered: " + serviceDescription, true);
         }
-        return new Response("Added: " + serviceDescription);
+        return new Response("Already registered: " + serviceDescription, false);
     }
 
 }

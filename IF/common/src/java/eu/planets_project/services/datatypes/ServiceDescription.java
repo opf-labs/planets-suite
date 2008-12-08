@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,7 +63,6 @@ import javax.xml.transform.stream.StreamResult;
  * <p/>
  * For usage examples, see the tests in {@link ServiceDescriptionTest}.
  * @see ServiceDescriptionTest
- * @see AlwaysSaysValidService
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>, <a
  *         href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  */
@@ -92,6 +92,12 @@ public final class ServiceDescription {
      */
     @XmlElement(namespace = SERVICES_NS)
     String type;
+
+    /**
+     * The endpoint of the service.
+     */
+    @XmlElement(namespace = SERVICES_NS)
+    URL endpoint;
 
     /**
      * Declared Parameters: [name, type, value (default)]*n.
@@ -140,7 +146,7 @@ public final class ServiceDescription {
      */
     @XmlElement(name = "publisher", namespace = TERMS_NS)
     String serviceProvider;
-    
+
     // FIXME Add service status....???
 
     /**
@@ -192,6 +198,7 @@ public final class ServiceDescription {
     private ServiceDescription(final Builder builder) {
         name = builder.name;
         type = builder.type;
+        endpoint = builder.endpoint;
         paths = builder.paths;
         properties = builder.properties;
         inputFormats = builder.inputFormats;
@@ -228,6 +235,7 @@ public final class ServiceDescription {
         private List<Property> properties = new ArrayList<Property>();
         private List<URI> inputFormats = new ArrayList<URI>();
         private URI logo = null;
+        private URL endpoint = null;
         private URI furtherInfo = null;
         private String instructions = null;
         private String serviceProvider = null;
@@ -277,6 +285,7 @@ public final class ServiceDescription {
         private void initialize(final ServiceDescription serviceDescription) {
             name = serviceDescription.name;
             type = serviceDescription.type;
+            endpoint = serviceDescription.endpoint;
             paths = serviceDescription.paths;
             properties = serviceDescription.properties;
             inputFormats = serviceDescription.inputFormats;
@@ -308,6 +317,15 @@ public final class ServiceDescription {
          */
         public Builder type(final String type) {
             this.type = type;
+            return this;
+        }
+
+        /**
+         * @param endpoint The endpoint for this service
+         * @return The builder, for cascaded calls
+         */
+        public Builder endpoint(final URL endpoint) {
+            this.endpoint = endpoint;
             return this;
         }
 
@@ -466,6 +484,14 @@ public final class ServiceDescription {
     @Queryable
     public String getType() {
         return type;
+    }
+
+    /**
+     * @return the endpoint
+     */
+    @Queryable
+    public URL getEndpoint() {
+        return endpoint;
     }
 
     /**

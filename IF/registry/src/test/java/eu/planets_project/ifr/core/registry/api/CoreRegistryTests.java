@@ -1,6 +1,8 @@
 package eu.planets_project.ifr.core.registry.api;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import org.junit.After;
@@ -28,11 +30,17 @@ public class CoreRegistryTests {
     static final String TYPE1 = "type1";
     static final String TYPE2 = "type2";
     static final String NAME = "name";
+    private static URL endpoint;
     static Registry registry;
 
     @BeforeClass
     public static void registryCreation() {
         registry = CoreRegistry.getInstance();
+        try {
+            endpoint = new URL("http://some.dummy.endpoint");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     ServiceDescription description1 = null;
@@ -43,10 +51,16 @@ public class CoreRegistryTests {
         registry.clear();
         description1 = new ServiceDescription.Builder(NAME, TYPE1).description(
                 DESCRIPTION).inputFormats(URI.create(PRONOM1),
-                URI.create(PRONOM2)).build();
+                URI.create(PRONOM2)).endpoint(endpoint).build();
         description2 = new ServiceDescription.Builder(NAME, TYPE2)
-                .inputFormats(URI.create(PRONOM1), URI.create(PRONOM2)).build();
-        registry.register(description1);
+                .inputFormats(URI.create(PRONOM1), URI.create(PRONOM2))
+                .endpoint(endpoint).build();
+        Response register = registry.register(description1);
+        Assert.assertTrue(register.success);
+        /* But we can't register descriptions without an endpoint: */
+        Response fail = registry.register(new ServiceDescription.Builder(NAME,
+                TYPE1).build());
+        Assert.assertFalse(fail.success);
         registry.register(description2);
     }
 
@@ -122,6 +136,15 @@ public class CoreRegistryTests {
          * only corresponding to the first description:
          */
         Assert.assertEquals(1, services.size());
+        compare(services);
+    }
+
+    @Test
+    public void findByEndpoint() {
+        List<ServiceDescription> services = registry
+                .query(new ServiceDescription.Builder(null, null).endpoint(
+                        endpoint).build());
+        Assert.assertEquals(2, services.size());
         compare(services);
     }
 
