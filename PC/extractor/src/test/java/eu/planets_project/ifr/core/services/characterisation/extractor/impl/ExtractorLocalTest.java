@@ -114,7 +114,7 @@ public class ExtractorLocalTest {
     		System.out.println("Received list of FileFormatProperty objects for file: " + testFile.getName());
         	
         	for (FileFormatProperty fileFormatProperty : properties) {
-        		assertTrue("No metrics!",fileFormatProperty.getMetrics().getList().size()>0);
+        		assertTrue("No metrics!",fileFormatProperty.getMetrics().size()>0);
     			System.out.println(fileFormatProperty.toString());
     		}
         	System.out.println("--------------------------------------------------------------------");
@@ -136,12 +136,14 @@ public class ExtractorLocalTest {
     	
     	DigitalObject digitalObject = createDigitalObjectByValue(new URL("http://somePermamentURL"), binary);
     	
+    	
     	/* find XCEL, no parameters*/
     	System.out.println("test1: find XCEL, no parameters:");
     	System.out.println("--------------------------------");
         CharacteriseResult characteriseResult = extractor.characterise(digitalObject, null, null);
-        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), test1Out);
-        byte[] resultData = characteriseResult.getDigitalObject().getContent().getValue();
+        outputXcdl = FileUtils.writeInputStreamToTmpFile(characteriseResult.getDigitalObject().getContent().read(), test1Out, "");
+        	
+        byte[] resultData = FileUtils.writeInputStreamToBinary(characteriseResult.getDigitalObject().getContent().read());
         int fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
         System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
@@ -154,8 +156,8 @@ public class ExtractorLocalTest {
         System.out.println("test2: give XCEL, no parameters:");
         System.out.println("--------------------------------");
         characteriseResult = extractor.characterise(digitalObject, xcelString, null);
-        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), test2Out);
-        resultData = characteriseResult.getDigitalObject().getContent().getValue();
+        outputXcdl = FileUtils.writeInputStreamToTmpFile(characteriseResult.getDigitalObject().getContent().read(), test2Out, "");
+        resultData = FileUtils.writeInputStreamToBinary(characteriseResult.getDigitalObject().getContent().read());
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
         System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
@@ -170,8 +172,8 @@ public class ExtractorLocalTest {
         Parameters parameters = new Parameters();
         parameters.add("enableRawDataInXCDL", "-r");
         characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
-        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), test3Out);
-        resultData = characteriseResult.getDigitalObject().getContent().getValue();
+        outputXcdl = FileUtils.writeInputStreamToTmpFile(characteriseResult.getDigitalObject().getContent().read(), test3Out, "");
+        resultData = FileUtils.writeInputStreamToBinary(characteriseResult.getDigitalObject().getContent().read());
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
         System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
@@ -188,8 +190,8 @@ public class ExtractorLocalTest {
         parameters.add("disableNormDataInXCDL", "-n");
         parameters.add("enableRawDataInXCDL", "-r");
         characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
-        outputXcdl = ByteArrayHelper.writeToDestFile(characteriseResult.getDigitalObject().getContent().getValue(), test4Out);
-        resultData = characteriseResult.getDigitalObject().getContent().getValue();
+        outputXcdl = FileUtils.writeInputStreamToTmpFile(characteriseResult.getDigitalObject().getContent().read(), test4Out, "");
+        resultData = FileUtils.writeInputStreamToBinary(characteriseResult.getDigitalObject().getContent().read());
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
         System.out.println("Find the XCDL here: " + outputXcdl.getAbsolutePath());
