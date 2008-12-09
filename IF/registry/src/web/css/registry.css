@@ -91,3 +91,45 @@
 #endpointDetailPanel {
   height: 500px;
 }
+
+legend  {
+  color:#006699;
+  font-weight:bold;
+  padding:0.2em;
+}
+
+form.serviceform label {
+  display: inline-block;
+  vertical-align: top;
+}
+
+form.serviceform ol {
+  margin: 0;
+  padding: 0;
+}
+
+form.serviceform li {
+  list-style: none;
+  padding: 0.2em;
+  margin: 0;
+}
+
+fieldset input {
+   width: 40em;
+}
+
+fieldset textarea {
+  width:40em;
+}
+
+input:focus {
+  background-color : #efa;
+  }
+form.serviceform fieldset label {
+  font-weight:bold;
+  width: 10em; /* Width of labels */
+}
+
+.fieldname {
+  font-weight:bold;
+}
