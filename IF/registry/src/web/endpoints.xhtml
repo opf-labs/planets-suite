@@ -11,15 +11,19 @@
 <body>
 
   <ui:composition template="/WEB-INF/planets/page-template.xhtml">
-    <ui:param name="pagetitle" value="Register Endpoints"/>
+    <ui:param name="pagetitle" value="Planets IF Service Registry"/>
     <ui:param name="extraCSS" value="css/registry.css" />
     
     <div id="content">
     <h:form>
 		<rich:toolBar height="34" itemSeparator="line">
 			<rich:toolBarGroup>
-				<h:commandLink action="gotoServices">
-					<h:graphicImage id="toservices" value="/images/go-jump.png" /> Services</h:commandLink>
+				<h:selectOneMenu id="categoryfilter"
+					value="#{EndpointBean.selectedCategory}">
+					<f:selectItems value="#{EndpointBean.serviceCategories}" />
+					<a4j:support event="onchange" reRender="endpointResults"
+						requestDelay="200" />
+				</h:selectOneMenu>
 			</rich:toolBarGroup>
 			<rich:toolBarGroup location="right">
 				<h:inputText id="endpointSearchInput" value="#{EndpointBean.searchStr}">
@@ -45,57 +49,86 @@
 		  	      <h:outputText value="#{endpoint.category}"/>
 				</h:commandLink>
 	  	      </rich:column>
+	  	      <!--
+	  	        TODO - centre the graphic alignment in css
+	  	      -->
+	  	      <rich:column sortBy="#{endpoint.registered}"  sortOrder="ASCENDING"
+	  	      	 styleClass="#{ ( EndpointBean.currentEndpoint.location == endpoint.location ) ? 'isCurrent' : 'isNotCurrent'}">
+		  	    <f:facet name="header">Registered</f:facet>
+		  	    <h:graphicImage value="#{endpoint.regGraphic}"/>
+		  	  </rich:column>
 	  	  </rich:dataTable>
 		  <rich:tabPanel switchType="ajax" id="endpointDetailPanel">
 
 		    <rich:tab label="Info">
 		      <c:choose>
 		        <c:when test="#{EndpointBean.currentEndpoint == null}">
-				  <p>There are<h:outputText value=" #{EndpointBean.endpointCount}" /> endpoints listed in the table, please choose one.</p>
+			  <h3>Service Registry Information</h3>
+			  <div>
+			    <p>
+                  <h:outputText value="There are #{EndpointBean.endpointCount} Planets service endpoints deployed on this IF instance."/>
+			    </p>
+			    <p>
+			      <h:outputText value="#{EndpointBean.registeredEndpointCount} of these are recorded in this service registry."/>
+			    </p>
+			    <p>
+			      <h:outputText value="There are #{RegistryBean.registeredCount} Planets services recorded in this Service Registry."/><br/>
+			    </p>
+			    <p>Please choose an endpoint.</p>
+			  </div>
 				</c:when>
 			    <c:otherwise>
-			      <h3>Endpoint Information</h3>
+			      <h3><h:outputText value="#{EndpointBean.currentEndpoint.name} Service Endpoint Information"/></h3>
                   <h:outputText value="WSDL: #{EndpointBean.currentEndpoint.location}"/><br/>
                   <h:outputText value="Status: #{EndpointBean.currentEndpoint.status}" />
 				</c:otherwise>
 		      </c:choose>  
         	</rich:tab>
 
-			<rich:tab label="Description" disabled="#{EndpointBean.currentEndpoint == null or ! EndpointBean.currentEndpoint.described} ">
-			  <c:choose>
-			    <c:when test="#{EndpointBean.currentEndpoint.described}">
-			      <h3><h:outputText value="#{EndpointBean.currentDescription.name} #{EndpointBean.currentDescription.version}"/></h3>
-			      <h:outputText value="#{EndpointBean.currentDescription.description}"/><br/>
-			      <h:outputText value="author->#{EndpointBean.currentDescription.author}"/><br/>
-			      <h:outputText value="type->#{EndpointBean.currentDescription.type}"/><br/>
-			      <h:outputText value="author->#{EndpointBean.currentDescription.author}"/><br/>
-			      <h:outputText value="pub->#{EndpointBean.currentDescription.serviceProvider}"/><br/>
-			      <c:if test="#{EndpointBean.currentDescription.inputFormats != null }">
-	                <ul>
-		            <c:forEach var="fmt" items="#{EndpointBean.currentDescription.inputFormats}">
-		              <li>${fmt}</li>
-		            </c:forEach>
-		            </ul>
-			      </c:if>
-			      <c:if test="#{EndpointBean.currentDescription.paths != null}">
-			        <h:outputText value="paths"/>
-	                <ul>
-		            <c:forEach var="path" items="#{EndpointBean.currentDescription.paths}">
-		              <li>${path.inputFormat}->${path.outputFormat}</li>
-		            </c:forEach>
-		            </ul>
-			      </c:if>
-			    </c:when>
-			    <c:otherwise>
-			      <h:outputText value="We DON'T have a description"/>
-			    </c:otherwise>
-			  </c:choose>
+			<rich:tab label="Description" disabled="#{(EndpointBean.currentEndpoint == null)}">
+			  <h3><h:outputText value="#{DescriptionBean.serviceDescription.name} #{DescriptionBean.serviceDescription.version}"/></h3>
+			  <span class="fieldname"><h:outputText value="Type"/></span><br/>
+			  <h:outputText value="#{DescriptionBean.serviceDescription.type}"/><br/>
+			  <span class="fieldname"><h:outputText value="Author"/></span><br/>
+			  <h:outputText value="#{DescriptionBean.serviceDescription.author}"/><br/>
+			  <span class="fieldname"><h:outputText value="Provider"/></span><br/>
+			  <h:outputText value="#{DescriptionBean.serviceDescription.serviceProvider}"/><br/>
+			  <span class="fieldname"><h:outputText value="Description"/></span><br/>
+			  <h:outputText value="#{DescriptionBean.serviceDescription.description}"/><br/>
         	</rich:tab>
 
-			<rich:tab label="Register" disabled="#{EndpointBean.currentEndpoint == null }">
+			<rich:tab label="Register" disabled="#{EndpointBean.currentEndpoint == null}">
 			  <c:choose>
-			    <c:when test="#{EndpointBean.currentEndpoint.described}">
-                  <h3><h:outputText value="Automatically Register this Service"/></h3>
+			    <c:when test="#{EndpointBean.justRegistered}">
+                  <h3><h:outputText value="You Have Registered #{EndpointBean.currentEndpoint.name}"/></h3>
+                  <p>
+                    <h:outputText value="You have successfully registered the #{EndpointBean.currentEndpoint.name} #{EndpointBean.currentEndpoint.category} Service."/>
+                  </p>
+                  <p>
+                    <h:outputText value="This service is now registered with this Planets Service Registry."/>
+                  </p>
+			      <p>
+			        <h:outputText value="There are #{RegistryBean.registeredCount} Planets services recorded in this Service Registry."/><br/>
+			      </p>
+			    </c:when>
+			    <c:when test="#{! RegistryBean.canRegisterServices}">
+                  <h3><h:outputText value="You are not Authorised to Register Services"/></h3>
+                  <div>
+                    <p>Your user account lacks the privileges required to register services. You
+                    should contact the IF Administrator and request that they register this service for you.</p>
+                    <p>If you believe that this is an oversight,
+                    or that you have previously been able to register services then contact the IF Administrator.</p>
+                  </div>
+			    </c:when>
+			    <c:when test="#{EndpointBean.currentEndpoint.registered}">
+                  <h3><h:outputText value="#{EndpointBean.currentEndpoint.name} #{EndpointBean.currentEndpoint.category} Service Already Registered"/></h3>
+                  <div>
+                    <p>There is already an entry for the<h:outputText value=" #{EndpointBean.currentEndpoint.name} #{EndpointBean.currentEndpoint.category} "/>service in the Service Registry.
+                    It is not advisable to add multiple registrations for the same service.</p>
+                  </div>
+			    </c:when>
+			    <c:when test="#{! EndpointBean.currentEndpoint.depracated}">
+                  <h3><h:outputText value="Automatically Register the #{EndpointBean.currentEndpoint.name} #{EndpointBean.currentEndpoint.category} Service"/></h3>
                   <div>
                     <p>
                       This service implements the new Planets<h:outputText value=" #{EndpointBean.currentEndpoint.category} "/>interface.
@@ -106,14 +139,14 @@
                       <ul>
                         <li>Edit the service description for the
 				          <h:commandLink action="#{EndpointBean.editADescription}">
-		  	                <h:outputText value="#{EndpointBean.currentEndpoint.name}" />
-		  	                <h:outputText value=" #{endpoint.category} service"/>
+		  	                <h:outputText value=" #{EndpointBean.currentEndpoint.name}" />
+		  	                <h:outputText value=" #{EndpointBean.currentEndpoint.category} service"/>
 				          </h:commandLink> and register it.
 				        </li>
                         <li>Register the
-				          <h:commandLink action="#{EndpointBean.registerService}">
-		  	                <h:outputText value="#{EndpointBean.currentEndpoint.name}" />
-		  	                <h:outputText value=" #{endpoint.category} service"/>
+				          <h:commandLink action="#{RegistryBean.registerAutomatically}">
+		  	                <h:outputText value=" #{EndpointBean.currentEndpoint.name}" />
+		  	                <h:outputText value=" #{EndpointBean.currentEndpoint.category} service"/>
 				          </h:commandLink> automatically.
 				        </li>
                       </ul>
@@ -121,24 +154,45 @@
                   </div>
 			    </c:when>
 			    <c:otherwise>
-			      <h3><h:outputText value="Manually Register this Service"/></h3>
+			      <h3><h:outputText value="Manually Register the #{EndpointBean.currentEndpoint.name} #{EndpointBean.currentEndpoint.category} Service"/></h3>
                   <div>
                     <p>This service implements the deprecated Planets
                       <h:outputText value=" #{EndpointBean.currentEndpoint.category} "/>interface.
                       This unfortunately means that the service doesn't provide enough information for the 
                       Service Registry to automatically register it.
                     </p>
-                    <p>We can help a little, follow this link to create a description for this service and
-                    register it.
+                    <p>We can help a little, 
+                    <h:commandLink action="#{EndpointBean.editADescription}">
+                      <h:outputText value=" follow this link "/>
+				    </h:commandLink> and register it.
+		  	        <h:outputText value=" to create a description for the #{EndpointBean.currentEndpoint.name}" />
+		  	         <h:outputText value=" #{EndpointBean.currentEndpoint.category} service."/>
                     </p>
                     <p>The Planets services team are currently working to move all of the IF services to the 
                     new interfaces. Going forward the old interfaces types won't be supported.  In the meantime
-                    thankyou for your patience as we work to improve things.
+                    thankyou for your patience as we work to improve the Planets Interoperability Framework.
                     </p>
                   </div>
 			    </c:otherwise>
 			  </c:choose>
             </rich:tab>
+		    <rich:tab label="Summary">
+			  <h3>Service Registry Information</h3>
+			  <div>
+			    <p>
+                  <h:outputText value="There are #{EndpointBean.endpointCount} Planets service endpoints deployed on this IF instance."/>
+			    </p>
+			    <p>
+			      <h:outputText value="#{EndpointBean.registeredEndpointCount} of these are registered."/>
+			    </p>
+			    <p>
+			      <h:outputText value="There are #{RegistryBean.registeredCount} Planets services recorded in this Service Registry."/><br/>
+			    </p>
+			    <p>
+			      <h:outputText value="There are #{EndpointBean.unregisteredEndpointCount} Planets service endpoints deployed on this IF instance that are not recorded in this Service Registry."/><br/>
+			    </p>
+			  </div>
+        	</rich:tab>
 
 		 </rich:tabPanel>
   	  </h:panelGrid>

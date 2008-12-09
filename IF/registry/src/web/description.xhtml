@@ -5,7 +5,9 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
 <body>
 
   <ui:composition template="/WEB-INF/planets/page-template.xhtml">
@@ -13,10 +15,61 @@
     <ui:param name="extraCSS" value="css/registry.css" />
     
     <div id="trContent">
-    <h:form>
-    
-    <h2><h:outputText value="Check &amp; Edit the #{EndpointBean.currentEndpoint.name} Service Description"/></h2>
-    
+    <h:form styleClass="serviceform">
+		<rich:toolBar height="34" itemSeparator="line">
+            <rich:toolBarGroup>
+              <h:commandLink action="gotoEndpoints"><h:graphicImage id="edit" value="/images/go-first.png" /> Back</h:commandLink>
+            </rich:toolBarGroup>
+			<rich:toolBarGroup location="center">
+				<h:commandLink action="gotoEndpoints">
+					<h:graphicImage id="imgRegister" value="/images/go-next.png" />
+					<h:outputText value=" Add Input Formats"/>
+				</h:commandLink>
+			</rich:toolBarGroup>
+			<rich:toolBarGroup>
+				<h:commandLink action="#{RegistryBean.registerManually}">
+					<h:graphicImage id="imgForward" value="/images/applications-system.png" />
+					<h:outputText value=" Register"/>
+				</h:commandLink>
+			</rich:toolBarGroup>
+		</rich:toolBar>
+	    <div>
+	      <fieldset>
+	        <legend>Service Description Details</legend>
+	        <ul>
+	          <li>
+	            <h:outputLabel for="name" value="Name" />
+	            <h:inputText id="name" required="true" value="#{DescriptionBean.name}"/>
+	          </li>
+	          <li>
+	            <h:outputLabel for="endpoint" value="Endpoint" />
+	            <h:inputText disabled="true" id="endpoint" required="true" value="#{DescriptionBean.serviceDescription.endpoint}"/>
+	          </li>
+	          <li>
+	            <h:outputLabel for="type" value="Type" />
+	            <h:inputText id="type" disabled="true" required="true" value="#{DescriptionBean.serviceDescription.type}"/>
+	          </li>
+	          <li>
+	            <label for="author">
+	              <h:outputText value="Author" />
+	            </label>
+	            <h:inputText id="author" value="#{DescriptionBean.author}"/>
+	          </li>
+	          <li>
+	            <label for="provider">
+	              <h:outputText value="Provider" />
+	            </label>
+	            <h:inputText id="provider" value="#{DescriptionBean.serviceProvider}"/>
+	          </li>
+	          <li>
+	            <label for="description">
+	              <h:outputText value="Description" />
+	            </label>
+	            <h:inputTextarea id="description" value="#{DescriptionBean.description}" rows="4" cols="50" />
+	          </li>
+	        </ul>
+	      </fieldset>
+	    </div>
    </h:form>
     </div>
     
