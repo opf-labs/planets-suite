@@ -34,8 +34,8 @@ public class RegistryBackingBean {
 	 */
 	public RegistryBackingBean() {
 		// this clear is useful for dev purposes, we don't really want to clear the registry
-		Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
-		registry.clear();
+		//Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+		//registry.clear();
 	}
 	/**
 	 * 
