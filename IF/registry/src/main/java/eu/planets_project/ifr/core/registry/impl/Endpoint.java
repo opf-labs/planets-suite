@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.utils.DiscoveryUtils;
 import eu.planets_project.ifr.core.registry.utils.PlanetsServiceExplorer;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -17,15 +18,20 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class Endpoint {
 	private static Log log = LogFactory.getLog(Endpoint.class);
+	
+	// This is a bodge to work around the
+	private static final String notRegGraphic = "/images/notreg.gif"; 
+	private static final String isRegGraphic = "/images/reg.gif"; 
 	// private
 	// properties
 	private URL location = null;
 	private String name = "";
 	private String category = "";
-	private String Type = "";
+	private String type = "";
 	private String status = "Not tested";
-	private boolean described = true;
-
+	private boolean depracated = false;
+	private boolean registered = false;
+	private String regGraphic = notRegGraphic;
 	/**
 	 * We don't want Endpoints without URLs so disable no arg 
 	 */
@@ -45,7 +51,7 @@ public class Endpoint {
 			this.name = name.substring(this.name.lastIndexOf('/') + 1);
 		}
 		if (null != pse.getServiceClass()) {
-			this.Type = pse.getServiceClass().getCanonicalName();
+			this.type = pse.getServiceClass().getCanonicalName();
 			if (pse.getServiceClass().getCanonicalName().indexOf('.') >= 0) {
 				this.setCategory(pse.getServiceClass().getCanonicalName().substring(pse.getServiceClass().getCanonicalName().lastIndexOf('.') + 1));
 			}
@@ -57,9 +63,24 @@ public class Endpoint {
 				else this.status = "Failed";
 			} catch (RuntimeException e) {
 				this.status = "Unknown";
-				this.described = false;
+				this.depracated = true;
 			}
 		}
+	}
+	
+	/**
+	 * @param desc 
+	 * 
+	 */
+	public Endpoint(ServiceDescription desc) {
+		this.location = desc.getEndpoint();
+		this.name = desc.getName();
+		this.setCategory(desc.getType().substring(desc.getType().lastIndexOf('.') + 1));
+		this.type = desc.getType();
+		this.status = "OK";
+		this.depracated = false;
+		this.registered = true;
+		this.regGraphic = isRegGraphic;
 	}
 	/**
 	 * @param location the location to set
@@ -118,30 +139,60 @@ public class Endpoint {
 	}
 
 	/**
-	 * @param described the described to set
+	 * @param depracated the described to set
 	 */
-	public void setDescribed(boolean described) {
-		this.described = described;
+	public void setDepracated(boolean depracated) {
+		this.depracated = depracated;
 	}
 
 	/**
 	 * @return the described
 	 */
-	public boolean isDescribed() {
-		return described;
+	public boolean isDepracated() {
+		return depracated;
 	}
 
 	/**
 	 * @param type the type to set
 	 */
 	public void setType(String type) {
-		Type = type;
+		this.type = type;
 	}
 
 	/**
 	 * @return the type
 	 */
 	public String getType() {
-		return Type;
+		return this.type;
+	}
+
+	/**
+	 * @param registered the registered to set
+	 */
+	public void setRegistered(boolean registered) {
+		this.registered = registered;
+		if (this.registered) this.regGraphic = Endpoint.isRegGraphic;
+		else this.regGraphic = Endpoint.notRegGraphic;
+	}
+
+	/**
+	 * @return the registered
+	 */
+	public boolean isRegistered() {
+		return registered;
+	}
+
+	/**
+	 * @param regGraphic the regGraphic to set
+	 */
+	public void setRegGraphic(String regGraphic) {
+		this.regGraphic = regGraphic;
+	}
+
+	/**
+	 * @return the regGraphic
+	 */
+	public String getRegGraphic() {
+		return regGraphic;
 	}
 }
