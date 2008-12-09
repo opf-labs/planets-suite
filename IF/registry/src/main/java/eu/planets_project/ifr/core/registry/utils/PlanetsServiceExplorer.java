@@ -73,7 +73,7 @@ public class PlanetsServiceExplorer {
      * @param wsdlLocation The location of the WSDL of the service.
      */
     public PlanetsServiceExplorer(URL wsdlLocation) {
-    	log.info("Creating new instance");
+    	log.debug("Creating new instance");
         this.wsdlLocation = wsdlLocation;
         this.qName = determineServiceQNameFromWsdl();
     }
@@ -126,13 +126,13 @@ public class PlanetsServiceExplorer {
      * @throws SAXException
      */
     private QName determineServiceQNameFromWsdl() {
-    	log.info("determining qname");
+    	log.debug("determining qname");
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
         // Using factory get an instance of document builder
         DocumentBuilder db;
         try {
-        	log.info("new doc builder");
+        	log.debug("new doc builder");
             db = dbf.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
