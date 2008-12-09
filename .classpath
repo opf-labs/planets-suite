@@ -178,5 +178,6 @@
 	<classpathentry kind="lib" path="IF/registry/lib/scout-1.0rc2.jar"/>
 	<classpathentry kind="lib" path="IF/registry/lib/xbean.jar"/>
 	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/el-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
