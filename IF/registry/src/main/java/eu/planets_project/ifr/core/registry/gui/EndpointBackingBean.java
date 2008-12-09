@@ -3,10 +3,13 @@ package eu.planets_project.ifr.core.registry.gui;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,19 +23,21 @@ import eu.planets_project.ifr.core.registry.utils.DiscoveryUtils;
 import eu.planets_project.ifr.core.registry.utils.EndpointUtils;
 import eu.planets_project.ifr.core.registry.utils.PlanetsServiceExplorer;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceDescription.Builder;
 
 /**
  * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 public class EndpointBackingBean {
-	private static Log log = LogFactory.getLog(RegistryBackingBean.class);
+	private static Log log = LogFactory.getLog(EndpointBackingBean.class);
 
+	private Endpoint _justRegistered = null;
 	private List<Endpoint> _endpoints = new ArrayList<Endpoint>();
+	private SelectItemGroup categoryMenu;
+	private List<SelectItem> serviceCategories = new ArrayList<SelectItem>();
     private HtmlDataTable endpointsDataTable;
 	private Endpoint currentEndpoint;
-	private ServiceDescription currentDescription = null;
 	private String searchStr = "";
+	private String selectedCategory = "all";
 	/**
 	 * Default constructor
 	 */
@@ -49,7 +54,8 @@ public class EndpointBackingBean {
 		for (Endpoint endpoint : _endpoints) {
 			if ((endpoint.getCategory().toLowerCase().indexOf(this.searchStr.toLowerCase()) > -1) ||
 					(endpoint.getName().toLowerCase().indexOf(this.searchStr.toLowerCase()) > -1)){
-				endpoints.add(endpoint);
+				if ((this.selectedCategory.equals("all")) | (this.selectedCategory.equals(endpoint.getCategory())))
+					endpoints.add(endpoint);
 			}
 		}
 		return endpoints;
@@ -75,6 +81,28 @@ public class EndpointBackingBean {
 	}
 
 	/**
+	 * @return the number of registered planets service endpoints found
+	 */
+	public int getRegisteredEndpointCount() {
+		int _count = 0;
+		for (Endpoint endpoint : this._endpoints) {
+			if (endpoint.isRegistered()) _count++;
+		}
+		return _count;
+	}
+
+	/**
+	 * @return the number of registered planets service endpoints found
+	 */
+	public int getUnregisteredEndpointCount() {
+		int _count = 0;
+		for (Endpoint endpoint : this._endpoints) {
+			if (! endpoint.isRegistered()) _count++;
+		}
+		return _count;
+	}
+
+	/**
      * @return the current endpoint
      */
     public Endpoint getCurrentEndpoint() {
@@ -86,13 +114,6 @@ public class EndpointBackingBean {
 	 */
 	public void setCurrentEndpoint(Endpoint currentEndpoint) {
 		this.currentEndpoint = currentEndpoint;
-	}
-
-	/**
-	 * @return the currentDesription
-	 */
-	public ServiceDescription getCurrentDescription() {
-		return this.currentDescription;
 	}
 
 	/**
@@ -109,15 +130,92 @@ public class EndpointBackingBean {
 		this.searchStr = searchStr;
 	}
 
+	/**
+	 * @param selectedCategory the selectedCategory to set
+	 */
+	public void setSelectedCategory(String selectedCategory) {
+		this.selectedCategory = selectedCategory;
+	}
+
+	/**
+	 * @return the selectedCategory
+	 */
+	public String getSelectedCategory() {
+		return selectedCategory;
+	}
+
+	/**
+	 * @param serviceCategories the serviceCategories to set
+	 */
+	public void setServiceCategories(List<SelectItem> serviceCategories) {
+		this.serviceCategories = serviceCategories;
+	}
+
+	/**
+	 * @return the serviceCategories
+	 */
+	public List<SelectItem> getServiceCategories() {
+		return serviceCategories;
+	}
+
+	/**
+	 * @param categoryMenu the categoryMenu to set
+	 */
+	public void setCategoryMenu(SelectItemGroup categoryMenu) {
+		this.categoryMenu = categoryMenu;
+	}
+
+	/**
+	 * @return the categoryMenu
+	 */
+	public SelectItemGroup getCategoryMenu() {
+		return categoryMenu;
+	}
+
+	/**
+	 * @return the _justRegistered
+	 */
+	public boolean getJustRegistered() {
+		if ((null != this._justRegistered) && (this.currentEndpoint.equals(this._justRegistered))) {
+			this._justRegistered = null;
+			return true;
+		}
+		return false;
+	}
+
 	/* ----------------- Actions ---------------------- */
 	/**
      * Select the current format from the table.
 	 * @return success status code
      */
     public String selectAnEndpoint() {
+    	// get the ServiceDescription backing bean
+    	log.info("Getting context");
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+    	ELResolver res = ctx.getApplication().getELResolver();
+    	ServiceDescriptionBackingBean descBean = (ServiceDescriptionBackingBean) res.getValue(ctx.getELContext(), null, "DescriptionBean");
+    	// get the selected endpoint
+    	log.info("Getting Row data");
         currentEndpoint = (Endpoint) this.endpointsDataTable.getRowData();
-        if (currentEndpoint.isDescribed()) {
-			this.currentDescription = DiscoveryUtils.getServiceDescription(currentEndpoint.getLocation());
+    	Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    	ServiceDescription example = new ServiceDescription.Builder(null, null).endpoint(currentEndpoint.getLocation()).build();
+    	List<ServiceDescription> _matches = registry.query(example);  
+        // If it's registered then get the description from the registry
+    	if (_matches.size() > 0) {
+        	descBean.setServiceDescription(_matches.get(0));
+        // If it's a new style endpoint then we can get the description and set the bean
+        } else if (! currentEndpoint.isDepracated()) {
+        	log.info("");
+        	// Get the service description and add the endpoint
+        	ServiceDescription servDev = DiscoveryUtils.getServiceDescription(currentEndpoint.getLocation());
+        	servDev = new ServiceDescription.Builder(servDev).endpoint(currentEndpoint.getLocation()).build();
+        	descBean.setServiceDescription(servDev);
+        } else {
+        	// TODO: what happens when there's no service description?
+        	// ANSWER: we make one
+        	ServiceDescription.Builder sb = 
+        		new ServiceDescription.Builder(currentEndpoint.getName(), currentEndpoint.getType());
+        	descBean.setServiceDescription(sb.endpoint(currentEndpoint.getLocation()).build());
         }
         return "success";
     }
@@ -130,24 +228,25 @@ public class EndpointBackingBean {
     }
     
     /**
-     * @return string status for faces
+     * 
      */
-    public String registerService() {
-    	// Get the registry bean
-    	FacesContext ctx = FacesContext.getCurrentInstance();
-    	ELResolver res = ctx.getApplication().getELResolver();
-    	RegistryBackingBean regBean = (RegistryBackingBean) res.getValue(ctx.getELContext(), null, "RegistryBean");
-    	// Build a new Service Description with the endpoint
-    	ServiceDescription desc = 
-    		new ServiceDescription.Builder(currentDescription).endpoint(currentEndpoint.getLocation()).build();
-    	// Now register it
-    	regBean.registerService(desc);
-    	return "gotoServices";
+    public void recordRegistration() {
+    	this.currentEndpoint.setRegistered(true);
+    	this._justRegistered = this.currentEndpoint;
+    	for (Endpoint endpoint : this._endpoints)  {
+    		if(endpoint.getLocation().toString().equals(currentEndpoint.getLocation().toString())) {
+    			endpoint.setRegistered(true);
+    		}
+    	}
     }
 
     /* Private methods */
     
     private void findEndpoints() {
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+    	ELResolver res = ctx.getApplication().getELResolver();
+    	RegistryBackingBean regBean = (RegistryBackingBean) res.getValue(ctx.getELContext(), null, "RegistryBean");
+    	HashMap<String, String> _cats = new HashMap<String, String>();
     	log.info("looking for deployed endpoints");
     	// get the endpoints from ServiceLookup
     	this._endpoints = new ArrayList<Endpoint>();
@@ -159,14 +258,31 @@ public class EndpointBackingBean {
     			PlanetsServiceExplorer pse = new PlanetsServiceExplorer(location.toURL());
     			// we only want the planets services
 				if ((null != pse.getServiceClass()) && (null != pse.getQName())) {
-					this._endpoints.add(new Endpoint(pse));
+					// Check to see if we're already registered
+					Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+					List<ServiceDescription> matches = registry.query(new ServiceDescription.Builder(null, null).endpoint(location.toURL()).build());
+					// Create a new endpoint
+					Endpoint _endpoint;
+					if (matches.size() > 0)
+						_endpoint = new Endpoint(matches.get(0));
+					else
+						_endpoint = new Endpoint(pse);
+						
+					this._endpoints.add(_endpoint);
+					if (! _cats.containsKey(_endpoint.getCategory())) {
+						_cats.put(_endpoint.getCategory(), _endpoint.getCategory());
+					}
 				}
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				log.error("Endpoint " + location.toASCIIString() + " is a malformed URL");
 				e.printStackTrace();
 			}
+			this.serviceCategories.clear();
+			this.serviceCategories.add(new SelectItem("all", "all"));
+			for (String value : _cats.values()) {
+				this.serviceCategories.add(new SelectItem(value, value));
+			}
     	}
     }
-
 }
