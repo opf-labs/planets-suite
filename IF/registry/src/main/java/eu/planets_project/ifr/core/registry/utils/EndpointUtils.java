@@ -144,7 +144,7 @@ public class EndpointUtils {
     }
     
     /**
-     * TODO This is a real bodge at the moment and hard codes localhost:8080 change to properties
+     * FIXME This is a real bodge at the moment and hard codes localhost:8080 change to properties
      * 
      * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
      *
@@ -152,7 +152,7 @@ public class EndpointUtils {
     public static class PlanetsServerConfig {
 
     	/**
-    	 * TODO Correct hard coded localhost reference
+    	 * FIXME Correct hard coded localhost reference
     	 * @return host name of the if server
     	 */
     	public static String getHostname() {
@@ -160,7 +160,7 @@ public class EndpointUtils {
     	}
 
     	/**
-    	 * TODO correct hard coded bodge of port number
+    	 * FIXME correct hard coded bodge of port number
     	 * @return the port number of the if server
     	 */
     	public static int getPort() {
