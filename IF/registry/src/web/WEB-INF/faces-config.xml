@@ -26,8 +26,8 @@
     </managed-bean>
 
     <managed-bean>
-        <managed-bean-name>CategoryBean</managed-bean-name>
-        <managed-bean-class>eu.planets_project.ifr.core.registry.gui.CategoryBackingBean</managed-bean-class>
+        <managed-bean-name>DescriptionBean</managed-bean-name>
+        <managed-bean-class>eu.planets_project.ifr.core.registry.gui.ServiceDescriptionBackingBean</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
@@ -36,11 +36,6 @@
         <navigation-case>
             <from-outcome>gotoList</from-outcome>
             <to-view-id>/list.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>gotoServices</from-outcome>
-            <to-view-id>/services.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
