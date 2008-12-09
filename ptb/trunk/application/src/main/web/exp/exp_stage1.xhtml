@@ -140,9 +140,9 @@
     <li>
         <h:inputText required="false" id="erefFinder" value="#{ExperimentBean.erefFinder}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" />
         <h:commandLink action="#{ExperimentBean.addAnotherExpRefAction}">
-            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/list-add.png" alt="add reference" title="add reference" style="margin-left: 5px; margin-right: 10px;"/>
+            &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/list-add.png" alt="add reference" title="add reference" style="margin-left: 5px; margin-right: 5px;"/>#{res['button.add']}
         </h:commandLink>
-        <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+        <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" style="margin-left: 5px;" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipIdeas']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
         </li>
     </ul>
     <p>
