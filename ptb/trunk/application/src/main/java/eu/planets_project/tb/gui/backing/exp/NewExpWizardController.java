@@ -33,8 +33,10 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.persistency.ExecutionRecordPersistency;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
@@ -664,12 +666,22 @@ public class NewExpWizardController {
             exp.getExperimentExecutable().setWorkflowType(expType);
         } catch( Exception e ) {
             FacesMessage fmsg = new FacesMessage();
-            fmsg.setSummary("There was an error when configuring your experiment.");
+            fmsg.setSummary("There was an error when configuring your experiment. Please check the workflow parameter(s).");
             fmsg.setDetail("ERROR: " + e );
             fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("etype",fmsg);
             result = "failed";
+        }
+        
+        // Warn if experiment will require approval.
+        if( AdminManagerImpl.experimentRequiresApproval(exp) ) {
+            FacesMessage fmsg = new FacesMessage();
+            fmsg.setSummary("Experiments this big require approval by an administrator.");
+            fmsg.setDetail(fmsg.getSummary());
+            fmsg.setSeverity(FacesMessage.SEVERITY_WARN);
+            FacesContext ctx = FacesContext.getCurrentInstance();
+            ctx.addMessage("etype",fmsg);
         }
 
         if( "success".equals(result)) {
@@ -1320,9 +1332,23 @@ public class NewExpWizardController {
                   ! exp.getExperimentExecutable().isExecutionCompleted() ) {
               // Grab all the results:
               DataHandler dh = new DataHandlerImpl();
-              List<ExecutionRecordImpl> recs = exp.getExperimentExecutable().getExecutionRecords();
-              ExecutionRecordPersistency erp = eu.planets_project.tb.impl.persistency.ExecutionRecordPersistencyImpl.getInstance();
-              log.info("Got the recs: "+recs.size());
+              BatchExecutionRecordImpl batch = new BatchExecutionRecordImpl();
+              exp.getExperimentExecutable().getBatchExecutionRecords().add(batch);
+              batch.setStartDate(job.getStartDate());
+              batch.setEndDate(job.getEndDate());
+              if( job.getStatus().equals( TestbedBatchJob.DONE ) ) {
+                  batch.setBatchRunSucceeded(true);
+              } else {
+                  batch.setBatchRunSucceeded(false);
+              }
+              ExecutionRecordPersistency erp = null;
+              /* FIXME Should not be fiddling with this here! 
+              try {
+                  erp = eu.planets_project.tb.impl.persistency.ExecutionRecordPersistencyImpl.getInstance();
+              } catch( Exception e ) {
+                  log.error("Could not find the ExecutionRecordPersistency manager: "+e);
+              }
+              */
               for( String filename : job.getDigitalObjects()) {
                   ExecutionRecordImpl rec = new ExecutionRecordImpl();
                   rec.setDigitalObjectReferenceCopy(filename);
@@ -1333,7 +1359,7 @@ public class NewExpWizardController {
                   }
                   // FIXME Set this in the job somewhere:
                   rec.setDate(Calendar.getInstance());
-                  Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
+                  List<ExecutionStageRecordImpl> stages = rec.getStages();
                   WorkflowResult wrf = job.getWorkflowResult(filename);
                   // FIXME This reflects other problems!
                   if( wrf != null && wrf.getMeasurements() != null ) {
@@ -1346,21 +1372,26 @@ public class NewExpWizardController {
                           stage.setStage(stagename);
                           log.info("Looking for stage: "+stagename);
                           // Now loop over measurement, recording ones taken at this stage.
-                          List<MeasurementImpl> sms = new LinkedList<MeasurementImpl>();
+                          List<MeasurementRecordImpl> sms = stage.getMeasurements();
                           for( MeasurementImpl m : wrf.getMeasurements() ) {
-                              if( m.getStage().equals(stagename)) sms.add(m);
+                              if( m.getStage().equals(stagename)) {
+                                  sms.add( new MeasurementRecordImpl(m.getIdentifier().toString(), m.getValue() ) );
+                                  log.info("Adding measurment of "+m.getIdentifier()+" from stage: "+m.getStage());
+                              } else {
+                                  log.info("No-match for stage: "+m.getStage());
+                              }
                           }
                           stage.setMeasurements(sms);
                           // FIXME The current Workflow Execution system needs Stages so I can get the service records!                      
-                          //                      stage.setServiceRecord(serviceRecord);
+                          //                      stage.setServiceRecord(serviceRecord); 
                           stages.add(stage);
                       }
                   }
-                  rec.setStages(stages);
-                  if( erp != null )
+                  if( erp != null ) {
                       erp.persistExecutionRecordImpl(rec);
-                  recs.add(rec);
-                  log.info("Added record for "+rec.getDigitalObjectSource());
+                  }
+                  batch.getRuns().add(rec);
+                  log.info("Added records ("+batch.getRuns().size()+") for "+rec.getDigitalObjectSource());
               }
               // General State Update:
               if( TestbedBatchJob.DONE.equals(job.getStatus()) ) {
@@ -1374,7 +1405,10 @@ public class NewExpWizardController {
               exp.getExperimentExecutable().setExecutableInvoked(true);
               exp.getExperimentExecutable().setExecutionCompleted(true);
               exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
-              exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);       
+              exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
+              // FIXME This should get a final time out of the execution engine.
+              exp.getExperimentExecutable().setExecutionEndDate(Calendar.getInstance().getTimeInMillis());
+              exp.getExperimentExecution().setEndDate(Calendar.getInstance());
           }
           // Store:
           testbedMan.updateExperiment(exp);

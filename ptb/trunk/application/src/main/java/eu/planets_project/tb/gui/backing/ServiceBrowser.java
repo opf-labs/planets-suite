@@ -16,9 +16,15 @@ import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
-import eu.planets_project.tb.impl.services.util.DiscoveryUtils;
+import eu.planets_project.ifr.core.registry.api.Registry;
+import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
+import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
+
 
 /**
  * TODO Merge in the ServiceTemplates and the IF Service Registry - all endpoints only once, of course.
@@ -220,15 +226,54 @@ public class ServiceBrowser {
     }
     
     /**
-     * FIXME This should to real service look-ups...
-     * @return
+     * @return A list of SelectItems populated with the identify service endpoints.
      */
     public List<SelectItem> getIdentifyServicesSelectList() {
+        return this.createServiceList(Identify.class.getCanonicalName());
+    }
+    
+    /**
+     * @return A list of SelectItems populated with the identify service endpoints.
+     */
+    public List<SelectItem> getMigrateServicesSelectList() {
+        return this.createServiceList(Migrate.class.getCanonicalName());
+    }
+
+    /**
+     * @param type
+     * @return
+     */
+    private List<SelectItem> createServiceList( String type ) {
         List<SelectItem> slist = new ArrayList<SelectItem>();
         
-        slist.add(new SelectItem("http://localhost:8080/pserv-pc-droid/Droid?wsdl", "DROID @ localhost"));
+        //Instantiate a registry:
+        Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+
+        //Get all services
+        //List<ServiceDescription> identifiers = registry.query(null); //If you pass a ServiceDescription with fields filled in it will query against matches.
+        
+        // List Identify services:
+        ServiceDescription sdQuery = new ServiceDescription.Builder(null, type).build();
+        List<ServiceDescription> identifiers = registry.query(sdQuery);
+        for( ServiceDescription sd : identifiers ) {
+            slist.add( this.createServiceSelectItem(sd) );
+        }
+
+        //To register a service
+        //Response = registry.register(ServiceDescription)
         
         return slist;
+        
+    }
+    
+    /**
+     * @param sd
+     * @return
+     */
+    private SelectItem createServiceSelectItem( ServiceDescription sd ) {
+        String serviceName = sd.getName();
+        serviceName += " (@"+sd.getEndpoint().getHost()+")";
+        return new SelectItem( sd.getEndpoint(), serviceName );
     }
     
 }

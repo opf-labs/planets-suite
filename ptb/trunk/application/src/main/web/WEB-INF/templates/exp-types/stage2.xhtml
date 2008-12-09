@@ -18,11 +18,8 @@
                 </f:facet>
 
 
-<fieldset>
-    <legend>#{res['new_exp.legendTypes']}</legend>
-     
-
-<p>
+<h:panelGroup rendered="#{ ! ExperimentBean.approved}">
+  <p>
     <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
         <h:selectOneMenu id="etype" onchange="submit();" required="true"
         value="#{ExperimentBean.etype}"  style="width: 23em;"
@@ -41,12 +38,13 @@
 
    <t:graphicImage value="/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipExperimentType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
              
-</p>
+  </p>
 
   <h:message for="etype" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
 
+  <div class="clear"></div>
 
-<div class="clear"></div>
+</h:panelGroup>
 
 
         <c:if test="#{ExperimentBean.etype == 'identify'}">
@@ -57,8 +55,6 @@
         
         </c:if>
                 
-</fieldset>
-
             </rich:panel>
             
             <rich:panel styleClass="doListPanel">
@@ -85,6 +81,7 @@
 
                 </fieldset>
 
+                <h:panelGroup rendered="#{!ExperimentBean.approved}">
                 <fieldset>
                         <legend>#{res['exp_stage2.addDOs']}</legend>
          
@@ -135,6 +132,7 @@
  -->                        
  
                 </fieldset>
+                </h:panelGroup>
             </rich:panel>
         </h:panelGrid>
 

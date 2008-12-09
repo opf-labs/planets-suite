@@ -37,7 +37,7 @@
             
                 <h:panelGroup rendered="#{ExperimentBean.currentStage >= 4}">
                     <li class="#{ExperimentPhase == 4 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage4"
-                                styleClass="exp_done">
+                                styleClass="#{ExperimentBean.currentStage > 4 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage4']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
@@ -48,7 +48,7 @@
                 
                 <h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
                     <li class="#{ExperimentPhase == 5 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage5"
-                                styleClass="exp_done">
+                                styleClass="#{ExperimentBean.currentStage > 5 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage5']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
@@ -59,7 +59,7 @@
                 
                 <h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
                     <li class="#{ExperimentPhase == 6 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage6"
-                                styleClass="exp_done">
+                                styleClass="#{ExperimentBean.currentStage > 6 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage6']}" />
                     </h:commandLink></li>
                 </h:panelGroup>

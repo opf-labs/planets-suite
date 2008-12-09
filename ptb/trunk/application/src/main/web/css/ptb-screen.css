@@ -826,14 +826,23 @@ width:100%;
 #expHeaderTable input, #expFooterTable input {
   margin: 0px 5px;
 }
+.expDesignerPanel {
+  width: 100%;
+}
 .expDesignerPanel tr {
   vertical-align: top;
 }
 .expDesignerPanel fieldset {
   width: auto;
 }
+.expDesignerPanel tbTable {
+  width: 100%;
+}
 .expDesignColumn {
     width: 66%;
+}
+.expMeasurementPanel {
+  width: 100%;
 }
 .doListColumn {
     width: 33%;
@@ -853,14 +862,56 @@ width:100%;
 }
 .expChooseService {
   width: 70%;
-  background-color: #f8ffff;
-  background-color: #ffffd0;
+  background-color: #f0f8ff;
+  padding: 0 0 1em 0;
+}
+.expStageHeader {
+  background-color: #579EC2;
+  color: white;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 1em;
+  padding: 2px 0;
+  letter-spacing: 1px;
 }
 .expResultBox {
+  padding: 0 0 1em 0;
   margin-bottom: 2em;
   background-color: #ffffd0;
   border: 2px solid #888;
   font-weight: bold;
+}
+.expExecLogPanel {
+  padding: 1;
+}
+.expExecLogPanel div {
+  padding: 0;
+}
+.expExecLogPanel .tbTable {
+  width: 100%;
+  margin: 0;
+}
+.expRunStatusPanel {
+  display: block;
+  position: absolute;
+  right: 0;
+  margin: -10px 17px;
+  z-index: 1000;
+  border: 1px solid #579EC2;
+  background-color: #eef2f8;
+  width: 250px;
+  height: 25px;
+  text-align: center;
+  color: #333;
+}
+.expRunStatusPanel .statusMessage {
+  margin-top: 4px;
+  display: block;
+}
+.expRunStatusPanel .expRunStatusRun {
+  background-image: url(../graphics/spinner.gif);
+  margin: 0 auto;
+  margin-top: 4px;
 }
 .rich-tool-tip{
     background-color: #eef2f8;

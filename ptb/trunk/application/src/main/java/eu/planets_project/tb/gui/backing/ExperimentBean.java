@@ -30,6 +30,24 @@ import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import com.googlecode.charts4j.AxisLabels;
+import com.googlecode.charts4j.AxisLabelsFactory;
+import com.googlecode.charts4j.AxisStyle;
+import com.googlecode.charts4j.AxisTextAlignment;
+import com.googlecode.charts4j.Color;
+import com.googlecode.charts4j.Data;
+import com.googlecode.charts4j.DataUtil;
+import com.googlecode.charts4j.Fills;
+import com.googlecode.charts4j.GCharts;
+import com.googlecode.charts4j.Line;
+import com.googlecode.charts4j.LinearGradientFill;
+import com.googlecode.charts4j.Plots;
+import com.googlecode.charts4j.ScatterPlot;
+import com.googlecode.charts4j.ScatterPlotData;
+import com.googlecode.charts4j.Shape;
+import com.googlecode.charts4j.LineChart;
+
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -48,11 +66,19 @@ import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
+import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
+
+import static com.googlecode.charts4j.Color.WHITE;
+import static com.googlecode.charts4j.UrlUtil.normalize;
 
 
 public class ExperimentBean {
@@ -124,6 +150,7 @@ public class ExperimentBean {
     private List<String[]> fullDtypes = new ArrayList<String[]>();
     
     private ExecutionRecordImpl selectedExecutionRecord = null;
+    private BatchExecutionRecordImpl selectedBatchExecutionRecord = null;
     
     private String ereportTitle;
     private String ereportBody;
@@ -1452,4 +1479,116 @@ public class ExperimentBean {
         this.selectedExecutionRecord = selectedExecutionRecord;
     }
     
+    /**
+     * @return the selectedBatchExecutionRecord
+     */
+    public BatchExecutionRecordImpl getSelectedBatchExecutionRecord() {
+        return selectedBatchExecutionRecord;
+    }
+
+    /**
+     * @param selectedBatchExecutionRecord the selectedBatchExecutionRecord to set
+     */
+    public void setSelectedBatchExecutionRecord(
+            BatchExecutionRecordImpl selectedBatchExecutionRecord) {
+        this.selectedBatchExecutionRecord = selectedBatchExecutionRecord;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public String getServicePlotImageUrl() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        // Lists to store the data in:
+        List<Double> x = new ArrayList<Double>(), y = new ArrayList<Double>(), p = new ArrayList<Double>();
+        // Check there is enough data.
+        log.info("Looking for data in batches: "+expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords().size());
+        // Grab the service timing data.
+        int i = 1;
+        double xrange[] = new double[2]; 
+        double yrange[] = new double[2];
+        for( BatchExecutionRecordImpl batch : expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords() ) {
+        log.info("Found batch... "+batch);
+        for( ExecutionRecordImpl exr : batch.getRuns() ) {
+            log.info("Found Record... "+exr+" stages: "+exr.getStages());
+            if( exr != null && exr.getStages() != null ) {
+            for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
+                log.info("Found Stage... "+exsr);
+                for( MeasurementRecordImpl m : exsr.getMeasurements() ) {
+                    log.info("Looking at result for property "+m.getIdentifier());
+                    // FIXME This should be a proper lookup, or something!
+                    if( m.getIdentifier().toString().equals( TecRegMockup.URIServicePropertyRoot+"wallclock"  )) {
+                        Double xi = new Double(i);
+                        Double yi = new Double(m.getValue());
+                        x.add( xi );
+                        y.add( yi );
+                        p.add(new Double(4.0));
+                        if( i == 1 ) {
+                            xrange[0] = xi.doubleValue();
+                            xrange[1] = xi.doubleValue();
+                            yrange[0] = yi.doubleValue();
+                            yrange[1] = yi.doubleValue();
+                        } else {
+                            if( xrange[0] > xi.doubleValue() ) xrange[0] = xi.doubleValue();
+                            if( xrange[1] < xi.doubleValue() ) xrange[1] = xi.doubleValue();
+                            if( yrange[0] > yi.doubleValue() ) yrange[0] = yi.doubleValue();
+                            if( yrange[1] < yi.doubleValue() ) yrange[1] = yi.doubleValue();
+                        }
+//                        log.info("Added point "+xi+", "+yi+" to the plot.");
+                        i++;
+                    }
+                }
+            }
+            }
+        }
+        }
+        // FIXME This 
+        if( y.size() <= 1 ) return "";
+        // Init the data store:
+        //      Data d1 = Data.newData(10, 50, 30, 45, 65, 95, 20, 80);
+        //      Data d2 = Data.newData(20, 40, 40, 15, 85, 95, 80, 20);
+        //      Data pointSizes = Data.newData(100, 30, 50, 75, 40, 35, 80, 100);
+        Data d1 = DataUtil.scale(x);
+        Data d2 = DataUtil.scale(y);
+        Data pointSizes = Data.newData(p);
+        // Plot it.
+        //ScatterPlotData data = Plots.newScatterPlotData(d1, d2, pointSizes);
+        //data.setLegend("Service Execution Time");
+        
+        //Color diamondColor = Color.newColor("FF471A");
+        //data.addShapeMarkers(Shape.DIAMOND, diamondColor, 3);
+        //data.setColor(diamondColor);
+//        ScatterPlot chart = GCharts.newScatterPlot(data);
+        LineChart chart = GCharts.newLineChart(Plots.newLine(d2, Color.BLUE, "Service Execution Time"));
+        chart.setSize(800, 300);
+        //chart.setGrid(20, 20, 3, 2);
+        log.info("Got x range: "+xrange[0]+", "+xrange[1]);
+        log.info("Got y range: "+yrange[0]+", "+yrange[1]);
+        
+        chart.addXAxisLabels( this.makeAxisLabels(xrange) );
+        chart.addXAxisLabels( AxisLabelsFactory.newAxisLabels("Run", 50.0 ) );
+
+        chart.addYAxisLabels( this.makeAxisLabels(yrange));
+        chart.addYAxisLabels( AxisLabelsFactory.newAxisLabels("Time (s)", 50.0 ));
+        
+        //chart.setTitle("Scatter Plot", WHITE, 16);
+        //chart.setBackgroundFill(Fills.newSolidFill(Color.newColor("2F3E3E")));
+        //LinearGradientFill fill = Fills.newLinearGradientFill(0, Color.newColor("3783DB"), 100);
+        //fill.addColorAndOffset(Color.newColor("9BD8F5"), 0);
+        //chart.setAreaFill(fill);
+        return chart.toURLString();    
+    }
+    
+    private AxisLabels makeAxisLabels( double a[] ) {
+        List<String> xLs = new ArrayList<String>();
+        xLs.add(""+a[0]);
+        xLs.add(""+a[1]);
+        List<Double> xLp = new ArrayList<Double>();
+        xLp.add(0.0);
+        xLp.add(100.0);
+        return AxisLabelsFactory.newAxisLabels(xLs, xLp);
+        
+    }
+
 }

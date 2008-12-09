@@ -44,8 +44,10 @@ public class ExecutionRecordPersistencyImpl implements ExecutionRecordPersistenc
 	public static ExecutionRecordPersistency getInstance(){
 		try{
 			Context jndiContext = getInitialContext();
-			ExecutionRecordPersistency dao_r = (ExecutionRecordPersistency) PortableRemoteObject.narrow(
-					jndiContext.lookup("testbed/ExecutionRecordPersistencyImpl/remote"), ExecutionRecordPersistency.class);
+//            ExecutionRecordPersistency dao_r = (ExecutionRecordPersistency) PortableRemoteObject.narrow(
+//                    jndiContext.lookup("testbed/ExecutionRecordPersistencyImpl/remote"), ExecutionRecordPersistency.class);
+            ExecutionRecordPersistency dao_r = (ExecutionRecordPersistency) 
+                    jndiContext.lookup("testbed/ExecutionRecordPersistencyImpl/local");
 			return dao_r;
 		}catch (NamingException e) {
 			//TODO integrate message into logging mechanism

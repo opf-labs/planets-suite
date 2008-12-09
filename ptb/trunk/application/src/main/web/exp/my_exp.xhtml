@@ -56,6 +56,10 @@
 	            <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
         </t:column>
         <t:column>
+            <f:facet name="header">#{res['expList.colHeader.numberOfInputs']}</f:facet>
+            <h:outputText value="#{exp.experimentExecutable.numberOfInputs}" />
+        </t:column>
+        <t:column>
             <f:facet name="header">
               <t:commandSortHeader id="sortHeader_startDate" columnName="startDate" arrow="true" immediate="false" styleClass="tableHeaderSel">
                   #{res['expList.colHeader.startDate']}
@@ -69,7 +73,7 @@
 	    	      #{res['expList.colHeader.exDate']}
 		  </t:commandSortHeader>
 			</f:facet>		      
-            <h:outputText value="#{exp.experimentExecution.executionEndedDate.time}">
+            <h:outputText value="#{exp.experimentExecutable.executionEndDate.time}">
 	             <f:convertDateTime type="both" dateStyle="short"/>
             </h:outputText>
         </t:column>
@@ -84,10 +88,6 @@
             alt="Experiment Stage #{exp.currentPhaseIndex}/7" style="float: right; padding: 1px 5px;" />
             <h:outputText value="#{exp.currentPhase.phaseName}" /><h:panelGroup rendered="#{exp.denied}" >: <strong><h:outputText value="#{res['approve_exp.denied']}" /></strong></h:panelGroup>
             </h:panelGroup>
-        </t:column>
-        <t:column>
-            <f:facet name="header">#{res['expList.colHeader.numberOfInputs']}</f:facet>
-            <h:outputText value="#{exp.experimentExecutable.numberOfInputs}" />
         </t:column>
         <!--
         <t:column>

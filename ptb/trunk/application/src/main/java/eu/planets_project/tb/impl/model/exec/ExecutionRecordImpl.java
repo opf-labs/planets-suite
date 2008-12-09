@@ -4,39 +4,37 @@
 package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Vector;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
-
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-//@Entity
+@Embeddable
 @XmlRootElement(name = "ExecutionRecord")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExecutionRecordImpl implements Serializable {
-//    @Id
+    /** */
+    private static final long serialVersionUID = -6230965529849585615L;
+
+    //    @Id
 //    @GeneratedValue
     @XmlTransient
     private long id;
     
     /** The experiment this belongs to */
 //    @ManyToOne
-    private ExperimentExecutableImpl experimentExecutable;
+//    private ExperimentExecutableImpl experimentExecutable;
     
     // The source Digital Object - original URL.
     private String digitalObjectSource;
@@ -48,8 +46,17 @@ public class ExecutionRecordImpl implements Serializable {
     private Calendar date;
     
     /** The sequence of stages of this experiment. */
-    private Vector<ExecutionStageRecordImpl> stages;
+//    @OneToMany
+    private Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
+//    private List<ExecutionStageRecordImpl> stages;
+   
+    // The 'Result'
+    private String resultType;
+    private String result;
     
+    // The 'Report'
+    private String report;
+
     /**
      * @return the id
      */
@@ -67,16 +74,16 @@ public class ExecutionRecordImpl implements Serializable {
     /**
      * @return the experimentExecutable
      */
-    public ExperimentExecutableImpl getExperimentExecutable() {
-        return experimentExecutable;
-    }
+//    public ExperimentExecutableImpl getExperimentExecutable() {
+//        return experimentExecutable;
+//    }
 
     /**
      * @param experimentExecutable the experimentExecutable to set
      */
-    public void setExperimentExecutable(ExperimentExecutableImpl experimentExecutable) {
-        this.experimentExecutable = experimentExecutable;
-    }
+//    public void setExperimentExecutable(ExperimentExecutableImpl experimentExecutable) {
+//        this.experimentExecutable = experimentExecutable;
+//    }
 
     /**
      * @return the digitalObjectSource
@@ -109,15 +116,15 @@ public class ExecutionRecordImpl implements Serializable {
     /**
      * @return the stages
      */
-    public Vector<ExecutionStageRecordImpl> getStages() {
+    public List<ExecutionStageRecordImpl> getStages() {
         return stages;
     }
 
     /**
      * @param stages the stages to set
      */
-    public void setStages(Vector<ExecutionStageRecordImpl> stages) {
-        this.stages = stages;
+    public void setStages(List<ExecutionStageRecordImpl> stages) {
+        this.stages = new Vector<ExecutionStageRecordImpl>(stages);
     }
 
     /**
@@ -134,4 +141,60 @@ public class ExecutionRecordImpl implements Serializable {
         this.date = date;
     }
     
+    /**
+     * @return the resultType
+     */
+    public String getResultType() {
+        return resultType;
+    }
+
+    /**
+     * @param resultType the resultType to set
+     */
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
+    }
+
+    /**
+     * @return the result
+     */
+    public String getResult() {
+        return result;
+    }
+
+    /**
+     * @param result the result to set
+     */
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    /**
+     * @return the report
+     */
+    public String getReport() {
+        return report;
+    }
+
+    /**
+     * @param report the report to set
+     */
+    public void setReport(String report) {
+        this.report = report;
+    }
+    
+    /**
+     * @return The number of measurements stored under this record.
+     */
+    public int getNumberOfMeasurements() {
+        if( this.getStages() == null ) return 0;
+        int im = 0;
+        for( ExecutionStageRecordImpl exr : this.getStages()) {
+            if( exr.getMeasurements() != null ) {
+                im += exr.getMeasurements().size();
+            }
+        }
+        return im;
+    }
+
 }

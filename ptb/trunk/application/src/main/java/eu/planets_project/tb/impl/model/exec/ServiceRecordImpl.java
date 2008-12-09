@@ -6,6 +6,7 @@ package eu.planets_project.tb.impl.model.exec;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,10 +21,13 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-//@Entity
+@Embeddable
 @XmlRootElement(name = "ExecutionRecord")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ServiceRecordImpl implements Serializable {
+    /** */
+    private static final long serialVersionUID = -510307823143330587L;
+
 //    @Id
 //    @GeneratedValue
     @XmlTransient

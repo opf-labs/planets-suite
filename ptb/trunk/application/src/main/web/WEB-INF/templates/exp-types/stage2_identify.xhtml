@@ -23,17 +23,21 @@
     </div>
     
     <div class="expChooseService">
+    <div class="expStageHeader">Identify</div>
     Pass Through This Identification Service:<br/>
     
-    <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeIdentify.identifyService}" onchange="submit();"
-            readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
+    <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeIdentify.identifyService}" onchange="submit();">
          <f:selectItem itemValue="" itemLabel="Select..."/>
          <f:selectItems value="#{ServiceBrowser.identifyServicesSelectList}" />
     </h:selectOneMenu>
     <h:commandButton value="#{res['button.select']}"
-             action="success"
-             disabled="#{ExperimentBean.approved}"/>
-    <br/>
+             action="success"/>
+    </h:panelGroup>
+    
+    <h:panelGroup rendered="#{ExperimentBean.approved}">
+    #{ExpTypeIdentify.identifyService}
+    </h:panelGroup>
     
     </div>
     
@@ -42,7 +46,8 @@
     </div>
     
     <div class="expResultBox">
-    Result: The format of the Digital Object.    
+    <div class="expStageHeader">Result</div>
+    The format of the Digital Object.    
     </div>
     
 </fieldset>

@@ -3,6 +3,7 @@
  */
 package eu.planets_project.tb.impl.system;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -30,6 +31,8 @@ public class TestbedBatchJob {
     private String status;
     private int percentComplete;
     private HashMap<String,WorkflowResult> results = new HashMap<String,WorkflowResult>();
+    private Calendar startDate;
+    private Calendar endDate;
 
     /**
      * @param workflow
@@ -102,6 +105,34 @@ public class TestbedBatchJob {
      */
     public WorkflowResult getWorkflowResult(String filename ) {
         return this.results.get(filename);
+    }
+
+    /**
+     * @return the startDate
+     */
+    public Calendar getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Calendar startDate) {
+        this.startDate = startDate;
+    }
+
+    /**
+     * @return the endDate
+     */
+    public Calendar getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Calendar endDate) {
+        this.endDate = endDate;
     }
     
 }

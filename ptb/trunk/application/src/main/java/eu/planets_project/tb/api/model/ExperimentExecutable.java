@@ -10,6 +10,7 @@ import java.util.Vector;
 import java.util.Map.Entry;
 
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 
@@ -206,8 +207,8 @@ public interface ExperimentExecutable extends Executable{
     public void setWorkflowType( String expType ) throws Exception;
     
     /** The results */
-    public void setExecutionRecords(List<ExecutionRecordImpl> executionRecords);
-    public List<ExecutionRecordImpl> getExecutionRecords();
-    public int getNumExecutionRecords();
+    public void setBatchExecutionRecords(List<BatchExecutionRecordImpl> executionRecords);
+    public List<BatchExecutionRecordImpl> getBatchExecutionRecords();
+    public int getNumBatchExecutionRecords();
 
 }

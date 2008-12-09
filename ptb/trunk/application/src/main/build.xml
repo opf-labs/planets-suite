@@ -227,6 +227,7 @@
 		<fileset dir="${build.dir}/${appName}/WEB-INF/lib">
           <include name="commons-*.jar" />
           <include name="castor-xml.jar" />
+          <include name="charts4j-*.jar" />
 		</fileset>
 	</move>
 

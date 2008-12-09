@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl.system;
 
 import java.io.File;
+import java.util.Calendar;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,6 +58,7 @@ public class TestbedBatchProcessDaemon extends Thread {
     public void executeWorkflow( TestbedBatchJob job ) {
         job.setStatus(TestbedBatchJob.RUNNING);
         job.setPercentComplete(0);
+        job.setStartDate(Calendar.getInstance());
         
         try {
             // Set up the basics:
@@ -97,12 +99,14 @@ public class TestbedBatchProcessDaemon extends Thread {
         } catch( Exception e ) {
             job.setStatus(TestbedBatchJob.FAILED);
             job.setPercentComplete(100);
+            job.setEndDate(Calendar.getInstance());
             log.error("Job failed, with exception: "+e);
             e.printStackTrace();
             return;
         }
         job.setStatus(TestbedBatchJob.DONE);
         job.setPercentComplete(100);
+        job.setEndDate(Calendar.getInstance());
     }
 
 }

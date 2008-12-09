@@ -38,7 +38,7 @@
 			<ui:fragment id="userHeader" rendered="#{not empty UserBean.userid}">
 				<div id="geright">
 					<p class="glinks">${UserBean.userid}
-                        <a target="_blank" class="glinks" href="/admin/editProfile.html">
+                        <a target="_blank" class="glinks" href="/users/editprofile.faces">
                         <img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" alt="" title="" />
                         <h:outputText value="#{res.editprofile}"/>
                         </a> |
