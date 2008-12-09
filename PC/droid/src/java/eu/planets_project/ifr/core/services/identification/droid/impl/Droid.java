@@ -83,8 +83,8 @@ public final class Droid implements Identify, Serializable {
      * @see eu.planets_project.services.identify.Identify#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
-                this.getClass().getCanonicalName());
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Identify.class.getCanonicalName());
+        sd.classname(this.getClass().getCanonicalName());
         sd.description("Identification service based on Droid.");
         return sd.build();
     }

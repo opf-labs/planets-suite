@@ -74,7 +74,9 @@ public final class JhoveIdentification implements Identify, Serializable {
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
-                this.getClass().getCanonicalName());
+                Identify.class.getCanonicalName());
+        sd.classname(this.getClass().getCanonicalName());
+
         sd.description("Identification service using JHOVE.");
         return sd.build();
     }

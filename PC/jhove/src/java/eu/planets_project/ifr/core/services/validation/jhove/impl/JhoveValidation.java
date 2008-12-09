@@ -14,6 +14,7 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
@@ -53,7 +54,8 @@ public final class JhoveValidation implements Validate, Serializable {
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
-                this.getClass().getCanonicalName());
+                Validate.class.getCanonicalName());
+        sd.classname(this.getClass().getCanonicalName());
         sd.description("Validation service using JHOVE.");
         return sd.build();
     }

@@ -98,8 +98,8 @@ public final class PngCheck implements Validate, Serializable {
      * @see eu.planets_project.services.validate.Validate#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
-                this.getClass().getCanonicalName());
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Validate.class.getCanonicalName());
+        sd.classname(this.getClass().getCanonicalName());
         sd.description("Validation service based on PngCheck.");
         return sd.build();
     }
