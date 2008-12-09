@@ -116,6 +116,7 @@ public class ServiceDescriptionBackingBean {
     	if ((this._serviceProvider.length() > 0) | (null != this._serviceDescription.getServiceProvider()))
     		sb.serviceProvider(this._serviceProvider);
     	if ((this._desc.length() > 0) | (null != this._serviceDescription.getDescription()))
-    		sb.description(this._desc).build();
+    		sb.description(this._desc);
+    	this._serviceDescription = sb.build();
     }
 }
