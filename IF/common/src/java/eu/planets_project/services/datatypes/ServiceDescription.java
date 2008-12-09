@@ -740,8 +740,8 @@ public final class ServiceDescription {
          */
         public Result createOutput(final String namespaceUri,
                 final String suggestedFileName) throws IOException {
-            return new StreamResult(new java.io.File(baseDir, schemaFileName
-                    + "_" + suggestedFileName));
+            return new StreamResult(new java.io.File(baseDir, 
+                    schemaFileName.split("\\.")[0] + "_" + suggestedFileName));
         }
     }
 
