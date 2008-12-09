@@ -23,20 +23,21 @@ public class RegistrySampleUsage {
     public void usage() throws MalformedURLException {
         /* We retrieve an instance of the registry: */
         Registry registry = RegistryFactory.getInstance();
-        URL endpoint = new URL("http://some.dummy.endpoint");
+        URL endpoint1 = new URL("http://some.dummy.endpoint");
+        URL endpoint2 = new URL("http://another.dummy.endpoint");
         /* We register service descriptions: */
         registry
                 .register(/* new Droid().describe() */new ServiceDescription.Builder(
-                        "Droid", Identify.class.getName()).endpoint(endpoint)
+                        "Droid", Identify.class.getName()).endpoint(endpoint1)
                         .build());
         registry
                 .register(/* new SanselanMigrate().describe() */new ServiceDescription.Builder(
-                        "Sanselan", Migrate.class.getName()).endpoint(endpoint)
-                        .build());
+                        "Sanselan", Migrate.class.getName())
+                        .endpoint(endpoint2).build());
         /* And can then query by example, e.g. for migration services: */
         List<ServiceDescription> migrationServices = registry
                 .query(new ServiceDescription.Builder(null, Migrate.class
-                        .getName()).endpoint(endpoint).build());
+                        .getName()).build());
         /* Which we expect to return only the migration service: */
         Assert.assertEquals(1, migrationServices.size());
         Assert.assertEquals("Sanselan", migrationServices.get(0).getName());

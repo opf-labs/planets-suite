@@ -51,6 +51,14 @@ public interface Registry {
     @WebResult
     Response clear();
 
+    /**
+     * @param example The sample of the service descriptions to delete
+     * @return A response message
+     */
+    @WebMethod
+    @WebResult
+    Response delete(@WebParam ServiceDescription example);
+
     // **********************************************************************
 
     // TODO Do XML-based methods make sense at all here?

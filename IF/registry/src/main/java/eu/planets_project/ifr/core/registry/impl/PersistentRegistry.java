@@ -188,4 +188,18 @@ public final class PersistentRegistry implements Registry {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
+     */
+    public Response delete(final ServiceDescription example) {
+        Response response = registry.delete(example);
+        List<ServiceDescription> list = registry.query(null);
+        clear();
+        for (ServiceDescription serviceDescription : list) {
+            register(serviceDescription);
+        }
+        return response;
+    }
+
 }

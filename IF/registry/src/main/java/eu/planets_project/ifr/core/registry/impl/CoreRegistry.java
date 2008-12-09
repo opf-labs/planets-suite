@@ -59,11 +59,38 @@ public final class CoreRegistry implements Registry {
                                     "Could not add service description %s, as it has no endpoint",
                                     serviceDescription), false);
         }
-        if (!descriptions.contains(serviceDescription)) {
+        if (!endpointPresent(serviceDescription)
+                && !descriptions.contains(serviceDescription)) {
             descriptions.add(serviceDescription);
             return new Response("Registered: " + serviceDescription, true);
         }
         return new Response("Already registered: " + serviceDescription, false);
+    }
+
+    /**
+     * @param serviceDescription The description to check
+     * @return True, if a description with the same endpoint is already
+     *         registered
+     */
+    private boolean endpointPresent(final ServiceDescription serviceDescription) {
+        for (ServiceDescription d : descriptions) {
+            if (d.getEndpoint() != null
+                    && d.getEndpoint().toString().equals(
+                            serviceDescription.getEndpoint().toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#delete(java.lang.String)
+     */
+    public Response delete(final ServiceDescription description) {
+        List<ServiceDescription> list = query(description);
+        boolean removed = descriptions.removeAll(list);
+        return new Response("Attempted to delete: " + description, removed);
     }
 
 }

@@ -30,14 +30,16 @@ public class CoreRegistryTests {
     static final String TYPE1 = "type1";
     static final String TYPE2 = "type2";
     static final String NAME = "name";
-    private static URL endpoint;
+    private static URL endpoint1;
+    private static URL endpoint2;
     static Registry registry;
 
     @BeforeClass
     public static void registryCreation() {
         registry = CoreRegistry.getInstance();
         try {
-            endpoint = new URL("http://some.dummy.endpoint");
+            endpoint1 = new URL("http://some.dummy.endpoint");
+            endpoint2 = new URL("http://another.dummy.endpoint");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -51,10 +53,10 @@ public class CoreRegistryTests {
         registry.clear();
         description1 = new ServiceDescription.Builder(NAME, TYPE1).description(
                 DESCRIPTION).inputFormats(URI.create(PRONOM1),
-                URI.create(PRONOM2)).endpoint(endpoint).build();
+                URI.create(PRONOM2)).endpoint(endpoint1).build();
         description2 = new ServiceDescription.Builder(NAME, TYPE2)
                 .inputFormats(URI.create(PRONOM1), URI.create(PRONOM2))
-                .endpoint(endpoint).build();
+                .endpoint(endpoint2).build();
         Response register = registry.register(description1);
         Assert.assertTrue(register.success);
         /* But we can't register descriptions without an endpoint: */
@@ -143,9 +145,27 @@ public class CoreRegistryTests {
     public void findByEndpoint() {
         List<ServiceDescription> services = registry
                 .query(new ServiceDescription.Builder(null, null).endpoint(
-                        endpoint).build());
-        Assert.assertEquals(2, services.size());
+                        endpoint1).build());
+        Assert.assertEquals(1, services.size());
         compare(services);
+    }
+
+    @Test
+    public void deleteByExample() {
+        Response response = registry.delete(new ServiceDescription.Builder(
+                null, TYPE1).endpoint(endpoint1).build());
+        Assert.assertTrue(response.success);
+        List<ServiceDescription> services = registry.query(null);
+        Assert.assertEquals(1, services.size());
+    }
+
+    @Test
+    public void duplicateEndpointGuard() {
+        Response response = registry.register(new ServiceDescription.Builder(
+                null, TYPE1).endpoint(endpoint1).build());
+        Assert.assertFalse(response.success);
+        List<ServiceDescription> services = registry.query(null);
+        Assert.assertEquals(2, services.size());
     }
 
     /**

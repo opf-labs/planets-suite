@@ -616,6 +616,8 @@ public final class ServiceDescription {
         result = prime * result + ((tool == null) ? 0 : tool.hashCode());
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((version == null) ? 0 : version.hashCode());
+        result = prime * result
+                + ((endpoint == null) ? 0 : endpoint.toString().hashCode());
         return result;
     }
 
@@ -632,6 +634,11 @@ public final class ServiceDescription {
         if (getClass() != obj.getClass())
             return false;
         ServiceDescription other = (ServiceDescription) obj;
+        if (endpoint == null) {
+            if (other.endpoint != null)
+                return false;
+        } else if (!endpoint.toString().equals(other.endpoint.toString()))
+            return false;
         if (classname == null) {
             if (other.classname != null)
                 return false;

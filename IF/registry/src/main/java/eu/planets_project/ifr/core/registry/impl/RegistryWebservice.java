@@ -63,4 +63,12 @@ public final class RegistryWebservice implements Registry {
         return registry.register(serviceDescription);
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
+     */
+    public Response delete(final ServiceDescription example) {
+        return registry.delete(example);
+    }
+
 }
