@@ -24,7 +24,7 @@ public class JSFUtil
   
  
   public static void storeOnSession(FacesContext ctx, String key, Object object) {
-      Map sessionState = ctx.getExternalContext().getSessionMap();
+      Map<String, Object> sessionState = ctx.getExternalContext().getSessionMap();
       sessionState.put(key, object);
   }
   

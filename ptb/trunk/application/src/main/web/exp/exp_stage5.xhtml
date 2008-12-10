@@ -69,19 +69,44 @@
 
 </a4j:outputPanel>
 
+<!-- ***************************  -->
 
-<a4j:outputPanel id="executedResults" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
+<a4j:outputPanel id="executedResults">
 
-    <rich:tabPanel width="100%" selectedTab="ExeLogTab">
-        <rich:tab label="Overall Results">
+    <rich:tabPanel width="100%" selectedTab="OverallResultTab" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
+        <rich:tab label="Overall Results" name="OverallResultTab">
+     <rich:dataTable value="#{ExperimentBean.experimentDigitalObjectResults}" 
+         var="res" styleClass="tbTable" reRender="dolist_ds" rows="10">
+        <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
+          <f:facet name="header">Digital Object</f:facet>
+          <h:outputLink value="#{res.downloadURL}" styleClass="inTableIcon">
+            <t:graphicImage value="/graphics/go-down.png" alt="Download..."/>
+          </h:outputLink>
+          <h:commandLink title="View Results.">
+              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectedDigitalObjectActionListener"/>
+                 <h:outputText value="#{res.digitalObjectName}"/>
+          </h:commandLink>
+        </rich:column>
+        <rich:column>
+          <f:facet name="header">Results</f:facet>
+          
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_identify_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+           <ui:param name="Results" value="#{res}" />
+        </ui:include>
+          
+          
+        </rich:column>
+        <f:facet name="footer">
+          <rich:datascroller id="dolist_ds"></rich:datascroller>
+        </f:facet>
+     </rich:dataTable>
         <p>
-        The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects, leading to #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} sets of results.
-        </p>
-        <p>
-        Comparisons of the measured digital object properties. Cross-comparisons, etc.
+        The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.
         </p>
         
         </rich:tab>
+
         
         <rich:tab label="Service Statistics">
             <p>
@@ -155,7 +180,12 @@
         </rich:tab>
         
         <rich:tab label="Comparison &amp; Evaluation">
+        <p>
             Difference displays, comparator configuration, depending on experiment type.
+        </p>
+        <p>
+        Comparisons of the measured digital object properties. Cross-comparisons, etc.
+        </p>
         
         </rich:tab>
         

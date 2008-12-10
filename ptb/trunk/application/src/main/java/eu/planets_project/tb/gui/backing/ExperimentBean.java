@@ -60,6 +60,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
@@ -151,6 +152,7 @@ public class ExperimentBean {
     
     private ExecutionRecordImpl selectedExecutionRecord = null;
     private BatchExecutionRecordImpl selectedBatchExecutionRecord = null;
+    private String selectedDigitalObject = null;
     
     private String ereportTitle;
     private String ereportBody;
@@ -528,9 +530,8 @@ public class ExperimentBean {
     			//retrieve URI
     		    String fInput = localFileRefs.get(key);
 				URI uri = dh.getDownloadURI(fInput);
-				String name = dh.getName(fInput);
 				map.put("uri", uri.toString());
-				map.put("name", name);
+				map.put("name", this.createShortDoName(dh.getName(fInput)));
 				map.put("inputID", key);
 				ret.add(map);
 			} catch (FileNotFoundException e) {
@@ -538,6 +539,54 @@ public class ExperimentBean {
 			}
     	}
     	return ret;
+    }
+
+    /**
+     * @param name
+     * @return
+     */
+    private String createShortDoName( String name ) {
+        int lastSlash = name.lastIndexOf("/");
+        if( lastSlash != -1 ) {
+            return name.substring( lastSlash + 1, name.length() );
+        }
+        return name;
+    }
+    
+    /**
+     * Used to package execution results by digital object.
+     * @return
+     */
+    public List<ResultsForDigitalObjectBean> getExperimentDigitalObjectResults() {
+        List<ResultsForDigitalObjectBean> results = new Vector<ResultsForDigitalObjectBean>();
+        // Populate using the results:
+        DataHandler dh = new DataHandlerImpl();
+        for( String file : getExperimentInputData().values() ) {
+            ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean();
+            res.setDigitalObject(file);
+            try {
+                res.setDownloadURL(dh.getDownloadURI(file).toString());
+            } catch (FileNotFoundException e) {
+                res.setDownloadURL("");
+            }
+            try {
+                res.setDigitalObjectName(this.createShortDoName(dh.getName(file)));
+            } catch (FileNotFoundException e) {
+                res.setDigitalObjectName(this.createShortDoName(file));
+            }
+            // Loop over results:
+            for( BatchExecutionRecordImpl batch : this.getExperiment().getExperimentExecutable().getBatchExecutionRecords() ) {
+                for( ExecutionRecordImpl run : batch.getRuns() ) {
+                    if( file.equals( run.getDigitalObjectReferenceCopy() ) ) {
+                        res.getExecutionRecords().add(run);
+                    }
+                }
+            }
+            results.add(res);
+        }
+
+        // Now return the results:
+        return results;
     }
         
     
@@ -1492,6 +1541,20 @@ public class ExperimentBean {
     public void setSelectedBatchExecutionRecord(
             BatchExecutionRecordImpl selectedBatchExecutionRecord) {
         this.selectedBatchExecutionRecord = selectedBatchExecutionRecord;
+    }
+    
+    /**
+     * @return the selectedDigitalObject
+     */
+    public String getSelectedDigitalObject() {
+        return selectedDigitalObject;
+    }
+
+    /**
+     * @param selectedDigitalObject the selectedDigitalObject to set
+     */
+    public void setSelectedDigitalObject(String selectedDigitalObject) {
+        this.selectedDigitalObject = selectedDigitalObject;
     }
 
     /**

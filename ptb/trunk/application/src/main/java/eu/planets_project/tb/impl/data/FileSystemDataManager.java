@@ -178,7 +178,12 @@ public class FileSystemDataManager implements DataManagerLocal {
     public InputStream retrieve(URI pdURI) throws PathNotFoundException,
             URISyntaxException {
         try {
-            return new FileInputStream( new File( pdURI ) );
+            File f = new File( pdURI );
+            log.info("Got file: "+f.getAbsolutePath());
+            log.info("Got something that exists? "+f.exists());
+            FileInputStream fin = new FileInputStream( f );
+            log.info("Got FileInputStream: "+fin);
+            return fin;
         } catch ( FileNotFoundException e ) {
             throw new PathNotFoundException(pdURI.toString());
         }
@@ -225,10 +230,13 @@ public class FileSystemDataManager implements DataManagerLocal {
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#retrieveBinary(java.net.URI)
      */
+    @Deprecated
     public byte[] retrieveBinary(URI pdURI) throws SOAPException {
         byte[] bin  = null;
         
         try {
+            File f = new File( pdURI );
+            bin = new byte[(int)f.length()];
             this.retrieve(pdURI).read(bin);
         } catch( IOException e ) {
             log.error("Failed to list DR URI." + e);

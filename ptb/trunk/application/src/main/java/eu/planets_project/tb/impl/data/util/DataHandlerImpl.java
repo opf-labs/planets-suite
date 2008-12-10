@@ -99,7 +99,10 @@ public class DataHandlerImpl implements DataHandler {
      */
 	private String generateUniqueName(String name) {
 	    // create unique filename
-        String ext = name.substring(name.lastIndexOf('.'));
+	    
+        String ext = "no_ext";
+        if( name.lastIndexOf('.') != -1 )
+            ext = name.substring(name.lastIndexOf('.'));
         return UUID.randomUUID().toString() + ext;
 	}
 	
@@ -164,6 +167,7 @@ public class DataHandlerImpl implements DataHandler {
      */
     public String addFromDataRegistry(DataRegistryManagerImpl dr, URI pduri) throws IOException {
         InputStream in = null;
+        log.info("Adding from URI: "+pduri );
         try {
             in = new ByteArrayInputStream( dr.getDataManager(pduri).retrieveBinary(pduri) );
         } catch (SOAPException e) {

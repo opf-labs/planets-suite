@@ -3,12 +3,19 @@
  */
 package eu.planets_project.tb.gui.backing.exp;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 
@@ -54,4 +61,9 @@ public class ExpTypeIdentify {
         return new IdentifyWorkflow();
     }
     
+    
+    // Get the format registry:
+    public FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
+    public Format unknown = fr.getFormatForURI( Format.extensionToURI("unknown") );
+
 }

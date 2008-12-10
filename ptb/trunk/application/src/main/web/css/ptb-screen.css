@@ -802,6 +802,9 @@ width:100%;
 .globalMessageBox table{
   margin: 0 auto;
 }
+.inTableIcon { 
+  float: right;
+}
 #expHeaderTable, #expFooterTable {
   color:#FFFFFF;
   font-size:1.1em;
@@ -912,6 +915,9 @@ width:100%;
   background-image: url(../graphics/spinner.gif);
   margin: 0 auto;
   margin-top: 4px;
+}
+#executedResults .tbTable {
+  width: 100%;
 }
 .rich-tool-tip{
     background-color: #eef2f8;
