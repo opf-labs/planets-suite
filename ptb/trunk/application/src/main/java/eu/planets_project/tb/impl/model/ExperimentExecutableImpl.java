@@ -545,10 +545,11 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
      * @throws Exception
      */
     private ExperimentWorkflow buildWorkflow() throws Exception {
+        ExperimentBean expBean = (ExperimentBean) JSFUtil.getManagedObject("ExperimentBean");
+        Experiment exp = expBean.getExperiment();
+        // Check for workflowType
         if( this.workflowType == null ) {
             log.error("Workflow Type is null!");
-            ExperimentBean expBean = (ExperimentBean) JSFUtil.getManagedObject("ExperimentBean");
-            Experiment exp = expBean.getExperiment();
             this.workflowType = exp.getExperimentSetup().getExperimentTypeID();
             log.info("Set workflow type to: " + this.workflowType);
             if( this.workflowType == null ) return null;
@@ -560,7 +561,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
             expwf.setParameters(getParameters());
             return expwf;
 
-        } else if( this.workflowType.startsWith("simple ")) {
+        } else if( AdminManagerImpl.isExperimentDeprecated(exp) ) {
             log.error("Executing old-style experiment - Should Not Happen!");
             throw new Exception( "Executing old-style experiment - Should Not Happen! "+this.workflowType);
             

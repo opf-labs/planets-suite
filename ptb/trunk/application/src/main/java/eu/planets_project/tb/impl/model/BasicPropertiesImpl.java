@@ -623,7 +623,12 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		Iterator<String> itKeys = this.hmLiteratureReference.keySet().iterator();
 		while(itKeys.hasNext()){
 			Vector<String> item = this.hmLiteratureReference.get(itKeys.next());
-			String[] sRet = {item.get(0),item.get(1),item.get(2),item.get(3)};
+            String[] sRet;
+			if( item.size() > 2 ) {
+                sRet = new String[] {item.get(0),item.get(1),item.get(2),item.get(3)};
+			} else {
+	            sRet = new String[] {item.get(0),item.get(1), "", ""};
+			}
 			vRet.add(sRet);
 		}
 		return vRet;

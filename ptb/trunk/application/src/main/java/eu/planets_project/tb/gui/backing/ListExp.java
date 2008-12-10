@@ -245,6 +245,11 @@ public class ListExp extends SortableList {
 	      
 	      //Store selected Experiment Row accessible later as #{Experiment} 
 	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+	      
+	      // Abort and go to View page if this is an old experiment:
+	      if( AdminManagerImpl.isExperimentDeprecated( selectedExperiment ) ) {
+	          return "viewExp";
+	      }
 	              
 	      // go to edit page
 	      return "editExp";

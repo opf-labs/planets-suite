@@ -45,7 +45,7 @@ public class AdminManagerImpl implements AdminManager {
     public static final String MIGRATE = "migrate";
     public static final String EMULATE = "migrate";
 	
-	//e.g. key:"experimentType.simpleMigration" value:"simple migration"
+	//e.g. key:"identify" -> "Identify"
 	private static HashMap<String,String> hmExperimentTypes;
 	// No longer read from XML, by statically coded:
 	static {
@@ -386,6 +386,19 @@ public class AdminManagerImpl implements AdminManager {
      */
     public static String getAuthority() {
         return PlanetsServerConfig.getHostname() + ":" + PlanetsServerConfig.getPort();
+    }
+
+    /**
+     * @param selectedExperiment
+     * @return
+     */
+    public static boolean isExperimentDeprecated(Experiment exp) {
+        log.info("Checking if "+exp.getExperimentSetup().getExperimentTypeID()+" is a deprecated type");
+        if( AdminManagerImpl.hmOldExperimentTypes.containsKey(
+                exp.getExperimentSetup().getExperimentTypeID() ) ) {
+            return true;
+        }
+        return false;
     }
 
 }
