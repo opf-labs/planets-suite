@@ -11,6 +11,6 @@ public class FactoryRemoteTests extends CoreRegistryTests {
     @BeforeClass
     public static void registryCreation() {
         registry = RegistryFactory
-                .getInstance("http://localhost:8080/pserv-if-registry/RegistryWebservice?wsdl");
+                .getInstance("http://localhost:8080/pserv-if-registry-pserv-if-registry/RegistryWebservice?wsdl");
     }
 }

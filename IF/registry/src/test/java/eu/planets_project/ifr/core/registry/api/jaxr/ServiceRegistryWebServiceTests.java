@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 public final class ServiceRegistryWebServiceTests extends ServiceRegistryTests {
     /** The remote registry instance used for testing. */
     private static final String TEST_SERVER_WSDL = "http://localhost:8080/"
-            + "pserv-if-registry/ServiceRegistryManager?wsdl";
+            + "pserv-if-registry-pserv-if-registry/ServiceRegistryManager?wsdl";
 
     /** Create a registry and a mock object factory once for all tests. */
     @BeforeClass

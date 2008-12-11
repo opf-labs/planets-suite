@@ -8,13 +8,14 @@ digraph registry {
   Persistent[label = "{PersistentRegistry|registry:Registry\n...|...}"]
   ServiceRegistry[label = "{\<\<Interface\>\>\nRegistry||...}"]
   Factory[label = "{RegistryFactory|...|getInstance():Registry\n...}"]
-  NonIfProgrammer[label = "Non-IF Programmer\n (web service instance)" style=rounded]
+  NonIfProgrammer[label = "External Programmer\n (web service instance)" style=rounded]
   IfProgrammer[label = "IF Programmer\n(local instance)" style=rounded]
   
   subgraph cluster_internal{
     color=white
-    Persistent->Core[arrowhead=none arrowtail=odiamond]
-    Persistent->WS[arrowhead=odiamond]
+    
+    Persistent->WS[arrowhead=odiamond ]
+    Persistent->Core[arrowhead=none arrowtail=odiamond constraint=false]
   }
   
   subgraph cluster_public{
@@ -22,10 +23,11 @@ digraph registry {
     labelloc=b
     color=grey
     label="API"
-    Persistent->ServiceRegistry[arrowhead=empty]
-    Core->ServiceRegistry[arrowhead=empty label=" \<\<implements\>\>"]
-    WS->ServiceRegistry[arrowhead=empty ] 
-    ServiceRegistry->Factory[arrowtail=none arrowhead=odiamond]
+    Core->ServiceRegistry[arrowhead=empty style=dashed color=gray label=" \<\<implements\>\>"]
+    Persistent->ServiceRegistry[arrowhead=empty style=dashed color=gray]
+    WS->ServiceRegistry[arrowhead=empty] 
+    Factory->ServiceRegistry[arrowtail=odiamond arrowhead=none constraint=false]
+    
   }
   Factory->NonIfProgrammer[arrowhead=none style=dashed]
   Factory->IfProgrammer[arrowhead=none style=dashed]

@@ -19,6 +19,6 @@ public class RegistryWebserviceTests extends CoreRegistryTests {
     public static void registryCreation() {
         registry = ServiceCreator.createTestService(Registry.QNAME,
                 RegistryWebservice.class,
-                "/pserv-if-registry/RegistryWebservice?wsdl", Mode.SERVER);
+                "/pserv-if-registry-pserv-if-registry/RegistryWebservice?wsdl", Mode.SERVER);
     }
 }

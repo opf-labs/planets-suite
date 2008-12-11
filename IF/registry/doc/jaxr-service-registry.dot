@@ -1,35 +1,42 @@
 /* Graphviz diagram for the Planets Service Registry classes */
 
 digraph registry {
-  node[shape=record style=filled,fillcolor=grey95 width=1.5]
+  node[shape=record style=filled,fillcolor=grey95 width=1.8 height=1]
   edge[]
   Jaxr[label = "{JaxrServiceRegistry|...|...}"]
-  WS[label = "{ServiceRegistryManager\n(Web-Service)|registry:ServiceRegistry\n...|...}"]
-  Jsf[label = "{RegistryBean\n(JSF-Bean)|registry:ServiceRegistry\n...|...}"]
+  WS[label = "{ServiceRegistryManager|registry:ServiceRegistry\n...|...}"]
+  
+  //Jsf[label = "{RegistryBean\n(JSF-Bean)|registry:ServiceRegistry\n...|...}"]
+  
   ServiceRegistry[label = "{\<\<Interface\>\>\nServiceRegistry||...}"]
+  
   //SDR[label = "{\<\<Interface\>\>\nServiceDescriptionRegistry||}" style="dashed"]
+  
   Factory[label = "{ServiceRegistryFactory|...|getInstance():ServiceRegistry\n...}"]
-  NonIfProgrammer[label = "Non-IF Programmer\n (web service instance)" style=rounded]
-  IfProgrammer[label = "IF Programmer\n(local instance)" style=rounded]
-  UiProgrammer[label = "UI Programmer\n (JSF bean instance)" style=rounded]
+  NonIfProgrammer[height=0.5 label = "External Programmer\n (web service instance)" style=rounded]
+  IfProgrammer[height=0.5 label = "IF Programmer\n(local instance)" style=rounded]
+  //UiProgrammer[label = "UI Programmer\n (JSF bean instance)" style=rounded]
+  
   subgraph cluster_internal{
     color=white
-    Jaxr->Jsf[arrowhead=odiamond]
-    Jaxr->WS[arrowhead=odiamond]
+    //Jaxr->Jsf[arrowhead=odiamond]
+    WS->Jaxr[arrowtail=odiamond arrowhead=none constraint=false]
   }
+  
   subgraph cluster_public{
     labeljust=r
     labelloc=b
     color=grey
-    label="Intended public API"
-    Jsf->ServiceRegistry[arrowhead=empty]
+    label="API"
+    //Jsf->ServiceRegistry[arrowhead=empty]
     Jaxr->ServiceRegistry[arrowhead=empty label=" \<\<implements\>\>"]
     //Jaxr->SDR[arrowhead=empty label=" \<\<implements\>\>" style=dashed]
     WS->ServiceRegistry[arrowhead=empty ] 
     Factory->ServiceRegistry[arrowtail=odiamond arrowhead=none constraint=false]
     //SDR->Factory[arrowhead=none style=dashed]
   }
+  
   Factory->NonIfProgrammer[arrowhead=none style=dashed]
   Factory->IfProgrammer[arrowhead=none style=dashed]
-  Factory->UiProgrammer[arrowhead=none style=dashed]
+  //Factory->UiProgrammer[arrowhead=none style=dashed]
 }
