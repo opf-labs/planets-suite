@@ -21,6 +21,7 @@
   
     <property name="test.src.dir" value="${appDir}/test/java" />
 	<property name="test.local" value="" />
+	<property name="test.standalone" value="" />
     <property name="test.server" value="" />
 
 

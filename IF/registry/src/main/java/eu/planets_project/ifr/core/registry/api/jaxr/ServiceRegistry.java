@@ -12,6 +12,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
+import javax.xml.ws.BindingType;
 
 import eu.planets_project.ifr.core.registry.api.jaxr.model.BindingList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.OrganizationList;
@@ -27,12 +28,16 @@ import eu.planets_project.services.PlanetsServices;
  * @author Thomas Krämer (thomas.kraemer@uni-koeln.de)
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = ServiceRegistry.NAME, serviceName = ServiceRegistry.NAME, targetNamespace = ServiceRegistry.NS)
+@WebService(name = ServiceRegistry.NAME, targetNamespace = PlanetsServices.NS)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+//@WebService(name = ServiceRegistry.NAME, serviceName = ServiceRegistry.NAME, targetNamespace = ServiceRegistry.NS)
 public interface ServiceRegistry {
     /***/
     String NAME = "ServiceRegistryManager";
     /***/
     String NS = "http://planets-project.eu/ifr/core/registry";
+    /***/
+    QName QNAME = new QName(PlanetsServices.NS, ServiceRegistry.NAME);
 
     /**
      * @param username The username

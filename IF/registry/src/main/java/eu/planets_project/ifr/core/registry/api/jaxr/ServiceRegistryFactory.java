@@ -22,8 +22,8 @@ public final class ServiceRegistryFactory {
     private ServiceRegistryFactory() {}
 
     /** Service endpoint for the local registry service. */
-    private static final String WSDL = "http://localhost:8080/"
-            + "registry-ifr-registry-ejb/ServiceRegistryManager?wsdl";
+//    private static final String WSDL = "http://localhost:8080/"
+//            + "registry-ifr-registry-ejb/ServiceRegistryManager?wsdl";
 
     /**
      * @return A service registry instance

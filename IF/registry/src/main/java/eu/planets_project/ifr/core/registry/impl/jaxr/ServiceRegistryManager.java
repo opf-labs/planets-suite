@@ -1,7 +1,5 @@
 package eu.planets_project.ifr.core.registry.impl.jaxr;
 
-import java.io.Serializable;
-
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -9,8 +7,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -19,12 +15,13 @@ import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry;
 import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.registry.api.jaxr.ServiceTaxonomy;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.BindingList;
-import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.OrganizationList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsService;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceList;
+import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;
+import eu.planets_project.services.PlanetsServices;
 
 /**
  * This class exposes the IF service registry as a web service.
@@ -34,14 +31,13 @@ import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceList;
  * @author Thomas Kraemer <br/>
  * @author Fabian Steeg <br/>
  */
-@WebService(name = ServiceRegistry.NAME, targetNamespace = ServiceRegistry.NS, serviceName = ServiceRegistry.NAME)
-@Stateless(mappedName = "planets/LocalServiceRegistryManager")
+@WebService(name = ServiceRegistryManager.NAME, targetNamespace = PlanetsServices.NS, serviceName = ServiceRegistry.NAME, endpointInterface = "eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry")
+@Stateless()
 @Local(ServiceRegistry.class)
 @Remote(ServiceRegistry.class)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http")
-@SOAPBinding(style = SOAPBinding.Style.RPC, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.BARE)
-public final class ServiceRegistryManager implements Serializable,
-        ServiceRegistry {
+//@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http")
+//@SOAPBinding(style = SOAPBinding.Style.RPC, use = SOAPBinding.Use.LITERAL, parameterStyle = SOAPBinding.ParameterStyle.BARE)
+public final class ServiceRegistryManager implements ServiceRegistry {
     private ServiceRegistry registry = ServiceRegistryFactory.getInstance();
     /***/
     private static final long serialVersionUID = 3994805571958430140L;

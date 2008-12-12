@@ -13,6 +13,7 @@ import eu.planets_project.ifr.core.registry.impl.jaxr.ServiceRegistryManager;
 public final class ServiceRegistryManagerTests extends ServiceRegistryTests {
     @BeforeClass
     public static void setup() {
+        if(ServiceRegistryTestsHelper.guard()) return;
         registry = new ServiceRegistryManager();
         mock = new ServiceRegistryObjectFactory(USERNAME, PASSWORD, registry);
     }

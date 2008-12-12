@@ -2,6 +2,9 @@ package eu.planets_project.ifr.core.registry.api;
 
 import org.junit.BeforeClass;
 
+import eu.planets_project.ifr.core.registry.impl.RegistryWebservice;
+import eu.planets_project.services.utils.test.ServiceCreator;
+
 /**
  * Tests for a webservice registry instance retrieved via the factory.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
@@ -10,7 +13,8 @@ public class FactoryRemoteTests extends CoreRegistryTests {
 
     @BeforeClass
     public static void registryCreation() {
-        registry = RegistryFactory
-                .getInstance("http://localhost:8080/pserv-if-registry-pserv-if-registry/RegistryWebservice?wsdl");
+        registry = ServiceCreator.createTestService(Registry.QNAME,
+                RegistryWebservice.class,
+                "/pserv-if-registry-pserv-if-registry/RegistryWebservice?wsdl");
     }
 }

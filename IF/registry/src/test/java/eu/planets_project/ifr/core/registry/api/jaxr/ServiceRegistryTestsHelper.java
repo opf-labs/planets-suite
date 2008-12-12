@@ -9,6 +9,7 @@ import eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsCategory;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsRegistryObject;
+import eu.planets_project.services.utils.PlanetsLogger;
 
 class ServiceRegistryTestsHelper {
     /**
@@ -57,5 +58,25 @@ class ServiceRegistryTestsHelper {
         assertNotNull(name + " is null;", string);
         assertTrue(name + " is empty;", string.trim().length() > 0);
         System.out.println("[OK] " + name + ": " + string);
+    }
+
+    public static boolean guard() {
+        String property = System.getProperty("pserv.test.context");
+        boolean testOnServer = property != null && property.equals("server");
+        if (!testOnServer) {
+            /*
+             * All JAXR stuff can only be tested on the server. To include the
+             * other things in the registry component in the tests without a
+             * server, we guard against that case here and succeed without
+             * running the test... the registry component should probably be
+             * split into two for such reasons.
+             */
+            PlanetsLogger
+                    .getLogger(ServiceRegistryTestsHelper.class)
+                    .warn(
+                            "Skipping JAXR registry test (not running against a server)");
+            return true;
+        }
+        return false;
     }
 }

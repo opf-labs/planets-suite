@@ -12,6 +12,7 @@ import javax.xml.ws.BindingType;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
@@ -23,7 +24,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * Characterisation of one digital object.
  * 
  * This is intended to become the generic characterisation interface for characterisation tools
- * like JHove and Extractor.
+ * like the XCL Extractor and the New Zealand Metadata Extractor.
  * 
  * It should:
  *  - cover (at least) those two characterisation tools under one interface
@@ -39,7 +40,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 
-public interface Characterise {
+public interface Characterise extends PlanetsService{
 	
 	    /***/
 	    String NAME = "Characterise";
@@ -85,6 +86,10 @@ public interface Characterise {
 	    
 	    
 	    
+	    /**
+	     * @param formatURI A format URI
+	     * @return The properties this characterisation service extracts for the given file format
+	     */
 	    @WebMethod(operationName = Characterise.NAME + "_" + "listProperties", action = PlanetsServices.NS
 	            + "/" + Characterise.NAME + "/" + "listProperties")
 	    @WebResult(name = Characterise.NAME + "Property_List", targetNamespace = PlanetsServices.NS
