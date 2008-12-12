@@ -38,12 +38,12 @@ import eu.planets_project.services.utils.FileUtils;
 @WebService(name = Droid.NAME, serviceName = Identify.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.identify.Identify")
 public final class Droid implements Identify, Serializable {
     private static Log log = LogFactory.getLog(Droid.class);
-    
+
     /**
      * The e number of ms. we want to wait in one waiting step for the
      * identification to finish
      */
-    private static final int WAIT_INTERVAL = 100;
+    private static final int WAIT_INTERVAL = 300;
     /**
      * The maximum times we want to sleep for WAIT_INTERVAL ms. to wait for the
      * identification to finish
@@ -83,7 +83,8 @@ public final class Droid implements Identify, Serializable {
      * @see eu.planets_project.services.identify.Identify#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Identify.class.getCanonicalName());
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
+                Identify.class.getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
         sd.description("Identification service based on Droid.");
         return sd.build();
@@ -106,8 +107,8 @@ public final class Droid implements Identify, Serializable {
             e.printStackTrace();
             log.error("Failed to read sig file");
         }
-        log.info("Attempting to identify "+tempFile.getAbsolutePath());
-        log.info("File is of length "+tempFile.length());
+        log.info("Attempting to identify " + tempFile.getAbsolutePath());
+        log.info("File is of length " + tempFile.length());
         controller.addFile(tempFile.getAbsolutePath());
         controller.setVerbose(false);
         controller.runFileFormatAnalysis();
@@ -119,7 +120,7 @@ public final class Droid implements Identify, Serializable {
             IdentificationFile file = iterator.next();
             waitFor(file);
             URI[] uris = new URI[file.getNumHits()];
-            log.info("Looking at results: #"+file.getNumHits());
+            log.info("Looking at results: #" + file.getNumHits());
             // Retrieve the results:
             try {
                 for (int hitCounter = 0; hitCounter < file.getNumHits(); hitCounter++) {
@@ -156,15 +157,32 @@ public final class Droid implements Identify, Serializable {
          * Droid runs the identification in a Thread, so we have to wait until
          * it finishes...
          */
-        while (file.getClassification() == AnalysisController.FILE_CLASSIFICATION_NOTCLASSIFIED
-                /* ...but we won't wait forever */
+        while (!file.isClassified() /* ...but we won't wait forever: */
                 && slept < WAIT_MAX) {
-            try {
-                Thread.sleep(WAIT_INTERVAL);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            sleep();
             slept++;
+        }
+        /*
+         * We seem to be hitting are rare case sometimes: The file is
+         * classified, we think we are done with waiting, but that
+         * classification is preliminary and would be replaced, if we'd wait a
+         * little longer, e.g. having RTF 1.0 as a preliminary result, which
+         * will be updated to RTF 1.5 a moment later. I have no idea how to
+         * check that form the API, so for now, I've set the waiting interval a
+         * little higher, and wait at least once more, after Droid has
+         * something:
+         */
+        sleep();
+    }
+
+    /**
+     * Let the current thread sleep for WAIT_INTERVAL ms.
+     */
+    private void sleep() {
+        try {
+            Thread.sleep(WAIT_INTERVAL);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

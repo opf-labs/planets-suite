@@ -1,10 +1,12 @@
 package eu.planets_project.ifr.core.services.identification.droid.impl;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -66,7 +68,7 @@ public class DroidTests {
         /***/
         private String location;
         /***/
-        private String[] expected;
+        private List<String> expected;
 
         /**
          * @param location The sample file location
@@ -74,7 +76,7 @@ public class DroidTests {
          */
         private TestFile(final String location, final String... expected) {
             this.location = location;
-            this.expected = expected;
+            this.expected = new ArrayList<String>(Arrays.asList(expected));
         }
     }
 
@@ -100,8 +102,8 @@ public class DroidTests {
         }
         if (identify != null) {
             for (int i = 0; i < identify.length; i++) {
-                assertEquals("Identification failed for " + f.location,
-                        f.expected[i], identify[i]);
+                Assert.assertTrue("Identification failed for " + f.location,
+                        f.expected.contains(identify[i]));
             }
         }
     }

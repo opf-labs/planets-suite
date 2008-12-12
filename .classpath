@@ -63,7 +63,7 @@
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/image.jar"/>
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
 	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/xena.jar"/>
-	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar"/>
+	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar" sourcepath="PC/droid/lib/droid/droid-src.zip"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
 	<classpathentry kind="lib" path="PC/jhove/lib/jhove.jar"/>
