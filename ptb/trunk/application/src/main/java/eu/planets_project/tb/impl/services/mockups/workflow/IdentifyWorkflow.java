@@ -146,7 +146,8 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
             ServiceReport sr = new ServiceReport();
             sr.setErrorState(ServiceReport.ERROR);
             sr.setError(exceptionReport);
-            sr.setInfo(identify.getReport().toString());
+            if( identify != null && identify.getReport() != null )
+                sr.setInfo(identify.getReport().toString());
             wr = new WorkflowResult(measurements.values(), null, null, sr);
         }
         return wr;
