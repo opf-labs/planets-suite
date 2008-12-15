@@ -135,14 +135,20 @@ public final class DigitalObjectTests {
      * DigitalObject instances also work with Java's set collections, which use
      * equals for comparison, not comparable as the static sorting method in
      * Collections.
+     * @throws MalformedURLException
      */
     @Test
-    public void equality() {
+    public void equality() throws MalformedURLException {
         Set<DigitalObject> set = new HashSet<DigitalObject>();
         set.add(digitalObject1);
         set.add(digitalObject1);
+        /* The permanent URL is optional: */
+        DigitalObject anon = new DigitalObject.Builder(Content
+                .byReference(new URL(SOME_URL_1))).build();
+        set.add(anon);
+        set.add(anon);
         assertTrue("Set of digital objects contains duplicate entries;", set
-                .size() == 1);
+                .size() == 2);
     }
 
     /**

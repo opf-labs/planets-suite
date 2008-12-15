@@ -355,8 +355,17 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(final DigitalObject o) {
-        return this.permanentUrl.toString()
-                .compareTo(o.permanentUrl.toString());
+        if (this.permanentUrl != null && o.permanentUrl != null) {
+            /* The ID is optional, so if we have one we use it: */
+            return this.permanentUrl.toString().compareTo(
+                    o.permanentUrl.toString());
+        } else if (this.permanentUrl != null || o.permanentUrl != null) {
+            /* If only one of them is defined, they are not equal: */
+            return -1;
+        } else {
+            /* But if none is, we use the XML serialization: */
+            return this.toXml().compareTo(o.toXml());
+        }
     }
 
     /**
@@ -375,7 +384,11 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      */
     @Override
     public int hashCode() {
-        return permanentUrl.toString().hashCode();
+        if (permanentUrl != null) {
+            return permanentUrl.toString().hashCode();
+        } else {
+            return this.toXml().hashCode();
+        }
     }
 
     /**
