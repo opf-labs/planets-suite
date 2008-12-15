@@ -187,13 +187,16 @@ public class Manager {
         try {
             // Send a message.
             PlanetsMailMessage mailer = new PlanetsMailMessage();
+            mailer.setSender("noreply@planets-project.eu");
             mailer.setSubject(this.emailTestSubject);
             mailer.setBody(this.emailTestMessage);
             mailer.addRecipient(this.emailTestAddress);
             mailer.send();
             this.setTestEmailResult("You email appears to have been successfully sent. Please check the logs.");
+            log.info("Email sent successfully.");
         } catch( Exception e ) {
             this.setTestEmailResult("Sending email failed, with exception: "+e);
+            log.info("Email sending failed.");
         }
         return "success";
     }
