@@ -36,6 +36,10 @@
 								<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_login.gif" 
                             	alt="#{res['welcome.login.login']}" title="#{res['login.login']}" style="margin:5px 5px 5px 5px;" />
 							</h:commandLink>
+							<ui:fragment rendered="#{empty UserBean.userid}">
+								<p>Forgotten your username or password? Need help registering for an account? 
+								<br />Email the helpdesk: <a href="mailto:helpdesktb@planets-project.eu">helpdesktb@planets-project.eu</a></p>
+							</ui:fragment>
 							<h:commandLink action="browse_services" rendered="#{UserBean.reader}">
                             <img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_services.gif" 
                             	alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" style="margin:5px 5px 5px 5px;" />
