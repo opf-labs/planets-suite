@@ -132,24 +132,26 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         measurements.get(IDENTIFY_SERVICE_TIME).setValue(""+((msAfter-msBefore)/1000.0));
         log.info("Got timing: "+((msAfter-msBefore)/1000.0));
         // Now record
+        try {
         if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
             URI format_uri = identify.getTypes().get(0);
-            
             measurements.get(IDENTIFY_SUCCESS).setValue("true");
             measurements.get(IDENTIFY_FORMAT).setValue(format_uri.toString());
-            
             wr = new WorkflowResult(measurements.values(), WorkflowResult.RESULT_URI, format_uri, identify.getReport() );
-        } else {
-            // Build in a 'service success' property.
-            measurements.get(IDENTIFY_SUCCESS).setValue("false");
-            // Create a ServiceReport from the exception.
-            ServiceReport sr = new ServiceReport();
-            sr.setErrorState(ServiceReport.ERROR);
-            sr.setError(exceptionReport);
-            if( identify != null && identify.getReport() != null )
-                sr.setInfo(identify.getReport().toString());
-            wr = new WorkflowResult(measurements.values(), null, null, sr);
+            return wr;
         }
+        } catch( Exception e ) {
+            exceptionReport += "<p>Failed with exception: "+e+"</p>";
+        }
+        // Build in a 'service success' property.
+        measurements.get(IDENTIFY_SUCCESS).setValue("false");
+        // Create a ServiceReport from the exception.
+        ServiceReport sr = new ServiceReport();
+        sr.setErrorState(ServiceReport.ERROR);
+        sr.setError(exceptionReport);
+        if( identify != null && identify.getReport() != null )
+            sr.setInfo(identify.getReport().toString());
+        wr = new WorkflowResult(measurements.values(), null, null, sr);
         return wr;
     }
 
