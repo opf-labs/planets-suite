@@ -187,7 +187,7 @@ public class Manager {
         try {
             // Send a message.
             PlanetsMailMessage mailer = new PlanetsMailMessage();
-            mailer.setSender("noreply@planets-project.eu");
+            //mailer.setSender("noreply@planets-project.eu");
             mailer.setSubject(this.emailTestSubject);
             mailer.setBody(this.emailTestMessage);
             mailer.addRecipient(this.emailTestAddress);
