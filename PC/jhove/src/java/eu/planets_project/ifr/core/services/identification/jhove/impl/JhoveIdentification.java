@@ -14,6 +14,9 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import edu.harvard.hul.ois.jhove.App;
 import edu.harvard.hul.ois.jhove.JhoveBase;
 import edu.harvard.hul.ois.jhove.JhoveException;
@@ -36,6 +39,7 @@ import eu.planets_project.services.utils.FileUtils;
 @Remote(Identify.class)
 @Stateless()
 public final class JhoveIdentification implements Identify, Serializable {
+    private static Log log = LogFactory.getLog(JhoveIdentification.class);
     /***/
     static final String NAME = "JhoveIdentification";
     /***/
@@ -63,6 +67,7 @@ public final class JhoveIdentification implements Identify, Serializable {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "jhove-temp", "bin");
         Types types = identifyOneBinary(file);
+        log.info("JHOVE Identification, got types: "+types.types);
         ServiceReport report = new ServiceReport();
         report.setInfo(types.status);
         return new IdentifyResult(Arrays.asList(types.types), report);
