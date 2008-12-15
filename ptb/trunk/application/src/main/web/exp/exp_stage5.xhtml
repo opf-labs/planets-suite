@@ -57,14 +57,6 @@
                         <h:commandButton value="#{res['button.edit']}"
                         action="#{NewExp_Controller.unsubmitAndEdit}"/>
                     </h:panelGroup>
-                    <h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.executionRunning}" >
-                        <p>
-                            Your experiment is currently being executed. Depending on the intensity of your experiment this may take some time.
-                            <br/>
-                            <h:commandButton value="Refresh"
-                            action="goToStage5" />
-                        </p>
-                   </h:panelGroup>
     </h:panelGroup>
 
 </a4j:outputPanel>
@@ -200,9 +192,19 @@
         
      </rich:tabPanel>
 
+     <h:panelGroup rendered="#{! NewExp_Controller.experimentExecutable.executionRunning}" >
      <h:commandButton action="#{NewExp_Controller.executeExperimentStart}"
                       value="Re-run this experiment to collect more data." 
                       rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }"/>
+     </h:panelGroup>
+     <h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.executionRunning}" >
+                        <p>
+                            Your experiment is currently being executed. Depending on the intensity of your experiment this may take some time.
+                            <br/>
+                            <h:commandButton value="Refresh"
+                            action="goToStage5" />
+                        </p>
+     </h:panelGroup>
      
 </a4j:outputPanel>
     
