@@ -601,7 +601,8 @@ public final class ServiceDescription {
                 .unmodifiableList(properties);
     }
 
-    /* Proposed hashing and equality methods, generated using Eclipse */
+    /* Proposed hashing and equality methods, giving the identifier preference
+     * if it exists, else using the serialized XML form. */
 
     /**
      * {@inheritDoc}
@@ -609,16 +610,11 @@ public final class ServiceDescription {
      */
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((classname == null) ? 0 : classname.hashCode());
-        result = prime * result + ((tool == null) ? 0 : tool.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
-        result = prime * result + ((version == null) ? 0 : version.hashCode());
-        result = prime * result
-                + ((endpoint == null) ? 0 : endpoint.toString().hashCode());
-        return result;
+        if (identifier != null) {
+            return identifier.hashCode();
+        } else{
+            return toXml().hashCode();
+        }
     }
 
     /**
@@ -626,40 +622,16 @@ public final class ServiceDescription {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
+    public boolean equals(final Object obj) {
+        if(!(obj instanceof ServiceDescription)){
             return false;
-        if (getClass() != obj.getClass())
-            return false;
+        }
         ServiceDescription other = (ServiceDescription) obj;
-        if (endpoint == null) {
-            if (other.endpoint != null)
-                return false;
-        } else if (!endpoint.toString().equals(other.endpoint.toString()))
-            return false;
-        if (classname == null) {
-            if (other.classname != null)
-                return false;
-        } else if (!classname.equals(other.classname))
-            return false;
-        if (tool == null) {
-            if (other.tool != null)
-                return false;
-        } else if (!tool.equals(other.tool))
-            return false;
-        if (type == null) {
-            if (other.type != null)
-                return false;
-        } else if (!type.equals(other.type))
-            return false;
-        if (version == null) {
-            if (other.version != null)
-                return false;
-        } else if (!version.equals(other.version))
-            return false;
-        return true;
+        if (identifier != null) {
+            return identifier.equals(other.identifier);
+        } else{
+            return toXml().equals(other.toXml());
+        }
     }
 
     /**
@@ -699,8 +671,6 @@ public final class ServiceDescription {
     }
 
     private String toXml(boolean formatted) {
-        // Update the identifier using the hash code
-        this.identifier = "" + this.hashCode();
         try {
             /* Marshall with JAXB: */
             JAXBContext context = JAXBContext

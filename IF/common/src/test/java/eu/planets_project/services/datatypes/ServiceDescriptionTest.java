@@ -9,6 +9,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,7 +19,8 @@ import org.junit.Test;
 import eu.planets_project.services.identify.Identify;
 
 /**
- * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
+ * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>, <a
+ *         href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  */
 public class ServiceDescriptionTest {
 
@@ -108,6 +111,84 @@ public class ServiceDescriptionTest {
                 "Re-serialised ServiceDescription does not match the original. ",
                 sd.equals(nsd));
 
+    }
+
+    /**
+     * Test method for
+     * {@link eu.planets_project.services.datatypes.ServiceDescription#equals(Object)}
+     * .
+     */
+    @Test
+    public void equalsWithIdentifier() {
+        String name = "name";
+        String type = "type";
+        String id = "id1";
+        /* Create a service description and a copy via XML: */
+        ServiceDescription original = new ServiceDescription.Builder(name, type)
+                .identifier(id).build();
+        ServiceDescription copy = ServiceDescription.of(original.toXml());
+        /*
+         * Might seem needless, but was the original motivation for this test:
+         * check if the original is still OK:
+         */
+        Assert.assertEquals(id, original.getIdentifier());
+        Assert.assertEquals(name, original.getName());
+        Assert.assertEquals(type, original.getType());
+        /* At the same time, the two objects should be identical: */
+        Assert.assertEquals(original, copy);
+        /* But if we change the ID, no longer: */
+        Assert.assertNotSame(original, new ServiceDescription.Builder(original)
+                .identifier("id2").build());
+
+    }
+
+    /**
+     * Test method for
+     * {@link eu.planets_project.services.datatypes.ServiceDescription#equals(Object)}
+     * .
+     */
+    @Test
+    public void equalsWithoutIdentifier() {
+        /* Create a service description and a copy via XML: */
+        ServiceDescription original = new ServiceDescription.Builder("name",
+                "type").build();
+        ServiceDescription copy = ServiceDescription.of(original.toXml());
+        /* These two objects should be identical: */
+        Assert.assertEquals(original, copy);
+        /* But if we change anything, no longer: */
+        Assert.assertNotSame(original, new ServiceDescription.Builder(original)
+                .author("me").build());
+    }
+
+    /**
+     * Test method for
+     * {@link eu.planets_project.services.datatypes.ServiceDescription#equals(Object)}
+     * .
+     */
+    @Test
+    public void equalsCornerCases() {
+        Assert.assertFalse(sd.equals("Some string"));
+        Assert.assertFalse(sd.equals(1));
+        Assert.assertFalse(sd.equals(null));
+    }
+
+    /**
+     * Test method for
+     * {@link eu.planets_project.services.datatypes.ServiceDescription#hashCode()}
+     * .
+     */
+    @Test
+    public void hashCodeUsage() {
+        /*
+         * We test the hashCode implementation by using service descriptions
+         * with a HashSet:
+         */
+        Set<ServiceDescription> set = new HashSet<ServiceDescription>();
+        set.add(sd);
+        set.add(ServiceDescription.of(sd.toXml()));
+        set.add(ServiceDescription.of(sd.toXml())); // all the same until here
+        set.add(new ServiceDescription.Builder(sd).author("me").build());
+        Assert.assertEquals(2, set.size());
     }
 
 }
