@@ -21,7 +21,7 @@ import eu.planets_project.services.identify.IdentifyResult;
  */
 public class DroidTests {
 
-    static Identify droid;
+    static Identify droid = null;
 
     /**
      * Tests Droid identification using a local Droid instance.
