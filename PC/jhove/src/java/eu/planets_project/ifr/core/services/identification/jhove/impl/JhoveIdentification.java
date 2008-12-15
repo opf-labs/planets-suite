@@ -210,8 +210,12 @@ public final class JhoveIdentification implements Identify, Serializable {
             builder.append(line);
         }
         if (mime == null) {
-            throw new IllegalStateException("Identification failed: " + status
-                    + " (no mime type in " + builder.toString() + ")");
+            String output = builder.toString();
+            throw new IllegalStateException(
+                    "Identification failed with status: " + status
+                            + " (no mime type in "
+                            + (output.length() == 0 ? "empty output" : output)
+                            + ")");
         }
         Types t = new Types();
         t.status = status;
