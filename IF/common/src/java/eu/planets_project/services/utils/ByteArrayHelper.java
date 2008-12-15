@@ -32,7 +32,7 @@ public final class ByteArrayHelper {
         byte[] array = null;
         try {
             BufferedInputStream in = new BufferedInputStream(
-                    new FileInputStream(file));
+                    new FileInputStream(file), 65536);
             if (file.length() > Integer.MAX_VALUE) {
                 throw new IllegalArgumentException("The file at "
                         + file.getAbsolutePath()
@@ -62,7 +62,7 @@ public final class ByteArrayHelper {
             file = File.createTempFile("planets", null);
             file.deleteOnExit();
             BufferedOutputStream out = new BufferedOutputStream(
-                    new FileOutputStream(file));
+                    new FileOutputStream(file), 65536);
             out.write(bytes);
             out.flush();
             out.close();
@@ -84,7 +84,7 @@ public final class ByteArrayHelper {
 		}
     	BufferedOutputStream out;
 		try {
-			out = new BufferedOutputStream(new FileOutputStream(inputFilePath));
+			out = new BufferedOutputStream(new FileOutputStream(inputFilePath), 65536);
 			out.write(inputBlob);
 			out.flush();
 			out.close();

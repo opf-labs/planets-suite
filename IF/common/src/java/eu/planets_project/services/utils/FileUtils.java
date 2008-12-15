@@ -5,6 +5,7 @@
  */
 package eu.planets_project.services.utils;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +16,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 /**
  *  @author: Thomas Kraemer thomas.kraemer@uni-koeln.de
@@ -68,44 +70,43 @@ public class FileUtils {
 	 * @return Returns a temp file created in the System-Temp folder
 	 */
 	public static File getTempFile(String name, String suffix) {
-		File input;
-		if(suffix.startsWith(".")) {
-			input = new File(SYSTEM_TEMP, name + suffix);
+		if(!suffix.startsWith(".")) {
+			suffix = "." + suffix;
 		}
-		else {
-			input = new File(SYSTEM_TEMP, name + "." + suffix);
+		File input = null;
+		try {
+			input = File.createTempFile(name, suffix, new File(SYSTEM_TEMP));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		return input;
 	}
 	
 	
+	
 	/**
-	 * @param name
-	 *            The name to use when generating the temp file
-	 * @param suffix
-	 * 			  The suffix for the temp file           
-	 * @return Returns a temp file created in the System-Temp folder
+	 * @param data - the data to write to that file
+	 * @param name - the file name of the file to be created
+	 * @param suffix - the suffx of that file (e.g. ".tmp", ".bin", ...)
+	 * @return - a new File with the given content (--> data), name and extension.
 	 */
 	public static File getTempFile(byte[] data ,String  name,String suffix) {
-		File input;
-			if(suffix.startsWith(".")) {
-				input = new File(SYSTEM_TEMP, name + suffix);
-			}
-			else {
-				input = new File(SYSTEM_TEMP, name + "." + suffix);
-			}
-			FileOutputStream fos;
-			try {
-				fos = new FileOutputStream(input);
-				fos.write(data);
-				fos.flush();
-				fos.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return input;
+		if(!suffix.startsWith(".")) {
+			suffix = "." + suffix;
+		}
+		File input = getTempFile(name, suffix);
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(input);
+			fos.write(data);
+			fos.flush();
+			fos.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return input;
 	}
 	
 	public static String readTxtFileIntoString(File textFile) {
@@ -134,7 +135,7 @@ public class FileUtils {
 	public static File writeStringToFile (String toWriteToFile, String destinationFilePath) {
 		File result = new File(destinationFilePath);
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(result));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(result), 32768);
 			writer.write(toWriteToFile);
 			writer.flush();
 			writer.close();
@@ -201,33 +202,74 @@ public class FileUtils {
 		return null;
 	}
 	
-	public static File writeInputStreamToTmpFile(InputStream inputStream,String fileName, String suffix) {
-		File file = getTempFile(fileName, suffix);
-		FileOutputStream fileOutStream = null;
-		try {
-			fileOutStream = new FileOutputStream(file);
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	public static File writeInputStreamToTmpFile(InputStream inputStream, String fileName, String suffix) {
 		if(!suffix.startsWith(".")) {
 			suffix = "." + suffix;
 		}
+		File file = getTempFile(fileName, suffix);
+		BufferedOutputStream bos = null;
+		FileOutputStream fileOutStream = null;
+		try {
+			fileOutStream = new FileOutputStream(file);
+			bos = new BufferedOutputStream(fileOutStream, 32768);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
 		try {
 			int dataBit;
 			
 			while((dataBit = inputStream.read())!=-1) {
-				fileOutStream.write(dataBit);
+				bos.write(dataBit);
 			}
-			fileOutStream.flush();
-			fileOutStream.close();
+			bos.flush();
+			bos.close();
 			
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return file;
+	}
+	
+	public static File writeInputStreamToFile(InputStream in, File parentFolder, String fileName) {
+		BufferedOutputStream bos = null;
+		FileOutputStream fileOut = null;
+		File target = new File(parentFolder, fileName);
+		if(target.exists()) {
+			long randonNr = (long) (Math.random()* 1000);
+			if(fileName.contains(".")) {
+				fileName = fileName.substring(0, fileName.lastIndexOf(".")) + "_" + randonNr + fileName.substring(fileName.lastIndexOf("."));
+			}
+			else {
+				fileName = fileName + randonNr;
+			}
+			target.renameTo(new File(parentFolder, fileName));
+		}
+		try {
+			fileOut = new FileOutputStream(target);
+			bos = new BufferedOutputStream(fileOut, 32768);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		}
+		
+		try {
+			int dataBit;
+			
+			while((dataBit = in.read())!=-1) {
+				bos.write(dataBit);
+			}
+			bos.flush();
+			bos.close();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return target;
+	}
+	
+	public static File getSystemTempFolder() {
+		return new File(SYSTEM_TEMP);
 	}
 
 }
