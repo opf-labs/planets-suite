@@ -23,7 +23,7 @@ import javax.naming.InitialContext;
  */
 public class PlanetsMailMessage {
     private Session session = null;
-    private InternetAddress sender = new InternetAddress();
+    private InternetAddress sender = null;
     private String subject = new String();
     private String body = new String();
     private List recipients = new ArrayList();
@@ -135,7 +135,9 @@ public class PlanetsMailMessage {
             InternetAddress[] recipientsArr;
             recipientsArr = (InternetAddress[]) recipients.toArray(new InternetAddress[0]);
             MimeMessage msg = new MimeMessage(session);
-            msg.setFrom(sender);
+            // Optionally override the sender.
+            if( sender != null )
+                msg.setFrom(sender);
             msg.setRecipients(Message.RecipientType.TO, recipientsArr);
 
             if (!ccRecipients.isEmpty()) 
