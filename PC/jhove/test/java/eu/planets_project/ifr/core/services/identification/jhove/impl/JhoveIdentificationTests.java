@@ -50,9 +50,19 @@ public class JhoveIdentificationTests {
         test(FileType.HTML);
     }
 
-    //@Test TODO: add back when fixed for build server
-    public void testJpeg() {
-        test(FileType.JPEG);
+    @Test
+    public void testJpeg1() {
+        test(FileType.JPEG1);
+    }
+
+    @Test
+    public void testJpeg2() {
+        test(FileType.JPEG2);
+    }
+
+    @Test
+    public void testJpeg3() {
+        test(FileType.JPEG3);
     }
 
     @Test

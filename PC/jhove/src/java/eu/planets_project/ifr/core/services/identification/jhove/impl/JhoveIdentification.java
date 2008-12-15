@@ -98,7 +98,11 @@ public final class JhoveIdentification implements Identify, Serializable {
         /***/
         HTML("text/html", "info:pronom/fmt/96", "html/sample.html"),
         /***/
-        JPEG("image/jpeg", "info:pronom/fmt/42", "jpeg/AA_Banner.jpg"),
+        JPEG1("image/jpeg", "info:pronom/fmt/42", "jpeg/black.jpg"),
+        /***/
+        JPEG2("image/jpeg", "info:pronom/fmt/42", "jpeg/blue.jpg"),
+        /***/
+        JPEG3("image/jpeg", "info:pronom/fmt/42", "jpeg/AA_Banner.jpg"),
         /***/
         PDF("application/pdf", "info:pronom/fmt/14", "pdf/AA_Banner-single.pdf"),
         /***/
@@ -195,6 +199,7 @@ public final class JhoveIdentification implements Identify, Serializable {
         }
         String mime = null;
         String status = null;
+        StringBuilder builder = new StringBuilder();
         while (s.hasNextLine()) {
             String line = s.nextLine().trim().toLowerCase();
             if (line.startsWith("mimetype:")) {
@@ -202,10 +207,11 @@ public final class JhoveIdentification implements Identify, Serializable {
             } else if (line.startsWith("status:")) {
                 status = value(line);
             }
+            builder.append(line);
         }
         if (mime == null) {
             throw new IllegalStateException("Identification failed: " + status
-                    + " (details in " + base.getOuputFile() + ")");
+                    + " (no mime type in " + builder.toString() + ")");
         }
         Types t = new Types();
         t.status = status;
