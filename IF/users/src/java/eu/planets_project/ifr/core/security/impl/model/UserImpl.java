@@ -56,7 +56,8 @@ import org.jboss.security.Util;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class UserImpl implements User, Serializable {
     private static final long serialVersionUID = 3832626162173359411L;
-	private static Log log = LogFactory.getLog(UserImpl.class);
+	@SuppressWarnings("unused")
+    private static Log log = LogFactory.getLog(UserImpl.class);
 
     private Long id;
     private String username; // required
@@ -94,7 +95,7 @@ public class UserImpl implements User, Serializable {
      * @return the id of the user, its unique key
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "id", nullable = false, unique = true)
     public Long getId() {
         return id;

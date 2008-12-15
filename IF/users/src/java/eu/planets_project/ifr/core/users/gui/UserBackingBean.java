@@ -294,6 +294,9 @@ public class UserBackingBean {
 	}
 
 	private boolean passwordChanged() {
+	    // Check the password field has been filled in:
+//        if( this.userPassword.trim().equals("") ) return false;
+//        if( this.confirmPassword.trim().equals("") ) return false;
 		// Check that all of the password fields are the same
 		//(the user hasn't changed either password field on the form
 		return !(this.originalPassword.equals(this.confirmPassword)  && this.originalPassword.equals(this.userPassword));
@@ -317,7 +320,8 @@ public class UserBackingBean {
 			e.printStackTrace();
 			return;
 		}
-		this.userPassword = this.confirmPassword = this.originalPassword = this.user.getPassword();
+//        this.userPassword = this.confirmPassword = "";
+        this.userPassword = this.confirmPassword = this.originalPassword = this.user.getPassword();
 		this.userRoles = this.user.rolesAsStrings();
 	}
 	
