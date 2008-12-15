@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
 
 
@@ -77,7 +78,15 @@ public interface DataHandler {
      * @return
      */
     public File getFile(String id) throws FileNotFoundException;
-
+    
+    
+    /**
+     * 
+     * @param id
+     * @return
+     * @throws FileNotFoundException
+     */
+    public DigitalObject getDigitalObject(String id ) throws FileNotFoundException;
     
     
     /**

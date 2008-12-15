@@ -3,8 +3,10 @@
  */
 package eu.planets_project.tb.gui.backing;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.faces.model.SelectItem;
 
@@ -24,6 +26,9 @@ import eu.planets_project.tb.impl.services.ServiceRegistryManager;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 
 
 /**
@@ -49,6 +54,13 @@ public class ServiceBrowser {
     
     private String nodeTitle;
     
+    // Get the format registry:
+    public static  FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
+    public static Format unknown = fr.getFormatForURI( Format.extensionToURI("unknown") );
+
+    /**
+     * 
+     */
     public class ServiceTreeItem {
         String type;
         String category;
@@ -229,23 +241,29 @@ public class ServiceBrowser {
      * @return A list of SelectItems populated with the identify service endpoints.
      */
     public List<SelectItem> getIdentifyServicesSelectList() {
-        return this.createServiceList(Identify.class.getCanonicalName());
+        return createServiceList(Identify.class.getCanonicalName());
     }
     
     /**
      * @return A list of SelectItems populated with the identify service endpoints.
      */
     public List<SelectItem> getMigrateServicesSelectList() {
-        return this.createServiceList(Migrate.class.getCanonicalName());
+        return createServiceList(Migrate.class.getCanonicalName());
     }
 
     /**
      * @param type
      * @return
      */
-    private List<SelectItem> createServiceList( String type ) {
-        List<SelectItem> slist = new ArrayList<SelectItem>();
-        
+    private static List<SelectItem> createServiceList( String type ) {
+        return mapServicesToSelectList( getListOfServices(type) );
+    }
+
+    /**
+     * @param type
+     * @return
+     */
+    public static List<ServiceDescription> getListOfServices( String type ) {
         //Instantiate a registry:
         Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
 
@@ -254,26 +272,53 @@ public class ServiceBrowser {
         
         // List Identify services:
         ServiceDescription sdQuery = new ServiceDescription.Builder(null, type).build();
-        List<ServiceDescription> identifiers = registry.query(sdQuery);
-        for( ServiceDescription sd : identifiers ) {
-            slist.add( this.createServiceSelectItem(sd) );
-        }
 
         //To register a service
         //Response = registry.register(ServiceDescription)
         
-        return slist;
-        
+        return registry.query(sdQuery);
     }
     
+    /**
+     * @param sdlist
+     * @return
+     */
+    public static List<SelectItem> mapServicesToSelectList( List<ServiceDescription> sdlist ) {
+        List<SelectItem> slist = new ArrayList<SelectItem>();
+        for( ServiceDescription sd : sdlist ) {
+            slist.add( createServiceSelectItem(sd) );
+        }
+        return slist;
+    }
+
     /**
      * @param sd
      * @return
      */
-    private SelectItem createServiceSelectItem( ServiceDescription sd ) {
+    private static SelectItem createServiceSelectItem( ServiceDescription sd ) {
         String serviceName = sd.getName();
         serviceName += " (@"+sd.getEndpoint().getHost()+")";
         return new SelectItem( sd.getEndpoint(), serviceName );
+    }
+    
+    /**
+     * @param formats
+     * @return
+     */
+    public static List<SelectItem> mapFormatURIsToSelectList( Set<URI> formats ) {
+        List<SelectItem> slist = new ArrayList<SelectItem>();
+        for( URI fmt : formats ) {
+            slist.add( createFormatURISelectItem(fmt) );
+        }
+        return slist;
+    }
+
+    /**
+     * @param fmt
+     * @return
+     */
+    private static SelectItem createFormatURISelectItem( URI fmt ) {
+        return new SelectItem( fmt.toString(), fmt.toString() );
     }
     
 }

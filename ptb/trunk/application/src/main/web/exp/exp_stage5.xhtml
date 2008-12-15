@@ -75,32 +75,25 @@
 
     <rich:tabPanel width="100%" selectedTab="OverallResultTab" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
         <rich:tab label="Overall Results" name="OverallResultTab">
-     <rich:dataTable value="#{ExperimentBean.experimentDigitalObjectResults}" 
-         var="res" styleClass="tbTable" reRender="dolist_ds" rows="10">
-        <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
-          <f:facet name="header">Digital Object</f:facet>
-          <h:outputLink value="#{res.downloadURL}" styleClass="inTableIcon">
-            <t:graphicImage value="/graphics/go-down.png" alt="Download..."/>
-          </h:outputLink>
-          <h:commandLink title="View Results.">
-              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectedDigitalObjectActionListener"/>
-                 <h:outputText value="#{res.digitalObjectName}"/>
-          </h:commandLink>
-        </rich:column>
-        <rich:column>
-          <f:facet name="header">Results</f:facet>
-          
+     
+
+        <c:if test="#{ExperimentBean.etype == 'identify'}">
+        
         <ui:include src="/WEB-INF/templates/exp-types/stage5_identify_result.xhtml">
            <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-           <ui:param name="Results" value="#{res}" />
         </ui:include>
           
+        </c:if>
+                
+        <c:if test="#{ExperimentBean.etype == 'migrate'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_migrate_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
           
-        </rich:column>
-        <f:facet name="footer">
-          <rich:datascroller id="dolist_ds"></rich:datascroller>
-        </f:facet>
-     </rich:dataTable>
+        
+        </c:if>
+     
         <p>
         The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.
         </p>
@@ -153,24 +146,37 @@
                 Execution Results In Detail
                 </f:facet>
                 
-         <h:panelGroup rendered="#{ExperimentBean.selectedExecutionRecord != null}">
+         <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord != null}">
+         
+         <a4j:repeat value="#{ExperimentBean.selectedBatchExecutionRecord.runs}" var="run">
+         <rich:panel>
+         <f:facet name="header">
+           <h:outputText value="#{run.digitalObjectSource}"/>
+         </f:facet>
 
-         <a4j:repeat value="#{ExperimentBean.selectedExecutionRecord.stages}" var="stage">
+         <a4j:repeat value="#{run.stages}" var="stage">
         
           <rich:dataTable value="#{stage.measurements}" var="m" styleClass="tbTable">
                 <f:facet name="header">#{stage.stage}</f:facet>
             <rich:column>
             <f:facet name="header">Measurement</f:facet>
-            <h:outputText value="#{m.name}"/>
+            <h:outputText value="#{m.identifier}"/>
             </rich:column>
             <rich:column>
             <f:facet name="header">Value</f:facet>
-            <h:outputText value="#{m.value}"/><h:outputText value=" #{m.unit}" rendered="#{m.unit != null}"/>
+            <h:outputText value="#{m.value}"/><!--h:outputText value=" {m.unit}" rendered="{m.unit != null}"/ -->
             </rich:column>
           </rich:dataTable>
           
          </a4j:repeat>
          
+         </rich:panel>
+         </a4j:repeat>
+         
+         </h:panelGroup>
+         
+         <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord == null}">
+         <p>Please select a batch execution time (on the left) to see the batch results.</p>
          </h:panelGroup>
                 
     </rich:panel>
@@ -179,12 +185,15 @@
 
         </rich:tab>
         
-        <rich:tab label="Comparison &amp; Evaluation">
+        <rich:tab label="Comparisons">
         <p>
-            Difference displays, comparator configuration, depending on experiment type.
+        TBC
         </p>
         <p>
-        Comparisons of the measured digital object properties. Cross-comparisons, etc.
+            Difference displays, using default comparator configuration, depending on experiment type.
+        </p>
+        <p>
+          Comparisons of the measured digital object properties. Cross-comparisons, etc.
         </p>
         
         </rich:tab>
@@ -192,7 +201,8 @@
      </rich:tabPanel>
 
      <h:commandButton action="#{NewExp_Controller.executeExperimentStart}"
-                        value="Re-run this experiment to collect more data." />
+                      value="Re-run this experiment to collect more data." 
+                      rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }"/>
      
 </a4j:outputPanel>
     
@@ -201,7 +211,7 @@
        <ui:param name="PlaceBandAsHeader" value="false" />
     </ui:include>
 
-        <rich:simpleTogglePanel label="Hacky Development And Debug Options" opened="false">
+        <rich:simpleTogglePanel label="Hacky Development And Debug Options" opened="false" rendered="false">
          <p>
        #{NewExp_Controller.executeExperimentIsRunning}, and #{TestbedBatchProcessor.daemon.secs}
        <h:commandButton value="HACK! Click to abort runningness." action="#{NewExp_Controller.commandResetAfterFailure}" />

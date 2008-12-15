@@ -25,7 +25,10 @@ String mimetype = new MimetypesFileTypeMap().getContentType(f);
 // Set the headers appropriately:
 response.setContentType( (mimetype != null) ? mimetype : "application/octet-stream" );
 response.setContentLength( ((Long)f.length()).intValue() );
-response.setHeader( "Content-Disposition", "attachment; filename=\"" + filename + "\"" );
+// This should allow the content to be rendered by the browser, but the filename is ignored.
+response.setHeader( "Content-Disposition", "inline; filename=\"" + filename + "\"" );
+// The following alternative forces a download:
+//response.setHeader( "Content-Disposition", "attachment; filename=\"" + filename + "\"" );
 
 // Now stream out the data:
 byte[] bbuf = new byte[2*1024];

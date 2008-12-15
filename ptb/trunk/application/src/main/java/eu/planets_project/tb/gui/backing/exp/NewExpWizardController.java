@@ -1,6 +1,7 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -50,6 +51,7 @@ import javax.faces.application.FacesMessage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URI;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
@@ -1363,6 +1365,24 @@ public class NewExpWizardController {
                   WorkflowResult wrf = job.getWorkflowResult(filename);
                   // FIXME This reflects other problems!
                   if( wrf != null && wrf.getMeasurements() != null ) {
+                      // Examine the result:
+                      if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wrf.getResultType())) {
+                          DigitalObject dob = (DigitalObject) wrf.getResult();
+                          try {
+                              String storeKey = dh.addBytestream(dob.getContent().read(), dob.getTitle());
+                              rec.setResult(storeKey);
+                              rec.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
+                              /* FIXME In the future, store the whole DO in the TB DR.
+                              Add dob.gatherBinaries/embedBinaries method?
+                                      */
+                          } catch (IOException e) {
+                              log.error("Could not store result DigitalObject - "+dob);
+                              e.printStackTrace();
+                          }
+                      } else {
+                          rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
+                      }
+                      // Now pull out the measurements:
                       Set<String> stagenames = new HashSet<String>();
                       for( MeasurementImpl m : wrf.getMeasurements() ) {
                           stagenames.add(m.getStage());
@@ -1741,13 +1761,10 @@ public class NewExpWizardController {
            
            if( etype.equals( AdminManagerImpl.IDENTIFY ) ) {
                ExpTypeIdentify exptype = (ExpTypeIdentify)JSFUtil.getManagedObject("ExpTypeIdentify");
-               Collection<MeasurementImpl> measurements = exptype.getObservables();
-               obs = new ArrayList<MeasurementBean>();
-               for( MeasurementImpl measurement : measurements ) {
-                   MeasurementBean measurebean =  new MeasurementBean(measurement);
-                   measurebean.setSelected(true);
-                   obs.add(measurebean);
-               }
+               obs = this.createMeasurementBeans(exptype.getObservables());
+           } else if( etype.equals( AdminManagerImpl.MIGRATE ) ) {
+               ExpTypeMigrate exptype = (ExpTypeMigrate)JSFUtil.getManagedObject("ExpTypeMigrate");
+               obs = this.createMeasurementBeans(exptype.getObservables());
            } else {
                // For unrecognised experiment types, set to NULL:
                obs = null;
@@ -1766,6 +1783,20 @@ public class NewExpWizardController {
                 m.setSelected(true);
             }
         }
+    }
+    
+    /**
+     * @param measurements
+     * @return
+     */
+    private List<MeasurementBean> createMeasurementBeans( Collection<MeasurementImpl> measurements ) {
+        List<MeasurementBean> mbeans = new ArrayList<MeasurementBean>();
+        for( MeasurementImpl measurement : measurements ) {
+            MeasurementBean measurebean =  new MeasurementBean(measurement);
+            measurebean.setSelected(true);
+            mbeans.add(measurebean);
+        }
+        return mbeans;
     }
     
     /**

@@ -25,6 +25,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
@@ -41,6 +44,8 @@ import eu.planets_project.tb.impl.system.BackendProperties;
  * References returned are relative filenames w.r.t. the Testbed data directory.
  * 
  * Older versions supported full pathnames, and the resolver deals with those too.
+ * 
+ * FIXME Future version should store references for DigitalObjects in 
  * 
  * @author Andrew Lindley, ARC. Andrew Jackson, BL.
  * 
@@ -100,9 +105,11 @@ public class DataHandlerImpl implements DataHandler {
 	private String generateUniqueName(String name) {
 	    // create unique filename
 	    
-        String ext = "no_ext";
-        if( name.lastIndexOf('.') != -1 )
-            ext = name.substring(name.lastIndexOf('.'));
+        String ext = "_no_ext";
+        if( name != null ) {
+            if( name.lastIndexOf('.') != -1 )
+                ext = name.substring(name.lastIndexOf('.'));
+        }
         return UUID.randomUUID().toString() + ext;
 	}
 	
@@ -201,6 +208,32 @@ public class DataHandlerImpl implements DataHandler {
         return cf.getName();
     }
     
+    
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#getDigitalObject(java.lang.String)
+     */
+    public DigitalObject getDigitalObject(String id)
+            throws FileNotFoundException {
+        CachedFile cf = new CachedFile(id);
+        File f = cf.getFile();
+        DigitalObject.Builder dob = new DigitalObject.Builder(Content.byValue(f));
+        if( cf.getName() != null ) {
+            dob.title(cf.getName());
+        } else {
+            dob.title(id);
+        }
+        try {
+            dob.permanentUrl(cf.getDownload().toURL());
+        } catch (Exception e) {
+            // This has been known to throw a 'URI is not absolute' exception, so catching the generic one here.
+            log.error("Could not set Permanent URL based on " + cf.getDownload() + " :: " +e );
+            dob.permanentUrl(null);
+        }
+        return dob.build();
+    }
+
+
 
     /* -------------------------------------------------------------------------------------------------- */
     public class CachedFile {
@@ -255,7 +288,10 @@ public class DataHandlerImpl implements DataHandler {
                 context = req.getContextPath();
             }
             try {
-                download = new URI(null, null, context+"/reader/download.jsp","fid="+id, null);
+                
+                download = new URI( "http", 
+                        PlanetsServerConfig.getHostname()+":"+PlanetsServerConfig.getPort(), 
+                        context+"/reader/download.jsp","fid="+id, null);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
                 download = null;
@@ -285,10 +321,24 @@ public class DataHandlerImpl implements DataHandler {
         
         
     }
+    
     /* -------------------------------------------------------------------------------------------------- */
 	
-	
+    /**
+     * @param name
+     * @return
+     */
+    public static String createShortDOName( String name ) {
+        int lastSlash = name.lastIndexOf("/");
+        if( lastSlash != -1 ) {
+            return name.substring( lastSlash + 1, name.length() );
+        }
+        return name;
+    }
+    
+    /* -------------------------------------------------------------------------------------------------- */
 
+    
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#getInputFileIndexEntryName(java.io.File)
      */
@@ -337,22 +387,27 @@ public class DataHandlerImpl implements DataHandler {
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#setInputFileIndexEntryName(java.lang.String, java.lang.String)
      */
+    /*
     private void setInputFileIndexEntryName(String sFileRandomNumber, String sFileName){
         setFileEntryName(sFileRandomNumber, sFileName,true);
     }
+    */
     
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#setOutputFileIndexEntryName(java.lang.String, java.lang.String)
      */
+    /*
     private void setOutputFileIndexEntryName(String sFileRandomNumber, String sFileName){
         setFileEntryName(sFileRandomNumber, sFileName,false);
     }
+    */
     
     /**
      * @param sFileRandomNumber
      * @param sFileName
      * @param inputIndex indicates if this shall be written to the (true) inputFileIndex or (false) outputFileIndex
      */
+    /*
     private void setFileEntryName(String sFileRandomNumber, String sFileName, boolean inputIndex){
         if((sFileRandomNumber!=null)&&(sFileName!=null)){
             try{
@@ -374,6 +429,7 @@ public class DataHandlerImpl implements DataHandler {
             }
         }
     }
+    */
     
     /**
      * checks if for the input files an index file exists and if not creates it. As for the input

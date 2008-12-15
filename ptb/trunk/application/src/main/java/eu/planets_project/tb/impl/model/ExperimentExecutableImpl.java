@@ -39,6 +39,7 @@ import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
+import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 
 /**
  * @author alindley
@@ -558,6 +559,12 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
         if( AdminManagerImpl.IDENTIFY.equals(this.workflowType)) {
             log.info("Running an Identify experiment.");
             ExperimentWorkflow expwf = new IdentifyWorkflow();
+            expwf.setParameters(getParameters());
+            return expwf;
+            
+        } else if( AdminManagerImpl.MIGRATE.equals(this.workflowType)) {
+            log.info("Running a Migrate experiment.");
+            ExperimentWorkflow expwf = new MigrateWorkflow();
             expwf.setParameters(getParameters());
             return expwf;
 

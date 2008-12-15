@@ -68,8 +68,7 @@ public class TestbedBatchProcessDaemon extends Thread {
             // Process each in turn:
             for( String filename : job.getDigitalObjects() ) {
                 log.info("Running job: "+(i+1)+"/"+total);
-                File file = dh.getFile(filename);
-                DigitalObject dob = new DigitalObject.Builder( Content.byValue(ByteArrayHelper.read(file)) ).build();
+                DigitalObject dob = dh.getDigitalObject(filename);
                 WorkflowResult wfr = null;
                 if( job.getWorkflow() == null ) {
                     throw new Exception("Cannot run this workflow, as it is null!");

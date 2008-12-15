@@ -12,7 +12,7 @@
   <ui:composition rendered="ExperimentBean != null}">
 
 
-     <rich:dataTable value="#{ExpTypeIdentify.formatResults}" 
+     <rich:dataTable value="#{ExpTypeMigrate.migrateResults}" 
          var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
         <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
           <f:facet name="header">Digital Object</f:facet>
@@ -27,12 +27,20 @@
         <rich:column>
           <f:facet name="header">Results</f:facet>
           
+          Patch mime-type into download?
           
-         <a4j:repeat value="#{res.formats}" var="fmt">
+          Make hovers on overview page to summarise configuration.
+
+         <a4j:repeat value="#{res.migrations}" var="mdo">
           
-          <h:outputText value="#{fmt.summary}"/><br/>
+         <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
+           <h:outputText value="#{mdo.digitalObjectResult}"/>
+         </h:outputLink>
+         <br/>
 
          </a4j:repeat>
+          
+
           
         </rich:column>
         <f:facet name="footer">
@@ -41,5 +49,6 @@
      </rich:dataTable>
 
   </ui:composition>
+
 </body>
 </html>

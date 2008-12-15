@@ -27,6 +27,16 @@ public class ExecutionRecordImpl implements Serializable {
     /** */
     private static final long serialVersionUID = -6230965529849585615L;
 
+    /** If the execution lead to a DigitalObject as output, stored in a data registry. */
+    public static final String RESULT_DIGITALOBJECT_REF = "DigitalObjectRef";
+
+    /** If the execution lead to a file that is stored in the local file store. */
+    public static final String RESULT_DATAHANDLER_REF = "DataHandlerRef";
+    
+    /** If the execution did not have any output other than the measurements */
+    public static final String RESULT_MEASUREMENTS_ONLY = "MeasurmentsOnly";
+
+
     //    @Id
 //    @GeneratedValue
     @XmlTransient
@@ -41,6 +51,9 @@ public class ExecutionRecordImpl implements Serializable {
     
     // The identity of the internally cached copy (from the DataHandler)
     private String digitalObjectReferenceCopy;
+    
+    // A fixity check for this digital object.
+    private String digitalObjectFixity;
     
     // The date of this invocation:
     private Calendar date;
@@ -111,6 +124,20 @@ public class ExecutionRecordImpl implements Serializable {
      */
     public void setDigitalObjectReferenceCopy(String digitalObjectReferenceCopy) {
         this.digitalObjectReferenceCopy = digitalObjectReferenceCopy;
+    }
+
+    /**
+     * @return the digitalObjectFixity
+     */
+    public String getDigitalObjectFixity() {
+        return digitalObjectFixity;
+    }
+
+    /**
+     * @param digitalObjectFixity the digitalObjectFixity to set
+     */
+    public void setDigitalObjectFixity(String digitalObjectFixity) {
+        this.digitalObjectFixity = digitalObjectFixity;
     }
 
     /**

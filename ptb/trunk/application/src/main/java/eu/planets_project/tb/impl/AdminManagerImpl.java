@@ -51,9 +51,9 @@ public class AdminManagerImpl implements AdminManager {
 	static {
 	    hmExperimentTypes = new HashMap<String,String>();
         hmExperimentTypes.put(IDENTIFY, "Identify");
+        //hmExperimentTypes.put(MIGRATE, "Migrate"); // FIXME This one is largely implemented, but disabled for now.
         //hmExperimentTypes.put(VALIDATE, "Validate");
         //hmExperimentTypes.put(CHARACTERISE, "Characterise");
-        //hmExperimentTypes.put(MIGRATE, "Migrate");
         //hmExperimentTypes.put(EMULATE, "View in Emulator");
 	}
 

@@ -23,10 +23,8 @@ public class SelectBatchExecutionRecordActionListener implements ActionListener 
     private PlanetsLogger log = PlanetsLogger.getLogger(SelectBatchExecutionRecordActionListener.class, "testbed-log4j.xml");
 
     public void processAction(ActionEvent anEvent) throws AbortProcessingException {
-        log.info("Processing event.");
+        log.info("Processing event. SelectBatch.");
         
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-
       UIComponent tmpComponent = anEvent.getComponent();
 
       while (null != tmpComponent && !(tmpComponent instanceof UIData)) {
@@ -36,7 +34,8 @@ public class SelectBatchExecutionRecordActionListener implements ActionListener 
       if (tmpComponent != null && (tmpComponent instanceof UIData)) {
         Object tmpRowData = ((UIData) tmpComponent).getRowData();
         if (tmpRowData instanceof BatchExecutionRecordImpl ) {
-            expBean.setSelectedBatchExecutionRecord( (BatchExecutionRecordImpl) tmpRowData ); 
+            ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+            expBean.setSelectedBatchExecutionRecord( (BatchExecutionRecordImpl) tmpRowData );
         }
       }
     }

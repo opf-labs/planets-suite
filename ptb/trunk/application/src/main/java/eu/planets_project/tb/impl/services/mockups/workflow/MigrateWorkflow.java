@@ -12,31 +12,34 @@ import java.util.HashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
-import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
+import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
 
 /**
- * This is the class that carries the code specific to invoking an Identify experiment.
+ * This is the class that carries the code specific to invoking an Migrate experiment.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class IdentifyWorkflow implements ExperimentWorkflow {
-    private static Log log = LogFactory.getLog(IdentifyWorkflow.class);
+public class MigrateWorkflow implements ExperimentWorkflow {
+    private static Log log = LogFactory.getLog(MigrateWorkflow.class);
 
     /** External property keys */
-    public static final String PARAM_SERVICE = "identify.service";
+    public static final String PARAM_SERVICE = "migrate.service";
+    public static final String PARAM_FROM = "migrate.from";
+    public static final String PARAM_TO = "migrate.to";
     
     /** Internal keys for easy referral to the service+stage combinations. */
-    public static final String STAGE_IDENTIFY = "Identify";
-    private static final String IDENTIFY_SUCCESS = STAGE_IDENTIFY+".service.success";
-    private static final String IDENTIFY_SERVICE_TIME = STAGE_IDENTIFY+".service.time";
-    private static final String IDENTIFY_FORMAT = STAGE_IDENTIFY+".do.format";
+    private static final String STAGE_MIGRATE = "Migrate";
+    private static final String MIGRATE_SUCCESS = STAGE_MIGRATE+".service.success";
+    private static final String MIGRATE_SERVICE_TIME = STAGE_MIGRATE+".service.time";
     
     /** Statically define the observable properties. FIXME Should be built from the TechReg */
     private static HashMap<String,MeasurementImpl> observables;
@@ -46,32 +49,23 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
 
             // The service succeeded
             observables.put( 
-                    IDENTIFY_SUCCESS,
+                    MIGRATE_SUCCESS,
                     new MeasurementImpl(
                             new URI( TecRegMockup.URIServicePropertyRoot+"success" ), 
                             "Service succeeded", "",
                             "Did this service execute successfully?  Returns true/false.", 
-                            STAGE_IDENTIFY, MeasurementImpl.TYPE_SERVICE)
+                            STAGE_MIGRATE, MeasurementImpl.TYPE_SERVICE)
                     );
             // The service time
             observables.put( 
-                IDENTIFY_SERVICE_TIME,
+                MIGRATE_SERVICE_TIME,
                 new MeasurementImpl(
                         new URI( TecRegMockup.URIServicePropertyRoot+"wallclock" ), 
                         "Service execution time", "seconds",
                         "The wall-clock time taken to execute the service, in seconds.", 
-                        STAGE_IDENTIFY, MeasurementImpl.TYPE_SERVICE)
+                        STAGE_MIGRATE, MeasurementImpl.TYPE_SERVICE)
                 );
         
-            // The measured type
-            observables.put( 
-                    IDENTIFY_FORMAT,
-                new MeasurementImpl(
-                        new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format" ), 
-                        "The format of the Digital Object", "",
-                        "The format of a Digital Object, specified as a Planets Format URI.", 
-                        STAGE_IDENTIFY, MeasurementImpl.TYPE_DIGITALOBJECT)
-                );
         } catch (URISyntaxException e) { 
         }
         
@@ -82,7 +76,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     /** Parameters for the workflow execution etc */
     HashMap<String, String> parameters = new HashMap<String,String>();
     /** The holder for the identifier service. */
-    Identify identifier = null;
+    Migrate migrator = null;
 
     /* ------------------------------------------------------------- */
     
@@ -99,8 +93,8 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     public void setParameters(HashMap<String, String> parameters)
             throws Exception {
         this.parameters = parameters;
-        // Attempt to connect to the Identify service.
-        identifier = new IdentifyWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
+        // Attempt to connect to the Migrate service.
+        migrator = new MigrateWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
     }
 
     /* (non-Javadoc)
@@ -111,11 +105,14 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         // Invoke the service, timing it along the way:
         boolean success = true;
         String exceptionReport = "";
-        IdentifyResult identify = null;
+        MigrateResult migrated = null;
         long msBefore = 0, msAfter = 0;
+        URI from = null, to = null;
         msBefore = System.currentTimeMillis();
         try {
-            identify = identifier.identify(dob);
+            from = new URI(this.parameters.get(PARAM_FROM));
+            to = new URI(this.parameters.get(PARAM_TO));
+            migrated = migrator.migrate(dob, from, to, null);
         } catch( Exception e ) {
             success = false;
             exceptionReport = "<p>Service Invocation Failed!<br/>" + e + "</p>";
@@ -129,24 +126,29 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         for( String key : observables.keySet()) {
             measurements.put(key, new MeasurementImpl(observables.get(key)) );
         }
-        measurements.get(IDENTIFY_SERVICE_TIME).setValue(""+((msAfter-msBefore)/1000.0));
+        measurements.get(MIGRATE_SERVICE_TIME).setValue(""+((msAfter-msBefore)/1000.0));
         log.info("Got timing: "+((msAfter-msBefore)/1000.0));
         // Now record
-        if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
-            URI format_uri = identify.getTypes().get(0);
+        if( success && migrated.getDigitalObject() != null ) {
             
-            measurements.get(IDENTIFY_SUCCESS).setValue("true");
-            measurements.get(IDENTIFY_FORMAT).setValue(format_uri.toString());
+            measurements.get(MIGRATE_SUCCESS).setValue("true");
             
-            wr = new WorkflowResult(measurements.values(), WorkflowResult.RESULT_URI, format_uri, identify.getReport() );
+            // FIXME: Take the digital object, and give it a sensible name, using the new format extension.
+            DigitalObject.Builder newdob = new DigitalObject.Builder(migrated.getDigitalObject());
+            if( to != null ) {
+                Format f = ServiceBrowser.fr.getFormatForURI(to);
+                newdob.title( dob.getTitle()+"."+f.getExtensions().iterator().next());
+            }
+            wr = new WorkflowResult(measurements.values(), 
+                    WorkflowResult.RESULT_DIGITAL_OBJECT, newdob.build(), migrated.getReport() );
         } else {
             // Build in a 'service success' property.
-            measurements.get(IDENTIFY_SUCCESS).setValue("false");
+            measurements.get(MIGRATE_SUCCESS).setValue("false");
             // Create a ServiceReport from the exception.
             ServiceReport sr = new ServiceReport();
             sr.setErrorState(ServiceReport.ERROR);
             sr.setError(exceptionReport);
-            sr.setInfo(identify.getReport().toString());
+            sr.setInfo(migrated.getReport().toString());
             wr = new WorkflowResult(measurements.values(), null, null, sr);
         }
         return wr;

@@ -560,28 +560,8 @@ public class ExperimentBean {
     public List<ResultsForDigitalObjectBean> getExperimentDigitalObjectResults() {
         List<ResultsForDigitalObjectBean> results = new Vector<ResultsForDigitalObjectBean>();
         // Populate using the results:
-        DataHandler dh = new DataHandlerImpl();
         for( String file : getExperimentInputData().values() ) {
-            ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean();
-            res.setDigitalObject(file);
-            try {
-                res.setDownloadURL(dh.getDownloadURI(file).toString());
-            } catch (FileNotFoundException e) {
-                res.setDownloadURL("");
-            }
-            try {
-                res.setDigitalObjectName(this.createShortDoName(dh.getName(file)));
-            } catch (FileNotFoundException e) {
-                res.setDigitalObjectName(this.createShortDoName(file));
-            }
-            // Loop over results:
-            for( BatchExecutionRecordImpl batch : this.getExperiment().getExperimentExecutable().getBatchExecutionRecords() ) {
-                for( ExecutionRecordImpl run : batch.getRuns() ) {
-                    if( file.equals( run.getDigitalObjectReferenceCopy() ) ) {
-                        res.getExecutionRecords().add(run);
-                    }
-                }
-            }
+            ResultsForDigitalObjectBean res = new ResultsForDigitalObjectBean(file);
             results.add(res);
         }
 
@@ -1566,27 +1546,27 @@ public class ExperimentBean {
         // Lists to store the data in:
         List<Double> x = new ArrayList<Double>(), y = new ArrayList<Double>(), p = new ArrayList<Double>();
         // Check there is enough data.
-        log.info("Looking for data in batches: "+expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords().size());
+//        log.info("Looking for data in batches: "+expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords().size());
         // Grab the service timing data.
-        int i = 1;
         double xrange[] = new double[2]; 
         double yrange[] = new double[2];
         for( BatchExecutionRecordImpl batch : expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords() ) {
-        log.info("Found batch... "+batch);
+//        log.info("Found batch... "+batch);
+        int i = 1;
         for( ExecutionRecordImpl exr : batch.getRuns() ) {
-            log.info("Found Record... "+exr+" stages: "+exr.getStages());
+//            log.info("Found Record... "+exr+" stages: "+exr.getStages());
             if( exr != null && exr.getStages() != null ) {
             for( ExecutionStageRecordImpl exsr : exr.getStages() ) {
-                log.info("Found Stage... "+exsr);
+//                log.info("Found Stage... "+exsr);
                 for( MeasurementRecordImpl m : exsr.getMeasurements() ) {
-                    log.info("Looking at result for property "+m.getIdentifier());
+//                    log.info("Looking at result for property "+m.getIdentifier());
                     // FIXME This should be a proper lookup, or something!
                     if( m.getIdentifier().toString().equals( TecRegMockup.URIServicePropertyRoot+"wallclock"  )) {
                         Double xi = new Double(i);
                         Double yi = new Double(m.getValue());
                         x.add( xi );
                         y.add( yi );
-                        p.add(new Double(4.0));
+                        p.add(new Double(100.0));
                         if( i == 1 ) {
                             xrange[0] = xi.doubleValue();
                             xrange[1] = xi.doubleValue();
@@ -1599,38 +1579,47 @@ public class ExperimentBean {
                             if( yrange[1] < yi.doubleValue() ) yrange[1] = yi.doubleValue();
                         }
 //                        log.info("Added point "+xi+", "+yi+" to the plot.");
-                        i++;
                     }
                 }
             }
             }
+            // Increment, for the next run.
+            i++;
         }
         }
-        // FIXME This 
+        // FIXME This should auto-scale to and cope with a single data point.
         if( y.size() <= 1 ) return "";
-        // Init the data store:
-        //      Data d1 = Data.newData(10, 50, 30, 45, 65, 95, 20, 80);
-        //      Data d2 = Data.newData(20, 40, 40, 15, 85, 95, 80, 20);
-        //      Data pointSizes = Data.newData(100, 30, 50, 75, 40, 35, 80, 100);
-        Data d1 = DataUtil.scale(x);
-        Data d2 = DataUtil.scale(y);
+        // Re-scale the data:
+        Data d1, d2;
+        try {
+            d1 = DataUtil.scale(x);
+        } catch ( IllegalArgumentException e ) {
+            log.error("Could not scale "+x);
+            return "";
+        }
+        try {
+            d2 = DataUtil.scale(y);
+        } catch ( IllegalArgumentException e ) {
+            log.error("Could not scale "+y);
+            return "";
+        }
         Data pointSizes = Data.newData(p);
         // Plot it.
-        //ScatterPlotData data = Plots.newScatterPlotData(d1, d2, pointSizes);
-        //data.setLegend("Service Execution Time");
+        ScatterPlotData data = Plots.newScatterPlotData(d1, d2, pointSizes);
+        data.setLegend("Service Execution Times");
         
-        //Color diamondColor = Color.newColor("FF471A");
-        //data.addShapeMarkers(Shape.DIAMOND, diamondColor, 3);
-        //data.setColor(diamondColor);
-//        ScatterPlot chart = GCharts.newScatterPlot(data);
-        LineChart chart = GCharts.newLineChart(Plots.newLine(d2, Color.BLUE, "Service Execution Time"));
+        Color diamondColor = Color.newColor("0000AA");
+        data.addShapeMarkers(Shape.CIRCLE, diamondColor, 8);
+        data.setColor(diamondColor);
+        ScatterPlot chart = GCharts.newScatterPlot(data);
+        //LineChart chart = GCharts.newLineChart(Plots.newLine(d2, Color.BLUE, "Service Execution Time"));
         chart.setSize(800, 300);
         //chart.setGrid(20, 20, 3, 2);
         log.info("Got x range: "+xrange[0]+", "+xrange[1]);
         log.info("Got y range: "+yrange[0]+", "+yrange[1]);
         
         chart.addXAxisLabels( this.makeAxisLabels(xrange) );
-        chart.addXAxisLabels( AxisLabelsFactory.newAxisLabels("Run", 50.0 ) );
+        chart.addXAxisLabels( AxisLabelsFactory.newAxisLabels("Digital Object Number", 50.0 ) );
 
         chart.addYAxisLabels( this.makeAxisLabels(yrange));
         chart.addYAxisLabels( AxisLabelsFactory.newAxisLabels("Time (s)", 50.0 ));

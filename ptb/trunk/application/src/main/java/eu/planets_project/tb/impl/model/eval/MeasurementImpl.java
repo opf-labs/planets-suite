@@ -35,19 +35,6 @@ public class MeasurementImpl implements Serializable {
 //    @ManyToOne
 //    protected ExecutionStageRecordImpl executionStageRecord;
 
-/*
-    
-    Add an Application backing bean that holds 
-      - the list of Workflows to Execute, 
-      - a list of worker threads,
-      - and the List of Executions in progress.
-      
-    This should not update the DB directly, but the handle should be stored in the experiment.
-    
-    GUI has run/status/repeat bar at the top.
-    Then a results header
-    Then [list of DO and #repeats], [Result Details, etc in Tabs.]
-*/
     protected URI identifier;
     
     protected String name;
