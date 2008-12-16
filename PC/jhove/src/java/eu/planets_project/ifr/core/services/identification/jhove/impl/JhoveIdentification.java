@@ -222,6 +222,8 @@ public final class JhoveIdentification implements Identify, Serializable {
                             + (output.length() == 0 ? "empty output" : output)
                             + ")");
         }
+        log.info("Got mime type: "+mime);
+        log.info("Got status: "+status);
         Types t = new Types();
         t.status = status;
         t.types = new URI[] { uri(mime) };

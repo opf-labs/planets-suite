@@ -36,14 +36,14 @@ public class ODFValidatorService implements Validate {
      * @see eu.planets_project.services.validate.Validate#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription mds = new ServiceDescription(NAME, Validate.class.getCanonicalName());
-        mds.setDescription("A validator for ODF file, based on the ODF Toolkit project ODF Validator.");
-        mds.setAuthor("Andrew Jackson <Andrew.Jackson@bl.uk>");
+        ServiceDescription.Builder mds = new ServiceDescription.Builder(NAME, Validate.class.getCanonicalName());
+        mds.description("A validator for ODF file, based on the ODF Toolkit project ODF Validator.");
+        mds.author("Andrew Jackson <Andrew.Jackson@bl.uk>");
         try {
-            mds.setFurtherInfo(new URI("http://odftoolkit.org/projects/odftoolkit/pages/ODFValidator"));
+            mds.furtherInfo(new URI("http://odftoolkit.org/projects/odftoolkit/pages/ODFValidator"));
         } catch (URISyntaxException e) { }
-        mds.setClassname(this.getClass().getCanonicalName());
-        return mds;
+        mds.classname(this.getClass().getCanonicalName());
+        return mds.build();
     }
 
     /* (non-Javadoc)

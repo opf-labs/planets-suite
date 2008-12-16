@@ -20,9 +20,6 @@ import magick.ImageInfo;
 import magick.MagickException;
 import magick.MagickImage;
 
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
@@ -149,11 +146,11 @@ public class ImageMagickMigrations implements Migrate {
 	private MigrationPath[] createMigrationPathwayMatrix (List<String> inputFormats, List<String> outputFormats) {
 		List<MigrationPath> paths = new ArrayList<MigrationPath>();
 
-		for (Iterator iterator = inputFormats.iterator(); iterator.hasNext();) {
-			String input = (String) iterator.next();
+		for (Iterator<String> iterator = inputFormats.iterator(); iterator.hasNext();) {
+			String input = iterator.next();
 			
-			for (Iterator iterator2 = outputFormats.iterator(); iterator2.hasNext();) {
-				String output = (String) iterator2.next();
+			for (Iterator<String> iterator2 = outputFormats.iterator(); iterator2.hasNext();) {
+				String output = iterator2.next();
 				MigrationPath path = new MigrationPath(Format.extensionToURI(input), Format.extensionToURI(output), null);
 				// Debug...
 //				System.out.println(path.getInputFormat() + " --> " + path.getOutputFormat());

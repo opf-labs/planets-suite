@@ -11,6 +11,12 @@
 	<classpathentry kind="src" path="IF/clients/BasicMigrateOneBinary/src/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicIdentifyOneBinary/src/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
+	<classpathentry kind="src" path="IF/registry/src/main/java"/>
+	<classpathentry kind="src" path="IF/registry/src/test/java"/>
+	<classpathentry kind="src" path="IF/users/src/java"/>
+	<classpathentry kind="src" path="IF/users/src/test/java"/>
+	<classpathentry kind="src" path="IF/admin/src/java"/>
+	<classpathentry kind="src" path="IF/admin/src/test/java"/>
 	<classpathentry kind="src" path="PA/ps2pdf/src/main/java"/>
 	<classpathentry kind="src" path="PA/dvips/src/java"/>
 	<classpathentry kind="src" path="PA/pdf2pdfa_MayComputer/src/java"/>
@@ -26,6 +32,12 @@
 	<classpathentry kind="src" path="PA/jmagickconverter/src/test/java"/>
 	<classpathentry kind="src" path="PA/sanselan/src/java"/>
 	<classpathentry kind="src" path="PA/sanselan/test/java"/>
+	<classpathentry kind="src" path="PA/java-se/src/java"/>
+	<classpathentry kind="src" path="PA/java-se/test/java"/>
+	<classpathentry kind="src" path="PA/mdb2siard/src/java"/>
+	<classpathentry kind="src" path="PA/mdb2siard/test"/>
+	<classpathentry kind="src" path="PA/gimp/test"/>
+	<classpathentry kind="src" path="PA/gimp/src/java"/>
 	<classpathentry kind="src" path="PC/droid/src/java"/>
 	<classpathentry kind="src" path="PC/droid/test/java"/>
 	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
@@ -39,21 +51,13 @@
 	<classpathentry kind="src" path="PC/extractor/src/test/java"/>
 	<classpathentry kind="src" path="PC/fpm/src/java"/>
 	<classpathentry kind="src" path="PC/fpm/src/test/java"/>
-	<classpathentry kind="src" path="PP/comparator/src/java"/>
-	<classpathentry kind="src" path="PP/comparator/test/java"/>
-	<classpathentry kind="src" path="IF/registry/src/main/java"/>
-	<classpathentry kind="src" path="IF/registry/src/test/java"/>
-	<classpathentry kind="src" path="tests"/>
-	<classpathentry kind="src" path="PA/gimp/test"/>
-	<classpathentry kind="src" path="PA/gimp/src/java"/>
 	<classpathentry kind="src" path="PC/libtiff/src/java"/>
 	<classpathentry kind="src" path="PC/libtiff/test/java"/>
-	<classpathentry kind="src" path="IF/users/src/java"/>
-	<classpathentry kind="src" path="IF/users/src/test/java"/>
-	<classpathentry kind="src" path="IF/admin/src/java"/>
-	<classpathentry kind="src" path="IF/admin/src/test/java"/>
-	<classpathentry kind="src" path="PA/java-se/src/java"/>
-	<classpathentry kind="src" path="PA/java-se/test/java"/>
+	<classpathentry kind="src" path="PC/odf-toolkit/src/main/java"/>
+	<classpathentry kind="src" path="PC/odf-toolkit/src/test/java"/>
+	<classpathentry kind="src" path="PP/comparator/src/java"/>
+	<classpathentry kind="src" path="PP/comparator/test/java"/>
+	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
@@ -181,5 +185,7 @@
 	<classpathentry kind="lib" path="IF/registry/lib/xbean.jar"/>
 	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/el-api.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfdom.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -44,7 +44,7 @@ public class ODFValidatorServiceTest {
     @Test
     public void testDescribe() {
         ServiceDescription desc = ids.describe();
-        System.out.println("Recieved service description: " + desc.toXml(true) );
+        System.out.println("Recieved service description: " + desc.toXmlFormatted() );
         assertTrue("The ServiceDescription should not be NULL.", desc != null );
     }
 
@@ -52,7 +52,7 @@ public class ODFValidatorServiceTest {
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
         testValidateThis(null, new URI("http://some"), ValidateResult.Validity.INVALID );
-        testValidateThis(new DigitalObject.Builder(new URL("http://some"), Content.byReference(null) ).build() , new URI("ext"), 
+        testValidateThis(new DigitalObject.Builder( Content.byReference(null) ).build() , new URI("ext"), 
                 ValidateResult.Validity.VALID );
     }
     
