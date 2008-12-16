@@ -194,6 +194,11 @@
    <to-view-id>/reader/help.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
+   <navigation-case>
+   <from-outcome>about</from-outcome>
+   <to-view-id>/reader/about.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
   <navigation-case>
    <from-action>#{Login_Backing.logout}</from-action>
    <from-outcome>success</from-outcome>
