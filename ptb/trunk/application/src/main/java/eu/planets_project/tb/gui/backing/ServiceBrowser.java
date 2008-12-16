@@ -5,6 +5,7 @@ package eu.planets_project.tb.gui.backing;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -307,7 +308,9 @@ public class ServiceBrowser {
      */
     public static List<SelectItem> mapFormatURIsToSelectList( Set<URI> formats ) {
         List<SelectItem> slist = new ArrayList<SelectItem>();
-        for( URI fmt : formats ) {
+        List<URI> formatList = new ArrayList<URI>(formats);
+        Collections.sort(formatList);
+        for( URI fmt : formatList ) {
             slist.add( createFormatURISelectItem(fmt) );
         }
         return slist;

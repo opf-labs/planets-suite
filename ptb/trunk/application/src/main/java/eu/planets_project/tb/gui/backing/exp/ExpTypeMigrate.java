@@ -74,13 +74,13 @@ public class ExpTypeMigrate {
         for( ServiceDescription sd : this.listAllMigrationServices() )  {
             boolean addThis = false;
             for( MigrationPath path : sd.getPaths() ) {
-                if( ( ! this.isInputSet() ) || this.getInputFormat().equals(path.getInputFormat()) ) {
-                    if( ( ! this.isOutputSet() ) || this.getOutputFormat().equals(path.getOutputFormat()) ) {
+                if( ( ! this.isInputSet() ) || this.getInputFormat().equals(path.getInputFormat().toString()) ) {
+                    if( ( ! this.isOutputSet() ) || this.getOutputFormat().equals(path.getOutputFormat().toString()) ) {
                         addThis = true;
                     }
                 }
-                if( addThis ) sdl.add(sd);
             }
+            if( addThis ) sdl.add(sd);
         }
         return ServiceBrowser.mapServicesToSelectList( sdl );
     }
@@ -117,7 +117,7 @@ public class ExpTypeMigrate {
         for( ServiceDescription sd : this.listAllMigrationServices() )  {
             for( MigrationPath path : sd.getPaths() ) {
                 if( ( ! this.isServiceSet() ) || this.getMigrationService().equals(sd.getEndpoint().toString()) ) {
-                    if( ( ! this.isOutputSet() ) || this.getOutputFormat().equals(path.getOutputFormat()) ) {
+                    if( ( ! this.isOutputSet() ) || this.getOutputFormat().equals(path.getOutputFormat().toString()) ) {
                         formats.add(path.getInputFormat());
                     }
                 }
@@ -153,7 +153,7 @@ public class ExpTypeMigrate {
         for( ServiceDescription sd : this.listAllMigrationServices() )  {
             for( MigrationPath path : sd.getPaths() ) {
                 if( ( ! this.isServiceSet() ) || this.getMigrationService().equals(sd.getEndpoint().toString()) ) {
-                    if( ( ! this.isInputSet() ) || this.getInputFormat().equals(path.getInputFormat()) ) {
+                    if( ( ! this.isInputSet() ) || this.getInputFormat().equals(path.getInputFormat().toString()) ) {
                         formats.add(path.getOutputFormat());
                     }
                 }
