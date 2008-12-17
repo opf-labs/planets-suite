@@ -1578,7 +1578,7 @@ public class ExperimentBean {
                             if( yrange[0] > yi.doubleValue() ) yrange[0] = yi.doubleValue();
                             if( yrange[1] < yi.doubleValue() ) yrange[1] = yi.doubleValue();
                         }
-//                        log.info("Added point "+xi+", "+yi+" to the plot.");
+                        log.info("Added point "+xi+", "+yi+" to the plot.");
                     }
                 }
             }

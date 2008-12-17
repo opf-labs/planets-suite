@@ -67,7 +67,7 @@ public class ExpTypeMigrate {
     }
 
     /**
-     * @return FIXME Return available Services consistent with the current Input and Output.
+     * @return Return available Services consistent with the current Input and Output.
      */
     public List<SelectItem> getMigrationServiceList() {
         List<ServiceDescription> sdl = new Vector<ServiceDescription>();
@@ -110,7 +110,7 @@ public class ExpTypeMigrate {
     }
 
     /**
-     * @return FIXME Return available Input Formats consistent with the current Service and Output.
+     * @return Return available Input Formats consistent with the current Service and Output.
      */
     public List<SelectItem> getInputFormatList() {
         Set<URI> formats = new HashSet<URI>();
@@ -146,7 +146,7 @@ public class ExpTypeMigrate {
         return isValueSet( this.getOutputFormat() );
     }
     /**
-     * @return FIXME Return available Output Formats consistent with the current Service and Input.
+     * @return Return available Output Formats consistent with the current Service and Input.
      */
     public List<SelectItem> getOutputFormatList() {
         Set<URI> formats = new HashSet<URI>();
