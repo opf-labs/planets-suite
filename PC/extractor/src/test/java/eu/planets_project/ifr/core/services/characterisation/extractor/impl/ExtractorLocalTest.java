@@ -128,11 +128,11 @@ public class ExtractorLocalTest {
     @Test
     public void testCharacterise() throws MalformedURLException {
     	File outputFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT);
-    	String test1Out = outputFolder.getAbsolutePath() + File.separator + "test1Out.xcdl";
-    	String test2Out = outputFolder.getAbsolutePath() + File.separator + "test2Out.xcdl";
-    	String test3Out = outputFolder.getAbsolutePath() + File.separator + "test3Out.xcdl";
-    	String test4Out = outputFolder.getAbsolutePath() + File.separator + "test4Out.xcdl";
-    	String test5Out = outputFolder.getAbsolutePath() + File.separator + "test5Out.xcdl";
+    	String test1Out = "test1Out.xcdl";
+    	String test2Out = "test2Out.xcdl";
+    	String test3Out = "test3Out.xcdl";
+    	String test4Out = "test4Out.xcdl";
+    	String test5Out = "test5Out.xcdl";
     	
     	DigitalObject digitalObject = createDigitalObjectByValue(new URL("http://somePermamentURL"), binary);
     	
@@ -141,7 +141,7 @@ public class ExtractorLocalTest {
     	System.out.println("test1: find XCEL, no parameters:");
     	System.out.println("--------------------------------");
         CharacteriseResult characteriseResult = extractor.characterise(digitalObject, null, null);
-        outputXcdl = FileUtils.writeInputStreamToTmpFile(characteriseResult.getDigitalObject().getContent().read(), test1Out, "");
+        outputXcdl = FileUtils.writeInputStreamToFile(characteriseResult.getDigitalObject().getContent().read(), outputFolder, test1Out);
         	
         byte[] resultData = FileUtils.writeInputStreamToBinary(characteriseResult.getDigitalObject().getContent().read());
         int fileSize = resultData.length / 1024;
@@ -156,7 +156,8 @@ public class ExtractorLocalTest {
         System.out.println("test2: give XCEL, no parameters:");
         System.out.println("--------------------------------");
         characteriseResult = extractor.characterise(digitalObject, xcelString, null);
-        outputXcdl = FileUtils.writeInputStreamToTmpFile(characteriseResult.getDigitalObject().getContent().read(), test2Out, "");
+        outputXcdl = FileUtils.writeInputStreamToFile(characteriseResult.getDigitalObject().getContent().read(), outputFolder, test2Out);
+        
         resultData = FileUtils.writeInputStreamToBinary(characteriseResult.getDigitalObject().getContent().read());
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
@@ -172,7 +173,8 @@ public class ExtractorLocalTest {
         Parameters parameters = new Parameters();
         parameters.add("enableRawDataInXCDL", "-r");
         characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
-        outputXcdl = FileUtils.writeInputStreamToTmpFile(characteriseResult.getDigitalObject().getContent().read(), test3Out, "");
+        outputXcdl = FileUtils.writeInputStreamToFile(characteriseResult.getDigitalObject().getContent().read(), outputFolder, test3Out);
+        
         resultData = FileUtils.writeInputStreamToBinary(characteriseResult.getDigitalObject().getContent().read());
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");
@@ -190,7 +192,8 @@ public class ExtractorLocalTest {
         parameters.add("disableNormDataInXCDL", "-n");
         parameters.add("enableRawDataInXCDL", "-r");
         characteriseResult = extractor.characterise(digitalObject, xcelString, parameters);
-        outputXcdl = FileUtils.writeInputStreamToTmpFile(characteriseResult.getDigitalObject().getContent().read(), test4Out, "");
+        outputXcdl = FileUtils.writeInputStreamToFile(characteriseResult.getDigitalObject().getContent().read(), outputFolder, test4Out);
+        
         resultData = FileUtils.writeInputStreamToBinary(characteriseResult.getDigitalObject().getContent().read());
         fileSize = resultData.length / 1024;
         System.out.println("XCDL file size: " + fileSize + " KB");

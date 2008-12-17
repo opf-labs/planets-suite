@@ -339,6 +339,47 @@ public class ImageMagickMigrationsLocalTest {
 		return parameters;
     }
 
+    private File getTestFile(String srcExtension) {
+    	File testFile = null;
+    	
+    	if (srcExtension.equalsIgnoreCase("BMP")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.BMP_TEST_FILE);
+		}
+    	
+    	if (srcExtension.equalsIgnoreCase("GIF")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.GIF_TEST_FILE);
+		}
+    	
+    	if(srcExtension.equalsIgnoreCase("JPG") || srcExtension.equalsIgnoreCase("JPEG")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.JPG_TEST_FILE);
+    	}
+    	
+    	if (srcExtension.equalsIgnoreCase("PCX")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.PCX_TEST_FILE);
+		}
+    	
+    	if (srcExtension.equalsIgnoreCase("PDF")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.PDF_TEST_FILE);
+		}
+    	
+    	if (srcExtension.equalsIgnoreCase("PNG")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.PNG_TEST_FILE);
+		}
+    	
+    	if (srcExtension.equalsIgnoreCase("RAW")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.RAW_TEST_FILE);
+		}
+    	
+    	if (srcExtension.equalsIgnoreCase("TGA")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.TGA_TEST_FILE);
+		}
+    	
+    	if (srcExtension.equalsIgnoreCase("TIF") || srcExtension.equalsIgnoreCase("TIFF")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.TIFF_TEST_FILE);
+		}
+    	
+    	return testFile;
+    }
 
     /**
      * Test the pass-thru migration.
@@ -351,46 +392,9 @@ public class ImageMagickMigrationsLocalTest {
              * we simply pass one into the service and expect one back:
              */
         	
-        	File inputFile = null;
+        	File inputFile = getTestFile(srcExtension);
         	
-        	if (srcExtension.equalsIgnoreCase("BMP")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.BMP_TEST_FILE);
-			}
-        	
-        	if (srcExtension.equalsIgnoreCase("GIF")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.GIF_TEST_FILE);
-			}
-        	
-        	if(srcExtension.equalsIgnoreCase("JPG") || srcExtension.equalsIgnoreCase("JPEG")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.JPG_TEST_FILE);
-        	}
-        	
-        	if (srcExtension.equalsIgnoreCase("PCX")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.PCX_TEST_FILE);
-			}
-        	
-        	if (srcExtension.equalsIgnoreCase("PDF")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.PDF_TEST_FILE);
-			}
-        	
-        	if (srcExtension.equalsIgnoreCase("PNG")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.PNG_TEST_FILE);
-			}
-        	
-        	if (srcExtension.equalsIgnoreCase("RAW")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.RAW_TEST_FILE);
-			}
-        	
-        	if (srcExtension.equalsIgnoreCase("TGA")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.TGA_TEST_FILE);
-			}
-        	
-        	if (srcExtension.equalsIgnoreCase("TIF") || srcExtension.equalsIgnoreCase("TIFF")) {
-        		inputFile = new File(ImageMagickMigrationsTestHelper.TIFF_TEST_FILE);
-			}
-        	
-        	
-            DigitalObject input = new DigitalObject.Builder(Content.byReference(inputFile.toURL())).permanentUrl(new URL(
+            DigitalObject input = new DigitalObject.Builder(Content.byValue(inputFile)).permanentUrl(new URL(
                     "http://somePermanentURL"))
                     .build();
             System.out.println("Input: " + input);
@@ -436,22 +440,23 @@ public class ImageMagickMigrationsLocalTest {
             }      
 			
             File outFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT + File.separator + srcExtension.toUpperCase() + "-" + targetExtension.toUpperCase());
-            File outFile = 
+            String outFileName = 
             	
-            	new File(outFolder, 
-            		
-            		"test_out" 
-            		+ "_" 
-            		+ srcExtension 
+            		srcExtension 
             		+ "_To_" 
             		+ targetExtension 
             		+ compressionTypeStr
             		+ "_"
             		+ compressionQuality
-            		+ "." 
-            		+ targetExtension);
+            		+ "."
+            		+ targetExtension;
             
-            ByteArrayHelper.writeToDestFile(doOut.getContent().getValue(), outFile.getAbsolutePath());
+//            ByteArrayHelper.writeToDestFile(doOut.getContent().getValue(), outFile.getAbsolutePath());
+            File outFile = new File(outFolder, outFileName);
+            if(outFile.exists()) {
+            	outFile.delete();
+            }
+            outFile = FileUtils.writeInputStreamToFile(doOut.getContent().read(), outFolder, outFileName);
             
             System.out.println("Please find the result file here: " + outFile.getAbsolutePath() + "\n\n");
             assertTrue("Result file created?", outFile.canRead());

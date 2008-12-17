@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,10 @@ import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
 
 
+/**
+ * @author melmsp
+ *
+ */
 @Stateless()
 @Local(Characterise.class)
 @Remote(Characterise.class)
@@ -81,12 +86,16 @@ public class Extractor implements Characterise, Serializable {
 		
 		int sizeInKB = 0;
 		
-		if(result!=null) {
-			sizeInKB = result.length/1024;
+		if (result != null) {
+			sizeInKB = result.length / 1024;
 			
 			// output Files smaller than 10Mb
-			if(sizeInKB < MAX_FILE_SIZE) {
-				resultDigOb = new DigitalObject.Builder(Content.byValue(result)).build();
+			if (sizeInKB < MAX_FILE_SIZE) {
+				try {
+					resultDigOb = new DigitalObject.Builder(Content.byValue(result)).permanentUrl(new URL("http://planets-project.eu/services/pc/planets-extractor-service")).build();
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				}
 				sReport.setInfo("Success!!! Extracted XCDL from ");
 				sReport.setErrorState(0);
 				characteriseResult = new CharacteriseResult(resultDigOb, sReport);
@@ -112,8 +121,13 @@ public class Extractor implements Characterise, Serializable {
 	}
 	
 	
-	private CharacteriseResult returnWithErrorMessage(String message, Exception e ) {
-        if( e == null ) {
+	/**
+	 * @param message an optional message on what happened to the service
+	 * @param e the Exception e which causes the problem
+	 * @return CharacteriseResult containing a Error-Report
+	 */
+	private CharacteriseResult returnWithErrorMessage(final String message, final Exception e) {
+        if (e == null) {
             return new CharacteriseResult(null, ServiceUtils.createErrorReport(message));
         } else {
             return new CharacteriseResult(null, ServiceUtils.createExceptionErrorReport(message, e));
@@ -124,8 +138,8 @@ public class Extractor implements Characterise, Serializable {
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(Extractor.NAME, Characterise.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
-        sd.description("A wrapper for the Extractor tool. The tool returns the extracted properties\n" +
-        		"in a XCDL file");        
+        sd.description("A wrapper for the Extractor tool. The tool returns the extracted properties\n" 
+        		+ "in a XCDL file");        
         sd.classname(this.getClass().getCanonicalName());
         sd.version("0.1");
         
@@ -146,7 +160,10 @@ public class Extractor implements Characterise, Serializable {
 		return sd.build();
 	}
 
-	public List<FileFormatProperty> listProperties(URI formatURI) {
+	/* (non-Javadoc)
+	 * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
+	 */
+	public final List<FileFormatProperty> listProperties(final URI formatURI) {
 		FileFormatProperties fileFormatProperties = ExtractorPropertiesLister.getFileFormatProperties(formatURI);
 		List<FileFormatProperty> properties = fileFormatProperties.getProperties();
 		return properties;

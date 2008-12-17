@@ -203,8 +203,10 @@ public class FileUtils {
 	}
 	
 	public static File writeInputStreamToTmpFile(InputStream inputStream, String fileName, String suffix) {
-		if(!suffix.startsWith(".")) {
-			suffix = "." + suffix;
+		if(suffix!=null) {
+			if(!suffix.startsWith(".")) {
+				suffix = "." + suffix;
+			}
 		}
 		File file = getTempFile(fileName, suffix);
 		BufferedOutputStream bos = null;
@@ -232,19 +234,29 @@ public class FileUtils {
 		return file;
 	}
 	
+	/**
+	 * This method writes an InputStream to a file. If a file with the same name and path exists already, 
+	 * a random number is appended to the filename and the "renamed" file is returned.
+	 * 
+	 * @param in the inputstream to write to a file
+	 * @param parentFolder the folder the file should be created in
+	 * @param fileName the name of the file to be created
+	 * @return a File object with the given name and path
+	 */
 	public static File writeInputStreamToFile(InputStream in, File parentFolder, String fileName) {
 		BufferedOutputStream bos = null;
 		FileOutputStream fileOut = null;
 		File target = new File(parentFolder, fileName);
 		if(target.exists()) {
-			long randonNr = (long) (Math.random()* 1000);
+			long randonNr = (long) (Math.random()* 1000000);
 			if(fileName.contains(".")) {
 				fileName = fileName.substring(0, fileName.lastIndexOf(".")) + "_" + randonNr + fileName.substring(fileName.lastIndexOf("."));
 			}
 			else {
 				fileName = fileName + randonNr;
 			}
-			target.renameTo(new File(parentFolder, fileName));
+			//target.delete();
+			target = new File(parentFolder, fileName);
 		}
 		try {
 			fileOut = new FileOutputStream(target);
