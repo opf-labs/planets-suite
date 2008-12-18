@@ -50,6 +50,20 @@
                 </h:commandLink>
             </rich:column>
         </rich:dataTable>
+        
+        <h:panelGroup rendered="#{ExperimentBean.selectedStage == null}">
+          Select an experiment stage to view.
+        </h:panelGroup>
+        <h:panelGroup rendered="#{ExperimentBean.selectedStage != null}">
+        <p>
+        Stage: #{ExperimentBean.selectedStage.name}
+        </p>
+        <p>
+        #{ExperimentBean.selectedStage.description}
+        </p>
+        </h:panelGroup>
+        
+        
     </rich:panel>
 
     <rich:panel styleClass="expMeasurementPanel">
@@ -60,13 +74,6 @@
                 <h:outputText value="Observable Properties"/>
             </f:facet>
          -->
-            
-            <rich:column sortBy="#{prop.stage}" sortOrder="DESCENDING"> 
-                <f:facet name="header">
-                    <h:outputText value="Experiment Stage"/>
-                </f:facet>
-                <h:outputText value="#{prop.stage}"/>
-            </rich:column>
             
             <rich:column> 
                 <f:facet name="header">
@@ -82,7 +89,7 @@
                 <h:outputText value="#{prop.type}"/> 
             </rich:column>
             
-            <rich:column sortBy="#{prop.name}">
+            <rich:column sortBy="#{prop.name}" sortOrder="DESCENDING">
                 <f:facet name="header">
                     <h:outputText value="Name"/>
                 </f:facet>

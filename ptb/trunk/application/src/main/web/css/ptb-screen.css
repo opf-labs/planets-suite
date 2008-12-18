@@ -845,6 +845,15 @@ width:100%;
     width: 66%;
 }
 .expMeasurementPanel {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+.expMeasurementPanel div {
+  padding: 1px;
+  width: 100%;
+}
+.expMeasurementPanel table.tbTable {
   width: 100%;
 }
 .doListColumn {
