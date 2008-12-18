@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 
 /**
@@ -19,6 +20,12 @@ public interface ExperimentWorkflow {
      * @return A list of all of the properties that can be measured during each stage of this experiment workflow.
      */
     public abstract HashMap<String,List<MeasurementImpl>> getObservables();
+    
+    /**
+     * @return A list of the stages involved in this experiment.
+     */
+    public abstract List<ExperimentStageBean> getStages();
+    
 
     /**
      * @param parameters The set of parameters to use when invoking this workflow.

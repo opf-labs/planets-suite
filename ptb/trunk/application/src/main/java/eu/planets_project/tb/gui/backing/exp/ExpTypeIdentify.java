@@ -13,6 +13,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
@@ -25,7 +26,7 @@ import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class ExpTypeIdentify {
+public class ExpTypeIdentify extends ExpTypeBackingBean {
     private PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeIdentify.class, "testbed-log4j.xml");
     
     /**
@@ -47,23 +48,22 @@ public class ExpTypeIdentify {
         expBean.getExperiment().getExperimentExecutable().getParameters().put(IdentifyWorkflow.PARAM_SERVICE, identifyService);
     }
 
-    /**
-     * 
-     * @return
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getStageBeans()
      */
-    public HashMap<String,List<MeasurementImpl>> getObservables() {
-        return this.getIdentifyWorkflow().getObservables();
+    @Override
+    public List<ExperimentStageBean> getStageBeans() {
+        return ExpTypeBackingBean.getWorkflow(AdminManagerImpl.IDENTIFY).getStages();
     }
 
-    /**
-     * 
-     * @return
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getObservables()
      */
-    public ExperimentWorkflow getIdentifyWorkflow() {
-        return new IdentifyWorkflow();
+    @Override
+    public HashMap<String,List<MeasurementImpl>> getObservables() {
+        return ExpTypeBackingBean.getWorkflow(AdminManagerImpl.IDENTIFY).getObservables();
     }
-    
-    
+
     /**
      * A Bean to hold the results on each digital object.
      */

@@ -37,7 +37,23 @@
 <rich:simpleTogglePanel label="#{res['exp_stage3.automaticProps']}" opened="true" switchType="server">
 <p>These are properties that the Testbed can automatically measure during your experiment.</p>
 
-        <rich:dataTable value="#{NewExp_Controller.observables}" var="prop" rows="25" 
+<h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
+    <rich:panel styleClass="expExecLogPanel">
+        <rich:dataTable value="#{NewExp_Controller.stages}" var="stage" styleClass="tbTable" >
+            <rich:column> 
+                <f:facet name="header">
+                    <h:outputText value="Experiment Stage"/>
+                </f:facet>
+                        <h:commandLink>
+          <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectStageActionListener"/>
+                <h:outputText value="#{stage.name}"/>
+                </h:commandLink>
+            </rich:column>
+        </rich:dataTable>
+    </rich:panel>
+
+    <rich:panel styleClass="expMeasurementPanel">
+        <rich:dataTable value="#{NewExp_Controller.observables}" var="prop" rows="50" 
         reRender="prop_ds" styleClass="tbTable" binding="#{NewExp_Controller.obsTable}">
         <!-- 
             <f:facet name="header">
@@ -89,6 +105,9 @@
                 <rich:datascroller id="prop_ds"></rich:datascroller>
             </f:facet>
         </rich:dataTable>
+        
+    </rich:panel>
+</h:panelGrid>
 
 </rich:simpleTogglePanel>
 

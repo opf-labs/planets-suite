@@ -18,6 +18,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
@@ -37,6 +38,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
 
     /** Internal keys for easy referral to the service+stage combinations. */
     public static final String STAGE_IDENTIFY = "Identify";
+    
     private static final String IDENTIFY_SUCCESS = STAGE_IDENTIFY+".service.success";
     private static final String IDENTIFY_SERVICE_TIME = STAGE_IDENTIFY+".service.time";
     private static final String IDENTIFY_METHOD = STAGE_IDENTIFY+".method";
@@ -47,6 +49,14 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     public static URI PROP_IDENTIFY_FORMAT;
     public static URI PROP_IDENTIFY_METHOD;
 
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getStages()
+     */
+    public List<ExperimentStageBean> getStages() {
+        List<ExperimentStageBean> stages = new Vector<ExperimentStageBean>();
+        stages.add( new ExperimentStageBean(STAGE_IDENTIFY, "Identify a digital object."));
+        return stages;
+    }
 
     /** Statically define the observable properties. FIXME Should be built from the TechReg */
     private static HashMap<String,List<MeasurementImpl>> observables;

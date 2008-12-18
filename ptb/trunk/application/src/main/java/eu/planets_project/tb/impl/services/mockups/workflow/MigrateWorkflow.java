@@ -26,6 +26,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
@@ -85,6 +86,17 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     
     /* ------------------------------------------------------------- */
 
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getStages()
+     */
+    public List<ExperimentStageBean> getStages() {
+        List<ExperimentStageBean> stages = new Vector<ExperimentStageBean>();
+        stages.add( new ExperimentStageBean(STAGE_PRE_MIGRATE, "Characterise before migration."));
+        stages.add( new ExperimentStageBean(STAGE_MIGRATE, "Migrate the digital object."));
+        stages.add( new ExperimentStageBean(STAGE_POST_MIGRATE, "Characterise after migration."));
+        return stages;
+    }
+    
     /* (non-Javadoc)
      * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getObservables()
      */

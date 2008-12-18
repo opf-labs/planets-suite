@@ -381,7 +381,8 @@ public class NewExpWizardController {
     	exp.getExperimentSetup().setExperimentResources(expRes);
     	//testbedMan.updateExperiment(exp);
         //the current stage is 3 as the'save' button is pressed
-        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);  
+        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);
+        exp.getExperimentSetup().setSubStage(ExperimentSetup.SUBSTAGE3);
         return "success";
         /* FIXME ANJ Clean this up
 	  } catch (InvalidInputException e) {
@@ -629,7 +630,8 @@ public class NewExpWizardController {
         exp.setState(Experiment.STATE_IN_PROGRESS);
         // testbedMan.updateExperiment(exp);
 
-        exp.getExperimentSetup().setSubStage(2);
+        // Default state, staying on this stage unless success is maintained:
+        exp.getExperimentSetup().setSubStage(ExperimentSetup.SUBSTAGE2);
         String result  ="success";
         
         // Verify that there is at least on DO:
@@ -687,7 +689,7 @@ public class NewExpWizardController {
         }
 
         if( "success".equals(result)) {
-            exp.getExperimentSetup().setSubStage(3);
+            exp.getExperimentSetup().setSubStage(ExperimentSetup.SUBSTAGE3);
         }
         return result;
     }
@@ -1619,6 +1621,13 @@ public class NewExpWizardController {
 	  }
     
 	/* ------------------------------------------------------------------------------- */
+	
+	public List<ExperimentStageBean> getStages() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(expBean.getEtype());
+	    return exptype.getStageBeans();
+	}
+	
 	/* The observables list */
 	
 	HtmlDataTable obsTable = new HtmlDataTable();
@@ -1644,7 +1653,18 @@ public class NewExpWizardController {
      */
     public List<MeasurementBean> getObservables() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        this.chooseObservablesForEtype(expBean.getEtype(), expBean.getExperiment());
+        
+        // FIXME Use the stage to narrow the list:
+        String selectedStage = null;
+        if( this.getStages() != null && this.getStages().size() > 0 ) {
+            selectedStage = this.getStages().get(0).getName();
+        }
+        if( expBean.getSelectedStage() != null ) {
+            selectedStage = expBean.getSelectedStage().getName();
+        }
+        log.info("Got expBean, selected Stage = "+selectedStage);
+        
+        this.chooseObservablesForEtype(expBean.getEtype(), expBean.getExperiment(), selectedStage );
         if( obs == null ) {
             return new ArrayList<MeasurementBean>();
         }
@@ -1656,25 +1676,17 @@ public class NewExpWizardController {
      * @param etype
      * @param exp
      */
-    private void chooseObservablesForEtype(String etype, Experiment exp) {
-        boolean refresh = false;
-        if(this.obsEType != etype ) {
-           this.obsEType = etype;
-           refresh = true;
-           
-           // FIXME: This should work better! Measurements and Beans have the right relationship?
-           if( etype.equals( AdminManagerImpl.IDENTIFY ) ) {
-               ExpTypeIdentify exptype = (ExpTypeIdentify)JSFUtil.getManagedObject("ExpTypeIdentify");
-               obs = this.createMeasurementBeans(exptype.getObservables());
-           } else if( etype.equals( AdminManagerImpl.MIGRATE ) ) {
-               ExpTypeMigrate exptype = (ExpTypeMigrate)JSFUtil.getManagedObject("ExpTypeMigrate");
-               obs = this.createMeasurementBeans(exptype.getObservables());
-           } else {
-               // For unrecognised experiment types, set to NULL:
-               obs = null;
-           }
-           
+    private void chooseObservablesForEtype(String etype, Experiment exp, String stage) {
+
+        ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
+        if( exptype != null ) {
+            // FIXME: Should change depending on selected Stage:
+            obs = this.createMeasurementBeans(exptype.getObservables(), stage);
+        } else {
+            // For unrecognised experiment types, set to NULL:
+            obs = null;
         }
+
         Vector<String> props = exp.getExperimentExecutable().getProperties();
         for( MeasurementBean m : obs ) {
             if( props.contains(m.getIdentifier().toString()) ) {
@@ -1684,10 +1696,6 @@ public class NewExpWizardController {
 //                m.setSelected(false);
                 m.setSelected(true);
             }
-            // FIXME Temporary fix to make defaults TRUE
-            if( refresh == true ) {
-                m.setSelected(true);
-            }
         }
     }
     
@@ -1695,15 +1703,18 @@ public class NewExpWizardController {
      * @param measurements
      * @return
      */
-    private List<MeasurementBean> createMeasurementBeans( HashMap<String,List<MeasurementImpl>> measurements ) {
+    private List<MeasurementBean> createMeasurementBeans( HashMap<String,List<MeasurementImpl>> measurements, 
+            String selectedStage ) {
         List<MeasurementBean> mbeans = new ArrayList<MeasurementBean>();
         for( String stage: measurements.keySet() ) {
-        for( MeasurementImpl measurement : measurements.get(stage) ) {
-            MeasurementBean measurebean =  new MeasurementBean(measurement);
-            measurebean.setSelected(true);
-            measurebean.setStage(stage);
-            mbeans.add(measurebean);
-        }
+            if( selectedStage == null || selectedStage.equals(stage) ) {
+                for( MeasurementImpl measurement : measurements.get(stage) ) {
+                    MeasurementBean measurebean =  new MeasurementBean(measurement);
+                    measurebean.setSelected(true);
+                    measurebean.setStage(stage);
+                    mbeans.add(measurebean);
+                }
+            }
         }
         return mbeans;
     }

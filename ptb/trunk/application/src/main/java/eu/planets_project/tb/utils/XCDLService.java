@@ -5,7 +5,6 @@ package eu.planets_project.tb.utils;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 import java.util.Vector;
@@ -22,7 +21,6 @@ import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
@@ -73,7 +71,7 @@ public class XCDLService implements DetermineProperties {
         List<Property> props = new Vector<Property>();
         for( FileFormatProperty m : properties ) {
             System.out.println("Got property "+m.getId() + ", " +m.getName() + ", " + m.getDescription() );
-            Property p = new Property( m.getName()+"#"+m.getId(), m.getValue());
+            Property p = new Property( m.getId()+"/"+m.getName(), m.getValue());
             p.setDescription(m.getDescription());
             p.setType(m.getType());
             p.setUnit(m.getUnit());

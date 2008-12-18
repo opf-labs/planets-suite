@@ -60,6 +60,7 @@ import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
@@ -153,6 +154,7 @@ public class ExperimentBean {
     private ExecutionRecordImpl selectedExecutionRecord = null;
     private BatchExecutionRecordImpl selectedBatchExecutionRecord = null;
     private String selectedDigitalObject = null;
+    private ExperimentStageBean selectedStage;
     
     private String ereportTitle;
     private String ereportBody;
@@ -1643,4 +1645,19 @@ public class ExperimentBean {
         
     }
 
+    /**
+     * @param stage
+     */
+    public void setSelectedStage(ExperimentStageBean stage) {
+        this.selectedStage = stage;
+    }
+
+    /**
+     * @return the selectedStage
+     */
+    public ExperimentStageBean getSelectedStage() {
+        return selectedStage;
+    }
+
+    
 }

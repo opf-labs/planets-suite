@@ -30,6 +30,7 @@ import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
@@ -41,7 +42,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class ExpTypeMigrate {
+public class ExpTypeMigrate extends ExpTypeBackingBean {
     private PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeMigrate.class, "testbed-log4j.xml");
     
     /**
@@ -170,31 +171,24 @@ public class ExpTypeMigrate {
         return ServiceBrowser.mapFormatURIsToSelectList(formats);
     }
     
-    /**
-     * 
-     * @return
+    
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getStageBeans()
      */
-    public HashMap<String,List<MeasurementImpl>> getObservables() {
-        return this.getMigrateWorkflow().getObservables();
+    @Override
+    public List<ExperimentStageBean> getStageBeans() {
+        return ExpTypeBackingBean.getWorkflow(AdminManagerImpl.MIGRATE).getStages();
     }
 
-    /**
-     * 
-     * @return
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getObservables()
      */
-    public ExperimentWorkflow getMigrateWorkflow() {
-        // FIXME this should be hooked up with the Executable, and remember the parameters.
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        ExperimentWorkflow ew = new MigrateWorkflow();
-        try {
-            ew.setParameters(expBean.getExperiment().getExperimentExecutable().getParameters());
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return ew;
+    @Override
+    public HashMap<String,List<MeasurementImpl>> getObservables() {
+        return ExpTypeBackingBean.getWorkflow(AdminManagerImpl.MIGRATE).getObservables();
     }
-    
+
     /**
      * 
      * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

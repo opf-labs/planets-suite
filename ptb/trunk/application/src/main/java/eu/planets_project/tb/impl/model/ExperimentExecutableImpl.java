@@ -31,6 +31,7 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
@@ -555,20 +556,16 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
             log.info("Set workflow type to: " + this.workflowType);
             if( this.workflowType == null ) return null;
         }
+        
         // Invoke, depending on the experiment type:
-        if( AdminManagerImpl.IDENTIFY.equals(this.workflowType)) {
-            log.info("Running an Identify experiment.");
-            ExperimentWorkflow expwf = new IdentifyWorkflow();
+        ExperimentWorkflow expwf = ExpTypeBackingBean.getWorkflow(this.workflowType);
+        if( expwf != null ) {
             expwf.setParameters(getParameters());
             return expwf;
-            
-        } else if( AdminManagerImpl.MIGRATE.equals(this.workflowType)) {
-            log.info("Running a Migrate experiment.");
-            ExperimentWorkflow expwf = new MigrateWorkflow();
-            expwf.setParameters(getParameters());
-            return expwf;
-
-        } else if( AdminManagerImpl.isExperimentDeprecated(exp) ) {
+        }
+        
+        // FAILED:
+        if( AdminManagerImpl.isExperimentDeprecated(exp) ) {
             log.error("Executing old-style experiment - Should Not Happen!");
             throw new Exception( "Executing old-style experiment - Should Not Happen! "+this.workflowType);
             
