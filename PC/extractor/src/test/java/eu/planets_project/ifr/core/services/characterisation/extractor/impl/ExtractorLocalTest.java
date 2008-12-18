@@ -83,7 +83,7 @@ public class ExtractorLocalTest {
             e.printStackTrace();
         }
         
-        extractor = ServiceCreator.createTestService(Characterise.QNAME, Extractor.class, WSDL);
+        extractor = new Extractor();
     }
     
     @Test

@@ -20,6 +20,7 @@ public class ImageMagickMigrationsServerTest extends
         System.setProperty("pserv.test.port", "8080");
         
     	imageMagick = ServiceCreator.createTestService(Migrate.QNAME, ImageMagickMigrations.class, wsdlLocation);
+    	
     	compressionTypes[0] = "Undefined Compression";
 		compressionTypes[1] = "No Compression";
 		compressionTypes[2] = "BZip Compression";

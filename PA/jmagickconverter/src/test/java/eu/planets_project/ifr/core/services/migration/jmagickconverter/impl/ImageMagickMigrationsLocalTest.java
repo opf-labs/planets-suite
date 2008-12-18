@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class ImageMagickMigrationsLocalTest {
     	
     	System.setProperty("pserv.test.context", "local");
     	
-    	imageMagick = ServiceCreator.createTestService(Migrate.QNAME, ImageMagickMigrations.class, wsdlLocation);
+//    	imageMagick = ServiceCreator.createTestService(Migrate.QNAME, ImageMagickMigrations.class, wsdlLocation);
+    	imageMagick = new ImageMagickMigrations();
     	
     	compressionTypes[0] = "Undefined Compression";
 		compressionTypes[1] = "No Compression";
@@ -94,6 +96,30 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
         
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_NO, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
+    }
+    
+    @Test
+    public void testTiffToJP2 () throws IOException {
+    	String inputFormatExt = "tiff";
+        String outputFormatExt = "jp2";
+        
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG2000, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
+        
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_JPEG2000, ImageMagickMigrationsTestHelper.COMP_QUAL_50));
+        
+        testMigrate(inputFormatExt, outputFormatExt, null);
+    }
+    
+    @Test
+    public void testJP2ToPng () throws IOException {
+    	String inputFormatExt = "jp2";
+        String outputFormatExt = "png";
+        
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_25));
+        
+        testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_LZW, ImageMagickMigrationsTestHelper.COMP_QUAL_50));
+        
+        testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
     @Test
@@ -288,6 +314,8 @@ public class ImageMagickMigrationsLocalTest {
         
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
+    
+    
 
 //    @Test
 //    public void testPdfToTiff () throws IOException {
@@ -344,41 +372,54 @@ public class ImageMagickMigrationsLocalTest {
     	
     	if (srcExtension.equalsIgnoreCase("BMP")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.BMP_TEST_FILE);
+    		return testFile;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("GIF")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.GIF_TEST_FILE);
+    		return testFile;
 		}
     	
     	if(srcExtension.equalsIgnoreCase("JPG") || srcExtension.equalsIgnoreCase("JPEG")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.JPG_TEST_FILE);
+    		return testFile;
+    	}
+    	
+    	if(srcExtension.equalsIgnoreCase("JP2") || srcExtension.equalsIgnoreCase("J2K")) {
+    		testFile = new File(ImageMagickMigrationsTestHelper.JP2_TEST_FILE);
+    		return testFile;
     	}
     	
     	if (srcExtension.equalsIgnoreCase("PCX")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.PCX_TEST_FILE);
+    		return testFile;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("PDF")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.PDF_TEST_FILE);
+    		return testFile;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("PNG")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.PNG_TEST_FILE);
+    		return testFile;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("RAW")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.RAW_TEST_FILE);
+    		return testFile;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("TGA")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.TGA_TEST_FILE);
+    		return testFile;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("TIF") || srcExtension.equalsIgnoreCase("TIFF")) {
     		testFile = new File(ImageMagickMigrationsTestHelper.TIFF_TEST_FILE);
+    		return testFile;
 		}
-    	
-    	return testFile;
+    	return null;
     }
 
     /**
@@ -411,7 +452,6 @@ public class ImageMagickMigrationsLocalTest {
             System.out.println("Output: " + doOut);
             System.out.println("Output.content: " + doOut.getContent());
             System.out.println("Output.content.isByValue: " + doOut.getContent().isByValue());
-            System.out.println("Output.content.getValue: " + doOut.getContent().getValue());
             System.out.println("Output.content.getReference: " + doOut.getContent().getReference());
             
             int compressionType = 1;

@@ -15,6 +15,7 @@ public class ImageMagickMigrationsTestHelper {
 	public static final String TGA_TEST_FILE = "PA/jmagickconverter/src/main/resources/test_images/test_tga/2326378356_65c3b81dfd.tga";
 	public static final String PCX_TEST_FILE = "PA/jmagickconverter/src/main/resources/test_images/test_pcx/2326378356_65c3b81dfd.pcx";
 	public static final String PDF_TEST_FILE = "PA/jmagickconverter/src/main/resources/test_images/test_pdf/2326378356_65c3b81dfd.pdf";
+	public static final String JP2_TEST_FILE = "PA/jmagickconverter/src/main/resources/test_images/test_jp2/2274192346_4a0a03c5d6.jp2";
 	
 	public static String COMP_QUAL_25 = "25";
 	public static String COMP_QUAL_50 = "50";
