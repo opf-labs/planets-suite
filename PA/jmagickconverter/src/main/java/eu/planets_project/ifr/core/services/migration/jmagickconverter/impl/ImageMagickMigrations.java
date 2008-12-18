@@ -84,7 +84,7 @@ public class ImageMagickMigrations implements Migrate {
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,Migrate.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
-        sd.description("A wrapper for ImageMagick file format conversions. Using ImageMagick v6.3.9 and JMagick v6.3.9.\n" +
+        sd.description("A wrapper for ImageMagick file format conversions. Using ImageMagick v6.3.9-Q8 and JMagick v6.3.9-Q8.\n" +
         		"This service accepts input and target formats of this shape: 'planets:fmt/ext/[extension]'\n" +
         		"e.g. 'planets:fmt/ext/tiff' or 'planets:fmt/ext/tif'");
         

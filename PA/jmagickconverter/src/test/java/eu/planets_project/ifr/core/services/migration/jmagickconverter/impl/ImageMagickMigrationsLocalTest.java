@@ -436,7 +436,7 @@ public class ImageMagickMigrationsLocalTest {
         	File inputFile = getTestFile(srcExtension);
         	
             DigitalObject input = new DigitalObject.Builder(Content.byValue(inputFile)).permanentUrl(new URL(
-                    "http://somePermanentURL"))
+                    "http://imageMagickMigrationsTests"))
                     .build();
             System.out.println("Input: " + input);
             
