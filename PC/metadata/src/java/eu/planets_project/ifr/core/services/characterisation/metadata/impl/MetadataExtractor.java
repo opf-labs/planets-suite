@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.ejb.Local;
@@ -21,25 +24,26 @@ import nz.govt.natlib.meta.config.Config;
 import nz.govt.natlib.meta.config.Configuration;
 import nz.govt.natlib.meta.config.ConfigurationException;
 import nz.govt.natlib.meta.ui.PropsManager;
+
+import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.ByteArrayHelper;
 
 /**
  * Service wrapping the Metadata Extraction Tool from the National Archive of
  * New Zealand (http://meta-extractor.sourceforge.net/).
- * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = MetadataExtractor.NAME, serviceName = BasicCharacteriseOneBinary.NAME, 
-        targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.BasicCharacteriseOneBinary")
+@WebService(name = MetadataExtractor.NAME, serviceName = BasicCharacteriseOneBinary.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.BasicCharacteriseOneBinary")
 @Local(BasicCharacteriseOneBinary.class)
 @Remote(BasicCharacteriseOneBinary.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class MetadataExtractor implements BasicCharacteriseOneBinary,
-        Serializable {
+        Serializable, PlanetsService {
     /***/
     static final String NAME = "MetadataExtractor";
     /***/
@@ -58,8 +62,7 @@ public final class MetadataExtractor implements BasicCharacteriseOneBinary,
             + "Result")
     public String basicCharacteriseOneBinary(
             @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicCharacteriseOneBinary.NAME, partName = "binary")
-            final byte[] binary) {
+                    + "/" + BasicCharacteriseOneBinary.NAME, partName = "binary") final byte[] binary) {
         File file = ByteArrayHelper.write(binary);
         /* Create a HarvestSource of the object we want to harvest */
         FileHarvestSource source = new FileHarvestSource(file);
@@ -101,5 +104,22 @@ public final class MetadataExtractor implements BasicCharacteriseOneBinary,
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
+     */
+    public ServiceDescription describe() {
+        return new ServiceDescription.Builder(NAME, this.getClass().getName())
+                .author("Fabian Steeg")
+                .classname(this.getClass().getName())
+                .description(
+                        "Metadata extraction service based on the Metadata Extraction Tool of the National Library of New Zealand.")
+                .serviceProvider("The Planets Consortium")
+                .tool(URI.create("http://meta-extractor.sourceforge.net/"))
+                .version(
+                        "Patched Metadata Extraction Tool 3.4GA (see http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407&atid=929202)")
+                .build();
     }
 }

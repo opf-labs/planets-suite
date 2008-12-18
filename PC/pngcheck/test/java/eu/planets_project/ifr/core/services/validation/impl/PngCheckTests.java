@@ -7,10 +7,13 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 import eu.planets_project.services.validate.Validate;
@@ -21,6 +24,15 @@ import eu.planets_project.services.validate.ValidateResult.Validity;
  * @author Fabian Steeg
  */
 public final class PngCheckTests {
+
+    @Test
+    public void testServiceDescription() {
+        PngCheck check = new PngCheck();
+        ServiceDescription description = check.describe();
+        /* There are 3 Pronom IDs for PNG: */
+        Assert.assertEquals(3, description.getInputFormats().size());
+        System.out.println(description.toXmlFormatted());
+    }
 
     /**
      * Tests PngCheck identification using a local PngCheck instance.

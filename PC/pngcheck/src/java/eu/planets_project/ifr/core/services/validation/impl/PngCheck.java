@@ -13,6 +13,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -43,8 +44,9 @@ public final class PngCheck implements Validate, Serializable {
      * A list of pronom URIs describing PNG files; the URI given to this service
      * must be one of these or null.
      */
-    private static final List<String> PNG_PRONOM = Arrays.asList(
-            "info:pronom/fmt/11", "info:pronom/fmt/12", "info:pronom/fmt/13");
+    private static final List<URI> PNG_PRONOM = Arrays.asList(URI
+            .create("info:pronom/fmt/11"), URI.create("info:pronom/fmt/12"),
+            URI.create("info:pronom/fmt/13"));
     /***/
     private static final PlanetsLogger LOG = PlanetsLogger
             .getLogger(PngCheck.class);
@@ -61,7 +63,7 @@ public final class PngCheck implements Validate, Serializable {
      */
     private boolean basicValidateOneBinary(final File tempFile, final URI fmt) {
         /* PngCheck can only validate PNG files: */
-        if (fmt != null && !PNG_PRONOM.contains(fmt.toString())) {
+        if (fmt != null && !PNG_PRONOM.contains(fmt)) {
             throw new IllegalArgumentException(
                     "PngCheck can only validate PNG (" + PNG_PRONOM
                             + ") files, not " + fmt.toString());
@@ -98,9 +100,14 @@ public final class PngCheck implements Validate, Serializable {
      * @see eu.planets_project.services.validate.Validate#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Validate.class.getCanonicalName());
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
+                Validate.class.getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
         sd.description("Validation service based on PngCheck.");
+        sd.author("Fabian Steeg");
+        sd.inputFormats(PNG_PRONOM.toArray(new URI[] {}));
+        sd.tool(URI.create("http://www.libpng.org/pub/png/apps/pngcheck.html"));
+        sd.serviceProvider("The Planets Consortium");
         return sd.build();
     }
 

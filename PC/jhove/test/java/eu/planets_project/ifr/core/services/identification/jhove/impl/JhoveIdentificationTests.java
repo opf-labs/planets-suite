@@ -6,12 +6,15 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 
+import junit.framework.Assert;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 
 /**
@@ -28,6 +31,14 @@ public class JhoveIdentificationTests {
     public static void setup() {
         System.out.println("Local:");
         jhove = new JhoveIdentification();
+    }
+
+    @Test
+    public void testServiceDescription() {
+        ServiceDescription description = new JhoveIdentification().describe();
+        Assert.assertEquals(FileType.values().length, description
+                .getInputFormats().size());
+        System.out.println(description.toXmlFormatted());
     }
 
     @Test
@@ -60,7 +71,7 @@ public class JhoveIdentificationTests {
         test(FileType.JPEG2);
     }
 
-    //@Test TODO: There is something wrong with that JPEG file
+    // @Test TODO: There is something wrong with that JPEG file
     public void testJpeg3() {
         test(FileType.JPEG3);
     }

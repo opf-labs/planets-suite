@@ -5,8 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.ejb.Local;
@@ -81,8 +83,12 @@ public final class JhoveIdentification implements Identify, Serializable {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
                 Identify.class.getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
-
         sd.description("Identification service using JHOVE.");
+        sd.author("Fabian Steeg");
+        sd.tool(URI.create("http://hul.harvard.edu/jhove/"));
+        sd.version("JHOVE 1.1");
+        sd.inputFormats(inputFormats());
+        sd.serviceProvider("The Planets Consortium");
         return sd.build();
     }
 
@@ -148,6 +154,17 @@ public final class JhoveIdentification implements Identify, Serializable {
         public String getSample() {
             return RESOURCES + sample;
         }
+    }
+
+    /**
+     * @return An array of Pronom IDs supported as input formats by Jhove
+     */
+    public static URI[] inputFormats() {
+        List<URI> result = new ArrayList<URI>();
+        for (FileType type : FileType.values()) {
+            result.add(URI.create(type.getPronom()));
+        }
+        return result.toArray(new URI[] {});
     }
 
     /**
