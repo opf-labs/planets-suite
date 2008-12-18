@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xcdl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.planets-project.eu/xcl/schemas/xcl" xsi:schemaLocation="http://www.planets-project.eu/xcl/schemas/xcl ../res/xcl/xcdl/XCDLCore.xsd" id="0" >
+    <object id="o1" >
+        <normData type="image" id="nd1" >00 00 00 00 10 84 00 00 21 08 00 00 31 8c 00 00 42 10 00 00 52 94 00 00 
+63 18 00 00 73 9c 00 00 84 20 00 00 94 a4 00 00 a5 28 00 00 b5 ac 00 00 
+c6 30 00 00 d6 b4 00 00 e7 38 00 00 f7 bc 00 00 f7 bc 00 00 e7 38 00 00 
+d6 b4 00 00 c6 30 00 00 b5 ac 00 00 a5 28 00 00 94 a4 00 00 84 20 00 00 
+73 9c 00 00 63 18 00 00 52 94 00 00 42 10 00 00 31 8c 00 00 21 08 00 00 
+10 84 00 00 00 00 00 00 10 84 00 00 00 00 10 85 11 a7 10 85 23 4f 10 85 
+34 f6 10 85 46 9e 10 85 58 46 10 85 69 ed 10 85 7b 95 10 85 8d 3d 10 85 
+9e e4 10 85 b0 8c 10 85 c2 34 10 85 d3 db 10 85 e5 83 10 85 f7 2b 10 85 
+f7 2b 10 85 e5 83 10 85 d3 db 10 85 c2 34 10 85 b0 8c 10 85 9e e4 10 85 
+8d 3d 10 85 7b 95 10 85 69 ed 10 85 58 46 10 85 46 9e 10 85 34 f6 10 85 
+23 4f 10 85 11 a7 10 85 00 00 10 85 10 84 00 00 21 08 00 00 11 a7 10 85 
+00 00 21 09 12 f6 21 09 25 ec 21 09 38 e3 21 09 4b d9 21 09 5e d0 21 09 
+71 c6 21 09 84 bd 21 09 97 b3 21 09 aa a9 21 09 bd a0 21 09 d0 96 21 09 
+e3 8d 21 09 f6 83 21 09 f6 83 21 09 e3 8d 21 09 d0 96 21 09 bd a0 21 09 
+aa a9 21 09 97 b3 21 09 84 bd 21 09 71 c6 21 09 5e d0 21 09 4b d9 21 09 
+38 e3 21 09 25 ec 21 09 12 f6 21 09 00 00 21 09 11 a7 10 85 21 08 00 00 
+31 8c 00 00 23 4f 10 85 12 f6 21 09 00 00 31 8d 14 7a 31 8d 28 f5 31 8d 
+3d 70 31 8d 51 eb 31 8d 66 65 31 8d 7a e0 31 8d 8f 5b 31 8d a3 d6 31 8d 
+b8 51 31 8d cc cb 31 8d e1 46 31 8d f5 c1 31 8d f5 c1 31 8d e1 46 31 8d 
+cc cb 31 8d b8 51 31 8d a3 d6 31 8d 8f 5b 31 8d 7a e0 31 8d 66 65 31 8d 
+51 eb 31 8d 3d 70 31 8d 28 f5 31 8d 14 7a 31 8d 00 00 31 8d 12 f6 21 09 
+23 4f 10 85 31 8c 00 00 42 10 00 00 34 f6 10 85 25 ec 21 09 14 7a 31 8d 
+00 00 42 11 16 42 42 11 2c 85 42 11 42 c8 42 11 59 0a 42 11 6f 4d 42 11 
+85 90 42 11 9b d2 42 11 b2 15 42 11 c8 58 42 11 de 9a 42 11 f4 dd 42 11 
+f4 dd 42 11 de 9a 42 11 c8 58 42 11 b2 15 42 11 9b d2 42 11 85 90 42 11 
+6f 4d 42 11 59 0a 42 11 42 c8 42 11 2c 85 42 11 16 42 42 11 00 00 42 11 
+14 7a 31 8d 25 ec 21 09 34 f6 10 85 42 10 00 00 52 94 00 00 46 9e 10 85 
+38 e3 21 09 28 f5 31 8d 16 42 42 11 00 00 52 95 18 61 52 95 30 c2 52 95 
+49 24 52 95 61 85 52 95 79 e7 52 95 92 48 52 95 aa a9 52 95 c3 0b 52 95 
+db 6c 52 95 f3 ce 52 95 f3 ce 52 95 db 6c 52 95 c3 0b 52 95 aa a9 52 95 
+92 48 52 95 79 e7 52 95 61 85 52 95 49 24 52 95 30 c2 52 95 18 61 52 95 
+00 00 52 95 16 42 42 11 28 f5 31 8d 38 e3 21 09 46 9e 10 85 52 94 00 00 
+63 18 00 00 58 46 10 85 4b d9 21 09 3d 70 31 8d 2c 85 42 11 18 61 52 95 
+00 00 63 19 1a f2 63 19 35 e4 63 19 50 d7 63 19 6b c9 63 19 86 bc 63 19 
+a1 ae 63 19 bc a0 63 19 d7 93 63 19 f2 85 63 19 f2 85 63 19 d7 93 63 19 
+bc a0 63 19 a1 ae 63 19 86 bc 63 19 6b c9 63 19 50 d7 63 19 35 e4 63 19 
+1a f2 63 19 00 00 63 19 18 61 52 95 2c 85 42 11 3d 70 31 8d 4b d9 21 09 
+58 46 10 85 63 18 00 00 73 9c 00 00 69 ed 10 85 5e d0 21 09 51 eb 31 8d 
+42 c8 42 11 30 c2 52 95 1a f2 63 19 00 00 73 9d 1e 1d 73 9d 3c 3b 73 9d 
+5a 59 73 9d 78 77 73 9d 96 95 73 9d b4 b3 73 9d d2 d1 73 9d f0 ef 73 9d 
+f0 ef 73 9d d2 d1 73 9d b4 b3 73 9d 96 95 73 9d 78 77 73 9d 5a 59 73 9d 
+3c 3b 73 9d 1e 1d 73 9d 00 00 73 9d 1a f2 63 19 30 c2 52 95 42 c8 42 11 
+51 eb 31 8d 5e d0 21 09 69 ed 10 85 73 9c 00 00 84 20 00 00 7b 95 10 85 
+71 c6 21 09 66 65 31 8d 59 0a 42 11 49 24 52 95 35 e4 63 19 1e 1d 73 9d 
+00 00 84 21 22 21 84 21 44 43 84 21 66 65 84 21 88 87 84 21 aa a9 84 21 
+cc cb 84 21 ee ed 84 21 ee ed 84 21 cc cb 84 21 aa a9 84 21 88 87 84 21 
+66 65 84 21 44 43 84 21 22 21 84 21 00 00 84 21 1e 1d 73 9d 35 e4 63 19 
+49 24 52 95 59 0a 42 11 66 65 31 8d 71 c6 21 09 7b 95 10 85 84 20 00 00 
+94 a4 00 00 8d 3d 10 85 84 bd 21 09 7a e0 31 8d 6f 4d 42 11 61 85 52 95 
+50 d7 63 19 3c 3b 73 9d 22 21 84 21 00 00 94 a5 27 62 94 a5 4e c4 94 a5 
+76 26 94 a5 9d 89 94 a5 c4 eb 94 a5 ec 4d 94 a5 ec 4d 94 a5 c4 eb 94 a5 
+9d 89 94 a5 76 26 94 a5 4e c4 94 a5 27 62 94 a5 00 00 94 a5 22 21 84 21 
+3c 3b 73 9d 50 d7 63 19 61 85 52 95 6f 4d 42 11 7a e0 31 8d 84 bd 21 09 
+8d 3d 10 85 94 a4 00 00 a5 28 00 00 9e e4 10 85 97 b3 21 09 8f 5b 31 8d 
+85 90 42 11 79 e7 52 95 6b c9 63 19 5a 59 73 9d 44 43 84 21 27 62 94 a5 
+00 00 a5 29 2e 8b a5 29 5d 16 a5 29 8b a2 a5 29 ba 2d a5 29 e8 b9 a5 29 
+e8 b9 a5 29 ba 2d a5 29 8b a2 a5 29 5d 16 a5 29 2e 8b a5 29 00 00 a5 29 
+27 62 94 a5 44 43 84 21 5a 59 73 9d 6b c9 63 19 79 e7 52 95 85 90 42 11 
+8f 5b 31 8d 97 b3 21 09 9e e4 10 85 a5 28 00 00 b5 ac 00 00 b0 8c 10 85 
+aa a9 21 09 a3 d6 31 8d 9b d2 42 11 92 48 52 95 86 bc 63 19 78 77 73 9d 
+66 65 84 21 4e c4 94 a5 2e 8b a5 29 00 00 b5 ad 38 e3 b5 ad 71 c6 b5 ad 
+aa a9 b5 ad e3 8d b5 ad e3 8d b5 ad aa a9 b5 ad 71 c6 b5 ad 38 e3 b5 ad 
+00 00 b5 ad 2e 8b a5 29 4e c4 94 a5 66 65 84 21 78 77 73 9d 86 bc 63 19 
+92 48 52 95 9b d2 42 11 a3 d6 31 8d aa a9 21 09 b0 8c 10 85 b5 ac 00 00 
+c6 30 00 00 c2 34 10 85 bd a0 21 09 b8 51 31 8d b2 15 42 11 aa a9 52 95 
+a1 ae 63 19 96 95 73 9d 88 87 84 21 76 26 94 a5 5d 16 a5 29 38 e3 b5 ad 
+00 00 c6 31 49 24 c6 31 92 48 c6 31 db 6c c6 31 db 6c c6 31 92 48 c6 31 
+49 24 c6 31 00 00 c6 31 38 e3 b5 ad 5d 16 a5 29 76 26 94 a5 88 87 84 21 
+96 95 73 9d a1 ae 63 19 aa a9 52 95 b2 15 42 11 b8 51 31 8d bd a0 21 09 
+c2 34 10 85 c6 30 00 00 d6 b4 00 00 d3 db 10 85 d0 96 21 09 cc cb 31 8d 
+c8 58 42 11 c3 0b 52 95 bc a0 63 19 b4 b3 73 9d aa a9 84 21 9d 89 94 a5 
+8b a2 a5 29 71 c6 b5 ad 49 24 c6 31 00 00 d6 b5 66 65 d6 b5 cc cb d6 b5 
+cc cb d6 b5 66 65 d6 b5 00 00 d6 b5 49 24 c6 31 71 c6 b5 ad 8b a2 a5 29 
+9d 89 94 a5 aa a9 84 21 b4 b3 73 9d bc a0 63 19 c3 0b 52 95 c8 58 42 11 
+cc cb 31 8d d0 96 21 09 d3 db 10 85 d6 b4 00 00 e7 38 00 00 e5 83 10 85 
+e3 8d 21 09 e1 46 31 8d de 9a 42 11 db 6c 52 95 d7 93 63 19 d2 d1 73 9d 
+cc cb 84 21 c4 eb 94 a5 ba 2d a5 29 aa a9 b5 ad 92 48 c6 31 66 65 d6 b5 
+00 00 e7 39 aa a9 e7 39 aa a9 e7 39 00 00 e7 39 66 65 d6 b5 92 48 c6 31 
+aa a9 b5 ad ba 2d a5 29 c4 eb 94 a5 cc cb 84 21 d2 d1 73 9d d7 93 63 19 
+db 6c 52 95 de 9a 42 11 e1 46 31 8d e3 8d 21 09 e5 83 10 85 e7 38 00 00 
+f7 bc 00 00 f7 2b 10 85 f6 83 21 09 f5 c1 31 8d f4 dd 42 11 f3 ce 52 95 
+f2 85 63 19 f0 ef 73 9d ee ed 84 21 ec 4d 94 a5 e8 b9 a5 29 e3 8d b5 ad 
+db 6c c6 31 cc cb d6 b5 aa a9 e7 39 00 00 f7 bd 00 00 f7 bd aa a9 e7 39 
+cc cb d6 b5 db 6c c6 31 e3 8d b5 ad e8 b9 a5 29 ec 4d 94 a5 ee ed 84 21 
+f0 ef 73 9d f2 85 63 19 f3 ce 52 95 f4 dd 42 11 f5 c1 31 8d f6 83 21 09 
+f7 2b 10 85 f7 bc 00 00 f7 bc 00 00 f7 2b 10 85 f6 83 21 09 f5 c1 31 8d 
+f4 dd 42 11 f3 ce 52 95 f2 85 63 19 f0 ef 73 9d ee ed 84 21 ec 4d 94 a5 
+e8 b9 a5 29 e3 8d b5 ad db 6c c6 31 cc cb d6 b5 aa a9 e7 39 00 00 f7 bd 
+00 00 f7 bd aa a9 e7 39 cc cb d6 b5 db 6c c6 31 e3 8d b5 ad e8 b9 a5 29 
+ec 4d 94 a5 ee ed 84 21 f0 ef 73 9d f2 85 63 19 f3 ce 52 95 f4 dd 42 11 
+f5 c1 31 8d f6 83 21 09 f7 2b 10 85 f7 bc 00 00 e7 38 00 00 e5 83 10 85 
+e3 8d 21 09 e1 46 31 8d de 9a 42 11 db 6c 52 95 d7 93 63 19 d2 d1 73 9d 
+cc cb 84 21 c4 eb 94 a5 ba 2d a5 29 aa a9 b5 ad 92 48 c6 31 66 65 d6 b5 
+00 00 e7 39 aa a9 e7 39 aa a9 e7 39 00 00 e7 39 66 65 d6 b5 92 48 c6 31 
+aa a9 b5 ad ba 2d a5 29 c4 eb 94 a5 cc cb 84 21 d2 d1 73 9d d7 93 63 19 
+db 6c 52 95 de 9a 42 11 e1 46 31 8d e3 8d 21 09 e5 83 10 85 e7 38 00 00 
+d6 b4 00 00 d3 db 10 85 d0 96 21 09 cc cb 31 8d c8 58 42 11 c3 0b 52 95 
+bc a0 63 19 b4 b3 73 9d aa a9 84 21 9d 89 94 a5 8b a2 a5 29 71 c6 b5 ad 
+49 24 c6 31 00 00 d6 b5 66 65 d6 b5 cc cb d6 b5 cc cb d6 b5 66 65 d6 b5 
+00 00 d6 b5 49 24 c6 31 71 c6 b5 ad 8b a2 a5 29 9d 89 94 a5 aa a9 84 21 
+b4 b3 73 9d bc a0 63 19 c3 0b 52 95 c8 58 42 11 cc cb 31 8d d0 96 21 09 
+d3 db 10 85 d6 b4 00 00 c6 30 00 00 c2 34 10 85 bd a0 21 09 b8 51 31 8d 
+b2 15 42 11 aa a9 52 95 a1 ae 63 19 96 95 73 9d 88 87 84 21 76 26 94 a5 
+5d 16 a5 29 38 e3 b5 ad 00 00 c6 31 49 24 c6 31 92 48 c6 31 db 6c c6 31 
+db 6c c6 31 92 48 c6 31 49 24 c6 31 00 00 c6 31 38 e3 b5 ad 5d 16 a5 29 
+76 26 94 a5 88 87 84 21 96 95 73 9d a1 ae 63 19 aa a9 52 95 b2 15 42 11 
+b8 51 31 8d bd a0 21 09 c2 34 10 85 c6 30 00 00 b5 ac 00 00 b0 8c 10 85 
+aa a9 21 09 a3 d6 31 8d 9b d2 42 11 92 48 52 95 86 bc 63 19 78 77 73 9d 
+66 65 84 21 4e c4 94 a5 2e 8b a5 29 00 00 b5 ad 38 e3 b5 ad 71 c6 b5 ad 
+aa a9 b5 ad e3 8d b5 ad e3 8d b5 ad aa a9 b5 ad 71 c6 b5 ad 38 e3 b5 ad 
+00 00 b5 ad 2e 8b a5 29 4e c4 94 a5 66 65 84 21 78 77 73 9d 86 bc 63 19 
+92 48 52 95 9b d2 42 11 a3 d6 31 8d aa a9 21 09 b0 8c 10 85 b5 ac 00 00 
+a5 28 00 00 9e e4 10 85 97 b3 21 09 8f 5b 31 8d 85 90 42 11 79 e7 52 95 
+6b c9 63 19 5a 59 73 9d 44 43 84 21 27 62 94 a5 00 00 a5 29 2e 8b a5 29 
+5d 16 a5 29 8b a2 a5 29 ba 2d a5 29 e8 b9 a5 29 e8 b9 a5 29 ba 2d a5 29 
+8b a2 a5 29 5d 16 a5 29 2e 8b a5 29 00 00 a5 29 27 62 94 a5 44 43 84 21 
+5a 59 73 9d 6b c9 63 19 79 e7 52 95 85 90 42 11 8f 5b 31 8d 97 b3 21 09 
+9e e4 10 85 a5 28 00 00 94 a4 00 00 8d 3d 10 85 84 bd 21 09 7a e0 31 8d 
+6f 4d 42 11 61 85 52 95 50 d7 63 19 3c 3b 73 9d 22 21 84 21 00 00 94 a5 
+27 62 94 a5 4e c4 94 a5 76 26 94 a5 9d 89 94 a5 c4 eb 94 a5 ec 4d 94 a5 
+ec 4d 94 a5 c4 eb 94 a5 9d 89 94 a5 76 26 94 a5 4e c4 94 a5 27 62 94 a5 
+00 00 94 a5 22 21 84 21 3c 3b 73 9d 50 d7 63 19 61 85 52 95 6f 4d 42 11 
+7a e0 31 8d 84 bd 21 09 8d 3d 10 85 94 a4 00 00 84 20 00 00 7b 95 10 85 
+71 c6 21 09 66 65 31 8d 59 0a 42 11 49 24 52 95 35 e4 63 19 1e 1d 73 9d 
+00 00 84 21 22 21 84 21 44 43 84 21 66 65 84 21 88 87 84 21 aa a9 84 21 
+cc cb 84 21 ee ed 84 21 ee ed 84 21 cc cb 84 21 aa a9 84 21 88 87 84 21 
+66 65 84 21 44 43 84 21 22 21 84 21 00 00 84 21 1e 1d 73 9d 35 e4 63 19 
+49 24 52 95 59 0a 42 11 66 65 31 8d 71 c6 21 09 7b 95 10 85 84 20 00 00 
+73 9c 00 00 69 ed 10 85 5e d0 21 09 51 eb 31 8d 42 c8 42 11 30 c2 52 95 
+1a f2 63 19 00 00 73 9d 1e 1d 73 9d 3c 3b 73 9d 5a 59 73 9d 78 77 73 9d 
+96 95 73 9d b4 b3 73 9d d2 d1 73 9d f0 ef 73 9d f0 ef 73 9d d2 d1 73 9d 
+b4 b3 73 9d 96 95 73 9d 78 77 73 9d 5a 59 73 9d 3c 3b 73 9d 1e 1d 73 9d 
+00 00 73 9d 1a f2 63 19 30 c2 52 95 42 c8 42 11 51 eb 31 8d 5e d0 21 09 
+69 ed 10 85 73 9c 00 00 63 18 00 00 58 46 10 85 4b d9 21 09 3d 70 31 8d 
+2c 85 42 11 18 61 52 95 00 00 63 19 1a f2 63 19 35 e4 63 19 50 d7 63 19 
+6b c9 63 19 86 bc 63 19 a1 ae 63 19 bc a0 63 19 d7 93 63 19 f2 85 63 19 
+f2 85 63 19 d7 93 63 19 bc a0 63 19 a1 ae 63 19 86 bc 63 19 6b c9 63 19 
+50 d7 63 19 35 e4 63 19 1a f2 63 19 00 00 63 19 18 61 52 95 2c 85 42 11 
+3d 70 31 8d 4b d9 21 09 58 46 10 85 63 18 00 00 52 94 00 00 46 9e 10 85 
+38 e3 21 09 28 f5 31 8d 16 42 42 11 00 00 52 95 18 61 52 95 30 c2 52 95 
+49 24 52 95 61 85 52 95 79 e7 52 95 92 48 52 95 aa a9 52 95 c3 0b 52 95 
+db 6c 52 95 f3 ce 52 95 f3 ce 52 95 db 6c 52 95 c3 0b 52 95 aa a9 52 95 
+92 48 52 95 79 e7 52 95 61 85 52 95 49 24 52 95 30 c2 52 95 18 61 52 95 
+00 00 52 95 16 42 42 11 28 f5 31 8d 38 e3 21 09 46 9e 10 85 52 94 00 00 
+42 10 00 00 34 f6 10 85 25 ec 21 09 14 7a 31 8d 00 00 42 11 16 42 42 11 
+2c 85 42 11 42 c8 42 11 59 0a 42 11 6f 4d 42 11 85 90 42 11 9b d2 42 11 
+b2 15 42 11 c8 58 42 11 de 9a 42 11 f4 dd 42 11 f4 dd 42 11 de 9a 42 11 
+c8 58 42 11 b2 15 42 11 9b d2 42 11 85 90 42 11 6f 4d 42 11 59 0a 42 11 
+42 c8 42 11 2c 85 42 11 16 42 42 11 00 00 42 11 14 7a 31 8d 25 ec 21 09 
+34 f6 10 85 42 10 00 00 31 8c 00 00 23 4f 10 85 12 f6 21 09 00 00 31 8d 
+14 7a 31 8d 28 f5 31 8d 3d 70 31 8d 51 eb 31 8d 66 65 31 8d 7a e0 31 8d 
+8f 5b 31 8d a3 d6 31 8d b8 51 31 8d cc cb 31 8d e1 46 31 8d f5 c1 31 8d 
+f5 c1 31 8d e1 46 31 8d cc cb 31 8d b8 51 31 8d a3 d6 31 8d 8f 5b 31 8d 
+7a e0 31 8d 66 65 31 8d 51 eb 31 8d 3d 70 31 8d 28 f5 31 8d 14 7a 31 8d 
+00 00 31 8d 12 f6 21 09 23 4f 10 85 31 8c 00 00 21 08 00 00 11 a7 10 85 
+00 00 21 09 12 f6 21 09 25 ec 21 09 38 e3 21 09 4b d9 21 09 5e d0 21 09 
+71 c6 21 09 84 bd 21 09 97 b3 21 09 aa a9 21 09 bd a0 21 09 d0 96 21 09 
+e3 8d 21 09 f6 83 21 09 f6 83 21 09 e3 8d 21 09 d0 96 21 09 bd a0 21 09 
+aa a9 21 09 97 b3 21 09 84 bd 21 09 71 c6 21 09 5e d0 21 09 4b d9 21 09 
+38 e3 21 09 25 ec 21 09 12 f6 21 09 00 00 21 09 11 a7 10 85 21 08 00 00 
+10 84 00 00 00 00 10 85 11 a7 10 85 23 4f 10 85 34 f6 10 85 46 9e 10 85 
+58 46 10 85 69 ed 10 85 7b 95 10 85 8d 3d 10 85 9e e4 10 85 b0 8c 10 85 
+c2 34 10 85 d3 db 10 85 e5 83 10 85 f7 2b 10 85 f7 2b 10 85 e5 83 10 85 
+d3 db 10 85 c2 34 10 85 b0 8c 10 85 9e e4 10 85 8d 3d 10 85 7b 95 10 85 
+69 ed 10 85 58 46 10 85 46 9e 10 85 34 f6 10 85 23 4f 10 85 11 a7 10 85 
+00 00 10 85 10 84 00 00 00 00 00 00 10 84 00 00 21 08 00 00 31 8c 00 00 
+42 10 00 00 52 94 00 00 63 18 00 00 73 9c 00 00 84 20 00 00 94 a4 00 00 
+a5 28 00 00 b5 ac 00 00 c6 30 00 00 d6 b4 00 00 e7 38 00 00 f7 bc 00 00 
+f7 bc 00 00 e7 38 00 00 d6 b4 00 00 c6 30 00 00 b5 ac 00 00 a5 28 00 00 
+94 a4 00 00 84 20 00 00 73 9c 00 00 63 18 00 00 52 94 00 00 42 10 00 00 
+31 8c 00 00 21 08 00 00 10 84 00 00 00 00 00 00 </normData>
+        <property id="p5" source="raw" cat="descr" >
+            <name id="id30" >imageWidth</name>
+            <valueSet id="i_i1_s4" >
+                <labValue>
+                    <val>32</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p6" source="raw" cat="descr" >
+            <name id="id2" >imageHeight</name>
+            <valueSet id="i_i1_s5" >
+                <labValue>
+                    <val>32</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p7" source="raw" cat="descr" >
+            <name id="id151" >bitsPerSample</name>
+            <valueSet id="i_i1_s6" >
+                <labValue>
+                    <val>16</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p12" source="raw" cat="descr" >
+            <name id="id18" >compression</name>
+            <valueSet id="i_i1_s8" >
+                <labValue>
+                    <val>zlibDeflateInflate</val>
+                    <type>XCLLabel</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p13" source="raw" cat="descr" >
+            <name id="id20" >imageType</name>
+            <valueSet id="i_i1_s7" >
+                <labValue>
+                    <val>greyscaleAlpha</val>
+                    <type>XCLLabel</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p52" source="raw" cat="descr" >
+            <name id="id39" >filter</name>
+            <valueSet id="i_i1_s9" >
+                <labValue>
+                    <val>adaptive</val>
+                    <type>XCLLabel</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p53" source="raw" cat="descr" >
+            <name id="id45" >interlace</name>
+            <valueSet id="i_i1_s10" >
+                <labValue>
+                    <val>adam7</val>
+                    <type>XCLLabel</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p54" source="raw" cat="descr" >
+            <name id="id41" >gamma</name>
+            <valueSet id="i_i1_s14" >
+                <labValue>
+                    <val>100000</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <propertySet id="id_0" >
+            <valueSetRelations/>
+        </propertySet>
+    </object>
+</xcdl>

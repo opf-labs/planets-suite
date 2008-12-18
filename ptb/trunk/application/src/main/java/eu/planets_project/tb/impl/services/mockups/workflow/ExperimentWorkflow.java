@@ -3,8 +3,8 @@
  */
 package eu.planets_project.tb.impl.services.mockups.workflow;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
@@ -14,11 +14,11 @@ import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
  *
  */
 public interface ExperimentWorkflow {
-
+    
     /**
-     * @return A list of all of the properties that can be measured during this experiment workflow.
+     * @return A list of all of the properties that can be measured during each stage of this experiment workflow.
      */
-    public abstract Collection<MeasurementImpl> getObservables();
+    public abstract HashMap<String,List<MeasurementImpl>> getObservables();
 
     /**
      * @param parameters The set of parameters to use when invoking this workflow.

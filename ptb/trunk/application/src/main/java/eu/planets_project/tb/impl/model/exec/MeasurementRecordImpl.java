@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
+import java.net.URI;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
@@ -15,10 +16,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.sun.xml.xsom.impl.util.Uri;
+
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 
 /**
  * This is the Testbed's notion of a property, one that can be stored in the DB.
+ * 
+ * Modelled on the XCDL notion of a property.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
@@ -41,7 +46,7 @@ public class MeasurementRecordImpl implements Serializable {
     protected String identifier;
     
     protected String value;
-        
+    
     /** */
     public MeasurementRecordImpl() { }
     
@@ -51,6 +56,17 @@ public class MeasurementRecordImpl implements Serializable {
     public MeasurementRecordImpl(String identifier, String value ) {
         super();
         this.identifier = identifier;
+        this.value = value;
+    }
+    
+    /**
+     * 
+     * @param identifier
+     * @param value
+     */
+    public MeasurementRecordImpl( URI identifier, String value ) {
+        super();
+        this.identifier = identifier.toString();
         this.value = value;
     }
 

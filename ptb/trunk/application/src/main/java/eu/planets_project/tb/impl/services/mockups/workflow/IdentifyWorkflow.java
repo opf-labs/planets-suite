@@ -3,11 +3,13 @@
  */
 package eu.planets_project.tb.impl.services.mockups.workflow;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +20,7 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
 /**
@@ -31,73 +34,115 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
 
     /** External property keys */
     public static final String PARAM_SERVICE = "identify.service";
-    
+
     /** Internal keys for easy referral to the service+stage combinations. */
     public static final String STAGE_IDENTIFY = "Identify";
     private static final String IDENTIFY_SUCCESS = STAGE_IDENTIFY+".service.success";
     private static final String IDENTIFY_SERVICE_TIME = STAGE_IDENTIFY+".service.time";
+    private static final String IDENTIFY_METHOD = STAGE_IDENTIFY+".method";
     private static final String IDENTIFY_FORMAT = STAGE_IDENTIFY+".do.format";
-    
-    /** Statically define the observable properties. FIXME Should be built from the TechReg */
-    private static HashMap<String,MeasurementImpl> observables;
-    static {
-        observables = new HashMap<String,MeasurementImpl>();
-        try {
+    private static final String IDENTIFY_DO_SIZE = STAGE_IDENTIFY+".do.size";
 
-            // The service succeeded
-            observables.put( 
-                    IDENTIFY_SUCCESS,
-                    new MeasurementImpl(
-                            new URI( TecRegMockup.URIServicePropertyRoot+"success" ), 
-                            "Service succeeded", "",
-                            "Did this service execute successfully?  Returns true/false.", 
-                            STAGE_IDENTIFY, MeasurementImpl.TYPE_SERVICE)
-                    );
-            // The service time
-            observables.put( 
-                IDENTIFY_SERVICE_TIME,
+    /** Observable properties for this service type */
+    public static URI PROP_IDENTIFY_FORMAT;
+    public static URI PROP_IDENTIFY_METHOD;
+
+
+    /** Statically define the observable properties. FIXME Should be built from the TechReg */
+    private static HashMap<String,List<MeasurementImpl>> observables;
+    static {
+
+        try {
+            PROP_IDENTIFY_FORMAT = new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format" );
+            PROP_IDENTIFY_METHOD = new URI( TecRegMockup.URIServicePropertyRoot + "identify/method" );
+        } catch (URISyntaxException e) { 
+            log.error("Error during initialisation: " +e);
+            e.printStackTrace();
+        }
+
+        // Now set up the hash:
+        observables = new HashMap<String,List<MeasurementImpl>>();
+        observables.put(STAGE_IDENTIFY, new Vector<MeasurementImpl>() );
+        // The service succeeded
+        observables.get(STAGE_IDENTIFY).add( 
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
+        // The service time
+        observables.get(STAGE_IDENTIFY).add( 
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
+        // The object size:
+        observables.get(STAGE_IDENTIFY).add( 
+                TecRegMockup.getObservable(TecRegMockup.PROP_DO_SIZE) );
+        // The measured type:
+        observables.get(STAGE_IDENTIFY).add( 
                 new MeasurementImpl(
-                        new URI( TecRegMockup.URIServicePropertyRoot+"wallclock" ), 
-                        "Service execution time", "seconds",
-                        "The wall-clock time taken to execute the service, in seconds.", 
-                        STAGE_IDENTIFY, MeasurementImpl.TYPE_SERVICE)
-                );
-        
-            // The measured type
-            observables.put( 
-                    IDENTIFY_FORMAT,
+                        PROP_IDENTIFY_FORMAT, 
+                        "The format of the Digital Object", "",
+                        "The format of a Digital Object, specified as a Planets Format URI.", 
+                        null, MeasurementImpl.TYPE_DIGITALOBJECT)
+        );
+
+        // The identification method employed by the service:
+        observables.get(STAGE_IDENTIFY).add( 
                 new MeasurementImpl(
-                        new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format" ), 
+                        PROP_IDENTIFY_METHOD, 
+                        "The identification method.", "",
+                        "The method the service used to identify the digital object.", 
+                        null, MeasurementImpl.TYPE_SERVICE)
+        );
+
+        /*
+        observables.put( IDENTIFY_SUCCESS, 
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS, STAGE_IDENTIFY) );
+        // The service time
+        observables.put( IDENTIFY_SERVICE_TIME, 
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME, STAGE_IDENTIFY) );
+        // The object size:
+        observables.put( IDENTIFY_DO_SIZE, 
+                TecRegMockup.getObservable(TecRegMockup.PROP_DO_SIZE, STAGE_IDENTIFY) );
+        // The measured type:
+        observables.put( 
+                IDENTIFY_FORMAT,
+                new MeasurementImpl(
+                        PROP_IDENTIFY_FORMAT, 
                         "The format of the Digital Object", "",
                         "The format of a Digital Object, specified as a Planets Format URI.", 
                         STAGE_IDENTIFY, MeasurementImpl.TYPE_DIGITALOBJECT)
-                );
-        } catch (URISyntaxException e) { 
-        }
-        
+        );
+
+        // The identification method employed by the service:
+        observables.put( 
+                IDENTIFY_METHOD,
+                new MeasurementImpl(
+                        PROP_IDENTIFY_METHOD, 
+                        "The identification method.", "",
+                        "The method the service used to identify the digital object.", 
+                        STAGE_IDENTIFY, MeasurementImpl.TYPE_SERVICE)
+        );
+         */
+
     }
-    
+
     /* ------------------------------------------------------------- */
-    
+
     /** Parameters for the workflow execution etc */
     HashMap<String, String> parameters = new HashMap<String,String>();
     /** The holder for the identifier service. */
     Identify identifier = null;
 
     /* ------------------------------------------------------------- */
-    
+
     /* (non-Javadoc)
      * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getObservables()
      */
-    public Collection<MeasurementImpl> getObservables() {
-        return observables.values();
+    public HashMap<String,List<MeasurementImpl>> getObservables() {
+        return observables;
     }
-    
+
     /* (non-Javadoc)
      * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#setParameters(java.util.HashMap)
      */
     public void setParameters(HashMap<String, String> parameters)
-            throws Exception {
+    throws Exception {
         this.parameters = parameters;
         // Attempt to connect to the Identify service.
         identifier = new IdentifyWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
@@ -121,37 +166,46 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
             exceptionReport = "<p>Service Invocation Failed!<br/>" + e + "</p>";
         }
         msAfter = System.currentTimeMillis();
-        
+
         // Now prepare the result:
-        WorkflowResult wr = null;
-        HashMap<String,MeasurementImpl> measurements = new HashMap<String, MeasurementImpl>();
-        // Deep copy:
-        for( String key : observables.keySet()) {
-            measurements.put(key, new MeasurementImpl(observables.get(key)) );
+        WorkflowResult wr = new WorkflowResult();
+        List<MeasurementRecordImpl> recs = wr.getStage(STAGE_IDENTIFY).getMeasurements();
+        recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
+        // Store the size:
+        // FIXME: This should be a proper method that scans down and works out the size.
+        try {
+            recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+dob.getContent().read().available() ) );
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        measurements.get(IDENTIFY_SERVICE_TIME).setValue(""+((msAfter-msBefore)/1000.0));
-        log.info("Got timing: "+((msAfter-msBefore)/1000.0));
         // Now record
         try {
-        if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
-            URI format_uri = identify.getTypes().get(0);
-            measurements.get(IDENTIFY_SUCCESS).setValue("true");
-            measurements.get(IDENTIFY_FORMAT).setValue(format_uri.toString());
-            wr = new WorkflowResult(measurements.values(), WorkflowResult.RESULT_URI, format_uri, identify.getReport() );
-            return wr;
-        }
+            if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
+                recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+                for( URI format_uri : identify.getTypes() ) {
+                    recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_FORMAT, format_uri.toString()));
+                }
+                for( IdentifyResult.Method method : identify.getMethods() ) {
+                    recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
+                }
+                wr.setReport(identify.getReport());
+                return wr;
+            }
         } catch( Exception e ) {
             exceptionReport += "<p>Failed with exception: "+e+"</p>";
         }
-        // Build in a 'service success' property.
-        measurements.get(IDENTIFY_SUCCESS).setValue("false");
+
+        // Build in a 'service failed' property.
+        recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
+
         // Create a ServiceReport from the exception.
         ServiceReport sr = new ServiceReport();
         sr.setErrorState(ServiceReport.ERROR);
         sr.setError(exceptionReport);
         if( identify != null && identify.getReport() != null )
             sr.setInfo(identify.getReport().toString());
-        wr = new WorkflowResult(measurements.values(), null, null, sr);
+        wr.setReport(sr);
+
         return wr;
     }
 

@@ -4,7 +4,7 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.net.URI;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -51,7 +51,7 @@ public class ExpTypeIdentify {
      * 
      * @return
      */
-    public Collection<MeasurementImpl> getObservables() {
+    public HashMap<String,List<MeasurementImpl>> getObservables() {
         return this.getIdentifyWorkflow().getObservables();
     }
 

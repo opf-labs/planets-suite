@@ -1,7 +1,11 @@
 package eu.planets_project.tb.impl.model.eval.mockup;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+
+import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 
 /**
  * @author lindleyA
@@ -24,11 +28,72 @@ public class TecRegMockup {
     public static final String URIXCDLPropertyRoot = "planets:pc/xcdl/property/";
     public static final String URIXCDLMetricRoot = "planets:pc/xcdl/metric/";
     public static final String URIServicePropertyRoot = "planets:tb/srv/";
+    
+    // Testbed Service properties.
+    public static URI PROP_SERVICE_SUCCESS;
+    public static URI PROP_SERVICE_TIME;
+    // Testbed Digital Object Properties
+    public static URI PROP_DO_FORMAT;
+    public static URI PROP_DO_SIZE;
 
-    /** */
-	private TecRegMockup(){
-		
-	}
+    /** Statically define the observable properties. FIXME Should be built from the TechReg */
+    private static HashMap<URI,MeasurementImpl> observables;
+    static {
+        // Set up the properties:
+        try {
+            // Testbed Service properties.
+            PROP_SERVICE_SUCCESS = new URI( TecRegMockup.URIServicePropertyRoot+"success" );
+            PROP_SERVICE_TIME = new URI( TecRegMockup.URIServicePropertyRoot+"wallclock" );
+            // Testbed Digital Object Properties
+            PROP_DO_FORMAT = new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format" );
+            PROP_DO_SIZE = new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/size" );
+        } catch (URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+        //  Set up the hash map:
+        observables = new HashMap<URI,MeasurementImpl>();
+        // The service succeeded
+        observables.put( 
+                PROP_SERVICE_SUCCESS,
+                new MeasurementImpl(
+                        PROP_SERVICE_SUCCESS, 
+                        "Service succeeded", "",
+                        "Did this service execute successfully?  Returns true/false.", 
+                        null, MeasurementImpl.TYPE_SERVICE)
+        );
+        // The service time
+        observables.put( 
+                PROP_SERVICE_TIME,
+                new MeasurementImpl(
+                        PROP_SERVICE_TIME, 
+                        "Service execution time", "seconds",
+                        "The wall-clock time taken to execute the service, in seconds.", 
+                        null, MeasurementImpl.TYPE_SERVICE)
+        );
+
+        // The measured type
+        observables.put( 
+                PROP_DO_FORMAT,
+                new MeasurementImpl(
+                        PROP_DO_FORMAT, 
+                        "The format of the Digital Object", "",
+                        "The format of a Digital Object, specified as a Planets Format URI.", 
+                        null, MeasurementImpl.TYPE_DIGITALOBJECT)
+        );
+
+        // The size
+        observables.put( 
+                PROP_DO_SIZE,
+                new MeasurementImpl(
+                        PROP_DO_SIZE, 
+                        "The size of the Digital Object", "bytes",
+                        "The total size of a particular Digital Object.", 
+                        null, MeasurementImpl.TYPE_DIGITALOBJECT)
+        );
+    }
+
 	
 	/** */
 	static {
@@ -145,10 +210,13 @@ public class TecRegMockup {
 		properties.put("planets:pc/xcdl/property/scanDocName/unit", "undefined");
 		properties.put("planets:pc/xcdl/property/scanDocName/metrics", new String[]{"levenstheinDistance"});
 
-		// Additional TB properties.  FIXME How should these work?
-		properties.put(URIServicePropertyRoot+"wallclock/name", "service exec time");
 	}
-	
+
+    /** */
+    private TecRegMockup(){
+        
+    }
+
 	/**
 	 * Returns the registry's value for a given key or null
 	 * Please note case sensitivity 
@@ -162,5 +230,25 @@ public class TecRegMockup {
             return metrics.get(sParamURI);
 		return null;
 	}
+
+    /**
+     * @param observable
+     * @return
+     */
+    public static MeasurementImpl getObservable( URI observable ) {
+        return observables.get(observable);
+    }
+    
+    /**
+     * FIXME This should not be necessary!
+     * @param observable
+     * @return
+     */
+    @Deprecated
+    public static MeasurementImpl getObservable( URI observable, String stage ) {
+        MeasurementImpl m = new MeasurementImpl(observables.get(observable));
+        m.setStage(stage);
+        return m;
+    }
 
 }

@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 
 /**
- * This is the Testbed's notion of a property, one that can be stored in the DB.
+ * This is the Testbed's notion of a property measurement.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *

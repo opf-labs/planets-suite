@@ -828,7 +828,7 @@ public class NewExpWizardController {
             // Add a Global message:
             ctx.addMessage(null,fmsg);
         } else {
-            fmsg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "There were problems with your experiment.","Save failed.");
+            fmsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "There were problems with your experiment.","Save failed.");
             log.info("Message: Edit Failed.");
             // Add a Global message:
             ctx.addMessage(null,fmsg);
@@ -1324,112 +1324,15 @@ public class NewExpWizardController {
               return 101;
           }
 	  }
+	  
 	  private void recordExperimentCompleted(TestbedBatchJob job ) {
           TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
           Experiment exp = expBean.getExperiment();
- 
-          log.info("Recording result of experiment. "+exp.getExperimentExecution().isExecutionInvoked()+" ; "+exp.getExperimentExecution().isExecutionCompleted());
-          if (exp.getExperimentExecutable().isExecutableInvoked() && 
-                  ! exp.getExperimentExecutable().isExecutionCompleted() ) {
-              // Grab all the results:
-              DataHandler dh = new DataHandlerImpl();
-              BatchExecutionRecordImpl batch = new BatchExecutionRecordImpl();
-              exp.getExperimentExecutable().getBatchExecutionRecords().add(batch);
-              batch.setStartDate(job.getStartDate());
-              batch.setEndDate(job.getEndDate());
-              if( job.getStatus().equals( TestbedBatchJob.DONE ) ) {
-                  batch.setBatchRunSucceeded(true);
-              } else {
-                  batch.setBatchRunSucceeded(false);
-              }
-              ExecutionRecordPersistency erp = null;
-              /* FIXME Should not be fiddling with this here! 
-              try {
-                  erp = eu.planets_project.tb.impl.persistency.ExecutionRecordPersistencyImpl.getInstance();
-              } catch( Exception e ) {
-                  log.error("Could not find the ExecutionRecordPersistency manager: "+e);
-              }
-              */
-              for( String filename : job.getDigitalObjects()) {
-                  ExecutionRecordImpl rec = new ExecutionRecordImpl();
-                  rec.setDigitalObjectReferenceCopy(filename);
-                  try {
-                      rec.setDigitalObjectSource(dh.getName(filename));
-                  } catch (FileNotFoundException e) {
-                      rec.setDigitalObjectSource(filename);
-                  }
-                  // FIXME Set this in the job somewhere:
-                  rec.setDate(Calendar.getInstance());
-                  List<ExecutionStageRecordImpl> stages = rec.getStages();
-                  WorkflowResult wrf = job.getWorkflowResult(filename);
-                  // FIXME This reflects other problems!
-                  if( wrf != null && wrf.getMeasurements() != null ) {
-                      // Examine the result:
-                      if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wrf.getResultType())) {
-                          DigitalObject dob = (DigitalObject) wrf.getResult();
-                          try {
-                              String storeKey = dh.addBytestream(dob.getContent().read(), dob.getTitle());
-                              rec.setResult(storeKey);
-                              rec.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
-                              /* FIXME In the future, store the whole DO in the TB DR.
-                              Add dob.gatherBinaries/embedBinaries method?
-                                      */
-                          } catch (IOException e) {
-                              log.error("Could not store result DigitalObject - "+dob);
-                              e.printStackTrace();
-                          }
-                      } else {
-                          rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
-                      }
-                      // Now pull out the measurements:
-                      Set<String> stagenames = new HashSet<String>();
-                      for( MeasurementImpl m : wrf.getMeasurements() ) {
-                          stagenames.add(m.getStage());
-                      }
-                      for( String stagename : stagenames ) {
-                          ExecutionStageRecordImpl stage = new ExecutionStageRecordImpl();
-                          stage.setStage(stagename);
-                          log.info("Looking for stage: "+stagename);
-                          // Now loop over measurement, recording ones taken at this stage.
-                          List<MeasurementRecordImpl> sms = stage.getMeasurements();
-                          for( MeasurementImpl m : wrf.getMeasurements() ) {
-                              if( m.getStage().equals(stagename)) {
-                                  sms.add( new MeasurementRecordImpl(m.getIdentifier().toString(), m.getValue() ) );
-                                  log.info("Adding measurment of "+m.getIdentifier()+" from stage: "+m.getStage());
-                              } else {
-                                  log.info("No-match for stage: "+m.getStage());
-                              }
-                          }
-                          stage.setMeasurements(sms);
-                          // FIXME The current Workflow Execution system needs Stages so I can get the service records!                      
-                          //                      stage.setServiceRecord(serviceRecord); 
-                          stages.add(stage);
-                      }
-                  }
-                  if( erp != null ) {
-                      erp.persistExecutionRecordImpl(rec);
-                  }
-                  batch.getRuns().add(rec);
-                  log.info("Added records ("+batch.getRuns().size()+") for "+rec.getDigitalObjectSource());
-              }
-              // General State Update:
-              if( TestbedBatchJob.DONE.equals(job.getStatus()) ) {
-                  // If we got here, then log that all went well...
-                  log.info("Status: DONE - All went well.");
-                  exp.getExperimentExecutable().setExecutionSuccess(true);
-              } else {
-                  log.error("Experiment execution failed - setting state: failure within the experiment's executable: ");
-                  exp.getExperimentExecutable().setExecutionSuccess(false);
-              }
-              exp.getExperimentExecutable().setExecutableInvoked(true);
-              exp.getExperimentExecutable().setExecutionCompleted(true);
-              exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
-              exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
-              // FIXME This should get a final time out of the execution engine.
-              exp.getExperimentExecutable().setExecutionEndDate(Calendar.getInstance().getTimeInMillis());
-              exp.getExperimentExecution().setEndDate(Calendar.getInstance());
-          }
+
+          // Update the experiment from the job:
+          WorkflowResult.recordJobToExperiment( job, exp );
+          
           // Store:
           testbedMan.updateExperiment(exp);
 	  }
@@ -1759,6 +1662,7 @@ public class NewExpWizardController {
            this.obsEType = etype;
            refresh = true;
            
+           // FIXME: This should work better! Measurements and Beans have the right relationship?
            if( etype.equals( AdminManagerImpl.IDENTIFY ) ) {
                ExpTypeIdentify exptype = (ExpTypeIdentify)JSFUtil.getManagedObject("ExpTypeIdentify");
                obs = this.createMeasurementBeans(exptype.getObservables());
@@ -1776,7 +1680,9 @@ public class NewExpWizardController {
             if( props.contains(m.getIdentifier().toString()) ) {
                 m.setSelected(true);
             } else {
-                m.setSelected(false);
+                // FIXME This should remember properly, and set to false if necessary.
+//                m.setSelected(false);
+                m.setSelected(true);
             }
             // FIXME Temporary fix to make defaults TRUE
             if( refresh == true ) {
@@ -1789,12 +1695,15 @@ public class NewExpWizardController {
      * @param measurements
      * @return
      */
-    private List<MeasurementBean> createMeasurementBeans( Collection<MeasurementImpl> measurements ) {
+    private List<MeasurementBean> createMeasurementBeans( HashMap<String,List<MeasurementImpl>> measurements ) {
         List<MeasurementBean> mbeans = new ArrayList<MeasurementBean>();
-        for( MeasurementImpl measurement : measurements ) {
+        for( String stage: measurements.keySet() ) {
+        for( MeasurementImpl measurement : measurements.get(stage) ) {
             MeasurementBean measurebean =  new MeasurementBean(measurement);
             measurebean.setSelected(true);
+            measurebean.setStage(stage);
             mbeans.add(measurebean);
+        }
         }
         return mbeans;
     }

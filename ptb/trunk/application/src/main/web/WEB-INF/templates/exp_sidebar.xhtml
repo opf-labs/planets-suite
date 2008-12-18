@@ -14,64 +14,64 @@
             <h:form>
             <ul class="exp">
             
-                <h:panelGroup rendered="#{ExperimentBean.currentStage >= 1}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 1}">
                     <li class="#{ExperimentPhase == 1 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage1"
-                                styleClass="#{ExperimentBean.currentStage > 1 ? 'exp_done' : 'exp' }">
+                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 1 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage1']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.currentStage lt 1}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 1}">
                     <li class="exp_nd">#{res['new_exp.stage1']}</li>
                 </h:panelGroup>
 
-                <h:panelGroup rendered="#{ExperimentBean.currentStage >= 2}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 2}">
                     <li class="#{ExperimentPhase == 2 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage2"
-                                styleClass="#{ExperimentBean.currentStage > 2 ? 'exp_done' : 'exp' }">
+                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 2 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage2']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.currentStage lt 2}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 2}">
                     <li class="exp_nd">#{res['new_exp.stage2']}</li>
                 </h:panelGroup>
 
-                <h:panelGroup rendered="#{ExperimentBean.currentStage >= 3}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 3}">
                     <li class="#{ExperimentPhase == 3 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage3"
-                                styleClass="#{ExperimentBean.currentStage > 3 ? 'exp_done' : 'exp' }">
+                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 3 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage3']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.currentStage lt 3}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 3}">
                     <li class="exp_nd">#{res['new_exp.stage3']}</li>
                 </h:panelGroup>
 
-                <h:panelGroup rendered="#{ExperimentBean.currentStage >= 4}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 4}">
                     <li class="#{ExperimentPhase == 4 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage4"
-                                styleClass="#{ExperimentBean.currentStage > 4 ? 'exp_done' : 'exp' }">
+                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 4 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage4']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.currentStage lt 4}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 4}">
                     <li class="exp_nd">#{res['new_exp.stage4']}</li>
                 </h:panelGroup>
                 
-                <h:panelGroup rendered="#{ExperimentBean.currentStage >= 5}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 5}">
                     <li class="#{ExperimentPhase == 5 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage5"
-                                styleClass="#{ExperimentBean.currentStage > 5 ? 'exp_done' : 'exp' }">
+                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 5 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage5']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.currentStage lt 5}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 5}">
                     <li class="exp_nd">#{res['new_exp.stage5']}</li>
                 </h:panelGroup>
 
                 
-                <h:panelGroup rendered="#{ExperimentBean.currentStage >= 6}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 6}">
                     <li class="#{ExperimentPhase == 6 ? 'exp_sel' : 'exp' }"><h:commandLink action="goToStage6"
-                                styleClass="#{ExperimentBean.currentStage > 6 ? 'exp_done' : 'exp' }">
+                                styleClass="#{ExperimentBean.experiment.currentPhaseIndex > 6 ? 'exp_done' : 'exp' }">
                             <t:outputText value="#{res['new_exp.stage6']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.currentStage lt 6}">
+                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 6}">
                     <li class="exp_nd">#{res['new_exp.stage6']}</li>
                 </h:panelGroup>
                 
