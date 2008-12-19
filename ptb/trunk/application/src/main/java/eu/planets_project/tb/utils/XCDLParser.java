@@ -5,6 +5,8 @@ package eu.planets_project.tb.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
@@ -24,6 +26,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
@@ -94,6 +97,26 @@ public class XCDLParser {
         DocumentBuilder builder;
         builder = factory.newDocumentBuilder();
         Reader reader = new StringReader(xcdl);
+        InputSource inputSource = new InputSource(reader);
+        Document xcdlDoc = builder.parse(inputSource);
+        return XCDLParser.parseXCDL(xcdlDoc);
+    }
+
+    /**
+     * @param read
+     * @return
+     * @throws ParserConfigurationException 
+     * @throws IOException 
+     * @throws SAXException 
+     * @throws XPathExpressionException 
+     */
+    public static List<MeasurementRecordImpl> parseXCDL(InputStream input) 
+            throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+        DocumentBuilderFactory factory =   DocumentBuilderFactory.newInstance();  
+        factory.setNamespaceAware(false);
+        DocumentBuilder builder;
+        builder = factory.newDocumentBuilder();
+        Reader reader = new InputStreamReader(input);
         InputSource inputSource = new InputSource(reader);
         Document xcdlDoc = builder.parse(inputSource);
         return XCDLParser.parseXCDL(xcdlDoc);

@@ -3,16 +3,22 @@
  */
 package eu.planets_project.tb.utils;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.Service;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.xml.sax.SAXException;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.characterise.DetermineProperties;
 import eu.planets_project.services.characterise.DeterminePropertiesResult;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -21,6 +27,8 @@ import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
@@ -69,17 +77,21 @@ public class XCDLService implements DetermineProperties {
         if( properties == null ) return null;
         // Now create list and copy the properties into it:
         List<Property> props = new Vector<Property>();
-        for( FileFormatProperty m : properties ) {
-            System.out.println("Got property "+m.getId() + ", " +m.getName() + ", " + m.getDescription() );
-            Property p = new Property( m.getId()+"/"+m.getName(), m.getValue());
-            p.setDescription(m.getDescription());
-            p.setType(m.getType());
-            p.setUnit(m.getUnit());
-            props.add(p);
+        for( FileFormatProperty ffp : properties ) {
+            //System.out.println("Got property "+ffp.getId() + ", " +ffp.getName() + ", " + ffp.getDescription() );
+            props.add( this.createPropertyFromFFProp(ffp) );
         }
         Properties propobj = new Properties();
         propobj.setProperties(props);
         return propobj;
+    }
+    
+    private Property createPropertyFromFFProp( FileFormatProperty ffp ) {
+        Property p = new Property( ffp.getId()+"/"+ffp.getName(), ffp.getValue());
+        p.setDescription(ffp.getDescription());
+        p.setType(ffp.getType());
+        p.setUnit(ffp.getUnit());
+        return p;
     }
 
     /* (non-Javadoc)
@@ -88,7 +100,33 @@ public class XCDLService implements DetermineProperties {
     public DeterminePropertiesResult measure(DigitalObject dob,
             Properties props, Parameters params) {
         
-        return null;
+        CharacteriseResult characteriseResult = extractor.characterise(dob, null, params);
+
+        Properties propobj = new Properties();
+        List<MeasurementRecordImpl> list;
+        try {
+            list = XCDLParser.parseXCDL(characteriseResult.getDigitalObject().getContent().read());
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            list = null;
+        }
+        List<Property> mprops = new Vector<Property>();
+        if( list != null ) {
+            for( MeasurementRecordImpl m : list ) {
+                Property p = new Property();
+                p.setName( m.getIdentifier() );
+                p.setValue( m.getValue() );
+                mprops.add(p);
+            }
+        }
+        propobj.setProperties( mprops );
+        
+        // FIXME Interface is a problem!  We really want to return simpler entities than full property descriptions.
+
+        ServiceReport report = new ServiceReport();
+        
+        return new DeterminePropertiesResult(propobj, report);
     }
 
 }

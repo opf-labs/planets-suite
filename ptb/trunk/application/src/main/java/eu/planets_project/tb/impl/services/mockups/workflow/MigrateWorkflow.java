@@ -18,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.DetermineProperties;
+import eu.planets_project.services.characterise.DeterminePropertiesResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
@@ -29,6 +30,7 @@ import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
 import eu.planets_project.tb.utils.XCDLService;
 
@@ -245,7 +247,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         this.parameters = parameters;
         // Attempt to connect to the Migrate service.
         migrator = new MigrateWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
-        // Also set the format parameters!?
+        // FIXME Also set the format parameters!? Caught, I think.
+        // FIXME Also create/record a ServiceRecordImpl?
     }
     
     private String getFromFormat() {
@@ -255,15 +258,57 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private String getToFormat() {
         return this.parameters.get(PARAM_TO);        
     }
+    
+    /* ---------------------------------------------------------------------------------------- */
+    /* ---------------------------------------------------------------------------------------- */
+    /* ---------------------------------------------------------------------------------------- */
 
     /* (non-Javadoc)
      * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#execute(eu.planets_project.services.datatypes.DigitalObject, java.util.HashMap)
      */
     public WorkflowResult execute( DigitalObject dob ) {
+        // Initialise the result:
+        WorkflowResult wr = new WorkflowResult();
 
+        // Attempt to ru each stage:
+        try {
+            // Pre-migrate characterise
+            executeCharacteriseStage(wr, dob, STAGE_PRE_MIGRATE);
+            
+            // Migrate Stage:
+            executeMigrateStage(wr, dob);
+            
+            // Post-migrate characterise
+            executeCharacteriseStage(wr, (DigitalObject)wr.getResult(), STAGE_POST_MIGRATE);
+            
+        } catch (Exception e ) {
+            // Create a ServiceReport from the exception.
+            ServiceReport sr = new ServiceReport();
+            sr.setErrorState(ServiceReport.ERROR);
+            sr.setError(e.toString());
+            wr.setReport(sr);
+        }
+        return wr;
+    }
+
+    /**
+     * The actual Migration stage.
+     * 
+     * @param wr
+     * @param dob
+     * @throws Exception
+     */
+    private void executeMigrateStage( WorkflowResult wr, DigitalObject dob ) throws Exception {
+        // Now prepare the result:
+        List<MeasurementRecordImpl> stage_m = wr.getStage(STAGE_MIGRATE).getMeasurements();
+        
+        // FIXME Create a ServiceRecord, use a factory or pass down, and fill out based on Service Registry.
+        ServiceRecordImpl sr = new ServiceRecordImpl();
+        //sr.setServiceDescription(sd);
+        wr.getStage(STAGE_MIGRATE).setServiceRecord(sr);
+        
         // Invoke the service, timing it along the way:
         boolean success = true;
-        String exceptionReport = "";
         MigrateResult migrated = null;
         long msBefore = 0, msAfter = 0;
         URI from = null, to = null;
@@ -274,13 +319,11 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             migrated = migrator.migrate(dob, from, to, null);
         } catch( Exception e ) {
             success = false;
-            exceptionReport = "<p>Service Invocation Failed!<br/>" + e + "</p>";
+            throw new Exception ("Service Invocation Failed! : " + e );
         }
         msAfter = System.currentTimeMillis();
-
-        // Now prepare the result:
-        WorkflowResult wr = new WorkflowResult();
-        List<MeasurementRecordImpl> stage_m = wr.getStage(STAGE_MIGRATE).getMeasurements();
+        
+        // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
 
         // Now record
@@ -298,17 +341,64 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             wr.setResultType(WorkflowResult.RESULT_DIGITAL_OBJECT);
             wr.setReport(migrated.getReport());
             log.info("Migration succeeded.");
-            return wr;
+            return;
         }
-        // Build in a 'service failed' property.
+        
+        // Only get to here if there was not a valid result.
+        
+        // Build in a 'service failed' property, i.e. the call worked, but no result.
         stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
-        // Create a ServiceReport from the exception.
-        ServiceReport sr = new ServiceReport();
-        sr.setErrorState(ServiceReport.ERROR);
-        sr.setError(exceptionReport);
-        sr.setInfo(migrated.getReport().toString());
-        wr.setReport(sr);
-        return wr;
+
+        // FIXME Really, need to be able to ADD a report, so the full set is known.
+        wr.setReport(migrated.getReport());
+        
+        // FIXME Should now throw an Exception, as the WF cannot proceed?
+        throw new Exception("Migration failed.  No Digital Object was created. "+migrated.getReport().getError());
+        
+        // FIXME Add a 'toString' on the report that makes a text summary of the whole state?
+        
+    }
+    
+    /**
+     * 
+     * @param wr
+     * @param dob
+     * @param stage
+     * @throws Exception
+     */
+    private void executeCharacteriseStage( WorkflowResult wr, DigitalObject dob, String stage ) throws Exception {
+        // Now prepare the result:
+        List<MeasurementRecordImpl> stage_m = wr.getStage(stage).getMeasurements();
+        
+        // Invoke the service, timing it along the way:
+        boolean success = true;
+        DeterminePropertiesResult result = null;
+        long msBefore = 0, msAfter = 0;
+        msBefore = System.currentTimeMillis();
+        try {
+            result = dp.measure(dob, null, null);
+        } catch( Exception e ) {
+            success = false;
+        }
+        msAfter = System.currentTimeMillis();
+        
+        // Compute the run time.
+        stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+
+        // Record results:
+        if( success ) {
+            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+            if( result != null ) {
+                for( Property p : result.getProperties().getProperties() ) {
+                    stage_m.add(new MeasurementRecordImpl( p.getName(), p.getValue() ));
+                }
+            }
+            return;
+        }
+
+        // FAILED:
+        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
+
     }
 
 }
