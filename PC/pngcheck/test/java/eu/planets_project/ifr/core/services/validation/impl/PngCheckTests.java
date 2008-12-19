@@ -25,6 +25,9 @@ import eu.planets_project.services.validate.ValidateResult.Validity;
  */
 public final class PngCheckTests {
 
+    /**
+     * test the describe() method
+     */
     @Test
     public void testServiceDescription() {
         PngCheck check = new PngCheck();
@@ -67,11 +70,11 @@ public final class PngCheckTests {
         try {
             DigitalObject inPng = new DigitalObject.Builder(Content
                     .byReference(new File(
-                            "PC/pngcheck/src/resources/planets.png").toURL()))
+                            "PC/pngcheck/src/resources/planets.png").toURI().toURL()))
                     .build();
             DigitalObject inJpg = new DigitalObject.Builder(Content
                     .byReference(new File(
-                            "PC/pngcheck/src/resources/planets.jpg").toURL()))
+                            "PC/pngcheck/src/resources/planets.jpg").toURI().toURL()))
                     .build();
             /* Check with null PRONOM URI, both with PNG and JPG */
             assertTrue("Valid PNG was not validated;", pngCheck.validate(inPng,
