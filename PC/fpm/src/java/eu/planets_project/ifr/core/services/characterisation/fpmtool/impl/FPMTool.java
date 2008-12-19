@@ -1,6 +1,3 @@
-/**
- * @author Thomas Kraemer thomas.kraemer@uni-koeln.de
- */
 package eu.planets_project.ifr.core.services.characterisation.fpmtool.impl;
 
 import java.io.File;
@@ -31,6 +28,9 @@ import eu.planets_project.services.compare.BasicCompareFormatProperties;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
+/**
+ * @author Thomas Kraemer thomas.kraemer@uni-koeln.de
+ */
 @Stateless()
 @Local(BasicCompareFormatProperties.class)
 @Remote(BasicCompareFormatProperties.class)
@@ -50,6 +50,9 @@ public class FPMTool implements BasicCompareFormatProperties, Serializable {
     private String FPMTOOL_WORK = null;
     private String FPMTOOL_OUT = "fpm.fpm";
 
+    /**
+     * no arg constructor
+     */
     public FPMTool() {
         try {
             FPMTOOL_WORK = null;
@@ -104,6 +107,9 @@ public class FPMTool implements BasicCompareFormatProperties, Serializable {
         }
     }
 
+    /**
+     * @see eu.planets_project.services.compare.BasicCompareFormatProperties#basicCompareFormatProperties(java.lang.String)
+     */
     @WebMethod(operationName = BasicCompareFormatProperties.NAME, action = PlanetsServices.NS
             + "/" + BasicCompareFormatProperties.NAME)
     @WebResult(name = BasicCompareFormatProperties.NAME + "Result", targetNamespace = PlanetsServices.NS
@@ -126,7 +132,7 @@ public class FPMTool implements BasicCompareFormatProperties, Serializable {
             if (outfile.exists() && !outfile.isDirectory()) {
                 plogger.info("Output file already exists...");
             } else {
-                outfile.createTempFile("tmp", "tmp");
+                File.createTempFile("tmp", "tmp");
                 plogger.info("Created new output file:"
                         + outfile.getAbsolutePath());
             }
@@ -193,6 +199,11 @@ public class FPMTool implements BasicCompareFormatProperties, Serializable {
         return bytes;
     }
 
+    /**
+     * @param source
+     * @param target
+     * @throws IOException
+     */
     public void copy(File source, File target) throws IOException {
         plogger.warn("Copying from " + source.getAbsolutePath() + " to "
                 + target.getAbsolutePath());
