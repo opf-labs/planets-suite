@@ -33,6 +33,9 @@ public class JhoveIdentificationTests {
         jhove = new JhoveIdentification();
     }
 
+    /**
+     * test the describe() method
+     */
     @Test
     public void testServiceDescription() {
         ServiceDescription description = new JhoveIdentification().describe();
@@ -41,56 +44,90 @@ public class JhoveIdentificationTests {
         System.out.println(description.toXmlFormatted());
     }
 
+    /**
+     * test AIFF identification
+     */
     @Test
     public void testAiff() {
         test(FileType.AIFF);
     }
 
+    
+    /**
+     * test ASCII identification
+     */
     @Test
     public void testAscii() {
         test(FileType.ASCII);
     }
 
+    /**
+     * test GIF identification
+     */
     @Test
     public void testGif() {
         test(FileType.GIF);
     }
 
+    /**
+     * Test HTML identifcation
+     */
     @Test
     public void testHtml() {
         test(FileType.HTML);
     }
 
+    /**
+     * Test JPEG 1 identification
+     */
     @Test
     public void testJpeg1() {
         test(FileType.JPEG1);
     }
 
+    /**
+     * Test JPEG 2 identification
+     */
     @Test
     public void testJpeg2() {
         test(FileType.JPEG2);
     }
 
+    /**
+     * Test JPEG identification
+     */
     // @Test TODO: There is something wrong with that JPEG file
     public void testJpeg3() {
         test(FileType.JPEG3);
     }
 
+    /**
+     * Test PDF identification
+     */
     @Test
     public void testPdf() {
         test(FileType.PDF);
     }
 
+    /**
+     * Test TIFF identification
+     */
     @Test
     public void testTiff() {
         test(FileType.TIFF);
     }
 
+    /**
+     * Test wav identification
+     */
     @Test
     public void testWave() {
         test(FileType.WAVE);
     }
 
+    /**
+     * test xml identification
+     */
     @Test
     public void testXml() {
         test(FileType.XML);
@@ -99,7 +136,8 @@ public class JhoveIdentificationTests {
     /**
      * The old approach: iterate over the enum types...
      */
-    private void test() {
+    @SuppressWarnings("unused")
+	private void test() {
         /* We check all the enumerated file types: */
         for (FileType type : FileType.values()) {
             test(type);
@@ -118,7 +156,7 @@ public class JhoveIdentificationTests {
         try {
             result = jhove.identify(
                     new DigitalObject.Builder(Content.byReference(new File(
-                            location).toURL())).build()).getTypes().get(0);
+                            location).toURI().toURL())).build()).getTypes().get(0);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
