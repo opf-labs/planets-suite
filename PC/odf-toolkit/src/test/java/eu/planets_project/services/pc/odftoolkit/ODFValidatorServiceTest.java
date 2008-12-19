@@ -41,6 +41,9 @@ public class ODFValidatorServiceTest {
         ids = ServiceCreator.createTestService(Validate.QNAME, ODFValidatorService.class, wsdlLoc );
     }
 
+    /**
+     * test the describe() method
+     */
     @Test
     public void testDescribe() {
         ServiceDescription desc = ids.describe();
@@ -48,6 +51,11 @@ public class ODFValidatorServiceTest {
         assertTrue("The ServiceDescription should not be NULL.", desc != null );
     }
 
+    /**
+     * Test the validate method
+     * @throws MalformedURLException
+     * @throws URISyntaxException
+     */
     @Test
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
