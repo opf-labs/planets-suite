@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import javax.ejb.Local;
@@ -111,15 +109,18 @@ public final class MetadataExtractor implements BasicCharacteriseOneBinary,
      * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
-        return new ServiceDescription.Builder(NAME, this.getClass().getName())
+        return new ServiceDescription.Builder(
+                "New Zealand Metadata Extractor Service", this.getClass()
+                        .getName())
                 .author("Fabian Steeg")
                 .classname(this.getClass().getName())
                 .description(
-                        "Metadata extraction service based on the Metadata Extraction Tool of the National Library of New Zealand.")
+                        "Metadata extraction service based on the Metadata Extraction Tool of the National Library of New Zealand (patched 3.4GA).")
                 .serviceProvider("The Planets Consortium")
                 .tool(URI.create("http://meta-extractor.sourceforge.net/"))
-                .version(
-                        "Patched Metadata Extraction Tool 3.4GA (see http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407&atid=929202)")
+                .furtherInfo(
+                        URI
+                                .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407&atid=929202"))
                 .build();
     }
 }

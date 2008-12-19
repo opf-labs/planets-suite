@@ -83,13 +83,14 @@ public final class Droid implements Identify, Serializable {
      * @see eu.planets_project.services.identify.Identify#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
-                Identify.class.getCanonicalName());
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(
+                "DROID Identification Service", Identify.class
+                        .getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
-        sd.description("Identification service based on Droid.");
+        sd
+                .description("Identification service based on Droid (DROID 3.0, Signature File 13).");
         sd.author("Carl Wilson, Fabian Steeg");
         sd.tool(URI.create("http://droid.sourceforge.net/"));
-        sd.version("DROID 3.0, Signature File 13");
         sd.serviceProvider("The Planets Consortium");
         return sd.build();
     }

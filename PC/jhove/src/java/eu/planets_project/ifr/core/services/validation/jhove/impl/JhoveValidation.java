@@ -2,8 +2,6 @@ package eu.planets_project.ifr.core.services.validation.jhove.impl;
 
 import java.io.Serializable;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -12,7 +10,6 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
-import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -55,13 +52,12 @@ public final class JhoveValidation implements Validate, Serializable {
      * @see eu.planets_project.services.validate.Validate#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
-                Validate.class.getCanonicalName());
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(
+                "JHOVE Validation Service", Validate.class.getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
-        sd.description("Validation service using JHOVE.");
+        sd.description("Validation service using JHOVE (1.1).");
         sd.author("Fabian Steeg");
         sd.tool(URI.create("http://hul.harvard.edu/jhove/"));
-        sd.version("JHOVE 1.1");
         sd.inputFormats(JhoveIdentification.inputFormats());
         sd.serviceProvider("The Planets Consortium");
         return sd.build();

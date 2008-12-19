@@ -69,7 +69,7 @@ public final class JhoveIdentification implements Identify, Serializable {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "jhove-temp", "bin");
         Types types = identifyOneBinary(file);
-        log.info("JHOVE Identification, got types: "+types.types);
+        log.info("JHOVE Identification, got types: " + types.types);
         ServiceReport report = new ServiceReport();
         report.setInfo(types.status);
         return new IdentifyResult(Arrays.asList(types.types), report);
@@ -80,13 +80,13 @@ public final class JhoveIdentification implements Identify, Serializable {
      * @see eu.planets_project.services.identify.Identify#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
-                Identify.class.getCanonicalName());
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(
+                "JHOVE Identification Service", Identify.class
+                        .getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
-        sd.description("Identification service using JHOVE.");
+        sd.description("Identification service using JHOVE (1.1).");
         sd.author("Fabian Steeg");
         sd.tool(URI.create("http://hul.harvard.edu/jhove/"));
-        sd.version("JHOVE 1.1");
         sd.inputFormats(inputFormats());
         sd.serviceProvider("The Planets Consortium");
         return sd.build();
@@ -239,8 +239,8 @@ public final class JhoveIdentification implements Identify, Serializable {
                             + (output.length() == 0 ? "empty output" : output)
                             + ")");
         }
-        log.info("Got mime type: "+mime);
-        log.info("Got status: "+status);
+        log.info("Got mime type: " + mime);
+        log.info("Got status: " + status);
         Types t = new Types();
         t.status = status;
         t.types = new URI[] { uri(mime) };
