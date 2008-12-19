@@ -35,7 +35,7 @@ public final class ComparatorCompareMultipleXcdlValues implements
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.compare.CompareMultipleXcdlValues#compareMultipleXcdlValues(java.util.List,
+     * @see eu.planets_project.services.compare.CompareMultipleXcdlValues#compareMultipleXcdlValues(java.lang.String[],
      *      java.lang.String)
      */
     @WebMethod(operationName = CompareMultipleXcdlValues.NAME, action = PlanetsServices.NS
