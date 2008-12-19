@@ -1,22 +1,10 @@
 package eu.planets_project.ifr.core.services.validation.impl;
 
+import java.io.File;
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Iterator;
 import java.util.Arrays;
-import java.io.File;
 import java.util.List;
-
-import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.Platform;
-import com.sun.jna.Pointer;
-import com.sun.jna.Callback;
-import com.sun.jna.ptr.IntByReference;
-import com.sun.jna.ptr.ByReference;
-import com.sun.jna.Memory;
-import com.sun.jna.PointerType;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -26,6 +14,15 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
+
+import com.sun.jna.Callback;
+import com.sun.jna.Library;
+import com.sun.jna.Memory;
+import com.sun.jna.Native;
+import com.sun.jna.Platform;
+import com.sun.jna.Pointer;
+import com.sun.jna.ptr.ByReference;
+import com.sun.jna.ptr.IntByReference;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.utils.ByteArrayHelper;
@@ -51,6 +48,9 @@ import eu.planets_project.services.validate.BasicValidateOneBinary;
 public class TiffValidation implements BasicValidateOneBinary, Serializable 
 {
 	private static final long serialVersionUID = -7116493742376868779L;
+	/**
+	 * the service name
+	 */
 	public static final String NAME = "TiffValidation";
 	
 	private static final PlanetsLogger LOG = 
@@ -61,16 +61,20 @@ public class TiffValidation implements BasicValidateOneBinary, Serializable
 	/**
 	 * PRONOM UIDs 
 	 */ 
+	@SuppressWarnings("unused")
 	private static final String PRONOM_TIFF_V3 = "info:pronom/fmt/7";	
+	@SuppressWarnings("unused")
 	private static final String PRONOM_TIFF_V4 = "info:pronom/fmt/8";	
+	@SuppressWarnings("unused")
 	private static final String PRONOM_TIFF_V5 = "info:pronom/fmt/9";	
+	@SuppressWarnings("unused")
 	private static final String PRONOM_TIFF_V6 = "info:pronom/fmt/10";	
 
 
 	/**
 	 * TIFF Baseline Tags
 	 *
-	 * @see http://www.awaresystems.be/imaging/tiff/tifftags/baseline.html
+	 * @see "http://www.awaresystems.be/imaging/tiff/tifftags/baseline.html"
 	 */ 	
 	private static final int TIFF_IMAGE_WIDTH = 256;
 	private static final int TIFF_IMAGE_LENGTH = 257;
@@ -159,71 +163,277 @@ public class TiffValidation implements BasicValidateOneBinary, Serializable
 	 */
 	public interface TiffLibrary extends Library 
 	{
+		/**
+		 * the lib tiff instance
+		 */
 		TiffLibrary INSTANCE = 
 			(TiffLibrary)Native.loadLibrary(
 				(Platform.isWindows() ? "libtiff3" : "tiff"), 
 				TiffLibrary.class);
 	
+		/**
+		 * @param file
+		 * @param mode
+		 * @return pointer
+		 */
 		Pointer TIFFOpen(String file, String mode);
+		/**
+		 * @param p
+		 */
 		void TIFFClose(Pointer p);
 	
+		/**
+		 * @param handler
+		 * @return error function
+		 */
 		ErrorFunc TIFFSetErrorHandler(ErrorFunc handler);
+		/**
+		 * @param handler
+		 * @return warning function
+		 */
 		WarnFunc TIFFSetWarningHandler(WarnFunc handler);
 
+		/**
+		 * @param tif
+		 * @param tag
+		 * @param va
+		 * @return the field requested
+		 */
 		int TIFFGetField(Pointer tif, int tag, ByReference... va);
+		/**
+		 * @param tif
+		 * @param tag
+		 * @param va
+		 * @return the field tag
+		 */
 		int TIFFSetField(Pointer tif, int tag, ByReference... va);
 	
+		/**
+		 * @param tif
+		 * @return the current row
+		 */
 		// query details
 		long TIFFCurrentRow(Pointer tif);
+		/**
+		 * @param tif
+		 * @return the current strip
+		 */
 		long TIFFCurrentStrip(Pointer tif);
+		/**
+		 * @param tif
+		 * @return the current tile
+		 */
 		long TIFFCurrentTile(Pointer tif);
+		/**
+		 * @param tif
+		 * @return the current directory
+		 */
 		int TIFFCurrentDirectory(Pointer tif);
+		/**
+		 * @param tif
+		 * @return the last dir
+		 */
 		int TIFFLastDirectory(Pointer tif);
+		/**
+		 * @param tif
+		 * @return the file no
+		 */
 		int TIFFFileno(Pointer tif);
+		/**
+		 * @param tif
+		 * @return the file name
+		 */
 		String TIFFFileName(Pointer tif);
+		/**
+		 * @param tif
+		 * @return the mode
+		 */
 		int TIFFGetMode(Pointer tif);
+		/**
+		 * @param tif
+		 * @return is tiff tiled
+		 */
 		int TIFFIsTiled(Pointer tif);
+		/**
+		 * @param tif
+		 * @return is the tiff byte swapped
+		 */
 		int TIFFIsBytSwapped(Pointer tif);
+		/**
+		 * @param tif
+		 * @return is the tiff upsampled
+		 */
 		int TIFFIsUpSampled(Pointer tif);
+		/**
+		 * @param tif
+		 * @return is tiff most sig bit to least sig
+		 */
 		int TIFFIsMSB2LSB(Pointer tif);
+		/**
+		 * @return the tiff version
+		 */
 		String TIFFGetVersion();
 	 
+		/**
+		 * @param tiff
+		 * @return status
+		 */
 		int TIFFReadDirectory(Pointer tiff);
+		/**
+		 * @param tif
+		 * @param strip
+		 * @param buffer
+		 * @param size
+		 * @return status
+		 */
 		long TIFFReadEncodedStrip(Pointer tif, long strip, Memory buffer, long size);
+		/**
+		 * @param tif
+		 * @param tile
+		 * @param buffer
+		 * @param size
+		 * @return status
+		 */
 		int TIFFReadEncodedTile(Pointer tif, int tile, Memory buffer, long size);
+		/**
+		 * @param tif
+		 * @param strip
+		 * @param buffer
+		 * @param size
+		 * @return status
+		 */
 		long TIFFReadRawStrip(Pointer tif, long strip, Memory buffer, long size);
+		/**
+		 * @param tif
+		 * @param tile
+		 * @param buffer
+		 * @param size
+		 * @return status
+		 */
 		long TIFFReadRawTile(Pointer tif, long tile, Memory buffer, long size);
+		/**
+		 * @param tif
+		 * @param w
+		 * @param h
+		 * @param buffer
+		 * @param stopOnError
+		 * @return status
+		 */
 		int TIFFReadRGBAImage(Pointer tif, long w, long h, 
 			Memory buffer, int stopOnError);
+		/**
+		 * @param tif
+		 * @param w
+		 * @param h
+		 * @param buffer
+		 * @param orientation
+		 * @param stopOnError
+		 * @return status
+		 */
 		int TIFFReadRGBAImageOriented(Pointer tif, long w, long h, 
 			Memory buffer,int orientation, int stopOnError);
 
+		/**
+		 * @param tif
+		 * @param row
+		 * @param buffer
+		 * @return status
+		 */
 		int TIFFReadRGBAStrip(Pointer tif, long row, Memory buffer);
+		/**
+		 * @param tif
+		 * @param x
+		 * @param y
+		 * @param buffer
+		 * @return status
+		 */
 		int TIFFReadRGBATile(Pointer tif, long x, long y, Memory buffer);
+		/**
+		 * @param tif
+		 * @param buffer
+		 * @param row
+		 * @param sample
+		 * @return status
+		 */
 		int TIFFReadScanline(Pointer tif, Memory buffer, long row, int sample);
+		/**
+		 * @param tif
+		 * @param buffer
+		 * @param x
+		 * @param y
+		 * @param z
+		 * @param sample
+		 * @return status
+		 */
 		long TIFFReadTile(Pointer tif, Memory buffer, long x, long y, long z, int sample);
 
+		/**
+		 * @param tiff
+		 * @param message
+		 * @return is RGBA image ok
+		 */
 		int TIFFRGBAImageOK(Pointer tiff, byte[] message);
+		/**
+		 * @param img
+		 * @param tiff
+		 * @param stopOnError
+		 * @param msg
+		 * @return the image sart
+		 */
 		int TIFFRGBAImageBegin(Pointer img, Pointer tiff, 
 			int stopOnError, byte[] msg);
+		/**
+		 * @param img
+		 * @param buffer
+		 * @param w
+		 * @param h
+		 * @return the image
+		 */
 		int TIFFRGBAImageGet(Pointer img, Memory buffer, long w, long h);
+		/**
+		 * @param img
+		 */
 		void TIFFRGBAImageEnd(Pointer img);
 
+		/**
+		 * @param tif
+		 * @param dirnum
+		 * @return status
+		 */
 		int TIFFSetDirectory(Pointer tif, int dirnum);
+		/**
+		 * @param tif
+		 * @param offset
+		 * @return status
+		 */
 		int TIFFSetSubDirectory(Pointer tif, long offset);
 	}
 
 	static ErrorFunc eFunc = new TiffErrorFunc();
 	static WarnFunc wFunc = new TiffWarnFunc();
 
+	/**
+	 *
+	 */
 	public static interface ErrorFunc extends Callback
 	{
+		/**
+		 * @param module
+		 * @param fmt
+		 */
 		// XXX: varargs not possible for interfaces
 		void callback(String module, String fmt); 
 	}
 
+	/**
+	 *
+	 */
 	public static interface WarnFunc extends Callback
 	{
+		/**
+		 * @param module
+		 * @param fmt
+		 */
 		// XXX: varargs not possible for interfaces
 		void callback(String module, String fmt); 
 	}
