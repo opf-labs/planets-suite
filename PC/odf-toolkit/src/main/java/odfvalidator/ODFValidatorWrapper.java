@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Vector;
 
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.validate.ValidateResult;
 
 /**
@@ -24,6 +23,10 @@ import eu.planets_project.services.validate.ValidateResult;
 public class ODFValidatorWrapper {
     Main main = new Main();
     
+    /**
+     * main method
+     * @param aArgs
+     */
     public static void main(String[] aArgs) {
         
         String aConfigFileName = null;
@@ -231,6 +234,10 @@ public class ODFValidatorWrapper {
         }
     }
     
+    /**
+     * @param dob
+     * @return the result of the validation of the ODF file
+     */
     public static ValidateResult validateODF( DigitalObject dob ) {
         
         Configuration aConfig = null;
@@ -241,14 +248,9 @@ public class ODFValidatorWrapper {
                 aVersion = aArg.substring(1);
             }
          */
-        String aFilterFileName = null;
-        String aExcludeRegExp = null;
         boolean bUseMathDTD = false;
-        boolean bRecursive = false;
-        int nLogLevel = Logger.ERROR;
         int nMode = ODFPackageValidator.VALIDATE;
         // nMode = ODFPackageValidator.CHECK_CONFORMANCE;
-        List<String> aFileNames = new Vector<String>();
         String aBaseURI = null;
        
         try
@@ -261,9 +263,7 @@ public class ODFValidatorWrapper {
             ODFValidator aValidator = new ODFValidator( aConfig, Logger.INFO, aVersion, bUseMathDTD );
 
             //aValidator.validate(aOut, aFileNames, aExcludeRegExp, nMode, bRecursive, aFilterFileName );
-            boolean result = aValidator.validateStream(aOut, dob.getContent().read(), aBaseURI , nMode, null);
-            
-            ServiceReport sr = new ServiceReport();
+            aValidator.validateStream(aOut, dob.getContent().read(), aBaseURI , nMode, null);
         }
         catch( ODFValidatorException e )
         {
