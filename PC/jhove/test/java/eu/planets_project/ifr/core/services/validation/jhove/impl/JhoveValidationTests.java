@@ -12,7 +12,6 @@ import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -36,6 +35,9 @@ public class JhoveValidationTests {
         jhove = new JhoveValidation();
     }
 
+    /**
+     * test the describe() method
+     */
     @Test
     public void testServiceDescription() {
         ServiceDescription description = new JhoveValidation().describe();
@@ -44,56 +46,89 @@ public class JhoveValidationTests {
         System.out.println(description.toXmlFormatted());
     }
 
+    /**
+     * Test AIFF validation
+     */
     @Test
     public void testAiff() {
         test(FileType.AIFF);
     }
 
+    /**
+     * Test ASCII validation
+     */
     @Test
     public void testAscii() {
         test(FileType.ASCII);
     }
 
+    /**
+     * Test GIF validation
+     */
     @Test
     public void testGif() {
         test(FileType.GIF);
     }
 
+    /**
+     * Test HTML validation
+     */
     @Test
     public void testHtml() {
         test(FileType.HTML);
     }
 
+    /**
+     * Test JPEG validation
+     */
     @Test
     public void testJpeg1() {
         test(FileType.JPEG1);
     }
 
+    /**
+     * Test JPEG validation again
+     */
     @Test
     public void testJpeg2() {
         test(FileType.JPEG2);
     }
 
+    /**
+     * Test JPEG validation yet again
+     */
     // @Test TODO: There is something wrong with that JPEG file
     public void testJpeg3() {
         test(FileType.JPEG3);
     }
 
+    /**
+     * Test PDF validation
+     */
     @Test
     public void testPdf() {
         test(FileType.PDF);
     }
 
+    /**
+     * Test TIFF validation
+     */
     @Test
     public void testTiff() {
         test(FileType.TIFF);
     }
 
+    /**
+     * Test WAV validation
+     */
     @Test
     public void testWave() {
         test(FileType.WAVE);
     }
 
+    /**
+     * test XML validation
+     */
     @Test
     public void testXml() {
         test(FileType.XML);
@@ -102,7 +137,8 @@ public class JhoveValidationTests {
     /**
      * The old approach: iterate over the enum types...
      */
-    private void test() {
+    @SuppressWarnings("unused")
+	private void test() {
         /* We check all the enumerated file types: */
         for (FileType type : FileType.values()) {
             test(type);
@@ -121,7 +157,7 @@ public class JhoveValidationTests {
         try {
             result = jhove.validate(
                     new DigitalObject.Builder(Content.byReference(new File(
-                            location).toURL())).build(),
+                            location).toURI().toURL())).build(),
                     new URI(type.getPronom())).getValidity().equals(
                     Validity.VALID);
         } catch (MalformedURLException e) {
