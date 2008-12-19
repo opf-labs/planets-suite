@@ -6,16 +6,15 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.ImageMagickMigrations;
-import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.ImageMagickMigrationsTestHelper;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.compare.BasicCompareFormatProperties;
-import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
+/**
+ *
+ */
 public class FPMToolTest {
 	
 //	@BeforeClass
@@ -25,11 +24,17 @@ public class FPMToolTest {
 //        System.setProperty("pserv.test.port", "8080");
 //    }
 
+    /**
+     * test the tool
+     */
     @Test
     public void localTests() {
         test(new FPMTool());
     }
 
+    /**
+     * run client tests
+     */
     @Test
     public void clientTests() {
         BasicCompareFormatProperties bcfp = ServiceCreator.createTestService(
@@ -38,6 +43,9 @@ public class FPMToolTest {
         test(bcfp);
     }
 
+    /**
+     * @param fpmt
+     */
     public void test(BasicCompareFormatProperties fpmt) {
 
         try {
@@ -56,6 +64,10 @@ public class FPMToolTest {
         }
     }
 
+    /**
+     * @throws IOException
+     * @throws PlanetsException
+     */
     @Test
     public void testBasicCompareFormatProperties() throws IOException,
             PlanetsException {
