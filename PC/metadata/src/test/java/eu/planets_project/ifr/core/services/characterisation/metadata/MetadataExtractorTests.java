@@ -34,76 +34,121 @@ public class MetadataExtractorTests {
 		characterizer = new MetadataExtractor();
 	}
 
+	/**
+	 * Test BMP metadata extraction
+	 */
 	@Test
 	public void testBMPExtraction() {
 		test(MetadataType.BMP);
 	}
 
+	/**
+	 * Test GIF metadata extraction
+	 */
 	@Test
 	public void testGIFExtraction() {
 		test(MetadataType.GIF);
 	}
 
+	/**
+	 * Test JPEG metadata extraction
+	 */
 	@Test
 	public void testJPEGExtraction() {
 		test(MetadataType.JPEG);
 	}
 
+	/**
+	 * Test TIFF metadata extraction
+	 */
 	@Test
 	public void testTIFFExtraction() {
 		test(MetadataType.TIFF);
 	}
 
+	/**
+	 * Test PDF metadata extraction
+	 */
 	@Test
 	public void testPDFExtraction() {
 		test(MetadataType.PDF);
 	}
 
+	/**
+	 * Test WAV metadata extraction
+	 */
 	@Test
 	public void testWAVExtraction() {
 		test(MetadataType.WAV);
 	}
 
+	/**
+	 * Test HTML metadata extraction
+	 */
 	@Test
 	public void testHTMLExtraction() {
 		test(MetadataType.HTML);
 	}
 
+	/**
+	 * Test Open Office file metadata extraction
+	 */
 	@Test
 	public void testOpenOfficeExtraction() {
 		test(MetadataType.OPEN_OFFICE1);
 	}
 
+	/**
+	 * Test Word Perfect file metadata extraction
+	 */
 	@Test
 	public void testWordPerfectExtraction() {
 		test(MetadataType.WORD_PERFECT);
 	}
 
+	/**
+	 * Test Word 6 file metadata extraction
+	 */
 	@Test
 	public void testWORD6Extraction() {
 		test(MetadataType.WORD6);
 	}
 
+	/**
+	 * Test MS Workd format metadata extraction
+	 */
 	@Test
 	public void testWORKSExtraction() {
 		test(MetadataType.WORKS);
 	}
 
+	/**
+	 * Test excel file metadata extraction
+	 */
 	@Test
 	public void testEXCELExtraction() {
 		test(MetadataType.EXCEL);
 	}
 
+	/**
+	 * Test powerpoint file metadata extraction
+	 */
 	@Test
 	public void testPowerPointExtraction() {
 		test(MetadataType.POWER_POINT);
 	}
 
+	/**
+	 * Test MP£ file metadata extraction
+	 */
 	@Test
 	public void testMP3Extraction() {
 		test(MetadataType.MP3);
 	}
 
+	/**
+	 * Test XML file metadata extraction
+	 */
 	@Test
 	public void testXMLExtraction() {
 		test(MetadataType.XML);
@@ -170,6 +215,7 @@ public class MetadataExtractorTests {
 	/**
 	 * Old approach: iterate over all enum types...
 	 */
+	@SuppressWarnings("unused")
 	private void test() {
 		/* Test all file types supported by the tool */
 		for (MetadataType type : MetadataType.values()) {
