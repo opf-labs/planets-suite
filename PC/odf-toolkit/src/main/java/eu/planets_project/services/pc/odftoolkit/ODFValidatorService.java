@@ -12,7 +12,6 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
      
@@ -28,11 +27,15 @@ import odfvalidator.ODFValidatorWrapper;
         endpointInterface = "eu.planets_project.services.validate.Validate" )
 public class ODFValidatorService implements Validate {
 
+    /**
+     * the service name
+     */
     public static final String NAME="ODFValidatorService";
     
-    private static Log log = LogFactory.getLog(ODFValidatorService.class);
+    @SuppressWarnings("unused")
+	private static Log log = LogFactory.getLog(ODFValidatorService.class);
     
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.services.validate.Validate#describe()
      */
     public ServiceDescription describe() {
@@ -46,8 +49,8 @@ public class ODFValidatorService implements Validate {
         return mds.build();
     }
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.services.validate.Validate#identify(eu.planets_project.services.datatypes.DigitalObject, java.net.URI)
+    /**
+     * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI)
      */
     public ValidateResult validate(DigitalObject dob, URI format) {
         
