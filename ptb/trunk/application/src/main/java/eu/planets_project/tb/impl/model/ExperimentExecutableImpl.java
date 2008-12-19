@@ -32,6 +32,7 @@ import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeIdentify;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
@@ -557,8 +558,10 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
             if( this.workflowType == null ) return null;
         }
         
-        // Invoke, depending on the experiment type:
-        ExperimentWorkflow expwf = ExpTypeBackingBean.getWorkflow(this.workflowType);
+        // Invoke, depending on the experiment type, using any old WF as the source:
+        // FIXME Can this be made cleaner?  What about passing back more meaningful errors?
+        ExpTypeBackingBean bb = new ExpTypeIdentify();
+        ExperimentWorkflow expwf = bb.getWorkflow(this.workflowType);
         if( expwf != null ) {
             expwf.setParameters(getParameters());
             return expwf;

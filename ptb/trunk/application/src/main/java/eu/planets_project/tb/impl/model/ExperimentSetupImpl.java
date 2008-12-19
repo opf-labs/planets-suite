@@ -242,7 +242,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#getSubStage()
 	 */
 	public int getSubStage() {
-	    log.info("Getting iSubstage "+this.iSubstage);
 		return this.iSubstage;
 	}
 
@@ -251,7 +250,6 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setSubStage(int)
 	 */
 	public void setSubStage(int subStage) {
-        log.info("Setting iSubstage ("+this.iSubstage+") to "+subStage);
 		this.iSubstage = subStage;
 	}
 
@@ -282,8 +280,8 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#removeServiceTemplate()
 	 */
 	public void removeServiceTemplate() {
-		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
-		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
+//		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
+//		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
 		
 //		thisExperiment.removeExperimentExecutable();
 	}
@@ -293,8 +291,8 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	 * @see eu.planets_project.tb.api.model.ExperimentSetup#setServiceTemplate(eu.planets_project.tb.api.model.ExperimentExecutable)
 	 */
 	public void setServiceTemplate(TestbedServiceTemplate template) {
-		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
-		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
+//		TestbedManager tbManager = TestbedManagerImpl.getInstance(true);
+//		Experiment thisExperiment = tbManager.getExperiment(this.lExperimentIDRef);
 		
 		//ExperimentExecutable is set and initialized for this experiment
 //		if( thisExperiment.getExperimentExecutable() == null ) {

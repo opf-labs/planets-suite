@@ -236,7 +236,7 @@ public class TecRegMockup {
      * @return
      */
     public static MeasurementImpl getObservable( URI observable ) {
-        return observables.get(observable);
+        return new MeasurementImpl(observables.get(observable));
     }
     
     /**

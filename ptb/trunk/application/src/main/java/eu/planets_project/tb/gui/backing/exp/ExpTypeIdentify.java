@@ -53,7 +53,7 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
      */
     @Override
     public List<ExperimentStageBean> getStageBeans() {
-        return ExpTypeBackingBean.getWorkflow(AdminManagerImpl.IDENTIFY).getStages();
+        return getWorkflow(AdminManagerImpl.IDENTIFY).getStages();
     }
 
     /* (non-Javadoc)
@@ -61,7 +61,7 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
      */
     @Override
     public HashMap<String,List<MeasurementImpl>> getObservables() {
-        return ExpTypeBackingBean.getWorkflow(AdminManagerImpl.IDENTIFY).getObservables();
+        return getWorkflow(AdminManagerImpl.IDENTIFY).getObservables();
     }
 
     /**

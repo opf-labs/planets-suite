@@ -5,10 +5,7 @@ package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,16 +13,12 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.faces.model.SelectItem;
-import javax.xml.ws.Service;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
@@ -34,9 +27,7 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
-import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
-import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -178,7 +169,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      */
     @Override
     public List<ExperimentStageBean> getStageBeans() {
-        return ExpTypeBackingBean.getWorkflow(AdminManagerImpl.MIGRATE).getStages();
+        return getWorkflow(AdminManagerImpl.MIGRATE).getStages();
     }
 
     /* (non-Javadoc)
@@ -186,7 +177,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      */
     @Override
     public HashMap<String,List<MeasurementImpl>> getObservables() {
-        return ExpTypeBackingBean.getWorkflow(AdminManagerImpl.MIGRATE).getObservables();
+        return getWorkflow(AdminManagerImpl.MIGRATE).getObservables();
     }
 
     /**

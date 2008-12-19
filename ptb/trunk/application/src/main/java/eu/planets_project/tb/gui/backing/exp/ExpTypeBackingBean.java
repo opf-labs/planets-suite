@@ -22,6 +22,9 @@ import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 public abstract class ExpTypeBackingBean {
     private static PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeBackingBean.class);
 
+    /** Allow the workflow to be cached during editing. */
+    private ExperimentWorkflow ewfCache = null;
+
     /**
      * @return
      */
@@ -53,32 +56,34 @@ public abstract class ExpTypeBackingBean {
      * @param etype
      * @return
      */
-    public static final ExperimentWorkflow getWorkflow( String etype ) {
-        ExperimentWorkflow expwf = null;
+    public final ExperimentWorkflow getWorkflow( String etype ) {
         
         // Workflow, depending on the experiment type:
         if( AdminManagerImpl.IDENTIFY.equals(etype)) {
             log.info("Running an Identify experiment.");
-            expwf = new IdentifyWorkflow();
+            if( ewfCache == null || ( ! (ewfCache instanceof IdentifyWorkflow) ) )
+                ewfCache = new IdentifyWorkflow();
             
         } else if( AdminManagerImpl.MIGRATE.equals(etype)) {
             log.info("Running a Migrate experiment.");
-            expwf = new MigrateWorkflow();
-
+            if( ewfCache == null || ( ! (ewfCache instanceof MigrateWorkflow) ) )
+                ewfCache = new MigrateWorkflow();
+            
         } else {
             log.error("Unknown experiment type: "+etype);
+            
         }
 
         // Ensure the parameters are stored/remembered:
-        if( expwf != null ) {
+        if( ewfCache != null ) {
             ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
             try {
-                expwf.setParameters(expBean.getExperiment().getExperimentExecutable().getParameters());
+                ewfCache.setParameters(expBean.getExperiment().getExperimentExecutable().getParameters());
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return expwf;
+        return ewfCache;
     }
 
 }

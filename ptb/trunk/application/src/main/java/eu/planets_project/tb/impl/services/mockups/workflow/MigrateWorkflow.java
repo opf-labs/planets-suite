@@ -7,7 +7,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -112,21 +111,53 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Pre-characterise:
         if( obs.get(STAGE_PRE_MIGRATE) == null ) 
             obs.put(STAGE_PRE_MIGRATE, new Vector<MeasurementImpl>() );
-        for( MeasurementImpl m : this.getMeasurementsForFormat(this.getFromFormat()) ) {
+        for( MeasurementImpl m : this.getMeasurementsForInFormat(this.getFromFormat()) ) {
             obs.get(STAGE_PRE_MIGRATE).add(m);
         }
-
+        obs.get(STAGE_PRE_MIGRATE).add( 
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
+        obs.get(STAGE_PRE_MIGRATE).add( 
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
+        
         // Post-characterise:
         if( obs.get(STAGE_POST_MIGRATE) == null ) 
             obs.put(STAGE_POST_MIGRATE, new Vector<MeasurementImpl>() );
-        for( MeasurementImpl m : this.getMeasurementsForFormat(this.getToFormat()) ) {
+        for( MeasurementImpl m : this.getMeasurementsForOutFormat(this.getToFormat()) ) {
             obs.get(STAGE_POST_MIGRATE).add(m);
         }
+        obs.get(STAGE_POST_MIGRATE).add( 
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
+        obs.get(STAGE_POST_MIGRATE).add( 
+                TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
             
         return obs;
     }
+        
+    private String cacheInFormat = "";
+    private List<MeasurementImpl> cacheInProps = null;
+    private String cacheOutFormat = "";
+    private List<MeasurementImpl> cacheOutProps = null;
+    
+    private List<MeasurementImpl> getMeasurementsForInFormat(String format) {
+        if( format == null ) return null;
+        if( ! format.equals(cacheInFormat) || cacheInProps == null ) {
+            cacheInProps = this.getMeasurementsForFormat(format);
+            cacheInFormat = format;
+        }
+        return cacheInProps;
+    }
+
+    private List<MeasurementImpl> getMeasurementsForOutFormat(String format) {
+        if( format == null ) return null;
+        if( ! format.equals(cacheOutFormat) || cacheOutProps == null ) {
+            cacheOutProps = this.getMeasurementsForFormat(format);
+            cacheOutFormat = format;
+        }
+        return cacheOutProps;
+    }
     
     private List<MeasurementImpl> getMeasurementsForFormat( String format ) {
+        
         HashMap<URI,MeasurementImpl> meas = new HashMap<URI,MeasurementImpl>();
         URI formatURI;
         if( format == null ) {
@@ -174,7 +205,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         m.setName(p.getName());
         m.setIdentifier(propURI);
         m.setDescription(p.getDescription());
-        m.setType(p.getType());
+        // FIXME The TYPES have different meanings here! What should this be recorded as?
+        //m.setType(p.getType());
+        m.setType(MeasurementImpl.TYPE_DIGITALOBJECT);
         m.setUnit(p.getUnit());
         m.setValue(p.getValue());
         
