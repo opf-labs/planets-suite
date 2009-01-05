@@ -94,6 +94,8 @@ public class FileTypeResolver {
     
     /**
         Gets an instance of the FileTypeResolver.
+     * @return an instance of the FileTypeResolver 
+     * @throws Exception 
     */
     public static FileTypeResolver instantiate() throws Exception
     {
@@ -104,6 +106,9 @@ public class FileTypeResolver {
 
     /**
         Gets an instance of the FileTypeResolver from the passed file.
+     * @param ftrFile 
+     * @return  an instance of the FileTypeResolver
+     * @throws Exception 
     */
     public static FileTypeResolver instantiate( String ftrFile ) throws Exception
     {
@@ -122,6 +127,9 @@ public class FileTypeResolver {
 
     /**
         Gets an instance of the FileTypeResolver from the passed stream.
+     * @param ftrIn 
+     * @return an instance of the FileTypeResolver
+     * @throws Exception 
     */
     public static FileTypeResolver instantiate( InputStream ftrIn ) throws Exception
     {
@@ -144,7 +152,7 @@ public class FileTypeResolver {
             JDOMXPath xpath = new JDOMXPath("/planets:Document/planets:MIME-mapping");    
             xpath.addNamespace( "planets", "http://www.planets-project.eu/xml/ns/planets/core/mimetypes" );                        
             
-            Iterator _mappings = xpath.selectNodes( d ).iterator();
+            Iterator<?> _mappings = xpath.selectNodes( d ).iterator();
             while ( _mappings.hasNext() ) {            
             
                 Element _mapping = (Element)_mappings.next();
@@ -180,7 +188,8 @@ public class FileTypeResolver {
 
     
     /**
-        @returns the mime-type for the passed file or null if no mapping was found.
+    * @param file 
+    * @return the mime-type for the passed file or null if no mapping was found.
     */
     public String getMIMEType( File file ) 
     {
@@ -189,19 +198,21 @@ public class FileTypeResolver {
     
     
     /**    
-        @returns true if the passes mime-type is known by this file type resolver.
+    * @param _mimetype 
+    * @return true if the passes mime-type is known by this file type resolver.
     */
     public boolean isKnownMIMEType( String _mimetype ) 
     {
         if ( _mimetype == null )
             return false;
-        ArrayList al = getMIMETypeList();
+        ArrayList<String> al = getMIMETypeList();
         return al.contains( _mimetype );
     }
 
     /**
-     * @returns the mime-type for the passed filename or null if no mapping was
-     *          found.
+     * @param fileName 
+     * @return the mime-type for the passed filename or null if no mapping was
+     *         found.
      */
     public String getMIMEType(String fileName) {
         String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
@@ -209,8 +220,9 @@ public class FileTypeResolver {
     }
 
     /**
-     * @returns the mime-type for the passed filename or null if no mapping was
-     *          found.
+     * @param url 
+     * @return the mime-type for the passed filename or null if no mapping was
+     *         found.
      */
     public String getMIMEType(URL url) {
         String extension = url.toString().substring(url.toString().lastIndexOf('.') + 1);
@@ -219,7 +231,8 @@ public class FileTypeResolver {
 
 
     /**
-     @returns the pretty print mime-type for the passed mime-type or the passed mimetype if no mapping was found.
+     * @param mimetype 
+     * @return the pretty print mime-type for the passed mime-type or the passed mimetype if no mapping was found.
      */
     public String getPrettyPrintMIMEType( String mimetype ) 
     {
@@ -234,14 +247,15 @@ public class FileTypeResolver {
     
 
     /**
-        @returns a (array)list of all extensions mapping the passed mime-type.
+    * @param _mimetype 
+    * @return a (array)list of all extensions mapping the passed mime-type.
     */
-    public ArrayList getExtensions( String _mimetype ) 
+    public ArrayList<String> getExtensions( String _mimetype ) 
     {
         ArrayList<String> ret = new ArrayList<String>();
         if ( _mimetype == null )
             return ret;
-        Enumeration keys = mappings.keys();
+        Enumeration<String> keys = mappings.keys();
         while ( keys.hasMoreElements() == true) {
             String extension = (String)keys.nextElement();
             if ( _mimetype.equalsIgnoreCase( (String) mappings.get(extension) ) )
@@ -276,7 +290,7 @@ public class FileTypeResolver {
     public ArrayList<String> getMIMETypeList()
     {
         ArrayList<String> ret = new ArrayList<String>();        
-        for ( Enumeration e = mappings.elements() ; e.hasMoreElements() ;) {
+        for ( Enumeration<String> e = mappings.elements() ; e.hasMoreElements() ;) {
             String mt = (String) e.nextElement();
             if ( ! ret.contains( mt ) )
                 ret.add( mt );
@@ -286,7 +300,8 @@ public class FileTypeResolver {
     }
 
     /**
-        for testing purposes only
+    * for testing purposes only
+    * @param args 
     */    
     public static void main(String[] args)
     {
