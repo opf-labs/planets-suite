@@ -19,6 +19,10 @@ import eu.planets_project.services.migrate.Migrate;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public class RegistrySampleUsage {
+    /**
+     * Shows sample service registry usage
+     * @throws MalformedURLException
+     */
     @Test
     public void usage() throws MalformedURLException {
         /* We retrieve an instance of the registry: */
