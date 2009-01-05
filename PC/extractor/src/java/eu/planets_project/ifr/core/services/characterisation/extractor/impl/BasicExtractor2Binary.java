@@ -21,6 +21,9 @@ import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELto
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.PlanetsLogger;
 
+/**
+ * @deprecated Use {@link Extractor} instead.
+ */
 @Stateless()
 @Local(BasicCharacteriseOneBinaryXCELtoBinary.class)
 @Remote(BasicCharacteriseOneBinaryXCELtoBinary.class)
@@ -78,7 +81,7 @@ public class BasicExtractor2Binary implements
 
         CoreExtractor extractor = new CoreExtractor(CALLING_EXTRACTOR_NAME,
                 plogger);
-        
+
         File inputImage = ByteArrayHelper.write(binary);
 
         byte[] outputXCDL = extractor.extractXCDL(binary, xcel != null ? xcel

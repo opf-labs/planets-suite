@@ -16,6 +16,7 @@ import eu.planets_project.services.PlanetsServices;
  * e.g. to be used by the service wrapping the metadata extraction tool of the
  * national library of New Zealand
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
+ * @deprecated Use {@link Characterise} instead.
  */
 @WebService(name = BasicCharacteriseOneBinary.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")

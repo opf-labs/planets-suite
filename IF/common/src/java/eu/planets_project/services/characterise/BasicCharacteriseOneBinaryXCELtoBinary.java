@@ -4,7 +4,6 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
@@ -16,6 +15,7 @@ import eu.planets_project.services.PlanetsServices;
  * interoperability, but services are NOT interoperable with .NET without at
  * least some of this information.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>.
+ * @deprecated Use {@link Characterise} instead.
  */
 @WebService(targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")

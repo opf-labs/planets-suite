@@ -24,7 +24,7 @@ import eu.planets_project.services.PlanetsServices;
  * without at least some of this information.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>.
- *
+ * @deprecated Use {@link Identify} instead.
  */
 @WebService(
         name = BasicIdentifyOneBinary.NAME, 

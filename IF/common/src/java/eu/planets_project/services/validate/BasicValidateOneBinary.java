@@ -16,7 +16,8 @@ import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 
 /**
- * The Basic Validate interface
+ * The Basic Validate interface.
+ * @deprecated Use {@link Validate} instead.
  */
 @WebService(
         name = BasicValidateOneBinary.NAME, 

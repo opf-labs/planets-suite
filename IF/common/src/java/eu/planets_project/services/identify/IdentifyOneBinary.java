@@ -21,6 +21,7 @@ import eu.planets_project.services.datatypes.Types;
  * from the identification.
  * 
  * @author Fabian Steeg
+ * @deprecated Use {@link Identify} instead.
  */
 @WebService(
         name = IdentifyOneBinary.NAME, 

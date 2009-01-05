@@ -22,7 +22,7 @@ import eu.planets_project.services.migrate.BasicMigrateOneBinary;
  * It should also be possible to do this for each service type.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
+ * 
  */
 public class BasicMigrateOneBinaryClient {
 
