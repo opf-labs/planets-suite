@@ -42,9 +42,11 @@ public final class ServiceRegistryManager implements ServiceRegistry {
     /***/
     private static final long serialVersionUID = 3994805571958430140L;
     /***/
-    private static final String LOG_CONFIG_FILE = "eu/planets_project/ifr/core/registry/servreg-log4j.xml";
+    @SuppressWarnings("unused")
+	private static final String LOG_CONFIG_FILE = "eu/planets_project/ifr/core/registry/servreg-log4j.xml";
     /***/
-    private static Log log = LogFactory.getLog(ServiceRegistryManager.class
+    @SuppressWarnings("unused")
+	private static Log log = LogFactory.getLog(ServiceRegistryManager.class
             .getName());
 
     /**
@@ -180,9 +182,7 @@ public final class ServiceRegistryManager implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#saveOrganization(java.lang.String,
-     *      java.lang.String, java.lang.String, java.lang.String,
-     *      java.lang.String, java.lang.String)
+     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#saveOrganization(java.lang.String, java.lang.String, eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization)
      */
     @WebMethod
     @WebResult
@@ -197,7 +197,7 @@ public final class ServiceRegistryManager implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteBinding(eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding)
+     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteBinding(java.lang.String, java.lang.String, eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding)
      */
     @WebMethod
     @WebResult
@@ -210,7 +210,7 @@ public final class ServiceRegistryManager implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteOrganization(eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization)
+     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteOrganization(java.lang.String, java.lang.String, eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization)
      */
     @WebMethod
     @WebResult
@@ -223,7 +223,7 @@ public final class ServiceRegistryManager implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteService(eu.planets_project.ifr.core.registry.api.jaxr.model.PsService)
+     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteService(java.lang.String, java.lang.String, eu.planets_project.ifr.core.registry.api.jaxr.model.PsService)
      */
     @WebMethod
     @WebResult

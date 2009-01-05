@@ -40,10 +40,18 @@ public class ServiceRegistryManager_Service
         SERVICEREGISTRYMANAGER_WSDL_LOCATION = url;
     }
 
+    /**
+     * construct from wsdl location and service name
+     * @param wsdlLocation
+     * @param serviceName
+     */
     public ServiceRegistryManager_Service(URL wsdlLocation, QName serviceName) {
         super(wsdlLocation, serviceName);
     }
 
+    /**
+     * default no arg constructor
+     */
     public ServiceRegistryManager_Service() {
         super(SERVICEREGISTRYMANAGER_WSDL_LOCATION, new QName("http://planets-project.eu/ifr/core/registry", "ServiceRegistryManager"));
     }
