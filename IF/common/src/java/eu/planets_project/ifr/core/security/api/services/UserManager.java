@@ -19,7 +19,7 @@ import eu.planets_project.ifr.core.security.api.model.User;
  * </p>
  * 
  * <p>
- * The user accounts were originally handled by the Administration component: {@link eu.planets_project.ifr.core.admin.api.service.UserManager}.
+ * The user accounts were originally handled by the Administration component (now removed).
  * However, the code was not suitable for accessing from other components over EJB.
  * Therefore, the persistence code was re-written using the JPA, but accessing exactly the same tables as used by the Admin component.
  * </p>
