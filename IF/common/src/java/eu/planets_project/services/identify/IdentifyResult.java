@@ -25,7 +25,6 @@ public class IdentifyResult {
     
     /**
      *  The Method enumeration is intended to allow you state what kind of evidence was used to create this identification result.
-     *
      */
     public enum Method { 
         
@@ -72,7 +71,7 @@ public class IdentifyResult {
 
     /**
      * @param types
-     * @param method
+     * @param methods 
      * @param report
      */
     public IdentifyResult(List<URI> types, List<Method> methods, ServiceReport report) {

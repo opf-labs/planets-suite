@@ -29,8 +29,10 @@ import eu.planets_project.services.datatypes.Types;
 @Deprecated
 public interface IdentifyOneBinary {
 	
+    /** The interface name */
     public static final String NAME = "IdentifyOneBinary";
 	
+	/** The qualified name */
 	public static final QName QNAME = new QName(PlanetsServices.NS,
 			IdentifyOneBinary.NAME);
 

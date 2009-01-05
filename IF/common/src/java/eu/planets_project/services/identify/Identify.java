@@ -25,7 +25,9 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface Identify extends PlanetsService {
 
+    /** The interface name */
     String NAME = "Identify";
+    /** The qualified name */
     QName QNAME = new QName(PlanetsServices.NS, Identify.NAME);
 
     /**
