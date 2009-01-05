@@ -9,21 +9,18 @@
  */
 package eu.planets_project.services.migration.pdf2pdfa_MayComputer;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.io.File;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
-
-import java.lang.Runtime;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.text.SimpleDateFormat;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -33,10 +30,9 @@ import javax.jws.WebService;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
-import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.migrate.BasicMigrateOneBinary;
+import eu.planets_project.services.utils.PlanetsLogger;
 //import java.rmi.Remote;
 
 class StreamCatcher extends Thread
@@ -86,14 +82,19 @@ public class Pdf2pPdfa_MayComputer implements BasicMigrateOneBinary {
     
     private static Logger logger = Logger.getLogger(Pdf2pPdfa_MayComputer.class.getName());
     
+    /** The name of the PDFA converter app */
     public String PDFAConverter_app_name;
     
     private File fTmpInFile;
     private File fTmpOutFile;
     
    
+    /** The extension for the output files */
     public String PDFAConverter_outfile_ext;
     
+    /**
+     * no arg default constructor
+     */
     public Pdf2pPdfa_MayComputer() {
         Properties props = new Properties();
         try {
@@ -112,8 +113,8 @@ public class Pdf2pPdfa_MayComputer implements BasicMigrateOneBinary {
         
     }
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.common.services.migrate.BasicMigrateOneBinary#basicMigrateOneBinary(byte[])
+    /**
+     * @see eu.planets_project.services.migrate.BasicMigrateOneBinary#basicMigrateOneBinary(byte[])
      */
     public byte[] basicMigrateOneBinary ( 
             byte[] binary ) {
