@@ -42,9 +42,9 @@ import eu.planets_project.services.datatypes.ServiceDescription;
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface MigrateAsync extends PlanetsService {
-    /***/
+    /** The interface name */
     String NAME = "MigrateAsync";
-    /***/
+    /** The qualified name */
     QName QNAME = new QName(PlanetsServices.NS, MigrateAsync.NAME);
 
     /*-----------------------------------------------------------------------------------
@@ -53,6 +53,10 @@ public interface MigrateAsync extends PlanetsService {
 
     /**
      * @param digitalObject The digital object to migrate
+     * @param inputFormat Format URI for the digital object path (migrate from)
+     * @param outputFormat Format URI for the desired ouput (migrate to)
+     * @param writeLocation a location (URL) to write the result to
+     * @param parameters extra parameters to control particular tools
      * @return A new digital object, the result of migrating the given digital
      *         object
      */
@@ -86,10 +90,16 @@ public interface MigrateAsync extends PlanetsService {
      * but just masks a synchronous call.
      * 
      */
-
+    /**
+     * Enum to track the asynch process status
+     */
     enum AsyncStatus { INVALID, IN_PROGRESS, COMPLETE }
 
     
+    /**
+     * @param ticket
+     * @return the current status enum
+     */
     @WebMethod(operationName = MigrateAsync.NAME + "_status", action = PlanetsServices.NS
             + "/" + MigrateAsync.NAME + "/status" )
     @WebResult(name = MigrateAsync.NAME + "Status", targetNamespace = PlanetsServices.NS
@@ -100,6 +110,10 @@ public interface MigrateAsync extends PlanetsService {
                     + "/" + MigrateAsync.NAME, partName = "ticket") 
             String ticket );
     
+    /**
+     * @param ticket
+     * @return the completed job MigrateResult
+     */
     @WebResult(name = MigrateAsync.NAME + "Result", targetNamespace = PlanetsServices.NS
             + "/" + MigrateAsync.NAME, partName = MigrateAsync.NAME
             + "Result")

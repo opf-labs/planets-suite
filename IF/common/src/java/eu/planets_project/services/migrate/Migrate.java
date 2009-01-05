@@ -39,13 +39,16 @@ import eu.planets_project.services.datatypes.ServiceDescription;
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface Migrate extends PlanetsService {
-    /***/
+    /** The interface name */
     String NAME = "Migrate";
-    /***/
+    /** The qualified name */
     QName QNAME = new QName(PlanetsServices.NS, Migrate.NAME);
 
     /**
      * @param digitalObject The digital object to migrate
+     * @param inputFormat the initial format (migrate from)
+     * @param outputFormat the required format (migrate to)
+     * @param parameters a list of parameters to provide fine grained tool control
      * @return A new digital object, the result of migrating the given digital
      *         object
      */

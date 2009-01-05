@@ -10,7 +10,6 @@ import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
-import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 
 /**
@@ -29,14 +28,15 @@ import eu.planets_project.services.PlanetsServices;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @Deprecated
 public interface BasicMigrateOneBinary {
+    /** The interface name */
     public static final String NAME = "BasicMigrateOneBinary";
+    /** The qualified name */
     public static final QName QNAME = new QName(PlanetsServices.NS, BasicMigrateOneBinary.NAME );
 
     /**
      * 
      * @param binary
-     * @return
-     * @throws PlanetsException 
+     * @return the migrated binary in new format
      */
     @WebMethod(
             operationName = BasicMigrateOneBinary.NAME, 
