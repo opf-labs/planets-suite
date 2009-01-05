@@ -12,8 +12,16 @@ import javax.xml.ws.Service;
 
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.identify.BasicIdentifyOneBinary;
+/**
+ * Web client to call BasicIdentifyOneBinary services
+ */
 public class BasicIdentifyOneBinaryClient {
 	
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws PlanetsException
+	 */
 	public static void main(String[] args) throws IOException, PlanetsException {
 		String wsdlLocation = 
 			
