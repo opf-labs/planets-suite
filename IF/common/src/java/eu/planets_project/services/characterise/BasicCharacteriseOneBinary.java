@@ -9,7 +9,6 @@ import javax.xml.ws.BindingType;
 
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
  * The most basic characterization interface yet: takes a binary and returns a
@@ -22,10 +21,17 @@ import eu.planets_project.services.validate.BasicValidateOneBinary;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface BasicCharacteriseOneBinary {
 
+    /** The interface name */
     public static final String NAME = "BasicCharacteriseOneBinary";
+    /** The qualified name */
     public static final QName QNAME = new QName(PlanetsServices.NS,
             BasicCharacteriseOneBinary.NAME);
 
+    /**
+     * @param binary
+     * @return string characterisation result
+     * @throws PlanetsException
+     */
     @WebMethod(operationName = BasicCharacteriseOneBinary.NAME, action = PlanetsServices.NS
             + "/" + BasicCharacteriseOneBinary.NAME)
     @WebResult(name = BasicCharacteriseOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
