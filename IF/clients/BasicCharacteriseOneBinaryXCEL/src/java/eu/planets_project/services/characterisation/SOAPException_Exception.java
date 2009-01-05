@@ -20,8 +20,8 @@ import javax.xml.ws.WebFault;
 public class SOAPException_Exception
     extends Exception
 {
-
-    /**
+	private static final long serialVersionUID = 3256808525800060185L;
+	/**
      * Java type that goes as soapenv:Fault detail element.
      * 
      */
