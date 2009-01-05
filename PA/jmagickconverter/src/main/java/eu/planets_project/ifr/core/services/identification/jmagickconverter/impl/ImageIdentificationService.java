@@ -45,7 +45,9 @@ import eu.planets_project.services.utils.PlanetsLogger;
         endpointInterface = "eu.planets_project.services.identify.BasicIdentifyOneBinary" )
 public class ImageIdentificationService implements Serializable, BasicIdentifyOneBinary {
 
-	// Default Constructor, setting the System.property to tell Jboss to use its own Classloader...
+	/**
+	 * Default Constructor, setting the System.property to tell Jboss to use its own Classloader...
+	 */
 	public ImageIdentificationService(){
 	    System.setProperty("jmagick.systemclassloader","no"); // Use the JBoss-Classloader, instead of the Systemclassloader.
 	}
@@ -56,6 +58,9 @@ public class ImageIdentificationService implements Serializable, BasicIdentifyOn
     private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass(), logConfigFile);
     
 
+    /**
+     * @see eu.planets_project.services.identify.BasicIdentifyOneBinary#basicIdentifyOneBinary(byte[])
+     */
     public URI basicIdentifyOneBinary ( 
             byte[] binary ) {
     		
