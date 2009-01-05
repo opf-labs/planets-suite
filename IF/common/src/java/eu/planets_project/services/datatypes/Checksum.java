@@ -67,7 +67,7 @@ public final class Checksum implements Comparable<Checksum>, Serializable {
     /**
      * {@inheritDoc}
      * 
-     * @see java.lang.Object#toString()2
+     * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
