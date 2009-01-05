@@ -11,6 +11,9 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  */
 public class FactoryRemoteTests extends CoreRegistryTests {
 
+    /**
+     * get a remote instance
+     */
     @BeforeClass
     public static void registryCreation() {
         registry = ServiceCreator.createTestService(Registry.QNAME,

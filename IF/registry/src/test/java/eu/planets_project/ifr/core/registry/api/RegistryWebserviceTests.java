@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import eu.planets_project.ifr.core.registry.impl.RegistryWebservice;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
-import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 
 /**
  * Tests for the persistent ServiceDescriptionRegistry.
@@ -15,6 +14,9 @@ import eu.planets_project.services.utils.test.ServiceCreator.Mode;
  */
 public class RegistryWebserviceTests extends CoreRegistryTests {
 
+    /**
+     * set up by creating a registry before testing 
+     */
     @BeforeClass
     public static void registryCreation() {
         registry = ServiceCreator.createTestService(Registry.QNAME,

@@ -14,6 +14,9 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class PersistentRegistryTests extends
         CoreRegistryTests {
+    /**
+     * Get a persistent registry instance for testing
+     */
     @BeforeClass
     public static void registryCreation() {
         registry = PersistentRegistry

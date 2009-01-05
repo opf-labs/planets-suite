@@ -8,6 +8,9 @@ import org.junit.BeforeClass;
  */
 public class FactoryLocalTests extends CoreRegistryTests {
 
+    /**
+     * get registry instance
+     */
     @BeforeClass
     public static void registryCreation() {
         registry = RegistryFactory.getInstance();

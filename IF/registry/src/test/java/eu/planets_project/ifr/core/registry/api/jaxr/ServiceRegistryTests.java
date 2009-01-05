@@ -17,7 +17,6 @@ import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryFactory;
 import eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistryObjectFactory;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.BindingList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.OrganizationList;
-import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsCategory;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization;
@@ -138,18 +137,24 @@ public class ServiceRegistryTests {
         registry.clear(USERNAME, PASSWORD);
     }
 
+    /**
+     * test the creation of organisations
+     */
     @Test
     public void testCreateOrganization() {
         if(ServiceRegistryTestsHelper.guard()) return;
         assertEquals(0, registry
                 .findOrganizations(USERNAME, PASSWORD, WILDCARD).organizations
                 .size());
-        PsOrganization organization = mock.createOrganization();
+		mock.createOrganization();
         List<PsOrganization> retrieved = registry.findOrganizations(USERNAME,
                 PASSWORD, WILDCARD).organizations;
         assertEquals(1, retrieved.size());
     }
 
+    /**
+     * test query and retrieval of organisations
+     */
     @Test
     public void testFindOrganizations() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -169,24 +174,30 @@ public class ServiceRegistryTests {
                 .getContactMail());
     }
 
+    /**
+     * test deletion of organization
+     */
     @Test
     public void testDeleteOrganization() {
         if(ServiceRegistryTestsHelper.guard()) return;
         assertEquals(0, registry
                 .findOrganizations(USERNAME, PASSWORD, WILDCARD).organizations
                 .size());
-        PsOrganization organization = mock.createOrganization();
+		mock.createOrganization();
         List<PsOrganization> retrieved = registry.findOrganizations(USERNAME,
                 PASSWORD, WILDCARD).organizations;
         assertEquals(1, retrieved.size());
         PsOrganization retrievedOrganization = retrieved.get(0);
-        ServiceRegistryMessage message = registry.deleteOrganization(USERNAME,
+        registry.deleteOrganization(USERNAME,
                 PASSWORD, retrievedOrganization);
         assertEquals(0, registry
                 .findOrganizations(USERNAME, PASSWORD, WILDCARD).organizations
                 .size());
     }
 
+    /**
+     * test the creation of a service
+     */
     @Test
     public void testCreateService() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -194,13 +205,16 @@ public class ServiceRegistryTests {
                 0,
                 registry.findServices(USERNAME, PASSWORD, WILDCARD, "").services
                         .size());
-        PsService service = mock.createService(mock.createOrganization());
+        mock.createService(mock.createOrganization());
         assertEquals(
                 1,
                 registry.findServices(USERNAME, PASSWORD, WILDCARD, "").services
                         .size());
     }
 
+    /**
+     * Test querying and finding a service
+     */
     @Test
     public void testFindServices() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -216,6 +230,9 @@ public class ServiceRegistryTests {
         compareRegistryObjects(service, retrieved);
     }
 
+    /**
+     * test service deletion
+     */
     @Test
     public void testDeleteService() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -234,17 +251,23 @@ public class ServiceRegistryTests {
                         .size());
     }
 
+    /**
+     * test persisting a service binding
+     */
     @Test
     public void testSaveBinding() {
         if(ServiceRegistryTestsHelper.guard()) return;
         PsService s = mock.createService(mock.createOrganization());
         /* Now we can associate a binding with it: */
-        PsBinding binding = mock.createBinding(s);
+        mock.createBinding(s);
         List<PsBinding> bindings = registry.findBindings(USERNAME, PASSWORD, s
                 .getKey()).bindings;
         assertEquals(1, bindings.size());
     }
 
+    /**
+     * test querying and finding a binding
+     */
     @Test
     public void testFindBindings() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -263,6 +286,9 @@ public class ServiceRegistryTests {
         assertEquals(binding.isValidateuri(), actual.isValidateuri());
     }
 
+    /**
+     * test deletion of a binding
+     */
     @Test
     public void testDeleteBinding() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -277,6 +303,9 @@ public class ServiceRegistryTests {
                         .size());
     }
 
+    /**
+     * test taxonomy retrieval
+     */
     @Test
     public void testGetTaxonomy() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -292,6 +321,9 @@ public class ServiceRegistryTests {
         }
     }
 
+    /**
+     * test the creation of free classification categories
+     */
     @Test
     public void testFreeClassification() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -305,6 +337,9 @@ public class ServiceRegistryTests {
         assertEquals(category, services.get(0).getCategories().get(0).code);
     }
 
+    /**
+     * test the predefined planets classification
+     */
     @Test
     public void testPredefinedClassification() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -313,7 +348,7 @@ public class ServiceRegistryTests {
         PsOrganization organization = mock.createOrganization();
         /* Create both a classified and an unclassified service: */
         PsService classifiedService = mock.createService(organization);
-        PsService unclassifiedService = mock.createService(organization);
+        mock.createService(organization);
         registry.savePredefinedClassification(USERNAME, PASSWORD,
                 classifiedService.getKey(), id);
         /* Retrieve only the classified service: */
@@ -332,6 +367,9 @@ public class ServiceRegistryTests {
                 allServices.services.size());
     }
 
+    /**
+     * test the use of multiple classifications
+     */
     @Test
     public void testMultipleClassification() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -381,6 +419,9 @@ public class ServiceRegistryTests {
         Assert.assertEquals(2, services3.services.size());
     }
 
+    /**
+     * a more heavyweight test with multiple organisations and services
+     */
     @Test
     public void testMultipleOrgsAndServices() {
         if(ServiceRegistryTestsHelper.guard()) return;
@@ -399,40 +440,35 @@ public class ServiceRegistryTests {
         PsService s1s3 = mock.createService("Service-1-3", "Desc-1-3", o1);
         PsService s1s4 = mock.createService("Service-1-4", "Desc-1-4", o1);
         /* For each of the first four services, each 2 bindings: */
-        PsBinding b1b1b1 = mock.createBinding("Desc-1-1-1", "End-1-1-1", s1s1);
-        PsBinding b1b1b2 = mock.createBinding("Desc-1-1-2", "End-1-1-2", s1s1);
-
-        PsBinding b1b2b1 = mock.createBinding("Desc-1-2-1", "End-1-2-1", s1s2);
-        PsBinding b1b2b2 = mock.createBinding("Desc-1-2-2", "End-1-2-2", s1s2);
-
-        PsBinding b1b3b1 = mock.createBinding("Desc-1-3-1", "End-1-3-1", s1s3);
-        PsBinding b1b3b2 = mock.createBinding("Desc-1-3-2", "End-1-3-2", s1s3);
-
-        PsBinding b1b4b1 = mock.createBinding("Desc-1-4-1", "End-1-4-1", s1s4);
-        PsBinding b1b4b2 = mock.createBinding("Desc-1-4-2", "End-1-4-2", s1s4);
+        mock.createBinding("Desc-1-1-1", "End-1-1-1", s1s1);
+        mock.createBinding("Desc-1-1-2", "End-1-1-2", s1s1);
+		mock.createBinding("Desc-1-2-1", "End-1-2-1", s1s2);
+        mock.createBinding("Desc-1-2-2", "End-1-2-2", s1s2);
+		mock.createBinding("Desc-1-3-1", "End-1-3-1", s1s3);
+        mock.createBinding("Desc-1-3-2", "End-1-3-2", s1s3);
+		mock.createBinding("Desc-1-4-1", "End-1-4-1", s1s4);
+        mock.createBinding("Desc-1-4-2", "End-1-4-2", s1s4);
         /* Services with types and input formats: */
-        PsService s2s1 = mock.createService("Service-2-1", "Desc-2-1", o2,
+        mock.createService("Service-2-1", "Desc-2-1", o2,
                 Migrate.class.getSimpleName(), "PDF");
-        PsService s2s2 = mock.createService("Service-2-2", "Desc-2-2", o2,
+        mock.createService("Service-2-2", "Desc-2-2", o2,
                 Migrate.class.getSimpleName(), "PDF");
-        PsService s2s3 = mock.createService("Service-2-3", "Desc-2-3", o2,
+        mock.createService("Service-2-3", "Desc-2-3", o2,
                 Migrate.class.getSimpleName(), "PDF");
-        PsService s2s4 = mock.createService("Service-2-4", "Desc-2-4", o2,
+        mock.createService("Service-2-4", "Desc-2-4", o2,
                 Migrate.class.getSimpleName(), "PDF");
-
-        PsService s3s1 = mock.createService("Service-3-1", "Desc-3-1", o3,
+        mock.createService("Service-3-1", "Desc-3-1", o3,
                 Identify.class.getSimpleName(), "PNG");
-        PsService s3s2 = mock.createService("Service-3-2", "Desc-3-2", o3,
+        mock.createService("Service-3-2", "Desc-3-2", o3,
                 Identify.class.getSimpleName(), "PNG");
-        PsService s3s3 = mock.createService("Service-3-3", "Desc-3-3", o3,
+        mock.createService("Service-3-3", "Desc-3-3", o3,
                 Identify.class.getSimpleName(), "PNG");
-        PsService s3s4 = mock.createService("Service-3-4", "Desc-3-4", o3,
+        mock.createService("Service-3-4", "Desc-3-4", o3,
                 Identify.class.getSimpleName(), "PNG");
-
-        PsService s4s1 = mock.createService("Service-3-1", "Desc-3-1", o4);
-        PsService s4s2 = mock.createService("Service-3-2", "Desc-3-2", o4);
-        PsService s4s3 = mock.createService("Service-3-3", "Desc-3-3", o4);
-        PsService s4s4 = mock.createService("Service-3-4", "Desc-3-4", o4);
+        mock.createService("Service-3-1", "Desc-3-1", o4);
+        mock.createService("Service-3-2", "Desc-3-2", o4);
+        mock.createService("Service-3-3", "Desc-3-3", o4);
+        mock.createService("Service-3-4", "Desc-3-4", o4);
         /* And we wanna get all of that back: */
         ServiceList migration = registry.findServicesForInputFormats(USERNAME,
                 PASSWORD, Migrate.class.getSimpleName(), "PDF");

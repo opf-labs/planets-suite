@@ -11,6 +11,9 @@ import eu.planets_project.ifr.core.registry.impl.jaxr.ServiceRegistryManager;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class ServiceRegistryManagerTests extends ServiceRegistryTests {
+    /**
+     * set up the registry manager and a mock object factory before testing
+     */
     @BeforeClass
     public static void setup() {
         if(ServiceRegistryTestsHelper.guard()) return;

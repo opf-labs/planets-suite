@@ -17,7 +17,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 /**
  * Tests for the CoreServiceDescriptioRegistry, demonstrating the
  * query-by-example functionality.
- * @see CoreServiceDescriptioRegistry
+ * @see CoreRegistry
  * @see Registry
  * @see ServiceDescription
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
@@ -34,6 +34,9 @@ public class CoreRegistryTests {
     private static URL endpoint2;
     static Registry registry;
 
+    /**
+     * create a registry
+     */
     @BeforeClass
     public static void registryCreation() {
         registry = CoreRegistry.getInstance();
@@ -48,6 +51,9 @@ public class CoreRegistryTests {
     ServiceDescription description1 = null;
     ServiceDescription description2 = null;
 
+    /**
+     * Test the registration of services
+     */
     @Before
     public void registerSampleServices() {
         registry.clear();
@@ -66,11 +72,17 @@ public class CoreRegistryTests {
         registry.register(description2);
     }
 
+    /**
+     * Clear up the registry
+     */
     @After
     public void cleanupRegistry() {
         registry.clear();
     }
 
+    /**
+     * Register a single service description
+     */
     @Test
     public void registerServiceDescription() {
         Response message = registry.register(description1);
@@ -80,6 +92,9 @@ public class CoreRegistryTests {
         System.out.println("Registered: " + message);
     }
 
+    /**
+     * test query by service name
+     */
     @Test
     public void findByName() {
         List<ServiceDescription> services = registry
@@ -87,6 +102,9 @@ public class CoreRegistryTests {
         compare(services);
     }
 
+    /**
+     * test query by service type
+     */
     @Test
     public void findByType() {
         List<ServiceDescription> services = registry
@@ -94,6 +112,9 @@ public class CoreRegistryTests {
         compare(services);
     }
 
+    /**
+     * test query by description
+     */
     @Test
     public void findByDescription() {
         List<ServiceDescription> services = registry
@@ -102,6 +123,9 @@ public class CoreRegistryTests {
         compare(services);
     }
 
+    /**
+     * test query by name and description
+     */
     @Test
     public void findByNameAndDescription() {
         List<ServiceDescription> services = registry
@@ -115,6 +139,9 @@ public class CoreRegistryTests {
         compare(services);
     }
 
+    /**
+     * test query by input format
+     */
     @Test
     public void findByInputFormat() {
         List<ServiceDescription> services = registry
@@ -128,6 +155,9 @@ public class CoreRegistryTests {
         compare(services);
     }
 
+    /**
+     * test query by input format and service type
+     */
     @Test
     public void findByInputFormatAndType() {
         List<ServiceDescription> services = registry
@@ -141,6 +171,9 @@ public class CoreRegistryTests {
         compare(services);
     }
 
+    /**
+     * query by service endpoint
+     */
     @Test
     public void findByEndpoint() {
         List<ServiceDescription> services = registry
@@ -150,6 +183,9 @@ public class CoreRegistryTests {
         compare(services);
     }
 
+    /**
+     * Test service deletion 
+     */
     @Test
     public void deleteByExample() {
         Response response = registry.delete(new ServiceDescription.Builder(
@@ -159,6 +195,9 @@ public class CoreRegistryTests {
         Assert.assertEquals(1, services.size());
     }
 
+    /**
+     * We don't allow duplicate endpoints so check
+     */
     @Test
     public void duplicateEndpointGuard() {
         Response response = registry.register(new ServiceDescription.Builder(
