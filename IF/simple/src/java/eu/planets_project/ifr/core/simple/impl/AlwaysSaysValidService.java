@@ -36,11 +36,12 @@ import eu.planets_project.services.validate.ValidateResult;
         
 public class AlwaysSaysValidService implements Validate {
 
+    /** The service name */
     public static final String NAME="AlwaysSaysValidService";
     
     private static Log log = LogFactory.getLog(AlwaysSaysValidService.class);
     
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.services.validate.Validate#describe()
      */
     public ServiceDescription describe() {
@@ -51,8 +52,8 @@ public class AlwaysSaysValidService implements Validate {
         return mds.build();
     }
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.services.validate.Validate#identify(eu.planets_project.services.datatypes.DigitalObject, java.net.URI)
+    /**
+     * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI)
      */
     public ValidateResult validate(DigitalObject dob, URI format) {
         ServiceReport sr = new ServiceReport();

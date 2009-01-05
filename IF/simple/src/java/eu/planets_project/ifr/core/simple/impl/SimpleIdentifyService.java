@@ -39,11 +39,12 @@ import eu.planets_project.services.identify.IdentifyResult;
         
 public class SimpleIdentifyService implements Identify {
 
+    /** The name of the service */
     public static final String NAME="SimpleIdentifyService";
     
     private static Log log = LogFactory.getLog(SimpleIdentifyService.class);
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.services.identify.Identify#describe()
      */
     public ServiceDescription describe() {
@@ -54,7 +55,7 @@ public class SimpleIdentifyService implements Identify {
         return mds.build();
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
      */
     public IdentifyResult identify(DigitalObject dob) {

@@ -34,16 +34,16 @@ import eu.planets_project.services.migrate.MigrateResult;
         
 public final class PassThruMigrationService implements Migrate,
         Serializable {
-    /***/
+    /** The service name */
     static final String NAME = "PassThruMigrationService";
     
-    /***/
+    /** The unique class id */
     private static final long serialVersionUID = 2127494848765937613L;
 
     /**
      * {@inheritDoc}
      * 
-     * @see eu.planets_project.ifr.core.common.services.migrate.MigrateOneDigitalObject#migrate(eu.planets_project.ifr.core.common.services.datatypes.DigitalObject)
+     * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)
      */
     public MigrateResult migrate( final DigitalObject digitalObject, URI inputFormat,
             URI outputFormat, Parameters parameters) {
@@ -57,8 +57,8 @@ public final class PassThruMigrationService implements Migrate,
     }
 
     
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.common.services.migrate.MigrateOneDigitalObject#describe()
+    /**
+     * @see eu.planets_project.services.migrate.Migrate#describe()
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder mds = new ServiceDescription.Builder(NAME, Migrate.class.getCanonicalName());

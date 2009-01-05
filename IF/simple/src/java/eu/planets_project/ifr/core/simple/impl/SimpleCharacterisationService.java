@@ -46,7 +46,7 @@ public class SimpleCharacterisationService implements DetermineProperties
     /** The Planets Property ID for the size of the object. */
     public static String MIME_PROP_URI = "planets:pc/basic/bytestream/size";
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.services.characterise.DetermineProperties#describe()
      */
     public ServiceDescription describe() {
@@ -55,7 +55,7 @@ public class SimpleCharacterisationService implements DetermineProperties
         return sd.build();
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.services.characterise.DetermineProperties#getMeasurableProperties(java.net.URI)
      */
     public Properties getMeasurableProperties(URI format) {
@@ -64,7 +64,7 @@ public class SimpleCharacterisationService implements DetermineProperties
         return props;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
      */
     public DeterminePropertiesResult measure(DigitalObject digitalObject,
