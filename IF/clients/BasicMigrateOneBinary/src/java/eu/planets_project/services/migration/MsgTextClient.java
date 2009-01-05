@@ -15,11 +15,20 @@ import javax.xml.ws.Service;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 
+/**
+ * A web service client for the MsgTxt migration service
+ *
+ */
 public class MsgTextClient {
 	
 	private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 	private static final String MSGTEXT_CLIENT_OUTPUT = SYSTEM_TEMP + "MSGTEXT_CLIENT_OUTPUT";
 	
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws PlanetsException
+	 */
 	public static void main(String[] args) throws IOException, PlanetsException {
 		
 		String wsdlLocation = 
