@@ -24,8 +24,10 @@ import eu.planets_project.services.identify.Identify;
  */
 public class ServiceDescriptionTest {
 
+    /**
+     *  A short overview of using the ServiceDescription API:
+     */
     @Test
-    /* A short overview of using the ServiceDescription API: */
     public void sampleUsage() {
         /*
          * You can create a service description from scratch, using required

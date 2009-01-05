@@ -33,6 +33,7 @@ public final class DigitalObjectTests {
 
     /**
      * Simple sample usage (only required values).
+     * @throws MalformedURLException 
      */
     @Test
     public void usage1() throws MalformedURLException {
@@ -55,6 +56,7 @@ public final class DigitalObjectTests {
     /**
      * More complex sample usage (some optional parameters). See further below
      * for more examples.
+     * @throws MalformedURLException 
      */
     @Test
     public void usage2() throws MalformedURLException {

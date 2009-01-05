@@ -34,7 +34,7 @@ public final class ContentTests {
         java.io.File file = new java.io.File(LOCATION);
         bytes = ByteArrayHelper.read(file);
         try {
-            url = file.toURL();
+            url = file.toURI().toURL();
         } catch (MalformedURLException e1) {
             e1.printStackTrace();
         }
