@@ -30,8 +30,9 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface CreateView extends PlanetsService {
 
+    /** The interface name */
     public static final String NAME = "CreateView";
-    
+    /** The qualified name */
     public static final QName QNAME = new QName(PlanetsServices.NS,
             CreateView.NAME);
 
