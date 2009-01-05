@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,11 +22,13 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.test.ServiceCreator;
 
 
+/**
+ * local tests for image magick migrations
+ *
+ */
 public class ImageMagickMigrationsLocalTest {
 	  
 	static Migrate imageMagick;
@@ -35,10 +36,16 @@ public class ImageMagickMigrationsLocalTest {
 	
 	static String wsdlLocation = "/pserv-pa-jmagick/ImageMagickMigrations?wsdl";
 	
+	/**
+	 * test output
+	 */
 	public static String TEST_OUT = null;
 	
 	static String[] compressionTypes = new String[11];
 	
+    /**
+     * test setup
+     */
     @BeforeClass
     public static void setup() {
     	System.out.println("Running ImageMagickMigrations LOCAL tests...");
@@ -76,6 +83,10 @@ public class ImageMagickMigrationsLocalTest {
         assertTrue("The ServiceDescription should not be NULL.", desc != null );
     }
     
+    /**
+     * test jpg compression
+     * @throws IOException
+     */
     @Test
     public void testJpgCompression () throws IOException {
     	String inputFormatExt = "TIFF";
@@ -85,6 +96,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_NO, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
     }
     
+    /**
+     * test png compression
+     * @throws IOException
+     */
     @Test
     public void testPngCompression () throws IOException {
     	
@@ -98,6 +113,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, createParameters(ImageMagickMigrationsTestHelper.COMP_TYPE_NO, ImageMagickMigrationsTestHelper.COMP_QUAL_100));
     }
     
+    /**
+     * test jpg to tiff migration
+     * @throws IOException
+     */
     @Test
     public void testTiffToJP2 () throws IOException {
     	String inputFormatExt = "tiff";
@@ -110,6 +129,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * Test JPEG2 to PNG migration
+     * @throws IOException
+     */
     @Test
     public void testJP2ToPng () throws IOException {
     	String inputFormatExt = "jp2";
@@ -122,6 +145,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * Test for JPEG to TIFF migration
+     * @throws IOException
+     */
     @Test
     public void testJpgToTiff () throws IOException {
     	String inputFormatExt = "jpeg";
@@ -134,7 +161,11 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
-    @Test
+    /**
+     * test jpg to png migration
+     * @throws IOException
+     */
+   @Test
     public void testJpgToPng () throws IOException {
     	String inputFormatExt = "jpeg";
         String outputFormatExt = "png";
@@ -146,6 +177,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+   /**
+    * test jpg to gif migration
+    * @throws IOException
+    */
     @Test
     public void testJpgToGif () throws IOException {
     	String inputFormatExt = "jpeg";
@@ -158,6 +193,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * test png to tiff migration
+     * @throws IOException
+     */
     @Test
     public void testPngToTiff () throws IOException {
     	String inputFormatExt = "png";
@@ -170,6 +209,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * test pnf to jpg migration
+     * @throws IOException
+     */
     @Test
     public void testPngToJpg () throws IOException {
     	String inputFormatExt = "png";
@@ -182,6 +225,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * test png to gif migration
+     * @throws IOException
+     */
     @Test
     public void testPngToGif () throws IOException {
     	String inputFormatExt = "png";
@@ -194,6 +241,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * test tiff to jpg migration
+     * @throws IOException
+     */
     @Test
     public void testTiffToJpg () throws IOException {
     	String inputFormatExt = "tiff";
@@ -206,6 +257,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
 
+    /**
+     * test tiff to png migration
+     * @throws IOException
+     */
     @Test
     public void testTiffToPng () throws IOException {
     	String inputFormatExt = "tiff";
@@ -218,6 +273,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * test tiff to gif migration
+     * @throws IOException
+     */
     @Test
     public void testTiffToGif () throws IOException {
     	String inputFormatExt = "tiff";
@@ -230,6 +289,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * test tiff to tga migration
+     * @throws IOException
+     */
     @Test
     public void testTiffToTga () throws IOException {
     	String inputFormatExt = "tiff";
@@ -242,6 +305,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * test tga to tiff migration
+     * @throws IOException
+     */
     @Test
     public void testTgaToTiff () throws IOException {
     	String inputFormatExt = "tga";
@@ -291,6 +358,10 @@ public class ImageMagickMigrationsLocalTest {
 //        testMigrate(inputFormatExt, outputFormatExt, parameters);
 //    }
     
+    /**
+     * test tiff to pcx migration
+     * @throws IOException
+     */
     @Test
     public void testTiffToPcx () throws IOException {
     	String inputFormatExt = "tiff";
@@ -303,6 +374,10 @@ public class ImageMagickMigrationsLocalTest {
         testMigrate(inputFormatExt, outputFormatExt, null);
     }
     
+    /**
+     * test pcx to tiff migration
+     * @throws IOException
+     */
     @Test
     public void testPcxToTiff () throws IOException {
     	String inputFormatExt = "pcx";
@@ -337,6 +412,10 @@ public class ImageMagickMigrationsLocalTest {
 //        testMigrate(inputFormatExt, outputFormatExt, parameters);
 //    }
     
+    /**
+     * test tiff to pdf migration
+     * @throws IOException
+     */
     @Test
     public void testTiffToPdf () throws IOException {
     	String inputFormatExt = "tiff";
@@ -424,6 +503,9 @@ public class ImageMagickMigrationsLocalTest {
 
     /**
      * Test the pass-thru migration.
+     * @param srcExtension 
+     * @param targetExtension 
+     * @param parameters 
      * @throws IOException 
      */
     public void testMigrate(String srcExtension, String targetExtension, Parameters parameters) throws IOException {

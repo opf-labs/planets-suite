@@ -5,9 +5,16 @@ import org.junit.BeforeClass;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
+/**
+ * Image magick migration server tests
+ *
+ */
 public class ImageMagickMigrationsServerTest extends
 		ImageMagickMigrationsLocalTest {
 	
+	/**
+	 * set up the server tests by creating a test service and the array of compression types
+	 */
 	@BeforeClass
     public static void setup() {
 		System.out.println("Running ImageMagickMigrations SERVER tests...");
