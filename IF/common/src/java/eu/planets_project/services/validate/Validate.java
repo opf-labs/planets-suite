@@ -27,15 +27,18 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface Validate extends PlanetsService {
     
+	/** The interface name */
 	public static final String NAME = "Validate";
-	
+	/** The qualified name */
 	public static final QName QNAME = new QName(PlanetsServices.NS,
 			Validate.NAME);
 
 	/**
 	 * @param digitalObject 
-	 *            The Digital Object to be identified.
-	 * @return Returns a Types object containing the identification result
+	 *            The Digital Object to be validated.
+	 * @param format
+	 *            The format that digital object purports to be in
+	 * @return Returns a ValidateResult object with the result of the validation
 	 */
 	@WebMethod(operationName = Validate.NAME, action = PlanetsServices.NS
 			+ "/" + Validate.NAME)

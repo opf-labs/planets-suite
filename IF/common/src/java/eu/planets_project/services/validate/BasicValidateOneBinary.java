@@ -15,19 +15,24 @@ import javax.xml.ws.BindingType;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 
+/**
+ * The Basic Validate interface
+ */
 @WebService(
         name = BasicValidateOneBinary.NAME, 
         targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @Deprecated
 public interface BasicValidateOneBinary {
+    /** The interface name */
     public static final String NAME = "BasicValidateOneBinary";
+    /** The qualified name */
     public static final QName QNAME = new QName(PlanetsServices.NS, BasicValidateOneBinary.NAME );
 
     /**
      * 
      * @param binary
-     * @param PLANETS URI 
+     * @param fmt 
      * @return boolean.
      * @throws PlanetsException 
      */
