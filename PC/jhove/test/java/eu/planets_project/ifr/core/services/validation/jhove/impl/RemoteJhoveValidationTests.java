@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.services.validation.jhove.impl;
 import org.junit.BeforeClass;
 
 import eu.planets_project.services.utils.test.ServiceCreator;
-import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 import eu.planets_project.services.validate.Validate;
 
 /**

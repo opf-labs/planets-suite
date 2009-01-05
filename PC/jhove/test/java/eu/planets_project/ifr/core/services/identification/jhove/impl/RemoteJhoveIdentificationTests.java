@@ -4,7 +4,6 @@ import org.junit.BeforeClass;
 
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.utils.test.ServiceCreator;
-import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 
 /**
  * Client tests of the JHOVE identification functionality.
