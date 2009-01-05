@@ -179,6 +179,7 @@ public final class ServiceRegistryObjectFactory {
      * @param description The service description
      * @param type The service type (e.g. "Identification", "Migration")
      * @param organization The organization providing the service
+     * @param inputFormats a set of input formats
      * @return The registered service
      */
     public PsService createService(String name, String description,

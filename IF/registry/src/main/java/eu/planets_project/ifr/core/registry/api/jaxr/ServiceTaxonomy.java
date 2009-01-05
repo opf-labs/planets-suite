@@ -101,6 +101,9 @@ public final class ServiceTaxonomy {
             this.val = val;
         }
 
+        /**
+         * @return the value
+         */
         public String getVal() {
             return val;
         }
@@ -137,6 +140,7 @@ public final class ServiceTaxonomy {
      * Creates an instance and loads the contents of the XML file in which the
      * taxonomy is specified.
      * @param blcm The life cycle manager
+     * @param bqm 
      * @throws JAXRException When creating the classification scheme fails
      */
     public ServiceTaxonomy(final BusinessLifeCycleManager blcm,
@@ -247,7 +251,6 @@ public final class ServiceTaxonomy {
     // synchronized API with access to the properties files:
 
     /**
-     * @param service
      * @param s The service
      * @param id The ID of the classification to add to the service
      */
@@ -280,7 +283,6 @@ public final class ServiceTaxonomy {
     }
 
     /**
-     * @param service
      * @param s The service
      * @param free The free text classification to set for the service
      */
@@ -749,10 +751,16 @@ public final class ServiceTaxonomy {
         return planetsServiceScheme;
     }
 
+    /**
+     * @return the structure mapping
+     */
     public Map<String, List<JAXRConcept>> getStructureMapping() {
         return structureMapping;
     }
 
+    /**
+     * @return the concepts mapping
+     */
     public Map<String, JAXRConcept> getConceptsMapping() {
         return conceptsMapping;
     }

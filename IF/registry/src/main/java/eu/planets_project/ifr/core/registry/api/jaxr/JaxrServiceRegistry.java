@@ -845,7 +845,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteBinding(eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding)
+     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteBinding(java.lang.String, java.lang.String, eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding)
      */
     public ServiceRegistryMessage deleteBinding(final String username,
             final String password, final PsBinding serviceBinding) {
@@ -863,7 +863,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteOrganization(eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization)
+     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteOrganization(java.lang.String, java.lang.String, eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization)
      */
     public ServiceRegistryMessage deleteOrganization(final String username,
             final String password, final PsOrganization organization) {
@@ -881,7 +881,7 @@ public final class JaxrServiceRegistry implements ServiceRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteService(eu.planets_project.ifr.core.registry.api.jaxr.model.PsService)
+     * @see eu.planets_project.ifr.core.registry.api.jaxr.ServiceRegistry#deleteService(java.lang.String, java.lang.String, eu.planets_project.ifr.core.registry.api.jaxr.model.PsService)
      */
     public ServiceRegistryMessage deleteService(final String username,
             final String password, final PsService service) {
