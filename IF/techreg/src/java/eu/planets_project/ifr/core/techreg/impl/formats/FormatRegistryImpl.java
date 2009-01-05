@@ -105,7 +105,7 @@ public class FormatRegistryImpl implements FormatRegistry {
         log.info("File format look-up tables complete.");
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatForURI(java.net.URI)
      */
     public Format getFormatForURI(URI puri) {
@@ -116,7 +116,7 @@ public class FormatRegistryImpl implements FormatRegistry {
         }
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getURIsForExtension(java.lang.String)
      */
     public Set<URI> getURIsForExtension(String ext) {
@@ -124,14 +124,14 @@ public class FormatRegistryImpl implements FormatRegistry {
         return extMap.get(ext);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getURIsForMimeType(java.lang.String)
      */
     public Set<URI> getURIsForMimeType(String mimetype) {
         return mimeMap.get(mimetype);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#search(java.lang.String)
      */
     public List<URI> search( String query ) {
@@ -140,7 +140,7 @@ public class FormatRegistryImpl implements FormatRegistry {
         return found;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatURIAliases(java.net.URI)
      */
     public List<URI> getFormatURIAliases(URI typeURI) {
@@ -174,7 +174,7 @@ public class FormatRegistryImpl implements FormatRegistry {
         return new ArrayList<URI>(turis);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatAliases(java.net.URI)
      */
     public List<Format> getFormatAliases(URI typeURI) {

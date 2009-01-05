@@ -111,7 +111,7 @@ public class DroidFormatRegistry  {
     
     /**
      * 
-     * @return
+     * @return the formats in a Set
      */
     public Set<Format> getFormats() {
        HashSet<Format> fmts = new HashSet<Format>();
@@ -123,7 +123,7 @@ public class DroidFormatRegistry  {
     
     /**
      * 
-     * @return
+     * @return the DROID analysis controller
      */
     public static AnalysisController getController() {
         // Determine the config directory:

@@ -33,9 +33,17 @@ public class FormatRegistryIndexer {
     
     Analyzer analyzer;
     
+    /**
+     * @param args
+     * @throws IOException
+     * @throws ParseException
+     */
     public static void main(String[] args) throws IOException, ParseException {
     }
     
+    /**
+     * no arg constructor, initialisation
+     */
     public FormatRegistryIndexer() {
         // Init the index:
         // Store the index in memory:
@@ -96,7 +104,7 @@ public class FormatRegistryIndexer {
     /**
      * 
      * @param query
-     * @return
+     * @return a List of matching format URIs
      */
     public List<URI> search( String query ) {
         // Return the matching Format URIs:
