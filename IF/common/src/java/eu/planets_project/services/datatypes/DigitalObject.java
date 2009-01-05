@@ -135,7 +135,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
      * Builder for DigitalObject instances. Using a builder ensures consistent
      * object state during creation and models optional named constructor
      * parameters.
-     * @see eu.planets_project.ifr.core.common.services.datatypes.DigitalObjectTests
+     * @see eu.planets_project.services.datatypes.DigitalObjectTests
      */
     public static final class Builder {
         /* Required parameter: */
