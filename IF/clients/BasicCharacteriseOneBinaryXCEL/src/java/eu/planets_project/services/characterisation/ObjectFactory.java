@@ -35,6 +35,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link StringArray }
+     * @return a new StringArray
      * 
      */
     public StringArray createStringArray() {
@@ -43,6 +44,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link SOAPException }
+     * @return the SOAP exception
      * 
      */
     public SOAPException createSOAPException() {
@@ -51,6 +53,8 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SOAPException }{@code >}}
+     * @param value 
+     * @return SOAP exception as a JAXB element
      * 
      */
     @XmlElementDecl(namespace = "http://planets-project.eu/ifr/core/storage/data", name = "SOAPException")
