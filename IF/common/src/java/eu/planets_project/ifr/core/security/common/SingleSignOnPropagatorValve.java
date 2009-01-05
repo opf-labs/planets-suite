@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
  * It may be of general use, in setting up the DR session.
  * 
  * See the SingleSignOn Valve of inspiration:
- * @see http://svn.apache.org/repos/asf/tomcat/container/tc5.5.x/catalina/src/share/org/apache/catalina/authenticator/SingleSignOn.java
+ * @see "http://svn.apache.org/repos/asf/tomcat/container/tc5.5.x/catalina/src/share/org/apache/catalina/authenticator/SingleSignOn.java"
  * 
  * The OpenID login would be another example of code where we can propagate the login:
  * @see eu.planets_project.ifr.core.security.common.OpenIDLoginAction
@@ -39,7 +39,7 @@ public class SingleSignOnPropagatorValve extends ValveBase {
     private static String PASS_PARAM = "josso_password";
 
 
-    /* (non-Javadoc)
+    /**
      * @see org.apache.catalina.Valve#invoke(org.apache.catalina.connector.Request, org.apache.catalina.connector.Response)
      */
     public void invoke(Request request, Response response) throws IOException,
