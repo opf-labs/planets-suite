@@ -65,7 +65,7 @@ public class PredefinedConcepts {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXRClassificationScheme }
-     * 
+     * @return the list of Java API for XML Registry classification scheme
      * 
      */
     public List<JAXRClassificationScheme> getJAXRClassificationScheme() {
