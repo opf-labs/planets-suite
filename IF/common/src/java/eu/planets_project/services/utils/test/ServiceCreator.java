@@ -6,9 +6,12 @@ package eu.planets_project.services.utils.test;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.wsdl.Port;
 import javax.xml.namespace.QName;
+import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
+import javax.xml.ws.soap.SOAPBinding;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -112,8 +115,14 @@ public final class ServiceCreator {
             Service service = Service.create(url, qname);
             @SuppressWarnings("unchecked")
             T ids = (T) service.getPort(impl.getInterfaces()[0]);
+            SOAPBinding binding = (SOAPBinding) ((BindingProvider)ids).getBinding();
+            binding.setMTOMEnabled(true);
             log.info("INIT: Created proxy class for service "
                     + service.getServiceName());
+            System.out.println("INIT: Created proxy class for service "
+                    + service.getServiceName());
+            log.info("INIT: MTOM enabled for Service: " + binding.isMTOMEnabled());
+            System.out.println("INIT: MTOM enabled for Service: " + binding.isMTOMEnabled());
             return ids;
         }
     }

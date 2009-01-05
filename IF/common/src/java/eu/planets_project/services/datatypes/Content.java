@@ -1,15 +1,19 @@
 package eu.planets_project.services.datatypes;
 
 import java.io.ByteArrayInputStream;
+import java.io.Externalizable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 
+import javax.activation.DataHandler;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlMimeType;
 
+import eu.planets_project.services.utils.ByteArrayDataSource;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
@@ -25,10 +29,14 @@ import eu.planets_project.services.utils.FileUtils;
 public final class Content implements Serializable {
     /** Generated UID. */
     private static final long serialVersionUID = 3352422791774816377L;
-    @XmlElement
-    private byte[] value;
+//    @XmlElement
+//    private byte[] value;
     @XmlAttribute
     private URL reference;
+    
+    @XmlElement
+    @XmlMimeType("application/octet-stream") 
+    private DataHandler dataHandler;
 
     /*
      * We use static factory methods to provide named constructors for the
@@ -66,7 +74,9 @@ public final class Content implements Serializable {
      * @param value The content value
      */
     private Content(final byte[] value) {
-        this.value = value;
+       ByteArrayDataSource bads = new ByteArrayDataSource(value, "application/octet-stream");
+       DataHandler dh = new DataHandler(bads);
+       this.dataHandler = dh;
     }
 
     /**
@@ -86,7 +96,12 @@ public final class Content implements Serializable {
      */
     public InputStream read() {
         if (isByValue()) {
-            return new ByteArrayInputStream(value);
+            try {
+				return dataHandler.getDataSource().getInputStream();
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
         } else {
             try {
                 return reference.openStream();
@@ -98,8 +113,13 @@ public final class Content implements Serializable {
     }
 
     /**
+     * Should be used with care. If used in web service context, large files could
+     * cause errors, when sent as byte[] via SOAP. 
+     * The read() method should be used instead, to receive a DataHandler instance that
+     * is able to stream large files!
      * @return The value of this content.
      */
+    @Deprecated
     public byte[] getValue() {
         /* Should work for both content by reference and by value: */
         return FileUtils.writeInputStreamToBinary(read());
@@ -142,7 +162,7 @@ public final class Content implements Serializable {
         }
         /* Else we compare either value or reference: */
         if (isByValue()) {
-            return this.value == other.value;
+            return this.dataHandler.equals(other.dataHandler);
         } else {
             return this.reference.toString().equals(other.reference.toString());
         }
@@ -154,7 +174,7 @@ public final class Content implements Serializable {
      */
     @Override
     public int hashCode() {
-        return isByValue() ? value.hashCode() : reference.toString().hashCode();
+        return isByValue() ? dataHandler.hashCode() : reference.toString().hashCode();
     }
 
     /**
@@ -163,8 +183,8 @@ public final class Content implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("Content by %s: %s", isByValue() ? "value"
-                : "reference", isByValue() ? value : reference);
+        return String.format("Content by %s: %s", isByValue() ? "value (DataHandler)"
+                : "reference", isByValue() ? dataHandler : reference);
     }
 
 }
