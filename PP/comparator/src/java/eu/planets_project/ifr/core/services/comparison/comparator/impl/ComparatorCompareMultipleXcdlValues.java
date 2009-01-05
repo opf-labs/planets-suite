@@ -19,6 +19,7 @@ import eu.planets_project.services.compare.CompareMultipleXcdlValues;
  * PP comparator service, comparing multiple XCDL strings, using the given
  * configuration string and returning a result string for the comparison.
  * @author Fabian Steeg
+ * @deprecated Use {@link Comparator} instead
  */
 @WebService(name = ComparatorCompareMultipleXcdlValues.NAME, serviceName = CompareMultipleXcdlValues.NAME, 
         targetNamespace = PlanetsServices.NS, endpointInterface="eu.planets_project.services.compare.CompareMultipleXcdlValues")

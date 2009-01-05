@@ -20,7 +20,9 @@ import eu.planets_project.services.PlanetsServices;
  * data registry, using the default configuration and returning a reference to
  * the result of the comparison.
  * @author Fabian Steeg
+ * @deprecated Use {@link Compare} instead
  */
+@Deprecated
 @WebService(name = BasicCompareTwoXcdlReferences.NAME, serviceName = BasicCompareTwoXcdlReferences.NAME, targetNamespace = PlanetsServices.NS)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")

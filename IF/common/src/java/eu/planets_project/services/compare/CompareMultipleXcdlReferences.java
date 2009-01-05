@@ -20,6 +20,7 @@ import eu.planets_project.services.PlanetsServices;
  * IF data registry, using the referenced configuration and returning a
  * reference to the result of the comparison.
  * @author Fabian Steeg
+ * @deprecated Use {@link Compare} instead
  */
 @WebService(name = CompareMultipleXcdlReferences.NAME, serviceName = CompareMultipleXcdlReferences.NAME, targetNamespace = PlanetsServices.NS)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)

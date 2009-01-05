@@ -10,13 +10,15 @@ import javax.xml.ws.Service;
 import org.junit.Test;
 
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
-import eu.planets_project.services.compare.CompareMultipleXcdlValues;
+import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
- * Local and client tests of the comparator services by value functionality.
+ * Local and client tests of the comparator service.
  * @author Fabian Steeg
  */
 public final class ComparatorServiceTests {
@@ -70,25 +72,17 @@ public final class ComparatorServiceTests {
      */
     protected void testServices(final String server, final byte[] data1,
             final byte[] data2, final byte[] configData) {
-        String xcdl1 = new String(data1);
-        String xcdl2 = new String(data2);
-        String config = new String(configData);
-        /* Test of the TWO VALUES service: */
-        BasicCompareTwoXcdlValues c1 = ServiceCreator
-                .createTestService(BasicCompareTwoXcdlValues.QNAME,
-                        ComparatorBasicCompareTwoXcdlValues.class,
-                        "/pserv-pp-comparator/ComparatorBasicCompareTwoXcdlValues?wsdl");// serviceFrom(server,
-        // BasicCompareTwoXcdlValues.class);
-        String result = c1.basicCompareTwoXcdlValues(xcdl1, xcdl2);
-        ComparatorWrapperTests.check(result);
-        /* Test of the MULTI VALUES service: */
-        CompareMultipleXcdlValues c2 = ServiceCreator
-                .createTestService(CompareMultipleXcdlValues.QNAME,
-                        ComparatorCompareMultipleXcdlValues.class,
-                        "/pserv-pp-comparator/ComparatorCompareMultipleXcdlValues?wsdl");// serviceFrom(server,
-        // CompareMultipleXcdlValues.class);
-        result = c2.compareMultipleXcdlValues(new String[] { xcdl1, xcdl2 },
-                config);
+        Compare c = ServiceCreator.createTestService(Comparator.QNAME,
+                Comparator.class, "/pserv-pp-comparator/Comparator?wsdl");
+        // serviceFrom(server, BasicCompareTwoXcdlValues.class);
+        DigitalObject[] objects = new DigitalObject[] {
+                new DigitalObject.Builder(Content.byValue(data1)).build(),
+                new DigitalObject.Builder(Content.byValue(data2)).build() };
+        DigitalObject configFile = new DigitalObject.Builder(Content
+                .byValue(configData)).build();
+        String result = new String(FileUtils.writeInputStreamToBinary(c
+                .compare(objects, configFile).getDigitalObject().getContent()
+                .read()));
         ComparatorWrapperTests.check(result);
     }
 

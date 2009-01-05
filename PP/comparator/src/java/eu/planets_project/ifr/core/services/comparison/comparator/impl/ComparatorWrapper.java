@@ -24,11 +24,9 @@ public final class ComparatorWrapper {
      * We enforce non-instantiability with a private constructor (this is a
      * static utility class).
      */
-    private ComparatorWrapper() {
+    private ComparatorWrapper() {}
 
-    }
-
-    /** The filenmae of the result file. */
+    /** The filename of the result file. */
     private static final String RESULT_FILENAME = "cpr.cpr";
     /** A planets logger. */
     private static final PlanetsLogger LOG = PlanetsLogger

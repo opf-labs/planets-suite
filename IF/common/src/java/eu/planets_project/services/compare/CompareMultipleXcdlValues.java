@@ -16,6 +16,7 @@ import eu.planets_project.services.PlanetsServices;
  * PP comparator service, comparing multiple XCDL strings, using the given
  * configuration string and returning a result string for the comparison.
  * @author Fabian Steeg
+ * @deprecated Use {@link Compare} instead
  */
 @WebService(name = CompareMultipleXcdlValues.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
