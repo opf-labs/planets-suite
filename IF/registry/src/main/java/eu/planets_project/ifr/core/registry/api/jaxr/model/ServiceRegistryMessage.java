@@ -13,15 +13,25 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ServiceRegistryMessage {
 
+    /** The message string */
     public String message;
+    /** A public list of operand strings  */
     public List<String> operands = new ArrayList<String>();
+    /** A planets service registry object */
     public PsRegistryObject registryObject;
 
+    /**
+     * construct from a message string
+     * @param message
+     */
     public ServiceRegistryMessage(String message) {
         this.message = message;
         operands = new ArrayList<String>();
     }
 
+    /**
+     * default no arg constructor
+     */
     public ServiceRegistryMessage() {
         operands = new ArrayList<String>();
     }

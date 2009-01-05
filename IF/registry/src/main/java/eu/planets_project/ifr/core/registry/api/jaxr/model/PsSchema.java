@@ -15,12 +15,20 @@ import eu.planets_project.ifr.core.registry.api.jaxr.jaxb.concepts.JAXRConcept;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PsSchema {
+    /** The schema name */
     public String schemaName;
+    /** A description of the schema */
     public String schemaDescription;
+    /** The unique id of the schema */
     public String schemaId;
+    /** A list of the categories associated with the schema */
     public ArrayList<PsCategory> categories = new ArrayList<PsCategory>();
+    /** Any error message goes here */
     public String errorMessage;
 
+    /**
+     * default no arg constructor
+     */
     public PsSchema() {
     }
 
@@ -44,6 +52,9 @@ public class PsSchema {
         this.categories.trimToSize();
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         return "PsSchema : " + schemaId + " name: " + schemaName + " :  "

@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class BindingList {
+    /** The List of planet service bindings */
     public List<PsBinding> bindings = new ArrayList<PsBinding>();
+    /** Any error messages are here */
     public String errorMessage;
 }

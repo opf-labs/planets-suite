@@ -14,6 +14,13 @@ public class PsBinding extends PsRegistryObject {
     private PsBinding targetbinding;
     private boolean validateuri;
 
+    /**
+     * parameterised constructor
+     * @param description
+     * @param uri
+     * @param isValidate
+     * @param service
+     */
     public PsBinding(String description, String uri, boolean isValidate,
             PsService service) {
         this.description = description;
@@ -22,6 +29,9 @@ public class PsBinding extends PsRegistryObject {
         this.service = service;
     }
 
+    /**
+     * default no arg constructor
+     */
     public PsBinding() {}
 
     /**

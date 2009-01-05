@@ -12,10 +12,7 @@ import javax.xml.registry.infomodel.InternationalString;
 import javax.xml.registry.infomodel.Organization;
 import javax.xml.registry.infomodel.User;
 
-import sun.rmi.runtime.Log;
-
 import eu.planets_project.ifr.core.registry.api.jaxr.JaxrServiceRegistryHelper;
-import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
  * Planets organization.
@@ -26,6 +23,12 @@ public class PsOrganization extends PsRegistryObject {
     private String contactMail;
     private List<PsService> services = new ArrayList<PsService>();
 
+    /**
+     * @param name
+     * @param description
+     * @param contact
+     * @param mail
+     */
     public PsOrganization(String name, String description, String contact,
             String mail) {
         this.name = name;
@@ -34,6 +37,9 @@ public class PsOrganization extends PsRegistryObject {
         this.contactMail = mail;
     }
 
+    /**
+     * default no arg constructor
+     */
     public PsOrganization() {}
 
     /**

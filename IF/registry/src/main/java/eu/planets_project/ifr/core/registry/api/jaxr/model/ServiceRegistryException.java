@@ -23,15 +23,26 @@ public class ServiceRegistryException extends Throwable{
 
 
    
+	/**
+	 * default no arg constructor, logs a blank line
+	 */
 	public ServiceRegistryException() {
 		super("ServiceRegistryException");
 		plogger.error("");
 	}
+	/**
+	 * construct from message and add log the message
+	 * @param mesg
+	 */
 	public ServiceRegistryException(String mesg) {
 		super("ServiceRegistryException");
 		plogger.error(mesg);
 		
 	}
+	/**
+	 * construct from throwable and log the throwable's stack trace
+	 * @param t
+	 */
 	public ServiceRegistryException(Throwable t) {
 		super("ServiceRegistryException");
 		plogger.error(t.getStackTrace());

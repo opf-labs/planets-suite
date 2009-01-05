@@ -15,6 +15,9 @@ public class PsRegistryObject {
 
     protected List<PsCategory> categories = new ArrayList<PsCategory>();
 
+    /**
+     * default no arg constructor
+     */
     public PsRegistryObject() {
     }
 

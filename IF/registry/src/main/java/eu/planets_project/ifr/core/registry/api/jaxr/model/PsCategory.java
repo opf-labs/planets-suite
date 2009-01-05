@@ -16,20 +16,32 @@ import eu.planets_project.ifr.core.registry.api.jaxr.jaxb.concepts.JAXRConcept;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PsCategory implements Comparable<PsCategory> {
 
+    /** the category code */
     @XmlAttribute
     public String code;
+    /**the category id */
     @XmlAttribute
     public String id;
+    /** the category name */
     @XmlAttribute
     public String name;
+    /** the categorys parent */
     @XmlAttribute
     protected String parent;
 
+    /**
+     * name and value constructor
+     * @param name
+     * @param value
+     */
     public PsCategory(String name, String value) {
         this.name = name;
         this.code = value;
     }
 
+    /**
+     * default no arg constructor
+     */
     public PsCategory() {
     }
 

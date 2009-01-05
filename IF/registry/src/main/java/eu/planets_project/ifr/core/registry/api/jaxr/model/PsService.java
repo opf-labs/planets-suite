@@ -22,15 +22,26 @@ public class PsService extends PsRegistryObject {
     private PsOrganization organization;
     private List<PsBinding> bindings = new ArrayList<PsBinding>();
 
+    /**
+     * default no arg constructor
+     */
     public PsService() {
         this.organization = null;
     }
 
+    /**
+     * Constructor with name and description
+     * @param name
+     * @param description
+     */
     public PsService(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
+    /**
+     * @see eu.planets_project.ifr.core.registry.api.jaxr.model.PsRegistryObject#toString()
+     */
     @Override
     public String toString() {
         String res = "";

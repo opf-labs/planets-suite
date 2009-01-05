@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class OrganizationList {
+    /** The list of planets service orgs */
     public List<PsOrganization> organizations = new ArrayList<PsOrganization>();
+    /** Any error messages go here */
     public String errorMessage;
 }

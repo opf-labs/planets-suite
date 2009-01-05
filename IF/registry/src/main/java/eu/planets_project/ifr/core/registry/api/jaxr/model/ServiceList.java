@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ServiceList {
+    /** A list of planets services */
     public List<PsService> services = new ArrayList<PsService>();
+    /** Any error message goes here */
     public String errorMessage;
 }
