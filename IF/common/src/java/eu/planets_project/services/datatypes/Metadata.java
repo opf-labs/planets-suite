@@ -87,6 +87,11 @@ public final class Metadata implements Comparable<Metadata>, Serializable {
         return type;
     }
 
+    /**
+     * @param o the metadata 
+     * @return 0 if equal
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     public int compareTo(Metadata o) {
         if (this.type.equals(o.type)) {
             return this.content.compareTo(o.content);

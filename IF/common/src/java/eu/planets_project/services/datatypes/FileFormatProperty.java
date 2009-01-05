@@ -2,11 +2,17 @@ package eu.planets_project.services.datatypes;
 
 import java.util.List;
 
+/**
+ * Extension of Property class for file formats
+ */
 public class FileFormatProperty extends Property {
 	
 	private String id;
 	private Metrics metrics = new Metrics();
 	
+	/**
+	 * default no arg constructor
+	 */
 	public FileFormatProperty() {
 		super(null, null);
 		this.id = null;
@@ -16,6 +22,10 @@ public class FileFormatProperty extends Property {
 		this.metrics = new Metrics();
 	}
 	
+	/**
+	 * @param name
+	 * @param value
+	 */
 	public FileFormatProperty(String name, String value) {
 		super(name, value);
 		this.id = null;
@@ -58,34 +68,52 @@ public class FileFormatProperty extends Property {
 	
 	
 	/**
-	 * @param metric the metric to set
+	 * @param metricsToSet 
 	 */
 	public void setMetrics(List<Metric> metricsToSet) {
 		this.metrics.setMetrics(metricsToSet);
 	}
 	
+	/**
+	 * @param metricsToSet
+	 */
 	public void setMetrics(Metrics metricsToSet) {
 		this.metrics = metricsToSet;
 	}
 	
+	/**
+	 * @see eu.planets_project.services.datatypes.Property#setName(java.lang.String)
+	 */
 	public void setName(String name) {
 		super.setName(name);
 	}
 	
+	/**
+	 * @see eu.planets_project.services.datatypes.Property#getName()
+	 */
 	public String getName() {
 		return super.getName();
 	}
 	
+	/**
+	 * @see eu.planets_project.services.datatypes.Property#setValue(java.lang.String)
+	 */
 	public void setValue(String value) {
 		super.setValue(value);
 	}
 	
+	/**
+	 * @see eu.planets_project.services.datatypes.Property#getValue()
+	 */
 	public String getValue() {
 		return super.getValue();
 	}
 
 
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		
 		StringBuffer buf = new StringBuffer();

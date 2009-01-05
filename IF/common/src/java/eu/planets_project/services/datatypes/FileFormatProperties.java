@@ -6,15 +6,24 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+/**
+ * A collection of @see FileFormatProperty objects
+ */
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class FileFormatProperties {
 	
+	/**
+	 * no arg default
+	 */
 	public FileFormatProperties() {
 		this.fileFormatProperties = new ArrayList<FileFormatProperty>();
 	}
 	
 	List <FileFormatProperty> fileFormatProperties;
 	
+	/**
+	 * @return list of file format props
+	 */
 	public List<FileFormatProperty> getProperties() {
         return fileFormatProperties;
     }
@@ -26,6 +35,9 @@ public class FileFormatProperties {
         this.fileFormatProperties = propertyList;
     }
     
+    /**
+     * @param fileFormatProperty
+     */
     public void add(FileFormatProperty fileFormatProperty) {
     	if(this.fileFormatProperties != null) {
     		this.fileFormatProperties.add(fileFormatProperty);

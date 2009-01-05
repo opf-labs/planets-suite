@@ -112,14 +112,23 @@ public class Parameter {
     }
     
     
+    /**
+     * @return the description
+     */
     public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * @param description the new description value
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		String toPrint = this.name + " = " + this.value;
 		return toPrint;

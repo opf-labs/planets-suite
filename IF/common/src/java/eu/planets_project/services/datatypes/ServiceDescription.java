@@ -219,7 +219,7 @@ public final class ServiceDescription {
      * Builder for ServiceDescription instances. Using a builder ensures
      * consistent object state during creation and models optional named
      * constructor parameters while allowing immutable objects.
-     * @see eu.planets_project.ifr.core.common.services.datatypes.ServiceDescriptionTests
+     * @see eu.planets_project.services.datatypes.ServiceDescriptionTest
      */
     public static final class Builder {
 

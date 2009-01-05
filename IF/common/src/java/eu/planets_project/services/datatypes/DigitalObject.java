@@ -50,13 +50,12 @@ import javax.xml.transform.stream.StreamResult;
  * {@code DigitalObject o = DigitalObject.of(xml);}
  * <p/>
  * For usage examples, see the tests in {@link DigitalObjectTests} and web
- * service sample usage in {@link PassThruMigrationService} (pserv/IF/simple).
+ * service sample usage in {@link eu.planets_project.ifr.core.simple.impl.PassThruMigrationService#migrate} (pserv/IF/simple).
  * <p/>
  * A corresponding XML schema can be generated from this class by running this
  * class as a Java application, see {@link #main(String[])}.
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  * @see DigitalObjectTests
- * @see Migrate
  */
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)

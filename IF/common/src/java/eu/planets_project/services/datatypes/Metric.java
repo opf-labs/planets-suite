@@ -60,6 +60,9 @@ public class Metric {
 		this.id = id;
 	}
 	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		String nameOut;
 		String idOut;

@@ -51,19 +51,18 @@ public class ServiceReport {
      * A value of 0 indicates success.
      * A non-zero value (usually 1-255) indicates failure, and may perhaps be used as an error code.
      * 
-     * {@link http://en.wikipedia.org/wiki/Exit_status}
+     * {@link "http://en.wikipedia.org/wiki/Exit_status"}
      */
     public static final int SUCCESS = 0;
+    /** Default non zero error value */
     public static final int ERROR = 1;
+    /** The error state for the service invocation */
     public int error_state;
-    
-    /**
-     * Also allow properties to be returned, to permit extensible behaviour.
-     */
+    /** Also allow properties to be returned, to permit extensible behaviour. */
     public List<Property> properties;
 
     /**
-     * 
+     * No arg constructor
      */
     public ServiceReport() {
     }
@@ -83,7 +82,7 @@ public class ServiceReport {
     }
 
     /**
-     * @return the warn
+     * @return the warning
      */
     public String getWarn() {
         return warn;
@@ -138,7 +137,7 @@ public class ServiceReport {
         this.properties = properties;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.lang.Object#toString()
      */
     @Override
@@ -166,7 +165,4 @@ public class ServiceReport {
         }
         return rep.toString();
     }
-    
-    
-    
 }

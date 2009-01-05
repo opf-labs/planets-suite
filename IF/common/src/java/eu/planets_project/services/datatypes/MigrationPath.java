@@ -35,12 +35,16 @@ public class MigrationPath {
     List<Parameter> parameters;
 
     /**
-     * 
+     * No arg constructor
      */
     protected MigrationPath() { }
     
     /**
-     * 
+	 * Parameterised constructor
+	 *
+     * @param in 
+     * @param out 
+     * @param pars 
      */
     public MigrationPath(URI in, URI out, List<Parameter> pars ) {
         this.inputFormat = in;
