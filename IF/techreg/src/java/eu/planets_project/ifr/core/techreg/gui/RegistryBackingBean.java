@@ -41,7 +41,7 @@ public class RegistryBackingBean {
     
     /**
      * 
-     * @return
+     * @return the List of matching formats
      */
     public synchronized List<Format> getFormats() {
         ArrayList<Format> fmts = new ArrayList<Format>();
@@ -100,6 +100,7 @@ public class RegistryBackingBean {
     
     /**
      * Select the current format from the table.
+     * @return the jsf outcome
      */
     public String selectAFormat() {
         currentFormat = (Format) this.formatsDataTable.getRowData();
