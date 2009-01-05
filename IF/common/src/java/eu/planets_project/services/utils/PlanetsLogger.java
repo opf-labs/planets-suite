@@ -12,6 +12,9 @@ import org.apache.log4j.*;
  */
 public class PlanetsLogger implements Log
 {
+	/**
+	 * the planets log root namespace
+	 */
 	public static final String PLANETS_LOG_ROOT = "eu.planets_project";
 	private static HashMap<String, PlanetsLogger> logTable = new HashMap<String, PlanetsLogger>();
 	
@@ -141,92 +144,146 @@ public class PlanetsLogger implements Log
 		return getLogger(PLANETS_LOG_ROOT, null, true);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#isDebugEnabled()
+	 */
 	public boolean isDebugEnabled()
 	{
 		return log.isDebugEnabled();
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#isErrorEnabled()
+	 */
 	public boolean isErrorEnabled()
 	{
 		return log.isEnabledFor(Level.ERROR);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#isFatalEnabled()
+	 */
 	public boolean isFatalEnabled()
 	{
 		return log.isEnabledFor(Level.FATAL);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#isInfoEnabled()
+	 */
 	public boolean isInfoEnabled()
 	{
 		return log.isEnabledFor(Level.INFO);
 	}
 	
+	/**
+	 * @see org.apache.commons.logging.Log#isWarnEnabled()
+	 */
 	public boolean isWarnEnabled()
 	{
 		return log.isEnabledFor(Level.WARN);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#isTraceEnabled()
+	 */
 	public boolean isTraceEnabled()
 	{
 		return false; // XXX
 	//	return log.isEnabledFor(Level.TRACE);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#trace(java.lang.Object)
+	 */
 	public void trace(Object message)
 	{
 	//	log.trace(message); //XXX
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#trace(java.lang.Object, java.lang.Throwable)
+	 */
 	public void trace(Object message, Throwable t)
 	{
 	//	log.trace(message, t); //XXX
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#debug(java.lang.Object)
+	 */
 	public void debug(Object message)
 	{
 		log.debug(message);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#debug(java.lang.Object, java.lang.Throwable)
+	 */
 	public void debug(Object message, Throwable t)
 	{
 		log.debug(message, t);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#warn(java.lang.Object)
+	 */
 	public void warn(Object message)
 	{
 		log.warn(message);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#warn(java.lang.Object, java.lang.Throwable)
+	 */
 	public void warn(Object message, Throwable t)
 	{
 		log.warn(message, t);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#error(java.lang.Object)
+	 */
 	public void error(Object message)
 	{
 		log.error(message);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#error(java.lang.Object, java.lang.Throwable)
+	 */
 	public void error(Object message, Throwable t)
 	{	
 		log.error(message, t);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
+	 */
 	public void fatal(Object message)
 	{
 		log.fatal(message);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#fatal(java.lang.Object, java.lang.Throwable)
+	 */
 	public void fatal(Object message, Throwable t)
 	{
 		log.fatal(message, t);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#info(java.lang.Object)
+	 */
 	public void info(Object message)
 	{
 		log.info(message);
 	}
 
+	/**
+	 * @see org.apache.commons.logging.Log#info(java.lang.Object, java.lang.Throwable)
+	 */
 	public void info(Object message, Throwable t)
 	{
 		log.info(message, t);

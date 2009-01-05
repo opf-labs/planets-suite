@@ -1,8 +1,3 @@
-/**
- *  @author : Thomas Krämer thomas.kraemer@uni-koeln.de
- *  created : 14.07.2008
- *  
- */
 package eu.planets_project.services.utils;
 
 import java.io.BufferedOutputStream;
@@ -16,10 +11,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Random;
 
 /**
- *  @author: Thomas Kraemer thomas.kraemer@uni-koeln.de
+ *  @author Thomas Kraemer thomas.kraemer@uni-koeln.de
  *  created: 14.07.2008
  */
 public class FileUtils {
@@ -36,7 +30,7 @@ public class FileUtils {
 		File folder = null;
 		folder = new File(SYSTEM_TEMP, folderName);
 		if(folderName.contains("/") | folderName.contains(File.separator)) {
-			boolean madeFolder = folder.mkdirs();
+			folder.mkdirs();
 		}
 		else {
 			boolean madeFolder = folder.mkdir();
@@ -109,6 +103,10 @@ public class FileUtils {
 		return input;
 	}
 	
+	/**
+	 * @param textFile
+	 * @return file contents as string
+	 */
 	public static String readTxtFileIntoString(File textFile) {
 		String resultString = null;
 		StringBuffer buffer = new StringBuffer();
@@ -132,6 +130,11 @@ public class FileUtils {
 		return resultString;
 	}
 	
+	/**
+	 * @param toWriteToFile
+	 * @param destinationFilePath
+	 * @return file 
+	 */
 	public static File writeStringToFile (String toWriteToFile, String destinationFilePath) {
 		File result = new File(destinationFilePath);
 		try {
@@ -180,6 +183,10 @@ public class FileUtils {
 		}
 	}
 	
+	/**
+	 * @param inputStream
+	 * @return byte array from stream
+	 */
 	public static byte[] writeInputStreamToBinary(InputStream inputStream) {
 		ByteArrayOutputStream boStream = new ByteArrayOutputStream();
 		int in;
@@ -202,6 +209,12 @@ public class FileUtils {
 		return null;
 	}
 	
+	/**
+	 * @param inputStream
+	 * @param fileName
+	 * @param suffix
+	 * @return tmp file from stream
+	 */
 	public static File writeInputStreamToTmpFile(InputStream inputStream, String fileName, String suffix) {
 		if(suffix!=null) {
 			if(!suffix.startsWith(".")) {
@@ -280,6 +293,9 @@ public class FileUtils {
 		return target;
 	}
 	
+	/**
+	 * @return system temp dir
+	 */
 	public static File getSystemTempFolder() {
 		return new File(SYSTEM_TEMP);
 	}

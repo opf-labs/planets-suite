@@ -74,6 +74,11 @@ public final class ByteArrayHelper {
         return file;
     }
     
+    /**
+     * @param inputBlob
+     * @param inputFilePath
+     * @return the file written to
+     */
     public static File writeToDestFile(final byte[] inputBlob, final String inputFilePath) {
 		File file = new File(inputFilePath);
 		try {

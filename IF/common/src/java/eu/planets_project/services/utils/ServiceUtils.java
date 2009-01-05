@@ -17,7 +17,7 @@ public class ServiceUtils {
      * 
      * @param message
      * @param e
-     * @return
+     * @return service report from exception and message
      */
     public static ServiceReport createExceptionErrorReport(String message, Exception e) {
         ServiceReport sr = new ServiceReport();
@@ -29,7 +29,7 @@ public class ServiceUtils {
     /**
      * 
      * @param message
-     * @return
+     * @return service report from message
      */
     public static ServiceReport createErrorReport(String message) {
         ServiceReport sr = new ServiceReport();
