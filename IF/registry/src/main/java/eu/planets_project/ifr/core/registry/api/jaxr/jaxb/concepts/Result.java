@@ -79,7 +79,7 @@ public class Result {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXRClassificationScheme }
-     * 
+     * @return the list of Java API for XML Registry classification schemes
      * 
      */
     public List<JAXRClassificationScheme> getJAXRClassificationScheme() {
@@ -108,6 +108,7 @@ public class Result {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXRConcept }
+     * @return the list of Java API for XML Registry concepts
      * 
      * 
      */

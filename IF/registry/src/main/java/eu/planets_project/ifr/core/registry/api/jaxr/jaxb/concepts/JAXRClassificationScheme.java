@@ -75,6 +75,7 @@ public class JAXRClassificationScheme {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXRConcept }
+     * @return the list of JAXR concepts
      * 
      * 
      */

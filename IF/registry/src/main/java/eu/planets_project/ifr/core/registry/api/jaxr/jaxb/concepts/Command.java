@@ -79,6 +79,7 @@ public class Command {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXRClassificationScheme }
+     * @return the list of JAXR classification schemes
      * 
      * 
      */
@@ -108,6 +109,7 @@ public class Command {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXRConcept }
+     * @return the list of JAXR concepts
      * 
      * 
      */
@@ -137,6 +139,7 @@ public class Command {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Namepattern }
+     * @return  the list of namepatterns
      * 
      * 
      */

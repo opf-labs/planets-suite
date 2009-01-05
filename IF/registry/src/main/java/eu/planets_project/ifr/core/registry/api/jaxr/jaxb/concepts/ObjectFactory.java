@@ -38,6 +38,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Command }
+     * @return a new Command
      * 
      */
     public Command createCommand() {
@@ -46,6 +47,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link PredefinedConcepts }
+     * @return a new predefined concepts object
      * 
      */
     public PredefinedConcepts createPredefinedConcepts() {
@@ -54,6 +56,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXRClassificationScheme }
+     * @return a new JAXR classification scheme
      * 
      */
     public JAXRClassificationScheme createJAXRClassificationScheme() {
@@ -62,6 +65,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Namepattern }
+     * @return a new Namepattern
      * 
      */
     public Namepattern createNamepattern() {
@@ -70,6 +74,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link JAXRConcept }
+     * @return a new JAXR concept
      * 
      */
     public JAXRConcept createJAXRConcept() {
@@ -78,7 +83,7 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Result }
-     * 
+     * @return a new Result
      */
     public Result createResult() {
         return new Result();

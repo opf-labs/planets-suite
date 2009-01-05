@@ -77,6 +77,7 @@ public class JAXRConcept {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link JAXRConcept }
+     * @return the array list of JAXR concepts
      * 
      * 
      */
