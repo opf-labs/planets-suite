@@ -23,11 +23,14 @@ import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 import org.jboss.annotation.security.SecurityDomain;
 
-import eu.planets_project.ifr.core.security.api.services.RoleManager;
-import eu.planets_project.ifr.core.security.api.services.RoleManager.RoleNotFoundException;
 import eu.planets_project.ifr.core.security.api.model.Role;
-import eu.planets_project.ifr.core.security.api.services.UserManager;
+import eu.planets_project.ifr.core.security.api.services.RoleManager;
 
+/**
+ * Class to manage Planets IF security Roles
+ * @author CFWilson
+ *
+ */
 @Stateless(mappedName="security/LocalRoleManager")
 @Local(RoleManager.class)
 @Remote(RoleManager.class)

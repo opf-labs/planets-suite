@@ -4,6 +4,10 @@ import java.util.List;
 
 import eu.planets_project.ifr.core.security.api.model.Role;
 
+/**
+ * @author CFWilson
+ *
+ */
 public interface RoleManager {
 	/**
 	 * 

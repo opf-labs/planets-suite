@@ -16,7 +16,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -47,7 +46,7 @@ import org.jboss.security.Util;
  * Attempting to build up the persistance logic in a abstract interface is not supported by the persistance API.
  * </p>
  * 
- * @see eu.planets_project.ifr.core.security.api.services.UserManager
+ * @see eu.planets_project.ifr.core.security.api.model.User
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
@@ -78,7 +77,7 @@ public class UserImpl implements User, Serializable {
     private boolean credentialsExpired;
     private boolean appliesAsProvider = false;
     /**
-     * Default no arg constructor
+     * no arg default
      */
     public UserImpl() {
     }
@@ -92,7 +91,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return the id of the user, its unique key
+     * @see eu.planets_project.ifr.core.security.api.model.User#getId()
      */
     @Id
     @GeneratedValue
@@ -102,7 +101,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return the java.lang.Integer version of the user
+     * @see eu.planets_project.ifr.core.security.api.model.User#getVersion()
      */
     @Version
     public Integer getVersion() {
@@ -110,7 +109,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return the username as a java.lang.String
+     * @see eu.planets_project.ifr.core.security.api.model.User#getUsername()
      */
     @Column(name = "username", length = 50, nullable = false, unique = true)
     public String getUsername() {
@@ -118,7 +117,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return the password as java.lang.String
+     * @see eu.planets_project.ifr.core.security.api.model.User#getPassword()
      */
     @Column(name = "password", nullable = false)
     public String getPassword() {
@@ -126,7 +125,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getFirstName()
      */
     @Column(name = "first_name", length = 50, nullable = false)
     public String getFirstName() {
@@ -134,7 +133,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getLastName()
      */
     @Column(name = "last_name", length = 50, nullable = false)
     public String getLastName() {
@@ -142,7 +141,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getAddress()
      */
     @Embedded
     @Target(AddressImpl.class)
@@ -151,7 +150,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getEmail()
      */
     @Column(name = "email", nullable = false, unique = true)
     public String getEmail() {
@@ -159,7 +158,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getPhoneNumber()
      */
     @Column(name = "phone_number", nullable = true)
     public String getPhoneNumber() {
@@ -167,7 +166,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getWebsite()
      */
     @Column(name = "website", nullable = true)
     public String getWebsite() {
@@ -175,15 +174,14 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getPasswordHint()
      */
-    @Column(name = "password_hint", nullable = true)
     public String getPasswordHint() {
         return passwordHint;
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getRoles()
      */
     @ManyToMany(
     		targetEntity=eu.planets_project.ifr.core.security.impl.model.RoleImpl.class,
@@ -198,7 +196,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getAccountEnabled()
      */
     @Column(name = "account_enabled", nullable = false)
     @Type(type="yes_no")
@@ -207,7 +205,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getAccountExpired()
      */
     @Column(name = "account_expired", nullable = false)
     @Type(type="yes_no")
@@ -216,7 +214,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getAccountLocked()
      */
     @Column(name = "account_locked", nullable = false)
     @Type(type="yes_no")
@@ -225,7 +223,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getCredentialsExpired()
      */
     @Column(name = "credentials_expired", nullable = false)
     @Type(type="yes_no")
@@ -234,7 +232,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#getFullName()
      */
     @Transient
     public String getFullName() {
@@ -242,14 +240,14 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#confirmPassword()
      */
     public String confirmPassword() {
         return confirmPassword;
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#rolesAsStrings()
      */
     public String[] rolesAsStrings() {
         String[] userRoles = new String[getRoles().size()];
@@ -274,7 +272,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#firstRole()
      */
     public String firstRole() {
         if (!getRoles().isEmpty()) {
@@ -285,55 +283,55 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * @param firstrole
+     * @see eu.planets_project.ifr.core.security.api.model.User#firstRole(java.lang.String)
      */
     public void firstRole(String firstrole) {
     }
 
     /**
-     * @param role
+     * @see eu.planets_project.ifr.core.security.api.model.User#addRole(eu.planets_project.ifr.core.security.api.model.Role)
      */
     public void addRole(Role role) {
         roles.add(role);
     }
 
     /**
-     * @param role
+     * @see eu.planets_project.ifr.core.security.api.model.User#removeRole(eu.planets_project.ifr.core.security.api.model.Role)
      */
     public void removeRole(Role role) {
         roles.remove(role);
     }
 
     /**
-     * @return
+     * @see eu.planets_project.ifr.core.security.api.model.User#appliedAsProvider()
      */
     public boolean appliedAsProvider() {
         return appliesAsProvider;
     }
 
     /**
-     * @param appliesAsProvider
+     * @see eu.planets_project.ifr.core.security.api.model.User#applyingAsProvider(boolean)
      */
     public void applyingAsProvider(boolean appliesAsProvider) {
         this.appliesAsProvider = appliesAsProvider;
     }
 
     /**
-     * @param id
+     * @see eu.planets_project.ifr.core.security.api.model.User#setId(java.lang.Long)
      */
     public void setId(Long id) {
         this.id = id;
     }
 
     /**
-     * @param username
+     * @see eu.planets_project.ifr.core.security.api.model.User#setUsername(java.lang.String)
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * @param password
+     * @see eu.planets_project.ifr.core.security.api.model.User#setPassword(java.lang.String)
      */
     public void setPassword(String password) {
         this.password = password;
@@ -361,104 +359,104 @@ public class UserImpl implements User, Serializable {
 		this.password = Util.encodeBase16(hash);
     }
     /**
-     * @param confirmPassword
+     * @see eu.planets_project.ifr.core.security.api.model.User#setConfirmPassword(java.lang.String)
      */
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
 
     /**
-     * @param firstName
+     * @see eu.planets_project.ifr.core.security.api.model.User#setFirstName(java.lang.String)
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
     /**
-     * @param lastName
+     * @see eu.planets_project.ifr.core.security.api.model.User#setLastName(java.lang.String)
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
     /**
-     * @param address
+     * @see eu.planets_project.ifr.core.security.api.model.User#setAddress(eu.planets_project.ifr.core.security.api.model.Address)
      */
     public void setAddress(Address address) {
     	this.address = new AddressImpl(address);
     }
 
     /**
-     * @param email
+     * @see eu.planets_project.ifr.core.security.api.model.User#setEmail(java.lang.String)
      */
     public void setEmail(String email) {
         this.email = email;
     }
 
     /**
-     * @param phoneNumber
+     * @see eu.planets_project.ifr.core.security.api.model.User#setPhoneNumber(java.lang.String)
      */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
     /**
-     * @param website
+     * @see eu.planets_project.ifr.core.security.api.model.User#setWebsite(java.lang.String)
      */
     public void setWebsite(String website) {
         this.website = website;
     }
 
     /**
-     * @param passwordHint
+     * @see eu.planets_project.ifr.core.security.api.model.User#setPasswordHint(java.lang.String)
      */
     public void setPasswordHint(String passwordHint) {
         this.passwordHint = passwordHint;
     }
 
     /**
-     * @param roles
+     * {@link eu.planets_project.ifr.core.security.api.model.User#setRoles(Set)}
      */
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
     /**
-     * @param version
+     * @see eu.planets_project.ifr.core.security.api.model.User#setVersion(Integer)
      */
     public void setVersion(Integer version) {
         this.version = version;
     }
 
     /**
-     * @param enabled
+     * @see eu.planets_project.ifr.core.security.api.model.User#setAccountEnabled(boolean)
      */
     public void setAccountEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
     /**
-     * @param accountExpired
+     * @see eu.planets_project.ifr.core.security.api.model.User#setAccountExpired(boolean)
      */
     public void setAccountExpired(boolean accountExpired) {
         this.accountExpired = accountExpired;
     }
 
     /**
-     * @param accountLocked
+     * @see eu.planets_project.ifr.core.security.api.model.User#setAccountLocked(boolean)
      */
     public void setAccountLocked(boolean accountLocked) {
         this.accountLocked = accountLocked;
     }
 
     /**
-     * @param credentialsExpired
+     * @see eu.planets_project.ifr.core.security.api.model.User#setCredentialsExpired(boolean)
      */
     public void setCredentialsExpired(boolean credentialsExpired) {
         this.credentialsExpired = credentialsExpired;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
@@ -476,14 +474,14 @@ public class UserImpl implements User, Serializable {
         return true;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
         return (username != null ? username.hashCode() : 0);
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {

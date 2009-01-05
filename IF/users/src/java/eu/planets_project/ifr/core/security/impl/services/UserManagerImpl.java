@@ -73,22 +73,19 @@ public class UserManagerImpl implements UserManager {
 	 */
 	@Resource SessionContext ctx;
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.tb.api.UserManagerInterface#getUser(java.lang.Long)
 	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#getUser(java.lang.Long)
+	/**
+	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#getUser(java.lang.Long)
 	 */
 	@RolesAllowed( { "user" })
 	public User getUser(Long userId) {
 		return manager.find(UserImpl.class, userId);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#isUsernameAvailable(java.lang.String)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#isUsernameAvailable(java.lang.String)
 	 */
 	@PermitAll
 	public boolean isUsernameAvailable(String username) {
@@ -112,11 +109,8 @@ public class UserManagerImpl implements UserManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.UserManagerInterface#getUsers(eu.planets_project.ifr.core.admin.api.model.User)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#getUsers()
+	/**
+	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#getUsers()
 	 */
 	@RolesAllowed( { "user" })
 	@SuppressWarnings("unchecked")
@@ -125,11 +119,8 @@ public class UserManagerImpl implements UserManager {
 		return (List<User>) query.getResultList();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#getUsernames()
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#getUsernames()
 	 */
 	@RolesAllowed( { "user" })
 	public List<String> getUsernames() {
@@ -140,11 +131,8 @@ public class UserManagerImpl implements UserManager {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.UserManagerInterface#loadUserByUsername(java.lang.String)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#getUserByUsername(java.lang.String)
+	/**
+	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#getUserByUsername(java.lang.String)
 	 */
 	@RolesAllowed( { "user" })
 	public User getUserByUsername(String username) throws UserNotFoundException {
@@ -169,7 +157,7 @@ public class UserManagerImpl implements UserManager {
 			if (groups.hasNext()) {
 				log.info("getting role groups");
 				Group roles = (Group)groups.next();
-				Enumeration roleEnum = roles.members();
+				Enumeration<?> roleEnum = roles.members();
 				while (roleEnum.hasMoreElements()) {
 					log.info("Role:  " + roleEnum.nextElement());
 				}
@@ -202,11 +190,8 @@ public class UserManagerImpl implements UserManager {
 		return user;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#addUser(eu.planets_project.ifr.core.security.api.model.User)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#addUser(eu.planets_project.ifr.core.security.impl.model.UserImpl)
 	 */
 	@RolesAllowed( { "admin" })
 	public void addUser(User user) throws UserNotValidException {
@@ -221,22 +206,16 @@ public class UserManagerImpl implements UserManager {
 		manager.persist(user);
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.UserManagerInterface#removeUser(java.lang.Long)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#removeUser(java.lang.Long)
+	/**
+	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#removeUser(java.lang.Long)
 	 */
 	@RolesAllowed( { "admin" })
 	public void removeUser(Long userId) {
 		manager.remove(this.getUser(userId));
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.UserManagerInterface#saveUser(eu.planets_project.ifr.core.admin.api.model.User)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#saveUser(eu.planets_project.ifr.core.security.impl.model.UserImpl)
+	/**
+	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#saveUser(eu.planets_project.ifr.core.security.api.model.User)
 	 */
 	@RolesAllowed( { "user" })
 	public void saveUser(User user) {
@@ -251,11 +230,8 @@ public class UserManagerImpl implements UserManager {
 		}
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#sendUserMessage(java.lang.String, java.lang.String, java.lang.String)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#sendUserMessage(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@RolesAllowed( { "user" })
 	public void sendUserMessage(String username, String subject, String body) {
@@ -277,11 +253,8 @@ public class UserManagerImpl implements UserManager {
 		mailer.send();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#assignRoleToUser(eu.planets_project.ifr.core.security.api.model.User, java.lang.String)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#assignRoleToUser(eu.planets_project.ifr.core.security.impl.model.UserImpl, java.lang.String)
 	 */
 	@RolesAllowed( { "admin", "testbed.admin" })
 	public void assignRoleToUser(User user, String role) {
@@ -289,11 +262,8 @@ public class UserManagerImpl implements UserManager {
 		saveUser(user);
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#listRoles()
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#listRoles()
 	 */
 	@PermitAll
 	@SuppressWarnings("unchecked")
@@ -308,14 +278,10 @@ public class UserManagerImpl implements UserManager {
 		return rolestr;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#listUsersInRole(java.lang.String)
 	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#listUsersInRole(java.lang.String)
-	 */
 	@RolesAllowed( { "user" })
-	@SuppressWarnings("unchecked")
 	public List<User> listUsersInRole(String role) {
 		// TODO This should list the users by role at the DB level, not filter the all-user list.
 		/*
@@ -333,11 +299,8 @@ public class UserManagerImpl implements UserManager {
 		return roleUsers;
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#revokeRoleFromUser(eu.planets_project.ifr.core.security.api.model.User, java.lang.String)
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.ifr.core.security.impl.services.UserManagerApi#revokeRoleFromUser(eu.planets_project.ifr.core.security.impl.model.UserImpl, java.lang.String)
 	 */
 	@RolesAllowed( { "admin", "testbed.admin" })
 	public void revokeRoleFromUser(User user, String role) {

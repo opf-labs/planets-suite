@@ -207,7 +207,7 @@ public class UserBackingBean {
 	}
 
 	/**
-	 * @return
+	 * @return true if user name editing is disabled
 	 */
 	public boolean getDisableEditName() {
 		return !(this._context == UserBackingBean.Context.NEWUSER);
@@ -254,7 +254,7 @@ public class UserBackingBean {
 
 	/**
 	 * 
-	 * @return
+	 * @return the jsf outcome
 	 * @throws UserNotValidException
 	 * @throws UserNotFoundException
 	 * @throws NoSuchAlgorithmException
@@ -325,11 +325,17 @@ public class UserBackingBean {
 		this.userRoles = this.user.rolesAsStrings();
 	}
 	
+	/**
+	 * @return true if list to be refreshed
+	 */
 	public boolean getRefreshUserList() {
 		this._context = UserBackingBean.Context.LIST;
 		this.loadAllUsers();
 		return true;
 	}
+	/**
+	 * @param refresh
+	 */
 	public void setRefreshUserList(boolean refresh) {
 	}
 
@@ -339,7 +345,7 @@ public class UserBackingBean {
 
 	/**
 	 * 
-	 * @return
+	 * @return the jsf outcome
 	 */
 	public String prepareNewUser() {
 		this._context = UserBackingBean.Context.NEWUSER;
@@ -353,7 +359,7 @@ public class UserBackingBean {
 
 	/**
 	 * 
-	 * @return
+	 * @return the jsf outcome
 	 * @throws UserNotFoundException
 	 */
 	public String editUserByName() throws UserNotFoundException {
@@ -511,7 +517,7 @@ public class UserBackingBean {
 
 	/**
 	 * 
-	 * @return
+	 * @return jsf outcome
 	 */
 	public String deleteUser() {
 		// first check that the user is not trying to delete their own account
