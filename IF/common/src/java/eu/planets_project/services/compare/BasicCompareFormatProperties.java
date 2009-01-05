@@ -1,8 +1,3 @@
-/**
- *  @author : Thomas Krämer thomas.kraemer@uni-koeln.de
- *  created : 21.07.2008
- *  
- */
 package eu.planets_project.services.compare;
 
 import javax.jws.WebMethod;
@@ -18,7 +13,7 @@ import eu.planets_project.services.PlanetsServices;
 /**
  *  Comparison of file format properties.
  *  Implementing services provide a list of commmon file format properties given two identifiers of file formats
- *  @author: Thomas Kraemer thomas.kraemer@uni-koeln.de
+ *  @author Thomas Kraemer thomas.kraemer@uni-koeln.de
  *  created: 21.07.2008
  */
 
@@ -26,7 +21,9 @@ import eu.planets_project.services.PlanetsServices;
 		targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface BasicCompareFormatProperties {
+	/** The interface name */
 	public static final String NAME = "BasicCompareFormatProperties";
+	/** The qualified name */
 	public static final QName QNAME = new QName(PlanetsServices.NS,
 			BasicCompareFormatProperties.NAME);
 
@@ -34,6 +31,7 @@ public interface BasicCompareFormatProperties {
 	 * @param twoFormatIds
 	 *            A String with two file format ids such as "fmt_10:fmt_13:"
 	 * @return Returns the common set of properties as a string
+	 * @throws PlanetsException 
 	 */
 	@WebMethod(operationName = BasicCompareFormatProperties.NAME, action = PlanetsServices.NS
 			+ "/" + BasicCompareFormatProperties.NAME)
