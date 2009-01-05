@@ -56,6 +56,7 @@ public class StringArray {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link String }
+     * @return  the item list
      * 
      * 
      */
