@@ -7,9 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
 
 import org.junit.Before;
 import org.junit.Test;
