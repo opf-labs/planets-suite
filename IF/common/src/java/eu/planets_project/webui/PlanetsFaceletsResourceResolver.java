@@ -32,22 +32,22 @@ public class PlanetsFaceletsResourceResolver extends DefaultResourceResolver {
 
     /**
      * 
-     * @return
+     * @return path prefix for shared web ui bits
      */
     public String getViewIdPrefix() {
         return "/planets-webui-shared/";
     }
     
     /**
-     * Where on the classpath to find the results.
-     * @return
+     * @return Where on the classpath to find the results.
      */
     public String getClassPrefix() {
         return "/eu/planets_project/webui/";
     }
 
     /**
-     * 
+     * @param path 
+     * @return the resolved URL for passed path
      */
     public URL resolveUrl(String path) {
         log.debug("resolving: " + path);
