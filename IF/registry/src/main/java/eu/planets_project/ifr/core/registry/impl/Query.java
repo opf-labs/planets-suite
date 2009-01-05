@@ -14,7 +14,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * Query by example functionality for service description instances.
- * @see CoreRegistryTests
+ * @see eu.planets_project.ifr.core.registry.api.CoreRegistryTests
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class Query {

@@ -85,7 +85,7 @@ public final class CoreRegistry implements Registry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.Registry#delete(java.lang.String)
+     * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
      */
     public Response delete(final ServiceDescription description) {
         List<ServiceDescription> list = query(description);

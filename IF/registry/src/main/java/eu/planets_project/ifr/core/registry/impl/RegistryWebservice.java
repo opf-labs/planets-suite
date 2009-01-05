@@ -30,7 +30,8 @@ public final class RegistryWebservice implements Registry {
     private Registry registry = PersistentRegistry.getInstance(CoreRegistry
             .getInstance());
     /***/
-    private static Log log = LogFactory.getLog(RegistryWebservice.class
+    @SuppressWarnings("unused")
+	private static Log log = LogFactory.getLog(RegistryWebservice.class
             .getName());
     /***/
     static final String NAME = "RegistryWebservice";
