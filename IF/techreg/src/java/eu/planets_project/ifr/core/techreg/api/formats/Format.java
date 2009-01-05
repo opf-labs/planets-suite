@@ -36,7 +36,9 @@ import java.util.Set;
  */
 public class Format implements Serializable {
 
-    private URI typeURI;
+	private static final long serialVersionUID = -4713590391811379383L;
+
+	private URI typeURI;
     
     private Set<URI> aliases = new HashSet<URI>();
     
@@ -183,15 +185,18 @@ public class Format implements Serializable {
     /* ========================================================================================== */
     /* ========================================================================================== */
     
+    /** The prefix for MIME format URIs */
     public static final String MIME_URI_PREFIX="planets:fmt/mime/";
+    /** The prefix for extension format URIs */
     public static final String EXT_URI_PREFIX="planets:fmt/ext/";
+    /** The prefix for PRONOM format URIs */
     public static final String PRONOM_URI_PREFIX="info:pronom";
 
     /**
      * Static helper to construct appropriate URIs for file-extensions format specifiers.
      * 
      * @param ext
-     * @return
+     * @return the extension as a format URI
      */
     public static URI extensionToURI(String ext) {
         try {
@@ -204,8 +209,8 @@ public class Format implements Serializable {
     /**
      * Static helper to construct appropriate URIs for mime-type format specifiers.
      * 
-     * @param ext
-     * @return
+     * @param mime
+     * @return the MIME type as a format URI
      */
     public static URI mimeToURI(String mime) {
         try {
@@ -218,7 +223,7 @@ public class Format implements Serializable {
     /**
      * 
      * @param typeURI
-     * @return
+     * @return true if a MIME URI
      */
     public static boolean isThisAMimeURI( URI typeURI ) {
         return typeURI.toString().startsWith(MIME_URI_PREFIX); 
@@ -227,7 +232,7 @@ public class Format implements Serializable {
     /**
      * 
      * @param typeURI
-     * @return
+     * @return true if an extension URI
      */
     public static boolean isThisAnExtensionURI( URI typeURI ) {
         return typeURI.toString().startsWith(EXT_URI_PREFIX); 
@@ -236,7 +241,7 @@ public class Format implements Serializable {
     /**
      * 
      * @param typeURI
-     * @return
+     * @return true if a PRONOM URI
      */
     public static boolean isThisAPronomURI( URI typeURI ) {
         return typeURI.toString().startsWith(PRONOM_URI_PREFIX); 
