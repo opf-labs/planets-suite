@@ -4,13 +4,11 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
-import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.identify.IdentifyOneBinary;
 
 /**
  * This is a basic migration service, with no parameters or metadata. It is not
@@ -23,7 +21,9 @@ import eu.planets_project.services.identify.IdentifyOneBinary;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface BasicCharacteriseOneBinaryXCELtoBinary {
 
+    /** The interface name */
     public static final String NAME = "BasicCharacteriseOneBinaryXCELtoBinary";
+    /** The qualified name */
     public static final QName QNAME = new QName(PlanetsServices.NS,
             BasicCharacteriseOneBinaryXCELtoBinary.NAME);
 
@@ -31,7 +31,6 @@ public interface BasicCharacteriseOneBinaryXCELtoBinary {
      * @param binary
      * @param xcel a String holding the Contents of a XCEL file
      * @return an byte[] containing the created XCDL file
-     * @throws PlanetsException
      */
     @WebMethod(operationName = BasicCharacteriseOneBinaryXCELtoBinary.NAME, action = PlanetsServices.NS
             + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME)

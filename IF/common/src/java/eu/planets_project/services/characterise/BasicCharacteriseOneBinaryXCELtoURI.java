@@ -36,13 +36,15 @@ import eu.planets_project.services.PlanetsServices;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface BasicCharacteriseOneBinaryXCELtoURI {
 	
+    /** The interface name */
     public static final String NAME = "BasicCharacteriseOneBinaryXCELtoURI";
+    /** The qualified name */
     public static final QName QNAME = new QName(PlanetsServices.NS, BasicCharacteriseOneBinaryXCELtoURI.NAME );
 
     /**
      * 
-     * @param binary
-     * @param xcel a String holding the Contents of a XCEL file
+     * @param inputImageURI 
+     * @param inputXcelURI 
      * @return an URI indicating the location of the XCDL-file in the DataRegistry
      * @throws PlanetsException 
      */

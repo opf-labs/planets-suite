@@ -42,13 +42,15 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 
 public interface Characterise extends PlanetsService{
 	
-	    /***/
+	    /** The service name*/
 	    String NAME = "Characterise";
-	    /***/
+	    /** The qualified name*/
 	    QName QNAME = new QName(PlanetsServices.NS, Characterise.NAME);
 
 	    /**
 	     * @param digitalObject The digital object to characterise
+	     * @param optionalFormatXCEL the extraction file if you've got one
+	     * @param parameters for fine grained tool control
 	     * @return A new digital object, the result of characterising the given digital
 	     *         object
 	     */

@@ -35,8 +35,10 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 public interface DetermineProperties extends PlanetsService {
 
     
+    /** The service name */
     public static final String NAME = "DetermineProperties";
     
+    /** The qualified name */
     public static final QName QNAME = new QName(PlanetsServices.NS,
             DetermineProperties.NAME);
 
@@ -62,7 +64,8 @@ public interface DetermineProperties extends PlanetsService {
      * 
      * @param digitalObject
      * @param properties
-     * @return
+     * @param parameters 
+     * @return the DeterminePropertiesResult
      */
     @WebMethod(operationName = DetermineProperties.NAME, action = PlanetsServices.NS
             + "/" + DetermineProperties.NAME)
@@ -81,7 +84,7 @@ public interface DetermineProperties extends PlanetsService {
                 Parameters parameters );
 
     /**
-     * @return
+     * @return the service description
      */
     @WebMethod(operationName = DetermineProperties.NAME + "_describe", action = PlanetsServices.NS
             + "/" + DetermineProperties.NAME + "/describe")
