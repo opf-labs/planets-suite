@@ -17,7 +17,6 @@ import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.GeneralImageConverter;
 import eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.utils.MigrationResults;
-import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 import eu.planets_project.services.utils.PlanetsLogger;
@@ -56,12 +55,7 @@ public class JpgToTiffConverter implements Serializable, BasicMigrateOneBinary {
      * instance, who carries out the migration. The results of this migration
      * are returned as a MigrationResults instance, containing the migrated
      * image as byte[], a message and a flag indicating success (or not).
-     */
-    /*
-     * (non-Javadoc)
-     * @see
-     * eu.planets_project.ifr.core.common.api.PlanetsBasicService#basicMigrateBinary
-     * (byte[])
+     * @see eu.planets_project.services.migrate.BasicMigrateOneBinary#basicMigrateOneBinary(byte[])
      */
     @WebMethod(operationName = BasicMigrateOneBinary.NAME, action = PlanetsServices.NS
             + "/" + BasicMigrateOneBinary.NAME)

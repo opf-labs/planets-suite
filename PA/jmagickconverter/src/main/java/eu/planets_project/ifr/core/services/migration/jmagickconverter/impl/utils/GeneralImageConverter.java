@@ -21,6 +21,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
  *  Created : 27.05.2008
  */
 public class GeneralImageConverter {
+    /** Array of compression type strings */
     public static String[] compressionTypes = new String[11];
 
     // Default-Constructor

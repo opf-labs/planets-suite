@@ -39,6 +39,10 @@ import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
 
 
+/**
+ * @author Peter Melms
+ *
+ */
 @Stateless()
 @Local(Migrate.class)
 @Remote(Migrate.class)
@@ -51,8 +55,12 @@ import eu.planets_project.services.utils.ServiceUtils;
         endpointInterface = "eu.planets_project.services.migrate.Migrate")
 public class ImageMagickMigrations implements Migrate {
 	
+	/**
+	 * the service name
+	 */
 	public static final String NAME = "ImageMagickMigrations";
 	
+	/** Array of compression type strings */
 	public static String[] compressionTypes = new String[11];
 	private PlanetsLogger plogger = PlanetsLogger.getLogger(this.getClass());
 	private static final String COMPRESSION_TYPE = "compressionType";
@@ -65,6 +73,9 @@ public class ImageMagickMigrations implements Migrate {
 	private static final String OUTPUT_FILE_NAME = "imageMagickOutput";
 	private static final String IMAGE_MAGICK_URI = "http://www.imagemagick.org";
 	
+	/**
+	 * default no arg constructor
+	 */
 	public ImageMagickMigrations() {
 		System.setProperty("jmagick.systemclassloader","no"); // Use the JBoss-Classloader, instead of the Systemclassloader.
 
@@ -81,6 +92,9 @@ public class ImageMagickMigrations implements Migrate {
 		compressionTypes[10] = "Zip Compression";
 	}
 
+	/**
+	 * @see eu.planets_project.services.migrate.Migrate#describe()
+	 */
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,Migrate.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
@@ -162,6 +176,9 @@ public class ImageMagickMigrations implements Migrate {
 		return paths.toArray(new MigrationPath[]{});
 	}
 
+	/**
+	 * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)
+	 */
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, Parameters parameters) {
 		
