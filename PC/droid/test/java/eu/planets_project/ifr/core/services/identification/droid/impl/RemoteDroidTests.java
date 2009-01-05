@@ -1,17 +1,8 @@
 package eu.planets_project.ifr.core.services.identification.droid.impl;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.ws.Service;
-
 import org.junit.BeforeClass;
 
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**

@@ -31,16 +31,25 @@ public class DroidTests {
         droid = new Droid();
     }
 
+    /**
+     * test rich text format id
+     */
     @Test
     public void testRTF() {
         test(TestFile.RTF);
     }
 
+    /**
+     * test xml id
+     */
     @Test
     public void testXML() {
         test(TestFile.XML);
     }
 
+    /**
+     * test zip id
+     */
     @Test
     public void testZIP() {
         test(TestFile.ZIP);
@@ -109,15 +118,15 @@ public class DroidTests {
     }
 
     /**
-     * @param identify The IdentifyOneBinary instance to test
+     * @param identify The Identify instance to test
      * @param location The location of the file to test with the instance
      * @return Returns the resulting URI as ASCII strings
      * @throws MalformedURLException
      */
-    private static String[] test(final Identify identify, final String location)
+	private static String[] test(final Identify identify, final String location)
             throws MalformedURLException {
         IdentifyResult result = identify.identify(new DigitalObject.Builder(
-                Content.byReference(new File(location).toURL())).build());
+                Content.byReference(new File(location).toURI().toURL())).build());
         String[] strings = new String[result.getTypes().size()];
         for (int i = 0; i < result.getTypes().size(); i++) {
             String string = result.getTypes().get(i).toASCIIString();
