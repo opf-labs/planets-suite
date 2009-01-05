@@ -63,62 +63,62 @@ public interface User {
     public String getEmail();
 
     /**
-     * @return
+     * @return the phone number
      */
     public String getPhoneNumber();
 
     /**
-     * @return
+     * @return the website address
      */
     public String getWebsite();
 
     /**
-     * @return
+     * @return the password hint
      */
     public String getPasswordHint();
 
     /**
-     * @return
+     * @return the set of roles associated with the user
      */
     public Set<Role> getRoles();
 
     /**
-     * @return
+     * @return true if user account is enabled
      */
     public boolean getAccountEnabled();
 
     /**
-     * @return
+     * @return true if user account has expired
      */
     public boolean getAccountExpired();
 
     /**
-     * @return
+     * @return true is user account locked
      */
     public boolean getAccountLocked();
 
     /**
-     * @return
+     * @return true if user credentials expired
      */
     public boolean getCredentialsExpired();
 
     /**
-     * @return
+     * @return the users full name
      */
     public String getFullName();
 
     /**
-     * @return
+     * @return the confirmation password
      */
     public String confirmPassword();
 
     /**
-     * @return
+     * @return the users associated role names
      */
     public String[] rolesAsStrings();
 
     /**
-     * @return
+     * @return the name of the first role in the list
      */
     public String firstRole();
 
@@ -138,7 +138,7 @@ public interface User {
     public void removeRole(Role role);
 
     /**
-     * @return
+     * @return true if the user a provider
      */
     public boolean appliedAsProvider();
 
