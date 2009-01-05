@@ -17,6 +17,9 @@ import eu.planets_project.ifr.core.sample.impl.SimpleIdentifyServiceTest;
 @Suite.SuiteClasses( { PassThruMigrationServiceTest.class,
         SimpleIdentifyServiceTest.class, AlwaysSaysValidServiceTest.class })
 public class AllSimpleSuite {
+    /**
+     * set the props for testing
+     */
     @BeforeClass
     public static void setupProperties() {
         /* Probably a temp solution; the simple component is not deployed... */

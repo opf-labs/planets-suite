@@ -11,8 +11,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,6 +42,9 @@ public class AlwaysSaysValidServiceTest {
                 AlwaysSaysValidService.class, wsdlLoc);
     }
 
+    /**
+     * test the describe method
+     */
     @Test
     public void testDescribe() {
         ServiceDescription desc = ids.describe();
@@ -52,6 +53,11 @@ public class AlwaysSaysValidServiceTest {
                 + desc.toXmlFormatted());
     }
 
+    /**
+     * test the validate method
+     * @throws MalformedURLException
+     * @throws URISyntaxException
+     */
     @Test
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name

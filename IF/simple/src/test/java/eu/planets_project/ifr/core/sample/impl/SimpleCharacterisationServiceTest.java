@@ -33,12 +33,19 @@ public class SimpleCharacterisationServiceTest {
     /* A holder for the object to be tested */
     DetermineProperties ids = null;
 
+    /**
+     * Create the service instance to test before running test 
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         ids = ServiceCreator.createTestService(DetermineProperties.QNAME, SimpleCharacterisationService.class, wsdlLoc );
 
     }
 
+    /**
+     * Test the services describe() method
+     */
     @Test
     public void testDescribe() {
         ServiceDescription desc = ids.describe();
@@ -47,9 +54,7 @@ public class SimpleCharacterisationServiceTest {
     }
 
     /**
-     * 
-     * @param purl
-     * @param type
+     * test the sizing of a binary
      */
     @Test
     public void testSizeABinary() {
@@ -68,9 +73,7 @@ public class SimpleCharacterisationServiceTest {
     }
     
     /**
-     * 
-     * @param purl
-     * @param type
+     * test sizing from a URL reference
      * @throws MalformedURLException 
      */
     @Test
@@ -80,7 +83,7 @@ public class SimpleCharacterisationServiceTest {
         File file = ByteArrayHelper.write(binary);
         
         /* Create the content: */
-        Content c1 = Content.byReference(file.toURL());
+        Content c1 = Content.byReference(file.toURI().toURL());
         
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).build();
