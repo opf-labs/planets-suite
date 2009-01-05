@@ -39,11 +39,11 @@ public final class ExtractorUnitHelper {
     
     /***/
     // TODO: Add if clause before replacing File.separators
-    static final String SAMPLE_FILE = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator) + "res/testpng/bgai4a16.png".replace("/", File.separator);
+    static final String SAMPLE_FILE = "PC/extractor/src/test/resources/sample_files/bgai4a16.png";
 
     /***/
     // TODO: Add if clause before replacing File.separators
-    static final String SAMPLE_XCEL = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator) + "res/xcl/xcel/xcel_docs/xcel_png.xml".replace("/", File.separator);
+    static final String SAMPLE_XCEL = "PC/extractor/src/test/resources/sample_files/xcel_png.xml";
 
     /**
      * We enforce non-instantiability with a private constructor.
