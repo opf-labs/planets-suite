@@ -60,7 +60,7 @@ class ServiceRegistryTestsHelper {
         System.out.println("[OK] " + name + ": " + string);
     }
 
-    public static boolean guard() {
+    private static boolean guard() {
         String property = System.getProperty("pserv.test.context");
         boolean testOnServer = property != null && property.equals("server");
         if (!testOnServer) {

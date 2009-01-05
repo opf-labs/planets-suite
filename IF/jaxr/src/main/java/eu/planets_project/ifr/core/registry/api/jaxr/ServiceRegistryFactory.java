@@ -6,10 +6,6 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
-import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
-
 /**
  * Factory class for central retrieval of registry instances.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
@@ -41,10 +37,10 @@ public final class ServiceRegistryFactory {
      * private (aka default visibility).
      * @return A service registry instance
      */
-    static Registry getServiceDescriptionRegistryInstance() {
-        return PersistentRegistry
-                .getInstance(CoreRegistry.getInstance());
-    }
+//    static Registry getServiceDescriptionRegistryInstance() {
+//        return PersistentRegistry
+//                .getInstance(CoreRegistry.getInstance());
+//    }
 
     /**
      * @param wsdl The WSDL location for the registry

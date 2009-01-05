@@ -58,6 +58,8 @@
 	<classpathentry kind="src" path="PP/comparator/src/java"/>
 	<classpathentry kind="src" path="PP/comparator/test/java"/>
 	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="src" path="IF/jaxr/src/test/java"/>
+	<classpathentry kind="src" path="IF/jaxr/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
@@ -177,15 +179,15 @@
 	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-saaj.jar"/>
 	<classpathentry kind="lib" path="PA/sanselan/lib/sanselan-0.94-incubator.jar" sourcepath="PA/sanselan/lib/apache-sanselan-incubating-0.94-src.zip"/>
 	<classpathentry kind="lib" path="lib/standalone/jsf-facelets.jar"/>
-	<classpathentry kind="lib" path="IF/registry/lib/axis.jar"/>
-	<classpathentry kind="lib" path="IF/registry/lib/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="IF/registry/lib/juddi-service.jar"/>
-	<classpathentry kind="lib" path="IF/registry/lib/juddi.jar"/>
-	<classpathentry kind="lib" path="IF/registry/lib/scout-1.0rc2.jar"/>
-	<classpathentry kind="lib" path="IF/registry/lib/xbean.jar"/>
 	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/el-api.jar"/>
 	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfdom.jar"/>
 	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/axis.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/juddi-service.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/juddi.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/scout-1.0rc2.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/xbean.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

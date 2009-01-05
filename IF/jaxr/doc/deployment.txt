@@ -1,0 +1,2 @@
+- The jaxr registry component is deployed using Ant
+- The jaxr registry (*.jaxr.* classes) requires JAXR, jUDDI and Scout

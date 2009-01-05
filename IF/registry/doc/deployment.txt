@@ -3,4 +3,4 @@
   are deployed with the registry
 - The service description registry implementation relies only on Java 6 
   (or Java 5 plus JAXB)
-- The original registry (*.jaxr.* classes) requires JAXR, jUDDI and Scout
+- The original registry (*.jaxr.* classes) can be found in IF/jaxr

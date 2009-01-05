@@ -13,7 +13,7 @@ public final class ServiceRegistryWebServiceTests extends ServiceRegistryTests {
     /** Create a registry and a mock object factory once for all tests. */
     @BeforeClass
     public static void setup() {
-        if(ServiceRegistryTestsHelper.guard()) return;
+//        if(ServiceRegistryTestsHelper.guard()) return;
         /*
          * We run the same tests as in the super test, but against the web
          * service version of the service registry:
@@ -21,7 +21,7 @@ public final class ServiceRegistryWebServiceTests extends ServiceRegistryTests {
         registry = ServiceCreator
                 .createTestService(ServiceRegistry.QNAME,
                         ServiceRegistryManager.class,
-                        "/pserv-if-registry-pserv-if-registry/ServiceRegistryManager?wsdl");
+                        "/pserv-if-jaxr-pserv-if-jaxr/ServiceRegistryManager?wsdl");
         mock = new ServiceRegistryObjectFactory(USERNAME, PASSWORD, registry);
     }
 }

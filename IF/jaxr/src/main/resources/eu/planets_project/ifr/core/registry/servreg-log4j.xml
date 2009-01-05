@@ -1,0 +1,65 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+  <appender name="PLANTES-FILE-TEST" class="org.jboss.logging.appender.DailyRollingFileAppender">
+    <errorHandler class="org.jboss.logging.util.OnlyOnceErrorHandler"/>
+      <param name="File" value="${jboss.server.log.dir}/planets-ifr-servreg-service.log"/>
+      <param name="Append" value="false"/>
+
+      <!-- Rollover at midnight each day -->
+      <param name="DatePattern" value="'.'yyyy-MM-dd"/>
+
+      <!-- Rollover at the top of each hour
+      <param name="DatePattern" value="'.'yyyy-MM-dd-HH"/>
+      -->
+
+      <layout class="org.apache.log4j.PatternLayout">
+         <!-- The default pattern: Date Priority [Category] Message\n -->
+         <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+
+         <!-- The full pattern: Date MS Priority [Category] (Thread:NDC) Message\n
+         <param name="ConversionPattern" value="%d %-5r %-5p [%c] (%t:%x) %m%n"/>
+          -->
+      </layout>
+   </appender>
+   <category name="eu.planets_project.ifr.core.registry">
+      <appender-ref ref="PLANTES-REGISTRY" />
+   </category>
+</log4j:configuration>
+
+<!--  <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <param name="Threshold" value="INFO"/>
+        <layout class="org.apache.log4j.PatternLayout">
+	    <param name="ConversionPattern" value="%d %-5p [%c] - %m%n"/>
+	</layout>
+    </appender>
+	
+    <appender name="ROLLING" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${jboss.server.log.dir}/planets-ifr-servreg-service.log"/>
+        <errorHandler
+			class="org.jboss.logging.util.OnlyOnceErrorHandler" />
+        <layout class="org.apache.log4j.PatternLayout">
+	    <param name="ConversionPattern" value="%d %-5p [%c] - %m%n"/>
+	</layout>
+    </appender>
+	
+    <category name="eu.planets_project.ifr.core.registry">
+        <priority value="INFO"/>
+	    <appender-ref ref="STDOUT"/>
+    </category>
+    
+   
+    <category name="eu.planets_project.ifr.core.registry">
+        <priority value="INFO"/>
+	    <appender-ref ref="ROLLING"/>
+    </category>	
+    
+</log4j:configuration>
+-->
