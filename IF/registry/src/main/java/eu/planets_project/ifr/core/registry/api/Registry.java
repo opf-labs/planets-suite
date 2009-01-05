@@ -22,7 +22,9 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public interface Registry {
 
+    /** The interface name */
     String NAME = "Registry";
+    /** The qualified name */
     QName QNAME = new QName(PlanetsServices.NS, Registry.NAME);
 
     /**
