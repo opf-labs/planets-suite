@@ -13,12 +13,10 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -51,7 +49,7 @@ public final class PngCheck implements Validate, Serializable {
     private static final PlanetsLogger LOG = PlanetsLogger
             .getLogger(PngCheck.class);
     /***/
-    private byte[] bytes;
+    //private byte[] bytes;
 
     /**
      * Validates that a file is a PNG using PngCheck.
