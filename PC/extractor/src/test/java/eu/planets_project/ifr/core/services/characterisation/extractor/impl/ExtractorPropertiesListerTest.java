@@ -15,12 +15,25 @@ import eu.planets_project.services.datatypes.FileFormatProperties;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.utils.FileUtils;
 
+/**
+ * @author Peter Melms
+ *
+ */
 public class ExtractorPropertiesListerTest {
 	
+	/**
+	 * list of pronom ids
+	 */
 	public static List<String> listOfPronomIDs = new ArrayList<String> ();
+	/**
+	 * file of format ids
+	 */
 	public static File formatIDs;
 	
 	
+	/**
+	 * setup the test
+	 */
 	@BeforeClass
 	public static void setup() {
 		File puidFile = new File(System.getenv("EXTRACTOR_HOME") + File.separator + "res" + File.separator + "PUIDList.txt");
@@ -58,10 +71,13 @@ public class ExtractorPropertiesListerTest {
 //		FileUtils.writeStringToFile(puidBuffer.toString(), formatIDs.getAbsolutePath());
 //	}
 	
+	/**
+	 * @throws URISyntaxException
+	 */
 	@Test
 	public void testGetFileFormatProperties() throws URISyntaxException {
 		int i = 1;
-		for (Iterator iterator = listOfPronomIDs.iterator(); iterator.hasNext();) {
+		for (Iterator<String> iterator = listOfPronomIDs.iterator(); iterator.hasNext();) {
 			String currentPuid = "info:pronom://" + (String) iterator.next();
 			FileFormatProperties propertiesList = ExtractorPropertiesLister.getFileFormatProperties(new URI(currentPuid));
 			i++;
@@ -69,7 +85,7 @@ public class ExtractorPropertiesListerTest {
 			System.out.println("******************START*****************");
 			System.out.println("Properties for PronomID: " + currentPuid);
 			System.out.println("****************************************");
-			for (Iterator iterator1 = propertiesList.getProperties().iterator(); iterator1.hasNext();) {
+			for (Iterator<FileFormatProperty> iterator1 = propertiesList.getProperties().iterator(); iterator1.hasNext();) {
 				FileFormatProperty testOutProp = (FileFormatProperty) iterator1.next();
 				System.out.println(testOutProp.toString());
 			}

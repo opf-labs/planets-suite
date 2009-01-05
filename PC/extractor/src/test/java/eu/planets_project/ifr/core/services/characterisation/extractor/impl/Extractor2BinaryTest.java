@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.test.ServiceCreator;

@@ -27,7 +27,6 @@ import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Test of the extractor (local and remote) using binaries. TODO: clean up both
@@ -46,6 +45,9 @@ public class ExtractorLocalTest {
     /***/
     static byte[] binary;
     
+    /**
+     * the service
+     */
     public static Characterise extractor;
     static String TEST_OUT  = null;
 
@@ -86,6 +88,9 @@ public class ExtractorLocalTest {
         extractor = new Extractor();
     }
     
+    /**
+     * test describe method
+     */
     @Test
     public void testDescribe() {
     	ServiceDescription sd = extractor.describe();
@@ -100,6 +105,9 @@ public class ExtractorLocalTest {
     
     
     
+    /**
+     * test the list props method
+     */
     @Test
     public void testListProperties() {
     	File testFile = new File(ExtractorUnitHelper.SAMPLE_FILE);
@@ -125,6 +133,10 @@ public class ExtractorLocalTest {
     	}
     }
     
+    /**
+     * test characterise method
+     * @throws MalformedURLException
+     */
     @Test
     public void testCharacterise() throws MalformedURLException {
     	File outputFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT);
@@ -132,8 +144,6 @@ public class ExtractorLocalTest {
     	String test2Out = "test2Out.xcdl";
     	String test3Out = "test3Out.xcdl";
     	String test4Out = "test4Out.xcdl";
-    	String test5Out = "test5Out.xcdl";
-    	
     	DigitalObject digitalObject = createDigitalObjectByValue(new URL("http://somePermamentURL"), binary);
     	
     	
@@ -227,7 +237,8 @@ public class ExtractorLocalTest {
     	return fileFormatURI;
     }
 
-    private DigitalObject createDigitalObjectByReference(URL permanentURL, URL reference) {
+    @SuppressWarnings("unused")
+	private DigitalObject createDigitalObjectByReference(URL permanentURL, URL reference) {
 		DigitalObject digObj =  new DigitalObject.Builder(Content.byReference(reference)).build();
 		return digObj;
 	}

@@ -1,7 +1,5 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
-import static org.junit.Assert.fail;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,9 +10,11 @@ import org.junit.BeforeClass;
 
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.utils.ByteArrayHelper;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
+/**
+ * Standalone tests for the extractor
+ */
 public class ExtractorStandaloneTest extends ExtractorLocalTest {
 	
 	/**

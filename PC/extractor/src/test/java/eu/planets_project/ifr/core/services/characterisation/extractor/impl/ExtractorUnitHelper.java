@@ -23,7 +23,7 @@ public final class ExtractorUnitHelper {
     /** System Temp folder */
     private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
     
-    private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+    //private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
     
     /***/
     static final String BASIC_EXTRACTOR2BINARY_TEST_OUT = SYSTEM_TEMP + File.separator + "BASIC_EXTRACTOR2BINARY_TEST_OUT";
