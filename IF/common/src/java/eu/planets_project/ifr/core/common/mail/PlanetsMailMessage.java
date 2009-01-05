@@ -26,10 +26,13 @@ public class PlanetsMailMessage {
     private InternetAddress sender = null;
     private String subject = new String();
     private String body = new String();
-    private List recipients = new ArrayList();
-    private List ccRecipients = new ArrayList();
-    private List bccRecipients = new ArrayList();
+    private List<InternetAddress> recipients = new ArrayList<InternetAddress>();
+    private List<InternetAddress> ccRecipients = new ArrayList<InternetAddress>();
+    private List<InternetAddress> bccRecipients = new ArrayList<InternetAddress>();
 
+    /**
+     * No arg constructor
+     */
     public PlanetsMailMessage() 
     {
         try {
@@ -42,48 +45,75 @@ public class PlanetsMailMessage {
         }
     }
 
+    /**
+     * @param sender
+     */
     public void setSender(String sender) 
     {
         this.sender = makeInternetAddress(sender);
     }
 
+    /**
+     * @param subject
+     */
     public void setSubject(String subject) {
         this.subject = subject;
     }
     
+    /**
+     * @param body
+     */
     public void setBody(String body) 
     {
         this.body = body;
     }
 
+    /**
+     * @param recipient
+     */
     public void addRecipient(String recipient)
     {
         recipients.add(makeInternetAddress(recipient));
     }
 
-    public void setRecipients(List recipients) 
+    /**
+     * @param recipients
+     */
+    public void setRecipients(List<InternetAddress> recipients) 
     {
         this.recipients.clear();
         this.recipients.addAll(recipients);
     }
 
+    /**
+     * @param recipient
+     */
     public void addCcRecipient(String recipient) 
     {
         ccRecipients.add(makeInternetAddress(recipient));
     }
 
-    public void setCcRecipients(List ccRecipients)
+    /**
+     * @param ccRecipients
+     */
+    public void setCcRecipients(List<InternetAddress> ccRecipients)
     {
         this.ccRecipients.clear();
         this.ccRecipients.addAll(ccRecipients);
     }
 
+    /**
+     * @param recipient
+     */
     public void addBccRecipient(String recipient) 
     {
         bccRecipients.add(makeInternetAddress(recipient));
     }
 
-    public void setBccRecipients(List bccRecipients)
+    /**
+     * @param bccRecipients
+     */
+    public void setBccRecipients(List<InternetAddress> bccRecipients)
     {
         this.bccRecipients.clear();
         this.bccRecipients.addAll(bccRecipients);
@@ -102,10 +132,11 @@ public class PlanetsMailMessage {
         return internetAddress;
     }
 
-    private static List internetAddressesToStrings(List internetAddressRecipients) 
+    @SuppressWarnings("unused")
+	private static List<String> internetAddressesToStrings(List<InternetAddress> internetAddressRecipients) 
     {
-        List stringRecipients = new ArrayList();
-        Iterator internetAddressRecipientsIter = internetAddressRecipients.iterator();
+        List<String> stringRecipients = new ArrayList<String>();
+        Iterator<InternetAddress> internetAddressRecipientsIter = internetAddressRecipients.iterator();
 
         while (internetAddressRecipientsIter.hasNext()) 
         {
@@ -116,10 +147,11 @@ public class PlanetsMailMessage {
         return stringRecipients;
     }
 
-    private static List stringsToInternetAddresses(List stringRecipients) 
+    @SuppressWarnings("unused")
+	private static List<InternetAddress> stringsToInternetAddresses(List<String> stringRecipients) 
     {
-        List internetAddressRecipients = new ArrayList();
-        Iterator stringRecipientsIter = stringRecipients.iterator();
+        List<InternetAddress> internetAddressRecipients = new ArrayList<InternetAddress>();
+        Iterator<String> stringRecipientsIter = stringRecipients.iterator();
 
         while (stringRecipientsIter.hasNext()) 
         {
@@ -129,6 +161,9 @@ public class PlanetsMailMessage {
         return internetAddressRecipients;
     }
 
+    /**
+     * 
+     */
     public void send() 
     {
         try {
