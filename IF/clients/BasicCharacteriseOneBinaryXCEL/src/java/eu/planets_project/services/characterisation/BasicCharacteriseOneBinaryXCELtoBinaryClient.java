@@ -17,6 +17,9 @@ import javax.xml.ws.Service;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 
+/**
+ * Class to provide a client to call a BasicCharacteriseOneBinaryXCELtoBinary service 
+ */
 public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
 	
 	
@@ -30,6 +33,12 @@ public class BasicCharacteriseOneBinaryXCELtoBinaryClient {
     private static String HOST = "localhost";
 //  private static String HOST = "planetarium.hki.uni-koeln.de";
 	
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws PlanetsException
+	 * @throws SOAPException_Exception
+	 */
 	public static void main(String[] args) throws IOException, PlanetsException, SOAPException_Exception {
 		if(EXTRACTOR_HOME.endsWith(File.separator + File.separator)) {
 			EXTRACTOR_HOME = EXTRACTOR_HOME.replace(File.separator + File.separator, File.separator);
