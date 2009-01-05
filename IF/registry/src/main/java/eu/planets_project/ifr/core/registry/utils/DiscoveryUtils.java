@@ -23,7 +23,7 @@ public class DiscoveryUtils {
      * Attempts to determine the service description for the given WSDL.
      * 
      * @param wsdlLocation
-     * @return
+     * @return the service description from the service endpoint describe() method
      */
     public static ServiceDescription getServiceDescription( URL wsdlLocation ) {
         try {
@@ -51,7 +51,6 @@ public class DiscoveryUtils {
      * @param wsdlLocation The location of the WSDL.
      * @return A new instance of the the given class, wrapping the referenced service.
      */
-    @SuppressWarnings("unchecked")
     public static <T> T createServiceObject( Class<T> serviceClass, URL wsdlLocation ) {
         PlanetsServiceExplorer se = new PlanetsServiceExplorer(wsdlLocation);
         Service service;

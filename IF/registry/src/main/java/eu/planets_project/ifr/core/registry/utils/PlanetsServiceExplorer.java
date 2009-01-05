@@ -92,11 +92,10 @@ public class PlanetsServiceExplorer {
     }
 
     /**
-     * Attempts to instanciate a service, and so checks if the thing is
+     * Attempts to instantiate a service, and so checks if the thing is
      * essentially working.
      * 
-     * @param wsdlLocation
-     * @return
+     * @return true if an instanstiable PlanetsService
      */
     public boolean isServiceInstanciable() {
         Service service = Service.create(wsdlLocation, qName);
@@ -109,7 +108,7 @@ public class PlanetsServiceExplorer {
     }
 
     /**
-     * @return
+     * @return the service class
      */
     public Class<?> getServiceClass() {
         return classmap.get(qName);
