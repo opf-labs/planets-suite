@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
-import java.io.File;
 import java.io.Serializable;
 
 import javax.ejb.Local;
@@ -64,7 +63,6 @@ public class BasicExtractor2Binary implements
      * @param binary a byte[] which contains the image data
      * @param xcel a String holding the Contents of a XCEL file
      * @return a String holding the contents of a XCDL file
-     * @throws PlanetsException
      */
     @WebMethod(operationName = BasicCharacteriseOneBinaryXCELtoBinary.NAME, action = PlanetsServices.NS
             + "/" + BasicCharacteriseOneBinaryXCELtoBinary.NAME)
@@ -82,7 +80,7 @@ public class BasicExtractor2Binary implements
         CoreExtractor extractor = new CoreExtractor(CALLING_EXTRACTOR_NAME,
                 plogger);
 
-        File inputImage = ByteArrayHelper.write(binary);
+        ByteArrayHelper.write(binary);
 
         byte[] outputXCDL = extractor.extractXCDL(binary, xcel != null ? xcel
                 .getBytes() : null, null);

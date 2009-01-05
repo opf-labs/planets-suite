@@ -22,6 +22,9 @@ import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
+/**
+ *
+ */
 public class CoreExtractor {
 
     private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
@@ -37,6 +40,10 @@ public class CoreExtractor {
     private static boolean NORM_DATA_DISABLED = false;
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
 
+    /**
+     * @param extractorName
+     * @param logger
+     */
     public CoreExtractor(String extractorName, PlanetsLogger logger) {
         this.plogger = logger;
 //        SYSTEM_TEMP = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
@@ -47,7 +54,8 @@ public class CoreExtractor {
     
     // this is a work around to disable norm data output in XCDL, 
     // as long as flag in extractor does not work
-    private byte[] removeNormData(byte[] XCDLtoRemoveNormDataFrom) {
+    @SuppressWarnings("unchecked")
+	private byte[] removeNormData(byte[] XCDLtoRemoveNormDataFrom) {
     	SAXBuilder saxBuilder = new SAXBuilder();
     	Document xcdlDoc;
     	
@@ -66,11 +74,8 @@ public class CoreExtractor {
 			List<Element> content = rootXCDL.getChildren();
 			
 			for (Element objectElement : content) {
-				String object = objectElement.getName();
 				List<Element>  objectChildren = objectElement.getChildren();
 				for (Element level2Element : objectChildren) {
-					String normDataName = level2Element.getQualifiedName();
-					Element parent = level2Element.getParentElement();
 					if(level2Element.getName().equalsIgnoreCase("normData")) {
 						level2Element.detach();
 						break;
@@ -93,6 +98,12 @@ public class CoreExtractor {
 		return result;
     }
 
+    /**
+     * @param binary
+     * @param xcel
+     * @param parameters
+     * @return xcdl as byte array
+     */
     public byte[] extractXCDL(byte[] binary, byte[] xcel, Parameters parameters) {
     	
     	if(EXTRACTOR_HOME==null){

@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.jdom.Document;
@@ -20,7 +18,6 @@ import eu.planets_project.services.datatypes.FileFormatProperties;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Metric;
 import eu.planets_project.services.datatypes.Metrics;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
@@ -33,11 +30,24 @@ import eu.planets_project.services.utils.ProcessRunner;
 
 public class ExtractorPropertiesLister {
 	
+	/**
+	 * logger
+	 */
 	public static PlanetsLogger LOG = PlanetsLogger.getLogger(ExtractorPropertiesLister.class);
 	
+	/**
+	 * xtractoer home dir
+	 */
 	public static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+	/**
+	 * fpm tool
+	 */
 	public static String FPM_TOOL = EXTRACTOR_HOME + "fpmTool";
 	
+	/**
+	 * @param formatURI
+	 * @return file format props
+	 */
 	public static FileFormatProperties getFileFormatProperties(URI formatURI) {
 		String pronomID = formatURI.toASCIIString();
 		
@@ -102,10 +112,6 @@ public class ExtractorPropertiesLister {
 			FileFormatProperty formatProperty = null;
 //			List <Metric> metrics = null;
 			Metrics metrics = null;
-			
-			Element format = orgRoot.getChild("format");
-			
-			String puid = format.getAttributeValue("puid");
 			
 			for (Element element : content) {
 				List <Element> level1Elements = element.getChildren();
@@ -189,6 +195,10 @@ public class ExtractorPropertiesLister {
 	}
 	
 	
+	/**
+	 * @param formatURI
+	 * @return props file
+	 */
 	public static File generatePropertiesFile (URI formatURI) {
 		
 		String formatString = formatURI.toASCIIString();
@@ -211,7 +221,6 @@ public class ExtractorPropertiesLister {
 		System.out.println("***********************************************************");
 		System.out.println("Property list for PronomID: " + formatString);
 		
-		boolean success = false;
 		ProcessRunner shell = new ProcessRunner();
 		
 		shell.setStartingDir(new File(EXTRACTOR_HOME));
@@ -223,24 +232,12 @@ public class ExtractorPropertiesLister {
 		shell.setCommand(shellCommands);
 		shell.run();
 		
-		String processOutput = shell.getProcessOutputAsString();
-		String processError = shell.getProcessErrorAsString();
-		
-		File resultFPM = new File(EXTRACTOR_HOME + "fpm.fpm");
-		
-		byte[] resultFPMArray = ByteArrayHelper.read(resultFPM);
-		
-		String newOutputFilePath = "PC/extractor/src/resources/fpm_files/" + puid + ".fpm";  
-		
-		File fpmTempFile = ByteArrayHelper.writeToDestFile(resultFPMArray, newOutputFilePath);
 		File formattedFPM = new File("PC/extractor/src/resources/fpm_files/" + puid + ".xml");
 		
 		FileFormatProperties fileFormatProperties = getFileFormatProperties(formatURI);
 		
 		XMLOutputter xmlOut = new XMLOutputter();
 		BufferedWriter xmlWriter;
-		String deletedFile;
-		
 		try {
 			
 			Element xclProperties = new Element("XCLProperties");
@@ -286,7 +283,6 @@ public class ExtractorPropertiesLister {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		success = true;
 		System.out.println("***********************************************************");
 		return formattedFPM;
 	}

@@ -52,11 +52,26 @@ public class Extractor implements Characterise, Serializable {
 	
 	private static final long serialVersionUID = -8537596616209516979L;
 	
+	/**
+	 * the service name
+	 */
 	public static final String NAME = "Extractor";
+	/**
+	 * output dir
+	 */
 	public static final String OUT_DIR = NAME.toUpperCase() + "_OUT" + File.separator;
+	/**
+	 * the logger
+	 */
 	public static final PlanetsLogger LOG = PlanetsLogger.getLogger(Extractor.class);
+	/**
+	 * a max file size
+	 */
 	public static final int MAX_FILE_SIZE = 10240;
 
+	/**
+	 * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject, java.lang.String, eu.planets_project.services.datatypes.Parameters)
+	 */
 	public CharacteriseResult characterise(DigitalObject digitalObject,
 			String optionalFormatXCEL, Parameters parameters) {
 		
@@ -103,7 +118,7 @@ public class Extractor implements Characterise, Serializable {
 			else {
 				File tmpResult = FileUtils.getTempFile(result, "tmpResult", "tmp"); 
 				try {
-					resultDigOb = new DigitalObject.Builder(Content.byReference(tmpResult.toURL())).build();
+					resultDigOb = new DigitalObject.Builder(Content.byReference(tmpResult.toURI().toURL())).build();
 					sReport.setInfo("Success!!!");
 					sReport.setErrorState(0);
 					characteriseResult = new CharacteriseResult(resultDigOb, sReport);
@@ -135,6 +150,9 @@ public class Extractor implements Characterise, Serializable {
     }
 	
 
+	/**
+	 * @see eu.planets_project.services.characterise.Characterise#describe()
+	 */
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(Extractor.NAME, Characterise.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
@@ -160,7 +178,7 @@ public class Extractor implements Characterise, Serializable {
 		return sd.build();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
 	 */
 	public final List<FileFormatProperty> listProperties(final URI formatURI) {
