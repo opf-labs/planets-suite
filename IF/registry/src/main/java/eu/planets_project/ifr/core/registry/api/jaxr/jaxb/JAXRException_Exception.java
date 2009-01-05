@@ -21,7 +21,8 @@ public class JAXRException_Exception
     extends Exception
 {
 
-    /**
+	private static final long serialVersionUID = -8519020417897883227L;
+	/**
      * Java type that goes as soapenv:Fault detail element.
      * 
      */
