@@ -38,10 +38,17 @@ public class DataManager_Service
         DATAMANAGER_WSDL_LOCATION = url;
     }
 
+    /**
+     * @param wsdlLocation
+     * @param serviceName
+     */
     public DataManager_Service(URL wsdlLocation, QName serviceName) {
         super(wsdlLocation, serviceName);
     }
 
+    /**
+     * no arg constructor
+     */
     public DataManager_Service() {
         super(DATAMANAGER_WSDL_LOCATION, new QName("http://planets-project.eu/ifr/core/storage/data", "DataManager"));
     }
