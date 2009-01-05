@@ -1,8 +1,5 @@
 package eu.planets_project.ifr.core.registry.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 
@@ -11,9 +8,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
-import eu.planets_project.ifr.core.registry.impl.Endpoint;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
-import eu.planets_project.ifr.core.registry.impl.ServiceInfo;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**

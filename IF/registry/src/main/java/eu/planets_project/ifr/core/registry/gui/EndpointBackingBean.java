@@ -210,12 +210,15 @@ public class EndpointBackingBean {
         	ServiceDescription servDev = DiscoveryUtils.getServiceDescription(currentEndpoint.getLocation());
         	servDev = new ServiceDescription.Builder(servDev).endpoint(currentEndpoint.getLocation()).build();
         	descBean.setServiceDescription(servDev);
+        // It's an old deprecated interface so we'll cobble together a service description
+        // as best we can :)
+        // TODO: This is horrible, we can get rid when we de-commission the old interfaces
         } else {
-        	// TODO: what happens when there's no service description?
-        	// ANSWER: we make one
         	ServiceDescription.Builder sb = 
         		new ServiceDescription.Builder(currentEndpoint.getName(), currentEndpoint.getType());
-        	descBean.setServiceDescription(sb.endpoint(currentEndpoint.getLocation()).build());
+        	descBean.setServiceDescription(
+        			sb.endpoint(currentEndpoint.getLocation()).classname(
+        					currentEndpoint.getFullName()).build());
         }
         return "success";
     }
@@ -243,9 +246,6 @@ public class EndpointBackingBean {
     /* Private methods */
     
     private void findEndpoints() {
-    	FacesContext ctx = FacesContext.getCurrentInstance();
-    	ELResolver res = ctx.getApplication().getELResolver();
-    	RegistryBackingBean regBean = (RegistryBackingBean) res.getValue(ctx.getELContext(), null, "RegistryBean");
     	HashMap<String, String> _cats = new HashMap<String, String>();
     	log.info("looking for deployed endpoints");
     	// get the endpoints from ServiceLookup
