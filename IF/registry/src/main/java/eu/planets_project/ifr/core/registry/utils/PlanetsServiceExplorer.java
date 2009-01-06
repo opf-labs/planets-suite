@@ -18,6 +18,7 @@ import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
+import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.DetermineProperties;
 import eu.planets_project.services.compare.BasicCompareFormatProperties;
 import eu.planets_project.services.compare.BasicCompareTwoXcdlReferences;
@@ -64,6 +65,7 @@ public class PlanetsServiceExplorer {
         classmap.put(Migrate.QNAME, Migrate.class);
         classmap.put(BasicValidateOneBinary.QNAME, BasicValidateOneBinary.class);
         classmap.put(Validate.QNAME, Validate.class);
+        classmap.put(Characterise.QNAME, Characterise.class);
         classmap.put(CreateView.QNAME, CreateView.class);
     }
 
@@ -120,8 +122,6 @@ public class PlanetsServiceExplorer {
      * 
      * @param wsdlLocation
      * @return
-     * @throws IOException
-     * @throws SAXException
      */
     private QName determineServiceQNameFromWsdl() {
     	log.debug("determining qname");

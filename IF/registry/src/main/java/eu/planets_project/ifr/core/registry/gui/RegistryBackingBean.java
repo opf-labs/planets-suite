@@ -50,7 +50,7 @@ public class RegistryBackingBean {
 	 *     A boolean indicating if the user can edit the service registry
 	 */
     public boolean getCanRegisterServices() {
-    	return (FacesContext.getCurrentInstance().getExternalContext().isUserInRole(adminRole) |
+    	return (FacesContext.getCurrentInstance().getExternalContext().isUserInRole(adminRole) ||
     			FacesContext.getCurrentInstance().getExternalContext().isUserInRole(providerRole));
     }
  

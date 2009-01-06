@@ -109,13 +109,13 @@ public class ServiceDescriptionBackingBean {
 	 */
     public void updateDescription() {
     	ServiceDescription.Builder sb = new ServiceDescription.Builder(this._serviceDescription);
-    	if ((this._name.length() > 0) | (null != this._serviceDescription.getName()))
+    	if ((this._name.length() > 0) || (null != this._serviceDescription.getName()))
     		sb.name(this._name);
-    	if ((this._author.length() > 0) | (null != this._serviceDescription.getAuthor()))
+    	if ((this._author.length() > 0) || (null != this._serviceDescription.getAuthor()))
     		sb.author(this._author);
-    	if ((this._serviceProvider.length() > 0) | (null != this._serviceDescription.getServiceProvider()))
+    	if ((this._serviceProvider.length() > 0) || (null != this._serviceDescription.getServiceProvider()))
     		sb.serviceProvider(this._serviceProvider);
-    	if ((this._desc.length() > 0) | (null != this._serviceDescription.getDescription()))
+    	if ((this._desc.length() > 0) || (null != this._serviceDescription.getDescription()))
     		sb.description(this._desc);
     	this._serviceDescription = sb.build();
     }

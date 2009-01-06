@@ -54,7 +54,7 @@ public class EndpointBackingBean {
 		for (Endpoint endpoint : _endpoints) {
 			if ((endpoint.getCategory().toLowerCase().indexOf(this.searchStr.toLowerCase()) > -1) ||
 					(endpoint.getName().toLowerCase().indexOf(this.searchStr.toLowerCase()) > -1)){
-				if ((this.selectedCategory.equals("all")) | (this.selectedCategory.equals(endpoint.getCategory())))
+				if ((this.selectedCategory.equals("all")) || (this.selectedCategory.equals(endpoint.getCategory())))
 					endpoints.add(endpoint);
 			}
 		}
