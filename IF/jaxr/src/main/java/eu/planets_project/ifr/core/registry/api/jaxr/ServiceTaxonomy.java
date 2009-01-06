@@ -82,7 +82,7 @@ public final class ServiceTaxonomy {
         /***/
         JBOSS_HOME_DIR_KEY("jboss.home.dir"),
         /***/
-        LOCAL("IF/registry/src/main/resources/eu/planets_project/ifr/core/registry/"),
+        LOCAL("IF/jaxr/src/main/resources/eu/planets_project/ifr/core/registry/"),
         /***/
         DESTINATION_PACKAGE("eu.planets_project.ifr.core.registry.api.jaxr.jaxb.concepts"),
         /***/

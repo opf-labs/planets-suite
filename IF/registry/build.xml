@@ -35,14 +35,6 @@
 	<property name="pserv.root.dir" value="../.." />
 	<import file="${pserv.root.dir}/build.common.xml" />
 
-	<!-- Copy the config files into the server config directory -->
-	<copy todir="${if_server.dir}/server/default/conf/" overwrite="true">
-		<fileset dir="src/main/resources/eu/planets_project/ifr/core/registry/">
-			<include name="registryconcepts.xml" />
-			<include name="jaxrconcepts.xsd" />
-		</fileset>
-	</copy>
-
 	<!-- Copy the registered services into the server config directory -->
 	<copy todir="${if_server.dir}/server/default/conf/service-description-registry/" overwrite="true">
 		<fileset dir="src/main/resources/service-description-registry/">
