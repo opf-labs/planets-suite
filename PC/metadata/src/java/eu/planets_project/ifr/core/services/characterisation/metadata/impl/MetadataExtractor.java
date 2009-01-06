@@ -127,7 +127,7 @@ public final class MetadataExtractor implements Characterise {
      */
     public ServiceDescription describe() {
         return new ServiceDescription.Builder(
-                "New Zealand Metadata Extractor Service", this.getClass()
+                "New Zealand Metadata Extractor Service", Characterise.class
                         .getName())
                 .author("Fabian Steeg")
                 .classname(this.getClass().getName())
