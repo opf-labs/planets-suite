@@ -3,7 +3,7 @@ package eu.planets_project.ifr.core.services.characterisation.metadata;
 import org.junit.BeforeClass;
 
 import eu.planets_project.ifr.core.services.characterisation.metadata.impl.MetadataExtractor;
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
+import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -20,7 +20,7 @@ public final class RemoteMetadataExtractorTests extends MetadataExtractorTests {
     public static void setup() {
         System.out.println("Remote:");
         characterizer = ServiceCreator.createTestService(
-                BasicCharacteriseOneBinary.QNAME, MetadataExtractor.class,
+                Characterise.QNAME, MetadataExtractor.class,
                 "/pserv-pc-metadata/MetadataExtractor?wsdl");
     }
 }

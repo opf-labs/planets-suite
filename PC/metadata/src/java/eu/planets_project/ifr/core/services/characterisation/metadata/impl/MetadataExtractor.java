@@ -3,18 +3,14 @@ package eu.planets_project.ifr.core.services.characterisation.metadata.impl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Serializable;
+import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
-import javax.jws.WebMethod;
-import javax.jws.WebParam;
-import javax.jws.WebResult;
 import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
 import javax.xml.ws.BindingType;
 
 import nz.govt.natlib.meta.FileHarvestSource;
@@ -22,30 +18,55 @@ import nz.govt.natlib.meta.config.Config;
 import nz.govt.natlib.meta.config.Configuration;
 import nz.govt.natlib.meta.config.ConfigurationException;
 import nz.govt.natlib.meta.ui.PropsManager;
-
-import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.FileFormatProperty;
+import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Service wrapping the Metadata Extraction Tool from the National Archive of
  * New Zealand (http://meta-extractor.sourceforge.net/).
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = MetadataExtractor.NAME, serviceName = BasicCharacteriseOneBinary.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.BasicCharacteriseOneBinary")
-@Local(BasicCharacteriseOneBinary.class)
-@Remote(BasicCharacteriseOneBinary.class)
-@SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
-@Stateless()
+@Stateless
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-public final class MetadataExtractor implements BasicCharacteriseOneBinary,
-        Serializable, PlanetsService {
+@WebService(name = MetadataExtractor.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
+public final class MetadataExtractor implements Characterise {
     /***/
     static final String NAME = "MetadataExtractor";
-    /***/
-    private static final long serialVersionUID = -1622020084969585711L;
+
+    /**
+     * The optional format XCEL and parameters are ignored in this
+     * implementation (you may pass null). {@inheritDoc}
+     * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject,
+     *      java.lang.String, eu.planets_project.services.datatypes.Parameters)
+     */
+    public CharacteriseResult characterise(final DigitalObject digitalObject,
+            final String optionalFormatXCEL, final Parameters parameters) {
+        InputStream stream = digitalObject.getContent().read();
+        byte[] binary = FileUtils.writeInputStreamToBinary(stream);
+        String resultString = basicCharacteriseOneBinary(binary);
+        DigitalObject result = new DigitalObject.Builder(Content
+                .byValue(resultString.getBytes())).build();
+        return new CharacteriseResult(result, new ServiceReport());
+    }
+
+    /**
+     * Property listing is not yet implemented for this class, the resulting
+     * list will always be empty. {@inheritDoc}
+     * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
+     */
+    public List<FileFormatProperty> listProperties(final URI formatURI) {
+        // TODO implement property listing
+        return new ArrayList<FileFormatProperty>();
+    }
 
     /**
      * @param binary The binary file to characterize
@@ -53,14 +74,10 @@ public final class MetadataExtractor implements BasicCharacteriseOneBinary,
      *         extractor tool
      * @see eu.planets_project.services.characterise.BasicCharacteriseOneBinary#basicCharacteriseOneBinary(byte[])
      */
-    @WebMethod(operationName = BasicCharacteriseOneBinary.NAME, action = PlanetsServices.NS
-            + "/" + BasicCharacteriseOneBinary.NAME)
-    @WebResult(name = BasicCharacteriseOneBinary.NAME + "Result", targetNamespace = PlanetsServices.NS
-            + "/" + BasicCharacteriseOneBinary.NAME, partName = BasicCharacteriseOneBinary.NAME
-            + "Result")
-    public String basicCharacteriseOneBinary(
-            @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicCharacteriseOneBinary.NAME, partName = "binary") final byte[] binary) {
+    private String basicCharacteriseOneBinary(final byte[] binary) {
+        if (binary.length == 0) {
+            throw new IllegalArgumentException("Binary is empty!");
+        }
         File file = ByteArrayHelper.write(binary);
         /* Create a HarvestSource of the object we want to harvest */
         FileHarvestSource source = new FileHarvestSource(file);

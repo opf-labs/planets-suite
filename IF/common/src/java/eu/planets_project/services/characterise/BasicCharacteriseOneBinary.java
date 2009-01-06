@@ -20,6 +20,7 @@ import eu.planets_project.services.PlanetsServices;
  */
 @WebService(name = BasicCharacteriseOneBinary.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@Deprecated
 public interface BasicCharacteriseOneBinary {
 
     /** The interface name */
@@ -40,7 +41,6 @@ public interface BasicCharacteriseOneBinary {
             + "Result")
     public String basicCharacteriseOneBinary(
             @WebParam(name = "binary", targetNamespace = PlanetsServices.NS
-                    + "/" + BasicCharacteriseOneBinary.NAME, partName = "binary") byte[] binary)
-            throws PlanetsException;
+                    + "/" + BasicCharacteriseOneBinary.NAME, partName = "binary") byte[] binary);
 
 }
