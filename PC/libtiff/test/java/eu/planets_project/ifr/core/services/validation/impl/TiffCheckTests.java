@@ -5,14 +5,18 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.MalformedURLException;
 
 import org.junit.Test;
 
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
+import eu.planets_project.services.validate.ValidateResult.Validity;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.ServiceCreator.Mode;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
 
 /**
  * Local and client tests of the LibTiffCheck functionality.
@@ -39,8 +43,8 @@ public final class TiffCheckTests
 	 */
 	public void clientTests() 
 	{
-		BasicValidateOneBinary tiffCheck = ServiceCreator.createTestService(
-			BasicValidateOneBinary.QNAME, TiffValidation.class,
+		Validate tiffCheck = ServiceCreator.createTestService(
+			Validate.QNAME, TiffValidation.class,
 			"/pserv-pc-libtiff/TiffValidation?wsdl", Mode.SERVER);
 		test(tiffCheck);
 	}
@@ -50,35 +54,47 @@ public final class TiffCheckTests
 	 * trying to invalidate a PNG file.
 	 * @param tiffCheck The tiffCheck instance to test
 	 */
-	private void test(final BasicValidateOneBinary tiffCheck) 
+	private void test(final Validate tiffCheck) 
 	{
-		byte[] inPng = ByteArrayHelper.read(
-			new File("PC/libtiff/src/resources/image01.png"));
-		byte[] inTiff = ByteArrayHelper.read(
-			new File("PC/libtiff/src/resources/image01.tif"));
+		File pngFile = new File("PC/libtiff/src/resources/image01.png");
+		File tifFile = new File("PC/libtiff/src/resources/image01.tif");
+		Content pngContent = null;
+		Content tifContent = null;
+		try {
+			pngContent = Content.byReference(pngFile.toURL());
+			tifContent = Content.byReference(tifFile.toURL());
+		}
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
 
-		boolean result;
+		DigitalObject inPng = new DigitalObject.Builder(pngContent).build();
+		DigitalObject inTiff = new DigitalObject.Builder(pngContent).build();
+
+		ValidateResult result;
 		/* Check with null PRONOM URI, both with PNG and TIFF */
 		try {
-			result = tiffCheck.basicValidateOneBinary(inTiff, null);
-			assertTrue("Valid TIFF was not validated;", result);
+			result = tiffCheck.validate(inTiff, null);
+			assertTrue("Valid TIFF was not validated;", 
+				result.getValidity().equals(Validity.VALID));
 
-			result = !tiffCheck.basicValidateOneBinary(inPng, null);
-			assertTrue("Invalid TIFF was not invalidated;", result);
-
+			result = tiffCheck.validate(inPng, null);
+			assertTrue("Invalid TIFF was not invalidated;", 
+				result.getValidity().equals(Validity.INVALID));
 
 			/* Check with valid and invalid PRONOM URI */
 			URI uri = new URI("info:pronom/fmt/7");
-			result = tiffCheck.basicValidateOneBinary(inTiff, uri);
-			assertTrue("Valid TIFF with URI was not validated;", result);
+			result = tiffCheck.validate(inTiff, uri);
+			assertTrue("Valid TIFF with URI was not validated;", 
+				result.getValidity().equals(Validity.VALID));
 
 			/* This should throw an IllegalArgumentException: */
 			uri = new URI("info:pronom/fmt/11");
-			result = !tiffCheck.basicValidateOneBinary(inTiff, uri);
-			assertTrue("Valid TIFF with invalid URI not invalidated;", result);
+			result = tiffCheck.validate(inTiff, uri);
+			assertTrue("Valid TIFF with invalid URI not invalidated;", 
+				result.getValidity().equals(Validity.INVALID));
 
-		} catch (PlanetsException e) {
-			e.printStackTrace();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
