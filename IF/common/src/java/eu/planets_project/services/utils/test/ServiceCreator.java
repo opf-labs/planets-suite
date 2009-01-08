@@ -6,7 +6,6 @@ package eu.planets_project.services.utils.test;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.wsdl.Port;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import javax.xml.ws.Endpoint;
@@ -33,24 +32,10 @@ public final class ServiceCreator {
     private static Log log = LogFactory.getLog(ServiceCreator.class.getName());
 
     /**
-     * Emulated extensible enum using an interface.
-     */
-    interface Creator {
-        /**
-         * @param <T> The interface type
-         * @param qname The qualified name
-         * @param impl The service impl class
-         * @param wsdl The wsdl
-         * @return An instance of the given class
-         */
-        <T> T create(QName qname, Class<T> impl, String wsdl);
-    }
-
-    /**
      * Modes for creating a service implementation instance.
      * @author Fabian Steeg (fabian.steeg@netcologne.de)
      */
-    public enum Mode implements Creator {
+    public enum Mode {
         /** Use a local instance. */
         LOCAL {
             /**
@@ -110,6 +95,15 @@ public final class ServiceCreator {
                 return createFor(qname, impl, url);
             }
         };
+        /**
+         * @param <T> The interface type
+         * @param qname The qualified name
+         * @param impl The service impl class
+         * @param wsdl The wsdl
+         * @return An instance of the given class
+         */
+        abstract <T> T create(QName qname, Class<T> impl, String wsdl);
+        
         private static <T> T createFor(QName qname, Class<T> impl, URL url) {
             log.info("INIT: Creating the proxied service class.");
             Service service = Service.create(url, qname);
