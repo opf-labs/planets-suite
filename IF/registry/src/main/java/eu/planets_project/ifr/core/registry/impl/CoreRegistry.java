@@ -44,7 +44,7 @@ public final class CoreRegistry implements Registry {
      * @see eu.planets_project.ifr.core.registry.api.Registry#query(eu.planets_project.services.datatypes.ServiceDescription)
      */
     public List<ServiceDescription> query(final ServiceDescription sample) {
-        return new Query(descriptions).byExample(sample);
+        return queryWithMode(sample, MatchingMode.EXACT);
     }
 
     /**
@@ -91,6 +91,16 @@ public final class CoreRegistry implements Registry {
         List<ServiceDescription> list = query(description);
         boolean removed = descriptions.removeAll(list);
         return new Response("Attempted to delete: " + description, removed);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
+     *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
+     */
+    public List<ServiceDescription> queryWithMode(
+            final ServiceDescription example, final MatchingMode mode) {
+        return new Query(descriptions).byExample(example, mode);
     }
 
 }

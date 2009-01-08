@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.registry.api;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
+import eu.planets_project.ifr.core.registry.impl.MatchingMode;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -35,7 +37,7 @@ public class CoreRegistryTests {
     static Registry registry;
 
     /**
-     * create a registry
+     * Create a registry.
      */
     @BeforeClass
     public static void registryCreation() {
@@ -52,7 +54,7 @@ public class CoreRegistryTests {
     ServiceDescription description2 = null;
 
     /**
-     * Test the registration of services
+     * Test the registration of services.
      */
     @Before
     public void registerSampleServices() {
@@ -73,7 +75,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * Clear up the registry
+     * Clear up the registry.
      */
     @After
     public void cleanupRegistry() {
@@ -81,7 +83,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * Register a single service description
+     * Register a single service description.
      */
     @Test
     public void registerServiceDescription() {
@@ -93,7 +95,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * test query by service name
+     * Test query by service name.
      */
     @Test
     public void findByName() {
@@ -103,7 +105,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * test query by service type
+     * Test query by service type.
      */
     @Test
     public void findByType() {
@@ -113,7 +115,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * test query by description
+     * Test query by description.
      */
     @Test
     public void findByDescription() {
@@ -124,7 +126,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * test query by name and description
+     * Test query by name and description.
      */
     @Test
     public void findByNameAndDescription() {
@@ -140,7 +142,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * test query by input format
+     * Test query by input format.
      */
     @Test
     public void findByInputFormat() {
@@ -156,7 +158,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * test query by input format and service type
+     * Test query by input format and service type.
      */
     @Test
     public void findByInputFormatAndType() {
@@ -172,7 +174,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * query by service endpoint
+     * Query by service endpoint.
      */
     @Test
     public void findByEndpoint() {
@@ -184,7 +186,39 @@ public class CoreRegistryTests {
     }
 
     /**
-     * Test service deletion 
+     * Test queries using wildcard matching mode.
+     * @throws MalformedURLException
+     * @throws URISyntaxException
+     */
+    @Test
+    public void findUsingWildcard() throws MalformedURLException,
+            URISyntaxException {
+        /* Using a wildcard matches any number of characters: */
+        List<ServiceDescription> services = registry.queryWithMode(
+                new ServiceDescription.Builder(NAME, null).endpoint(
+                /* any endpoint containing "dummy": */
+                new URL("http://*dummy*")).build(), MatchingMode.WILDCARD);
+        Assert.assertEquals(2, services.size());
+        services = registry.queryWithMode(
+        /* any type ending in "1": */
+        new ServiceDescription.Builder(NAME, "*1").build(),
+                MatchingMode.WILDCARD);
+        Assert.assertEquals(1, services.size());
+    }
+
+    /**
+     * Test queries using regular expression matching mode.
+     */
+    @Test
+    public void findUsingRegex() {
+        List<ServiceDescription> services = registry.queryWithMode(
+                new ServiceDescription.Builder(NAME, "type[0-9]").build(),
+                MatchingMode.REGEX);
+        Assert.assertEquals(2, services.size());
+    }
+
+    /**
+     * Test service deletion.
      */
     @Test
     public void deleteByExample() {
@@ -196,7 +230,7 @@ public class CoreRegistryTests {
     }
 
     /**
-     * We don't allow duplicate endpoints so check
+     * We don't allow duplicate endpoints so check.
      */
     @Test
     public void duplicateEndpointGuard() {
@@ -210,7 +244,7 @@ public class CoreRegistryTests {
     /**
      * @param services The retrieved services to be compared to the testing data
      */
-    private void compare(List<ServiceDescription> services) {
+    private void compare(final List<ServiceDescription> services) {
         Assert.assertTrue("No services found!", services.size() > 0);
         Assert.assertEquals(description1.getName(), services.get(0).getName());
         Assert.assertEquals(description1.getDescription(), services.get(0)

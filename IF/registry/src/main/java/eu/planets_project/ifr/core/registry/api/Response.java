@@ -9,14 +9,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Response {
 
-    /** The response message */
+    /** The response message. */
     public String message;
-    /** Success flag */
+    /** Success flag. */
     public boolean success = false;
 
     /**
      * @param message The response message
-     * @param success 
+     * @param success
      */
     public Response(final String message, boolean success) {
         this.message = message;

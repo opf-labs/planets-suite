@@ -31,7 +31,7 @@ public final class RegistryWebservice implements Registry {
             .getInstance());
     /***/
     @SuppressWarnings("unused")
-	private static Log log = LogFactory.getLog(RegistryWebservice.class
+    private static Log log = LogFactory.getLog(RegistryWebservice.class
             .getName());
     /***/
     static final String NAME = "RegistryWebservice";
@@ -70,6 +70,16 @@ public final class RegistryWebservice implements Registry {
      */
     public Response delete(final ServiceDescription example) {
         return registry.delete(example);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
+     *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
+     */
+    public List<ServiceDescription> queryWithMode(
+            final ServiceDescription example, final MatchingMode mode) {
+        return registry.queryWithMode(example, mode);
     }
 
 }

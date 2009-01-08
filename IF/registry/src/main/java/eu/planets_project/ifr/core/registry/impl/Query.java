@@ -31,13 +31,15 @@ public final class Query {
 
     /**
      * @param sample The sample description
+     * @param mode The matching strategy to use
      * @return Returns the service descriptions corresponding to the given
      *         sample instance
      */
-    public List<ServiceDescription> byExample(final ServiceDescription sample) {
+    public List<ServiceDescription> byExample(final ServiceDescription sample,
+            final MatchingMode mode) {
         List<ServiceDescription> result = new ArrayList<ServiceDescription>();
         for (ServiceDescription description : descriptions) {
-            if (matches(description, sample)) {
+            if (matches(description, sample, mode)) {
                 result.add(description);
             }
         }
@@ -51,11 +53,12 @@ public final class Query {
      * functionality without changing this class.
      * @param candidate The candidate service description
      * @param sample The query-by-example sample instance
+     * @param mode The match mode to use
      * @return True, if the given candidate is described by the given sample,
      *         else false
      */
     private static boolean matches(final ServiceDescription candidate,
-            final ServiceDescription sample) {
+            final ServiceDescription sample, final MatchingMode mode) {
         if (candidate == null) {
             throw new IllegalArgumentException(
                     "Candidate service description is null!");
@@ -103,8 +106,9 @@ public final class Query {
                                  * They need not be equals, but all sample
                                  * values should be in the candidate:
                                  */
-                                if (!((Collection<?>) candidateValue)
-                                        .containsAll(((Collection<?>) sampleValue))) {
+                                Collection<?> cands = (Collection<?>) candidateValue;
+                                Collection<?> samps = (Collection<?>) sampleValue;
+                                if (!containsAll(cands, samps, mode)) {
                                     return false;
                                 }
                             } else {
@@ -113,7 +117,8 @@ public final class Query {
                                  * here: if two non-null, non-Collection values
                                  * are not equal the candidate does not match:
                                  */
-                                if (!(sampleValue.equals(candidateValue))) {
+                                if (!(mode.matches(candidateValue.toString(),
+                                        sampleValue.toString()))) {
                                     return false;
                                 }
                             }
@@ -129,5 +134,25 @@ public final class Query {
             }
         }
         return true;
+    }
+
+    /**
+     * @param cands The candidate collection
+     * @param samps The sample collection
+     * @param mode The matching mode to use
+     * @return True, if all the sample elements match a candidate element
+     */
+    private static boolean containsAll(final Collection<?> cands,
+            final Collection<?> samps, final MatchingMode mode) {
+        int matched = 0;
+        for (Object sample : samps) {
+            for (Object candidate : cands) {
+                if (mode.matches(candidate.toString(), sample.toString())) {
+                    matched++;
+                    break;
+                }
+            }
+        }
+        return matched == samps.size();
     }
 }

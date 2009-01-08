@@ -20,7 +20,7 @@ import eu.planets_project.services.migrate.Migrate;
  */
 public class RegistrySampleUsage {
     /**
-     * Shows sample service registry usage
+     * Shows sample service registry usage.
      * @throws MalformedURLException
      */
     @Test
@@ -47,4 +47,5 @@ public class RegistrySampleUsage {
         Assert.assertEquals("Sanselan", migrationServices.get(0).getName());
         /* For further example on queries see CoreRegistryTests */
     }
+
 }

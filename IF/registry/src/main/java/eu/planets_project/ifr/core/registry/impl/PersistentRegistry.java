@@ -202,4 +202,14 @@ public final class PersistentRegistry implements Registry {
         return response;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
+     *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
+     */
+    public List<ServiceDescription> queryWithMode(
+            final ServiceDescription example, final MatchingMode mode) {
+        return registry.queryWithMode(example, mode);
+    }
+
 }
