@@ -53,33 +53,74 @@ public final class ByteArrayDataSource implements DataSource {
     private final int start;
     private final int len;
 
+    /**
+     * A convenience constructor, works out the missing params
+     * @param buf
+     * 		The byte[] for the buffer
+     * @param contentType
+     * 		The MIME type of the content
+     */
     public ByteArrayDataSource(byte[] buf, String contentType) {
         this(buf,0,buf.length,contentType);
     }
+
+    /**
+     * A convenience constructor, works out the missing params
+     * @param buf
+     * 		The byte[] for the buffer
+     * @param length 
+     * 		The length of the buf byte array
+     * @param contentType
+     * 		The MIME type of the content
+     */
     public ByteArrayDataSource(byte[] buf, int length, String contentType) {
         this(buf,0,length,contentType);
     }
-    public ByteArrayDataSource(byte[] buf, int start, int length, String contentType) {
+
+    /**
+     * A convenience constructor, works out the missing params
+     * @param buf
+     * 		The byte[] for the buffer
+     * @param start
+     * 		An offset into the buf byte sequence 
+     * @param length 
+     * 		The length of the buf byte array
+     * @param contentType
+     * 		The MIME type of the content
+     */
+     public ByteArrayDataSource(byte[] buf, int start, int length, String contentType) {
         this.buf = buf;
         this.start = start;
         this.len = length;
         this.contentType = contentType;
     }
 
+    /**
+     * @see javax.activation.DataSource#getContentType()
+     */
     public String getContentType() {
         if(contentType==null)
             return "application/octet-stream";
         return contentType;
     }
 
+    /**
+     * @see javax.activation.DataSource#getInputStream()
+     */
     public InputStream getInputStream() {
         return new ByteArrayInputStream(buf,start,len);
     }
 
+    /**
+     * @see javax.activation.DataSource#getName()
+     */
     public String getName() {
         return null;
     }
 
+    /**
+     * @see javax.activation.DataSource#getOutputStream()
+     */
     public OutputStream getOutputStream() {
         throw new UnsupportedOperationException();
     }
