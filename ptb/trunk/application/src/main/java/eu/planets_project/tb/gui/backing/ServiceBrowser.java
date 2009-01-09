@@ -19,9 +19,11 @@ import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
+import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.tb.gui.backing.service.PathwayBean;
 import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
 import eu.planets_project.ifr.core.registry.api.Registry;
@@ -278,6 +280,30 @@ public class ServiceBrowser {
         //Response = registry.register(ServiceDescription)
         
         return registry.query(sdQuery);
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public List<ServiceDescription> getAllServices() {
+        return getListOfServices(null);
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public List<PathwayBean> getAllPathways() {
+        List<ServiceDescription> sds = getListOfServices(null);
+        List<PathwayBean> paths = new ArrayList<PathwayBean>();
+        for( ServiceDescription sd : sds ) {
+            for( MigrationPath path : sd.getPaths() ) {
+                PathwayBean pb = new PathwayBean( sd.getName(), path.getInputFormat(), path.getOutputFormat() );
+                paths.add(pb);
+            }
+        }
+        return paths;
     }
     
     /**

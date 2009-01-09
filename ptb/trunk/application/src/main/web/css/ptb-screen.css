@@ -239,6 +239,9 @@ text-align:center;
 fieldset.login {
 width:400px;
 }
+ul.leftcol {
+  text-align:left;
+}
 ul.exp, ul.sub_exp {
 border:0pt none;
 list-style-image:none;
@@ -931,5 +934,8 @@ width:100%;
 .rich-tool-tip{
     background-color: #eef2f8;
     border-color:#579EC2;
+}
+.dr-table-footer {
+    background: #f0f0f0;
 }
 
