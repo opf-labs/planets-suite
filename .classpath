@@ -13,8 +13,8 @@
 	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
 	<classpathentry kind="src" path="IF/registry/src/main/java"/>
 	<classpathentry kind="src" path="IF/registry/src/test/java"/>
-    <classpathentry kind="src" path="IF/jaxr/src/main/java"/>
-    <classpathentry kind="src" path="IF/jaxr/src/test/java"/>
+	<classpathentry kind="src" path="IF/jaxr/src/main/java"/>
+	<classpathentry kind="src" path="IF/jaxr/src/test/java"/>
 	<classpathentry kind="src" path="IF/users/src/java"/>
 	<classpathentry kind="src" path="IF/users/src/test/java"/>
 	<classpathentry kind="src" path="IF/admin/src/java"/>
@@ -51,6 +51,8 @@
 	<classpathentry kind="src" path="PC/metadata/src/resources"/>
 	<classpathentry kind="src" path="PC/extractor/src/java"/>
 	<classpathentry kind="src" path="PC/extractor/src/test/java"/>
+	<classpathentry kind="src" path="PC/file/src/java"/>
+	<classpathentry kind="src" path="PC/file/test/java"/>
 	<classpathentry kind="src" path="PC/fpm/src/java"/>
 	<classpathentry kind="src" path="PC/fpm/src/test/java"/>
 	<classpathentry kind="src" path="PC/libtiff/src/java"/>
