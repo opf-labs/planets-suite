@@ -6,8 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import javax.ejb.Stateless;
 import javax.jws.WebService;
@@ -18,6 +22,9 @@ import nz.govt.natlib.meta.config.Config;
 import nz.govt.natlib.meta.config.Configuration;
 import nz.govt.natlib.meta.config.ConfigurationException;
 import nz.govt.natlib.meta.ui.PropsManager;
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
@@ -64,8 +71,45 @@ public final class MetadataExtractor implements Characterise {
      * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
     public List<FileFormatProperty> listProperties(final URI formatURI) {
-        // TODO implement property listing
-        return new ArrayList<FileFormatProperty>();
+        ArrayList<FileFormatProperty> result = new ArrayList<FileFormatProperty>();
+        /* Get the extensions for the supplied Pronom ID: */
+        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
+        Format format = registry.getFormatForURI(formatURI);
+        Set<String> extensions = format.getExtensions();
+        /* Find the corresponding metadata file type: */
+        MetadataType[] types = MetadataType.values();
+        for (MetadataType metadataType : types) {
+            String[] split = metadataType.sample.split("\\.");
+            String suffix = split[split.length - 1];
+            if (extensions.contains(suffix.toLowerCase())) {
+                /* For that, get the extractable properties: */
+                List<String> listProperties = listProperties(metadataType);
+                for (String string : listProperties) {
+                    result.add(new FileFormatProperty(string, null));
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
+     */
+    public ServiceDescription describe() {
+        return new ServiceDescription.Builder(
+                "New Zealand Metadata Extractor Service", Characterise.class
+                        .getName())
+                .author("Fabian Steeg")
+                .classname(this.getClass().getName())
+                .description(
+                        "Metadata extraction service based on the Metadata Extraction Tool of the National Library of New Zealand (patched 3.4GA).")
+                .serviceProvider("The Planets Consortium")
+                .tool(URI.create("http://meta-extractor.sourceforge.net/"))
+                .furtherInfo(
+                        URI
+                                .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407&atid=929202"))
+                .build();
     }
 
     /**
@@ -122,22 +166,55 @@ public final class MetadataExtractor implements Characterise {
     }
 
     /**
-     * {@inheritDoc}
-     * @see eu.planets_project.services.PlanetsService#describe()
+     * @param type The file type
+     * @return A list of attributes extractable for the given type, as defined
+     *         in the adapters DTD file
      */
-    public ServiceDescription describe() {
-        return new ServiceDescription.Builder(
-                "New Zealand Metadata Extractor Service", Characterise.class
-                        .getName())
-                .author("Fabian Steeg")
-                .classname(this.getClass().getName())
-                .description(
-                        "Metadata extraction service based on the Metadata Extraction Tool of the National Library of New Zealand (patched 3.4GA).")
-                .serviceProvider("The Planets Consortium")
-                .tool(URI.create("http://meta-extractor.sourceforge.net/"))
-                .furtherInfo(
-                        URI
-                                .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407&atid=929202"))
-                .build();
+    static List<String> listProperties(final MetadataType type) {
+        File adapter = null;
+        /*
+         * We get the adapter jar from the current thread in order to work in
+         * all environments (e.g., when running locally as a test or when
+         * running on a server:)
+         */
+        InputStream stream = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream(type.adapter);
+        adapter = FileUtils.writeInputStreamToTmpFile(stream, "adapter", "tmp");
+        List<String> props = new ArrayList<String>();
+        try {
+            /*
+             * The NZ metadata extractor has an adapter jar for each supported
+             * file format. Inside that, there is a dtd in which the extractable
+             * properties for that format are listed. Thus, we iterate over the
+             * contents of the jar file, get the dtd, and read the properties
+             * defined inside of it:
+             */
+            JarFile jar = new JarFile(adapter);
+            Enumeration<JarEntry> entries = jar.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                if (entry.getName().endsWith("dtd")) {
+                    InputStream inputStream = jar.getInputStream(entry);
+                    Scanner s = new Scanner(inputStream);
+                    while (s.hasNextLine()) {
+                        String nextLine = s.nextLine();
+                        /**
+                         * A line we care about looks like this:
+                         * <p/>
+                         * <!ELEMENT COMPRESSION (#PCDATA)>
+                         */
+                        if (nextLine.startsWith("<!ELEMENT")) {
+                            String prop = nextLine.split(" ")[1];
+                            props.add(prop);
+                        }
+                    }
+                    /* It's just one DTD file: */
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return props;
     }
 }

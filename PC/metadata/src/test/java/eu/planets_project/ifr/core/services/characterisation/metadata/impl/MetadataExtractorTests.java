@@ -1,17 +1,22 @@
-package eu.planets_project.ifr.core.services.characterisation.metadata;
+package eu.planets_project.ifr.core.services.characterisation.metadata.impl;
 
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.net.URI;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.characterisation.metadata.impl.MetadataExtractor;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
@@ -21,8 +26,11 @@ import eu.planets_project.services.utils.FileUtils;
  */
 public class MetadataExtractorTests {
 
+    private static final FormatRegistry FORMAT_REGISTRY = FormatRegistryFactory
+            .getFormatRegistry();
+    private static final String HOME = "PC/metadata/";
     /***/
-    protected static final String SAMPLES = "PC/metadata/src/resources/samples/";
+    protected static final String SAMPLES = HOME + "src/resources/samples/";
     protected static Characterise characterizer;
 
     /**
@@ -156,66 +164,19 @@ public class MetadataExtractorTests {
     }
 
     /**
-     * Enumeration of sample files and their types (as the tool detects them).
-     */
-    private enum MetadataType {
-        /** Some types work just fine and give a full result. */
-        BMP("bmp/test1.bmp", "image/bmp"),
-        /***/
-        GIF("gif/AA_Banner.gif", "image/gif"),
-        /***/
-        JPEG("jpeg/AA_Banner.jpg", "image/jpeg"),
-        /***/
-        TIFF("tiff/AA_Banner.tif", "image/tiff"),
-        /***/
-        PDF("pdf/AA_Banner-single.pdf", "application/pdf"),
-        /***/
-        WAV("wav/comet.wav", "wave"),
-        /***/
-        HTML("html/sample.html", "text/html"),
-        /** The OO adapter throws an exception but still works. */
-        OPEN_OFFICE1("oo1/planets.sxw", "application/open-office-1.x"),
-        /**
-         * And some are characterized as unknown although they should be
-         * supported (according to http://meta-extractor.sourceforge.net).
-         */
-        WORD_PERFECT("wordperfect/sample.wpd",
-        /* Word perfect identification works only on windows: */
-        System.getProperty("os.name").toLowerCase().contains("windows") ? "application/vnd.wordperfect"
-                : "file/unknown"),
-        /***/
-        WORD6("word6/planets.doc", "file/unknown"),
-        /***/
-        WORKS("works/sample.wps", "file/unknown"),
-        /***/
-        EXCEL("excel/Travel.xls", "file/unknown"),
-        /***/
-        POWER_POINT("pp/planets.ppt", "file/unknown"),
-        /***/
-        MP3("mp3/Arkansas.mp3", "file/unknown"),
-        /***/
-        XML("xml/sample.xml", "file/unknown");
-        /***/
-        private String mime;
-        /***/
-        private String location;
-
-        /**
-         * @param location The file location
-         * @param type The type, as the tool detects it
-         */
-        private MetadataType(final String location, final String type) {
-            this.location = location;
-            this.mime = type;
-        }
-    }
-
-    /**
      * @param type The enum type to test
      */
     private void test(final MetadataType type) {
+        testPropertyListing(type);
+        testCharacterization(type);
+    }
+
+    /**
+     * @param type The type to test characterization for
+     */
+    private void testCharacterization(final MetadataType type) {
         System.out.println("Testing characterisation of " + type);
-        File file = new File(SAMPLES + type.location);
+        File file = new File(SAMPLES + type.sample);
         byte[] binary = ByteArrayHelper.read(file);
         if (binary.length == 0) {
             throw new IllegalStateException("Empty file: " + file);
@@ -234,6 +195,24 @@ public class MetadataExtractorTests {
         assertTrue("Result does not contain the correct mime type: "
                 + type.mime + " in result: " + result, result.toLowerCase()
                 .contains(type.mime));
+    }
+
+    /**
+     * @param type he type to test property listing for
+     */
+    private void testPropertyListing(final MetadataType type) {
+        System.out.println("Testing adapter access for " + type);
+        List<String> props = MetadataExtractor.listProperties(type);
+        Assert.assertTrue("No props read for adapter: " + type.adapter, props
+                .size() > 0);
+        System.out.println("Testing properties listing for " + type);
+        URI puidToUri = FORMAT_REGISTRY.puidToUri(type.samplePuid);
+        System.out.println("URI: " + puidToUri);
+        List<FileFormatProperty> listProperties = characterizer
+                .listProperties(puidToUri);
+        Assert.assertTrue("No props listed for PUID: " + type.samplePuid,
+                listProperties.size() > 0);
+        System.out.println("Found " + listProperties.size() + " properties");
     }
 
     /**

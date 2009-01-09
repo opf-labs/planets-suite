@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.impl.formats.droid;
+package eu.planets_project.ifr.core.techreg.impl.formats;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -23,7 +23,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.droid.DroidConfig;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class DroidFormatRegistry  {
+class DroidFormatRegistry  {
     
     private static Log log = LogFactory.getLog(DroidFormatRegistry.class);
 
@@ -51,7 +51,7 @@ public class DroidFormatRegistry  {
      * @param PUID
      * @return
      */
-    private static URI PUIDtoURI( String PUID ) {
+    static URI PUIDtoURI( String PUID ) {
         URI puidURI = null;
         try {
             // Opaque URL constructed using a Scheme Specific Part:
@@ -68,8 +68,7 @@ public class DroidFormatRegistry  {
      * @param puri
      * @return
      */
-    @SuppressWarnings("unused")
-	private static String URItoPUID( URI puri ) {
+    static String URItoPUID( URI puri ) {
         if( puri == null ) return null;
         return puri.getSchemeSpecificPart().substring(INFO_PRONOM.length());
     }

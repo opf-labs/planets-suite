@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.characterisation.metadata;
+package eu.planets_project.ifr.core.services.characterisation.metadata.impl;
 
 import org.junit.BeforeClass;
 

@@ -15,30 +15,40 @@ import eu.planets_project.ifr.core.techreg.impl.formats.FormatRegistryImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
  */
-public class FormatRegistryFactory {
+public final class FormatRegistryFactory {
+    /** Enforce non-instantiability with a private constructor. */
+    private FormatRegistryFactory() {}
+
     private static Log log = LogFactory.getLog(FormatRegistryFactory.class);
-    
+
     /**
-     * Hook up to an instance of the Planets User Manager.
-     * @return A UserManager, as discovered via JNDI.
+     * Hook up to an instance of the Planets format registry.
+     * @return A format registry, as discovered via JNDI; or a local instance,
+     *         if the lookup failed.
      */
     public static FormatRegistry getFormatRegistry() {
-        if( System.getProperty("pserv.test.context") != null ) {
+        if (System.getProperty("pserv.test.context") != null) {
             return new FormatRegistryImpl();
         }
-        try{
+        try {
             Context jndiContext = new javax.naming.InitialContext();
-            Object ref = jndiContext.lookup("planets-project.eu/FormatRegistry/remote");
+            Object ref = jndiContext
+                    .lookup("planets-project.eu/FormatRegistry/remote");
             FormatRegistry um = (FormatRegistry) PortableRemoteObject.narrow(
                     ref, FormatRegistry.class);
             return um;
         } catch (NamingException e) {
-            log.error("Failure during lookup of the FormatRegistry PortableRemoteObject: "+e.toString());
-            return null;
+            log
+                    .error("Failure during lookup of the FormatRegistry PortableRemoteObject: "
+                            + e.toString());
+            /*
+             * We might not be able to retrieve via JNDI, and have not set the
+             * property that is checked above, for instance when running a JUnit
+             * test directly, so here we return a local instance too:
+             */
+            return new FormatRegistryImpl();
         }
     }
-    
 
 }
