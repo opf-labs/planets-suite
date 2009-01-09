@@ -1,12 +1,10 @@
 package eu.planets_project.services.file;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -21,6 +19,7 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.ByteArrayHelper;
@@ -42,30 +41,9 @@ public class FileIdentify implements Identify {
 	/** The logger */
     private static Log _log = LogFactory.getLog(FileIdentify.class);
 
-    /** Properties file location and Properties holder */
-	private static final String PROPERTIES_PATH = "eu/planets_project/services/file/FileIdentify.properties";
-	private Properties _properties = null;
-
 	/** The service name */
     public static final String NAME = "FileIdentify";
 
-    /**
-     * No arg constructor, just loads the properties
-     */
-    public FileIdentify() {
-    	this.loadProperties(FileIdentify.PROPERTIES_PATH);
-    }
-    
-    /**
-     * Second constructor for testing, allows an alternative set of properties to be read in
-     * DO NOT use this in practise, the no arg constructor is fine
-     * @param propPath 
-     * 		An alternative properties file
-     */
-    public FileIdentify(String propPath) {
-    	this.loadProperties(propPath);
-    }
-    
 	/**
 	 * @see eu.planets_project.services.identify.Identify#describe()
 	 */
@@ -81,15 +59,20 @@ public class FileIdentify implements Identify {
 	 * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
 	 */
 	public IdentifyResult identify(DigitalObject digitalObject) {
-		// First check that the properties aren't null
-		// If they are then we can't get going so return a bad initialisation message
-		if (this._properties == null) {
-			return this.returnWithErrorMessage("Error Reading properties file", 1);
-		}
 
         // Can only cope if the object is 'simple', i.e. we need a byte sequence
         if(digitalObject.getContent() == null) {
             return this.returnWithErrorMessage("The Content of the DigitalObject should not be NULL.", 1);
+        }
+
+        // Now check that windows, we won't work on none windows at the moment
+        if (!FileServiceSetup.isWindows()) {
+            return this.returnWithErrorMessage("OS detected not windows based, this service only runs on windows.", 1);
+        }
+
+        // Finally check that the cygwin file command cannot be found
+        if (!FileServiceSetup.isCygwinFileDetected()) {
+            return this.returnWithErrorMessage("Cygwin file.exe not found at location given in cygwin.file.location property.", 1);
         }
 
         // Get binary data from digital object
@@ -99,7 +82,7 @@ public class FileIdentify implements Identify {
         File tmpInFile = ByteArrayHelper.write(binary);
 
         // Right we'll need to create a suitable command line
-        String[] commands = new String[] {this._properties.getProperty("cygwin.file.location"),
+        String[] commands = new String[] {FileServiceSetup.getProperties().getProperty("cygwin.file.location"),
         								  "-i",
         								  "-b",
         								  tmpInFile.getAbsolutePath()};
@@ -118,7 +101,7 @@ public class FileIdentify implements Identify {
         // Get the MIME type from the process output 
         String mime = runner.getProcessOutputAsString().trim();
         // Let's check that it found the file, this should never happen but who knows
-        if (mime.indexOf(this._properties.getProperty("cygwin.message.nofile")) != -1) {
+        if (mime.indexOf(FileServiceSetup.getProperties().getProperty("cygwin.message.nofile")) != -1) {
         	FileIdentify._log.debug("File failed to find an error");
         	return this.returnWithErrorMessage(mime, 1);
         }
@@ -135,24 +118,6 @@ public class FileIdentify implements Identify {
 	//======================================================================
 	// PRIVATE METHODS
 	//======================================================================
-
-	/**
-	 * Load the properties from the supplied path
-	 * @param propPath
-	 * 		The path to the properties file
-	 */
-	private void loadProperties(String propPath) {
-		try {
-			// Create a new properties object and load the properties
-			_properties = new Properties();
-	       	_properties.load(this.getClass().getClassLoader().getResourceAsStream(propPath));
-		} catch (IOException exp) {
-			// Hopefully this won't happen, it's unrecoverable if it does
-			// We'll log it and then set _propertes to null
-			FileIdentify._log.debug("IOException processing properties file", exp);
-			_properties = null;
-		}
-	}
 
 	/**
 	 * Method to create the IdentifyResult with an error message, used when things go wrong
