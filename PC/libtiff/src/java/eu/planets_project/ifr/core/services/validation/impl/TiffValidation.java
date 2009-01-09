@@ -25,9 +25,15 @@ import com.sun.jna.ptr.ByReference;
 import com.sun.jna.ptr.IntByReference;
 
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.PlanetsLogger;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
+import eu.planets_project.services.validate.ValidateResult.Validity;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.utils.FileUtils;
+
 
 /**
  * Simple TIFF validation service
@@ -37,15 +43,15 @@ import eu.planets_project.services.validate.BasicValidateOneBinary;
  */
 @WebService(
 	name = TiffValidation.NAME, 
-	serviceName = BasicValidateOneBinary.NAME, 
+	serviceName = Validate.NAME, 
 	targetNamespace = PlanetsServices.NS, 
-	endpointInterface = "eu.planets_project.services.validate.BasicValidateOneBinary"
+	endpointInterface = "eu.planets_project.services.validate.Validate"
 	)
-@Local(BasicValidateOneBinary.class)
-@Remote(BasicValidateOneBinary.class)
+@Local(Validate.class)
+@Remote(Validate.class)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Stateless()
-public class TiffValidation implements BasicValidateOneBinary, Serializable 
+public class TiffValidation implements Validate, Serializable 
 {
 	private static final long serialVersionUID = -7116493742376868779L;
 	/**
@@ -90,10 +96,35 @@ public class TiffValidation implements BasicValidateOneBinary, Serializable
 		"info:pronom/fmt/10");
 
 	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI)
+	 */
+	public ValidateResult validate(final DigitalObject o, final URI fmt) 
+	{
+		ValidateResult result;
+		File tempFile =  FileUtils.writeInputStreamToTmpFile(o.getContent().read(), 
+			"image", "tif");
+		boolean valid = basicValidateOneBinary(tempFile, fmt);
+		result = new ValidateResult(valid ? Validity.VALID 
+			: Validity.INVALID, new ServiceReport());
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.services.validate.Validate#describe()
+	 */
+	public ServiceDescription describe() {
+		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME,
+			this.getClass().getCanonicalName());
+		sd.description("Validation service using JNA/libtiff");
+		return sd.build();
+	}
+	
+	/**
 	 * Validata a TIFF file by opening a byte array with native libtiff
 	 * 
-	 * @param binary The file to check (as a byte array)
-	 *        
+	 * @param digitalObject The digital object file to validate        
 	 * @param fmt PRONOM UID: 
 	 * 	info:pronom/fmt/7  - TIFF V3
 	 * 	info:pronom/fmt/8  - TIFF V4
@@ -101,27 +132,15 @@ public class TiffValidation implements BasicValidateOneBinary, Serializable
 	 * 	info:pronom/fmt/10 - TIFF V6
 	 *
 	 * @return verification (boolean)
+	 * @see eu.planets_project.services.validate.BasicValidateOneBinary#basicValidateOneBinary(byte[], java.net.URI)
 	 */
-	@WebMethod(operationName = BasicValidateOneBinary.NAME, 
-		action = PlanetsServices.NS + "/" + BasicValidateOneBinary.NAME)
-	@WebResult(name = BasicValidateOneBinary.NAME + "Result", 
-		targetNamespace = PlanetsServices.NS + "/" + BasicValidateOneBinary.NAME, 
-		partName = BasicValidateOneBinary.NAME + "Result")
-	public boolean  basicValidateOneBinary(
-		@WebParam(name = "binary", 
-			targetNamespace = PlanetsServices.NS + "/" + BasicValidateOneBinary.NAME,
-			partName = "binary") final byte[] binary,
-		@WebParam(name = "fmt", 
-			targetNamespace = PlanetsServices.NS + "/" + BasicValidateOneBinary.NAME,
-			partName = "fmt") final URI fmt) 
+	private boolean  basicValidateOneBinary(File tempFile, final URI fmt)
 	{
 		if (fmt != null && !TIFF_PRONOM.contains(fmt.toString())) 
 		{
 			throw new IllegalArgumentException(fmt.toString() 
 				+ " is not a valid PRONOM UID for TIFF validation service");
 		}
-
-		File tempFile = ByteArrayHelper.write(binary);
 
 		Pointer tiff = TiffLibrary.INSTANCE.TIFFOpen(tempFile.getAbsolutePath(), "r");
 		if(tiff == null)
@@ -151,10 +170,9 @@ public class TiffValidation implements BasicValidateOneBinary, Serializable
 	@WebMethod
 	public boolean basicValidateOneBinary(final String fileName) 
 	{
-		bytes = ByteArrayHelper.read(new File(fileName));
-		return basicValidateOneBinary(bytes, null);
+		File tempFile = new File(fileName);
+		return basicValidateOneBinary(tempFile, null);
 	}
-
 
 	/**
 	 * Interface wrapping libTiff's functions
