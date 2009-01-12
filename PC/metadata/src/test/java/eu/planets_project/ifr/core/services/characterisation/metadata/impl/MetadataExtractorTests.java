@@ -17,6 +17,7 @@ import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
@@ -41,6 +42,19 @@ public class MetadataExtractorTests {
     public static void setup() {
         System.out.println("Local:");
         characterizer = new MetadataExtractor();
+    }
+
+    @Test
+    public void testServiceDescription() {
+        ServiceDescription description = characterizer.describe();
+        /*
+         * We expect to have at least as many input formats (PRONOM) as there
+         * are supported file types (extensions):
+         */
+        int size = description.getInputFormats().size();
+        Assert.assertTrue(
+                "Service description contains less input formats than it should: "
+                        + size, size >= MetadataType.values().length);
     }
 
     /**

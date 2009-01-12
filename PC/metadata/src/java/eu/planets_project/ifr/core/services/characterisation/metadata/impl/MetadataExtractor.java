@@ -97,6 +97,24 @@ public final class MetadataExtractor implements Characterise {
      * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
+        /*
+         * Gather all supported input formats using the tech reg and the types
+         * enum:
+         */
+        FormatRegistry formatRegistry = FormatRegistryFactory
+                .getFormatRegistry();
+        List<URI> inputFormats = new ArrayList<URI>();
+        MetadataType[] metadataTypes = MetadataType.values();
+        for (MetadataType metadataType : metadataTypes) {
+            /*
+             * We use the sample file extension instead of the mime type, as the
+             * latter is file/unknown for many types (it's what the tool returns
+             * as a result, used for testing)
+             */
+            String[] split = metadataType.sample.split("\\.");
+            String extension = split[split.length - 1];
+            inputFormats.addAll(formatRegistry.getURIsForExtension(extension));
+        }
         return new ServiceDescription.Builder(
                 "New Zealand Metadata Extractor Service", Characterise.class
                         .getName())
@@ -109,7 +127,7 @@ public final class MetadataExtractor implements Characterise {
                 .furtherInfo(
                         URI
                                 .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407&atid=929202"))
-                .build();
+                .inputFormats(inputFormats.toArray(new URI[] {})).build();
     }
 
     /**
