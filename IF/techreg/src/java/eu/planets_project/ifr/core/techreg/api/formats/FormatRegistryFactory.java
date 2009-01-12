@@ -17,6 +17,9 @@ import eu.planets_project.ifr.core.techreg.impl.formats.FormatRegistryImpl;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
 public final class FormatRegistryFactory {
+    /** The cached instance. */
+    private static FormatRegistry registry = null;
+
     /** Enforce non-instantiability with a private constructor. */
     private FormatRegistryFactory() {}
 
@@ -28,27 +31,31 @@ public final class FormatRegistryFactory {
      *         if the lookup failed.
      */
     public static FormatRegistry getFormatRegistry() {
-        if (System.getProperty("pserv.test.context") != null) {
-            return new FormatRegistryImpl();
+        if (registry == null) {
+            if (System.getProperty("pserv.test.context") != null) {
+                registry = new FormatRegistryImpl();
+            } else {
+                try {
+                    Context jndiContext = new javax.naming.InitialContext();
+                    Object ref = jndiContext
+                            .lookup("planets-project.eu/FormatRegistry/remote");
+                    FormatRegistry um = (FormatRegistry) PortableRemoteObject
+                            .narrow(ref, FormatRegistry.class);
+                    registry = um;
+                } catch (NamingException e) {
+                    log
+                            .error("Failure during lookup of the FormatRegistry PortableRemoteObject: "
+                                    + e.toString());
+                    /*
+                     * We might not be able to retrieve via JNDI, and have not
+                     * set the property that is checked above, for instance when
+                     * running a JUnit test directly, so here we return a local
+                     * instance too:
+                     */
+                    registry = new FormatRegistryImpl();
+                }
+            }
         }
-        try {
-            Context jndiContext = new javax.naming.InitialContext();
-            Object ref = jndiContext
-                    .lookup("planets-project.eu/FormatRegistry/remote");
-            FormatRegistry um = (FormatRegistry) PortableRemoteObject.narrow(
-                    ref, FormatRegistry.class);
-            return um;
-        } catch (NamingException e) {
-            log
-                    .error("Failure during lookup of the FormatRegistry PortableRemoteObject: "
-                            + e.toString());
-            /*
-             * We might not be able to retrieve via JNDI, and have not set the
-             * property that is checked above, for instance when running a JUnit
-             * test directly, so here we return a local instance too:
-             */
-            return new FormatRegistryImpl();
-        }
+        return registry;
     }
-
 }

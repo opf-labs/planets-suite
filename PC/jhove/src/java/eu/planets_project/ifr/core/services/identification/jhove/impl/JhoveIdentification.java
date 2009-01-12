@@ -23,6 +23,8 @@ import edu.harvard.hul.ois.jhove.App;
 import edu.harvard.hul.ois.jhove.JhoveBase;
 import edu.harvard.hul.ois.jhove.JhoveException;
 import edu.harvard.hul.ois.jhove.handler.TextHandler;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -69,7 +71,8 @@ public final class JhoveIdentification implements Identify, Serializable {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "jhove-temp", "bin");
         Types types = identifyOneBinary(file);
-        log.info("JHOVE Identification, got types: " + types.types);
+        log.info("JHOVE Identification, got types: "
+                + Arrays.asList(types.types));
         ServiceReport report = new ServiceReport();
         report.setInfo(types.status);
         return new IdentifyResult(Arrays.asList(types.types), report);
@@ -123,7 +126,7 @@ public final class JhoveIdentification implements Identify, Serializable {
         /***/
         XML("text/xml", "info:pronom/fmt/101", "xml/sample.xml");
         /***/
-        private String pronom;
+        private String samplePronomId;
         /***/
         private String mime;
         /***/
@@ -137,7 +140,7 @@ public final class JhoveIdentification implements Identify, Serializable {
         private FileType(final String mime, final String pronom,
                 final String sample) {
             this.mime = mime;
-            this.pronom = pronom;
+            this.samplePronomId = pronom;
             this.sample = sample;
         }
 
@@ -145,7 +148,7 @@ public final class JhoveIdentification implements Identify, Serializable {
          * @return Returns the pronom URI
          */
         public String getPronom() {
-            return pronom;
+            return samplePronomId;
         }
 
         /**
@@ -162,7 +165,11 @@ public final class JhoveIdentification implements Identify, Serializable {
     public static URI[] inputFormats() {
         List<URI> result = new ArrayList<URI>();
         for (FileType type : FileType.values()) {
-            result.add(URI.create(type.getPronom()));
+            String[] split = type.getSample().split("\\.");
+            FormatRegistry formatRegistry = FormatRegistryFactory
+                    .getFormatRegistry();
+            result.addAll(formatRegistry
+                    .getURIsForExtension(split[split.length - 1]));
         }
         return result.toArray(new URI[] {});
     }
@@ -256,7 +263,7 @@ public final class JhoveIdentification implements Identify, Serializable {
         for (FileType type : FileType.values()) {
             if (mime.trim().toLowerCase().equals(type.mime)) {
                 try {
-                    return new URI(type.pronom);
+                    return new URI(type.samplePronomId);
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                 }

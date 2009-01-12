@@ -41,8 +41,11 @@ public class JhoveValidationTests {
     @Test
     public void testServiceDescription() {
         ServiceDescription description = new JhoveValidation().describe();
-        Assert.assertEquals(FileType.values().length, description
-                .getInputFormats().size());
+        Assert
+                .assertTrue(
+                        "We have less supported pronom IDs than supported file types",
+                        description.getInputFormats().size() >= FileType
+                                .values().length);
         System.out.println(description.toXmlFormatted());
     }
 
@@ -138,7 +141,7 @@ public class JhoveValidationTests {
      * The old approach: iterate over the enum types...
      */
     @SuppressWarnings("unused")
-	private void test() {
+    private void test() {
         /* We check all the enumerated file types: */
         for (FileType type : FileType.values()) {
             test(type);

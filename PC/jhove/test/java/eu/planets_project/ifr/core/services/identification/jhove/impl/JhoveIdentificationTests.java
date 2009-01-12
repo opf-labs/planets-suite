@@ -34,27 +34,29 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * test the describe() method
+     * Test the describe() method.
      */
     @Test
     public void testServiceDescription() {
         ServiceDescription description = new JhoveIdentification().describe();
-        Assert.assertEquals(FileType.values().length, description
-                .getInputFormats().size());
+        Assert
+                .assertTrue(
+                        "We have less supported pronom IDs than supported file types",
+                        description.getInputFormats().size() >= FileType
+                                .values().length);
         System.out.println(description.toXmlFormatted());
     }
 
     /**
-     * test AIFF identification
+     * Test AIFF identification.
      */
     @Test
     public void testAiff() {
         test(FileType.AIFF);
     }
 
-    
     /**
-     * test ASCII identification
+     * Test ASCII identification.
      */
     @Test
     public void testAscii() {
@@ -62,7 +64,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * test GIF identification
+     * Test GIF identification.
      */
     @Test
     public void testGif() {
@@ -70,7 +72,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * Test HTML identifcation
+     * Test HTML identifcation.
      */
     @Test
     public void testHtml() {
@@ -78,7 +80,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * Test JPEG 1 identification
+     * Test JPEG 1 identification.
      */
     @Test
     public void testJpeg1() {
@@ -86,7 +88,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * Test JPEG 2 identification
+     * Test JPEG 2 identification.
      */
     @Test
     public void testJpeg2() {
@@ -94,7 +96,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * Test JPEG identification
+     * Test JPEG identification.
      */
     // @Test TODO: There is something wrong with that JPEG file
     public void testJpeg3() {
@@ -102,7 +104,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * Test PDF identification
+     * Test PDF identification.
      */
     @Test
     public void testPdf() {
@@ -110,7 +112,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * Test TIFF identification
+     * Test TIFF identification.
      */
     @Test
     public void testTiff() {
@@ -118,7 +120,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * Test wav identification
+     * Test wav identification.
      */
     @Test
     public void testWave() {
@@ -126,7 +128,7 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * test xml identification
+     * Test xml identification.
      */
     @Test
     public void testXml() {
@@ -137,7 +139,7 @@ public class JhoveIdentificationTests {
      * The old approach: iterate over the enum types...
      */
     @SuppressWarnings("unused")
-	private void test() {
+    private void test() {
         /* We check all the enumerated file types: */
         for (FileType type : FileType.values()) {
             test(type);
@@ -147,7 +149,7 @@ public class JhoveIdentificationTests {
     /**
      * @param type The enum type to test
      */
-    private void test(FileType type) {
+    private void test(final FileType type) {
         System.out.println("Testing identification of: " + type);
         /* For each we get the sample file: */
         String location = type.getSample();
@@ -156,10 +158,12 @@ public class JhoveIdentificationTests {
         try {
             result = jhove.identify(
                     new DigitalObject.Builder(Content.byReference(new File(
-                            location).toURI().toURL())).build()).getTypes().get(0);
+                            location).toURI().toURL())).build()).getTypes()
+                    .get(0);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        Assert.assertNotNull(result);
         assertEquals("Wrong pronom ID;", type.getPronom(), result.toString());
     }
 
