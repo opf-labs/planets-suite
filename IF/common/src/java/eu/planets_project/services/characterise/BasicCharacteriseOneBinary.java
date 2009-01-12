@@ -32,7 +32,6 @@ public interface BasicCharacteriseOneBinary {
     /**
      * @param binary
      * @return string characterisation result
-     * @throws PlanetsException
      */
     @WebMethod(operationName = BasicCharacteriseOneBinary.NAME, action = PlanetsServices.NS
             + "/" + BasicCharacteriseOneBinary.NAME)
