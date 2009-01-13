@@ -8,11 +8,11 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Extr
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.ExtractorStandaloneTest;
 
 /**
- * Suite to run all tests in the extreactor component.
+ * Suite to run all tests in the extractor component.
  * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { ExtractorLocalTest.class, ExtractorServerTest.class, ExtractorStandaloneTest.class })
+@Suite.SuiteClasses( { ExtractorLocalTest.class , ExtractorServerTest.class, ExtractorStandaloneTest.class})
 public class AllExtractorSuite {}

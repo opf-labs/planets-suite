@@ -249,7 +249,7 @@ public class ImageMagickMigrations implements Migrate {
 			// Has the input file the format it claims it has?
 			if(compareExtensions(inputExt, actualSrcFormat) == false) {
 				// if NOT just return without doing anything...
-				return this.returnWithErrorMessage("The passed input file format does not match the actual format of the file!\n" +
+				return this.returnWithErrorMessage("The passed input file format (" + inputExt + " does not match the actual format (" + actualSrcFormat + ") of the file!\n" +
 						"This could cause unpredictable behaviour. Nothing has been done!", null);
 			}
 			
