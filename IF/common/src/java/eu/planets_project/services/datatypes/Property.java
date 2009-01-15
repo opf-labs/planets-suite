@@ -12,9 +12,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property {
 
-    private String name;
+    private String name = "";
 
-    private String value;
+    private String value = "";
 
     protected String unit = "";
 
@@ -24,9 +24,9 @@ public class Property {
     
     /**
      * For JAXB.
+     * @deprecated Use the constructor with the two required parameters instead.
      */
-    @SuppressWarnings("unused")
-    private Property() {}
+    public Property() {}
 
     /**
      * @param name
