@@ -38,6 +38,9 @@
 
   <property name="test.dir" value="${appDir}/../test/java"/>
   <property name="client.config" value="${appDir}/../test/client-config"/>
+	
+  <property name="reports.dir" value="${pserv.root.dir}/tests/reports"/>
+  <property name="summary.dir" value="${pserv.root.dir}/tests/summary"/>
 
 
   <if>
@@ -388,6 +391,14 @@
         <ant target="test:server"/>
       </then>
     </if>
+  	<!-- collect the results into a summary report -->
+  	<junitreport todir="${summary.dir}">
+  	  <fileset dir="${reports.dir}">
+  	    <include name="TEST-*.xml"/>
+  	  </fileset>
+  	  <report format="frames" todir="${summary.dir}"/>
+  	</junitreport>
+  	<echo message="Wrote summary test report to: ${summary.dir}" />
   </target>
   
   <!-- This is required for Java 6, which ships with JAXB 2.0 not 2.1. -->
@@ -402,8 +413,8 @@
       <sysproperty key="pserv.test.context" value="local"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       
-      <batchtest fork="yes">
-        <formatter type="plain" usefile="false" />
+      <batchtest fork="yes" todir="${reports.dir}">
+        <formatter type="xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
@@ -422,8 +433,8 @@
       <sysproperty key="pserv.test.context" value="standalone"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       
-      <batchtest fork="yes">
-        <formatter type="plain" usefile="false" />
+      <batchtest fork="yes" todir="${reports.dir}">
+        <formatter type="xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
@@ -459,8 +470,8 @@
       <sysproperty key="pserv.test.host" value="${if_server.host}"/>
       <sysproperty key="pserv.test.port" value="${if_server.port}"/>
       
-      <batchtest fork="yes">
-        <formatter type="plain" usefile="false" />
+      <batchtest fork="yes" todir="${reports.dir}">
+        <formatter type="xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
