@@ -39,6 +39,7 @@ public class CoreExtractor {
     private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
     private static boolean NORM_DATA_DISABLED = false;
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
+    private static String OPTIONAL_XCEL_PARAM = "optionalXCELString";
 
     /**
      * @param extractorName
@@ -195,27 +196,36 @@ public class CoreExtractor {
         
         // Got Parameters???
         if(parameters!=null) {
-        	List <Parameter> parameterList = parameters.getParameters();
-        	for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
-				Parameter parameter = (Parameter) iterator.next();
-				String name = parameter.name;
-				if(name.equalsIgnoreCase(RAW_DATA_FLAG)) {
-					plogger.info("Got Parameter: " + name + " = " + parameter.value);
-					plogger.info("Configuring Extractor to write RAW data!");
-					extractor_arguments.add(parameter.value);
-					continue;
-				}
-				else if(name.equalsIgnoreCase(NO_NORM_DATA_FLAG)) {
-					plogger.info("Got Parameter: " + name + " = " + parameter.value);
-					plogger.info("Configuring Extractor to skip NormData!");
-					extractor_arguments.add(parameter.value);
-					NORM_DATA_DISABLED = true;
-					continue;
-				}
-				else {
-					plogger.warn("Invalid parameter: " + name + " = '" + parameter.value + "'. Ignoring parameter...!");
-					continue;
-				}
+        	if(parameters.getParameters()!=null && parameters.getParameters().size() != 0) {
+	        	plogger.info("Got additional parameters: ");
+	        	List <Parameter> parameterList = parameters.getParameters();
+	        	for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
+					Parameter parameter = (Parameter) iterator.next();
+					String name = parameter.name;
+					if(name.equalsIgnoreCase(OPTIONAL_XCEL_PARAM)) {
+						plogger.info("Optional XCEL passed! Using specified XCEL.");
+						continue;
+					}
+					
+					if(name.equalsIgnoreCase(RAW_DATA_FLAG)) {
+						plogger.info("Got Parameter: " + name + " = " + parameter.value);
+						plogger.info("Configuring Extractor to write RAW data!");
+						extractor_arguments.add(parameter.value);
+						continue;
+					}
+					
+					else if(name.equalsIgnoreCase(NO_NORM_DATA_FLAG)) {
+						plogger.info("Got Parameter: " + name + " = " + parameter.value);
+						plogger.info("Configuring Extractor to skip NormData!");
+						extractor_arguments.add(parameter.value);
+						NORM_DATA_DISABLED = true;
+						continue;
+					}
+					else {
+						plogger.warn("Invalid parameter: " + name + " = '" + parameter.value + "'. Ignoring parameter...!");
+						continue;
+					}
+	        	}
         	}
         }
         

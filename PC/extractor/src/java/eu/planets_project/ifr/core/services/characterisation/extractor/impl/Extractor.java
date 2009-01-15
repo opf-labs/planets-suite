@@ -83,14 +83,7 @@ public class Extractor implements Characterise, Serializable {
 		
 		CoreExtractor coreExtractor = new CoreExtractor(Extractor.NAME, LOG);
 		
-		byte[] inputData = null;
-		
-		if(digitalObject.getContent().isByValue()) {
-			inputData = digitalObject.getContent().getValue();
-		}
-		else {
-			inputData = FileUtils.writeInputStreamToBinary(digitalObject.getContent().read());
-		}
+		byte[] inputData = FileUtils.writeInputStreamToBinary(digitalObject.getContent().read());
 		
 		byte[] result = null;
 		

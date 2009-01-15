@@ -36,13 +36,8 @@ public final class ExtractorUnitHelper {
     
     static final String EXTRACTOR_STANDALONE_TEST_OUT = "EXTRACTOR_STANDALONE_TEST_OUT";
            
-    
-    /***/
-    // TODO: Add if clause before replacing File.separators
     static final String SAMPLE_FILE = "PC/extractor/src/test/resources/sample_files/bgai4a16.png";
 
-    /***/
-    // TODO: Add if clause before replacing File.separators
     static final String SAMPLE_XCEL = "PC/extractor/src/test/resources/sample_files/xcel_png.xml";
 
     /**
