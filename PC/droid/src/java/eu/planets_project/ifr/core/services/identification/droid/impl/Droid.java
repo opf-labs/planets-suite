@@ -162,22 +162,28 @@ public final class Droid implements Identify, Serializable {
          * Droid runs the identification in a Thread, so we have to wait until
          * it finishes...
          */
-        while (!file.isClassified() /* ...but we won't wait forever: */
+        while (!classificationIsDone(file) /* ...but we won't wait forever: */
                 && slept < WAIT_MAX) {
             sleep();
             slept++;
         }
+    }
+
+    /**
+     * @param file The file object
+     * @return True, if the file has a final, non-tentative classification
+     */
+    private boolean classificationIsDone(final IdentificationFile file) {
         /*
          * We seem to be hitting are rare case sometimes: The file is
          * classified, we think we are done with waiting, but that
          * classification is preliminary and would be replaced, if we'd wait a
          * little longer, e.g. having RTF 1.0 as a preliminary result, which
-         * will be updated to RTF 1.5 a moment later. I have no idea how to
-         * check that form the API, so for now, I've set the waiting interval a
-         * little higher, and wait at least once more, after Droid has
-         * something:
+         * will be updated to RTF 1.5 a moment later. So we not only check if we
+         * have a classification, but also if that is final, i.e. not tentative:
          */
-        sleep();
+        return file.isClassified()
+                && file.getClassification() != AnalysisController.FILE_CLASSIFICATION_TENTATIVE;
     }
 
     /**
