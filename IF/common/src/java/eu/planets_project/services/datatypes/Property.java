@@ -7,21 +7,26 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * @author AnJackson
- *
+ * @author Andrew Jackson, Fabian Steeg
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property {
 
     private String name;
-    
+
     private String value;
 
-    protected String unit;
+    protected String unit = "";
 
-    protected String description;
+    protected String description = "";
 
-    protected String type;
+    protected String type = "";
+    
+    /**
+     * For JAXB.
+     */
+    @SuppressWarnings("unused")
+    private Property() {}
 
     /**
      * @param name
@@ -46,69 +51,103 @@ public class Property {
     public String getValue() {
         return value;
     }
-    
+
     /**
-     * 
+     * @param name the name to set
      */
-    public Property() {
+    public void setName(String name) {
+        this.name = name;
     }
 
-    
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-
-	/**
-	 * @param value the value to set
-	 */
-	public void setValue(String value) {
-		this.value = value;
-	}
+    /**
+     * @param value the value to set
+     */
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     /**
      * @return the unit
      */
     public String getUnit() {
-    	return unit;
+        return unit;
     }
 
     /**
      * @param unit the unit to set
      */
     public void setUnit(String unit) {
-    	this.unit = unit;
+        this.unit = unit;
     }
 
     /**
      * @return the description
      */
     public String getDescription() {
-    	return description;
+        return description;
     }
 
     /**
      * @param description the description to set
      */
     public void setDescription(String description) {
-    	this.description = description;
+        this.description = description;
     }
 
     /**
      * @return the type
      */
     public String getType() {
-    	return type;
+        return type;
     }
 
     /**
      * @param type the type to set
      */
     public void setType(String type) {
-    	this.type = type;
+        this.type = type;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String.format("%s '%s' = '%s'", this.getClass().getSimpleName(),
+                name, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Property)) {
+            return false;
+        }
+        Property that = (Property) obj;
+        return this.name.equals(that.name) && this.value.equals(that.value)
+                && this.unit.equals(that.unit)
+                && this.description.equals(that.description)
+                && this.type.equals(that.type);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        int result = 17;
+        int oddPrime = 31;
+        result = oddPrime * result + name.hashCode();
+        result = oddPrime * result + value.hashCode();
+        result = oddPrime * result + unit.hashCode();
+        result = oddPrime * result + description.hashCode();
+        result = oddPrime * result + type.hashCode();
+        return result;
     }
 
 }

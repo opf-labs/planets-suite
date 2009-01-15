@@ -84,7 +84,7 @@
 	<classpathentry kind="lib" path="PC/metadata/lib/gif_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/html_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/jpg_adapter_1_1.jar"/>
-	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar" sourcepath="PC/metadata/lib/metadata-src.zip"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/mp3_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/msword_adapter_2_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/msworks_adapter_1_0.jar"/>

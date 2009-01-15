@@ -1,7 +1,5 @@
 package eu.planets_project.ifr.core.services.characterisation.metadata.impl;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.net.URI;
 import java.util.List;
@@ -17,9 +15,9 @@ import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.ByteArrayHelper;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Tests of the metadata extractor functionality.
@@ -195,20 +193,16 @@ public class MetadataExtractorTests {
         if (binary.length == 0) {
             throw new IllegalStateException("Empty file: " + file);
         }
-        String result = null;
         DigitalObject digitalObject = new DigitalObject.Builder(Content
                 .byValue(binary)).build();
         CharacteriseResult characteriseResult = characterizer.characterise(
                 digitalObject, null, null);
-        byte[] resultBytes = FileUtils
-                .writeInputStreamToBinary(characteriseResult.getDigitalObject()
-                        .getContent().read());
-        result = new String(resultBytes);
+        List<Property> properties = characteriseResult.getProperties();
         System.out.println("Characterised " + file.getAbsolutePath() + " as: "
-                + result);
-        assertTrue("Result does not contain the correct mime type: "
-                + type.mime + " in result: " + result, result.toLowerCase()
-                .contains(type.mime));
+                + properties);
+        Assert.assertTrue("Result does not contain the correct mime type: "
+                + type.mime + " in result: " + properties, properties
+                .contains(new Property("TYPE", type.mime)));
     }
 
     /**

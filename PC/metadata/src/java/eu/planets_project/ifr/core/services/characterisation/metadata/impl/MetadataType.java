@@ -17,7 +17,7 @@ public enum MetadataType {
     /***/
     PDF("pdf/AA_Banner-single.pdf", "application/pdf", "pdf_adapter_1_0.jar", "fmt/14"),
     /***/
-    WAV("wav/comet.wav", "wave", "wave_adapter_1_0.jar", "fmt/2"),
+    WAV("wav/comet.wav", "audio/wav", "wave_adapter_1_0.jar", "fmt/2"),
     /***/
     HTML("html/sample.html", "text/html", "html_adapter_1_0.jar", "fmt/97"),
     /** The OO adapter throws an exception but still works. */

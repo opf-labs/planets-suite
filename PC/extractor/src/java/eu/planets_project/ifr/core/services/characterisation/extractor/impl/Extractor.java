@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -23,6 +24,7 @@ import eu.planets_project.services.datatypes.FileFormatProperties;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.FileUtils;
@@ -143,9 +145,9 @@ public class Extractor implements Characterise, Serializable {
 	 */
 	private CharacteriseResult returnWithErrorMessage(final String message, final Exception e) {
         if (e == null) {
-            return new CharacteriseResult(null, ServiceUtils.createErrorReport(message));
+            return new CharacteriseResult(new ArrayList<Property>(), ServiceUtils.createErrorReport(message));
         } else {
-            return new CharacteriseResult(null, ServiceUtils.createExceptionErrorReport(message, e));
+            return new CharacteriseResult(new ArrayList<Property>(), ServiceUtils.createExceptionErrorReport(message, e));
         }
     }
 	

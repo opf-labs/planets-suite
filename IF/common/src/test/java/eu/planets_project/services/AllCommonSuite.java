@@ -7,15 +7,16 @@ import eu.planets_project.services.datatypes.ChecksumTests;
 import eu.planets_project.services.datatypes.ContentTests;
 import eu.planets_project.services.datatypes.DigitalObjectTests;
 import eu.planets_project.services.datatypes.MetadataTests;
+import eu.planets_project.services.datatypes.PropertyTests;
 import eu.planets_project.services.datatypes.ServiceDescriptionTest;
 
 /**
  * Suite to run all tests in the common component.
- * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { ChecksumTests.class, DigitalObjectTests.class,
-        MetadataTests.class, ContentTests.class, ServiceDescriptionTest.class })
+        MetadataTests.class, ContentTests.class, ServiceDescriptionTest.class,
+        PropertyTests.class })
 public class AllCommonSuite {}

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -22,16 +23,22 @@ import nz.govt.natlib.meta.config.Config;
 import nz.govt.natlib.meta.config.Configuration;
 import nz.govt.natlib.meta.config.ConfigurationException;
 import nz.govt.natlib.meta.ui.PropsManager;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.ByteArrayHelper;
@@ -60,9 +67,8 @@ public final class MetadataExtractor implements Characterise {
         InputStream stream = digitalObject.getContent().read();
         byte[] binary = FileUtils.writeInputStreamToBinary(stream);
         String resultString = basicCharacteriseOneBinary(binary);
-        DigitalObject result = new DigitalObject.Builder(Content
-                .byValue(resultString.getBytes())).build();
-        return new CharacteriseResult(result, new ServiceReport());
+        List<Property> props = readProperties(resultString);
+        return new CharacteriseResult(props, new ServiceReport());
     }
 
     /**
@@ -130,57 +136,33 @@ public final class MetadataExtractor implements Characterise {
                 .inputFormats(inputFormats.toArray(new URI[] {})).build();
     }
 
+    /*------------------------------------------------------------------------*/
+    /*-------------------------- package private API -------------------------*/
+    /*------------------------------------------------------------------------*/
+
     /**
-     * @param binary The binary file to characterize
-     * @return Returns the proprietary XML result string returned by the
-     *         extractor tool
-     * @see eu.planets_project.services.characterise.BasicCharacteriseOneBinary#basicCharacteriseOneBinary(byte[])
+     * @param metadataXml The XML string resulting from harvesting, the output
+     *        of the NZ metadata extractor
+     * @return A list of properties
      */
-    private String basicCharacteriseOneBinary(final byte[] binary) {
-        if (binary.length == 0) {
-            throw new IllegalArgumentException("Binary is empty!");
-        }
-        File file = ByteArrayHelper.write(binary);
-        /* Create a HarvestSource of the object we want to harvest */
-        FileHarvestSource source = new FileHarvestSource(file);
+    static List<Property> readProperties(final String metadataXml) {
+        List<Property> properties = new ArrayList<Property>();
+        SAXBuilder builder = new SAXBuilder();
         try {
-            /* Get the native Configuration: */
-            Configuration c = Config.getInstance().getConfiguration(
-                    "Extract in Native form");
-            String tempFolder = file.getParent();
-            c.setOutputDirectory(tempFolder);
-            /* Harvest the file: */
-            c.getHarvester().harvest(c, source, new PropsManager());
-            /* The resulting file is the original file plus ".xml": */
-            File result = new File(c.getOutputDirectory() + File.separator
-                    + file.getName() + ".xml");
-            result.deleteOnExit();
-            return read(result.getAbsolutePath());
-        } catch (ConfigurationException e) {
+            Document doc = builder.build(new StringReader(metadataXml));
+            Element meta = doc.getRootElement().getChild("METADATA");
+            for (Object propElem : meta.getChildren()) {
+                Element e = (Element) propElem;
+                Property p = new Property(e.getName(), e.getText());
+                properties.add(p);
+            }
+
+        } catch (JDOMException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    /**
-     * @param location The location of the text file to read
-     * @return Return the content of the file at the specified location
-     */
-    private static String read(final String location) {
-        StringBuilder builder = new StringBuilder();
-        Scanner s;
-        try {
-            s = new Scanner(new File(location));
-            while (s.hasNextLine()) {
-                builder.append(s.nextLine()).append("\n");
-            }
-            return builder.toString();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return properties;
     }
 
     /**
@@ -234,5 +216,62 @@ public final class MetadataExtractor implements Characterise {
             e.printStackTrace();
         }
         return props;
+    }
+
+    /*------------------------------------------------------------------------*/
+    /*------------------------------- private API ----------------------------*/
+    /*------------------------------------------------------------------------*/
+
+    /**
+     * @param binary The binary file to characterize
+     * @return Returns the proprietary XML result string returned by the
+     *         extractor tool
+     * @see eu.planets_project.services.characterise.BasicCharacteriseOneBinary#basicCharacteriseOneBinary(byte[])
+     */
+    private String basicCharacteriseOneBinary(final byte[] binary) {
+        if (binary.length == 0) {
+            throw new IllegalArgumentException("Binary is empty!");
+        }
+        File file = ByteArrayHelper.write(binary);
+        /* Create a HarvestSource of the object we want to harvest */
+        FileHarvestSource source = new FileHarvestSource(file);
+        try {
+            /* Get the native Configuration: */
+            Configuration c = Config.getInstance().getConfiguration(
+                    "Extract in Native form");
+            String tempFolder = file.getParent();
+            c.setOutputDirectory(tempFolder);
+            /* Harvest the file: */
+            c.getHarvester().harvest(c, source, new PropsManager());
+            /* The resulting file is the original file plus ".xml": */
+            File result = new File(c.getOutputDirectory() + File.separator
+                    + file.getName() + ".xml");
+            result.deleteOnExit();
+            return read(result.getAbsolutePath());
+        } catch (ConfigurationException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @param location The location of the text file to read
+     * @return Return the content of the file at the specified location
+     */
+    private static String read(final String location) {
+        StringBuilder builder = new StringBuilder();
+        Scanner s;
+        try {
+            s = new Scanner(new File(location));
+            while (s.hasNextLine()) {
+                builder.append(s.nextLine()).append("\n");
+            }
+            return builder.toString();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
