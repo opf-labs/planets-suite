@@ -38,11 +38,14 @@
 
   <property name="test.dir" value="${appDir}/../test/java"/>
   <property name="client.config" value="${appDir}/../test/client-config"/>
+    
+  <property name="reports.dir" value="${pserv.root.dir}/tests/reports"/>
+  <property name="summary.dir" value="${pserv.root.dir}/tests/summary"/>
 
 
   <if>
-	<isset property="if_server.dir"/>
-	<then>
+    <isset property="if_server.dir"/>
+    <then>
     <property name="jboss.home" value="${if_server.dir}"/>
     <property name="server.deploy.lib.dir" value="${if_server.dir}/server/default/lib"/>
     <property name="server.deploy.dir" value="${if_server.dir}/server/default/deploy"/>
@@ -51,8 +54,8 @@
 
   <!-- The IF server classpath -->
   <if>
-	<isset property="use.if.classpath"/>
-	<then>
+    <isset property="use.if.classpath"/>
+    <then>
   <path id="server_classpath">
     <fileset dir="${server.deploy.lib.dir}">
       <include name="*.jar"/>
@@ -69,17 +72,17 @@
   </path>
     </then>
     <else>
-	  <!-- This is a portable server_classpath that suffices for compilation and testing of Planets web services. -->
-	  <path id="server_classpath">
-	    <fileset dir="${pserv.root.dir}/lib">
-	      <include name="standalone/*.jar" />
-	      <include name="jaxws-jboss-native/*.jar"/>
+      <!-- This is a portable server_classpath that suffices for compilation and testing of Planets web services. -->
+      <path id="server_classpath">
+        <fileset dir="${pserv.root.dir}/lib">
+          <include name="standalone/*.jar" />
+          <include name="jaxws-jboss-native/*.jar"/>
           <exclude name="jaxws-jboss-native/jaxws-rt.jar"/>
           <exclude name="jaxws-jboss-native/jaxws-tools.jar"/>
-	    </fileset>
-	    <path refid="pserv_common_classpath"/>
-	  </path>
-	</else>
+        </fileset>
+        <path refid="pserv_common_classpath"/>
+      </path>
+    </else>
   </if>
 
   <!-- The classpath corresponding to the shared artefacts. -->
@@ -203,14 +206,14 @@
     <!-- And deploy the common jars into the right places -->
     <copy file="${build.dir}/${jar.base.name}" todir="${pserv.root.dir}/build"/>
     <if>
-	  <isset property="server.deploy.lib.dir"/>
-	  <then>
-	    <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.lib.dir}"/>
-	  </then>
+      <isset property="server.deploy.lib.dir"/>
+      <then>
+        <copy file="${build.dir}/${jar.base.name}" todir="${server.deploy.lib.dir}"/>
+      </then>
       <else>
-      	<echo message="Cannot deploy, as no server lib directory is defined."/>
+        <echo message="Cannot deploy, as no server lib directory is defined."/>
       </else>
-	</if>
+    </if>
   </target>
 
   <!-- =================================================================== -->
@@ -259,7 +262,7 @@
     
     <!--compile the model-->
     <javac source="1.5" target="${target.jvm}" 
-		 srcdir="${src.dir}"
+         srcdir="${src.dir}"
            destdir="${build.classes.dir}"
            debug="on"
            deprecation="on"
@@ -272,7 +275,7 @@
     <!-- tempory not compiling test cases - include after restructuring build.xml-->
     <!--compile the test-classes, session beans, etc.-->
     <!--javac source="1.5" target="${target.jvm}"
-			srcdir="${test.dir}"
+            srcdir="${test.dir}"
            destdir="${build.classes.dir}"
            debug="on"
            deprecation="on"
@@ -388,6 +391,14 @@
         <ant target="test:server"/>
       </then>
     </if>
+    <!-- collect the results into a summary report -->
+    <junitreport todir="${summary.dir}">
+      <fileset dir="${reports.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${summary.dir}"/>
+    </junitreport>
+    <echo message="Wrote summary test report to: ${summary.dir}" />
   </target>
   
   <!-- This is required for Java 6, which ships with JAXB 2.0 not 2.1. -->
@@ -402,8 +413,8 @@
       <sysproperty key="pserv.test.context" value="local"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       
-      <batchtest fork="yes">
-        <formatter type="plain" usefile="false" />
+      <batchtest fork="yes" todir="${reports.dir}">
+        <formatter type="xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
@@ -422,8 +433,8 @@
       <sysproperty key="pserv.test.context" value="standalone"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       
-      <batchtest fork="yes">
-        <formatter type="plain" usefile="false" />
+      <batchtest fork="yes" todir="${reports.dir}">
+        <formatter type="xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
@@ -459,8 +470,8 @@
       <sysproperty key="pserv.test.host" value="${if_server.host}"/>
       <sysproperty key="pserv.test.port" value="${if_server.port}"/>
       
-      <batchtest fork="yes">
-        <formatter type="plain" usefile="false" />
+      <batchtest fork="yes" todir="${reports.dir}">
+        <formatter type="xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
@@ -497,8 +508,8 @@
 
   <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
     <if>
-	  <isset property="server.deploy.dir"/>
-	  <then>
+      <isset property="server.deploy.dir"/>
+      <then>
         <delete file="${server.deploy.dir}/${war.base.name}" failonerror="false"/>
         <delete file="${server.deploy.dir}/${ear.base.name}" failonerror="false"/>
         <delete file="${server.deploy.dir}/${jar.base.name}" failonerror="false"/>
@@ -724,12 +735,12 @@
 
   <target name="deploy:war" depends="undeploy, build:war">
     <if>
-	  <isset property="server.deploy.dir"/>
-	  <then>
-	  <copy file="${build.dir}/${war.base.name}" todir="${server.deploy.dir}"/>
+      <isset property="server.deploy.dir"/>
+      <then>
+      <copy file="${build.dir}/${war.base.name}" todir="${server.deploy.dir}"/>
       </then>
       <else>
-      	<echo message="Cannot deploy, as no deployment directory is defined."/>
+        <echo message="Cannot deploy, as no deployment directory is defined."/>
       </else>
     </if>
   </target>
@@ -737,12 +748,12 @@
   <target name="deploy:ear" depends="undeploy, build:ear" 
         description="DEFAULT builds and deploy the ear">
     <if>
-	  <isset property="server.deploy.dir"/>
-	  <then>
-	<copy file="${build.dir}/${ear.base.name}" todir="${server.deploy.dir}" />
+      <isset property="server.deploy.dir"/>
+      <then>
+    <copy file="${build.dir}/${ear.base.name}" todir="${server.deploy.dir}" />
     </then>
     <else>
-    	<echo message="Cannot deploy, as no deployment directory is defined."/>
+        <echo message="Cannot deploy, as no deployment directory is defined."/>
     </else>
   </if>
   </target>
