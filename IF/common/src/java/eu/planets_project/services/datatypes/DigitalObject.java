@@ -184,6 +184,15 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         private Builder() {}
 
         /**
+         * @param content The new content for the digital object to be created
+         * @return The builder, for cascaded calls
+         */
+        public Builder content(final Content content) {
+        	this.content = content;
+        	return this;
+        }
+
+        /**
          * @param permanentUrl The globally unique locator and identifier for
          *        this digital object.
          * @return The builder, for cascaded calls
