@@ -43,17 +43,6 @@ public class CharacteriseResult {
     }
 
     /**
-     * @deprecated Use the constructor with a list of properties instead.
-     * @param digitalObject
-     * @param report
-     */
-    public CharacteriseResult(DigitalObject digitalObject, ServiceReport report) {
-        super();
-        this.digitalObject = digitalObject;
-        this.report = report;
-    }
-
-    /**
      * @return the result properties
      */
     public List<Property> getProperties() {
@@ -61,19 +50,27 @@ public class CharacteriseResult {
     }
 
     /**
-     * @deprecated As the corresponding constructor, this will be replaced by
-     *             the list of properties.
-     * @return the digitalObject
-     */
-    public DigitalObject getDigitalObject() {
-        return digitalObject;
-    }
-
-    /**
      * @return the event
      */
     public ServiceReport getReport() {
         return report;
+    }
+
+    /**
+     * @param digitalObject the digitalObject to set
+     * @deprecated In the future, characterise results will only contain the
+     *             properties
+     */
+    public void setDigitalObject(DigitalObject digitalObject) {
+        this.digitalObject = digitalObject;
+    }
+
+    /**
+     * @deprecated Use {@link #getProperties()} to get the list of properties.
+     * @return the digitalObject
+     */
+    public DigitalObject getDigitalObject() {
+        return digitalObject;
     }
 
 }

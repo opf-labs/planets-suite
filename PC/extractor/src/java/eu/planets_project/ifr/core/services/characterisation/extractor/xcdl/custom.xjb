@@ -1,0 +1,8 @@
+<jxb:bindings version="2.0" 
+xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" 
+jxb:extensionBindingPrefixes="xjc">
+<jxb:globalBindings>
+<xjc:simple/>
+</jxb:globalBindings>
+</jxb:bindings>

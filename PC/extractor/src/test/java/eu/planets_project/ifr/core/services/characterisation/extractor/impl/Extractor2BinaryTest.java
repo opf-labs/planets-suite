@@ -36,10 +36,10 @@ public final class Extractor2BinaryTest {
      */
     @Before
     public void testBasicCharacteriseOneBinaryXCELtoBinary() {
-        File inputImage = new File(ExtractorUnitHelper.SAMPLE_FILE);
-        File inputXcel = new File(ExtractorUnitHelper.SAMPLE_XCEL);
+        File inputImage = new File(XcdlCharacteriseUnitHelper.SAMPLE_FILE);
+        File inputXcel = new File(XcdlCharacteriseUnitHelper.SAMPLE_XCEL);
         File outputFolder = new File(
-                ExtractorUnitHelper.BASIC_EXTRACTOR2BINARY_TEST_OUT);
+                XcdlCharacteriseUnitHelper.BASIC_EXTRACTOR2BINARY_TEST_OUT);
         boolean made = outputFolder.mkdir();
         if (!made && !outputFolder.exists()) {
             fail("Could not create directory: " + outputFolder);

@@ -33,16 +33,16 @@ public class ExtractorPropertiesLister {
 	/**
 	 * logger
 	 */
-	public static PlanetsLogger LOG = PlanetsLogger.getLogger(ExtractorPropertiesLister.class);
+	public final static PlanetsLogger LOG = PlanetsLogger.getLogger(ExtractorPropertiesLister.class);
 	
 	/**
 	 * xtractoer home dir
 	 */
-	public static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+	public final static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 	/**
 	 * fpm tool
 	 */
-	public static String FPM_TOOL = EXTRACTOR_HOME + "fpmTool";
+	public final static String FPM_TOOL = EXTRACTOR_HOME + "fpmTool";
 	
 	/**
 	 * @param formatURI

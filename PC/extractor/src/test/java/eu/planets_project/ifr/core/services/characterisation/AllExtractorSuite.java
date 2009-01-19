@@ -3,16 +3,24 @@ package eu.planets_project.ifr.core.services.characterisation;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.ExtractorLocalTest;
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.ExtractorServerTest;
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.ExtractorStandaloneTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Extractor2BinaryTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacteriseLocalTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.ExtractorPropertiesListerTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacteriseServerTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacteriseStandaloneTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrateLocalTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrateServerTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccessTests;
 
 /**
  * Suite to run all tests in the extractor component.
- * 
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { ExtractorLocalTest.class , ExtractorServerTest.class, ExtractorStandaloneTest.class})
+@Suite.SuiteClasses( { Extractor2BinaryTest.class, XcdlAccessTests.class,
+        XcdlCharacteriseLocalTest.class, XcdlCharacteriseServerTest.class,
+        XcdlCharacteriseStandaloneTest.class,
+        ExtractorPropertiesListerTest.class, XcdlMigrateLocalTest.class,
+        XcdlMigrateServerTest.class })
 public class AllExtractorSuite {}

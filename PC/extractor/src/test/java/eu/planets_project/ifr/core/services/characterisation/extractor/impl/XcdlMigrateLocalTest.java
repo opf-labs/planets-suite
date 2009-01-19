@@ -2,11 +2,7 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -18,15 +14,11 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlExtractor;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
-import eu.planets_project.services.characterise.Characterise;
-import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
@@ -34,8 +26,6 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.migration.soxservices.SoXTestsHelper;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -44,10 +34,10 @@ import eu.planets_project.services.utils.FileUtils;
  * @author Peter Melms
  * @author Fabian Steeg
  */
-public class XcdlExtractorLocalTest {
+public class XcdlMigrateLocalTest {
 
     /***/
-    static final String WSDL = "/pserv-pc-extractor/XcdlExtractor?wsdl";
+    static final String WSDL = "/pserv-pc-extractor/XcdlMigrate?wsdl";
     /***/
     static String xcelString;
     /***/
@@ -71,17 +61,19 @@ public class XcdlExtractorLocalTest {
      */
     @BeforeClass
     public static void setup() {
+        System.err.println("PATH env: " + System.getenv("PATH"));
+        System.err.println("PATH prop: " + System.getProperty("PATH"));
     	System.out.println("************************");
     	System.out.println("* Running LOCAL tests: *");
     	System.out.println("************************");
     	System.out.println();
     	System.setProperty("pserv.test.context", "local");
     	
-    	TEST_OUT = XcdlExtractorUnitHelper.XCDL_EXTRACTOR_LOCAL_TEST_OUT;
+    	TEST_OUT = XcdlMigrateUnitHelper.XCDL_EXTRACTOR_LOCAL_TEST_OUT;
     	
     	testOutFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT);
         
-        extractor = new XcdlExtractor();
+        extractor = new XcdlMigrate();
         
         migrationPaths = extractor.describe().getPaths().toArray(new MigrationPath[]{});
     }
@@ -170,27 +162,27 @@ public class XcdlExtractorLocalTest {
 	
 private String getTestXCEL (String srcExtension) {
     	if (srcExtension.equalsIgnoreCase("TIFF")) {
-    		return FileUtils.readTxtFileIntoString(XcdlExtractorUnitHelper.TIFF_XCEL);
+    		return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.TIFF_XCEL);
 		}
     	
     	if (srcExtension.equalsIgnoreCase("BMP")) {
-    		return FileUtils.readTxtFileIntoString(XcdlExtractorUnitHelper.BMP_XCEL);
+    		return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.BMP_XCEL);
 		}
     	
     	if (srcExtension.equalsIgnoreCase("GIF")) {
-    		return FileUtils.readTxtFileIntoString(XcdlExtractorUnitHelper.GIF_XCEL);
+    		return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.GIF_XCEL);
 		}
     	
     	if (srcExtension.equalsIgnoreCase("PDF")) {
-    		return FileUtils.readTxtFileIntoString(XcdlExtractorUnitHelper.PDF_XCEL);
+    		return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.PDF_XCEL);
 		}
     	
     	if (srcExtension.equalsIgnoreCase("JPEG") || srcExtension.equalsIgnoreCase("JPG")) {
-    		return FileUtils.readTxtFileIntoString(XcdlExtractorUnitHelper.JPEG_XCEL);
+    		return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.JPEG_XCEL);
 		}
     	
     	if (srcExtension.equalsIgnoreCase("PNG")) {
-    		return FileUtils.readTxtFileIntoString(XcdlExtractorUnitHelper.PNG_XCEL);
+    		return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.PNG_XCEL);
 		}
     	
 //    	if (srcExtension.equalsIgnoreCase("DOC")) {
@@ -202,28 +194,28 @@ private String getTestXCEL (String srcExtension) {
 	private File getTestFile(String srcExtension) {
     	
     	if (srcExtension.equalsIgnoreCase("TIFF")) {
-    		return XcdlExtractorUnitHelper.TIFF_INPUT;
+    		return XcdlMigrateUnitHelper.TIFF_INPUT;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("BMP")) {
-    		return XcdlExtractorUnitHelper.BMP_INPUT;
+    		return XcdlMigrateUnitHelper.BMP_INPUT;
 		}
     	
     	
     	if (srcExtension.equalsIgnoreCase("GIF")) {
-    		return XcdlExtractorUnitHelper.GIF_INPUT;
+    		return XcdlMigrateUnitHelper.GIF_INPUT;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("PDF")) {
-    		return XcdlExtractorUnitHelper.PDF_INPUT;
+    		return XcdlMigrateUnitHelper.PDF_INPUT;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("JPEG") || srcExtension.equalsIgnoreCase("JPG")) {
-    		return XcdlExtractorUnitHelper.JPEG_INPUT;
+    		return XcdlMigrateUnitHelper.JPEG_INPUT;
 		}
     	
     	if (srcExtension.equalsIgnoreCase("PNG")) {
-    		return XcdlExtractorUnitHelper.PNG_INPUT;
+    		return XcdlMigrateUnitHelper.PNG_INPUT;
 		}
     	
 //    	if (srcExtension.equalsIgnoreCase("DOC")) {

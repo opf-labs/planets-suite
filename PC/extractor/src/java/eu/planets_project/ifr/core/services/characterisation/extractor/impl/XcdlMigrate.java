@@ -33,7 +33,9 @@ import eu.planets_project.services.utils.ServiceUtils;
 
 
 /**
+ * XCL extractor service based on the Migrate interface.
  * @author melmsp
+ * @see XcdlCharacterise
  *
  */
 @Stateless()
@@ -45,12 +47,12 @@ import eu.planets_project.services.utils.ServiceUtils;
 //@BindingType(value=SOAPBinding.SOAP12HTTP_MTOM_BINDING)
 //@StreamingAttachment(parseEagerly=true, memoryThreshold=5000000L)
 @WebService(
-        name = XcdlExtractor.NAME, 
+        name = XcdlMigrate.NAME, 
         serviceName = Migrate.NAME,
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.migrate.Migrate")
 
-public class XcdlExtractor implements Migrate, Serializable {
+public class XcdlMigrate implements Migrate, Serializable {
 	
 	
 	private static final long serialVersionUID = -8231114442082962651L;
@@ -66,7 +68,7 @@ public class XcdlExtractor implements Migrate, Serializable {
 	/**
 	 * the logger
 	 */
-	public static final PlanetsLogger LOG = PlanetsLogger.getLogger(XcdlExtractor.class);
+	public static final PlanetsLogger LOG = PlanetsLogger.getLogger(XcdlMigrate.class);
 	/**
 	 * a max file size
 	 */
@@ -107,7 +109,7 @@ public class XcdlExtractor implements Migrate, Serializable {
 	 * @see eu.planets_project.services.characterise.Characterise#describe()
 	 */
 	public ServiceDescription describe() {
-		ServiceDescription.Builder sd = new ServiceDescription.Builder(Extractor.NAME, Characterise.class.getCanonicalName());
+		ServiceDescription.Builder sd = new ServiceDescription.Builder(XcdlCharacterise.NAME, Characterise.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
         sd.description("A wrapper for the Extractor tool developed by UzK (University at Cologne).\n" +
         		"The tool returns a XCDL file (as byte[]) in which includes all data of the input file in a machine readable way (xml).\n" +
@@ -165,7 +167,7 @@ public class XcdlExtractor implements Migrate, Serializable {
 		MigrateResult migrateResult = null;
 		String optionalFormatXCEL = null;
 		
-		CoreExtractor coreExtractor = new CoreExtractor(XcdlExtractor.NAME, LOG);
+		CoreExtractor coreExtractor = new CoreExtractor(XcdlMigrate.NAME, LOG);
 		
 		byte[] inputData = FileUtils.writeInputStreamToBinary(digitalObject.getContent().read());
 		

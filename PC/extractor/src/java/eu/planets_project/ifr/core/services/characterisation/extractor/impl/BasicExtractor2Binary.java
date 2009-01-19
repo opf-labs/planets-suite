@@ -21,7 +21,7 @@ import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
- * @deprecated Use {@link Extractor} instead.
+ * @deprecated Use {@link XcdlCharacterise} instead.
  */
 @Stateless()
 @Local(BasicCharacteriseOneBinaryXCELtoBinary.class)

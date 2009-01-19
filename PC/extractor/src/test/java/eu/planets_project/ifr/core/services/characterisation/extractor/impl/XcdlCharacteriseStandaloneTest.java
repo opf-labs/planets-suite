@@ -15,7 +15,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 /**
  * Standalone tests for the extractor
  */
-public class ExtractorStandaloneTest extends ExtractorLocalTest {
+public class XcdlCharacteriseStandaloneTest extends XcdlCharacteriseLocalTest {
 	
 	/**
      * Set up the testing environment: create files and directories for testing.
@@ -31,10 +31,10 @@ public class ExtractorStandaloneTest extends ExtractorLocalTest {
         System.setProperty("pserv.test.host", "localhost");
         System.setProperty("pserv.test.port", "8080");
         
-        TEST_OUT = ExtractorUnitHelper.EXTRACTOR_STANDALONE_TEST_OUT;
+        TEST_OUT = XcdlCharacteriseUnitHelper.EXTRACTOR_STANDALONE_TEST_OUT;
         
-        File inputImage = new File(ExtractorUnitHelper.SAMPLE_FILE);
-        File inputXcel = new File(ExtractorUnitHelper.SAMPLE_XCEL);
+        File inputImage = new File(XcdlCharacteriseUnitHelper.SAMPLE_FILE);
+        File inputXcel = new File(XcdlCharacteriseUnitHelper.SAMPLE_XCEL);
         
         binary = ByteArrayHelper.read(inputImage);
         
@@ -54,7 +54,7 @@ public class ExtractorStandaloneTest extends ExtractorLocalTest {
             e.printStackTrace();
         }
         
-        extractor = ServiceCreator.createTestService(Characterise.QNAME, Extractor.class, WSDL);
+        extractor = ServiceCreator.createTestService(Characterise.QNAME, XcdlCharacterise.class, WSDL);
     }
 
 }

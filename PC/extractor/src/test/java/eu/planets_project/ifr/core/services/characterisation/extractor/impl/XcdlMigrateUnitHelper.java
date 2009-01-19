@@ -15,7 +15,7 @@ import eu.planets_project.services.PlanetsServices;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * 
  */
-public final class XcdlExtractorUnitHelper {
+public final class XcdlMigrateUnitHelper {
     /** Local host address of the JBoss instance. */
     static final String LOCALHOST = "http://localhost:8080";
     /** Test server address of the JBoss instance. */
@@ -65,7 +65,7 @@ public final class XcdlExtractorUnitHelper {
     /**
      * We enforce non-instantiability with a private constructor.
      */
-    private XcdlExtractorUnitHelper() {}
+    private XcdlMigrateUnitHelper() {}
 
     /**
      * @param <T> The interface type of the instance to retrieve
