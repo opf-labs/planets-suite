@@ -50,21 +50,21 @@ public class XcdlCharacterise implements Characterise, Serializable {
     private static final long serialVersionUID = -8537596616209516979L;
 
     /**
-     * the service name
+     * the service name.
      */
     public static final String NAME = "Extractor";
     /**
-     * output dir
+     * output dir.
      */
     public static final String OUT_DIR = NAME.toUpperCase() + "_OUT"
             + File.separator;
     /**
-     * the logger
+     * the logger.
      */
     public static final PlanetsLogger LOG = PlanetsLogger
             .getLogger(XcdlCharacterise.class);
     /**
-     * a max file size
+     * a max file size.
      */
     public static final int MAX_FILE_SIZE = 10240;
 
