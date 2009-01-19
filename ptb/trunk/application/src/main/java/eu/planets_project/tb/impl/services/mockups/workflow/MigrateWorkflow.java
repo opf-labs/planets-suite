@@ -22,8 +22,9 @@ import eu.planets_project.services.characterise.DeterminePropertiesResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
@@ -31,7 +32,7 @@ import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
+import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
 import eu.planets_project.tb.utils.XCDLService;
 
@@ -60,9 +61,6 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private static final String STAGE_PRE_MIGRATE = "Pre-Migrate";
     private static final String STAGE_POST_MIGRATE = "Post-Migrate";
     
-    private static final String MIGRATE_SUCCESS = STAGE_MIGRATE+".service.success";
-    private static final String MIGRATE_SERVICE_TIME = STAGE_MIGRATE+".service.time";
-
     /** Statically define the observable properties. */
     private static HashMap<String,List<MeasurementImpl>> observables;
     static {
@@ -92,6 +90,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     
     DetermineProperties dpPre = null;
     DetermineProperties dpPost = null;
+    Identify idPre = null;
+    Identify idPost = null;
     
     /* ------------------------------------------------------------- */
 
@@ -130,6 +130,12 @@ public class MigrateWorkflow implements ExperimentWorkflow {
                 obs.get(STAGE_PRE_MIGRATE).add(m);
             }
         }
+        // For Identify:
+        if( this.preIsIdentify() ) {
+            obs.get(STAGE_PRE_MIGRATE).add(IdentifyWorkflow.MEASURE_IDENTIFY_FORMAT);
+            obs.get(STAGE_PRE_MIGRATE).add(IdentifyWorkflow.MEASURE_IDENTIFY_METHOD);
+        }
+        // In general:
         if( this.preIsDefined() ) {
             // Add basic properties.
             obs.get(STAGE_PRE_MIGRATE).add( 
@@ -149,6 +155,12 @@ public class MigrateWorkflow implements ExperimentWorkflow {
                 obs.get(STAGE_POST_MIGRATE).add(m);
             }
         }
+        // For Identify:
+        if( this.postIsIdentify() ) {
+            obs.get(STAGE_POST_MIGRATE).add(IdentifyWorkflow.MEASURE_IDENTIFY_FORMAT);
+            obs.get(STAGE_POST_MIGRATE).add(IdentifyWorkflow.MEASURE_IDENTIFY_METHOD);
+        }
+        // In general:
         if( this.postIsDefined() ) {
             // Add basic properties.
             obs.get(STAGE_POST_MIGRATE).add( 
@@ -272,17 +284,31 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         this.parameters = parameters;
         // Attempt to connect to the Migrate service.
         migrator = new MigrateWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
-        // FIXME Also set the pre services:
+        
+        // Also set the pre services:
         if( this.preIsCharacterise() ) {
             dpPre = new XCDLService(new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
         } else {
             dpPre = null;
         }
-        // FIXME Also set the post services:
+        if( this.preIsIdentify() ) {
+            idPre = new IdentifyWrapper( new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
+            
+        } else {
+            idPre = null;
+        }
+        
+        // Also set the post services:
         if( this.postIsCharacterise() ) {
             dpPost = new XCDLService(new URL(this.parameters.get(PARAM_POST_SERVICE)) );
         } else {
             dpPost = null;
+        }
+        if( this.postIsIdentify() ) {
+            idPost = new IdentifyWrapper( new URL(this.parameters.get(PARAM_POST_SERVICE)) );
+            
+        } else {
+            idPost = null;
         }
         
         // FIXME Also create/record a ServiceRecordImpl? 
@@ -290,11 +316,23 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     }
     
     private boolean preIsCharacterise() {
+        if( ! this.preIsDefined() ) return false;
         return this.parameters.get(PARAM_PRE_SERVICE_TYPE).equals(SERVICE_TYPE_CHARACTERISE);
     }
     
     private boolean postIsCharacterise() {
+        if( ! this.postIsDefined() ) return false;
         return this.parameters.get(PARAM_POST_SERVICE_TYPE).equals(SERVICE_TYPE_CHARACTERISE);
+    }
+    
+    private boolean preIsIdentify() {
+        if( ! this.preIsDefined() ) return false;
+        return this.parameters.get(PARAM_PRE_SERVICE_TYPE).equals(SERVICE_TYPE_IDENTIFY);
+    }
+    
+    private boolean postIsIdentify() {
+        if( ! this.postIsDefined() ) return false;
+        return this.parameters.get(PARAM_POST_SERVICE_TYPE).equals(SERVICE_TYPE_IDENTIFY);
     }
     
     private boolean preIsDefined() {
@@ -331,18 +369,22 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Attempt to ru each stage:
         try {
             // Pre-migrate characterise
-            // FIXME This could also be an ID instead.
             if( this.preIsCharacterise() ) {
                 executeCharacteriseStage(wr, dob, STAGE_PRE_MIGRATE, dpPre );
+            }
+            if( this.preIsIdentify()) {
+                executeIdentifyStage(wr, dob, STAGE_PRE_MIGRATE, idPre );
             }
             
             // Migrate Stage:
             executeMigrateStage(wr, dob);
             
             // Post-migrate characterise
-            // FIXME This could also be an ID instead.
             if( this.postIsCharacterise() ) {
                 executeCharacteriseStage(wr, (DigitalObject)wr.getResult(), STAGE_POST_MIGRATE, dpPost );
+            }
+            if( this.postIsIdentify()) {
+                executeIdentifyStage(wr, (DigitalObject)wr.getResult(), STAGE_POST_MIGRATE, idPost );
             }
             
         } catch (Exception e ) {
@@ -464,5 +506,48 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
 
     }
+
+    /**
+     * FIXME Code duplication between this and the actual IdentifyWorkflow.  Can we clean up more?
+     * 
+     * @param wr
+     * @param result
+     * @param stagePostMigrate
+     * @param idPost2
+     */
+    private void executeIdentifyStage(WorkflowResult wr, DigitalObject dob,
+            String stage, Identify identify) throws Exception {
+        // Now prepare the result:
+        List<MeasurementRecordImpl> stage_m = wr.getStage(stage).getMeasurements();
+        
+        // Invoke the service, timing it along the way:
+        boolean success = true;
+        IdentifyResult result = null;
+        long msBefore = 0, msAfter = 0;
+        msBefore = System.currentTimeMillis();
+        try {
+            result = identify.identify(dob);
+        } catch( Exception e ) {
+            success = false;
+        }
+        msAfter = System.currentTimeMillis();
+        
+        // Compute the run time.
+        stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
+
+        // Record results:
+        if( success ) {
+            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+            log.info("Start with Measurements #"+stage_m.size());
+            IdentifyWorkflow.collectIdentifyResults(stage_m, result);
+            log.info("Afterwards, Measurements #"+stage_m.size());
+            return;
+        }
+
+        // FAILED:
+        stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "false"));
+
+    }
+
 
 }

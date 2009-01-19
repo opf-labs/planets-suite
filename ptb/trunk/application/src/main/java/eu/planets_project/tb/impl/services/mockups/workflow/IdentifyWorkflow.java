@@ -49,6 +49,16 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     /** Observable properties for this service type */
     public static URI PROP_IDENTIFY_FORMAT;
     public static URI PROP_IDENTIFY_METHOD;
+    public static MeasurementImpl MEASURE_IDENTIFY_FORMAT = new MeasurementImpl(
+            PROP_IDENTIFY_FORMAT, 
+            "The format of the Digital Object", "",
+            "The format of a Digital Object, specified as a Planets Format URI.", 
+            null, MeasurementImpl.TYPE_DIGITALOBJECT);
+    public static MeasurementImpl MEASURE_IDENTIFY_METHOD = new MeasurementImpl(
+            PROP_IDENTIFY_METHOD, 
+            "The identification method.", "",
+            "The method the service used to identify the digital object.", 
+            null, MeasurementImpl.TYPE_SERVICE);
 
     /* (non-Javadoc)
      * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getStages()
@@ -83,23 +93,12 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         // The object size:
         observables.get(STAGE_IDENTIFY).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_DO_SIZE) );
+        
         // The measured type:
-        observables.get(STAGE_IDENTIFY).add( 
-                new MeasurementImpl(
-                        PROP_IDENTIFY_FORMAT, 
-                        "The format of the Digital Object", "",
-                        "The format of a Digital Object, specified as a Planets Format URI.", 
-                        null, MeasurementImpl.TYPE_DIGITALOBJECT)
-        );
+        observables.get(STAGE_IDENTIFY).add( MEASURE_IDENTIFY_FORMAT );
 
         // The identification method employed by the service:
-        observables.get(STAGE_IDENTIFY).add( 
-                new MeasurementImpl(
-                        PROP_IDENTIFY_METHOD, 
-                        "The identification method.", "",
-                        "The method the service used to identify the digital object.", 
-                        null, MeasurementImpl.TYPE_SERVICE)
-        );
+        observables.get(STAGE_IDENTIFY).add( MEASURE_IDENTIFY_METHOD );
 
         /*
         observables.put( IDENTIFY_SUCCESS, 
@@ -196,12 +195,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         try {
             if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
                 recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
-                for( URI format_uri : identify.getTypes() ) {
-                    recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_FORMAT, format_uri.toString()));
-                }
-                for( IdentifyResult.Method method : identify.getMethods() ) {
-                    recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
-                }
+                collectIdentifyResults(recs, identify);
                 wr.setReport(identify.getReport());
                 return wr;
             }
@@ -221,6 +215,16 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         wr.setReport(sr);
 
         return wr;
+    }
+    
+    public static void collectIdentifyResults( List<MeasurementRecordImpl> recs, IdentifyResult ident ) {
+        for( URI format_uri : ident.getTypes() ) {
+            recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_FORMAT, format_uri.toString()));
+        }
+        for( IdentifyResult.Method method : ident.getMethods() ) {
+            recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
+        }
+        return;
     }
 
 }

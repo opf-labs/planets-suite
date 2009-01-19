@@ -20,6 +20,7 @@ import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
@@ -100,6 +101,9 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         for( ServiceDescription sd : this.listAllCharacteriseServices() ) {
             slist.add( createCharServiceSelectItem(sd) );
         }
+        for( ServiceDescription sd : this.listAllIdentificationServices() ) {
+            slist.add( createIdentifyServiceSelectItem(sd) );
+        }
         return slist;
     }
     
@@ -118,6 +122,20 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
                 serviceName );
     }
 
+    /**
+     * @param sd
+     * @return
+     */
+    private static SelectItem createIdentifyServiceSelectItem( ServiceDescription sd ) {
+        String serviceName = "Identify via " + sd.getName();
+        serviceName += " (@"+sd.getEndpoint().getHost()+")";
+        return new SelectItem( 
+                encodeCharParFromOp(
+                        MigrateWorkflow.SERVICE_TYPE_IDENTIFY, 
+                        sd.getEndpoint().toString() 
+                        ), 
+                serviceName );
+    }
     
     /**
      * @return
@@ -128,6 +146,10 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
  
     private List<ServiceDescription> listAllCharacteriseServices() {
         return ServiceBrowser.getListOfServices(Characterise.class.getCanonicalName());
+    }
+
+    private List<ServiceDescription> listAllIdentificationServices() {
+        return ServiceBrowser.getListOfServices(Identify.class.getCanonicalName());
     }
 
     /**
@@ -147,8 +169,11 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     public String getPreMigrationService() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
-        return encodeCharParFromOp(
+        String config = encodeCharParFromOp(
                 p.get(MigrateWorkflow.PARAM_PRE_SERVICE_TYPE), p.get(MigrateWorkflow.PARAM_PRE_SERVICE) );
+        log.info("Getting the Pre-Migrate service: "+config);
+        return config;
+
     }
     
     /**
@@ -168,8 +193,10 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     public String getPostMigrationService() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
-        return encodeCharParFromOp(
+        String config = encodeCharParFromOp(
                 p.get( MigrateWorkflow.PARAM_POST_SERVICE_TYPE), p.get(MigrateWorkflow.PARAM_POST_SERVICE) );
+        log.info("Getting the Post-Migrate service: "+config);
+        return config;
     }
 
     private static String encodeCharParFromOp( String operation, String endpoint ) {
