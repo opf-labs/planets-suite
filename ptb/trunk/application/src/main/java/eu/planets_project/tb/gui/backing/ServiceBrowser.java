@@ -3,9 +3,13 @@
  */
 package eu.planets_project.tb.gui.backing;
 
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -23,9 +27,19 @@ import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.tb.api.TestbedManager;
+import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.gui.backing.service.PathwayBean;
+import eu.planets_project.tb.gui.backing.service.ServiceRecordBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
+import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
@@ -61,6 +75,9 @@ public class ServiceBrowser {
     public static  FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
     public static Format unknown = fr.getFormatForURI( Format.extensionToURI("unknown") );
 
+    //Instantiate a registry:
+    Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    
     /**
      * 
      */
@@ -348,6 +365,107 @@ public class ServiceBrowser {
      */
     private static SelectItem createFormatURISelectItem( URI fmt ) {
         return new SelectItem( fmt.toString(), fmt.toString() );
+    }
+    
+    /**
+     * @param string
+     * @return
+     */
+    public static ServiceRecordImpl createServiceRecordFromEndpoint(String endpointString) {
+        ServiceRecordImpl sr = null;
+        URL endpoint;
+        try {
+            endpoint = new URL(endpointString);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        ServiceDescription sdQuery = new ServiceDescription.Builder(null, null).endpoint(endpoint).build();
+        
+        Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+        List<ServiceDescription> result = registry.query(sdQuery);
+        
+        if( result != null && result.size() > 0 ) {
+            ServiceDescription sd = result.get(0);
+            sr = ServiceRecordImpl.createServiceRecordFromDescription(sd);
+        }
+        
+        return sr;
+    }
+
+
+    /**
+     * 
+     * @return
+     */
+    public String getExperimentServiceRecordFixLog() {
+        log.info("Looking through the experiments...");
+        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+        Collection<Experiment> allExps = testbedMan.getAllExperiments();
+        log.debug("Found "+allExps.size()+" experiment(s).");
+        
+        return null;
+/* FIXME Make this work again when we know what to do with ServiceRecords...
+        // Loop through, looking for missing service records.
+        for( Experiment exp: allExps) {
+            ExperimentExecutable executable = exp.getExperimentExecutable();
+            if( executable != null && executable.getBatchExecutionRecords() != null ) {
+                for( BatchExecutionRecordImpl batch: executable.getBatchExecutionRecords() )  {
+                    for( ExecutionRecordImpl run : batch.getRuns() ) {
+                        for( ExecutionStageRecordImpl stage : run.getStages() ) {
+                            stage.getServiceRecord();
+                            stage.getStage();
+
+                            // Create any missing service record.
+
+                            // Store updated service record.
+                            if( stage.getStage().equals( IdentifyWorkflow.STAGE_IDENTIFY) ) {
+                                //stage.setServiceRecord(
+                                ServiceRecordImpl sr = 
+                                    ServiceBrowser.createServiceRecordFromEndpoint( 
+                                            executable.getParameters().get(IdentifyWorkflow.PARAM_SERVICE)) ;
+                                //           );
+                                log.info("Got service name: " + sr.getServiceName() );
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+        */
+    }
+    
+    /**
+     * 
+     * @return
+     */
+    public List<ServiceRecordBean> getAllServicesAndRecords() {
+        // Use a hash map to build up the list.
+        HashMap<String,ServiceRecordBean> serviceMap = new HashMap<String,ServiceRecordBean>();
+        // Get the historical service records:
+        /* FIXME Make this work properly.
+        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+        List<ServiceRecordImpl> serviceRecords = testbedMan.getExperimentPersistencyRemote().getServiceRecords();
+        for( ServiceRecordImpl sr : serviceRecords ) {
+            if( sr != null ) {
+                serviceMap.put(sr.getServiceHash(), new ServiceRecordBean(sr) );
+            }
+        }
+        */
+
+        // Now get the active services and patch these records in:
+        List<ServiceDescription> serviceList = getListOfServices(null);
+        for( ServiceDescription sd : serviceList ) {
+            if( serviceMap.containsKey(sd.hashCode()) ) {
+                serviceMap.get(sd.hashCode()).setServiceDescription(sd);
+            } else {
+                serviceMap.put(""+sd.hashCode(), new ServiceRecordBean(sd) );
+            }
+        }
+
+        return new ArrayList<ServiceRecordBean>(serviceMap.values());
     }
     
 }

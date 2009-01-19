@@ -54,7 +54,7 @@ public class TestbedManagerImpl
 	ExperimentPersistencyRemote edao;
 	
 	// The version number of the Testbed.  Can be overridden in BackendResources.properties.
-	private String tbVersion = "0.5";
+	private String tbVersion = "0.8";
 	
 	
 	/**
@@ -101,7 +101,16 @@ public class TestbedManagerImpl
 	}
 	
 	
+	
 	/* (non-Javadoc)
+     * @see eu.planets_project.tb.api.TestbedManager#getExperimentPersistencyRemote()
+     */
+    public ExperimentPersistencyRemote getExperimentPersistencyRemote() {
+        return edao;
+    }
+
+
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.TestbedManager#getAllExperimentIDs()
 	 */
 	public Set<Long> getAllExperimentIDs() {

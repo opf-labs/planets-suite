@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoalsHandler;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 
 public interface TestbedManager {
@@ -83,5 +84,9 @@ public interface TestbedManager {
 	// ServiceTemplateRegistry
 	public ServiceTemplateRegistry getServiceTemplateRegistry();
 	
+	/**
+	 * @return The Experiment persistency handler.
+	 */
+	public ExperimentPersistencyRemote getExperimentPersistencyRemote();
 
 }

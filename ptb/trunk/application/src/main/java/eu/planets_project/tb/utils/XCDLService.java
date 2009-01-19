@@ -57,6 +57,13 @@ public class XCDLService implements DetermineProperties {
         extractor = srv.getPort(Characterise.class);
     }
 
+    /** */
+    public XCDLService( URL endpoint ) {
+        this.extractorWsdl = endpoint;
+        Service srv = Service.create(extractorWsdl, Characterise.QNAME);
+        extractor = srv.getPort(Characterise.class);
+    }
+
     /* (non-Javadoc)
      * @see eu.planets_project.services.characterise.DetermineProperties#describe()
      */

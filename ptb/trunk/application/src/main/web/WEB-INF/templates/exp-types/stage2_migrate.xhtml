@@ -37,7 +37,12 @@
 
     <div class="expChooseService">
     <div class="expStageHeader">Characterise Before</div>
-    Optional. [No characterisation services at present.]
+    <h:selectOneMenu id="preServiceSelectMenu" value="#{ExpTypeMigrate.preMigrationService}" onchange="submit();">
+         <f:selectItem itemValue="" itemLabel="Do not characterise." />
+         <f:selectItems value="#{ExpTypeMigrate.preMigrationServiceList}" />
+    </h:selectOneMenu>
+    <h:commandButton value="#{res['button.select']}"
+             action="success"/>
     </div>
     
     <div class="expSimpleStep">
@@ -69,7 +74,12 @@
     
     <div class="expChooseService">
     <div class="expStageHeader">Characterise After</div>
-    Optional. [No characterisation services at present.]
+    <h:selectOneMenu id="postServiceSelectMenu" value="#{ExpTypeMigrate.postMigrationService}" onchange="submit();">
+         <f:selectItem itemValue="" itemLabel="Do not characterise." />
+         <f:selectItems value="#{ExpTypeMigrate.postMigrationServiceList}" />
+    </h:selectOneMenu>
+    <h:commandButton value="#{res['button.select']}"
+             action="success"/>
     </div>
     
     <div class="expSimpleStep">

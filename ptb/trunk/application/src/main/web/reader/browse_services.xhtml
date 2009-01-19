@@ -27,14 +27,9 @@
 	<div id="maincol">
 	<div class="innertubemain">
 
-    <p>
-    The Testbed will allow you to browse the services and their histories of invocation on the Testbed.  
-    You can also <a href="/registry/">browse the IF Service Registry directly</a>.
-    </p>
-    
     <h:form>
 
-        <rich:dataTable value="#{ServiceBrowser.allServices}" var="sd"
+        <rich:dataTable value="#{ServiceBrowser.allServicesAndRecords}" var="sd"
         reRender="services_ds" styleClass="tbTable">
         
                     
@@ -56,7 +51,8 @@
                 <f:facet name="header">
                     <h:outputText value="Description"/>
                 </f:facet>
-                <h:outputText value="#{sd.description}"/> 
+                <h:outputText value="#{sd.description}"/>
+                <h:outputLink rendered="#{sd.furtherInfo != null}" value="#{sd.furtherInfo}" target="_new"><br/>[further info]</h:outputLink>
             </rich:column>
             
 <!-- 
@@ -67,7 +63,12 @@
         </rich:dataTable>
   
     </h:form>
-	
+    
+    <p>
+    The Testbed will allow you to browse the services and their histories of invocation on the Testbed.  
+    You can also <a href="/registry/">browse the IF Service Registry directly</a>.
+    </p>
+    
         <p>&#160;</p>
         <p>&#160;</p>
         <p>&#160;</p>

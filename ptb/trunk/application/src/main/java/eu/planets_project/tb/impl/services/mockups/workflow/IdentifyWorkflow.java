@@ -18,6 +18,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
@@ -179,6 +180,9 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
 
         // Now prepare the result:
         WorkflowResult wr = new WorkflowResult();
+        // FIXME Can this be done more automatically?
+        wr.getStage(STAGE_IDENTIFY).setServiceRecord(
+                ServiceBrowser.createServiceRecordFromEndpoint(this.parameters.get(PARAM_SERVICE)) );
         List<MeasurementRecordImpl> recs = wr.getStage(STAGE_IDENTIFY).getMeasurements();
         recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
         // Store the size:

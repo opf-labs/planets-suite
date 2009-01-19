@@ -22,6 +22,7 @@ import eu.planets_project.services.characterise.DeterminePropertiesResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
@@ -47,6 +48,12 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     public static final String PARAM_SERVICE = "migrate.service";
     public static final String PARAM_FROM = "migrate.from";
     public static final String PARAM_TO = "migrate.to";
+    public static final String PARAM_PRE_SERVICE = "migrate.pre.service";
+    public static final String PARAM_PRE_SERVICE_TYPE = "migrate.pre.service.type";
+    public static final String PARAM_POST_SERVICE = "migrate.post.service";
+    public static final String PARAM_POST_SERVICE_TYPE = "migrate.post.service.type";
+    public static final String SERVICE_TYPE_CHARACTERISE = "Characterise";
+    public static final String SERVICE_TYPE_IDENTIFY = "Identify";
 
     /** Internal keys for easy referral to the service+stage combinations. */
     private static final String STAGE_MIGRATE = "Migrate";
@@ -83,7 +90,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
 
     /* ------------------------------------------------------------- */
     
-    DetermineProperties dp = new XCDLService();
+    DetermineProperties dpPre = null;
+    DetermineProperties dpPost = null;
     
     /* ------------------------------------------------------------- */
 
@@ -110,28 +118,45 @@ public class MigrateWorkflow implements ExperimentWorkflow {
                 obs.get(stage).add(m);
             }
         }
+
+        /* --------------------------------------------------------------------- */
+        
         // Pre-characterise:
         if( obs.get(STAGE_PRE_MIGRATE) == null ) 
             obs.put(STAGE_PRE_MIGRATE, new Vector<MeasurementImpl>() );
-        for( MeasurementImpl m : this.getMeasurementsForInFormat(this.getFromFormat()) ) {
-            obs.get(STAGE_PRE_MIGRATE).add(m);
+        // For Characterise:
+        if( this.preIsCharacterise() ) {
+            for( MeasurementImpl m : this.getMeasurementsForInFormat(this.getFromFormat()) ) {
+                obs.get(STAGE_PRE_MIGRATE).add(m);
+            }
         }
-        obs.get(STAGE_PRE_MIGRATE).add( 
+        if( this.preIsDefined() ) {
+            // Add basic properties.
+            obs.get(STAGE_PRE_MIGRATE).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
-        obs.get(STAGE_PRE_MIGRATE).add( 
+            obs.get(STAGE_PRE_MIGRATE).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
+        }
+        
+        /* --------------------------------------------------------------------- */
         
         // Post-characterise:
         if( obs.get(STAGE_POST_MIGRATE) == null ) 
             obs.put(STAGE_POST_MIGRATE, new Vector<MeasurementImpl>() );
-        for( MeasurementImpl m : this.getMeasurementsForOutFormat(this.getToFormat()) ) {
-            obs.get(STAGE_POST_MIGRATE).add(m);
+        // For Characterise:
+        if( this.postIsCharacterise() ) {
+            for( MeasurementImpl m : this.getMeasurementsForOutFormat(this.getToFormat()) ) {
+                obs.get(STAGE_POST_MIGRATE).add(m);
+            }
         }
-        obs.get(STAGE_POST_MIGRATE).add( 
+        if( this.postIsDefined() ) {
+            // Add basic properties.
+            obs.get(STAGE_POST_MIGRATE).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_SUCCESS) );
-        obs.get(STAGE_POST_MIGRATE).add( 
+            obs.get(STAGE_POST_MIGRATE).add( 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME) );
-            
+        }
+        
         return obs;
     }
         
@@ -143,7 +168,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private List<MeasurementImpl> getMeasurementsForInFormat(String format) {
         if( format == null ) return null;
         if( ! format.equals(cacheInFormat) || cacheInProps == null ) {
-            cacheInProps = this.getMeasurementsForFormat(format);
+            cacheInProps = this.getMeasurementsForFormat( format, dpPre );
             cacheInFormat = format;
         }
         return cacheInProps;
@@ -152,13 +177,13 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private List<MeasurementImpl> getMeasurementsForOutFormat(String format) {
         if( format == null ) return null;
         if( ! format.equals(cacheOutFormat) || cacheOutProps == null ) {
-            cacheOutProps = this.getMeasurementsForFormat(format);
+            cacheOutProps = this.getMeasurementsForFormat( format, dpPost );
             cacheOutFormat = format;
         }
         return cacheOutProps;
     }
     
-    private List<MeasurementImpl> getMeasurementsForFormat( String format ) {
+    private List<MeasurementImpl> getMeasurementsForFormat( String format, DetermineProperties dp ) {
         
         HashMap<URI,MeasurementImpl> meas = new HashMap<URI,MeasurementImpl>();
         URI formatURI;
@@ -247,8 +272,41 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         this.parameters = parameters;
         // Attempt to connect to the Migrate service.
         migrator = new MigrateWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
-        // FIXME Also set the format parameters!? Caught, I think.
-        // FIXME Also create/record a ServiceRecordImpl?
+        // FIXME Also set the pre services:
+        if( this.preIsCharacterise() ) {
+            dpPre = new XCDLService(new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
+        } else {
+            dpPre = null;
+        }
+        // FIXME Also set the post services:
+        if( this.postIsCharacterise() ) {
+            dpPost = new XCDLService(new URL(this.parameters.get(PARAM_POST_SERVICE)) );
+        } else {
+            dpPost = null;
+        }
+        
+        // FIXME Also create/record a ServiceRecordImpl? 
+        
+    }
+    
+    private boolean preIsCharacterise() {
+        return this.parameters.get(PARAM_PRE_SERVICE_TYPE).equals(SERVICE_TYPE_CHARACTERISE);
+    }
+    
+    private boolean postIsCharacterise() {
+        return this.parameters.get(PARAM_POST_SERVICE_TYPE).equals(SERVICE_TYPE_CHARACTERISE);
+    }
+    
+    private boolean preIsDefined() {
+        if( this.parameters.get(PARAM_PRE_SERVICE_TYPE) == null ||
+                "".equals( this.parameters.get(PARAM_PRE_SERVICE_TYPE) ) ) return false;
+        return true;
+    }
+    
+    private boolean postIsDefined() {
+        if( this.parameters.get(PARAM_POST_SERVICE_TYPE) == null ||
+                "".equals( this.parameters.get(PARAM_POST_SERVICE_TYPE) ) ) return false;
+        return true;
     }
     
     private String getFromFormat() {
@@ -273,13 +331,19 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Attempt to ru each stage:
         try {
             // Pre-migrate characterise
-            executeCharacteriseStage(wr, dob, STAGE_PRE_MIGRATE);
+            // FIXME This could also be an ID instead.
+            if( this.preIsCharacterise() ) {
+                executeCharacteriseStage(wr, dob, STAGE_PRE_MIGRATE, dpPre );
+            }
             
             // Migrate Stage:
             executeMigrateStage(wr, dob);
             
             // Post-migrate characterise
-            executeCharacteriseStage(wr, (DigitalObject)wr.getResult(), STAGE_POST_MIGRATE);
+            // FIXME This could also be an ID instead.
+            if( this.postIsCharacterise() ) {
+                executeCharacteriseStage(wr, (DigitalObject)wr.getResult(), STAGE_POST_MIGRATE, dpPost );
+            }
             
         } catch (Exception e ) {
             // Create a ServiceReport from the exception.
@@ -302,10 +366,10 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Now prepare the result:
         List<MeasurementRecordImpl> stage_m = wr.getStage(STAGE_MIGRATE).getMeasurements();
         
-        // FIXME Create a ServiceRecord, use a factory or pass down, and fill out based on Service Registry.
-        ServiceRecordImpl sr = new ServiceRecordImpl();
-        //sr.setServiceDescription(sd);
-        wr.getStage(STAGE_MIGRATE).setServiceRecord(sr);
+        // Create a ServiceRecord, use a factory or pass down, and fill out based on Service Registry.
+        // FIXME Can this be done more automatically/sensibly?
+        wr.getStage(STAGE_MIGRATE).setServiceRecord(
+                ServiceBrowser.createServiceRecordFromEndpoint(this.parameters.get(PARAM_SERVICE)) );
         
         // Invoke the service, timing it along the way:
         boolean success = true;
@@ -366,7 +430,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      * @param stage
      * @throws Exception
      */
-    private void executeCharacteriseStage( WorkflowResult wr, DigitalObject dob, String stage ) throws Exception {
+    private void executeCharacteriseStage( WorkflowResult wr, DigitalObject dob, String stage, DetermineProperties dp ) throws Exception {
         // Now prepare the result:
         List<MeasurementRecordImpl> stage_m = wr.getStage(stage).getMeasurements();
         

@@ -7,6 +7,7 @@ import javax.ejb.Remote;
 import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 
 /**
  * @author alindley
@@ -29,4 +30,8 @@ public interface ExperimentPersistencyRemote {
 	public List<Experiment> getPagedExperiments(int firstRow, int numberOfRows, String sortField, boolean descending);
 	
 	public int getNumberOfExperiments();
+	
+    public List<ServiceRecordImpl> getServiceRecords();
+    public ServiceRecordImpl findServiceRecordByHashcode( String serviceHash );
+
 }

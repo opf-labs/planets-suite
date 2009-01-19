@@ -6,6 +6,7 @@ package eu.planets_project.tb.gui.backing.exp;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Vector;
 import javax.faces.model.SelectItem;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -41,8 +43,8 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      */
     public String getMigrationService() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        log.info("Got params: "+expBean.getExperiment().getExperimentExecutable().getParameters() );
-        log.info("Got param: "+expBean.getExperiment().getExperimentExecutable().getParameters().get(MigrateWorkflow.PARAM_SERVICE) );
+//        log.info("Got params: "+expBean.getExperiment().getExperimentExecutable().getParameters() );
+//        log.info("Got param: "+expBean.getExperiment().getExperimentExecutable().getParameters().get(MigrateWorkflow.PARAM_SERVICE) );
         return expBean.getExperiment().getExperimentExecutable().getParameters().get(MigrateWorkflow.PARAM_SERVICE);
     }
 
@@ -88,7 +90,103 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     private List<ServiceDescription> listAllMigrationServices() {
         return ServiceBrowser.getListOfServices(Migrate.class.getCanonicalName());
     }
+
+
+    /**
+     * @return
+     */
+    public List<SelectItem> getPreMigrationServiceList() {
+        List<SelectItem> slist = new ArrayList<SelectItem>();
+        for( ServiceDescription sd : this.listAllCharacteriseServices() ) {
+            slist.add( createCharServiceSelectItem(sd) );
+        }
+        return slist;
+    }
+    
+    /**
+     * @param sd
+     * @return
+     */
+    private static SelectItem createCharServiceSelectItem( ServiceDescription sd ) {
+        String serviceName = "Characterise via " + sd.getName();
+        serviceName += " (@"+sd.getEndpoint().getHost()+")";
+        return new SelectItem( 
+                encodeCharParFromOp(
+                        MigrateWorkflow.SERVICE_TYPE_CHARACTERISE, 
+                        sd.getEndpoint().toString() 
+                        ), 
+                serviceName );
+    }
+
+    
+    /**
+     * @return
+     */
+    public List<SelectItem> getPostMigrationServiceList() {
+        return this.getPreMigrationServiceList();
+    }
  
+    private List<ServiceDescription> listAllCharacteriseServices() {
+        return ServiceBrowser.getListOfServices(Characterise.class.getCanonicalName());
+    }
+
+    /**
+     * @param service
+     */
+    public void setPreMigrationService(String service) {
+        log.info("Setting the Pre-Migrate service to: "+service);
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
+        p.put(MigrateWorkflow.PARAM_PRE_SERVICE_TYPE, decodeOpFromCharPar(service) );
+        p.put(MigrateWorkflow.PARAM_PRE_SERVICE, decodeEndpointFromCharPar(service) );
+    }
+
+    /**
+     * @return
+     */
+    public String getPreMigrationService() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
+        return encodeCharParFromOp(
+                p.get(MigrateWorkflow.PARAM_PRE_SERVICE_TYPE), p.get(MigrateWorkflow.PARAM_PRE_SERVICE) );
+    }
+    
+    /**
+     * @param service
+     */
+    public void setPostMigrationService(String service) {
+        log.info("Setting the Post-Migrate service to: "+service);
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
+        p.put(MigrateWorkflow.PARAM_POST_SERVICE_TYPE, decodeOpFromCharPar(service) );
+        p.put(MigrateWorkflow.PARAM_POST_SERVICE, decodeEndpointFromCharPar(service) );
+    }
+
+    /**
+     * @return
+     */
+    public String getPostMigrationService() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        HashMap<String, String> p = expBean.getExperiment().getExperimentExecutable().getParameters();
+        return encodeCharParFromOp(
+                p.get( MigrateWorkflow.PARAM_POST_SERVICE_TYPE), p.get(MigrateWorkflow.PARAM_POST_SERVICE) );
+    }
+
+    private static String encodeCharParFromOp( String operation, String endpoint ) {
+        return operation+":"+endpoint;
+    }
+    
+    private static String decodeOpFromCharPar( String charparameter ) {
+        if( charparameter == null || charparameter.indexOf(":") == -1 ) return "";
+        return charparameter.substring(0, charparameter.indexOf(":"));
+    }
+    
+    private static String decodeEndpointFromCharPar( String charparameter ) {
+        if( charparameter == null || charparameter.indexOf(":") == -1 ) return "";
+        return charparameter.substring(charparameter.indexOf(":")+1);
+    }
+    
+
     /**
      * @return
      */

@@ -1,5 +1,6 @@
 package eu.planets_project.tb.impl.persistency;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -14,6 +15,10 @@ import javax.rmi.PortableRemoteObject;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
@@ -105,7 +110,7 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
 	{
 		return new javax.naming.InitialContext();
 	}
-
+	
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote#getPagedExperiments(int, int, java.lang.String, boolean)
      */
@@ -189,4 +194,48 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
     }
 	
     
+    @SuppressWarnings("unchecked")
+    public List<ServiceRecordImpl> getServiceRecords() {
+        List<ServiceRecordImpl> list = new ArrayList<ServiceRecordImpl>();
+//        Query query = manager.createQuery("SELECT s.serviceRecord FROM ExperimentImpl AS e INNER JOIN e.executable.executionRecords AS x INNER JOIN x.runs AS r INNER JOIN r.stages AS s");
+        List<Experiment> experiments = this.queryAllExperiments();
+        for( Experiment exp : experiments ) {
+            if( exp.getExperimentExecutable() != null && exp.getExperimentExecutable().getBatchExecutionRecords() != null ) {
+                List<BatchExecutionRecordImpl> batches = exp.getExperimentExecutable().getBatchExecutionRecords();
+                for( BatchExecutionRecordImpl batch : batches ) {
+                    if( batch != null && batch.getRuns() != null ) {
+                        for( ExecutionRecordImpl run : batch.getRuns() ) {
+                            for( ExecutionStageRecordImpl stage: run.getStages() ) {
+                                if( stage.getServiceRecord() != null ) list.add( stage.getServiceRecord() );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return list;
+    }
+    
+    
+    // FIXME This does not work.
+    
+    //@SuppressWarnings("unchecked")
+    public ServiceRecordImpl findServiceRecordByHashcode( String serviceHash ) {
+        Query query = manager.createQuery("SELECT s.serviceRecord FROM ExperimentImpl AS exp LEFT JOIN exp.executable.executionRecords AS rec LEFT JOIN rec.runs AS run LEFT JOIN run.stages AS stage WHERE stage.serviceHash = :hash");
+        query.setParameter("hash", serviceHash);
+        List<ServiceRecordImpl> srs = query.getResultList();
+        if( srs == null ) return null;
+        if( srs.size() == 0 ) return null;
+        return srs.get(0);
+        /*
+        */
+        /*
+        for( ServiceRecordImpl record : this.getServiceRecords() ) {
+            if( serviceHash.equals( record.getServiceHash()) ) return record;
+        }
+        return null;
+        */
+    }
+    
+
 }

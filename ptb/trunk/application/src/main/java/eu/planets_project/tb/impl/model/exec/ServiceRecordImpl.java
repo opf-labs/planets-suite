@@ -16,6 +16,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -27,7 +30,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 public class ServiceRecordImpl implements Serializable {
     /** */
     private static final long serialVersionUID = -510307823143330587L;
-
+    
 //    @Id
 //    @GeneratedValue
     @XmlTransient
@@ -39,6 +42,7 @@ public class ServiceRecordImpl implements Serializable {
     
     private String toolVersion;
     
+    @Id
     private String serviceHash;
     
     private String host;
@@ -167,4 +171,33 @@ public class ServiceRecordImpl implements Serializable {
         this.dateFirstSeen = dateFirstSeen;
     }
     
+    /**
+     * 
+     * @param sd
+     * @return
+     */
+    public static ServiceRecordImpl createServiceRecordFromDescription( ServiceDescription sd ) {
+        // This is the unique service identifier:
+        String serviceHash = ""+sd.hashCode();
+        
+        // Look to see if there is already a matching ServiceRecord...
+        TestbedManagerImpl managerImpl = TestbedManagerImpl.getInstance();
+        ExperimentPersistencyRemote epr = managerImpl.getExperimentPersistencyRemote();
+        // FIXME Make this work so service records are recorded.
+        //ServiceRecordImpl esr = epr.findServiceRecordByHashcode(serviceHash);
+        //if( esr != null ) return esr;
+
+        // Otherwise, create a new one.
+        ServiceRecordImpl sr = new ServiceRecordImpl();
+        // Fill out:
+        sr.setServiceName( sd.getName() );
+        sr.setServiceVersion( sd.getVersion() );
+        //sr.setToolVersion(sd.getProperties().get(index)); ???
+        sr.setServiceHash(serviceHash);
+        sr.setHost(sd.getEndpoint().getHost());
+        sr.setServiceDescription(sd);
+        sr.setDateFirstSeen(Calendar.getInstance());
+        return sr;
+    }
+
 }
