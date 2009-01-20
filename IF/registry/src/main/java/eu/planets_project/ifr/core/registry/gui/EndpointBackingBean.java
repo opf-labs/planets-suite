@@ -31,6 +31,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class EndpointBackingBean {
 	private static Log _log = LogFactory.getLog(EndpointBackingBean.class);
+
 	private static final String ALL_CATEGORY = "All";
 
 	private PlanetsServiceEndpoint _justRegistered = null;

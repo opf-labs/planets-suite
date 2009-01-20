@@ -25,6 +25,12 @@
 						requestDelay="200" />
 				</h:selectOneMenu>
 			</rich:toolBarGroup>
+			<rich:toolBarGroup>
+              <h:commandLink action="gotoAddExternal">
+              	<h:graphicImage id="addExtern" value="/images/add.png" />
+              	<h:outputText value="Add External Service" />
+              </h:commandLink>
+			</rich:toolBarGroup>
 			<rich:toolBarGroup location="right">
 				<h:inputText id="endpointSearchInput" value="#{EndpointBean.searchStr}">
 					<a4j:support event="onkeyup" reRender="endpointResults"

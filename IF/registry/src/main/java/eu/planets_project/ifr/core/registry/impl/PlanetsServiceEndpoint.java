@@ -21,7 +21,10 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 public class PlanetsServiceEndpoint {
 	/** The logger for this class */
 	private static Log _log = LogFactory.getLog(PlanetsServiceEndpoint.class);
-	
+	// TODO This is a bodge to work around a bool read problem in JSF
+	private static final String notRegGraphic = "/images/notreg.gif"; 
+	private static final String isRegGraphic = "/images/reg.gif"; 
+	private String regGraphic = notRegGraphic;
 	/**
 	 * Enumeration for the service status
 	 * 
@@ -85,7 +88,7 @@ public class PlanetsServiceEndpoint {
 		this._location = desc.getEndpoint();
 		this._class = desc.getType();
 		this._status = Status.OK;
-		this._registered = true;
+		this.setRegistered(true);
 	}
 
 	//==========================================================================
@@ -156,6 +159,8 @@ public class PlanetsServiceEndpoint {
 	 */
 	public void setRegistered(boolean registered) {
 		this._registered = registered;
+		if (this._registered) this.setRegGraphic(PlanetsServiceEndpoint.isRegGraphic);
+		else this.setRegGraphic(PlanetsServiceEndpoint.notRegGraphic);
 	}
 
 	/**
@@ -164,5 +169,19 @@ public class PlanetsServiceEndpoint {
 	 */
 	public boolean isRegistered() {
 		return _registered;
+	}
+
+	/**
+	 * @param regGraphic the regGraphic to set
+	 */
+	public void setRegGraphic(String regGraphic) {
+		this.regGraphic = regGraphic;
+	}
+
+	/**
+	 * @return the regGraphic
+	 */
+	public String getRegGraphic() {
+		return regGraphic;
 	}
 }
