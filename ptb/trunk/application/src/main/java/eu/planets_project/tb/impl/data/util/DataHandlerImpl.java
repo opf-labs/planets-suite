@@ -288,7 +288,7 @@ public class DataHandlerImpl implements DataHandler {
                 context = req.getContextPath();
             }
             try {
-                /*
+                /* FIXME Restore this, allowing TB config so that the fact that we are proxied can be dealt with.
                 download = new URI( "http", 
                         PlanetsServerConfig.getHostname()+":"+PlanetsServerConfig.getPort(), 
                         context+"/reader/download.jsp","fid="+id, null);
