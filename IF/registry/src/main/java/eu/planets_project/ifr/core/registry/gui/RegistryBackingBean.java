@@ -53,17 +53,14 @@ public class RegistryBackingBean {
     	return (FacesContext.getCurrentInstance().getExternalContext().isUserInRole(adminRole) ||
     			FacesContext.getCurrentInstance().getExternalContext().isUserInRole(providerRole));
     }
- 
-    /**
-     * 
-     * @param desc
-     * @return
-     */
-    
+
+    //====================================================================================
+    // -----Action Methods ---
+    //====================================================================================
+
     /**
      * @return JSF status
      */
-    /* -----Action Methods --- */
     public String registerAutomatically() {
     	this.registerService(false);
     	return "success";
@@ -72,9 +69,31 @@ public class RegistryBackingBean {
     /**
      * @return JSF status
      */
-    /* -----Action Methods --- */
     public String registerManually() {
     	this.registerService(true);
+    	return "gotoEndpoints";
+    }
+    
+    /**
+     * @return JSF status
+     */
+    public String registerExternalService(){
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+    	ELResolver res = ctx.getApplication().getELResolver();
+    	EndpointBackingBean endBean = (EndpointBackingBean) res.getValue(ctx.getELContext(), null, "EndpointBean");
+    	ServiceDescriptionBackingBean descBean = (ServiceDescriptionBackingBean) res.getValue(ctx.getELContext(), null, "DescriptionBean");
+    	ExternalEndpointBackingBean extBean = (ExternalEndpointBackingBean) res.getValue(ctx.getELContext(), null, "ExternalBean");
+
+    	// Set the current endpoint
+    	endBean.addEndpoint(extBean.getEndpoint());
+    	// And the service description
+    	descBean.setServiceDescription(extBean.getServiceDescription());
+		Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+		registry.register(extBean.getServiceDescription());
+
+    	// Update the Endpoint List
+		log.info("recording registration");
+		endBean.recordRegistration();
     	return "gotoEndpoints";
     }
 

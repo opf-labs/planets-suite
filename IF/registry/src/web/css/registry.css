@@ -133,3 +133,7 @@ form.serviceform fieldset label {
 .fieldname {
   font-weight:bold;
 }
+
+input.externalURL {
+  width:50em;
+}

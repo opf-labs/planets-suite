@@ -31,6 +31,12 @@
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
 
+    <managed-bean>
+        <managed-bean-name>ExternalBean</managed-bean-name>
+        <managed-bean-class>eu.planets_project.ifr.core.registry.gui.ExternalEndpointBackingBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+
 	<navigation-rule>
 		<from-view-id>*</from-view-id>
         <navigation-case>
@@ -48,6 +54,11 @@
             <to-view-id>/description.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+		<navigation-case>
+			<from-outcome>gotoAddExternal</from-outcome>
+			<to-view-id>/external.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
 	</navigation-rule>
     
 	<converter>
