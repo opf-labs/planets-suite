@@ -317,6 +317,11 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         // FIXME Also create/record a ServiceRecordImpl? 
         
+        // MUST throw an Exception if the input and outputs are not defined!
+        if( this.getFromFormat() == null || "".equals(this.getFromFormat()) ||
+                this.getToFormat() == null || "".equals(this.getToFormat()) ) {
+            throw new Exception("You must specify a full pathway!");
+        }
     }
     
     private boolean preIsCharacterise() {
@@ -352,10 +357,12 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     }
     
     private String getFromFormat() {
+        log.info("getFromFormat: "+this.parameters.get(PARAM_FROM));
         return this.parameters.get(PARAM_FROM);
     }
     
     private String getToFormat() {
+        log.info("getToFormat: "+this.parameters.get(PARAM_TO));
         return this.parameters.get(PARAM_TO);        
     }
     
@@ -397,6 +404,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             sr.setErrorState(ServiceReport.ERROR);
             sr.setError(e.toString());
             wr.setReport(sr);
+            log.error("Migration failed! "+e);
+            e.printStackTrace();
         }
         return wr;
     }
@@ -429,6 +438,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             migrated = migrator.migrate(dob, from, to, null);
         } catch( Exception e ) {
             success = false;
+            e.printStackTrace();
             throw new Exception ("Service Invocation Failed! : " + e );
         }
         msAfter = System.currentTimeMillis();

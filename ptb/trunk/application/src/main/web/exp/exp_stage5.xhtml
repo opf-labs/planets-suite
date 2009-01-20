@@ -213,7 +213,7 @@
        <ui:param name="PlaceBandAsHeader" value="false" />
     </ui:include>
 
-        <rich:simpleTogglePanel label="Hacky Development And Debug Options" opened="false" rendered="false">
+        <rich:simpleTogglePanel label="Hacky Development And Debug Options" opened="false" rendered=#{UserBean.admin}">
          <p>
        #{NewExp_Controller.executeExperimentIsRunning}, and #{TestbedBatchProcessor.daemon.secs}
        <h:commandButton value="HACK! Click to abort runningness." action="#{NewExp_Controller.commandResetAfterFailure}" />

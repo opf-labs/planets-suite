@@ -74,6 +74,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      * @return Return available Services consistent with the current Input and Output.
      */
     public List<SelectItem> getMigrationServiceList() {
+        log.info("IN: getMigrationServiceList");
         List<ServiceDescription> sdl = new Vector<ServiceDescription>();
         for( ServiceDescription sd : this.listAllMigrationServices() )  {
             boolean addThis = false;
@@ -86,11 +87,19 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
             }
             if( addThis ) sdl.add(sd);
         }
+        log.info("OUT: getMigrationServiceList");
         return ServiceBrowser.mapServicesToSelectList( sdl );
     }
     
+    // FIXME Update this cache? When?
+    List<ServiceDescription> migrators = null;
     private List<ServiceDescription> listAllMigrationServices() {
-        return ServiceBrowser.getListOfServices(Migrate.class.getCanonicalName());
+        if( migrators == null ) {
+            log.info("Refreshing list of migration services...");
+            migrators = ServiceBrowser.getListOfServices(Migrate.class.getCanonicalName());
+            log.info("Refreshed.");
+        }
+        return migrators;
     }
 
 
@@ -239,6 +248,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      * @return Return available Input Formats consistent with the current Service and Output.
      */
     public List<SelectItem> getInputFormatList() {
+        log.info("IN: getInputFormatList");
         Set<URI> formats = new HashSet<URI>();
         for( ServiceDescription sd : this.listAllMigrationServices() )  {
             for( MigrationPath path : sd.getPaths() ) {
@@ -249,6 +259,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
                 }
             }
         }
+        log.info("OUT: getInputFormatList");
         return ServiceBrowser.mapFormatURIsToSelectList(formats);
     }
     
@@ -275,6 +286,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      * @return Return available Output Formats consistent with the current Service and Input.
      */
     public List<SelectItem> getOutputFormatList() {
+        log.info("IN: getOutputFormatList");
         Set<URI> formats = new HashSet<URI>();
         for( ServiceDescription sd : this.listAllMigrationServices() )  {
             for( MigrationPath path : sd.getPaths() ) {
@@ -285,6 +297,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
                 }
             }
         }
+        log.info("OUT: getOutputFormatList");
         return ServiceBrowser.mapFormatURIsToSelectList(formats);
     }
     

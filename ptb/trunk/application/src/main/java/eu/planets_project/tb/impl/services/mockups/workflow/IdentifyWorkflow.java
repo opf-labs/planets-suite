@@ -218,11 +218,16 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     }
     
     public static void collectIdentifyResults( List<MeasurementRecordImpl> recs, IdentifyResult ident ) {
-        for( URI format_uri : ident.getTypes() ) {
-            recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_FORMAT, format_uri.toString()));
+        if( ident == null ) return;
+        if( ident.getTypes() != null ) {
+            for( URI format_uri : ident.getTypes() ) {
+                recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_FORMAT, format_uri.toString()));
+            }
         }
-        for( IdentifyResult.Method method : ident.getMethods() ) {
-            recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
+        if( ident.getMethods() != null ) {
+            for( IdentifyResult.Method method : ident.getMethods() ) {
+                recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
+            }
         }
         return;
     }
