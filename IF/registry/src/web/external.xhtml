@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:jsp="http://java.sun.com/JSP/Page"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<body>
+
+  <ui:composition template="/WEB-INF/planets/page-template.xhtml">
+    <ui:param name="pagetitle" value="Add External Service"/>
+    <ui:param name="extraCSS" value="css/registry.css" />
+    
+    <div id="trContent">
+    <h:form styleClass="serviceform">
+
+		<rich:toolBar id="endpointToolbar" height="34" itemSeparator="line">
+            <rich:toolBarGroup location="left">
+				<h:inputText id="externalURL" styleClass="externalURL" value="#{ExternalBean.externalUrl}" />
+				<a4j:commandButton action="#{ExternalBean.parseExternalEndpoint}" process="externalURL" value="Search" reRender="endpointToolbar, endpointDetailPanel" />
+            </rich:toolBarGroup>
+			<rich:toolBarGroup location="right" rendered="#{ExternalBean.endpoint != null}">
+				<h:commandLink action="#{RegistryBean.registerExternalService}">
+					<h:graphicImage id="imgRegister" value="/images/applications-system.png" />
+					<h:outputText value=" Register Service"/>
+				</h:commandLink>
+			</rich:toolBarGroup>
+			<rich:toolBarGroup location="right" rendered="#{ExternalBean.endpoint == null}">
+				<h:commandLink action="gotoEndpoints">
+					<h:graphicImage id="imgPrevious" value="/images/go-previous.png" />
+					<h:outputText value=" Go to Endpoints"/>
+				</h:commandLink>
+			</rich:toolBarGroup>
+		</rich:toolBar>
+		  <rich:tabPanel switchType="ajax" id="endpointDetailPanel">
+
+		    <rich:tab label="Info">
+		      <c:choose>
+		        <c:when test="#{ExternalBean.endpoint == null}">
+				  <h3>No valid endpoint selected</h3>
+				  <p>
+				  	<h:outputText value="Please type a valid URL for a Planets Service."/>
+				  </p>
+				</c:when>
+			    <c:otherwise>
+			    <c:otherwise>
+			      <h3><h:outputText value="#{ExternalBean.endpoint.name} Service Endpoint Information"/></h3>
+                  <h:outputText value="WSDL: #{ExternalBean.endpoint.location}"/><br/>
+                  <h:outputText value="Status: #{ExternalBean.endpoint.status}" />
+				</c:otherwise>
+				</c:otherwise>
+		      </c:choose>  
+        	</rich:tab>
+
+			<rich:tab label="Description" disabled="#{(ExternalBean.endpoint == null)}">
+			  <h3><h:outputText value="#{ExternalBean.serviceDescription.name} #{ExternalBean.serviceDescription.version}"/></h3>
+			  <span class="fieldname"><h:outputText value="Type"/></span><br/>
+			  <h:outputText value="#{ExternalBean.serviceDescription.type}"/><br/>
+			  <span class="fieldname"><h:outputText value="Author"/></span><br/>
+			  <h:outputText value="#{ExternalBean.serviceDescription.author}"/><br/>
+			  <span class="fieldname"><h:outputText value="Provider"/></span><br/>
+			  <h:outputText value="#{ExternalBean.serviceDescription.serviceProvider}"/><br/>
+			  <span class="fieldname"><h:outputText value="Description"/></span><br/>
+			  <h:outputText value="#{ExternalBean.serviceDescription.description}"/><br/>
+        	</rich:tab>
+
+			<rich:tab label="Register" disabled="#{ExternalBean.endpoint == null}">
+            </rich:tab>
+		    <rich:tab label="Summary">
+			  <h3>Service Registry Information</h3>
+			  <div>
+			    <p>
+                  <h:outputText value="There are #{EndpointBean.endpointCount} Planets service endpoints deployed on this IF instance."/>
+			    </p>
+			    <p>
+			      <h:outputText value="#{EndpointBean.registeredEndpointCount} of these are registered."/>
+			    </p>
+			    <p>
+			      <h:outputText value="There are #{RegistryBean.registeredCount} Planets services recorded in this Service Registry."/><br/>
+			    </p>
+			    <p>
+			      <h:outputText value="There are #{EndpointBean.unregisteredEndpointCount} Planets service endpoints deployed on this IF instance that are not recorded in this Service Registry."/><br/>
+			    </p>
+			  </div>
+        	</rich:tab>
+
+		 </rich:tabPanel>
+
+    </h:form>
+    </div>
+    
+  </ui:composition>
+</body>
+</html>
+    
