@@ -113,7 +113,7 @@
         <f:facet name="header">Execution Date</f:facet>
         <h:commandLink>
           <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
-        <h:outputText value="#{batch.endDate.time}">
+        <h:outputText value="#{batch.endDate.time}" styleClass="#{ ( ExperimentBean.selectedBatchExecutionRecord.endDate.time eq batch.endDate.time ) ? 'isSelected' : 'isNotSelected'}" >
           <f:convertDateTime type="both" dateStyle="short"/>
         </h:outputText>
         </h:commandLink>

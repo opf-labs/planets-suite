@@ -178,7 +178,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private List<MeasurementImpl> cacheOutProps = null;
     
     private List<MeasurementImpl> getMeasurementsForInFormat(String format) {
-        if( format == null ) return null;
+        if( format == null ) return new Vector<MeasurementImpl>();
         if( ! format.equals(cacheInFormat) || cacheInProps == null ) {
             cacheInProps = this.getMeasurementsForFormat( format, dpPre );
             cacheInFormat = format;
@@ -187,7 +187,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     }
 
     private List<MeasurementImpl> getMeasurementsForOutFormat(String format) {
-        if( format == null ) return null;
+        if( format == null ) return  new Vector<MeasurementImpl>();
         if( ! format.equals(cacheOutFormat) || cacheOutProps == null ) {
             cacheOutProps = this.getMeasurementsForFormat( format, dpPost );
             cacheOutFormat = format;
@@ -196,18 +196,22 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     }
     
     private List<MeasurementImpl> getMeasurementsForFormat( String format, DetermineProperties dp ) {
+        List<MeasurementImpl> lm = new Vector<MeasurementImpl>();
         
         HashMap<URI,MeasurementImpl> meas = new HashMap<URI,MeasurementImpl>();
         URI formatURI;
         if( format == null ) {
             log.error("Format was set to NULL.");
-            return null;
+            return lm;
         }
         try {
             formatURI = new URI(format);
         } catch (URISyntaxException e) {
             e.printStackTrace();
-            return null;
+            return lm;
+        }
+        if( dp == null ) {
+            return lm;
         }
         // Find all the PRONOM IDs for this format URI:
         for( URI puid : this.getPronomURIAliases(formatURI) ) {
@@ -222,7 +226,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             }
         }
 
-        List<MeasurementImpl> lm = new Vector<MeasurementImpl>(meas.values());
+        lm = new Vector<MeasurementImpl>(meas.values());
         //Collections.sort( lm );
         return lm;
     }

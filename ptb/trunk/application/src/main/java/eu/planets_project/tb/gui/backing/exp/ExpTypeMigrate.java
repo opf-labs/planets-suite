@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
@@ -417,4 +418,10 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
 
     }
     
+    public static void main(String args[]) {
+        Properties p = System.getProperties();
+        for( Object key : p.keySet() ) {
+            System.out.println(key + " = "+p.getProperty((String)key));
+        }
+    }
 }

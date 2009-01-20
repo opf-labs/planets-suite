@@ -46,7 +46,7 @@
                 </f:facet>
                         <h:commandLink>
           <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectStageActionListener"/>
-                <h:outputText value="#{stage.name}"/>
+                <h:outputText value="#{stage.name}" styleClass="#{ ( ExperimentBean.selectedStage.name eq stage.name ) ? 'isSelected' : 'isNotSelected'}" />
                 </h:commandLink>
             </rich:column>
         </rich:dataTable>

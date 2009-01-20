@@ -1654,14 +1654,8 @@ public class NewExpWizardController {
     public List<MeasurementBean> getObservables() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         
-        // FIXME Use the stage to narrow the list:
-        String selectedStage = null;
-        if( this.getStages() != null && this.getStages().size() > 0 ) {
-            selectedStage = this.getStages().get(0).getName();
-        }
-        if( expBean.getSelectedStage() != null ) {
-            selectedStage = expBean.getSelectedStage().getName();
-        }
+        // Use the stage to narrow the list:
+        String selectedStage = expBean.getSelectedStage().getName();
         log.info("Got expBean, selected Stage = "+selectedStage);
         
         this.chooseObservablesForEtype(expBean.getEtype(), expBean.getExperiment(), selectedStage );
@@ -1689,7 +1683,7 @@ public class NewExpWizardController {
 
         Vector<String> props = exp.getExperimentExecutable().getProperties();
         for( MeasurementBean m : obs ) {
-            if( props.contains(m.getIdentifier().toString()) ) {
+            if( props != null && m.getIdentifier() != null && props.contains(m.getIdentifier().toString()) ) {
                 m.setSelected(true);
             } else {
                 // FIXME This should remember properly, and set to false if necessary.

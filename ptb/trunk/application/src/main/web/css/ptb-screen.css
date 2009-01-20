@@ -938,4 +938,17 @@ width:100%;
 .dr-table-footer {
     background: #f0f0f0;
 }
-
+.isSelected {
+  font-weight: bold;
+  display: block;
+  width: 95%;
+  background: #ddffff;
+  padding: 2px 4px;
+  font-size: 1.1em;
+}
+.isNotSelected {
+  display: block;
+  width: 95%;
+  padding: 2px 4px;
+  font-size: 1.1em;
+}

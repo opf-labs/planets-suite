@@ -7,16 +7,11 @@ package eu.planets_project.tb.utils;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.net.URI;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Extractor;
-import eu.planets_project.services.characterise.Characterise;
-import eu.planets_project.services.datatypes.FileFormatProperty;
-import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 //import eu.planets_project.tb.impl.system.BackendProperties;
 
