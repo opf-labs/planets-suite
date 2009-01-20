@@ -288,9 +288,12 @@ public class DataHandlerImpl implements DataHandler {
                 context = req.getContextPath();
             }
             try {
-                
+                /*
                 download = new URI( "http", 
                         PlanetsServerConfig.getHostname()+":"+PlanetsServerConfig.getPort(), 
+                        context+"/reader/download.jsp","fid="+id, null);
+                        */
+                download = new URI( null, null, 
                         context+"/reader/download.jsp","fid="+id, null);
             } catch (URISyntaxException e) {
                 e.printStackTrace();
