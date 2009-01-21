@@ -15,7 +15,7 @@ public class XcdlExtractorStandaloneTest extends XcdlExtractorLocalTest {
     @BeforeClass
     public static void setup() {
     	System.out.println("*************************");
-    	System.out.println("* Running SERVER tests: *");
+    	System.out.println("* Running STANDALONE tests: *");
     	System.out.println("*************************");
     	System.out.println();
     	System.setProperty("pserv.test.context", "Standalone");
