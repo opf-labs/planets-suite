@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -80,16 +82,17 @@ public class XcdlCharacteriseLocalTest {
         System.out.println("test1: find XCEL, no parameters:");
         System.out.println("--------------------------------");
         CharacteriseResult characteriseResult = extractor.characterise(
-                digitalObject, null, null);
+                digitalObject, null);
         check(characteriseResult);
     }
 
     @Test
     public void testCharacteriseWithXcdlNoParams() {
-        System.out.println("test2: give XCEL, no parameters:");
+        System.out.println("test2: give XCEL (as parameter, no additional parameters:");
         System.out.println("--------------------------------");
+        Parameters parameters = createParameters(false, false, xcelString);
         CharacteriseResult characteriseResult = extractor.characterise(
-                digitalObject, xcelString, null);
+                digitalObject, parameters);
         check(characteriseResult);
     }
 
@@ -97,10 +100,10 @@ public class XcdlCharacteriseLocalTest {
     public void testCharacteriseNoXcdlWithParams() {
         System.out.println("test3: find XCEL, give parameter: -r");
         System.out.println("--------------------------------");
-        Parameters parameters = new Parameters();
-        parameters.add("enableRawDataInXCDL", "-r");
+        Parameters parameters = createParameters(false, true, null);
+        
         CharacteriseResult characteriseResult = extractor.characterise(
-                digitalObject, xcelString, parameters);
+                digitalObject, parameters);
         check(characteriseResult);
     }
 
@@ -109,11 +112,10 @@ public class XcdlCharacteriseLocalTest {
         /* give XCEL, give Parameters */
         System.out.println("test4: give XCEL, parameters: -n, -r");
         System.out.println("--------------------------------");
-        Parameters parameters = new Parameters();
-        parameters.add("disableNormDataInXCDL", "-n");
-        parameters.add("enableRawDataInXCDL", "-r");
+        Parameters parameters = createParameters(true, true, xcelString);
+        
         CharacteriseResult characteriseResult = extractor.characterise(
-                digitalObject, xcelString, parameters);
+                digitalObject, parameters);
         check(characteriseResult);
     }
 
@@ -173,6 +175,34 @@ public class XcdlCharacteriseLocalTest {
         List<Property> properties = characteriseResult.getProperties();
         Assert.assertTrue("No properties extracted", properties.size() > 0);
         System.out.println("Extracted properties: " + properties);
+    }
+    
+    private Parameters createParameters(boolean disableNormDataFlag, boolean enableRawDataFlag, String optionalXCELString) {
+    	List<Parameter> parameterList = new ArrayList<Parameter>();
+        
+    	if(disableNormDataFlag) {
+    		Parameter normDataFlag = new Parameter("disableNormDataInXCDL", "-n");
+            normDataFlag.setDescription("Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
+            parameterList.add(normDataFlag);
+    	}
+    	
+        if(enableRawDataFlag) {
+        	Parameter enableRawData = new Parameter("enableRawDataInXCDL", "-r");
+            enableRawData.setDescription("Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
+            parameterList.add(enableRawData);
+        }
+        
+        if(optionalXCELString!=null) {
+        	Parameter xcelStringParam = new Parameter("optionalXCELString", optionalXCELString);
+            xcelStringParam.setDescription("Could contain an optional XCEL String which is passed to the Extractor tool.\n\r" +
+            		"If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.");
+            parameterList.add(xcelStringParam);
+        }
+        
+        Parameters parameters = new Parameters();
+        parameters.setParameters(parameterList);
+        
+        return parameters;
     }
 
     /**

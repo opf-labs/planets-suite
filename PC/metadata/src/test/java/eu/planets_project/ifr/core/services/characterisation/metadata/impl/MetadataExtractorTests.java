@@ -196,7 +196,7 @@ public class MetadataExtractorTests {
         DigitalObject digitalObject = new DigitalObject.Builder(Content
                 .byValue(binary)).build();
         CharacteriseResult characteriseResult = characterizer.characterise(
-                digitalObject, null, null);
+                digitalObject, null);
         List<Property> properties = characteriseResult.getProperties();
         System.out.println("Characterised " + file.getAbsolutePath() + " as: "
                 + properties);

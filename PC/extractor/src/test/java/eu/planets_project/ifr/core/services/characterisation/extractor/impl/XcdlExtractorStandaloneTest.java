@@ -7,7 +7,7 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
-public class XcdlExtractorStandaloneTest extends XcdlExtractorLocalTest {
+public class XcdlExtractorStandaloneTest extends XcdlMigrateLocalTest {
 	
 	/**
      * Set up the testing environment: create files and directories for testing.
@@ -22,11 +22,11 @@ public class XcdlExtractorStandaloneTest extends XcdlExtractorLocalTest {
         System.setProperty("pserv.test.host", "localhost");
         System.setProperty("pserv.test.port", "8080");
     	
-    	TEST_OUT = XcdlExtractorUnitHelper.XCDL_EXTRACTOR_STANDALONE_TEST_OUT;
+    	TEST_OUT = XcdlMigrateUnitHelper.XCDL_EXTRACTOR_STANDALONE_TEST_OUT;
     	
     	testOutFolder = FileUtils.createWorkFolderInSysTemp(TEST_OUT);
         
-        extractor = ServiceCreator.createTestService(Migrate.QNAME, XcdlExtractor.class, WSDL);
+        extractor = ServiceCreator.createTestService(Migrate.QNAME, XcdlMigrate.class, WSDL);
         
         migrationPaths = extractor.describe().getPaths().toArray(new MigrationPath[]{});
     }

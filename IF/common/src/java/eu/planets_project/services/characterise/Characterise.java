@@ -65,9 +65,6 @@ public interface Characterise extends PlanetsService{
 	            @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
 	                    + "/" + Characterise.NAME, partName = "digitalObject") 
 	                final DigitalObject digitalObject,
-	            @WebParam(name = "optional_format_XCEL", targetNamespace = PlanetsServices.NS
-	                    + "/" + Characterise.NAME, partName = "optional_format_XCEL") 
-	                String optionalFormatXCEL, 
 	            @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
 	                    + "/" + Characterise.NAME, partName = "parameters") 
 	                Parameters parameters );

@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -73,11 +74,12 @@ public class XcdlCharacterise implements Characterise, Serializable {
      *      java.lang.String, eu.planets_project.services.datatypes.Parameters)
      */
     public CharacteriseResult characterise(DigitalObject digitalObject,
-            String optionalFormatXCEL, Parameters parameters) {
+            Parameters parameters) {
 
         DigitalObject resultDigOb = null;
         ServiceReport sReport = new ServiceReport();
         CharacteriseResult characteriseResult = null;
+        String optionalFormatXCEL = null;
 
         CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME, LOG);
 
@@ -85,6 +87,19 @@ public class XcdlCharacterise implements Characterise, Serializable {
                 .getContent().read());
 
         byte[] result = null;
+        
+        if(parameters!=null) {
+        	List<Parameter> parameterList = parameters.getParameters();
+        	if(parameterList!=null && parameterList.size() > 0) {
+    			for (Parameter parameter : parameterList) {
+					String name = parameter.name;
+					if(name.equalsIgnoreCase("optionalXCELString")) {
+						optionalFormatXCEL = parameter.value;
+						break;
+					}
+				}
+        	}
+        }
 
         if (optionalFormatXCEL != null) {
             result = coreExtractor.extractXCDL(inputData, optionalFormatXCEL

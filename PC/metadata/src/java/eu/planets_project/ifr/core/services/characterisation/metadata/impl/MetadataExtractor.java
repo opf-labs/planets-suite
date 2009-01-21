@@ -63,7 +63,7 @@ public final class MetadataExtractor implements Characterise {
      *      java.lang.String, eu.planets_project.services.datatypes.Parameters)
      */
     public CharacteriseResult characterise(final DigitalObject digitalObject,
-            final String optionalFormatXCEL, final Parameters parameters) {
+            final Parameters parameters) {
         InputStream stream = digitalObject.getContent().read();
         byte[] binary = FileUtils.writeInputStreamToBinary(stream);
         String resultString = basicCharacteriseOneBinary(binary);

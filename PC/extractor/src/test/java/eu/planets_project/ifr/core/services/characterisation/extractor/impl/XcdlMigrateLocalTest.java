@@ -260,7 +260,7 @@ private String getTestXCEL (String srcExtension) {
 			
 			File formatFolder = FileUtils.createFolderInWorkFolder(testOutFolder, extension);
 			
-			File result = FileUtils.writeInputStreamToFile(doOut.getContent().read(), formatFolder, "xcdlExtractorTest_" + extension + ".xcdl");
+			File result = FileUtils.writeInputStreamToFile(doOut.getContent().read(), formatFolder, "xcdlMigrateTest_" + extension + ".xcdl");
 			
 			System.out.println("Resulting file size: " + result.length() + " KB.");
 			System.out.println("Resulting file path: " + result.getAbsolutePath());
