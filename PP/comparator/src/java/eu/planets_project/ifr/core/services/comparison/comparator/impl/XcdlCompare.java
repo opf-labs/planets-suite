@@ -1,5 +1,6 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,19 +12,20 @@ import javax.jws.WebService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
  * XCDL Comparator service.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = Comparator.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare")
+@WebService(name = XcdlCompare.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare")
 @Stateless
-public final class Comparator implements Compare {
+public final class XcdlCompare implements Compare {
     /***/
     static final String NAME = "Comparator";
 
@@ -39,8 +41,17 @@ public final class Comparator implements Compare {
                 objects.length));
         String pcr = read(Arrays.asList(config)).get(0);
         String result = ComparatorWrapper.compare(xcdl, xcdls, pcr);
-        return new CompareResult(new DigitalObject.Builder(Content
-                .byValue(result.getBytes())).build(), new ServiceReport());
+        List<Prop> props = propertiesFrom(result);
+        return new CompareResult(props, new ServiceReport());
+    }
+
+    /**
+     * @param result The comparator result
+     * @return The properties found in the result XML
+     */
+    private List<Prop> propertiesFrom(String result) {
+        File file = ByteArrayHelper.write(result.getBytes());
+        return new ResultPropertiesReader(file).getProperties();
     }
 
     /**

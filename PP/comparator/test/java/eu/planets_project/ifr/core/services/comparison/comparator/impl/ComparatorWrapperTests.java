@@ -4,13 +4,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import eu.planets_project.services.datatypes.Prop;
 
 /**
  * Tests of the comparator wrapper functionality, which is used by the different
  * comparator services.
- * 
  * @author Fabian Steeg
  */
 public final class ComparatorWrapperTests {
@@ -63,7 +66,8 @@ public final class ComparatorWrapperTests {
     }
 
     /** Tests PP comparator wrapper with three XCDLs and no given config. */
-    //@Test does not pass, but should it? I'm not sure this is even supposed to work
+    // @Test does not pass, but should it? I'm not sure this is even supposed to
+    // work
     public void testWrapperMultiNoConfig() {
         String result = ComparatorWrapper.compare(
                 ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
@@ -81,5 +85,17 @@ public final class ComparatorWrapperTests {
                 .contains("validation failed"));
         assertTrue("Comparator result contains an error: " + result, !result
                 .contains("<error>"));
+    }
+
+    /**
+     * @param properties The result properties to check
+     */
+    public static void check(final List<Prop> properties) {
+        Assert.assertTrue(properties.size() > 0);
+        System.out.println("Comparator returned: ");
+        for (Prop prop : properties) {
+            System.out.println(prop);
+        }
+
     }
 }

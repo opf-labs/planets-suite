@@ -18,5 +18,5 @@ import eu.planets_project.services.datatypes.ServiceDescriptionTest;
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { ChecksumTests.class, DigitalObjectTests.class,
         MetadataTests.class, ContentTests.class, ServiceDescriptionTest.class,
-        PropertyTests.class })
+        PropertyTests.class, PropertyTests.class })
 public class AllCommonSuite {}

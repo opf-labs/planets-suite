@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -13,8 +14,8 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.utils.ByteArrayHelper;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -72,18 +73,15 @@ public final class ComparatorServiceTests {
      */
     protected void testServices(final String server, final byte[] data1,
             final byte[] data2, final byte[] configData) {
-        Compare c = ServiceCreator.createTestService(Comparator.QNAME,
-                Comparator.class, "/pserv-pp-comparator/Comparator?wsdl");
-        // serviceFrom(server, BasicCompareTwoXcdlValues.class);
+        Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME,
+                XcdlCompare.class, "/pserv-pp-comparator/Comparator?wsdl");
         DigitalObject[] objects = new DigitalObject[] {
                 new DigitalObject.Builder(Content.byValue(data1)).build(),
                 new DigitalObject.Builder(Content.byValue(data2)).build() };
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
-        String result = new String(FileUtils.writeInputStreamToBinary(c
-                .compare(objects, configFile).getDigitalObject().getContent()
-                .read()));
-        ComparatorWrapperTests.check(result);
+        List<Prop> properties = c.compare(objects, configFile).getProperties();
+        ComparatorWrapperTests.check(properties);
     }
 
     /**

@@ -21,7 +21,7 @@ import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
  * PP comparator service, comparing two XCDL strings, using the default
  * configuration and returning a result string for the comparison.
  * @author Fabian Steeg
- * @deprecated Use {@link Comparator} instead
+ * @deprecated Use {@link XcdlCompare} instead
  */
 @WebService(name = ComparatorBasicCompareTwoXcdlValues.NAME, serviceName = BasicCompareTwoXcdlValues.NAME, 
         targetNamespace = PlanetsServices.NS, endpointInterface="eu.planets_project.services.compare.BasicCompareTwoXcdlValues")
