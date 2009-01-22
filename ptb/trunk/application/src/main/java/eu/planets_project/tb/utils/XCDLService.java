@@ -107,7 +107,7 @@ public class XCDLService implements DetermineProperties {
     public DeterminePropertiesResult measure(DigitalObject dob,
             Properties props, Parameters params) {
         
-        CharacteriseResult characteriseResult = extractor.characterise(dob, null, params);
+        CharacteriseResult characteriseResult = extractor.characterise(dob, params);
 
         Properties propobj = new Properties();
         List<MeasurementRecordImpl> list;

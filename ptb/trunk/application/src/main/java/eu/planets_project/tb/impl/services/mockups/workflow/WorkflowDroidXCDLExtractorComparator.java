@@ -48,7 +48,8 @@ import eu.planets_project.tb.impl.model.eval.EvaluationExecutableImpl;
 public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	
 	private static final String URL_DROID = "http://localhost:8080/pserv-pc-droid/Droid?wsdl";
-	private static final String URL_XCDLEXTRACTOR = "http://localhost:8080/pserv-pc-extractor/Extractor2Binary?wsdl";
+	//private static final String URL_XCDLEXTRACTOR = "http://localhost:8080/pserv-pc-extractor/Extractor2Binary?wsdl";
+	private static final String URL_XCDLEXTRACTOR = "http://planetarium.hki.uni-koeln.de:8080/pserv-pc-extractor/Extractor2Binary?wsdl";
 	private static final String URL_XCDLCOMPARATOR = "http://localhost:8080/pserv-pp-comparator/ComparatorBasicCompareTwoXcdlValues?wsdl";
 	
 	//the new extractor interface does not require to hand over the xcel anymore
@@ -56,8 +57,11 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	//private static final String PATH_TO_xcel_png = "Planets_XCEL_Exctractor/res/xcl/xcel/xcel_docs/xcel_png.xml";
 	
 	enum supportedTypes{
-		TIFF(new String[]{"info:pronom/fmt/7","info:pronom/fmt/8","info:pronom/fmt/9","info:pronom/fmt/10"}/*,PATH_TO_xcel_tiff*/),
-		PNG(new String[]{"info:pronom/fmt/11","info:pronom/fmt/12"}/*,PATH_TO_xcel_png*/);
+		TIFF(new String[]{"info:pronom/fmt/7","info:pronom/fmt/8","info:pronom/fmt/9","info:pronom/fmt/10","info:pronom/fmt/152","info:pronom/fmt/153","info:pronom/fmt/154","info:pronom/fmt/155","info:pronom/fmt/156","info:pronom/x-fmt/387","info:pronom/x-fmt/388","info:pronom/x-fmt/399"}/*,PATH_TO_xcel_tiff*/),
+		PNG(new String[]{"info:pronom/fmt/11","info:pronom/fmt/12","info:pronom/fmt/13"}/*,PATH_TO_xcel_png*/),
+		JPEG(new String[]{"info:pronom/fmt/41","info:pronom/fmt/42","info:pronom/fmt/43","info:pronom/fmt/44","info:pronom/fmt/112","info:pronom/fmt/149","info:pronom/x-fmt/390","info:pronom/x-fmt/391","info:pronom/x-fmt/398"}/*,PATH_TO_xcel_jpeg*/),
+		GIF(new String[]{"info:pronom/fmt/3","info:pronom/fmt/4"}/*,PATH_TO_xcel_gif*/),
+		BMP(new String[]{"info:pronom/fmt/114","info:pronom/fmt/115","info:pronom/fmt/116","info:pronom/fmt/117","info:pronom/fmt/118","info:pronom/fmt/119","info:pronom/x-fmt/25","info:pronom/x-fmt/270"}/*,PATH_TO_xcel_bmp*/);
 		private String[] idsForType;
 		//private String xcelPath;
 		
