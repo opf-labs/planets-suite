@@ -3,6 +3,8 @@
  */
 package eu.planets_project.services.compare;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -15,6 +17,7 @@ import javax.xml.ws.ResponseWrapper;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -47,7 +50,22 @@ public interface Compare extends PlanetsService {
             @WebParam(name = "digitalObjects", targetNamespace = PlanetsServices.NS
                     + "/" + Compare.NAME, partName = "digitalObjects") final DigitalObject[] objects,
             @WebParam(name = "config", targetNamespace = PlanetsServices.NS
-                    + "/" + Compare.NAME, partName = "config") final DigitalObject config);
+                    + "/" + Compare.NAME, partName = "config") final List<Prop> config);
+
+    /**
+     * Convert a tool-specific configuration file to the generic format of a
+     * list of properties. Use this method to pass your configuration file to
+     * {@link #compare(DigitalObject[], List)}.
+     * @param configFile The tool-specific configuration file
+     * @return A list of properties containing the configuration values
+     */
+    @WebMethod(operationName = "ConfigProperties", action = PlanetsServices.NS
+            + "/" + Compare.NAME)
+    @WebResult(name = Compare.NAME + "ConfigProperties", targetNamespace = PlanetsServices.NS
+            + "/" + Compare.NAME, partName = Compare.NAME + "ConfigProperties")
+    List<Prop> convert(
+            @WebParam(name = "configFile", targetNamespace = PlanetsServices.NS
+                    + "/" + Compare.NAME, partName = "configFile") final DigitalObject configFile);
 
     /**
      * {@inheritDoc}

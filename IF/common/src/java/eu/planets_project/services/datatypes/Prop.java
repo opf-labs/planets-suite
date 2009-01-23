@@ -49,9 +49,9 @@ public final class Prop {
 
     private String name, unit, description, type;
 
-    private List<String> values;
+    private List<String> values = new ArrayList<String>();
 
-    private List<Prop> properties;
+    private List<Prop> properties = new ArrayList<Prop>();
 
     /**
      * Entry point for creating a {@link Prop} instance.
@@ -218,8 +218,12 @@ public final class Prop {
      */
     @Override
     public String toString() {
-        return String.format("%s '%s' = '%s'", this.getClass().getSimpleName(),
-                name, values);
+        String format = String.format("%s '%s' = '%s'", this.getClass()
+                .getSimpleName(), name, values);
+        if (properties.size() > 0) {
+            format += ", sub: " + properties;
+        }
+        return format;
     }
 
     /**

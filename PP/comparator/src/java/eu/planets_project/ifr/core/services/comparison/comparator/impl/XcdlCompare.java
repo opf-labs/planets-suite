@@ -9,6 +9,8 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreator;
+import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
@@ -35,11 +37,11 @@ public final class XcdlCompare implements Compare {
      *      eu.planets_project.services.datatypes.DigitalObject)
      */
     public CompareResult compare(final DigitalObject[] objects,
-            final DigitalObject config) {
+            final List<Prop> config) {
         String xcdl = read(Arrays.asList(objects[0])).get(0);
         List<String> xcdls = read(Arrays.asList(objects).subList(1,
                 objects.length));
-        String pcr = read(Arrays.asList(config)).get(0);
+        String pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
         String result = ComparatorWrapper.compare(xcdl, xcdls, pcr);
         List<Prop> props = propertiesFrom(result);
         return new CompareResult(props, new ServiceReport());
@@ -49,7 +51,7 @@ public final class XcdlCompare implements Compare {
      * @param result The comparator result
      * @return The properties found in the result XML
      */
-    private List<Prop> propertiesFrom(String result) {
+    private List<Prop> propertiesFrom(final String result) {
         File file = ByteArrayHelper.write(result.getBytes());
         return new ResultPropertiesReader(file).getProperties();
     }
@@ -79,5 +81,15 @@ public final class XcdlCompare implements Compare {
                 .getName()).classname(Compare.class.getName()).author(
                 "Fabian Steeg").description("XCDL Comparison Service")
                 .serviceProvider("The Planets Consortium").build();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public List<Prop> convert(final DigitalObject configFile) {
+        File file = ByteArrayHelper.write(FileUtils
+                .writeInputStreamToBinary(configFile.getContent().read()));
+        return new ComparatorConfigParser(file).getProperties();
     }
 }

@@ -16,13 +16,17 @@ public class PropTests {
     public void usage() {
         /* A dummy example to demonstrate the principle: */
         Prop.name("color").values("red", "green").props(
-                Prop.name("saturation").values("55").build(),
-                Prop.name("brightness").values("12").build()).build();
+                Prop.name("saturation").values("none", "half", "full").build(),
+                Prop.name("brightness").values("dark", "bright").build())
+                .build();
         /* A sample input config property for the XCDL comparator: */
-        Prop s1 = Prop.name("imageHeight")
-                .values("equal", "intDiff", "percDev").unit("pixel").build();
-        Assert.assertEquals(3, s1.getValues().size());
-        /* A sample (nested) result property of the XCDL comparator: */
+        Prop s1 = Prop.name("imageHeight").unit("pixel").type("101").props(
+                Prop.name("metric").type("200").description("equal").build(),
+                Prop.name("metric").type("201").description("intDiff").build(),
+                Prop.name("metric").type("210").description("percDev").build())
+                .build();
+        Assert.assertEquals(3, s1.getProps().size());
+        /* A sample result property of the XCDL comparator: */
         Prop s2 = Prop.name("bitsPerSample").values("8", "2").unit("bit").type(
                 "int").props(
                 Prop.name("equal").values("false").type("metric").build(),

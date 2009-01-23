@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?> 
+<pcRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://www.planets-project.eu/xcl/schemas/xcl" 
+    xsi:schemaLocation="http://www.planets-project.eu/xcl/schemas/xcl  pcr.xsd"> 
+    <compSet> 
+        <source name="XCDL1.xml" /> 
+        <target name="XCDL2.xml" /> 
+        <property id="45" name="rgbPalette"> 
+            <metric id="10" name="hammingDistance" /> 
+        </property> 
+        <property id="300" name="normData"> 
+            <metric id="10" name="hammingDistance" /> 
+            <metric id="50" name="RMSE" /> 
+            <metric id="15" name="levenstheinDistance" /> 
+        </property> 
+        <property id="39" name="filter"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+        <property id="45" name="interlace"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+        <property id="2" name="imageHeight" unit="pixel"> 
+            <metric id="200" name="equal" /> 
+            <metric id="201" name="intDiff" /> 
+            <metric id="210" name="percDev" /> 
+        </property> 
+        <property id="30" name="imageWidth" unit="pixel"> 
+            <metric id="200" name="equal" /> 
+            <metric id="201" name="intDiff" /> 
+            <metric id="210" name="percDev" /> 
+        </property> 
+        <property id="151" name="bitsPerSample" unit="bit"> 
+            <metric id="200" name="equal" /> 
+            <metric id="201" name="intDiff" /> 
+        </property> 
+        <property id="10" name="backgroundColour"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+        <property id="18" name="compression"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+        <property id="8" name="gamma"> 
+            <metric id="200" name="equal" /> 
+            <metric id="201" name="intDiff" /> 
+            <metric id="210" name="percDev" /> 
+        </property> 
+        <property id="20" name="imageType"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+        <property id="49" name="planarConfiguration"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+        <property id="9" name="orientation"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+        <property id="22" name="resolutionUnit"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+        <property id="23" name="resolutionX"> 
+            <metric id="200" name="equal" /> 
+            <metric id="205" name="ratDiff" /> 
+            <metric id="210" name="percDev" /> 
+        </property> 
+        <property id="24" name="resolutionY"> 
+            <metric id="200" name="equal" /> 
+            <metric id="205" name="ratDiff" /> 
+            <metric id="210" name="percDev" /> 
+        </property> 
+        <property id="144" name="scanDocName"> 
+            <metric id="15" name="levenstheinDistance" /> 
+        </property> 
+        <property id="11" name="transparency"> 
+            <metric id="200" name="equal" /> 
+        </property> 
+    </compSet> 
+</pcRequest> 

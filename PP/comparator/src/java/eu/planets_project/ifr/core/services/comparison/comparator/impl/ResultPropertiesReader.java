@@ -40,6 +40,10 @@ public final class ResultPropertiesReader {
         try {
             Document doc = builder.build(cprFile);
             Element obj = doc.getRootElement().getChild("compSet", NS);
+            if (obj == null) {
+                throw new IllegalArgumentException("Can't process document: "
+                        + doc.getRootElement().getChildText("error", NS));
+            }
             List<?> propElems = obj.getChildren("property", NS);
             for (Object object : propElems) {
                 Element e = (Element) object;
