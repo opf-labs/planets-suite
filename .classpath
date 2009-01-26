@@ -51,8 +51,6 @@
 	<classpathentry kind="src" path="PC/metadata/src/resources"/>
 	<classpathentry kind="src" path="PC/extractor/src/java"/>
 	<classpathentry kind="src" path="PC/extractor/src/test/java"/>
-	<classpathentry kind="src" path="PC/file/src/java"/>
-	<classpathentry kind="src" path="PC/file/test/java"/>
 	<classpathentry kind="src" path="PC/fpm/src/java"/>
 	<classpathentry kind="src" path="PC/fpm/src/test/java"/>
 	<classpathentry kind="src" path="PC/libtiff/src/java"/>
@@ -62,6 +60,8 @@
 	<classpathentry kind="src" path="PP/comparator/src/java"/>
 	<classpathentry kind="src" path="PP/comparator/test/java"/>
 	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="src" path="PA/jtidy/src/java"/>
+	<classpathentry kind="src" path="PA/jtidy/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
@@ -84,7 +84,7 @@
 	<classpathentry kind="lib" path="PC/metadata/lib/gif_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/html_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/jpg_adapter_1_1.jar"/>
-	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar" sourcepath="PC/metadata/lib/metadata-src.zip"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/mp3_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/msword_adapter_2_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/msworks_adapter_1_0.jar"/>
@@ -191,5 +191,10 @@
 	<classpathentry kind="lib" path="IF/jaxr/lib/juddi.jar"/>
 	<classpathentry kind="lib" path="IF/jaxr/lib/scout-1.0rc2.jar"/>
 	<classpathentry kind="lib" path="IF/jaxr/lib/xbean.jar"/>
+	<classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar" sourcepath="D:/JTidy/jtidy-04aug2000r7-dev/src">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/D:/JTidy/jtidy-04aug2000r7-dev/doc/api/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
