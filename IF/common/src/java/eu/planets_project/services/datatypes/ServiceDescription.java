@@ -193,6 +193,27 @@ public final class ServiceDescription {
     List<MigrationPath> paths;
 
     /**
+     * @param name The name of the service description to build
+     * @param type The type of service description to build
+     * @return The builder, to alter the created service description; call
+     *         build() on the builder to create the actual service description
+     */
+    public static ServiceDescription.Builder create(final String name,
+            final String type) {
+        return new ServiceDescription.Builder(name, type);
+    }
+
+    /**
+     * @param serviceDescription The service description to copy
+     * @return The builder, to alter the created service description; call
+     *         build() on the builder to create the actual service description
+     */
+    public static ServiceDescription.Builder copy(
+            final ServiceDescription serviceDescription) {
+        return new ServiceDescription.Builder(serviceDescription);
+    }
+
+    /**
      * @param builder The builder to construct a service description from
      */
     private ServiceDescription(final Builder builder) {
@@ -601,8 +622,10 @@ public final class ServiceDescription {
                 .unmodifiableList(properties);
     }
 
-    /* Proposed hashing and equality methods, giving the identifier preference
-     * if it exists, else using the serialized XML form. */
+    /*
+     * Proposed hashing and equality methods, giving the identifier preference
+     * if it exists, else using the serialized XML form.
+     */
 
     /**
      * {@inheritDoc}
@@ -612,7 +635,7 @@ public final class ServiceDescription {
     public int hashCode() {
         if (identifier != null) {
             return identifier.hashCode();
-        } else{
+        } else {
             return toXml().hashCode();
         }
     }
@@ -623,13 +646,13 @@ public final class ServiceDescription {
      */
     @Override
     public boolean equals(final Object obj) {
-        if(!(obj instanceof ServiceDescription)){
+        if (!(obj instanceof ServiceDescription)) {
             return false;
         }
         ServiceDescription other = (ServiceDescription) obj;
         if (identifier != null) {
             return identifier.equals(other.identifier);
-        } else{
+        } else {
             return toXml().equals(other.toXml());
         }
     }
@@ -710,8 +733,9 @@ public final class ServiceDescription {
          */
         public Result createOutput(final String namespaceUri,
                 final String suggestedFileName) throws IOException {
-            return new StreamResult(new java.io.File(baseDir, 
-                    schemaFileName.split("\\.")[0] + "_" + suggestedFileName));
+            return new StreamResult(new java.io.File(baseDir, schemaFileName
+                    .split("\\.")[0]
+                    + "_" + suggestedFileName));
         }
     }
 

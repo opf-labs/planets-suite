@@ -3,6 +3,7 @@ package eu.planets_project.services.datatypes;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 
 import javax.activation.DataHandler;
@@ -24,11 +25,19 @@ import eu.planets_project.services.utils.FileUtils;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * @author Peter Melms (peter.melms@uni-koeln.de)
  */
-public final class Content {
+public final class Content implements Serializable {
+    /***/
+    private static final long serialVersionUID = 7135127983024589335L;
     @XmlAttribute
     private URL reference;
+    /*
+     * FIXME: The data handler class is not serializable. If an API consumer
+     * would create content by value and use Java's object serialization, this
+     * would not work. Do our classes need to implement Serializable at all?
+     */
     @XmlElement
     @XmlMimeType("application/octet-stream")
+    /* The DataHandler is not serializable, so we define it transient: */
     private DataHandler dataHandler;
 
     /*
@@ -47,6 +56,9 @@ public final class Content {
 
     /**
      * Create content by value.
+     * <p/>
+     * Note that content created by value cannot be used with Java's object
+     * serialization.
      * @param value The value for the content
      * @return A content instance with the specified value
      */
@@ -56,6 +68,9 @@ public final class Content {
 
     /**
      * Create content by value.
+     * <p/>
+     * Note that content created by value cannot be used with Java's object
+     * serialization.
      * @param file The value for the content
      * @return A content instance with the specified value
      */

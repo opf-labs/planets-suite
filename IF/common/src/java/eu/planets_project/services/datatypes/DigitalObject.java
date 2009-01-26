@@ -50,7 +50,9 @@ import javax.xml.transform.stream.StreamResult;
  * {@code DigitalObject o = DigitalObject.of(xml);}
  * <p/>
  * For usage examples, see the tests in {@link DigitalObjectTests} and web
- * service sample usage in {@link eu.planets_project.ifr.core.simple.impl.PassThruMigrationService#migrate} (pserv/IF/simple).
+ * service sample usage in
+ * {@link eu.planets_project.ifr.core.simple.impl.PassThruMigrationService#migrate}
+ * (pserv/IF/simple).
  * <p/>
  * A corresponding XML schema can be generated from this class by running this
  * class as a Java application, see {@link #main(String[])}.
@@ -102,6 +104,24 @@ public final class DigitalObject implements Comparable<DigitalObject>,
     /** @see {@link #getFragments()} */
     @XmlElement
     private List<Fragment> fragments;
+
+    /**
+     * @param content The content for the digital object to build
+     * @return The builder, to alter the created digital object; call build() on
+     *         the builder to create the actual digital object
+     */
+    public static DigitalObject.Builder create(final Content content) {
+        return new DigitalObject.Builder(content);
+    }
+
+    /**
+     * @param digitalObject The digital object to copy
+     * @return The builder, to alter the copied digital object; call build() on
+     *         the builder to create the actual digital object
+     */
+    public static DigitalObject.Builder copy(final DigitalObject digitalObject) {
+        return new DigitalObject.Builder(digitalObject);
+    }
 
     /**
      * A digital object fragment.
@@ -188,8 +208,8 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @return The builder, for cascaded calls
          */
         public Builder content(final Content content) {
-        	this.content = content;
-        	return this;
+            this.content = content;
+            return this;
         }
 
         /**

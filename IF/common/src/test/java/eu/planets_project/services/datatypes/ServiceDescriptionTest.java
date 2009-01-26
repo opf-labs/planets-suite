@@ -25,7 +25,7 @@ import eu.planets_project.services.identify.Identify;
 public class ServiceDescriptionTest {
 
     /**
-     *  A short overview of using the ServiceDescription API:
+     * A short overview of using the ServiceDescription API:
      */
     @Test
     public void sampleUsage() {
@@ -38,6 +38,13 @@ public class ServiceDescriptionTest {
                 "Test Service", Identify.class.getName()).author("Some One")
                 .build();
         Assert.assertEquals("Some One", description1.getAuthor());
+        /* Or use the more concise factory method to create a description...: */
+        description1 = ServiceDescription.create("Test Service",
+                Identify.class.getName()).build();
+        Assert.assertEquals("Test Service", description1.getName());
+        /* Or to copy a description: */
+        ServiceDescription copy = ServiceDescription.copy(description1).build();
+        Assert.assertEquals(description1, copy);
         /*
          * You can also use an existing description (both as an object or as the
          * XML) as a template for your new description:

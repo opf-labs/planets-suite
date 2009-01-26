@@ -33,7 +33,7 @@ public final class DigitalObjectTests {
 
     /**
      * Simple sample usage (only required values).
-     * @throws MalformedURLException 
+     * @throws MalformedURLException
      */
     @Test
     public void usage1() throws MalformedURLException {
@@ -43,6 +43,14 @@ public final class DigitalObjectTests {
         DigitalObject o = new DigitalObject.Builder(Content
                 .byReference(new URL("http://some.reference")))
                 .permanentUrl(id).build();
+        assertEquals(o, DigitalObject.of(o.toXml()));
+        /* Or use the factory method to create...: */
+        o = DigitalObject.create(Content.byValue(new File("build.xml")))
+                .build();
+        assertEquals(o, DigitalObject.of(o.toXml()));
+        /* Or to copy a digital object: */
+        o = DigitalObject.copy(o).build();
+        assertEquals(o, DigitalObject.of(o.toXml()));
         /* Or by value: */
         o = new DigitalObject.Builder(Content.byValue(new File("build.xml")))
                 .permanentUrl(id).build();
@@ -56,7 +64,7 @@ public final class DigitalObjectTests {
     /**
      * More complex sample usage (some optional parameters). See further below
      * for more examples.
-     * @throws MalformedURLException 
+     * @throws MalformedURLException
      */
     @Test
     public void usage2() throws MalformedURLException {
