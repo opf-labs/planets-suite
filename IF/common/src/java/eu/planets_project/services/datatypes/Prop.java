@@ -18,13 +18,16 @@ import javax.xml.bind.annotation.XmlAccessorType;
  *<li>Multiple values are possible</li>
  *<li>Can contain sub-properties</li>
  *</ul>
- * This allows to create properties like this:
+ * This allows to create properties like this (a sample input config property
+ * for the XCDL comparator):
  * 
  * <pre>
  * {@code
- * Prop.name("color").values("red", "green").props(
-    Prop.name("saturation").values("55").build(),
-    Prop.name("brightness").values("12").build()).build();
+Prop.name("imageHeight").type("101").unit("pixel").props(
+        Prop.name("metric").type("200").description("equal").build(),
+        Prop.name("metric").type("201").description("intDiff").build(),
+        Prop.name("metric").type("210").description("percDev").build())
+        .build();
    }
  * </pre>
  *<p/>
