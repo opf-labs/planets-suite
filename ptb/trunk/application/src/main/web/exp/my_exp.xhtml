@@ -3,7 +3,9 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:t="http://myfaces.apache.org/tomahawk"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich">
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
@@ -36,7 +38,8 @@
                   cellpadding="2"
                   cellspacing="0"
                   border="1"
-                  binding="#{ListExp_Backing.myExp_data}">
+                  binding="#{ListExp_Backing.myExp_data}"
+                  rowIndexVar="row">
         <t:column>
             <f:facet name="header">
 	         <t:commandSortHeader id="sortName" columnName="name" arrow="true" immediate="false" styleClass="tableHeaderSel">
@@ -105,8 +108,22 @@
                 &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/go-down.png" alt="#{res['expList.colHeader.download']}" title="#{res['expList.colHeader.download']}"/>
             </h:commandLink>        
         </t:column>
+        <t:column style="text-align: center;">
+        	<rich:effect name="showDiv#{row}"  for="deleteDiv#{row}" type="Appear" />
+            <f:facet name="header">#{res['expList.colHeader.delete']}</f:facet>
+            	&nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="#{res['expList.colHeader.delete']}" title="#{res['expList.colHeader.delete']}" onclick="showDiv#{row}()"/>
+        <span id="deleteDiv#{row}" style="display:none">
+        	
+        	<input name="delReason#{row}" onclick="this.value=''" value="Enter reason"></input>
+        	<input type="hidden" value="#{exp.experimentSetup.basicProperties.experimentName}" />
+	  		<h:commandLink action="#{ListExp_Backing.sendDeletionRequest}">
+                 <f:param name="outcome" value="welcome"/>
+                 <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_contact.png" alt="#{res['expList.colHeader.delete']}" title="#{res['expList.colHeader.delete']}"/>
+            </h:commandLink>
+		</span>
+        </t:column>
     </t:dataTable>
-
+	
     <h:panelGrid columns="1" styleClass="scrollerTable2" columnClasses="standardTable_ColumnCentered" >
         <t:dataScroller id="scroll_1"
                         for="dataTable_myExp"
