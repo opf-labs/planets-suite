@@ -37,7 +37,7 @@ import eu.planets_project.services.utils.FileUtils;
 public class XcdlMigrateLocalTest {
 
     /***/
-    static final String WSDL = "/pserv-pc-extractor/XcdlMigrate?wsdl";
+    static final String WSDL = "/pserv-pa-jtidy/JTidy?wsdl";
     /***/
     static String xcelString;
     /***/
@@ -160,7 +160,7 @@ public class XcdlMigrateLocalTest {
         return parameters;
     }
 	
-private String getTestXCEL (String srcExtension) {
+	private String getTestXCEL (String srcExtension) {
     	if (srcExtension.equalsIgnoreCase("TIFF")) {
     		return FileUtils.readTxtFileIntoString(XcdlMigrateUnitHelper.TIFF_XCEL);
 		}

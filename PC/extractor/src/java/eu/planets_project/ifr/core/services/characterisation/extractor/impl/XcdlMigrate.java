@@ -111,7 +111,7 @@ public class XcdlMigrate implements Migrate, Serializable {
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(
-                XcdlCharacterise.NAME, Characterise.class.getCanonicalName());
+                XcdlMigrate.NAME, Migrate.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
         sd
                 .description("A wrapper for the Extractor tool developed by UzK (University at Cologne).\n"
