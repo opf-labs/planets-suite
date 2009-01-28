@@ -14,6 +14,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 
@@ -86,6 +87,14 @@ public final class Pdf2HtmlMigrationTest extends TestCase {
             assertTrue("Resulting digital object is null.", doOut != null);
 
             System.out.println("Output: " + doOut);
+            
+            Content content = doOut.getContent();
+            
+            File workfolder = FileUtils.createWorkFolderInSysTemp("pdf2html_test");
+            
+            File resultHtml = FileUtils.writeInputStreamToFile(content.read(), workfolder, "pdf2html_result.html");
+            
+            System.out.println("Please find the result HTML file here: \n" + resultHtml.getAbsolutePath());
 
             assertTrue("Resulting digital object not equal to the original.",
                     !input.equals(doOut));
