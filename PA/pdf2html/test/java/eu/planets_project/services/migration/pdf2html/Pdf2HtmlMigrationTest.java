@@ -24,7 +24,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.Format;
 public final class Pdf2HtmlMigrationTest extends TestCase {
 
     /* The location of this service when deployed. */
-    String wsdlLoc = "/pa-pserv-pdf2html/Pdf2HtmlMigration?wsdl";
+    String wsdlLoc = "/pserv-pa-pdf2html/Pdf2HtmlMigration?wsdl";
 
     /* A holder for the object to be tested */
     Migrate dom = null;
@@ -56,7 +56,7 @@ public final class Pdf2HtmlMigrationTest extends TestCase {
     @Test
     public void testDescribe() {
         ServiceDescription desc = dom.describe();
-        System.out.println("Recieved service description: " + desc);
+        System.out.println("Recieved service description: " + desc.toXmlFormatted());
         assertTrue("The ServiceDescription should not be NULL.", desc != null);
     }
 
@@ -80,7 +80,7 @@ public final class Pdf2HtmlMigrationTest extends TestCase {
                             build();
             System.out.println("Input: " + input);
 
-            MigrateResult mr = dom.migrate(input, null, null, null);
+            MigrateResult mr = dom.migrate(input, Format.extensionToURI("pdf"), Format.extensionToURI("html"), null);
             DigitalObject doOut = mr.getDigitalObject();
 
             assertTrue("Resulting digital object is null.", doOut != null);
