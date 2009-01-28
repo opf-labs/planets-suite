@@ -33,8 +33,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.Format;
         endpointInterface = "eu.planets_project.services.migrate.Migrate" )
 public class Pdf2HtmlMigration implements Migrate, Serializable {
 
-	private static final long serialVersionUID = 6141883197344343019L;
-	
+
 	/** The service name */
     static final String NAME = "Pdf2HtmlMigration";
 
@@ -71,7 +70,7 @@ public class Pdf2HtmlMigration implements Migrate, Serializable {
 
         ServiceDescription.Builder builder = new ServiceDescription.Builder(NAME, Migrate.class.getName());
 
-        builder.author("Claus Jensen <cjen@kb.dk>");
+        builder.author("Asger Blekinge-Rasmussen <abr@statsbiblioteket.dk>");
         builder.classname(this.getClass().getCanonicalName());
         builder.description("Extracts the textual contents of pdf files to html");
 
