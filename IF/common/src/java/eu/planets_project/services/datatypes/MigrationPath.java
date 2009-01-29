@@ -6,6 +6,7 @@ package eu.planets_project.services.datatypes;
 import java.net.URI;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -84,7 +85,7 @@ public class MigrationPath {
      * @param outputFormats The allowed outputformats
      * @return An array of all the paths.
      */
-    public static MigrationPath[] constructPaths(List<URI> inputformats,List<URI> outputFormats){
+    public static MigrationPath[] constructPaths(Set<URI> inputformats, Set<URI> outputFormats){
         if (inputformats == null || outputFormats == null) {
             return new MigrationPath[0];
         } else {
