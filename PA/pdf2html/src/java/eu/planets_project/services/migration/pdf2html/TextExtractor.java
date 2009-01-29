@@ -8,6 +8,8 @@ import org.pdfbox.exceptions.CryptographyException;
 import org.pdfbox.exceptions.InvalidPasswordException;
 import org.pdfbox.pdmodel.PDDocument;
 import org.pdfbox.util.PDFTextStripperByArea;
+import org.pdfbox.util.PDFTextStripper;
+import org.pdfbox.util.PDFText2HTML;
 
 public class TextExtractor {
 
@@ -27,8 +29,9 @@ public class TextExtractor {
             document.decrypt("");
         }
 
-        PDFTextStripperByArea stripper = new PDFTextStripperByArea();
-        stripper.setSortByPosition( true );
+        PDFText2HTML stripper = new PDFText2HTML();
+        stripper.shouldSeparateByBeads();
+        stripper.shouldSortByPosition();
 
 
         return stripper.getText(document);

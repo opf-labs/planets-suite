@@ -53,8 +53,9 @@ public class Pdf2HtmlMigration implements Migrate, Serializable {
             factory.title(digitalObject.getTitle()+".html");
             factory.permanentUrl(new URL("http://example.com/test.html"));
             factory.format(Format.extensionToURI("html"));
-
             DigitalObject htmlObject = factory.build();
+
+
             return new MigrateResult(htmlObject,report);
 
         } catch (Exception e) {
