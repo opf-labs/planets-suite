@@ -1,10 +1,11 @@
 /**
- * 
+ *
  */
 package eu.planets_project.services.datatypes;
 
 import java.net.URI;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,9 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Simple class to build path matrices from.  
- * 
+ *
  * Contains the input and outputs of the path, and allows for parameters for that mapping.
- * 
+ *
  * @author  <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
 @XmlRootElement(name = "path")
@@ -38,13 +39,13 @@ public class MigrationPath {
      * No arg constructor
      */
     protected MigrationPath() { }
-    
+
     /**
-	 * Parameterised constructor
-	 *
-     * @param in 
-     * @param out 
-     * @param pars 
+     * Parameterised constructor
+     *
+     * @param in
+     * @param out
+     * @param pars
      */
     public MigrationPath(URI in, URI out, List<Parameter> pars ) {
         this.inputFormat = in;
@@ -72,5 +73,28 @@ public class MigrationPath {
     public List<Parameter> getParameters() {
         return parameters;
     }
-    
+
+
+    /**
+     * Construct an array of migrationpaths, linking all the formats in
+     * inputformas to all the formats in outputformats. If either is null or
+     * empty, the array will be length 0. All migrationPaths will be with
+     * null parameters.
+     * @param inputformats The allowed inputformats
+     * @param outputFormats The allowed outputformats
+     * @return An array of all the paths.
+     */
+    public static MigrationPath[] constructPaths(List<URI> inputformats,List<URI> outputFormats){
+        if (inputformats == null || outputFormats == null) {
+            return new MigrationPath[0];
+        } else {
+            List<MigrationPath> paths = new ArrayList<MigrationPath>(inputformats.size()*outputFormats.size());
+            for (URI in: inputformats){
+                for (URI out:outputFormats){
+                    paths.add(new MigrationPath(in,out,null));
+                }
+            }
+            return paths.toArray(new MigrationPath[0]);
+        }
+    }
 }
