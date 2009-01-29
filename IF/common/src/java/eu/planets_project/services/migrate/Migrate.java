@@ -66,7 +66,7 @@ public interface Migrate extends PlanetsService {
             @WebParam(name = "inputFormat", targetNamespace = PlanetsServices.NS
                     + "/" + Migrate.NAME, partName = "inputFormat") 
                 URI inputFormat, 
-            @WebParam(name = "outoutFormat", targetNamespace = PlanetsServices.NS
+            @WebParam(name = "outputFormat", targetNamespace = PlanetsServices.NS
                     + "/" + Migrate.NAME, partName = "outputFormat") 
                 URI outputFormat,
             @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS

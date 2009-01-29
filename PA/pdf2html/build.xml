@@ -8,6 +8,9 @@
     <!-- Define the project name and directory, based on the project name specified above. -->
     <property name="appName" value="${ant.project.name}"/>
     <property name="appDir" value="."/>
+	
+	<!-- Specify if this application requires further software to be installed -->
+	<property name="pserv.app.deploy.mode" value="pure-java" />
 
     <!-- Specify the build type: ejb, war or ear. -->
     <property name="pserv.app.build.type" value="ejb"/>
@@ -24,7 +27,6 @@
     <!-- Unit testing definitions -->
     <property name="test.src.dir" value="${appDir}/test/java" />
     <property name="test.local" value="" />
-
     <property name="test.server" value="" />
 
     <!-- Reference to the main build file -->
