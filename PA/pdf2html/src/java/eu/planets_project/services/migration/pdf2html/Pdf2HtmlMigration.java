@@ -20,6 +20,8 @@ import eu.planets_project.services.datatypes.*;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 
 
 @Local(Migrate.class)
@@ -51,8 +53,7 @@ public class Pdf2HtmlMigration implements Migrate, Serializable {
             String htmlBlob = TextExtractor.getText(digitalObject.getContent().read());
             DigitalObject.Builder factory = new DigitalObject.Builder(Content.byValue(htmlBlob.getBytes()));
             factory.title(digitalObject.getTitle()+".html");
-            factory.permanentUrl(new URL("http://example.com/test.html"));
-            factory.format(Format.extensionToURI("html"));
+            factory.format(new URI("info:pronom/fmt/99"));
             DigitalObject htmlObject = factory.build();
 
 
@@ -75,12 +76,10 @@ public class Pdf2HtmlMigration implements Migrate, Serializable {
         builder.classname(this.getClass().getCanonicalName());
         builder.description("Extracts the textual contents of pdf files to html");
 
-        /* TODO There are many uris for pdf. How is this handled?*/
-        MigrationPath[] mPaths = new MigrationPath []{
-                new MigrationPath(Format.extensionToURI("pdf"), Format.extensionToURI("html"),null)
-        };
+        FormatRegistry fm= FormatRegistryFactory.getFormatRegistry();
+        MigrationPath[] paths = MigrationPath.constructPaths(fm.getURIsForExtension("pdf"),fm.getURIsForExtension("html"));
 
-        builder.paths(mPaths);
+        builder.paths(paths);
         builder.version("0.1");
 
         return builder.build();
