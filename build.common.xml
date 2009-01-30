@@ -407,7 +407,7 @@
   <target name="test:local" description="executes the included JUnit tests w/o a server" depends="test:src-defined,compile:tests" if="test.local">
     <echo message="TEST:LOCAL: Testing the service code without a server."/>
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
+    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}" printsummary="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
       <sysproperty key="pserv.test.context" value="local"/>
@@ -427,7 +427,7 @@
   <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)" depends="test:src-defined,compile:tests" if="test.standalone">
     <echo message="TEST:STANDALONE: Testing the service code using a standalone server."/>
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
+    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}" printsummary="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
       <sysproperty key="pserv.test.context" value="standalone"/>
@@ -462,7 +462,7 @@
     <property name="echoclasspath" refid="standalone_test_classpath"/>
     <!-- echo message="Classpath = ${echoclasspath}"/ -->
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}">
+    <junit fork="yes" haltonfailure="yes" dir="${pserv.root.dir}" printsummary="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
       <sysproperty key="pserv.test.context" value="server"/>
