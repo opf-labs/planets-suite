@@ -262,4 +262,22 @@ public final class Prop {
         result = oddPrime * result + properties.hashCode();
         return result;
     }
+
+    /**
+     * @param prop The prop name
+     * @return The sub properties with the given name
+     */
+    public List<Prop> getProps(String prop) {
+        /*
+         * TODO to optimize this kind of access, the sub properties could be
+         * stored in a Map
+         */
+        List<Prop> result = new ArrayList<Prop>();
+        for (Prop p : getProps()) {
+            if (p.name.toLowerCase().equals(prop.toLowerCase())) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
 }

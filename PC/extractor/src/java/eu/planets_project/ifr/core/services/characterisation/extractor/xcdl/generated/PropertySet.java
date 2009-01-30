@@ -95,8 +95,8 @@ public class PropertySet {
     protected PropertySet.DataRef dataRef;
     @XmlAttribute
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlID
-    @XmlSchemaType(name = "ID")
+//    @XmlID
+//    @XmlSchemaType(name = "ID")
     protected String id;
 
     /**
@@ -239,9 +239,9 @@ public class PropertySet {
             @XmlAttribute(required = true)
             protected int end;
             @XmlAttribute(required = true)
-            @XmlIDREF
-            @XmlSchemaType(name = "IDREF")
-            protected java.lang.Object id;
+//            @XmlIDREF
+//            @XmlSchemaType(name = "IDREF")
+            protected /*java.lang.Object*/String id;
 
             /**
              * Gets the value of the begin property.
@@ -283,7 +283,7 @@ public class PropertySet {
              * Sets the value of the id property.
              * @param value allowed object is {@link java.lang.Object }
              */
-            public void setId(java.lang.Object value) {
+            public void setId(/*java.lang.Object*/String value) {
                 this.id = value;
             }
 
@@ -373,9 +373,9 @@ public class PropertySet {
         public static class Ref {
 
             @XmlAttribute(required = true)
-            @XmlIDREF
-            @XmlSchemaType(name = "IDREF")
-            protected java.lang.Object valueSetId;
+//            @XmlIDREF
+//            @XmlSchemaType(name = "IDREF")
+            protected /*java.lang.Object*/String valueSetId;
             @XmlAttribute
             protected String name;
 
@@ -391,7 +391,7 @@ public class PropertySet {
              * Sets the value of the valueSetId property.
              * @param value allowed object is {@link java.lang.Object }
              */
-            public void setValueSetId(java.lang.Object value) {
+            public void setValueSetId(/*java.lang.Object*/String value) {
                 this.valueSetId = value;
             }
 

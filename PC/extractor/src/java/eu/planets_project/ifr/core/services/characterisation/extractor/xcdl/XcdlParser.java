@@ -13,6 +13,7 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.gene
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.ValueSet;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Xcdl;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue.Val;
+import eu.planets_project.services.datatypes.Prop;
 
 /**
  * Access to a complete XCDL, via JAXB-generated classes.
@@ -92,5 +93,52 @@ public final class XcdlParser implements XcdlAccess {
         for (eu.planets_project.services.datatypes.Property property : properties) {
             System.out.println(property);
         }
+    }
+
+    /**
+     * NOTE: This is a temporary solution to avoid spreading the preliminary
+     * Prop class too far. Eventually, this class will only provide on
+     * getProp(ertie)s() method.
+     * @return The properties parsed from the XCDL file
+     */
+    public List<Prop> getProps() {
+        List<eu.planets_project.services.datatypes.Property> properties = this
+                .getProperties();
+        return propertiesToProps(properties);
+    }
+
+    private List<Prop> propertiesToProps(
+            List<eu.planets_project.services.datatypes.Property> properties) {
+        /*
+         * This is totally work in progress... The basic idea is: We wrap all
+         * this stuff here around the plain properties to make it work for the
+         * XCDL comparator.
+         */
+        int p = 73;
+        int v = 217;
+        System.out.println("Attempting to convert properties: ");
+        for (eu.planets_project.services.datatypes.Property property : properties) {
+            System.out.println(property);
+        }
+        List<Prop> result = new ArrayList<Prop>();
+        result.add(Prop.name("normData").type("id").description("object")
+                .values("00 01 02 03 04 05 06 07 08 09 0a").build());
+        result.add(Prop.name("propertySet").type("id_0").props(
+                Prop.name("ref").type("id").description("id").build(),
+                Prop.name("ref").type("id").description("id").build()).build());
+        for (eu.planets_project.services.datatypes.Property property : properties) {
+            result.add(Prop.name("property").type("p" + p).values("raw",
+                    "descr").props(
+                    Prop.name("name").type("id")
+                            .description(property.getName()).build(),
+                    Prop.name("valueSet").type("i_i1_i" + v + "_s5").props(
+                            Prop.name("labValue").description(
+                                    property.getUnit()).values(
+                                    property.getValue()).build()).build())
+                    .build());
+            p--;
+            v--;
+        }
+        return result;
     }
 }

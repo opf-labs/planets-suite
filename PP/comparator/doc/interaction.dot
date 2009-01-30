@@ -1,0 +1,42 @@
+digraph interaction{
+    label="Goal: XCL tools interaction, IF wrapping (solid boxes), and integration\n(dashed for XCL tools, dotted for others): a potential experiment setup"
+    node[shape=box]
+    rankdir=LR
+    
+    Input[shape=none label="Original and\nmigrated files"]
+    Result[shape=none label="4 different\ncomparison\nresults"]
+    
+    subgraph cluster_1{
+        label="Characterise"
+        XcdlCharacterise[style=dashed]
+        MetadataExtractor[style=dotted label="MetadataExtractor"]
+    }
+    
+    subgraph cluster_2{
+        label="Migrate"
+        XcdlMigrate
+    }
+    
+    subgraph cluster_3{
+        label="Compare"
+        XcdlCompare
+    }
+    
+    subgraph cluster_4{
+        label="CompareProperties"
+        XcdlCompareProperties[style=dashed]
+    }
+    
+    XcdlMigrate->XcdlCompare[label="XCDL"]
+    XcdlCharacterise->XcdlCompareProperties[label="Prop."]
+    
+    MetadataExtractor->XcdlCompare[label="XSLT" style=dotted]
+    MetadataExtractor->XcdlCompareProperties[label="Prop."]
+    
+    Input->XcdlMigrate
+    Input->XcdlCharacterise
+    Input->MetadataExtractor
+    
+    XcdlCompareProperties->Result
+    XcdlCompare->Result
+}

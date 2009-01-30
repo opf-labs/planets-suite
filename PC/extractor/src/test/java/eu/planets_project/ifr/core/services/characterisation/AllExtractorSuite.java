@@ -11,6 +11,7 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Xcdl
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrateLocalTest;
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrateServerTest;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccessTests;
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlCreatorTests;
 
 /**
  * Suite to run all tests in the extractor component.
@@ -22,5 +23,5 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.Xcdl
         XcdlCharacteriseLocalTest.class, XcdlCharacteriseServerTest.class,
         XcdlCharacteriseStandaloneTest.class,
         ExtractorPropertiesListerTest.class, XcdlMigrateLocalTest.class,
-        XcdlMigrateServerTest.class })
+        XcdlMigrateServerTest.class, XcdlCreatorTests.class })
 public class AllExtractorSuite {}

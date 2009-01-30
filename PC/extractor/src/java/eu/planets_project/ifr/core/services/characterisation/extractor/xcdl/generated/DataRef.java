@@ -43,9 +43,10 @@ public class DataRef {
     @XmlAttribute(required = true)
     protected DataRefType ind;
     @XmlAttribute
-    @XmlIDREF
-    @XmlSchemaType(name = "IDREF")
-    protected java.lang.Object propertySetId;
+//    @XmlIDREF
+//    @XmlSchemaType(name = "IDREF")
+//    protected java.lang.Object propertySetId;
+    protected String propertySetId;
 
     /**
      * Gets the value of the ind property.
@@ -75,7 +76,7 @@ public class DataRef {
      * Sets the value of the propertySetId property.
      * @param value allowed object is {@link java.lang.Object }
      */
-    public void setPropertySetId(java.lang.Object value) {
+    public void setPropertySetId(/*java.lang.Object*/String value) {
         this.propertySetId = value;
     }
 

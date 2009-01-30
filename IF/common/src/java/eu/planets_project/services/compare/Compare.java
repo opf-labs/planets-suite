@@ -18,7 +18,6 @@ import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
-import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * Comparison of digital objects.
@@ -34,18 +33,18 @@ public interface Compare extends PlanetsService {
 
     /**
      * @param objects The digital objects to compare
-     * @param config A configuration file
-     * @return A new digital object, the result of comparing the given digital
-     *         object, wrapped in a result object
+     * @param config A configuration property list
+     * @return A list of result properties, the result of comparing the given
+     *         digital object, wrapped in a result object
      */
     @WebMethod(operationName = Compare.NAME, action = PlanetsServices.NS + "/"
             + Compare.NAME)
     @WebResult(name = Compare.NAME + "Result", targetNamespace = PlanetsServices.NS
             + "/" + Compare.NAME, partName = Compare.NAME + "Result")
     @RequestWrapper(className = "eu.planets_project.services.compare."
-            + Compare.NAME + "Compare")
+            + Compare.NAME + "Request")
     @ResponseWrapper(className = "eu.planets_project.services.compare."
-            + Compare.NAME + "CompareResponse")
+            + Compare.NAME + "Response")
     CompareResult compare(
             @WebParam(name = "digitalObjects", targetNamespace = PlanetsServices.NS
                     + "/" + Compare.NAME, partName = "digitalObjects") final DigitalObject[] objects,
@@ -66,17 +65,5 @@ public interface Compare extends PlanetsService {
     List<Prop> convert(
             @WebParam(name = "configFile", targetNamespace = PlanetsServices.NS
                     + "/" + Compare.NAME, partName = "configFile") final DigitalObject configFile);
-
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.services.PlanetsService#describe()
-     */
-    @WebMethod(operationName = Compare.NAME + "_" + "describe", action = PlanetsServices.NS
-            + "/" + Compare.NAME + "/" + "describe")
-    @WebResult(name = Compare.NAME + "Description", targetNamespace = PlanetsServices.NS
-            + "/" + Compare.NAME, partName = Compare.NAME + "Description")
-    @ResponseWrapper(className = "eu.planets_project.services.compare."
-            + Compare.NAME + "DescribeResponse")
-    ServiceDescription describe();
 
 }

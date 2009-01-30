@@ -13,10 +13,10 @@ import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
- * Local and client tests of the comparator service.
+ * Local and client tests of the comparator XCDL comparison service.
  * @author Fabian Steeg
  */
-public final class ComparatorServiceTests {
+public final class XcdlCompareTests {
 
     private static final String WSDL = "/pserv-pp-comparator/XcdlCompare?wsdl";
 
@@ -49,8 +49,8 @@ public final class ComparatorServiceTests {
                 new DigitalObject.Builder(Content.byValue(data2)).build() };
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
-        List<Prop> properties = c.compare(objects,
-                c.convert(configFile)).getProperties();
+        List<Prop> properties = c.compare(objects, c.convert(configFile))
+                .getProperties();
         ComparatorWrapperTests.check(properties);
     }
 }
