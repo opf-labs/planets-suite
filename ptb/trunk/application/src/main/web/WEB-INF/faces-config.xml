@@ -200,6 +200,11 @@
    <redirect/>
   </navigation-case>
   <navigation-case>
+   <from-outcome>server</from-outcome>
+   <to-view-id>/reader/server.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
    <from-action>#{Login_Backing.logout}</from-action>
    <from-outcome>success</from-outcome>
    <to-view-id>/reader/welcome.xhtml</to-view-id>

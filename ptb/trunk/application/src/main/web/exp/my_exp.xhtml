@@ -111,14 +111,14 @@
         <t:column style="text-align: center;">
         	<rich:effect name="showDiv#{row}"  for="deleteDiv#{row}" type="Appear" />
             <f:facet name="header">#{res['expList.colHeader.delete']}</f:facet>
-            	&nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="#{res['expList.colHeader.delete']}" title="#{res['expList.colHeader.delete']}" onclick="showDiv#{row}()"/>
+            	&nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="#{res['expList.colHeader.delete']}" title="#{res['expList.colHeader.delete']}" onclick="showDiv#{row}(); "/>
         <span id="deleteDiv#{row}" style="display:none">
         	
-        	<input name="delReason#{row}" onclick="this.value=''" value="Enter reason"></input>
+        	<input name="delReason#{row}" onclick="this.value=''" value="Enter reason" style="display: none"></input>
         	<input type="hidden" value="#{exp.experimentSetup.basicProperties.experimentName}" />
 	  		<h:commandLink action="#{ListExp_Backing.sendDeletionRequest}">
-                 <f:param name="outcome" value="welcome"/>
-                 <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_contact.png" alt="#{res['expList.colHeader.delete']}" title="#{res['expList.colHeader.delete']}"/>
+                 
+                 <img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_contact.png" alt="#{res['expList.colHeader.delete']}" title="#{res['expList.colHeader.delete']}" />
             </h:commandLink>
 		</span>
         </t:column>

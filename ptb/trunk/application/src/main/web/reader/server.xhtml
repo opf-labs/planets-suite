@@ -10,12 +10,12 @@
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
-        #{res.title} - #{res['about.pageTitle']}
+        #{res.title} - #{res['server.pageTitle']}
   </ui:define>
 
 	<ui:define name="header">
 		<ui:include src="/WEB-INF/templates/header.xhtml">
-			<ui:param name="page" value="about"/>
+			<ui:param name="page" value="server"/>
 		</ui:include>
 	</ui:define>
 
@@ -24,9 +24,13 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
-			<div style="text-align:center;margin-top:20px;">
-                <p><img src="${facesContext.externalContext.requestContextPath}/graphics/tb-info.png" alt="About the Planets Testbed" title="About the Planets Testbed" /></p>
-                <p><img src="${facesContext.externalContext.requestContextPath}/graphics/tb-science.png" alt="Scientific Approach" title="Scientific Approach" /> <img src="${facesContext.externalContext.requestContextPath}/graphics/tb-share.png" alt="Sharing Results" title="Sharing Results" /></p>   	
+			<div>
+                <p>The PLANETS Testbed is currently hosted on a 64 bit SPARC-based Sun Fire V240 server.</p>  
+                <p><b>Operating System:</b> Solaris 9 (SunOS 5.9)</p>
+                <p><b>Processor:</b> 2 x 1.5 GHz UltraSPARC IIIi</p> 	
+                <p><b>Memory:</b> 8GB DDR-1 SDRAM (PC2100)</p>
+                <p><b>Hard disk:</b> 2 x 73GB</p>
+                
              </div>               
         
         
@@ -47,18 +51,6 @@
 			Please see the project's website it's wiki or gforge for more details
 		</p>
 		</div>
-		
-		<h3 class="leftcol">Server Specification</h3>
-		<div class="innertube">
-		<p class="leftcol">
-		<h:form styleClass="hidden">	
-			<h:commandLink action="server"  rendered="#{UserBean.reader}">
-				Server Specification
-			</h:commandLink>
-		</h:form>
-		</p>
-		</div>
-		
 	</div>
 
 	</ui:define>
