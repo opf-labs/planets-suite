@@ -62,7 +62,7 @@ public interface Compare extends PlanetsService {
             + "/" + Compare.NAME)
     @WebResult(name = Compare.NAME + "ConfigProperties", targetNamespace = PlanetsServices.NS
             + "/" + Compare.NAME, partName = Compare.NAME + "ConfigProperties")
-    List<Prop> convert(
+    List<Prop> convertConfig(
             @WebParam(name = "configFile", targetNamespace = PlanetsServices.NS
                     + "/" + Compare.NAME, partName = "configFile") final DigitalObject configFile);
 

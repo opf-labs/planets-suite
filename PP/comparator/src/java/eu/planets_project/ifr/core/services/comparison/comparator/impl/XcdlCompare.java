@@ -86,9 +86,9 @@ public final class XcdlCompare implements Compare {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
+     * @see eu.planets_project.services.compare.Compare#convertConfig(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public List<Prop> convert(final DigitalObject configFile) {
+    public List<Prop> convertConfig(final DigitalObject configFile) {
         File file = ByteArrayHelper.write(FileUtils
                 .writeInputStreamToBinary(configFile.getContent().read()));
         return new ComparatorConfigParser(file).getProperties();

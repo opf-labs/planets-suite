@@ -55,15 +55,16 @@ public final class XcdlComparePropertiesTests {
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
         /* We now convert both into properties using our service: */
-        List<List<Prop>> inputProps = new ArrayList<List<Prop>>();
+        List<ArrayList<Prop>> inputProps = new ArrayList<ArrayList<Prop>>();
         for (DigitalObject digitalObject : objects) {
-            inputProps.add(c.convert(digitalObject));
+            inputProps.add(c.convertInput(digitalObject));
         }
-        List<Prop> configProps = new ComparatorConfigParser(ByteArrayHelper
-                .write(FileUtils.writeInputStreamToBinary(configFile
-                        .getContent().read()))).getProperties();
-        List<Prop> properties = c.compare(inputProps, configProps)
-                .getProperties();
+        List<Prop> configProps = new ArrayList<Prop>(
+                new ComparatorConfigParser(ByteArrayHelper.write(FileUtils
+                        .writeInputStreamToBinary(configFile.getContent()
+                                .read()))).getProperties());
+        List<Prop> properties = new ArrayList<Prop>(c.compare(inputProps,
+                configProps).getProperties());
         ComparatorWrapperTests.check(properties);
     }
 }

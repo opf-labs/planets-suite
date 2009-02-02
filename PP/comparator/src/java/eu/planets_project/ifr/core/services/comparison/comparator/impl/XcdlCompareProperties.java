@@ -27,7 +27,7 @@ import eu.planets_project.services.utils.FileUtils;
  * @see XcdlComparePropertiesTests
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = XcdlCompareProperties.NAME, serviceName = CompareProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CompareProps")
+@WebService(name = XcdlCompareProperties.NAME, serviceName = CompareProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CompareProperties")
 @Stateless
 public final class XcdlCompareProperties implements CompareProperties {
     /***/
@@ -38,9 +38,9 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @see eu.planets_project.services.compare.CompareProperties#compare(java.util.List,
      *      java.util.List)
      */
-    public CompareResult compare(final List<List<Prop>> lists,
+    public CompareResult compare(final List<ArrayList<Prop>> lists,
             final List<Prop> config) {
-        List<List<Prop>> first = new ArrayList<List<Prop>>();
+        List<ArrayList<Prop>> first = new ArrayList<ArrayList<Prop>>();
         first.add(lists.get(0));
         String xcdl = read(first).get(0);
         List<String> xcdls = read(lists.subList(1, lists.size()));
@@ -64,7 +64,7 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @param list The list of digital objects
      * @return A list of strings representing the content of the digital objects
      */
-    private List<String> read(final List<List<Prop>> list) {
+    private List<String> read(final List<ArrayList<Prop>> list) {
         List<String> result = new ArrayList<String>();
         for (List<Prop> xcdlProps : list) {
             String content = new XcdlCreator(xcdlProps).getXcdlXml();
@@ -87,11 +87,11 @@ public final class XcdlCompareProperties implements CompareProperties {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.compare.CompareProperties#convert(eu.planets_project.services.datatypes.DigitalObject)
+     * @see eu.planets_project.services.compare.CompareProperties#convertInput(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public List<Prop> convert(final DigitalObject inputFile) {
+    public ArrayList<Prop> convertInput(final DigitalObject inputFile) {
         File file = ByteArrayHelper.write(FileUtils
                 .writeInputStreamToBinary(inputFile.getContent().read()));
-        return new XcdlParser(file).getProps();
+        return new ArrayList<Prop>(new XcdlParser(file).getProps());
     }
 }

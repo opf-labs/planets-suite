@@ -3,6 +3,7 @@
  */
 package eu.planets_project.services.compare;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -14,6 +15,7 @@ import javax.xml.ws.BindingType;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
 
+import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -29,7 +31,7 @@ import eu.planets_project.services.datatypes.Prop;
  */
 @WebService(name = CompareProperties.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-public interface CompareProperties {
+public interface CompareProperties extends PlanetsService {
     /***/
     String NAME = "CompareProperties";
     /***/
@@ -52,14 +54,18 @@ public interface CompareProperties {
             + CompareProperties.NAME + "Response")
     CompareResult compare(
             @WebParam(name = "propLists", targetNamespace = PlanetsServices.NS
-                    + "/" + CompareProperties.NAME, partName = "propLists") final List<List<Prop>> lists,
+            /*
+             * A list is fine for the WS stack, but a list of list upsets JAXB,
+             * so we specify an implementation (ArrayList):
+             */
+            + "/" + CompareProperties.NAME, partName = "propLists") final List<ArrayList<Prop>> lists,
             @WebParam(name = "config", targetNamespace = PlanetsServices.NS
                     + "/" + CompareProperties.NAME, partName = "config") final List<Prop> config);
 
     /**
      * Convert a tool-specific input file (like the output of a characterisation
      * tool) to the generic format of a list of properties. Use this method to
-     * pass your file to {@link #compare(List, List)}.
+     * pass your file to {@link #compare(ArrayList, ArrayList)}.
      * @param inputFile The tool-specific configuration file
      * @return A list of properties containing the configuration values
      */
@@ -68,8 +74,12 @@ public interface CompareProperties {
     @WebResult(name = CompareProperties.NAME + "InputProperties", targetNamespace = PlanetsServices.NS
             + "/" + CompareProperties.NAME, partName = CompareProperties.NAME
             + "InputProperties")
-    List<Prop> convert(
-            @WebParam(name = "InputProperties", targetNamespace = PlanetsServices.NS
-                    + "/" + CompareProperties.NAME, partName = "InputProperties") final DigitalObject inputFile);
+    /*
+     * Here, we specify ArrayList instead of List as well, because what is
+     * returned here is meant to be one of the elements in the list above.
+     */
+    ArrayList<Prop> convertInput(
+            @WebParam(name = "inputProperties", targetNamespace = PlanetsServices.NS
+                    + "/" + CompareProperties.NAME, partName = "inputProperties") final DigitalObject inputFile);
 
 }

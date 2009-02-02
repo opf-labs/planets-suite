@@ -49,7 +49,7 @@ public final class XcdlCompareTests {
                 new DigitalObject.Builder(Content.byValue(data2)).build() };
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
-        List<Prop> properties = c.compare(objects, c.convert(configFile))
+        List<Prop> properties = c.compare(objects, c.convertConfig(configFile))
                 .getProperties();
         ComparatorWrapperTests.check(properties);
     }
