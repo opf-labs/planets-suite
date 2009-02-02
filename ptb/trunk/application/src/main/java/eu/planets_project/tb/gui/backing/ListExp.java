@@ -10,6 +10,7 @@ import javax.faces.component.html.HtmlDataTable;
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.common.mail.PlanetsMailMessage;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
@@ -19,7 +20,7 @@ import eu.planets_project.tb.gui.util.SortableList;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 
 import java.util.Collection;
-
+import eu.planets_project.ifr.core.security.api.model.User;
 
 public class ListExp extends SortableList {
     
@@ -494,6 +495,36 @@ public class ListExp extends SortableList {
          */
         public void setAllExpPageSize(int allExpPageSize) {
             this.allExpPageSize = allExpPageSize;
+        }
+        
+        public void sendDeletionRequest() {
+            try {
+            	Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
+            	if (selectedExperiment != null){
+	            	String expName = selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName();
+	            	String contactName = selectedExperiment.getExperimentSetup().getBasicProperties().getContactName();
+	            	String contactEmail = selectedExperiment.getExperimentSetup().getBasicProperties().getContactMail();
+	            	
+	            	//how do I get this from the form?
+	            	//String reason = "";
+	            	
+	            	String body = "Experiment deletion request received for experiment:\r\n";
+	            	body += expName+"\r\n";
+	            	body += "The contact for this experiment is "+contactName+" ("+contactEmail+")\r\n";
+	            	//body += "Reason given for deletion: "+reason;
+	                PlanetsMailMessage mailer = new PlanetsMailMessage();
+	                mailer.setSender("noreply@planets-project.eu");
+	                mailer.setSubject("Experiment deletion request: "+expName);
+	                mailer.setBody(body);
+
+	                User user = UserBean.getUser("admin");
+	                mailer.addRecipient(user.getFullName() + "<" + user.getEmail() + ">");
+	                mailer.send();
+	                log.info("Deletion request email sent successfully.");
+            	}
+            } catch( Exception e ) {
+                log.info("Deletion email sending failed. Details: "+ e);
+            }
         }
 
 }
