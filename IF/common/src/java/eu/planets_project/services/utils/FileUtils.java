@@ -11,6 +11,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipOutputStream;
 
 /**
  *  @author Thomas Kraemer thomas.kraemer@uni-koeln.de
@@ -328,6 +332,88 @@ public class FileUtils {
 	 */
 	public static File getSystemTempFolder() {
 		return new File(SYSTEM_TEMP);
+	}
+	
+	/** 
+	 * 
+	 * @param folder the resulting zip file will contain all files in this folder
+	 * @param zipFileName the name, the returned zip file should have
+	 * @return a zip file containing all files in 'folder' or null, if the folder does not contain a file.
+	 */
+	
+	public static File createZipFile(File folder, String zipFileName) {
+		// Creating an empty ArrayList for calling the listAllFiles method with
+		// "resultFolder" as root.
+		ArrayList<String> listOfFiles = new ArrayList<String>();
+		
+		// Calling the recursive method listAllFiles, which lists all files in
+		// all folders in the resultFolder.
+		ArrayList<String> resultFileList;
+		try {
+			resultFileList = listAllFiles(folder, listOfFiles);
+			
+			// "Normalize" the paths in resultFileList for creation of ZipEntries
+			ArrayList<String> normalizedPaths = new ArrayList<String>();
+			
+			for (int i = 0; i < resultFileList.size(); i++) {
+				String currentPath = resultFileList.get(i);
+				// Strip the beginning of the String, except the "[FOLDER-NAME] itself\"....
+				int index = currentPath.indexOf(folder.getName().toUpperCase());
+				currentPath = currentPath.substring(index);
+				// Delete the [FOLDER-NAME] part of the paths
+				currentPath = currentPath.replace(folder.getName().toUpperCase() + File.separator, "");
+				// add the normalized path to the list
+				normalizedPaths.add(currentPath);
+			}
+			
+			// Write the output ZIP
+			ZipOutputStream zipWriter = new ZipOutputStream(new FileOutputStream(new File(folder, zipFileName)));
+			zipWriter.setLevel(9);
+			
+			// writing the resultFiles to the ZIP
+			for (int i = 0; i < normalizedPaths.size(); i++) {
+				// Creating the ZipEntries using the normalizedList
+				zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
+				// And getting the files to write for the ZipEntry from the resultFileList
+				File currentFile = new File(resultFileList.get(i));
+				// getting the byte[] to write
+				byte[] current = ByteArrayHelper.read(currentFile);
+				zipWriter.write(current);
+				zipWriter.flush();
+				zipWriter.closeEntry();
+			}
+	
+			zipWriter.flush();
+			zipWriter.finish();
+			zipWriter.close();
+		} 
+		catch (ZipException zipEx) {
+			zipEx.printStackTrace();
+			return null;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Getting a reference to the new ZIP file
+		File resultZIP = new File(folder, zipFileName);
+		return resultZIP;
+	}
+	
+	private static ArrayList<String> listAllFiles(File dir, ArrayList<String> list) throws IOException {
+
+		File[] files = dir.listFiles();
+		if (files != null) {
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					listAllFiles(files[i], list); 
+	            }
+				else {
+					list.add(files[i].getPath());
+				}
+			}
+		}
+		return list;
 	}
 
 }
