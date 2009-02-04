@@ -98,4 +98,38 @@ public class MigrationPath {
             return paths.toArray(new MigrationPath[0]);
         }
     }
+    
+    /**
+     * Construct an array of migrationpaths, linking all the formats in
+     * inputformas to all the formats in outputformats. If either is null or
+     * empty, the array will be length 0. All migrationPaths will be with
+     * null parameters.
+     * @param inputformats The allowed inputformats
+     * @param outputFormats The allowed outputformats
+     * @param params the parameters for this migration path.
+     * @return An array of all the paths.
+     */
+    public static MigrationPath[] constructPathsWithParams(Set<URI> inputformats, Set<URI> outputFormats, Parameters params){
+        if (inputformats == null || outputFormats == null) {
+            return new MigrationPath[0];
+        }
+        
+        if(params==null) {
+        	return constructPaths(inputformats, outputFormats);
+        }
+        
+        if(params.getParameters().size()>0) {
+        	List<MigrationPath> paths = new ArrayList<MigrationPath>(inputformats.size()*outputFormats.size());
+            for (URI in: inputformats){
+                for (URI out:outputFormats){
+                    paths.add(new MigrationPath(in,out,params.getParameters()));
+                }
+            }
+            return paths.toArray(new MigrationPath[0]);
+        }
+        else {
+        	return constructPaths(inputformats, outputFormats);
+        }
+        
+    }
 }

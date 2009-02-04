@@ -185,6 +185,35 @@ public class FileUtils {
 	}
 	
 	/**
+	 * This method deletes all the content in a folder, without the need of passing it a PlanetsLogger instance!
+	 * @param workFolder the folder you wish to delete. All contained folders will be deleted recursive
+	 * @return true, if all folders were deleted and false, if not.
+	 */
+	public static boolean deleteTempFiles(File workFolder) {
+		if (workFolder.isDirectory()){
+			File[] entries = workFolder.listFiles();
+				for (int i=0;i<entries.length;i++){
+					File current = entries[i];
+					deleteTempFiles(current);
+				}
+			if (workFolder.delete()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			if (workFolder.delete()) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	
+	/**
 	 * @param inputStream
 	 * @return byte array from stream
 	 */
