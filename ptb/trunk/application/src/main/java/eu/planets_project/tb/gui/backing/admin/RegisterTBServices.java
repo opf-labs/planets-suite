@@ -55,8 +55,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.jboss.wsf.spi.deployment.Endpoint;
-import org.jboss.wsf.spi.management.EndpointRegistryFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -79,9 +77,6 @@ import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.tags.ServiceTagImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.tb.impl.AdminManagerImpl;
-
-import org.jboss.wsf.spi.management.EndpointRegistryFactory;
-import org.jboss.wsf.stack.jbws.EndpointRegistryFactoryImpl;
 
 /**
  * 

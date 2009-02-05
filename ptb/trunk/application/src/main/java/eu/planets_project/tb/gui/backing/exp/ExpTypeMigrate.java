@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
@@ -91,12 +93,24 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         return ServiceBrowser.mapServicesToSelectList( sdl );
     }
     
-    // FIXME Update this cache? When?
-    List<ServiceDescription> migrators = null;
+
+    /** Name to store the look-up tables under. */
+    private final static String MIGRATE_SD_CACHE_NAME = "CacheMigrationServicesCache";
+    
+    /**
+     * @return A list of all the migration services (cached in request-scope).
+     */
+    @SuppressWarnings("unchecked")
     private List<ServiceDescription> listAllMigrationServices() {
+        Map<String,Object> reqmap =
+            FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        
+        // Lookup or re-build:
+        List<ServiceDescription> migrators = (List<ServiceDescription>) reqmap.get(MIGRATE_SD_CACHE_NAME);
         if( migrators == null ) {
             log.info("Refreshing list of migration services...");
             migrators = ServiceBrowser.getListOfServices(Migrate.class.getCanonicalName());
+            reqmap.put(MIGRATE_SD_CACHE_NAME, migrators);
             log.info("Refreshed.");
         }
         return migrators;
@@ -154,12 +168,48 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         return this.getPreMigrationServiceList();
     }
  
+    /** Name to store the look-up tables under. */
+    private final static String CHAR_SD_CACHE_NAME = "CacheCharacterisationServicesCache";
+    
+    /**
+     * @return A list of all the characterisation services (cached in request-scope).
+     */
+    @SuppressWarnings("unchecked")
     private List<ServiceDescription> listAllCharacteriseServices() {
-        return ServiceBrowser.getListOfServices(Characterise.class.getCanonicalName());
+        Map<String,Object> reqmap =
+            FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        
+        // Lookup or re-build:
+        List<ServiceDescription> sds = (List<ServiceDescription>) reqmap.get(CHAR_SD_CACHE_NAME);
+        if( sds == null ) {
+            log.info("Refreshing list of characterisation services...");
+            sds = ServiceBrowser.getListOfServices(Characterise.class.getCanonicalName());
+            reqmap.put(CHAR_SD_CACHE_NAME, sds);
+            log.info("Refreshed.");
+        }
+        return sds;
     }
-
+    
+    /** Name to store the look-up tables under. */
+    private final static String IDENTIFY_SD_CACHE_NAME = "CacheIdentifcationServicesCache";
+    
+    /**
+     * @return A list of all the identification services (cached in request-scope).
+     */
+    @SuppressWarnings("unchecked")
     private List<ServiceDescription> listAllIdentificationServices() {
-        return ServiceBrowser.getListOfServices(Identify.class.getCanonicalName());
+        Map<String,Object> reqmap =
+            FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        
+        // Lookup or re-build:
+        List<ServiceDescription> sds = (List<ServiceDescription>) reqmap.get(IDENTIFY_SD_CACHE_NAME);
+        if( sds == null ) {
+            log.info("Refreshing list of identification services...");
+            sds = ServiceBrowser.getListOfServices(Identify.class.getCanonicalName());
+            reqmap.put(IDENTIFY_SD_CACHE_NAME, sds);
+            log.info("Refreshed.");
+        }
+        return sds;
     }
 
     /**

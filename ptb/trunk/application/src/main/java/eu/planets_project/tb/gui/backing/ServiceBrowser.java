@@ -11,8 +11,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -278,14 +280,21 @@ public class ServiceBrowser {
     private static List<SelectItem> createServiceList( String type ) {
         return mapServicesToSelectList( getListOfServices(type) );
     }
+    
+    /**
+     * @return Looks up the service registry, cached in ServiceBrowser in Session scope.
+     */
+    private static Registry lookupServiceRegistry() {
+        ServiceBrowser sbrowse = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+        return sbrowse.registry;
+    }
 
     /**
      * @param type
      * @return
      */
     public static List<ServiceDescription> getListOfServices( String type ) {
-        //Instantiate a registry:
-        Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+        Registry registry = lookupServiceRegistry();
 
         //Get all services
         //List<ServiceDescription> identifiers = registry.query(null); //If you pass a ServiceDescription with fields filled in it will query against matches.
@@ -382,7 +391,7 @@ public class ServiceBrowser {
         }
         ServiceDescription sdQuery = new ServiceDescription.Builder(null, null).endpoint(endpoint).build();
         
-        Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+        Registry registry = lookupServiceRegistry();
         List<ServiceDescription> result = registry.query(sdQuery);
         
         if( result != null && result.size() > 0 ) {
