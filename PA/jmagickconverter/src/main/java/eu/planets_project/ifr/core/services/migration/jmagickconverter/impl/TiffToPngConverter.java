@@ -24,6 +24,9 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 import eu.planets_project.services.utils.PlanetsLogger;
 
+/**
+ * @deprecated Use {@link ImageMagicMigrations} instead.
+ */
 
 /**
  * The purpose of this class is the image migration from TIFF to PNG. 
@@ -51,6 +54,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @SOAPBinding(
         parameterStyle = SOAPBinding.ParameterStyle.BARE,
         style = SOAPBinding.Style.RPC)
+@Deprecated
 public class TiffToPngConverter implements Serializable, BasicMigrateOneBinary {
 
 	private static final long serialVersionUID = 7130990234174919390L;

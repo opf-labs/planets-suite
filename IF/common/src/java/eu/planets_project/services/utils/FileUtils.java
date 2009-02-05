@@ -339,6 +339,7 @@ public class FileUtils {
 	 * @param folder the resulting zip file will contain all files in this folder
 	 * @param zipFileName the name, the returned zip file should have
 	 * @return a zip file containing all files in 'folder' or null, if the folder does not contain a file.
+	 * @throws IOException 
 	 */
 	
 	public static File createZipFile(File folder, String zipFileName) {
@@ -349,9 +350,13 @@ public class FileUtils {
 		// Calling the recursive method listAllFiles, which lists all files in
 		// all folders in the resultFolder.
 		ArrayList<String> resultFileList;
-		try {
-			resultFileList = listAllFiles(folder, listOfFiles);
-			
+//		try {
+		resultFileList = listAllFiles(folder, listOfFiles);
+		
+		if(resultFileList.size()==0) {
+			return null;
+		}
+		else {		
 			// "Normalize" the paths in resultFileList for creation of ZipEntries
 			ArrayList<String> normalizedPaths = new ArrayList<String>();
 			
@@ -367,41 +372,41 @@ public class FileUtils {
 			}
 			
 			// Write the output ZIP
-			ZipOutputStream zipWriter = new ZipOutputStream(new FileOutputStream(new File(folder, zipFileName)));
-			zipWriter.setLevel(9);
-			
-			// writing the resultFiles to the ZIP
-			for (int i = 0; i < normalizedPaths.size(); i++) {
-				// Creating the ZipEntries using the normalizedList
-				zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
-				// And getting the files to write for the ZipEntry from the resultFileList
-				File currentFile = new File(resultFileList.get(i));
-				// getting the byte[] to write
-				byte[] current = ByteArrayHelper.read(currentFile);
-				zipWriter.write(current);
+			ZipOutputStream zipWriter;
+			try {
+				zipWriter = new ZipOutputStream(new FileOutputStream(new File(folder, zipFileName)));
+				zipWriter.setLevel(9);
+				
+				// writing the resultFiles to the ZIP
+				for (int i = 0; i < normalizedPaths.size(); i++) {
+					// Creating the ZipEntries using the normalizedList
+					zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
+					// And getting the files to write for the ZipEntry from the resultFileList
+					File currentFile = new File(resultFileList.get(i));
+					// getting the byte[] to write
+					byte[] current = ByteArrayHelper.read(currentFile);
+					zipWriter.write(current);
+					zipWriter.flush();
+					zipWriter.closeEntry();
+				}
+		
 				zipWriter.flush();
-				zipWriter.closeEntry();
+				zipWriter.finish();
+				zipWriter.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-	
-			zipWriter.flush();
-			zipWriter.finish();
-			zipWriter.close();
-		} 
-		catch (ZipException zipEx) {
-			zipEx.printStackTrace();
-			return null;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		// Getting a reference to the new ZIP file
 		File resultZIP = new File(folder, zipFileName);
 		return resultZIP;
 	}
-	
-	private static ArrayList<String> listAllFiles(File dir, ArrayList<String> list) throws IOException {
 
+	
+	private static ArrayList<String> listAllFiles(File dir, ArrayList<String> list) {
 		File[] files = dir.listFiles();
 		if (files != null) {
 			for (int i = 0; i < files.length; i++) {

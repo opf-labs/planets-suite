@@ -22,6 +22,10 @@ import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
+ * @deprecated Use {@link ImageMagicMigrations} instead.
+ */
+
+/**
  * The purpose of this class is the image migration from JPEG to TIFF. Therefor
  * it uses the GeneralImageConverterClass, passing a byte[] containing the
  * src-image data, the required src-format (in this case JPEG which will be
@@ -38,6 +42,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @WebService(name = "JpgToTiffConverter", serviceName = BasicMigrateOneBinary.NAME, targetNamespace = PlanetsServices.NS)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
+@Deprecated
 public class JpgToTiffConverter implements Serializable, BasicMigrateOneBinary {
 
     private static final long serialVersionUID = -8344078893579549092L;
