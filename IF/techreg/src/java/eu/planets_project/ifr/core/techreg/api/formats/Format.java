@@ -131,7 +131,9 @@ public class Format implements Serializable {
      * @return the summary with the version number appended.
      */
     public String getSummaryAndVersion() {
-        return summary+" "+version;
+        if( version != null )
+            return summary+" "+version;
+        return summary;
     }
 
     /**
