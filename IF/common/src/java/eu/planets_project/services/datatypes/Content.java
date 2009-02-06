@@ -7,12 +7,12 @@ import java.io.Serializable;
 import java.net.URL;
 
 import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlMimeType;
 
 import eu.planets_project.services.utils.ByteArrayDataSource;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -75,7 +75,7 @@ public final class Content implements Serializable {
      * @return A content instance with the specified value
      */
     public static Content byValue(final File file) {
-        return new Content(ByteArrayHelper.read(file));
+        return new Content(file);
     }
 
     /**
@@ -89,7 +89,16 @@ public final class Content implements Serializable {
     }
 
     /**
-     * @param reference The content reference.
+     * @param value The content value, from a file.
+     */
+    private Content(final File value) {
+       FileDataSource ds = new FileDataSource(value);
+       DataHandler dh = new DataHandler(ds);
+       this.dataHandler = dh;
+    }
+
+    /**
+     * @param reference The content, passed as an explicit reference.
      */
     private Content(final URL reference) {
         this.reference = reference;

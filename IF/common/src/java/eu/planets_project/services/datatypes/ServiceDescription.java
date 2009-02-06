@@ -251,7 +251,7 @@ public final class ServiceDescription {
         /* Required parameters: */
         private String name;
         private String type;
-        /* Optional parameters, initialized to default values: */
+        /* Optional parameters, initialised to default values: */
         private List<MigrationPath> paths = new ArrayList<MigrationPath>();
         private List<Property> properties = new ArrayList<Property>();
         private List<URI> inputFormats = new ArrayList<URI>();

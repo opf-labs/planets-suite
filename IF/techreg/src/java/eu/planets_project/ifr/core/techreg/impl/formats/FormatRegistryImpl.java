@@ -149,13 +149,12 @@ public class FormatRegistryImpl implements FormatRegistry {
         turis.add(typeURI);
 
         if (Format.isThisAMimeURI(typeURI)) {
+            Format mime = new Format(typeURI);
+            Set<URI> furis = getURIsForMimeType(mime.getMimeTypes().iterator().next());
+            turis.addAll(furis);
+        } else if( Format.isThisAnExtensionURI(typeURI)) {
             Format ext = new Format(typeURI);
             Set<URI> furis = getURIsForExtension(ext.getExtensions().iterator()
-                    .next());
-            turis.addAll(furis);
-        } else if (Format.isThisAnExtensionURI(typeURI)) {
-            Format mime = new Format(typeURI);
-            Set<URI> furis = getURIsForMimeType(mime.getMimeTypes().iterator()
                     .next());
             turis.addAll(furis);
         } else {
