@@ -64,6 +64,23 @@
 	<classpathentry kind="src" path="PP/comparator/src/java"/>
 	<classpathentry kind="src" path="PP/comparator/test/java"/>
 	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="src" path="PA/abiword/src/java"/>
+	<classpathentry kind="src" path="PA/abiword/test"/>
+	<classpathentry kind="src" path="PA/avidemux/src/java"/>
+	<classpathentry kind="src" path="PA/avidemux/test"/>
+	<classpathentry kind="src" path="PA/dialogika/src/java"/>
+	<classpathentry kind="src" path="PA/dialogika/test/java"/>
+	<classpathentry kind="src" path="PA/dvips/test"/>
+	<classpathentry kind="src" path="PA/jasper19/src/java"/>
+	<classpathentry kind="src" path="PA/jasper19/test"/>
+	<classpathentry kind="src" path="PA/openjpeg/src/java"/>
+	<classpathentry kind="src" path="PA/openjpeg/test"/>
+	<classpathentry kind="src" path="PA/pdf2pdfamaycomputer/src/java"/>
+	<classpathentry kind="src" path="PA/pdf2pdfamaycomputer/test"/>
+	<classpathentry kind="src" path="PA/pdf2ps/src/java"/>
+	<classpathentry kind="src" path="PA/pdf2ps/test"/>
+	<classpathentry kind="src" path="PC/file/src/java"/>
+	<classpathentry kind="src" path="PC/file/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
