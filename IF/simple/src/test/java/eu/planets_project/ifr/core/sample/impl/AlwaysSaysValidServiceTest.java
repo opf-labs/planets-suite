@@ -63,7 +63,7 @@ public class AlwaysSaysValidServiceTest {
         // Attempt to determine the type of a simple file, by name
         testValidateThis(null, new URI("http://some"),
                 ValidateResult.Validity.INVALID);
-        testValidateThis(new DigitalObject.Builder(Content.byReference(null))
+        testValidateThis(new DigitalObject.Builder(Content.byReference(new URL("http://someother")))
                 .permanentUrl(new URL("http://some")).build(), new URI("ext"),
                 ValidateResult.Validity.VALID);
     }

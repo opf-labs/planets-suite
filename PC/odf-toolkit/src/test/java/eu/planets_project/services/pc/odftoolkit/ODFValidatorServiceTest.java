@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -57,7 +58,7 @@ public class ODFValidatorServiceTest {
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
         testValidateThis(null, new URI("http://some"), ValidateResult.Validity.INVALID );
-        testValidateThis(new DigitalObject.Builder( Content.byReference(null) ).build() , new URI("ext"), 
+        testValidateThis(new DigitalObject.Builder( Content.byReference(new URL("http://someother") ) ).build() , new URI("ext"), 
                 ValidateResult.Validity.VALID );
     }
     

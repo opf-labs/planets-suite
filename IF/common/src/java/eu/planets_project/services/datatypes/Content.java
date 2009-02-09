@@ -13,6 +13,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlMimeType;
 
 import eu.planets_project.services.utils.ByteArrayDataSource;
+import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -53,6 +54,18 @@ public final class Content implements Serializable {
     public static Content byReference(final URL reference) {
         return new Content(reference);
     }
+    
+    /**
+     * Create content by reference, from a File.
+     * 
+     * Note that the file must be left in place long enough for the web service client to complete the access.
+     * 
+     * @param reference The reference to the actual content value, using a File whose content will be streamed over the connection.
+     * @return A content instance referencing the given location.
+     */
+    public static Content byReference( final File reference ) {
+        return new Content(reference);
+    }
 
     /**
      * Create content by value.
@@ -71,11 +84,13 @@ public final class Content implements Serializable {
      * <p/>
      * Note that content created by value cannot be used with Java's object
      * serialization.
-     * @param file The value for the content
+     * 
+     * @param file The value for the content, a File that should be read into a byte array.
      * @return A content instance with the specified value
      */
-    public static Content byValue(final File file) {
-        return new Content(file);
+    public static Content byValue(final File value) {
+        byte[] bytes = ByteArrayHelper.read(value);
+        return new Content( bytes );
     }
 
     /**
@@ -103,7 +118,7 @@ public final class Content implements Serializable {
     private Content(final URL reference) {
         this.reference = reference;
     }
-
+    
     /** No-args constructor for JAXB. Clients should not use this. */
     private Content() {}
 
