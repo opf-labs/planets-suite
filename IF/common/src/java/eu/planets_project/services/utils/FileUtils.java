@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipOutputStream;
 
 /**
  *  @author Thomas Kraemer thomas.kraemer@uni-koeln.de
+ *  @author Peter Melms (peter.melms@uni-koeln.de), Fabian Steeg (fabian.steeg@uni-koeln.de)
  *  created: 14.07.2008
  */
 public class FileUtils {

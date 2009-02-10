@@ -21,17 +21,22 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.identify.BasicIdentifyOneBinary;
 import eu.planets_project.services.utils.PlanetsLogger;
 
+
+/**
+ * @deprecated Use {@link ImageMagickIdentify} instead.
+ */
 /**
  * The purpose of this class is to identify the format of a given image, passed as byte[].
  * It delivers a planets-Format-URI, which is composed like this:
  * planets://type/extension/[Format Identifier, e.g. TIFF / JPEG / PNG ...]  
  * 
  * This Class is a Webservice realised using an EJB3.0 Bean.
- *  
+ * 
  * @author : Peter Melms
  * Email : peter.melms@uni-koeln.de 
  * Created : 27.05.2008
  */
+
 @Stateless()
 @Local(BasicIdentifyOneBinary.class)
 @Remote(BasicIdentifyOneBinary.class)
@@ -43,6 +48,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
         name = "ImageIdentificationService", 
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.identify.BasicIdentifyOneBinary" )
+@Deprecated
 public class ImageIdentificationService implements Serializable, BasicIdentifyOneBinary {
 
 	/**
@@ -61,8 +67,7 @@ public class ImageIdentificationService implements Serializable, BasicIdentifyOn
     /**
      * @see eu.planets_project.services.identify.BasicIdentifyOneBinary#basicIdentifyOneBinary(byte[])
      */
-    public URI basicIdentifyOneBinary ( 
-            byte[] binary ) {
+    public URI basicIdentifyOneBinary (byte[] binary) {
     		
     		URI planetsFormatURI = null;
 			

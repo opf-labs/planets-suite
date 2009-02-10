@@ -23,6 +23,7 @@ import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
@@ -76,7 +77,7 @@ public class FileIdentify implements Identify {
         }
 
         // Get binary data from digital object
-        byte[] binary = digitalObject.getContent().getValue();
+        byte[] binary = FileUtils.writeInputStreamToBinary(digitalObject.getContent().read());
        
         // write binary array to temporary file
         File tmpInFile = ByteArrayHelper.write(binary);
