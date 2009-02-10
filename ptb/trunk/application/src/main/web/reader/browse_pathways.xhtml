@@ -28,37 +28,111 @@
 	<div class="innertubemain">
     
     <h:form>
-
-        <rich:dataTable value="#{ServiceBrowser.allPathways}" var="path" 
-        id="pathwayTable" reRender="pathways_ds" styleClass="tbTable">
+    
+        <table id="pathwayBrowserTable" class="tbTable" style="width: 100%">
+        <tr>
+        <th>Input Format</th>
+        <th>Migration Service</th>
+        <th>Output Format</th>
+        </tr>
         
-            <rich:column sortBy="#{path.inputFormat}"  sortOrder="ASCENDING">
-                <f:facet name="header">
-                    <h:outputText value="Input Format"/>
-                </f:facet>
-                <h:outputText value="#{path.inputFormat}"/>
-            </rich:column>
+        <tr>
+        <td style="vertical-align: top; width: 25%;">
+        
+        <rich:dataTable value="#{ServiceBrowser.migrationInputFormatBeans}" var="fb" style="width:100%;">
+          <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }">
+          
+            <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
+              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBInputFormatActionListener"/>
+              <h:panelGroup rendered="#{fb.selected}">
+                <input type="radio" checked="checked"/>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{!fb.selected}">
+                <input type="radio"/>
+              </h:panelGroup>
+              <b><h:outputText value="#{fb.summary} "/></b>
+            </h:commandLink>
+            <h:panelGroup rendered="#{!fb.enabled}" styleClass="selectableDisabled">
+              <input type="radio" disabled="disabled"/>
+              <h:outputText value="#{fb.summary} "/>
+            </h:panelGroup>
             
-            <rich:column sortBy="#{path.outputFormat}">
-                <f:facet name="header">
-                    <h:outputText value="Output Format"/>
-                </f:facet>
-                <h:outputText value="#{path.outputFormat}"/>
-            </rich:column>
-                        
-            <rich:column sortBy="#{path.name}"> 
-                <f:facet name="header">
-                    <h:outputText value="Service Name"/>
-                </f:facet>
-                <h:outputText value="#{path.name}"/>
-            </rich:column>
- <!-- 
-            <f:facet name="footer">
-                <rich:datascroller id="pathways_ds" renderIfSinglePage="false"></rich:datascroller>
-            </f:facet>
-  -->           
+            <h:panelGroup rendered="#{fb.format.registryURL != null}">
+              <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+            </h:panelGroup>
+            
+            <rich:toolTip showDelay="500">
+              <i><h:outputText value="#{fb.uri}"/></i>
+            </rich:toolTip>
+            
+          </rich:column>
         </rich:dataTable>
-  
+
+        </td>
+        <td style="vertical-align: top; width: 50%;">
+        
+        <rich:dataTable value="#{ServiceBrowser.migrationServiceBeans}" var="srb" style="width:100%;">
+          <rich:column styleClass="#{srb.selected ? 'cellSelected' : 'cellUnselected' }">
+          
+            <h:commandLink rendered="#{srb.enabled}" styleClass="selectableEnabled">
+              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBServiceActionListener"/>
+              <h:panelGroup rendered="#{srb.selected}">
+                <input type="radio" checked="checked"/>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{!srb.selected}">
+                <input type="radio"/>
+              </h:panelGroup>
+              <b><h:outputText value="#{srb.serviceDescription.name}"/></b>
+            </h:commandLink>
+            
+            <h:panelGroup rendered="#{!srb.enabled}" styleClass="selectableDisabled">
+              <input type="radio" disabled="disabled"/>
+              <h:outputText value="#{srb.serviceDescription.name}"/>
+            </h:panelGroup>
+            <br/>
+            <i><h:outputLink value="#{srb.serviceDescription.endpoint}" target="_blank">@<h:outputText value="#{srb.serviceDescription.endpoint.host} "/><t:graphicImage value="/graphics/external-link.png" alt="Open WSDL in new window..."/></h:outputLink></i>
+            
+          </rich:column>
+        </rich:dataTable>
+
+
+        </td>
+        <td style="vertical-align: top; width: 25%;">
+        
+        <rich:dataTable value="#{ServiceBrowser.migrationOutputFormatBeans}" var="fb" style="width:100%;">
+          <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }">
+          
+            <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
+              <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBOutputFormatActionListener"/>
+              <h:panelGroup rendered="#{fb.selected}">
+                <input type="radio" checked="checked"/>
+              </h:panelGroup>
+              <h:panelGroup rendered="#{!fb.selected}">
+                <input type="radio"/>
+              </h:panelGroup>
+              <b><h:outputText value="#{fb.summary} "/></b>
+            </h:commandLink>
+            <h:panelGroup rendered="#{!fb.enabled}" styleClass="selectableDisabled">
+              <input type="radio" disabled="disabled"/>
+              <h:outputText value="#{fb.summary} "/>
+            </h:panelGroup>
+            
+            <h:panelGroup rendered="#{fb.format.registryURL != null}">
+              <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+            </h:panelGroup>
+            
+            <rich:toolTip showDelay="500">
+              <i><h:outputText value="#{fb.uri}"/></i>
+            </rich:toolTip>
+            
+          </rich:column>
+        </rich:dataTable>
+
+
+        </td>
+        </tr>
+        </table>
+
     </h:form>
 	
         <p>&#160;</p>

@@ -5,10 +5,8 @@ package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -19,12 +17,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
@@ -77,45 +74,19 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      */
     public List<SelectItem> getMigrationServiceList() {
         log.info("IN: getMigrationServiceList");
-        List<ServiceDescription> sdl = new Vector<ServiceDescription>();
-        for( ServiceDescription sd : this.listAllMigrationServices() )  {
-            boolean addThis = false;
-            for( MigrationPath path : sd.getPaths() ) {
-                if( ( ! this.isInputSet() ) || this.getInputFormat().equals(path.getInputFormat().toString()) ) {
-                    if( ( ! this.isOutputSet() ) || this.getOutputFormat().equals(path.getOutputFormat().toString()) ) {
-                        addThis = true;
-                    }
-                }
-            }
-            if( addThis ) sdl.add(sd);
-        }
+        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+        
+        String input = this.getInputFormat();
+        if( ! this.isInputSet() ) input = null;
+        String output = this.getOutputFormat();
+        if( ! this.isOutputSet() ) output = null;
+        
+        List<ServiceDescription> sdl = sb.getMigrationServices( input, output );
+        
         log.info("OUT: getMigrationServiceList");
         return ServiceBrowser.mapServicesToSelectList( sdl );
     }
     
-
-    /** Name to store the look-up tables under. */
-    private final static String MIGRATE_SD_CACHE_NAME = "CacheMigrationServicesCache";
-    
-    /**
-     * @return A list of all the migration services (cached in request-scope).
-     */
-    @SuppressWarnings("unchecked")
-    private List<ServiceDescription> listAllMigrationServices() {
-        Map<String,Object> reqmap =
-            FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
-        
-        // Lookup or re-build:
-        List<ServiceDescription> migrators = (List<ServiceDescription>) reqmap.get(MIGRATE_SD_CACHE_NAME);
-        if( migrators == null ) {
-            log.info("Refreshing list of migration services...");
-            migrators = ServiceBrowser.getListOfServices(Migrate.class.getCanonicalName());
-            reqmap.put(MIGRATE_SD_CACHE_NAME, migrators);
-            log.info("Refreshed.");
-        }
-        return migrators;
-    }
-
 
     /**
      * @return
@@ -299,18 +270,17 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      */
     public List<SelectItem> getInputFormatList() {
         log.info("IN: getInputFormatList");
-        Set<URI> formats = new HashSet<URI>();
-        for( ServiceDescription sd : this.listAllMigrationServices() )  {
-            for( MigrationPath path : sd.getPaths() ) {
-                if( ( ! this.isServiceSet() ) || this.getMigrationService().equals(sd.getEndpoint().toString()) ) {
-                    if( ( ! this.isOutputSet() ) || this.getOutputFormat().equals(path.getOutputFormat().toString()) ) {
-                        formats.add(path.getInputFormat());
-                    }
-                }
-            }
-        }
+        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+        
+        String endpoint = this.getMigrationService();
+        if( ! this.isServiceSet() ) endpoint = null;
+        String output = this.getOutputFormat();
+        if( ! this.isOutputSet() ) output = null;
+        
+        Set<Format> inputFormats = sb.getMigrationInputFormats(endpoint, output);
+
         log.info("OUT: getInputFormatList");
-        return ServiceBrowser.mapFormatURIsToSelectList(formats);
+        return ServiceBrowser.mapFormatsToSelectList(inputFormats);
     }
     
     /**
@@ -337,18 +307,17 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      */
     public List<SelectItem> getOutputFormatList() {
         log.info("IN: getOutputFormatList");
-        Set<URI> formats = new HashSet<URI>();
-        for( ServiceDescription sd : this.listAllMigrationServices() )  {
-            for( MigrationPath path : sd.getPaths() ) {
-                if( ( ! this.isServiceSet() ) || this.getMigrationService().equals(sd.getEndpoint().toString()) ) {
-                    if( ( ! this.isInputSet() ) || this.getInputFormat().equals(path.getInputFormat().toString()) ) {
-                        formats.add(path.getOutputFormat());
-                    }
-                }
-            }
-        }
+        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+        
+        String endpoint = this.getMigrationService();
+        if( ! this.isServiceSet() ) endpoint = null;
+        String input = this.getInputFormat();
+        if( ! this.isInputSet() ) input = null;
+        
+        Set<Format> outputFormats = sb.getMigrationOutputFormats(endpoint, input);
+
         log.info("OUT: getOutputFormatList");
-        return ServiceBrowser.mapFormatURIsToSelectList(formats);
+        return ServiceBrowser.mapFormatsToSelectList(outputFormats);
     }
     
     

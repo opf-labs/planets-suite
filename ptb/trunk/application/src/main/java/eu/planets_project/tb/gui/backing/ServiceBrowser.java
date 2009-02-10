@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -31,17 +34,14 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
-import eu.planets_project.tb.api.model.ExperimentExecutable;
+import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.backing.service.PathwayBean;
 import eu.planets_project.tb.gui.backing.service.ServiceRecordBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
-import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
@@ -69,7 +69,10 @@ public class ServiceBrowser {
     private List<Service> services;
     
     private TreeNode<ServiceTreeItem> rootNode = null;
-    private Service selectedService = null;    
+    private Service selectedService = null;
+    private FormatBean selectedInputFormat = null;
+    private FormatBean selectedOutputFormat = null;
+    private ServiceRecordBean selectedServiceRecord = null;
     
     private String nodeTitle;
     
@@ -321,15 +324,189 @@ public class ServiceBrowser {
      * @return
      */
     public List<PathwayBean> getAllPathways() {
-        List<ServiceDescription> sds = getListOfServices(null);
+        List<ServiceDescription> sds = this.listAllMigrationServices();
         List<PathwayBean> paths = new ArrayList<PathwayBean>();
         for( ServiceDescription sd : sds ) {
             for( MigrationPath path : sd.getPaths() ) {
-                PathwayBean pb = new PathwayBean( sd.getName(), path.getInputFormat(), path.getOutputFormat() );
+                ServiceRecordBean srb = new ServiceRecordBean(sd);
+                FormatBean in = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getInputFormat() ) );
+                FormatBean out = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getOutputFormat() ) );
+                PathwayBean pb = new PathwayBean( srb, in, out );
                 paths.add(pb);
             }
         }
         return paths;
+    }
+    
+    /**
+     * @return A list of all the formats that the available migration services can take.
+     */
+    public List<FormatBean> getMigrationInputFormatBeans() {
+        // Look up the enabled formats:
+        String endpoint = null;
+        if( this.getSelectedServiceRecord() != null ) {
+            endpoint = this.getSelectedServiceRecord().getEndpoint().toString();
+        }
+        String out = null;
+        if( this.getSelectedOutputFormat() != null ) {
+            out = this.getSelectedOutputFormat().getUri().toString();
+        }
+        Set<Format> formats =  this.getMigrationInputFormats( endpoint, out );        
+            
+        // Now build the full output:
+        Set<FormatBean> fmts = new HashSet<FormatBean>();
+        for( Format f : this.getMigrationInputFormats(null, null) ) {
+            FormatBean formatBean = new FormatBean(f);
+            // Make this modify if selected:
+            if( formatBean.equals( this.getSelectedInputFormat() ) ) formatBean.setSelected(true);
+            // Modify if enabled:
+            if( ! formats.contains( f ) ) formatBean.setEnabled(false);
+            
+            fmts.add( formatBean );
+        }
+        ArrayList<FormatBean> list = new ArrayList<FormatBean>(fmts);
+        Collections.sort(list);
+        return list;
+    }
+    
+    /**
+     * @param endpoint
+     * @param outputFormat
+     * @return
+     */
+    public Set<Format> getMigrationInputFormats(String endpoint, String outputFormat ) {
+        log.info("IN: getMigrationInputFormats");
+        Set<Format> formats = new HashSet<Format>();
+        for( ServiceDescription sd : this.listAllMigrationServices() )  {
+            for( MigrationPath path : sd.getPaths() ) {
+                if( ( endpoint == null ) || endpoint.equals(sd.getEndpoint().toString()) ) {
+                    if( ( outputFormat == null ) || outputFormat.equals(path.getOutputFormat().toString()) ) {
+                        Format fmt = ServiceBrowser.fr.getFormatForURI( path.getInputFormat() );
+                        formats.add(fmt);
+                    }
+                }
+            }
+        }
+        log.info("OUT: getMigrationInputFormats");
+        return formats;
+    }
+
+    /**
+     * @param endpoint
+     * @param inputFormat
+     * @return
+     */
+    public Set<Format> getMigrationOutputFormats(String endpoint, String inputFormat ) {
+        log.info("IN: getMigrationOutputFormats");
+        Set<Format> formats = new HashSet<Format>();
+        for( ServiceDescription sd : this.listAllMigrationServices() )  {
+            for( MigrationPath path : sd.getPaths() ) {
+                if( ( endpoint == null ) || endpoint.equals(sd.getEndpoint().toString()) ) {
+                    if( ( inputFormat == null ) || inputFormat.equals(path.getInputFormat().toString()) ) {
+                        Format fmt = ServiceBrowser.fr.getFormatForURI( path.getOutputFormat() );
+                        formats.add(fmt);
+                    }
+                }
+            }
+        }
+        log.info("OUT: getMigrationOutputFormats");
+        return formats;
+    }
+
+    /**
+     * @return A list of all the output formats that the available migration services can create.
+     */
+    public List<FormatBean> getMigrationOutputFormatBeans() {
+        // Look up the enabled formats:
+        String endpoint = null;
+        if( this.getSelectedServiceRecord() != null ) {
+            endpoint = this.getSelectedServiceRecord().getEndpoint().toString();
+        }
+        String in = null;
+        if( this.getSelectedInputFormat() != null ) {
+            in = this.getSelectedInputFormat().getUri().toString();
+        }
+        Set<Format> formats = this.getMigrationOutputFormats( endpoint, in );
+        
+        // Now build the full output:
+        Set<FormatBean> fmts = new HashSet<FormatBean>();
+        for( Format f : this.getMigrationOutputFormats(null, null) ) {
+            FormatBean formatBean = new FormatBean(f);
+            // Modify if selected:
+            if( formatBean.equals( this.getSelectedOutputFormat() ) ) formatBean.setSelected(true);
+            // Modify if enabled:
+            if( ! formats.contains( f ) ) formatBean.setEnabled(false);
+            
+            fmts.add( formatBean );
+        }
+        ArrayList<FormatBean> list = new ArrayList<FormatBean>(fmts);
+        Collections.sort(list);
+        return list;
+    }
+
+    /**
+     * @param inputFormat
+     * @param outputFormat
+     * @return
+     */
+    public List<ServiceDescription> getMigrationServices( String inputFormat, String outputFormat ) {
+        List<ServiceDescription> sdl = new Vector<ServiceDescription>();
+        for( ServiceDescription sd : this.listAllMigrationServices() )  {
+            boolean addThis = false;
+            for( MigrationPath path : sd.getPaths() ) {
+                if( ( inputFormat == null ) || inputFormat.equals(path.getInputFormat().toString()) ) {
+                    if( ( outputFormat == null ) || outputFormat.equals(path.getOutputFormat().toString()) ) {
+                        addThis = true;
+                    }
+                }
+            }
+            if( addThis ) sdl.add(sd);
+        }
+        return sdl;
+    }
+    
+    /**
+     * @return
+     */
+    public List<ServiceRecordBean> getMigrationServiceBeans() {
+        List<ServiceRecordBean> srbs = new ArrayList<ServiceRecordBean>();
+        for( ServiceDescription sd : this.getMigrationServices() ) {
+            ServiceRecordBean srb = new ServiceRecordBean(sd);
+            // Check if this service is selected:
+            if( this.getSelectedServiceRecord() != null && 
+                    sd.getEndpoint().equals( this.getSelectedServiceRecord().getEndpoint() )) {
+                srb.setSelected(true);
+            }
+            // Check if this service is compatible with the input and output formats:
+            List<ServiceDescription> migrationServices = this.getSelectableMigrationServices();
+            if( ! migrationServices.contains(sd) ) {
+                srb.setEnabled(false);
+            }
+            srbs.add(srb);
+        }
+        return srbs;
+    }
+
+    /**
+     * @return
+     */
+    private List<ServiceDescription> getSelectableMigrationServices() {
+        String in = null;
+        if( this.getSelectedInputFormat() != null ) {
+            in = this.getSelectedInputFormat().getUri().toString();
+        }
+        String out = null;
+        if( this.getSelectedOutputFormat() != null ) {
+            out =  this.getSelectedOutputFormat().getUri().toString();
+        }
+        return this.getMigrationServices( in, out );
+    }
+
+    /**
+     * @return
+     */
+    public List<ServiceDescription> getMigrationServices() {
+        return this.getMigrationServices(null,null);
     }
     
     /**
@@ -361,9 +538,27 @@ public class ServiceBrowser {
     public static List<SelectItem> mapFormatURIsToSelectList( Set<URI> formats ) {
         List<SelectItem> slist = new ArrayList<SelectItem>();
         List<URI> formatList = new ArrayList<URI>(formats);
+        
         Collections.sort(formatList);
         for( URI fmt : formatList ) {
             slist.add( createFormatURISelectItem(fmt) );
+        }
+        return slist;
+    }
+    
+    public static List<SelectItem> mapFormatsToSelectList( Set<Format> formats ) {
+        List<SelectItem> slist = new ArrayList<SelectItem>();
+        List<FormatBean> fbList = new ArrayList<FormatBean>();
+        
+        // Use the FormatBean to ensure consistent sorting.
+        for( Format fmt : formats ) {
+            fbList.add(new FormatBean(fmt));
+        }
+        Collections.sort(fbList);
+        
+        // Now map:
+        for( FormatBean fb : fbList ) {
+            slist.add( createFormatSelectItem(fb.getFormat()) );
         }
         return slist;
     }
@@ -374,6 +569,14 @@ public class ServiceBrowser {
      */
     private static SelectItem createFormatURISelectItem( URI fmt ) {
         return new SelectItem( fmt.toString(), fmt.toString() );
+    }
+    
+    /**
+     * @param fmt
+     * @return
+     */
+    private static SelectItem createFormatSelectItem( Format fmt ) {
+        return new SelectItem( fmt.getTypeURI().toString(), fmt.getSummaryAndVersion() );
     }
     
     /**
@@ -477,4 +680,77 @@ public class ServiceBrowser {
         return new ArrayList<ServiceRecordBean>(serviceMap.values());
     }
     
+    
+    /**
+     * @param the selectedInputFormat
+     */
+    public void setSelectedInputFormat(FormatBean fb) {
+        this.selectedInputFormat = fb;
+    }
+
+    /**
+     * @return the selectedOutputFormat
+     */
+    public FormatBean getSelectedOutputFormat() {
+        return selectedOutputFormat;
+    }
+
+    /**
+     * @param selectedOutputFormat the selectedOutputFormat to set
+     */
+    public void setSelectedOutputFormat(FormatBean selectedOutputFormat) {
+        this.selectedOutputFormat = selectedOutputFormat;
+    }
+
+    /**
+     * @return the selectedInputFormat
+     */
+    public FormatBean getSelectedInputFormat() {
+        return selectedInputFormat;
+    }
+
+    /**
+     * @return the selectedServiceRecord
+     */
+    public ServiceRecordBean getSelectedServiceRecord() {
+        return selectedServiceRecord;
+    }
+
+    /**
+     * @param selectedServiceRecord the selectedServiceRecord to set
+     */
+    public void setSelectedServiceRecord(ServiceRecordBean selectedServiceRecord) {
+        this.selectedServiceRecord = selectedServiceRecord;
+    }
+
+
+    /* ------------------------------------------------------------------------------------ */
+
+    // FIXME Cache this stuff automatically, in getListOfServices method.
+   
+
+    /** Name to store the look-up tables under. */
+    private final static String MIGRATE_SD_CACHE_NAME = "CacheMigrationServicesCache";
+    
+    /**
+     * @return A list of all the migration services (cached in request-scope).
+     */
+    @SuppressWarnings("unchecked")
+    private List<ServiceDescription> listAllMigrationServices() {
+        Map<String,Object> reqmap =
+            FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        
+        // Lookup or re-build:
+        List<ServiceDescription> migrators = (List<ServiceDescription>) reqmap.get(MIGRATE_SD_CACHE_NAME);
+        if( migrators == null ) {
+            log.info("Refreshing list of migration services...");
+            migrators = ServiceBrowser.getListOfServices(Migrate.class.getCanonicalName());
+            reqmap.put(MIGRATE_SD_CACHE_NAME, migrators);
+            log.info("Refreshed.");
+        }
+        return migrators;
+    }
+
+
+
 }

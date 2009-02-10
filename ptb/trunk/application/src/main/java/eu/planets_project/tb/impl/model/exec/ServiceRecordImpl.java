@@ -200,4 +200,74 @@ public class ServiceRecordImpl implements Serializable {
         return sr;
     }
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((dateFirstSeen == null) ? 0 : dateFirstSeen.hashCode());
+        result = prime * result + ((host == null) ? 0 : host.hashCode());
+        result = prime
+                * result
+                + ((serviceDescription == null) ? 0 : serviceDescription
+                        .hashCode());
+        result = prime * result
+                + ((serviceName == null) ? 0 : serviceName.hashCode());
+        result = prime * result
+                + ((serviceVersion == null) ? 0 : serviceVersion.hashCode());
+        result = prime * result
+                + ((toolVersion == null) ? 0 : toolVersion.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ServiceRecordImpl other = (ServiceRecordImpl) obj;
+        if (dateFirstSeen == null) {
+            if (other.dateFirstSeen != null)
+                return false;
+        } else if (!dateFirstSeen.equals(other.dateFirstSeen))
+            return false;
+        if (host == null) {
+            if (other.host != null)
+                return false;
+        } else if (!host.equals(other.host))
+            return false;
+        if (serviceDescription == null) {
+            if (other.serviceDescription != null)
+                return false;
+        } else if (!serviceDescription.equals(other.serviceDescription))
+            return false;
+        if (serviceName == null) {
+            if (other.serviceName != null)
+                return false;
+        } else if (!serviceName.equals(other.serviceName))
+            return false;
+        if (serviceVersion == null) {
+            if (other.serviceVersion != null)
+                return false;
+        } else if (!serviceVersion.equals(other.serviceVersion))
+            return false;
+        if (toolVersion == null) {
+            if (other.toolVersion != null)
+                return false;
+        } else if (!toolVersion.equals(other.toolVersion))
+            return false;
+        return true;
+    }
+    
+    
+
 }

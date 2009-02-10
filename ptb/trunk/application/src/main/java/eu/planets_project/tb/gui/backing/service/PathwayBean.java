@@ -3,25 +3,23 @@
  */
 package eu.planets_project.tb.gui.backing.service;
 
-import java.net.URI;
-
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
 public class PathwayBean {
 
-    private String name;
-    private URI inputFormat;
-    private URI outputFormat;
+    private ServiceRecordBean srb;
+    private FormatBean inputFormat;
+    private FormatBean outputFormat;
 
     /**
      * @param name
      * @param inputFormat
      * @param outputFormat
      */
-    public PathwayBean(String name, URI inputFormat, URI outputFormat) {
-        this.name = name;
+    public PathwayBean(ServiceRecordBean srb, FormatBean inputFormat, FormatBean outputFormat) {
+        this.srb = srb;
         this.inputFormat = inputFormat;
         this.outputFormat = outputFormat;
     }
@@ -29,21 +27,21 @@ public class PathwayBean {
     /**
      * @return the name
      */
-    public String getName() {
-        return name;
+    public ServiceRecordBean getServiceRecord() {
+        return srb;
     }
 
     /**
      * @return the inputFormat
      */
-    public URI getInputFormat() {
+    public FormatBean getInputFormat() {
         return inputFormat;
     }
 
     /**
      * @return the outputFormat
      */
-    public URI getOutputFormat() {
+    public FormatBean getOutputFormat() {
         return outputFormat;
     }
    

@@ -22,7 +22,7 @@ public class Service {
     String type;
     Date dateOfUse;
     
-    // Transient
+    // Transient:
     ServiceDescription sd;
     
     protected Service() {} 
