@@ -37,12 +37,12 @@ public class Event {
     /** 
      * A human-readable description of the event.
      */
-    @XmlAttribute String summary;
+    @XmlAttribute public String summary;
 
     /** 
      * The date and time at which this Event began.
      */
-    @XmlAttribute String datetime;
+    @XmlAttribute public String datetime;
     
     /** 
      * The total duration of this event, 
@@ -56,18 +56,18 @@ public class Event {
      * Only really known to the caller, so maybe this does not belong here.
      * </p>
      */
-    @XmlAttribute double duration;
+    @XmlAttribute public double duration;
 
     /** 
      * The Agent that caused this Event. 
      */
-    Agent agent;
+    public Agent agent;
     
     /**
      * Name-value pairs for extra properties.  
      * This is an expansion point for future functionality.
      */
-    @XmlElement List<Property> properties;
+    @XmlElement public List<Property> properties;
 
     /**
      * 
@@ -75,5 +75,7 @@ public class Event {
     public Event() {
         super();
     }
+    
+    
     
 }

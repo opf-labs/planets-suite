@@ -3,17 +3,19 @@
  */
 package eu.planets_project.services.datatypes;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
 public class Agent {
 
-    String id;
+	@XmlAttribute public String id;
     
-    String name;
+	@XmlAttribute public String name;
     
-    String type;
+	@XmlAttribute public String type;
 
     /**
      * 
@@ -21,5 +23,7 @@ public class Agent {
     public Agent() {
         super();
     }
+    
+    
     
 }
