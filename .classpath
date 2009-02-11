@@ -13,6 +13,8 @@
 	<classpathentry kind="src" path="IF/jaxr/src/test/java"/>
 	<classpathentry kind="src" path="IF/registry/src/main/java"/>
 	<classpathentry kind="src" path="IF/registry/src/test/java"/>
+	<classpathentry kind="src" path="IF/storage/src/main/java"/>
+	<classpathentry kind="src" path="IF/storage/src/test/java"/>
 	<classpathentry kind="src" path="IF/simple/src/java"/>
 	<classpathentry kind="src" path="IF/simple/src/resources"/>
 	<classpathentry kind="src" path="IF/simple/src/test/java"/>
