@@ -1,0 +1,6 @@
+<jboss-web>
+   <security-domain>java:/jaas/PlanetsRealm</security-domain>
+   <!-- security-domain>java:/jaas/sampleAppDomain</security-domain -->
+   <!-- security-domain>java:/jaas/TestbedJaasDbRealm</security-domain -->
+   <!-- security-domain>java:/jaas/Jackrabbit</security-domain -->
+</jboss-web>

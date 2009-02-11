@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflowConf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="planets_wdt.xsd">
+	<template>
+		<class>eu.planets_project.ifr.core.wee.impl.templates.IdentifyMigrateIdentifyTemplate</class>
+	</template>
+	<services>
+		<service id="identify1">
+			<endpoint>http://localhost:8080/pserv-pc-droid/Droid?wsdl</endpoint>
+		</service>
+		<service id="identify2">
+			<endpoint>http://localhost:8080/pserv-pa-sanselan/SanselanIdentify?wsdl</endpoint>
+		</service>
+		<service id="migrate1">
+			<endpoint>http://localhost:8080/pserv-pa-jmagick/ImageMagickMigrations?wsdl</endpoint>
+			<parameters>
+				<!--service configuration parameters if required. They are currently not defined and should be registered in the tech. registry-->
+				<param>
+					<name>planets:service/migration/input/migrate_to_fmt</name>
+					<value>planets:fmt/ext/png</value>
+				</param>
+					<!--see eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.ImageMagickMigrationsTestHelper
+						these service specific properties should be moved into the tech. registry-->				
+				<param>
+					<name>compressionType</name>
+					<!--7 = LosslessJPEG Compression-->
+					<value>7</value>
+				</param>
+				<param>
+					<name>compressionQuality</name>
+					<!--50=quality 50%-->
+					<value>50</value>
+				</param>
+			</parameters>
+		</service>
+	</services>
+</workflowConf>

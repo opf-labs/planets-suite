@@ -26,7 +26,7 @@ import javax.xml.ws.soap.SOAPBinding;
 //import org.jboss.ws.core.server.HttpContext;
 //import org.jboss.ws.core.server.HttpServer;
 
-import eu.planets_project.ifr.core.wee.api.WorkflowExecutionEngine;
+import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
 import eu.planets_project.ifr.core.wee.impl.WeeManagerImpl;
 
 /**
@@ -40,7 +40,7 @@ public class WeeManagerServlet extends HttpServlet {
     private static final long serialVersionUID = 8584229539252629375L;
     
     private Endpoint endpoint;
-    
+    /*
     @Override
     public void init(ServletConfig config) throws ServletException
     {
@@ -62,7 +62,7 @@ public class WeeManagerServlet extends HttpServlet {
        HttpContext context = httpServer.createContext("/jaxws-endpoint");
        endpoint.publish(context);
        
-       */
+       /
 
     }
     
@@ -78,7 +78,7 @@ public class WeeManagerServlet extends HttpServlet {
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    @Override
+    /*@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
     {
         /*
@@ -94,12 +94,12 @@ public class WeeManagerServlet extends HttpServlet {
        // Return the result
        PrintWriter pw = new PrintWriter(res.getWriter());
        pw.print(retStr);
-       */
+       /
         
-        WorkflowExecutionEngine wee = WeeManagerImpl.getPlanetsWeeManager().getWee();
+        WorkflowExecutionStatus wee = WeeManagerImpl.getPlanetsWeeManager().getWee();
       res.getWriter().println( wee );
 //      res.getWriter().println( wee.getSecs() );
         res.getWriter().println( " ACK");
-    }
+    }*/
 
 }
