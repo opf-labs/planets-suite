@@ -25,7 +25,7 @@ import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
- * @deprecated Use {@link ImageMagickMigrations} instead.
+ * @deprecated Use {@link ImageMagickMigrate} instead.
  */
 
 /**

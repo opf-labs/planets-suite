@@ -33,7 +33,7 @@ public class MsgTextClient {
 		
 		String wsdlLocation = 
 			
-			"http://localhost:8080/pserv-pa-msgtext/MsgText?wsdl";
+			"http://localhost:8080/pserv-pa-msgtext/MsgTextBasicMigrateOneBinary?wsdl";
 		
 		QName qName = BasicMigrateOneBinary.QNAME;
 		
