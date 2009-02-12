@@ -30,9 +30,8 @@ import eu.planets_project.ifr.core.wee.impl.utils.RegistryUtils;
 
 
 /**
- * TODO add more detailed description
- * The registry uses the default Planets data registry for storing and reading 
- * its workflow templates.
+ * The WorkflowTemplateRegistry Implementation
+ * TODO switch to the default data registry as soon as the programatical SSO is solved
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
  * @since 13.11.2008
  *

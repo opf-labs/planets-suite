@@ -9,6 +9,14 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 
 
+/**
+ * An implementation of this interface can extend the WorkflowTemplateHelper util object, which provides all
+ * methods that are required for the Factory for building a WorkflowInstance by reflection
+ * except execute() and describe() - which need to be implemented by a WorkflowTemplate provider.
+ * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
+ * @since 12.02.2009
+ *
+ */
 public interface WorkflowTemplate extends Serializable{
 	
 	 /** External property keys */
@@ -82,6 +90,14 @@ public interface WorkflowTemplate extends Serializable{
 	 * no Exceptions thrown - all information on execution success, etc. is contained within the WorkflowResult
 	 */
 	public WorkflowResult execute();
+	
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String describe();
+	
 	
 
 }

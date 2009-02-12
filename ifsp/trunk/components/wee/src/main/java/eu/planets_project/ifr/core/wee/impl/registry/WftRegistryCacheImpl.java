@@ -50,10 +50,8 @@ public class WftRegistryCacheImpl {
 				}
 			}
 		} catch (SOAPException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
