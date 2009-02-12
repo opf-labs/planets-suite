@@ -42,6 +42,10 @@
         <rich:dataTable value="#{ServiceBrowser.migrationInputFormatBeans}" var="fb" style="width:100%;">
           <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }">
           
+            <h:panelGroup rendered="#{fb.format.registryURL != null}" styleClass="infoFloat">
+              <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+            </h:panelGroup>
+            
             <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
               <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBInputFormatActionListener"/>
               <h:panelGroup rendered="#{fb.selected}">
@@ -57,10 +61,6 @@
               <h:outputText value="#{fb.summary} "/>
             </h:panelGroup>
             
-            <h:panelGroup rendered="#{fb.format.registryURL != null}">
-              <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
-            </h:panelGroup>
-            
             <rich:toolTip showDelay="500">
               <i><h:outputText value="#{fb.uri}"/></i>
             </rich:toolTip>
@@ -74,6 +74,10 @@
         <rich:dataTable value="#{ServiceBrowser.migrationServiceBeans}" var="srb" style="width:100%;">
           <rich:column styleClass="#{srb.selected ? 'cellSelected' : 'cellUnselected' }">
           
+            <h:panelGroup styleClass="infoFloat">
+              <i><h:outputLink value="#{srb.serviceDescription.endpoint}" target="_blank">@<h:outputText value="#{srb.serviceDescription.endpoint.host} "/><t:graphicImage value="/graphics/external-link.png" alt="Open WSDL in new window..."/></h:outputLink></i>
+            </h:panelGroup>
+            
             <h:commandLink rendered="#{srb.enabled}" styleClass="selectableEnabled">
               <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBServiceActionListener"/>
               <h:panelGroup rendered="#{srb.selected}">
@@ -89,8 +93,7 @@
               <input type="radio" disabled="disabled"/>
               <h:outputText value="#{srb.serviceDescription.name}"/>
             </h:panelGroup>
-            <br/>
-            <i><h:outputLink value="#{srb.serviceDescription.endpoint}" target="_blank">@<h:outputText value="#{srb.serviceDescription.endpoint.host} "/><t:graphicImage value="/graphics/external-link.png" alt="Open WSDL in new window..."/></h:outputLink></i>
+
             
           </rich:column>
         </rich:dataTable>
@@ -102,6 +105,10 @@
         <rich:dataTable value="#{ServiceBrowser.migrationOutputFormatBeans}" var="fb" style="width:100%;">
           <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }">
           
+            <h:panelGroup rendered="#{fb.format.registryURL != null}" styleClass="infoFloat">
+              <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
+            </h:panelGroup>
+            
             <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
               <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBOutputFormatActionListener"/>
               <h:panelGroup rendered="#{fb.selected}">
@@ -115,10 +122,6 @@
             <h:panelGroup rendered="#{!fb.enabled}" styleClass="selectableDisabled">
               <input type="radio" disabled="disabled"/>
               <h:outputText value="#{fb.summary} "/>
-            </h:panelGroup>
-            
-            <h:panelGroup rendered="#{fb.format.registryURL != null}">
-              <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
             </h:panelGroup>
             
             <rich:toolTip showDelay="500">
@@ -154,6 +157,31 @@
 	<div id="leftcol">
 	
       <ui:include src="/WEB-INF/templates/sb_sidebar.xhtml"/>
+      
+        <h3 class="leftcol">Current Selection</h3>
+        <div class="innertube">
+          <h:panelGroup rendered="#{ServiceBrowser.selectedInputFormat == null}">
+            <p class="leftcol"><b>From:</b> <i>ANY</i></p>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{ServiceBrowser.selectedInputFormat != null}">
+            <p class="leftcol"><b>From:</b> #{ServiceBrowser.selectedInputFormat.summary}</p>
+          </h:panelGroup>
+          
+          <h:panelGroup rendered="#{ServiceBrowser.selectedOutputFormat == null}">
+            <p class="leftcol"><b>To:</b> <i>ANY</i></p>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{ServiceBrowser.selectedOutputFormat != null}">
+            <p class="leftcol"><b>To:</b> #{ServiceBrowser.selectedOutputFormat.summary}</p>
+          </h:panelGroup>
+          
+          <h:panelGroup rendered="#{ServiceBrowser.selectedServiceRecord == null}">
+            <p class="leftcol"><b>Using:</b> <i>ANY</i></p>
+          </h:panelGroup>
+          <h:panelGroup rendered="#{ServiceBrowser.selectedServiceRecord  != null}">
+            <p class="leftcol"><b>Using:</b> #{ServiceBrowser.selectedServiceRecord.name}</p>
+          </h:panelGroup>
+        </div>
+      
 	
 	</div>
 

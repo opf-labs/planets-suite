@@ -17,6 +17,9 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.registry.api.Registry;
+import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
+import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -154,7 +157,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         List<ServiceDescription> sds = (List<ServiceDescription>) reqmap.get(CHAR_SD_CACHE_NAME);
         if( sds == null ) {
             log.info("Refreshing list of characterisation services...");
-            sds = ServiceBrowser.getListOfServices(Characterise.class.getCanonicalName());
+            sds = lookupServicesByType(Characterise.class.getCanonicalName());
             reqmap.put(CHAR_SD_CACHE_NAME, sds);
             log.info("Refreshed.");
         }
@@ -176,7 +179,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         List<ServiceDescription> sds = (List<ServiceDescription>) reqmap.get(IDENTIFY_SD_CACHE_NAME);
         if( sds == null ) {
             log.info("Refreshing list of identification services...");
-            sds = ServiceBrowser.getListOfServices(Identify.class.getCanonicalName());
+            sds = lookupServicesByType(Identify.class.getCanonicalName());
             reqmap.put(IDENTIFY_SD_CACHE_NAME, sds);
             log.info("Refreshed.");
         }

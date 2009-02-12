@@ -172,7 +172,10 @@
 
   <target name="undeploy" description="undeploy the testbed application from the JBoss application server">
       <delete file="${jboss.home}/server/default/deploy/${appName}.ear"/>
-      <delete file="${jboss.home}/server/default/deploy/${appName}-ds.xml"/>
+  </target>
+  
+  <target name="undeploy:ds" description="Undeploy the TB data source.">
+    <delete file="${jboss.home}/server/default/deploy/${appName}-ds.xml"/>
   </target>
 
   <!-- =================================================================== -->
@@ -201,7 +204,7 @@
     </copy> -->
   </target>
 
-  <target name="dist" depends="populateDirectories">
+  <target name="dist" depends="deploy:ds, populateDirectories">
 
     <copy todir="${build.dir}/${appName}">
       <fileset dir="web" casesensitive="yes">
@@ -253,10 +256,13 @@
   </target>
 
   <target name="deploy:ear" depends="undeploy, createejbjar, dist" description="DEFAULT builds and deploy the Testbed application">
-        <copy file="${src.resources}/META-INF/testbed-ds.xml" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
-        <copy file="${build.dir}/${appName}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+    <copy file="${build.dir}/${appName}.ear" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
   </target>
 
+  <target name="deploy:ds" description="Deploy the TB data source.">
+    <copy file="${src.resources}/META-INF/testbed-ds.xml" todir="${jboss.home}/server/default/deploy" overwrite="true"/>
+  </target>
+  
   <target name="build:ear" depends="createejbjar,dist" description="builds the Testbed application"/>
 
 </project>

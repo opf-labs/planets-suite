@@ -179,9 +179,11 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
 
         // Now prepare the result:
         WorkflowResult wr = new WorkflowResult();
+        
         // FIXME Can this be done more automatically?
         wr.getStage(STAGE_IDENTIFY).setServiceRecord(
                 ServiceBrowser.createServiceRecordFromEndpoint(this.parameters.get(PARAM_SERVICE)) );
+        
         List<MeasurementRecordImpl> recs = wr.getStage(STAGE_IDENTIFY).getMeasurements();
         recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
         // Store the size:

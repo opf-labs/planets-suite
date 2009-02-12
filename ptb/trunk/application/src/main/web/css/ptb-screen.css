@@ -961,3 +961,23 @@ width:100%;
 .selectableDisabled {
   color: gray;
 }
+#pathwayBrowserTable .selectableEnabled, #pathwayBrowserTable .selectableDisabled {
+  width: 100%;
+  display: block;
+  margin:0;
+  padding: 3px 0;
+}
+#pathwayBrowserTable .selectableEnabled:hover {
+  background-color: #e8ffff;
+}
+#pathwayBrowserTable a:hover {
+  text-decoration: none;
+}
+#pathwayBrowserTable .infoFloat {
+  float: right;
+  padding: 0 2px;
+}
+#pathwayBrowserTable .infoFloat a:hover {
+  text-decoration: underline;
+}
+

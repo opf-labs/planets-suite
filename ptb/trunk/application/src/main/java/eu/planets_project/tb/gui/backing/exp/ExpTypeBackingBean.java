@@ -7,6 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.registry.api.Registry;
+import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
+import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -24,6 +28,9 @@ public abstract class ExpTypeBackingBean {
 
     /** Allow the workflow to be cached during editing. */
     private ExperimentWorkflow ewfCache = null;
+
+    /** A Service Registry instance for look-ups. */
+    protected Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
 
     /**
      * @return
@@ -84,6 +91,15 @@ public abstract class ExpTypeBackingBean {
             }
         }
         return ewfCache;
+    }
+    
+    /**
+     * @param type
+     * @return
+     */
+    protected List<ServiceDescription> lookupServicesByType( String type ) {
+        ServiceDescription sdQuery = new ServiceDescription.Builder(null, type ).build();
+        return registry.query(sdQuery);
     }
 
 }

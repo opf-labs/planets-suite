@@ -17,7 +17,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -38,7 +37,6 @@ import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.backing.service.PathwayBean;
 import eu.planets_project.tb.gui.backing.service.ServiceRecordBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
@@ -280,24 +278,24 @@ public class ServiceBrowser {
      * @param type
      * @return
      */
-    private static List<SelectItem> createServiceList( String type ) {
+    private List<SelectItem> createServiceList( String type ) {
         return mapServicesToSelectList( getListOfServices(type) );
     }
     
     /**
      * @return Looks up the service registry, cached in ServiceBrowser in Session scope.
      */
-    private static Registry lookupServiceRegistry() {
-        ServiceBrowser sbrowse = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
-        return sbrowse.registry;
+    private static Registry instanciateServiceRegistry() {
+        return PersistentRegistry.getInstance(CoreRegistry.getInstance());
     }
 
     /**
      * @param type
      * @return
      */
-    public static List<ServiceDescription> getListOfServices( String type ) {
-        Registry registry = lookupServiceRegistry();
+    public List<ServiceDescription> getListOfServices( String type ) {
+        
+        //Registry registry = lookupServiceRegistry();
 
         //Get all services
         //List<ServiceDescription> identifiers = registry.query(null); //If you pass a ServiceDescription with fields filled in it will query against matches.
@@ -360,7 +358,8 @@ public class ServiceBrowser {
             // Make this modify if selected:
             if( formatBean.equals( this.getSelectedInputFormat() ) ) formatBean.setSelected(true);
             // Modify if enabled:
-            if( ! formats.contains( f ) ) formatBean.setEnabled(false);
+            if( ( this.getSelectedInputFormat() != null  && ! this.getSelectedInputFormat().equals(formatBean) )
+                    || ! formats.contains( f ) ) formatBean.setEnabled(false);
             
             fmts.add( formatBean );
         }
@@ -435,7 +434,8 @@ public class ServiceBrowser {
             // Modify if selected:
             if( formatBean.equals( this.getSelectedOutputFormat() ) ) formatBean.setSelected(true);
             // Modify if enabled:
-            if( ! formats.contains( f ) ) formatBean.setEnabled(false);
+            if( ( this.getSelectedOutputFormat() != null && ! this.getSelectedOutputFormat().equals(formatBean) ) 
+                    || ! formats.contains( f ) ) formatBean.setEnabled(false);
             
             fmts.add( formatBean );
         }
@@ -479,7 +479,8 @@ public class ServiceBrowser {
             }
             // Check if this service is compatible with the input and output formats:
             List<ServiceDescription> migrationServices = this.getSelectableMigrationServices();
-            if( ! migrationServices.contains(sd) ) {
+            if( ( this.getSelectedServiceRecord() != null && ! this.getSelectedServiceRecord().equals(srb) ) 
+                    || ! migrationServices.contains(sd) ) {
                 srb.setEnabled(false);
             }
             srbs.add(srb);
@@ -594,7 +595,7 @@ public class ServiceBrowser {
         }
         ServiceDescription sdQuery = new ServiceDescription.Builder(null, null).endpoint(endpoint).build();
         
-        Registry registry = lookupServiceRegistry();
+        Registry registry = instanciateServiceRegistry();
         List<ServiceDescription> result = registry.query(sdQuery);
         
         if( result != null && result.size() > 0 ) {
@@ -744,7 +745,7 @@ public class ServiceBrowser {
         List<ServiceDescription> migrators = (List<ServiceDescription>) reqmap.get(MIGRATE_SD_CACHE_NAME);
         if( migrators == null ) {
             log.info("Refreshing list of migration services...");
-            migrators = ServiceBrowser.getListOfServices(Migrate.class.getCanonicalName());
+            migrators = getListOfServices(Migrate.class.getCanonicalName());
             reqmap.put(MIGRATE_SD_CACHE_NAME, migrators);
             log.info("Refreshed.");
         }
