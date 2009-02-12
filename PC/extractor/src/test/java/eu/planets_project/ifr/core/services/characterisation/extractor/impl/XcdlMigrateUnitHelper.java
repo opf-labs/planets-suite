@@ -43,6 +43,8 @@ public final class XcdlMigrateUnitHelper {
     
     static final File PNG_INPUT = new File("PC/extractor/src/test/resources/test_samples/png/basi4a16.png");
     
+    static final File STRANGE_TIFF_FILE = new File("PA/imagemagick/test/resources/test_images/test_tiff/strange_tiff.tif");
+    
 //    static final File DOC_INPUT = new File();
     
     

@@ -80,4 +80,8 @@ public class ServiceUtils {
 		return day + "/" + month + "/" + year + " - " + hour + ":" + minute + ":" + second + "," + millisecond;
     }
     
+    public static double calculateDuration(long startTime, long endTime) {
+    	double duration = endTime - startTime;
+    	return duration;
+    }
 }
