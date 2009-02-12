@@ -32,9 +32,10 @@ import eu.planets_project.ifr.core.wee.impl.utils.RegistryUtils;
 
 /**
  * This is a mock implementation of the DataManagerLocal Interface which is used
- * interim to overcome the problem of programmatically authenticating against the SSO.
+ * as interim solution to overcome the problem of programmatically authenticating against the SSO.
+ * The implementation closely hooked up between registry paths and QNames, which probably need
+ * to be checked and reworked after switching to the Planets data registry.
  * TODO: delete this class
- *
  */
 
 public class DataRegistryMockup implements DataManagerLocal{
@@ -77,24 +78,24 @@ public class DataRegistryMockup implements DataManagerLocal{
 	 * @throws 	SOAPException
 	 */
 	public URI[] list(URI pdUri) throws SOAPException{
+		// not implemented
 		return null;
 	}
 
 	public URI createLocalSandbox() throws URISyntaxException {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	public InputStream retrieve(URI pdURI) throws PathNotFoundException,
 			URISyntaxException {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	public void store(URI pdURI, InputStream stream) throws LoginException,
 			RepositoryException, URISyntaxException {
-		// TODO Auto-generated method stub
-		
+		// not implemented
 	}
 
 	public void storeBinary(URI pdURI, byte[] binary) throws LoginException,
@@ -157,7 +158,6 @@ public class DataRegistryMockup implements DataManagerLocal{
 				try {
 					retURI[count] = new URI(s);
 				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -170,17 +170,17 @@ public class DataRegistryMockup implements DataManagerLocal{
 
 	public URI[] findFilesWithNameContaining(URI pdURI, String name)
 			throws SOAPException {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	public URI listDownladURI(URI pdURI) throws SOAPException {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
 	public String read(URI pdURI) throws SOAPException {
-		// TODO Auto-generated method stub
+		// not implemented
 		return null;
 	}
 
@@ -218,8 +218,7 @@ public class DataRegistryMockup implements DataManagerLocal{
 	}
 
 	public void store(URI pdURI, String encodedFile) throws SOAPException {
-		// TODO Auto-generated method stub
-		
+		// not implemented
 	}
 	
 }
