@@ -31,6 +31,7 @@ import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
@@ -57,8 +58,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     public static final String SERVICE_TYPE_IDENTIFY = "Identify";
 
     /** Internal keys for easy referral to the service+stage combinations. */
-    private static final String STAGE_MIGRATE = "Migrate";
     private static final String STAGE_PRE_MIGRATE = "Pre-Migrate";
+    private static final String STAGE_MIGRATE = "Migrate";
     private static final String STAGE_POST_MIGRATE = "Post-Migrate";
     
     /** Statically define the observable properties. */
@@ -85,6 +86,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     HashMap<String, String> parameters = new HashMap<String,String>();
     /** The holder for the identifier service. */
     Migrate migrator = null;
+    URL migratorEndpoint = null;
 
     /* ------------------------------------------------------------- */
     
@@ -287,7 +289,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     throws Exception {
         this.parameters = parameters;
         // Attempt to connect to the Migrate service.
-        migrator = new MigrateWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
+        migratorEndpoint = new URL(this.parameters.get(PARAM_SERVICE));
+        migrator = new MigrateWrapper( migratorEndpoint );
         
         // Also set the pre services:
         if( this.preIsCharacterise() ) {
@@ -379,23 +382,29 @@ public class MigrateWorkflow implements ExperimentWorkflow {
 
         // Attempt to ru each stage:
         try {
+            ExecutionStageRecordImpl preStage = new ExecutionStageRecordImpl(STAGE_PRE_MIGRATE);
+            wr.getStages().add( preStage );
             // Pre-migrate characterise
             if( this.preIsCharacterise() ) {
-                executeCharacteriseStage(wr, dob, STAGE_PRE_MIGRATE, dpPre );
+                executeCharacteriseStage(wr, dob, preStage, dpPre );
             }
             if( this.preIsIdentify()) {
-                executeIdentifyStage(wr, dob, STAGE_PRE_MIGRATE, idPre );
+                executeIdentifyStage(wr, dob, preStage, idPre );
             }
             
             // Migrate Stage:
-            executeMigrateStage(wr, dob);
+            ExecutionStageRecordImpl migrateStage = new ExecutionStageRecordImpl(STAGE_MIGRATE);
+            wr.getStages().add( migrateStage );
+            executeMigrateStage(wr, migrateStage, dob);
             
             // Post-migrate characterise
+            ExecutionStageRecordImpl postStage = new ExecutionStageRecordImpl(STAGE_POST_MIGRATE);
+            wr.getStages().add( postStage );
             if( this.postIsCharacterise() ) {
-                executeCharacteriseStage(wr, (DigitalObject)wr.getResult(), STAGE_POST_MIGRATE, dpPost );
+                executeCharacteriseStage(wr, (DigitalObject)wr.getResult(), postStage, dpPost );
             }
             if( this.postIsIdentify()) {
-                executeIdentifyStage(wr, (DigitalObject)wr.getResult(), STAGE_POST_MIGRATE, idPost );
+                executeIdentifyStage(wr, (DigitalObject)wr.getResult(), postStage, idPost );
             }
             
         } catch (Exception e ) {
@@ -414,17 +423,16 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      * The actual Migration stage.
      * 
      * @param wr
+     * @param migrateStage 
      * @param dob
      * @throws Exception
      */
-    private void executeMigrateStage( WorkflowResult wr, DigitalObject dob ) throws Exception {
+    private void executeMigrateStage( WorkflowResult wr, ExecutionStageRecordImpl migrateStage, DigitalObject dob ) throws Exception {
         // Now prepare the result:
-        List<MeasurementRecordImpl> stage_m = wr.getStage(STAGE_MIGRATE).getMeasurements();
+        List<MeasurementRecordImpl> stage_m = migrateStage.getMeasurements();
         
-        // Create a ServiceRecord, use a factory or pass down, and fill out based on Service Registry.
-        // FIXME Can this be done more automatically/sensibly?
-        wr.getStage(STAGE_MIGRATE).setServiceRecord(
-                ServiceBrowser.createServiceRecordFromEndpoint(this.parameters.get(PARAM_SERVICE)) );
+        // Record the endpoint of the service used for this stage.
+        migrateStage.setEndpoint(migratorEndpoint);
         
         // Invoke the service, timing it along the way:
         boolean success = true;
@@ -486,9 +494,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      * @param stage
      * @throws Exception
      */
-    private void executeCharacteriseStage( WorkflowResult wr, DigitalObject dob, String stage, DetermineProperties dp ) throws Exception {
+    private void executeCharacteriseStage( WorkflowResult wr, DigitalObject dob, ExecutionStageRecordImpl  stage, DetermineProperties dp ) throws Exception {
         // Now prepare the result:
-        List<MeasurementRecordImpl> stage_m = wr.getStage(stage).getMeasurements();
+        List<MeasurementRecordImpl> stage_m = stage.getMeasurements();
         
         // Invoke the service, timing it along the way:
         boolean success = true;
@@ -530,9 +538,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      * @param idPost2
      */
     private void executeIdentifyStage(WorkflowResult wr, DigitalObject dob,
-            String stage, Identify identify) throws Exception {
+            ExecutionStageRecordImpl stage, Identify identify) throws Exception {
         // Now prepare the result:
-        List<MeasurementRecordImpl> stage_m = wr.getStage(stage).getMeasurements();
+        List<MeasurementRecordImpl> stage_m = stage.getMeasurements();
         
         // Invoke the service, timing it along the way:
         boolean success = true;

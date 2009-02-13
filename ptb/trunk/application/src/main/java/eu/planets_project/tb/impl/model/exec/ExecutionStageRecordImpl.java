@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,6 +16,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
@@ -23,6 +27,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name = "ExecutionStage")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExecutionStageRecordImpl implements Serializable {
+    /** */
+    private static final Log log = LogFactory.getLog(ExecutionStageRecordImpl.class);
     /** */
     private static final long serialVersionUID = 5405314146855620431L;
 
@@ -33,6 +39,9 @@ public class ExecutionStageRecordImpl implements Serializable {
     
     // The name of this stage:
     private String stage;
+    
+    /** The endpoint invoked during this stage */
+    private URL endpoint;
 
     /** The record of the service description at this time */
 //   @OneToOne(cascade={CascadeType.ALL})
@@ -44,6 +53,13 @@ public class ExecutionStageRecordImpl implements Serializable {
     private Vector<MeasurementRecordImpl> measurements = new Vector<MeasurementRecordImpl>();
 //    private List<MeasurementRecordImpl> measurements;
     
+    /**
+     * @param stagePreMigrate
+     */
+    public ExecutionStageRecordImpl(String stageName) {
+        this.stage = stageName;
+    }
+
     /**
      * @return the id
      */
@@ -73,6 +89,20 @@ public class ExecutionStageRecordImpl implements Serializable {
     }
 
     /**
+     * @return the endpoint
+     */
+    public URL getEndpoint() {
+        return endpoint;
+    }
+
+    /**
+     * @param endpoint the endpoint to set
+     */
+    public void setEndpoint(URL endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    /**
      * @return the serviceRecord
      */
     public ServiceRecordImpl getServiceRecord() {
@@ -83,6 +113,9 @@ public class ExecutionStageRecordImpl implements Serializable {
      * @param serviceRecord the serviceRecord to set
      */
     public void setServiceRecord(ServiceRecordImpl serviceRecord) {
+        if( serviceRecord != null) {
+            log.info("Setting service record: name = "+ serviceRecord.getServiceName());
+        }
         this.serviceRecord = serviceRecord;
     }
 

@@ -28,6 +28,8 @@
 	<div class="innertubemain">
 
     <h:form>
+    
+    #{ServiceBrowser.experimentServiceRecordFixLog}
 
         <rich:dataTable value="#{ServiceBrowser.allServicesAndRecords}" var="sd"
         reRender="services_ds" styleClass="tbTable">

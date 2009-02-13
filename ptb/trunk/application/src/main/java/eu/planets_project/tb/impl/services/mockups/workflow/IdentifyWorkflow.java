@@ -22,6 +22,7 @@ import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 
@@ -138,6 +139,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     HashMap<String, String> parameters = new HashMap<String,String>();
     /** The holder for the identifier service. */
     Identify identifier = null;
+    URL identifierEndpoint = null;
 
     /* ------------------------------------------------------------- */
 
@@ -155,7 +157,8 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     throws Exception {
         this.parameters = parameters;
         // Attempt to connect to the Identify service.
-        identifier = new IdentifyWrapper( new URL(this.parameters.get(PARAM_SERVICE)) );
+        identifierEndpoint = new URL( this.parameters.get(PARAM_SERVICE));
+        identifier = new IdentifyWrapper( identifierEndpoint );
     }
 
     /* (non-Javadoc)
@@ -180,11 +183,14 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         // Now prepare the result:
         WorkflowResult wr = new WorkflowResult();
         
-        // FIXME Can this be done more automatically?
-        wr.getStage(STAGE_IDENTIFY).setServiceRecord(
-                ServiceBrowser.createServiceRecordFromEndpoint(this.parameters.get(PARAM_SERVICE)) );
+        // Record this one-stage experiment:
+        ExecutionStageRecordImpl idStage = new ExecutionStageRecordImpl(STAGE_IDENTIFY);
+        wr.getStages().add( idStage );
         
-        List<MeasurementRecordImpl> recs = wr.getStage(STAGE_IDENTIFY).getMeasurements();
+        // Record the endpoint of the service used for this stage.  FIXME Can this be done more automatically, from above?
+        idStage.setEndpoint(identifierEndpoint);
+        
+        List<MeasurementRecordImpl> recs = idStage.getMeasurements();
         recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
         // Store the size:
         // FIXME: This should be a proper method that scans down and works out the size.

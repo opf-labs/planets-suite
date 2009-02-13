@@ -15,8 +15,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 
@@ -28,6 +32,8 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 @XmlRootElement(name = "ExecutionRecord")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ServiceRecordImpl implements Serializable {
+    /** */
+    private static final Log log = LogFactory.getLog(ServiceRecordImpl.class);
     /** */
     private static final long serialVersionUID = -510307823143330587L;
     
@@ -177,6 +183,7 @@ public class ServiceRecordImpl implements Serializable {
      * @return
      */
     public static ServiceRecordImpl createServiceRecordFromDescription( ServiceDescription sd ) {
+        log.info("Creating service record for SD = "+sd.getName());
         // This is the unique service identifier:
         String serviceHash = ""+sd.hashCode();
         

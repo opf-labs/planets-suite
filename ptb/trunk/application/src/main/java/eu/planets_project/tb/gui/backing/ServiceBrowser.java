@@ -33,10 +33,14 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.backing.service.PathwayBean;
 import eu.planets_project.tb.gui.backing.service.ServiceRecordBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
@@ -584,19 +588,16 @@ public class ServiceBrowser {
      * @param string
      * @return
      */
-    public static ServiceRecordImpl createServiceRecordFromEndpoint(String endpointString) {
+    public static ServiceRecordImpl createServiceRecordFromEndpoint(URL endpoint) {
+        if( endpoint == null ) return null;
+        
         ServiceRecordImpl sr = null;
-        URL endpoint;
-        try {
-            endpoint = new URL(endpointString);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            return null;
-        }
-        ServiceDescription sdQuery = new ServiceDescription.Builder(null, null).endpoint(endpoint).build();
         
         Registry registry = instanciateServiceRegistry();
+        ServiceDescription sdQuery = new ServiceDescription.Builder(null, null).endpoint(endpoint).build();
+        
         List<ServiceDescription> result = registry.query(sdQuery);
+        log.info("Got matching results: "+result);
         
         if( result != null && result.size() > 0 ) {
             ServiceDescription sd = result.get(0);
@@ -617,37 +618,33 @@ public class ServiceBrowser {
         Collection<Experiment> allExps = testbedMan.getAllExperiments();
         log.debug("Found "+allExps.size()+" experiment(s).");
         
-        return null;
-/* FIXME Make this work again when we know what to do with ServiceRecords...
         // Loop through, looking for missing service records.
         for( Experiment exp: allExps) {
+            log.info("Looking at experiment: "+exp.getExperimentSetup().getBasicProperties().getExperimentName());
             ExperimentExecutable executable = exp.getExperimentExecutable();
             if( executable != null && executable.getBatchExecutionRecords() != null ) {
                 for( BatchExecutionRecordImpl batch: executable.getBatchExecutionRecords() )  {
                     for( ExecutionRecordImpl run : batch.getRuns() ) {
                         for( ExecutionStageRecordImpl stage : run.getStages() ) {
-                            stage.getServiceRecord();
-                            stage.getStage();
-
-                            // Create any missing service record.
-
-                            // Store updated service record.
-                            if( stage.getStage().equals( IdentifyWorkflow.STAGE_IDENTIFY) ) {
-                                //stage.setServiceRecord(
-                                ServiceRecordImpl sr = 
-                                    ServiceBrowser.createServiceRecordFromEndpoint( 
-                                            executable.getParameters().get(IdentifyWorkflow.PARAM_SERVICE)) ;
-                                //           );
+                            log.info("Looking at stage: " + stage.getStage());
+                            ServiceRecordImpl sr = stage.getServiceRecord();
+                            if( sr != null ) {
                                 log.info("Got service name: " + sr.getServiceName() );
+                                log.info("Got service desc: " + sr.getServiceDescription() );
+                                if( sr.getServiceDescription() != null ) {
+                                    log.info("Got service desc name: " + sr.getServiceDescription().getName() );
+                                }
+                                log.info("Got service host: " + sr.getHost() );
+                            } else {
+                                log.info("Got service record = null!");
                             }
-
                         }
                     }
                 }
             }
         }
+        log.info("Done looking.");
         return null;
-        */
     }
     
     /**

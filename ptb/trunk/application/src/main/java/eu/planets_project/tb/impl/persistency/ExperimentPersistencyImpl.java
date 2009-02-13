@@ -58,8 +58,8 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
 	@SuppressWarnings("unchecked")
     public List<Experiment> queryAllExperiments() {
         log.info("Looking up all experiments.");
-        Exception e = new Exception("All Experiments.");
-        e.printStackTrace();
+        // FIXME This is not needed: Exception e = new Exception("All Experiments.");
+        // e.printStackTrace();
 		Query query = manager.createQuery("from ExperimentImpl");
 		return query.getResultList();
 	}

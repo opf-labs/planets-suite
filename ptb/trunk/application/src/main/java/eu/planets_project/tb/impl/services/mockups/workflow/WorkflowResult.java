@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +18,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
@@ -32,7 +34,7 @@ import eu.planets_project.tb.impl.system.TestbedBatchJob;
 public class WorkflowResult {
     private static Log log = LogFactory.getLog(WorkflowResult.class);
     
-    HashMap<String,ExecutionStageRecordImpl> stages = new HashMap<String,ExecutionStageRecordImpl>();
+    List<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
     
     String resultType;
     public static final String RESULT_URI = "uri";
@@ -49,17 +51,15 @@ public class WorkflowResult {
     /**
      * @return the stage
      */
-    public ExecutionStageRecordImpl getStage( String stage ) {
-        if( stages.get(stage) == null )
-            stages.put(stage, new ExecutionStageRecordImpl() );
+    public ExecutionStageRecordImpl getStage( int stage ) {
         return stages.get(stage);
     }
     
     /**
      * @return
      */
-    public Set<String> getStages() {
-        return stages.keySet();
+    public List<ExecutionStageRecordImpl> getStages() {
+        return stages;
     }
 
 
@@ -162,19 +162,11 @@ public class WorkflowResult {
                         rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
                     }
                     // Now pull out the measurements:
-                    for( String stagename : wrf.getStages() ) {
-                        ExecutionStageRecordImpl stage = new ExecutionStageRecordImpl();
-                        stage.setStage(stagename);
-                        log.info("Looking for stage: "+stagename);
-                        // Now loop over measurement, recording ones taken at this stage.
-                        List<MeasurementRecordImpl> sms = stage.getMeasurements();
-                        for( MeasurementRecordImpl m : wrf.getStage(stagename).getMeasurements() ) {
-                            sms.add( new MeasurementRecordImpl(m.getIdentifier().toString(), m.getValue() ) );
-                            log.info("Adding measurment of "+m.getIdentifier()+" from stage: "+stagename);
-                        }
-                        stage.setMeasurements(sms);
-                        // FIXME The current Workflow Execution system needs Stages so I can get the service records!                      
-                        //                      stage.setServiceRecord(serviceRecord); 
+                    for( ExecutionStageRecordImpl stage : wrf.getStages() ) {
+                        // FIXME Can this be done from the session's Service Registry instead, please!
+                        log.info("Recording info about endpoint: "+stage.getEndpoint());
+                        stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( stage.getEndpoint()) );
+                        // Re-reference this stage object from the Experiment:
                         stages.add(stage);
                     }
                 }
