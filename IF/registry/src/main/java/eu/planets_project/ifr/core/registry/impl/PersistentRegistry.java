@@ -44,6 +44,7 @@ public final class PersistentRegistry implements Registry {
                 + DESCRIPTION_REGISTRY;
     }
     private Registry registry;
+    private long updated;
 
     /**
      * @param registry The backing registry, e.g. a CoreRegistry
@@ -70,6 +71,9 @@ public final class PersistentRegistry implements Registry {
      * @see eu.planets_project.ifr.core.registry.api.Registry#query(eu.planets_project.services.datatypes.ServiceDescription)
      */
     public List<ServiceDescription> query(final ServiceDescription example) {
+        if (root.lastModified() != updated) {
+            initFromDisk();
+        }
         return registry.query(example);
     }
 
@@ -81,6 +85,7 @@ public final class PersistentRegistry implements Registry {
         String xml = serviceDescription.toXml();
         File f = new File(root, filename(serviceDescription));
         writeTo(xml, f);
+        updateRootModified();
         return registry.register(serviceDescription);
     }
 
@@ -100,6 +105,7 @@ public final class PersistentRegistry implements Registry {
                 }
             }
         }
+        updateRootModified();
         return registry.clear();
     }
 
@@ -125,10 +131,30 @@ public final class PersistentRegistry implements Registry {
             throw new IllegalStateException("Could not create registry root: "
                     + root);
         }
+        updateRootModified();
+        initFromDisk();
+    }
+
+    /**
+     * 
+     */
+    private void updateRootModified() {
         /*
-         * When instantiating the registry, we read all available descriptions
-         * from disk:
+         * We are not using root.lastModified() as is here as that gives
+         * inconsistent results and its behavior varies on different platforms.
+         * Instead, we explicitly set it to the current time in nanoseconds.
          */
+        boolean ok = root.setLastModified(System.nanoTime());
+        if (!ok) {
+            log.warn("Could not set root modified time");
+        }
+    }
+
+    /**
+     * Initialize the registry from disk.
+     */
+    private void initFromDisk() {
+        this.registry.clear();
         String[] list = root.list();
         for (String string : list) {
             File f = new File(root, string);
@@ -137,6 +163,7 @@ public final class PersistentRegistry implements Registry {
                 this.registry.register(ServiceDescription.of(xml));
             }
         }
+        updated = root.lastModified();
     }
 
     /**

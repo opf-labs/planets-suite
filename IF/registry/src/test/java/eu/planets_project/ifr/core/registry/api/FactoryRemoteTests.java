@@ -9,10 +9,10 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * Tests for a webservice registry instance retrieved via the factory.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public class FactoryRemoteTests extends CoreRegistryTests {
+public class FactoryRemoteTests extends PersistentRegistryTests {
 
     /**
-     * get a remote instance
+     * Get a remote instance.
      */
     @BeforeClass
     public static void registryCreation() {

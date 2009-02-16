@@ -12,10 +12,10 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * @see ServiceDescription
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public class RegistryWebserviceTests extends CoreRegistryTests {
+public class RegistryWebserviceTests extends PersistentRegistryTests {
 
     /**
-     * set up by creating a registry before testing 
+     * Set up by creating a registry before testing.
      */
     @BeforeClass
     public static void registryCreation() {

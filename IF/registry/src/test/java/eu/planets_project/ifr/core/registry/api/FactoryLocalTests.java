@@ -6,10 +6,10 @@ import org.junit.BeforeClass;
  * Tests for a local registry instance retrieved via the factory.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public class FactoryLocalTests extends CoreRegistryTests {
+public class FactoryLocalTests extends PersistentRegistryTests {
 
     /**
-     * get registry instance
+     * Get a registry instance.
      */
     @BeforeClass
     public static void registryCreation() {

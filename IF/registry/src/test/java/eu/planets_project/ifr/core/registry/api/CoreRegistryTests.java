@@ -32,8 +32,8 @@ public class CoreRegistryTests {
     static final String TYPE1 = "type1";
     static final String TYPE2 = "type2";
     static final String NAME = "name";
-    private static URL endpoint1;
-    private static URL endpoint2;
+    private URL endpoint1;
+    private URL endpoint2;
     static Registry registry;
 
     /**
@@ -42,12 +42,6 @@ public class CoreRegistryTests {
     @BeforeClass
     public static void registryCreation() {
         registry = CoreRegistry.getInstance();
-        try {
-            endpoint1 = new URL("http://some.dummy.endpoint");
-            endpoint2 = new URL("http://another.dummy.endpoint");
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
     }
 
     ServiceDescription description1 = null;
@@ -58,6 +52,12 @@ public class CoreRegistryTests {
      */
     @Before
     public void registerSampleServices() {
+        try {
+            endpoint1 = new URL("http://some.dummy.endpoint");
+            endpoint2 = new URL("http://another.dummy.endpoint");
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         registry.clear();
         description1 = new ServiceDescription.Builder(NAME, TYPE1).description(
                 DESCRIPTION).inputFormats(URI.create(PRONOM1),
@@ -66,11 +66,16 @@ public class CoreRegistryTests {
                 .inputFormats(URI.create(PRONOM1), URI.create(PRONOM2))
                 .endpoint(endpoint2).build();
         Response register = registry.register(description1);
-        Assert.assertTrue(register.success);
+        if (!register.success) {
+            System.err.println(register.message);
+        }
+        Assert.assertTrue("Could not register when it should work",
+                register.success);
         /* But we can't register descriptions without an endpoint: */
         Response fail = registry.register(new ServiceDescription.Builder(NAME,
                 TYPE1).build());
-        Assert.assertFalse(fail.success);
+        Assert.assertFalse("Could register when it should not work",
+                fail.success);
         registry.register(description2);
     }
 
@@ -101,7 +106,7 @@ public class CoreRegistryTests {
     public void findByName() {
         List<ServiceDescription> services = registry
                 .query(new ServiceDescription.Builder(NAME, null).build());
-        compare(services);
+        Assert.assertEquals(2, services.size());
     }
 
     /**
@@ -154,7 +159,6 @@ public class CoreRegistryTests {
          * specified input format (among others):
          */
         Assert.assertEquals(2, services.size());
-        compare(services);
     }
 
     /**
