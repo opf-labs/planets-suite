@@ -96,7 +96,7 @@
   <path id="component_classpath">
     
     <!-- specific libs -->
-    <fileset dir="${lib.dir}" erroronmissingdir="false">
+    <fileset dir="${lib.dir}">
       <include name="**/*.jar"/>
       <exclude name="lib-jee/*.jar"/>
     </fileset>
@@ -286,8 +286,8 @@
     </javac-->
     
     <!-- Also copy the libs into the right place -->
-    <copy toDir="${build.classes.dir}" flatten="true">
-      <fileset dir="${lib.dir}" erroronmissingdir="false">
+    <copy toDir="${build.classes.dir}" flatten="true" erroronmissingdir="false">
+      <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
         <exclude name="lib-jee/*.jar"/>
       </fileset>
