@@ -71,10 +71,33 @@ public final class PersistentRegistry implements Registry {
      * @see eu.planets_project.ifr.core.registry.api.Registry#query(eu.planets_project.services.datatypes.ServiceDescription)
      */
     public List<ServiceDescription> query(final ServiceDescription example) {
-        if (root.lastModified() != updated) {
-            initFromDisk();
-        }
+        updateIfChanged();
         return registry.query(example);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
+     */
+    public Response delete(final ServiceDescription example) {
+        Response response = registry.delete(example);
+        List<ServiceDescription> list = registry.query(null);
+        clear();
+        for (ServiceDescription serviceDescription : list) {
+            register(serviceDescription);
+        }
+        return response;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
+     *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
+     */
+    public List<ServiceDescription> queryWithMode(
+            final ServiceDescription example, final MatchingMode mode) {
+        updateIfChanged();
+        return registry.queryWithMode(example, mode);
     }
 
     /**
@@ -107,6 +130,15 @@ public final class PersistentRegistry implements Registry {
         }
         updateRootModified();
         return registry.clear();
+    }
+
+    /**
+     * Updates the registry content from disk if it has been modified on disk.
+     */
+    private void updateIfChanged() {
+        if (root.lastModified() != updated) {
+            initFromDisk();
+        }
     }
 
     /**
@@ -213,30 +245,6 @@ public final class PersistentRegistry implements Registry {
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
-     */
-    public Response delete(final ServiceDescription example) {
-        Response response = registry.delete(example);
-        List<ServiceDescription> list = registry.query(null);
-        clear();
-        for (ServiceDescription serviceDescription : list) {
-            register(serviceDescription);
-        }
-        return response;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.Registry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
-     *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
-     */
-    public List<ServiceDescription> queryWithMode(
-            final ServiceDescription example, final MatchingMode mode) {
-        return registry.queryWithMode(example, mode);
     }
 
 }
