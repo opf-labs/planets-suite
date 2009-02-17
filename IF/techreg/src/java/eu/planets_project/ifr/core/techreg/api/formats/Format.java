@@ -194,7 +194,7 @@ public class Format implements Serializable {
     /** The prefix for extension format URIs */
     public static final String EXT_URI_PREFIX="planets:fmt/ext/";
     /** The prefix for PRONOM format URIs */
-    public static final String PRONOM_URI_PREFIX="info:pronom";
+    public static final String PRONOM_URI_PREFIX="info:pronom/";
 
     /**
      * Static helper to construct appropriate URIs for file-extensions format specifiers.
@@ -219,6 +219,20 @@ public class Format implements Serializable {
     public static URI mimeToURI(String mime) {
         try {
             return new URI(MIME_URI_PREFIX+mime.toLowerCase());
+        } catch (URISyntaxException e) {
+            return null;
+        }
+    }
+    
+    /**
+     * Static helper to convert a short-form PRONOM ID into a PRONOM URI.
+     * 
+     * @param pronomID Short-form PUID, e.g. 'fmt/95'
+     * @return A full PRONOM Format URI, e.g. 'info:pronom/fmt/95'
+     */
+    public static URI pronomIdToURI(String pronomID) {
+        try {
+            return new URI(PRONOM_URI_PREFIX + pronomID.toLowerCase());
         } catch (URISyntaxException e) {
             return null;
         }
