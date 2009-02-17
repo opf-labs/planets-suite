@@ -286,7 +286,7 @@
     </javac-->
     
     <!-- Also copy the libs into the right place -->
-    <copy toDir="${build.classes.dir}" flatten="true" erroronmissingdir="false">
+    <copy toDir="${build.classes.dir}" flatten="true" failonerror="false">
       <fileset dir="${lib.dir}">
         <include name="**/*.jar"/>
         <exclude name="lib-jee/*.jar"/>
