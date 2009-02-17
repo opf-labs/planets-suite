@@ -96,7 +96,7 @@
   <path id="component_classpath">
     
     <!-- specific libs -->
-    <fileset dir="${lib.dir}">
+    <fileset dir="${lib.dir}" erroronmissingdir="false">
       <include name="**/*.jar"/>
       <exclude name="lib-jee/*.jar"/>
     </fileset>
@@ -238,6 +238,7 @@
          srcdir="${src.dir}"
            destdir="${build.api.classes.dir}"
            debug="on"
+           listfiles="yes"
            deprecation="on"
            optimize="off"
            includes="${src.api.includes}">
@@ -286,7 +287,7 @@
     
     <!-- Also copy the libs into the right place -->
     <copy toDir="${build.classes.dir}" flatten="true">
-      <fileset dir="${lib.dir}">
+      <fileset dir="${lib.dir}" erroronmissingdir="false">
         <include name="**/*.jar"/>
         <exclude name="lib-jee/*.jar"/>
       </fileset>
