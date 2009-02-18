@@ -33,7 +33,6 @@ public interface WftRegistryService {
 
     /**
      * Registers a new WorkflowTemplate
-     * @param digObj
      * @param QWorkflowTemplateName the fully qualified name of the submitted class. e.g. 'eu.planet_project.ifr.core.Template1.java'
      * @param javaBinary a byte[] of the java class which will be stored in the registry
      * @result
