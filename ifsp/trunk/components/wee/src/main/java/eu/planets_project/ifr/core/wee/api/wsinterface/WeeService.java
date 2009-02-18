@@ -26,9 +26,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
 /**
  * WebService Interface for the Planets Workflow Execution Engine. This allows 
  *  - job submission
- *  - querying on a job's status
+ *  - querying on a job's status and position in queue
  *  - retrieving execution results
- *  - list all registered and supported workflowTemplate QNames
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
  * @since 12.11.2008
  *
