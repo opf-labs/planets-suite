@@ -87,6 +87,8 @@
 	<classpathentry kind="src" path="PA/imagemagick/test/java"/>
 	<classpathentry kind="src" path="PA/pdf2text/src/java"/>
 	<classpathentry kind="src" path="PA/pdf2text/test/java"/>
+	<classpathentry kind="src" path="PA/pdfbox/src/java"/>
+	<classpathentry kind="src" path="PA/pdfbox/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
@@ -219,7 +221,9 @@
 	<classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar" sourcepath="D:/JTidy/jtidy-04aug2000r7-dev/src"/>
 	<classpathentry kind="lib" path="PA/pdf2html/lib/fontbox-0.1.0.jar"/>
 	<classpathentry kind="lib" path="PA/pdf2html/lib/PDFBox-0.7.3.jar"/>
-    <classpathentry kind="lib" path="PA/pdf2text/lib/fontbox-0.1.0.jar"/>
-    <classpathentry kind="lib" path="PA/pdf2text/lib/PDFBox-0.7.3.jar"/>
+	<classpathentry kind="lib" path="PA/pdf2text/lib/fontbox-0.1.0.jar"/>
+	<classpathentry kind="lib" path="PA/pdf2text/lib/PDFBox-0.7.3.jar"/>
+    <classpathentry kind="lib" path="PA/pdfbox/lib/fontbox-0.1.0.jar"/>
+    <classpathentry kind="lib" path="PA/pdfbox/lib/PDFBox-0.7.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
