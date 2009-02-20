@@ -41,8 +41,16 @@ public class PersistentRegistryTests extends CoreRegistryTests {
     public void syncInMemoryAndDisk() throws MalformedURLException {
         init();
         /* We want the other instance to be up to date as well: */
-        List<ServiceDescription> updated = newRegistry.query(ServiceDescription
-                .copy(description).author("Me").build());
+        ServiceDescription example = ServiceDescription.copy(description)
+                .author("Me")
+                /*
+                 * We need to be really careful when using the copy method, if
+                 * we don't null the endpoint here, the new instance will have
+                 * the old endpoint, resulting in wrong comparison, unsuccessful
+                 * registration, etc.
+                 */
+                .endpoint(null).build();
+        List<ServiceDescription> updated = newRegistry.query(example);
         check(updated);
         clean();
     }
@@ -58,8 +66,8 @@ public class PersistentRegistryTests extends CoreRegistryTests {
         init();
         /* The same thing should work for the other query method: */
         List<ServiceDescription> updated = newRegistry.queryWithMode(
-                ServiceDescription.copy(description).author("Me").build(),
-                MatchingMode.EXACT);
+                ServiceDescription.copy(description).author("Me")
+                        .endpoint(null).build(), MatchingMode.EXACT);
         check(updated);
         clean();
     }
@@ -91,13 +99,21 @@ public class PersistentRegistryTests extends CoreRegistryTests {
         /* Some client instantiates a registry backed by the same directory: */
         newRegistry = PersistentRegistry.getInstance(
                 CoreRegistry.getInstance(), CoreRegistryTests.TEST_ROOT);
-        List<ServiceDescription> list = newRegistry.query(description);
+        checkIfPresent(description, newRegistry);
+        /* Now, we change something in the original registry: */
+        ServiceDescription newDescription = ServiceDescription
+                .copy(description).author("Me").endpoint(
+                        new URL("http://some.place")).build();
+        registry.register(newDescription);
+        checkIfPresent(newDescription, registry);
+    }
+
+    private void checkIfPresent(ServiceDescription description,
+            Registry registry) {
+        List<ServiceDescription> list = registry.query(description);
         Assert.assertEquals(1, list.size());
         ServiceDescription retrieved = list.get(0);
         Assert.assertEquals(description, retrieved);
-        /* Now, if we change something in the original registry: */
-        registry.register(ServiceDescription.copy(description).author("Me")
-                .build());
     }
 
     private void clean() {

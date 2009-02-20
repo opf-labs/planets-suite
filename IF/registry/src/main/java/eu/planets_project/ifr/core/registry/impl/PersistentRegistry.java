@@ -105,11 +105,14 @@ public final class PersistentRegistry implements Registry {
      * @see eu.planets_project.ifr.core.registry.api.Registry#register(eu.planets_project.services.datatypes.ServiceDescription)
      */
     public Response register(final ServiceDescription serviceDescription) {
-        String xml = serviceDescription.toXml();
-        File f = new File(root, filename(serviceDescription));
-        writeTo(xml, f);
-        updateRootModified();
-        return registry.register(serviceDescription);
+        Response response = registry.register(serviceDescription);
+        if (response.success) {
+            String xml = serviceDescription.toXml();
+            File f = new File(root, filename(serviceDescription));
+            writeTo(xml, f);
+            updateRootModified();
+        }
+        return response;
     }
 
     /**
@@ -163,7 +166,6 @@ public final class PersistentRegistry implements Registry {
             throw new IllegalStateException("Could not create registry root: "
                     + root);
         }
-        updateRootModified();
         initFromDisk();
     }
 
