@@ -48,6 +48,24 @@
     <h:panelGroup rendered="#{not NewExp_Controller.experimentExecutable.executionCompleted}">
                    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
                         <p>Your experiment has been setup and approved successfully - you may now <b>run the experiment</b>: </p>
+                        
+                        <p>
+                        
+                        <h:form>
+                       <h:panelGrid columns="3">			           
+			           <rich:column>
+					   <h:outputLabel value="#{res['new_exp.expNumExecutions']}" for="numExecutions" ></h:outputLabel>
+					   </rich:column>
+					   <rich:column>
+					   		<rich:inputNumberSpinner id="numExecutions"  value="1" inputSize="5" maxValue="10" minValue="1" />&nbsp;&nbsp;
+					   	</rich:column>
+					   	<rich:column>	
+					   		<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipNumExecutions']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+					   </rich:column>					   
+					   </h:panelGrid>	
+					   </h:form>	
+					   	
+					   </p>    
                 <h:commandButton id="executeExperimentButton" value="#{res['exp_stage5.button.run']}" 
                 action="#{NewExp_Controller.executeExperiment}" disabled="#{NewExp_Controller.experimentExecutable.executionRunning}">
                 </h:commandButton>                        
