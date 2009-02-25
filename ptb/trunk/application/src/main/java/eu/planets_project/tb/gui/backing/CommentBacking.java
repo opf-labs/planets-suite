@@ -184,7 +184,7 @@ public class CommentBacking implements java.io.Serializable {
     }
 
     /**
-     * 
+     * action for the submit comment button
      */
     public void addCommentAction() {
         log.debug("Recieved addCommentAction()" );
@@ -236,6 +236,20 @@ public class CommentBacking implements java.io.Serializable {
         this.time = "";
         
         // Redirect to the original page, if it is set:
+        if( parentURI == null || parentURI == "" ) return;
+        try {
+          javax.faces.context.FacesContext.getCurrentInstance().getExternalContext().redirect(parentURI);
+        } catch ( java.io.IOException e) {
+            log.error("Redirect failed with exception: " + e);
+        }
+    }
+    
+    
+    /**
+     * action for the cancel button
+     */
+    public void cancelCommentAction(){
+    	//cancel add or edit comment - redirect to the original page, if it is set:
         if( parentURI == null || parentURI == "" ) return;
         try {
           javax.faces.context.FacesContext.getCurrentInstance().getExternalContext().redirect(parentURI);

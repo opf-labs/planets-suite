@@ -138,6 +138,8 @@ ni.appendChild(newdiv);
           <div class="addCommentSubmitWrap">
             <h:commandButton value="#{res['comment.submit']}" 
             action="#{Comment_Backing.addCommentAction}" />
+            <h:commandButton immediate="true" value="#{res['comment.cancel']}" 
+            action="#{Comment_Backing.cancelCommentAction}" />
           </div>
       </h:form>
       </div>

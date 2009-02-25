@@ -5,7 +5,8 @@
     xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:t="http://myfaces.apache.org/tomahawk">
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:a4j="http://richfaces.org/a4j">
 <body>
   <ui:composition rendered="#{ExperimentBean != null}">
     <div id="experimentComments">
@@ -14,14 +15,14 @@
     
       <!-- TODO Add comment list and forms etc etc. -->
       <div class="commentFormWrap">
-      <h:form id="commentForm">
+      <a4j:form id="commentForm">
 
         <fieldset>
         <legend>#{res['comment.commentsOn']} '#{ExperimentBean.ename}' </legend>
 
         <h:panelGroup styleClass="expandAllTop" rendered="#{Comment_Backing.numberOfComments gt 0}">
-          <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
-          <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
+          <a4j:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}" reRender="commentForm"/>/
+          <a4j:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}" reRender="commentForm"/>
         </h:panelGroup>
 
         <t:tree2 id="commentTree" value="#{Comment_Backing.commentTree}" var="cmt" varNodeToggler="t" showRootNode="false" binding="#{Comment_Backing.tree}" showLines="true" preserveToggle="true" clientSideToggle="true">
@@ -46,30 +47,30 @@
                 <h:outputText value="#{cmt.author}" styleClass="commentAuthor"/><h:outputText value=" (#{cmt.time} - #{cmt.expPhase})" styleClass="commentDate"/>
                 </div>
                 <t:div styleClass="commentEditWrap" rendered="#{cmt.author==UserBean.userid||UserBean.admin}">
-                  <h:commandLink action="addComment">
+                  <a4j:commandLink action="addComment">
                     <h:outputText value="#{res['comment.edit']}"/>
                     <t:updateActionListener property="#{Comment_Backing.commentId}" value="#{cmt.identifier}" />
-                  </h:commandLink>
+                  </a4j:commandLink>
                 </t:div>
                 <t:div styleClass="commentReplyWrap">
-                  <h:commandLink action="addComment">
+                  <a4j:commandLink action="addComment">
                     <h:outputText value="#{res['comment.replyToThis']}"/>
                     <t:updateActionListener property="#{Comment_Backing.parentId}" value="#{cmt.identifier}" />
-                  </h:commandLink>
+                  </a4j:commandLink>
                 </t:div>
             </h:panelGroup>
         </f:facet>
         <f:facet name="commentbox">        
           <h:panelGroup styleClass="commentWrap">
         <h:panelGroup styleClass="expandAllTop" rendered="#{Comment_Backing.numberOfComments gt 4}">
-          <h:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}"/>/
-          <h:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}"/>
+          <a4j:commandLink immediate="true" value="#{res['comment.expandAll']}" action="#{Comment_Backing.expandAll}" reRender="commentForm"/>/
+          <a4j:commandLink immediate="true" value="#{res['comment.collapseAll']}" action="#{Comment_Backing.collapseAll}" reRender="commentForm"/>
         </h:panelGroup>
           <t:div styleClass="commentReplyWrap">
-           <h:commandLink immediate="true" action="addComment">
+           <a4j:commandLink immediate="true" action="addComment">
               <h:outputText value="#{res['comment.addNew']}"/>
               <t:updateActionListener property="#{Comment_Backing.parentId}" value="-1" />
-           </h:commandLink>
+           </a4j:commandLink>
           </t:div>
           </h:panelGroup>
         </f:facet>
@@ -77,7 +78,7 @@
         </t:tree2>
         
         </fieldset>
-      </h:form>
+      </a4j:form>
       
      </div>
      
