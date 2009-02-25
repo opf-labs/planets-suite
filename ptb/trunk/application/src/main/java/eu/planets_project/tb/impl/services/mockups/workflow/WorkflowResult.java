@@ -119,70 +119,85 @@ public class WorkflowResult {
         log.info("Recording result of experiment. "+exp.getExperimentExecution().isExecutionInvoked()+" ; "+exp.getExperimentExecution().isExecutionCompleted());
         if (exp.getExperimentExecutable().isExecutableInvoked() && 
                 ! exp.getExperimentExecutable().isExecutionCompleted() ) {
-            // Grab all the results:
-            DataHandler dh = new DataHandlerImpl();
-            BatchExecutionRecordImpl batch = new BatchExecutionRecordImpl();
-            exp.getExperimentExecutable().getBatchExecutionRecords().add(batch);
-            batch.setStartDate(job.getStartDate());
-            batch.setEndDate(job.getEndDate());
-            if( job.getStatus().equals( TestbedBatchJob.DONE ) ) {
-                batch.setBatchRunSucceeded(true);
-            } else {
-                batch.setBatchRunSucceeded(false);
-            }
             
-            for( String filename : job.getDigitalObjects()) {
-                ExecutionRecordImpl rec = new ExecutionRecordImpl();
-                rec.setDigitalObjectReferenceCopy(filename);
-                try {
-                    rec.setDigitalObjectSource(dh.getName(filename));
-                } catch (FileNotFoundException e) {
-                    rec.setDigitalObjectSource(filename);
+            // Add an overall Exception catcher, to avoid infinite loops when things go wrong.
+            try {
+                // Grab all the results:
+                DataHandler dh = new DataHandlerImpl();
+                BatchExecutionRecordImpl batch = new BatchExecutionRecordImpl();
+                exp.getExperimentExecutable().getBatchExecutionRecords().add(batch);
+                batch.setStartDate(job.getStartDate());
+                batch.setEndDate(job.getEndDate());
+                if( job.getStatus().equals( TestbedBatchJob.DONE ) ) {
+                    batch.setBatchRunSucceeded(true);
+                } else {
+                    batch.setBatchRunSucceeded(false);
                 }
-                // FIXME Set this in the job somewhere:
-                rec.setDate(Calendar.getInstance());
-                List<ExecutionStageRecordImpl> stages = rec.getStages();
-                WorkflowResult wrf = job.getWorkflowResult(filename);
-                if( wrf != null && wrf.getStages() != null ) {
-                    // Examine the result:
-                    if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wrf.getResultType())) {
-                        DigitalObject dob = (DigitalObject) wrf.getResult();
+
+                for( String filename : job.getDigitalObjects()) {
+                    try {
+                        ExecutionRecordImpl rec = new ExecutionRecordImpl();
+                        rec.setDigitalObjectReferenceCopy(filename);
                         try {
-                            String storeKey = dh.addBytestream(dob.getContent().read(), dob.getTitle());
-                            rec.setResult(storeKey);
-                            rec.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
-                            /* FIXME In the future, store the whole DO in the TB DR.
-                            Add dob.gatherBinaries/embedBinaries method?
-                                    */
-                        } catch (IOException e) {
-                            log.error("Could not store result DigitalObject - "+dob);
-                            e.printStackTrace();
+                            rec.setDigitalObjectSource(dh.getName(filename));
+                        } catch (FileNotFoundException e) {
+                            rec.setDigitalObjectSource(filename);
                         }
-                    } else {
-                        rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
+                        // FIXME Set this in the job somewhere:
+                        rec.setDate(Calendar.getInstance());
+                        List<ExecutionStageRecordImpl> stages = rec.getStages();
+                        WorkflowResult wrf = job.getWorkflowResult(filename);
+                        if( wrf != null && wrf.getStages() != null ) {
+                            // Examine the result:
+                            if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wrf.getResultType())) {
+                                DigitalObject dob = (DigitalObject) wrf.getResult();
+                                try {
+                                    String storeKey = dh.addBytestream(dob.getContent().read(), dob.getTitle());
+                                    rec.setResult(storeKey);
+                                    rec.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
+                                    /* FIXME In the future, store the whole DO in the TB DR.
+                            Add dob.gatherBinaries/embedBinaries method?
+                                     */
+                                } catch (IOException e) {
+                                    log.error("Could not store result DigitalObject - "+dob);
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
+                            }
+                            // Now pull out the stages, which include the measurements etc:
+                            for( ExecutionStageRecordImpl stage : wrf.getStages() ) {
+                                // FIXME Can this be done from the session's Service Registry instead, please!
+                                log.info("Recording info about endpoint: "+stage.getEndpoint());
+                                stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( stage.getEndpoint()) );
+                                // Re-reference this stage object from the Experiment:
+                                stages.add(stage);
+                            }
+                        }
+
+                        batch.getRuns().add(rec);
+                        log.info("Added records ("+batch.getRuns().size()+") for "+rec.getDigitalObjectSource());
+                    } catch( Exception e ) {
+                        log.error("Exception while parsing Execution Record.");
+                        e.printStackTrace();
                     }
-                    // Now pull out the stages, which include the measurements etc:
-                    for( ExecutionStageRecordImpl stage : wrf.getStages() ) {
-                        // FIXME Can this be done from the session's Service Registry instead, please!
-                        log.info("Recording info about endpoint: "+stage.getEndpoint());
-                        stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( stage.getEndpoint()) );
-                        // Re-reference this stage object from the Experiment:
-                        stages.add(stage);
-                    }
+
                 }
-                
-                batch.getRuns().add(rec);
-                log.info("Added records ("+batch.getRuns().size()+") for "+rec.getDigitalObjectSource());
-                
-            }
-            
-            // General State Update:
-            if( TestbedBatchJob.DONE.equals(job.getStatus()) ) {
-                // If we got here, then log that all went well...
-                log.info("Status: DONE - All went well.");
-                exp.getExperimentExecutable().setExecutionSuccess(true);
-            } else {
-                log.error("Experiment execution failed - setting state: failure within the experiment's executable: ");
+
+                // General State Update:
+                if( TestbedBatchJob.DONE.equals(job.getStatus()) ) {
+                    // If we got here, then log that all went well...
+                    log.info("Status: DONE - All went well.");
+                    exp.getExperimentExecutable().setExecutionSuccess(true);
+                } else {
+                    log.error("Experiment execution failed - setting state: failure within the experiment's executable: ");
+                    exp.getExperimentExecutable().setExecutionSuccess(false);
+                }
+
+            } catch ( Exception e ) {
+                // FAIL Case:
+                log.error("Experiment result parsing failed!");
+                e.printStackTrace();
                 exp.getExperimentExecutable().setExecutionSuccess(false);
             }
             exp.getExperimentExecutable().setExecutableInvoked(true);

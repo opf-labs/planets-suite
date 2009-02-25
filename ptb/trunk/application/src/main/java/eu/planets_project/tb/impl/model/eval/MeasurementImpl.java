@@ -205,6 +205,14 @@ public class MeasurementImpl implements Serializable {
         return "[id:"+this.identifier+", name:"+this.name+", unit:"+this.unit+", desc:"+this.description+", stage:"+this.stage+", type:"+this.type+", value:"+this.value+"]";
     }
     
-    
+    /**
+     * 
+     * @return
+     */
+    public boolean isUnitDefined() {
+        if( this.unit == null ) return false;
+        if( "".equals(this.unit)) return false;
+        return true;
+    }
     
 }

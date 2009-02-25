@@ -523,7 +523,9 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
             for( int k = 0; k < 10; k++ ) {
                 for( int j = 0; j < 100000; j++ ) {
                     double a = Math.pow(i, j);
-                    double b = a/j;
+                    double b = a/j + Math.random();
+                    a = b * Math.random();
+                    b = a * Math.random();
                 }
 
                 try {

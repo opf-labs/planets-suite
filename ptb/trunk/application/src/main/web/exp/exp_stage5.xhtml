@@ -36,7 +36,7 @@
       <h:outputText value="Executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times." 
           rendered="#{not NewExp_Controller.experimentExecutable.executionRunning}" styleClass="statusMessage"/>
       <rich:progressBar value="#{NewExp_Controller.executeExperimentProgress}"
-          interval="500" label="#{NewExp_Controller.executeExperimentProgress} %"
+          interval="1000" label="#{NewExp_Controller.executeExperimentProgress} %"
           enabled="true" minValue="0" maxValue="100" styleClass="expRunStatusRun"
           reRenderAfterComplete="progressPanel,runExperimentForm,executedResults" reRender="runExperimentForm,executedResults">
       </rich:progressBar>
@@ -191,7 +191,7 @@
             </rich:column>
             <rich:column>
               <f:facet name="header">Value</f:facet>
-              <h:outputText value="#{m.value}"/><h:outputText value=" [#{m.unit}]" rendered="#{m.unit != null}"/>
+              <h:outputText value="#{m.value}"/><h:outputText value=" [#{m.unit}]" rendered="#{m.unitDefined}"/>
             </rich:column>
           </rich:dataTable>
           
