@@ -3,9 +3,14 @@
  */
 package eu.planets_project.tb.gui.backing.exp;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -453,10 +458,98 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
 
     }
     
+    //Embed system properties in ServiceDescription property chunk?;
+    //Drag-and-drop in RF moves the pane? NO.
+    // FIXME Remove this.
     public static void main(String args[]) {
+               
         Properties p = System.getProperties();
-        for( Object key : p.keySet() ) {
-            System.out.println(key + " = "+p.getProperty((String)key));
+        
+        ByteArrayOutputStream byos = new ByteArrayOutputStream();
+        try {
+            p.storeToXML(byos, "Automatically generated for PLANETS Service ", "UTF-8");
+            String res = byos.toString("UTF-8");
+            System.out.println(res);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        
+        // This.
+        List<String> pl = new ArrayList<String>();
+        for( Object key : p.keySet() ) {
+            pl.add( (String)key );
+        }
+        Collections.sort(pl);
+        
+        //
+        for( String key : pl ) {
+            System.out.println(key + " = "+p.getProperty(key));
+        }
+        
+        /*
+         * http://java.sun.com/j2se/1.5.0/docs/api/java/lang/management/ThreadMXBean.html#getCurrentThreadCpuTime()
+         * 
+         * http://www.java-forums.org/new-java/5303-how-determine-cpu-usage-using-java.html
+         * 
+         */
+        
+        ThreadMXBean TMB = ManagementFactory.getThreadMXBean();
+        int mscale = 1000000;
+        long time = 0, time2 = 0;
+        long cput = 0, cput2 = 0;
+        double cpuperc = -1;
+
+        //Begin loop.
+        for( int i=0; i< 10; i++ ) {
+
+            if( TMB.isThreadCpuTimeSupported() )
+            {
+                if(!TMB.isThreadCpuTimeEnabled())
+                {
+                    TMB.setThreadCpuTimeEnabled(true);
+                }
+                
+//                if(new Date().getTime() * mscale - time > 1000000000) //Reset once per second
+//                {
+                System.out.println("Resetting...");
+                time = System.currentTimeMillis() * mscale;
+                cput = TMB.getCurrentThreadCpuTime();
+//                cput = TMB.getCurrentThreadUserTime();
+//                }
+
+            }
+
+            //Do cpu intensive stuff
+            for( int k = 0; k < 10; k++ ) {
+                for( int j = 0; j < 100000; j++ ) {
+                    double a = Math.pow(i, j);
+                    double b = a/j;
+                }
+
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if( TMB.isThreadCpuTimeSupported() )
+            {
+//                if(new Date().getTime() * mscale - time != 0) {
+                cput2 = TMB.getCurrentThreadCpuTime();
+                System.out.println("cpu: " + (cput2 - cput)/(1000.0*mscale) );
+//                cput2 = TMB.getCurrentThreadUserTime();
+                
+                time2 = System.currentTimeMillis() * mscale;
+                System.out.println("time: " + (time2 - time)/(1000.0*mscale) );
+                
+                cpuperc = 100.0 * (cput2 - cput) / (double)(time2 - time);
+                System.out.println("cpu perc = " + cpuperc);
+//                }
+            }
+            //End Loop
+        }
+        System.out.println("Done.");
     }
 }

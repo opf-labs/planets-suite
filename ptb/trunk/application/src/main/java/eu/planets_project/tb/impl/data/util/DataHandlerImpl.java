@@ -26,10 +26,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.data.util.DataHandler;
-import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
+import eu.planets_project.tb.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
@@ -172,12 +173,13 @@ public class DataHandlerImpl implements DataHandler {
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#addFromDataRegistry(eu.planets_project.tb.impl.data.DataRegistryManagerImpl, java.net.URI)
      */
-    public String addFromDataRegistry(DataRegistryManagerImpl dr, URI pduri) throws IOException {
+    public String addFromDataRegistry(DigitalObjectDirectoryLister dr, URI pduri) throws IOException {
         InputStream in = null;
         log.info("Adding from URI: "+pduri );
         try {
-            in = new ByteArrayInputStream( dr.getDataManager(pduri).retrieveBinary(pduri) );
-        } catch (SOAPException e) {
+            in = dr.getDataManager(pduri).retrieve(pduri).getContent().read();
+        } catch (DigitalObjectNotFoundException e) {
+            e.printStackTrace();
             throw new IOException("Caught "+ e.getMessage()+" on " + pduri );
         }
         return this.addBytestream(in, pduri.toString());

@@ -5,30 +5,28 @@ package eu.planets_project.tb.impl.data;
 
 import java.net.URI;
 
-import javax.xml.soap.SOAPException;
-
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
-import eu.planets_project.tb.api.data.DataRegistryManager;
-import eu.planets_project.tb.api.data.DigitalObject;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.tb.api.data.DigitalObjectReference;
 
 /**
- * This class masks the presence of multiple data registries for the TB
- * and encloses the result in DigitalObjects to be used in the interface.
  * 
- * The DataSourceManager is used to manage the known Data Registries.
+ * This class provides the access point for mapping between the DigitalObjectManager interface and the TB, by
+ * creating the DigitalObjectReference beans that are used in the TB interface to explore the DOMs.
+ * 
+ * The DigitalObjectMultiManager does the actual work.
  * 
  * @author AnJackson
  *
  */
-public class DataRegistryManagerImpl extends DataRegistryManager {
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DataRegistryManagerImpl.class, "testbed-log4j.xml");
+public class DigitalObjectDirectoryLister {
+    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectDirectoryLister.class);
     
     // The data sources are managed here:
-    DataSourceManager dsm = new DataSourceManager();
+    DigitalObjectManager dsm = new DigitalObjectMultiManager();
     
-    public DigitalObject getRootDigitalObject() {
-        return new DigitalObject( null );
+    public DigitalObjectReference getRootDigitalObject() {
+        return new DigitalObjectReference( null );
     }
     
     /**
@@ -37,30 +35,20 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
      * @param puri The Planets URI to list. Should point to a directory.
      * @return Returns null if URI is a file or is invalid.
      */
-    public DigitalObject[] list( URI puri ) {
+    public DigitalObjectReference[] list( URI puri ) {
         // List from the appropriate registry.
-        URI[] childs = null;
-        try {
-            childs = dsm.list(puri);
-        } catch( SOAPException e ) {
-            e.printStackTrace();
-            log.error("Exception while listing " + puri + " : " + e );
-        }
-        if( childs == null ) return new DigitalObject[0];
+        URI[] childs = dsm.list(puri);
+        
+        if( childs == null ) return new DigitalObjectReference[0];
         
         // Create a DigitalObject for each URI.
-        DigitalObject[] dobs = new DigitalObject[childs.length];
+        DigitalObjectReference[] dobs = new DigitalObjectReference[childs.length];
         for( int i = 0; i < childs.length; i ++ ) {
             // Create a DOB from the URI:
-            dobs[i] = new DigitalObject( childs[i] );
+            dobs[i] = new DigitalObjectReference( childs[i] );
             
             // Mark that DigitalObject as a Directory if listing it returns NULL:
-            URI[] grandchilds = null;
-            try {
-                grandchilds = dsm.list(childs[i]);
-            } catch( SOAPException e ) {
-                log.error("Exception while listing " + childs[i] + " : " + e);
-            }
+            URI[] grandchilds = dsm.list(childs[i]);
             if( grandchilds == null ) {
                 dobs[i].setDirectory(false);
             } else {
@@ -90,7 +78,7 @@ public class DataRegistryManagerImpl extends DataRegistryManager {
      * @param puri
      * @return
      */
-    public DataManagerLocal getDataManager( URI puri ) {
+    public DigitalObjectManager getDataManager( URI puri ) {
         return dsm;
     }
     

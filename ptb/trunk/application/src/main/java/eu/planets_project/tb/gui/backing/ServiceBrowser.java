@@ -46,6 +46,7 @@ import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
+import eu.planets_project.ifr.core.registry.impl.MatchingMode;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
@@ -298,18 +299,17 @@ public class ServiceBrowser {
      * @return
      */
     public List<ServiceDescription> getListOfServices( String type ) {
-        
-        //Registry registry = lookupServiceRegistry();
 
-        //Get all services
-        //List<ServiceDescription> identifiers = registry.query(null); //If you pass a ServiceDescription with fields filled in it will query against matches.
+        // If no type specified, return all:
+        if( type == null) {
+            return registry.query(null);
+        }
         
-        // List Identify services:
+        // List particular services:
+        log.info("Looking for services of type: "+type);
         ServiceDescription sdQuery = new ServiceDescription.Builder(null, type).build();
-
-        //To register a service
-        //Response = registry.register(ServiceDescription)
         
+        // This is the list:
         return registry.query(sdQuery);
     }
 
@@ -614,6 +614,7 @@ public class ServiceBrowser {
      */
     public String getExperimentServiceRecordFixLog() {
         log.info("Looking through the experiments...");
+        long start = System.currentTimeMillis();
         TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
         Collection<Experiment> allExps = testbedMan.getAllExperiments();
         log.debug("Found "+allExps.size()+" experiment(s).");
@@ -629,12 +630,12 @@ public class ServiceBrowser {
                             log.info("Looking at stage: " + stage.getStage());
                             ServiceRecordImpl sr = stage.getServiceRecord();
                             if( sr != null ) {
-                                log.info("Got service name: " + sr.getServiceName() );
-                                log.info("Got service desc: " + sr.getServiceDescription() );
+                                log.info("Got old service name: " + sr.getServiceName() );
+                                log.info("Got old service desc: " + sr.getServiceDescription() );
                                 if( sr.getServiceDescription() != null ) {
-                                    log.info("Got service desc name: " + sr.getServiceDescription().getName() );
+                                    log.info("Got old service desc name: " + sr.getServiceDescription().getName() );
                                 }
-                                log.info("Got service host: " + sr.getHost() );
+                                log.info("Got old service host: " + sr.getHost() );
                             } else {
                                 log.info("Got service record = null!");
                             }
@@ -643,7 +644,8 @@ public class ServiceBrowser {
                 }
             }
         }
-        log.info("Done looking.");
+        long finish = System.currentTimeMillis();
+        log.info("Done looking: in " + (finish-start)/1000.0 + "s");
         return null;
     }
     
@@ -667,7 +669,10 @@ public class ServiceBrowser {
 
         // Now get the active services and patch these records in:
         List<ServiceDescription> serviceList = getListOfServices(null);
+        log.info("Query result: "+serviceList);
+        if( serviceList != null ) log.info("Matched services = "+serviceList.size());
         for( ServiceDescription sd : serviceList ) {
+            log.info("Looking at service: "+sd.getName());
             if( serviceMap.containsKey(sd.hashCode()) ) {
                 serviceMap.get(sd.hashCode()).setServiceDescription(sd);
             } else {

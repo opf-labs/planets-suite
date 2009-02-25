@@ -196,6 +196,14 @@ public class MeasurementImpl implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "[id:"+this.identifier+", name:"+this.name+", unit:"+this.unit+", desc:"+this.description+", stage:"+this.stage+", type:"+this.type+", value:"+this.value+"]";
+    }
     
     
     

@@ -70,7 +70,6 @@ import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.DataSourceManager;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;

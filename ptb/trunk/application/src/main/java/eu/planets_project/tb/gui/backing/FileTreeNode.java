@@ -5,7 +5,7 @@ package eu.planets_project.tb.gui.backing;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import java.net.URI;
-import eu.planets_project.tb.api.data.DigitalObject;
+import eu.planets_project.tb.api.data.DigitalObjectReference;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 /**
@@ -17,7 +17,7 @@ public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     
     static private PlanetsLogger log = PlanetsLogger.getLogger(FileTreeNode.class);
     
-    private DigitalObject dob;
+    private DigitalObjectReference dob;
     private String displayName;
     private String owner;
     private String size;
@@ -30,20 +30,20 @@ public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     /**
      * Constructor based on Digital Object:
      */
-    public FileTreeNode( DigitalObject dob ) {
+    public FileTreeNode( DigitalObjectReference dob ) {
         this.setDob(dob);
     }
     
     /**
      * @return the dob
      */
-    public DigitalObject getDob() {
+    public DigitalObjectReference getDob() {
         return dob;
     }
     /**
      * @param dob the dob to set
      */
-    public void setDob(DigitalObject dob) {
+    public void setDob(DigitalObjectReference dob) {
         this.dob = dob;
         // Pick up configuration from the DO:
         if( this.isDirectory() ) {

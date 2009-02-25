@@ -18,10 +18,10 @@ import org.apache.myfaces.custom.tree2.TreeModelBase;
 import org.apache.myfaces.custom.tree2.TreeNode;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.tb.api.data.DigitalObject;
+import eu.planets_project.tb.api.data.DigitalObjectReference;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
+import eu.planets_project.tb.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 /**
@@ -35,7 +35,7 @@ public class FileBrowser {
     private static PlanetsLogger log = PlanetsLogger.getLogger(FileBrowser.class, "testbed-log4j.xml");
     
     // The Data Registry:
-    private DataRegistryManagerImpl dr = new DataRegistryManagerImpl();
+    private DigitalObjectDirectoryLister dr = new DigitalObjectDirectoryLister();
 
     // The current URI/position in the DR:
     private URI location = null;
@@ -96,22 +96,22 @@ public class FileBrowser {
     public void setLocation(URI location) {
         log.debug("Setting location: "+location);
         if( location != null ) this.location = location.normalize();
-        DigitalObject[] dobs = dr.list(this.location);
+        DigitalObjectReference[] dobs = dr.list(this.location);
         int fileCount = 0;
-        for( DigitalObject dob : dobs ) {
+        for( DigitalObjectReference dob : dobs ) {
             if( !dob.isDirectory() ) fileCount++;
         }
         //this.currentItems = new FileTreeNode[fileCount];
         // Put directories first.
         this.currentItems = new FileTreeNode[dobs.length];
         int i = 0;
-        for( DigitalObject dob : dobs ) {
+        for( DigitalObjectReference dob : dobs ) {
             if( dob.isDirectory() ) {
                 this.currentItems[i] = new FileTreeNode(dob);
                 i++;
             }
         }
-        for( DigitalObject dob : dobs ) {
+        for( DigitalObjectReference dob : dobs ) {
             if( !dob.isDirectory() ) {
                 this.currentItems[i] = new FileTreeNode(dob);
                 i++;
@@ -176,13 +176,13 @@ public class FileBrowser {
      * @param dobs
      * @param depth
      */
-    private void getChildItems( TreeModel tm, TreeNode parent, DigitalObject[] dobs, int depth ) {
+    private void getChildItems( TreeModel tm, TreeNode parent, DigitalObjectReference[] dobs, int depth ) {
         // Do nothing if there are no comments.
         if( dobs == null ) return;
         if( dobs.length == 0 ) return;
         
         // Iterate over the children:
-        for ( DigitalObject dob : dobs ) {
+        for ( DigitalObjectReference dob : dobs ) {
           // Only include directories:
           if( dob.isDirectory() ) {
             // Generate the child node:

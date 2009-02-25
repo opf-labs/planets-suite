@@ -1,22 +1,21 @@
-/**
- * This is a class that wraps a Planets Digital Object.
- * It is usually associated with a Planets URI, but the data may be embedded.
- * It may be a single file, or a directory or other collection.
- */
+
 package eu.planets_project.tb.api.data;
 
 import java.net.URI;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.tb.gui.backing.FileBrowser;
 
 /**
+ * 
+ * This actually a reference to a digital object (URI), and does not contain an actual Digital Object.
+ * This is used for walking the tree of stored data, and the DigitalObjectManager is used to actually retrieve the thing.
+ * 
  * @author AnJackson
  *
  */
-public class DigitalObject {
+public class DigitalObjectReference {
     // A logger for this:
-    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObject.class, "testbed-log4j.xml");
+    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectReference.class);
     
     // The Planets URI to which this description refers.
     private URI puri = null;
@@ -24,11 +23,8 @@ public class DigitalObject {
     // The nature of this item, directory or file:
     private boolean directory = false;
     
-    // One or more binary blobs that hold the file information instead of referencing PURLs:
-    private byte[][] binary = null;
-    
     // Constructor from URI:
-    public DigitalObject( URI puri ) {
+    public DigitalObjectReference( URI puri ) {
         this.puri = puri;
     }
 
@@ -105,7 +101,7 @@ public class DigitalObject {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final DigitalObject other = (DigitalObject) obj;
+        final DigitalObjectReference other = (DigitalObjectReference) obj;
         if (puri == null) {
             if (other.puri != null)
                 return false;

@@ -4,13 +4,17 @@
 package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 import javax.persistence.Embeddable;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+//import javax.persistence.OneToMany;
+//import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -18,6 +22,11 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -124,6 +133,60 @@ public class ExecutionStageRecordImpl implements Serializable {
      */
     public List<MeasurementRecordImpl> getMeasurements() {
         return measurements;
+    }
+
+    /**
+     * Gets the Measurements and patches in the property data, if available.
+     * @return Looks up the measurments, patching in the definitions of the properties.
+     */
+    public List<MeasurementImpl> getMeasuredObservables() {
+        
+        // Get the actual measurements:
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        List<MeasurementRecordImpl> mrl = this.getMeasurements();
+        
+        // Look up the observables and their definitions:
+        ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(expBean.getEtype());
+        HashMap<String, List<MeasurementImpl>> observables = exptype.getObservables();
+        
+        // Patch the descriptions in with the results:
+        List<MeasurementImpl> mobs = new ArrayList<MeasurementImpl>();
+        for( MeasurementRecordImpl mr : mrl ) {
+            MeasurementImpl new_m = null;
+            
+            // Look for matches:
+            if( observables.keySet().contains( this.getStage() )) {
+                for( MeasurementImpl m : observables.get( this.getStage() ) ) {
+                    if( m.getIdentifier() != null && mr.getIdentifier() != null &&
+                            m.getIdentifier().toString().equals( mr.getIdentifier() ) ) {
+                        new_m = new MeasurementImpl(m);
+                        new_m.setValue( mr.getValue() );
+                    }
+                }
+            }
+            
+            // If that doesn't work, generate manually:
+            if( new_m == null && mr.getIdentifier() != null ) {
+                try {
+                    new_m = new MeasurementImpl();
+                    new_m.setIdentifier( new URI( mr.getIdentifier() ) );
+                    new_m.setValue( mr.getValue() );
+                    // Add to the list.
+                    mobs.add(new_m);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                    new_m = null;
+                }
+            }
+            
+            // Add to the results:
+            if( new_m != null ) {
+                //log.info("Adding observable: "+new_m.toString());
+                mobs.add(new_m);
+            }
+        }
+
+        return mobs;
     }
 
     /**

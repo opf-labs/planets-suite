@@ -36,7 +36,7 @@ import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
  *
  */
 public class XCDLParser {
-
+    
     /**
      * 
      * @param xcdlDoc
@@ -53,9 +53,11 @@ public class XCDLParser {
         for( int i = 0; i < nodes.getLength(); i++ ) {
             Node n = nodes.item(i);
             String name = (String) xpath.evaluate( "./name", n,  XPathConstants.STRING);
+            String id = (String) xpath.evaluate( "./name/@id", n,  XPathConstants.STRING);
             // Loop through the property definitions and patch them into Property objects.
             MeasurementRecordImpl m = new MeasurementRecordImpl();
-            m.setIdentifier(TecRegMockup.URIXCDLPropertyRoot + name);
+            // FIXME Unify this construction: See also XCDLService.createPropertyFromFFProp
+            m.setIdentifier(TecRegMockup.URIXCDLPropertyRoot + id + "/" + name); 
             m.setValue( (String) xpath.evaluate( "./valueSet/labValue/val", n,  XPathConstants.STRING) );
 //            m.setType( "xcdl:" + (String) xpath.evaluate( "./valueSet/labValue/type", n,  XPathConstants.STRING) );
             

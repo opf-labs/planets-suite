@@ -40,7 +40,7 @@
         <td style="vertical-align: top; width: 25%;">
         
         <rich:dataTable value="#{ServiceBrowser.migrationInputFormatBeans}" var="fb" style="width:100%;">
-          <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }">
+          <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{fb.enabled}">
           
             <h:panelGroup rendered="#{fb.format.registryURL != null}" styleClass="infoFloat">
               <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
@@ -61,10 +61,6 @@
               <h:outputText value="#{fb.summary} "/>
             </h:panelGroup>
             
-            <rich:toolTip showDelay="500">
-              <i><h:outputText value="#{fb.uri}"/></i>
-            </rich:toolTip>
-            
           </rich:column>
         </rich:dataTable>
 
@@ -72,7 +68,7 @@
         <td style="vertical-align: top; width: 50%;">
         
         <rich:dataTable value="#{ServiceBrowser.migrationServiceBeans}" var="srb" style="width:100%;">
-          <rich:column styleClass="#{srb.selected ? 'cellSelected' : 'cellUnselected' }">
+          <rich:column styleClass="#{srb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{srb.enabled}">
           
             <h:panelGroup styleClass="infoFloat">
               <i><h:outputLink value="#{srb.serviceDescription.endpoint}" target="_blank">@<h:outputText value="#{srb.serviceDescription.endpoint.host} "/><t:graphicImage value="/graphics/external-link.png" alt="Open WSDL in new window..."/></h:outputLink></i>
@@ -103,7 +99,7 @@
         <td style="vertical-align: top; width: 25%;">
         
         <rich:dataTable value="#{ServiceBrowser.migrationOutputFormatBeans}" var="fb" style="width:100%;">
-          <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }">
+          <rich:column styleClass="#{fb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{fb.enabled}">
           
             <h:panelGroup rendered="#{fb.format.registryURL != null}" styleClass="infoFloat">
               <h:outputLink value="#{fb.format.registryURL}" target="_blank"><t:graphicImage value="/graphics/external-link.png" alt="Open registry entry in new window..."/></h:outputLink>
@@ -123,10 +119,6 @@
               <input type="radio" disabled="disabled"/>
               <h:outputText value="#{fb.summary} "/>
             </h:panelGroup>
-            
-            <rich:toolTip showDelay="500">
-              <i><h:outputText value="#{fb.uri}"/></i>
-            </rich:toolTip>
             
           </rich:column>
         </rich:dataTable>
@@ -164,14 +156,14 @@
             <p class="leftcol"><b>From:</b> <i>ANY</i></p>
           </h:panelGroup>
           <h:panelGroup rendered="#{ServiceBrowser.selectedInputFormat != null}">
-            <p class="leftcol"><b>From:</b> #{ServiceBrowser.selectedInputFormat.summary}</p>
+            <p class="leftcol"><b>From:</b> #{ServiceBrowser.selectedInputFormat.summary} <i>#{ServiceBrowser.selectedInputFormat.uri}</i></p>
           </h:panelGroup>
           
           <h:panelGroup rendered="#{ServiceBrowser.selectedOutputFormat == null}">
             <p class="leftcol"><b>To:</b> <i>ANY</i></p>
           </h:panelGroup>
           <h:panelGroup rendered="#{ServiceBrowser.selectedOutputFormat != null}">
-            <p class="leftcol"><b>To:</b> #{ServiceBrowser.selectedOutputFormat.summary}</p>
+            <p class="leftcol"><b>To:</b> #{ServiceBrowser.selectedOutputFormat.summary} <i>#{ServiceBrowser.selectedOutputFormat.uri}</i></p>
           </h:panelGroup>
           
           <h:panelGroup rendered="#{ServiceBrowser.selectedServiceRecord == null}">

@@ -50,16 +50,8 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     /** Observable properties for this service type */
     public static URI PROP_IDENTIFY_FORMAT;
     public static URI PROP_IDENTIFY_METHOD;
-    public static MeasurementImpl MEASURE_IDENTIFY_FORMAT = new MeasurementImpl(
-            PROP_IDENTIFY_FORMAT, 
-            "The format of the Digital Object", "",
-            "The format of a Digital Object, specified as a Planets Format URI.", 
-            null, MeasurementImpl.TYPE_DIGITALOBJECT);
-    public static MeasurementImpl MEASURE_IDENTIFY_METHOD = new MeasurementImpl(
-            PROP_IDENTIFY_METHOD, 
-            "The identification method.", "",
-            "The method the service used to identify the digital object.", 
-            null, MeasurementImpl.TYPE_SERVICE);
+    public static MeasurementImpl MEASURE_IDENTIFY_FORMAT;
+    public static MeasurementImpl MEASURE_IDENTIFY_METHOD;
 
     /* (non-Javadoc)
      * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getStages()
@@ -74,6 +66,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     private static HashMap<String,List<MeasurementImpl>> observables;
     static {
 
+        // Set up URIs
         try {
             PROP_IDENTIFY_FORMAT = new URI( TecRegMockup.URIDigitalObjectPropertyRoot+"basic/format" );
             PROP_IDENTIFY_METHOD = new URI( TecRegMockup.URIServicePropertyRoot + "identify/method" );
@@ -81,6 +74,18 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
             log.error("Error during initialisation: " +e);
             e.printStackTrace();
         }
+        
+        // Set up properties:
+        MEASURE_IDENTIFY_FORMAT = new MeasurementImpl(
+                PROP_IDENTIFY_FORMAT, 
+                "The format of the Digital Object", "",
+                "The format of a Digital Object, specified as a Planets Format URI.", 
+                null, MeasurementImpl.TYPE_DIGITALOBJECT);
+        MEASURE_IDENTIFY_METHOD = new MeasurementImpl(
+                PROP_IDENTIFY_METHOD, 
+                "The identification method.", "",
+                "The method the service used to identify the digital object.", 
+                null, MeasurementImpl.TYPE_SERVICE);
 
         // Now set up the hash:
         observables = new HashMap<String,List<MeasurementImpl>>();

@@ -1674,13 +1674,13 @@ public class NewExpWizardController {
 
         ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
         if( exptype != null ) {
-            // FIXME: Should change depending on selected Stage:
             obs = this.createMeasurementBeans(exptype.getObservables(), stage);
         } else {
             // For unrecognised experiment types, set to NULL:
             obs = null;
         }
 
+        // Determine 'selected' state for this observable:
         Vector<String> props = exp.getExperimentExecutable().getProperties();
         for( MeasurementBean m : obs ) {
             if( props != null && m.getIdentifier() != null && props.contains(m.getIdentifier().toString()) ) {

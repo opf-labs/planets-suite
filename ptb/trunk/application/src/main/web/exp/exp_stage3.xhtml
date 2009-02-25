@@ -79,7 +79,7 @@
                 <f:facet name="header">
                     <h:outputText value="Measure"/>
                 </f:facet>
-                <h:selectBooleanCheckbox value="#{prop.selected}"  disabled="#{ExperimentBean.approved}" valueChangeListener="#{NewExp_Controller.handleObsSelectChangeListener}"/>
+                <h:selectBooleanCheckbox value="#{prop.selected}"  disabled="#{ExperimentBean.approved || true}" valueChangeListener="#{NewExp_Controller.handleObsSelectChangeListener}"/>
             </rich:column>
             
             <rich:column sortBy="#{prop.type}">
@@ -95,9 +95,11 @@
                 </f:facet>
                 <t:graphicImage value="/graphics/help.gif" style="float: right; padding: 1px 5px;"/>
                 <h:outputText value="#{prop.name}"/>
-                <rich:toolTip>
+                <rich:toolTip showDelay="500">
                   <h:outputText value="#{prop.description}"/>
-                  <h:outputText value=" (#{prop.identifier})" rendered="#{prop.identifier != null}"/>
+                  <h:panelGroup rendered="#{prop.identifier != null}">
+                    <br/><i><h:outputText value="(URI: #{prop.identifier})"/></i>
+                  </h:panelGroup>
                 </rich:toolTip>
             </rich:column>
             

@@ -161,7 +161,7 @@ public class WorkflowResult {
                     } else {
                         rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
                     }
-                    // Now pull out the measurements:
+                    // Now pull out the stages, which include the measurements etc:
                     for( ExecutionStageRecordImpl stage : wrf.getStages() ) {
                         // FIXME Can this be done from the session's Service Registry instead, please!
                         log.info("Recording info about endpoint: "+stage.getEndpoint());

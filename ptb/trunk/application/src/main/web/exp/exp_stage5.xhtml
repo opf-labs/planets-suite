@@ -148,15 +148,32 @@
 
          <a4j:repeat value="#{run.stages}" var="stage">
         
-          <rich:dataTable value="#{stage.measurements}" var="m" styleClass="tbTable">
+          <rich:dataTable value="#{stage.measuredObservables}" var="m" styleClass="tbTable">
                 <f:facet name="header">#{stage.stage}</f:facet>
             <rich:column>
-            <f:facet name="header">Measurement</f:facet>
-            <h:outputText value="#{m.identifier}"/>
+              <f:facet name="header">Measurement</f:facet>
+              
+                <!--  Full property definitions is available:  -->
+                <h:panelGroup rendered="#{m.name != null}">
+                  <t:graphicImage value="/graphics/help.gif" style="float: right; padding: 1px 5px;"/>
+                  <h:outputText value="#{m.name}"/>
+                </h:panelGroup>
+                <rich:toolTip showDelay="500" rendered="#{m.name != null}">
+                  <h:outputText value="#{m.description}"/>
+                  <h:panelGroup rendered="#{m.identifier != null}">
+                    <br/><i><h:outputText value="(URI: #{m.identifier})"/></i>
+                  </h:panelGroup>
+                </rich:toolTip>
+                
+                <!-- Otherwise, just show the property ID: -->
+                <h:panelGroup rendered="#{m.name == null}">
+                  <h:outputText value="#{m.identifier}"/>
+                </h:panelGroup>
+                
             </rich:column>
             <rich:column>
-            <f:facet name="header">Value</f:facet>
-            <h:outputText value="#{m.value}"/><!--h:outputText value=" {m.unit}" rendered="{m.unit != null}"/ -->
+              <f:facet name="header">Value</f:facet>
+              <h:outputText value="#{m.value}"/><h:outputText value=" [#{m.unit}]" rendered="#{m.unit != null}"/>
             </rich:column>
           </rich:dataTable>
           

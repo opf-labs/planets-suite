@@ -8,7 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.tb.impl.data.DataRegistryManagerImpl;
+import eu.planets_project.tb.impl.data.DigitalObjectDirectoryLister;
 
 
 /**
@@ -53,7 +53,7 @@ public interface DataHandler {
      * 
      * @return
      */
-    public String addFromDataRegistry( DataRegistryManagerImpl dr, URI pduri ) throws IOException;
+    public String addFromDataRegistry( DigitalObjectDirectoryLister dr, URI pduri ) throws IOException;
     
     
     /* -- Getting data back from the repository -- */

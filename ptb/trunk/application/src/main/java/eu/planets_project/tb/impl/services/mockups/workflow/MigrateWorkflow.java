@@ -15,6 +15,7 @@ import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Document;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.DetermineProperties;
@@ -240,6 +241,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         URI propURI;
         try {
+            // FIXME Unify the URI construction: See also XCDLParser.parseXCDL(), XCDLService.createPropertyFromFFProp()
             propURI = new URI( TecRegMockup.URIXCDLPropertyRoot + p.getName());
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -518,6 +520,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
             if( result != null ) {
                 for( Property p : result.getProperties().getProperties() ) {
+                    log.info("Recording measurement: "+p.getName()+" = "+p.getValue());
                     stage_m.add(new MeasurementRecordImpl( p.getName(), p.getValue() ));
                 }
             }

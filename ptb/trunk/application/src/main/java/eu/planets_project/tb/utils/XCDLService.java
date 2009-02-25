@@ -93,14 +93,15 @@ public class XCDLService implements DetermineProperties {
         return propobj;
     }
     
+    // FIXME Unify this construction: See also XCDLParser.parseXCDL
     private Property createPropertyFromFFProp( FileFormatProperty ffp ) {
-        Property p = new Property( ffp.getId()+"/"+ffp.getName(), ffp.getValue());
+        Property p = new Property( "id"+ffp.getId()+"/"+ffp.getName(), ffp.getValue());
         p.setDescription(ffp.getDescription());
         p.setType(ffp.getType());
         p.setUnit(ffp.getUnit());
         return p;
     }
-
+    
     /* (non-Javadoc)
      * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
      */
@@ -109,21 +110,25 @@ public class XCDLService implements DetermineProperties {
         
         CharacteriseResult characteriseResult = extractor.characterise(dob, params);
 
+        // FIXME Use the properties interface / generally update the invoker as this code is not needed now...
+        /*
+        for( Property p : characteriseResult.getProperties() ) {
+            log.info("Got p = "+p);
+        }
+        */
+
         Properties propobj = new Properties();
         List<MeasurementRecordImpl> list;
         try {
             list = XCDLParser.parseXCDL(characteriseResult.getDigitalObject().getContent().read());
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             list = null;
         }
         List<Property> mprops = new Vector<Property>();
         if( list != null ) {
             for( MeasurementRecordImpl m : list ) {
-                Property p = new Property();
-                p.setName( m.getIdentifier() );
-                p.setValue( m.getValue() );
+                Property p = new Property( m.getIdentifier(), m.getValue() );
                 mprops.add(p);
             }
         }
