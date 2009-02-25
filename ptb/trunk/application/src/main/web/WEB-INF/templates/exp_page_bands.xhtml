@@ -38,7 +38,10 @@
       
       </td>
       <td class="headerButtons">
-
+	  <c:if test="#{ExperimentPhase != 1}">
+      <h:commandButton value="#{res['button.saveas']}"
+                                    action="#{NewExp_Controller.commandSaveAs}" />
+      </c:if>	
       <c:if test="#{ExperimentPhase == 1}">
       <h:commandButton value="#{res['button.save']}"
                                     action="#{NewExp_Controller.commandSaveStage1}"
