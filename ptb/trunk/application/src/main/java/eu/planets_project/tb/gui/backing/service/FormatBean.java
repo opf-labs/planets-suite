@@ -80,7 +80,11 @@ public class FormatBean implements Comparable<FormatBean> {
      */
     public int compareTo(FormatBean f) {
 //        return format.getTypeURI().compareTo( f.getFormat().getTypeURI() );
-        return this.getSummary().compareTo( f.getSummary() );
+        if( this.getSummary() != null ) {
+            return this.getSummary().compareTo( f.getSummary() );
+        } else {
+            return this.getUri().compareTo(f.getUri());
+        }
     }
 
     /* (non-Javadoc)
