@@ -15,11 +15,13 @@ import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
+import org.jboss.annotation.ejb.cache.Cache;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
@@ -29,7 +31,8 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
  * This is the Planets Format Registry and Resolver.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
-@Stateful(mappedName = "planets-project.eu/FormatRegistry")
+@Stateless(mappedName = "planets-project.eu/FormatRegistry")
+//@Cache(org.jboss.ejb3.cache.NoPassivationCache.class)
 @Local(FormatRegistry.class)
 @LocalBinding(jndiBinding = "planets-project.eu/FormatRegistry/local")
 @Remote(FormatRegistry.class)

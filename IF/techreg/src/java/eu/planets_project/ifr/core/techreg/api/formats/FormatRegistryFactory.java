@@ -42,10 +42,11 @@ public final class FormatRegistryFactory {
                     FormatRegistry um = (FormatRegistry) PortableRemoteObject
                             .narrow(ref, FormatRegistry.class);
                     registry = um;
-                } catch (NamingException e) {
-                    log
-                            .error("Failure during lookup of the FormatRegistry PortableRemoteObject: "
+                } catch ( Exception e ) {
+                    log.error("Failure during lookup of the FormatRegistry PortableRemoteObject: "
                                     + e.toString());
+                    e.printStackTrace();
+                    
                     /*
                      * We might not be able to retrieve via JNDI, and have not
                      * set the property that is checked above, for instance when
@@ -53,6 +54,7 @@ public final class FormatRegistryFactory {
                      * instance too:
                      */
                     registry = new FormatRegistryImpl();
+                    
                 }
             }
         }

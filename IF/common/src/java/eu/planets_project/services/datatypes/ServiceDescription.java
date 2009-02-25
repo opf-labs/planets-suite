@@ -3,6 +3,7 @@
  */
 package eu.planets_project.services.datatypes;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -474,6 +476,26 @@ public final class ServiceDescription {
         public Builder tool(final URI tool) {
             this.tool = tool;
             return this;
+        }
+        
+        /**
+         * Add or Update automatically generated list of JVM/OS properties.
+         * Embeds information about the service environment inside the service description 
+         * as a property called 'planets:if/srv/java-system-properties'
+         * 
+         * TODO Upgrade this idea to some standardised form for platform/environment/software stacks.
+         */
+        public void addServerDescriptionProperty() {
+            Properties p = System.getProperties();
+            
+            ByteArrayOutputStream byos = new ByteArrayOutputStream();
+            try {
+                p.storeToXML(byos, "Automatically generated for PLANETS Service "+ this.name, "UTF-8");
+                Property jspp = new Property("planets:if/srv/java-system-properties", byos.toString("UTF-8") );
+                this.properties.add(jspp);
+            } catch ( Exception e ) {
+                // Fail silently.
+            }
         }
 
     }

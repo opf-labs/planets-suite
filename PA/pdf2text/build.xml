@@ -10,7 +10,7 @@
     <property name="appDir" value="."/>
 	
 	<!-- Specify if this application requires further software to be installed -->
-	<property name="pserv.app.deploy.mode" value="pure-java" />
+	<property name="pserv.app.deploy.mode" value="none" />
 
     <!-- Specify the build type: ejb, war or ear. -->
     <property name="pserv.app.build.type" value="ejb"/>
