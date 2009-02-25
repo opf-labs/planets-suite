@@ -164,6 +164,8 @@ public class ExperimentBean {
     private Map<String,ServiceTag> mapAnnotTagVals = new HashMap<String,ServiceTag>();
     //triggers the XMLResponds in case of an error for stage6
     private boolean bRenderXMLResponds = false;
+    
+    private long numExecutions;
         
     public ExperimentBean() {
     	/*experimentBenchmarks = new HashMap<String,BenchmarkBean>();
@@ -1671,6 +1673,17 @@ public class ExperimentBean {
             }
         }
         return selectedStage;
+    }
+    
+    public void setNumExecutions(long numExecutions){
+    	this.numExecutions = numExecutions;
+    }
+    
+    /**
+     * @return the number of executions
+     */
+    public long getNumExecutions(){
+    	return this.numExecutions;
     }
     
 }

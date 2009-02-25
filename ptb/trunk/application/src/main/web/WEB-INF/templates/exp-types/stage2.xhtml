@@ -27,6 +27,8 @@
                 <f:selectItem itemValue="" itemLabel="Select..."/>
                 <f:selectItems value="#{NewExp_Controller.availableExperimentTypes}" />
         </h:selectOneMenu>
+        
+    
 
     <h:commandButton value="#{res['button.select']}"
              action="success"
@@ -36,9 +38,15 @@
              action="success"
              disabled="#{ExperimentBean.approved}" rendered="#{ExperimentBean.etype != ''}"/>
 
-   <t:graphicImage value="/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipExperimentType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-             
-  </p>
+   &nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipExperimentType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+   </p>
+   <p>
+   <h:outputLabel value="#{res['new_exp.expNumExecutions']}" for="numExecutions" ></h:outputLabel>
+   		<rich:inputNumberSpinner id="numExecutions" value="#{ExperimentBean.numExecutions}" 
+   			readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}" 
+   			inputSize="5" maxValue="10" minValue="1" />&nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipNumExecutions']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+   </p>    
+ 
 
   <h:message for="etype" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
 
