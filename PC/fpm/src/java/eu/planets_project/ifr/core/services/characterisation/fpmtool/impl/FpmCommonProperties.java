@@ -12,7 +12,6 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.CommonProperties;
-import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -61,7 +60,7 @@ public final class FpmCommonProperties implements CommonProperties {
      */
     public ServiceDescription describe() {
         return ServiceDescription.create("XCL suite FPM tool service",
-                CompareProperties.class.toString()).author("Fabian Steeg")
+                CommonProperties.class.toString()).author("Fabian Steeg")
                 .serviceProvider("The Planets Consortium").build();
     }
 

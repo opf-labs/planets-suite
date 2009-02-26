@@ -25,7 +25,7 @@ public class ComparatorConfigParserTests {
      * @param parser The parser to check
      */
     private void check(final ComparatorConfigParser parser) {
-        List<Prop> properties = parser.getProperties();
+        List<Prop<Object>> properties = parser.getProperties();
         Assert.assertTrue("No properties extracted by "
                 + parser.getClass().getSimpleName(), properties.size() > 0);
         for (Prop prop : properties) {

@@ -15,25 +15,42 @@ public class PropTests {
     @Test
     public void usage() {
         /* A dummy example to demonstrate the principle: */
-        Prop.name("color").values("red", "green").props(
+        Prop.name("color").values("red", "green").values(
                 Prop.name("saturation").values("none", "half", "full").build(),
                 Prop.name("brightness").values("dark", "bright").build())
                 .build();
-        /* A sample input config property for the XCDL comparator: */
-        Prop s1 = Prop.name("imageHeight").unit("pixel").type("101").props(
+        /*
+         * A sample input config property for the XCDL comparator (a typesafe
+         * property, containing only one type of values, namely props):
+         */
+
+        Prop.name("imageHeight").unit("pixel").type("101").values(
                 Prop.name("metric").type("200").description("equal").build(),
                 Prop.name("metric").type("201").description("intDiff").build(),
                 Prop.name("metric").type("210").description("percDev").build())
                 .build();
-        Assert.assertEquals(3, s1.getProps().size());
-        /* A sample result property of the XCDL comparator: */
-        Prop s2 = Prop.name("bitsPerSample").values("8", "2").unit("bit").type(
-                "int").props(
+
+        /* Or with a type: */
+        Prop<Prop<?>> s1 = Prop.<Prop<?>> name("imageHeight").unit("pixel")
+                .type("101").values(
+                        Prop.name("metric").type("200").description("equal")
+                                .build(),
+                        Prop.name("metric").type("201").description("intDiff")
+                                .build(),
+                        Prop.name("metric").type("210").description("percDev")
+                                .build()).build();
+
+        Assert.assertEquals(3, s1.getValues().size());
+        /*
+         * A sample result property of the XCDL comparator (a property with
+         * heterogenous values):
+         */
+        Prop<?> s2 = Prop.name("bitsPerSample").unit("bit").type("int").values(
+                "8", "2",
                 Prop.name("equal").values("false").type("metric").build(),
                 Prop.name("intDiff").values("6").type("metric").build())
                 .build();
-        Assert.assertEquals(2, s2.getValues().size());
-        Assert.assertEquals(2, s2.getProps().size());
+        Assert.assertEquals(4, s2.getValues().size());
 
     }
 

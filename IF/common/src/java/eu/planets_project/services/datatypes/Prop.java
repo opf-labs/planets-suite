@@ -16,18 +16,18 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * {@link Property} mainly in two aspects:
  *<ul>
  *<li>Multiple values are possible</li>
- *<li>Can contain sub-properties</li>
+ *<li>Values are generic (can be other Props)</li>
  *</ul>
  * This allows to create properties like this (a sample input config property
  * for the XCDL comparator):
  * 
  * <pre>
  * {@code
-Prop.name("imageHeight").type("101").unit("pixel").props(
-        Prop.name("metric").type("200").description("equal").build(),
-        Prop.name("metric").type("201").description("intDiff").build(),
-        Prop.name("metric").type("210").description("percDev").build())
-        .build();
+Prop.name("imageHeight").unit("pixel").type("101").values(
+            Prop.name("metric").type("200").description("equal").build(),
+            Prop.name("metric").type("201").description("intDiff").build(),
+            Prop.name("metric").type("210").description("percDev").build())
+            .build();
    }
  * </pre>
  *<p/>
@@ -44,43 +44,42 @@ Prop.name("imageHeight").type("101").unit("pixel").props(
  *<li>{@link Metric}</li>
  *<li>{@link Metrics}</li>
  *</ul>
+ * @param <T> The type of the values of this property
  * @see {@link PropTests}
  * @author Fabian Steeg
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class Prop {
+public final class Prop<T> {
 
     private String name, unit, description, type;
 
-    private List<String> values = new ArrayList<String>();
-
-    private List<Prop> properties = new ArrayList<Prop>();
+    private List<T> values = new ArrayList<T>();
 
     /**
      * Entry point for creating a {@link Prop} instance.
+     * @param <T> The type of the values of this property
      * @param name The property name
      * @return The builder, for cascaded calls. After setting all desired
      *         attributes, call the build() method on the returned builder to
      *         create the {@link Prop} instance.
      */
-    public static Prop.Builder name(final String name) {
-        return new Prop.Builder(name);
+    public static <T> Prop.Builder<T> name(final String name) {
+        return new Prop.Builder<T>(name);
     }
 
     /**
      * Builder for universal properties.
      */
-    public static final class Builder {
-        private List<String> values = new ArrayList<String>();
+    public static final class Builder<T> {
+        private List<T> values = new ArrayList<T>();
         private String name;
         private String unit = "";
         private String description = "";
         private String type = "";
-        private List<Prop> sub = new ArrayList<Prop>();
 
         /** @return The instance created using this builder. */
-        public Prop build() {
-            return new Prop(this);
+        public Prop<T> build() {
+            return new Prop<T>(this);
         }
 
         /**
@@ -97,7 +96,7 @@ public final class Prop {
          * @param unit The unit
          * @return The builder, for cascaded calls
          */
-        public Builder unit(final String unit) {
+        public Builder<T> unit(final String unit) {
             this.unit = unit;
             return this;
         }
@@ -106,7 +105,7 @@ public final class Prop {
          * @param type The type
          * @return The builder, for cascaded calls
          */
-        public Builder type(final String type) {
+        public Builder<T> type(final String type) {
             this.type = type;
             return this;
         }
@@ -115,17 +114,8 @@ public final class Prop {
          * @param description The description
          * @return The builder, for cascaded calls
          */
-        public Builder description(final String description) {
+        public Builder<T> description(final String description) {
             this.description = description;
-            return this;
-        }
-
-        /**
-         * @param sub The sub properties
-         * @return The builder, for cascaded calls
-         */
-        public Builder props(final Prop... sub) {
-            this.sub = Arrays.asList(sub);
             return this;
         }
 
@@ -133,7 +123,7 @@ public final class Prop {
          * @param values The value(s)
          * @return The builder, for cascaded calls
          */
-        public Builder values(final String... values) {
+        public Builder<T> values(final T... values) {
             this.values = Arrays.asList(values);
             return this;
         }
@@ -153,7 +143,7 @@ public final class Prop {
      * @param values The values
      */
     private Prop(final String name, final String type, final String unit,
-            final String description, final List<String> values) {
+            final String description, final List<T> values) {
         this.name = name;
         this.values = values;
         this.type = type;
@@ -164,13 +154,12 @@ public final class Prop {
     /**
      * @param builder The builder
      */
-    private Prop(final Builder builder) {
+    private Prop(final Builder<T> builder) {
         this.description = builder.description;
         this.name = builder.name;
         this.type = builder.type;
         this.unit = builder.unit;
         this.values = builder.values;
-        this.properties = builder.sub;
     }
 
     /**
@@ -183,7 +172,7 @@ public final class Prop {
     /**
      * @return the values, as an unmodifiable view
      */
-    public List<String> getValues() {
+    public List<T> getValues() {
         return Collections.unmodifiableList(values);
     }
 
@@ -209,13 +198,6 @@ public final class Prop {
     }
 
     /**
-     * @return the sub-properties, as an unmodifiable view
-     */
-    public List<Prop> getProps() {
-        return Collections.unmodifiableList(properties);
-    }
-
-    /**
      * {@inheritDoc}
      * @see java.lang.Object#toString()
      */
@@ -223,9 +205,6 @@ public final class Prop {
     public String toString() {
         String format = String.format("%s '%s' = '%s'", this.getClass()
                 .getSimpleName(), name, values);
-        if (properties.size() > 0) {
-            format += ", sub: " + properties;
-        }
         return format;
     }
 
@@ -238,12 +217,11 @@ public final class Prop {
         if (!(obj instanceof Prop)) {
             return false;
         }
-        Prop that = (Prop) obj;
+        Prop<?> that = (Prop<?>) obj;
         return this.name.equals(that.name) && this.values.equals(that.values)
                 && this.unit.equals(that.unit)
                 && this.description.equals(that.description)
-                && this.type.equals(that.type)
-                && this.properties.equals(that.properties);
+                && this.type.equals(that.type);
     }
 
     /**
@@ -259,22 +237,26 @@ public final class Prop {
         result = oddPrime * result + unit.hashCode();
         result = oddPrime * result + description.hashCode();
         result = oddPrime * result + type.hashCode();
-        result = oddPrime * result + properties.hashCode();
         return result;
     }
 
     /**
-     * @param prop The prop name
+     * @param name The prop name
      * @return The sub properties with the given name
      */
-    public List<Prop> getProps(String prop) {
+    public List<T> getValues(String name) {
         /*
-         * TODO to optimize this kind of access, the sub properties could be
-         * stored in a Map
+         * TODO to optimize this kind of access, the values could be stored in a
+         * Map
          */
-        List<Prop> result = new ArrayList<Prop>();
-        for (Prop p : getProps()) {
-            if (p.name.toLowerCase().equals(prop.toLowerCase())) {
+        List<T> result = new ArrayList<T>();
+        for (T p : getValues()) {
+            if (p instanceof Prop) {
+                Prop<?> prop = (Prop<?>) p;
+                if (prop.name.toLowerCase().equals(name.toLowerCase())) {
+                    result.add(p);
+                }
+            } else if (p.toString().toLowerCase().equals(name)) {
                 result.add(p);
             }
         }

@@ -63,7 +63,7 @@ public final class ResultPropertiesReader {
                         valuesTar).description(status).unit(unit).type(
                         valuesType);
                 List<Prop> subProperties = metrics(e);
-                pBuilder.props(subProperties.toArray(new Prop[] {}));
+                pBuilder.values(subProperties.toArray(new Prop[] {}));
                 properties.add(pBuilder.build());
             }
         } catch (JDOMException e) {

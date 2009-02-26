@@ -43,7 +43,7 @@ public class XcdlCreator {
      *        these are properties of a single object and will be represented as
      *        a single object in the resulting XCDL. The props need to contain
      */
-    public XcdlCreator(List<Prop> xcdlProps) {
+    public XcdlCreator(List<Prop<Object>> xcdlProps) {
         try {
             JAXBContext jc = JAXBContext
                     .newInstance("eu.planets_project.ifr.core.services."
@@ -95,14 +95,14 @@ public class XcdlCreator {
         }
     }
 
-    private Xcdl createXcdlObject(List<Prop> xcdlProps) {
+    private Xcdl createXcdlObject(List<Prop<Object>> xcdlProps) {
         /*
          * The given properties are assumed to be properties of a single object
          * and are thus wrapped in a single XCDL-Object.
          */
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object();
         object.setId("generated_" + String.valueOf(System.currentTimeMillis()));
-        for (Prop prop : xcdlProps) {
+        for (Prop<Object> prop : xcdlProps) {
             if (prop.getName().toLowerCase().equals(PropertyName.NORMDATA.s)) {
                 addNormData(object, prop);
             } else if (prop.getName().toLowerCase().equals(
@@ -128,26 +128,28 @@ public class XcdlCreator {
 
     private void addProperty(
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
-            Prop prop) {
+            Prop<Object> prop) {
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property p = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property();
         p.setId(prop.getType());
-        p
-                .setSource(SourceType.fromValue(prop.getValues().get(0)
-                        .toLowerCase()));
-        p.setCat(CatType.fromValue(prop.getValues().get(1).toLowerCase()));
+        p.setSource(SourceType.fromValue(((Prop)prop.getValues().get(0)).getValues().get(0).toString()
+                .toLowerCase()));
+        p.setCat(CatType.fromValue(((Prop)prop.getValues().get(0)).getValues().get(1).toString()
+                .toLowerCase()));
         /* The name element: */
         Name name = new Name();
-        for (Prop nameProp : prop.getProps("name")) {
+        for (Object o : prop.getValues("name")) {
+            Prop<String> nameProp = (Prop) o;
             name.getValues().add(nameProp.getDescription());
             name.setId(nameProp.getType());
             p.setName(name);
         }
         /* The value set element: */
-        for (Prop valSetProp : prop.getProps("valueset")) {
+        for (Object valSet : prop.getValues("valueset")) {
+            Prop<Prop> valSetProp = (Prop) valSet;
             ValueSet set = new ValueSet();
             set.setId(valSetProp.getType());
             /* The lab vals: */
-            for (Prop labProp : valSetProp.getProps("labvalue")) {
+            for (Prop labProp : valSetProp.getValues("labvalue")) {
                 LabValue labValue = new LabValue();
                 Type type = new Type();
                 type.setValue(determineLabValType(labProp));
@@ -159,7 +161,7 @@ public class XcdlCreator {
                 set.setLabValue(labValue);
             }
             /* The data refs: */
-            List<Prop> dataRefs = valSetProp.getProps("dataref");
+            List<Prop> dataRefs = valSetProp.getValues("dataref");
             for (Prop dataRefProp : dataRefs) {
                 DataRef dataRef = new DataRef();
                 dataRef.setPropertySetId(dataRefProp.getType());
@@ -177,7 +179,7 @@ public class XcdlCreator {
         PropertySet set = new PropertySet();
         set.setId(prop.getType());
         ValueSetRelations rel = new ValueSetRelations();
-        List<Prop> props = prop.getProps("ref");
+        List<Prop> props = prop.getValues("ref");
         for (Prop p : props) {
             Ref ref = new Ref();
             ref.setValueSetId(p.getType());

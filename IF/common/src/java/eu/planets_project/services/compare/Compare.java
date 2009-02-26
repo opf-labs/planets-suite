@@ -16,16 +16,21 @@ import javax.xml.ws.ResponseWrapper;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
 
 /**
- * Comparison of digital objects.
+ * Comparison of digital objects. NOTE: The {@link Prop} class used in this
+ * interface (and therefore the interface itself, too) is work in progress.
+ * Eventually, the input of this interface will be of the same class as the
+ * output of the {@link Characterise} interface.
+ * @param <T> The type of the values to compare
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @WebService(name = Compare.NAME, targetNamespace = PlanetsServices.NS)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-public interface Compare extends PlanetsService {
+public interface Compare<T> extends PlanetsService {
     /***/
     String NAME = "Compare";
     /***/
@@ -47,9 +52,24 @@ public interface Compare extends PlanetsService {
             + Compare.NAME + "Response")
     CompareResult compare(
             @WebParam(name = "digitalObjects", targetNamespace = PlanetsServices.NS
-                    + "/" + Compare.NAME, partName = "digitalObjects") final DigitalObject[] objects,
+                    + "/" + Compare.NAME, partName = "digitalObjects") final List<T> objects,
             @WebParam(name = "config", targetNamespace = PlanetsServices.NS
-                    + "/" + Compare.NAME, partName = "config") final List<Prop> config);
+                    + "/" + Compare.NAME, partName = "config") final List<Prop<Object>> config);
+
+    /**
+     * Convert a tool-specific input file (like the output of a characterisation
+     * tool) to the generic format the service. Use this method to the list to
+     * pass as the first argument to {@link #compare(List, List)}.
+     * @param inputFile The tool-specific configuration file
+     * @return A object representing the given input file
+     */
+    @WebMethod(operationName = "InputProperties", action = PlanetsServices.NS
+            + "/" + Compare.NAME)
+    @WebResult(name = Compare.NAME + "InputProperties", targetNamespace = PlanetsServices.NS
+            + "/" + Compare.NAME, partName = Compare.NAME + "InputProperties")
+    T convertInput(
+            @WebParam(name = "inputProperties", targetNamespace = PlanetsServices.NS
+                    + "/" + Compare.NAME, partName = "inputProperties") final DigitalObject inputFile);
 
     /**
      * Convert a tool-specific configuration file to the generic format of a
@@ -62,7 +82,7 @@ public interface Compare extends PlanetsService {
             + "/" + Compare.NAME)
     @WebResult(name = Compare.NAME + "ConfigProperties", targetNamespace = PlanetsServices.NS
             + "/" + Compare.NAME, partName = Compare.NAME + "ConfigProperties")
-    List<Prop> convertConfig(
+    List<Prop<Object>> convertConfig(
             @WebParam(name = "configFile", targetNamespace = PlanetsServices.NS
                     + "/" + Compare.NAME, partName = "configFile") final DigitalObject configFile);
 

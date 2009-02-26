@@ -13,7 +13,6 @@ import eu.planets_project.services.datatypes.Prop;
 /**
  * Tests for the {@link ComparatorConfigCreator}.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
- *
  */
 public class ComparatorConfigCreatorTests {
     @Test
@@ -27,14 +26,14 @@ public class ComparatorConfigCreatorTests {
         "normData", "hammingDistance", "RMSE", "levenstheinDistance");
         Iterator<String> i = l.iterator();
         /* We create 4 props for these, using names and specifying the IDs: */
-        Prop s = Prop.name("source").values(i.next()).build();
-        Prop t = Prop.name("target").values(i.next()).build();
-        Prop p1 = Prop.name(i.next()).type("55").props(
+        Prop<Object> s = Prop.name("source").values(i.next()).build();
+        Prop<Object> t = Prop.name("target").values(i.next()).build();
+        Prop<Object> p1 = Prop.name(i.next()).type("55").values(
                 Prop.name("metric").type("200").description(i.next()).build(),
                 Prop.name("metric").type("201").description(i.next()).build(),
                 Prop.name("metric").type("210").description(i.next()).build())
                 .unit(i.next()).build();
-        Prop p2 = Prop.name(i.next()).type("35").props(
+        Prop<Object> p2 = Prop.name(i.next()).type("35").values(
                 Prop.name("metric").type("10").description(i.next()).build(),
                 Prop.name("metric").type("50").description(i.next()).build(),
                 Prop.name("metric").type("15").description(i.next()).build())
@@ -43,8 +42,8 @@ public class ComparatorConfigCreatorTests {
          * From this object representation, we can create the PCR XML file
          * required by the XCDL Comparator:
          */
-        ComparatorConfigCreator creator = new ComparatorConfigCreator(Arrays
-                .asList(s, t, p1, p2));
+        List<Prop<Object>> asList = Arrays.asList(s, t, p1, p2);
+        ComparatorConfigCreator creator = new ComparatorConfigCreator(asList);
         String pcr = creator.getComparatorConfigXml();
         for (String string : l) {
             Assert.assertTrue(String.format("String '%s' not in result: %s",

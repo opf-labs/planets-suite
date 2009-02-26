@@ -27,7 +27,7 @@ import eu.planets_project.services.utils.FileUtils;
  */
 @WebService(name = XcdlCompare.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare")
 @Stateless
-public final class XcdlCompare implements Compare {
+public final class XcdlCompare implements Compare<DigitalObject> {
     /***/
     static final String NAME = "XcdlCompare";
 
@@ -36,11 +36,10 @@ public final class XcdlCompare implements Compare {
      * @see eu.planets_project.services.compare.Compare#compare(eu.planets_project.services.datatypes.DigitalObject[],
      *      eu.planets_project.services.datatypes.DigitalObject)
      */
-    public CompareResult compare(final DigitalObject[] objects,
-            final List<Prop> config) {
-        String xcdl = read(Arrays.asList(objects[0])).get(0);
-        List<String> xcdls = read(Arrays.asList(objects).subList(1,
-                objects.length));
+    public CompareResult compare(final List<DigitalObject> objects,
+            final List<Prop<Object>> config) {
+        String xcdl = read(Arrays.asList(objects.get(0))).get(0);
+        List<String> xcdls = read(objects.subList(1, objects.size()));
         String pcr = new ComparatorConfigCreator(config)
                 .getComparatorConfigXml();
         String result = ComparatorWrapper.compare(xcdl, xcdls, pcr);
@@ -88,9 +87,20 @@ public final class XcdlCompare implements Compare {
      * {@inheritDoc}
      * @see eu.planets_project.services.compare.Compare#convertConfig(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public List<Prop> convertConfig(final DigitalObject configFile) {
+    public List<Prop<Object>> convertConfig(final DigitalObject configFile) {
         File file = ByteArrayHelper.write(FileUtils
                 .writeInputStreamToBinary(configFile.getContent().read()));
         return new ComparatorConfigParser(file).getProperties();
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.compare.Compare#convertInput(eu.planets_project.services.datatypes.DigitalObject)
+     */
+    public DigitalObject convertInput(final DigitalObject inputFile) {
+        /*
+         * special case, this service uses the digital object itself:
+         */
+        return inputFile;
     }
 }

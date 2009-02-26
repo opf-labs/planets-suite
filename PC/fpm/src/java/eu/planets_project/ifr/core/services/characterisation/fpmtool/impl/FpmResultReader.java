@@ -45,7 +45,7 @@ public final class FpmResultReader {
                         pElem.getChildTextTrim("id")).description(
                         pElem.getChildTextTrim("description")).unit(
                         pElem.getChildTextTrim("unit")).values(
-                        pElem.getChildTextTrim("type").trim()).props(
+                        pElem.getChildTextTrim("type").trim()).values(
                         mProps.toArray(new Prop[] {})).build();
                 result.add(p);
 

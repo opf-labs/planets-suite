@@ -28,7 +28,7 @@ public final class ComparatorConfigCreator {
     /**
      * @param config The config elements
      */
-    public ComparatorConfigCreator(final List<Prop> config) {
+    public ComparatorConfigCreator(final List<Prop<Object>> config) {
         try {
             JAXBContext jc = JAXBContext
                     .newInstance("eu.planets_project.ifr.core.services."
@@ -52,18 +52,18 @@ public final class ComparatorConfigCreator {
      * @param config The config elements
      * @return Returns a {@link PcRequest} corresponding to the properties
      */
-    private PcRequest createPcrObject(final List<Prop> config) {
+    private PcRequest createPcrObject(final List<Prop<Object>> config) {
         PcRequest result = new PcRequest();
         CompSet set = new CompSet();
         result.getCompSets().add(set);
-        for (Prop prop : config) {
+        for (Prop<Object> prop : config) {
             if (prop.getName().equals("source")) {
                 Source s = new Source();
-                s.setName(prop.getValues().get(0));
+                s.setName(prop.getValues().get(0).toString());
                 set.setSource(s);
             } else if (prop.getName().equals("target")) {
                 Target t = new Target();
-                t.setName(prop.getValues().get(0));
+                t.setName(prop.getValues().get(0).toString());
                 set.setTarget(t);
             } else {
                 addPropertyElement(set, prop);
@@ -89,7 +89,7 @@ public final class ComparatorConfigCreator {
                 }
             }
         }
-        List<Prop> metrics = prop.getProps();
+        List<Prop> metrics = prop.getValues();
         for (Prop metric : metrics) {
             if (metric.getName().equals("metric")) {
                 Metric m = new Metric();

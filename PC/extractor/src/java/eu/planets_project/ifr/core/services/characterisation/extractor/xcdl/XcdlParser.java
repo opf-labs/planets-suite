@@ -101,13 +101,13 @@ public final class XcdlParser implements XcdlAccess {
      * getProp(ertie)s() method.
      * @return The properties parsed from the XCDL file
      */
-    public List<Prop> getProps() {
+    public List<Prop<Object>> getProps() {
         List<eu.planets_project.services.datatypes.Property> properties = this
                 .getProperties();
         return propertiesToProps(properties);
     }
 
-    private List<Prop> propertiesToProps(
+    private List<Prop<Object>> propertiesToProps(
             List<eu.planets_project.services.datatypes.Property> properties) {
         /*
          * This is totally work in progress... The basic idea is: We wrap all
@@ -120,18 +120,18 @@ public final class XcdlParser implements XcdlAccess {
         for (eu.planets_project.services.datatypes.Property property : properties) {
             System.out.println(property);
         }
-        List<Prop> result = new ArrayList<Prop>();
+        List<Prop<Object>> result = new ArrayList<Prop<Object>>();
         result.add(Prop.name("normData").type("id").description("object")
                 .values("00 01 02 03 04 05 06 07 08 09 0a").build());
-        result.add(Prop.name("propertySet").type("id_0").props(
+        result.add(Prop.name("propertySet").type("id_0").values(
                 Prop.name("ref").type("id").description("id").build(),
                 Prop.name("ref").type("id").description("id").build()).build());
         for (eu.planets_project.services.datatypes.Property property : properties) {
-            result.add(Prop.name("property").type("p" + p).values("raw",
-                    "descr").props(
+            result.add(Prop.name("property").type("p" + p).values(
+                    Prop.name("value").values("raw", "descr").build(),
                     Prop.name("name").type("id")
                             .description(property.getName()).build(),
-                    Prop.name("valueSet").type("i_i1_i" + v + "_s5").props(
+                    Prop.name("valueSet").type("i_i1_i" + v + "_s5").values(
                             Prop.name("labValue").description(
                                     property.getUnit()).values(
                                     property.getValue()).build()).build())

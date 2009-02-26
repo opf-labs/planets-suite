@@ -51,14 +51,11 @@ public final class ComparatorConfigParser {
     /**
      * @return The properties of the comparator config file
      */
-    public List<Prop> getProperties() {
-        List<Prop> result = new ArrayList<Prop>();
+    public List<Prop<Object>> getProperties() {
+        List<Prop<Object>> result = new ArrayList<Prop<Object>>();
+        result.addAll(getBasicProperties());
         CompSet compSet = pcr.getCompSets().get(0);
         // TODO what about multiple files in the PCR?
-        result.add(Prop.name("source").values(compSet.getSource().getName())
-                .build());
-        result.add(Prop.name("target").values(compSet.getTarget().getName())
-                .build());
         List<eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Property> list = compSet
                 .getProperties();
         for (eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Property property : list) {
@@ -71,10 +68,23 @@ public final class ComparatorConfigParser {
                         .description(metric.getName()).build());
             }
             String propId = String.valueOf(property.getId());
-            Prop prop = Prop.name(name).props(metrics.toArray(new Prop[] {}))
+            Prop prop = Prop.name(name).values(metrics.toArray(new Prop[] {}))
                     .type(propId).build();
             result.add(prop);
         }
+        return result;
+    }
+
+    /**
+     * @return The basic string properties
+     */
+    public List<Prop<Object>> getBasicProperties() {
+        List<Prop<Object>> result = new ArrayList<Prop<Object>>();
+        CompSet compSet = pcr.getCompSets().get(0);
+        result.add(Prop.name("source").values(
+                compSet.getSource().getName()).build());
+        result.add(Prop.name("target").values(
+                compSet.getTarget().getName()).build());
         return result;
     }
 
