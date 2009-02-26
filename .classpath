@@ -25,10 +25,12 @@
     <classpathentry kind="src" path="PA/abiword/test" />
     <classpathentry kind="src" path="PA/avidemux/src/java" />
     <classpathentry kind="src" path="PA/avidemux/test" />
+    <classpathentry kind="src" path="PA/dia2/src/java" />
     <classpathentry kind="src" path="PA/dialogika/src/java" />
     <classpathentry kind="src" path="PA/dialogika/test/java" />
     <classpathentry kind="src" path="PA/dvips/src/java" />
     <classpathentry kind="src" path="PA/dvips/test" />
+    <classpathentry kind="src" path="PA/ffmpeg/src/java" />
     <classpathentry kind="src" path="PA/gimp/src/java" />
     <classpathentry kind="src" path="PA/gimp/test" />
     <classpathentry kind="src" path="PA/imagemagick/src/java" />
