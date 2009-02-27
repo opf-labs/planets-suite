@@ -12,12 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService;
-import eu.planets_project.services.characterise.DetermineProperties;
-import eu.planets_project.services.characterise.DeterminePropertiesResult;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.Properties;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.DigitalObject;
 
@@ -31,7 +32,7 @@ public class SimpleCharacterisationServiceTest {
     String wsdlLoc = "/pserv-if-simple/SimpleCharacterisationService?wsdl";
 
     /* A holder for the object to be tested */
-    DetermineProperties ids = null;
+    Characterise ids = null;
 
     /**
      * Create the service instance to test before running test 
@@ -39,7 +40,7 @@ public class SimpleCharacterisationServiceTest {
      */
     @Before
     public void setUp() throws Exception {
-        ids = ServiceCreator.createTestService(DetermineProperties.QNAME, SimpleCharacterisationService.class, wsdlLoc );
+        ids = ServiceCreator.createTestService(Characterise.QNAME, SimpleCharacterisationService.class, wsdlLoc );
 
     }
 
@@ -101,19 +102,27 @@ public class SimpleCharacterisationServiceTest {
     private void testSizing(DigitalObject object, int size) {
         /* Init the properties */
         Properties properties = new Properties();
-        properties.add(SimpleCharacterisationService.MIME_PROP_URI);
+        properties.add(
+                SimpleCharacterisationService.makePropertyURI( SimpleCharacterisationService.MIME_PROP_URI), 
+                SimpleCharacterisationService.MIME_PROP_URI);
         
         /* Now pass this to the service */
-        DeterminePropertiesResult ir = ids.measure(object, properties, null);
+        CharacteriseResult ir = ids.characterise( object, null);
         System.out.println("Got report: "+ir.getReport());
         System.out.println("Got properties: "+ir.getProperties());
         System.out.println("Got properties.size(): "+ir.getProperties().size());
         
         /* Check the result */
-        int mSize = Integer.parseInt( ir.getProperties().get( SimpleCharacterisationService.MIME_PROP_URI ) );
+        long mSize = -1;
+        for( Property p : ir.getProperties() ) {
+            if( p.getName().equals(SimpleCharacterisationService.MIME_PROP_URI)) {
+                mSize = Long.parseLong( p.getValue() );
+            }
+        }
         System.out.println("Recieved measured size: " + mSize );
-        System.out.println("Recieved service report: " + ir.getReport() );
         assertEquals("The returned size did not match the expected size;", size, mSize);
+        
+        System.out.println("Recieved service report: " + ir.getReport() );
     }
 
 }

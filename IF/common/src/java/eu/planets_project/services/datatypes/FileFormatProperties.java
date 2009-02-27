@@ -1,5 +1,6 @@
 package eu.planets_project.services.datatypes;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,10 +54,10 @@ public class FileFormatProperties {
      * @param name
      * @param value
      */
-    public void add(String name, String value) {
+    public void add(URI uri, String name, String value) {
         if( this.fileFormatProperties == null ) this.fileFormatProperties = new ArrayList<FileFormatProperty>();
         
-        FileFormatProperty p = new FileFormatProperty(name, value);
+        FileFormatProperty p = new FileFormatProperty(uri, name, value);
         this.fileFormatProperties.add(p);
     }
 
@@ -64,8 +65,8 @@ public class FileFormatProperties {
      * 
      * @param name
      */
-    public void add( String name ) {
-        this.add(name, null);
+    public void add( URI uri, String name ) {
+        this.add(uri, name, null);
     }
     
     /**

@@ -1,5 +1,6 @@
 package eu.planets_project.services.datatypes;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class FileFormatProperty extends Property {
 	 * default no arg constructor
 	 */
 	public FileFormatProperty() {
-		super(null, null);
+		super(null, null, null);
 		this.id = null;
 		this.unit = null;
 		this.type = null;
@@ -26,8 +27,8 @@ public class FileFormatProperty extends Property {
 	 * @param name
 	 * @param value
 	 */
-	public FileFormatProperty(String name, String value) {
-		super(name, value);
+	public FileFormatProperty(URI uri, String name, String value) {
+		super(uri, name, value);
 		this.id = null;
 		this.unit = null;
 		this.type = null;
@@ -109,8 +110,7 @@ public class FileFormatProperty extends Property {
 		return super.getValue();
 	}
 
-
-
+	
 	/**
 	 * @see java.lang.Object#toString()
 	 */
@@ -149,6 +149,5 @@ public class FileFormatProperty extends Property {
 				return toString;
 				
 	}
-	
 	
 }

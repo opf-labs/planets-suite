@@ -1,6 +1,8 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.xcdl;
 
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,8 +67,9 @@ public final class XcdlParser implements XcdlAccess {
                 for (ValueSet valueSet : valueSets) {
                     LabValue labValue = valueSet.getLabValue();
                     List<Val> val = labValue.getVals();
+                    URI propUri = XcdlProperties.makePropertyURI(property.getId(), name);
                     eu.planets_project.services.datatypes.Property p = new eu.planets_project.services.datatypes.Property(
-                            name, val.get(0).getValues().get(0));
+                            propUri, name, val.get(0).getValues().get(0));
                     p.setType(labValue.getTypes().get(0).getValue().value());
                     result.add(p);
                 }

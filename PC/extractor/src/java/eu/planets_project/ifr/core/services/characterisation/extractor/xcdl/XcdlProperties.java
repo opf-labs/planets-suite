@@ -2,6 +2,8 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.xcdl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,17 @@ public final class XcdlProperties implements XcdlAccess {
 
     private static final Namespace NS = Namespace
             .getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
+    
+    public static final String XCDLPropertyRoot = "planets:pc/xcdl/property/";
+    
+    public static URI XCDLPropertyRootUri;
+    static {
+        try {
+            XCDLPropertyRootUri = new URI(XCDLPropertyRoot);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 
     private File xcdlFile;
 
@@ -30,6 +43,19 @@ public final class XcdlProperties implements XcdlAccess {
      */
     public XcdlProperties(final File xcdlFile) {
         this.xcdlFile = xcdlFile;
+    }
+    
+    /**
+     * 
+     */
+    public static URI makePropertyURI(String id, String name) {
+        try {
+            URI propUri = new URI( XcdlProperties.XCDLPropertyRoot + "id" + id + "/" + name);
+            return propUri;
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -49,7 +75,9 @@ public final class XcdlProperties implements XcdlAccess {
                 Element labVal = e.getChild("valueSet", NS).getChild(
                         "labValue", NS);
                 String value = labVal.getChildText("val", NS);
-                Property p = new Property(name, value);
+                String id = e.getAttributeValue("id");
+                URI propUri = XcdlProperties.makePropertyURI(id, name);
+                Property p = new Property(propUri, name, value);
                 p.setType(labVal.getChildText("type", NS));
                 properties.add(p);
             }

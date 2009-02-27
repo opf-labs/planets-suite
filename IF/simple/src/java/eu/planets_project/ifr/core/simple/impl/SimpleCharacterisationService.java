@@ -2,6 +2,9 @@ package eu.planets_project.ifr.core.simple.impl;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -10,15 +13,18 @@ import javax.jws.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.characterise.DetermineProperties;
-import eu.planets_project.services.characterise.DeterminePropertiesResult;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -30,13 +36,13 @@ import eu.planets_project.services.utils.ServiceUtils;
  *
  */
 @Stateless
-@Remote(DetermineProperties.class)
+@Remote(Characterise.class)
 
 @WebService(name = SimpleCharacterisationService.NAME, 
-        serviceName = DetermineProperties.NAME, 
+        serviceName = Characterise.NAME, 
         targetNamespace = PlanetsServices.NS,
-        endpointInterface = "eu.planets_project.services.characterise.DetermineProperties" )
-public class SimpleCharacterisationService implements DetermineProperties
+        endpointInterface = "eu.planets_project.services.characterise.Characterise" )
+public class SimpleCharacterisationService implements Characterise
 {
     private final Log log = LogFactory.getLog(getClass().getName());
     
@@ -47,10 +53,23 @@ public class SimpleCharacterisationService implements DetermineProperties
     public static String MIME_PROP_URI = "planets:pc/basic/bytestream/size";
 
     /**
+     * 
+     */
+    public static URI makePropertyURI( String name) {
+        try {
+            URI propUri = new URI( name);
+            return propUri;
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * @see eu.planets_project.services.characterise.DetermineProperties#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder( NAME, DetermineProperties.class.getCanonicalName() );
+        ServiceDescription.Builder sd = new ServiceDescription.Builder( NAME, Characterise.class.getCanonicalName() );
         sd.description("A simple example characterization service, which just measures the size of single-binary digital objects.");
         return sd.build();
     }
@@ -58,43 +77,25 @@ public class SimpleCharacterisationService implements DetermineProperties
     /**
      * @see eu.planets_project.services.characterise.DetermineProperties#getMeasurableProperties(java.net.URI)
      */
-    public Properties getMeasurableProperties(URI format) {
-        Properties props = new Properties();
-        props.add(MIME_PROP_URI, null);
+    public List<FileFormatProperty> listProperties(URI format) {
+        List<FileFormatProperty> props = new ArrayList<FileFormatProperty>();
+        props.add( new FileFormatProperty( makePropertyURI(MIME_PROP_URI), MIME_PROP_URI, null) );
         return props;
     }
 
     /**
      * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
      */
-    public DeterminePropertiesResult measure(DigitalObject digitalObject,
-            Properties properties, Parameters parameters) {
+    public CharacteriseResult characterise(DigitalObject digitalObject, Parameters parameters) {
         log.info("Start...");
         // Set up property list:
-        Properties measured = new Properties();
+        List<Property> measured = new ArrayList<Property>();
         ServiceReport sr = new ServiceReport();
-        // Loop through properties:
-        for( Property prop : properties.getProperties() ) {
-            log.info("Parsing property = "+prop.getName());
-            // Attempt to measure:
-            if( prop.getName().equals(MIME_PROP_URI)) {
-                if( digitalObject.getContent() != null ) {
-                    if( digitalObject.getContent().isByValue() ) {
-                        measured.add( MIME_PROP_URI, ""+digitalObject.getContent().getValue().length);
-                        log.info("Added for val.");
-                    } else {
-                        try {
-                            measured.add( MIME_PROP_URI, 
-                                    ""+digitalObject.getContent().getReference().openStream().available() );
-                            log.info("Added for ref.");
-                        } catch (IOException e) {
-                            sr = ServiceUtils.createExceptionErrorReport("Could not inspect "+digitalObject.getContent().getReference(), e);
-                        }
-                    }
-                }
-            }
-        }
-        return new DeterminePropertiesResult(measured, sr);
+        
+        // Attempt to measure size:
+        measured.add( new Property( makePropertyURI(MIME_PROP_URI), MIME_PROP_URI, ""+DigitalObjectUtils.getContentSize( digitalObject ) ));
+
+        return new CharacteriseResult(measured, sr);
     }
 
 }

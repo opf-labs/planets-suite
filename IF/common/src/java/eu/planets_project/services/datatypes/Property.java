@@ -3,6 +3,8 @@
  */
 package eu.planets_project.services.datatypes;
 
+import java.net.URI;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
@@ -11,6 +13,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property {
+    
+    private URI uri = null;
 
     private String name = "";
 
@@ -32,10 +36,18 @@ public class Property {
      * @param name
      * @param value
      */
-    public Property(String name, String value) {
+    public Property(URI uri, String name, String value) {
         super();
+        this.uri = uri;
         this.name = name;
         this.value = value;
+    }
+    
+    /**
+     * @return the uri
+     */
+    public URI getUri() {
+        return uri;
     }
 
     /**
@@ -51,6 +63,14 @@ public class Property {
     public String getValue() {
         return value;
     }
+
+    /**
+     * @param the uri to set
+     */
+    public void setUri(URI uri) {
+        this.uri = uri;
+    }
+
 
     /**
      * @param name the name to set
@@ -114,40 +134,70 @@ public class Property {
      */
     @Override
     public String toString() {
-        return String.format("%s '%s' = '%s'", this.getClass().getSimpleName(),
-                name, value);
+        return String.format("%s [%s] '%s' = '%s'", this.getClass().getSimpleName(),
+                uri, name, value);
     }
 
-    /**
-     * {@inheritDoc}
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Property)) {
-            return false;
-        }
-        Property that = (Property) obj;
-        return this.name.equals(that.name) && this.value.equals(that.value)
-                && this.unit.equals(that.unit)
-                && this.description.equals(that.description)
-                && this.type.equals(that.type);
-    }
-
-    /**
-     * {@inheritDoc}
+    /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
-        int result = 17;
-        int oddPrime = 31;
-        result = oddPrime * result + name.hashCode();
-        result = oddPrime * result + value.hashCode();
-        result = oddPrime * result + unit.hashCode();
-        result = oddPrime * result + description.hashCode();
-        result = oddPrime * result + type.hashCode();
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        result = prime * result + ((unit == null) ? 0 : unit.hashCode());
+        result = prime * result + ((uri == null) ? 0 : uri.hashCode());
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Property other = (Property) obj;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (type == null) {
+            if (other.type != null)
+                return false;
+        } else if (!type.equals(other.type))
+            return false;
+        if (unit == null) {
+            if (other.unit != null)
+                return false;
+        } else if (!unit.equals(other.unit))
+            return false;
+        if (uri == null) {
+            if (other.uri != null)
+                return false;
+        } else if (!uri.equals(other.uri))
+            return false;
+        if (value == null) {
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
+        return true;
     }
 
 }

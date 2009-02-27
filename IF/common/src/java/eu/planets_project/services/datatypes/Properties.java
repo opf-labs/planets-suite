@@ -3,6 +3,7 @@
  */
 package eu.planets_project.services.datatypes;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
  */
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class Properties {
-
+    
+    // The properties
     List<Property> properties = null;
 
     /**
@@ -39,10 +41,10 @@ public class Properties {
      * @param name
      * @param value
      */
-    public void add(String name, String value) {
+    public void add(URI uri, String name, String value) {
         if( this.properties == null ) this.properties = new ArrayList<Property>();
         
-        Property p = new Property(name, value);
+        Property p = new Property(uri, name, value);
         this.properties.add(p);
     }
 
@@ -50,8 +52,8 @@ public class Properties {
      * 
      * @param name
      */
-    public void add( String name ) {
-        this.add(name, null);
+    public void add( URI uri, String name ) {
+        this.add(uri, name, null);
     }
     
     /**

@@ -24,6 +24,8 @@ import javax.xml.bind.Unmarshaller;
 import org.junit.Before;
 import org.junit.Test;
 
+import eu.planets_project.services.utils.DigitalObjectUtils;
+
 /**
  * Tests for digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
@@ -184,6 +186,27 @@ public final class DigitalObjectTests {
         DigitalObject roundtrip = roundtrip(digitalObject1);
         System.out.println("Unmarshalled: " + digitalObject1);
         compare(digitalObject1, roundtrip);
+    }
+    
+    /**
+     * As a helper method for counting the size of the bytestream content has been added, and
+     * as this can be recursive, this should be tested.
+     */
+    @Test
+    public void contentSizeCalculation() {
+        int size1 = 23823, size2 = 1283;
+        // Construct a shallow object:
+        DigitalObject bytes1 = new DigitalObject.Builder(Content
+                .byValue(new byte[size1])).build();
+        long bytes = DigitalObjectUtils.getContentSize( bytes1 );
+        assertEquals("Counted, shallow byte[] size is not correct.", size1, bytes );
+        
+        // construct a deeper object:
+        DigitalObject bytes2 = new DigitalObject.Builder(Content
+                .byValue(new byte[size2])).contains(bytes1).build();
+        bytes = DigitalObjectUtils.getContentSize( bytes2 );
+        assertEquals("Counted, 2-level byte[] size is not correct.", (size1+size2), bytes );
+        
     }
 
     /**

@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Properties;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -486,18 +486,30 @@ public final class ServiceDescription {
          * TODO Upgrade this idea to some standardised form for platform/environment/software stacks.
          */
         public void addServerDescriptionProperty() {
-            Properties p = System.getProperties();
+            java.util.Properties p = System.getProperties();
             
             ByteArrayOutputStream byos = new ByteArrayOutputStream();
             try {
                 p.storeToXML(byos, "Automatically generated for PLANETS Service "+ this.name, "UTF-8");
-                Property jspp = new Property("planets:if/srv/java-system-properties", byos.toString("UTF-8") );
+                Property jspp = new Property(ENV_JAVA_SYS_PROP,"Java JVM System Properties", byos.toString("UTF-8") );
                 this.properties.add(jspp);
             } catch ( Exception e ) {
                 // Fail silently.
             }
         }
-
+        // Some standard property identifiers:
+        // FIXME Move to a standard place?
+        
+        /** A standard ENVIRONMENT identifier for the Java System.getProperties. */
+        public static URI ENV_JAVA_SYS_PROP = null;
+        
+        static {
+            try {
+                ENV_JAVA_SYS_PROP = new URI("planets:if/srv/java-system-properties");
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /** For JAXB. */

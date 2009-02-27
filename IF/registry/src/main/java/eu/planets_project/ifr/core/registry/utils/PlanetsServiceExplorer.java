@@ -19,7 +19,6 @@ import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
 import eu.planets_project.services.characterise.Characterise;
-import eu.planets_project.services.characterise.DetermineProperties;
 import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.compare.BasicCompareTwoXcdlReferences;
 import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
@@ -52,7 +51,6 @@ public class PlanetsServiceExplorer {
     	classmap.put(BasicCharacteriseOneBinary.QNAME, BasicCharacteriseOneBinary.class);
     	classmap.put(BasicCharacteriseOneBinaryXCELtoBinary.QNAME, BasicCharacteriseOneBinaryXCELtoBinary.class);
     	classmap.put(BasicCharacteriseOneBinaryXCELtoURI.QNAME, BasicCharacteriseOneBinaryXCELtoURI.class);
-        classmap.put(DetermineProperties.QNAME, DetermineProperties.class);
         classmap.put(CommonProperties.QNAME, CommonProperties.class);
         classmap.put(BasicCompareTwoXcdlReferences.QNAME, BasicCompareTwoXcdlReferences.class);
         classmap.put(BasicCompareTwoXcdlValues.QNAME, BasicCompareTwoXcdlValues.class);

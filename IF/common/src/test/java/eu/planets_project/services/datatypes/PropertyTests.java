@@ -1,5 +1,7 @@
 package eu.planets_project.services.datatypes;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +14,19 @@ import org.junit.Test;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class PropertyTests {
-    private final Property p1 = new Property("name1", "value1");
-    private final Property p2 = new Property("name2", "value2");
+    private static URI uri1 = null;
+    private static URI uri2 = null;
+    static {
+        try {
+            uri1 = new URI("planets:uri/1");
+            uri2 = new URI("planets:uri/2");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private final Property p1 = new Property(uri1, "name1", "value1");
+    private final Property p2 = new Property(uri2, "name2", "value2");
 
     @Test
     public void testToString() {
@@ -23,7 +36,7 @@ public final class PropertyTests {
 
     @Test
     public void testEquals() {
-        Assert.assertEquals(p1, new Property(p1.getName(), p1.getValue()));
+        Assert.assertEquals(p1, new Property(p1.getUri(),p1.getName(), p1.getValue()));
     }
 
     @Test

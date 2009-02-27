@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -55,6 +56,20 @@ import eu.planets_project.services.utils.FileUtils;
 public final class MetadataExtractor implements Characterise {
     /***/
     static final String NAME = "MetadataExtractor";
+    public static final String NZMEPropertyRoot = "planets:pc/nzme/";
+
+    /**
+     * 
+     */
+    public static URI makePropertyURI( String name) {
+        try {
+            URI propUri = new URI( NZMEPropertyRoot + name);
+            return propUri;
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     /**
      * The optional format XCEL and parameters are ignored in this
@@ -91,7 +106,7 @@ public final class MetadataExtractor implements Characterise {
                 /* For that, get the extractable properties: */
                 List<String> listProperties = listProperties(metadataType);
                 for (String string : listProperties) {
-                    result.add(new FileFormatProperty(string, null));
+                    result.add(new FileFormatProperty( makePropertyURI(string), string, null));
                 }
             }
         }
@@ -153,7 +168,7 @@ public final class MetadataExtractor implements Characterise {
             Element meta = doc.getRootElement().getChild("METADATA");
             for (Object propElem : meta.getChildren()) {
                 Element e = (Element) propElem;
-                Property p = new Property(e.getName(), e.getText());
+                Property p = new Property(makePropertyURI(e.getName()), e.getName(), e.getText());
                 properties.add(p);
             }
 

@@ -14,6 +14,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.services.datatypes.FileFormatProperties;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Metric;
@@ -177,6 +178,7 @@ public class ExtractorPropertiesLister {
 					}
 					
 					formatProperty.setMetrics(metrics);
+					formatProperty.setUri( XcdlProperties.makePropertyURI(formatProperty.getId(), formatProperty.getName()) );
 					LOG.info("Set metrics for FileFormatProperty ID/Name: " + formatProperty.getId() + "/" + formatProperty.getName());
 					fileFormatProperties.add(formatProperty);
 					metrics = null;

@@ -202,7 +202,7 @@ public class MetadataExtractorTests {
                 + properties);
         Assert.assertTrue("Result does not contain the correct mime type: "
                 + type.mime + " in result: " + properties, properties
-                .contains(new Property("TYPE", type.mime)));
+                .contains(new Property(MetadataExtractor.makePropertyURI("TYPE"), "TYPE", type.mime)));
     }
 
     /**

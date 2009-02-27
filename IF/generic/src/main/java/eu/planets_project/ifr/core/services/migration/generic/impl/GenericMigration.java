@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
@@ -125,7 +126,11 @@ public class GenericMigration implements Migrate, Serializable
 			log.info = pr.getProcessOutputAsString();
 			log.warn = pr.getProcessOutputAsString();
 			log.properties = new ArrayList<Property>();
-			log.properties.add( new Property("name", "value") );
+			try {
+                log.properties.add( new Property(new URI("planets:uri"), "name", "value") );
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
 			return new MigrateResult(readDestination(outputFile), log);
 		}
 		catch(IOException e)
