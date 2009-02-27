@@ -15,13 +15,12 @@ import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.w3c.dom.Document;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.services.characterise.DetermineProperties;
-import eu.planets_project.services.characterise.DeterminePropertiesResult;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Properties;
+import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
@@ -34,9 +33,9 @@ import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
+import eu.planets_project.tb.impl.services.wrappers.CharacteriseWrapper;
 import eu.planets_project.tb.impl.services.wrappers.IdentifyWrapper;
 import eu.planets_project.tb.impl.services.wrappers.MigrateWrapper;
-import eu.planets_project.tb.utils.XCDLService;
 
 /**
  * This is the class that carries the code specific to invoking an Migrate experiment.
@@ -59,9 +58,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     public static final String SERVICE_TYPE_IDENTIFY = "Identify";
 
     /** Internal keys for easy referral to the service+stage combinations. */
-    private static final String STAGE_PRE_MIGRATE = "Pre-Migrate";
+    private static final String STAGE_PRE_MIGRATE = "Characterise Before Migration";
     private static final String STAGE_MIGRATE = "Migrate";
-    private static final String STAGE_POST_MIGRATE = "Post-Migrate";
+    private static final String STAGE_POST_MIGRATE = "Characterise After Migration";
     
     /** Statically define the observable properties. */
     private static HashMap<String,List<MeasurementImpl>> observables;
@@ -91,8 +90,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
 
     /* ------------------------------------------------------------- */
     
-    DetermineProperties dpPre = null;
-    DetermineProperties dpPost = null;
+    Characterise dpPre = null;
+    Characterise dpPost = null;
     Identify idPre = null;
     Identify idPost = null;
     
@@ -137,6 +136,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( this.preIsIdentify() ) {
             obs.get(STAGE_PRE_MIGRATE).add(IdentifyWorkflow.MEASURE_IDENTIFY_FORMAT);
             obs.get(STAGE_PRE_MIGRATE).add(IdentifyWorkflow.MEASURE_IDENTIFY_METHOD);
+            obs.get(STAGE_PRE_MIGRATE).add(TecRegMockup.getObservable(TecRegMockup.PROP_DO_SIZE));
         }
         // In general:
         if( this.preIsDefined() ) {
@@ -162,6 +162,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( this.postIsIdentify() ) {
             obs.get(STAGE_POST_MIGRATE).add(IdentifyWorkflow.MEASURE_IDENTIFY_FORMAT);
             obs.get(STAGE_POST_MIGRATE).add(IdentifyWorkflow.MEASURE_IDENTIFY_METHOD);
+            obs.get(STAGE_POST_MIGRATE).add(TecRegMockup.getObservable(TecRegMockup.PROP_DO_SIZE));
         }
         // In general:
         if( this.postIsDefined() ) {
@@ -198,7 +199,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         return cacheOutProps;
     }
     
-    private List<MeasurementImpl> getMeasurementsForFormat( String format, DetermineProperties dp ) {
+    private List<MeasurementImpl> getMeasurementsForFormat( String format, Characterise dp ) {
         List<MeasurementImpl> lm = new Vector<MeasurementImpl>();
         
         HashMap<URI,MeasurementImpl> meas = new HashMap<URI,MeasurementImpl>();
@@ -218,9 +219,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
         // Find all the PRONOM IDs for this format URI:
         for( URI puid : this.getPronomURIAliases(formatURI) ) {
-            Properties measurableProperties = dp.getMeasurableProperties(puid);
+            List<FileFormatProperty> measurableProperties = dp.listProperties(puid);
             if( measurableProperties != null ) {
-                for( Property p : measurableProperties.getProperties()) {
+                for( FileFormatProperty p : measurableProperties ) {
                     MeasurementImpl m = this.createMeasurementFromProperty(p);
                     if( ! meas.containsKey( m.getIdentifier() ) ) {
                         meas.put(m.getIdentifier(), m);
@@ -239,13 +240,15 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         if( p == null ) return m;
         
-        URI propURI;
-        try {
-            // FIXME Unify the URI construction: See also XCDLParser.parseXCDL(), XCDLService.createPropertyFromFFProp()
-            propURI = new URI( TecRegMockup.URIXCDLPropertyRoot + p.getName());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return m;
+        URI propURI = p.getUri();
+        if( p == null ) {
+            try {
+                // FIXME Unify the URI construction: See also XCDLParser.parseXCDL(), XCDLService.createPropertyFromFFProp()
+                propURI = new URI( TecRegMockup.URIXCDLPropertyRoot + p.getName());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+                return m;
+            }
         }
         
         // Copy in:
@@ -296,7 +299,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         // Also set the pre services:
         if( this.preIsCharacterise() ) {
-            dpPre = new XCDLService(new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
+            dpPre = new CharacteriseWrapper(new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
         } else {
             dpPre = null;
         }
@@ -309,7 +312,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         // Also set the post services:
         if( this.postIsCharacterise() ) {
-            dpPost = new XCDLService(new URL(this.parameters.get(PARAM_POST_SERVICE)) );
+            dpPost = new CharacteriseWrapper(new URL(this.parameters.get(PARAM_POST_SERVICE)) );
         } else {
             dpPost = null;
         }
@@ -496,17 +499,17 @@ public class MigrateWorkflow implements ExperimentWorkflow {
      * @param stage
      * @throws Exception
      */
-    private void executeCharacteriseStage( WorkflowResult wr, DigitalObject dob, ExecutionStageRecordImpl  stage, DetermineProperties dp ) throws Exception {
+    private void executeCharacteriseStage( WorkflowResult wr, DigitalObject dob, ExecutionStageRecordImpl  stage, Characterise dp ) throws Exception {
         // Now prepare the result:
         List<MeasurementRecordImpl> stage_m = stage.getMeasurements();
         
         // Invoke the service, timing it along the way:
         boolean success = true;
-        DeterminePropertiesResult result = null;
+        CharacteriseResult result = null;
         long msBefore = 0, msAfter = 0;
         msBefore = System.currentTimeMillis();
         try {
-            result = dp.measure(dob, null, null);
+            result = dp.characterise(dob, null);
         } catch( Exception e ) {
             success = false;
         }
@@ -519,9 +522,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( success ) {
             stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
             if( result != null ) {
-                for( Property p : result.getProperties().getProperties() ) {
-                    log.info("Recording measurement: "+p.getName()+" = "+p.getValue());
-                    stage_m.add(new MeasurementRecordImpl( p.getName(), p.getValue() ));
+                for( Property p : result.getProperties() ) {
+                    log.info("Recording measurement: "+p.getUri()+":"+p.getName()+" = "+p.getValue());
+                    stage_m.add(new MeasurementRecordImpl( p.getUri(), p.getValue() ));
                 }
             }
             return;
@@ -559,12 +562,12 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
-
+        
         // Record results:
         if( success ) {
             stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
             log.info("Start with Measurements #"+stage_m.size());
-            IdentifyWorkflow.collectIdentifyResults(stage_m, result);
+            IdentifyWorkflow.collectIdentifyResults(stage_m, result, dob);
             log.info("Afterwards, Measurements #"+stage_m.size());
             return;
         }

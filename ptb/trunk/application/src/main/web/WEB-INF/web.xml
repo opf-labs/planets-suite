@@ -145,6 +145,14 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<!-- Chart Servlet -->
+    <servlet>
+        <servlet-name>Chart Servlet</servlet-name>
+        <servlet-class>eu.planets_project.tb.impl.chart.ExperimentChartServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+	
 
 	<servlet-mapping>
 		<servlet-name>local_default</servlet-name>
@@ -154,6 +162,10 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.faces</url-pattern>
 	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Chart Servlet</servlet-name>
+        <url-pattern>/reader/chartserver</url-pattern>
+    </servlet-mapping>
 
 
 	<mime-mapping>

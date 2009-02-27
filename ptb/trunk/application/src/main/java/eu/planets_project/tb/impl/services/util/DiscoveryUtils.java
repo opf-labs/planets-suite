@@ -13,7 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.PlanetsService;
-import eu.planets_project.services.characterise.DetermineProperties;
+import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.BasicIdentifyOneBinary;
 import eu.planets_project.services.identify.Identify;
@@ -131,8 +131,8 @@ public class DiscoveryUtils {
                 ||  qName.equals(BasicValidateOneBinary.QNAME)) {
             return Validate.class;
             
-        } else if (qName.equals(DetermineProperties.QNAME) ) {
-            return DetermineProperties.class;
+        } else if (qName.equals(Characterise.QNAME) ) {
+            return Characterise.class;
             
         } else if (qName.equals(CreateView.QNAME) ) {
             return CreateView.class;

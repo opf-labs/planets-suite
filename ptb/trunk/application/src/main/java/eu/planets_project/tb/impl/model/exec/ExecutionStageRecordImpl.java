@@ -157,6 +157,7 @@ public class ExecutionStageRecordImpl implements Serializable {
             // Look for matches:
             if( observables.keySet().contains( this.getStage() )) {
                 for( MeasurementImpl m : observables.get( this.getStage() ) ) {
+                    //log.info("Comparing '"+m.getIdentifier() +"' to '"+mr.getIdentifier()+"', "+m.getName());
                     if( m.getIdentifier() != null && mr.getIdentifier() != null &&
                             m.getIdentifier().toString().equals( mr.getIdentifier() ) ) {
                         new_m = new MeasurementImpl(m);
@@ -171,8 +172,6 @@ public class ExecutionStageRecordImpl implements Serializable {
                     new_m = new MeasurementImpl();
                     new_m.setIdentifier( new URI( mr.getIdentifier() ) );
                     new_m.setValue( mr.getValue() );
-                    // Add to the list.
-                    mobs.add(new_m);
                 } catch (URISyntaxException e) {
                     e.printStackTrace();
                     new_m = null;

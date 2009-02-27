@@ -6,7 +6,9 @@ package eu.planets_project.tb.utils;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -19,8 +21,8 @@ import org.xml.sax.SAXException;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.characterise.DetermineProperties;
-import eu.planets_project.services.characterise.DeterminePropertiesResult;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameters;
@@ -35,7 +37,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class XCDLService implements DetermineProperties {
+public class XCDLService implements Characterise {
 
     /** */
     private URL extractorWsdl;
@@ -74,13 +76,16 @@ public class XCDLService implements DetermineProperties {
     /* (non-Javadoc)
      * @see eu.planets_project.services.characterise.DetermineProperties#getMeasurableProperties(java.net.URI)
      */
-    public Properties getMeasurableProperties(URI formatURI) {
+    public List<FileFormatProperty> listProperties(URI formatURI) {
         // Only cope with PRONOM IDs:
         if( ! Format.isThisAPronomURI(formatURI) ) {
             return null;
         }
+        
         // Extract the list:
         List<FileFormatProperty> properties = extractor.listProperties(formatURI);
+        
+        /*
         if( properties == null ) return null;
         // Now create list and copy the properties into it:
         List<Property> props = new Vector<Property>();
@@ -88,14 +93,16 @@ public class XCDLService implements DetermineProperties {
             //System.out.println("Got property "+ffp.getId() + ", " +ffp.getName() + ", " + ffp.getDescription() );
             props.add( this.createPropertyFromFFProp(ffp) );
         }
-        Properties propobj = new Properties();
-        propobj.setProperties(props);
-        return propobj;
+        */
+        return properties;
     }
     
     // FIXME Unify this construction: See also XCDLParser.parseXCDL
     private Property createPropertyFromFFProp( FileFormatProperty ffp ) {
-        Property p = new Property( "id"+ffp.getId()+"/"+ffp.getName(), ffp.getValue());
+        Property p = new Property( 
+                XCDLParser.makePropertyUri(ffp.getId(), ffp.getName()), 
+                "id"+ffp.getId()+"/"+ffp.getName(), 
+                ffp.getValue() );
         p.setDescription(ffp.getDescription());
         p.setType(ffp.getType());
         p.setUnit(ffp.getUnit());
@@ -105,8 +112,7 @@ public class XCDLService implements DetermineProperties {
     /* (non-Javadoc)
      * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
      */
-    public DeterminePropertiesResult measure(DigitalObject dob,
-            Properties props, Parameters params) {
+    public CharacteriseResult characterise(DigitalObject dob, Parameters params) {
         
         CharacteriseResult characteriseResult = extractor.characterise(dob, params);
 
@@ -117,7 +123,6 @@ public class XCDLService implements DetermineProperties {
         }
         */
 
-        Properties propobj = new Properties();
         List<MeasurementRecordImpl> list;
         try {
             list = XCDLParser.parseXCDL(characteriseResult.getDigitalObject().getContent().read());
@@ -128,17 +133,21 @@ public class XCDLService implements DetermineProperties {
         List<Property> mprops = new Vector<Property>();
         if( list != null ) {
             for( MeasurementRecordImpl m : list ) {
-                Property p = new Property( m.getIdentifier(), m.getValue() );
-                mprops.add(p);
+                Property p;
+                try {
+                    p = new Property( new URI( m.getIdentifier()), m.getIdentifier(), m.getValue() );
+                    mprops.add(p);
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        propobj.setProperties( mprops );
         
         // FIXME Interface is a problem!  We really want to return simpler entities than full property descriptions.
 
         ServiceReport report = new ServiceReport();
         
-        return new DeterminePropertiesResult(propobj, report);
+        return new CharacteriseResult(mprops, report);
     }
 
 }

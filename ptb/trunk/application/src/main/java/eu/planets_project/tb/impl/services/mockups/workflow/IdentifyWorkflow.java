@@ -14,6 +14,7 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
@@ -197,18 +198,12 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         
         List<MeasurementRecordImpl> recs = idStage.getMeasurements();
         recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0) ));
-        // Store the size:
-        // FIXME: This should be a proper method that scans down and works out the size.
-        try {
-            recs.add(new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+dob.getContent().read().available() ) );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        
         // Now record
         try {
             if( success && identify.getTypes() != null && identify.getTypes().size() > 0 ) {
                 recs.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
-                collectIdentifyResults(recs, identify);
+                collectIdentifyResults(recs, identify, dob);
                 wr.setReport(identify.getReport());
                 return wr;
             }
@@ -230,7 +225,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         return wr;
     }
     
-    public static void collectIdentifyResults( List<MeasurementRecordImpl> recs, IdentifyResult ident ) {
+    public static void collectIdentifyResults( List<MeasurementRecordImpl> recs, IdentifyResult ident, DigitalObject dob ) {
         if( ident == null ) return;
         if( ident.getTypes() != null ) {
             for( URI format_uri : ident.getTypes() ) {
@@ -242,7 +237,42 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
                 recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
             }
         }
+        // Store the size:
+        // FIXME: This method has now been added to the Digital Object.  Change it here to dob.getContentSize();
+        recs.add( new MeasurementRecordImpl(TecRegMockup.PROP_DO_SIZE, ""+getContentSize(dob) ) );
         return;
     }
 
-}
+    /*
+     * Recursive method for computing the total size.
+     * TODO A badly-formed DigitalObject could cause this method to recurse forever. Can that be stopped?
+     */
+    private static long getContentSize( DigitalObject dob ) {
+        long bytes = 0;
+        // Get the size at this level:
+        if( dob.getContent() != null ) {
+            bytes += getSizeOfContent(dob.getContent());
+        }
+        // Recurse into sub-dobs:
+        if( dob.getContained() != null ) {
+            for( DigitalObject cdob : dob.getContained() ) {
+                bytes += getContentSize( cdob );
+            }
+        }
+        // Return the total:
+        return bytes;
+    }
+
+    /*
+     * Attempts to determine the size of the content of a particular DigitalObject.
+     */
+    private static long getSizeOfContent( Content con ) {
+        if( con == null ) return 0;
+        try {
+            return con.read().available();   
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    }

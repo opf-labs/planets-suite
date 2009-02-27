@@ -231,6 +231,12 @@
           <include name="commons-*.jar" />
           <include name="castor-xml.jar" />
           <include name="charts4j-*.jar" />
+          <include name="jcommon-*.jar" />
+          <include name="jfreechart-*.jar" />
+          <include name="iText-*.jar" />
+          <include name="js.jar" />
+          <include name="pdf-transcoder.jar" />
+          <include name="batik-*.jar" />
 		</fileset>
 	</move>
 

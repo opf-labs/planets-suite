@@ -18,7 +18,7 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import eu.planets_project.services.PlanetsService;
-import eu.planets_project.services.characterise.DetermineProperties;
+import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.identify.BasicIdentifyOneBinary;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyOneBinary;
@@ -47,7 +47,7 @@ public class PlanetsServiceExplorer {
         classmap.put( BasicIdentifyOneBinary.QNAME, BasicIdentifyOneBinary.class);
         classmap.put( Validate.QNAME, Validate.class );
         classmap.put( BasicValidateOneBinary.QNAME, BasicValidateOneBinary.class );
-        classmap.put( DetermineProperties.QNAME, DetermineProperties.class );
+        classmap.put( Characterise.QNAME, Characterise.class );
         classmap.put( CreateView.QNAME, CreateView.class );
     }
 

@@ -38,7 +38,7 @@ import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
 public class IdentifyWrapper implements Identify {
 
     /** */
-    private static final Log log = LogFactory.getLog(MigrateWrapper.class);
+    private static final Log log = LogFactory.getLog(IdentifyWrapper.class);
 
     PlanetsServiceExplorer pse = null;
     Service service = null;

@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Vector;
 
@@ -57,7 +59,7 @@ public class XCDLParser {
             // Loop through the property definitions and patch them into Property objects.
             MeasurementRecordImpl m = new MeasurementRecordImpl();
             // FIXME Unify this construction: See also XCDLService.createPropertyFromFFProp
-            m.setIdentifier(TecRegMockup.URIXCDLPropertyRoot + id + "/" + name); 
+            m.setIdentifier(makePropertyUri(id, name).toString()); 
             m.setValue( (String) xpath.evaluate( "./valueSet/labValue/val", n,  XPathConstants.STRING) );
 //            m.setType( "xcdl:" + (String) xpath.evaluate( "./valueSet/labValue/type", n,  XPathConstants.STRING) );
             
@@ -66,6 +68,15 @@ public class XCDLParser {
         
         
         return props;
+    }
+    
+    public static URI makePropertyUri( String id, String name ) {
+        try {
+            return new URI( TecRegMockup.URIXCDLPropertyRoot + id + "/" + name );
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**

@@ -80,8 +80,8 @@ public class ServiceBrowser {
     private String nodeTitle;
     
     // Get the format registry:
-    public static  FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
-    public static Format unknown = fr.getFormatForURI( Format.extensionToURI("unknown") );
+    public static FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
+//    public static Format unknown = fr.getFormatForURI( Format.extensionToURI("unknown") );
 
     //Instantiate a registry:
     Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
