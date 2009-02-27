@@ -28,7 +28,7 @@ import eu.planets_project.services.utils.FileUtils;
  * @see XcdlComparePropertiesTests
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = XcdlCompareProperties.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CompareProperties")
+@WebService(name = XcdlCompareProperties.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare")
 @Stateless
 public final class XcdlCompareProperties implements Compare<List<Prop<Object>>> {
     /***/
