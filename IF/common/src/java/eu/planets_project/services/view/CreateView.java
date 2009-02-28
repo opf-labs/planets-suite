@@ -3,6 +3,8 @@
  */
 package eu.planets_project.services.view;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -37,9 +39,9 @@ public interface CreateView extends PlanetsService {
             CreateView.NAME);
 
     /**
-     * @param digitalObject 
-     *            The Digital Object to be identified.
-     * @return Returns a Types object containing the identification result
+     * @param digitalObjects
+     *            The Digital Objects to be viewed.
+     * @return Returns a CreateViewResult that contains to a URL where the objects may be viewed.
      */
     @WebMethod(operationName = CreateView.NAME, action = PlanetsServices.NS
             + "/" + CreateView.NAME)
@@ -48,8 +50,22 @@ public interface CreateView extends PlanetsService {
             + "Result")
     public CreateViewResult createView(
             @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
-                    + "/" + CreateView.NAME, partName = "digitalObject") 
-            DigitalObject digitalObject);
+                    + "/" + CreateView.NAME, partName = "digitalObjects") 
+            List<DigitalObject> digitalObjects );
+    
+    /**
+     * @param sessionIdentifier A key that allows the service  to uniquely identify the user's session.
+     * @return A description of the current state of that session, optionally including properties determined from the session.
+     */
+    @WebMethod(operationName = CreateView.NAME + "_status", action = PlanetsServices.NS
+            + "/" + CreateView.NAME + "/status")
+    @WebResult(name = CreateView.NAME + "Status", targetNamespace = PlanetsServices.NS
+            + "/" + CreateView.NAME, partName = CreateView.NAME
+            + "Status")
+    public ViewStatus getViewStatus( 
+            @WebParam(name = "sessionIdentifier", targetNamespace = PlanetsServices.NS
+                    + "/" + CreateView.NAME, partName = "sessionIdentifier") 
+            String sessionIdentifier );
     
     /**
      * A method that can be used to recover a rich service description, and thus populate a service registry.
@@ -62,4 +78,5 @@ public interface CreateView extends PlanetsService {
             + "Description")
     @ResponseWrapper(className="eu.planets_project.services.view."+CreateView.NAME+"DescribeResponse")
     public ServiceDescription describe();
+    
 }

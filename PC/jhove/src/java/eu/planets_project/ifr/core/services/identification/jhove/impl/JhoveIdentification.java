@@ -90,6 +90,7 @@ public final class JhoveIdentification implements Identify, Serializable {
         sd.description("Identification service using JHOVE (1.1).");
         sd.author("Fabian Steeg");
         sd.tool(URI.create("http://hul.harvard.edu/jhove/"));
+        sd.furtherInfo(URI.create("http://hul.harvard.edu/jhove/"));
         sd.inputFormats(inputFormats());
         sd.serviceProvider("The Planets Consortium");
         return sd.build();

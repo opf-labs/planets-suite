@@ -12,6 +12,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import eu.planets_project.services.datatypes.ServiceReport;
 
 /**
+ * A service that creates a view should return a URL where the user can view the session.
+ * 
+ * Optionally, the service should return a session handle so the invoking agent can query the sessions status.
+ * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
@@ -20,6 +24,8 @@ import eu.planets_project.services.datatypes.ServiceReport;
 public class CreateViewResult {
 
     private URL viewURL;
+    
+    private String sessionIdentifier;
     
     private ServiceReport report;
 
@@ -30,11 +36,13 @@ public class CreateViewResult {
 
     /**
      * @param viewURL
+     * @param sessionIdentifier
      * @param report
      */
-    public CreateViewResult(URL viewURL, ServiceReport report) {
+    public CreateViewResult(URL viewURL, String sessionIdentifier, ServiceReport report) {
         super();
         this.viewURL = viewURL;
+        this.sessionIdentifier = sessionIdentifier;
         this.report = report;
     }
 
@@ -43,6 +51,13 @@ public class CreateViewResult {
      */
     public URL getViewURL() {
         return viewURL;
+    }
+    
+    /**
+     * @return the sessionIdentifier
+     */
+    public String getSessionIdentifier() {
+        return sessionIdentifier;
     }
 
     /**
