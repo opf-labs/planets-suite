@@ -840,6 +840,46 @@ public class NewExpWizardController {
         // Pop to the destination:
         return result;
     }
+    
+    /**
+     * Attempts to make a copy of the current experiment and return user to stage 1
+     * of the "new" experiment
+     */
+    private String commandSaveExperimentAs() {
+        log.info("Attempting to save this experiment as a new experiment.");
+        ExperimentBean oldExpBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        
+        ExperimentBean newExpBean = new ExperimentBean();
+        newExpBean.setExperiment(oldExpBean.getExperiment());
+        newExpBean.setEname(oldExpBean.getEname()+"_1");
+        Experiment newExp = testbedMan.createNewExperiment();
+        newExpBean.setExperiment(newExp);
+        
+        testbedMan.registerExperiment(newExp);
+        log.info("commandSaveExperimentAs: ExpBean: "+oldExpBean.getEname()+" saved as "+newExpBean.getEname());
+        
+        /*        
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        // Add a message:
+        FacesMessage fmsg = null;
+        if( "success".equals(result)) {
+            // Tell them it went well:
+            fmsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your data has been saved successfully.","Saved.");
+            log.info("Message: Edit Succeeded.");
+            // Add a Global message:
+            ctx.addMessage(null,fmsg);
+        } else {
+            fmsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "There were problems with your experiment.","Save failed.");
+            log.info("Message: Edit Failed.");
+            // Add a Global message:
+            ctx.addMessage(null,fmsg);
+            return "failure";
+        }
+		*/
+        return "goToStage1";
+    }
+    
     private String commandSaveExperimentAndGoto(int stage, String destination ) {
         String result = commandSaveExperiment(1);
         if( "success".equals(result)) {
@@ -847,6 +887,14 @@ public class NewExpWizardController {
         } else {
             return result;
         }
+    }
+    /*
+    private String commandSaveExperimentAs() {
+        return null;
+    }
+    */
+    public String commandSaveAs() {
+        return this.commandSaveExperimentAs();
     }
     
     public String commandSaveStage1() {
