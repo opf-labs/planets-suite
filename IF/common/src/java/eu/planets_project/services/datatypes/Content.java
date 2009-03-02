@@ -29,8 +29,11 @@ import eu.planets_project.services.utils.FileUtils;
 public final class Content implements Serializable {
     /***/
     private static final long serialVersionUID = 7135127983024589335L;
+    
+    /** */
     @XmlAttribute
     private URL reference;
+    
     /*
      * FIXME: The data handler class is not serializable. If an API consumer
      * would create content by value and use Java's object serialization, this
@@ -41,6 +44,10 @@ public final class Content implements Serializable {
     /* The DataHandler is not serializable, so we define it transient: */
     private DataHandler dataHandler;
 
+    /** */
+    @XmlAttribute
+    private long length = -1;
+    
     /*
      * We use static factory methods to provide named constructors for the
      * different kinds of content instances:
@@ -100,6 +107,7 @@ public final class Content implements Serializable {
         ByteArrayDataSource bads = new ByteArrayDataSource(value,
                 "application/octet-stream");
         DataHandler dh = new DataHandler(bads);
+        this.length = value.length;
         this.dataHandler = dh;
     }
 
@@ -109,6 +117,7 @@ public final class Content implements Serializable {
     private Content(final File value) {
        FileDataSource ds = new FileDataSource(value);
        DataHandler dh = new DataHandler(ds);
+       this.length = value.length();
        this.dataHandler = dh;
     }
 
@@ -116,6 +125,7 @@ public final class Content implements Serializable {
      * @param reference The content, passed as an explicit reference.
      */
     private Content(final URL reference) {
+        this.length = -1;
         this.reference = reference;
     }
     
@@ -168,6 +178,13 @@ public final class Content implements Serializable {
      */
     public boolean isByValue() {
         return reference == null;
+    }
+    
+    /**
+     * @return The size of the Content, in bytes.  Returns -1 if this is a 'by reference' Content object.
+     */
+    public long length() {
+        return length;
     }
 
     /**

@@ -409,7 +409,7 @@
   <target name="test:local" description="executes the included JUnit tests w/o a server" depends="test:src-defined,compile:tests" if="test.local">
     <echo message="TEST:LOCAL: Testing the service code without a server."/>
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes">
+    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
       <sysproperty key="pserv.test.context" value="local"/>
@@ -429,14 +429,14 @@
   <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)" depends="test:src-defined,compile:tests" if="test.standalone">
     <echo message="TEST:STANDALONE: Testing the service code using a standalone server."/>
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes">
+    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
       <sysproperty key="pserv.test.context" value="standalone"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
-        <formatter type="xml"/>
+        <formatter type="xml" extension="-standalone.xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
@@ -464,7 +464,7 @@
     <property name="echoclasspath" refid="standalone_test_classpath"/>
     <!-- echo message="Classpath = ${echoclasspath}"/ -->
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes">
+    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
       <sysproperty key="pserv.test.context" value="server"/>
@@ -473,7 +473,7 @@
       <sysproperty key="pserv.test.port" value="${if_server.port}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
-        <formatter type="xml"/>
+        <formatter type="xml" extension="-server.xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
@@ -558,7 +558,14 @@
       </fileset>
     </copy>
     
-    <copy file="${build.dir}/${jar.base.name}" tofile="${war.build.dir}/${appName}/WEB-INF/lib"/>
+    <!--
+    <copy file="${build.dir}/${jar.base.name}" todir="${war.build.dir}/${appName}/WEB-INF/lib"/>
+    -->
+    <copy todir="${war.build.dir}/${appName}/WEB-INF/lib">
+      <fileset dir="${lib.dir}">
+        <include name="**/*.jar" />
+      </fileset>
+    </copy>
     
     <jar jarfile="${build.dir}/${war.base.name}" 
      basedir="${war.build.dir}/${appName}"/>

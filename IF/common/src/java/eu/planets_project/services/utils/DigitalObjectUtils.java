@@ -4,6 +4,9 @@
 package eu.planets_project.services.utils;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -22,9 +25,9 @@ public class DigitalObjectUtils {
      */
     public static long getContentSize( DigitalObject dob ) {
         long bytes = 0;
-        // Get the size at this level:
-        if( dob.getContent() != null ) {
-            bytes += getSizeOfContent(dob.getContent());
+        // Get the size at this level, if set:
+        if( dob.getContent() != null && dob.getContent().length() != -1 ) {
+            bytes += dob.getContent().length();
         }
         // Recurse into sub-dobs:
         if( dob.getContained() != null ) {
@@ -37,16 +40,37 @@ public class DigitalObjectUtils {
     }
 
     /*
-     * Attempts to determine the size of a Content object.
+     * These cases:
+     * 
+     *     - A compound DO, zip as Content, with MD outside the zip, pointing into it via Title.  
+     *       This is to pass between services.
+     *     - A zip file containing CDO, MD inside the zip, pointing to the binaries via the Title. 
+     *       This is an pure file 'IP', in effect.
+     *     - A compound DO, pulled from such a CDO zip file, with inputstreams for content.
+     *     
+     *     Okay, two formats, different contexts and packing/unpacking options.
+     *     - (CDO[zip] or CDO) i.e. If no Content, look up to root and unpack? 
+     *     - DOIP - a special ZIP file containing CDOs.
+     *     
+     *     Operations:
+     *     - Packing one or more CDOs into a DOIP, optionally embedding referenced resources. (Value) resources always to be embedded.
+     *     - Unpacking a DOIP and getting N CDOs out, optionally embedding binaries, using ZipInputStreams, or unpacking into Files?
+     *     
+     *     FIXME DO must know if it has a parent in order to be able to look things up?
+     *     FIXME Should DO use URI internally got Content.reference, to allow relative resolution?
      */
-    private static long getSizeOfContent( Content con ) {
-        if( con == null ) return 0;
+    
+    public static void main( String args[] ) {
         try {
-            return con.read().available();   
-        } catch (IOException e) {
+            URI uri = new URI("FAQ.html");
+            System.out.println("Got "+uri);
+            System.out.println("Got "+uri.isAbsolute());
+            uri = new URI("http://localhost/FAQ.html");
+            System.out.println("Got "+uri);
+            System.out.println("Got "+uri.isAbsolute());
+        } catch ( Exception e ) {
             e.printStackTrace();
         }
-        return 0;
     }
     
 }
