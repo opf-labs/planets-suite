@@ -54,8 +54,6 @@
 	<classpathentry kind="src" path="PA/openXML/src/test/java"/>
 	<classpathentry kind="src" path="PA/openjpeg/src/java"/>
 	<classpathentry kind="src" path="PA/openjpeg/test"/>
-	<classpathentry kind="src" path="PA/pdf2html/src/java"/>
-	<classpathentry kind="src" path="PA/pdf2html/test/java"/>
 	<classpathentry kind="src" path="PA/pdf2pdfamaycomputer/src/java"/>
 	<classpathentry kind="src" path="PA/pdf2pdfamaycomputer/test"/>
 	<classpathentry kind="src" path="PA/pdf2ps/src/java"/>
@@ -223,7 +221,6 @@
 	<classpathentry kind="lib" path="IF/jaxr/lib/scout-1.0rc2.jar"/>
 	<classpathentry kind="lib" path="IF/jaxr/lib/xbean.jar"/>
 	<classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar" sourcepath="D:/JTidy/jtidy-04aug2000r7-dev/src"/>
-	<classpathentry kind="lib" path="PA/pdf2html/lib/fontbox-0.1.0.jar"/>
 	<classpathentry kind="lib" path="PA/pdf2text/lib/fontbox-0.1.0.jar"/>
 	<classpathentry kind="lib" path="PA/pdfbox/lib/fontbox-0.1.0.jar"/>
 	<classpathentry kind="lib" path="PA/pdfbox/lib/PDFBox-0.7.3.jar"/>
