@@ -39,7 +39,10 @@
                 <f:facet name="header">
                     <h:outputText value="Name"/>
                 </f:facet>
-                <h:outputText value="#{sd.name}"/>
+                <h:outputLink value="service_inspector.faces">
+                    <f:param name="serviceName" value="#{sd.name}"/>
+                    <h:outputText value="#{sd.name}"/>
+                </h:outputLink>
             </rich:column>
             
             <rich:column sortBy="#{sd.type}" sortOrder="ASCENDING">
@@ -53,8 +56,13 @@
                 <f:facet name="header">
                     <h:outputText value="Description"/>
                 </f:facet>
+                
+                <h:panelGroup rendered="#{sd.logo != null}">
+                  <img src="#{sd.logo}" height="32" style="float: right; height: 32px;" title="#{sd.name}" alt="#{sd.name}"/>
+                </h:panelGroup>
+                
                 <h:outputText value="#{sd.description}"/>
-                <h:outputLink rendered="#{sd.furtherInfo != null}" value="#{sd.furtherInfo}" target="_new"><br/>[further info]</h:outputLink>
+                <h:outputLink rendered="#{sd.furtherInfo != null}" value="#{sd.furtherInfo}" target="_new"> <t:graphicImage value="/graphics/external-link.png" alt="Open service info in new window..."/></h:outputLink>
             </rich:column>
             
 <!-- 

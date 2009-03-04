@@ -237,6 +237,7 @@
           <include name="js.jar" />
           <include name="pdf-transcoder.jar" />
           <include name="batik-*.jar" />
+          <include name="opencsv-*.jar" />
 		</fileset>
 	</move>
 

@@ -980,4 +980,23 @@ width:100%;
 #pathwayBrowserTable .infoFloat a:hover {
   text-decoration: underline;
 }
-
+.serviceInspectorPanel {
+  margin: 10px 10px;
+  padding: 5px;
+  display: block;
+}
+.serviceInspectorPanel dt {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.serviceInspectorPanel dd {
+  margin-bottom: 5px;
+}
+pre.rawServiceDescription {
+  font-size: 10pt;
+  overflow: scroll;
+  border: 1px solid gray;
+  margin: 0;
+  padding: 2px 4px;
+  background-color: #f8f8f8;
+}

@@ -103,6 +103,15 @@
   <managed-bean-scope>session</managed-bean-scope>
  </managed-bean>
  <managed-bean>
+  <managed-bean-name>ServiceInspector</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.service.ServiceInspector</managed-bean-class>
+  <managed-bean-scope>request</managed-bean-scope>
+  <managed-property>
+   <property-name>serviceName</property-name>
+   <value>#{param['serviceName']}</value>
+  </managed-property>
+ </managed-bean>
+ <managed-bean>
   <managed-bean-name>PlanetsSharedBean</managed-bean-name>
   <managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
   <managed-bean-scope>application</managed-bean-scope>
@@ -141,6 +150,11 @@
   <navigation-case>
    <from-outcome>browse_experiments</from-outcome>
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>service_inspector</from-outcome>
+   <to-view-id>/reader/service_inspector.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>

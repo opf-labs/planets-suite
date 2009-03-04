@@ -210,6 +210,13 @@
     
     </h:panelGrid>
 
+    <p>         
+        <h:outputLink value="/testbed/reader/results.jsp">
+          <f:param name="eid" value="#{ExperimentBean.experiment.entityID}"/>
+          <h:outputText value="Click here to download data from all runs, in CVS format..."/>
+        </h:outputLink>
+    </p>
+
         </rich:tab>
         
         <rich:tab label="Comparisons">

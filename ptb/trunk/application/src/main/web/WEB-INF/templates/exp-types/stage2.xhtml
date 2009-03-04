@@ -71,34 +71,10 @@
                     Digital Objects
                 </f:facet>
 
-                <fieldset>
-                
-                    <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
-                    <p>The list of Digital Object to experiment upon.</p>
-                    <h:message for="addedFileInfoPanel" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
-                    
-                    <h:panelGroup id="addedFileInfoPanel">
-                           <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
-                                         layout="unorderedList" rowIndexVar="rowi">
-                                 <h:commandLink title="Remove this Digital Object." rendered="#{ExperimentBean.approved==false}">
-                                   <f:actionListener type="eu.planets_project.tb.gui.backing.exp.RemoveDigitalObjectActionListener"/>
-                                   <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
-                                 </h:commandLink>
-                                 <a href="#{filemap['uri']}">#{filemap['name']}</a>
-                           </t:dataList>
-                    </h:panelGroup>
-
-                </fieldset>
-
                 <h:panelGroup rendered="#{!ExperimentBean.approved}">
                 <fieldset>
                         <legend>#{res['exp_stage2.addDOs']}</legend>
-         
-                        <p>Use the buttons below to add more Digital Objects to this experiment.</p>
-                            
-                <fieldset>
-                        <legend>The Testbed Data Registry</legend>
-
+                                     
                          <p class="center">
                           <h:commandButton value="#{res['browse_data.selectData']}"
                            action="browseForData"
@@ -106,7 +82,6 @@
                            readonly="#{ExperimentBean.approved}"/>
                          </p>
 
-                </fieldset>
                 <fieldset>
                         <legend>#{res['exp_stage3.uploadFile']}</legend>
                         
@@ -141,6 +116,29 @@
  -->                        
  
                 </fieldset>
+
+                <fieldset>
+                
+                    <legend><h:outputText value="#{res['exp_stage2.inputData']} "/></legend>
+                    <p>The list of Digital Object to experiment upon.</p>
+                    <h:message for="addedFileInfoPanel" errorClass="errorMessage" infoClass="infoMessage" showDetail="true" showSummary="true"/>
+                    
+                    <h:panelGroup id="addedFileInfoPanel">
+                           <t:dataList var="filemap" value="#{ExperimentBean.experimentInputDataNamesAndURIs}" 
+                                         layout="unorderedList" rowIndexVar="rowi">
+                                 <h:commandLink title="Remove this Digital Object." rendered="#{ExperimentBean.approved==false}">
+                                   <f:actionListener type="eu.planets_project.tb.gui.backing.exp.RemoveDigitalObjectActionListener"/>
+                                   <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
+                                 </h:commandLink>
+                                 <a href="#{filemap['uri']}">#{filemap['name']}</a>
+                           </t:dataList>
+                    </h:panelGroup>
+
+                    <p>Use the above buttons to add more Digital Objects to this experiment.</p>
+                        
+                </fieldset>
+
+                
                 </h:panelGroup>
             </rich:panel>
         </h:panelGrid>

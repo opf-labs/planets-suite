@@ -12,6 +12,10 @@ import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
  */
 public class MeasurementBean extends MeasurementImpl {
 
+    /** */
+    private static final long serialVersionUID = -9007264139415572106L;
+    
+    /** */
     protected boolean selected = true;
     
     /**

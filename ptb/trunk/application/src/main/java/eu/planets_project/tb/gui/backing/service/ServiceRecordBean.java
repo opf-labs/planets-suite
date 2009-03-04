@@ -139,7 +139,18 @@ public class ServiceRecordBean {
      * @return the sd
      */
     public ServiceDescription getServiceDescription() {
+        if( sd == null ) {
+            return sr.getServiceDescription();
+        }
         return sd;
+    }
+
+    /**
+     * @return the service description as formatted XML:
+     */
+    public String getServiceDescriptionAsXml() {
+        if( this.getServiceDescription() == null ) return null;
+        return this.getServiceDescription().toXmlFormatted();
     }
 
     /**
@@ -201,6 +212,14 @@ public class ServiceRecordBean {
         if( sr != null ) {
             return sr.getServiceDescription().getEndpoint();
         }
+        return null;
+    }
+
+    /**
+     * @return
+     */
+    public URI getLogo() {
+        if( sd != null ) return sd.getLogo();
         return null;
     }
 

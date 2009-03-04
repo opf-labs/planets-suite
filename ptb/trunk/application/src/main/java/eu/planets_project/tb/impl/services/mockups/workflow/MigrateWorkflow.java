@@ -241,9 +241,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( p == null ) return m;
         
         URI propURI = p.getUri();
-        if( p == null ) {
+        // Invent a uri if required:
+        if( propURI == null ) {
             try {
-                // FIXME Unify the URI construction: See also XCDLParser.parseXCDL(), XCDLService.createPropertyFromFFProp()
                 propURI = new URI( TecRegMockup.URIXCDLPropertyRoot + p.getName());
             } catch (URISyntaxException e) {
                 e.printStackTrace();

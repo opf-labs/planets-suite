@@ -881,7 +881,8 @@ public class NewExpWizardController {
     }
     
     private String commandSaveExperimentAndGoto(int stage, String destination ) {
-        String result = commandSaveExperiment(1);
+        String result = commandSaveExperiment( stage );
+        log.info("Save: "+result);
         if( "success".equals(result)) {
             return destination;
         } else {
