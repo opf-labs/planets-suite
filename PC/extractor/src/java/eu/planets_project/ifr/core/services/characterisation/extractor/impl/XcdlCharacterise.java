@@ -6,7 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.ejb.Local;
@@ -16,15 +16,18 @@ import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
+import eu.planets_project.ifr.core.services.characterisation.fpmtool.impl.FpmCommonProperties;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
+import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperties;
 import eu.planets_project.services.datatypes.FileFormatProperty;
+import eu.planets_project.services.datatypes.Metric;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -35,16 +38,13 @@ import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * XCL extractor service based on the Characterise interface.
- * @author melmsp
+ * @author Peter Melms, Fabian Steeg
  * @see XcdlMigrate
  */
 @Stateless()
 @Local(Characterise.class)
 @Remote(Characterise.class)
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-// @MTOM
-// @BindingType(value=SOAPBinding.SOAP12HTTP_MTOM_BINDING)
-// @StreamingAttachment(parseEagerly=true, memoryThreshold=5000000L)
 @WebService(name = XcdlCharacterise.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
 public class XcdlCharacterise implements Characterise, Serializable {
 
@@ -70,8 +70,9 @@ public class XcdlCharacterise implements Characterise, Serializable {
     public static final int MAX_FILE_SIZE = 10240;
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject,
-     *      java.lang.String, eu.planets_project.services.datatypes.Parameters)
+     *      eu.planets_project.services.datatypes.Parameters)
      */
     public CharacteriseResult characterise(DigitalObject digitalObject,
             Parameters parameters) {
@@ -81,24 +82,25 @@ public class XcdlCharacterise implements Characterise, Serializable {
         CharacteriseResult characteriseResult = null;
         String optionalFormatXCEL = null;
 
-        CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME, LOG);
+        CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME,
+                LOG);
 
         byte[] inputData = FileUtils.writeInputStreamToBinary(digitalObject
                 .getContent().read());
 
         byte[] result = null;
-        
-        if(parameters!=null) {
-        	List<Parameter> parameterList = parameters.getParameters();
-        	if(parameterList!=null && parameterList.size() > 0) {
-    			for (Parameter parameter : parameterList) {
-					String name = parameter.name;
-					if(name.equalsIgnoreCase("optionalXCELString")) {
-						optionalFormatXCEL = parameter.value;
-						break;
-					}
-				}
-        	}
+
+        if (parameters != null) {
+            List<Parameter> parameterList = parameters.getParameters();
+            if (parameterList != null && parameterList.size() > 0) {
+                for (Parameter parameter : parameterList) {
+                    String name = parameter.name;
+                    if (name.equalsIgnoreCase("optionalXCELString")) {
+                        optionalFormatXCEL = parameter.value;
+                        break;
+                    }
+                }
+            }
         }
 
         if (optionalFormatXCEL != null) {
@@ -212,11 +214,32 @@ public class XcdlCharacterise implements Characterise, Serializable {
      * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
     public final List<FileFormatProperty> listProperties(final URI formatURI) {
-        FileFormatProperties fileFormatProperties = ExtractorPropertiesLister
-                .getFileFormatProperties(formatURI);
-        List<FileFormatProperty> properties = fileFormatProperties
-                .getProperties();
-        return properties;
+        FpmCommonProperties commonProperties = new FpmCommonProperties();
+        CompareResult result = commonProperties.of(Arrays.asList(formatURI));
+        List<Prop> list = result.getProperties();
+        /*
+         * Starting here, this is a temporary workaround to match the output of
+         * the FpmCommonProperties to the FileFormatProperty class (in the
+         * future, this method will return elements of the same type as
+         * FpmCommonProperties returns):
+         */
+        List<FileFormatProperty> resultProps = new ArrayList<FileFormatProperty>();
+        for (Prop prop : list) {
+            FileFormatProperty fileFormatProperty = new FileFormatProperty(
+                    XcdlProperties.makePropertyURI(prop.getType(), prop
+                            .getName()), prop.getName(), null);
+            List<Prop> values = prop.getValues();
+            List<Metric> metrics = new ArrayList<Metric>();
+            for (Prop m : values) {
+                Metric o = new Metric();
+                o.setDescription(m.getDescription());
+                o.setName(m.getName());
+                o.setId(m.getType());
+                metrics.add(o);
+            }
+            fileFormatProperty.setMetrics(metrics);
+            resultProps.add(fileFormatProperty);
+        }
+        return resultProps;
     }
-
 }

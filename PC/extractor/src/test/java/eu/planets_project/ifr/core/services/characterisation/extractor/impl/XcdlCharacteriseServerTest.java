@@ -15,7 +15,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 /**
  * server tests for the extractor service
  */
-public class XcdlCharacteriseServerTest extends XcdlCharacteriseLocalTest {
+public class XcdlCharacteriseServerTest extends XcdlCharacteriseTests {
 	
 	/**
      * Set up the testing environment: create files and directories for testing.

@@ -25,4 +25,8 @@
 	<property name="test.local" value="" />
 	<property name="test.standalone" value="" />
 	<property name="test.server" value="" />
+
+	<!-- Define the API part-->
+	<property name="src.api.includes" 
+		value="eu/planets_project/ifr/core/services/characterisation/fpmtool/impl/*" />
 </project>

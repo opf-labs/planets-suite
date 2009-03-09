@@ -38,10 +38,6 @@ public class ExtractorPropertiesListerTest {
         formatIDs = new File("PC/extractor/src/resources/fpm_files/"
                 + "formatIDs.txt");
 
-        System.setProperty("pserv.test.context", "server");
-        System.setProperty("pserv.test.host", "localhost");
-        System.setProperty("pserv.test.port", "8080");
-
         listOfPronomIDs = new ArrayList<String>();
 
         String puidListString = FileUtils.readTxtFileIntoString(puidFile);
@@ -55,21 +51,6 @@ public class ExtractorPropertiesListerTest {
         }
 
     }
-
-    // @Test
-    // public void testGeneratePropertiesFile() throws URISyntaxException {
-    // StringBuffer puidBuffer = new StringBuffer();
-    // int i = 1;
-    // for (Iterator iterator = listOfPronomIDs.iterator(); iterator.hasNext();)
-    // {
-    // String currentPuid = (String) iterator.next();
-    // ExtractorPropertiesLister.generatePropertiesFile(new URI(currentPuid));
-    // puidBuffer.append(currentPuid + "\r\n");
-    // i++;
-    // }
-    // FileUtils.writeStringToFile(puidBuffer.toString(),
-    // formatIDs.getAbsolutePath());
-    // }
 
     /**
      * @throws URISyntaxException

@@ -9,7 +9,7 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
-public class XcdlMigrateServerTest extends XcdlMigrateLocalTest {
+public class XcdlMigrateServerTest extends XcdlMigrateTests {
 	
 	/**
      * Set up the testing environment: create files and directories for testing.

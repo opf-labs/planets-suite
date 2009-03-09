@@ -67,7 +67,8 @@ public final class XcdlParser implements XcdlAccess {
                 for (ValueSet valueSet : valueSets) {
                     LabValue labValue = valueSet.getLabValue();
                     List<Val> val = labValue.getVals();
-                    URI propUri = XcdlProperties.makePropertyURI(property.getId(), name);
+                    String id = property.getName().getId().replaceAll("id", "");
+                    URI propUri = XcdlProperties.makePropertyURI(id, name);
                     eu.planets_project.services.datatypes.Property p = new eu.planets_project.services.datatypes.Property(
                             propUri, name, val.get(0).getValues().get(0));
                     p.setType(labValue.getTypes().get(0).getValue().value());

@@ -24,9 +24,9 @@ public final class XcdlProperties implements XcdlAccess {
 
     private static final Namespace NS = Namespace
             .getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
-    
+
     public static final String XCDLPropertyRoot = "planets:pc/xcdl/property/";
-    
+
     public static URI XCDLPropertyRootUri;
     static {
         try {
@@ -44,13 +44,14 @@ public final class XcdlProperties implements XcdlAccess {
     public XcdlProperties(final File xcdlFile) {
         this.xcdlFile = xcdlFile;
     }
-    
+
     /**
      * 
      */
     public static URI makePropertyURI(String id, String name) {
         try {
-            URI propUri = new URI( XcdlProperties.XCDLPropertyRoot + "id" + id + "/" + name);
+            URI propUri = new URI(XcdlProperties.XCDLPropertyRoot + "id" + id
+                    + "/" + name);
             return propUri;
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -75,7 +76,8 @@ public final class XcdlProperties implements XcdlAccess {
                 Element labVal = e.getChild("valueSet", NS).getChild(
                         "labValue", NS);
                 String value = labVal.getChildText("val", NS);
-                String id = e.getAttributeValue("id");
+                String id = e.getChild("name",NS).getAttributeValue("id")
+                        .replaceAll("id", "");
                 URI propUri = XcdlProperties.makePropertyURI(id, name);
                 Property p = new Property(propUri, name, value);
                 p.setType(labVal.getChildText("type", NS));
