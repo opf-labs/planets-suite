@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Extractor2BinaryTest;
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.ExtractorPropertiesListerTest;
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.FpmCommonPropertiesTests;
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacteriseTests;
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrateTests;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccessTests;
@@ -18,5 +19,6 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.Xcdl
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { Extractor2BinaryTest.class, XcdlAccessTests.class,
         XcdlCharacteriseTests.class, ExtractorPropertiesListerTest.class,
-        XcdlMigrateTests.class, XcdlCreatorTests.class })
+        XcdlMigrateTests.class, XcdlCreatorTests.class,
+        FpmCommonPropertiesTests.class })
 public class AllExtractorSuite {}

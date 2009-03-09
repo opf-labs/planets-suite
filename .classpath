@@ -73,8 +73,6 @@
 	<classpathentry kind="src" path="PC/extractor/src/test/java"/>
 	<classpathentry kind="src" path="PC/file/src/java"/>
 	<classpathentry kind="src" path="PC/file/test/java"/>
-	<classpathentry kind="src" path="PC/fpm/src/java"/>
-	<classpathentry kind="src" path="PC/fpm/src/test/java"/>
 	<classpathentry kind="src" path="PC/jhove/src/java"/>
 	<classpathentry kind="src" path="PC/jhove/test/java"/>
 	<classpathentry kind="src" path="PC/libtiff/src/java"/>

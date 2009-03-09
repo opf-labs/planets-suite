@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.characterisation.fpmtool.impl;
+package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.IOException;
 import java.io.StringReader;

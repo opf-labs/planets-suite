@@ -16,7 +16,6 @@ import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
-import eu.planets_project.ifr.core.services.characterisation.fpmtool.impl.FpmCommonProperties;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
@@ -215,7 +214,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
      */
     public final List<FileFormatProperty> listProperties(final URI formatURI) {
         FpmCommonProperties commonProperties = new FpmCommonProperties();
-        CompareResult result = commonProperties.of(Arrays.asList(formatURI));
+        CompareResult result = commonProperties.union(Arrays.asList(formatURI));
         List<Prop> list = result.getProperties();
         /*
          * Starting here, this is a temporary workaround to match the output of

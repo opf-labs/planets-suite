@@ -1,7 +1,8 @@
-package eu.planets_project.ifr.core.services.characterisation.fpmtool.impl;
+package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,9 +40,9 @@ public final class FpmCommonProperties implements CommonProperties {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.compare.CommonProperties#of(java.util.List)
+     * @see eu.planets_project.services.compare.CommonProperties#union(java.util.List)
      */
-    public CompareResult of(final List<URI> formatIds) {
+    public CompareResult union(final List<URI> formatIds) {
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         StringBuilder builder = new StringBuilder();
         for (URI uri : formatIds) {
@@ -52,6 +53,36 @@ public final class FpmCommonProperties implements CommonProperties {
         ServiceReport report = new ServiceReport();
         report.setInfo(result);
         return new CompareResult(resultProperties, report);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.compare.CommonProperties#intersection(java.util.List)
+     */
+    public CompareResult intersection(final List<URI> formatIds) {
+        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
+        List<List<Prop>> propsOfEach = new ArrayList<List<Prop>>();
+        StringBuilder fullResult = new StringBuilder();
+        for (URI uri : formatIds) {
+            String result = basicCompareFormatProperties(registry
+                    .uriToPuid(uri)
+                    + ":");
+            fullResult.append(result).append("\n");
+            List<Prop> resultProperties = FpmResultReader.properties(result);
+            propsOfEach.add(resultProperties);
+        }
+        List<Prop> result = intersection(propsOfEach);
+        ServiceReport report = new ServiceReport();
+        report.setInfo(fullResult.toString());
+        return new CompareResult(result, report);
+    }
+
+    private List<Prop> intersection(List<List<Prop>> propsOfEach) {
+        List<Prop> result = new ArrayList<Prop>(propsOfEach.get(0));
+        for (List<Prop> list : propsOfEach) {
+            result.retainAll(list);
+        }
+        return result;
     }
 
     /**
@@ -85,4 +116,5 @@ public final class FpmCommonProperties implements CommonProperties {
         LOG.info("Returning joint file format properties string: " + result);
         return result;
     }
+
 }

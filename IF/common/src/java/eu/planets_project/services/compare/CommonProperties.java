@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
@@ -15,8 +14,8 @@ import eu.planets_project.services.PlanetsServices;
 
 /**
  * Determine common properties of different file formats. Implementing services
- * provide a list of common file format properties given identifiers of file
- * formats.
+ * provide a lists of union or intersection of common file format properties
+ * given identifiers of file formats.
  * @author Thomas Kraemer thomas.kraemer@uni-koeln.de, Fabian Steeg
  *         (fabian.steeg@uni-koeln.de)
  */
@@ -30,15 +29,26 @@ public interface CommonProperties extends PlanetsService {
 
     /**
      * @param formatIds File format IDs (PRONOM)
-     * @return Returns the set of common properties of the specified file
+     * @return Returns the intersection set of common properties of the
+     *         specified file formats (in a compare result object)
+     */
+    @WebMethod(operationName = CommonProperties.NAME + "IntersectionName", action = PlanetsServices.NS
+            + "/" + CommonProperties.NAME + "IntersectionAction")
+    @WebResult(name = CommonProperties.NAME + "IntersectionResultName", targetNamespace = PlanetsServices.NS
+            + "/" + CommonProperties.NAME, partName = CommonProperties.NAME
+            + "IntersectionResultPart")
+    CompareResult intersection(List<URI> formatIds);
+
+    /**
+     * @param formatIds File format IDs (PRONOM)
+     * @return Returns the union set of common properties of the specified file
      *         formats (in a compare result object)
      */
-    @WebMethod(operationName = CommonProperties.NAME, action = PlanetsServices.NS
-            + "/" + CommonProperties.NAME)
-    @WebResult(name = CommonProperties.NAME + "Result", targetNamespace = PlanetsServices.NS
+    @WebMethod(operationName = CommonProperties.NAME + "UnionName", action = PlanetsServices.NS
+            + "/" + CommonProperties.NAME + "UnionAction")
+    @WebResult(name = CommonProperties.NAME + "UnionResultName", targetNamespace = PlanetsServices.NS
             + "/" + CommonProperties.NAME, partName = CommonProperties.NAME
-            + "Result")
-    CompareResult of(@WebParam(targetNamespace = PlanetsServices.NS + "/"
-            + CommonProperties.NAME) List<URI> formatIds);
+            + "UnionResultPart")
+    CompareResult union(List<URI> formatIds);
 
 }

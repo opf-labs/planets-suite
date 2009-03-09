@@ -1,14 +1,17 @@
-package eu.planets_project.ifr.core.services.characterisation.fpmtool.impl;
+package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.FpmCommonProperties;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.compare.CommonProperties;
@@ -53,15 +56,39 @@ public class FpmCommonPropertiesTests {
     private void testFor(final String... suffixes) {
         CommonProperties commonProperties = ServiceCreator.createTestService(
                 CommonProperties.QNAME, FpmCommonProperties.class,
-                "/pserv-pc-fpmtool/FpmCommonProperties?wsdl");
+                "/pserv-pc-extractor/FpmCommonProperties?wsdl");
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         List<URI> puids = new ArrayList<URI>();
         for (String suffix : suffixes) {
             puids.addAll(registry.getURIsForExtension(suffix));
         }
         System.out.println("PUIDS: " + puids);
-        CompareResult compareResult = commonProperties.of(puids);
-        List<Prop> list = compareResult.getProperties();
+        testIntersection(commonProperties, puids);
+        testUnion(commonProperties, puids);
+    }
+
+    private void testUnion(CommonProperties commonProperties, List<URI> puids) {
+        CompareResult union = commonProperties.union(puids);
+        commonCheck(union, union.getProperties());
+        List<Prop> properties = commonProperties.union(
+                Arrays.asList(puids.get(0))).getProperties();
+        Assert.assertTrue("Less union properties than properties of one only",
+                union.getProperties().size() >= properties.size());
+    }
+
+    private void testIntersection(CommonProperties commonProperties,
+            List<URI> puids) {
+        CompareResult intersection = commonProperties.intersection(puids);
+        commonCheck(intersection, intersection.getProperties());
+        Assert.assertTrue(
+                "More intersection properties than properties of one only",
+                intersection.getProperties().size() <= commonProperties
+                        .intersection(Arrays.asList(puids.get(0)))
+                        .getProperties().size());
+    }
+
+    private void commonCheck(final CompareResult compareResult,
+            final List<Prop> list) {
         assertNotNull("response was null", list);
         String info = compareResult.getReport().getInfo();
         assertTrue("Result contains an error: " + info, !info.contains("Error"));
