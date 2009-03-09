@@ -202,6 +202,8 @@ public class XcdlCharacterise implements Characterise, Serializable {
         parameters.setParameters(parameterList);
 
         sd.parameters(parameters);
+        
+        sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(new URI[]{}));
 
         return sd.build();
     }

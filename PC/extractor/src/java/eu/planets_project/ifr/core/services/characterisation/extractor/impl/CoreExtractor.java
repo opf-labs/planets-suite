@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.utils.ByteArrayHelper;
@@ -97,6 +99,25 @@ public class CoreExtractor {
 		}
 		NORM_DATA_DISABLED = false;
 		return result;
+    }
+    
+    public static List<URI> getSupportedInputFormats() {
+    	List<URI> inputFormats = new ArrayList<URI>();
+    	inputFormats.add(Format.extensionToURI("JPEG"));
+        inputFormats.add(Format.extensionToURI("TIFF"));
+        inputFormats.add(Format.extensionToURI("GIF"));
+        inputFormats.add(Format.extensionToURI("PNG"));
+        inputFormats.add(Format.extensionToURI("BMP"));
+        inputFormats.add(Format.extensionToURI("PDF"));
+        // inputFormats.add(Format.extensionToURI("DOC"));
+        // inputFormats.add(Format.extensionToURI("DOCX"));
+        return inputFormats;
+    }
+    
+    public static List<URI> getSupportedOutputFormats() {
+    	List<URI> outputFormats = new ArrayList<URI>();
+    	outputFormats.add(Format.extensionToURI("XCDL"));
+    	return outputFormats;
     }
 
     /**

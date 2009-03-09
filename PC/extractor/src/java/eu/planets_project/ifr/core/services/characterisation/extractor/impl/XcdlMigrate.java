@@ -68,25 +68,21 @@ public class XcdlMigrate implements Migrate, Serializable {
     public static final int MAX_FILE_SIZE = 75420028;
 
     private MigrationPath[] createMigrationPathwayMatrix(
-            List<String> inputFormats, List<String> outputFormats) {
-        List<MigrationPath> paths = new ArrayList<MigrationPath>();
+    		List<URI> inputFormats, List<URI> outputFormats) {
+        	List<MigrationPath> paths = new ArrayList<MigrationPath>();
 
-        for (Iterator<String> iterator = inputFormats.iterator(); iterator
-                .hasNext();) {
-            String input = iterator.next();
+        	for (Iterator<URI> iterator = inputFormats.iterator(); iterator.hasNext();) {
+        		URI input = iterator.next();
 
-            for (Iterator<String> iterator2 = outputFormats.iterator(); iterator2
-                    .hasNext();) {
-                String output = iterator2.next();
-                MigrationPath path = new MigrationPath(Format
-                        .extensionToURI(input), Format.extensionToURI(output),
-                        null);
-                // Debug...
-                // System.out.println(path.getInputFormat() + " --> " +
-                // path.getOutputFormat());
-                paths.add(path);
-            }
-        }
+        		for (Iterator<URI> iterator2 = outputFormats.iterator(); iterator2.hasNext();) {
+        			URI output = iterator2.next();
+        			MigrationPath path = new MigrationPath(input, output,null);
+        			// Debug...
+        			// System.out.println(path.getInputFormat() + " --> " +
+        			// path.getOutputFormat());
+        			paths.add(path);
+        		}
+        	}
         return paths.toArray(new MigrationPath[] {});
     }
 
@@ -147,22 +143,7 @@ public class XcdlMigrate implements Migrate, Serializable {
         sd.parameters(parameters);
 
         // Migration Paths: List all combinations:
-        List<String> inputFormats = new ArrayList<String>();
-
-        inputFormats.add("JPEG");
-        inputFormats.add("TIFF");
-        inputFormats.add("GIF");
-        inputFormats.add("PNG");
-        inputFormats.add("BMP");
-        inputFormats.add("PDF");
-        // inputFormats.add("DOC");
-        // inputFormats.add("DOCX");
-
-        List<String> outputFormats = new ArrayList<String>();
-
-        outputFormats.add("XCDL");
-
-        sd.paths(createMigrationPathwayMatrix(inputFormats, outputFormats));
+        sd.paths(createMigrationPathwayMatrix(CoreExtractor.getSupportedInputFormats(), CoreExtractor.getSupportedOutputFormats()));
 
         return sd.build();
     }
