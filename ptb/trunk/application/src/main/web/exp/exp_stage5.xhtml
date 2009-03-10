@@ -51,7 +51,7 @@
                         
                         <p>
                         
-                        <h:form>
+                        <a4j:form>
                        <h:panelGrid columns="3">			           
 			           <rich:column>
 					   <h:outputLabel value="#{res['new_exp.expNumExecutions']}" for="numExecutions" ></h:outputLabel>
@@ -63,7 +63,7 @@
 					   		<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipNumExecutions']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
 					   </rich:column>					   
 					   </h:panelGrid>	
-					   </h:form>	
+					   </a4j:form>	
 					   	
 					   </p>    
                 <h:commandButton id="executeExperimentButton" value="#{res['exp_stage5.button.run']}" 

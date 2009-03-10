@@ -21,6 +21,7 @@ import eu.planets_project.tb.impl.model.eval.EvaluationExecutableImpl;
  * @author alindley
  *
  */
+@Deprecated
 //@Entity
 @XmlRootElement(name = "BenchmarkGoal")
 @XmlAccessorType(XmlAccessType.FIELD) 

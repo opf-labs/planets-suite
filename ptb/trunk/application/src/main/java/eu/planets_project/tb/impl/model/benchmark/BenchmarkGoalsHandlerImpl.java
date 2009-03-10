@@ -35,6 +35,7 @@ import java.util.Vector;
  * 	</Text>
  * </BenachmarkGoals>
  **/
+@Deprecated
 public class BenchmarkGoalsHandlerImpl implements BenchmarkGoalsHandler{
 	
 	private Element root;

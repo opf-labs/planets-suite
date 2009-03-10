@@ -101,11 +101,12 @@
           <include name="META-INF/persistence.xml"/>
       </fileset>
       <fileset dir="${src.resources}/">
-          <include name="eu/planets_project/tb/impl/BenchmarkGoals.xml"/>
-          <include name="eu/planets_project/tb/impl/ServiceAnnotationTags.xml"/>
-          <include name="eu/planets_project/tb/impl/BackendResources.properties"/>
-          <include name="eu/planets_project/tb/impl/TBServiceTemplateSchema.xsd"/>
-          <include name="eu/planets_project/tb/impl/TBEvaluationServiceTemplateSchema.xsd"/>
+          <!-- e.g. BackendResources.properties, schema files, etc."/-->
+          <include name="*eu/planets_project/tb/impl/*.xml"/>
+          <include name="*eu/planets_project/tb/impl/*.xsd"/>
+          <include name="*eu/planets_project/tb/impl/*.owl"/>
+          <include name="*eu/planets_project/tb/impl/*.properties"/>
+          <!--the approval vm's-->
           <include name="**/*.vm"/>
       </fileset>
      </jar>
@@ -238,6 +239,11 @@
           <include name="pdf-transcoder.jar" />
           <include name="batik-*.jar" />
           <include name="opencsv-*.jar" />
+          <include name="protege*.jar" />
+          <include name="orphanNodesAlg.jar" />
+          <include name="jena.jar" />
+          <include name="iri.jar" />
+          <include name="icu4j_3_4.jar" />
 		</fileset>
 	</move>
 

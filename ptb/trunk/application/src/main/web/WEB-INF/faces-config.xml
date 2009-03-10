@@ -116,6 +116,11 @@
   <managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
   <managed-bean-scope>application</managed-bean-scope>
  </managed-bean>
+ <managed-bean>
+  <managed-bean-name>simpleTreeDndBean</managed-bean-name>
+  <managed-bean-class>eu.planets_project.tb.gui.backing.PropertyDnDTreeBean</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+ </managed-bean>
 <!--End Managed Beans -->
 
 
@@ -165,6 +170,11 @@
   <navigation-case>
    <from-outcome>browse_data</from-outcome>
    <to-view-id>/reader/browse_data.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>browse_ontology</from-outcome>
+   <to-view-id>/reader/browse_ontology.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
