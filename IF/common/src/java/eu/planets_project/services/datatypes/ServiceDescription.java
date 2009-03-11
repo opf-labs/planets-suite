@@ -306,6 +306,7 @@ public final class ServiceDescription {
          *        creating a new description
          */
         private void initialize(final ServiceDescription serviceDescription) {
+	    if( serviceDescription == null ) return;
             name = serviceDescription.name;
             type = serviceDescription.type;
             endpoint = serviceDescription.endpoint;
