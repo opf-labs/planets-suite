@@ -60,6 +60,7 @@
     <classpathentry kind="src" path="PA/pdf2ps/test" />
     <classpathentry kind="src" path="PA/pdfbox/src/java" />
     <classpathentry kind="src" path="PA/pdfbox/test/java" />
+    <classpathentry kind="src" path="PA/ps2pdf/src/java" />
     <classpathentry kind="src" path="PA/ps2pdf/src/main/java" />
     <classpathentry kind="src" path="PA/ps2pdf/test/java" />
     <classpathentry kind="src" path="PA/sanselan/src/java" />
