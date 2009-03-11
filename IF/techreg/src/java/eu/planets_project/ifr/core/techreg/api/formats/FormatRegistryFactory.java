@@ -3,15 +3,12 @@
  */
 package eu.planets_project.ifr.core.techreg.api.formats;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
-
+import eu.planets_project.ifr.core.techreg.impl.formats.FormatRegistryImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.impl.formats.FormatRegistryImpl;
+import javax.naming.Context;
+import javax.rmi.PortableRemoteObject;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -44,8 +41,8 @@ public final class FormatRegistryFactory {
                     registry = um;
                 } catch ( Exception e ) {
                     log.error("Failure during lookup of the FormatRegistry PortableRemoteObject: "
-                                    + e.toString());
-                    e.printStackTrace();
+                                    + e.toString(),e);
+                    //e.printStackTrace();
                     
                     /*
                      * We might not be able to retrieve via JNDI, and have not
