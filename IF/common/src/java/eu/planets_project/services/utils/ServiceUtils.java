@@ -3,10 +3,10 @@
  */
 package eu.planets_project.services.utils;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import eu.planets_project.services.datatypes.ServiceReport;
+
+import java.net.URI;
+import java.util.*;
 
 /**
  * A class to hold some utility functions for Planets Service developers.
@@ -83,5 +83,9 @@ public class ServiceUtils {
     public static double calculateDuration(long startTime, long endTime) {
     	double duration = endTime - startTime;
     	return duration;
+    }
+    
+    public static Set<URI> asSet(URI... uris){
+        return new HashSet<URI>(Arrays.asList(uris));
     }
 }
