@@ -1,227 +1,225 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="src" path="IF/admin/src/java" />
-    <classpathentry kind="src" path="IF/admin/src/test/java" />
-    <classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java" />
-    <classpathentry kind="src" path="IF/clients/BasicIdentifyOneBinary/src/java" />
-    <classpathentry kind="src" path="IF/clients/BasicMigrateOneBinary/src/java" />
-    <classpathentry kind="src" path="IF/common/src/java" />
-    <classpathentry kind="src" path="IF/common/src/test/java" />
-    <classpathentry kind="src" path="IF/generic/src/main/java" />
-    <classpathentry kind="src" path="IF/generic/src/test/java" />
-    <classpathentry kind="src" path="IF/jaxr/src/main/java" />
-    <classpathentry kind="src" path="IF/jaxr/src/test/java" />
-    <classpathentry kind="src" path="IF/registry/src/main/java" />
-    <classpathentry kind="src" path="IF/registry/src/test/java" />
-    <classpathentry kind="src" path="IF/simple/src/java" />
-    <classpathentry kind="src" path="IF/simple/src/test/java" />
-    <classpathentry kind="src" path="IF/storage/src/main/java" />
-    <classpathentry kind="src" path="IF/storage/src/test/java" />
-    <classpathentry kind="src" path="IF/techreg/src/java" />
-    <classpathentry kind="src" path="IF/users/src/java" />
-    <classpathentry kind="src" path="IF/users/src/test/java" />
-    <classpathentry kind="src" path="PA/abiword/src/java" />
-    <classpathentry kind="src" path="PA/abiword/test" />
-    <classpathentry kind="src" path="PA/avidemux/src/java" />
-    <classpathentry kind="src" path="PA/avidemux/test" />
-    <classpathentry kind="src" path="PA/dialogika/src/java" />
-    <classpathentry kind="src" path="PA/dialogika/test/java" />
-    <classpathentry kind="src" path="PA/dvips/src/java" />
-    <classpathentry kind="src" path="PA/dvips/test" />
-    <classpathentry kind="src" path="PA/ffmpeg/src/java" />
-    <classpathentry kind="src" path="PA/gimp/src/java" />
-    <classpathentry kind="src" path="PA/gimp/test" />
-    <classpathentry kind="src" path="PA/imagemagick/src/java" />
-    <classpathentry kind="src" path="PA/imagemagick/test/java" />
-    <classpathentry kind="src" path="PA/jasper19/src/java" />
-    <classpathentry kind="src" path="PA/jasper19/test" />
-    <classpathentry kind="src" path="PA/java-se/src/java" />
-    <classpathentry kind="src" path="PA/java-se/test/java" />
-    <classpathentry kind="src" path="PA/jj2000/src/java" />
-    <classpathentry kind="src" path="PA/jj2000/src/test/java" />
-    <classpathentry kind="src" path="PA/jmagickconverter/src/main/java" />
-    <classpathentry kind="src" path="PA/jmagickconverter/src/test/java" />
-    <classpathentry kind="src" path="PA/jtidy/src/java" />
-    <classpathentry kind="src" path="PA/jtidy/src/resources" />
-    <classpathentry kind="src" path="PA/jtidy/test/java" />
-    <classpathentry kind="src" path="PA/mdb2siard/src/java" />
-    <classpathentry kind="src" path="PA/mdb2siard/test" />
-    <classpathentry kind="src" path="PA/msgtext/src/java" />
-    <classpathentry kind="src" path="PA/msgtext/test/java" />
-    <classpathentry kind="src" path="PA/netPBM/src/java" />
-    <classpathentry kind="src" path="PA/netPBM/test/java" />
-    <classpathentry kind="src" path="PA/openXML/src/main/java" />
-    <classpathentry kind="src" path="PA/openXML/src/test/java" />
-    <classpathentry kind="src" path="PA/openjpeg/src/java" />
-    <classpathentry kind="src" path="PA/openjpeg/test" />
-    <classpathentry kind="src" path="PA/pdf2pdfamaycomputer/src/java" />
-    <classpathentry kind="src" path="PA/pdf2pdfamaycomputer/test" />
-    <classpathentry kind="src" path="PA/pdf2ps/src/java" />
-    <classpathentry kind="src" path="PA/pdf2ps/test" />
-    <classpathentry kind="src" path="PA/pdfbox/src/java" />
-    <classpathentry kind="src" path="PA/pdfbox/test/java" />
-    <classpathentry kind="src" path="PA/ps2pdf/src/java" />
-    <classpathentry kind="src" path="PA/ps2pdf/src/main/java" />
-    <classpathentry kind="src" path="PA/ps2pdf/test/java" />
-    <classpathentry kind="src" path="PA/sanselan/src/java" />
-    <classpathentry kind="src" path="PA/sanselan/test/java" />
-    <classpathentry kind="src" path="PA/sox/src/java" />
-    <classpathentry kind="src" path="PA/sox/src/resources" />
-    <classpathentry kind="src" path="PA/sox/test/java" />
-    <classpathentry kind="src" path="PA/xena/src/java" />
-    <classpathentry kind="src" path="PC/droid/src/java" />
-    <classpathentry kind="src" path="PC/droid/test/java" />
-    <classpathentry kind="src" path="PC/extractor/src/java" />
-    <classpathentry kind="src" path="PC/extractor/src/test/java" />
-    <classpathentry kind="src" path="PC/file/src/java" />
-    <classpathentry kind="src" path="PC/file/test/java" />
-    <classpathentry kind="src" path="PC/jhove/src/java" />
-    <classpathentry kind="src" path="PC/jhove/test/java" />
-    <classpathentry kind="src" path="PC/libtiff/src/java" />
-    <classpathentry kind="src" path="PC/libtiff/test/java" />
-    <classpathentry kind="src" path="PC/metadata/src/java" />
-    <classpathentry kind="src" path="PC/metadata/src/resources" />
-    <classpathentry kind="src" path="PC/metadata/src/test/java" />
-    <classpathentry kind="src" path="PC/odf-toolkit/src/main/java" />
-    <classpathentry kind="src" path="PC/odf-toolkit/src/test/java" />
-    <classpathentry kind="src" path="PC/pngcheck/src/java" />
-    <classpathentry kind="src" path="PC/pngcheck/test/java" />
-    <classpathentry kind="src" path="PP/comparator/src/java" />
-    <classpathentry kind="src" path="PP/comparator/test/java" />
-    <classpathentry kind="src" path="tests" />
-    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
-    <classpathentry kind="lib" path="lib/standalone/commons-logging.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jaxen.jar" />
-    <classpathentry kind="lib" path="PC/extractor/lib/jdom.jar" sourcepath="D:/04-11-2008/JDom/src" />
-    <classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar" />
-    <classpathentry kind="lib" path="lib/standalone/log4j.jar" />
-    <classpathentry kind="lib" path="PA/xena/lib/xena-4.2/image.jar" />
-    <classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar" />
-    <classpathentry kind="lib" path="PA/xena/lib/xena-4.2/xena.jar" />
-    <classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar" sourcepath="PC/droid/lib/droid/droid-src.zip" />
-    <classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar" />
-    <classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar" />
-    <classpathentry kind="lib" path="PC/jhove/lib/jhove.jar" />
-    <classpathentry kind="lib" path="PC/jhove/lib/JhoveApp.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/bcmail-jdk14-132.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/bcprov-jdk14-132.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/bfj220.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/bmp_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/excel_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/gif_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/html_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/jpg_adapter_1_1.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/mp3_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/msword_adapter_2_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/msworks_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/openoffice_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/pdf_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/pdfbox_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/PDFBox-0.7.3.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/poi-2.5.1-final-20040804.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/powerpoint_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/serializer.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/tiff_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/wave_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/wordperfect_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="PC/metadata/lib/xml_adapter_1_0.jar" />
-    <classpathentry kind="lib" path="lib/junit-4.4.jar" />
-    <classpathentry kind="lib" path="PA/jmagickconverter/lib/jmagick.jar" />
-    <classpathentry kind="lib" path="lib/standalone/richfaces-api-3.2.1.GA.jar" />
-    <classpathentry kind="lib" path="lib/standalone/richfaces-impl-3.2.1.GA.jar" />
-    <classpathentry kind="lib" path="lib/standalone/richfaces-ui-3.2.1.GA.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jsf-api.jar" />
-    <classpathentry kind="lib" path="IF/techreg/lib/lucene-core-2.3.2.jar" />
-    <classpathentry kind="lib" path="lib/standalone/mail.jar" />
-    <classpathentry kind="lib" path="lib/standalone/commons-codec.jar" />
-    <classpathentry kind="lib" path="lib/standalone/hibernate-annotations.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbossall-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jaxb-api.jar" />
-    <classpathentry kind="lib" path="lib/standalone/serializer.jar" />
-    <classpathentry kind="lib" path="lib/standalone/xalan.jar" />
-    <classpathentry kind="lib" path="lib/standalone/xercesImpl.jar" />
-    <classpathentry kind="lib" path="IF/common/lib/stax-api.jar" />
-    <classpathentry kind="lib" path="IF/common/lib/stax-ex.jar" />
-    <classpathentry kind="lib" path="IF/common/lib/streambuffer.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbossws-spi.jar" />
-    <classpathentry kind="lib" path="lib/standalone/antlr.jar" />
-    <classpathentry kind="lib" path="lib/standalone/avalon-framework.jar" />
-    <classpathentry kind="lib" path="lib/standalone/commons-httpclient.jar" />
-    <classpathentry kind="lib" path="lib/standalone/commons-lang-2.0.jar" />
-    <classpathentry kind="lib" path="lib/standalone/concurrent.jar" />
-    <classpathentry kind="lib" path="lib/standalone/ejb3-persistence.jar" />
-    <classpathentry kind="lib" path="lib/standalone/FastInfoset.jar" />
-    <classpathentry kind="lib" path="lib/standalone/getopt.jar" />
-    <classpathentry kind="lib" path="lib/standalone/hibernate-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jacorb.jar" />
-    <classpathentry kind="lib" path="lib/standalone/javassist.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jaxb-impl.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jaxb-xjc.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-aop-jdk50-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-aspect-jdk50-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-common-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-deployment.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-ejb3-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-iiop-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-j2ee.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-jsr77-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-remoting.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-serialization.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-srp-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-system-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-transaction-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jboss-xml-binding.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbosscx-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbossha-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbossjmx-ant.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbossmq-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbosssx-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jbossweb.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jettison.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jmx-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jmx-invoker-adaptor-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/jnp-client.jar" />
-    <classpathentry kind="lib" path="lib/standalone/logkit.jar" />
-    <classpathentry kind="lib" path="lib/standalone/policy.jar" />
-    <classpathentry kind="lib" path="lib/standalone/servlet-api.jar" />
-    <classpathentry kind="lib" path="lib/standalone/stax-api.jar" />
-    <classpathentry kind="lib" path="lib/standalone/stax-ex.jar" />
-    <classpathentry kind="lib" path="lib/standalone/streambuffer.jar" />
-    <classpathentry kind="lib" path="lib/standalone/trove.jar" />
-    <classpathentry kind="lib" path="lib/standalone/velocity-1.4.jar" />
-    <classpathentry kind="lib" path="lib/standalone/wsdl4j.jar" />
-    <classpathentry kind="lib" path="lib/standalone/wstx.jar" />
-    <classpathentry kind="lib" path="lib/standalone/xmlsec.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/activation.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-common.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-framework.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-jboss422.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-client.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-core.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxrpc.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxws-ext.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxws.jar" />
-    <classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-saaj.jar" />
-    <classpathentry kind="lib" path="PA/sanselan/lib/sanselan-0.94-incubator.jar" sourcepath="PA/sanselan/lib/apache-sanselan-incubating-0.94-src.zip" />
-    <classpathentry kind="lib" path="lib/standalone/jsf-facelets.jar" />
-    <classpathentry kind="lib" path="PC/libtiff/lib/jna.jar" />
-    <classpathentry kind="lib" path="lib/standalone/el-api.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/odfdom.jar" />
-    <classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar" />
-    <classpathentry kind="lib" path="IF/jaxr/lib/axis.jar" />
-    <classpathentry kind="lib" path="IF/jaxr/lib/commons-discovery-0.2.jar" />
-    <classpathentry kind="lib" path="IF/jaxr/lib/juddi-service.jar" />
-    <classpathentry kind="lib" path="IF/jaxr/lib/juddi.jar" />
-    <classpathentry kind="lib" path="IF/jaxr/lib/scout-1.0rc2.jar" />
-    <classpathentry kind="lib" path="IF/jaxr/lib/xbean.jar" />
-    <classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar" sourcepath="D:/JTidy/jtidy-04aug2000r7-dev/src" />
-    <classpathentry kind="lib" path="PA/pdfbox/lib/fontbox-0.1.0.jar" />
-    <classpathentry kind="lib" path="PA/pdfbox/lib/PDFBox-0.7.3.jar" />
-    <classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar" />
-    <classpathentry kind="output" path="bin" />
+	<classpathentry kind="src" path="IF/admin/src/java"/>
+	<classpathentry kind="src" path="IF/admin/src/test/java"/>
+	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
+	<classpathentry kind="src" path="IF/clients/BasicIdentifyOneBinary/src/java"/>
+	<classpathentry kind="src" path="IF/clients/BasicMigrateOneBinary/src/java"/>
+	<classpathentry kind="src" path="IF/common/src/java"/>
+	<classpathentry kind="src" path="IF/common/src/test/java"/>
+	<classpathentry kind="src" path="IF/generic/src/main/java"/>
+	<classpathentry kind="src" path="IF/generic/src/test/java"/>
+	<classpathentry kind="src" path="IF/jaxr/src/main/java"/>
+	<classpathentry kind="src" path="IF/jaxr/src/test/java"/>
+	<classpathentry kind="src" path="IF/registry/src/main/java"/>
+	<classpathentry kind="src" path="IF/registry/src/test/java"/>
+	<classpathentry kind="src" path="IF/simple/src/java"/>
+	<classpathentry kind="src" path="IF/simple/src/test/java"/>
+	<classpathentry kind="src" path="IF/storage/src/main/java"/>
+	<classpathentry kind="src" path="IF/storage/src/test/java"/>
+	<classpathentry kind="src" path="IF/techreg/src/java"/>
+	<classpathentry kind="src" path="IF/users/src/java"/>
+	<classpathentry kind="src" path="IF/users/src/test/java"/>
+	<classpathentry kind="src" path="PA/abiword/src/java"/>
+	<classpathentry kind="src" path="PA/abiword/test"/>
+	<classpathentry kind="src" path="PA/avidemux/src/java"/>
+	<classpathentry kind="src" path="PA/avidemux/test"/>
+	<classpathentry kind="src" path="PA/dialogika/src/java"/>
+	<classpathentry kind="src" path="PA/dialogika/test/java"/>
+	<classpathentry kind="src" path="PA/dvips/src/java"/>
+	<classpathentry kind="src" path="PA/dvips/test"/>
+	<classpathentry kind="src" path="PA/ffmpeg/src/java"/>
+	<classpathentry kind="src" path="PA/gimp/src/java"/>
+	<classpathentry kind="src" path="PA/gimp/test"/>
+	<classpathentry kind="src" path="PA/imagemagick/src/java"/>
+	<classpathentry kind="src" path="PA/imagemagick/test/java"/>
+	<classpathentry kind="src" path="PA/jasper19/src/java"/>
+	<classpathentry kind="src" path="PA/jasper19/test"/>
+	<classpathentry kind="src" path="PA/java-se/src/java"/>
+	<classpathentry kind="src" path="PA/java-se/test/java"/>
+	<classpathentry kind="src" path="PA/jj2000/src/java"/>
+	<classpathentry kind="src" path="PA/jj2000/src/test/java"/>
+	<classpathentry kind="src" path="PA/jmagickconverter/src/main/java"/>
+	<classpathentry kind="src" path="PA/jmagickconverter/src/test/java"/>
+	<classpathentry kind="src" path="PA/jtidy/src/java"/>
+	<classpathentry kind="src" path="PA/jtidy/src/resources"/>
+	<classpathentry kind="src" path="PA/jtidy/test/java"/>
+	<classpathentry kind="src" path="PA/mdb2siard/src/java"/>
+	<classpathentry kind="src" path="PA/mdb2siard/test"/>
+	<classpathentry kind="src" path="PA/msgtext/src/java"/>
+	<classpathentry kind="src" path="PA/msgtext/test/java"/>
+	<classpathentry kind="src" path="PA/netPBM/src/java"/>
+	<classpathentry kind="src" path="PA/netPBM/test/java"/>
+	<classpathentry kind="src" path="PA/openXML/src/main/java"/>
+	<classpathentry kind="src" path="PA/openXML/src/test/java"/>
+	<classpathentry kind="src" path="PA/openjpeg/src/java"/>
+	<classpathentry kind="src" path="PA/openjpeg/test"/>
+	<classpathentry kind="src" path="PA/pdf2pdfamaycomputer/src/java"/>
+	<classpathentry kind="src" path="PA/pdf2pdfamaycomputer/test"/>
+	<classpathentry kind="src" path="PA/pdf2ps/src/java"/>
+	<classpathentry kind="src" path="PA/pdf2ps/test"/>
+	<classpathentry kind="src" path="PA/pdfbox/src/java"/>
+	<classpathentry kind="src" path="PA/pdfbox/test/java"/>
+	<classpathentry kind="src" path="PA/ps2pdf/src/java"/>
+	<classpathentry kind="src" path="PA/ps2pdf/test/java"/>
+	<classpathentry kind="src" path="PA/sanselan/src/java"/>
+	<classpathentry kind="src" path="PA/sanselan/test/java"/>
+	<classpathentry kind="src" path="PA/sox/src/java"/>
+	<classpathentry kind="src" path="PA/sox/src/resources"/>
+	<classpathentry kind="src" path="PA/sox/test/java"/>
+	<classpathentry kind="src" path="PA/xena/src/java"/>
+	<classpathentry kind="src" path="PC/droid/src/java"/>
+	<classpathentry kind="src" path="PC/droid/test/java"/>
+	<classpathentry kind="src" path="PC/extractor/src/java"/>
+	<classpathentry kind="src" path="PC/extractor/src/test/java"/>
+	<classpathentry kind="src" path="PC/file/src/java"/>
+	<classpathentry kind="src" path="PC/file/test/java"/>
+	<classpathentry kind="src" path="PC/jhove/src/java"/>
+	<classpathentry kind="src" path="PC/jhove/test/java"/>
+	<classpathentry kind="src" path="PC/libtiff/src/java"/>
+	<classpathentry kind="src" path="PC/libtiff/test/java"/>
+	<classpathentry kind="src" path="PC/metadata/src/java"/>
+	<classpathentry kind="src" path="PC/metadata/src/resources"/>
+	<classpathentry kind="src" path="PC/metadata/src/test/java"/>
+	<classpathentry kind="src" path="PC/odf-toolkit/src/main/java"/>
+	<classpathentry kind="src" path="PC/odf-toolkit/src/test/java"/>
+	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
+	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
+	<classpathentry kind="src" path="PP/comparator/src/java"/>
+	<classpathentry kind="src" path="PP/comparator/test/java"/>
+	<classpathentry kind="src" path="tests"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
+	<classpathentry kind="lib" path="PC/extractor/lib/jdom.jar" sourcepath="D:/04-11-2008/JDom/src"/>
+	<classpathentry kind="lib" path="lib/standalone/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/log4j.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/image.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/office.jar"/>
+	<classpathentry kind="lib" path="PA/xena/lib/xena-4.2/xena.jar"/>
+	<classpathentry kind="lib" path="PC/droid/lib/droid/droid.jar" sourcepath="PC/droid/lib/droid/droid-src.zip"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove-handler.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove-module.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/jhove.jar"/>
+	<classpathentry kind="lib" path="PC/jhove/lib/JhoveApp.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/bcmail-jdk14-132.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/bcprov-jdk14-132.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/bfj220.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/bmp_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/excel_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/gif_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/html_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/jpg_adapter_1_1.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/metadata-planets.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/mp3_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/msword_adapter_2_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/msworks_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/openoffice_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/pdf_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/pdfbox_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/PDFBox-0.7.3.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/poi-2.5.1-final-20040804.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/powerpoint_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/serializer.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/tiff_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/wave_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/wordperfect_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="PC/metadata/lib/xml_adapter_1_0.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
+	<classpathentry kind="lib" path="PA/jmagickconverter/lib/jmagick.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-api-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-impl-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/richfaces-ui-3.2.1.GA.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jsf-api.jar"/>
+	<classpathentry kind="lib" path="IF/techreg/lib/lucene-core-2.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/mail.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-codec.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossall-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-annotations-ejb3.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3x.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/serializer.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/xalan.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/stax-api.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/stax-ex.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/streambuffer.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossws-spi.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/antlr.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/avalon-framework.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-httpclient.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/commons-lang-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/concurrent.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/ejb3-persistence.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/FastInfoset.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/getopt.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/hibernate-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jacorb.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/javassist.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-aop-jdk50-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-aspect-jdk50-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-common-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-deployment.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-ejb3-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-iiop-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-j2ee.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-jsr77-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-remoting.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-serialization.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-srp-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-system-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-transaction-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jboss-xml-binding.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbosscx-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossha-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossjmx-ant.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossmq-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbosssx-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jbossweb.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jettison.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jmx-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jmx-invoker-adaptor-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/jnp-client.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/logkit.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/policy.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/stax-api.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/stax-ex.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/streambuffer.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/trove.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/velocity-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/wsdl4j.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/wstx.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/xmlsec.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/activation.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-common.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-framework.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-jboss422.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-client.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-core.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxrpc.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxws-ext.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-jaxws.jar"/>
+	<classpathentry kind="lib" path="lib/jaxws-jboss-native/jbossws-native-saaj.jar"/>
+	<classpathentry kind="lib" path="PA/sanselan/lib/sanselan-0.94-incubator.jar" sourcepath="PA/sanselan/lib/apache-sanselan-incubating-0.94-src.zip"/>
+	<classpathentry kind="lib" path="lib/standalone/jsf-facelets.jar"/>
+	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/standalone/el-api.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfdom.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/axis.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/juddi-service.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/juddi.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/scout-1.0rc2.jar"/>
+	<classpathentry kind="lib" path="IF/jaxr/lib/xbean.jar"/>
+	<classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar" sourcepath="D:/JTidy/jtidy-04aug2000r7-dev/src"/>
+	<classpathentry kind="lib" path="PA/pdfbox/lib/fontbox-0.1.0.jar"/>
+	<classpathentry kind="lib" path="PA/pdfbox/lib/PDFBox-0.7.3.jar"/>
+	<classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>
-
