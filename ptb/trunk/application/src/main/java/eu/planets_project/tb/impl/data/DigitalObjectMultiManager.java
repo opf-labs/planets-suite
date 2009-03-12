@@ -148,7 +148,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         } catch (SOAPException e1) {
             e1.printStackTrace();
             log.error("Could not retrieve the binary for " + pdURI);
-            throw new DigitalObjectNotFoundException();
+            throw new DigitalObjectNotFoundException( "Could not retrieve the binary for " + pdURI );
         }
         
         // FIXME Ensure that the DOB is set up correctly.
@@ -170,7 +170,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
 //        How to fix this?
 //        List<Metadata> domd = digitalObject.getMetadata();
         
-        throw new DigitalObjectNotStoredException();
+        throw new DigitalObjectNotStoredException("Could not store the digital object at " + pdURI);
 
     }
 
