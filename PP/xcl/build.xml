@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<!-- ======================================================================= -->
+<!-- Planets Services deployer build file for the XCL services               -->
+<!-- ======================================================================= -->
+
+<project name="pp-xcl" default="deploy" basedir=".">
+
+	<!-- Specify configuration for this project -->
+	<property name="appName" value="xcl" />
+	<property name="appDir" value="." />
+	<!-- Specify the build type: ejb, war or ear. -->
+	<property name="pserv.app.build.type" value="ejb" />
+
+	<property name="src.dir" value="${appDir}/src/java" />
+	<property name="lib.dir" value="${appDir}/lib" />
+	<property name="src.resources" value="${appDir}/src/resources" />
+
+	<!-- Include the build targets etc -->
+	<property name="pserv.root.dir" value="../.." />
+	<import file="${pserv.root.dir}/build.common.xml" />
+
+	<!-- Unit testing definitions -->
+	<property name="test.src.dir" value="${appDir}/src/test/java" />
+	<property name="test.local" value="" />
+	<property name="test.standalone" value="" />
+	<property name="test.server" value="" />
+
+</project>

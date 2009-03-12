@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xcdl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.planets-project.eu/xcl/schemas/xcl" xsi:schemaLocation="http://www.planets-project.eu/xcl/schemas/xcl ../res/xcl/xcdl/XCDLCore.xsd" id="0" >
+    <object id="o1" >
+        <normData type="image" id="nd1" >00 00 00 00 11 11 11 11 22 22 22 22 33 33 33 33 44 44 44 44 55 55 55 55 
+66 66 66 66 77 77 77 77 00 00 00 00 11 11 11 11 22 22 22 22 33 33 33 33 
+44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 00 00 00 00 11 11 11 11 
+22 22 22 22 33 33 33 33 44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 
+00 00 00 00 11 11 11 11 22 22 22 22 33 33 33 33 44 44 44 44 55 55 55 55 
+66 66 66 66 77 77 77 77 11 11 11 11 22 22 22 22 33 33 33 33 44 44 44 44 
+55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 11 11 11 11 22 22 22 22 
+33 33 33 33 44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 
+11 11 11 11 22 22 22 22 33 33 33 33 44 44 44 44 55 55 55 55 66 66 66 66 
+77 77 77 77 88 88 88 88 11 11 11 11 22 22 22 22 33 33 33 33 44 44 44 44 
+55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 22 22 22 22 33 33 33 33 
+44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 
+22 22 22 22 33 33 33 33 44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 
+88 88 88 88 99 99 99 99 22 22 22 22 33 33 33 33 44 44 44 44 55 55 55 55 
+66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 22 22 22 22 33 33 33 33 
+44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 
+33 33 33 33 44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 
+99 99 99 99 aa aa aa aa 33 33 33 33 44 44 44 44 55 55 55 55 66 66 66 66 
+77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa 33 33 33 33 44 44 44 44 
+55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa 
+33 33 33 33 44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 
+99 99 99 99 aa aa aa aa 44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 
+88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb 44 44 44 44 55 55 55 55 
+66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb 
+44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 
+aa aa aa aa bb bb bb bb 44 44 44 44 55 55 55 55 66 66 66 66 77 77 77 77 
+88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb 55 55 55 55 66 66 66 66 
+77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb cc cc cc cc 
+55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa 
+bb bb bb bb cc cc cc cc 55 55 55 55 66 66 66 66 77 77 77 77 88 88 88 88 
+99 99 99 99 aa aa aa aa bb bb bb bb cc cc cc cc 55 55 55 55 66 66 66 66 
+77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb cc cc cc cc 
+66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb 
+cc cc cc cc dd dd dd dd 66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 
+aa aa aa aa bb bb bb bb cc cc cc cc dd dd dd dd 66 66 66 66 77 77 77 77 
+88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb cc cc cc cc dd dd dd dd 
+66 66 66 66 77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb 
+cc cc cc cc dd dd dd dd 77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa 
+bb bb bb bb cc cc cc cc dd dd dd dd ee ee ee ee 77 77 77 77 88 88 88 88 
+99 99 99 99 aa aa aa aa bb bb bb bb cc cc cc cc dd dd dd dd ee ee ee ee 
+77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa bb bb bb bb cc cc cc cc 
+dd dd dd dd ee ee ee ee 77 77 77 77 88 88 88 88 99 99 99 99 aa aa aa aa 
+bb bb bb bb cc cc cc cc dd dd dd dd ee ee ee ee </normData>
+        <property id="p1" source="raw" cat="descr" >
+            <name id="id118" >dataType</name>
+            <valueSet id="i_i1_s12" >
+                <labValue>
+                    <val>3</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p4" source="raw" cat="descr" >
+            <name id="id146" >subfileType</name>
+            <valueSet id="i_i1_s8" >
+                <labValue>
+                    <val>unspecified</val>
+                    <type>XCLLabel</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p5" source="raw" cat="descr" >
+            <name id="id30" >imageWidth</name>
+            <valueSet id="i_i1_s10" >
+                <labValue>
+                    <val>32</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p6" source="raw" cat="descr" >
+            <name id="id2" >imageHeight</name>
+            <valueSet id="i_i1_s13" >
+                <labValue>
+                    <val>32</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p7" source="raw" cat="descr" >
+            <name id="id151" >bitsPerSample</name>
+            <valueSet id="i_i1_s16" >
+                <labValue>
+                    <val>8</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p12" source="raw" cat="descr" >
+            <name id="id18" >compression</name>
+            <valueSet id="i_i1_s20" >
+                <labValue>
+                    <val>uncompressed</val>
+                    <type>XCLLabel</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p13" source="raw" cat="descr" >
+            <name id="id20" >imageType</name>
+            <valueSet id="i_i1_s24" >
+                <labValue>
+                    <val>blackIsZero</val>
+                    <type>XCLLabel</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p23" source="raw" cat="descr" >
+            <name id="id26" >samplesPerPixel</name>
+            <valueSet id="i_i1_s32" >
+                <labValue>
+                    <val>1</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p24" source="raw" cat="descr" >
+            <name id="id116" >rowsPerStrip</name>
+            <valueSet id="i_i1_s34" >
+                <labValue>
+                    <val>32</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p25" source="raw" cat="descr" >
+            <name id="id145" >stripByteCount</name>
+            <valueSet id="i_i1_s36" >
+                <labValue>
+                    <val>1024</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p28" source="raw" cat="descr" >
+            <name id="id23" >resolutionX</name>
+            <valueSet id="i_i1_s42" >
+                <labValue>
+                    <val>72</val>
+                    <type>rational</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p29" source="raw" cat="descr" >
+            <name id="id24" >resolutionY</name>
+            <valueSet id="i_i1_s47" >
+                <labValue>
+                    <val>72</val>
+                    <type>rational</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p35" source="raw" cat="descr" >
+            <name id="id22" >resolutionUnit</name>
+            <valueSet id="i_i1_s51" >
+                <labValue>
+                    <val>inch</val>
+                    <type>XCLLabel</type>
+                </labValue>
+            </valueSet>
+        </property>
+        <property id="p48" source="raw" cat="descr" >
+            <name id="id64" >photoshop</name>
+            <valueSet id="i_i1_s56" >
+                <labValue>
+                    <val>56 66 73 77 3 237 10 82 101 115 111 108 117 116 105 111 110 0 0 0 0 16 0 72 0 0 0 1 0 2 0 72 0 0 0 1 0 2 56 66 73 77 4 13 24 70 88 32 71 108 111 98 97 108 32 76 105 103 104 116 105 110 103 32 65 110 103 108 101 0 0 0 0 4 0 0 0 120 56 66 73 77 3 243 11 80 114 105 110 116 32 70 108 97 103 115 0 0 0 9 0 0 0 0 0 0 0 0 1 0 56 66 73 77 4 10 14 67 111 112 121 114 105 103 104 116 32 70 108 97 103 0 0 0 0 1 0 0 56 66 73 77 39 16 20 74 97 112 97 110 101 115 101 32 80 114 105 110 116 32 70 108 97 103 115 0 0 0 0 10 0 1 0 0 0 0 0 0 0 2 56 66 73 77 3 244 28 77 111 110 111 99 104 114 111 109 101 32 72 97 108 102 116 111 110 101 32 83 101 116 116 105 110 103 115 0 0 0 0 18 0 53 0 0 0 1 0 45 0 0 0 6 0 0 0 0 0 1 56 66 73 77 3 247 28 77 111 110 111 99 104 114 111 109 101 32 84 114 97 110 115 102 101 114 32 83 101 116 116 105 110 103 115 0 0 0 0 28 0 0 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 3 232 0 0 56 66 73 77 4 8 6 71 117 105 100 101 115 0 0 0 0 16 0 0 0 1 0 0 2 64 0 0 2 64 0 0 0 0 56 66 73 77 4 30 13 85 82 76 32 111 118 101 114 114 105 100 101 115 0 0 0 4 0 0 0 0 56 66 73 77 4 26 6 83 108 105 99 101 115 0 0 0 0 113 0 0 0 6 0 0 0 0 0 0 0 0 0 0 0 32 0 0 0 32 0 0 0 8 0 66 0 65 0 83 0 73 0 48 0 71 0 48 0 52 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 32 0 0 0 32 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 56 66 73 77 4 17 17 73 67 67 32 85 110 116 97 103 103 101 100 32 70 108 97 103 0 0 0 1 1 0 56 66 73 77 4 20 23 76 97 121 101 114 32 73 68 32 71 101 110 101 114 97 116 111 114 32 66 97 115 101 0 0 0 4 0 0 0 1 56 66 73 77 4 12 21 78 101 119 32 87 105 110 100 111 119 115 32 84 104 117 109 98 110 97 105 108 0 0 2 221 0 0 0 1 0 0 0 32 0 0 0 32 0 0 0 96 0 0 12 0 0 0 2 193 0 24 0 1 255 216 255 224 0 16 74 70 73 70 0 1 2 1 0 72 0 72 0 0 255 238 0 14 65 100 111 98 101 0 100 128 0 0 0 1 255 219 0 132 0 12 8 8 8 9 8 12 9 9 12 17 11 10 11 17 21 15 12 12 15 21 24 19 19 21 19 19 24 17 12 12 12 12 12 12 17 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 13 11 11 13 14 13 16 14 14 16 20 14 14 14 20 20 14 14 14 14 20 17 12 12 12 12 12 17 17 12 12 12 12 12 12 17 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 255 192 0 17 8 0 32 0 32 3 1 34 0 2 17 1 3 17 1 255 221 0 4 0 2 255 196 1 63 0 0 1 5 1 1 1 1 1 1 0 0 0 0 0 0 0 3 0 1 2 4 5 6 7 8 9 10 11 1 0 1 5 1 1 1 1 1 1 0 0 0 0 0 0 0 1 0 2 3 4 5 6 7 8 9 10 11 16 0 1 4 1 3 2 4 2 5 7 6 8 5 3 12 51 1 0 2 17 3 4 33 18 49 5 65 81 97 19 34 113 129 50 6 20 145 161 177 66 35 36 21 82 193 98 51 52 114 130 209 67 7 37 146 83 240 225 241 99 115 53 22 162 178 131 38 68 147 84 100 69 194 163 116 54 23 210 85 226 101 242 179 132 195 211 117 227 243 70 39 148 164 133 180 149 196 212 228 244 165 181 197 213 229 245 86 102 118 134 150 166 182 198 214 230 246 55 71 87 103 119 135 151 167 183 199 215 231 247 17 0 2 2 1 2 4 4 3 4 5 6 7 7 6 5 53 1 0 2 17 3 33 49 18 4 65 81 97 113 34 19 5 50 129 145 20 161 177 66 35 193 82 209 240 51 36 98 225 114 130 146 67 83 21 99 115 52 241 37 6 22 162 178 131 7 38 53 194 210 68 147 84 163 23 100 69 85 54 116 101 226 242 179 132 195 211 117 227 243 70 148 164 133 180 149 196 212 228 244 165 181 197 213 229 245 86 102 118 134 150 166 182 198 214 230 246 39 55 71 87 103 119 135 151 167 183 199 255 218 0 12 3 1 0 2 17 3 17 0 63 0 243 188 204 102 179 169 229 177 144 214 182 219 3 90 209 0 0 242 54 181 91 196 199 227 221 249 190 31 5 115 55 27 252 175 155 238 143 211 91 219 249 101 93 196 199 227 221 249 190 31 4 148 172 76 126 61 223 155 225 240 90 248 184 252 123 191 55 195 224 150 46 63 30 239 205 240 248 45 140 92 126 61 223 155 225 240 73 79 255 208 202 205 199 255 0 43 102 123 163 244 214 246 254 89 87 49 113 248 247 126 111 135 193 91 205 199 255 0 43 102 107 31 166 183 183 242 202 187 139 143 199 187 243 124 62 9 41 88 184 252 123 191 55 195 224 181 241 113 248 247 126 111 135 193 44 92 126 61 223 155 225 240 90 216 180 113 238 252 223 15 130 74 127 255 217 0</val>
+                    <type>int</type>
+                </labValue>
+            </valueSet>
+        </property>      
+    </object>
+</xcdl>

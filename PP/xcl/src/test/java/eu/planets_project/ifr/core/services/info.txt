@@ -1,0 +1,4 @@
+The suites in this package are meant to be run via JUnit directly (e.g. from 
+within the IDE), while the suites in the sub-packages (containing the word 
+"Suite" in their names) are called by the Ant-based test system (which 
+automatically tests each suite locally, standalone and on a server).

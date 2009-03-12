@@ -1,0 +1,9 @@
+The classes in generated/ have been generated from the comparator config (PCR) 
+XSD files (in the xcltools project), using a custom binding that creates better
+classes (custom.xjb), using the command:
+
+- The ComparatorConfigParser class provides full access to a comparator
+  config file via JAXB-generated classes
+
+./xjc.sh -extension -b custom.xjb -p 
+    eu.planets_project.ifr.core.services.comparison.comparator.config pcr.xsd

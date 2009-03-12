@@ -1,0 +1,8 @@
+- The XcdlAccess class processes an XCDL file and get the properties only.
+- The XcdlParser class provides full access to the XCDL via JAXB-generated classes
+
+The classes in generated/ have been generated from the XCDL XSD files (in the 
+xcltools project), using a custom binding that creates better classes (custom.xjb), 
+using the command:
+
+./xjc.sh -extension -b custom.xjb -p eu.planets_project.xcdl.generated XCDLCore.xsd
