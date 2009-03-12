@@ -3,6 +3,7 @@
  */
 package eu.planets_project.services.compare;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -40,7 +41,7 @@ public final class CompareResult {
      * @return the result properties
      */
     public List<Prop> getProperties() {
-        return properties;
+        return properties == null ? new ArrayList<Prop>() : properties;
     }
 
     /**
