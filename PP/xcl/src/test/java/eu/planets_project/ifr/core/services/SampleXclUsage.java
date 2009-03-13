@@ -13,7 +13,8 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Xcdl
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompare;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompareProperties;
 import eu.planets_project.ifr.core.services.comparison.fpm.impl.FpmCommonProperties;
-import eu.planets_project.ifr.core.services.identification.droid.impl.Droid;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.CommonProperties;
@@ -23,7 +24,6 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
@@ -47,10 +47,13 @@ public class SampleXclUsage {
             Content.byReference(new File(CONVERTED))).build();
     private static final DigitalObject CONFIG = DigitalObject.create(
             Content.byReference(new File(COCO))).build();
-    /* We identify the original and the converted file: */
-    private static final Identify IDENTIFY = new Droid();
-    private static final URI GIF_ID = IDENTIFY.identify(GIF).getTypes().get(0);
-    private static final URI JPG_ID = IDENTIFY.identify(JPG).getTypes().get(0);
+    /* We get a PRONOM ID for the original and the converted file: */
+    private static final FormatRegistry REGISTRY = FormatRegistryFactory
+            .getFormatRegistry();
+    private static final URI GIF_ID = REGISTRY.getURIsForExtension("gif")
+            .iterator().next();
+    private static final URI JPG_ID = REGISTRY.getURIsForExtension("jpg")
+            .iterator().next();
     /* We identify the XCDL format somehow: */
     private static final URI XCDL_ID = URI.create("planets:/xcdl"); // not used
 
