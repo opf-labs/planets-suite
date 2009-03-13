@@ -84,8 +84,8 @@
 	<classpathentry kind="src" path="PC/odf-toolkit/src/test/java"/>
 	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
 	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
-	<classpathentry kind="src" path="PP/xcl/src/test/java"/>
     <classpathentry kind="src" path="PP/xcl/src/java"/>
+    <classpathentry kind="src" path="PP/xcl/src/test/java"/>
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
