@@ -66,10 +66,10 @@ public class PropertyDnDTreeBean{
 	private ArrayList<SelectItem> viewsSelectItems = new ArrayList<SelectItem>();
 	private String selectedview = null;
 	private TreeNode rootNode = null;
+	private String rootNodeName = "";
     private TreeNode selNode;
     //structure: Map<ID,TreeNode>
     private Map<String,TreeNode> dndSelNodes = new HashMap<String,TreeNode>();
-    private static final String DATA_PATH = "eu/planets_project/tb/impl/simple-tree-data.properties";
     private static final String VIEW_STANDARD = "standard";
     private static final String VIEW_ROTHENBERG = "rothenberg";
     
@@ -89,81 +89,20 @@ public class PropertyDnDTreeBean{
     }
 
     
-    /*private void addNodes(String path, TreeNode node, Properties properties, boolean applyfilter) {
-        boolean end = false;
-        int counter = 1;
-        
-        while (!end) {
-            String key = path != null ? path + '.' + counter : String.valueOf(counter);
-
-            String value = properties.getProperty(key);
-
-            if (value != null){
-            	boolean bMatchesFilter = true;
-                if(applyfilter)
-                	bMatchesFilter = value.contains(this.getFilterTreeString());
-            	TreeNodeImpl nodeImpl = new TreeNodeImpl();
-                nodeImpl.setData(new BackingDataBean("planets:/id/"+counter+value,counter,value));
-                //node.addChild(key,NodeImpl)
-                node.addChild(new Integer(counter), nodeImpl);
-                addNodes(key, nodeImpl, properties, applyfilter);
-                if(nodeImpl.isLeaf()){
-                	if(!bMatchesFilter){
-                		node.removeChild(new Integer(counter));
-                	}
-                }
-                if(!nodeImpl.isLeaf()){
-                	Iterator it = nodeImpl.getChildren();
-                	if(it.hasNext()){
-                		//ok node still has other leaf elements - keep it
-                	}
-                	else{
-                		node.removeChild(new Integer(counter));
-                	}
-                }
-                counter++;
-            } else {
-                end = true;
-            }
-        }
-    }*/
-    
-
-    
-    /*private void loadTree(boolean applyFilter){
-    	FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = facesContext.getExternalContext();
-        InputStream dataStream = getClass().getClassLoader().getResourceAsStream(DATA_PATH);
-        try {
-            Properties properties = new Properties();
-            properties.load(dataStream);
-            
-            rootNode = new TreeNodeImpl();
-            addNodes(null, rootNode, properties,applyFilter);
-            
-        } catch (IOException e) {
-            throw new FacesException(e.getMessage(), e);
-        } finally {
-            if (dataStream != null) {
-                try {
-                    dataStream.close();
-                } catch (IOException e) {
-                    externalContext.log(e.getMessage(), e);
-                }
-            }
-        }
-    }*/
-    
     private void loadTree(boolean applyFilter){
-    	this.filterTreeStringOld = this.getFilterTreeString();
     	
-    	OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology1:specificationPropertyNames");
+    	this.filterTreeStringOld = this.getFilterTreeString();
     	rootNode = new TreeNodeImpl();
+
     	if(this.selectedview.equals(VIEW_STANDARD)){
+    			OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology1:specificationPropertyNames");
+    			this.rootNodeName = startClass.getLocalName();
     			TreeViews.standardTraverseTree(startClass, new Vector(), rootNode, applyFilter);
     	}
     	if(this.selectedview.equals(VIEW_ROTHENBERG)){
     		//TODO add rothenbergTraverseTree
+    		OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology1:specificationPropertyNames");
+    		this.rootNodeName = startClass.getLocalName();
     		TreeViews.standardTraverseTree(startClass, new Vector(), rootNode, applyFilter);
     	}
     }
@@ -328,7 +267,11 @@ public class PropertyDnDTreeBean{
 	 * Triggers expand/collapse on the tree
      */
     public Boolean adviseNodeOpened(UITree tree) {
-        if (!bCollapstree)
+        //root always elapsed 
+    	if(((OntologyProperty)tree.getRowData()).getName().equals(this.rootNodeName)){return Boolean.TRUE;}
+    	
+    	//for all other nodes check if collapse/expand was chosen
+    	if (!bCollapstree)
                 return Boolean.TRUE;        
         return Boolean.FALSE;
     }
@@ -365,21 +308,21 @@ public class PropertyDnDTreeBean{
     
 
     private static class TreeViews{
-  	
+    	
     	public static TreeNode standardTraverseTree(OWLNamedClass cl, List stack, TreeNode node, boolean applyfilter) {
 
     		Collection<OWLIndividual> instances = cl.getInstances(false);    
             //adding a new category - isn't backed by any data, not even name??
             TreeNode childClass = new TreeNodeImpl();
-            childClass.setData(new DummyOntologyProperty(cl.getLocalName()+" ("+instances.size()+")"));
+            String instanceCountText = instances.size()>0 ? " ("+instances.size()+")" : "";
+            childClass.setData(new DummyOntologyProperty(cl.getLocalName()+instanceCountText));
             //addChild(key, nodeImpl
             node.addChild(cl.getURI(),childClass);
             
             if (instances.size() > 0) {
                 for (Iterator<OWLIndividual> jt = instances.iterator(); jt.hasNext();) {
-                	
                 	OWLIndividual individual = (OWLIndividual) jt.next();    
-                    TreeNode child = new TreeNodeImpl();
+                	TreeNode child = new TreeNodeImpl();
                     OntologyProperty ontologyProperty = new OntologyPropertyImpl(individual);
                     
                     boolean bMatchesFilter = true;
@@ -399,6 +342,8 @@ public class PropertyDnDTreeBean{
                     stack.remove(cl);
                 }
             }
+
+            //remove nodes that don't apply the given filter
             if(applyfilter){
             	Iterator it = childClass.getChildren();
 	        	if(it.hasNext()){
@@ -408,6 +353,7 @@ public class PropertyDnDTreeBean{
 	        		node.removeChild(cl.getURI());
 	        	}
             }
+            
             return node;
         }
     }
