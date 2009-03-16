@@ -185,7 +185,7 @@ public class PropertyDnDTreeBean{
     
     private boolean filterStringChanged(){
     	String filter = this.getFilterTreeString();
-    	if(filter.equals(this.filterTreeStringOld)){
+    	if(filter.equalsIgnoreCase(this.filterTreeStringOld)){
     		return false;
     	}
     	return true;
@@ -327,7 +327,7 @@ public class PropertyDnDTreeBean{
                     
                     boolean bMatchesFilter = true;
  	                if(applyfilter)
- 	                	bMatchesFilter = ontologyProperty.getName().contains(filterTreeString);
+ 	                	bMatchesFilter =  ontologyProperty.getName().toLowerCase().contains(filterTreeString.toLowerCase());
                     if(bMatchesFilter){
 	 	                child.setData(ontologyProperty);
 	                    childClass.addChild(ontologyProperty.getURI(), child);
