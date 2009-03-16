@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.comparison.fpm.config;
+package eu.planets_project.ifr.core.services.comparison.explorer.config;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -12,12 +12,12 @@ import org.jdom.input.SAXBuilder;
 import eu.planets_project.services.datatypes.Prop;
 
 /**
- * Reads a FPM tool result XML file into a list or property objects.
+ * Reads a XCL Explorer tool result XML file into a list or property objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public final class FpmResultReader {
+public final class ExplorerResultReader {
     /** Enforce non-instantiability with a private constructor. */
-    private FpmResultReader() {}
+    private ExplorerResultReader() {}
 
     /**
      * @param xml The FPM tool result XML string

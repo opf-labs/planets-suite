@@ -12,7 +12,7 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Xcdl
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrate;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompare;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompareProperties;
-import eu.planets_project.ifr.core.services.comparison.fpm.impl.FpmCommonProperties;
+import eu.planets_project.ifr.core.services.comparison.explorer.impl.XcdlCommonProperties;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
@@ -129,7 +129,7 @@ public class SampleXclUsage {
          * the properties here are different from the ones the comparator
          * currently expects):
          */
-        CommonProperties commonProps = new FpmCommonProperties();
+        CommonProperties commonProps = new XcdlCommonProperties();
         List<Prop> intersection = commonProps.intersection(
                 Arrays.asList(GIF_ID, JPG_ID)).getProperties();
         /*

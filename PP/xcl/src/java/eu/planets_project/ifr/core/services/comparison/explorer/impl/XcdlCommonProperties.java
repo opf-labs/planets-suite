@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.comparison.fpm.impl;
+package eu.planets_project.ifr.core.services.comparison.explorer.impl;
 
 import java.io.File;
 import java.net.URI;
@@ -9,7 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
-import eu.planets_project.ifr.core.services.comparison.fpm.config.FpmResultReader;
+import eu.planets_project.ifr.core.services.comparison.explorer.config.ExplorerResultReader;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
@@ -24,17 +24,17 @@ import eu.planets_project.services.utils.ProcessRunner;
 
 /**
  * Service to retrieve common properties of different file formats, given their
- * IDs, based on the XCL FPM tool.
+ * IDs, based on the XCL Explorer tool.
  * (http://gforge.planets-project.eu/gf/project/xcltools)
  * @author Thomas Kraemer (thomas.kraemer@uni-koeln.de), Fabian Steeg
  *         (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = FpmCommonProperties.NAME, serviceName = CommonProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CommonProperties")
+@WebService(name = XcdlCommonProperties.NAME, serviceName = CommonProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CommonProperties")
 @Stateless
-public final class FpmCommonProperties implements CommonProperties {
-    static final String NAME = "FpmCommonProperties";
+public final class XcdlCommonProperties implements CommonProperties {
+    static final String NAME = "XcdlCommonProperties";
     private static final PlanetsLogger LOG = PlanetsLogger
-            .getLogger(FpmCommonProperties.class);
+            .getLogger(XcdlCommonProperties.class);
     private static final String FPMTOOL_HOME = System.getenv("FPMTOOL_HOME")
             + File.separator;
     private static final String FPMTOOL_OUT = "fpm.fpm";
@@ -50,7 +50,7 @@ public final class FpmCommonProperties implements CommonProperties {
             builder.append(registry.uriToPuid(uri)).append(":");
         }
         String result = basicCompareFormatProperties(builder.toString());
-        List<Prop> resultProperties = FpmResultReader.properties(result);
+        List<Prop> resultProperties = ExplorerResultReader.properties(result);
         ServiceReport report = new ServiceReport();
         report.setInfo(result);
         return new CompareResult(resultProperties, report);
@@ -69,7 +69,7 @@ public final class FpmCommonProperties implements CommonProperties {
                     .uriToPuid(uri)
                     + ":");
             fullResult.append(result).append("\n");
-            List<Prop> resultProperties = FpmResultReader.properties(result);
+            List<Prop> resultProperties = ExplorerResultReader.properties(result);
             propsOfEach.add(resultProperties);
         }
         List<Prop> result = intersection(propsOfEach);
@@ -91,7 +91,7 @@ public final class FpmCommonProperties implements CommonProperties {
      * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
-        return ServiceDescription.create("XCL suite FPM tool service",
+        return ServiceDescription.create("XCL suite Explorer tool service",
                 CommonProperties.class.toString()).author("Fabian Steeg")
                 .serviceProvider("The Planets Consortium").build();
     }

@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.comparison.fpm.impl;
+package eu.planets_project.ifr.core.services.comparison.explorer.impl;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.comparison.fpm.impl.FpmCommonProperties;
+import eu.planets_project.ifr.core.services.comparison.explorer.impl.XcdlCommonProperties;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.compare.CommonProperties;
@@ -20,12 +20,12 @@ import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
- * Tests for the FPM common properties service.
- * @see FpmCommonProperties
+ * Tests for the XCDL common properties service.
+ * @see XcdlCommonProperties
  */
-public class FpmCommonPropertiesTests {
+public class XcdlCommonPropertiesTests {
 
-    private static final String WSDL = "/pserv-xcl/FpmCommonProperties?wsdl";
+    private static final String WSDL = "/pserv-xcl/XcdlCommonProperties?wsdl";
 
     @Test
     public void testBmpGif() {
@@ -57,7 +57,7 @@ public class FpmCommonPropertiesTests {
      */
     private void testFor(final String... suffixes) {
         CommonProperties commonProperties = ServiceCreator.createTestService(
-                CommonProperties.QNAME, FpmCommonProperties.class,
+                CommonProperties.QNAME, XcdlCommonProperties.class,
                 WSDL);
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         List<URI> puids = new ArrayList<URI>();
