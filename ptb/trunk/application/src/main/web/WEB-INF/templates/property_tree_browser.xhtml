@@ -37,28 +37,36 @@
                 
                 <!-- select different view on the tree and possibly apply a full-text filter on the tree's nodes -->
                 <rich:simpleTogglePanel switchType="client" label="apply settings: full-text filtering and different tree views" style="margin:2px;">            
-    				<h:outputText value="filter properties: "/><h:inputText id="filterTree" value="#{simpleTreeDndBean.filterTreeString}" maxlength="500">
-                    	<a4j:support event="onkeyup" reRender="propertytree" eventsQueue="foo"/>
-            		</h:inputText>
-            		
-            		<!-- trigger collaps/expand of the tree -->
-            		<a4j:commandButton id="collapsButton" value="collaps" action="#{simpleTreeDndBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
-            			<f:param value="collaps" name="collapsexpand"/>
-            		</a4j:commandButton>
-            		<a4j:commandButton id="expandButton" value="expand" action="#{simpleTreeDndBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
-            			<f:param value="expand" name="collapsexpand"/>
-            		</a4j:commandButton>
-            		<br/> 		
-            		<!-- select between different views of the tree -->
-					<h:outputText value="select tree view: "/><h:selectOneMenu value="#{simpleTreeDndBean.selectedViewItem}">
-						<f:selectItems value="#{simpleTreeDndBean.availableViews}" />
-					    <a4j:support event="onchange" reRender="propertytree" eventsQueue="foo"/>
-					</h:selectOneMenu>
+    				<a4j:region id="settings">
+	    				<h:outputText value="filter properties: "/><h:inputText id="filterTree" value="#{simpleTreeDndBean.filterTreeString}" maxlength="500">
+	                    	<a4j:support requestDelay="1000" event="onkeyup" reRender="propertytree" eventsQueue="foo" ignoreDupResponses="true"/>
+	            		</h:inputText>
+			
+	            		<!-- trigger collaps/expand of the tree -->
+	            		<a4j:commandButton id="collapsButton" value="collapse" action="#{simpleTreeDndBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
+	            			<f:param value="collaps" name="collapsexpand"/>
+	            		</a4j:commandButton>
+	            		<a4j:commandButton id="expandButton" value="expand" action="#{simpleTreeDndBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
+	            			<f:param value="expand" name="collapsexpand"/>
+	            		</a4j:commandButton>
+	            		<a4j:status for="settings">
+	                		<f:facet name="start">
+	                    		<h:graphicImage  value="/graphics/spinner.gif"/>
+	                		</f:facet>
+	            			</a4j:status>
+            			<br/> 		
+	            		<!-- select between different views of the tree -->
+						<h:outputText value="select tree view: "/><h:selectOneMenu value="#{simpleTreeDndBean.selectedViewItem}">
+							<f:selectItems value="#{simpleTreeDndBean.availableViews}" />
+						    <a4j:support event="onchange" reRender="propertytree" eventsQueue="foo"/>
+						</h:selectOneMenu>
+					</a4j:region>
+
     			</rich:simpleTogglePanel>  
                 
 	            <rich:tree style="width:300px" nodeSelectListener="#{simpleTreeDndBean.processSelection}" 
-	                reRender="infoPanel,selproppanel" ajaxSubmitSelection="true"  switchType="client"
-	                id="propertytree" value="#{simpleTreeDndBean.treeNode}" var="item" 
+	                reRender="infoPanel,selproppanel" ajaxSubmitSelection="true" ignoreDupResponses="true" eventsQueue="foo"
+	                switchType="client" id="propertytree" value="#{simpleTreeDndBean.treeNode}" var="item" 
 	                dragIndicator="indicator2"  adviseNodeOpened="#{simpleTreeDndBean.adviseNodeOpened}"
 	                treeNodeVar="treeNode" nodeFace="#{empty item.type == true ? 'node' : 'leaf'}">
 	                <rich:treeNode type="node" icon="/graphics/iconFolder.gif" iconLeaf="/graphics/iconFolder.gif">
