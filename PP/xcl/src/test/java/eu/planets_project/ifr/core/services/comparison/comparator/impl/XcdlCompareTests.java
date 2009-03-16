@@ -44,14 +44,14 @@ public final class XcdlCompareTests {
      */
     protected void testServices(final byte[] data1, final byte[] data2,
             final byte[] configData) {
-        Compare<DigitalObject> c = ServiceCreator.createTestService(XcdlCompare.QNAME,
+        Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME,
                 XcdlCompare.class, WSDL);
         DigitalObject[] objects = new DigitalObject[] {
                 new DigitalObject.Builder(Content.byValue(data1)).build(),
                 new DigitalObject.Builder(Content.byValue(data2)).build() };
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
-        List<Prop> properties = c.compare(Arrays.asList(objects), c.convertConfig(configFile))
+        List<Prop> properties = c.compare(Arrays.asList(objects), c.convert(configFile))
                 .getProperties();
         ComparatorWrapperTests.check(properties);
     }

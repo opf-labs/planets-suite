@@ -8,6 +8,7 @@ import eu.planets_project.ifr.core.services.comparison.comparator.config.Compara
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParserTests;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.ComparatorWrapperTests;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.ResultPropertiesReaderTests;
+import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlComparePropertiesTests;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompareTests;
 
 /**
@@ -18,6 +19,6 @@ import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompa
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { ComparatorWrapperTests.class, XcdlCompareTests.class,
         ResultPropertiesReaderTests.class, ComparatorConfigCreatorTests.class,
-        ComparatorConfigParserTests.class, XcdlCompareTests.class,
+        ComparatorConfigParserTests.class, XcdlComparePropertiesTests.class,
         SampleXclUsage.class /* Overall sample, but in the end Comparator */})
-public class AllComparatorSuite {}
+public class AllComparatorSuite { }

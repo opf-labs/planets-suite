@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.services;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -67,8 +69,8 @@ public class SampleXclUsage {
         DigitalObject jpgXcdl = migration.migrate(JPG, JPG_ID, XCDL_ID, null)
                 .getDigitalObject();
         /* We compare both XCDL files (for details see XcdlCompareTests): */
-        Compare<DigitalObject> comparison = new XcdlCompare();
-        List<Prop<Object>> configProperties = comparison.convertConfig(CONFIG);
+        Compare comparison = new XcdlCompare();
+        List<Prop<Object>> configProperties = comparison.convert(CONFIG);
         CompareResult result = comparison.compare(Arrays.asList(gifXcdl,
                 jpgXcdl), configProperties);
         /* And print the result: */
@@ -86,10 +88,9 @@ public class SampleXclUsage {
         DigitalObject jpgXcdl = migration.migrate(JPG, JPG_ID, XCDL_ID, null)
                 .getDigitalObject();
         /* Compare the XCDL files: */
-        Compare<DigitalObject> comparison = ServiceCreator
-                .createTestService(Compare.QNAME, XcdlCompare.class,
-                        "/pserv-xcl/XcdlCompare?wsdl");
-        List<Prop<Object>> configProperties = comparison.convertConfig(CONFIG);
+        Compare comparison = ServiceCreator.createTestService(Compare.QNAME,
+                XcdlCompare.class, "/pserv-xcl/XcdlCompare?wsdl");
+        List<Prop<Object>> configProperties = comparison.convert(CONFIG);
         CompareResult compareResult = comparison.compare(Arrays.asList(gifXcdl,
                 jpgXcdl), configProperties);
         /* Print the result: */
@@ -138,7 +139,7 @@ public class SampleXclUsage {
          * (then without the c1 and c2 conversion methods to make it compile
          * here):
          */
-        Compare<List<Prop<Object>>> comparison = new XcdlCompareProperties();
+        CompareProperties comparison = new XcdlCompareProperties();
         CompareResult result = comparison.compare(c1(propsToCompare),
                 c2(intersection));
         System.out.println("Result: " + result + " " + result.getProperties());
@@ -149,7 +150,7 @@ public class SampleXclUsage {
         throw new IllegalStateException("Dummy method not to be called!");
     }
 
-    private List<List<Prop<Object>>> c1(List<List<Property>> propsToCompare) {
+    private List<ArrayList<Prop<Object>>> c1(List<List<Property>> propsToCompare) {
         throw new IllegalStateException("Dummy method not to be called!");
     }
 

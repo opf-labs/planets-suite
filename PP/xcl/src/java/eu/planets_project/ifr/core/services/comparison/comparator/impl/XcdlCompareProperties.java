@@ -12,7 +12,7 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.Xcdl
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreator;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
@@ -28,9 +28,9 @@ import eu.planets_project.services.utils.FileUtils;
  * @see XcdlComparePropertiesTests
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = XcdlCompareProperties.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare")
+@WebService(name = XcdlCompareProperties.NAME, serviceName = CompareProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CompareProperties")
 @Stateless
-public final class XcdlCompareProperties implements Compare<List<Prop<Object>>> {
+public final class XcdlCompareProperties implements CompareProperties {
     /***/
     static final String NAME = "XcdlCompareProperties";
 
@@ -39,9 +39,13 @@ public final class XcdlCompareProperties implements Compare<List<Prop<Object>>> 
      * @see eu.planets_project.services.compare.CompareProperties#compare(java.util.List,
      *      java.util.List)
      */
-    public CompareResult compare(final List<List<Prop<Object>>> lists,
+    public CompareResult compare(final List<ArrayList<Prop<Object>>> lists,
             final List<Prop<Object>> config) {
-        List<List<Prop<Object>>> first = new ArrayList<List<Prop<Object>>>();
+        if (lists.size() < 2) {
+            throw new IllegalArgumentException(
+                    "Need at least two lists to compare");
+        }
+        List<ArrayList<Prop<Object>>> first = new ArrayList<ArrayList<Prop<Object>>>();
         first.add(lists.get(0));
         String xcdl = read(first).get(0);
         List<String> xcdls = read(lists.subList(1, lists.size()));
@@ -65,7 +69,7 @@ public final class XcdlCompareProperties implements Compare<List<Prop<Object>>> 
      * @param list The list of digital objects
      * @return A list of strings representing the content of the digital objects
      */
-    private List<String> read(final List<List<Prop<Object>>> list) {
+    private List<String> read(final List<ArrayList<Prop<Object>>> list) {
         List<String> result = new ArrayList<String>();
         for (List<Prop<Object>> xcdlProps : list) {
             String content = new XcdlCreator(xcdlProps).getXcdlXml();
@@ -90,15 +94,22 @@ public final class XcdlCompareProperties implements Compare<List<Prop<Object>>> 
      * {@inheritDoc}
      * @see eu.planets_project.services.compare.CompareProperties#convertInput(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public List<Prop<Object>> convertInput(final DigitalObject inputFile) {
+    public ArrayList<Prop<Object>> convertInput(final DigitalObject inputFile) {
         File file = ByteArrayHelper.write(FileUtils
                 .writeInputStreamToBinary(inputFile.getContent().read()));
-        return new ArrayList<Prop<Object>>(new XcdlParser(file).getProps());
+        List<Prop<Object>> props = new XcdlParser(file).getProps();
+        if (props.size() == 0) {
+            throw new IllegalStateException(
+                    "Could not parse any properties from: "
+                            + file.getAbsolutePath());
+        }
+        ArrayList<Prop<Object>> list = new ArrayList<Prop<Object>>(props);
+        return list;
     }
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.compare.Compare#convertConfig(eu.planets_project.services.datatypes.DigitalObject)
+     * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
      */
     public List<Prop<Object>> convertConfig(final DigitalObject configFile) {
         File file = ByteArrayHelper.write(FileUtils

@@ -7,8 +7,8 @@ import java.util.List;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
-import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompareProperties;
 import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
@@ -46,8 +46,8 @@ public final class XcdlComparePropertiesTests {
      */
     protected void testServices(final byte[] data1, final byte[] data2,
             final byte[] configData) {
-        Compare<List<Prop<Object>>> c = ServiceCreator.createTestService(
-                Compare.QNAME, XcdlCompareProperties.class, WSDL);
+        CompareProperties c = ServiceCreator.createTestService(
+                CompareProperties.QNAME, XcdlCompareProperties.class, WSDL);
         /* The actual XCDL files: */
         DigitalObject[] objects = new DigitalObject[] {
                 new DigitalObject.Builder(Content.byValue(data1)).build(),
@@ -56,11 +56,11 @@ public final class XcdlComparePropertiesTests {
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
         /* We now convert both into properties using our service: */
-        List<List<Prop<Object>>> inputProps = new ArrayList<List<Prop<Object>>>();
+        List<ArrayList<Prop<Object>>> inputProps = new ArrayList<ArrayList<Prop<Object>>>();
         for (DigitalObject digitalObject : objects) {
             inputProps.add(c.convertInput(digitalObject));
         }
-        List<Prop<Object>> configProps = new ArrayList<Prop<Object>>( 
+        List<Prop<Object>> configProps = new ArrayList<Prop<Object>>(
                 new ComparatorConfigParser(ByteArrayHelper.write(FileUtils
                         .writeInputStreamToBinary(configFile.getContent()
                                 .read()))).getProperties());
