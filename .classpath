@@ -30,6 +30,8 @@
 	<classpathentry kind="src" path="PA/dvips/src/java"/>
 	<classpathentry kind="src" path="PA/dvips/test"/>
 	<classpathentry kind="src" path="PA/ffmpeg/src/java"/>
+    <classpathentry kind="src" path="PA/ghostscript/src/java"/>
+    <classpathentry kind="src" path="PA/ghostscript/test/java"/>
 	<classpathentry kind="src" path="PA/gimp/src/java"/>
 	<classpathentry kind="src" path="PA/gimp/test"/>
 	<classpathentry kind="src" path="PA/imagemagick/src/java"/>
