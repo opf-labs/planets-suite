@@ -565,11 +565,15 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         // Record results:
         if( success ) {
-            stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
-            log.info("Start with Measurements #"+stage_m.size());
-            IdentifyWorkflow.collectIdentifyResults(stage_m, result, dob);
-            log.info("Afterwards, Measurements #"+stage_m.size());
+            try {
+                stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
+                log.info("Start with Measurements #"+stage_m.size());
+                IdentifyWorkflow.collectIdentifyResults(stage_m, result, dob);
+                log.info("Afterwards, Measurements #"+stage_m.size());
             return;
+            } catch ( Exception e ) {
+                log.error("Failed to record identification results: "+e);
+            }
         }
 
         // FAILED:

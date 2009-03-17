@@ -229,12 +229,16 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         if( ident == null ) return;
         if( ident.getTypes() != null ) {
             for( URI format_uri : ident.getTypes() ) {
-                recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_FORMAT, format_uri.toString()));
+                if( format_uri != null ) {
+                    recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_FORMAT, format_uri.toString()));
+        }
             }
         }
         if( ident.getMethods() != null ) {
             for( IdentifyResult.Method method : ident.getMethods() ) {
-                recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
+                if( method != null ) {
+                    recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
+                }
             }
         }
         // Store the size:

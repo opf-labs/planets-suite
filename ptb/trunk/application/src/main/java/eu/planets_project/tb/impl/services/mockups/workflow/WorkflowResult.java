@@ -152,6 +152,7 @@ public class WorkflowResult {
                             if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wrf.getResultType())) {
                                 DigitalObject dob = (DigitalObject) wrf.getResult();
                                 try {
+                                    // FIXME Check dob.getContent().read() != null?
                                     String storeKey = dh.addBytestream(dob.getContent().read(), dob.getTitle());
                                     rec.setResult(storeKey);
                                     rec.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
