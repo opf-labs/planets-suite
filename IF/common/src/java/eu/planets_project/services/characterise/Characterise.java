@@ -17,7 +17,6 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.ServiceDescription;
 
 
 /**
@@ -70,30 +69,15 @@ public interface Characterise extends PlanetsService{
 	                Parameters parameters );
 
 	    
-	    
-	    /**
-	     * A method that can be used to recover a rich service description, and thus populate a service registry.
-	     * @return An MigrateServiceDescription object that describes this service, to aid service discovery.
-	     */
-	    @WebMethod(operationName = Characterise.NAME + "_" + "describe", action = PlanetsServices.NS
-	            + "/" + Characterise.NAME + "/" + "describe")
-	    @WebResult(name = Characterise.NAME + "Description", targetNamespace = PlanetsServices.NS
-	            + "/" + Characterise.NAME, partName = Characterise.NAME
-	            + "Description")
-	    @ResponseWrapper(className="eu.planets_project.services.characterise."+Characterise.NAME+"DescribeResponse")
-	    public ServiceDescription describe();
-	    
-	    
-	    
 	    /**
 	     * @param formatURI A format URI
 	     * @return The properties this characterisation service extracts for the given file format
 	     */
-	    @WebMethod(operationName = Characterise.NAME + "_" + "listProperties", action = PlanetsServices.NS
-	            + "/" + Characterise.NAME + "/" + "listProperties")
-	    @WebResult(name = Characterise.NAME + "Property_List", targetNamespace = PlanetsServices.NS
+	    @WebMethod(operationName = Characterise.NAME + "ListProperties", action = PlanetsServices.NS
+	            + "/" + Characterise.NAME + "/" + "ListProperties")
+	    @WebResult(name = Characterise.NAME + "PropertyList", targetNamespace = PlanetsServices.NS
 	            + "/" + Characterise.NAME, partName = Characterise.NAME
-	            + "Property_List")
-	    @ResponseWrapper(className="eu.planets_project.services.characterise."+Characterise.NAME+"listPropertiesResponse")
+	            + "PropertyList")
+	    @ResponseWrapper(className="eu.planets_project.services.characterise."+Characterise.NAME+"ListPropertiesResponse")
 	    public List<FileFormatProperty> listProperties(URI formatURI);
 }

@@ -9,12 +9,10 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
-import javax.xml.ws.ResponseWrapper;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * Identification of a DigitalObject, returning a types object containing the
@@ -41,19 +39,4 @@ public interface Identify extends PlanetsService {
     IdentifyResult identify(
             @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
                     + "/" + Identify.NAME, partName = "digitalObject") DigitalObject digitalObject);
-
-    /**
-     * A method that can be used to recover a rich service description, and thus
-     * populate a service registry.
-     * @return An ServiceDescription object that describes this service, to aid
-     *         service discovery.
-     */
-    @WebMethod(operationName = Identify.NAME + "_describe", action = PlanetsServices.NS
-            + "/" + Identify.NAME + "/describe")
-    @WebResult(name = Identify.NAME + "Description", targetNamespace = PlanetsServices.NS
-            + "/" + Identify.NAME, partName = Identify.NAME + "Description")
-    @ResponseWrapper(className = "eu.planets_project.services.identify."
-            + Identify.NAME + "DescribeResponse")
-    ServiceDescription describe();
-
 }

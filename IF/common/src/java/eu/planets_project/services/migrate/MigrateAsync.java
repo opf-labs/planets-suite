@@ -12,14 +12,11 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
-import javax.xml.ws.ResponseWrapper;
-
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * This is intended to become the generic migration interface for complex migration services.
@@ -121,19 +118,4 @@ public interface MigrateAsync extends PlanetsService {
             @WebParam(name = "ticket", targetNamespace = PlanetsServices.NS
                     + "/" + MigrateAsync.NAME, partName = "ticket") 
             String ticket );
-    
-    
-    
-    /**
-     * A method that can be used to recover a rich service description, and thus populate a service registry.
-     * @return An MigrateServiceDescription object that describes this service, to aid service discovery.
-     */
-    @WebMethod(operationName = MigrateAsync.NAME + "_describe", action = PlanetsServices.NS
-            + "/" + MigrateAsync.NAME + "/describe")
-    @WebResult(name = MigrateAsync.NAME + "Description", targetNamespace = PlanetsServices.NS
-            + "/" + MigrateAsync.NAME, partName = MigrateAsync.NAME
-            + "Description")
-    @ResponseWrapper(className="eu.planets_project.services.migrate."+MigrateAsync.NAME+"DescribeResponse")
-    public ServiceDescription describe();
-    
 }

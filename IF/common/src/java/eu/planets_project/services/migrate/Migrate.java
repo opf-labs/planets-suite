@@ -18,7 +18,6 @@ import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * Migration of one digital object.
@@ -72,18 +71,4 @@ public interface Migrate extends PlanetsService {
             @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
                     + "/" + Migrate.NAME, partName = "parameters") 
                 Parameters parameters );
-
-    
-    /**
-     * A method that can be used to recover a rich service description, and thus populate a service registry.
-     * @return An MigrateServiceDescription object that describes this service, to aid service discovery.
-     */
-    @WebMethod(operationName = Migrate.NAME + "_" + "describe", action = PlanetsServices.NS
-            + "/" + Migrate.NAME + "/" + "describe")
-    @WebResult(name = Migrate.NAME + "Description", targetNamespace = PlanetsServices.NS
-            + "/" + Migrate.NAME, partName = Migrate.NAME
-            + "Description")
-    @ResponseWrapper(className="eu.planets_project.services.migrate."+Migrate.NAME+"DescribeResponse")
-    public ServiceDescription describe();
-    
 }
