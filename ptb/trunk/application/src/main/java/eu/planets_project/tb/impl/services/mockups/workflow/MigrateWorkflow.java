@@ -3,6 +3,7 @@
  */
 package eu.planets_project.tb.impl.services.mockups.workflow;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -19,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Property;
@@ -27,6 +29,7 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
@@ -464,8 +467,11 @@ public class MigrateWorkflow implements ExperimentWorkflow {
 
             stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
 
-            // Take the digital object, and give it a sensible name, using the new format extension.
+            // Take the digital object, put it in a temp file, and give it a sensible name, using the new format extension.
+            File doTmp = File.createTempFile("migrateResult", ".tmp");
+            FileUtils.writeInputStreamToFile(migrated.getDigitalObject().getContent().read(), doTmp);
             DigitalObject.Builder newdob = new DigitalObject.Builder(migrated.getDigitalObject());
+            newdob.content( Content.byReference(doTmp) );
             if( to != null ) {
                 Format f = ServiceBrowser.fr.getFormatForURI(to);
                 newdob.title( dob.getTitle()+"."+f.getExtensions().iterator().next());
