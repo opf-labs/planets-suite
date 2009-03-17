@@ -469,12 +469,15 @@ public class MigrateWorkflow implements ExperimentWorkflow {
 
             // Take the digital object, put it in a temp file, and give it a sensible name, using the new format extension.
             File doTmp = File.createTempFile("migrateResult", ".tmp");
+            doTmp.deleteOnExit();
             FileUtils.writeInputStreamToFile(migrated.getDigitalObject().getContent().read(), doTmp);
             DigitalObject.Builder newdob = new DigitalObject.Builder(migrated.getDigitalObject());
             newdob.content( Content.byReference(doTmp) );
             if( to != null ) {
                 Format f = ServiceBrowser.fr.getFormatForURI(to);
-                newdob.title( dob.getTitle()+"."+f.getExtensions().iterator().next());
+                String title = dob.getTitle()+"."+f.getExtensions().iterator().next();
+                title = title.substring( title.lastIndexOf("/") + 1);
+                newdob.title( title );
             }
             wr.setResult(newdob.build());
             wr.setResultType(WorkflowResult.RESULT_DIGITAL_OBJECT);
