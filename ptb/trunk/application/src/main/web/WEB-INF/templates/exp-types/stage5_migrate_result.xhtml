@@ -16,6 +16,7 @@
          var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
         <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
           <f:facet name="header">Digital Object</f:facet>
+          <!-- 
           <h:outputLink value="#{res.downloadURL}" styleClass="inTableIcon">
             <t:graphicImage value="/graphics/go-down.png" alt="Download..."/>
           </h:outputLink>
@@ -23,6 +24,10 @@
               <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectedDigitalObjectActionListener"/>
                  <h:outputText value="#{res.digitalObjectName}"/>
           </h:commandLink>
+           -->
+          <h:outputLink value="#{res.downloadURL}">
+             <h:outputText value="#{res.digitalObjectName}"/>
+          </h:outputLink>
         </rich:column>
         <rich:column>
           <f:facet name="header">Results</f:facet>

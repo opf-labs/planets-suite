@@ -38,7 +38,7 @@
       <rich:progressBar value="#{NewExp_Controller.executeExperimentProgress}"
           interval="1000" label="#{NewExp_Controller.executeExperimentProgress} %"
           enabled="true" minValue="0" maxValue="100" styleClass="expRunStatusRun"
-          reRenderAfterComplete="progressPanel,runExperimentForm,executedResults" reRender="runExperimentForm,executedResults">
+          reRenderAfterComplete="progressPanel,runExperimentForm,executedResults" reRender="runExperimentForm,progressPanel">
       </rich:progressBar>
       </h:panelGroup>
     </a4j:outputPanel>
