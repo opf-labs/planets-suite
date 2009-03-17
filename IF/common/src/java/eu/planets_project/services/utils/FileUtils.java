@@ -74,6 +74,7 @@ public class FileUtils {
 		File input = null;
 		try {
 			input = File.createTempFile(name, suffix, new File(SYSTEM_TEMP));
+			input.deleteOnExit();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -256,28 +257,7 @@ public class FileUtils {
 			}
 		}
 		File file = getTempFile(fileName, suffix);
-		BufferedOutputStream bos = null;
-		FileOutputStream fileOutStream = null;
-		try {
-			fileOutStream = new FileOutputStream(file);
-			bos = new BufferedOutputStream(fileOutStream, 32768);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
 		
-		try {
-			int dataBit;
-			
-			while((dataBit = inputStream.read())!=-1) {
-				bos.write(dataBit);
-			}
-			bos.flush();
-			bos.close();
-			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return file;
 	}
 	
@@ -305,28 +285,45 @@ public class FileUtils {
 			//target.delete();
 			target = new File(parentFolder, fileName);
 		}
-		try {
-			fileOut = new FileOutputStream(target);
-			bos = new BufferedOutputStream(fileOut, 32768);
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
+
+		// Write:
+		writeInputStreamToFile( in, target );
 		
-		try {
-			int dataBit;
-			
-			while((dataBit = in.read())!=-1) {
-				bos.write(dataBit);
-			}
-			bos.flush();
-			bos.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return target;
 	}
-	
+
+	/**
+	 * Writes an input stream to the specified file:
+	 * @param in
+	 * @param target
+	 * @return
+	 */
+     public static void writeInputStreamToFile(InputStream in, File target ) {
+	        BufferedOutputStream bos = null;
+	        FileOutputStream fileOut = null;
+	        try {
+	            fileOut = new FileOutputStream(target);
+	            bos = new BufferedOutputStream(fileOut, 32768);
+	        } catch (FileNotFoundException e1) {
+	            e1.printStackTrace();
+	        }
+	        
+	        try {
+	            int dataBit;
+	            
+	            while((dataBit = in.read())!=-1) {
+	                bos.write(dataBit);
+	            }
+                bos.flush();
+                bos.close();
+                fileOut.flush();
+	            fileOut.close();
+	            
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
 	/**
 	 * @return system temp dir
 	 */

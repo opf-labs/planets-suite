@@ -499,7 +499,7 @@ public final class ServiceDescription {
             }
         }
         // Some standard property identifiers:
-        // FIXME Move to a standard place?
+        // FIXME !!! Move to a standard place?
         
         /** A standard ENVIRONMENT identifier for the Java System.getProperties. */
         public static URI ENV_JAVA_SYS_PROP = null;
