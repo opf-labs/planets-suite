@@ -27,13 +27,14 @@ import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
- * @author CFWilson
- *
+ * Class that implements an eu.planets_project.services.Identify interface.  It wraps the Cygwin
+ * file utility, identifying passed digital objects and returning a Planets mimetype Format URI.  
+ * 
+ * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
 @Local(Identify.class)
 @Remote(Identify.class)
 @Stateless
-
 @WebService(name = FileIdentify.NAME, 
         serviceName = Identify.NAME, 
         targetNamespace = PlanetsServices.NS,

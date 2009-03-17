@@ -28,7 +28,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 /**
  * Tests for the file identification service
  * 
- * @author CFWilson
+ * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  *
  */
 public class FileIdentifyTest {

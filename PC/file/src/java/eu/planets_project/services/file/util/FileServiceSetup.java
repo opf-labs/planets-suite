@@ -16,7 +16,7 @@ import org.apache.commons.logging.LogFactory;
  * Currently this involves checking that we're running on Windows and that the Cygwin
  * file.exe can be detected at the location given in the properties file.
  * 
- * @author CFWilson
+ * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  *
  */
 public class FileServiceSetup {
