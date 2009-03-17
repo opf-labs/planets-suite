@@ -9,15 +9,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
@@ -36,14 +31,12 @@ import eu.planets_project.services.utils.ServiceUtils;
  * @author melmsp
  * @see XcdlCharacterise
  */
-@Stateless()
-@Local(Migrate.class)
-@Remote(Migrate.class)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-// @MTOM
-// @BindingType(value=SOAPBinding.SOAP12HTTP_MTOM_BINDING)
-// @StreamingAttachment(parseEagerly=true, memoryThreshold=5000000L)
-@WebService(name = XcdlMigrate.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
+@WebService(
+        name = XcdlMigrate.NAME, 
+        serviceName = Migrate.NAME, 
+        targetNamespace = PlanetsServices.NS, 
+        endpointInterface = "eu.planets_project.services.migrate.Migrate")
+@Stateless
 public class XcdlMigrate implements Migrate, Serializable {
 
     private static final long serialVersionUID = -8231114442082962651L;

@@ -25,7 +25,11 @@ import eu.planets_project.services.utils.FileUtils;
  * XCDL Comparator service. Compares XCDL files wrapped as digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = XcdlCompare.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare")
+@WebService(
+        name = XcdlCompare.NAME, 
+        serviceName = Compare.NAME, 
+        targetNamespace = PlanetsServices.NS, 
+        endpointInterface = "eu.planets_project.services.compare.Compare")
 @Stateless
 public final class XcdlCompare implements Compare {
     /***/

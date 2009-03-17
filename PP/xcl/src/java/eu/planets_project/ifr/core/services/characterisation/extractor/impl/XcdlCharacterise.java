@@ -9,11 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.xml.ws.BindingType;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.ifr.core.services.comparison.explorer.impl.XcdlCommonProperties;
@@ -41,11 +38,12 @@ import eu.planets_project.services.utils.ServiceUtils;
  * @author Peter Melms, Fabian Steeg
  * @see XcdlMigrate
  */
-@Stateless()
-@Local(Characterise.class)
-@Remote(Characterise.class)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-@WebService(name = XcdlCharacterise.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
+@WebService(
+        name = XcdlCharacterise.NAME, 
+        serviceName = Characterise.NAME, 
+        targetNamespace = PlanetsServices.NS, 
+        endpointInterface = "eu.planets_project.services.characterise.Characterise")
+@Stateless
 public class XcdlCharacterise implements Characterise, Serializable {
 
     private static final long serialVersionUID = -8537596616209516979L;

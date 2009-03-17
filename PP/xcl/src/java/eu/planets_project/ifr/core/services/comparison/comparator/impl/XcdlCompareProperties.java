@@ -24,11 +24,15 @@ import eu.planets_project.services.utils.FileUtils;
 /**
  * XCDL Comparator service. Compares lists of properties.
  * <p/>
- * Not: this is work in progress.
+ * Note: this is work in progress.
  * @see XcdlComparePropertiesTests
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = XcdlCompareProperties.NAME, serviceName = CompareProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CompareProperties")
+@WebService(
+        name = XcdlCompareProperties.NAME, 
+        serviceName = CompareProperties.NAME, 
+        targetNamespace = PlanetsServices.NS, 
+        endpointInterface = "eu.planets_project.services.compare.CompareProperties")
 @Stateless
 public final class XcdlCompareProperties implements CompareProperties {
     /***/

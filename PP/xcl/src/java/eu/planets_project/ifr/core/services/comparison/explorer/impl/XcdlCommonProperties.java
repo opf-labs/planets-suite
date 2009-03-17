@@ -29,7 +29,11 @@ import eu.planets_project.services.utils.ProcessRunner;
  * @author Thomas Kraemer (thomas.kraemer@uni-koeln.de), Fabian Steeg
  *         (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = XcdlCommonProperties.NAME, serviceName = CommonProperties.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.CommonProperties")
+@WebService(
+        name = XcdlCommonProperties.NAME, 
+        serviceName = CommonProperties.NAME, 
+        targetNamespace = PlanetsServices.NS, 
+        endpointInterface = "eu.planets_project.services.compare.CommonProperties")
 @Stateless
 public final class XcdlCommonProperties implements CommonProperties {
     static final String NAME = "XcdlCommonProperties";
