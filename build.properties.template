@@ -21,4 +21,12 @@ if_server.dir=@if_server.dir@
 #if_server.port=8080
 
 # Test against a running server (default is true):
-test.on.server=false
+test.on.server=true
+
+#
+# Use these properties to define a deployment profile.  
+#
+# First, define whether the pure-java set should be deployed under 'ant deploy:profile':
+# pserv.deploy.profile.pure-java = true
+# Add a comma-separated list of the sub-components you wish to deploy via 'ant deploy:profile'
+# pserv.deploy.profile = PA/imagemagick, PP/xcl

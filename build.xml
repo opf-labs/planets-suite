@@ -18,8 +18,12 @@
   <!-- Check that the build properties have been set up. -->
   <property file="build.properties"/>
   <target name="props:set" unless="if_server.dir">
-	  <echo level="warn" message="For full deployment on the IF, please set up your build.properties file.  Read the README.txt for more information. "/>
+	<echo level="warn" message="For full deployment on the IF, please set up your build.properties file.  Read the README.txt for more information. "/>
     <echo message="No build.properties found."/>
+  </target>
+  <target name="profile:set" unless="pserv.deploy.profile">
+    <echo level="warn" message="For profile-based deployment, you must set pserv.deploy.profile. See build.properties.template."/>
+    <fail message="No pserv.deploy.profile found."/>
   </target>
 	
   <!-- These are the shared PServ classes. -->
@@ -68,6 +72,26 @@
     <echo message="In ${sub.build}"/>
     <dirname property="sub.build.dir" file="${sub.build}"/>
     <ant antfile="${sub.build}" inheritAll="false" dir="${sub.build.dir}">
+      <property name="have.deployed.common" value="true"/>
+    </ant>
+  </target>
+  
+  <!-- ================= -->
+  <!-- Also support deployment profiles -->
+  
+  <target name="deploy:profile" depends="profile:set,props:set,deploy:common">
+    <if>
+      <isset property="pserv.deploy.profile.pure-java"/>
+      <then>
+        <echo message="pserv.deploy.profile.pure-java is set - will deploy pure-java services"/>
+        <ant target="deploy:pure-java"/>
+      </then>
+    </if>
+    <!-- Now deploy the profile -->
+    <foreach target="deploy:profile:sub" param="sub.build" inheritall="false" list="${pserv.deploy.profile}" delimiter=", "/>
+  </target>
+  <target name="deploy:profile:sub">
+    <ant antfile="${basedir}/${sub.build}/build.xml" inheritAll="false" dir="${basedir}/${sub.build}">
       <property name="have.deployed.common" value="true"/>
     </ant>
   </target>
