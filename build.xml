@@ -140,6 +140,27 @@
   </target>
   
   <!-- ================= -->
+  <!-- Also support testing deployment profiles -->
+  
+  <target name="test:profile" depends="props:set,deploy:common">
+    <if>
+      <isset property="pserv.deploy.profile.pure-java"/>
+      <then>
+        <echo message="pserv.deploy.profile.pure-java is set - will test pure-java services"/>
+        <ant target="test:pure-java"/>
+      </then>
+    </if>
+    <!-- Now test the profile -->
+    <foreach target="test:profile:sub" param="sub.build" inheritall="false" list="${pserv.deploy.profile}" delimiter=", "/>
+  </target>
+  <target name="test:profile:sub">
+    <echo message="In ${sub.build}"/>
+    <ant antfile="${basedir}/${sub.build}/build.xml" inheritAll="false" dir="${basedir}/${sub.build}" target="test-if-testable" >
+      <property name="have.deployed.common" value="true"/>
+    </ant>
+  </target>
+  
+  <!-- ================= -->
 
   <target name="test:pure-java" depends="props:set,deploy:common">
         <foreach target="test:sub:pure-java" param="sub.build"

@@ -26,6 +26,9 @@ test.on.server=true
 #
 # Use these properties to define a deployment profile.  
 #
+# Deploy using 'ant deploy:profile'
+# This can also be used for testing, via 'ant test:profile'
+#
 # First, define whether the pure-java set should be deployed under 'ant deploy:profile':
 # pserv.deploy.profile.pure-java = true
 # Add a comma-separated list of the sub-components you wish to deploy via 'ant deploy:profile'
