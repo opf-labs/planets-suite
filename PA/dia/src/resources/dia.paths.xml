@@ -1,0 +1,26 @@
+<paths>
+
+    <path>
+        <from>
+            <uri value="planets:fmt/ext/jpeg"/>
+            <uri value="planets:fmt/ext/jpg"/>
+        </from>
+        <to>
+            <uri value="planets:fmt/ext/pnm"/>
+        </to>
+        <command>jpegtopnm</command>
+    </path>
+
+    <path>
+        <from>
+            <uri value="planets:fmt/ext/pnm"/>
+        </from>
+        <to>
+            <uri value="planets:fmt/ext/jpeg"/>
+            <uri value="planets:fmt/ext/jpg"/>
+        </to>
+        <command>pnmtojpeg</command>
+    </path>
+
+
+</paths>
