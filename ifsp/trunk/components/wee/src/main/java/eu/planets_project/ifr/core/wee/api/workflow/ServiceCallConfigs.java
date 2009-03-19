@@ -2,7 +2,10 @@ package eu.planets_project.ifr.core.wee.api.workflow;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import eu.planets_project.services.datatypes.Parameter;
@@ -54,6 +57,21 @@ public class ServiceCallConfigs {
 	 */
 	public Parameter getPropertyAsParameter(String sKey){
 		return new Parameter(sKey,this.getProperty(sKey));
+	}
+	
+	
+	/**
+	 * Returns a List of all Parameters that have been specified in the workflow config
+	 * 
+	 * @return
+	 */
+	public List<Parameter> getAllPropertiesAsParameters(){
+		List<Parameter> ret = new ArrayList<Parameter>();
+		Iterator<String> keys = this.configs.keySet().iterator();
+		while(keys.hasNext()){
+			ret.add(this.getPropertyAsParameter(keys.next()));
+		}
+		return ret;
 	}
 
 }

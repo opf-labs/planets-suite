@@ -182,18 +182,21 @@ public class IdentifyMigrateIdentifyTemplate extends WorkflowTemplateHelper impl
 		
 		log.debug("runMigrationService: "+migrateFrom +" "+migrateToURI);
 		/*
-		 * This workflow uses the Service configuration parameters:
-		 * compressionType and compressionQuality
-		 * These values should be added from 
+		 * This workflow uses all specified Service configuration parameters:
+		 * e.g. compressionType and compressionQuality which are specific to a certain
+		 * service instance as e.g. ImageMagicMigrations
 		 * @see eu.planets_project.ifr.core.services.migration.jmagickconverter.impl.ImageMagickMigrationsTestHelper
-		 * into the technical registry!
 		 * 
 		 * Within this workflow we've decided to use as many parameters of those two as configured within the xml config,
 		 * but if one is not available (i.e. null) we still try to invoke the migration service (and use the default config of the service)
 		 */
 		List<Parameter> parameterList = new ArrayList<Parameter>();
-    	Parameters parameters = new Parameters();
-    	
+		Parameters parameters = new Parameters();
+		/*As long as accepted Parameters for a level-one service type aren't 
+    	 *uniquely defined and named the following is not possible within a template. 
+    	 *--> use getAllPropertiesAsParameter instead - this may also contain parameters a certain service does not understand
+    	 */
+		/*
     	Parameter pCompressionType = this.getServiceCallConfigs(this.migrate1).
 				getPropertyAsParameter("compressionType");
     	if(pCompressionType!=null){
@@ -203,7 +206,10 @@ public class IdentifyMigrateIdentifyTemplate extends WorkflowTemplateHelper impl
 			getPropertyAsParameter("compressionQuality");
     	if(pCompressionQuality!=null){
     		parameterList.add(pCompressionQuality);
-    	}
+    	}*/
+    	parameterList = this.getServiceCallConfigs(this.migrate1).
+    		getAllPropertiesAsParameters();
+    	
     	//finally set the parameters for the object
 		parameters.setParameters(parameterList);
 		
