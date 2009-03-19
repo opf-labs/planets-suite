@@ -257,7 +257,10 @@ public class FileUtils {
 			}
 		}
 		File file = getTempFile(fileName, suffix);
-		
+
+        // Write:
+        writeInputStreamToFile( inputStream, file);		
+        
 		return file;
 	}
 	
