@@ -74,9 +74,13 @@ public class MigrationPath {
     public List<Parameter> getParameters() {
         return parameters;
     }
+    
+    @Override
+	public String toString() {
+    	return inputFormat + " -> " + outputFormat + "  Parameters: " + parameters;
+	}
 
-
-    /**
+	/**
      * Construct an array of migrationpaths, linking all the formats in
      * inputformas to all the formats in outputformats. If either is null or
      * empty, the array will be length 0. All migrationPaths will be with
