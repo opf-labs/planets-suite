@@ -20,7 +20,7 @@
                             <t:outputText value="#{res['new_exp.stage1']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 1}">
+                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 1)}">
                     <li class="exp_nd">#{res['new_exp.stage1']}</li>
                 </h:panelGroup>
 
@@ -30,7 +30,7 @@
                             <t:outputText value="#{res['new_exp.stage2']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 2}">
+                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 2)}">
                     <li class="exp_nd">#{res['new_exp.stage2']}</li>
                 </h:panelGroup>
 
@@ -40,7 +40,7 @@
                             <t:outputText value="#{res['new_exp.stage3']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 3}">
+                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 3)}">
                     <li class="exp_nd">#{res['new_exp.stage3']}</li>
                 </h:panelGroup>
 
@@ -50,7 +50,7 @@
                             <t:outputText value="#{res['new_exp.stage4']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 4}">
+                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 4)}">
                     <li class="exp_nd">#{res['new_exp.stage4']}</li>
                 </h:panelGroup>
                 
@@ -60,7 +60,7 @@
                             <t:outputText value="#{res['new_exp.stage5']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 5}">
+                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 5)}">
                     <li class="exp_nd">#{res['new_exp.stage5']}</li>
                 </h:panelGroup>
 
@@ -71,7 +71,7 @@
                             <t:outputText value="#{res['new_exp.stage6']}" />
                     </h:commandLink></li>
                 </h:panelGroup>
-                <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 6}">
+                <h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 6)}">
                     <li class="exp_nd">#{res['new_exp.stage6']}</li>
                 </h:panelGroup>
                 
