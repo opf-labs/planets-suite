@@ -6,8 +6,6 @@ package eu.planets_project.services.migration.dia.impl;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +14,6 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
@@ -95,6 +91,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	@Test
 	public void testDescribe() throws Exception {
 		ServiceDescription diaServiceDescription = migrationService.describe();
+
 		assertNotNull("The migration service does not provide author information.", diaServiceDescription.getAuthor());
 		assertNotNull("The migration service does not provide a description.", diaServiceDescription.getDescription());
 //		assertNotNull("The migration service does not provide a indentifier.", diaServiceDescription.getIdentifier());
