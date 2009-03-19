@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="IF/admin/src/java"/>
+	<classpathentry kind="src" path="PA/dia/test/java"/>
+	<classpathentry kind="src" path="PA/dia/src/java"/>
 	<classpathentry kind="src" path="IF/admin/src/test/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicIdentifyOneBinary/src/java"/>
@@ -30,8 +32,8 @@
 	<classpathentry kind="src" path="PA/dvips/src/java"/>
 	<classpathentry kind="src" path="PA/dvips/test"/>
 	<classpathentry kind="src" path="PA/ffmpeg/src/java"/>
-    <classpathentry kind="src" path="PA/ghostscript/src/java"/>
-    <classpathentry kind="src" path="PA/ghostscript/test/java"/>
+	<classpathentry kind="src" path="PA/ghostscript/src/java"/>
+	<classpathentry kind="src" path="PA/ghostscript/test/java"/>
 	<classpathentry kind="src" path="PA/gimp/src/java"/>
 	<classpathentry kind="src" path="PA/gimp/test"/>
 	<classpathentry kind="src" path="PA/imagemagick/src/java"/>
@@ -86,8 +88,8 @@
 	<classpathentry kind="src" path="PC/odf-toolkit/src/test/java"/>
 	<classpathentry kind="src" path="PC/pngcheck/src/java"/>
 	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
-    <classpathentry kind="src" path="PP/xcl/src/java"/>
-    <classpathentry kind="src" path="PP/xcl/src/test/java"/>
+	<classpathentry kind="src" path="PP/xcl/src/java"/>
+	<classpathentry kind="src" path="PP/xcl/src/test/java"/>
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
