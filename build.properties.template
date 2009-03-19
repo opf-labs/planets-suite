@@ -21,7 +21,7 @@ if_server.dir=@if_server.dir@
 #if_server.port=8080
 
 # Test against a running server (default is true):
-test.on.server=true
+test.on.server=false
 
 #
 # Use these properties to define a deployment profile.  
