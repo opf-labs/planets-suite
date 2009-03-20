@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -93,7 +94,7 @@ public class XcdlMigrateAllPathsTests extends XcdlMigrateTests{
 //    }
 
     @Test
-    public void testAllPossibleMigrationPathways() {
+    public void testAllPossibleMigrationPathways() throws URISyntaxException {
         System.out.println("Testing all possible pathways...START");
         for (int i = 0; i < migrationPaths.length; i++) {
             MigrationPath path = migrationPaths[i];

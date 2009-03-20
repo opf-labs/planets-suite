@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -93,11 +94,11 @@ public class XcdlMigrateTests {
     }
 
     @Test
-    public void testMigration() {
+    public void testMigration() throws URISyntaxException {
         testPath(migrationPaths[0]);
     }
 
-    protected void testPath(MigrationPath path) {
+    protected void testPath(MigrationPath path) throws URISyntaxException {
         URI inputFormat = path.getInputFormat();
         URI outputFormat = path.getOutputFormat();
 
@@ -107,14 +108,27 @@ public class XcdlMigrateTests {
                 + outputFormat.toASCIIString() + "]");
         System.out.println();
 
+        
+        
         System.out
                 .println("PARAMS: disableNormData = FALSE, enableRawData = FALSE, XCEL = YES");
+        
+        if(inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/gif") 
+        	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/bmp")
+        	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/jpg")
+        	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/jpeg")) {
+        		System.err.println("NOTE: NO Xcel will be passed for this input format. " +
+        				"Extractor will find the proper one itself!");
+        }
+        	
         Parameters parameters = createParameters(false, false,
                 getTestXCEL(getFormatExtension(inputFormat)));
         testMigrate(inputFormat, outputFormat, parameters);
         System.out.println("*******************");
         System.out.println();
 
+        
+        
         System.out
                 .println("PARAMS: disableNormData = FALSE, enableRawData = FALSE, XCEL = NO");
         parameters = createParameters(false, false, null);
@@ -122,8 +136,19 @@ public class XcdlMigrateTests {
         System.out.println("*******************");
         System.out.println();
 
+        
+        
         System.out
                 .println("PARAMS: disableNormData = TRUE, enableRawData = FALSE, XCEL = YES");
+        
+        if(inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/gif") 
+            	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/bmp")
+            	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/jpg")
+            	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/jpeg")) {
+            		System.err.println("NOTE: NO Xcel will be passed for this input format. " +
+            				"Extractor will find the proper one itself!");
+        }
+        
         parameters = createParameters(true, false,
                 getTestXCEL(getFormatExtension(inputFormat)));
         testMigrate(inputFormat, outputFormat, parameters);
@@ -179,13 +204,15 @@ public class XcdlMigrateTests {
         }
 
         if (srcExtension.equalsIgnoreCase("BMP")) {
-            return FileUtils
-                    .readTxtFileIntoString(XcdlMigrateUnitHelper.BMP_XCEL);
+        	return null;
+//            return FileUtils
+//                    .readTxtFileIntoString(XcdlMigrateUnitHelper.BMP_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("GIF")) {
-            return FileUtils
-                    .readTxtFileIntoString(XcdlMigrateUnitHelper.GIF_XCEL);
+        	return null;
+//            return FileUtils
+//                    .readTxtFileIntoString(XcdlMigrateUnitHelper.GIF_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("PDF")) {
@@ -195,8 +222,9 @@ public class XcdlMigrateTests {
 
         if (srcExtension.equalsIgnoreCase("JPEG")
                 || srcExtension.equalsIgnoreCase("JPG")) {
-            return FileUtils
-                    .readTxtFileIntoString(XcdlMigrateUnitHelper.JPEG_XCEL);
+        	return null;
+//            return FileUtils
+//                    .readTxtFileIntoString(XcdlMigrateUnitHelper.JPEG_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("PNG")) {
@@ -251,8 +279,8 @@ public class XcdlMigrateTests {
 
         try {
             input = new DigitalObject.Builder(Content.byValue(inputFile))
-                    .permanentUrl(
-                            new URL("http://xcdlExtractorMigrationTest.eu"))
+                    .permanentUrl(new URL("http://xcdlExtractorMigrationTest.eu"))
+                    .title(inputFile.getName())
                     .build();
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block

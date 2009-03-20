@@ -51,7 +51,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
     /**
      * the service name.
      */
-    public static final String NAME = "Extractor";
+    public static final String NAME = "XcdlCharacteriseExtractor";
     /**
      * output dir.
      */
@@ -182,8 +182,10 @@ public class XcdlCharacterise implements Characterise, Serializable {
                 XcdlCharacterise.NAME, Characterise.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
         sd
-                .description("A wrapper for the Extractor tool. The tool returns the extracted properties\n"
-                        + "in a XCDL file");
+                .description("Another Wrapper for the Extractor tool developed at the UzK. This Wrapper uses the Extractor\n" +
+                		"to read all relevant properties from an input file. The Extractor output (.xcdl) is parsed and \n" +
+                		"returned as a a List of Properties to enable the comparison of results delivered by different Characterisation tools.\n" +
+                		"IMPORTANT NOTE: To receive the .xcdl file, please use the XcdlMigrate service!");
         sd.classname(this.getClass().getCanonicalName());
         sd.version("0.1");
 
@@ -204,6 +206,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
         sd.parameters(parameters);
         
         sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(new URI[]{}));
+        sd.serviceProvider("The Planets Consortium");
 
         return sd.build();
     }

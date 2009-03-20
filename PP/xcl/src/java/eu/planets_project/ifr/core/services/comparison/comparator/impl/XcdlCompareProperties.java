@@ -87,10 +87,16 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @see eu.planets_project.services.compare.CompareProperties#describe()
      */
     public ServiceDescription describe() {
-        return new ServiceDescription.Builder("XCL property comparator", super
-                .getClass().getName()).classname(super.getClass().getName())
-                .author("Fabian Steeg").description(
-                        "XCDL Comparison via Properties Service")
+        return new ServiceDescription.Builder(this.NAME, CompareProperties.class.getCanonicalName())
+        		.classname(this.getClass().getCanonicalName())
+                .author("Fabian Steeg")
+                .description("This services is a wrapper for the Comparator command line tool developed at the UzK." +
+                		"It compares Property lists instead of .xcdl files. This way, it is possible" +
+                		"to use the Comparator to compare the output of any Characterisation tool that could be" +
+                		"converted to (or that is delivered as) a list of properties." + 
+                		"To enable this, a xcdl file is created on the fly for each list of" + 
+                		"properties and is used as input for the Comparator command line tool." + 
+                		"IMPORTANT NOTE: To use .xcdl files directly, please use the XcdlCompare service!")
                 .serviceProvider("The Planets Consortium").build();
     }
 

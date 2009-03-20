@@ -95,8 +95,14 @@ public final class XcdlCommonProperties implements CommonProperties {
      * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
-        return ServiceDescription.create("XCL suite Explorer tool service",
-                CommonProperties.class.toString()).author("Fabian Steeg")
+        return ServiceDescription.create(this.NAME, CommonProperties.class.getCanonicalName())
+                .classname(this.getClass().getCanonicalName())
+                .description("This service is a wrapper for the XcdlExplorer command line tool (formerly known as FPM-Tool)\n" +
+                		"developed at the UzK.\n" +
+                		"It returns a List of Properties for a given list of file formats, each specified by a PRONOM ID.\n" +
+                		"It's possible to 1) receive a List containing ALL the properties of all input formats ('union')\n" +
+                		"or to 2) receive a List containing only the SHARED properties of the input formats ('intersection').")
+                .author("Fabian Steeg")
                 .serviceProvider("The Planets Consortium").build();
     }
 

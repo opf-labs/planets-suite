@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
@@ -81,6 +83,12 @@ public final class ComparatorWrapper {
         delete(tempXcdls.toArray(new File[] {}));
         /* And finally, return the result: */
         return result;
+    }
+    
+    public static List<URI> getSupportedInputFormats() {
+    	List<URI> inputFormats = new ArrayList<URI>();
+    	inputFormats.add(Format.extensionToURI("XCDL"));
+        return inputFormats;
     }
 
     /**

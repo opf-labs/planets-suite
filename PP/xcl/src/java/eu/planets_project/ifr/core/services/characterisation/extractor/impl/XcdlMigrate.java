@@ -44,7 +44,7 @@ public class XcdlMigrate implements Migrate, Serializable {
     /**
      * the service name.
      */
-    public static final String NAME = "XcdlExtractor";
+    public static final String NAME = "XcdlMigrateExtractor";
     /**
      * output dir.
      */
@@ -102,12 +102,13 @@ public class XcdlMigrate implements Migrate, Serializable {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(
                 XcdlMigrate.NAME, Migrate.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
-        sd
-                .description("A wrapper for the Extractor tool developed by UzK (University at Cologne).\n"
-                        + "The tool returns a XCDL file (as byte[]) in which includes all data of the input file in a machine readable way (xml).\n"
-                        + "This XCDL file could be automatically compared by the Comparator tool (UzK) to evaluate a migration has been.\n"
-                        + "(example: migrate a TIFF to PNG. Create a XCDL for the TIFF input file and create a XCDL for the PNG output file\n"
-                        + "and compare them using the Comparator. How much information has been lost?)");
+        sd.description("A wrapper for the Extractor tool developed by UzK (University at Cologne)."
+                        + "The tool returns a XCDL file (as byte[]) in which includes all data of the input file in a machine readable way (xml)."
+                        + "This XCDL file could be automatically compared by the Comparator tool (UzK) to evaluate how successful a migration has been."
+                        + "(Example: migrate a TIFF to PNG. Create a XCDL for the TIFF input file and create a XCDL for the PNG output file"
+                        + "and compare them using the Comparator. How much information has been lost?)" +
+                        "IMPORTANT NOTE: To receive the Extractor results as a list of properties, in order to enable the comparison" +
+                        "of different characterisation tools, please use the XcdlCharacterise Service!");
 
         sd.classname(this.getClass().getCanonicalName());
         sd.version("0.1");
@@ -137,13 +138,15 @@ public class XcdlMigrate implements Migrate, Serializable {
 
         // Migration Paths: List all combinations:
         sd.paths(createMigrationPathwayMatrix(CoreExtractor.getSupportedInputFormats(), CoreExtractor.getSupportedOutputFormats()));
+        sd.serviceProvider("The Planets Consortium");
 
         return sd.build();
     }
 
     public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
             URI outputFormat, Parameters parameters) {
-        DigitalObject resultDigOb = null;
+        System.out.println("Working on file: " + digitalObject.getTitle());
+    	DigitalObject resultDigOb = null;
         ServiceReport sReport = new ServiceReport();
         MigrateResult migrateResult = null;
         String optionalFormatXCEL = null;

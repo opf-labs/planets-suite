@@ -11,12 +11,15 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompare;
 import eu.planets_project.ifr.core.services.comparison.explorer.impl.XcdlCommonProperties;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.compare.CommonProperties;
+import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -26,6 +29,23 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 public class XcdlCommonPropertiesTests {
 
     private static final String WSDL = "/pserv-xcl/XcdlCommonProperties?wsdl";
+    
+    @Test
+	public void testDescribe() {
+		CommonProperties c = ServiceCreator.createTestService(XcdlCommonProperties.QNAME,
+				XcdlCommonProperties.class, WSDL);
+		ServiceDescription sd = c.describe();
+        assertTrue("The ServiceDescription should not be NULL.", sd != null);
+        System.out.println("test: describe()");
+        System.out
+                .println("--------------------------------------------------------------------");
+        System.out.println();
+        System.out.println("Received ServiceDescription from: "
+                + c.getClass().getName());
+        System.out.println(sd.toXmlFormatted());
+        System.out
+                .println("--------------------------------------------------------------------");
+    }
 
     @Test
     public void testBmpGif() {
