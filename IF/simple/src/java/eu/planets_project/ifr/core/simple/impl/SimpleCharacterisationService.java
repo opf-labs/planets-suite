@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.simple.impl;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -13,19 +12,16 @@ import javax.jws.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.DigitalObjectUtils;
-import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * A simple characterisation service.
@@ -50,7 +46,7 @@ public class SimpleCharacterisationService implements Characterise
     static final String NAME = "SimpleCharacterisationService";
     
     /** The Planets Property ID for the size of the object. */
-    public static String MIME_PROP_URI = "planets:pc/basic/bytestream/size";
+    public static final String MIME_PROP_URI = "planets:pc/basic/bytestream/size";
 
     /**
      * 
