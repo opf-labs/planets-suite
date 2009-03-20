@@ -25,8 +25,11 @@ public class PersistentRegistryTests extends CoreRegistryTests {
      */
     @BeforeClass
     public static void registryCreation() {
-        registry = PersistentRegistry.getInstance(CoreRegistry.getInstance(),
-                TEST_ROOT);
+        registry = new PersistentRegistryTests().createRegistry();
+    }
+
+    Registry createRegistry() {
+        return PersistentRegistry.getInstance(CoreRegistry.getInstance());
     }
 
     private Registry newRegistry;
@@ -97,8 +100,7 @@ public class PersistentRegistryTests extends CoreRegistryTests {
         }
         Assert.assertEquals(true, register.success);
         /* Some client instantiates a registry backed by the same directory: */
-        newRegistry = PersistentRegistry.getInstance(
-                CoreRegistry.getInstance(), CoreRegistryTests.TEST_ROOT);
+        newRegistry = createRegistry();
         checkIfPresent(description, newRegistry);
         /* Now, we change something in the original registry: */
         ServiceDescription newDescription = ServiceDescription
