@@ -15,9 +15,42 @@
 
 	
 	<ui:define name="content">
-        <ui:include src="/WEB-INF/templates/property_tree_browser.xhtml"/>
-	</ui:define>
+		<div id="mainwrapper">
+		<div id="maincol">
+		<div class="innertubemain">
+        	<ui:include src="/WEB-INF/templates/property_tree_browser.xhtml"/>
+        	<p>&#160;</p>
+	        <p>&#160;</p>
+	        <p>&#160;</p>
+	        <p>&#160;</p>
+	        <p>&#160;</p>
+	        <p>&#160;</p>
+	        <p>&#160;</p>
+	        <p>&#160;</p>
+	        <p>&#160;</p>
+	        <p>&#160;</p>
+        </div>
+        </div>
+        </div>
 
+    	<div id="leftcol">
+			<h3 class="leftcol">Planets Ontology Browser</h3>
+	        <div class="innertube">        
+	        <p class="leftcol">Explore all properties the Testbed can measure for you</p>        
+			<p class="leftcol">Multiple tree views of the ontology are available</p>     
+			<p class="leftcol">Searching is facilitated by a full-text search</p>           
+	        </div>
+	        
+	        <h3 class="leftcol">Information</h3>
+	        <div class="innertube">
+	        <form method="get" action="restrict/">
+	        <p class="leftcol">For futher information regarding properties or the process on adding 
+	        them to the Testbed please contact<br/>The Planets Properties Working Group (DOPWG)</p>         
+	        </form>        
+	        </div>
+   		</div>
+   	</ui:define>
+   
 	<ui:define name="footer">
 		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
 	</ui:define>

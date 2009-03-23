@@ -183,6 +183,13 @@ public class PropertyDnDTreeBean{
         	this.dndSelNodes.put(((OntologyProperty)draggedNode.getData()).getURI(),draggedNode);
     }
     
+	/**
+	 * removes all selected properties from the list
+	 */
+	public void removeAllSelectedProps(){
+		this.dndSelNodes.clear();
+	}
+    
     private boolean filterStringChanged(){
     	String filter = this.getFilterTreeString();
     	if(filter.equalsIgnoreCase(this.filterTreeStringOld)){
@@ -229,6 +236,10 @@ public class PropertyDnDTreeBean{
     		ret.add(n);
     	}
     	return ret;
+    }
+    
+    public int getSelNodesSize(){
+    	return this.dndSelNodes.size();
     }
     
     /**
@@ -356,6 +367,7 @@ public class PropertyDnDTreeBean{
             
             return node;
         }
+    	
     }
     
     /**

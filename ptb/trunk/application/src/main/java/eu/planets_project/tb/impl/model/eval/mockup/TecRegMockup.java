@@ -28,6 +28,7 @@ public class TecRegMockup {
     public static final String URIXCDLPropertyRoot = "planets:pc/xcdl/property/";
     public static final String URIXCDLMetricRoot = "planets:pc/xcdl/metric/";
     public static final String URIServicePropertyRoot = "planets:tb/srv/";
+    public static final String URIOntologyPropertyRoot = "planets:pc/xcdl/ontology/";
     
     // Testbed Service properties.
     public static URI PROP_SERVICE_SUCCESS;

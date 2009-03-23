@@ -25,7 +25,7 @@
 		<div id="mainwrapper">
 			<div id="maincol">
 				<div class="innertubemain">        
-<h:form>
+<a4j:form>
 
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="3" />
@@ -34,23 +34,24 @@
 
       <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
 
-<rich:simpleTogglePanel label="#{res['exp_stage3.automaticProps']}" opened="true" switchType="server">
+<a4j:region renderRegionOnly="true">
+<rich:simpleTogglePanel label="#{res['exp_stage3.automaticProps']}" opened="true" switchType="ajax">
 <p>These are properties that the Testbed can automatically measure during your experiment.</p>
 
 <h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
     <rich:panel styleClass="expExecLogPanel">
-        <rich:dataTable value="#{NewExp_Controller.stages}" var="stage" styleClass="tbTable" >
+        <rich:dataTable value="#{NewExp_Controller.stages}" var="stage" styleClass="tbTable">
             <rich:column> 
                 <f:facet name="header">
                     <h:outputText value="Experiment Stage"/>
                 </f:facet>
-                        <h:commandLink>
-          <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectStageActionListener"/>
-                <h:outputText value="#{stage.name}" styleClass="#{ ( ExperimentBean.selectedStage.name eq stage.name ) ? 'isSelected' : 'isNotSelected'}" />
+                <h:commandLink>
+          			<f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectStageActionListener"/>
+                	<h:outputText value="#{stage.name}" styleClass="#{ ( ExperimentBean.selectedStage.name eq stage.name ) ? 'isSelected' : 'isNotSelected'}" />
                 </h:commandLink>
             </rich:column>
         </rich:dataTable>
-        
+         
         <h:panelGroup rendered="#{ExperimentBean.selectedStage == null}">
           Select an experiment stage to view.
         </h:panelGroup>
@@ -62,7 +63,6 @@
         #{ExperimentBean.selectedStage.description}
         </p>
         </h:panelGroup>
-        
         
     </rich:panel>
 
@@ -119,76 +119,27 @@
 </h:panelGrid>
 
 </rich:simpleTogglePanel>
+</a4j:region>
 
-
-<rich:simpleTogglePanel label="#{res['exp_stage3.optionalManualBMGs']}" opened="false" switchType="server">
-    
-<p>These are properties that the Testbed <b>cannot</b> automatically measure during your experiment, and so must be measured manually instead.</p>
-
-
-<h:panelGroup rendered="#{ExperimentBean.dtype != ''}">
-
-						<fieldset>
-							<legend>#{res['exp_stage3.legendOutcomes']}</legend>
-              
-							<p>Here you can specify the Benchmark Goals for your experiment.  These will be used during the evaluation of your experiment to provide a record of the goals of your experiment and whether these goals were achieved.</p>	
-
-<p>
-<h:outputLabel value="#{res['new_exp.expDigiType']}" for="dtype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-<h:selectManyListbox id="dtype" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"
-  value="#{ExperimentBean.dtype}" style="width: 23em;" onchange="submit();">
-   <f:selectItems
-    value="#{ExperimentBean.dtypeList}"/>
-</h:selectManyListbox> <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipObjectType']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-</p>
-<div class="clear"></div>
-
-                    <!-- puts a list of all available Experiment 'BenchmarkBeans' into the session map -->
-                    #{NewExp_Controller.retrieveBenchmarkBeans}      
-              
-							<p>Highlight benchmark goals in category: 
-							<h:selectOneMenu id="filterBMCategory" value="#{ExperimentBean.BMGoalCategoryFilterValue}" immediate="true" 
-             					valueChangeListener="#{NewExp_Controller.processBMGoalCategoryFilterChange}">
-                 				<f:selectItems value="#{ExperimentBean.allBMGoalCategoriesForFilter}" />                        
-        						<a4j:support event="onchange" reRender="dataTable" />
-        					</h:selectOneMenu>	  
-        					</p>   
-						  	<h:dataTable id="dataTable" var="bm" value="#{BenchmarkBeans}"			    	              
-			        	          rowId="#{bm.ID}"
-			            	      cellpadding="2"
-			                	  cellspacing="0"
-				                  border="1">
-							        <h:column>
-									    <h:selectBooleanCheckbox id="selected" value="#{bm.selected}"  readonly="#{ExperimentBean.approved}"  disabled="#{ExperimentBean.approved}" valueChangeListener="#{NewExp_Controller.processSelBMValueTicked}">	
-									    	<f:param name="bmGoalID" value="#{bm.ID}"/>
-									    	<a4j:support event="onchange"/>	
-									    </h:selectBooleanCheckbox>	            	
-						            </h:column>
-							        <h:column>
-			            				<f:facet name="header">#{res['exp_stage3.bgCriteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
-										<h:outputText value="#{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue == bm.category}" style="background-color:#FFF8C6; font-weight:bold;"/>
-						            	<h:outputText value="#{bm.name}" rendered="#{ExperimentBean.BMGoalCategoryFilterValue != bm.category}"/>
-						        	</h:column>
-							        <h:column>
-			            				<f:facet name="header">#{res['exp_stage3.bgExplanation']}</f:facet>
-						            	#{bm.definition}<br/>
-						            	<i>#{bm.description}</i>
-						        	</h:column>	
-							</h:dataTable>
-							
-						</fieldset>
-</h:panelGroup>
-
-							<p><b>#{res['exp_stage3.warning']}</b></p>
+<!-- includes the ontology browser -->
+<a4j:region renderRegionOnly="true">
+<rich:simpleTogglePanel id="ontologytree" label="#{res['exp_stage3.ontologyProps']}" opened="true" switchType="ajax">  
+	<p>These are properties that the Testbed <b>cannot</b> automatically measure during your experiment, and so must be measured manually instead.</p>
+    <ui:include src="/WEB-INF/templates/property_tree_browser.xhtml">
+       <ui:param name="Standalone" value="false" />
+       <ui:param name="experimentStages" value="#{NewExp_Controller.stages}" />
+       <ui:param name="expApproved" value="#{ExperimentBean.approved}"/>
+    </ui:include>
 
 </rich:simpleTogglePanel>
+</a4j:region>
 
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="3" />
        <ui:param name="PlaceBandAsHeader" value="false" />
     </ui:include>
 
-</h:form>
+</a4j:form>
 
     <ui:include src="/WEB-INF/templates/comment_template.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />

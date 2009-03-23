@@ -30,6 +30,7 @@ import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
@@ -238,6 +239,45 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         return lm;
     }
     
+    /**
+     * Takes a OntologyProperty that's used 
+     * and converts it into the Testbed's Property model element: MeasurementImpl
+     * @param p eu.planets_project.services.datatypes.Property
+     * @return
+     */
+    private MeasurementImpl createMeasurementFromOntologyProperty(OntologyProperty p){
+    	 MeasurementImpl m = new MeasurementImpl();
+    	 if( p == null ) return m;
+    	 String propURI = p.getURI();
+    	 // Invent a uri if required - shouldn't be the case:
+         if( propURI == null ) {
+        	 propURI = TecRegMockup.URIOntologyPropertyRoot + p.getName();
+         }
+         URI pURI;
+         try {
+			pURI = new URI(propURI);
+		} catch (URISyntaxException e) {
+			log.debug(e);
+			return m;
+		} 
+		// Copy in:
+        m.setName(p.getName());
+        m.setIdentifier(pURI);
+        m.setDescription(p.getComment());
+        //FIXME: when ontology model contains service properties; currently XCDLOntologyProperty only contains digital object properties
+        m.setType(MeasurementImpl.TYPE_DIGITALOBJECT);
+        m.setUnit(p.getUnit());
+        m.setValue(null);
+        
+        return m;
+    }
+    
+    /**
+     * Takes a Property that's used in Planets level-one service call results
+     * and converts it into the Testbed's Property model element: MeasurementImpl
+     * @param p eu.planets_project.services.datatypes.Property
+     * @return
+     */
     private MeasurementImpl createMeasurementFromProperty( Property p ) {
         MeasurementImpl m = new MeasurementImpl();
         
