@@ -223,6 +223,6 @@
 	<classpathentry kind="lib" path="PA/jtidy/lib/Tidy.jar" sourcepath="D:/JTidy/jtidy-04aug2000r7-dev/src"/>
 	<classpathentry kind="lib" path="PA/pdfbox/lib/fontbox-0.1.0.jar"/>
 	<classpathentry kind="lib" path="PA/pdfbox/lib/PDFBox-0.7.3.jar"/>
-	<classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1-patched.jar"/>
+	<classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
