@@ -76,13 +76,13 @@ public final class XcdlCommonProperties implements CommonProperties {
             List<Prop> resultProperties = ExplorerResultReader.properties(result);
             propsOfEach.add(resultProperties);
         }
-        List<Prop> result = intersection(propsOfEach);
+        List<Prop> result = intersectionOf(propsOfEach);
         ServiceReport report = new ServiceReport();
         report.setInfo(fullResult.toString());
         return new CompareResult(result, report);
     }
 
-    private List<Prop> intersection(List<List<Prop>> propsOfEach) {
+    private List<Prop> intersectionOf(List<List<Prop>> propsOfEach) {
         List<Prop> result = new ArrayList<Prop>(propsOfEach.get(0));
         for (List<Prop> list : propsOfEach) {
             result.retainAll(list);
