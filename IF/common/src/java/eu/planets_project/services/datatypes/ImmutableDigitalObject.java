@@ -54,6 +54,7 @@ final class ImmutableDigitalObject implements
     private URI format;
 
     /** @see {@link #getPermanentUrl()} */
+    @XmlAttribute
     private URL permanentUrl;
 
     /** @see {@link #getManifestationOf()} */

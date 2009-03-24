@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * A representation of a digital object. Instances are created using a builder
  * to allow optional named constructor parameters and ensure consistent state
  * during creation. E.g. to create a digital object with only the required
- * arguments, you'd use:
+ * argument, you'd use:
  * <p/>
  * {@code DigitalObject o = new DigitalObject.Builder(content).build();}
  * <p/>
@@ -46,30 +46,19 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlJavaTypeAdapter(DigitalObject.Adapter.class)
 public interface DigitalObject {
-
-    /**
-     * @return The title of this digital object.
-     */
+    /** @return The title of this digital object. */
     String getTitle();
 
-    /**
-     * @return The type of this digital object.
-     */
+    /** @return The type of this digital object. */
     URI getFormat();
 
-    /**
-     * @return The unique identifier. Required.
-     */
+    /** @return The unique identifier. Required. */
     URL getPermanentUrl();
 
-    /**
-     * @return The URI that this digital object is a manifestation of.
-     */
+    /** @return The URI that this digital object is a manifestation of. */
     URI getManifestationOf();
 
-    /**
-     * @return The checksum for this digital object.
-     */
+    /** @return The checksum for this digital object. */
     Checksum getChecksum();
 
     /**
@@ -109,13 +98,11 @@ public interface DigitalObject {
 
     /**
      * @return An XML representation of this digital object (can be used to
-     *         instantiate an object using the static factory method)
+     *         instantiate an object using the builder)
      */
     String toXml();
 
-    /**
-     * Adapter for serialization of interface instances.
-     */
+    /** Adapter for serialization of interface instances. */
     static class Adapter extends
             XmlAdapter<ImmutableDigitalObject, DigitalObject> {
         /**
@@ -156,7 +143,7 @@ public interface DigitalObject {
         private String title = null;
 
         /** @return The instance created using this builder. */
-        public ImmutableDigitalObject build() {
+        public DigitalObject build() {
             return new ImmutableDigitalObject(this);
         }
 
@@ -255,7 +242,7 @@ public interface DigitalObject {
          * @param contained The contained digital objects
          * @return The builder, for cascaded calls
          */
-        public Builder contains(final ImmutableDigitalObject... contained) {
+        public Builder contains(final DigitalObject... contained) {
             this.contained = new ArrayList<DigitalObject>(Arrays
                     .asList(contained));
             return this;
@@ -353,6 +340,7 @@ public interface DigitalObject {
         public URI getManifestationOf() {
             return manifestationOf;
         }
+
         /**
          * @return The checksum
          * @see DigitalObject#getChecksum()
@@ -360,6 +348,7 @@ public interface DigitalObject {
         public Checksum getChecksum() {
             return checksum;
         }
+
         /**
          * @return The metadata
          * @see DigitalObject#getMetadata()
@@ -367,6 +356,7 @@ public interface DigitalObject {
         public List<Metadata> getMetadata() {
             return metadata;
         }
+
         /**
          * @return The format
          * @see DigitalObject#getFormat()
@@ -374,6 +364,7 @@ public interface DigitalObject {
         public URI getFormat() {
             return format;
         }
+
         /**
          * @return The title
          * @see DigitalObject#getTitle()
