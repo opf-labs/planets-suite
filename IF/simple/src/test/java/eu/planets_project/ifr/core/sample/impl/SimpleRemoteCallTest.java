@@ -49,7 +49,7 @@ public class SimpleRemoteCallTest {
             }
             Identify droid = (Identify) service.getPort( Identify.class );
             IdentifyResult result = droid.identify(new DigitalObject.Builder(
-                    Content.byValue(new File("PC/droid/src/resources/Licence.rtf"))).build());
+                    Content.byValue(new File("PC/droid/src/resources/Licence.rtf"))).build(), null);
             System.out.println("Result: "+result.getTypes());
             System.exit(1);
         } catch (MalformedURLException e) {

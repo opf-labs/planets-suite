@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.storage.utils;
+package eu.planets_project.ifr.core.storage.api;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;

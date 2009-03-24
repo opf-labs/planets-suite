@@ -75,7 +75,7 @@ public final class JhoveValidation implements Validate, Serializable {
             final URI fmt) {
         /* Identify the binary: */
         JhoveIdentification identification = new JhoveIdentification();
-        IdentifyResult identify = identification.identify(digitalObject);
+        IdentifyResult identify = identification.identify(digitalObject,null);
         /* And check it it is what we expected: */
         for (URI uri : identify.getTypes()) {
             if (uri.equals(fmt)) {

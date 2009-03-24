@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.file.util.FileServiceSetup;
@@ -57,10 +58,10 @@ public class FileIdentify implements Identify {
         return mds.build();
 	}
 
-	/**
-	 * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
-	 */
-	public IdentifyResult identify(DigitalObject digitalObject) {
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
+     */
+    public IdentifyResult identify(DigitalObject digitalObject, List<Parameter> parameters) {
 
         // Can only cope if the object is 'simple', i.e. we need a byte sequence
         if(digitalObject.getContent() == null) {

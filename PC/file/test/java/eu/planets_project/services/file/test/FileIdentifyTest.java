@@ -99,7 +99,7 @@ public class FileIdentifyTest {
         DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl).build();
         
         /* Now pass this to the service */
-        IdentifyResult ir = doi.identify(object);
+        IdentifyResult ir = doi.identify(object,null);
         
         /* Check the result */
         assertTrue("The IdentifyResult should not be NULL.", ir != null);

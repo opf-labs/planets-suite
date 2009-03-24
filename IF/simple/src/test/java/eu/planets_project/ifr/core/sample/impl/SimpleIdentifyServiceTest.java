@@ -85,7 +85,7 @@ public class SimpleIdentifyServiceTest {
                 .build();
 
         /* Now pass this to the service */
-        IdentifyResult ir = ids.identify(object);
+        IdentifyResult ir = ids.identify(object, null);
 
         /* Check the result */
         System.out.println("Recieved type: " + ir.getTypes());

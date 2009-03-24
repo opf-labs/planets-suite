@@ -3,6 +3,8 @@
  */
 package eu.planets_project.services.identify;
 
+import java.util.List;
+
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -13,6 +15,7 @@ import javax.xml.ws.BindingType;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Identification of a DigitalObject, returning a types object containing the
@@ -38,5 +41,10 @@ public interface Identify extends PlanetsService {
             + "/" + Identify.NAME, partName = Identify.NAME + "Result")
     IdentifyResult identify(
             @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
-                    + "/" + Identify.NAME, partName = "digitalObject") DigitalObject digitalObject);
+                    + "/" + Identify.NAME, partName = "digitalObject")
+            DigitalObject digitalObject,
+            @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
+                    + "/" + Identify.NAME, partName = "parameters") 
+            List<Parameter> parameters
+            );
 }

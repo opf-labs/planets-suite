@@ -27,6 +27,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Types;
@@ -63,11 +64,11 @@ public final class JhoveIdentification implements Identify, Serializable {
     /***/
     private static final String OUTPUT = "planets-jhove-output";
 
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
      */
-    public IdentifyResult identify(final DigitalObject digitalObject) {
+    public IdentifyResult identify(DigitalObject digitalObject, List<Parameter> parameters) {
+        
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "jhove-temp", "bin");
         Types types = identifyOneBinary(file);

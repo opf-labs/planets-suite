@@ -126,7 +126,7 @@ public class DroidTests {
 	private static String[] test(final Identify identify, final String location)
             throws MalformedURLException {
         IdentifyResult result = identify.identify(new DigitalObject.Builder(
-                Content.byReference(new File(location).toURI().toURL())).build());
+                Content.byReference(new File(location).toURI().toURL())).build(), null );
         String[] strings = new String[result.getTypes().size()];
         for (int i = 0; i < result.getTypes().size(); i++) {
             String string = result.getTypes().get(i).toASCIIString();

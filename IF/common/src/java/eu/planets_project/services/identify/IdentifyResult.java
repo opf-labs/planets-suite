@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 
 /**
@@ -47,7 +48,9 @@ public class IdentifyResult {
         OTHER 
         
     };
-    List<Method> methods;
+    Method method;
+    
+    List<Property> properties;
     
     ServiceReport report;
 
@@ -60,25 +63,27 @@ public class IdentifyResult {
      * @param types
      * @param method
      * @param report
+     * @param properties
      */
-    public IdentifyResult(List<URI> types, Method method, ServiceReport report) {
+    public IdentifyResult(List<URI> types, Method method, ServiceReport report, List<Property> properties ) {
         super();
         this.types = types;
-        this.methods = new ArrayList<Method>();
-        this.methods.add(method);
+        this.method = method;
         this.report = report;
+        this.properties = properties;
     }
 
     /**
      * @param types
-     * @param methods 
+     * @param method
      * @param report
      */
-    public IdentifyResult(List<URI> types, List<Method> methods, ServiceReport report) {
+    public IdentifyResult(List<URI> types, Method method, ServiceReport report ) {
         super();
         this.types = types;
-        this.methods = methods;
+        this.method = method;
         this.report = report;
+        this.properties = null;
     }
 
     /**
@@ -89,8 +94,9 @@ public class IdentifyResult {
     public IdentifyResult( List<URI> types, ServiceReport report ) {
         super();
         this.types = types;
-        this.methods = null;
+        this.method = null;
         this.report = report;
+        this.properties = null;
     }
 
     /**
@@ -104,8 +110,8 @@ public class IdentifyResult {
     /**
      * @return the method
      */
-    public List<Method> getMethods() {
-        return methods;
+    public Method getMethod() {
+        return method;
     }
 
     /**
@@ -115,5 +121,11 @@ public class IdentifyResult {
         return report;
     }
 
+    /**
+     * @return the properties
+     */
+    public List<Property> getProperties() {
+        return properties;
+    }
     
 }

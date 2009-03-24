@@ -19,6 +19,7 @@ import eu.planets_project.ifr.core.simple.impl.util.FileTypeResolver;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
@@ -58,7 +59,7 @@ public class SimpleIdentifyService implements Identify {
     /**
      * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public IdentifyResult identify(DigitalObject dob) {
+    public IdentifyResult identify(DigitalObject dob, List<Parameter> parameters ) {
         // Initialise the result:
         
         // Use this resolver:

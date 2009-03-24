@@ -7,6 +7,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -21,6 +22,7 @@ import uk.gov.nationalarchives.droid.FileFormatHit;
 import uk.gov.nationalarchives.droid.IdentificationFile;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Types;
@@ -62,11 +64,10 @@ public final class Droid implements Identify, Serializable {
     /***/
     private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
 
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
+    /* (non-Javadoc)
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
      */
-    public IdentifyResult identify(final DigitalObject digitalObject) {
+    public IdentifyResult identify(DigitalObject digitalObject, List<Parameter> parameters) {
         InputStream stream = digitalObject.getContent().read();
         File file = FileUtils.writeInputStreamToTmpFile(stream, "droid-temp",
                 "bin");

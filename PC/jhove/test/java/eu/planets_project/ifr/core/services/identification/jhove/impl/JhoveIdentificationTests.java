@@ -158,7 +158,7 @@ public class JhoveIdentificationTests {
         try {
             result = jhove.identify(
                     new DigitalObject.Builder(Content.byReference(new File(
-                            location).toURI().toURL())).build()).getTypes()
+                            location).toURI().toURL())).build(), null ).getTypes()
                     .get(0);
         } catch (MalformedURLException e) {
             e.printStackTrace();
