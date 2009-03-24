@@ -29,7 +29,7 @@ import eu.planets_project.services.utils.DigitalObjectUtils;
 /**
  * Tests for digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
- * @see DigitalObject
+ * @see ImmutableDigitalObject
  */
 public final class DigitalObjectTests {
 
@@ -42,25 +42,25 @@ public final class DigitalObjectTests {
         /* A simple example with only required values: */
         URL id = new URL("http://id");
         /* Either by reference: */
-        DigitalObject o = new DigitalObject.Builder(Content
+        ImmutableDigitalObject o = new ImmutableDigitalObject.Builder(Content
                 .byReference(new URL("http://some.reference")))
                 .permanentUrl(id).build();
-        assertEquals(o, DigitalObject.of(o.toXml()));
+        assertEquals(o, ImmutableDigitalObject.of(o.toXml()));
         /* Or use the factory method to create...: */
-        o = DigitalObject.create(Content.byValue(new File("build.xml")))
-                .build();
-        assertEquals(o, DigitalObject.of(o.toXml()));
-        /* Or to copy a digital object: */
-        o = DigitalObject.copy(o).build();
-        assertEquals(o, DigitalObject.of(o.toXml()));
-        /* Or by value: */
         o = new DigitalObject.Builder(Content.byValue(new File("build.xml")))
+                .build();
+        assertEquals(o, ImmutableDigitalObject.of(o.toXml()));
+        /* Or to copy a digital object: */
+        o = new DigitalObject.Builder(o).build();
+        assertEquals(o, ImmutableDigitalObject.of(o.toXml()));
+        /* Or by value: */
+        o = new ImmutableDigitalObject.Builder(Content.byValue(new File("build.xml")))
                 .permanentUrl(id).build();
         /*
          * These objects can be serialized to XML and instantiated from that
          * form:
          */
-        assertEquals(o, DigitalObject.of(o.toXml()));
+        assertEquals(o, ImmutableDigitalObject.of(o.toXml()));
     }
 
     /**
@@ -86,7 +86,7 @@ public final class DigitalObjectTests {
         String value = "the checksum data";
         Checksum checksum = new Checksum(algorithm, value);
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl)
+        DigitalObject object = new ImmutableDigitalObject.Builder(c1).permanentUrl(purl)
                 .metadata(meta).checksum(checksum).build();
         System.out.println("Created: " + object);
 
@@ -96,13 +96,13 @@ public final class DigitalObjectTests {
     private static final String SOME_URL_2 = "http://url2";
     private static final Checksum CHECKSUM = new Checksum("algo", "checksum");
     private static final Event EVENT = new Event();
-    private static final DigitalObject.Fragment FRAGMENT = new DigitalObject.Fragment(
+    private static final ImmutableDigitalObject.Fragment FRAGMENT = new ImmutableDigitalObject.Fragment(
             "ID");
     private static final Metadata META = new Metadata(URI.create(SOME_URL_1),
             "meta");
     private static final String TITLE = "title";
-    private DigitalObject digitalObject1;
-    private DigitalObject digitalObject2;
+    private ImmutableDigitalObject digitalObject1;
+    private ImmutableDigitalObject digitalObject2;
 
     /**
      * The ensure consistent state during creation and support named optional
@@ -115,11 +115,11 @@ public final class DigitalObjectTests {
             URI manifestationOf = URI.create(SOME_URL_1);
             URI planetsFormatUri = URI.create(SOME_URL_1);
             /* Creation with only required arguments: */
-            digitalObject2 = new DigitalObject.Builder(Content
+            digitalObject2 = new ImmutableDigitalObject.Builder(Content
                     .byReference(new URL(SOME_URL_2))).permanentUrl(
                     new URL(SOME_URL_2)).build();
             /* Creation with all optional arguments: */
-            digitalObject1 = new DigitalObject.Builder(Content
+            digitalObject1 = new ImmutableDigitalObject.Builder(Content
                     .byReference(permanentUrl)).permanentUrl(permanentUrl)
                     .checksum(CHECKSUM).events(EVENT).fragments(FRAGMENT)
                     .manifestationOf(manifestationOf).format(planetsFormatUri)
@@ -136,7 +136,7 @@ public final class DigitalObjectTests {
      */
     @Test
     public void sortDigitalObjects() {
-        List<DigitalObject> objects = Arrays.asList(digitalObject2,
+        List<ImmutableDigitalObject> objects = Arrays.asList(digitalObject2,
                 digitalObject1);
         Collections.sort(objects);
         assertEquals("Sorting a collection of digital objects did not work;",
@@ -151,11 +151,11 @@ public final class DigitalObjectTests {
      */
     @Test
     public void equality() throws MalformedURLException {
-        Set<DigitalObject> set = new HashSet<DigitalObject>();
+        Set<ImmutableDigitalObject> set = new HashSet<ImmutableDigitalObject>();
         set.add(digitalObject1);
         set.add(digitalObject1);
         /* The permanent URL is optional: */
-        DigitalObject anon = new DigitalObject.Builder(Content
+        ImmutableDigitalObject anon = new ImmutableDigitalObject.Builder(Content
                 .byReference(new URL(SOME_URL_1))).build();
         set.add(anon);
         set.add(anon);
@@ -171,7 +171,7 @@ public final class DigitalObjectTests {
         System.out.println("Original: " + digitalObject1);
         String xml = digitalObject1.toXml();
         System.out.println("XML: " + xml);
-        DigitalObject deserialized = DigitalObject.of(xml);
+        DigitalObject deserialized = ImmutableDigitalObject.of(xml);
         System.out.println("Unmarshalled: " + digitalObject1);
         compare(digitalObject1, deserialized);
     }
@@ -196,13 +196,13 @@ public final class DigitalObjectTests {
     public void contentSizeCalculation() {
         int size1 = 23823, size2 = 1283;
         // Construct a shallow object:
-        DigitalObject bytes1 = new DigitalObject.Builder(Content
+        ImmutableDigitalObject bytes1 = new ImmutableDigitalObject.Builder(Content
                 .byValue(new byte[size1])).build();
         long bytes = DigitalObjectUtils.getContentSize( bytes1 );
         assertEquals("Counted, shallow byte[] size is not correct.", size1, bytes );
         
         // construct a deeper object:
-        DigitalObject bytes2 = new DigitalObject.Builder(Content
+        DigitalObject bytes2 = new ImmutableDigitalObject.Builder(Content
                 .byValue(new byte[size2])).contains(bytes1).build();
         bytes = DigitalObjectUtils.getContentSize( bytes2 );
         assertEquals("Counted, 2-level byte[] size is not correct.", (size1+size2), bytes );
@@ -228,7 +228,7 @@ public final class DigitalObjectTests {
      */
     private DigitalObject roundtrip(final DigitalObject dObject) {
         try {
-            JAXBContext context = JAXBContext.newInstance(DigitalObject.class);
+            JAXBContext context = JAXBContext.newInstance(ImmutableDigitalObject.class);
             Marshaller marshaller = context.createMarshaller();
             StringWriter writer = new StringWriter();
             marshaller.marshal(dObject, writer);

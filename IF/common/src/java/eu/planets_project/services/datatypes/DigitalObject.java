@@ -1,39 +1,20 @@
 package eu.planets_project.services.datatypes;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.SchemaOutputResolver;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
- * Representation of a concrete digital object, to be passed through web
- * services. As the other planets data types, it uses XmlAccessType.FIELD
- * instead of getters and setters. This allows for proper encapsulation on the
- * API side while remaining JAXB-serializable.
- * <p/>
- * This class is immutable in practice; its instances can therefore be shared
- * freely and concurrently. Instances are created using a builder to allow
- * optional named constructor parameters and ensure consistent state during
- * creation. E.g. to create a digital object with only the required arguments,
- * you'd use:
+ * A representation of a digital object. Instances are created using a builder
+ * to allow optional named constructor parameters and ensure consistent state
+ * during creation. E.g. to create a digital object with only the required
+ * arguments, you'd use:
  * <p/>
  * {@code DigitalObject o = new DigitalObject.Builder(content).build();}
  * <p/>
@@ -44,109 +25,113 @@ import javax.xml.transform.stream.StreamResult;
  * ).title(title).build();}
  * <p/>
  * DigitalObject instances can be serialized to XML. Given such an XML
- * representation, a digital object can be instantiated using a static factory
- * method:
+ * representation, a digital object can be instantiated using the builder:
  * <p/>
- * {@code DigitalObject o = DigitalObject.of(xml);}
+ * {@code DigitalObject o = new DigitalObject.Builder(xml).build();}
  * <p/>
  * For usage examples, see the tests in {@link DigitalObjectTests} and web
  * service sample usage in
  * {@link eu.planets_project.ifr.core.simple.impl.PassThruMigrationService#migrate}
  * (pserv/IF/simple).
- * <p/>
- * A corresponding XML schema can be generated from this class by running this
- * class as a Java application, see {@link #main(String[])}.
- * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
- * @see DigitalObjectTests
+ * @author Fabian Steeg
  */
-@XmlRootElement
-@XmlAccessorType(value = XmlAccessType.FIELD)
-public final class DigitalObject implements Comparable<DigitalObject>,
-        Serializable {
-    /** Generated UID. */
-    private static final long serialVersionUID = -893249048201058999L;
-
-    /** @see {@link #getTitle()} */
-    @XmlAttribute
-    private String title;
-
-    /** @see {@link #getFormat()} */
-    @XmlAttribute
-    private URI format;
-
-    /** @see {@link #getPermanentUrl()} */
-    private URL permanentUrl;
-
-    /** @see {@link #getManifestationOf()} */
-    @XmlAttribute
-    private URI manifestationOf;
-
-    /** @see {@link #getChecksum()} */
-    @XmlElement
-    private Checksum checksum;
-
-    /** @see {@link #getMetadata()} */
-    @XmlElement
-    private List<Metadata> metadata;
-
-    /** @see {@link #getContained()} */
-    @XmlElement
-    private List<DigitalObject> contained;
-
-    /** @see {@link #getContent()} */
-    @XmlElement(required = true)
-    private Content content;
-
-    /** @see {@link #getEvents()} */
-    @XmlElement
-    private List<Event> events;
-
-    /** @see {@link #getFragments()} */
-    @XmlElement
-    private List<Fragment> fragments;
+/*
+ * The current solution to be able to pass this into web service methods: We
+ * tell JAXB which adapter to use for converting from the interface to the
+ * implementation. While this does tightly couple the interface and the
+ * implementation, it still allows us to hide the implementation class, e.g.
+ * keeping it out of our web service interfaces. Also, for using the IF API
+ * outside of a web service stack or JAXB, i.e. as a plain Java library, this is
+ * perfectly fine.
+ */
+@XmlJavaTypeAdapter(DigitalObject.Adapter.class)
+public interface DigitalObject {
 
     /**
-     * @param content The content for the digital object to build
-     * @return The builder, to alter the created digital object; call build() on
-     *         the builder to create the actual digital object
+     * @return The title of this digital object.
      */
-    public static DigitalObject.Builder create(final Content content) {
-        return new DigitalObject.Builder(content);
-    }
+    String getTitle();
 
     /**
-     * @param digitalObject The digital object to copy
-     * @return The builder, to alter the copied digital object; call build() on
-     *         the builder to create the actual digital object
+     * @return The type of this digital object.
      */
-    public static DigitalObject.Builder copy(final DigitalObject digitalObject) {
-        return new DigitalObject.Builder(digitalObject);
-    }
+    URI getFormat();
 
     /**
-     * A digital object fragment.
+     * @return The unique identifier. Required.
      */
-    public static final class Fragment {
-        /** The fragment ID. */
-        @XmlAttribute
-        private String id;
+    URL getPermanentUrl();
 
-        /** No-arg constructor for JAXB. Client should not use this. */
-        @SuppressWarnings("unused")
-        private Fragment() {}
+    /**
+     * @return The URI that this digital object is a manifestation of.
+     */
+    URI getManifestationOf();
 
+    /**
+     * @return The checksum for this digital object.
+     */
+    Checksum getChecksum();
+
+    /**
+     * @return Additional repository-specific metadata. Returns a defensive
+     *         copy, changes to the obtained list won't affect this digital
+     *         object.
+     */
+    List<Metadata> getMetadata();
+
+    /**
+     * @return The 0..n digital objects contained in this digital object.
+     *         Returns a defensive copy, changes to the obtained list won't
+     *         affect this digital object.
+     */
+    List<DigitalObject> getContained();
+
+    /**
+     * @return The actual content references. Required. Returns a defensive
+     *         copy, changes to the obtained list won't affect this digital
+     *         object.
+     */
+    Content getContent();
+
+    /**
+     * @return The 0..n events that happened to this digital object. Returns a
+     *         defensive copy, changes to the obtained list won't affect this
+     *         digital object.
+     */
+    List<Event> getEvents();
+
+    /**
+     * @return The 0..n fragments this digital object consists of. Returns a
+     *         defensive copy, changes to the obtained list won't affect this
+     *         digital object.
+     */
+    List<Fragment> getFragments();
+
+    /**
+     * @return An XML representation of this digital object (can be used to
+     *         instantiate an object using the static factory method)
+     */
+    String toXml();
+
+    /**
+     * Adapter for serialization of interface instances.
+     */
+    static class Adapter extends
+            XmlAdapter<ImmutableDigitalObject, DigitalObject> {
         /**
-         * @param id The ID
+         * {@inheritDoc}
+         * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
          */
-        public Fragment(final String id) {
-            this.id = id;
+        public DigitalObject unmarshal(final ImmutableDigitalObject v) {
+            return v;
         }
 
         /**
-         * @return The ID
+         * {@inheritDoc}
+         * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
          */
-        public String getId() {
-            return id;
+        public ImmutableDigitalObject marshal(final DigitalObject v) {
+            return (ImmutableDigitalObject) v;
         }
     }
 
@@ -171,8 +156,8 @@ public final class DigitalObject implements Comparable<DigitalObject>,
         private String title = null;
 
         /** @return The instance created using this builder. */
-        public DigitalObject build() {
-            return new DigitalObject(this);
+        public ImmutableDigitalObject build() {
+            return new ImmutableDigitalObject(this);
         }
 
         /**
@@ -188,20 +173,46 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          *        anonymous (permanentUrl == null) digital object.
          */
         public Builder(final DigitalObject digitalObject) {
-            content = digitalObject.content;
-            contained = digitalObject.contained;
-            events = digitalObject.events;
-            fragments = digitalObject.fragments;
-            manifestationOf = digitalObject.manifestationOf;
-            title = digitalObject.title;
-            checksum = digitalObject.checksum;
-            metadata = digitalObject.metadata;
-            format = digitalObject.format;
+            content = digitalObject.getContent();
+            contained = digitalObject.getContained();
+            events = digitalObject.getEvents();
+            fragments = digitalObject.getFragments();
+            manifestationOf = digitalObject.getManifestationOf();
+            title = digitalObject.getTitle();
+            checksum = digitalObject.getChecksum();
+            metadata = digitalObject.getMetadata();
+            format = digitalObject.getFormat();
+        }
+
+        /**
+         * Creates an builder that will build a digital object identical to the
+         * given object, including the permanent URL.
+         * @param digitalObjectXml An XML representation of a digital object.
+         */
+        public Builder(final String digitalObjectXml) {
+            /*
+             * Besides the adapter, this is the second place where we mention
+             * the implementation class, but as before, this is behind the
+             * interface.
+             */
+            ImmutableDigitalObject digitalObject = ImmutableDigitalObject
+                    .of(digitalObjectXml);
+            permanentUrl = digitalObject.getPermanentUrl();
+            content = digitalObject.getContent();
+            contained = digitalObject.getContained();
+            events = digitalObject.getEvents();
+            fragments = digitalObject.getFragments();
+            manifestationOf = digitalObject.getManifestationOf();
+            title = digitalObject.getTitle();
+            checksum = digitalObject.getChecksum();
+            metadata = digitalObject.getMetadata();
+            format = digitalObject.getFormat();
         }
 
         /** No-arg constructor for JAXB. API clients should not use this. */
         @SuppressWarnings("unused")
-        private Builder() {}
+        private Builder() {
+        }
 
         /**
          * @param content The new content for the digital object to be created
@@ -244,7 +255,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @param contained The contained digital objects
          * @return The builder, for cascaded calls
          */
-        public Builder contains(final DigitalObject... contained) {
+        public Builder contains(final ImmutableDigitalObject... contained) {
             this.contained = new ArrayList<DigitalObject>(Arrays
                     .asList(contained));
             return this;
@@ -272,7 +283,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @param checksum The digital object's checksum
          * @return The builder, for cascaded calls
          */
-        public Builder checksum(Checksum checksum) {
+        public Builder checksum(final Checksum checksum) {
             this.checksum = checksum;
             return this;
         }
@@ -281,7 +292,7 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @param metadata Additional metadata for the digital object
          * @return The builder, for cascaded calls
          */
-        public Builder metadata(Metadata... metadata) {
+        public Builder metadata(final Metadata... metadata) {
             this.metadata = new ArrayList<Metadata>(Arrays.asList(metadata));
             return this;
         }
@@ -290,254 +301,114 @@ public final class DigitalObject implements Comparable<DigitalObject>,
          * @param format The type of the digital object
          * @return The builder, for cascaded calls
          */
-        public Builder format(URI format) {
+        public Builder format(final URI format) {
             this.format = format;
             return this;
         }
-    }
 
-    /**
-     * @param builder The builder to construct a digital object from
-     */
-    private DigitalObject(final Builder builder) {
-        permanentUrl = builder.permanentUrl;
-        content = builder.content;
-        contained = builder.contained;
-        events = builder.events;
-        fragments = builder.fragments;
-        manifestationOf = builder.manifestationOf;
-        title = builder.title;
-        checksum = builder.checksum;
-        metadata = builder.metadata;
-        format = builder.format;
-    }
-
-    /**
-     * No-args constructor for JAXB serialization. Should not be called by an
-     * API client. Clients should use:
-     * <p/>
-     * {@code new DigitalObject.Builder(required args...)optional
-     * args...build();}
-     */
-    private DigitalObject() {}
-
-    /**
-     * @param xml The XML representation of a digital object (as created from
-     *        calling toXml)
-     * @return A digital object instance created from the given XML
-     */
-    public static DigitalObject of(final String xml) {
-        try {
-            /* Unmarshall with JAXB: */
-            JAXBContext context = JAXBContext.newInstance(DigitalObject.class);
-            Unmarshaller unmarshaller = context.createUnmarshaller();
-            Object object = unmarshaller.unmarshal(new StringReader(xml));
-            DigitalObject unmarshalled = (DigitalObject) object;
-            return unmarshalled;
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * @return An XML representation of this digital object (can be used to
-     *         instantiate an object using the static factory method)
-     */
-    public String toXml() {
-        try {
-            /* Marshall with JAXB: */
-            JAXBContext context = JAXBContext.newInstance(DigitalObject.class);
-            Marshaller marshaller = context.createMarshaller();
-            StringWriter writer = new StringWriter();
-            marshaller.marshal(this, writer);
-            return writer.toString();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        int contentSize = content == null ? 0 : 1;
-        int containedSize = contained == null ? 0 : contained.size();
-        int eventsSize = events == null ? 0 : events.size();
-        int fragmentsSize = fragments == null ? 0 : fragments.size();
-        int metaSize = metadata == null ? 0 : metadata.size();
-        return String
-                .format(
-                        "DigitalObject: id '%s', title '%s'; %s content elements, "
-                                + "%s contained objects, %s events, %s fragments; "
-                                + "type '%s', manifestation of '%s', checksum '%s', metadata '%s'",
-                        permanentUrl, title, contentSize, containedSize,
-                        eventsSize, fragmentsSize, format, manifestationOf,
-                        checksum, metaSize);
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see java.lang.Comparable#compareTo(java.lang.Object)
-     */
-    public int compareTo(final DigitalObject o) {
-        if (this.permanentUrl != null && o.permanentUrl != null) {
-            /* The ID is optional, so if we have one we use it: */
-            return this.permanentUrl.toString().compareTo(
-                    o.permanentUrl.toString());
-        } else if (this.permanentUrl != null || o.permanentUrl != null) {
-            /* If only one of them is defined, they are not equal: */
-            return -1;
-        } else {
-            /* But if none is, we use the XML serialization: */
-            return this.toXml().compareTo(o.toXml());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(final Object obj) {
-        return obj instanceof DigitalObject
-                && this.compareTo((DigitalObject) obj) == 0;
-    }
-
-    /**
-     * {@inheritDoc}
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        if (permanentUrl != null) {
-            return permanentUrl.toString().hashCode();
-        } else {
-            return this.toXml().hashCode();
-        }
-    }
-
-    /**
-     * @return The title of this digital object.
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * @return The type of this digital object.
-     */
-    public URI getFormat() {
-        return format;
-    }
-
-    /**
-     * @return The unique identifier. Required.
-     */
-    public URL getPermanentUrl() {
-        return permanentUrl;
-    }
-
-    /**
-     * @return The URI that this digital object is a manifestation of.
-     */
-    public URI getManifestationOf() {
-        return manifestationOf;
-    }
-
-    /**
-     * @return The checksum for this digital object.
-     */
-    public Checksum getChecksum() {
-        return checksum;
-    }
-
-    /**
-     * @return Additional repository-specific metadata. Returns a defensive
-     *         copy, changes to the obtained list won't affect this digital
-     *         object.
-     */
-    public List<Metadata> getMetadata() {
-        return new ArrayList<Metadata>(metadata);
-    }
-
-    /**
-     * @return The 0..n digital objects contained in this digital object.
-     *         Returns a defensive copy, changes to the obtained list won't
-     *         affect this digital object.
-     */
-    public List<DigitalObject> getContained() {
-        return new ArrayList<DigitalObject>(contained);
-    }
-
-    /**
-     * @return The actual content references. Required. Returns a defensive
-     *         copy, changes to the obtained list won't affect this digital
-     *         object.
-     */
-    public Content getContent() {
-        return content;
-    }
-
-    /**
-     * @return The 0..n events that happened to this digital object. Returns a
-     *         defensive copy, changes to the obtained list won't affect this
-     *         digital object.
-     */
-    public List<Event> getEvents() {
-        return new ArrayList<Event>(events);
-    }
-
-    /**
-     * @return The 0..n fragments this digital object consists of. Returns a
-     *         defensive copy, changes to the obtained list won't affect this
-     *         digital object.
-     */
-    public List<Fragment> getFragments() {
-        return new ArrayList<Fragment>(fragments);
-    }
-
-    /* Schema generation: */
-
-    /***/
-    private static java.io.File baseDir = new java.io.File(
-            "IF/common/src/resources");
-    /***/
-    private static String schemaFileName = "digital_object.xsd";
-
-    /** Resolver for schema generation. */
-    static class Resolver extends SchemaOutputResolver {
         /**
-         * {@inheritDoc}
-         * @see javax.xml.bind.SchemaOutputResolver#createOutput(java.lang.String,
-         *      java.lang.String)
+         * @return The content
+         * @see DigitalObject#getContent()
          */
-        public Result createOutput(final String namespaceUri,
-                final String suggestedFileName) throws IOException {
-            return new StreamResult(new java.io.File(baseDir, schemaFileName));
+        public Content getContent() {
+            return content;
+        }
+
+        /**
+         * @return The permanent URL
+         * @see DigitalObject#getPermanentUrl()
+         */
+        public URL getPermanentUrl() {
+            return permanentUrl;
+        }
+
+        /**
+         * @return The events
+         * @see DigitalObject#getEvents()
+         */
+        public List<Event> getEvents() {
+            return events;
+        }
+
+        /**
+         * @return The fragments
+         * @see DigitalObject#getFragments()
+         */
+        public List<Fragment> getFragments() {
+            return fragments;
+        }
+
+        /**
+         * @return The contained objects
+         * @see DigitalObject#getContained()
+         */
+        public List<DigitalObject> getContained() {
+            return contained;
+        }
+
+        /**
+         * @return The abstraction this object is a manifestation of
+         * @see DigitalObject#getManifestationOf()
+         */
+        public URI getManifestationOf() {
+            return manifestationOf;
+        }
+        /**
+         * @return The checksum
+         * @see DigitalObject#getChecksum()
+         */
+        public Checksum getChecksum() {
+            return checksum;
+        }
+        /**
+         * @return The metadata
+         * @see DigitalObject#getMetadata()
+         */
+        public List<Metadata> getMetadata() {
+            return metadata;
+        }
+        /**
+         * @return The format
+         * @see DigitalObject#getFormat()
+         */
+        public URI getFormat() {
+            return format;
+        }
+        /**
+         * @return The title
+         * @see DigitalObject#getTitle()
+         */
+        public String getTitle() {
+            return title;
         }
     }
 
     /**
-     * Generates the XML schema for this class.
-     * @param args Ignored
+     * A digital object fragment.
      */
-    public static void main(final String[] args) {
-        try {
-            Class<DigitalObject> clazz = DigitalObject.class;
-            JAXBContext context = JAXBContext.newInstance(clazz);
-            context.generateSchema(new Resolver());
-            System.out.println("Generated XML schema for "
-                    + clazz.getSimpleName()
-                    + " at "
-                    + new java.io.File(baseDir, schemaFileName)
-                            .getAbsolutePath());
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static final class Fragment {
+        /** The fragment ID. */
+        @XmlAttribute
+        private String id;
+
+        /** No-arg constructor for JAXB. Client should not use this. */
+        @SuppressWarnings("unused")
+        private Fragment() {
+        }
+
+        /**
+         * @param id The ID
+         */
+        public Fragment(final String id) {
+            this.id = id;
+        }
+
+        /**
+         * @return The ID
+         */
+        public String getId() {
+            return id;
         }
     }
+
 }

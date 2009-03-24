@@ -53,8 +53,8 @@ public class XcdlAccessTests {
                 .getURIsForExtension("png").iterator().next();
         List<FileFormatProperty> extractable = characterise.listProperties(uri);
         /* Now we actually extract a PNG: */
-        CharacteriseResult result = characterise.characterise(DigitalObject
-                .create(Content.byValue(new File(PNG))).build(), null);
+        CharacteriseResult result = characterise.characterise(new DigitalObject
+                .Builder(Content.byValue(new File(PNG))).build(), null);
         List<Property> extracted = result.getProperties();
         /* And check if the IDs correspond: */
         assertAllExtractedPropsAreListedAsExtractable(extractable, extracted);

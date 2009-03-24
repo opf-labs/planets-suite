@@ -43,11 +43,11 @@ public class SampleXclUsage {
     private static final String CONVERTED = SAMPLES + "jpeg/basketball.jpg";
     private static final String COCO = RESOURCES + "sampleComparatorConfig.xml";
     /* We wrap them as digital objects for later usage: */
-    private static final DigitalObject GIF = DigitalObject.create(
+    private static final DigitalObject GIF = new DigitalObject.Builder(
             Content.byReference(new File(ORIGINAL))).build();
-    private static final DigitalObject JPG = DigitalObject.create(
+    private static final DigitalObject JPG = new DigitalObject.Builder(
             Content.byReference(new File(CONVERTED))).build();
-    private static final DigitalObject CONFIG = DigitalObject.create(
+    private static final DigitalObject CONFIG = new DigitalObject.Builder(
             Content.byReference(new File(COCO))).build();
     /* We get a PRONOM ID for the original and the converted file: */
     private static final FormatRegistry REGISTRY = FormatRegistryFactory

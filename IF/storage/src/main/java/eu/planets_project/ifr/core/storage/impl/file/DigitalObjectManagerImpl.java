@@ -156,7 +156,7 @@ public class DigitalObjectManagerImpl implements DigitalObjectManager {
 				fileData.append(buf, 0, numRead);
 			}
 			reader.close();
-			retObj = DigitalObject.of(fileData.toString());
+			retObj = new DigitalObject.Builder(fileData.toString()).build();
 		} catch (UnsupportedEncodingException e) {
 			DigitalObjectManagerImpl._log.error("Unsupported encoding exception");
 			DigitalObjectManagerImpl._log.error(e.getMessage());

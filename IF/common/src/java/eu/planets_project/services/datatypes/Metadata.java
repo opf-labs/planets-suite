@@ -3,6 +3,8 @@ package eu.planets_project.services.datatypes;
 import java.io.Serializable;
 import java.net.URI;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
@@ -13,8 +15,9 @@ import javax.xml.bind.annotation.XmlAttribute;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * 
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class Metadata implements Comparable<Metadata>, Serializable {
-    /** Generat3ed UID. */
+    /** Generated UID. */
     private static final long serialVersionUID = 1299020544765389245L;
     /** @see #getContent() */
     @XmlAttribute
