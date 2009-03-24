@@ -179,7 +179,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         long msBefore = 0, msAfter = 0;
         msBefore = System.currentTimeMillis();
         try {
-            identify = identifier.identify(dob);
+            identify = identifier.identify(dob,null);
         } catch( Exception e ) {
             success = false;
             exceptionReport = "<p>Service Invocation Failed!<br/>" + e + "</p>";
@@ -234,12 +234,8 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         }
             }
         }
-        if( ident.getMethods() != null ) {
-            for( IdentifyResult.Method method : ident.getMethods() ) {
-                if( method != null ) {
-                    recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, method.name() ));
-                }
-            }
+        if( ident.getMethod() != null ) {
+            recs.add( new MeasurementRecordImpl( PROP_IDENTIFY_METHOD, ident.getMethod().name() ));
         }
         // Store the size:
         // FIXME: This method has now been added to the Digital Object.  Change it here to dob.getContentSize();

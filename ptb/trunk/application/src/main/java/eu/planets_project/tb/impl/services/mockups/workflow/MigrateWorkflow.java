@@ -604,7 +604,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         long msBefore = 0, msAfter = 0;
         msBefore = System.currentTimeMillis();
         try {
-            result = identify.identify(dob);
+            result = identify.identify(dob,null);
         } catch( Exception e ) {
             success = false;
         }

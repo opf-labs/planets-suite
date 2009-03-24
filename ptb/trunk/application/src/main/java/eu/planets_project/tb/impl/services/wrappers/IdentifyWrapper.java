@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -105,10 +106,11 @@ public class IdentifyWrapper implements Identify {
 
 
     /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
      */
-    public IdentifyResult identify(DigitalObject digitalObject) {
-
+    public IdentifyResult identify(DigitalObject digitalObject,
+            List<Parameter> parameters) {
+        
         // Transform the DO into a single binary, if that is sane
         byte[] binary = null;
         if ( this.isBasic() 
@@ -144,7 +146,7 @@ public class IdentifyWrapper implements Identify {
             
         } else {
             // Identify:
-            return i.identify(digitalObject);
+            return i.identify( digitalObject, parameters );
         }
     }
 

@@ -38,7 +38,7 @@
       <rich:progressBar value="#{NewExp_Controller.executeExperimentProgress}"
           interval="1000" label="#{NewExp_Controller.executeExperimentProgress} %"
           enabled="true" minValue="0" maxValue="100" styleClass="expRunStatusRun"
-          reRenderAfterComplete="progressPanel,runExperimentForm,executedResults" reRender="runExperimentForm,progressPanel">
+          reRenderAfterComplete="progressPanel,runExperimentForm,executedResults" reRender="runExperimentForm,progressPanel,executedResults">
       </rich:progressBar>
       </h:panelGroup>
     </a4j:outputPanel>
@@ -77,11 +77,27 @@
                     </h:panelGroup>
     </h:panelGroup>
 
+     <h:panelGroup rendered="#{! NewExp_Controller.experimentExecutable.executionRunning}" >
+         <h:commandButton action="#{NewExp_Controller.executeExperimentStart}"
+                      value="Re-run this experiment to collect more data." 
+                      rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }"/>
+        <h:commandButton value="Refresh"
+                            action="goToStage5" />
+     </h:panelGroup>
+     <h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.executionRunning}" >
+                        <p>
+                            Your experiment is currently being executed. Depending on the intensity of your experiment this may take some time.
+                            <br/>
+                            <h:commandButton value="Refresh"
+                            action="goToStage5" />
+                        </p>
+     </h:panelGroup>
+     
 </a4j:outputPanel>
 
 <!-- ***************************  -->
 
-<a4j:outputPanel id="executedResults">
+<a4j:outputPanel id="executedResults" rendered="#{not NewExp_Controller.experimentExecutable.executionRunning}">
 
     <rich:tabPanel width="100%" selectedTab="OverallResultTab" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
         <rich:tab label="Overall Results" name="OverallResultTab">
@@ -234,20 +250,6 @@
         
      </rich:tabPanel>
 
-     <h:panelGroup rendered="#{! NewExp_Controller.experimentExecutable.executionRunning}" >
-     <h:commandButton action="#{NewExp_Controller.executeExperimentStart}"
-                      value="Re-run this experiment to collect more data." 
-                      rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }"/>
-     </h:panelGroup>
-     <h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.executionRunning}" >
-                        <p>
-                            Your experiment is currently being executed. Depending on the intensity of your experiment this may take some time.
-                            <br/>
-                            <h:commandButton value="Refresh"
-                            action="goToStage5" />
-                        </p>
-     </h:panelGroup>
-     
 </a4j:outputPanel>
     
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
