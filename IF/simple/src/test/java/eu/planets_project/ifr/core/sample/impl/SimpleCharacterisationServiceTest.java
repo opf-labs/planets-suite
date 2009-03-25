@@ -3,7 +3,8 @@
  */
 package eu.planets_project.ifr.core.sample.impl;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -14,13 +15,13 @@ import org.junit.Test;
 import eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.utils.ByteArrayHelper;
-import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -81,7 +82,7 @@ public class SimpleCharacterisationServiceTest {
     public void testSizeAFileRef() throws MalformedURLException {
         /* set up a binary */
         byte[] binary = new byte[(int)(Math.random()*1024*10)];
-        File file = ByteArrayHelper.write(binary);
+        File file = FileUtils.writeByteArrayToTempFile(binary);
         
         /* Create the content: */
         Content c1 = Content.byReference(file.toURI().toURL());

@@ -28,7 +28,6 @@ import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
@@ -112,7 +111,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
 
         if (result != null) {
             sizeInKB = result.length / 1024;
-            File outputFile = ByteArrayHelper.write(result);
+            File outputFile = FileUtils.writeByteArrayToTempFile(result);
             List<Property> properties = new XcdlProperties(outputFile)
                     .getProperties();
             // output Files smaller than 10Mb

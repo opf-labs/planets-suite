@@ -18,7 +18,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacterise;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
@@ -30,7 +29,7 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -65,7 +64,7 @@ public class XcdlCharacteriseTests {
         TEST_OUT = XcdlCharacteriseUnitHelper.EXTRACTOR_LOCAL_TEST_OUT;
         File inputImage = new File(XcdlCharacteriseUnitHelper.SAMPLE_FILE);
         File inputXcel = new File(XcdlCharacteriseUnitHelper.SAMPLE_XCEL);
-        binary = ByteArrayHelper.read(inputImage);
+        binary = FileUtils.readFileIntoByteArray(inputImage);
         readXcelString(inputXcel);
         digitalObject = createDigitalObjectByValue(new URL(
                 "http://somePermamentURL"), binary);

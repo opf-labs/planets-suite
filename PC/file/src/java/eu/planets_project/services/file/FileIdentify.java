@@ -23,7 +23,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
@@ -82,7 +81,7 @@ public class FileIdentify implements Identify {
         byte[] binary = FileUtils.writeInputStreamToBinary(digitalObject.getContent().read());
        
         // write binary array to temporary file
-        File tmpInFile = ByteArrayHelper.write(binary);
+        File tmpInFile = FileUtils.writeByteArrayToTempFile(binary);
 
         // Right we'll need to create a suitable command line
         String[] commands = new String[] {FileServiceSetup.getProperties().getProperty("cygwin.file.location"),

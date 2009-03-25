@@ -13,7 +13,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Tests for Content objects. Reads the same data using Content objects both by
@@ -32,7 +32,7 @@ public final class ContentTests {
     public void setup() {
         /* For a test file, we create the actual value and a reference: */
         java.io.File file = new java.io.File(LOCATION);
-        bytes = ByteArrayHelper.read(file);
+        bytes = FileUtils.readFileIntoByteArray(file);
         try {
             url = file.toURI().toURL();
         } catch (MalformedURLException e1) {

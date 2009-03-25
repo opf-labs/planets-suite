@@ -19,7 +19,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -57,7 +56,7 @@ public final class XcdlCompare implements Compare {
      * @return The properties found in the result XML
      */
     private List<Prop> propertiesFrom(final String result) {
-        File file = ByteArrayHelper.write(result.getBytes());
+        File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
         return new ResultPropertiesReader(file).getProperties();
     }
 
@@ -99,7 +98,7 @@ public final class XcdlCompare implements Compare {
      * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
      */
     public List<Prop<Object>> convert(final DigitalObject configFile) {
-        File file = ByteArrayHelper.write(FileUtils
+        File file = FileUtils.writeByteArrayToTempFile(FileUtils
                 .writeInputStreamToBinary(configFile.getContent().read()));
         return new ComparatorConfigParser(file).getProperties();
     }

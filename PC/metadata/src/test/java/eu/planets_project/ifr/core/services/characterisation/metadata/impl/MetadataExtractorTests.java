@@ -17,7 +17,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Tests of the metadata extractor functionality.
@@ -189,7 +189,7 @@ public class MetadataExtractorTests {
     private void testCharacterization(final MetadataType type) {
         System.out.println("Testing characterisation of " + type);
         File file = new File(SAMPLES + type.sample);
-        byte[] binary = ByteArrayHelper.read(file);
+        byte[] binary = FileUtils.readFileIntoByteArray(file);
         if (binary.length == 0) {
             throw new IllegalStateException("Empty file: " + file);
         }

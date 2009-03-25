@@ -13,7 +13,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlMimeType;
 
 import eu.planets_project.services.utils.ByteArrayDataSource;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -96,7 +95,7 @@ public final class Content implements Serializable, DigitalObject.Content {
      * @return A content instance with the specified value
      */
     public static Content byValue(final File value) {
-        byte[] bytes = ByteArrayHelper.read(value);
+        byte[] bytes = FileUtils.readFileIntoByteArray(value);
         return new Content( bytes );
     }
 

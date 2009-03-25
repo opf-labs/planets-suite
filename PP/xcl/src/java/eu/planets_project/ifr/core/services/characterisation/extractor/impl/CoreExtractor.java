@@ -19,7 +19,6 @@ import org.jdom.output.XMLOutputter;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -65,7 +64,7 @@ public class CoreExtractor {
     	XMLOutputter xmlOut = new XMLOutputter();
 		BufferedWriter xmlWriter;
     	
-    	File xcdlTmp = ByteArrayHelper.write(XCDLtoRemoveNormDataFrom);
+    	File xcdlTmp = FileUtils.writeByteArrayToTempFile(XCDLtoRemoveNormDataFrom);
     	File cleanedXCDL = FileUtils.getTempFile("cleanedXCDL", "xcdl");
     	byte[] result = null;
     	
@@ -88,7 +87,7 @@ public class CoreExtractor {
 			}
 			xmlWriter = new BufferedWriter(new FileWriter(cleanedXCDL));
 			xmlOut.output(xcdlDoc, xmlWriter);
-			result = ByteArrayHelper.read(cleanedXCDL);
+			result = FileUtils.readFileIntoByteArray(cleanedXCDL);
 			
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -272,7 +271,7 @@ public class CoreExtractor {
         byte[] binary_out = null;
         plogger.info("Creating byte[] to return...");
 		
-        binary_out = ByteArrayHelper.read(new File(outputFilePath));
+        binary_out = FileUtils.readFileIntoByteArray(new File(outputFilePath));
         
         byte[] cleanedXCDL = null;
         

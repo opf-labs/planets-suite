@@ -9,13 +9,11 @@ import java.util.List;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
-import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
@@ -49,11 +47,11 @@ public final class XcdlComparePropertiesTests {
      */
     @Test
     public void testService() {
-        byte[] data1 = ByteArrayHelper.read(new File(
+        byte[] data1 = FileUtils.readFileIntoByteArray(new File(
                 ComparatorWrapperTests.XCDL1));
-        byte[] data2 = ByteArrayHelper.read(new File(
+        byte[] data2 = FileUtils.readFileIntoByteArray(new File(
                 ComparatorWrapperTests.XCDL2));
-        byte[] configData = ByteArrayHelper.read(new File(
+        byte[] configData = FileUtils.readFileIntoByteArray(new File(
                 ComparatorWrapperTests.PCR_SINGLE));
         testServices(data1, data2, configData);
     }
@@ -81,7 +79,7 @@ public final class XcdlComparePropertiesTests {
             inputProps.add(c.convertInput(digitalObject));
         }
         List<Prop<Object>> configProps = new ArrayList<Prop<Object>>(
-                new ComparatorConfigParser(ByteArrayHelper.write(FileUtils
+                new ComparatorConfigParser(FileUtils.writeByteArrayToTempFile(FileUtils
                         .writeInputStreamToBinary(configFile.getContent()
                                 .read()))).getProperties());
         List<Prop> properties = new ArrayList<Prop>(c.compare(inputProps,

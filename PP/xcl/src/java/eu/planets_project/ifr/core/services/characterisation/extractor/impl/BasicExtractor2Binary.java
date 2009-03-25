@@ -17,7 +17,7 @@ import org.jboss.annotation.ejb.RemoteBinding;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
@@ -80,7 +80,7 @@ public class BasicExtractor2Binary implements
         CoreExtractor extractor = new CoreExtractor(CALLING_EXTRACTOR_NAME,
                 plogger);
 
-        ByteArrayHelper.write(binary);
+        FileUtils.writeByteArrayToTempFile(binary);
 
         byte[] outputXCDL = extractor.extractXCDL(binary, xcel != null ? xcel
                 .getBytes() : null, null);

@@ -1,5 +1,8 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,11 +11,9 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.BasicExtractor2Binary;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -46,7 +47,7 @@ public final class Extractor2BinaryTest {
             fail("Could not create directory: " + outputFolder);
         }
         outputXcdl = new File(outputFolder, "client_output.xcdl");
-        binary = ByteArrayHelper.read(inputImage);
+        binary = FileUtils.readFileIntoByteArray(inputImage);
         BufferedReader br;
         try {
             br = new BufferedReader(new FileReader(inputXcel));
@@ -90,7 +91,7 @@ public final class Extractor2BinaryTest {
         /* give XCEL */
         result = extractor.basicCharacteriseOneBinaryXCELtoBinary(binary,
                 xcelString);
-        outputXcdl = ByteArrayHelper.write(result);
+        outputXcdl = FileUtils.writeByteArrayToTempFile(result);
         assertTrue("No output file written;", outputXcdl.exists());
     }
 }

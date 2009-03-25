@@ -42,7 +42,6 @@ import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -247,7 +246,7 @@ public final class MetadataExtractor implements Characterise {
         if (binary.length == 0) {
             throw new IllegalArgumentException("Binary is empty!");
         }
-        File file = ByteArrayHelper.write(binary);
+        File file = FileUtils.writeByteArrayToTempFile(binary);
         /* Create a HarvestSource of the object we want to harvest */
         FileHarvestSource source = new FileHarvestSource(file);
         try {
