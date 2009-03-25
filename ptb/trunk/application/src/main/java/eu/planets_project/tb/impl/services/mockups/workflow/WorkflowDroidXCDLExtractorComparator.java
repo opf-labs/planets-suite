@@ -15,7 +15,7 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.utils.ByteArrayHelper;
+import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
 import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
@@ -189,7 +189,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
         Service service = Service.create(url, new QName(PlanetsServices.NS,
                 IdentifyOneBinary.NAME));
         IdentifyOneBinary droid = service.getPort(IdentifyOneBinary.class);
-        byte[] array = ByteArrayHelper.read(f1);
+        byte[] array = FileUtils.readFileIntoByteArray(f1);
         
         //invoke the service and extract results
         Types results = droid.identifyOneBinary(array);
@@ -231,7 +231,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	        BasicCharacteriseOneBinaryXCELtoBinary extractor = service.getPort(BasicCharacteriseOneBinaryXCELtoBinary.class);
 	        
 	        //the service's input
-	        byte[] array = ByteArrayHelper.read(f1);
+	        byte[] array = FileUtils.readFileIntoByteArray(f1);
 	        
 	        //the service call and it's result
 	        byte[] results = extractor.basicCharacteriseOneBinaryXCELtoBinary(array,/*xcel*/null);

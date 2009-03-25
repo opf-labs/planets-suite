@@ -11,7 +11,6 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.utils.ByteArrayHelper;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
