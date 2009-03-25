@@ -1,5 +1,6 @@
 package eu.planets_project.services.datatypes;
 
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,15 +35,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * {@link eu.planets_project.ifr.core.simple.impl.PassThruMigrationService#migrate}
  * (pserv/IF/simple).
  * @author Fabian Steeg
- */
-/*
- * The current solution to be able to pass this into web service methods: We
- * tell JAXB which adapter to use for converting from the interface to the
- * implementation. While this does tightly couple the interface and the
- * implementation, it still allows us to hide the implementation class, e.g.
- * keeping it out of our web service interfaces. Also, for using the IF API
- * outside of a web service stack or JAXB, i.e. as a plain Java library, this is
- * perfectly fine.
  */
 @XmlJavaTypeAdapter(DigitalObject.Adapter.class)
 public interface DigitalObject {
@@ -102,23 +94,69 @@ public interface DigitalObject {
      */
     String toXml();
 
-    /** Adapter for serialization of interface instances. */
+    @XmlJavaTypeAdapter(DigitalObject.Content.Adapter.class)
+    interface Content {
+        /**
+         * @return An input stream for this content; this is either created for
+         *         the actual value (if this is value content) or a stream for
+         *         reading the reference (if this is a reference content)
+         */
+        public InputStream read();
+
+        /*
+         * The current solution to be able to pass this into web service
+         * methods: We tell JAXB which adapter to use for converting from the
+         * interface to the implementation. While this does tightly couple the
+         * interface and the implementation, it still allows us to hide the
+         * implementation class, e.g. keeping it out of our web service
+         * interfaces. Also, for using the IF API outside of a web service stack
+         * or JAXB, i.e. as a plain Java library, this is perfectly fine.
+         */
+        /**
+         * Adapter for serialization of DigitalObject.Content interface
+         * instances.
+         */
+        static class Adapter
+                extends
+                XmlAdapter<eu.planets_project.services.datatypes.Content, DigitalObject.Content> {
+            /**
+             * {@inheritDoc}
+             * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
+             */
+            public DigitalObject.Content unmarshal(
+                    final eu.planets_project.services.datatypes.Content c) {
+                return c;
+            }
+
+            /**
+             * {@inheritDoc}
+             * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
+             */
+            public eu.planets_project.services.datatypes.Content marshal(
+                    final DigitalObject.Content c) {
+                return (eu.planets_project.services.datatypes.Content) c;
+            }
+        }
+    }
+
+    /* Same approach as above, but for the DigitalObject itself. */
+    /** Adapter for serialization of DigitalObject interface instances. */
     static class Adapter extends
             XmlAdapter<ImmutableDigitalObject, DigitalObject> {
         /**
          * {@inheritDoc}
          * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
          */
-        public DigitalObject unmarshal(final ImmutableDigitalObject v) {
-            return v;
+        public DigitalObject unmarshal(final ImmutableDigitalObject o) {
+            return o;
         }
 
         /**
          * {@inheritDoc}
          * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
          */
-        public ImmutableDigitalObject marshal(final DigitalObject v) {
-            return (ImmutableDigitalObject) v;
+        public ImmutableDigitalObject marshal(final DigitalObject o) {
+            return (ImmutableDigitalObject) o;
         }
     }
 

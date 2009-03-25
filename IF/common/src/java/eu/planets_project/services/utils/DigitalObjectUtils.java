@@ -4,6 +4,7 @@
 package eu.planets_project.services.utils;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -26,8 +27,18 @@ public class DigitalObjectUtils {
     public static long getContentSize( DigitalObject dob ) {
         long bytes = 0;
         // Get the size at this level, if set:
-        if( dob.getContent() != null && dob.getContent().length() != -1 ) {
-            bytes += dob.getContent().length();
+        byte[] buf = new byte[1024];
+        if (dob.getContent() != null) {
+            InputStream inputStream = dob.getContent().read();
+            int length = 0;
+            try {
+                while ((inputStream != null)
+                        && ((length = inputStream.read(buf)) != -1)) {
+                    bytes += length;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         // Recurse into sub-dobs:
         if( dob.getContained() != null ) {

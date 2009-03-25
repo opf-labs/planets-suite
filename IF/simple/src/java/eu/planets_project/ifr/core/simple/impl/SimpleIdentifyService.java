@@ -71,23 +71,19 @@ public class SimpleIdentifyService implements Identify {
             return this.returnWithErrorMessage("Could not instanciate the file type resolver.");
         }
         // Can only cope if the object is 'simple':
-        if( dob.getContent() == null ) {
-            return this.returnWithErrorMessage("The Content of the DigitalObject should not be NULL.");
+        if (dob.getContent() == null) {
+            return this
+                    .returnWithErrorMessage("The Content of the DigitalObject should not be NULL.");
         }
-        // If this is an embedded binary:
-        if( dob.getContent().isByValue() ) {
-            return this.returnWithErrorMessage("Cannot identify digital objects that are passed by value.");
-        } else {
-            // URL, can deal with this:
-            String type = ftr.getMIMEType( dob.getContent().getReference() );
-            ServiceReport rep = new ServiceReport();
-            rep.setErrorState(ServiceReport.SUCCESS);
-            
-            List<URI> types = new ArrayList<URI>();
-            types.add( Format.mimeToURI(type) );
-            
-            return new IdentifyResult(types, IdentifyResult.Method.EXTENSION, rep);
-        }
+        // URL, can deal with this:
+        String type = ftr.getMIMEType(dob.getPermanentUrl());
+        ServiceReport rep = new ServiceReport();
+        rep.setErrorState(ServiceReport.SUCCESS);
+
+        List<URI> types = new ArrayList<URI>();
+        types.add(Format.mimeToURI(type));
+
+        return new IdentifyResult(types, IdentifyResult.Method.EXTENSION, rep);
     }
     
     private IdentifyResult returnWithErrorMessage(String message) {

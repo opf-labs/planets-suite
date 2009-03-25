@@ -26,7 +26,7 @@ import eu.planets_project.services.utils.FileUtils;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * @author Peter Melms (peter.melms@uni-koeln.de)
  */
-public final class Content implements Serializable {
+public final class Content implements Serializable, DigitalObject.Content {
     /***/
     private static final long serialVersionUID = 7135127983024589335L;
     
@@ -133,9 +133,8 @@ public final class Content implements Serializable {
     private Content() {}
 
     /**
-     * @return An input stream for this content; this is either created for the
-     *         actual value (if this is value content) or a stream for reading
-     *         the reference (if this is a reference content)
+     * {@inheritDoc}
+     * @see eu.planets_project.services.datatypes.DigitalObject.Content#read()
      */
     public InputStream read() {
         try {
