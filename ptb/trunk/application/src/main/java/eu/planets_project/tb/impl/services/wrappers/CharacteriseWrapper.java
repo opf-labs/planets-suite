@@ -5,7 +5,6 @@ package eu.planets_project.tb.impl.services.wrappers;
 
 import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.ws.Service;
@@ -13,21 +12,12 @@ import javax.xml.ws.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.Types;
-import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.identify.BasicIdentifyOneBinary;
-import eu.planets_project.services.identify.IdentifyOneBinary;
-import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
 
 /**
@@ -95,7 +85,7 @@ public class CharacteriseWrapper implements Characterise {
     /* (non-Javadoc)
      * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
-    public List<FileFormatProperty> listProperties(URI formatURI) {
+    public List<Property> listProperties(URI formatURI) {
         return c.listProperties(formatURI);
     }
 

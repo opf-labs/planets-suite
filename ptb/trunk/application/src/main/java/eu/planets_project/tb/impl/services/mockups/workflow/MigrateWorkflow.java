@@ -223,9 +223,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
         // Find all the PRONOM IDs for this format URI:
         for( URI puid : this.getPronomURIAliases(formatURI) ) {
-            List<FileFormatProperty> measurableProperties = dp.listProperties(puid);
+            List<Property> measurableProperties = dp.listProperties(puid);
             if( measurableProperties != null ) {
-                for( FileFormatProperty p : measurableProperties ) {
+                for( Property p : measurableProperties ) {
                     MeasurementImpl m = this.createMeasurementFromProperty(p);
                     if( ! meas.containsKey( m.getIdentifier() ) ) {
                         meas.put(m.getIdentifier(), m);

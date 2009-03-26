@@ -76,14 +76,14 @@ public class XCDLService implements Characterise {
     /* (non-Javadoc)
      * @see eu.planets_project.services.characterise.DetermineProperties#getMeasurableProperties(java.net.URI)
      */
-    public List<FileFormatProperty> listProperties(URI formatURI) {
+    public List<Property> listProperties(URI formatURI) {
         // Only cope with PRONOM IDs:
         if( ! Format.isThisAPronomURI(formatURI) ) {
             return null;
         }
         
         // Extract the list:
-        List<FileFormatProperty> properties = extractor.listProperties(formatURI);
+        List<Property> properties = extractor.listProperties(formatURI);
         
         /*
         if( properties == null ) return null;
