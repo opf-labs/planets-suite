@@ -51,7 +51,7 @@ public class XcdlAccessTests {
         /* Check what we can expect for PNG: */
         URI uri = FormatRegistryFactory.getFormatRegistry()
                 .getURIsForExtension("png").iterator().next();
-        List<FileFormatProperty> extractable = characterise.listProperties(uri);
+        List<Property> extractable = characterise.listProperties(uri);
         /* Now we actually extract a PNG: */
         CharacteriseResult result = characterise.characterise(new DigitalObject
                 .Builder(Content.byValue(new File(PNG))).build(), null);
@@ -61,14 +61,14 @@ public class XcdlAccessTests {
     }
 
     private void assertAllExtractedPropsAreListedAsExtractable(
-            List<FileFormatProperty> extractable, List<Property> extracted) {
+            List<Property> extractable, List<Property> extracted) {
         for (Property property : extracted) {
             /*
              * TODO: In the future, when the types are the same, we can just
              * check if extractable contains property, until then:
              */
             boolean found = false;
-            for (FileFormatProperty fileFormatProperty : extractable) {
+            for (Property fileFormatProperty : extractable) {
                 if (property.getUri().equals(fileFormatProperty.getUri())) {
                     found = true;
                     break;

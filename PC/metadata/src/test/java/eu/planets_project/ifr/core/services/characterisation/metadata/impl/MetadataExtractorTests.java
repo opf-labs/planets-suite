@@ -216,7 +216,7 @@ public class MetadataExtractorTests {
         System.out.println("Testing properties listing for " + type);
         URI puidToUri = FORMAT_REGISTRY.puidToUri(type.samplePuid);
         System.out.println("URI: " + puidToUri);
-        List<FileFormatProperty> listProperties = characterizer
+        List<Property> listProperties = characterizer
                 .listProperties(puidToUri);
         Assert.assertTrue("No props listed for PUID: " + type.samplePuid,
                 listProperties.size() > 0);

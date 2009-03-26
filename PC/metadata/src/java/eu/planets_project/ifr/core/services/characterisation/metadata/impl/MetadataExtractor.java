@@ -90,8 +90,8 @@ public final class MetadataExtractor implements Characterise {
      * list will always be empty. {@inheritDoc}
      * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
-    public List<FileFormatProperty> listProperties(final URI formatURI) {
-        ArrayList<FileFormatProperty> result = new ArrayList<FileFormatProperty>();
+    public List<Property> listProperties(final URI formatURI) {
+        ArrayList<Property> result = new ArrayList<Property>();
         /* Get the extensions for the supplied Pronom ID: */
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         Format format = registry.getFormatForURI(formatURI);

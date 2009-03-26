@@ -213,7 +213,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
     /**
      * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
-    public final List<FileFormatProperty> listProperties(final URI formatURI) {
+    public final List<Property> listProperties(final URI formatURI) {
         XcdlCommonProperties commonProperties = new XcdlCommonProperties();
         CompareResult result = commonProperties.union(Arrays.asList(formatURI));
         List<Prop> list = result.getProperties();
@@ -223,7 +223,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
          * future, this method will return elements of the same type as
          * FpmCommonProperties returns):
          */
-        List<FileFormatProperty> resultProps = new ArrayList<FileFormatProperty>();
+        List<Property> resultProps = new ArrayList<Property>();
         for (Prop prop : list) {
             FileFormatProperty fileFormatProperty = new FileFormatProperty(
                     XcdlProperties.makePropertyURI(prop.getType(), prop

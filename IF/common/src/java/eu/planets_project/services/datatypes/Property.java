@@ -28,7 +28,7 @@ public class Property {
     
     /**
      * For JAXB.
-     * @deprecated Use the constructor with the two required parameters instead.
+     * @deprecated Use the constructor with the required parameters instead.
      */
     public Property() {}
 
@@ -66,6 +66,7 @@ public class Property {
 
     /**
      * @param the uri to set
+     * @deprecated Should be set only via constructor
      */
     public void setUri(URI uri) {
         this.uri = uri;
@@ -74,6 +75,7 @@ public class Property {
 
     /**
      * @param name the name to set
+     * @deprecated Should be set only via constructor
      */
     public void setName(String name) {
         this.name = name;
@@ -81,6 +83,7 @@ public class Property {
 
     /**
      * @param value the value to set
+     * @deprecated Should be set only via constructor
      */
     public void setValue(String value) {
         this.value = value;
@@ -155,7 +158,8 @@ public class Property {
         return result;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

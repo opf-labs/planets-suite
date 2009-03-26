@@ -73,8 +73,8 @@ public class SimpleCharacterisationService implements Characterise
     /**
      * @see eu.planets_project.services.characterise.DetermineProperties#getMeasurableProperties(java.net.URI)
      */
-    public List<FileFormatProperty> listProperties(URI format) {
-        List<FileFormatProperty> props = new ArrayList<FileFormatProperty>();
+    public List<Property> listProperties(URI format) {
+        List<Property> props = new ArrayList<Property>();
         props.add( new FileFormatProperty( makePropertyURI(MIME_PROP_URI), MIME_PROP_URI, null) );
         return props;
     }
