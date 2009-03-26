@@ -155,7 +155,6 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
     }
     NamespaceContext ctx = new NamespaceContext() {
 
-        @Override
         public String getNamespaceURI(String prefix) {
             String uri;
             if (prefix.equals("pmh")) {
@@ -169,13 +168,11 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         }
 
         // Dummy implementation - not used!
-        @Override
         public Iterator getPrefixes(String val) {
             return null;
         }
 
         // Dummy implemenation - not used!
-        @Override
         public String getPrefix(String uri) {
             return null;
         }
