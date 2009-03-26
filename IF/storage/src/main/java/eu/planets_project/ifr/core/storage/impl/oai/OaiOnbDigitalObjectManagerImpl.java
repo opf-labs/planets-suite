@@ -15,17 +15,14 @@ import java.net.URI;
  */
 public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager{
 
-    @Override
     public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
         throw new UnsupportedOperationException("Not supported via OAI.");
     }
 
-    @Override
     public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
         return null;
     }
 
-    @Override
     public URI[] list(URI pdURI) {
         return null;
     }
