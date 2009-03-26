@@ -6,8 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.comparison.comparator.impl.ResultPropertiesReader;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 
 /**
  * Tests for the ResultPropertiesReader.
@@ -26,10 +25,10 @@ public final class ResultPropertiesReaderTests {
      * @param reader The access to check
      */
     private void check(final ResultPropertiesReader reader) {
-        List<Prop> properties = reader.getProperties();
+        List<Property> properties = reader.getProperties();
         Assert.assertTrue("No properties extracted by "
                 + reader.getClass().getSimpleName(), properties.size() > 0);
-        for (Prop prop : properties) {
+        for (Property prop : properties) {
             System.out.println(prop);
         }
     }

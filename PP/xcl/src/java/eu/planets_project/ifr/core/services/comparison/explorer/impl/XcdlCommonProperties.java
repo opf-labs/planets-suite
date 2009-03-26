@@ -16,6 +16,7 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.FileUtils;
@@ -54,7 +55,7 @@ public final class XcdlCommonProperties implements CommonProperties {
             builder.append(registry.uriToPuid(uri)).append(":");
         }
         String result = basicCompareFormatProperties(builder.toString());
-        List<Prop> resultProperties = ExplorerResultReader.properties(result);
+        List<Property> resultProperties = ExplorerResultReader.properties(result);
         ServiceReport report = new ServiceReport();
         report.setInfo(result);
         return new CompareResult(resultProperties, report);
@@ -66,25 +67,25 @@ public final class XcdlCommonProperties implements CommonProperties {
      */
     public CompareResult intersection(final List<URI> formatIds) {
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
-        List<List<Prop>> propsOfEach = new ArrayList<List<Prop>>();
+        List<List<Property>> propsOfEach = new ArrayList<List<Property>>();
         StringBuilder fullResult = new StringBuilder();
         for (URI uri : formatIds) {
             String result = basicCompareFormatProperties(registry
                     .uriToPuid(uri)
                     + ":");
             fullResult.append(result).append("\n");
-            List<Prop> resultProperties = ExplorerResultReader.properties(result);
+            List<Property> resultProperties = ExplorerResultReader.properties(result);
             propsOfEach.add(resultProperties);
         }
-        List<Prop> result = intersectionOf(propsOfEach);
+        List<Property> result = intersectionOf(propsOfEach);
         ServiceReport report = new ServiceReport();
         report.setInfo(fullResult.toString());
         return new CompareResult(result, report);
     }
 
-    private List<Prop> intersectionOf(List<List<Prop>> propsOfEach) {
-        List<Prop> result = new ArrayList<Prop>(propsOfEach.get(0));
-        for (List<Prop> list : propsOfEach) {
+    private List<Property> intersectionOf(List<List<Property>> propsOfEach) {
+        List<Property> result = new ArrayList<Property>(propsOfEach.get(0));
+        for (List<Property> list : propsOfEach) {
             result.retainAll(list);
         }
         return result;

@@ -71,12 +71,16 @@ public final class XcdlParser implements XcdlAccess {
                     URI propUri = XcdlProperties.makePropertyURI(id, name);
                     eu.planets_project.services.datatypes.Property p = new eu.planets_project.services.datatypes.Property(
                             propUri, name, val.get(0).getValues().get(0));
-                    p.setType(labValue.getTypes().get(0).getValue().value());
+                    p.setType(id);
+                    // TODO whats here?
+                    p.setUnit(labValue.getTypes().get(0).getValue().value());
+                    p.setDescription(labValue.getTypes().get(0).getValue()
+                            .value());
                     result.add(p);
                 }
             }
         }
-        return result;
+        return propertiesToProps(result);
     }
 
     /**
@@ -90,8 +94,9 @@ public final class XcdlParser implements XcdlAccess {
      * @param args unused
      */
     public static void main(final String[] args) {
-        XcdlParser p = new XcdlParser(new File(
-                "PC/extractor/src/java/eu/planets_project/xcdl/xcdl.xml"));
+        XcdlParser p = new XcdlParser(
+                new File(
+                        "PP/xcl/src/java/eu/planets_project/ifr/core/services/characterisation/extractor/xcdl/xcdl.xml"));
         List<eu.planets_project.services.datatypes.Property> properties = p
                 .getProperties();
         for (eu.planets_project.services.datatypes.Property property : properties) {
@@ -105,13 +110,12 @@ public final class XcdlParser implements XcdlAccess {
      * getProp(ertie)s() method.
      * @return The properties parsed from the XCDL file
      */
-    public List<Prop<Object>> getProps() {
-        List<eu.planets_project.services.datatypes.Property> properties = this
-                .getProperties();
-        return propertiesToProps(properties);
-    }
-
-    private List<Prop<Object>> propertiesToProps(
+    // public List<Prop<Object>> getProps() {
+    // List<eu.planets_project.services.datatypes.Property> properties = this
+    // .getProperties();
+    // return propertiesToProps(properties);
+    // }
+    private List<eu.planets_project.services.datatypes.Property> propertiesToProps(
             List<eu.planets_project.services.datatypes.Property> properties) {
         /*
          * This is totally work in progress... The basic idea is: We wrap all
@@ -124,22 +128,45 @@ public final class XcdlParser implements XcdlAccess {
         for (eu.planets_project.services.datatypes.Property property : properties) {
             System.out.println(property);
         }
-        List<Prop<Object>> result = new ArrayList<Prop<Object>>();
-        result.add(Prop.name("normData").type("id").description("object")
-                .values("00 01 02 03 04 05 06 07 08 09 0a").build());
-        result.add(Prop.name("propertySet").type("id_0").values(
-                Prop.name("ref").type("id").description("id").build(),
-                Prop.name("ref").type("id").description("id").build()).build());
+        List<eu.planets_project.services.datatypes.Property> result = new ArrayList<eu.planets_project.services.datatypes.Property>();
+        result.add(new eu.planets_project.services.datatypes.Property.Builder(
+                XcdlProperties.makePropertyURI("nd1", "normData")).name(
+                "normData").type("nd1").description("object").value(
+                "00 01 02 03 04 05 06 07 08 09 0a").build());
+        result.add(new eu.planets_project.services.datatypes.Property.Builder(
+                XcdlProperties.makePropertyURI("id_0", "propertySet")).name(
+                "propertySet").type("id_0").value(
+                "ref i_i1_i217_s4 suggestedPaletteAlpha").build());
+        // Prop.name("ref").type("id").description("id").build(),
+        // Prop.name("ref").type("id").description("id").build()).build());
         for (eu.planets_project.services.datatypes.Property property : properties) {
-            result.add(Prop.name("property").type("p" + p).values(
-                    Prop.name("value").values("raw", "descr").build(),
-                    Prop.name("name").type("id")
-                            .description(property.getName()).build(),
-                    Prop.name("valueSet").type("i_i1_i" + v + "_s5").values(
-                            Prop.name("labValue").description(
-                                    property.getUnit()).values(
-                                    property.getValue()).build()).build())
-                    .build());
+            result
+                    .add(new eu.planets_project.services.datatypes.Property.Builder(
+                            XcdlProperties.makePropertyURI("p"
+                                    + property.getType(), property.getName()))
+                            .name("property")
+                            .type("p" + property.getType())
+                            .value(
+                                    String
+                                            .format(
+                                                    "raw descr, name id%s %s, valueSet i_i1_i%s_s4, "
+                                                            + "labValue %s %s %s, dataRef id_0 global",
+                                                    // TODO which name or type,
+                                                    // here or above?
+                                                    property.getType(),
+                                                    property.getName(), v,
+                                                    property.getValue(),
+                                                    property.getUnit(),
+                                                    property.getUnit()))
+                            .build());
+            // Prop.name("value").values("raw", "descr").build(),
+            // Prop.name("name").type("id")
+            // .description(property.getName()).build(),
+            // Prop.name("valueSet").type("i_i1_i" + v + "_s5").values(
+            // Prop.name("labValue").description(
+            // property.getUnit()).values(
+            // property.getValue()).build()).build())
+            // .build());
             p--;
             v--;
         }

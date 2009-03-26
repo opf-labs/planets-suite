@@ -20,6 +20,7 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 
 /**
  * Comparison of property lists. NOTE: The {@link Prop} class used in this
@@ -53,7 +54,7 @@ public interface CompareProperties extends PlanetsService {
             + CompareProperties.NAME + "Response")
     CompareResult compare(
             @WebParam(name = "digitalObjects", targetNamespace = PlanetsServices.NS
-                    + "/" + CompareProperties.NAME, partName = "propertyLists") final List<ArrayList<Prop<Object>>> objects,
+                    + "/" + CompareProperties.NAME, partName = "propertyLists") final List<ArrayList<Property>> objects,
             @WebParam(name = "config", targetNamespace = PlanetsServices.NS
                     + "/" + CompareProperties.NAME, partName = "config") final List<Prop<Object>> config);
 
@@ -69,7 +70,7 @@ public interface CompareProperties extends PlanetsService {
     @WebResult(name = CompareProperties.NAME + "InputProperties", targetNamespace = PlanetsServices.NS
             + "/" + CompareProperties.NAME, partName = CompareProperties.NAME
             + "InputProperties")
-    ArrayList<Prop<Object>> convertInput(
+    ArrayList<Property> convertInput(
             @WebParam(name = "inputProperties", targetNamespace = PlanetsServices.NS
                     + "/" + CompareProperties.NAME, partName = "inputProperties") final DigitalObject inputFile);
 

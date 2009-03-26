@@ -11,14 +11,12 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompare;
-import eu.planets_project.ifr.core.services.comparison.explorer.impl.XcdlCommonProperties;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.compare.CommonProperties;
-import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
@@ -92,7 +90,7 @@ public class XcdlCommonPropertiesTests {
     private void testUnion(CommonProperties commonProperties, List<URI> puids) {
         CompareResult union = commonProperties.union(puids);
         commonCheck(union, union.getProperties());
-        List<Prop> properties = commonProperties.union(
+        List<Property> properties = commonProperties.union(
                 Arrays.asList(puids.get(0))).getProperties();
         Assert.assertTrue("Less union properties than properties of one only",
                 union.getProperties().size() >= properties.size());
@@ -110,7 +108,7 @@ public class XcdlCommonPropertiesTests {
     }
 
     private void commonCheck(final CompareResult compareResult,
-            final List<Prop> list) {
+            final List<Property> list) {
         assertNotNull("response was null", list);
         String info = compareResult.getReport().getInfo();
         assertTrue("Result contains an error: " + info, !info.contains("Error"));
@@ -124,10 +122,10 @@ public class XcdlCommonPropertiesTests {
      * @param list The properties
      * @param info The raw result
      */
-    private void printInfo(final List<Prop> list, final String info) {
+    private void printInfo(final List<Property> list, final String info) {
         // System.out.println("FPM raw result: " + info);
         System.out.println("FPM props result: ");
-        for (Prop prop : list) {
+        for (Property prop : list) {
             System.out.println(prop);
         }
         System.out.println(list.size() + " common properties");

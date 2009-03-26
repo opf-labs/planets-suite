@@ -9,8 +9,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.comparison.comparator.impl.ComparatorWrapper;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 
 /**
  * Tests of the comparator wrapper functionality, which is used by the different
@@ -91,10 +90,10 @@ public final class ComparatorWrapperTests {
     /**
      * @param properties The result properties to check
      */
-    public static void check(final List<Prop> properties) {
+    public static void check(final List<Property> properties) {
         Assert.assertTrue(properties.size() > 0);
         System.out.println("Comparator returned: ");
-        for (Prop prop : properties) {
+        for (Property prop : properties) {
             System.out.println(prop);
         }
 

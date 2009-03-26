@@ -16,6 +16,7 @@ import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.FileUtils;
@@ -42,20 +43,20 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @see eu.planets_project.services.compare.CompareProperties#compare(java.util.List,
      *      java.util.List)
      */
-    public CompareResult compare(final List<ArrayList<Prop<Object>>> lists,
+    public CompareResult compare(final List<ArrayList<Property>> lists,
             final List<Prop<Object>> config) {
         if (lists.size() < 2) {
             throw new IllegalArgumentException(
                     "Need at least two lists to compare");
         }
-        List<ArrayList<Prop<Object>>> first = new ArrayList<ArrayList<Prop<Object>>>();
+        List<ArrayList<Property>> first = new ArrayList<ArrayList<Property>>();
         first.add(lists.get(0));
         String xcdl = read(first).get(0);
         List<String> xcdls = read(lists.subList(1, lists.size()));
         String pcr = new ComparatorConfigCreator(config)
                 .getComparatorConfigXml();
         String result = ComparatorWrapper.compare(xcdl, xcdls, pcr);
-        List<Prop> props = propertiesFrom(result);
+        List<Property> props = propertiesFrom(result);
         return new CompareResult(props, new ServiceReport());
     }
 
@@ -63,7 +64,7 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @param result The comparator result
      * @return The properties found in the result XML
      */
-    private List<Prop> propertiesFrom(final String result) {
+    private List<Property> propertiesFrom(final String result) {
         File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
         return new ResultPropertiesReader(file).getProperties();
     }
@@ -72,9 +73,9 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @param list The list of digital objects
      * @return A list of strings representing the content of the digital objects
      */
-    private List<String> read(final List<ArrayList<Prop<Object>>> list) {
+    private List<String> read(final List<ArrayList<Property>> list) {
         List<String> result = new ArrayList<String>();
-        for (List<Prop<Object>> xcdlProps : list) {
+        for (List<Property> xcdlProps : list) {
             String content = new XcdlCreator(xcdlProps).getXcdlXml();
             result.add(content);
         }
@@ -103,16 +104,16 @@ public final class XcdlCompareProperties implements CompareProperties {
      * {@inheritDoc}
      * @see eu.planets_project.services.compare.CompareProperties#convertInput(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public ArrayList<Prop<Object>> convertInput(final DigitalObject inputFile) {
+    public ArrayList<Property> convertInput(final DigitalObject inputFile) {
         File file = FileUtils.writeByteArrayToTempFile(FileUtils
                 .writeInputStreamToBinary(inputFile.getContent().read()));
-        List<Prop<Object>> props = new XcdlParser(file).getProps();
+        List<Property> props = new XcdlParser(file).getProperties();
         if (props.size() == 0) {
             throw new IllegalStateException(
                     "Could not parse any properties from: "
                             + file.getAbsolutePath());
         }
-        ArrayList<Prop<Object>> list = new ArrayList<Prop<Object>>(props);
+        ArrayList<Property> list = new ArrayList<Property>(props);
         return list;
     }
 
@@ -125,4 +126,5 @@ public final class XcdlCompareProperties implements CompareProperties {
                 .writeInputStreamToBinary(configFile.getContent().read()));
         return new ComparatorConfigParser(file).getProperties();
     }
+
 }

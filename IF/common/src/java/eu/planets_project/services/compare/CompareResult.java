@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 
 /**
@@ -20,7 +20,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public final class CompareResult {
-    private List<Prop> properties;
+    private List<Property> properties;
     private ServiceReport report;
 
     /** For JAXB. */
@@ -31,7 +31,7 @@ public final class CompareResult {
      * @param properties The result properties
      * @param report The report
      */
-    public CompareResult(final List<Prop> properties, final ServiceReport report) {
+    public CompareResult(final List<Property> properties, final ServiceReport report) {
         super();
         this.properties = properties;
         this.report = report;
@@ -40,8 +40,8 @@ public final class CompareResult {
     /**
      * @return the result properties
      */
-    public List<Prop> getProperties() {
-        return properties == null ? new ArrayList<Prop>() : properties;
+    public List<Property> getProperties() {
+        return properties == null ? new ArrayList<Property>() : properties;
     }
 
     /**

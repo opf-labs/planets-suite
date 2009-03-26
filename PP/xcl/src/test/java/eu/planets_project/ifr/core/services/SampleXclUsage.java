@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacterise;
@@ -43,10 +42,10 @@ public class SampleXclUsage {
     private static final String CONVERTED = SAMPLES + "jpeg/basketball.jpg";
     private static final String COCO = RESOURCES + "sampleComparatorConfig.xml";
     /* We wrap them as digital objects for later usage: */
-    private static final DigitalObject GIF = new DigitalObject.Builder(
-            Content.byReference(new File(ORIGINAL))).build();
-    private static final DigitalObject JPG = new DigitalObject.Builder(
-            Content.byReference(new File(CONVERTED))).build();
+    private static final DigitalObject GIF = new DigitalObject.Builder(Content
+            .byReference(new File(ORIGINAL))).build();
+    private static final DigitalObject JPG = new DigitalObject.Builder(Content
+            .byReference(new File(CONVERTED))).build();
     private static final DigitalObject CONFIG = new DigitalObject.Builder(
             Content.byReference(new File(COCO))).build();
     /* We get a PRONOM ID for the original and the converted file: */
@@ -95,22 +94,16 @@ public class SampleXclUsage {
                 jpgXcdl), configProperties);
         /* Print the result: */
         System.out.println("Report: " + compareResult.getReport());
-        List<Prop> properties = compareResult.getProperties();
+        List<Property> properties = compareResult.getProperties();
         System.out.println("Results: " + properties);
     }
 
     /**
-     * This is an API usage sketch of what using the XCL services via the
-     * Characterise interface could look like once it's all put together.
+     * This is an API usage sketch of how using the XCL services via the
+     * Characterise interface could work once it's all put together.
      */
-    /*
-     * The details are not figured out yet, and this is supposed to be a
-     * readable API usage sample, hence:
-     */
-    @SuppressWarnings("unchecked")
-    // @Test (To be implemented)
+    // @Test
     public void viaXcdlCharacterisation() {
-        Assert.fail("Not completely implemented yet!");
         /*
          * We perform the characterisation, this time using the actual
          * Characterise interface. The advantage here, besides the less verbose
@@ -122,8 +115,24 @@ public class SampleXclUsage {
         CharacteriseResult gifProps = characterisation.characterise(GIF, null);
         CharacteriseResult jpgProps = characterisation.characterise(JPG, null);
         /* We set up the comparison. First, the values to compare: */
-        List<List<Property>> propsToCompare = Arrays.asList(gifProps
-                .getProperties(), jpgProps.getProperties());
+        List<ArrayList<Property>> propsToCompare = Arrays.asList(
+                new ArrayList<Property>(gifProps.getProperties()),
+                new ArrayList<Property>(jpgProps.getProperties()));
+        /*
+         * Then we compare the properties of the files. This is still
+         * preliminary as the interfaces will change (List<Parameter> as the
+         * config and two List<Property> instead of a list of lists):
+         */
+        CompareProperties comparison = new XcdlCompareProperties();
+        List<Prop<Object>> configProperties = comparison.convertConfig(CONFIG);
+        CompareResult result = comparison.compare(propsToCompare,
+                configProperties);
+        System.out.println("Result: " + result + " " + result.getProperties());
+
+    }
+
+    private void commonProperties() {
+        // TODO not sure if this makes any sense here...
         /*
          * Next, determine the intersection of common properties to be used to
          * configure the comparison of the values (this won't work yet, because
@@ -131,27 +140,8 @@ public class SampleXclUsage {
          * currently expects):
          */
         CommonProperties commonProps = new XcdlCommonProperties();
-        List<Prop> intersection = commonProps.intersection(
+        List<Property> intersection = commonProps.intersection(
                 Arrays.asList(GIF_ID, JPG_ID)).getProperties();
-        /*
-         * And finally we compare the properties of the files. The different
-         * classes don't work together yet, but this is what it should look like
-         * (then without the c1 and c2 conversion methods to make it compile
-         * here):
-         */
-        CompareProperties comparison = new XcdlCompareProperties();
-        CompareResult result = comparison.compare(c1(propsToCompare),
-                c2(intersection));
-        System.out.println("Result: " + result + " " + result.getProperties());
-
-    }
-
-    private List<Prop<Object>> c2(List<Prop> intersection) {
-        throw new IllegalStateException("Dummy method not to be called!");
-    }
-
-    private List<ArrayList<Prop<Object>>> c1(List<List<Property>> propsToCompare) {
-        throw new IllegalStateException("Dummy method not to be called!");
     }
 
 }

@@ -11,7 +11,7 @@ import org.junit.Test;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -21,12 +21,12 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * @author Fabian Steeg
  */
 public final class XcdlCompareTests {
-	
-	@Test
-	public void testDescribe() {
-		Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME,
+
+    @Test
+    public void testDescribe() {
+        Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME,
                 XcdlCompare.class, WSDL);
-		ServiceDescription sd = c.describe();
+        ServiceDescription sd = c.describe();
         assertTrue("The ServiceDescription should not be NULL.", sd != null);
         System.out.println("test: describe()");
         System.out
@@ -70,8 +70,8 @@ public final class XcdlCompareTests {
                 new DigitalObject.Builder(Content.byValue(data2)).build() };
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
-        List<Prop> properties = c.compare(Arrays.asList(objects), c.convert(configFile))
-                .getProperties();
+        List<Property> properties = c.compare(Arrays.asList(objects),
+                c.convert(configFile)).getProperties();
         ComparatorWrapperTests.check(properties);
     }
 }

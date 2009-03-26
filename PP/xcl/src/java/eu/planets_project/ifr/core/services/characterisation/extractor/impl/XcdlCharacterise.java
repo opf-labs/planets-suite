@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlParser;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.ifr.core.services.comparison.explorer.impl.XcdlCommonProperties;
 import eu.planets_project.services.PlanetsServices;
@@ -24,7 +25,6 @@ import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Metric;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -37,11 +37,7 @@ import eu.planets_project.services.utils.ServiceUtils;
  * @author Peter Melms, Fabian Steeg
  * @see XcdlMigrate
  */
-@WebService(
-        name = XcdlCharacterise.NAME, 
-        serviceName = Characterise.NAME, 
-        targetNamespace = PlanetsServices.NS, 
-        endpointInterface = "eu.planets_project.services.characterise.Characterise")
+@WebService(name = XcdlCharacterise.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
 @Stateless
 public class XcdlCharacterise implements Characterise, Serializable {
 
@@ -181,10 +177,10 @@ public class XcdlCharacterise implements Characterise, Serializable {
                 XcdlCharacterise.NAME, Characterise.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
         sd
-                .description("Another Wrapper for the Extractor tool developed at the UzK. This Wrapper uses the Extractor\n" +
-                		"to read all relevant properties from an input file. The Extractor output (.xcdl) is parsed and \n" +
-                		"returned as a a List of Properties to enable the comparison of results delivered by different Characterisation tools.\n" +
-                		"IMPORTANT NOTE: To receive the .xcdl file, please use the XcdlMigrate service!");
+                .description("Another Wrapper for the Extractor tool developed at the UzK. This Wrapper uses the Extractor\n"
+                        + "to read all relevant properties from an input file. The Extractor output (.xcdl) is parsed and \n"
+                        + "returned as a a List of Properties to enable the comparison of results delivered by different Characterisation tools.\n"
+                        + "IMPORTANT NOTE: To receive the .xcdl file, please use the XcdlMigrate service!");
         sd.classname(this.getClass().getCanonicalName());
         sd.version("0.1");
 
@@ -203,8 +199,9 @@ public class XcdlCharacterise implements Characterise, Serializable {
         parameters.setParameters(parameterList);
 
         sd.parameters(parameters);
-        
-        sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(new URI[]{}));
+
+        sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(
+                new URI[] {}));
         sd.serviceProvider("The Planets Consortium");
 
         return sd.build();
@@ -216,7 +213,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
     public final List<Property> listProperties(final URI formatURI) {
         XcdlCommonProperties commonProperties = new XcdlCommonProperties();
         CompareResult result = commonProperties.union(Arrays.asList(formatURI));
-        List<Prop> list = result.getProperties();
+        List<Property> list = result.getProperties();
         /*
          * Starting here, this is a temporary workaround to match the output of
          * the FpmCommonProperties to the FileFormatProperty class (in the
@@ -224,19 +221,26 @@ public class XcdlCharacterise implements Characterise, Serializable {
          * FpmCommonProperties returns):
          */
         List<Property> resultProps = new ArrayList<Property>();
-        for (Prop prop : list) {
+        for (Property prop : list) {
             FileFormatProperty fileFormatProperty = new FileFormatProperty(
                     XcdlProperties.makePropertyURI(prop.getType(), prop
                             .getName()), prop.getName(), null);
-            List<Prop> values = prop.getValues();
+            // TODO just dummy metrics here
+            // List<Prop> values = prop.getValues();
             List<Metric> metrics = new ArrayList<Metric>();
-            for (Prop m : values) {
-                Metric o = new Metric();
-                o.setDescription(m.getDescription());
-                o.setName(m.getName());
-                o.setId(m.getType());
-                metrics.add(o);
-            }
+            Metric o = new Metric();
+            o.setDescription("");
+            o.setName("");
+            o.setId("");
+            metrics.add(o);
+            // instead of the real thing:
+            // for (Prop m : values) {
+            // Metric o = new Metric();
+            // o.setDescription(m.getDescription());
+            // o.setName(m.getName());
+            // o.setId(m.getType());
+            // metrics.add(o);
+            // }
             fileFormatProperty.setMetrics(metrics);
             resultProps.add(fileFormatProperty);
         }

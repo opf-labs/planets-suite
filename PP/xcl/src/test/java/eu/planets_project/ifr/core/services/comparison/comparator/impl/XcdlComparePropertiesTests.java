@@ -13,6 +13,7 @@ import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -74,7 +75,7 @@ public final class XcdlComparePropertiesTests {
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
         /* We now convert both into properties using our service: */
-        List<ArrayList<Prop<Object>>> inputProps = new ArrayList<ArrayList<Prop<Object>>>();
+        List<ArrayList<Property>> inputProps = new ArrayList<ArrayList<Property>>();
         for (DigitalObject digitalObject : objects) {
             inputProps.add(c.convertInput(digitalObject));
         }
@@ -82,7 +83,7 @@ public final class XcdlComparePropertiesTests {
                 new ComparatorConfigParser(FileUtils.writeByteArrayToTempFile(FileUtils
                         .writeInputStreamToBinary(configFile.getContent()
                                 .read()))).getProperties());
-        List<Prop> properties = new ArrayList<Prop>(c.compare(inputProps,
+        List<Property> properties = new ArrayList<Property>(c.compare(inputProps,
                 configProps).getProperties());
         ComparatorWrapperTests.check(properties);
     }

@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.xcdl;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,6 +27,7 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.gene
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.PropertySet.ValueSetRelations;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.PropertySet.ValueSetRelations.Ref;
 import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 
 /**
  * Creates an XCDL XML string from a list of properties.
@@ -43,7 +45,8 @@ public class XcdlCreator {
      *        these are properties of a single object and will be represented as
      *        a single object in the resulting XCDL. The props need to contain
      */
-    public XcdlCreator(List<Prop<Object>> xcdlProps) {
+
+    public XcdlCreator(List<Property> xcdlProps) {
         try {
             JAXBContext jc = JAXBContext
                     .newInstance("eu.planets_project.ifr.core.services."
@@ -95,14 +98,17 @@ public class XcdlCreator {
         }
     }
 
-    private Xcdl createXcdlObject(List<Prop<Object>> xcdlProps) {
+    private Xcdl createXcdlObject(List<Property> xcdlProps) {
         /*
          * The given properties are assumed to be properties of a single object
          * and are thus wrapped in a single XCDL-Object.
          */
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object();
         object.setId("generated_" + String.valueOf(System.currentTimeMillis()));
-        for (Prop<Object> prop : xcdlProps) {
+        for (Property prop : xcdlProps) {
+            if(prop.getName()==null){
+                throw new IllegalArgumentException("Property has no name: " + prop);
+            }
             if (prop.getName().toLowerCase().equals(PropertyName.NORMDATA.s)) {
                 addNormData(object, prop);
             } else if (prop.getName().toLowerCase().equals(
@@ -128,62 +134,109 @@ public class XcdlCreator {
 
     private void addProperty(
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
-            Prop<Object> prop) {
+            Property prop) {
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property p = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property();
         p.setId(prop.getType());
-        p.setSource(SourceType.fromValue(((Prop)prop.getValues().get(0)).getValues().get(0).toString()
-                .toLowerCase()));
-        p.setCat(CatType.fromValue(((Prop)prop.getValues().get(0)).getValues().get(1).toString()
-                .toLowerCase()));
+
+        /*
+         * This is where it gets ugly: we map our property values onto the XCDL
+         * XML types:
+         */
+        String[] levelOneTokens = clean(prop.getValue().split(","));
+        String[] valueTokens = clean(levelOneTokens[0].split(" "));
+        String[] nameTokens = clean(levelOneTokens[1].split(" "));
+        String[] valueSetTokens = clean(levelOneTokens[2].split(" "));
+        String[] labValTokens = clean(levelOneTokens[3].split(" "));
+        String[] dataRefTokens = clean(levelOneTokens[4].split(" "));
+
+        p.setSource(SourceType.fromValue(valueTokens[0].toLowerCase()));
+        p.setCat(CatType.fromValue(valueTokens[1].toLowerCase()));
+
         /* The name element: */
         Name name = new Name();
-        for (Object o : prop.getValues("name")) {
-            Prop<String> nameProp = (Prop) o;
-            name.getValues().add(nameProp.getDescription());
-            name.setId(nameProp.getType());
-            p.setName(name);
-        }
+        name.getValues().add(nameTokens[2]);
+        name.setId(nameTokens[1]);
+        p.setName(name);
+
+        // TODO no multiple value sets, no multiple lab vals or data refs per
+        // value set, is this OK?
+
         /* The value set element: */
-        for (Object valSet : prop.getValues("valueset")) {
-            Prop<Prop> valSetProp = (Prop) valSet;
-            ValueSet set = new ValueSet();
-            set.setId(valSetProp.getType());
-            /* The lab vals: */
-            for (Prop labProp : valSetProp.getValues("labvalue")) {
-                LabValue labValue = new LabValue();
-                Type type = new Type();
-                type.setValue(determineLabValType(labProp));
-                labValue.getTypes().add(type);
-                Val val = new Val();
-                // val.setUnit(determineMeasureType(labProp));
-                val.getValues().addAll(labProp.getValues());
-                labValue.getVals().add(val);
-                set.setLabValue(labValue);
-            }
-            /* The data refs: */
-            List<Prop> dataRefs = valSetProp.getValues("dataref");
-            for (Prop dataRefProp : dataRefs) {
-                DataRef dataRef = new DataRef();
-                dataRef.setPropertySetId(dataRefProp.getType());
-                dataRef.setInd(determineDataRef(dataRefProp));
-                set.getDataReves().add(dataRef);
-            }
-            p.getValueSets().add(set);
-        }
+        ValueSet set = new ValueSet();
+        set.setId(valueSetTokens[1]);
+
+        /* The lab val: */
+        LabValue labValue = new LabValue();
+        Type type = new Type();
+        type.setValue(determineLabValType(labValTokens[2]));
+        labValue.getTypes().add(type);
+        Val val = new Val();
+        val.getValues().add(labValTokens[1]);
+        labValue.getVals().add(val);
+        set.setLabValue(labValue);
+
+        /* The data ref: */
+        DataRef dataRef = new DataRef();
+        dataRef.setPropertySetId(dataRefTokens[1]);
+        dataRef.setInd(determineDataRef(dataRefTokens[2]));
+        set.getDataReves().add(dataRef);
+
+        p.getValueSets().add(set);
         object.getProperties().add(p);
+
+        // for (Object valSet : prop.getValues("valueset")) {
+        // Prop<Prop> valSetProp = (Prop) valSet;
+        // ValueSet set = new ValueSet();
+        // set.setId(valSetProp.getType());
+        // /* The lab vals: */
+        // for (Prop labProp : valSetProp.getValues("labvalue")) {
+        // LabValue labValue = new LabValue();
+        // Type type = new Type();
+        // type.setValue(determineLabValType(labProp));
+        // labValue.getTypes().add(type);
+        // Val val = new Val();
+        // // val.setUnit(determineMeasureType(labProp));
+        // val.getValues().addAll(labProp.getValues());
+        // labValue.getVals().add(val);
+        // set.setLabValue(labValue);
+        // }
+        // /* The data refs: */
+        // List<Prop> dataRefs = valSetProp.getValues("dataref");
+        // for (Prop dataRefProp : dataRefs) {
+        // DataRef dataRef = new DataRef();
+        // dataRef.setPropertySetId(dataRefProp.getType());
+        // dataRef.setInd(determineDataRef(dataRefProp));
+        // set.getDataReves().add(dataRef);
+        // }
+        // p.getValueSets().add(set);
+        // }
+        // object.getProperties().add(p);
+    }
+
+    private String[] clean(String[] split) {
+        List<String> result = new ArrayList<String>();
+        for (String string : split) {
+            String clean = string.trim();
+            if (clean.length() > 0) {
+                result.add(clean);
+            }
+        }
+        return result.toArray(new String[] {});
     }
 
     private void addPropertySet(
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
-            Prop prop) {
+            Property prop) {
         PropertySet set = new PropertySet();
         set.setId(prop.getType());
         ValueSetRelations rel = new ValueSetRelations();
-        List<Prop> props = prop.getValues("ref");
-        for (Prop p : props) {
+        // List<Property> props = prop.getValues("ref");
+        String[] levelOneTokens = prop.getValue().split(",");
+        for (String s : levelOneTokens) {
+            String[] tokens = s.split(" ");
             Ref ref = new Ref();
-            ref.setValueSetId(p.getType());
-            ref.setName(p.getDescription());
+            ref.setValueSetId(tokens[1]);
+            ref.setName(tokens[2]);
             rel.getReves().add(ref);
         }
         set.setValueSetRelations(rel);
@@ -192,7 +245,7 @@ public class XcdlCreator {
 
     private void addNormData(
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
-            Prop prop) {
+            Property prop) {
         NormData normData = new NormData();
         String description = prop.getDescription();
         if (description == null || description.trim().equals("")) {
@@ -201,16 +254,15 @@ public class XcdlCreator {
         }
         normData.setType(InformType.fromValue(description.toLowerCase()));
         normData.setId(prop.getType());
-        List<String> values = prop.getValues();
-        if (values.size() == 0) {
+        if (prop.getValue() == null) {
             throw new IllegalArgumentException("Normdata must have a value");
         }
-        normData.setValue(values.get(0));
+        normData.setValue(prop.getValue());
         object.getNormDatas().add(normData);
     }
 
-    private DataRefType determineDataRef(Prop dataRefProp) {
-        String d = dataRefProp.getDescription();
+    private DataRefType determineDataRef(String description) {
+        String d = description;
         DataRefType type = DataRefType.NONE;
         try {
             type = DataRefType.fromValue(d);
@@ -239,9 +291,9 @@ public class XcdlCreator {
         return type;
     }
 
-    private LabValType determineLabValType(Prop labProp) {
+    private LabValType determineLabValType(String description) {
         LabValType labValType = LabValType.STRING;
-        String labValProp = labProp.getDescription();
+        String labValProp = description;
         try {
             labValType = LabValType.fromValue(labValProp);
         } catch (IllegalArgumentException e) {

@@ -2,6 +2,8 @@ package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +13,9 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Property;
 
 /**
  * Access to CPR (the XCDL comparator result format) properties.
@@ -34,8 +38,8 @@ public final class ResultPropertiesReader {
     /**
      * @return The properties in the given CPR file
      */
-    public List<Prop> getProperties() {
-        List<Prop> properties = new ArrayList<Prop>();
+    public List<Property> getProperties() {
+        List<Property> properties = new ArrayList<Property>();
         SAXBuilder builder = new SAXBuilder();
         try {
             Document doc = builder.build(cprFile);
@@ -59,12 +63,18 @@ public final class ResultPropertiesReader {
                     valuesSrc = valuesElement.getChildText("src", NS);
                     valuesTar = valuesElement.getChildText("tar", NS);
                 }
-                Prop.Builder pBuilder = Prop.name(name).values(valuesSrc,
-                        valuesTar).description(status).unit(unit).type(
-                        valuesType);
-                List<Prop> subProperties = metrics(e);
-                pBuilder.values(subProperties.toArray(new Prop[] {}));
-                properties.add(pBuilder.build());
+                Property result;
+                result = new Property.Builder(XcdlProperties.makePropertyURI(e
+                        .getAttributeValue("id"), name)).type(valuesType).name(
+                        name).value(valuesSrc + "," + valuesTar).description(
+                        status).unit(unit).build();
+                properties.add(result);
+                // Prop.Builder pBuilder = Prop.name(name).values(valuesSrc,
+                // valuesTar).description(status).unit(unit).type(
+                // valuesType);
+                // List<Prop> subProperties = metrics(e);
+                // pBuilder.values(subProperties.toArray(new Prop[] {}));
+                // properties.add(pBuilder.build());
             }
         } catch (JDOMException e) {
             e.printStackTrace();

@@ -13,7 +13,51 @@ import javax.xml.bind.annotation.XmlAccessorType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property {
-    
+
+    public static class Builder {
+
+        URI uri;
+        String name;
+        String value;
+        String description;
+        String unit;
+        String type;
+
+        public Builder(URI uri) {
+            this.uri = uri;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder value(String value) {
+            this.value = value;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder unit(String unit) {
+            this.unit = unit;
+            return this;
+        }
+
+        public Builder type(String type) {
+            this.type = type;
+            return this;
+        }
+
+        public Property build() {
+            return new Property(this);
+        }
+
+    }
+
     private URI uri = null;
 
     private String name = "";
@@ -25,7 +69,7 @@ public class Property {
     protected String description = "";
 
     protected String type = "";
-    
+
     /**
      * For JAXB.
      * @deprecated Use the constructor with the required parameters instead.
@@ -42,7 +86,16 @@ public class Property {
         this.name = name;
         this.value = value;
     }
-    
+
+    private Property(Property.Builder builder) {
+        this.uri = builder.uri;
+        this.name = builder.name;
+        this.value = builder.value;
+        this.description = builder.description;
+        this.unit = builder.unit;
+        this.type = builder.type;
+    }
+
     /**
      * @return the uri
      */
@@ -71,7 +124,6 @@ public class Property {
     public void setUri(URI uri) {
         this.uri = uri;
     }
-
 
     /**
      * @param name the name to set
@@ -137,11 +189,14 @@ public class Property {
      */
     @Override
     public String toString() {
-        return String.format("%s [%s] '%s' = '%s'", this.getClass().getSimpleName(),
-                uri, name, value);
+        return String.format(
+                "%s [%s] '%s' = '%s' (description=%s unit=%s type=%s)", this
+                        .getClass().getSimpleName(), uri, name, value,
+                description, unit, type);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
      * @see java.lang.Object#hashCode()
      */
     @Override
