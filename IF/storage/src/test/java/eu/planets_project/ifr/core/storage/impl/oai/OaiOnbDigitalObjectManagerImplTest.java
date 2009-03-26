@@ -2,11 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package eu.planets_project.ifr.core.storage.impl.oai;
 
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import java.net.URI;
+import java.net.URISyntaxException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,25 +40,17 @@ public class OaiOnbDigitalObjectManagerImplTest {
     }
 
     @Test
-    public void testRetrieve() throws Exception {
-        System.out.println("retrieve");
-        URI pdURI = null;
-        OaiOnbDigitalObjectManagerImpl instance = new OaiOnbDigitalObjectManagerImpl();
-        DigitalObject expResult = null;
-        DigitalObject result = instance.retrieve(pdURI);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
-
-    @Test
-    public void testList() {
+    public void testListAndRetrieve() throws URISyntaxException, DigitalObjectNotFoundException {
         System.out.println("list");
         URI pdURI = null;
         OaiOnbDigitalObjectManagerImpl instance = new OaiOnbDigitalObjectManagerImpl();
-        URI[] expResult = null;
         URI[] result = instance.list(pdURI);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
 
+        for (URI uri : result) {
+            String id = uri.toString();
+            System.out.println("id: " + id);
+            DigitalObject dio = instance.retrieve(new URI(id));
+            System.out.println("title: " + dio.getTitle());
+        }
+    }
 }
