@@ -494,6 +494,11 @@ public class PropertyDnDTreeBean{
 		public String getType() {
 			return null;
 		}
+		
+		public String getParentType(){
+			return null;
+		}
+		
 		public void setType(String s){
 			//
 		}

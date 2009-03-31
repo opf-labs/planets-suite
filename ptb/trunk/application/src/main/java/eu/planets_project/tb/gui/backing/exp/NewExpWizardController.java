@@ -1857,7 +1857,7 @@ public class NewExpWizardController {
 
         if( props.contains(targetBean.getIdentifier().toString()) ) {
             //remove from the model
-        	props.remove(targetBean.getIdentifier().toString());
+        	expBean.getExperiment().getExperimentExecutable().removeManualProperty(stageName, targetBean.getIdentifier().toString());
             //remove from the bean
         	exptype.getManualObservables().get(stageName);
         	MeasurementImpl removeMeasurement=null;
@@ -1869,6 +1869,10 @@ public class NewExpWizardController {
         	if(removeMeasurement!=null){
         		exptype.getManualObservables().get(stageName).remove(removeMeasurement);
         	}
+        	
+        	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+	    	testbedMan.updateExperiment(expBean.getExperiment());
+	    	
             log.info("Removed: "+targetBean.getIdentifier());
         } else {
             /*props.add(targetBean.getIdentifier().toString());
