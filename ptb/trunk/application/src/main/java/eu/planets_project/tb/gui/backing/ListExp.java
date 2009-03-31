@@ -396,6 +396,14 @@ public class ListExp extends SortableList {
           this.getExperimentsOfUser();
           this.getAllExperiments();
           
+          //send email to exp contact to inform them of deletion
+          PlanetsMailMessage mailer = new PlanetsMailMessage();
+          mailer.setSender("noreply@planets-project.eu");
+          mailer.setSubject("Testbed Experiment Deleted");
+          mailer.setBody("Experiment "+expBean.getEname()+" deleted.");
+          mailer.addRecipient(expBean.getEcontactemail());
+          mailer.send();
+
 	      // go back to 'my experiments' page
 	      return "expDeleted";
 	    }

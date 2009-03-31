@@ -42,30 +42,45 @@
       </rich:progressBar>
       </h:panelGroup>
     </a4j:outputPanel>
-</h:panelGroup>
-        
+    </h:panelGroup>
+    	
 <a4j:outputPanel id="runExperimentForm">
     <h:panelGroup rendered="#{not NewExp_Controller.experimentExecutable.executionCompleted}">
+    
                    <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (not NewExp_Controller.experimentExecutable.executionCompleted))}">
                         <p>Your experiment has been setup and approved successfully - you may now <b>run the experiment</b>: </p>
-                        
-                        <p>
-                        
-                        <a4j:form>
+                       <p>
+                       <!-- This doesn't work, input keeps defaulting back to 1.
                        <h:panelGrid columns="3">			           
 			           <rich:column>
 					   <h:outputLabel value="#{res['new_exp.expNumExecutions']}" for="numExecutions" ></h:outputLabel>
 					   </rich:column>
 					   <rich:column>
-					   		<rich:inputNumberSpinner id="numExecutions"  value="1" inputSize="5" maxValue="10" minValue="1" />&nbsp;&nbsp;
+					   	<rich:inputNumberSpinner id="numExecutions" maxValue="10" minValue="1" />&nbsp;&nbsp;
 					   	</rich:column>
 					   	<rich:column>	
 					   		<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipNumExecutions']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
 					   </rich:column>					   
 					   </h:panelGrid>	
-					   </a4j:form>	
-					   	
+					   
+					   <h:outputText value="#{res['new_exp.expNumExecutions']} " />
+						<h:selectOneMenu id="numExecutions">
+						  <f:selectItem
+						    itemValue="1" itemLabel="1"/>
+						  <f:selectItem 
+						    itemValue="2" itemLabel="2"/>
+						  <f:selectItem 
+						    itemValue="3" itemLabel="3"/>
+						  <f:selectItem 
+						    itemValue="4" itemLabel="4"/>
+						  <f:selectItem 
+						    itemValue="5" itemLabel="5"/>
+						</h:selectOneMenu> 
+					   
+					   <select id="numExecutions"><option value="1">1</option><option value="1">2</option><option value="1">3</option><option value="1">4</option><option value="1">5</option></select>
+					   -->
 					   </p>    
+					    
                 <h:commandButton id="executeExperimentButton" value="#{res['exp_stage5.button.run']}" 
                 action="#{NewExp_Controller.executeExperiment}" disabled="#{NewExp_Controller.experimentExecutable.executionRunning}">
                 </h:commandButton>                        
