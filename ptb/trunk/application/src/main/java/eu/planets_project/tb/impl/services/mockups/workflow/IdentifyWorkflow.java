@@ -21,6 +21,7 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
@@ -63,6 +64,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         return stages;
     }
 
+    private static HashMap<String,List<MeasurementImpl>> manualObservables;
     /** Statically define the observable properties. FIXME Should be built from the TechReg */
     private static HashMap<String,List<MeasurementImpl>> observables;
     static {
@@ -106,6 +108,10 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
 
         // The identification method employed by the service:
         observables.get(STAGE_IDENTIFY).add( MEASURE_IDENTIFY_METHOD );
+        
+        
+        manualObservables = new HashMap<String,List<MeasurementImpl>>();
+        manualObservables.put(STAGE_IDENTIFY, new Vector<MeasurementImpl>() );
 
         /*
         observables.put( IDENTIFY_SUCCESS, 
@@ -155,6 +161,13 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     public HashMap<String,List<MeasurementImpl>> getObservables() {
         return observables;
     }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getManualObservables()
+     */
+    public HashMap<String,List<MeasurementImpl>> getManualObservables() {
+    	return manualObservables;
+    }
 
     /* (non-Javadoc)
      * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#setParameters(java.util.HashMap)
@@ -165,6 +178,10 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         // Attempt to connect to the Identify service.
         identifierEndpoint = new URL( this.parameters.get(PARAM_SERVICE));
         identifier = new IdentifyWrapper( identifierEndpoint );
+    }
+    
+    public HashMap<String, String> getParameters(){
+    	return this.parameters;
     }
 
     /* (non-Javadoc)
@@ -275,4 +292,5 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
         }
         return 0;
     }
-    }
+
+}

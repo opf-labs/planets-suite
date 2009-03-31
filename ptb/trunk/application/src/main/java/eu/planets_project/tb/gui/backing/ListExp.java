@@ -251,6 +251,9 @@ public class ListExp extends SortableList {
 	      if( AdminManagerImpl.isExperimentDeprecated( selectedExperiment ) ) {
 	          return "viewExp";
 	      }
+	      
+	      //reinit the ontologyDnDBean
+	      Manager.initOntologDnDBean();
 	              
 	      // go to edit page
 	      return "editExp";

@@ -17,9 +17,14 @@ import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 public interface ExperimentWorkflow {
     
     /**
-     * @return A list of all of the properties that can be measured during each stage of this experiment workflow.
+     * @return A list of all of the properties that can be automatically measured during each stage of this experiment workflow.
      */
     public abstract HashMap<String,List<MeasurementImpl>> getObservables();
+    
+    /**
+     * @return A list of all of the properties that can be manually measured during each stage of this experiment workflow.
+     */
+    public abstract HashMap<String,List<MeasurementImpl>> getManualObservables();
     
     /**
      * @return A list of the stages involved in this experiment.
@@ -32,6 +37,8 @@ public interface ExperimentWorkflow {
      * @throws Exception Throws an exception if there are any problems with the parameters.  FIXME Is using an Exception sane?
      */
     public void setParameters( HashMap<String,String> parameters ) throws Exception;
+    
+    public HashMap<String, String> getParameters();
 
     /**
      * Executes the workflow.

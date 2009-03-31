@@ -1,38 +1,31 @@
 package eu.planets_project.tb.gui.backing;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Vector;
 
-import javax.faces.FacesException;
-import javax.faces.component.UIComponent;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
+import org.ajax4jsf.component.UIRepeat;
+import org.ajax4jsf.component.html.HtmlAjaxCommandButton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.tree.DefaultMutableTreeNode;
-import org.richfaces.component.UIDragSupport;
 import org.richfaces.component.UITreeNode;
 import org.richfaces.component.UITree;
+import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.component.html.HtmlInplaceSelect;
 import org.richfaces.component.html.HtmlTree;
 import org.richfaces.event.DropEvent;
 import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 import org.richfaces.model.TreeRowKey;
-
-import sun.util.logging.resources.logging;
 
 import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
@@ -224,7 +217,6 @@ public class PropertyDnDTreeBean{
     	return "";
     }
     
-    
 
     /**
      * List of all nodes which have been selected via drag and drop
@@ -315,7 +307,108 @@ public class PropertyDnDTreeBean{
 	
 	public void setSelectedViewItem(String value){
 		this.selectedview = value;
-	}       
+	}   
+	
+	/********************if experiment-mode****************************/
+	private UIRepeat repeater;
+	public void setRepeater(UIRepeat repeater) {
+        this.repeater = repeater;
+    }
+
+    public UIRepeat getRepeater() {
+        return repeater;
+    }
+	
+    private List<String> selStagePropList = new ArrayList<String>();
+    public List getSelStagePropList(){
+    	return selStagePropList;
+    }
+    
+    public int getSelStagePropListSize(){
+    	return selStagePropList.size();
+    }
+    
+    HtmlDataTable selPropTable = new HtmlDataTable();
+    /**
+     * @return the SelPropTable for dropped properties
+     */
+    public HtmlDataTable getSelPropTable() {
+        return this.selPropTable;
+    }
+
+    /**
+     * @param selPropTable to hold the dropped properties
+     */
+    public void setSelPropTable(HtmlDataTable selPropTable) {
+        this.selPropTable = selPropTable;
+    }
+   
+    HtmlInplaceSelect stageProp;
+	public HtmlInplaceSelect getStageProp() {
+		return stageProp;
+	}
+
+	public void setStageProp(HtmlInplaceSelect stageProp) {
+		this.stageProp = stageProp;
+	}
+	
+	//Structure: HashMap<PropertyID, HashMap<Stagename,sel true/false>>
+	HashMap<String,HashMap<String,String>> stageProps = new HashMap<String, HashMap<String,String>>();
+    
+    public void selStagePropChange(ActionEvent e){
+    	String selPropertyID = null, selStageName = null, selValue = null;
+    	FacesContext context = FacesContext.getCurrentInstance();
+    	Object o1 = context.getExternalContext().getRequestParameterMap().get("selPropID");
+        if(o1!=null)
+        	selPropertyID = (String)o1;
+        Object o2 = context.getExternalContext().getRequestParameterMap().get("selPropStageName");
+        if(o2!=null)
+        	selStageName = (String)o2;
+        
+        Object source =  e.getComponent();
+        if(source instanceof HtmlAjaxCommandButton ){
+        	HtmlAjaxCommandButton  sel = (HtmlAjaxCommandButton )source;
+        	selValue = (String)sel.getValue();
+        }
+        
+        if(selPropertyID==null||selStageName==null||selValue==null)
+        	return;
+        
+        //all required parameters received - now store the updates
+        HashMap<String,String> selection;
+        if(!stageProps.containsKey(selPropertyID)){
+        	selection = new HashMap<String,String>();
+        }
+        else{
+        	selection = stageProps.get(selPropertyID);
+        }
+        selection.put(selStageName, selValue);
+        stageProps.put(selPropertyID, selection);  
+    }
+    
+    /**
+     * contains the information which propertyID was selected for which stage
+     * @return
+     */
+    public Map<String,HashMap<String,String>> getStageSelectedState(){
+		return this.stageProps;
+	}
+    
+    /**
+     * Takes the selected properties and returns their data
+     * @return
+     */
+    public List<OntologyProperty> getSelectedOntologyProperties(){
+    	List<OntologyProperty> ret = new ArrayList<OntologyProperty>();
+    	List<TreeNode> nodes = this.getSelNodes();
+    	for(TreeNode node : nodes){
+    		ret.add((OntologyProperty)node.getData());
+    	}
+    	return ret;
+    }
+    
+	
+	/********************end experiment-mode***********************/
     
 
     private static class TreeViews{
@@ -433,4 +526,6 @@ public class PropertyDnDTreeBean{
 		}
     	
     }
+
+
 }

@@ -249,7 +249,7 @@ public class ExecutionRecordImpl implements Serializable {
     }
     
     /**
-     * @return The number of measurements stored under this record.
+     * @return The number of automatically extractable measurements stored under this record.
      */
     public int getNumberOfMeasurements() {
         if( this.getStages() == null ) return 0;
@@ -257,6 +257,20 @@ public class ExecutionRecordImpl implements Serializable {
         for( ExecutionStageRecordImpl exr : this.getStages()) {
             if( exr.getMeasurements() != null ) {
                 im += exr.getMeasurements().size();
+            }
+        }
+        return im;
+    }
+    
+    /**
+     * @return The number of manual measurements stored under this record.
+     */
+    public int getNumberOfManualMeasurements() {
+        if( this.getStages() == null ) return 0;
+        int im = 0;
+        for( ExecutionStageRecordImpl exr : this.getStages()) {
+            if( exr.getManualMeasurements() != null ) {
+                im += exr.getManualMeasurements().size();
             }
         }
         return im;

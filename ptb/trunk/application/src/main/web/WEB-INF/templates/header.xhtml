@@ -165,7 +165,7 @@
 			
 			<c:if test="${page == 'browse_ontology'}">
 				<li id="current">
-				<h:commandLink action="browse_ontology" rendered="#{UserBean.reader}">
+				<h:commandLink action="#{Manager_Backing.initOntologDnDBean}" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_ontology.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_ontology.pageTitle']}"/>
 				</h:commandLink>
@@ -173,7 +173,7 @@
 			</c:if>
 			<c:if test="${page != 'browse_ontology' and UserBean.reader == true}">
 				<li>
-				<h:commandLink action="browse_ontology" rendered="#{UserBean.reader}">
+				<h:commandLink action="#{Manager_Backing.initOntologDnDBean}" rendered="#{UserBean.reader}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_ontology.gif" class="toolbar"/>
 					<h:outputText value="#{res['browse_ontology.pageTitle']}"/>
 				</h:commandLink>

@@ -66,7 +66,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private static final String STAGE_MIGRATE = "Migrate";
     private static final String STAGE_POST_MIGRATE = "Characterise After Migration";
     
-    /** Statically define the observable properties. */
+    private static HashMap<String,List<MeasurementImpl>> manualObservables;
+    /** Statically define the automatically observable properties. */
     private static HashMap<String,List<MeasurementImpl>> observables;
     static {
         observables = new HashMap<String,List<MeasurementImpl>>();
@@ -82,6 +83,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         observables.put( MIGRATE_SERVICE_TIME, 
                 TecRegMockup.getObservable(TecRegMockup.PROP_SERVICE_TIME, STAGE_MIGRATE) );
          */
+        
+        manualObservables = new HashMap<String,List<MeasurementImpl>>();
+        manualObservables.put(STAGE_MIGRATE, new Vector<MeasurementImpl>() );
     }
 
     /* ------------------------------------------------------------- */
@@ -110,6 +114,13 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         stages.add( new ExperimentStageBean(STAGE_MIGRATE, "Migrate the digital object."));
         stages.add( new ExperimentStageBean(STAGE_POST_MIGRATE, "Characterise after migration."));
         return stages;
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getManualObservables()
+     */
+    public HashMap<String,List<MeasurementImpl>> getManualObservables() {
+    	return manualObservables;
     }
     
     /* (non-Javadoc)
@@ -203,6 +214,13 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         return cacheOutProps;
     }
     
+    /**
+     * Creates a list of MeasurementImpl for the requested format and Characterise service.
+     * Properties are requested from the service's .listProperties(puid) method. 
+     * @param format
+     * @param dp
+     * @return
+     */
     private List<MeasurementImpl> getMeasurementsForFormat( String format, Characterise dp ) {
         List<MeasurementImpl> lm = new Vector<MeasurementImpl>();
         
@@ -239,38 +257,6 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         return lm;
     }
     
-    /**
-     * Takes a OntologyProperty that's used 
-     * and converts it into the Testbed's Property model element: MeasurementImpl
-     * @param p eu.planets_project.services.datatypes.Property
-     * @return
-     */
-    private MeasurementImpl createMeasurementFromOntologyProperty(OntologyProperty p){
-    	 MeasurementImpl m = new MeasurementImpl();
-    	 if( p == null ) return m;
-    	 String propURI = p.getURI();
-    	 // Invent a uri if required - shouldn't be the case:
-         if( propURI == null ) {
-        	 propURI = TecRegMockup.URIOntologyPropertyRoot + p.getName();
-         }
-         URI pURI;
-         try {
-			pURI = new URI(propURI);
-		} catch (URISyntaxException e) {
-			log.debug(e);
-			return m;
-		} 
-		// Copy in:
-        m.setName(p.getName());
-        m.setIdentifier(pURI);
-        m.setDescription(p.getComment());
-        //FIXME: when ontology model contains service properties; currently XCDLOntologyProperty only contains digital object properties
-        m.setType(MeasurementImpl.TYPE_DIGITALOBJECT);
-        m.setUnit(p.getUnit());
-        m.setValue(null);
-        
-        return m;
-    }
     
     /**
      * Takes a Property that's used in Planets level-one service call results
@@ -306,6 +292,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         
         return m;
     }
+    
     
     private List<URI> getPronomURIAliases(URI typeURI) {
         Set<URI> turis = new HashSet<URI>();
@@ -373,6 +360,10 @@ public class MigrateWorkflow implements ExperimentWorkflow {
                 this.getToFormat() == null || "".equals(this.getToFormat()) ) {
             throw new Exception("You must specify a full pathway!");
         }
+    }
+    
+    public HashMap<String, String> getParameters(){
+    	return this.parameters;
     }
     
     private boolean preIsCharacterise() {

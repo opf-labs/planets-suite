@@ -1,7 +1,6 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -11,6 +10,7 @@ import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
+import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
@@ -21,6 +21,7 @@ import eu.planets_project.tb.gui.backing.BenchmarkBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.Manager;
+import eu.planets_project.tb.gui.backing.PropertyDnDTreeBean;
 import eu.planets_project.tb.gui.backing.UploadManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -39,6 +40,8 @@ import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
+import eu.planets_project.tb.impl.model.ontology.OntologyPropertyImpl;
+import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.persistency.ExecutionRecordPersistency;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
@@ -74,6 +77,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import org.richfaces.component.html.HtmlDataTable;
+import org.richfaces.model.TreeNode;
 
 public class NewExpWizardController {
     
@@ -1680,66 +1684,113 @@ public class NewExpWizardController {
 	/* The observables list */
 	
 	HtmlDataTable obsTable = new HtmlDataTable();
+	HtmlDataTable obsManualTable = new HtmlDataTable();
 	String obsEType = null;
     List<MeasurementBean> obs = null;
+    List<MeasurementBean> obsManual = null;
 	
     /**
-     * @return the obsTable
+     * @return the obsTable for automatically measured properties
      */
     public HtmlDataTable getObsTable() {
         return obsTable;
     }
 
     /**
-     * @param obsTable the obsTable to set
+     * @param obsTable the obsTable to set for automatically measured properties
      */
     public void setObsTable(HtmlDataTable obsTable) {
         this.obsTable = obsTable;
     }
+    
+    /**
+     * @return the obsTable for manually measured properties
+     */
+    public HtmlDataTable getManualObsTable() {
+        return this.obsManualTable;
+    }
 
     /**
-     * @return The list of measurable properties, depending on the experiment type.
+     * @param obsTable the obsTable to set for manually measured properties
+     */
+    public void setManualObsTable(HtmlDataTable manualobsTable) {
+        this.obsManualTable = manualobsTable;
+    }
+
+    /**
+     * @return The list of automatically measurable properties, depending on the experiment type.
      */
     public List<MeasurementBean> getObservables() {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        
         // Use the stage to narrow the list:
         String selectedStage = expBean.getSelectedStage().getName();
-        log.info("Got expBean, selected Stage = "+selectedStage);
-        
         this.chooseObservablesForEtype(expBean.getEtype(), expBean.getExperiment(), selectedStage );
-        if( obs == null ) {
-            return new ArrayList<MeasurementBean>();
-        }
         return obs;
     }
     
     /**
-     * 
+     * @return The list of manually measurable properties, depending on the experiment type.
+     */
+    public List<MeasurementBean> getManualObservables() {
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        // Use the stage to narrow the list:
+        String selectedStage = expBean.getSelectedStage().getName();
+        this.chooseManualObservablesForEtype(expBean.getEtype(), expBean.getExperiment(), selectedStage );
+        return obsManual;
+    }
+    
+    private void chooseManualObservablesForEtype(String etype, Experiment exp, String stage){
+    	this.obsManual = this.getObservablesForEtype(etype, exp, stage, true);
+    }
+    
+    private void chooseObservablesForEtype(String etype, Experiment exp, String stage){
+    	this.obs = this.getObservablesForEtype(etype, exp, stage, false);
+    }
+    
+    /**
+     * Returns a list of MeasurementBeans for a given experimentType and experiment instance and experiment stage
      * @param etype
      * @param exp
+     * @param stage
+     * @param manualObs flag if manual or automatically measurable properties are retrieved
+     * @return
      */
-    private void chooseObservablesForEtype(String etype, Experiment exp, String stage) {
+    private List<MeasurementBean> getObservablesForEtype(String etype, Experiment exp, String stage, boolean manualObs) {
 
-        ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
-        if( exptype != null ) {
-            obs = this.createMeasurementBeans(exptype.getObservables(), stage);
-        } else {
-            // For unrecognised experiment types, set to NULL:
-            obs = null;
+    	List<MeasurementBean> ret = new ArrayList<MeasurementBean>();
+    	ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
+    	if(exptype != null){
+    		if(manualObs){
+        		ret = this.createMeasurementBeans(exptype.getManualObservables(), stage);
+        	}
+        	else{
+        		ret = this.createMeasurementBeans(exptype.getObservables(), stage);
+        	}
+    	}
+    	else {
+            // For unrecognised experiment types return empty list:
+            return ret;
         }
 
         // Determine 'selected' state for this observable:
-        Vector<String> props = exp.getExperimentExecutable().getProperties();
-        for( MeasurementBean m : obs ) {
+    	Vector<String> props =null;
+        if(manualObs){
+        	props = exp.getExperimentExecutable().getManualProperties(stage);
+    	}
+    	else{
+    		props = exp.getExperimentExecutable().getProperties();
+    	}
+        
+        for( MeasurementBean m : ret ) {
             if( props != null && m.getIdentifier() != null && props.contains(m.getIdentifier().toString()) ) {
                 m.setSelected(true);
             } else {
                 // FIXME This should remember properly, and set to false if necessary.
-//                m.setSelected(false);
+            	//m.setSelected(false);
                 m.setSelected(true);
             }
         }
+        return ret;
     }
     
     /**
@@ -1781,6 +1832,121 @@ public class NewExpWizardController {
             log.info("Added: "+targetBean.getIdentifier());
         }
         
+    }
+    
+    /**
+     * 
+     * @param valueChangedEvent
+     */
+    public void handleManualObsSelectChangeListener(ValueChangeEvent valueChangedEvent) {
+        log.info("Handling event in handleManualObsSelectChangeListener.");
+        
+        MeasurementImpl targetBean = (MeasurementImpl) this.getManualObsTable().getRowData();
+        
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		Vector<String> props = expBean.getExperiment().getExperimentExecutable().getManualProperties(targetBean.getStage());
+
+        if( props.contains(targetBean.getIdentifier()) ) {
+            props.remove(targetBean.getIdentifier().toString());
+            log.info("Removed: "+targetBean.getIdentifier());
+        } else {
+            props.add(targetBean.getIdentifier().toString());
+            log.info("Added: "+targetBean.getIdentifier());
+        }
+        
+    }
+    
+    public void addOntoPropsToExp(){
+    	
+    	log.info("Adding properties from the ontology to the experiment");	
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	String etype = expBean.getEtype();
+    	ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
+    	
+    	if( etype.equals( AdminManagerImpl.IDENTIFY ) ) {
+            exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeIdentify");
+        } else if( etype.equals( AdminManagerImpl.MIGRATE ) ) {
+            exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeMigrate");
+        } else {
+            // For unrecognised experiment types, set to NULL:
+            log.error("unrecognised experiment type");
+        	return;
+        }
+    	
+    	//get the information from the ontology tree bean
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+		PropertyDnDTreeBean treeBean = (PropertyDnDTreeBean)JSFUtil.getManagedObject("simpleTreeDndBean");
+		if(treeBean==null){
+			// ontology tree bean has not been set
+	        log.error("ontology tree bean not set");
+	    	return;
+		}
+		
+		//the bean's manual observables
+		HashMap<String, List<MeasurementImpl>> props = exptype.getManualObservables();
+    	
+		//now iterate over all added properties
+		Map<String,HashMap<String,String>> stagePropsSel = treeBean.getStageSelectedState();
+		List<OntologyProperty> selProps = treeBean.getSelectedOntologyProperties();
+		
+		try {	
+			for(ExperimentStageBean stageb : exptype.getStageBeans()){
+				for(OntologyProperty prop : selProps){
+					String pURI = prop.getURI();
+					if(stagePropsSel.get(pURI) !=null){
+						String val = stagePropsSel.get(pURI).get(stageb.getName());
+						if(val!=null){
+						
+							//create a MeasurementImpl from the OntologyProperty
+							MeasurementImpl measurement = OntoPropertyUtil.createMeasurementFromOntologyProperty(prop);
+							
+							//check if this property was already added
+							boolean bContained = false;
+							MeasurementImpl measurementContained=null;
+							List<MeasurementImpl> lExistingMeasurements = props.get(stageb.getName());
+							for(MeasurementImpl m : lExistingMeasurements){
+								if(m.getIdentifier().equals(measurement.getIdentifier())){
+									bContained = true;
+									measurementContained = m;
+								}
+							}
+							
+							//add new
+							if(val.equals("true")){
+								//add the Measurement to the experimentType's backing bean
+					    		if(! bContained) {
+					    			lExistingMeasurements.add(measurement);
+					                log.info("Added manual property: "+measurement.getIdentifier());
+					            }
+					    		//update the model's information
+						    	expBean.getExperiment().getExperimentExecutable().addManualProperty(stageb.getName(), measurement.getIdentifier().toString());
+							}
+							
+							//remove existing
+							if(val.equals("false")){
+								//remove the Measurement from the experimentType's backing bean
+					    		if(bContained) {
+					    			lExistingMeasurements.remove(measurementContained);
+					                log.info("Removed manual property: "+measurement.getIdentifier());
+					            }
+					    		
+					    		//update the model's information
+						    	expBean.getExperiment().getExperimentExecutable().removeManualProperty(stageb.getName(), measurement.getIdentifier().toString());
+							}
+						}
+					}
+					
+				}
+			}
+			
+			//store the updated experiment
+	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+	    	testbedMan.updateExperiment(expBean.getExperiment());
+		    	
+		} catch (Exception e) {
+			log.debug("error building Measurement from OntologyProperty",e);
+		}
+
     }
 
 }

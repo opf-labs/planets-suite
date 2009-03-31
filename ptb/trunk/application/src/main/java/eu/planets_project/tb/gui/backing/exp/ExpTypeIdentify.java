@@ -63,6 +63,31 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
     public HashMap<String,List<MeasurementImpl>> getObservables() {
         return getWorkflow(AdminManagerImpl.IDENTIFY).getObservables();
     }
+    
+    HashMap<String,List<MeasurementImpl>> manualObsCache;
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getManualObservables()
+     */
+    @Override
+    public HashMap<String,List<MeasurementImpl>> getManualObservables() {
+    	if(manualObsCache==null){
+    		
+        	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        	
+        	//query for properties that have been added from the Ontology
+        	HashMap<String,Vector<String>> ontoPropIDs = new HashMap<String, Vector<String>>();
+        	for(ExperimentStageBean stage : expBean.getStages()){
+        		ontoPropIDs.put(stage.getName(),expBean.getExperiment().getExperimentExecutable().getManualProperties(stage.getName()));
+        	}
+        	
+        	//this is the static list of manual properties - normally empty
+        	HashMap<String,List<MeasurementImpl>> staticWFobs = getWorkflow(AdminManagerImpl.IDENTIFY).getManualObservables();
+
+        	manualObsCache = mergeManualObservables(staticWFobs, ontoPropIDs);
+    	}
+    	return manualObsCache;
+    }
+    
 
     /**
      * A Bean to hold the results on each digital object.

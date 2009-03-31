@@ -29,12 +29,14 @@ public interface OntologyProperty {
 
 
 	    /**
-	     * @return a human readable label for the type
+	     * @return a human readable label for the parent-type
+	     * e.g. PDF1.3_Properties
 	     */
-	    public String getType();
+	    public String getParentType();
 	    
 	    /**
 	     * @return a human readable label for the datatype
+	     * e.g. string
 	     */
 	    public String getDataType();
 	    
@@ -42,6 +44,14 @@ public interface OntologyProperty {
 	     * @return a human readable label for the comment
 	     */
 	    public String getComment();
+	    
+	    
+	    /**
+	     * Which type of layer does this property address
+	     * does it measure information on e.g. a digital object, the service layer, etc.
+	     * @return 
+	     */
+	    public String getType();
 
 
 	    /**

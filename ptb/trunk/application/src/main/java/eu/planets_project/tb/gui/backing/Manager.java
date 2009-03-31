@@ -30,7 +30,11 @@ public class Manager {
 		// Put Bean into Session; accessible later as #{ExperimentBean}
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
-	    return "success";
+	    
+		//every new experiment requires a new ontologyDnDBean
+		this.initOntologDnDBean();
+		
+		return "success";
     }
     
     
@@ -110,6 +114,16 @@ public class Manager {
 		//BenchmarkBean contains the BMGoal+EvaluationSerTemplate to configure
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		ctx.getExternalContext().getSessionMap().put("AutoEvalSerUserConfigBean", evalConfBean);
+    }
+    
+    /**
+     * Used to (re)init the session-scoped managed object simpleTreeDnDBean for the ontology browser
+     * @return
+     */
+    public static String initOntologDnDBean(){
+    	FacesContext ctx = FacesContext.getCurrentInstance();
+		ctx.getExternalContext().getSessionMap().put("simpleTreeDndBean", new PropertyDnDTreeBean());
+		return "browse_ontology";
     }
     
     /* --- Test user email sending... */

@@ -70,6 +70,8 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	
     /** The list of automatically measurable properties that should be measured during the experiment. */
     private Vector<String> properties = new Vector<String>();
+    /** The list of manually measurable property IDs per stage */
+    private HashMap<String,Vector<String>> manualProperties = new HashMap<String, Vector<String>>();
 
     /** The log of executed experiment results */
 //    @OneToMany(mappedBy="experimentExecutable")
@@ -130,6 +132,47 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
      */
     public void setProperties(Vector<String> props) {
         properties = props;
+    }
+    
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#getManualProperties()
+     */
+    public Vector<String> getManualProperties(String stage) {
+        if(this.manualProperties.containsKey(stage)){
+        	return this.manualProperties.get(stage);
+        }
+        return new Vector<String>();
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#setManualProperties(java.lang.String, java.util.Vector)
+     */
+    public void setManualProperties(String stage, Vector<String> propURIs) {
+        this.manualProperties.put(stage, propURIs);
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#addManualProperty(java.lang.String, java.lang.String)
+     */
+    public void addManualProperty(String stage, String propURI){
+    	if(this.manualProperties.get(stage)!=null){
+    		this.manualProperties.get(stage).add(propURI);
+    	}
+    	else{
+    		this.manualProperties.put(stage, new Vector<String>());
+    		this.manualProperties.get(stage).add(propURI);
+    	}
+    }
+    
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ExperimentExecutable#removeManualProperty(java.lang.String, java.lang.String)
+     */
+    public void removeManualProperty(String stage, String propURI){
+    	if(this.manualProperties.get(stage)!=null){
+    		this.manualProperties.get(stage).remove(propURI);
+    	}
     }
     
     /**

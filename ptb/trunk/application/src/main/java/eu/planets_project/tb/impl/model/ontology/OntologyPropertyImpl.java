@@ -47,6 +47,9 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     private Log log = LogFactory.getLog(OntologyPropertyImpl.class);
     //the owl model element containing the nodes property links
     private OWLIndividual individual;
+    //FIXME This information is currently hardcoded and must come from the Testbed ontology extension
+    private static final String TYPE_DIGITAL_OBJECT = "Digital Object";
+    private static final String TYPE_SERVICE = "Service";
     
     
     /**
@@ -89,9 +92,9 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
 
 
     /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getType()
+     * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getParentType()
      */
-    public String getType() {
+    public String getParentType() {
     	//get a certain DatatypeProperty
     	RDFProperty propertyType = individual.getOWLModel()
     	.getRDFProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
@@ -243,6 +246,14 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
 	public Object getRDFProperty(String rdfString) {
 		 RDFProperty rdfprop = individual.getOWLModel().getRDFProperty(rdfString);
 		 return rdfprop;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getType()
+	 */
+	public String getType() {
+		//FIXME currently all properties reflect digital object specific behavior -> TB ontology extension
+		return this.TYPE_DIGITAL_OBJECT;
 	}
 
 }

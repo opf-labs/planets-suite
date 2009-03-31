@@ -173,9 +173,8 @@
    <redirect/>
   </navigation-case>
   <navigation-case>
-   <from-outcome>browse_ontology</from-outcome>
+   <from-action>#{Manager_Backing.initOntologDnDBean}</from-action>
    <to-view-id>/reader/browse_ontology.xhtml</to-view-id>
-   <redirect/>
   </navigation-case>
   <navigation-case>
    <from-outcome>exp_scheduler</from-outcome>

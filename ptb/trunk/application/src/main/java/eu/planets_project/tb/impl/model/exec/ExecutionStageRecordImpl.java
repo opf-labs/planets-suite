@@ -61,6 +61,7 @@ public class ExecutionStageRecordImpl implements Serializable {
 //    @OneToMany
     private Vector<MeasurementRecordImpl> measurements = new Vector<MeasurementRecordImpl>();
 //    private List<MeasurementRecordImpl> measurements;
+    private Vector<MeasurementRecordImpl> manualMeasurements = new Vector<MeasurementRecordImpl>();
     
     /**
      * @param stagePreMigrate
@@ -129,25 +130,43 @@ public class ExecutionStageRecordImpl implements Serializable {
     }
 
     /**
-     * @return the measurements
+     * @return the service backed measurements
      */
     public List<MeasurementRecordImpl> getMeasurements() {
         return measurements;
     }
+    
 
     /**
-     * Gets the Measurements and patches in the property data, if available.
-     * @return Looks up the measurments, patching in the definitions of the properties.
+     * @return the service backed measurements
      */
-    public List<MeasurementImpl> getMeasuredObservables() {
-        
-        // Get the actual measurements:
+    public List<MeasurementRecordImpl> getManualMeasurements() {
+        return this.manualMeasurements;
+    }
+    
+    /**
+     * A helper either fetching the service backed measured observables or the manually measured ones
+     * @param measuredObsManually true: manually ones false: automatically measured ones
+     * @return
+     */
+    public List<MeasurementImpl> getMeasuredObservablesHelper(boolean measuredObsManually) {
+    	
+    	// Get the actual measurements:
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        List<MeasurementRecordImpl> mrl = this.getMeasurements();
+        List<MeasurementRecordImpl> mrl;
+        HashMap<String, List<MeasurementImpl>> observables;
         
         // Look up the observables and their definitions:
         ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(expBean.getEtype());
-        HashMap<String, List<MeasurementImpl>> observables = exptype.getObservables();
+      
+        //decide which measurements to fetch
+        if( measuredObsManually){
+        	mrl = this.getManualMeasurements();
+        	observables = exptype.getManualObservables();
+        }else{
+        	mrl = this.getMeasurements();
+        	observables = exptype.getObservables();
+        }
         
         // Patch the descriptions in with the results:
         List<MeasurementImpl> mobs = new ArrayList<MeasurementImpl>();
@@ -187,12 +206,35 @@ public class ExecutionStageRecordImpl implements Serializable {
 
         return mobs;
     }
+    
+    /**
+     * Gets the manual Measurements and patches in the property data, if available.
+     * @return Looks up the measurments, patching in the definitions of the properties.
+     */
+    public List<MeasurementImpl> getMeasuredManualObservables() {
+    	return getMeasuredObservablesHelper(true);
+    }
 
     /**
-     * @param measurements the measurements to set
+     * Gets the service backed Measurements and patches in the property data, if available.
+     * @return Looks up the measurments, patching in the definitions of the properties.
+     */
+    public List<MeasurementImpl> getMeasuredObservables() {
+    	return getMeasuredObservablesHelper(false);
+    }
+
+    /**
+     * @param measurements the service backed measurements to set
      */
     public void setMeasurements(List<MeasurementRecordImpl> measurements) {
         this.measurements = new Vector<MeasurementRecordImpl>(measurements);
+    }
+    
+    /**
+     * @param measurements the manual measurements to set
+     */
+    public void setManualMeasurements(List<MeasurementRecordImpl> measurements) {
+        this.manualMeasurements = new Vector<MeasurementRecordImpl>(measurements);
     }
 
     

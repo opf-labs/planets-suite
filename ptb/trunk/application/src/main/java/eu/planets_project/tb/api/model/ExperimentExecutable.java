@@ -47,6 +47,15 @@ public interface ExperimentExecutable extends Executable{
      */
     public Vector<String> getProperties();
     public void setProperties(Vector<String> props);
+    
+    /**
+     * Manually measurable properties
+     */
+    public Vector<String> getManualProperties(String stage);
+    public void setManualProperties(String stage, Vector<String> propURIs);
+    public void addManualProperty(String stage, String propURI);
+    public void removeManualProperty(String stage, String propURI);
+    
 	/**
 	 * Takes a local file ref and hands over its exposed http reference
 	 * @param localFileRef
