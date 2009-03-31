@@ -8,6 +8,7 @@ import java.net.URL;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
+import javax.activation.FileTypeMap;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlMimeType;
@@ -95,9 +96,26 @@ public final class Content implements Serializable, DigitalObject.Content {
      * @return A content instance with the specified value
      */
     public static Content byValue(final File value) {
-        byte[] bytes = FileUtils.readFileIntoByteArray(value);
-        return new Content( bytes );
+        // byte[] bytes = FileUtils.readFileIntoByteArray(value);
+        return new Content( value );
     }
+    
+    /**
+     * Create content by value.
+     * <p/>
+     * Note that content created by value cannot be used with Java's object
+     * serialization.
+     * 
+     * @param inputStream The InputStream containing the value for the content. The InputStream is written to a byte[]
+     * @return A content instance with the specified value
+     */
+    public static Content byValue(final InputStream inputStream) {
+    	// create a File from the InputStream and call the Content.byValue(File) 
+    	// to avoid having the whole (maybe large) file in memory
+    	File tmpFile = FileUtils.writeInputStreamToFile(inputStream, FileUtils.getSystemTempFolder(), "tempContent.dat");
+        return new Content( tmpFile );
+    }
+    
 
     /**
      * @param value The content value
@@ -115,6 +133,7 @@ public final class Content implements Serializable, DigitalObject.Content {
      */
     private Content(final File value) {
        FileDataSource ds = new FileDataSource(value);
+       ds.setFileTypeMap(FileTypeMap.getDefaultFileTypeMap());
        DataHandler dh = new DataHandler(ds);
        this.length = value.length();
        this.dataHandler = dh;
