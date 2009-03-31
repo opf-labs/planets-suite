@@ -72,6 +72,7 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -1824,7 +1825,7 @@ public class NewExpWizardController {
         
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         Vector<String> props = expBean.getExperiment().getExperimentExecutable().getProperties();
-        if( props.contains(targetBean.getIdentifier()) ) {
+        if( props.contains(targetBean.getIdentifier().toString()) ) {
             props.remove(targetBean.getIdentifier().toString());
             log.info("Removed: "+targetBean.getIdentifier());
         } else {
@@ -1841,21 +1842,45 @@ public class NewExpWizardController {
     public void handleManualObsSelectChangeListener(ValueChangeEvent valueChangedEvent) {
         log.info("Handling event in handleManualObsSelectChangeListener.");
         
+        //the measurement we're operating upon
         MeasurementImpl targetBean = (MeasurementImpl) this.getManualObsTable().getRowData();
         
+        //the experiment bean
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		String etype = expBean.getEtype();
+		//the experiment type backing bean
+    	ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
+    	//the model element
 		Vector<String> props = expBean.getExperiment().getExperimentExecutable().getManualProperties(targetBean.getStage());
+		// Use the stage to narrow the list:
+        String stageName = expBean.getSelectedStage().getName();
 
-        if( props.contains(targetBean.getIdentifier()) ) {
-            props.remove(targetBean.getIdentifier().toString());
+        if( props.contains(targetBean.getIdentifier().toString()) ) {
+            //remove from the model
+        	props.remove(targetBean.getIdentifier().toString());
+            //remove from the bean
+        	exptype.getManualObservables().get(stageName);
+        	MeasurementImpl removeMeasurement=null;
+        	for(MeasurementImpl m : exptype.getManualObservables().get(stageName)){
+        		if(m.getIdentifier().toString().equals(targetBean.getIdentifier().toString())){
+        			removeMeasurement = m;		
+        		}
+        	}
+        	if(removeMeasurement!=null){
+        		exptype.getManualObservables().get(stageName).remove(removeMeasurement);
+        	}
             log.info("Removed: "+targetBean.getIdentifier());
         } else {
-            props.add(targetBean.getIdentifier().toString());
-            log.info("Added: "+targetBean.getIdentifier());
+            /*props.add(targetBean.getIdentifier().toString());
+            log.info("Added: "+targetBean.getIdentifier());*/
         }
         
     }
     
+    /**
+     * Takes the properties from the OntologBrowser component and adds them
+     * as Measurements on the current experiment.
+     */
     public void addOntoPropsToExp(){
     	
     	log.info("Adding properties from the ontology to the experiment");	

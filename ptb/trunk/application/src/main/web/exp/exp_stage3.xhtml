@@ -162,7 +162,10 @@
 	                <f:facet name="header">
 	                    <h:outputText value="Measure"/>
 	                </f:facet>
-	                <h:selectBooleanCheckbox value="#{prop.selected}"  disabled="#{ExperimentBean.approved || true}" valueChangeListener="#{NewExp_Controller.handleManualObsSelectChangeListener}"/>
+	                <h:selectBooleanCheckbox value="#{prop.selected}"  disabled="#{ExperimentBean.approved}" 
+	                valueChangeListener="#{NewExp_Controller.handleManualObsSelectChangeListener}">
+	                	<a4j:support event="onclick" reRender="manualMeasurmentTable" eventsQueue="foo" rendered="#{!ExperimentBean.approved}"/>
+	                </h:selectBooleanCheckbox>
 	            </rich:column>
 	            
 	            <rich:column sortBy="#{prop.type}">
