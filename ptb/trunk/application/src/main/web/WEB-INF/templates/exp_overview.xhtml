@@ -5,9 +5,13 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:t="http://myfaces.apache.org/tomahawk">
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
 <body>
-  <ui:composition rendered="#{ExperimentBean != null}">
+  <ui:composition rendered="#{ExperimentBean != null}">  
+  <script type="text/javascript"
+			src="${facesContext.externalContext.requestContextPath}/js/overlib/overlib.js"></script>
 
                 <!--  Stage 1  -->
 <h2 class="main">#{res['exp_stage1.pageTitle']}</h2>
@@ -120,6 +124,12 @@
                                     <a href="#{filemap['uri']}">#{filemap['name']}</a>
                                 </t:dataList>
                             </h:panelGroup>
+                         <h:panelGroup render="#{ExperimentBean.etype == 'identify'}">						        
+							    <ui:include src="/WEB-INF/templates/exp-types/stage2_identify.xhtml">
+							       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+							    </ui:include>							        
+						 </h:panelGroup>
+						 <!-- If I add the c:if test for a migrate experiment here, we get a duplicate id for the selectOneMenu -->
                 </fieldset>
             </h:form>
 </h:panelGroup>
@@ -161,6 +171,7 @@
             </t:dataTable>
                         </fieldset>
                     </h:form>
+            
 </h:panelGroup>
             <!--  Stage 4  -->
 <h:panelGroup rendered="#{ExperimentBean.currentStage ge 4}">
@@ -173,6 +184,7 @@
  <div class="clear"></div>
 </h:panelGroup>
             <!--  Stage 5  -->
+<a4j:form>
 <h:panelGroup rendered="#{ExperimentBean.currentStage ge 5}">
         <h2 class="main">#{res['exp_stage5.pageTitle']}</h2>
         <fieldset>
@@ -190,7 +202,167 @@
                 </p>
             </div>
         </fieldset>
-</h:panelGroup>            
+        
+        <a4j:outputPanel id="executedResults" rendered="#{not NewExp_Controller.experimentExecutable.executionRunning}">
+
+    <rich:tabPanel switchType="ajax" width="100%" selectedTab="OverallResultTab" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
+        <rich:tab label="Overall Results" name="OverallResultTab">
+     
+
+        <c:if test="#{ExperimentBean.etype == 'identify'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_identify_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
+          
+        </c:if>
+                
+        <c:if test="#{ExperimentBean.etype == 'migrate'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_migrate_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
+          
+        
+        </c:if>
+     
+        <p>
+        The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.
+        </p>
+        
+        </rich:tab>
+
+        
+        <rich:tab label="Service Statistics">
+            <p>
+            Runtime statistics here. e.g. execution time of each service/stage, versus (exec, type, size).
+            </p>
+            <p>
+            <img src="#{ExperimentBean.servicePlotImageUrl}" />
+            </p>
+        </rich:tab>
+        
+        <rich:tab label="Raw Execution Log" name="ExeLogTab">
+            
+<h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
+            <rich:panel styleClass="expExecLogPanel">
+                
+     <rich:dataTable value="#{NewExp_Controller.experimentExecutable.batchExecutionRecords}" 
+         var="batch" styleClass="tbTable" reRender="prop_ds" rows="10">
+      <rich:column sortBy="#{batch.endDate}" sortOrder="DESCENDING">
+        <f:facet name="header">Execution Date</f:facet>
+        <h:commandLink>
+          	<f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
+        	<h:outputText value="#{batch.endDate.time}" styleClass="#{ ( ExperimentBean.selectedBatchExecutionRecord.endDate.time eq batch.endDate.time ) ? 'isSelected' : 'isNotSelected'}" >
+          		<f:convertDateTime type="both" dateStyle="short"/>
+        	</h:outputText>
+        </h:commandLink>
+      </rich:column>
+      <rich:column>
+        <f:facet name="header">Execution Success</f:facet>
+        <h:commandLink>
+          <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
+          <h:outputText value="#{batch.batchRunSucceeded}"/>
+        </h:commandLink>
+      </rich:column>
+      
+      <f:facet name="footer">
+         <rich:datascroller id="exelog_ds" renderIfSinglePage="false"></rich:datascroller>
+      </f:facet>
+      
+    </rich:dataTable>
+    
+    </rich:panel>
+    <rich:panel styleClass="expMeasurementPanel">
+                <f:facet name="header">
+                Execution Results In Detail
+                </f:facet>
+                
+         <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord != null}">
+         
+         <a4j:repeat value="#{ExperimentBean.selectedBatchExecutionRecord.runs}" var="run">
+         <rich:panel>
+         <f:facet name="header">
+           <h:outputText value="#{run.digitalObjectSource}"/>
+         </f:facet>
+
+         <a4j:repeat value="#{run.stages}" var="stage">
+        
+          <rich:dataTable value="#{stage.measuredObservables}" var="m" styleClass="tbTable">
+                <f:facet name="header">#{stage.stage}</f:facet>
+            <rich:column>
+              <f:facet name="header">Measurement</f:facet>
+              
+                <!--  Full property definitions is available:  -->
+                <h:panelGroup rendered="#{m.name != null}">
+                  <t:graphicImage value="/graphics/help.gif" style="float: right; padding: 1px 5px;"/>
+                  <h:outputText value="#{m.name}"/>
+                </h:panelGroup>
+                <rich:toolTip showDelay="500" rendered="#{m.name != null}">
+                  <h:outputText value="#{m.description}"/>
+                  <h:panelGroup rendered="#{m.identifier != null}">
+                    <br/><i><h:outputText value="(URI: #{m.identifier})"/></i>
+                  </h:panelGroup>
+                </rich:toolTip>
+                
+                <!-- Otherwise, just show the property ID: -->
+                <h:panelGroup rendered="#{m.name == null}">
+                  <i><h:outputText value="#{m.identifier}"/></i>
+                </h:panelGroup>
+                
+            </rich:column>
+            <rich:column>
+              <f:facet name="header">Value</f:facet>
+              <h:outputText value="#{m.value}"/><h:outputText value=" [#{m.unit}]" rendered="#{m.unitDefined}"/>
+            </rich:column>
+          </rich:dataTable>
+          
+         </a4j:repeat>
+         
+         </rich:panel>
+         </a4j:repeat>
+         
+         </h:panelGroup>
+         
+         <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord == null}">
+         <p>Please select a batch execution time (on the left) to see the batch results.</p>
+         </h:panelGroup>
+                
+    </rich:panel>
+    
+    </h:panelGrid>
+	
+    <p>         
+        <h:outputLink value="/testbed/reader/results.jsp">
+          <f:param name="eid" value="#{ExperimentBean.experiment.entityID}"/>
+          <h:outputText value="Click here to download data from all runs, in CVS format..."/>
+        </h:outputLink>
+    </p>
+
+        </rich:tab>
+        
+        <rich:tab label="Comparisons">
+        <p>
+        TBC
+        </p>
+        <p>
+            Difference displays, using default comparator configuration, depending on experiment type.
+        </p>
+        <p>
+          Comparisons of the measured digital object properties. Cross-comparisons, etc.
+        </p>
+        
+        </rich:tab>
+        
+        <rich:tab label="Server Specification">
+       	 <ui:include src="/WEB-INF/templates/server_spec.xhtml" />
+        </rich:tab>
+        
+     </rich:tabPanel>
+
+</a4j:outputPanel>
+</h:panelGroup>   
+</a4j:form>         
             <!--  Stage 6  -->            
 <h:panelGroup rendered="#{ExperimentBean.currentStage ge 6}">
 <h2 class="main">#{res['exp_stage6.pageTitle']}</h2>
