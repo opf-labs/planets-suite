@@ -148,7 +148,7 @@
 	                
 	                <c:if test="#{(! empty Standalone) and (Standalone=='false')}">
 	                	<br/>
-	                	<h:commandButton value="add to experiment"
+	                	<a4j:commandButton value="add to experiment"
                  			action="#{NewExp_Controller.addOntoPropsToExp}" rendered="#{(not empty expApproved) ? (!expApproved) : true}"/>
                  	</c:if>
                  		

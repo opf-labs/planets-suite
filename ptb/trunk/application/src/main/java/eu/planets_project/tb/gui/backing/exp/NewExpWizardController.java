@@ -1885,7 +1885,7 @@ public class NewExpWizardController {
      * Takes the properties from the OntologBrowser component and adds them
      * as Measurements on the current experiment.
      */
-    public void addOntoPropsToExp(){
+    public String addOntoPropsToExp(){
     	
     	log.info("Adding properties from the ontology to the experiment");	
     	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -1899,7 +1899,7 @@ public class NewExpWizardController {
         } else {
             // For unrecognised experiment types, set to NULL:
             log.error("unrecognised experiment type");
-        	return;
+        	return "goToStage3";
         }
     	
     	//get the information from the ontology tree bean
@@ -1908,7 +1908,7 @@ public class NewExpWizardController {
 		if(treeBean==null){
 			// ontology tree bean has not been set
 	        log.error("ontology tree bean not set");
-	    	return;
+	        return "goToStage3";
 		}
 		
 		//the bean's manual observables
@@ -1975,6 +1975,8 @@ public class NewExpWizardController {
 		} catch (Exception e) {
 			log.debug("error building Measurement from OntologyProperty",e);
 		}
+		
+		return "goToStage3";
 
     }
 
