@@ -13,8 +13,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 /**
@@ -417,94 +424,172 @@ public class FileUtils {
     public static File getSystemTempFolder() {
         return new File(SYSTEM_TEMP);
     }
-
+    
+    
+    
     /**
-     * @param folder the resulting zip file will contain all files in this
-     *        folder
-     * @param zipFileName the name, the returned zip file should have
-     * @return a zip file containing all files in 'folder' or null, if the
-     *         folder does not contain a file.
-     * @throws IOException
-     */
+	 * @param srcFolder the resulting zip file will contain all files in this
+	 *        folder
+	 * @param destFolder The folder where the created Zip file should live
+	 * @param zipFileName the name, the returned zip file should have
+	 * @return a zip file containing all files in 'srcFolder' or null, if the
+	 *         folder does not contain a file.
+	 * @throws IOException
+	 */
+		public static File createSimpleZipFile(File srcFolder, File destFolder, String zipFileName) {
+		// The target zip file
+		File resultZIP = new File(destFolder, zipFileName);
+	    
+		// Creating an empty ArrayList for calling the listAllFiles method with
+	    // "resultFolder" as root.
+	    ArrayList<String> listOfFiles = new ArrayList<String>();
+	
+	    // Calling the recursive method listAllFiles, which lists all files in
+	    // all folders in the resultFolder.
+	    ArrayList<String> resultFileList;
+	    // try {
+	    resultFileList = listAllFilesAndFolders(srcFolder, listOfFiles);
+	
+	    if (resultFileList.size() == 0) {
+	        return null;
+	    } else {
+	        // "Normalize" the paths in resultFileList for creation of
+	        // ZipEntries
+	        ArrayList<String> normalizedPaths = new ArrayList<String>();
+	
+	        for (int i = 0; i < resultFileList.size(); i++) {
+	            String currentPath = resultFileList.get(i);
+	            // Strip the beginning of the String, except the "[FOLDER-NAME]
+	            // itself\"....
+	            int index = currentPath.indexOf(srcFolder.getName());
+	            currentPath = currentPath.substring(index);
+	            // Delete the [FOLDER-NAME] part of the paths
+	            currentPath = currentPath.replace(srcFolder.getName() + File.separator, "");
+	            // add the normalized path to the list
+	            normalizedPaths.add(currentPath);
+	        }
+	
+	        // Write the output ZIP
+	        ZipOutputStream zipWriter;
+	        
+	        try {
+	            zipWriter = new ZipOutputStream(new FileOutputStream(resultZIP));
+	            zipWriter.setLevel(9);
+	
+	            // writing the resultFiles to the ZIP
+	            for (int i = 0; i < normalizedPaths.size(); i++) {
+	                // Creating the ZipEntries using the normalizedList
+	            	ZipEntry zipEntry = new ZipEntry(normalizedPaths.get(i));
+	            	if(zipEntry.isDirectory()) {
+	            		zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
+	            	}
+	            	else {
+	            		zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
+		                // And getting the files to write for the ZipEntry from the
+		                // resultFileList
+		                File currentFile = new File(resultFileList.get(i));
+		                if(currentFile.isFile()) {
+			                // getting the byte[] to write
+			                byte[] current = readFileIntoByteArray(currentFile);
+			                zipWriter.write(current);
+			                zipWriter.flush();
+			                zipWriter.closeEntry();
+		                }
+	            	}
+	            }
+	
+	            zipWriter.flush();
+	            zipWriter.finish();
+	            zipWriter.close();
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	
+	    // Getting a reference to the new ZIP file
+	    return resultZIP;
+	}
 
-    public static File createZipFile(File folder, String zipFileName) {
-        // Creating an empty ArrayList for calling the listAllFiles method with
-        // "resultFolder" as root.
-        ArrayList<String> listOfFiles = new ArrayList<String>();
-
-        // Calling the recursive method listAllFiles, which lists all files in
-        // all folders in the resultFolder.
-        ArrayList<String> resultFileList;
-        // try {
-        resultFileList = listAllFiles(folder, listOfFiles);
-
-        if (resultFileList.size() == 0) {
-            return null;
-        } else {
-            // "Normalize" the paths in resultFileList for creation of
-            // ZipEntries
-            ArrayList<String> normalizedPaths = new ArrayList<String>();
-
-            for (int i = 0; i < resultFileList.size(); i++) {
-                String currentPath = resultFileList.get(i);
-                // Strip the beginning of the String, except the "[FOLDER-NAME]
-                // itself\"....
-                int index = currentPath.indexOf(folder.getName().toUpperCase());
-                currentPath = currentPath.substring(index);
-                // Delete the [FOLDER-NAME] part of the paths
-                currentPath = currentPath.replace(folder.getName()
-                        .toUpperCase()
-                        + File.separator, "");
-                // add the normalized path to the list
-                normalizedPaths.add(currentPath);
-            }
-
-            // Write the output ZIP
-            ZipOutputStream zipWriter;
+	/**
+	 * Extracts all files from a given Zip file.
+	 * 
+	 * @param zipFile the zip file to extract files from
+	 * @param destDir the folder where the extracted files should be placed in
+	 * @return a List<File> with all extracted files.
+	 */ 
+	public static List<File> extractFilesFromZip(File zipFile, File destDir) {
+    	
+    	List<File> extractedFiles = new ArrayList<File>();
+    	
+    		// Open the ZIP file
             try {
-                zipWriter = new ZipOutputStream(new FileOutputStream(new File(
-                        folder, zipFileName)));
-                zipWriter.setLevel(9);
+            	ZipInputStream in = new ZipInputStream(new FileInputStream(zipFile));
+            	OutputStream out = null;
+            	
+            	ZipEntry entry = null;
+            	
+				while((entry = in.getNextEntry())!=null) {
+				    // Get the first entry
+				    //entry = in.getNextEntry();
+//					System.out.println("Entry name: " + entry.getName());
+					File outFile = null;
+				    if(entry.isDirectory()) {
+				    	outFile = new File(destDir, entry.getName());
+				    	boolean createdFolder = outFile.mkdirs();
+				    	extractedFiles.add(outFile);
+				    }
+				    else {
+						// Open the output file
+					    outFile = new File(destDir, entry.getName());
+//					    System.out.println("Create file: " + outFile.getAbsolutePath());
+					    outFile.createNewFile();
+					    out = new FileOutputStream(outFile);
+					    // Transfer bytes from the ZIP file to the output file
+					    byte[] buf = new byte[1024];
+					    int len;
+					    
+					    while ((len = in.read(buf)) > 0) {
+					        out.write(buf, 0, len);
+					    }
+					 // Add extracted Files to List
+					    extractedFiles.add(outFile);
 
-                // writing the resultFiles to the ZIP
-                for (int i = 0; i < normalizedPaths.size(); i++) {
-                    // Creating the ZipEntries using the normalizedList
-                    zipWriter
-                            .putNextEntry(new ZipEntry(normalizedPaths.get(i)));
-                    // And getting the files to write for the ZipEntry from the
-                    // resultFileList
-                    File currentFile = new File(resultFileList.get(i));
-                    // getting the byte[] to write
-                    byte[] current = readFileIntoByteArray(currentFile);
-                    zipWriter.write(current);
-                    zipWriter.flush();
-                    zipWriter.closeEntry();
-                }
-
-                zipWriter.flush();
-                zipWriter.finish();
-                zipWriter.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Getting a reference to the new ZIP file
-        File resultZIP = new File(folder, zipFileName);
-        return resultZIP;
+				    }
+				}
+				// Close the streams
+			    out.close();
+			    in.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return extractedFiles;
     }
 
-    private static ArrayList<String> listAllFiles(File dir,
+    private static ArrayList<String> listAllFilesAndFolders(File dir,
             ArrayList<String> list) {
+    	boolean dirIsDir = dir.isDirectory();
+//    	if(dirIsDir) {
+//    		System.out.println("dir: " + dir.getName() + " is a Directory!");
+//    	}
         File[] files = dir.listFiles();
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory()) {
-                    listAllFiles(files[i], list);
+            	File currentFile = files[i];
+            	boolean currentFileIsDir = currentFile.isDirectory();
+//            	if(currentFileIsDir) {
+//            		System.out.println("currentFile: " + currentFile.getName() + " is a Directory!");
+//            	}
+                if (currentFile.isDirectory()) {
+                	list.add(currentFile.getPath() + "/");
+                	listAllFilesAndFolders(currentFile, list);
                 } else {
-                    list.add(files[i].getPath());
+                    list.add(currentFile.getPath());
                 }
             }
         }
