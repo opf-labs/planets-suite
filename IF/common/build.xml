@@ -18,21 +18,24 @@
     <import file="${pserv.root.dir}/build.common.xml"/>
   
     <taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
-        <classpath>
-            <fileset dir="${pserv.root.dir}/lib/standalone" includes="*.jar" />
-        </classpath>
+        <classpath refid="standalone_classpath"/>
     </taskdef>
     
     <target name="gen:SDschema">
         <schemagen srcdir="${src.dir}/eu/planets_project/services/datatypes" destdir="${appDir}/src/resources">
-		<exclude name="DigitalObject.java"/>
+                
+                <classpath refid="standalone_classpath"/>
+
+                <exclude name="ImmutableDigitalObject.java"/>
+                <exclude name="DigitalObject.java"/>
                 <exclude name="Agent.java"/>  
                 <exclude name="Checksum.java"/>  
                 <exclude name="Content.java"/>
                 <exclude name="Event.java"/>
                 <exclude name="Metadata.java"/>
                 <exclude name="Properties.java"/>
-                
+
+
                 <schema namespace="http://www.planets-project.eu/services" file="service_description.xsd"/>
 		<schema namespace="http://purl.org/dc/terms/" file="dcterms.xsd"/>
 		<schema namespace="" file="nonamespace.xsd"/>
