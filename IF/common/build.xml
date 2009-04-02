@@ -18,13 +18,16 @@
     <import file="${pserv.root.dir}/build.common.xml"/>
   
     <taskdef name="schemagen" classname="com.sun.tools.jxc.SchemaGenTask">
-        <classpath refid="standalone_classpath"/>
+      <classpath id="schemagen_classpath">
+        <fileset dir="${pserv.root.dir}/lib/standalone" includes="*.jar" />
+        <fileset dir="${pserv.root.dir}/lib/jaxws-ri-2.1.4/lib" includes="*.jar" />
+      </classpath>
     </taskdef>
     
     <target name="gen:SDschema">
         <schemagen srcdir="${src.dir}/eu/planets_project/services/datatypes" destdir="${appDir}/src/resources">
                 
-                <classpath refid="standalone_classpath"/>
+                <classpath refid="schemagen_classpath"/>
 
                 <exclude name="ImmutableDigitalObject.java"/>
                 <exclude name="DigitalObject.java"/>
