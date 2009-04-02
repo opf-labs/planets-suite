@@ -394,26 +394,51 @@
       </then>
     </if>
     <!-- collect the results into a summary report -->
+    <ant target="test:gen:summary" />
+  </target>
+
+  <!-- collect the results into a summary report -->
+  <target name="test:gen:summary">
+    <mkdir dir="${summary.dir}/local"/>
+    <junitreport todir="${summary.dir}/local">
+      <fileset dir="${reports.dir}">
+        <include name="TEST-*-local.xml"/>
+      </fileset>
+      <report format="frames" todir="${summary.dir}/local">
+        <param name="TITLE" expression="Unit Test Results: LOCAL MODE"/>
+      </report>
+    </junitreport>
+
+    <mkdir dir="${summary.dir}/standalone"/>
+    <junitreport todir="${summary.dir}/standalone">
+      <fileset dir="${reports.dir}">
+        <include name="TEST-*-standalone.xml"/>
+      </fileset>
+      <report format="frames" todir="${summary.dir}/standalone">
+        <param name="TITLE" expression="Unit Test Results: STANDALONE MODE"/>
+      </report>
+    </junitreport>
+
+    <mkdir dir="${summary.dir}/server"/>
+    <junitreport todir="${summary.dir}/server">
+      <fileset dir="${reports.dir}">
+        <include name="TEST-*-server.xml"/>
+      </fileset>
+      <report format="frames" todir="${summary.dir}/server">
+        <param name="TITLE" expression="Unit Test Results: SERVER MODE"/>
+      </report>
+    </junitreport>
+
     <junitreport todir="${summary.dir}">
       <fileset dir="${reports.dir}">
         <include name="TEST-*.xml"/>
       </fileset>
-      <report format="frames" todir="${summary.dir}"/>
+      <report format="frames" todir="${summary.dir}">
+        <param name="TITLE" expression="Unit Test Results: ALL MODES"/>
+      </report>
     </junitreport>
     <echo message="Wrote summary test report to: ${summary.dir}" />
   </target>
-
-  <target name="gen:test-summary">
-    <!-- collect the results into a summary report -->
-    <junitreport todir="${summary.dir}">
-      <fileset dir="${reports.dir}">
-        <include name="TEST-*.xml"/>
-      </fileset>
-      <report format="frames" todir="${summary.dir}"/>
-    </junitreport>
-    <echo message="Wrote summary test report to: ${summary.dir}" />
-  </target>
-
   
   <!-- This is required for Java 6, which ships with JAXB 2.0 not 2.1. -->
   <property name="test.vmarg.boot.classpath" value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar;lib/endorsed/activation.jar;lib/endorsed/stax-ex.jar;lib/endorsed/jsr173_api.jar;lib/endorsed/jboss-native-saaj.jar"/>
@@ -428,7 +453,7 @@
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
-        <formatter type="xml"/>
+        <formatter type="xml" extension="-local.xml"/>
         <fileset dir="${test.src.dir}">
           <include name="**/*Suite*.java"/>
           <include name="**/*Testsuite*.java"/>
