@@ -28,10 +28,8 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-import eu.planets_project.services.validate.ValidateResult.Validity;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
+
+import eu.planets_project.services.datatypes.*;
 import eu.planets_project.services.utils.FileUtils;
 
 
@@ -97,16 +95,16 @@ public class TiffValidation implements Validate, Serializable
 
 	/**
 	 * {@inheritDoc}
-	 * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI)
+     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, eu.planets_project.services.datatypes.Parameters)
 	 */
-	public ValidateResult validate(final DigitalObject o, final URI fmt) 
+	public ValidateResult validate(final DigitalObject o, final URI fmt, Parameters paramenters)
 	{
 		ValidateResult result;
 		File tempFile =  FileUtils.writeInputStreamToTmpFile(o.getContent().read(), 
 			"image", "tif");
 		boolean valid = basicValidateOneBinary(tempFile, fmt);
-		result = new ValidateResult(valid ? Validity.VALID 
-			: Validity.INVALID, new ServiceReport());
+		result = new ValidateResult(fmt, new ServiceReport(),null);
+        result.setOfThisFormat(valid);
 		return result;
 	}
 

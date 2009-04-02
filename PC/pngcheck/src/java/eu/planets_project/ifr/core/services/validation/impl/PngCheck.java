@@ -14,15 +14,13 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.*;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-import eu.planets_project.services.validate.ValidateResult.Validity;
+
 
 /**
  * PngCheck validation service.
@@ -115,12 +113,12 @@ public final class PngCheck implements Validate, Serializable {
      *      java.net.URI)
      */
     public ValidateResult validate(final DigitalObject digitalObject,
-            final URI format) {
+            final URI format, Parameters parameters) {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "pngcheck-temp", "bin");
         boolean valid = basicValidateOneBinary(file, format);
-        ValidateResult result = new ValidateResult(valid ? Validity.VALID
-                : Validity.INVALID, new ServiceReport());
+        ValidateResult result = new ValidateResult(format, new ServiceReport(),null);
+        result.setOfThisFormat(valid);
         return result;
     }
 }

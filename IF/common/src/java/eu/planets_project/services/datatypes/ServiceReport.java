@@ -58,7 +58,9 @@ public class ServiceReport {
     public static final int ERROR = 1;
     /** The error state for the service invocation */
     public int error_state;
-    /** Also allow properties to be returned, to permit extensible behaviour. */
+    /** Also allow properties to be returned, to permit extensible behaviour.
+     * @deprecated, should be moved to the individual reports
+     */
     public List<Property> properties;
 
     /**

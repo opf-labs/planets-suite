@@ -7,6 +7,7 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.jws.WebParam;
 import javax.jws.soap.SOAPBinding;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
@@ -14,10 +15,11 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-import eu.planets_project.services.validate.ValidateResult.Validity;
+
 
 /**
  * JHOVE validation service.
@@ -34,18 +36,22 @@ public final class JhoveValidation implements Validate, Serializable {
     /***/
     static final String NAME = "JhoveValidation";
 
+
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject,
-     *      java.net.URI)
+     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, eu.planets_project.services.datatypes.Parameters)
      */
     public ValidateResult validate(final DigitalObject digitalObject,
-            final URI format) {
+            final URI format,
+            Parameters parameters) {
         boolean valid = basicValidateOneBinary(digitalObject, format);
-        ValidateResult result = new ValidateResult(valid ? Validity.VALID
-                : Validity.INVALID, new ServiceReport());
+
+
+        ValidateResult result = new ValidateResult(format,new ServiceReport(),null);
+        result.setOfThisFormat(valid);
         return result;
     }
+
 
     /**
      * {@inheritDoc}
@@ -76,6 +82,7 @@ public final class JhoveValidation implements Validate, Serializable {
         /* Identify the binary: */
         JhoveIdentification identification = new JhoveIdentification();
         IdentifyResult identify = identification.identify(digitalObject,null);
+        
         /* And check it it is what we expected: */
         for (URI uri : identify.getTypes()) {
             if (uri.equals(fmt)) {

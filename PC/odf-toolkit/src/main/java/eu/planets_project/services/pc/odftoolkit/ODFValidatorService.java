@@ -3,6 +3,7 @@ package eu.planets_project.services.pc.odftoolkit;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import javax.jws.WebService;
 
@@ -12,6 +13,8 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
      
@@ -50,11 +53,12 @@ public class ODFValidatorService implements Validate {
     }
 
     /**
+     * Returns null every time, no matter what is input.
      * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI)
      */
-    public ValidateResult validate(DigitalObject dob, URI format) {
+    public ValidateResult validate(DigitalObject dob, URI format, Parameters parameters) {
         
-       return ODFValidatorWrapper.validateODF(dob);
+       return ODFValidatorWrapper.validateODF(dob,format);
        
     }
        

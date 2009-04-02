@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.net.URI;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.validate.ValidateResult;
@@ -238,7 +239,7 @@ public class ODFValidatorWrapper {
      * @param dob
      * @return the result of the validation of the ODF file
      */
-    public static ValidateResult validateODF( DigitalObject dob ) {
+    public static ValidateResult validateODF( DigitalObject dob, URI format ) {
         
         Configuration aConfig = null;
         String aVersion = null;
