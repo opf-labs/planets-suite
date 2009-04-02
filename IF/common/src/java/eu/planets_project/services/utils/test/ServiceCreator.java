@@ -136,27 +136,37 @@ public final class ServiceCreator {
      */
     public static <T> T createTestService(QName qname,
             Class<T> serviceImplementation, String wsdlLoc) {
-        // Set up the remote version, if applicable:
-        String standalon = "standalone";
-        String context = "pserv.test.context";
-        String server = "server";
-        if (standalon.equals(System.getProperty(context))
-                || server.equals(System.getProperty(context))) {
-            /* In the standalone case, start up the test endpoint. */
-            if (System.getProperty(context).equals(standalon)) {
-                return Mode.STANDALONE.create(qname, serviceImplementation,
-                        wsdlLoc);
-            }
-            // In the server case, pick the server config up:
-            else {
-                return Mode.SERVER
-                        .create(qname, serviceImplementation, wsdlLoc);
-            }
+        
+        // In the standalone case, start up the test endpoint.
+        if ( testInStandaloneMode() ) {
+            return Mode.STANDALONE.create(qname, serviceImplementation,
+                    wsdlLoc);
         }
+        
+        // In the server case, pick the server config up:
+        else if (testInServerMode()  ) 
+        {
+            return Mode.SERVER.create(qname, serviceImplementation, wsdlLoc);
+        }
+        
         // If no remote context is configured, invoke locally:
         else {
             return Mode.LOCAL.create(qname, serviceImplementation, wsdlLoc);
         }
+    }
+
+    public static final String TEST_MODE_SERVER = "server";
+    public static final String TEST_MODE_STANDALONE = "standalone";
+    public static final String TEST_MODE_CONTEXT_FLAG = "pserv.test.context";
+    
+    public static boolean testInServerMode() {
+        if( TEST_MODE_SERVER.equals( System.getProperty( TEST_MODE_CONTEXT_FLAG ))) return true;
+        return false;
+    }
+
+    public static boolean testInStandaloneMode() {
+        if( TEST_MODE_STANDALONE.equals( System.getProperty( TEST_MODE_CONTEXT_FLAG ))) return true;
+        return false;
     }
 
     /**
