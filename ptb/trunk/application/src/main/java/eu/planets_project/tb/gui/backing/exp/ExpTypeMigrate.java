@@ -347,14 +347,16 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     }
     
     HashMap<String,List<MeasurementImpl>> manualObsCache;
+    long cacheExperimentID;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getManualObservables()
      */
     @Override
     public HashMap<String,List<MeasurementImpl>> getManualObservables() {
-    	if(manualObsCache==null){
-    		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        	
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	if(manualObsCache==null||(cacheExperimentID != expBean.getExperiment().getEntityID())){
+    		cacheExperimentID = expBean.getExperiment().getEntityID();
+
         	//query for properties that have been added from the Ontology
         	HashMap<String,Vector<String>> ontoPropIDs = new HashMap<String, Vector<String>>();
         	for(ExperimentStageBean stage : expBean.getStages()){

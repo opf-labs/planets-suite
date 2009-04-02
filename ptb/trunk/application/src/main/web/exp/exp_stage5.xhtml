@@ -84,9 +84,13 @@
 
 <!-- ***************************  -->
 
-<a4j:outputPanel id="executedResults" rendered="#{not NewExp_Controller.experimentExecutable.executionRunning}">
+<a4j:outputPanel id="executedResults" rendered="#{(not NewExp_Controller.experimentExecutable.executionRunning) and (NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 )}">
+<!-- START Automated Results -->
+<a4j:region id="regionAutoMResults" renderRegionOnly="true">
+<rich:simpleTogglePanel label="#{res['exp_stage5.automaticResults']}" opened="true" switchType="ajax">
+	<p>These are the results the Testbed has automatically measured and recorded for your experiment.</p>
 
-    <rich:tabPanel width="100%" selectedTab="OverallResultTab" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
+    <rich:tabPanel width="100%" selectedTab="OverallResultTab" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }" switchType="ajax">
         <rich:tab label="Overall Results" name="OverallResultTab">
      
 
@@ -161,11 +165,8 @@
                 
          <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord != null}">
          
-         <a4j:repeat value="#{ExperimentBean.selectedBatchExecutionRecord.runs}" var="run">
-         <rich:panel>
-         <f:facet name="header">
-           <h:outputText value="#{run.digitalObjectSource}"/>
-         </f:facet>
+         <a4j:repeat value="#{ExperimentBean.selectedBatchExecutionRecord.runs}" var="run" rowKeyVar="count">
+         <rich:simpleTogglePanel label="data entry: #{count+1} - #{run.digitalObjectSource}" opened="#{count>0 ? false : true}" switchType="client">
 
          <a4j:repeat value="#{run.stages}" var="stage">
         
@@ -200,7 +201,8 @@
           
          </a4j:repeat>
          
-         </rich:panel>
+         </rich:simpleTogglePanel>
+         <br/>
          </a4j:repeat>
          
          </h:panelGroup>
@@ -222,27 +224,32 @@
 
         </rich:tab>
         
-        <rich:tab label="Comparisons">
-        <p>
-        TBC
-        </p>
-        <p>
-            Difference displays, using default comparator configuration, depending on experiment type.
-        </p>
-        <p>
-          Comparisons of the measured digital object properties. Cross-comparisons, etc.
-        </p>
-        
-        </rich:tab>
-        
         <rich:tab label="Server Specification">
        	 <ui:include src="/WEB-INF/templates/server_spec.xhtml" />
         </rich:tab>
         
      </rich:tabPanel>
 
+</rich:simpleTogglePanel>
+</a4j:region>
+<!-- END Automated Results -->
+
+<!-- START Automated Results -->
+<a4j:region id="regionManualMResults" renderRegionOnly="true">
+<rich:simpleTogglePanel label="#{res['exp_stage5.manualResults']}" opened="true" switchType="ajax">
+	<p>Please fill in the properties you have selected to measure manually for this experiment.</p>
+	<rich:tabPanel>
+		<rich:tab label="Enter Property Data">
+	        TBC
+        </rich:tab>
+        <rich:tab label="Property Overview">
+	        TBC
+        </rich:tab>
+	 </rich:tabPanel>
+</rich:simpleTogglePanel>
+</a4j:region>
 </a4j:outputPanel>
-    
+
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="5" />
        <ui:param name="PlaceBandAsHeader" value="false" />

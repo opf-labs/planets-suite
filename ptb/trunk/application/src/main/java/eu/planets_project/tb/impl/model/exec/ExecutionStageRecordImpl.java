@@ -138,13 +138,14 @@ public class ExecutionStageRecordImpl implements Serializable {
     
 
     /**
-     * @return the service backed measurements
+     * @return the manual measurements
      */
     public List<MeasurementRecordImpl> getManualMeasurements() {
         return this.manualMeasurements;
     }
     
     /**
+     * FIXME this shouldn't be in the ExecutionStageRecord but rather in the ETypeBean - getObservables is mixing up concepts??
      * A helper either fetching the service backed measured observables or the manually measured ones
      * @param measuredObsManually true: manually ones false: automatically measured ones
      * @return
