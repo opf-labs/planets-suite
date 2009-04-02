@@ -73,8 +73,8 @@ public class FileUtils {
     public static File writeByteArrayToTempFile(final byte[] bytes) {
         File file = null;
         try {
-            file = File.createTempFile("planets", null);
-            file.deleteOnExit();
+            file = getTempFile("planets",null);
+            
             BufferedOutputStream out = new BufferedOutputStream(
                     new FileOutputStream(file), 65536);
             out.write(bytes);

@@ -280,10 +280,6 @@ public class CoreExtractor {
         	binary_out = cleanedXCDL;
         }
 
-        boolean successfullyDeleted = FileUtils.deleteTempFiles(extractor_work_folder, plogger);
-        plogger.info("Deleted all temp files = " + successfullyDeleted);
-//        System.out.println("Deleted all temp files = " + successfullyDeleted);
-
         return binary_out;
     }
 }

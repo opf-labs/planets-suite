@@ -96,7 +96,8 @@ public final class Content implements Serializable, DigitalObject.Content {
      * @return A content instance with the specified value
      */
     public static Content byValue(final File value) {
-        // byte[] bytes = FileUtils.readFileIntoByteArray(value);
+        //byte[] bytes = FileUtils.readFileIntoByteArray(value);
+        //return new Content( bytes );
         return new Content( value );
     }
     
