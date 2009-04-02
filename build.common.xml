@@ -402,6 +402,18 @@
     </junitreport>
     <echo message="Wrote summary test report to: ${summary.dir}" />
   </target>
+
+  <target name="gen:test-summary">
+    <!-- collect the results into a summary report -->
+    <junitreport todir="${summary.dir}">
+      <fileset dir="${reports.dir}">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="${summary.dir}"/>
+    </junitreport>
+    <echo message="Wrote summary test report to: ${summary.dir}" />
+  </target>
+
   
   <!-- This is required for Java 6, which ships with JAXB 2.0 not 2.1. -->
   <property name="test.vmarg.boot.classpath" value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar;lib/endorsed/activation.jar;lib/endorsed/stax-ex.jar;lib/endorsed/jsr173_api.jar;lib/endorsed/jboss-native-saaj.jar"/>

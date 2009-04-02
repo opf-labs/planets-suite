@@ -208,5 +208,19 @@
     <echo message="Got: ${sub.build.dir}"/>
     <delete dir="${sub.build.dir}"/>
   </target>
+
+  <!-- =================================================================== -->
+    
+  <target name="gen:test-summary">
+    <!-- collect the results into a summary report -->
+    <junitreport todir="tests/summary">
+      <fileset dir="tests/reports">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames" todir="test/summary"/>
+    </junitreport>
+    <echo message="Wrote summary test report to: tests/summary" />
+  </target>
+
   
 </project>
