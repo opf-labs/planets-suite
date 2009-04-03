@@ -61,27 +61,25 @@ public class AlwaysSaysValidServiceTest {
     @Test
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
-        testValidateThis(null, new URI("http://some"),
-                ValidateResult.Validity.INVALID);
+        testValidateThis(null, new URI("http://some"),false, false );
         testValidateThis(new DigitalObject.Builder(Content.byReference(new URL("http://someother")))
-                .permanentUrl(new URL("http://some")).build(), new URI("ext"),
-                ValidateResult.Validity.VALID);
+                .permanentUrl(new URL("http://some")).build(), new URI("ext"), true, true );
     }
 
     /**
      * @param purl
      * @param type
      */
-    private void testValidateThis(DigitalObject dob, URI type,
-            ValidateResult.Validity valid) {
+    private void testValidateThis(DigitalObject dob, URI type, boolean ofThisFormat, boolean inRegardToThisFormat ) {
         /* Now pass this to the service */
-        ValidateResult ir = ids.validate(dob, type);
+        ValidateResult ir = ids.validate(dob, type, null);
 
         /* Check the result */
-        System.out.println("Recieved validity: " + ir.getValidity());
+        System.out.println("Recieved is of format: " + ir.isOfThisFormat());
+        System.out.println("Recieved is of format and valid: " + ir.isValidInRegardToThisFormat());
         System.out.println("Recieved service report: " + ir.getReport());
-        assertEquals("The returned type did not match the expected;", valid, ir
-                .getValidity());
+        assertEquals("The returned type did not match the expected;", ofThisFormat , ir.isOfThisFormat() );
+        assertEquals("The returned type did not match the expected;", inRegardToThisFormat , ir.isValidInRegardToThisFormat() );
 
     }
 

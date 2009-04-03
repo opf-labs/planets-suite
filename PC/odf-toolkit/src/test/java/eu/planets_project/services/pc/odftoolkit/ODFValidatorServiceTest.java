@@ -57,9 +57,9 @@ public class ODFValidatorServiceTest {
     @Test
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
-        testValidateThis(null, new URI("http://some"), ValidateResult.Validity.INVALID );
+        testValidateThis(null, new URI("http://some"), false );
         testValidateThis(new DigitalObject.Builder( Content.byReference(new URL("http://someother") ) ).build() , new URI("ext"), 
-                ValidateResult.Validity.VALID );
+                true);
     }
     
     /**
@@ -67,14 +67,14 @@ public class ODFValidatorServiceTest {
      * @param purl
      * @param type
      */
-    private void testValidateThis( DigitalObject dob , URI type, ValidateResult.Validity valid ) {
+    private void testValidateThis( DigitalObject dob , URI type, boolean valid ) {
         /* Now pass this to the service */
-        ValidateResult ir = ids.validate(dob, type );
+        ValidateResult vr = ids.validate(dob, type, null );
         
         /* Check the result */
-        System.out.println("Recieved validity: " + ir.getValidity() );
-        System.out.println("Recieved service report: " + ir.getReport() );
-        assertEquals("The returned type did not match the expected;", valid , ir.getValidity() ) ;
+        System.out.println("Recieved validity: " + vr.isOfThisFormat() + ", " + vr.isValidInRegardToThisFormat() );
+        System.out.println("Recieved service report: " + vr.getReport() );
+        assertEquals("The returned type did not match the expected;", valid , vr.isOfThisFormat() && vr.isValidInRegardToThisFormat() ) ;
         
     }
 

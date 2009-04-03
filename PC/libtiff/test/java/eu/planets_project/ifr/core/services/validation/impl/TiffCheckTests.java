@@ -14,7 +14,6 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-import eu.planets_project.services.validate.ValidateResult.Validity;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 
@@ -75,25 +74,25 @@ public final class TiffCheckTests
 		ValidateResult result;
 		/* Check with null PRONOM URI, both with PNG and TIFF */
 		try {
-			result = tiffCheck.validate(inTiff, null);
+			result = tiffCheck.validate(inTiff, null, null);
 			assertTrue("Valid TIFF was not validated;", 
-				result.getValidity().equals(Validity.VALID));
+		            result.isOfThisFormat() && result.isValidInRegardToThisFormat() );
 
-			result = tiffCheck.validate(inPng, null);
+			result = tiffCheck.validate(inPng, null, null );
 			assertTrue("Invalid TIFF was not invalidated;", 
-				result.getValidity().equals(Validity.INVALID));
+                    result.isOfThisFormat() && result.isValidInRegardToThisFormat() );
 
 			/* Check with valid and invalid PRONOM URI */
 			URI uri = new URI("info:pronom/fmt/7");
-			result = tiffCheck.validate(inTiff, uri);
+			result = tiffCheck.validate(inTiff, uri, null );
 			assertTrue("Valid TIFF with URI was not validated;", 
-				result.getValidity().equals(Validity.VALID));
+                    result.isOfThisFormat() && result.isValidInRegardToThisFormat() );
 
 			/* This should throw an IllegalArgumentException: */
 			uri = new URI("info:pronom/fmt/11");
-			result = tiffCheck.validate(inTiff, uri);
+			result = tiffCheck.validate(inTiff, uri, null );
 			assertTrue("Valid TIFF with invalid URI not invalidated;", 
-				result.getValidity().equals(Validity.INVALID));
+                    result.isOfThisFormat() && result.isValidInRegardToThisFormat() );
 
 		} catch (URISyntaxException e) {
 			e.printStackTrace();

@@ -17,7 +17,6 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 import eu.planets_project.services.validate.Validate;
-import eu.planets_project.services.validate.ValidateResult.Validity;
 
 /**
  * Local and client tests of the PngCheck functionality.
@@ -78,17 +77,15 @@ public final class PngCheckTests {
                     .build();
             /* Check with null PRONOM URI, both with PNG and JPG */
             assertTrue("Valid PNG was not validated;", pngCheck.validate(inPng,
-                    null).getValidity().equals(Validity.VALID));
+                    null, null).isValidInRegardToThisFormat() );
             assertTrue("Invalid PNG was not invalidated;", !pngCheck.validate(
-                    inJpg, null).getValidity().equals(Validity.VALID));
+                    inJpg, null, null).isValidInRegardToThisFormat() );
             /* Check with valid and invalid PRONOM URI */
             assertTrue("Valid PNG was not validated;", pngCheck.validate(inPng,
-                    new URI("info:pronom/fmt/11")).getValidity().equals(
-                    Validity.VALID));
+                    new URI("info:pronom/fmt/11"), null).isValidInRegardToThisFormat() );
             /* This should throw an IllegalArgumentException: */
             assertTrue("Invalid PNG was not invalidated;", !pngCheck.validate(
-                    inJpg, new URI("info:pronom/fmt/10")).getValidity().equals(
-                    Validity.VALID));
+                    inJpg, new URI("info:pronom/fmt/10"), null).isValidInRegardToThisFormat() );
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {

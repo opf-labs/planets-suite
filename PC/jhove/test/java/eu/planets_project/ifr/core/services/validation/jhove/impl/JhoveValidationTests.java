@@ -17,7 +17,7 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.validate.Validate;
-import eu.planets_project.services.validate.ValidateResult.Validity;
+import eu.planets_project.services.validate.ValidateResult;
 
 /**
  * Tests of the JHOVE validation functionality.
@@ -158,11 +158,11 @@ public class JhoveValidationTests {
         /* And try validating it: */
         boolean result = false;
         try {
-            result = jhove.validate(
+            ValidateResult vr = jhove.validate(
                     new DigitalObject.Builder(Content.byReference(new File(
                             location).toURI().toURL())).build(),
-                    new URI(type.getPronom())).getValidity().equals(
-                    Validity.VALID);
+                    new URI(type.getPronom()), null );
+            result = vr.isOfThisFormat() && vr.isValidInRegardToThisFormat();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
