@@ -162,7 +162,7 @@ public class FileUtils {
         File input = null;
         try {
             input = File.createTempFile(name, suffix, new File(SYSTEM_TEMP));
-            //input.deleteOnExit();
+            input.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
         }
