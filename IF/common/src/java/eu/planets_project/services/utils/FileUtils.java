@@ -20,12 +20,16 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  * Utilities for reading and writing data.
  * @author Thomas Kraemer thomas.kraemer@uni-koeln.de, Peter Melms
  *         (peter.melms@uni-koeln.de), Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public class FileUtils {
+    private static Log log = LogFactory.getLog(FileUtils.class);
 
     private static final String SYSTEM_TEMP = System
             .getProperty("java.io.tmpdir");
@@ -397,6 +401,8 @@ public class FileUtils {
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
+        
+        long size = 0;
 
         try {
             int dataBit;
@@ -406,6 +412,7 @@ public class FileUtils {
             while ((dataBit = in.read(buf)) != -1) {
                 bos.write(buf, 0, dataBit);
                 bos.flush();
+                size++;
             }
             bos.flush();
             bos.close();
@@ -415,6 +422,7 @@ public class FileUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
     }
 
     /**

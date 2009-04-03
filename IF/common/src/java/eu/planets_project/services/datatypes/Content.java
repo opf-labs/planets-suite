@@ -13,6 +13,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlMimeType;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.utils.ByteArrayDataSource;
 import eu.planets_project.services.utils.FileUtils;
 
@@ -27,6 +30,8 @@ import eu.planets_project.services.utils.FileUtils;
  * @author Peter Melms (peter.melms@uni-koeln.de)
  */
 public final class Content implements Serializable, DigitalObject.Content {
+    private static Log log = LogFactory.getLog(Content.class);
+
     /***/
     private static final long serialVersionUID = 7135127983024589335L;
     
@@ -127,6 +132,7 @@ public final class Content implements Serializable, DigitalObject.Content {
         DataHandler dh = new DataHandler(bads);
         this.length = value.length;
         this.dataHandler = dh;
+        log.info("Created Content from byte array: "+ this.length+ " bytes in length.");
     }
 
     /**
@@ -138,6 +144,7 @@ public final class Content implements Serializable, DigitalObject.Content {
        DataHandler dh = new DataHandler(ds);
        this.length = value.length();
        this.dataHandler = dh;
+       log.info("Created Content from file '"+value.getAbsolutePath()+"': " + this.length + " bytes in length.");
     }
 
     /**
@@ -146,6 +153,7 @@ public final class Content implements Serializable, DigitalObject.Content {
     private Content(final URL reference) {
         this.length = -1;
         this.reference = reference;
+        log.info("Created Content from file '"+reference);
     }
     
     /** No-args constructor for JAXB. Clients should not use this. */
@@ -158,8 +166,11 @@ public final class Content implements Serializable, DigitalObject.Content {
     public InputStream read() {
         try {
             if (isByValue()) {
+                log.info("Opening dataHandler stream of type: "+dataHandler.getContentType());
+                log.info("Opening dataHandler stream available: "+dataHandler.getInputStream().available() );
                 return dataHandler.getDataSource().getInputStream();
             } else {
+                log.info("Opening reference: "+reference);
                 return reference.openStream();
             }
         } catch (IOException e) {
