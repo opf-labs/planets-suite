@@ -352,8 +352,6 @@ public class FileUtils {
      */
     public static File writeInputStreamToFile(InputStream in,
             File parentFolder, String fileName) {
-        BufferedOutputStream bos = null;
-        FileOutputStream fileOut = null;
         File target = new File(parentFolder, fileName);
         if (target.exists()) {
             long randonNr = (long) (Math.random() * 1000000);
@@ -390,7 +388,14 @@ public class FileUtils {
             e1.printStackTrace();
         }
         long size = writeInputStreamToOutputStream( in, bos );
-        log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
+        if( log.isInfoEnabled() ) {
+            log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
+        } else {
+            System.out.println("Wrote "+size+" bytes to "+target.getAbsolutePath());
+        }
+        log.warn("Wrote "+size+" bytes to "+target.getAbsolutePath());
+        log.error("Wrote "+size+" bytes to "+target.getAbsolutePath());
+        log.fatal("Wrote "+size+" bytes to "+target.getAbsolutePath());
     }
     
     
@@ -416,7 +421,6 @@ public class FileUtils {
 
         } catch (IOException e) {
             e.printStackTrace();
-
             return 0;
 
         } finally { 
@@ -430,6 +434,7 @@ public class FileUtils {
                 return 0;
             }
         }
+        log.info("Wrote "+size+" bytes.");
         return size;
     }
 
