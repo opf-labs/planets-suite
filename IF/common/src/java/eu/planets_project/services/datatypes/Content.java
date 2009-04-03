@@ -80,10 +80,8 @@ public final class Content implements Serializable, DigitalObject.Content {
     }
 
     /**
-     * Create content by value.
-     * <p/>
-     * Note that content created by value cannot be used with Java's object
-     * serialization.
+     * Create content by value, which means actually embedded in the request.
+     * 
      * @param value The value for the content
      * @return A content instance with the specified value
      */
@@ -92,36 +90,49 @@ public final class Content implements Serializable, DigitalObject.Content {
     }
 
     /**
-     * Create content by value.
-     * <p/>
-     * Note that content created by value cannot be used with Java's object
-     * serialization.
+     * Create content by value, embedding a file.
      * 
      * @param file The value for the content, a File that should be read into a byte array.
      * @return A content instance with the specified value
      */
     public static Content byValue(final File value) {
-        //byte[] bytes = FileUtils.readFileIntoByteArray(value);
-        //return new Content( bytes );
-        return new Content( value );
+        byte[] bytes = FileUtils.readFileIntoByteArray(value);
+        return new Content( bytes );
     }
     
     /**
-     * Create content by value.
-     * <p/>
-     * Note that content created by value cannot be used with Java's object
-     * serialization.
+     * Create content by value, embedding the contents of an input stream.
      * 
      * @param inputStream The InputStream containing the value for the content. The InputStream is written to a byte[]
      * @return A content instance with the specified value
      */
     public static Content byValue(final InputStream inputStream) {
-    	// create a File from the InputStream and call the Content.byValue(File) 
-    	// to avoid having the whole (maybe large) file in memory
-    	File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream, "tempContent", ".dat");
-        return new Content( tmpFile );
+        File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream, "tempContent", ".dat");
+        return new Content( FileUtils.readFileIntoByteArray(tmpFile) );
     }
     
+    /**
+     * Create content as a stream, drawn from a File.
+     * 
+     * @param file The value for the content, a File that should be read.
+     * @return A content instance with the specified value
+     */
+    public static Content asStream(final File value) {
+        return new Content( value );
+    }
+    
+    /**
+     * Pass content as a stream, from an input stream.
+     * 
+     * @param inputStream The InputStream containing the value for the content.
+     * @return A content instance with the specified value
+     */
+    public static Content asStream(final InputStream inputStream) {
+        // create a File from the InputStream and call the Content.byValue(File) 
+        // to avoid having the whole (maybe large) file in memory
+        File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream, "tempContent", ".dat");
+        return new Content( tmpFile );
+    }
 
     /**
      * @param value The content value
