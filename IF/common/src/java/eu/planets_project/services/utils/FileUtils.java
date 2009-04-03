@@ -313,6 +313,13 @@ public class FileUtils {
         ByteArrayOutputStream boStream = new ByteArrayOutputStream();
         
         long size = writeInputStreamToOutputStream(inputStream,boStream);
+        try {
+            boStream.flush();
+            boStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         if( size > 0 ) {
             return boStream.toByteArray();
         }
@@ -387,7 +394,16 @@ public class FileUtils {
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
+        
         long size = writeInputStreamToOutputStream( in, bos );
+        
+        try {
+            bos.flush();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         if( log.isInfoEnabled() ) {
             log.info("I Wrote "+size+" bytes to "+target.getAbsolutePath());
         } else {
