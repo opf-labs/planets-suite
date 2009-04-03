@@ -70,10 +70,11 @@ public class ValidateResult {
 
 
     /**
-     * The list of errors collected during the validation. Errors should be
-     * of the form <pre>
-     *  line x: Error Description
-     * </pre>
+     * The list of errors collected during the validation.
+     * Errors are expressed via the contained class Message. A message consist of
+     * two strings, adress and description. For this interface, the adress is
+     * meant to be a line number.
+     * <br>
      * If no line number can be found, or the error is in regards to the
      * entire file, use -1.
      * <br>
@@ -85,13 +86,14 @@ public class ValidateResult {
      * @see #ofThisFormat
      * @see #validInRegardToThisFormat
      * @see #warnings
+     * @see eu.planets_project.services.validate.ValidateResult.Message
      */
-    public List<String> errors;
+    public List<Message> errors;
 
     /**
-     * The list of warning collected during the validation. Warning should be
-     * of the form <pre>
-     *  line x: warning Description
+     * The list of warning collected during the validation.  A message consist of
+     * two strings, adress and description. For this interface, the adress is
+     * meant to be a line number.
      * </pre>
      * If no line number can be found, or the warning is in regards to the
      * entire file, use -1.
@@ -101,8 +103,9 @@ public class ValidateResult {
      * <br>
      * Warnings are problems with the file, that are not serious enough to
      * make validInRegardToThisFormat or ofThisFormat false.
+     * @see eu.planets_project.services.validate.ValidateResult.Message
      */
-    public List<String> warnings;
+    public List<Message> warnings;
 
 
     /**
@@ -127,7 +130,7 @@ public class ValidateResult {
      * @return The collected errors in the file
      * @see #errors
      */
-    public List<String> getErrors() {
+    public List<Message> getErrors() {
         return errors;
     }
 
@@ -136,7 +139,7 @@ public class ValidateResult {
      * @return The collected warnings
      * @see #warnings
      */
-    public List<String> getWarnings() {
+    public List<Message> getWarnings() {
         return warnings;
     }
 
@@ -175,6 +178,63 @@ public class ValidateResult {
         return properties;
     }
 
+    /**
+     * Messages about errors and warnings collected during the validation. A
+     * message consist of two Strings, adress and description.
+     *
+     * 
+     */
+    public static final class Message {
+
+        /**
+         * The adress that contained the data that this message is about.
+         * In files, this is just the line-number. 
+         */
+        private String adress;
+
+        /**
+         * The message.
+         */
+        private String description;
+
+        /**
+         * Constructor.
+         * @param adress The adress of what provoked the message
+         * @param description The message
+         */
+        public Message(String adress, String description) {
+            this.adress = adress;
+            this.description = description;
+        }
+
+        /**
+         * Construtor.
+         * @param description The message
+         */
+        public Message(String description) {
+            this.adress = "";
+            this.description = description;
+        }
+
+
+        public String getAdress() {
+            return adress;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
+        public String toString() {
+            return "Message{" +
+                    "adress='" + adress + '\'' +
+                    ", description='" + description + '\'' +
+                    '}';
+        }
+    }
+
+
     public static final class Builder {
 
         private boolean ofThisFormat;
@@ -189,9 +249,9 @@ public class ValidateResult {
 
         public List<Property> properties;
 
-        public List<String> errors;
+        public List<Message> errors;
 
-        public List<String> warnings;
+        public List<Message> warnings;
 
 
 
@@ -213,8 +273,8 @@ public class ValidateResult {
             ofThisFormat = true;
             validInRegardToThisFormat = true;
             properties = new ArrayList<Property>();
-            errors = new ArrayList<String>();
-            warnings = new ArrayList<String>();
+            errors = new ArrayList<Message>();
+            warnings = new ArrayList<Message>();
         }
 
         private void initialize(final ValidateResult validateResult){
@@ -265,8 +325,8 @@ public class ValidateResult {
          * @see #warnings
          */
         public Builder addWarning(int linenumber, String warning){
-            warnings.add("line "+linenumber+": "+warning);
-                        return this;
+            warnings.add(new Message("line "+linenumber,warning));
+            return this;
         }
 
         /**
@@ -275,8 +335,8 @@ public class ValidateResult {
          * @see #warnings
          */
         public Builder addWarning(String warning){
-            warnings.add("line -1: "+warning);
-                        return this;
+            warnings.add(new Message("line -1",warning));
+            return this;
         }
 
         /**
@@ -290,7 +350,7 @@ public class ValidateResult {
          * @see #validInRegardToThisFormat
          */
         public Builder addError(int linenumber, String error){
-            errors.add("line "+linenumber+": "+error);
+            errors.add(new Message("line "+linenumber, error));
             return this;
         }
 
@@ -301,8 +361,8 @@ public class ValidateResult {
          * @see #addError(int, String)
          */
         public Builder addError(String error){
-            errors.add("line -1: "+error);
-                        return this;
+            errors.add(new Message("line -1",error));
+            return this;
         }
 
     }
