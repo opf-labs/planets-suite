@@ -158,6 +158,9 @@ public class FileUtils {
      * @return Returns a temp file created in the System-Temp folder
      */
     public static File getTempFile(String name, String suffix) {
+        if( suffix == null ) suffix = ".tmp";
+        if( name == null ) name = "planetsTmp";
+        // Add a dot if missing:
         if (!suffix.startsWith(".")) {
             suffix = "." + suffix;
         }
