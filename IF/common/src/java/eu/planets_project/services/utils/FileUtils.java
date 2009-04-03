@@ -405,13 +405,10 @@ public class FileUtils {
         }
         
         if( log.isInfoEnabled() ) {
-            log.info("I Wrote "+size+" bytes to "+target.getAbsolutePath());
+            log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
         } else {
-            System.out.println("S Wrote "+size+" bytes to "+target.getAbsolutePath());
+            System.out.println("Wrote "+size+" bytes to "+target.getAbsolutePath());
         }
-        log.warn("W Wrote "+size+" bytes to "+target.getAbsolutePath());
-        log.error("E Wrote "+size+" bytes to "+target.getAbsolutePath());
-        log.fatal("F Wrote "+size+" bytes to "+target.getAbsolutePath());
     }
     
     
