@@ -1,10 +1,15 @@
 package eu.planets_project.ifr.core.services.validation.impl;
 
-import java.io.File;
-import java.io.Serializable;
-import java.net.URI;
-import java.util.Arrays;
-import java.util.List;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.utils.ProcessRunner;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -12,14 +17,11 @@ import javax.ejb.Stateless;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
-
-import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.*;
-import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
-import eu.planets_project.services.utils.ProcessRunner;
-import eu.planets_project.services.validate.Validate;
-import eu.planets_project.services.validate.ValidateResult;
+import java.io.File;
+import java.io.Serializable;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -109,16 +111,15 @@ public final class PngCheck implements Validate, Serializable {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject,
-     *      java.net.URI)
      */
     public ValidateResult validate(final DigitalObject digitalObject,
             final URI format, Parameters parameters) {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "pngcheck-temp", "bin");
         boolean valid = basicValidateOneBinary(file, format);
-        ValidateResult result = new ValidateResult(format, new ServiceReport(),null);
-        result.setOfThisFormat(valid);
+        ValidateResult result = new ValidateResult.Builder(format, new ServiceReport())
+                .ofThisFormat(valid)
+                .build();
         return result;
     }
 }

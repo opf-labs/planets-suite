@@ -1,24 +1,22 @@
 package eu.planets_project.ifr.core.services.validation.jhove.impl;
 
-import java.io.Serializable;
-import java.net.URI;
+import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-import javax.jws.WebParam;
 import javax.jws.soap.SOAPBinding;
-
-import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
-import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.validate.Validate;
-import eu.planets_project.services.validate.ValidateResult;
+import java.io.Serializable;
+import java.net.URI;
 
 
 /**
@@ -47,8 +45,11 @@ public final class JhoveValidation implements Validate, Serializable {
         boolean valid = basicValidateOneBinary(digitalObject, format);
 
 
-        ValidateResult result = new ValidateResult(format,new ServiceReport(),null);
-        result.setOfThisFormat(valid);
+
+        ValidateResult result = new ValidateResult.Builder(format,new ServiceReport())
+                .ofThisFormat(valid)
+                .build();
+
         return result;
     }
 

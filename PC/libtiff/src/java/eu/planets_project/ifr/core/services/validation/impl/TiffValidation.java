@@ -103,8 +103,9 @@ public class TiffValidation implements Validate, Serializable
 		File tempFile =  FileUtils.writeInputStreamToTmpFile(o.getContent().read(), 
 			"image", "tif");
 		boolean valid = basicValidateOneBinary(tempFile, fmt);
-		result = new ValidateResult(fmt, new ServiceReport(),null);
-        result.setOfThisFormat(valid);
+
+		result = new ValidateResult.Builder(fmt, new ServiceReport()).ofThisFormat(valid).build();
+
 		return result;
 	}
 

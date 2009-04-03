@@ -3,16 +3,15 @@
  */
 package eu.planets_project.services.validate;
 
+import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceReport;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.Property;
-
 import java.net.URI;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>,
@@ -111,95 +110,17 @@ public class ValidateResult {
      */
     protected ValidateResult() {}
 
-
-    /**
-     * Constructor method.
-     * @param thisFormat
-     *           The format to validate against
-     * @param report
-     *           The service report
-     *
-     * @see #thisFormat
-     */
-    public ValidateResult(
-            URI thisFormat,
-            ServiceReport report,
-            List<Property> properties) {
-        errors = new ArrayList<String>();
-        warnings = new ArrayList<String>();
-        ofThisFormat = true;
-        validInRegardToThisFormat = true;
-        this.thisFormat = thisFormat;
-        this.report = report;
-        this.properties = properties;
+    private ValidateResult(Builder builder) {
+        errors = builder.errors;
+        warnings = builder.warnings;
+        ofThisFormat = builder.ofThisFormat;
+        validInRegardToThisFormat = builder.validInRegardToThisFormat;
+        thisFormat = builder.thisFormat;
+        report = builder.report;
+        properties = builder.properties;
     }
 
 
-    /**
-     * Adds a warning for a specified line number in the file
-     * @param linenumber The offending line
-     * @param warning The warning description
-     * @see #warnings
-     */
-    public void addWarning(int linenumber, String warning){
-        warnings.add("line "+linenumber+": "+warning);
-    }
-
-    /**
-     * Adds a warning for line number -1, ie. for the entire file
-     * @param warning the description of the warning
-     * @see #warnings
-     */
-    public void addWarning(String warning){
-        warnings.add("line -1: "+warning);
-    }
-
-    /**
-     * Adds a error for a specified line number in the file. Remember
-     * to also mark the file as not ofThisFormat or not
-     * validInRegardToThisFormat
-     * @param linenumber the offending line
-     * @param error The error description
-     * @see #errors
-     * @see #ofThisFormat
-     * @see #validInRegardToThisFormat
-     */
-    public void addError(int linenumber, String error){
-        errors.add("line "+linenumber+": "+error);
-    }
-
-
-    /**
-     * Adds a error for line number -1, ie. for the entire file
-     * @param error the description of the error
-     * @see #addError(int, String)
-     */
-    public void addError(String error){
-        errors.add("line -1: "+error);
-    }
-
-    /**
-     *
-     * @param ofThisFormat specifies whether or not the parser could
-     * parse the file
-     * @see #ofThisFormat
-     */
-    public void setOfThisFormat(boolean ofThisFormat) {
-        this.ofThisFormat = ofThisFormat;
-        if (!ofThisFormat){
-            validInRegardToThisFormat = false;
-        }
-    }
-
-    /**
-     *
-     * @param validInRegardToThisFormat Specifies whether or not
-     * there were any errors in regards to the format
-     * @see #validInRegardToThisFormat
-     */
-    public void setValidInRegardToThisFormat(boolean validInRegardToThisFormat) {
-        this.validInRegardToThisFormat = validInRegardToThisFormat;
-    }
 
     /**
      *
@@ -252,5 +173,137 @@ public class ValidateResult {
 
     public List<Property> getProperties() {
         return properties;
+    }
+
+    public static final class Builder {
+
+        private boolean ofThisFormat;
+
+        private boolean validInRegardToThisFormat;
+
+        private URI thisFormat;
+
+        private ServiceReport report;
+
+
+
+        public List<Property> properties;
+
+        public List<String> errors;
+
+        public List<String> warnings;
+
+
+
+        public Builder(final ValidateResult validateResult) {
+            initialize(validateResult);
+        }
+
+        public Builder(URI thisFormat, ServiceReport report) {
+            init();
+            this.thisFormat = thisFormat;
+            this.report = report;
+        }
+
+        public ValidateResult build(){
+            return new ValidateResult(this);
+        }
+
+        private void init(){
+            ofThisFormat = true;
+            validInRegardToThisFormat = true;
+            properties = new ArrayList<Property>();
+            errors = new ArrayList<String>();
+            warnings = new ArrayList<String>();
+        }
+
+        private void initialize(final ValidateResult validateResult){
+            if (validateResult == null){
+                init();
+                return;
+            }
+            else {
+                ofThisFormat = validateResult.ofThisFormat;
+                validInRegardToThisFormat = validateResult.validInRegardToThisFormat;
+                thisFormat = validateResult.thisFormat;
+                report = validateResult.report;
+                properties = validateResult.properties;
+                errors = validateResult.errors;
+                warnings = validateResult.warnings;
+            }
+        }
+
+        public Builder ofThisFormat(boolean ofThisFormat){
+            this.ofThisFormat = ofThisFormat;
+            return this;
+        }
+
+        public Builder validInRegardToThisFormat(boolean validInRegardToThisFormat){
+            this.validInRegardToThisFormat = validInRegardToThisFormat;
+            return this;
+        }
+
+        public Builder thisFormat(URI thisFormat){
+            this.thisFormat = thisFormat;
+            return this;
+        }
+
+        public Builder report(ServiceReport report){
+            this.report = report;
+            return this;
+        }
+
+        public Builder properties(List<Property> properties){
+            this.properties = properties;
+            return this;
+        }
+
+        /**
+         * Adds a warning for a specified line number in the file
+         * @param linenumber The offending line
+         * @param warning The warning description
+         * @see #warnings
+         */
+        public Builder addWarning(int linenumber, String warning){
+            warnings.add("line "+linenumber+": "+warning);
+                        return this;
+        }
+
+        /**
+         * Adds a warning for line number -1, ie. for the entire file
+         * @param warning the description of the warning
+         * @see #warnings
+         */
+        public Builder addWarning(String warning){
+            warnings.add("line -1: "+warning);
+                        return this;
+        }
+
+        /**
+         * Adds a error for a specified line number in the file. Remember
+         * to also mark the file as not ofThisFormat or not
+         * validInRegardToThisFormat
+         * @param linenumber the offending line
+         * @param error The error description
+         * @see #errors
+         * @see #ofThisFormat
+         * @see #validInRegardToThisFormat
+         */
+        public Builder addError(int linenumber, String error){
+            errors.add("line "+linenumber+": "+error);
+            return this;
+        }
+
+
+        /**
+         * Adds a error for line number -1, ie. for the entire file
+         * @param error the description of the error
+         * @see #addError(int, String)
+         */
+        public Builder addError(String error){
+            errors.add("line -1: "+error);
+                        return this;
+        }
+
     }
 }

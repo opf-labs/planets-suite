@@ -3,21 +3,21 @@
  */
 package eu.planets_project.ifr.core.simple.impl;
 
-import java.net.URI;
-import java.util.List;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.*;
-import eu.planets_project.services.validate.Validate;
-import eu.planets_project.services.validate.ValidateResult;
+import java.net.URI;
         
 
 
@@ -56,10 +56,12 @@ public class AlwaysSaysValidService implements Validate {
         sr.setErrorState(ServiceReport.SUCCESS);
         log.info("This service always says yes, unless the digital object is null.");
         if( dob == null ) {
-            return  new ValidateResult(format, sr,null);
+
+            return  new ValidateResult.Builder(format, sr).build();
         } else {
-            ValidateResult result = new ValidateResult(format, sr, null);
-            result.setOfThisFormat(false);
+            ValidateResult result = new ValidateResult.Builder(format, sr)
+                    .ofThisFormat(false)
+                    .build();
             return result;
         }
     }
