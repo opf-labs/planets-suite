@@ -33,6 +33,8 @@ public class FileUtils {
 
     private static final String SYSTEM_TEMP = System
             .getProperty("java.io.tmpdir");
+    
+    private static final String TEMP_STORE_DIR = "planets-if-temp-store";
 
     /** We enforce non-instantiability with a private constructor. */
     private FileUtils() {
@@ -161,7 +163,11 @@ public class FileUtils {
         }
         File input = null;
         try {
-            input = File.createTempFile(name, suffix, new File(SYSTEM_TEMP));
+            File folder = new File(SYSTEM_TEMP, FileUtils.TEMP_STORE_DIR );
+            if( ! folder.exists() ) {
+                folder.mkdirs();
+            }
+            input = File.createTempFile(name, suffix, folder );
             input.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
