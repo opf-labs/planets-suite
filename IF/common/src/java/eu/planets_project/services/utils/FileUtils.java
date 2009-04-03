@@ -162,7 +162,7 @@ public class FileUtils {
         File input = null;
         try {
             input = File.createTempFile(name, suffix, new File(SYSTEM_TEMP));
-            input.deleteOnExit();
+            //input.deleteOnExit();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -389,13 +389,13 @@ public class FileUtils {
         }
         long size = writeInputStreamToOutputStream( in, bos );
         if( log.isInfoEnabled() ) {
-            log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
+            log.info("I Wrote "+size+" bytes to "+target.getAbsolutePath());
         } else {
-            System.out.println("Wrote "+size+" bytes to "+target.getAbsolutePath());
+            System.out.println("S Wrote "+size+" bytes to "+target.getAbsolutePath());
         }
-        log.warn("Wrote "+size+" bytes to "+target.getAbsolutePath());
-        log.error("Wrote "+size+" bytes to "+target.getAbsolutePath());
-        log.fatal("Wrote "+size+" bytes to "+target.getAbsolutePath());
+        log.warn("W Wrote "+size+" bytes to "+target.getAbsolutePath());
+        log.error("E Wrote "+size+" bytes to "+target.getAbsolutePath());
+        log.fatal("F Wrote "+size+" bytes to "+target.getAbsolutePath());
     }
     
     
@@ -416,7 +416,7 @@ public class FileUtils {
 
             while ((dataBit = in.read(buf)) != -1) {
                 out.write(buf, 0, dataBit);
-                size++;
+                size+=dataBit;
             }
 
         } catch (IOException e) {
