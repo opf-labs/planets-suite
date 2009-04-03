@@ -118,7 +118,7 @@ public final class Content implements Serializable, DigitalObject.Content {
     public static Content byValue(final InputStream inputStream) {
     	// create a File from the InputStream and call the Content.byValue(File) 
     	// to avoid having the whole (maybe large) file in memory
-    	File tmpFile = FileUtils.writeInputStreamToFile(inputStream, FileUtils.getSystemTempFolder(), "tempContent.dat");
+    	File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream, "tempContent", ".dat");
         return new Content( tmpFile );
     }
     

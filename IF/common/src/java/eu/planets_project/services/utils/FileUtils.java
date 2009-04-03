@@ -311,23 +311,12 @@ public class FileUtils {
      */
     public static byte[] writeInputStreamToBinary(InputStream inputStream) {
         ByteArrayOutputStream boStream = new ByteArrayOutputStream();
-        int in;
-        try {
-            while ((in = inputStream.read()) != -1) {
-                boStream.write(in);
-            }
-
-            boStream.flush();
-            boStream.close();
-
-            byte[] data = boStream.toByteArray();
-
-            return data;
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        
+        long size = writeInputStreamToOutputStream(inputStream,boStream);
+        if( size > 0 ) {
+            return boStream.toByteArray();
         }
+        
         return null;
     }
 
@@ -392,7 +381,6 @@ public class FileUtils {
      * @return
      */
     public static void writeInputStreamToFile(InputStream in, File target) {
-    	int BUFFER_SIZE = 65536;
         BufferedOutputStream bos = null;
         FileOutputStream fileOut = null;
         try {
@@ -401,28 +389,48 @@ public class FileUtils {
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         }
-        
+        long size = writeInputStreamToOutputStream( in, bos );
+        log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
+    }
+    
+    
+    /**
+     * Writes an input stream to an output stream, using a sane buffer size:
+     * @param in The input stream
+     * @param out The output stream
+     * @return
+     */
+    public static long writeInputStreamToOutputStream( InputStream in, OutputStream out ) {
+        int BUFFER_SIZE = 65536;
         long size = 0;
 
         try {
             int dataBit;
-            
-		    byte[] buf = new byte[BUFFER_SIZE];
+
+            byte[] buf = new byte[BUFFER_SIZE];
 
             while ((dataBit = in.read(buf)) != -1) {
-                bos.write(buf, 0, dataBit);
-                bos.flush();
+                out.write(buf, 0, dataBit);
                 size++;
             }
-            bos.flush();
-            bos.close();
-            fileOut.flush();
-            fileOut.close();
 
         } catch (IOException e) {
             e.printStackTrace();
+
+            return 0;
+
+        } finally { 
+            try {
+                if( out != null ) {
+                    out.flush();
+                    out.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return 0;
+            }
         }
-        log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
+        return size;
     }
 
     /**
@@ -497,9 +505,7 @@ public class FileUtils {
 		                // resultFileList
 		                File currentFile = new File(resultFileList.get(i));
 		                if(currentFile.isFile()) {
-			                // getting the byte[] to write
-			                byte[] current = readFileIntoByteArray(currentFile);
-			                zipWriter.write(current);
+			                long size = writeInputStreamToOutputStream( new FileInputStream( currentFile) , zipWriter );
 			                zipWriter.flush();
 			                zipWriter.closeEntry();
 		                }
