@@ -498,12 +498,12 @@
       </else>
     </if>
     <!-- Emit the property to the ant console -->
-    <property name="echoclasspath" refid="standalone_test_classpath"/>
+    <property name="echoclasspath" refid="run_test_classpath"/>
     <!-- echo message="Classpath = ${echoclasspath}"/ -->
     <!-- Invoke the tests -->
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
-      <classpath refid="standalone_test_classpath" />
+      <classpath refid="run_test_classpath" />
       <sysproperty key="pserv.test.context" value="server"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       <sysproperty key="pserv.test.host" value="${if_server.host}"/>
