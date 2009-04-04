@@ -1,5 +1,7 @@
 package eu.planets_project.tb.unittest.model;
 
+import java.io.File;
+
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentPhase;
@@ -8,7 +10,9 @@ import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
 import eu.planets_project.tb.impl.model.ExperimentExecutionImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentPhaseImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
 import junit.framework.TestCase;
 
 public class ExperimentTest extends TestCase{
@@ -17,15 +21,14 @@ public class ExperimentTest extends TestCase{
 	private long expID1, expID2;
 	
 	protected void setUp(){
-		manager = TestbedManagerImpl.getInstance();
+		manager = new TestbedManagerImpl();
 		//create two new test Experiments
-		ExperimentImpl exp1 = (ExperimentImpl)manager.createNewExperiment();
-		expID1 = exp1.getEntityID();
+		//ExperimentImpl exp1 = (ExperimentImpl)manager.createNewExperiment();
+		//expID1 = exp1.getEntityID();
 			
-		ExperimentImpl exp2 = (ExperimentImpl)manager.createNewExperiment();
-		expID2 = exp2.getEntityID();		
-	}
-	
+		//ExperimentImpl exp2 = (ExperimentImpl)manager.createNewExperiment();
+		//expID2 = exp2.getEntityID();		
+	}  
 	
 	public void testGetCurrentPhasePointer(){
 		Experiment test_exp = manager.getExperiment(this.expID1);

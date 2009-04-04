@@ -3,6 +3,10 @@
  */
 package eu.planets_project.tb.impl.model;
 
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -82,7 +86,7 @@ public class ExperimentImpl extends ExperimentPhaseImpl
 	 * @see eu.planets_project.tb.api.model.Experiment#getExperimentAnalysis()
 	 */
 	
-	public ExperimentEvaluation getExperimentEvaluation() {
+    public ExperimentEvaluation getExperimentEvaluation() {
 		return this.expEvaluation;
 	}
 
@@ -294,6 +298,5 @@ public class ExperimentImpl extends ExperimentPhaseImpl
         if( this.getExperimentApproval().getApprovalUsersIDs().size() == 0 ) return null;
         return this.getExperimentApproval().getApprovalUsersIDs().get(0);
     }
-    
 
 }

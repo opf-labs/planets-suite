@@ -26,10 +26,7 @@ public class Manager {
     }
     
     public String initExperimentAction() {
-		ExperimentBean expBean = new ExperimentBean();
-		// Put Bean into Session; accessible later as #{ExperimentBean}
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+        ExperimentBean.putExperimentIntoSessionExperimentBean( null );
 	    
 		//every new experiment requires a new ontologyDnDBean
 		this.initOntologDnDBean();

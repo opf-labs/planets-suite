@@ -206,8 +206,8 @@ public class WorkflowResult {
             exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
             exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);
             // FIXME This should get a final time out of the execution engine.
-            exp.getExperimentExecutable().setExecutionEndDate(Calendar.getInstance().getTimeInMillis());
             exp.getExperimentExecution().setEndDate(Calendar.getInstance());
+            exp.getExperimentExecutable().setExecutionEndDate(Calendar.getInstance().getTimeInMillis());
             
         }
         

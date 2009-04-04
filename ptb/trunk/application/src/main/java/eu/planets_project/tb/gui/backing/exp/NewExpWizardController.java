@@ -35,14 +35,9 @@ import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
-import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
-import eu.planets_project.tb.impl.model.ontology.OntologyPropertyImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
-import eu.planets_project.tb.impl.persistency.ExecutionRecordPersistency;
+import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
 import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
@@ -53,8 +48,6 @@ import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
 import javax.faces.application.FacesMessage;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URI;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
@@ -62,23 +55,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 
 import org.richfaces.component.html.HtmlDataTable;
-import org.richfaces.model.TreeNode;
 
 public class NewExpWizardController {
     
@@ -286,9 +274,9 @@ public class NewExpWizardController {
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         
-        Experiment exp = expBean.getExperiment();
-        AdminManagerImpl.toEditFromDenied(exp);
+        expBean.resetToEditingStage();
         
+        Experiment exp = expBean.getExperiment();
         testbedMan.updateExperiment(exp);
         return "goToStage1";
     }
@@ -853,35 +841,28 @@ public class NewExpWizardController {
     private String commandSaveExperimentAs() {
         log.info("Attempting to save this experiment as a new experiment.");
         ExperimentBean oldExpBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         
-        ExperimentBean newExpBean = new ExperimentBean();
-        newExpBean.setExperiment(oldExpBean.getExperiment());
-        newExpBean.setEname(oldExpBean.getEname()+"_1");
-        Experiment newExp = testbedMan.createNewExperiment();
-        newExpBean.setExperiment(newExp);
+        // Create a deep copy via the XML serialisation system:
+        Experiment exp = ExperimentViaJAXB.deepCopy( (ExperimentImpl)oldExpBean.getExperiment() );
         
-        testbedMan.registerExperiment(newExp);
+        // Modify Start Date and name
+        exp.setStartDate( Calendar.getInstance() );
+        try {
+            exp.getExperimentSetup().getBasicProperties().setExperimentName( 
+                exp.getExperimentSetup().getBasicProperties().getExperimentName() + " (copy)" );
+        } catch (InvalidInputException e) {
+            e.printStackTrace();
+        }
+        
+        // Place new experiment bean into session:
+        ExperimentBean newExpBean = ExperimentBean.putExperimentIntoSessionExperimentBean(exp);
+        
+        // Clear out the results, and pair back to the 'editor' stage.
+        newExpBean.resetToApprovedStage();
+        newExpBean.resetToEditingStage();
+        
         log.info("commandSaveExperimentAs: ExpBean: "+oldExpBean.getEname()+" saved as "+newExpBean.getEname());
         
-        /*        
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        // Add a message:
-        FacesMessage fmsg = null;
-        if( "success".equals(result)) {
-            // Tell them it went well:
-            fmsg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your data has been saved successfully.","Saved.");
-            log.info("Message: Edit Succeeded.");
-            // Add a Global message:
-            ctx.addMessage(null,fmsg);
-        } else {
-            fmsg = new FacesMessage(FacesMessage.SEVERITY_WARN, "There were problems with your experiment.","Save failed.");
-            log.info("Message: Edit Failed.");
-            // Add a Global message:
-            ctx.addMessage(null,fmsg);
-            return "failure";
-        }
-		*/
         return "goToStage1";
     }
     
@@ -1399,13 +1380,9 @@ public class NewExpWizardController {
 	  public String commandResetAfterFailure() {
           TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-          Experiment exp = expBean.getExperiment();
-          exp.getExperimentExecutable().setExecutableInvoked(false);
-          exp.getExperimentExecutable().setExecutionCompleted(false);
-          exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
-          exp.getExperimentEvaluation().setState(Experiment.STATE_NOT_STARTED);       
-          expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);
+          expBean.resetToApprovedStage();
           // Save these changes:
+          Experiment exp = expBean.getExperiment();
           testbedMan.updateExperiment(exp);
 	      return "success";
 	  }

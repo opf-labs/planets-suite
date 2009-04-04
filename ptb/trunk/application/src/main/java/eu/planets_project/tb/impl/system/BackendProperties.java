@@ -42,9 +42,9 @@ public class BackendProperties {
     public BackendProperties() {
         try {
             java.io.InputStream ResourceFile = getClass().getClassLoader().getResourceAsStream("eu/planets_project/tb/impl/BackendResources.properties");
-            properties.load(ResourceFile); 
+            properties.load(ResourceFile);
             ResourceFile.close();
-        } catch (IOException e) {
+        } catch ( Exception e ) {
             log.error("read BackendResources.properties failed!"+e.toString());
         }
         // This defines the location of the directory:

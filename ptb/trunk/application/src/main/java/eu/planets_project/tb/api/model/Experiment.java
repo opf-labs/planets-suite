@@ -51,4 +51,5 @@ public interface Experiment extends ExperimentPhase{
     public boolean isApproved();
     public boolean isDenied();
     public String getUsernameOfApprover();
+
 }

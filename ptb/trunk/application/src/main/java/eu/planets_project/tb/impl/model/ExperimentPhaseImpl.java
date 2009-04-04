@@ -3,6 +3,9 @@
  */
 package eu.planets_project.tb.impl.model;
 
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 

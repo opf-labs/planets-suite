@@ -1,7 +1,9 @@
 package eu.planets_project.tb.gui.backing;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.context.FacesContext;
@@ -18,6 +20,7 @@ import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.model.ExperimentImpl;
 
 import java.util.Collection;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -189,26 +192,26 @@ public class ListExp extends SortableList {
 				}
                                 if (column.equals("startDate"))
 				{
-                                    String c1_startDate = null;
-                                    if( c1.getCurrentPhase() != null && c1.getCurrentPhase().getStartDate() != null )
-                                        c1_startDate = c1.getCurrentPhase().getStartDate().toString();
-                                    String c2_startDate = null;
-                                    if( c2.getCurrentPhase() != null && c2.getCurrentPhase().getStartDate() != null )
-                                        c2_startDate = c2.getCurrentPhase().getStartDate().toString();
-                                    if (c1_startDate==null) c1_startDate="";
-                                    if (c2_startDate==null) c2_startDate="";
+                                    Date c1_startDate = null;
+                                    if( c1.getStartDate() != null )
+                                        c1_startDate = c1.getStartDate().getTime();
+                                    Date c2_startDate = null;
+                                    if( c2.getStartDate() != null )
+                                        c2_startDate = c2.getStartDate().getTime();
+                                    if (c1_startDate==null) c1_startDate=Calendar.getInstance().getTime();
+                                    if (c2_startDate==null) c2_startDate=Calendar.getInstance().getTime();
                                     return ascending ? c1_startDate.compareTo(c2_startDate) : c2_startDate.compareTo(c1_startDate);
 				}
                                 if (column.equals("exDate"))
 				{
-                                    String c1_exDate = null;
-                                    if( c1.getExperimentExecution().getExecutionEndedDate() != null )
-                                        c1_exDate = c1.getExperimentExecution().getExecutionEndedDate().toString();
-                                    String c2_exDate = null;
-                                    if( c2.getExperimentExecution().getExecutionEndedDate() != null )
-                                        c2_exDate = c2.getExperimentExecution().getExecutionEndedDate().toString();
-                                    if (c1_exDate==null) c1_exDate="";
-                                    if (c2_exDate==null) c2_exDate="";                                    
+                                    Date c1_exDate = null;
+                                    if( c1.getExperimentExecutable().getExecutionEndDate() != null )
+                                        c1_exDate = c1.getExperimentExecutable().getExecutionEndDate().getTime();
+                                    Date c2_exDate = null;
+                                    if( c2.getExperimentExecutable().getExecutionEndDate() != null )
+                                        c2_exDate = c2.getExperimentExecutable().getExecutionEndDate().getTime();
+                                    if (c1_exDate==null) c1_exDate=Calendar.getInstance().getTime();
+                                    if (c2_exDate==null) c2_exDate=Calendar.getInstance().getTime();
                                     return ascending ? c1_exDate.compareTo(c2_exDate) : c2_exDate.compareTo(c1_exDate);
 				}
                                 if (column.equals("currentStage"))
@@ -239,13 +242,8 @@ public class ListExp extends SortableList {
 	    
 	    private String editExperimentAction(Experiment selectedExperiment) {
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
-	      FacesContext ctx = FacesContext.getCurrentInstance();
-
-	      ExperimentBean expBean = new ExperimentBean();
-	      expBean.fill(selectedExperiment);
 	      
-	      //Store selected Experiment Row accessible later as #{Experiment} 
-	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+          ExperimentBean.putExperimentIntoSessionExperimentBean(selectedExperiment);
 	      
 	      // Abort and go to View page if this is an old experiment:
 	      if( AdminManagerImpl.isExperimentDeprecated( selectedExperiment ) ) {
@@ -262,21 +260,15 @@ public class ListExp extends SortableList {
 	    public String exportMyExperimentAction() {
             Experiment selectedExperiment = (Experiment) this.getMyExp_data().getRowData();
 	        DownloadManager dm = (DownloadManager)JSFUtil.getManagedObject("DownloadManager");
-	        return dm.downloadExperiment(selectedExperiment);
+	        return dm.downloadExperiment( (ExperimentImpl)selectedExperiment );
 	    }
 
         public String viewExperimentToApprove()
         {
         
           Experiment selectedExperiment = (Experiment) this.getToAppExp_data().getRowData();
-          FacesContext ctx = FacesContext.getCurrentInstance();
-
-          ExperimentBean expBean = new ExperimentBean();
-          expBean.fill(selectedExperiment);
-
-          //Store selected Experiment Row accessible later as #{Experiment} 
-          ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
-                  
+          ExperimentBean.putExperimentIntoSessionExperimentBean(selectedExperiment);
+          
           // go to edit page
           return "viewExperimentExeManager";
         }
@@ -285,13 +277,7 @@ public class ListExp extends SortableList {
         {
         
           Experiment selectedExperiment = (Experiment) this.getToExecExp_data().getRowData();
-          FacesContext ctx = FacesContext.getCurrentInstance();
-
-          ExperimentBean expBean = new ExperimentBean();
-          expBean.fill(selectedExperiment);
-
-          //Store selected Experiment Row accessible later as #{Experiment} 
-          ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+          ExperimentBean.putExperimentIntoSessionExperimentBean(selectedExperiment);
                   
           // go to edit page
           return "viewExperimentExeManager";
@@ -314,13 +300,8 @@ public class ListExp extends SortableList {
         
           Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
           System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
-          FacesContext ctx = FacesContext.getCurrentInstance();
 
-          ExperimentBean expBean = new ExperimentBean();
-          expBean.fill(selectedExperiment);
-
-          //Store selected Experiment Row accessible later as #{Experiment} 
-          ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+          ExperimentBean.putExperimentIntoSessionExperimentBean(selectedExperiment);
                   
           // go to edit page
           return "viewExp";
@@ -337,10 +318,7 @@ public class ListExp extends SortableList {
             Experiment selectedExperiment = testbedMan.getExperiment(Long.parseLong(linkEid));
             System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
 
-            ExperimentBean expBean = new ExperimentBean();
-            expBean.fill(selectedExperiment);
-            //Store selected Experiment Row accessible later as #{Experiment} 
-            ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+            ExperimentBean.putExperimentIntoSessionExperimentBean(selectedExperiment);
                     
             // go to edit page
             return "viewExp";            
@@ -363,12 +341,8 @@ public class ListExp extends SortableList {
         {
 	      Experiment selectedExperiment = (Experiment) this.getAllExp_data().getRowData();
 	      System.out.println("exp name: "+ selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName());
-	      FacesContext ctx = FacesContext.getCurrentInstance();
-
-	      ExperimentBean expBean = new ExperimentBean();
-	      expBean.fill(selectedExperiment);
-	      //Store selected Experiment Row accessible later as #{Experiment} 
-	      ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+	      
+          ExperimentBean.putExperimentIntoSessionExperimentBean(selectedExperiment);
               
             //go to page for confirming deletion
             return "selectDelete";

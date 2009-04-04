@@ -20,6 +20,7 @@ import javax.activation.MimetypesFileTypeMap;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.serialization.ExperimentFileCache;
 
 /**
@@ -41,7 +42,7 @@ public class DownloadManager {
         if( expID == null ) return "experimentNotFound";
         TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
         Experiment exp = testbedMan.getExperiment(expID);
-        return downloadExperiment(exp);
+        return downloadExperiment( (ExperimentImpl) exp );
     }
     
     /**
@@ -49,9 +50,9 @@ public class DownloadManager {
      * @param exp
      * @return
      */
-    public String downloadExperiment( Experiment exp ) {
+    public String downloadExperiment( ExperimentImpl exp ) {
         String expExportID = expCache.createExperimentExport(exp);
-        return downloadExportedExperiment(expExportID);
+        return downloadExportedExperiment(expExportID, exp);
     }
 
 
@@ -60,7 +61,7 @@ public class DownloadManager {
      * @return
      * @throws IOException
      */
-    public String downloadExportedExperiment(String expExportID) {
+    public String downloadExportedExperiment( String expExportID, ExperimentImpl exp ) {
         FacesContext ctx = FacesContext.getCurrentInstance();
 
         // Decode the file name (might contain spaces and on) and prepare file object.
@@ -103,7 +104,8 @@ public class DownloadManager {
             response.setContentType(contentType);
             response.setContentLength(contentLength);
             response.setHeader(
-                "Content-disposition", "attachment; filename=\"" + expExportID + "\"");
+                "Content-disposition", "attachment; filename=\"" + 
+                exp.getExperimentSetup().getBasicProperties().getExperimentName() + ".xml\"");
             output = new BufferedOutputStream(response.getOutputStream());
 
             // Write file out:

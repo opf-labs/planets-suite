@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.impl.model.ExperimentImpl;
 
 /**
  * This manages the temporary files needed to import and export Experiments.
@@ -48,7 +49,7 @@ public class ExperimentFileCache {
      * @param exp
      * @return
      */
-    public String createExperimentExport( Experiment exp ) {
+    public String createExperimentExport( ExperimentImpl exp ) {
         try {
             File tmp = createTempFile();
             ExperimentViaJAXB.writeToFile(exp, tmp);

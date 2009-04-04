@@ -72,7 +72,7 @@ implements eu.planets_project.tb.api.model.BasicProperties, java.io.Serializable
 		initialiseVariables();
 	}
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.BasicProperties#getConsiderations()
 	 */
 	public String getConsiderations() {

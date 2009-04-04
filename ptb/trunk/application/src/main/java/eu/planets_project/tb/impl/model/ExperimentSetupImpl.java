@@ -52,6 +52,7 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 	
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentResourcesImpl experimentResources;
+	
 	//a helper reference pointer, for retrieving the experiment in the phase
     @XmlTransient
 	private long lExperimentIDRef;
@@ -70,9 +71,8 @@ public class ExperimentSetupImpl extends ExperimentPhaseImpl implements
 		
 		setPhasePointer(PHASE_EXPERIMENTSETUP);
 	}
-	
-	
-	/**
+
+    /**
 	 * A helper reference pointer on the experiment's ID to retrieve other phases or the
 	 * experiment itself if this is required.
 	 * @return

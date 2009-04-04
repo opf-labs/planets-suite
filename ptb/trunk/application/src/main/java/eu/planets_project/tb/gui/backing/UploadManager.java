@@ -4,6 +4,7 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.File;
+import java.util.Calendar;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.TestbedManager;
@@ -68,19 +69,13 @@ public class UploadManager {
      * @return "success" if all goes well.
      */
     public String importExperiment( File uploaded ) {
-        log.info("Importing experiment from file: "+uploaded.getPath());
-        ExperimentImpl exp = ExperimentViaJAXB.readFromFile(uploaded);
-        log.info("Parsed into Experiment: "+exp.getExperimentSetup().getBasicProperties().getExperimentName());
-        // Create a new Experiment:
-        TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-        // Merge into DB
-        ExperimentPersistencyRemote dao_r = ExperimentPersistencyImpl.getInstance();
-        Experiment newExp = testbedMan.createNewExperiment();
-        exp.setEntityID(newExp.getEntityID());
-        dao_r.updateExperiment(exp);
-        testbedMan.updateExperiment(exp);
-        log.info("Persisted experiment.");
-        return "success";
+        try {
+            long eid = ExperimentViaJAXB.storeNewExperiment( uploaded );
+        } catch ( Exception e ) {
+            e.printStackTrace();
+            return "import_failed";
+        }
+        return "my_experiments";
     }
 
 }

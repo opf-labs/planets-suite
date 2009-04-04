@@ -45,6 +45,7 @@ implements ExperimentApproval, java.io.Serializable {
 	@Transient
     @XmlTransient
 	//This annotation specifies that the property or field is not persistent.
+    // This field is not used anywhere, but not removed as old data may contain it!
 	private ExperimentSetup expSetup;
 
 	//required for EJB Persistence
@@ -72,17 +73,7 @@ implements ExperimentApproval, java.io.Serializable {
         this.lExperimentIDRef = lExperimentIDRef;
     }
 	
-	public ExperimentApprovalImpl(ExperimentSetup expSetup){
-		//roles as defined in the Class TestbedRoles
-		vReqRoles = new Vector<Integer>();
-		vApprovalUsers = new Vector<String>();
-		bGo = false;
-		this.expSetup = expSetup;
-		
-		setPhasePointer(PHASE_EXPERIMENTAPPROVAL);
-	}
-
-	/* (non-Javadoc)
+    /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentApproval#addApprovalRequiredRole(int)
 	 */
 	public void addApprovalRequiredRole(int roleID) {

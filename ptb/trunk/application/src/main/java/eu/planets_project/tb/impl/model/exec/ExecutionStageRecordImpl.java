@@ -63,6 +63,10 @@ public class ExecutionStageRecordImpl implements Serializable {
 //    private List<MeasurementRecordImpl> measurements;
     private Vector<MeasurementRecordImpl> manualMeasurements = new Vector<MeasurementRecordImpl>();
     
+    /** for JAXB */
+    @SuppressWarnings("unused")
+    private ExecutionStageRecordImpl() {
+    }
     /**
      * @param stagePreMigrate
      */

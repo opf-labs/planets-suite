@@ -209,12 +209,8 @@ public class TestbedManagerImpl
 		    edao.updateExperiment(experiment);
 			ExperimentImpl exp = (ExperimentImpl)edao.findExperiment(experiment.getEntityID());
 		    // Also update the Experiment backing bean to reflect the changes:
-		    ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-		    if( expBean == null ) expBean = new ExperimentBean();
-            log.debug("Re-filling expBean from exp.");
-            expBean.fill(exp);
-            FacesContext ctx = FacesContext.getCurrentInstance();
-            ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+            ExperimentBean.putExperimentIntoSessionExperimentBean( exp );
+            
           //End Transaction
 		} else {
 		    log.error("updateExperiment Failed: No Entity ID for experiment: "+experiment.getExperimentSetup().getBasicProperties().getExperimentName());
@@ -451,6 +447,21 @@ public class TestbedManagerImpl
      */
     public List<Experiment> getPagedExperiments( int firstRow, int numberOfRows, String sortField, boolean descending ) {
         return edao.getPagedExperiments(firstRow, numberOfRows, sortField, descending);
+    }
+    
+    /** FIXME Add a deep copy... */
+    public static long copyToNewExperiment( TestbedManager tbm, ExperimentImpl src ) {
+        Experiment ne = src; // FIXME Serialise...???
+        ne.getEntityID();
+        ne.getExperimentApproval().getEntityID();
+        ne.getExperimentEvaluation().getEntityID();
+        ne.getExperimentExecutable();
+        ne.getExperimentExecutable();
+        ne.getExperimentExecution().getEntityID();
+        ne.getExperimentSetup().getEntityID();
+        ne.getExperimentSetup().getBasicProperties();
+        long eid = tbm.registerExperiment(ne);
+        return eid;
     }
 
 }

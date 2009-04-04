@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * @author alindley
@@ -22,6 +23,7 @@ public class ExperimentResourcesImpl implements
 	
 	@Id
 	@GeneratedValue
+	@XmlTransient
 	private long lExpRessourceID;
 	private int iNumberOfOutputFiles;
 	private int iIntensity;

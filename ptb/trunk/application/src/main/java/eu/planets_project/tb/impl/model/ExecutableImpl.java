@@ -27,8 +27,8 @@ public abstract class ExecutableImpl implements Executable, java.io.Serializable
 	private boolean bExecutionSuccess = false;
 	private String sXMLRequest ="";
 	private String sXMLResponds = "";
-	private Calendar execStartDate = new GregorianCalendar();
-	private Calendar execEndDate = new GregorianCalendar();
+	private Calendar execStartDate = null;
+	private Calendar execEndDate = null;
     /** This is a string that identifies which batch system we are running on. */
     private String batchQueueIdentifier;
     /** This is the batch-processing job identifier from whatever the batch handler is. */

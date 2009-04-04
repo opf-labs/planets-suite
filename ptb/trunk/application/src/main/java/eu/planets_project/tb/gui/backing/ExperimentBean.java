@@ -201,6 +201,15 @@ public class ExperimentBean {
         this.litrefauthor.add("");
     }
     
+    public static ExperimentBean putExperimentIntoSessionExperimentBean( Experiment exp ) {
+        ExperimentBean expBean = new ExperimentBean();
+        if( exp != null ) expBean.fill(exp);
+        //Store selected Experiment Row accessible later as #{Experiment} 
+        FacesContext ctx = FacesContext.getCurrentInstance();
+        ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
+        return expBean;
+    }
+    
     public void fill(Experiment exp) {
         log.info("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName() + " ID:"+exp.getEntityID());
         log.debug("Experiment Phase Name = " + exp.getPhaseName());
@@ -1684,6 +1693,26 @@ public class ExperimentBean {
      */
     public long getNumExecutions(){
     	return this.numExecutions;
+    }
+
+    /* ------------------------------------------------------------ */
+    
+    /**
+     */
+    public void resetToApprovedStage() {
+        exp.getExperimentExecutable().setExecutableInvoked(false);
+        exp.getExperimentExecutable().setExecutionCompleted(false);
+        exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
+        exp.getExperimentEvaluation().setState(Experiment.STATE_NOT_STARTED);       
+        setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);
+    }
+
+    /**
+     * 
+     */
+    public void resetToEditingStage() {
+        AdminManagerImpl.toEditFromDenied(exp);
+        setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);
     }
     
 }
