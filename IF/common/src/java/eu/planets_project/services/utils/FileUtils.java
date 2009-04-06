@@ -16,6 +16,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Adler32;
+import java.util.zip.CheckedInputStream;
+import java.util.zip.CheckedOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -449,7 +452,11 @@ public class FileUtils {
             try {
                 if( out != null ) {
                     out.flush();
-                    out.close();
+// Commented the following line out, because it caused a crash with the zip utility methods, 
+// when the ZipWriter tried to close the current ZipEntry.
+// After a short look at the referencing methods, it seems that all Outputstreams are closed outside this
+// this method! So it should do no harm to remove it here?!                    
+//                    out.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -607,170 +614,170 @@ public class FileUtils {
 		return extractedFiles;
     }
 	
-//	/**
-//	 * @param srcFolder the resulting zip file will contain all files in this
-//	 *        folder
-//	 * @param destFolder The folder where the created Zip file should live
-//	 * @param zipFileName the name, the returned zip file should have
-//	 * @return a ZipResult including:<br/>
-//	 * 			1) the zip file, which is containing all files in 'srcFolder'<br/>
-//	 * 			or null, if the folder does not contain a file.<br/>
-//	 * 			2) the checksum value of that zip file
-//	 * @throws IOException
-//	 */
-//		public static ZipResult createZipFileWithChecksum(File srcFolder, File destFolder, String zipFileName) {
-//		// The target zip file
-//		File resultZIP = new File(destFolder, zipFileName);
-//		CheckedOutputStream checksum = null;
-//	    
-//		// Creating an empty ArrayList for calling the listAllFiles method with
-//	    // "resultFolder" as root.
-//	    ArrayList<String> listOfFiles = new ArrayList<String>();
-//	    
-////	    listOfFiles.add(srcFolder + "/");
-//	
-//	    // Calling the recursive method listAllFiles, which lists all files in
-//	    // all folders in the resultFolder.
-//	    ArrayList<String> resultFileList;
-//	    // try {
-//	    resultFileList = listAllFilesAndFolders(srcFolder, listOfFiles);
-//	
-//	    if (resultFileList.size() == 0) {
-//	        return null;
-//	    } else {
-//	        // "Normalize" the paths in resultFileList for creation of
-//	        // ZipEntries
-//	        ArrayList<String> normalizedPaths = new ArrayList<String>();
-//	
-//	        for (int i = 0; i < resultFileList.size(); i++) {
-//	            String currentPath = resultFileList.get(i);
-//	            // Strip the beginning of the String, except the "[FOLDER-NAME]
-//	            // itself\"....
-//	            int index = currentPath.indexOf(srcFolder.getName());
-//	            currentPath = currentPath.substring(index);
-//	            // Delete the [FOLDER-NAME] part of the paths
-//	            currentPath = currentPath.replace(srcFolder.getName() + File.separator, "");
-//	            // add the normalized path to the list
-//	            normalizedPaths.add(currentPath);
-//	        }
-//	
-//	        
-//	        // Write the output ZIP
-//	        ZipOutputStream zipWriter;
-//	        
-//	        try {
-//	        	checksum = new CheckedOutputStream(new FileOutputStream(resultZIP), new Adler32());
-//	            zipWriter = new ZipOutputStream(new BufferedOutputStream(checksum));
-////	            zipWriter.setMethod(ZipOutputStream.DEFLATED);
-//	            zipWriter.setLevel(9); //Best compression
-//	            
-//	            // writing the resultFiles to the ZIP
-//	            for (int i = 0; i < normalizedPaths.size(); i++) {
-//	                // Creating the ZipEntries using the normalizedList
-//	            	ZipEntry zipEntry = new ZipEntry(normalizedPaths.get(i));
-//	            	if(zipEntry.isDirectory()) {
-//	            		zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
-//	            		zipWriter.closeEntry();
-//	            	}
-//	            	else {
-//		                // And getting the files to write for the ZipEntry from the
-//		                // resultFileList
-//		                File currentFile = new File(resultFileList.get(i));
-//		                // getting the byte[] to write
-//	                	zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
-//	                	
-//		                byte[] current = writeInputStreamToBinary(new FileInputStream(currentFile));
-//		                zipWriter.write(current);
-//		                zipWriter.flush();
-//		                zipWriter.closeEntry();
-//	            	}
-//	            }
-//	            zipWriter.flush();
-//	            zipWriter.finish();
-//	            zipWriter.close();
-//	            System.out.println("[createSimpleZipFile()] Checksum: " + checksum.getChecksum().getValue());
-//	        } catch (FileNotFoundException e) {
-//	            e.printStackTrace();
-//	        } catch (IOException e) {
-//	            e.printStackTrace();
-//	        }
-//	    }
-//	
-//	    // Getting a reference to the new ZIP file
-//	    ZipResult zipResult = new ZipResult(resultZIP, checksum.getChecksum().getValue());
-//	    return zipResult;
-//	}
+	/**
+	 * @param srcFolder the resulting zip file will contain all files in this
+	 *        folder
+	 * @param destFolder The folder where the created Zip file should live
+	 * @param zipFileName the name, the returned zip file should have
+	 * @return a ZipResult including:<br/>
+	 * 			1) the zip file, which is containing all files in 'srcFolder'<br/>
+	 * 			or null, if the folder does not contain a file.<br/>
+	 * 			2) the checksum value of that zip file
+	 * @throws IOException
+	 */
+		public static ZipResult createZipFileWithChecksum(File srcFolder, File destFolder, String zipFileName) {
+		// The target zip file
+		File resultZIP = new File(destFolder, zipFileName);
+		CheckedOutputStream checksum = null;
+	    
+		// Creating an empty ArrayList for calling the listAllFiles method with
+	    // "resultFolder" as root.
+	    ArrayList<String> listOfFiles = new ArrayList<String>();
+	    
+//	    listOfFiles.add(srcFolder + "/");
+	
+	    // Calling the recursive method listAllFiles, which lists all files in
+	    // all folders in the resultFolder.
+	    ArrayList<String> resultFileList;
+	    // try {
+	    resultFileList = listAllFilesAndFolders(srcFolder, listOfFiles);
+	
+	    if (resultFileList.size() == 0) {
+	        return null;
+	    } else {
+	        // "Normalize" the paths in resultFileList for creation of
+	        // ZipEntries
+	        ArrayList<String> normalizedPaths = new ArrayList<String>();
+	
+	        for (int i = 0; i < resultFileList.size(); i++) {
+	            String currentPath = resultFileList.get(i);
+	            // Strip the beginning of the String, except the "[FOLDER-NAME]
+	            // itself\"....
+	            int index = currentPath.indexOf(srcFolder.getName());
+	            currentPath = currentPath.substring(index);
+	            // Delete the [FOLDER-NAME] part of the paths
+	            currentPath = currentPath.replace(srcFolder.getName() + File.separator, "");
+	            // add the normalized path to the list
+	            normalizedPaths.add(currentPath);
+	        }
+	
+	        
+	        // Write the output ZIP
+	        ZipOutputStream zipWriter;
+	        
+	        try {
+	        	checksum = new CheckedOutputStream(new FileOutputStream(resultZIP), new Adler32());
+	            zipWriter = new ZipOutputStream(new BufferedOutputStream(checksum));
+//	            zipWriter.setMethod(ZipOutputStream.DEFLATED);
+	            zipWriter.setLevel(9); //Best compression
+	            
+	            // writing the resultFiles to the ZIP
+	            for (int i = 0; i < normalizedPaths.size(); i++) {
+	                // Creating the ZipEntries using the normalizedList
+	            	ZipEntry zipEntry = new ZipEntry(normalizedPaths.get(i));
+	            	if(zipEntry.isDirectory()) {
+	            		zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
+	            		zipWriter.closeEntry();
+	            	}
+	            	else {
+		                // And getting the files to write for the ZipEntry from the
+		                // resultFileList
+		                File currentFile = new File(resultFileList.get(i));
+		                // getting the byte[] to write
+	                	zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
+	                	
+		                byte[] current = writeInputStreamToBinary(new FileInputStream(currentFile));
+		                zipWriter.write(current);
+		                zipWriter.flush();
+		                zipWriter.closeEntry();
+	            	}
+	            }
+	            zipWriter.flush();
+	            zipWriter.finish();
+	            zipWriter.close();
+	            System.out.println("[createSimpleZipFile()] Checksum: " + checksum.getChecksum().getValue());
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	
+	    // Getting a reference to the new ZIP file
+	    ZipResult zipResult = new ZipResult(resultZIP, checksum.getChecksum().getValue());
+	    return zipResult;
+	}
 		
 		
-//	/**
-//	 * Extracts all files from a given Zip file.
-//	 * 
-//	 * @param zipFile the zip file to extract files from
-//	 * @param destDir the folder where the extracted files should be placed in
-//	 * @return a List<File> with all extracted files if the actual checksum is 
-//	 * equal to the passed checksumValue<br/>
-//	 *                      - <strong>null</strong> if not!
-//	 */ 
-//	public static List<File> extractFilesFromZipAndCheck(File zipFile, File destDir, long checksumValue) {
-//    	
-//    	List<File> extractedFiles = new ArrayList<File>();
-//    	CheckedInputStream checksum = null;
-//    	
-//    		// Open the ZIP file
-//            try {
-//            	checksum = 
-//            		new CheckedInputStream(new FileInputStream(zipFile), new Adler32());
-//            	
-//            	ZipInputStream in = new ZipInputStream(new BufferedInputStream(checksum));
-//            	OutputStream out = null;
-//            	
-//            	ZipEntry entry = null;
-//            	
-//				while((entry = in.getNextEntry())!=null) {
-//				    // Get the first entry
-//
-//					File outFile = null;
-//				    if(entry.isDirectory()) {
-//				    	outFile = new File(destDir, entry.getName());
-//				    	boolean createdFolder = outFile.mkdir();
-////				    	extractedFiles.add(outFile);
-//				    }
-//				    else {
-//						// Open the output file
-//					    outFile = new File(destDir, entry.getName());
-////						    System.out.println("Create file: " + outFile.getAbsolutePath());
-////					    outFile.createNewFile();
-////					    out = new BufferedOutputStream(new FileOutputStream(outFile));
-////					    // Transfer bytes from the ZIP file to the output file
-////					    byte[] buf = new byte[1024];
-////					    int len;
-////					    
-////					    while ((len = in.read(buf)) > 0) {
-////					        out.write(buf, 0, len);
-////					        out.flush();
-////					    }
-//					    writeInputStreamToFile(in, outFile);
-//					 // Add extracted Files to List
-//					    extractedFiles.add(outFile);
-//
-//				    }
-//				}
-//				// Close the streams
-////			    out.close();
-//			    in.close();
-//			    System.out.println("[extractFilesFromZip()] Checksum: " + checksum.getChecksum().getValue());
-//			} catch (FileNotFoundException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			if(checksumValue != checksum.getChecksum().getValue()) {
-//        		System.err.println("Wrong checksum. Zip file might has been damaged!");
-//        	}
-//		return extractedFiles;
-//    }	
+	/**
+	 * Extracts all files from a given Zip file.
+	 * 
+	 * @param zipFile the zip file to extract files from
+	 * @param destDir the folder where the extracted files should be placed in
+	 * @return a List<File> with all extracted files if the actual checksum is 
+	 * equal to the passed checksumValue<br/>
+	 *                      - <strong>null</strong> if not!
+	 */ 
+	public static List<File> extractFilesFromZipAndCheck(File zipFile, File destDir, long checksumValue) {
+    	
+    	List<File> extractedFiles = new ArrayList<File>();
+    	CheckedInputStream checksum = null;
+    	
+    		// Open the ZIP file
+            try {
+            	checksum = 
+            		new CheckedInputStream(new FileInputStream(zipFile), new Adler32());
+            	
+            	ZipInputStream in = new ZipInputStream(new BufferedInputStream(checksum));
+            	OutputStream out = null;
+            	
+            	ZipEntry entry = null;
+            	
+				while((entry = in.getNextEntry())!=null) {
+				    // Get the first entry
+
+					File outFile = null;
+				    if(entry.isDirectory()) {
+				    	outFile = new File(destDir, entry.getName());
+				    	boolean createdFolder = outFile.mkdir();
+//				    	extractedFiles.add(outFile);
+				    }
+				    else {
+						// Open the output file
+					    outFile = new File(destDir, entry.getName());
+//						    System.out.println("Create file: " + outFile.getAbsolutePath());
+//					    outFile.createNewFile();
+//					    out = new BufferedOutputStream(new FileOutputStream(outFile));
+//					    // Transfer bytes from the ZIP file to the output file
+//					    byte[] buf = new byte[1024];
+//					    int len;
+//					    
+//					    while ((len = in.read(buf)) > 0) {
+//					        out.write(buf, 0, len);
+//					        out.flush();
+//					    }
+					    writeInputStreamToFile(in, outFile);
+					 // Add extracted Files to List
+					    extractedFiles.add(outFile);
+
+				    }
+				}
+				// Close the streams
+//			    out.close();
+			    in.close();
+			    System.out.println("[extractFilesFromZip()] Checksum: " + checksum.getChecksum().getValue());
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(checksumValue != checksum.getChecksum().getValue()) {
+        		System.err.println("Wrong checksum. Zip file might has been damaged!");
+        	}
+		return extractedFiles;
+    }	
 	
 	
 

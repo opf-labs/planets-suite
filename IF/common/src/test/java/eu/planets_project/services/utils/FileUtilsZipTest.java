@@ -24,13 +24,13 @@ import eu.planets_project.services.datatypes.Checksum;
  */
 public class FileUtilsZipTest {
 
-	public static File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/testFileUtils");
-//	public static File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/test_zip");
+//	public static File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/testFileUtils");
+	public static File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/test_zip");
 	
 	public static File OUTPUT_FOLDER = FileUtils.createWorkFolderInSysTemp("FileUtilsZipTest_OUT");
 	public static File EXTRACT_RESULT_OUT = FileUtils.createFolderInWorkFolder(OUTPUT_FOLDER, "EXTRACTED");
 	public static File zip = null;
-//	public static ZipResult zipResult = null;
+	public static ZipResult zipResult = null;
 //	public static Checksum checksum = null;
 	
 //	@BeforeClass
@@ -58,6 +58,8 @@ public class FileUtilsZipTest {
 		System.out.println("Please find ZIP here: " + zip.getAbsolutePath());
 //		System.out.println("Zip Checksum is: " + zipResult.getChecksum());
 	}
+	
+	
 
 
 	/**
@@ -68,6 +70,41 @@ public class FileUtilsZipTest {
 //		System.out.println("Checksum before Extraction: " + zipResult.getChecksum());
 //		List<File> files = FileUtils.extractFilesFromZipAndCheck(zip, EXTRACT_RESULT_OUT, zipResult.getChecksum());
 		List<File> files = FileUtils.extractFilesFromZip(zip, EXTRACT_RESULT_OUT);
+		if(files!=null) {
+			for (Iterator iterator = files.iterator(); iterator.hasNext();) {
+				File file = (File) iterator.next();
+				System.out.println("Extracted file name: " + file.getAbsolutePath());
+			}
+		}
+	}
+	
+	/**
+	 * Test method for {@link eu.planets_project.services.utils.FileUtils#createZipFileWithChecksum(java.io.File, File, java.lang.String)}.
+	 * @throws IOException 
+	 * @throws ZipException 
+	 */
+	@Test
+	public void testCreateZipFileWithChecksum() throws ZipException, IOException {
+		File[] files = TEST_FILE_FOLDER.listFiles();
+		System.out.println("File count: " + files.length);
+		for (int i = 0; i < files.length; i++) {
+			System.out.println(i + ": " + files[i].getAbsolutePath());
+		}
+//		zip = FileUtils.createSimpleZipFile(TEST_FILE_FOLDER, OUTPUT_FOLDER, TEST_FILE_FOLDER.getName() + ".zip");
+		zipResult = FileUtils.createZipFileWithChecksum(TEST_FILE_FOLDER, OUTPUT_FOLDER, TEST_FILE_FOLDER.getName() + ".zip");
+		zip = zipResult.getZipFile();
+		System.out.println("Please find ZIP here: " + zip.getAbsolutePath());
+		System.out.println("Zip Checksum is: " + zipResult.getChecksum());
+	}
+	
+	/**
+	 * Test method for {@link eu.planets_project.services.utils.FileUtils#extractFilesFromZip(java.io.File)}.
+	 */
+	@Test
+	public void testcheckAndExtractFilesFromZip() {
+		System.out.println("Checksum before Extraction: " + zipResult.getChecksum());
+		List<File> files = FileUtils.extractFilesFromZipAndCheck(zip, EXTRACT_RESULT_OUT, zipResult.getChecksum());
+//		List<File> files = FileUtils.extractFilesFromZip(zip, EXTRACT_RESULT_OUT);
 		if(files!=null) {
 			for (Iterator iterator = files.iterator(); iterator.hasNext();) {
 				File file = (File) iterator.next();
