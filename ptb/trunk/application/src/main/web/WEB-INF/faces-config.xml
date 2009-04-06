@@ -237,6 +237,7 @@
  
  <!-- navigating between stages of experiment wizard -->
  <navigation-rule>
+  <from-view-id>/*</from-view-id>
   <navigation-case>
    <from-outcome>goToStage1</from-outcome>
    <to-view-id>/exp/exp_stage1.xhtml</to-view-id>

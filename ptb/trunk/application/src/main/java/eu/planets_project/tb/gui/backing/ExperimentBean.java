@@ -201,15 +201,6 @@ public class ExperimentBean {
         this.litrefauthor.add("");
     }
     
-    public static ExperimentBean putExperimentIntoSessionExperimentBean( Experiment exp ) {
-        ExperimentBean expBean = new ExperimentBean();
-        if( exp != null ) expBean.fill(exp);
-        //Store selected Experiment Row accessible later as #{Experiment} 
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        ctx.getExternalContext().getSessionMap().put("ExperimentBean", expBean);
-        return expBean;
-    }
-    
     public void fill(Experiment exp) {
         log.info("Filling the ExperimentBean with experiment: "+ exp.getExperimentSetup().getBasicProperties().getExperimentName() + " ID:"+exp.getEntityID());
         log.debug("Experiment Phase Name = " + exp.getPhaseName());

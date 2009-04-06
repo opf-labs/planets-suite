@@ -10,6 +10,7 @@ import javax.faces.event.PhaseListener;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.exp.ExpBeanReqManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
 /**
@@ -28,6 +29,11 @@ public class ExpDesignPhaseListener implements PhaseListener {
      */
     public void afterPhase(PhaseEvent arg0) {
         FacesContext context = arg0.getFacesContext();
+        /*
+        ExpBeanReqManager ebr = new ExpBeanReqManager();
+        ebr.setEid( (String) context.getExternalContext().getRequestParameterMap().get("eid") );
+        */
+        
         String viewId = context.getViewRoot().getViewId();
         // log.debug("ViewID: "+viewId);
         if( viewId.startsWith("/exp/exp_stage") ) {
@@ -39,6 +45,7 @@ public class ExpDesignPhaseListener implements PhaseListener {
             viewId.startsWith("/admin/exp_delete") ) {
             ExpDesignPhaseListener.redirectIfRequired(context, "browse_experiments");
         }
+
     }
     
     private static void redirectIfRequired(FacesContext context, String newView ) {
@@ -57,8 +64,6 @@ public class ExpDesignPhaseListener implements PhaseListener {
      * @see javax.faces.event.PhaseListener#beforePhase(javax.faces.event.PhaseEvent)
      */
     public void beforePhase(PhaseEvent arg0) {
-        // TODO Auto-generated method stub
-
     }
 
     /* (non-Javadoc)

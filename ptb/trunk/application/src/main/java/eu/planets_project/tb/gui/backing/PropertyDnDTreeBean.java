@@ -67,7 +67,10 @@ public class PropertyDnDTreeBean{
     private static final String VIEW_ROTHENBERG = "rothenberg";
     
     private static Log log = LogFactory.getLog(PropertyDnDTreeBean.class);
-    
+
+    // Make this session-scoped, for speed:
+    OntologyHandlerImpl ontoHandler = OntologyHandlerImpl.getInstance();
+
     //requires a no-arg constructor
     public PropertyDnDTreeBean(){
     	fillAvailableViews(new String[]{VIEW_STANDARD,VIEW_ROTHENBERG});
@@ -75,7 +78,6 @@ public class PropertyDnDTreeBean{
     }
     
     private void loadOwlOntology(){
-    	OntologyHandlerImpl ontoHandler = OntologyHandlerImpl.getInstance();
 		this.owlModel = ontoHandler.getOWLModel();
 		OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology1:specificationPropertyNames");
 		log.debug("loaded ontology."+startClass.getPrefixedName());

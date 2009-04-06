@@ -855,17 +855,31 @@ public class NewExpWizardController {
         }
         
         // Place new experiment bean into session:
-        ExperimentBean newExpBean = ExperimentBean.putExperimentIntoSessionExperimentBean(exp);
+        ExperimentBean newExpBean = ExpBeanReqManager.putExperimentIntoSessionExperimentBean(exp);
         
         // Clear out the results, and pair back to the 'editor' stage.
         newExpBean.resetToApprovedStage();
         newExpBean.resetToEditingStage();
         
         log.info("commandSaveExperimentAs: ExpBean: "+oldExpBean.getEname()+" saved as "+newExpBean.getEname());
+
+        // Test hard redirect:
+        //NewExpWizardController.redirectToExpStage(exp.getEntityID(), 1);
         
+        // Return generic result, to avoid JSF navigation taking over.
+        //return "success";
         return "goToStage1";
     }
     
+    /**
+     * @param entityID
+     * @param i
+     */
+    private static void redirectToExpStage(long eid, int i) {
+        if( i < 1 || i > 6 ) i = 1;
+        JSFUtil.redirect("/exp/exp_stage"+i+".faces?eid="+eid);
+    }
+
     private String commandSaveExperimentAndGoto(int stage, String destination ) {
         String result = commandSaveExperiment( stage );
         log.info("Save: "+result);

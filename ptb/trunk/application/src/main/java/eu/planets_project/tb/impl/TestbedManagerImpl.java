@@ -16,7 +16,7 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.exp.ExpBeanReqManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.CommentManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
@@ -209,7 +209,7 @@ public class TestbedManagerImpl
 		    edao.updateExperiment(experiment);
 			ExperimentImpl exp = (ExperimentImpl)edao.findExperiment(experiment.getEntityID());
 		    // Also update the Experiment backing bean to reflect the changes:
-            ExperimentBean.putExperimentIntoSessionExperimentBean( exp );
+            ExpBeanReqManager.putExperimentIntoSessionExperimentBean( exp );
             
           //End Transaction
 		} else {

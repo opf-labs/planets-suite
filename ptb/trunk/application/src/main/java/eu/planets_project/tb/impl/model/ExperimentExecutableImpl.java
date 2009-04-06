@@ -139,7 +139,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
      * @see eu.planets_project.tb.api.model.ExperimentExecutable#getManualProperties()
      */
     public Vector<String> getManualProperties(String stage) {
-        if(this.manualProperties.containsKey(stage)){
+        if(this.manualProperties != null && this.manualProperties.containsKey(stage)){
         	return this.manualProperties.get(stage);
         }
         return new Vector<String>();
@@ -150,7 +150,9 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
      * @see eu.planets_project.tb.api.model.ExperimentExecutable#setManualProperties(java.lang.String, java.util.Vector)
      */
     public void setManualProperties(String stage, Vector<String> propURIs) {
-        this.manualProperties.put(stage, propURIs);
+        if( this.manualProperties != null ) {
+            this.manualProperties.put(stage, propURIs);
+        }
     }
     
     /* (non-Javadoc)

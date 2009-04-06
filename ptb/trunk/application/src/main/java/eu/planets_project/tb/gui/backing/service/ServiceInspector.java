@@ -11,7 +11,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 
 /**
  * 
- * A request-scope bean that handles inspection of a service.  The JSF configuration passes an
+ * A request-scope bean that handles inspection of a service.  The URLs and JSF links pass an
  * f:param to this bean, which looks up the service and makes it available to the page.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
