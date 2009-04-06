@@ -34,7 +34,7 @@ public class ExtractorPropertiesListerTest {
      */
     @BeforeClass
     public static void setup() {
-        File puidFile = new File(System.getenv("EXTRACTOR_HOME")
+        File puidFile = new File(System.getenv("FPMTOOL_HOME")
                 + File.separator + "res" + File.separator + "PUIDList.txt");
         formatIDs = new File("PP/xcl/src/resources/fpm_files/"
                 + "formatIDs.txt");
