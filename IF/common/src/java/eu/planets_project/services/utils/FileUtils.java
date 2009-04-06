@@ -668,6 +668,7 @@ public class FileUtils {
 	        try {
 	        	checksum = new CheckedOutputStream(new FileOutputStream(resultZIP), new Adler32());
 	            zipWriter = new ZipOutputStream(new BufferedOutputStream(checksum));
+	            log.info("Checksum algorithm: Adler32");
 //	            zipWriter.setMethod(ZipOutputStream.DEFLATED);
 	            zipWriter.setLevel(9); //Best compression
 	            
@@ -729,6 +730,7 @@ public class FileUtils {
             		new CheckedInputStream(new FileInputStream(zipFile), new Adler32());
             	
             	ZipInputStream in = new ZipInputStream(new BufferedInputStream(checksum));
+            	log.info("Checksum algorithm: Adler32");
             	OutputStream out = null;
             	
             	ZipEntry entry = null;
@@ -765,7 +767,7 @@ public class FileUtils {
 				// Close the streams
 //			    out.close();
 			    in.close();
-			    System.out.println("[extractFilesFromZip()] Checksum: " + checksum.getChecksum().getValue());
+			    log.info("[extractFilesFromZip()] Checksum: " + checksum.getChecksum().getValue());
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -774,7 +776,7 @@ public class FileUtils {
 				e.printStackTrace();
 			}
 			if(checksumValue != checksum.getChecksum().getValue()) {
-        		System.err.println("Wrong checksum. Zip file might has been damaged!");
+        		log.error("Wrong checksum. Zip file might has been damaged!");
         	}
 		return extractedFiles;
     }	
