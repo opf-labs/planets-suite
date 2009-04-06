@@ -101,7 +101,7 @@ public class NewExpWizardController {
         boolean existingExp = true;
         log.debug("Checking if this is a new experiment.");
         // if not yet created, create new Experiment object and new Bean
-        if ((expBean.getID() == 0)) { 
+        if ((expBean.getID() <= 0)) { 
             existingExp = false;
 	        // Create new Experiment
 	        exp = new ExperimentImpl();
