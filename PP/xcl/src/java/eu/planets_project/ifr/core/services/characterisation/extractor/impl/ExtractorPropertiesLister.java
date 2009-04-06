@@ -39,11 +39,11 @@ public class ExtractorPropertiesLister {
 	/**
 	 * xtractoer home dir
 	 */
-	public final static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
+	public final static String FPMTOOL_HOME = System.getenv("FPMTOOL_HOME") + File.separator;
 	/**
 	 * fpm tool
 	 */
-	public final static String FPM_TOOL = EXTRACTOR_HOME + "fpmTool";
+	public final static String FPM_TOOL = FPMTOOL_HOME + "fpmTool";
 	
 	/**
 	 * @param formatURI
@@ -70,7 +70,7 @@ public class ExtractorPropertiesLister {
 		
 		ProcessRunner shell = new ProcessRunner();
 		
-		shell.setStartingDir(new File(EXTRACTOR_HOME));
+		shell.setStartingDir(new File(FPMTOOL_HOME));
 		
 		List<String> shellCommands = new ArrayList <String>();
 		shellCommands.add(FPM_TOOL);
@@ -85,7 +85,7 @@ public class ExtractorPropertiesLister {
 		String processError = shell.getProcessErrorAsString();
 		LOG.info("ProcessError: " + processError);
 		
-		File resultFPM = new File(EXTRACTOR_HOME + "fpm.fpm");
+		File resultFPM = new File(FPMTOOL_HOME + "fpm.fpm");
 		LOG.info("Reading result file: " + resultFPM.getAbsolutePath());
 		
 //		byte[] resultFPMArray = ByteArrayHelper.read(resultFPM);
@@ -225,7 +225,7 @@ public class ExtractorPropertiesLister {
 		
 		ProcessRunner shell = new ProcessRunner();
 		
-		shell.setStartingDir(new File(EXTRACTOR_HOME));
+		shell.setStartingDir(new File(FPMTOOL_HOME));
 		
 		List<String> shellCommands = new ArrayList <String>();
 		shellCommands.add(FPM_TOOL);
