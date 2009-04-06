@@ -275,10 +275,8 @@ public class NewExpWizardController {
     public String unsubmitAndEdit() {
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        
-        expBean.resetToEditingStage();
-        
         Experiment exp = expBean.getExperiment();
+        ExperimentImpl.resetToEditingStage(exp);
         testbedMan.updateExperiment(exp);
         return "goToStage1";
     }
@@ -856,14 +854,14 @@ public class NewExpWizardController {
             e.printStackTrace();
         }
         
+        // Clear out the results:
+        ExperimentExecutableImpl.clearExecutionRecords( (ExperimentExecutableImpl) exp.getExperimentExecutable() );
+        // Pair back to the 'editor' stage.
+        ExperimentImpl.resetToApprovedStage(exp);
+        ExperimentImpl.resetToEditingStage(exp);
+        
         // Place new experiment bean into session:
         ExperimentBean newExpBean = ExpBeanReqManager.putExperimentIntoSessionExperimentBean(exp);
-        
-        // Clear out the results:
-        ExperimentExecutableImpl.clearExecutionRecords( (ExperimentExecutableImpl) newExpBean.getExperiment().getExperimentExecutable() );
-        // Pair back to the 'editor' stage.
-        newExpBean.resetToApprovedStage();
-        newExpBean.resetToEditingStage();
         
         log.info("commandSaveExperimentAs: ExpBean: "+oldExpBean.getEname()+" saved as "+newExpBean.getEname());
 
@@ -1398,9 +1396,9 @@ public class NewExpWizardController {
 	  public String commandResetAfterFailure() {
           TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-          expBean.resetToApprovedStage();
           // Save these changes:
           Experiment exp = expBean.getExperiment();
+          ExperimentImpl.resetToApprovedStage(exp);
           testbedMan.updateExperiment(exp);
 	      return "success";
 	  }

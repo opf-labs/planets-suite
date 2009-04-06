@@ -1686,24 +1686,4 @@ public class ExperimentBean {
     	return this.numExecutions;
     }
 
-    /* ------------------------------------------------------------ */
-    
-    /**
-     */
-    public void resetToApprovedStage() {
-        exp.getExperimentExecutable().setExecutableInvoked(false);
-        exp.getExperimentExecutable().setExecutionCompleted(false);
-        exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
-        exp.getExperimentEvaluation().setState(Experiment.STATE_NOT_STARTED);       
-        setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEXECUTION);
-    }
-
-    /**
-     * 
-     */
-    public void resetToEditingStage() {
-        AdminManagerImpl.toEditFromDenied(exp);
-        setCurrentStage(ExperimentBean.PHASE_EXPERIMENTSETUP_3);
-    }
-    
 }

@@ -28,6 +28,7 @@ import eu.planets_project.tb.api.model.ExperimentExecution;
 import eu.planets_project.tb.api.model.ExperimentPhase;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentApprovalImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
@@ -299,4 +300,23 @@ public class ExperimentImpl extends ExperimentPhaseImpl
         return this.getExperimentApproval().getApprovalUsersIDs().get(0);
     }
 
+    /* ------------------------------------------------------------ */
+    
+    /**
+     * 
+     */
+    public static void resetToApprovedStage( Experiment exp ) {
+        exp.getExperimentExecutable().setExecutableInvoked(false);
+        exp.getExperimentExecutable().setExecutionCompleted(false);
+        exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
+        exp.getExperimentEvaluation().setState(Experiment.STATE_NOT_STARTED);   
+    }
+
+    /**
+     * 
+     */
+    public static void resetToEditingStage(Experiment exp ) {
+        AdminManagerImpl.toEditFromDenied(exp);
+    }
+    
 }
