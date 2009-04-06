@@ -29,7 +29,7 @@ public class ExpDesignPhaseListener implements PhaseListener {
      */
     public void afterPhase(PhaseEvent arg0) {
         FacesContext context = arg0.getFacesContext();
-        /*
+        /* Experimental support for pushing the ExperimentBean in from the session.
         ExpBeanReqManager ebr = new ExpBeanReqManager();
         ebr.setEid( (String) context.getExternalContext().getRequestParameterMap().get("eid") );
         */

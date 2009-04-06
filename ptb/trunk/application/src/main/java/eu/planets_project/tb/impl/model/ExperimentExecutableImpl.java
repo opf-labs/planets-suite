@@ -623,4 +623,18 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
         }
     }
 
+    /**
+     * @param experimentExecutable
+     */
+    public static void clearExecutionRecords( ExperimentExecutableImpl exe ) {
+        exe.setBatchExecutionRecords(new Vector<BatchExecutionRecordImpl>());
+        exe.setBatchExecutionIdentifier(null);
+        exe.setBatchQueueIdentifier(null);
+        exe.setExecutableInvoked(false);
+        exe.setExecutionCompleted(false);
+        exe.setExecutionSuccess(false);
+        exe.execEndDate = null;
+        exe.execStartDate = null;
+    }
+
 }

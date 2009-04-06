@@ -47,21 +47,9 @@
 
 </h:panelGroup>
 
-        <c:if test="#{ExperimentBean.etype == 'identify'}">
-        
-    <ui:include src="/WEB-INF/templates/exp-types/stage2_identify.xhtml">
+    <ui:include src="/WEB-INF/templates/exp-types/stage2_workflow.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include>
-        
-        </c:if>
-        
-        <c:if test="#{ExperimentBean.etype == 'migrate'}">
-
-    <ui:include src="/WEB-INF/templates/exp-types/stage2_migrate.xhtml">
-       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-    </ui:include>
-        
-        </c:if>
                 
             </rich:panel>
             

@@ -37,13 +37,21 @@
 
     <div class="expChooseService">
     <div class="expStageHeader">Characterise Before</div>
+    
+    <h:panelGroup rendered="#{!ExperimentBean.approved}">
     <h:selectOneMenu id="preServiceSelectMenu" value="#{ExpTypeMigrate.preMigrationService}" onchange="submit();" 
             disabled="#{ExperimentBean.approved}">
          <f:selectItem itemValue="" itemLabel="Do not characterise." />
          <f:selectItems value="#{ExpTypeMigrate.preMigrationServiceList}" />
     </h:selectOneMenu>
     <h:commandButton value="#{res['button.select']}"
-             action="success" rendered="#{!ExperimentBean.approved}"/>
+             action="success"/>
+    </h:panelGroup>
+                 
+    <h:panelGroup rendered="#{ExperimentBean.approved}">
+      <h:outputText value="#{ExpTypeMigrate.preMigrationService}" />
+    </h:panelGroup>
+             
     </div>
     
     <div class="expSimpleStep">
@@ -75,13 +83,21 @@
     
     <div class="expChooseService">
     <div class="expStageHeader">Characterise After</div>
+    
+    <h:panelGroup rendered="#{!ExperimentBean.approved}">
     <h:selectOneMenu id="postServiceSelectMenu" value="#{ExpTypeMigrate.postMigrationService}" onchange="submit();"
             disabled="#{ExperimentBean.approved}">
          <f:selectItem itemValue="" itemLabel="Do not characterise." />
          <f:selectItems value="#{ExpTypeMigrate.postMigrationServiceList}" />
     </h:selectOneMenu>
     <h:commandButton value="#{res['button.select']}"
-             action="success" rendered="#{!ExperimentBean.approved}"/>
+             action="success"/>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{ExperimentBean.approved}">
+      <h:outputText value="#{ExpTypeMigrate.postMigrationService}" />
+    </h:panelGroup>
+             
     </div>
     
     <div class="expSimpleStep">

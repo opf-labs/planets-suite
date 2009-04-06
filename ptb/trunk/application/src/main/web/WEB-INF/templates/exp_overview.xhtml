@@ -124,8 +124,8 @@
                                     <a href="#{filemap['uri']}">#{filemap['name']}</a>
                                 </t:dataList>
                             </h:panelGroup>
-                         <h:panelGroup render="#{ExperimentBean.etype == 'identify'}">						        
-							    <ui:include src="/WEB-INF/templates/exp-types/stage2_identify.xhtml">
+                         <h:panelGroup render="#{ExperimentBean.etype != null}">		
+							    <ui:include src="/WEB-INF/templates/exp-types/stage2_workflow.xhtml">
 							       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
 							    </ui:include>							        
 						 </h:panelGroup>

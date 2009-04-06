@@ -29,12 +29,14 @@ import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
 import eu.planets_project.tb.impl.model.ExperimentEvaluationImpl;
+import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
@@ -857,7 +859,9 @@ public class NewExpWizardController {
         // Place new experiment bean into session:
         ExperimentBean newExpBean = ExpBeanReqManager.putExperimentIntoSessionExperimentBean(exp);
         
-        // Clear out the results, and pair back to the 'editor' stage.
+        // Clear out the results:
+        ExperimentExecutableImpl.clearExecutionRecords( (ExperimentExecutableImpl) newExpBean.getExperiment().getExperimentExecutable() );
+        // Pair back to the 'editor' stage.
         newExpBean.resetToApprovedStage();
         newExpBean.resetToEditingStage();
         
