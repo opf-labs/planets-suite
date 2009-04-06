@@ -69,6 +69,7 @@ import eu.planets_project.tb.api.services.tags.ServiceTag;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
+import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -97,7 +98,7 @@ public class ExperimentBean {
 	// To avoid the data held here falling out of date, store the experiment:
 	Experiment exp = null;
                
-	private Log log = LogFactory.getLog(ExperimentBean.class);
+	private static Log log = LogFactory.getLog(ExperimentBean.class);
 	private long id;
 	private boolean formality = true;
 	private String ename = new String();
@@ -1684,6 +1685,46 @@ public class ExperimentBean {
      */
     public long getNumExecutions(){
     	return this.numExecutions;
+    }
+
+    /**
+     * @param expBean
+     */
+    public static boolean saveExperimentFromSession(ExperimentBean expBean) {
+        // create message for name error message
+        FacesMessage fmsg = new FacesMessage();
+        fmsg.setDetail("Experiment name was not valid and could not be stored!");
+        fmsg.setSummary("Experiment name could not be stored!");
+        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+        // Flag to catch new/existing state:
+        log.debug("Checking if this is a new experiment.");
+        Experiment exp = expBean.getExperiment();
+        // if not yet created, create new Experiment object and new Bean
+        if ((expBean.getID() <= 0)) { 
+            // Create new Experiment if necessary
+            if( exp == null )
+                exp = new ExperimentImpl();
+            // Get userid info from managed bean
+            UserBean currentUser = (UserBean) JSFUtil.getManagedObject("UserBean");
+            // set current User as experimenter
+            exp.getExperimentSetup().getBasicProperties().setExperimenter(currentUser.getUserid());
+            try {
+                log.debug("New experiment, setting name: " + expBean.getEname() );
+                exp.getExperimentSetup().getBasicProperties().setExperimentName(expBean.getEname());        
+            } catch (InvalidInputException e) {
+                // add message-tag for duplicate name
+                FacesContext ctx = FacesContext.getCurrentInstance();
+                ctx.addMessage("ename",fmsg);
+                return false;
+            }
+            log.info("Creating a new experiment.");
+            TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+            long expId = testbedMan.registerExperiment(exp);
+            expBean.setID(expId);
+            expBean.setExperiment(testbedMan.getExperiment(expId));
+        }
+        log.debug("Created experiment if necessary, now passing it back.");    
+        return true;
     }
 
 }

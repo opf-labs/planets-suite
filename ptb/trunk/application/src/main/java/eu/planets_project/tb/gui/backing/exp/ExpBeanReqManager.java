@@ -92,7 +92,7 @@ public class ExpBeanReqManager {
         FacesContext ctx = FacesContext.getCurrentInstance();
         ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_SESSION, expBean);
         // FIXME This overrides the experimental behaviour and returns to the default logic.
-        ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_REQUEST, expBean);
+        ctx.getExternalContext().getRequestMap().put(EXP_BEAN_IN_REQUEST, expBean);
         return expBean;
     }
 

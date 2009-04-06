@@ -87,64 +87,20 @@ public class NewExpWizardController {
         // Flag to indicate that the experiment definition is not valid and cannot be constructed
         boolean validExperiment = true;
         
-    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-    	Experiment exp = null;
-		BasicProperties props = null;
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         log.info("ExpBean: "+expBean.getEname()+" : "+expBean.getEsummary());
-        // create message for duplicate name error message
-        FacesMessage fmsg = new FacesMessage();
-        fmsg.setDetail("Experiment name already in use! - Please specify a unique name.");
-        fmsg.setSummary("Duplicate name: Experiment names must be unique!");
-        fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
-        // Flag to catch new/existing state:
-        boolean existingExp = true;
-        log.debug("Checking if this is a new experiment.");
-        // if not yet created, create new Experiment object and new Bean
-        if ((expBean.getID() <= 0)) { 
-            existingExp = false;
-	        // Create new Experiment
-	        exp = new ExperimentImpl();
-	        props = new BasicPropertiesImpl();
-	        // Get userid info from managed bean
-	        UserBean currentUser = (UserBean) JSFUtil.getManagedObject("UserBean");
-	        // set current User as experimenter
-	        props.setExperimenter(currentUser.getUserid());
-		    try {
-		        log.debug("New experiment, setting name: " + expBean.getEname() );
-		        props.setExperimentName(expBean.getEname());        
-		    } catch (InvalidInputException e) {
-	    		// add message-tag for duplicate name
-		        FacesContext ctx = FacesContext.getCurrentInstance();
-		        ctx.addMessage("ename",fmsg);
-	    		validForm = false;
-	    		validExperiment = false;
-	    	}
-	        ExperimentSetup expSetup = new ExperimentSetupImpl();
-	        expSetup.setBasicProperties(props);       
-	        exp.setExperimentSetup(expSetup);
-	        log.info("Creating a new experiment.");
-            long expId = testbedMan.registerExperiment(exp);
-            expBean.setID(expId);
-            expBean.setExperiment(testbedMan.getExperiment(expId));
-        }
-        log.debug("Created experiment, now retrieving it.");
+        
         // Get the Experiment description objects
-        exp = expBean.getExperiment();
-        props = exp.getExperimentSetup().getBasicProperties();
+        Experiment exp = expBean.getExperiment();
+        BasicProperties props = exp.getExperimentSetup().getBasicProperties();
         log.info("Setting the experimental properties, "+props.getExperimentName()+" : "+props.getSummary());
         // If the experiment already existed, check for valid name changes:
-        if( existingExp ) {
-  	      try {
-            log.info("Existing experiment, setting name from expBean: " + expBean.getEname() );
-	        props.setExperimentName(expBean.getEname());        
-	      } catch (InvalidInputException e) {
-    		// add message-tag for duplicate name
-	        FacesContext ctx = FacesContext.getCurrentInstance();
-	        ctx.addMessage("ename",fmsg);
-    		validForm = false;
-    	 }
+        try {
+            props.setExperimentName(expBean.getEname());
+        } catch (InvalidInputException e1) {
+            e1.printStackTrace();
         }
+        
         //set the experiment information
         props.setSummary(expBean.getEsummary());
         props.setConsiderations(expBean.getEconsiderations());
@@ -786,6 +742,9 @@ public class NewExpWizardController {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         log.info("commandSaveExperiment: ExpBean: "+expBean.getEname()+" : "+expBean.getEsummary());
+
+        // Always ensure the session Experiment is in the DB:
+        ExperimentBean.saveExperimentFromSession(expBean);
         
         // This saves the first three pages in turn, and redirects appropriately if there are any problems.
         String result = null;
