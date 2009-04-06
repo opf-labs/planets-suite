@@ -197,6 +197,11 @@ public class ValidateResult {
          */
         private String description;
 
+        /** Constructor for JAXB */
+        @SuppressWarnings("unused")
+        private Message() {
+        }
+
         /**
          * Constructor.
          * @param adress The adress of what provoked the message
