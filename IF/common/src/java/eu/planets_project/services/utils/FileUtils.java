@@ -42,8 +42,111 @@ public class FileUtils {
     /** We enforce non-instantiability with a private constructor. */
     private FileUtils() {
     }
+    
+    /**
+	 * @return system temp dir
+	 */
+	public static File getSystemTempFolder() {
+	    return new File(SYSTEM_TEMP);
+	}
+
+	public static File getIfTempStoreDir() {
+    	File tempStoreDir = FileUtils.createWorkFolderInSysTemp(TEMP_STORE_DIR);
+    	return tempStoreDir;
+    }
+	
+	/**
+	 * @param name The name to use when generating the temp file
+	 * @param suffix The suffix for the temp file to be created
+	 * @return Returns a temp file created in the System-Temp folder
+	 */
+	public static File getTempFile(String name, String suffix) {
+	    if( suffix == null ) suffix = ".tmp";
+	    if( name == null ) name = "planetsTmp";
+	    // Add a dot if missing:
+	    if (!suffix.startsWith(".")) {
+	        suffix = "." + suffix;
+	    }
+	    File input = null;
+	    try {
+	        File folder = new File(SYSTEM_TEMP, FileUtils.TEMP_STORE_DIR );
+	        if( ! folder.exists() ) {
+	            folder.mkdirs();
+	        }
+	        input = File.createTempFile(name, suffix, folder );
+	        input.deleteOnExit();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return input;
+	}
+
+	/**
+	 * @param data - the data to write to that file
+	 * @param name - the file name of the file to be created
+	 * @param suffix - the suffx of that file (e.g. ".tmp", ".bin", ...)
+	 * @return - a new File with the given content (--> data), name and
+	 *         extension.
+	 */
+	public static File getTempFile(byte[] data, String name, String suffix) {
+	    if (!suffix.startsWith(".")) {
+	        suffix = "." + suffix;
+	    }
+	    File input = getTempFile(name, suffix);
+	    FileOutputStream fos;
+	    try {
+	        fos = new FileOutputStream(input);
+	        fos.write(data);
+	        fos.flush();
+	        fos.close();
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return input;
+	}
+
+	public static File createFolderInIfTempStore (String folderName) {
+		return FileUtils.createFolderInWorkFolder(getIfTempStoreDir(), folderName);
+	}
 
     /**
+	 * @param folderName The name of the folder to be created in the System-Temp
+	 *        folder. The name could contain '/' or '\'. In this case, all
+	 *        nested folders will be created.
+	 * @return Returns the created folder as a File object, or the deepest
+	 *         nested folder
+	 */
+	public static File createWorkFolderInSysTemp(String folderName) {
+	    File folder = null;
+	    folder = new File(SYSTEM_TEMP, folderName);
+	    if (folderName.contains("/") || folderName.contains(File.separator)) {
+	        folder.mkdirs();
+	    } else {
+	        boolean madeFolder = folder.mkdir();
+	        if (!madeFolder & !folder.exists()) {
+	            System.err.println("ERROR: Could not create Folder!");
+	        }
+	    }
+	    return folder;
+	}
+
+	/**
+	 * @param parentFolder the folder to create the new folder with "folderName"
+	 *        in
+	 * @param folderName the folder to create in the parentFolder
+	 * @return a File object of the created folder
+	 */
+	public static File createFolderInWorkFolder(File parentFolder,
+	        String folderName) {
+	    File folder = null;
+	    folder = new File(parentFolder, folderName);
+	    folder.mkdirs();
+	    return folder;
+	}
+
+	/**
      * Reads the contents of a file into a byte array.
      * @param file The file to read into a byte array
      * @return Returns the contents of the given file as a byte array
@@ -68,29 +171,6 @@ public class FileUtils {
             e.printStackTrace();
         }
         return null;
-    }
-
-    /**
-     * Writes the contents of a byte array into a temporary file.
-     * @param bytes The bytes to write into a temporary file
-     * @return Returns the temporary file into which the bytes have been written
-     */
-    public static File writeByteArrayToTempFile(final byte[] bytes) {
-        File file = null;
-        try {
-            file = getTempFile("planets",null);
-            
-            BufferedOutputStream out = new BufferedOutputStream(
-                    new FileOutputStream(file), 32768);
-            out.write(bytes);
-            out.flush();
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
     }
 
     /**
@@ -121,93 +201,29 @@ public class FileUtils {
     }
 
     /**
-     * @param folderName The name of the folder to be created in the System-Temp
-     *        folder. The name could contain '/' or '\'. In this case, all
-     *        nested folders will be created.
-     * @return Returns the created folder as a File object, or the deepest
-     *         nested folder
-     */
-    public static File createWorkFolderInSysTemp(String folderName) {
-        File folder = null;
-        folder = new File(SYSTEM_TEMP, folderName);
-        if (folderName.contains("/") || folderName.contains(File.separator)) {
-            folder.mkdirs();
-        } else {
-            boolean madeFolder = folder.mkdir();
-            if (!madeFolder & !folder.exists()) {
-                System.err.println("ERROR: Could not create Folder!");
-            }
-        }
-        return folder;
-    }
+	 * Writes the contents of a byte array into a temporary file.
+	 * @param bytes The bytes to write into a temporary file
+	 * @return Returns the temporary file into which the bytes have been written
+	 */
+	public static File writeByteArrayToTempFile(final byte[] bytes) {
+	    File file = null;
+	    try {
+	        file = getTempFile("planets",null);
+	        
+	        BufferedOutputStream out = new BufferedOutputStream(
+	                new FileOutputStream(file), 32768);
+	        out.write(bytes);
+	        out.flush();
+	        out.close();
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return file;
+	}
 
-    /**
-     * @param parentFolder the folder to create the new folder with "folderName"
-     *        in
-     * @param folderName the folder to create in the parentFolder
-     * @return a File object of the created folder
-     */
-    public static File createFolderInWorkFolder(File parentFolder,
-            String folderName) {
-        File folder = null;
-        folder = new File(parentFolder, folderName);
-        folder.mkdirs();
-        return folder;
-    }
-
-    /**
-     * @param name The name to use when generating the temp file
-     * @param suffix The suffix for the temp file to be created
-     * @return Returns a temp file created in the System-Temp folder
-     */
-    public static File getTempFile(String name, String suffix) {
-        if( suffix == null ) suffix = ".tmp";
-        if( name == null ) name = "planetsTmp";
-        // Add a dot if missing:
-        if (!suffix.startsWith(".")) {
-            suffix = "." + suffix;
-        }
-        File input = null;
-        try {
-            File folder = new File(SYSTEM_TEMP, FileUtils.TEMP_STORE_DIR );
-            if( ! folder.exists() ) {
-                folder.mkdirs();
-            }
-            input = File.createTempFile(name, suffix, folder );
-            input.deleteOnExit();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return input;
-    }
-
-    /**
-     * @param data - the data to write to that file
-     * @param name - the file name of the file to be created
-     * @param suffix - the suffx of that file (e.g. ".tmp", ".bin", ...)
-     * @return - a new File with the given content (--> data), name and
-     *         extension.
-     */
-    public static File getTempFile(byte[] data, String name, String suffix) {
-        if (!suffix.startsWith(".")) {
-            suffix = "." + suffix;
-        }
-        File input = getTempFile(name, suffix);
-        FileOutputStream fos;
-        try {
-            fos = new FileOutputStream(input);
-            fos.write(data);
-            fos.flush();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return input;
-    }
-
-    /**
+	/**
      * @param textFile
      * @return file contents as string
      */
@@ -260,7 +276,7 @@ public class FileUtils {
 
     /**
      * @param workFolder the folder you wish to delete. All contained folders
-     *        will be deleted recursive
+     *        will be deleted recursively
      * @param plogger a PlanetsLogger instance to log the deletion of that
      *        folders
      * @return true, if all folders were deleted and false, if not.
@@ -293,7 +309,7 @@ public class FileUtils {
      * This method deletes all the content in a folder, without the need of
      * passing it a PlanetsLogger instance!
      * @param workFolder the folder you wish to delete. All contained folders
-     *        will be deleted recursive
+     *        will be deleted recursively
      * @return true, if all folders were deleted and false, if not.
      */
     public static boolean deleteTempFiles(File workFolder) {
@@ -361,6 +377,38 @@ public class FileUtils {
     }
 
     /**
+	 * Writes an input stream to the specified file:
+	 * @param in
+	 * @param target
+	 * @return
+	 */
+	public static void writeInputStreamToFile(InputStream in, File target) {
+	    BufferedOutputStream bos = null;
+	    FileOutputStream fileOut = null;
+	    try {
+	        fileOut = new FileOutputStream(target);
+	        bos = new BufferedOutputStream(fileOut);
+	    } catch (FileNotFoundException e1) {
+	        e1.printStackTrace();
+	    }
+	    
+	    long size = writeInputStreamToOutputStream( in, bos );
+	    
+	    try {
+	        bos.flush();
+	        bos.close();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    
+	    if( log.isInfoEnabled() ) {
+	        log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
+	    } else {
+	        System.out.println("Wrote "+size+" bytes to "+target.getAbsolutePath());
+	    }
+	}
+
+	/**
      * This method writes an InputStream to a file. If a file with the same name
      * and path exists already, a random number is appended to the filename and
      * the "renamed" file is returned.
@@ -391,39 +439,6 @@ public class FileUtils {
         return target;
     }
 
-    /**
-     * Writes an input stream to the specified file:
-     * @param in
-     * @param target
-     * @return
-     */
-    public static void writeInputStreamToFile(InputStream in, File target) {
-        BufferedOutputStream bos = null;
-        FileOutputStream fileOut = null;
-        try {
-            fileOut = new FileOutputStream(target);
-            bos = new BufferedOutputStream(fileOut);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
-        
-        long size = writeInputStreamToOutputStream( in, bos );
-        
-        try {
-            bos.flush();
-            bos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        if( log.isInfoEnabled() ) {
-            log.info("Wrote "+size+" bytes to "+target.getAbsolutePath());
-        } else {
-            System.out.println("Wrote "+size+" bytes to "+target.getAbsolutePath());
-        }
-    }
-    
-    
     /**
      * Writes an input stream to an output stream, using a sane buffer size:
      * @param in The input stream
@@ -467,15 +482,6 @@ public class FileUtils {
         return size;
     }
 
-    /**
-     * @return system temp dir
-     */
-    public static File getSystemTempFolder() {
-        return new File(SYSTEM_TEMP);
-    }
-    
-    
-    
     /**
 	 * @param srcFolder the resulting zip file will contain all files in this
 	 *        folder
