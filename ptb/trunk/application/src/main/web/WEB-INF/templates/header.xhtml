@@ -24,29 +24,24 @@
 	<div id="gelinks">
 		<div id="geleft"> &#160;</div>
 		<h:form>
-			<ui:fragment id="userLogin" rendered="#{empty UserBean.userid}">
+			<ui:fragment id="help">
 				<div id="geright">
 					<p class="glinks"> 
-						<h:commandLink styleClass="glinks" action="home">
-						<!-- h:commandLink styleClass="glinks" action="login" -->
-							<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" class="toolbar"/>
-							<h:outputText value="#{res['login.login']}"/>
+						<h:commandLink styleClass="glinks" action="help">
+						<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" style="padding-left: 2px; padding-right: 2px;" />
+						<h:outputText value="#{res['welcome.help']}"/>
 						</h:commandLink>
 					</p>		
 				</div>
 			</ui:fragment>
-			<ui:fragment id="userHeader" rendered="#{not empty UserBean.userid}">
+			<ui:fragment id="userHeader">
 				<div id="geright">
-					<p class="glinks">${UserBean.userid}
-                        <a target="_blank" class="glinks" href="/users/editprofile.faces">
-                        <img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_user.gif" alt="" title="" />
-                        <h:outputText value="#{res.editprofile}"/>
-                        </a> |
-                        <a class="glinks" href="/testbed/logout-redirect.jsp">
-                          <img class="toolbar" src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_logout.gif" alt="" title="" />
-                          <h:outputText value="#{res.logout}"/>
-                        </a>
-					</p>
+					<p class="glinks"> 
+						<h:commandLink styleClass="glinks" action="about">
+						<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_info.gif"  style="padding-left: 2px; padding-right: 2px;" />
+						<h:outputText value="#{res['welcome.about']}"/>
+						</h:commandLink>
+					</p>		
 				</div>
 			</ui:fragment>
 		</h:form>
@@ -234,22 +229,7 @@
       
 <!-- end of experimenter tabs -->
 			
-			<c:if test="${page == 'help'}">
-				<li id="current">
-				<h:commandLink action="help"  rendered="#{UserBean.reader}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" class="toolbar"/>
-					<h:outputText value="#{res['help.pageTitle']}"/>
-				</h:commandLink>
-				</li>
-			</c:if>
-			<c:if test="${page != 'help' and UserBean.reader == true}">
-				<li>
-				<h:commandLink action="help"  rendered="#{UserBean.reader}">
-					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" class="toolbar"/>
-					<h:outputText value="#{res['help.pageTitle']}"/>
-				</h:commandLink>
-			</li>
-			</c:if>			
+				
 		</ul>
 	</div>
         </h:form>
