@@ -92,9 +92,9 @@ public final class Droid implements Identify, Serializable {
                         .getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
         sd
-                .description("Identification service based on Droid (DROID 3.0, Signature File 13).");
+                .description("Identification service based on Droid (DROID 3.0, Signature File 16).");
         sd.author("Carl Wilson, Fabian Steeg");
-        sd.tool( Tool.create(null, "DROID", "3.0", null, "http://droid.sourceforge.net/") );
+        sd.tool( Tool.create(null, "DROID", "3.0-16", null, "http://droid.sourceforge.net/") );
         sd.furtherInfo(URI.create("http://droid.sourceforge.net/"));
         sd.logo(URI.create("http://droid.sourceforge.net/wiki/skins/snaphouston/droidlogo.gif"));
         sd.serviceProvider("The Planets Consortium.");

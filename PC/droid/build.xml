@@ -30,6 +30,7 @@
 	<import file="${pserv.root.dir}/build.common.xml" />
 
 	<!-- Copy the config file into the server config directory -->
+    <copy file="${src.resources}/DROID_SignatureFile_V16.xml" tofile="${src.resources}/DROID_SignatureFile_Planets.xml" overwrite="true" />
 	<if>
 	<isset property="jboss.home"/>
 	<then>
