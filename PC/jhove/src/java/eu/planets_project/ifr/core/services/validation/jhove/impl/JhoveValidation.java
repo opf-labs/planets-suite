@@ -6,6 +6,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
@@ -64,7 +65,7 @@ public final class JhoveValidation implements Validate, Serializable {
         sd.classname(this.getClass().getCanonicalName());
         sd.description("Validation service using JHOVE (1.1).");
         sd.author("Fabian Steeg");
-        sd.tool(URI.create("http://hul.harvard.edu/jhove/"));
+        sd.tool( Tool.create( null, "JHOVE", "1.1" , null, "http://hul.harvard.edu/jhove/") );
         sd.inputFormats(JhoveIdentification.inputFormats());
         sd.serviceProvider("The Planets Consortium");
         return sd.build();

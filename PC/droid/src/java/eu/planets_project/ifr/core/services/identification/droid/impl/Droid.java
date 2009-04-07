@@ -3,8 +3,10 @@ package eu.planets_project.ifr.core.services.identification.droid.impl;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +27,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
@@ -91,7 +94,7 @@ public final class Droid implements Identify, Serializable {
         sd
                 .description("Identification service based on Droid (DROID 3.0, Signature File 13).");
         sd.author("Carl Wilson, Fabian Steeg");
-        sd.tool(URI.create("http://droid.sourceforge.net/"));
+        sd.tool( Tool.create(null, "DROID", "3.0", null, "http://droid.sourceforge.net/") );
         sd.furtherInfo(URI.create("http://droid.sourceforge.net/"));
         sd.logo(URI.create("http://droid.sourceforge.net/wiki/skins/snaphouston/droidlogo.gif"));
         sd.serviceProvider("The Planets Consortium.");

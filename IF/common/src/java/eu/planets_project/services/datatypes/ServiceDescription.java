@@ -111,7 +111,7 @@ public final class ServiceDescription {
      * The link to the Tool registry.
      */
     @XmlElement(namespace = SERVICES_NS)
-    URI tool;
+    Tool tool;
 
     /**
      * Human readable description of the service. Allow to be HTML, using a
@@ -266,7 +266,7 @@ public final class ServiceDescription {
         private String identifier = null;
         private String version = null;
         private String description = null;
-        private URI tool = null;
+        private Tool tool = null;
         private Parameters parameters = null;
         private String classname = null;
 
@@ -474,7 +474,7 @@ public final class ServiceDescription {
          * @param tool The tool the service uses
          * @return The builder, for cascaded calls
          */
-        public Builder tool(final URI tool) {
+        public Builder tool(final Tool tool) {
             this.tool = tool;
             return this;
         }
@@ -562,7 +562,7 @@ public final class ServiceDescription {
      * @return the tool
      */
     @Queryable
-    public URI getTool() {
+    public Tool getTool() {
         return tool;
     }
 

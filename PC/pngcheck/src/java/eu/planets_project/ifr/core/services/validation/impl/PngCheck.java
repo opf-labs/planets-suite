@@ -5,6 +5,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -104,7 +105,7 @@ public final class PngCheck implements Validate, Serializable {
         sd.description("Validation service based on PngCheck.");
         sd.author("Fabian Steeg");
         sd.inputFormats(PNG_PRONOM.toArray(new URI[] {}));
-        sd.tool(URI.create("http://www.libpng.org/pub/png/apps/pngcheck.html"));
+        sd.tool( Tool.create(null, "PngCheck", null, null, "http://www.libpng.org/pub/png/apps/pngcheck.html") );
         sd.serviceProvider("The Planets Consortium");
         return sd.build();
     }

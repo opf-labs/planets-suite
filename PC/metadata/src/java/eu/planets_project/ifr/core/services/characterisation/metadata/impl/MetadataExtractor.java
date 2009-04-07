@@ -42,6 +42,7 @@ import eu.planets_project.services.datatypes.Parameters;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -143,7 +144,7 @@ public final class MetadataExtractor implements Characterise {
                 .description(
                         "Metadata extraction service based on the Metadata Extraction Tool of the National Library of New Zealand (patched 3.4GA).")
                 .serviceProvider("The Planets Consortium")
-                .tool(URI.create("http://meta-extractor.sourceforge.net/"))
+                .tool( Tool.create(null, "New Zealand Metadata Extractor", "3.4GA (patched)", null, "http://meta-extractor.sourceforge.net/"))
                 .furtherInfo(
                         URI
                                 .create("http://sourceforge.net/tracker/index.php?func=detail&aid=2027729&group_id=189407&atid=929202"))

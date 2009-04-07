@@ -30,6 +30,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
@@ -90,7 +91,7 @@ public final class JhoveIdentification implements Identify, Serializable {
         sd.classname(this.getClass().getCanonicalName());
         sd.description("Identification service using JHOVE (1.1).");
         sd.author("Fabian Steeg");
-        sd.tool(URI.create("http://hul.harvard.edu/jhove/"));
+        sd.tool( Tool.create(null, "JHOVE", "1.1", null, "http://hul.harvard.edu/jhove/") );
         sd.furtherInfo(URI.create("http://hul.harvard.edu/jhove/"));
         sd.inputFormats(inputFormats());
         sd.serviceProvider("The Planets Consortium");
