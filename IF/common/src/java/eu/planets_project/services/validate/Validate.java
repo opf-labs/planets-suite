@@ -4,6 +4,7 @@
 package eu.planets_project.services.validate;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -15,7 +16,7 @@ import javax.xml.ws.BindingType;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Validation of a DigitalObject.
@@ -55,6 +56,6 @@ public interface Validate extends PlanetsService {
             URI format,
             @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
                     + "/" + Validate.NAME, partName = "parameters")
-            Parameters parameters );
+            List<Parameter> parameters );
 
 }

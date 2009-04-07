@@ -70,7 +70,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)}.
+	 * Test method for {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)}.
 	 */
 	@Test
 	public void testMigrate() throws Exception {

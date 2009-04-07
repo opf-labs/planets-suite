@@ -18,7 +18,7 @@ import org.jdom.output.XMLOutputter;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -125,7 +125,7 @@ public class CoreExtractor {
      * @param parameters
      * @return xcdl as byte array
      */
-    public byte[] extractXCDL(byte[] binary, byte[] xcel, Parameters parameters) {
+    public byte[] extractXCDL(byte[] binary, byte[] xcel, List<Parameter> parameters) {
     	
     	if(EXTRACTOR_HOME==null){
     		System.err.println("EXTRACTOR_HOME is not set! Please create an system variable\n" +
@@ -216,10 +216,9 @@ public class CoreExtractor {
         
         // Got Parameters???
         if(parameters!=null) {
-        	if(parameters.getParameters()!=null && parameters.getParameters().size() != 0) {
+        	if( parameters.size() != 0) {
 	        	plogger.info("Got additional parameters: ");
-	        	List <Parameter> parameterList = parameters.getParameters();
-	        	for (Iterator<Parameter> iterator = parameterList.iterator(); iterator.hasNext();) {
+	        	for (Iterator<Parameter> iterator = parameters.iterator(); iterator.hasNext();) {
 					Parameter parameter = (Parameter) iterator.next();
 					String name = parameter.name;
 					if(name.equalsIgnoreCase(OPTIONAL_XCEL_PARAM)) {

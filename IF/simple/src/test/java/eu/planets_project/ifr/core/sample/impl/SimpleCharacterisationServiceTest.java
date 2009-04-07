@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +19,6 @@ import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Properties;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.FileUtils;
@@ -102,10 +103,12 @@ public class SimpleCharacterisationServiceTest {
      */
     private void testSizing(DigitalObject object, int size) {
         /* Init the properties */
-        Properties properties = new Properties();
-        properties.add(
+        List<Property> properties = new ArrayList<Property>();
+        properties.add( new Property( 
                 SimpleCharacterisationService.makePropertyURI( SimpleCharacterisationService.MIME_PROP_URI), 
-                SimpleCharacterisationService.MIME_PROP_URI);
+                SimpleCharacterisationService.MIME_PROP_URI, 
+                null 
+                ) );
         
         /* Now pass this to the service */
         CharacteriseResult ir = ids.characterise( object, null);

@@ -95,9 +95,9 @@ public class TiffValidation implements Validate, Serializable
 
 	/**
 	 * {@inheritDoc}
-     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, eu.planets_project.services.datatypes.Parameters)
+     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, eu.planets_project.services.datatypes.Parameter)
 	 */
-	public ValidateResult validate(final DigitalObject o, final URI fmt, Parameters paramenters)
+	public ValidateResult validate(final DigitalObject o, final URI fmt, List<Parameter> paramenters)
 	{
 		ValidateResult result;
 		File tempFile =  FileUtils.writeInputStreamToTmpFile(o.getContent().read(), 

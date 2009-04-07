@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Local;
@@ -13,7 +14,7 @@ import javax.jws.WebService;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
@@ -49,10 +50,10 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)
+	 * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)
 	 */
 	public MigrateResult migrate( final DigitalObject digitalObject, URI inputFormat,
-			URI outputFormat, Parameters parameters) {
+			URI outputFormat, List<Parameter> parameters) {
 
 		MigrateResult migrationResult;
         try {

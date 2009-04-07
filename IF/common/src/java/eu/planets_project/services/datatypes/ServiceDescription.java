@@ -105,7 +105,7 @@ public final class ServiceDescription {
      * Declared Parameters: [name, type, value (default)]*n.
      */
     @XmlElement(namespace = SERVICES_NS)
-    Parameters parameters;
+    List<Parameter> parameters;
 
     /**
      * The link to the Tool registry.
@@ -267,7 +267,7 @@ public final class ServiceDescription {
         private String version = null;
         private String description = null;
         private Tool tool = null;
-        private Parameters parameters = null;
+        private List<Parameter> parameters = null;
         private String classname = null;
 
         /** @return The instance created using this builder. */
@@ -465,7 +465,7 @@ public final class ServiceDescription {
          * @param parameters The service parameters
          * @return The builder, for cascaded calls
          */
-        public Builder parameters(final Parameters parameters) {
+        public Builder parameters(final List<Parameter> parameters) {
             this.parameters = parameters;
             return this;
         }
@@ -554,8 +554,8 @@ public final class ServiceDescription {
      * @return a copy of the parameters
      */
     @Queryable
-    public Parameters getParameters() {
-        return parameters == null ? null : new Parameters(parameters);
+    public List<Parameter> getParameters() {
+        return parameters;
     }
 
     /**

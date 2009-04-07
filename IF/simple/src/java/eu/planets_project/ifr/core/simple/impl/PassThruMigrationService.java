@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.simple.impl;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -10,7 +11,7 @@ import javax.jws.WebService;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
@@ -43,10 +44,10 @@ public final class PassThruMigrationService implements Migrate,
     /**
      * {@inheritDoc}
      * 
-     * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)
+     * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)
      */
     public MigrateResult migrate( final DigitalObject digitalObject, URI inputFormat,
-            URI outputFormat, Parameters parameters) {
+            URI outputFormat, List<Parameter> parameters) {
         /*
          * We just return a new digital object with the same required arguments
          * as the given:

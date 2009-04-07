@@ -17,7 +17,7 @@ import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -80,9 +80,9 @@ public class SimpleCharacterisationService implements Characterise
     }
 
     /**
-     * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
+     * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameter)
      */
-    public CharacteriseResult characterise(DigitalObject digitalObject, Parameters parameters) {
+    public CharacteriseResult characterise(DigitalObject digitalObject, List<Parameter> parameters) {
         log.info("Start...");
         // Set up property list:
         List<Property> measured = new ArrayList<Property>();

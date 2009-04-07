@@ -9,7 +9,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -86,8 +88,8 @@ public class ServiceDescriptionTest {
                 "planets:fmt/ext/jpeg"));
         builder
                 .instructions("There are not special instructions for this service.");
-        Parameters pars = new Parameters();
-        pars.add("planets:srv/par/test", "true");
+        List<Parameter> pars = new ArrayList<Parameter>();
+        pars.add( new Parameter("planets:srv/par/test", "true") );
         builder.parameters(pars);
         sd = builder.build();
     }

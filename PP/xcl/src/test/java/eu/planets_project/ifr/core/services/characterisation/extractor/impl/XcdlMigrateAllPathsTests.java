@@ -23,7 +23,7 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;

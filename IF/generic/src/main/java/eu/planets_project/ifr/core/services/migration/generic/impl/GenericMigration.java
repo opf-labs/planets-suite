@@ -23,7 +23,7 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -62,10 +62,10 @@ public class GenericMigration implements Migrate, Serializable
     }
 
     /**
-     * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)
+     * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)
      */
     public MigrateResult migrate( DigitalObject dob , URI inputFormat,
-            URI outputFormat, Parameters parameters) 
+            URI outputFormat, List<Parameter> parameters) 
     {
 		// yes yes, this probably ought to be a bunch of methods
 		Properties p = new Properties();
@@ -90,7 +90,7 @@ public class GenericMigration implements Migrate, Serializable
 		}
 		MultiProperties mp = MultiProperties.load(p);
 		Map<String, String> params = new HashMap<String, String>();
-		for(Parameter param : parameters.getParameters())
+		for(Parameter param : parameters )
 		{
 			params.put(param.name, param.value);
 		}

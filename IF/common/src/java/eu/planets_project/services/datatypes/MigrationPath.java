@@ -113,7 +113,7 @@ public class MigrationPath {
      * @param params the parameters for this migration path.
      * @return An array of all the paths.
      */
-    public static MigrationPath[] constructPathsWithParams(Set<URI> inputformats, Set<URI> outputFormats, Parameters params){
+    public static MigrationPath[] constructPathsWithParams(Set<URI> inputformats, Set<URI> outputFormats, List<Parameter> params){
         if (inputformats == null || outputFormats == null) {
             return new MigrationPath[0];
         }
@@ -122,11 +122,11 @@ public class MigrationPath {
         	return constructPaths(inputformats, outputFormats);
         }
         
-        if(params.getParameters().size()>0) {
+        if(params.size()>0) {
         	List<MigrationPath> paths = new ArrayList<MigrationPath>(inputformats.size()*outputFormats.size());
             for (URI in: inputformats){
                 for (URI out:outputFormats){
-                    paths.add(new MigrationPath(in,out,params.getParameters()));
+                    paths.add(new MigrationPath(in,out,params));
                 }
             }
             return paths.toArray(new MigrationPath[0]);

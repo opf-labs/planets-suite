@@ -15,7 +15,7 @@ import javax.xml.ws.ResponseWrapper;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 
 /**
@@ -56,7 +56,7 @@ public interface Characterise extends PlanetsService {
             @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
                     + "/" + Characterise.NAME, partName = "digitalObject") final DigitalObject digitalObject,
             @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
-                    + "/" + Characterise.NAME, partName = "parameters") Parameters parameters);
+                    + "/" + Characterise.NAME, partName = "parameters") List<Parameter> parameters);
 
     /**
      * @param formatURI A format URI

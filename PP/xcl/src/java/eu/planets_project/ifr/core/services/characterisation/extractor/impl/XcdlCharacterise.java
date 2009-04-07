@@ -24,7 +24,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Metric;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -65,10 +65,10 @@ public class XcdlCharacterise implements Characterise, Serializable {
     /**
      * {@inheritDoc}
      * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject,
-     *      eu.planets_project.services.datatypes.Parameters)
+     *      eu.planets_project.services.datatypes.Parameter)
      */
     public CharacteriseResult characterise(DigitalObject digitalObject,
-            Parameters parameters) {
+            List<Parameter> parameters) {
 
         DigitalObject resultDigOb = null;
         ServiceReport sReport = new ServiceReport();
@@ -84,9 +84,8 @@ public class XcdlCharacterise implements Characterise, Serializable {
         byte[] result = null;
 
         if (parameters != null) {
-            List<Parameter> parameterList = parameters.getParameters();
-            if (parameterList != null && parameterList.size() > 0) {
-                for (Parameter parameter : parameterList) {
+            if ( parameters.size() > 0) {
+                for (Parameter parameter : parameters) {
                     String name = parameter.name;
                     if (name.equalsIgnoreCase("optionalXCELString")) {
                         optionalFormatXCEL = parameter.value;
@@ -195,10 +194,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
                 .setDescription("Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
         parameterList.add(enableRawData);
 
-        Parameters parameters = new Parameters();
-        parameters.setParameters(parameterList);
-
-        sd.parameters(parameters);
+        sd.parameters(parameterList);
 
         sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(
                 new URI[] {}));

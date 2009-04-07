@@ -2,7 +2,7 @@ package eu.planets_project.ifr.core.services.validation.impl;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
@@ -114,7 +114,7 @@ public final class PngCheck implements Validate, Serializable {
      * {@inheritDoc}
      */
     public ValidateResult validate(final DigitalObject digitalObject,
-            final URI format, Parameters parameters) {
+            final URI format, List<Parameter> parameters) {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "pngcheck-temp", "bin");
         boolean valid = basicValidateOneBinary(file, format);

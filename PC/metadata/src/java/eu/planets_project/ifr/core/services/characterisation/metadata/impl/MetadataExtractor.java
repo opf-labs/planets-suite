@@ -38,7 +38,7 @@ import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -75,10 +75,10 @@ public final class MetadataExtractor implements Characterise {
      * The optional format XCEL and parameters are ignored in this
      * implementation (you may pass null). {@inheritDoc}
      * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject,
-     *      java.lang.String, eu.planets_project.services.datatypes.Parameters)
+     *      java.lang.String, eu.planets_project.services.datatypes.Parameter)
      */
     public CharacteriseResult characterise(final DigitalObject digitalObject,
-            final Parameters parameters) {
+            final List<Parameter> parameters) {
         InputStream stream = digitalObject.getContent().read();
         byte[] binary = FileUtils.writeInputStreamToBinary(stream);
         String resultString = basicCharacteriseOneBinary(binary);

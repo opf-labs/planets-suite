@@ -17,7 +17,7 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
@@ -131,10 +131,7 @@ public class XcdlMigrate implements Migrate, Serializable {
                         + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.");
         parameterList.add(optionalXCELString);
 
-        Parameters parameters = new Parameters();
-        parameters.setParameters(parameterList);
-
-        sd.parameters(parameters);
+        sd.parameters(parameterList);
 
         // Migration Paths: List all combinations:
         sd.paths(createMigrationPathwayMatrix(CoreExtractor.getSupportedInputFormats(), CoreExtractor.getSupportedOutputFormats()));
@@ -144,7 +141,7 @@ public class XcdlMigrate implements Migrate, Serializable {
     }
 
     public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
-            URI outputFormat, Parameters parameters) {
+            URI outputFormat, List<Parameter> parameters) {
         System.out.println("Working on file: " + digitalObject.getTitle());
     	DigitalObject resultDigOb = null;
         ServiceReport sReport = new ServiceReport();
@@ -159,10 +156,8 @@ public class XcdlMigrate implements Migrate, Serializable {
         byte[] result = null;
 
         if (parameters != null) {
-            if (parameters.getParameters() != null
-                    && parameters.getParameters().size() != 0) {
-                List<Parameter> parameterList = parameters.getParameters();
-                for (Parameter currentParameter : parameterList) {
+            if ( parameters.size() != 0) {
+                for (Parameter currentParameter : parameters) {
                     String currentName = currentParameter.name;
 
                     if (currentName.equalsIgnoreCase("optionalXCELString")) {

@@ -26,7 +26,7 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.FileUtils;
@@ -88,7 +88,7 @@ public class XcdlCharacteriseTests {
         System.out
                 .println("test2: give XCEL (as parameter, no additional parameters:");
         System.out.println("--------------------------------");
-        Parameters parameters = createParameters(false, false, xcelString);
+        List<Parameter> parameters = createParameters(false, false, xcelString);
         CharacteriseResult characteriseResult = extractor.characterise(
                 digitalObject, parameters);
         check(characteriseResult);
@@ -98,7 +98,7 @@ public class XcdlCharacteriseTests {
     public void testCharacteriseNoXcdlWithParams() {
         System.out.println("test3: find XCEL, give parameter: -r");
         System.out.println("--------------------------------");
-        Parameters parameters = createParameters(false, true, null);
+        List<Parameter> parameters = createParameters(false, true, null);
 
         CharacteriseResult characteriseResult = extractor.characterise(
                 digitalObject, parameters);
@@ -110,7 +110,7 @@ public class XcdlCharacteriseTests {
         /* give XCEL, give Parameters */
         System.out.println("test4: give XCEL, parameters: -n, -r");
         System.out.println("--------------------------------");
-        Parameters parameters = createParameters(true, true, xcelString);
+        List<Parameter> parameters = createParameters(true, true, xcelString);
 
         CharacteriseResult characteriseResult = extractor.characterise(
                 digitalObject, parameters);
@@ -178,7 +178,7 @@ public class XcdlCharacteriseTests {
         System.out.println("Extracted properties: " + properties);
     }
 
-    private Parameters createParameters(boolean disableNormDataFlag,
+    private List<Parameter> createParameters(boolean disableNormDataFlag,
             boolean enableRawDataFlag, String optionalXCELString) {
         List<Parameter> parameterList = new ArrayList<Parameter>();
 
@@ -206,10 +206,7 @@ public class XcdlCharacteriseTests {
             parameterList.add(xcelStringParam);
         }
 
-        Parameters parameters = new Parameters();
-        parameters.setParameters(parameterList);
-
-        return parameters;
+        return parameterList;
     }
 
     /**

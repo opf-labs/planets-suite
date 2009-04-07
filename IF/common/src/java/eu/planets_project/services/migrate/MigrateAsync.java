@@ -5,6 +5,7 @@ package eu.planets_project.services.migrate;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -16,7 +17,7 @@ import javax.xml.ws.BindingType;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * This is intended to become the generic migration interface for complex migration services.
@@ -77,7 +78,7 @@ public interface MigrateAsync extends PlanetsService {
                 URL writeLocation,
             @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
                     + "/" + MigrateAsync.NAME, partName = "parameters") 
-                Parameters parameters );
+                List<Parameter> parameters );
 
     
     /*

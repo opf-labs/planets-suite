@@ -7,11 +7,12 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
@@ -35,7 +36,7 @@ public class GenericCLIMigrationWrapper {
 
 	// FIXME! This method should be able to decide whether it should create temporary files or not. 
 	public MigrateResult migrate(DigitalObject sourceObject, URI sourceFormat,
-			URI destinationFormat, Parameters callerParameters) throws MigrationException {
+			URI destinationFormat, List<Parameter> callerParameters) throws MigrationException {
 
 
 		String command = getMigrationCommand(sourceFormat, destinationFormat);

@@ -4,6 +4,7 @@
 package eu.planets_project.services.migrate;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -17,7 +18,7 @@ import javax.xml.ws.ResponseWrapper;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Migration of one digital object.
@@ -70,5 +71,5 @@ public interface Migrate extends PlanetsService {
                 URI outputFormat,
             @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
                     + "/" + Migrate.NAME, partName = "parameters") 
-                Parameters parameters );
+                List<Parameter> parameters );
 }

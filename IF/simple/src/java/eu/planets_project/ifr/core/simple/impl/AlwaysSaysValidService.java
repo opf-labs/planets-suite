@@ -5,7 +5,7 @@ package eu.planets_project.ifr.core.simple.impl;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.validate.Validate;
@@ -18,6 +18,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import java.net.URI;
+import java.util.List;
         
 
 
@@ -51,7 +52,7 @@ public class AlwaysSaysValidService implements Validate {
         return mds.build();
     }
 
-    public ValidateResult validate(DigitalObject dob, URI format, Parameters parameters) {
+    public ValidateResult validate(DigitalObject dob, URI format, List<Parameter> parameters) {
         ServiceReport sr = new ServiceReport();
         sr.setErrorState(ServiceReport.SUCCESS);
         log.info("This service always says yes, unless the digital object is null.");

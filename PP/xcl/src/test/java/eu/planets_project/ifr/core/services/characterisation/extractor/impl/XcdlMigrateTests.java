@@ -23,7 +23,7 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
@@ -121,7 +121,7 @@ public class XcdlMigrateTests {
         				"Extractor will find the proper one itself!");
         }
         	
-        Parameters parameters = createParameters(false, false,
+        List<Parameter> parameters = createParameters(false, false,
                 getTestXCEL(getFormatExtension(inputFormat)));
         testMigrate(inputFormat, outputFormat, parameters);
         System.out.println("*******************");
@@ -163,7 +163,7 @@ public class XcdlMigrateTests {
         System.out.println();
     }
 
-    private Parameters createParameters(boolean disableNormDataFlag,
+    private List<Parameter> createParameters(boolean disableNormDataFlag,
             boolean enableRawDataFlag, String optionalXCELString) {
         List<Parameter> parameterList = new ArrayList<Parameter>();
 
@@ -191,10 +191,7 @@ public class XcdlMigrateTests {
             parameterList.add(xcelStringParam);
         }
 
-        Parameters parameters = new Parameters();
-        parameters.setParameters(parameterList);
-
-        return parameters;
+        return parameterList;
     }
 
     private String getTestXCEL(String srcExtension) {
@@ -291,7 +288,7 @@ public class XcdlMigrateTests {
     }
 
     private void testMigrate(URI inputFormat, URI outputFormat,
-            Parameters parameters) {
+            List<Parameter> parameters) {
         String extension = getFormatExtension(inputFormat);
         DigitalObject digObj = createDigitalObject(extension);
 

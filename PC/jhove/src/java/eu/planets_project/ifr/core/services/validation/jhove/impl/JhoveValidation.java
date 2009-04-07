@@ -3,7 +3,7 @@ package eu.planets_project.ifr.core.services.validation.jhove.impl;
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
@@ -18,6 +18,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import java.io.Serializable;
 import java.net.URI;
+import java.util.List;
 
 
 /**
@@ -38,11 +39,11 @@ public final class JhoveValidation implements Validate, Serializable {
 
     /**
      * {@inheritDoc}
-     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, eu.planets_project.services.datatypes.Parameters)
+     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, eu.planets_project.services.datatypes.Parameter)
      */
     public ValidateResult validate(final DigitalObject digitalObject,
             final URI format,
-            Parameters parameters) {
+            List<Parameter> parameters) {
         boolean valid = basicValidateOneBinary(digitalObject, format);
 
 
