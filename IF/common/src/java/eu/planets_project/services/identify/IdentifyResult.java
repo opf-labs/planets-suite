@@ -60,10 +60,10 @@ public class IdentifyResult {
     public IdentifyResult() { }
 
     /**
-     * @param types
-     * @param method
-     * @param report
-     * @param properties
+     * @param types The list of matching format URIs, specifying the formats the object is consistent with.
+     * @param method The method used to reach this decision.  Should not be set to NULL unless completely unavoidable.
+     * @param report The standard service report object.
+     * @param properties Any other properties determined by the service.
      */
     public IdentifyResult(List<URI> types, Method method, ServiceReport report, List<Property> properties ) {
         super();
@@ -74,27 +74,14 @@ public class IdentifyResult {
     }
 
     /**
-     * @param types
-     * @param method
-     * @param report
+     * @param types The list of matching format URIs, specifying the formats the object is consistent with.
+     * @param method The method used to reach this decision.  Should not be set to NULL unless completely unavoidable.
+     * @param report The standard service report object.
      */
     public IdentifyResult(List<URI> types, Method method, ServiceReport report ) {
         super();
         this.types = types;
         this.method = method;
-        this.report = report;
-        this.properties = null;
-    }
-
-    /**
-     * 
-     * @param types
-     * @param report
-     */
-    public IdentifyResult( List<URI> types, ServiceReport report ) {
-        super();
-        this.types = types;
-        this.method = null;
         this.report = report;
         this.properties = null;
     }

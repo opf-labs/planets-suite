@@ -77,7 +77,7 @@ public final class JhoveIdentification implements Identify, Serializable {
                 + Arrays.asList(types.types));
         ServiceReport report = new ServiceReport();
         report.setInfo(types.status);
-        return new IdentifyResult(Arrays.asList(types.types), report);
+        return new IdentifyResult(Arrays.asList(types.types), null, report);
     }
 
     /**

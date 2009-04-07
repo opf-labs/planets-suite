@@ -75,8 +75,14 @@ public final class Droid implements Identify, Serializable {
         Types types = identifyOneBinary(file);
         ServiceReport report = new ServiceReport();
         report.setInfo(types.status);
-        IdentifyResult result = new IdentifyResult(Arrays.asList(types.types),
-                report);
+        IdentifyResult.Method method = null;
+        if( AnalysisController.FILE_CLASSIFICATION_POSITIVE_TEXT.equals(types.status)) {
+            method = IdentifyResult.Method.MAGIC;
+        }
+        else if( AnalysisController.FILE_CLASSIFICATION_TENTATIVE_TEXT.equals(types.status)) {
+            method = IdentifyResult.Method.EXTENSION;
+        }
+        IdentifyResult result = new IdentifyResult(Arrays.asList(types.types), method, report);
         return result;
     }
 

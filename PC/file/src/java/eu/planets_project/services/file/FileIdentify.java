@@ -23,6 +23,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.identify.IdentifyResult.Method;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
@@ -138,6 +139,6 @@ public class FileIdentify implements Identify {
         rep.setErrorState(errorState);
         rep.setError(message);
         // Return a new IdentifyResult created from the ServiceReport and the null types
-        return new IdentifyResult(type, rep);
+        return new IdentifyResult(type, null, rep);
     }
 }
