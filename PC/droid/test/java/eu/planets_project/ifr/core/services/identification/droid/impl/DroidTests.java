@@ -14,6 +14,7 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Tests of the Droid functionality.
@@ -28,7 +29,14 @@ public class DroidTests {
      */
     @BeforeClass
     public static void localTests() {
-        droid = new Droid();
+        System.setProperty("proxySet","true");
+        System.setProperty("http.proxyHost","bspcache.bl.uk");
+        System.setProperty("http.proxyPort","8080");
+        System.setProperty("http.nonProxyHosts","localhost|127.0.0.1|*.ad.bl.uk");
+        System.out.println("Set.");
+        
+        droid = ServiceCreator.createTestService(Identify.QNAME,
+                Droid.class, "/pserv-pc-droid/Droid?wsdl");
     }
 
     /**
@@ -126,7 +134,7 @@ public class DroidTests {
 	private static String[] test(final Identify identify, final String location)
             throws MalformedURLException {
         IdentifyResult result = identify.identify(new DigitalObject.Builder(
-                Content.byReference(new File(location).toURI().toURL())).build(), null );
+                Content.byValue(new File(location) )).build(), null );
         String[] strings = new String[result.getTypes().size()];
         for (int i = 0; i < result.getTypes().size(); i++) {
             String string = result.getTypes().get(i).toASCIIString();

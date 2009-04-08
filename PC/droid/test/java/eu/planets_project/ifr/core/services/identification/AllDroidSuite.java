@@ -4,7 +4,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import eu.planets_project.ifr.core.services.identification.droid.impl.DroidTests;
-import eu.planets_project.ifr.core.services.identification.droid.impl.RemoteDroidTests;
 
 /**
  * Suite to run all tests in the droid component.
@@ -12,5 +11,5 @@ import eu.planets_project.ifr.core.services.identification.droid.impl.RemoteDroi
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { DroidTests.class, RemoteDroidTests.class })
+@Suite.SuiteClasses( { DroidTests.class })
 public class AllDroidSuite {}
