@@ -24,7 +24,7 @@
 <div id="maincol">
 <div class="innertubemain">
 
-<h:form>
+<a4j:form>
     <t:dataTable id="dataTable_allExp"
                  styleClass="tbTable"
                  var="exp"
@@ -45,12 +45,28 @@
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
-                <h:commandLink action="#{ListExp_Backing.readerExperimentAction}">
+                <h:panelGroup>
+                <a4j:commandLink action="#{ListExp_Backing.readerExperimentAction}">
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-                </h:commandLink>
-                <h:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
+                	<rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="server">
+	               		<rich:menuItem id="contextViewExp" action="#{ListExp_Backing.readerExperimentAction}">
+							<b>view</b> experiment
+						</rich:menuItem>
+						<rich:menuItem id="contextEditExp" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}" action="#{ListExp_Backing.editExperimentAction}">
+							<b>edit</b> experiment
+						</rich:menuItem>
+						<rich:menuItem id="contextSaveAs" action="#{NewExp_Controller.commandSaveAs}">
+							<b>save configuration as</b> new experiment
+						</rich:menuItem>
+						<rich:menuItem id="contextExportExp" action="#{ListExp_Backing.exportMyExperimentAction}">
+							<b>export</b> experiment
+						</rich:menuItem>
+	          		</rich:contextMenu>
+                </a4j:commandLink>
+                <a4j:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
                     <t:graphicImage value="/graphics/accessories-text-editor.png" alt="edit" styleClass="expEditIcon"/>
-                </h:commandLink>
+                </a4j:commandLink>
+                </h:panelGroup>
         </t:column>
         <t:column>
 	        <f:facet name="header">
@@ -141,7 +157,7 @@
     
     
     
-</h:form>
+</a4j:form>
     <p>&#160;</p>
     <p>&#160;</p>
     <p>&#160;</p>

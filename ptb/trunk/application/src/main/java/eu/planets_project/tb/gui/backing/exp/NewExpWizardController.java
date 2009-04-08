@@ -37,6 +37,9 @@ import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
@@ -47,6 +50,7 @@ import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
 import eu.planets_project.tb.impl.system.TestbedBatchJob;
 import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
 
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 
 import java.io.File;
@@ -56,6 +60,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -64,13 +69,15 @@ import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ValueChangeListener;
 
 import org.richfaces.component.html.HtmlDataTable;
 
-public class NewExpWizardController {
+public class NewExpWizardController{
     
     private static PlanetsLogger log = PlanetsLogger.getLogger(NewExpWizardController.class, "testbed-log4j.xml");
     public NewExpWizardController() {
@@ -1692,6 +1699,21 @@ public class NewExpWizardController {
         return obsManual;
     }
     
+    /**
+     * FIXME check if required
+     * Returns the list of all manually measurable properties grouped by the stageName
+     * HashMap<StageName,List<MeasurementsBeans>>
+     * @return
+     */
+    public HashMap<ExperimentStageBean,List<MeasurementBean>> getManualObservablesPerStage(){
+    	HashMap<ExperimentStageBean,List<MeasurementBean>> ret = new HashMap<ExperimentStageBean, List<MeasurementBean>>();
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	for(ExperimentStageBean stage : expBean.getStages()){
+    		 ret.put(stage,getObservablesForEtype(expBean.getEtype(), expBean.getExperiment(), stage.getName(), true));
+    	}
+    	return ret;
+    }
+    
     private void chooseManualObservablesForEtype(String etype, Experiment exp, String stage){
     	this.obsManual = this.getObservablesForEtype(etype, exp, stage, true);
     }
@@ -1931,5 +1953,88 @@ public class NewExpWizardController {
 		return "goToStage3";
 
     }
+    
+    /**
+     * Processes a manual property value change in step5 of an experiment's property overview table and
+     * updates the experiment with this value.
+     */
+    public void processManualDataEntryChange(ValueChangeEvent vce){
+    	
+    	String value = (String)vce.getNewValue();
+    	FacesContext context = FacesContext.getCurrentInstance();
+		Object o1 = context.getExternalContext().getRequestParameterMap().get("propertyID");
+		Object o2 = context.getExternalContext().getRequestParameterMap().get("stageName");
+		Object o3 = context.getExternalContext().getRequestParameterMap().get("runDateMillis");
+		Object o4 = context.getExternalContext().getRequestParameterMap().get("diObjRef");
+		
+		if((o1!=null)&&(o2!=null)&&(o3!=null)&&(o4!=null)){
+			//fetch the parameters from the requestParameterMap
+			String manualpropID = (String)o1; 
+			String stageName = (String)o2; 
+			String expRunInMillis = (String)o3; 
+			String digObjRef = (String)o4; 
+			Calendar c = new GregorianCalendar();
+			c.setTimeInMillis(Long.parseLong(expRunInMillis));
+			
+			//now create or update an MeasurementRecordImpl record
+			this.updateManualPropertyMeasurementRecord(manualpropID, digObjRef, stageName, c,value);
+			
+			//store the updated experiment
+	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+	        Experiment exp = expBean.getExperiment();
+	    	testbedMan.updateExperiment(expBean.getExperiment());
+			
+		}else{
+			log.debug("not all required HtmlActionParameters we're sent along");
+		}
+ 	}
+    
+    /**
+     * Updates a measurement record within step5 of an experiment's data input table overview
+     * @param propertyID http://www.semanticweb.org/ontologies/2008/7/XCLOntology1.5.owl#CCITTFaxDecode
+     * @param digObjectRefCopy 54f8cff2-2f27-46f3-add1-541a00937653.tif
+     * @param stageName Characterise Before Migration
+     * @param runEndDate 4/2/09 2:54:42 PM
+     * @param value
+     */
+    private void updateManualPropertyMeasurementRecord(String propertyID, String digObjectRefCopy, String stageName, Calendar runEndDate, String value){
+    	//TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        Experiment exp = expBean.getExperiment();
+        for(BatchExecutionRecordImpl batchRec : exp.getExperimentExecutable().getBatchExecutionRecords()){
+        	//check if we've found the requested batch execution
+        	if(batchRec.getEndDate().equals(runEndDate)){
+        		for(ExecutionRecordImpl execRec : batchRec.getRuns()){
+        			//check if we're operating on the requested digital object
+        			if(execRec.getDigitalObjectReferenceCopy().equals(digObjectRefCopy)){
+	        			for(ExecutionStageRecordImpl execStageRec : execRec.getStages()){
+	        				//check if we're operating on the proper stage
+	        				if(execStageRec.getStage().equals(stageName)){
+		        				//check if we're operating on the requested manual measurement ID
+	        					boolean bFound = false;
+	        					for(MeasurementRecordImpl mRec : execStageRec.getManualMeasurements()){
+		        					if(mRec.getIdentifier().equals(propertyID)){
+		        						mRec.setValue(value);
+		        						bFound = true;
+		        						log.info("updating measurement for time: "+runEndDate.getTimeInMillis()+" stage: "+stageName+" propID: "+propertyID);
+		        					}	
+		        				}
+	        					if(!bFound){
+	        						//no MeasurementRecord exists -> create a new one
+	        						MeasurementRecordImpl mRec = new MeasurementRecordImpl();
+	        						mRec.setIdentifier(propertyID);
+	        						mRec.setValue(value);
+	        						execStageRec.addManualMeasurement(mRec);
+	        						log.info("created new measurement for time: "+runEndDate.getTimeInMillis()+" stage: "+stageName+" propID: "+propertyID);
+	        					}
+	        				}
+	        			}
+        			}
+        		}
+        	}
+        }
+    }
+   
 
 }

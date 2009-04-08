@@ -133,7 +133,7 @@
             <rich:panel styleClass="expExecLogPanel">
                 
      <rich:dataTable value="#{NewExp_Controller.experimentExecutable.batchExecutionRecords}" 
-         var="batch" styleClass="tbTable" reRender="prop_ds" rows="10">
+         var="batch" styleClass="tbTable" reRender="prop_ds" rows="10" rowKeyVar="counter">
       <rich:column sortBy="#{batch.endDate}" sortOrder="DESCENDING">
         <f:facet name="header">Execution Date</f:facet>
         <h:commandLink>
@@ -234,17 +234,22 @@
 </a4j:region>
 <!-- END Automated Results -->
 
-<!-- START Automated Results -->
+<!-- START Manual Results -->
 <a4j:region id="regionManualMResults" renderRegionOnly="true">
 <rich:simpleTogglePanel label="#{res['exp_stage5.manualResults']}" opened="true" switchType="ajax">
 	<p>Please fill in the properties you have selected to measure manually for this experiment.</p>
-	<rich:tabPanel>
+	<rich:tabPanel switchType="server">
 		<rich:tab label="Enter Property Data">
-	        TBC
+
         </rich:tab>
-        <rich:tab label="Property Overview">
-	        TBC
-        </rich:tab>
+        <rich:tab label="Overview of Entered Data">
+		    <!-- start testing -->
+		    	<rich:dataTable binding="#{ExperimentBean.manualMeasurementsOverviewTable}"
+		    	onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"/>
+			<!-- end testing -->
+
+		</rich:tab>
 	 </rich:tabPanel>
 </rich:simpleTogglePanel>
 </a4j:region>

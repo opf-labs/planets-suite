@@ -241,6 +241,10 @@ public class ExecutionStageRecordImpl implements Serializable {
     public void setManualMeasurements(List<MeasurementRecordImpl> measurements) {
         this.manualMeasurements = new Vector<MeasurementRecordImpl>(measurements);
     }
+    
+    public void addManualMeasurement(MeasurementRecordImpl record){
+    	this.manualMeasurements.add(record);
+    }
 
     
 }

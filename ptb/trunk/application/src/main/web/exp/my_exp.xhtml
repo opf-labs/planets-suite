@@ -24,7 +24,7 @@
 	<div id="maincol">
 	<div class="innertubemain">
 		
-	<h:form>
+	<a4j:form>
      <t:dataTable id="dataTable_myExp"
                   styleClass="tbTable"
                   var="exp"
@@ -46,9 +46,28 @@
 		          #{res['expList.colHeader.expName']}
     	      </t:commandSortHeader>
     	    </f:facet>
-            <h:commandLink action="#{ListExp_Backing.editMyExperimentAction}">
-	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-    		</h:commandLink>
+            <a4j:commandLink action="#{ListExp_Backing.editMyExperimentAction}">
+	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}"/>
+	            <rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="server">
+	               	<rich:menuItem id="contextOpenExp" action="#{ListExp_Backing.editMyExperimentAction}">
+						<b>edit</b> experiment
+					</rich:menuItem>
+					<rich:menuItem id="contextSaveAs" action="#{NewExp_Controller.commandSaveAs}">
+						<b>save configuration as</b> new experiment
+					</rich:menuItem>
+					<!-- rich:menuGroup value="open and go to" direction="right-down">
+						<rich:menuItem value="#{res['new_exp.stage1']}" rendered="#{exp.currentPhaseIndex >= 1}" action="goToStage1"/>
+						<rich:menuItem value="#{res['new_exp.stage2']}" rendered="#{exp.currentPhaseIndex >= 2}" action="goToStage2"/>
+						<rich:menuItem value="#{res['new_exp.stage2']}" rendered="#{exp.currentPhaseIndex >= 3}" action="goToStage3"/>
+						<rich:menuItem value="#{res['new_exp.stage2']}" rendered="#{exp.currentPhaseIndex >= 4}" action="goToStage4"/>
+						<rich:menuItem value="#{res['new_exp.stage2']}" rendered="#{exp.currentPhaseIndex >= 5}" action="goToStage5"/>
+						<rich:menuItem value="#{res['new_exp.stage2']}" rendered="#{exp.currentPhaseIndex >= 6}" action="goToStage6"/>
+					</rich:menuGroup-->
+					<rich:menuItem id="contextExportExp" action="#{ListExp_Backing.exportMyExperimentAction}">
+						<b>export</b> experiment
+					</rich:menuItem>
+	          	</rich:contextMenu>
+    		</a4j:commandLink>
         </t:column>
         <t:column>
 	        <f:facet name="header">
@@ -162,7 +181,7 @@
         </t:dataScroller>
 
     </h:panelGrid>
-    </h:form>
+    </a4j:form>
 	
 	<div class="clear"></div>
   

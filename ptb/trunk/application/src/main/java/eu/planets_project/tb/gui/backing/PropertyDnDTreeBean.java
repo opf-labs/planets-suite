@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.faces.component.html.HtmlSelectBooleanCheckbox;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
@@ -16,6 +17,7 @@ import org.ajax4jsf.component.UIRepeat;
 import org.ajax4jsf.component.html.HtmlAjaxCommandButton;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.myfaces.custom.checkbox.HtmlCheckbox;
 import org.richfaces.component.UITreeNode;
 import org.richfaces.component.UITree;
 import org.richfaces.component.html.HtmlDataTable;
@@ -151,6 +153,20 @@ public class PropertyDnDTreeBean{
 		}
     }
     
+    HtmlSelectBooleanCheckbox cbx;
+    public HtmlSelectBooleanCheckbox getContextMenuEnabled(){
+    	if(cbx == null){
+    		cbx = new HtmlSelectBooleanCheckbox();
+    		cbx.setId("cbxcontextmenu");
+    		cbx.setSelected(false);
+    	}
+    	return cbx;
+    }
+    
+    public void setContextMenuEnabled(HtmlSelectBooleanCheckbox cbx){
+    	this.cbx = cbx;
+    }
+    
     public void processDrop(DropEvent dropEvent) {
     	// resolve drag source attributes
         UITreeNode srcNode = (dropEvent.getDraggableSource() instanceof UITreeNode) ? (UITreeNode) dropEvent.getDraggableSource() : null;
@@ -167,6 +183,23 @@ public class PropertyDnDTreeBean{
     
     public void processPropertyDblClick(ActionEvent event){
     	UITreeNode srcNode = (event.getComponent().getParent()instanceof UITreeNode) ? (UITreeNode) event.getComponent().getParent() : null;
+    	processAddNodeActionEvent(srcNode);
+    }
+    
+    /**
+     * TODO: There's a bug in
+     * I have a rich:tree with drag-n-drop support and an attached rich:contextMenu to the nestet rich:treeNode. if you click right on a node, the contextMenu will open. After click on the menuItem the cursor changes to the dragIndicator Icon and you drag/drop the element.	
+	 * The correct behavior should be that nothing happens in terms of drag-n-drop after click on a contextMenu in a tree. 
+     * https://cloud.prod.atl2.jboss.com:8443/jira/browse/RF-2516;jsessionid=146683782496939F59F8D6156B35AA9F?page=com.atlassian.jira.plugin.system.issuetabpanels%3Aall-tabpanel
+     * --> fixed, need to update version of RichFaces
+     * @param event
+     */
+    public void processLeafContextMenuAddProperty(ActionEvent event){
+    	UITreeNode srcNode = (event.getComponent().getParent().getParent()instanceof UITreeNode) ? (UITreeNode) event.getComponent().getParent().getParent() : null;
+    	processAddNodeActionEvent(srcNode);
+    }
+    
+    private void processAddNodeActionEvent(UITreeNode srcNode){
     	UITree srcTree = srcNode != null ? srcNode.getUITree() : null;
     	TreeRowKey dragNodeKey = (srcNode.getDragValue() instanceof TreeRowKey) ? (TreeRowKey) srcNode.getDragValue() : null;
     	TreeNode draggedNode = dragNodeKey != null ? srcTree.getTreeNode(dragNodeKey) : null;
@@ -177,6 +210,7 @@ public class PropertyDnDTreeBean{
     	if(draggedNode!=null)
         	this.dndSelNodes.put(((OntologyProperty)draggedNode.getData()).getURI(),draggedNode);
     }
+    
     
 	/**
 	 * removes all selected properties from the list
