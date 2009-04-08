@@ -33,3 +33,16 @@ test.on.server=false
 # pserv.deploy.profile.pure-java = true
 # Add a comma-separated list of the sub-components you wish to deploy via 'ant deploy:profile'
 # pserv.deploy.profile = PA/imagemagick, PP/xcl
+#
+# The same can be done for testing. 
+#
+# If these options are unset, then the test profile will default 
+# to the same as the deploy profile.
+#
+# Some of the tests are destructive, i.e. they alter the server state permanently.
+# The 'test:profile' options here allow these to be avoided.
+#
+# First, define whether the pure-java set should be tested under 'ant test:profile':
+#pserv.test.profile.pure-java = false
+# Add a comma-separated list of the sub-components you wish to deploy via 'ant test:profile'
+#pserv.test.profile = IF/common, PA/java-se, PC/droid

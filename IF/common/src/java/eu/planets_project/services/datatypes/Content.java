@@ -53,6 +53,9 @@ public final class Content implements Serializable, DigitalObject.Content {
     @XmlAttribute
     private long length = -1;
     
+    /** */
+    private Checksum checksum = null;
+    
     /*
      * We use static factory methods to provide named constructors for the
      * different kinds of content instances:
@@ -225,6 +228,23 @@ public final class Content implements Serializable, DigitalObject.Content {
      */
     public long length() {
         return length;
+    }
+
+    /**
+     * As checksum calculation is optional, this functionality is supported via a set method, not the builder.
+     * @param checksum the checksum to set
+     * @see Content#getChecksum()
+     */
+    public void setChecksum(Checksum checksum) {
+        this.checksum = checksum;
+    }
+
+    /**
+     * @return The checksum
+     * @see Content#getChecksum()
+     */
+    public Checksum getChecksum() {
+        return checksum;
     }
 
     /**

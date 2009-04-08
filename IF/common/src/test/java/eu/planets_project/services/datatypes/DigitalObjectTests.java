@@ -85,9 +85,10 @@ public final class DigitalObjectTests {
         String algorithm = "MD5";
         String value = "the checksum data";
         Checksum checksum = new Checksum(algorithm, value);
+        c1.setChecksum(checksum);
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1)
-                .permanentUrl(purl).metadata(meta).checksum(checksum).build();
+                .permanentUrl(purl).metadata(meta).build();
         System.out.println("Created: " + object);
 
     }
@@ -121,7 +122,7 @@ public final class DigitalObjectTests {
             /* Creation with all optional arguments: */
             digitalObject1 = new DigitalObject.Builder(Content
                     .byReference(permanentUrl)).permanentUrl(permanentUrl)
-                    .checksum(CHECKSUM).events(EVENT).fragments(FRAGMENT)
+                    .events(EVENT).fragments(FRAGMENT)
                     .manifestationOf(manifestationOf).format(planetsFormatUri)
                     .metadata(META).title(TITLE).contains(digitalObject2)
                     .build();

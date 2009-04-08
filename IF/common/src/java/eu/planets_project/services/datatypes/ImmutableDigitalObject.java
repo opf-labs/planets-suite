@@ -96,7 +96,6 @@ final class ImmutableDigitalObject implements
         fragments = builder.getFragments();
         manifestationOf = builder.getManifestationOf();
         title = builder.getTitle();
-        checksum = builder.getChecksum();
         metadata = builder.getMetadata();
         format = builder.getFormat();
     }

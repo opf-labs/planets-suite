@@ -50,9 +50,6 @@ public interface DigitalObject {
     /** @return The URI that this digital object is a manifestation of. */
     URI getManifestationOf();
 
-    /** @return The checksum for this digital object. */
-    Checksum getChecksum();
-
     /**
      * @return Additional repository-specific metadata. Returns a defensive
      *         copy, changes to the obtained list won't affect this digital
@@ -175,7 +172,6 @@ public interface DigitalObject {
         private List<Fragment> fragments = new ArrayList<Fragment>();
         private List<DigitalObject> contained = new ArrayList<DigitalObject>();
         private URI manifestationOf = null;
-        private Checksum checksum = null;
         private List<Metadata> metadata = null;
         private URI format = null;
         private String title = null;
@@ -204,7 +200,6 @@ public interface DigitalObject {
             fragments = digitalObject.getFragments();
             manifestationOf = digitalObject.getManifestationOf();
             title = digitalObject.getTitle();
-            checksum = digitalObject.getChecksum();
             metadata = digitalObject.getMetadata();
             format = digitalObject.getFormat();
         }
@@ -229,7 +224,6 @@ public interface DigitalObject {
             fragments = digitalObject.getFragments();
             manifestationOf = digitalObject.getManifestationOf();
             title = digitalObject.getTitle();
-            checksum = digitalObject.getChecksum();
             metadata = digitalObject.getMetadata();
             format = digitalObject.getFormat();
         }
@@ -305,15 +299,6 @@ public interface DigitalObject {
         }
 
         /**
-         * @param checksum The digital object's checksum
-         * @return The builder, for cascaded calls
-         */
-        public Builder checksum(final Checksum checksum) {
-            this.checksum = checksum;
-            return this;
-        }
-
-        /**
          * @param metadata Additional metadata for the digital object
          * @return The builder, for cascaded calls
          */
@@ -377,14 +362,6 @@ public interface DigitalObject {
          */
         public URI getManifestationOf() {
             return manifestationOf;
-        }
-
-        /**
-         * @return The checksum
-         * @see DigitalObject#getChecksum()
-         */
-        public Checksum getChecksum() {
-            return checksum;
         }
 
         /**
