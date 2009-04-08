@@ -36,6 +36,8 @@
 	<classpathentry kind="src" path="PA/gimp/test"/>
 	<classpathentry kind="src" path="PA/imagemagick/src/java"/>
 	<classpathentry kind="src" path="PA/imagemagick/test/java"/>
+	<classpathentry kind="src" path="PA/inkscape/src/java"/>
+	<classpathentry kind="src" path="PA/inkscape/test"/>
 	<classpathentry kind="src" path="PA/jasper19/src/java"/>
 	<classpathentry kind="src" path="PA/jasper19/test"/>
 	<classpathentry kind="src" path="PA/java-se/src/java"/>
