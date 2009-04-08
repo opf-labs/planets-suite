@@ -22,12 +22,30 @@ public class ServiceInspector {
     private static final Log log = LogFactory.getLog(ServiceInspector.class);
 
     private String serviceName;
-    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
-    public String getServiceName() { return serviceName; }
+    
+    private ServiceRecordBean srb = null;
 
-    public ServiceRecordBean getService() {
+    /**
+     * @param serviceName
+     */
+    public void setServiceName(String serviceName) { 
+        this.serviceName = serviceName; 
+        lookForService(); 
+    }
+
+    /**
+     * @return
+     */
+    public String getServiceName() { 
+        return serviceName; 
+    }
+
+    /**
+     * 
+     */
+    private void lookForService() {
         log.info("Looking up service: " + this.serviceName);
-        if( this.serviceName == null ) return null;
+        if( this.serviceName == null ) this.srb = null;
         
         // Get the service browser:
         ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
@@ -35,10 +53,19 @@ public class ServiceInspector {
         // Need a consistent way of getting the full record...
         for( ServiceRecordBean srb : sb.getAllServicesAndRecords() ) {
             if( this.serviceName.equals(srb.getName()) ) {
-                return srb;
+                 this.srb = srb;
+                 // FIXME Return the first hit:
+                 return;
             }
         }
-        return null;
+        this.srb = null;
+    }
+
+    /**
+     * @return
+     */
+    public ServiceRecordBean getService() {
+        return this.srb;
     }
 
 }

@@ -3,30 +3,21 @@
  */
 package eu.planets_project.tb.utils;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.ws.Service;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.xml.sax.SAXException;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.characterise.Characterise;
-import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
-import eu.planets_project.services.datatypes.Parameters;
-import eu.planets_project.services.datatypes.Properties;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -112,7 +103,7 @@ public class XCDLService implements Characterise {
     /* (non-Javadoc)
      * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
      */
-    public CharacteriseResult characterise(DigitalObject dob, Parameters params) {
+    public CharacteriseResult characterise(DigitalObject dob, List<Parameter> params) {
         
         CharacteriseResult characteriseResult = extractor.characterise(dob, params);
 

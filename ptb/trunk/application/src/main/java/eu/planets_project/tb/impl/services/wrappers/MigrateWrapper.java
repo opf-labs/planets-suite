@@ -5,6 +5,7 @@ package eu.planets_project.tb.impl.services.wrappers;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 
 import javax.xml.ws.Service;
 
@@ -13,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.BasicMigrateOneBinary;
@@ -101,7 +102,7 @@ public class MigrateWrapper implements Migrate {
      * eu.planets_project.services.datatypes.Parameters)
      */
     public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
-            URI outputFormat, Parameters parameters) {
+            URI outputFormat, List<Parameter> parameters) {
 
         // Transform the DO into a single binary, if that is sane
         byte[] binary = null;

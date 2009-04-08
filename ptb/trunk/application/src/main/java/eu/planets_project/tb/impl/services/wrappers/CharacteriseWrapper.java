@@ -15,7 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameters;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.impl.services.util.PlanetsServiceExplorer;
@@ -78,7 +78,7 @@ public class CharacteriseWrapper implements Characterise {
      * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Parameters)
      */
     public CharacteriseResult characterise(DigitalObject digitalObject,
-            Parameters parameters) {
+            List<Parameter> parameters) {
         return c.characterise(digitalObject, parameters);
     }
 

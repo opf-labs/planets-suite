@@ -69,7 +69,14 @@
        <dd>#{ServiceInspector.service.serviceDescription.serviceProvider}</dd>
        
        <dt>Tool</dt>
-       <dd>#{ServiceInspector.service.serviceDescription.tool}</dd>
+       <dd><ul>
+              <li>Identifier: #{ServiceInspector.service.serviceDescription.tool.identifier}</li>
+              <li>Name: #{ServiceInspector.service.serviceDescription.tool.name}</li>
+              <li>Version: #{ServiceInspector.service.serviceDescription.tool.version}</li>
+              <li>Description: #{ServiceInspector.service.serviceDescription.tool.description}</li>
+              <li>Homepage: #{ServiceInspector.service.serviceDescription.tool.homepage}</li>
+           </ul>
+       </dd>
        
        <dt>Version</dt>
        <dd>#{ServiceInspector.service.serviceDescription.version}</dd>
