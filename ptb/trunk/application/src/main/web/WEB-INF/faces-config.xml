@@ -214,12 +214,12 @@
 
   <navigation-case>
    <from-outcome>help</from-outcome>
-   <to-view-id>/reader/help.xhtml</to-view-id>
+   <to-view-id>/public/help.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
    <navigation-case>
    <from-outcome>about</from-outcome>
-   <to-view-id>/reader/about.xhtml</to-view-id>
+   <to-view-id>/public/about.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>

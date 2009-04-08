@@ -28,7 +28,24 @@
 	<div class="innertubemain">
 
     <h:form>
-    
+    <div>
+   
+    <h:commandLink action="browse_services.faces">
+	<img src="${facesContext.externalContext.requestContextPath}/graphics/browse_services.gif" 
+	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
+	     style="margin:5px 5px 5px 5px;" />
+	</h:commandLink>
+	<h:commandLink action="browse_pathways.faces">
+	<img src="${facesContext.externalContext.requestContextPath}/graphics/browse_pathways.gif" 
+	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
+	     style="margin:5px 5px 5px 5px;" />
+	</h:commandLink>
+	<h:commandLink action="list_pathways.faces">
+	<img src="${facesContext.externalContext.requestContextPath}/graphics/list_pathways.gif" 
+	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
+	     style="margin:5px 5px 5px 5px;" />
+	</h:commandLink>
+    </div>
     #{ServiceBrowser.experimentServiceRecordFixLog}
 
         <rich:dataTable value="#{ServiceBrowser.allServicesAndRecords}" var="sd"
