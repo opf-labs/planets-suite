@@ -1827,6 +1827,19 @@ public class ExperimentBean {
     	subTable.setOnRowMouseOver("this.style.backgroundColor='#F8F8F8'");
     	subTable.setOnRowMouseOut("this.style.backgroundColor='#FFFFFF'");
     	subTable.setRows(10);
+    	// FIXME ANJ Hacked this in to cope when there are no manual properties.
+    	/**
+    	 * 
+Caused by: java.lang.IllegalArgumentException
+    at javax.faces.model.ListDataModel.getRowData(ListDataModel.java:139)
+    at org.ajax4jsf.model.SequenceDataModel.getRowData(SequenceDataModel.java:147)
+    at org.richfaces.model.ModifiableModel.getRowData(ModifiableModel.java:67)
+    at org.ajax4jsf.component.UIDataAdaptor.getRowData(UIDataAdaptor.java:258)
+    at eu.planets_project.tb.gui.backing.ExperimentBean.initManualMeasurementsOverviewTable(ExperimentBean.java:1832)
+    at eu.planets_project.tb.gui.backing.ExperimentBean.getManualMeasurementsOverviewTable(ExperimentBean.java:1766)
+    	 * 
+    	 */
+    	try {
     	MeasurementPropertyResultsBean subTableVar = (MeasurementPropertyResultsBean)subTable.getRowData();
     	manualMeasurementsOverviewTable.getChildren().add(subTable);
     	
@@ -1947,8 +1960,11 @@ public class ExperimentBean {
 	 		colx.getChildren().add(inplaceInput); 
 	    	//add column
 	    	subTable.getChildren().add(colx); 
-	    	
     	}
+        } catch ( Exception e ) {
+            log.error("FAILED with exception: "+e);
+            e.printStackTrace();
+        }
     	
     }
     
