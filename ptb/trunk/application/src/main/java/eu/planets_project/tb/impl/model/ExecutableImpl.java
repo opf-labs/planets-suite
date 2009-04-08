@@ -52,13 +52,15 @@ public abstract class ExecutableImpl implements Executable, java.io.Serializable
 	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutionEndDate(long)
 	 */
 	public void setExecutionEndDate(long timeInMillis) {
-			this.execEndDate.setTimeInMillis(timeInMillis);
+	    this.execEndDate = GregorianCalendar.getInstance();
+	    this.execEndDate.setTimeInMillis(timeInMillis);
 	}
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setExecutionStartDate(long)
 	 */
 	public void setExecutionStartDate(long timeInMillis) {
+	    this.execStartDate = GregorianCalendar.getInstance();
 		this.execStartDate.setTimeInMillis(timeInMillis);
 	}
 	
