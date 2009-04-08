@@ -14,9 +14,8 @@ import eu.planets_project.services.datatypes.Property;
 /**
  * This is returned when a viewing session is polled for it's current status.
  * 
- * Any properties determined during the viewing session can be returned here.
- * 
- * FIXME Needs to distinguish between live sessions, live sessions that are still measuring properties, and dead sessions.
+ * Any properties determined during the viewing session can be returned here,
+ * or queried directly using the doAction interface.
  * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
@@ -25,16 +24,15 @@ import eu.planets_project.services.datatypes.Property;
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class ViewStatus {
     
-    public static final int INACTIVE = 0;
-    public static final int ACTIVE = 1;
+    public enum Status { ACTIVE, INACTIVE, UNKNOWN };
     
-    private int state = -1;
+    private Status state;
     private List<Property> properties;
     
     /* for JAXB */
     protected ViewStatus() { }
     
-    public ViewStatus( int state, List<Property> properties ) {
+    public ViewStatus( Status state, List<Property> properties ) {
         this.state = state;
         this.properties = properties;
     }
@@ -42,7 +40,7 @@ public class ViewStatus {
     /**
      * @return the state
      */
-    public int getState() {
+    public Status getState() {
         return state;
     }
 

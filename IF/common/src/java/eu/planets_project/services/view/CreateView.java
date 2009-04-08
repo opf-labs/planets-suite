@@ -15,6 +15,7 @@ import javax.xml.ws.BindingType;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * The purpose of the CreateView operation is to take a Digital Object and to wrap it up so
@@ -49,7 +50,11 @@ public interface CreateView extends PlanetsService {
     public CreateViewResult createView(
             @WebParam(name = "digitalObject", targetNamespace = PlanetsServices.NS
                     + "/" + CreateView.NAME, partName = "digitalObjects") 
-            List<DigitalObject> digitalObjects );
+            List<DigitalObject> digitalObjects,
+            @WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
+                    + "/" + CreateView.NAME, partName = "parameters")
+            List<Parameter> parameters );
+
     
     /**
      * @param sessionIdentifier A key that allows the service  to uniquely identify the user's session.
@@ -64,4 +69,20 @@ public interface CreateView extends PlanetsService {
             @WebParam(name = "sessionIdentifier", targetNamespace = PlanetsServices.NS
                     + "/" + CreateView.NAME, partName = "sessionIdentifier") 
             String sessionIdentifier );
+    
+    /**
+     * @param sessionIdentifier A key that allows the service  to uniquely identify the user's session.
+     * @return A description of the current state of that session, optionally including properties determined from the session.
+     */
+    @WebMethod(operationName = CreateView.NAME + "_viewactionresult", action = PlanetsServices.NS
+            + "/" + CreateView.NAME + "/viewactionresult")
+    @WebResult(name = CreateView.NAME + "ViewActionResult", targetNamespace = PlanetsServices.NS
+            + "/" + CreateView.NAME, partName = CreateView.NAME
+            + "ViewActionResult")
+    public ViewActionResult doAction( 
+            @WebParam(name = "sessionIdentifier", targetNamespace = PlanetsServices.NS
+                    + "/" + CreateView.NAME, partName = "sessionIdentifier") 
+            String sessionIdentifier, String action );
+    
+    
 }
