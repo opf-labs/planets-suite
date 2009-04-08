@@ -28,31 +28,52 @@
 	<div class="innertubemain">
 
     <h:form>
-    <div>
    
-    <h:outputLink value="list_services.faces">
-	<img src="${facesContext.externalContext.requestContextPath}/graphics/browse_services.gif" 
-	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
-	     style="margin:5px 5px 5px 5px;" />
-	</h:outputLink>
-    <h:outputLink value="browse_pathways.faces">
-	<img src="${facesContext.externalContext.requestContextPath}/graphics/browse_pathways.gif" 
-	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
-	     style="margin:5px 5px 5px 5px;" />
-	</h:outputLink>
-    <h:outputLink value="list_pathways.faces">
-	<img src="${facesContext.externalContext.requestContextPath}/graphics/list_pathways.gif" 
-	     alt="#{res['welcome.browse_services']}" title="#{res['welcome.browse_services']}" 
-	     style="margin:5px 5px 5px 5px;" />
-	</h:outputLink>
-    </div>
-    
+    <!--  # ServiceBrowser.experimentServiceRecordFixLog -->
+
+        <rich:dataTable value="#{ServiceBrowser.allServicesAndRecords}" var="sd"
+        reRender="services_ds" styleClass="tbTable">
+        
+                    
+            <rich:column sortBy="#{sd.name}"> 
+                <f:facet name="header">
+                    <h:outputText value="Name"/>
+                </f:facet>
+                <h:outputLink value="service_inspector.faces">
+                    <f:param name="serviceName" value="#{sd.name}"/>
+                    <h:outputText value="#{sd.name}"/>
+                </h:outputLink>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.type}" sortOrder="ASCENDING">
+                <f:facet name="header">
+                    <h:outputText value="Type"/>
+                </f:facet>
+                <h:outputText value="#{sd.type}"/> 
+            </rich:column>
+            
+            <rich:column>
+                <f:facet name="header">
+                    <h:outputText value="Description"/>
+                </f:facet>
+                
+                <h:panelGroup rendered="#{sd.logo != null}">
+                  <img src="#{sd.logo}" height="32" style="float: right; height: 32px;" title="#{sd.name}" alt="#{sd.name}"/>
+                </h:panelGroup>
+                
+                <h:outputText value="#{sd.description}"/>
+                <h:outputLink rendered="#{sd.furtherInfo != null}" value="#{sd.furtherInfo}" target="_new"> <t:graphicImage value="/graphics/external-link.png" alt="Open service info in new window..."/></h:outputLink>
+            </rich:column>
+            
+<!-- 
+            <f:facet name="footer">
+                <rich:datascroller id="services_ds" renderIfSinglePage="false"></rich:datascroller>
+            </f:facet>
+ -->
+        </rich:dataTable>
+  
     </h:form>
     
-    <p>
-    The Testbed will allow you to browse the services and their histories of invocation on the Testbed.  
-    You can also <a href="/registry/">browse the IF Service Registry directly</a>.
-    </p>
     
         <p>&#160;</p>
         <p>&#160;</p>
