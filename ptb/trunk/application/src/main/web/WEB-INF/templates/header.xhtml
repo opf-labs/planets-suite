@@ -27,20 +27,20 @@
 			<ui:fragment id="help">
 				<div id="geright">
 					<p class="glinks"> 
-						<h:commandLink styleClass="glinks" action="help">
+						<a href="/testbed/public/help.faces">
 						<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_help.gif" style="padding-left: 2px; padding-right: 2px;" />
 						<h:outputText value="#{res['welcome.help']}"/>
-						</h:commandLink>
+						</a>
 					</p>		
 				</div>
 			</ui:fragment>
 			<ui:fragment id="userHeader">
 				<div id="geright">
 					<p class="glinks"> 
-						<h:commandLink styleClass="glinks" action="about">
+						<a href="/testbed/public/about.faces">
 						<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_info.gif"  style="padding-left: 2px; padding-right: 2px;" />
 						<h:outputText value="#{res['welcome.about']}"/>
-						</h:commandLink>
+						</a>
 					</p>		
 				</div>
 			</ui:fragment>
