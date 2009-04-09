@@ -29,11 +29,13 @@ public class DroidTests {
      */
     @BeforeClass
     public static void localTests() {
+        /*
         System.setProperty("proxySet","true");
-        System.setProperty("http.proxyHost","bspcache.bl.uk");
+        System.setProperty("http.proxyHost","loncache.bl.uk");
         System.setProperty("http.proxyPort","8080");
         System.setProperty("http.nonProxyHosts","localhost|127.0.0.1|*.ad.bl.uk");
-        System.out.println("Set.");
+        System.out.println("Set proxy to "+System.getProperty("http.proxyHost")+":"+System.getProperty("http.proxyPort"));
+        */
         
         droid = ServiceCreator.createTestService(Identify.QNAME,
                 Droid.class, "/pserv-pc-droid/Droid?wsdl");
