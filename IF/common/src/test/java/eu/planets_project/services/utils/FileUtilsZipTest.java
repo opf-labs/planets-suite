@@ -103,7 +103,7 @@ public class FileUtilsZipTest {
 	@Test
 	public void testcheckAndExtractFilesFromZip() {
 		System.out.println("Checksum before Extraction: " + zipResult.getChecksum());
-		List<File> files = FileUtils.extractFilesFromZipAndCheck(zip, EXTRACT_RESULT_OUT, zipResult.getChecksum());
+		List<File> files = FileUtils.extractFilesFromZipAndCheck(zip, EXTRACT_RESULT_OUT, zipResult.getChecksumAsLong());
 //		List<File> files = FileUtils.extractFilesFromZip(zip, EXTRACT_RESULT_OUT);
 		if(files!=null) {
 			for (Iterator iterator = files.iterator(); iterator.hasNext();) {

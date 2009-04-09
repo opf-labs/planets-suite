@@ -63,6 +63,7 @@ public class FloppyImageHelper implements Migrate {
 	private static File EXTRACTED_FILES_DIR = null;
 	private static String EXTRACTION_OUT_FOLDER_NAME = "EXTRACTED_FILES";
 	private static String FLOPPY_IMAGE_TOOLS_HOME = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
+//	private static String FLOPPY_IMAGE_TOOLS_HOME = "PA/floppyImageHelper/src/resources/FLOPPY_IMAGE_TOOLS";
 	private static String DEFAULT_INPUT_NAME = "inputFile";
 	private static String INPUT_EXT = null;
 	private static String OUTPUT_EXT = ".ima";
@@ -106,10 +107,12 @@ public class FloppyImageHelper implements Migrate {
 		String inFormat = getFormatExtension(inputFormat).toUpperCase();
 		String outFormat = getFormatExtension(outputFormat).toUpperCase();
 		
-		for (Parameter parameter : parameters) {
-			if(parameter.name.equalsIgnoreCase("modifyImage")) {
-				if(parameter.value.equalsIgnoreCase("true")) {
-					MODIFY_IMAGE = true;
+		if(parameters!=null && parameters.size()>0) {
+			for (Parameter parameter : parameters) {
+				if(parameter.name.equalsIgnoreCase("modifyImage")) {
+					if(parameter.value.equalsIgnoreCase("true")) {
+						MODIFY_IMAGE = true;
+					}
 				}
 			}
 		}
@@ -122,7 +125,14 @@ public class FloppyImageHelper implements Migrate {
 		
 		Checksum checksum = content.getChecksum();
 		
-		long check = Long.parseLong(checksum.getValue());
+		long check = 0;
+		
+		if(checksum!=null) {
+			check = Long.parseLong(checksum.getValue());
+		}
+		else {
+			check = -1;
+		}
 		
 		if(fileName==null) {
 			INPUT_EXT = getFormatExtension(inputFormat);
@@ -137,11 +147,11 @@ public class FloppyImageHelper implements Migrate {
 		
 		ZipResult zippedResult = null;
 		
-		if(inFormat.endsWith(".IMA")) {
-			zippedResult = this.extractFilesFromFloppyImage(inputFile, EXTRACTED_FILES_DIR);
+		if(inFormat.endsWith("IMA")) {
+			zippedResult = this.extractFilesFromFloppyImage(inputFile);
 			
 			Content zipContent = Content.asStream(zippedResult.getZipFile());
-			zipContent.setChecksum(new Checksum("Adler32", Long.toString(zippedResult.getChecksum())));
+			zipContent.setChecksum(zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
 			.format(Format.extensionToURI("zip"))
@@ -157,8 +167,13 @@ public class FloppyImageHelper implements Migrate {
 		
 		// Check if we have a ZIP file?
 		if(inFormat.endsWith("ZIP")) {// x-fmt/263
-			// if yes, extract files from this ZIP and use these files for floppy image creation
-			 extractedFiles = FileUtils.extractFilesFromZipAndCheck(inputFile, TEMP_FOLDER, check);
+			if(check!=-1) {
+				// if yes, extract files from this ZIP and use these files for floppy image creation
+				 extractedFiles = FileUtils.extractFilesFromZipAndCheck(inputFile, TEMP_FOLDER, check);
+			}
+			else {
+				extractedFiles = FileUtils.extractFilesFromZip(inputFile, TEMP_FOLDER);
+			}
 			 
 			 // If the modifyImage parameter has been passed, look for an ".ima" file and make that
 			 // the image that will be modified.
@@ -213,10 +228,10 @@ public class FloppyImageHelper implements Migrate {
 		return new MigrateResult(resultDigObj, report);
 	}
 	
-	private ZipResult extractFilesFromFloppyImage(File image, File outputFolder) {
+	private ZipResult extractFilesFromFloppyImage(File image) {
 		ProcessRunner cmd = new ProcessRunner();
-		cmd.setCommand(this.getExtractCommandLine(image, EXTRACTED_FILES_DIR));
-		cmd.setStartingDir(TEMP_FOLDER);
+		cmd.setCommand(this.getExtractCommandLine(image));
+		cmd.setStartingDir(EXTRACTED_FILES_DIR);
 		cmd.run();
 		PROCESS_OUT = cmd.getProcessOutputAsString();
 		log.info("Tool output:\n" + PROCESS_OUT);
@@ -225,12 +240,12 @@ public class FloppyImageHelper implements Migrate {
 		return FileUtils.createZipFileWithChecksum(EXTRACTED_FILES_DIR, TEMP_FOLDER, "extractedFiles.zip");
 	}
 	
-	private ArrayList<String> getExtractCommandLine(File image, File outputFolder) {
+	private ArrayList<String> getExtractCommandLine(File image) {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add("\"" + TOOL_DIR.getAbsolutePath() + File.separator + "EXTRACT.EXE" + "\"");
 		commands.add("-oe");
-		commands.add("\"" + image.getName() + "\"");
-		commands.add("\"" + outputFolder.getName() + "\"");
+		commands.add("\".." + File.separator + image.getName() + "\"");
+//		commands.add(outputFolder.getName() + File.separator);
 		return commands;
 	}
 	

@@ -46,6 +46,8 @@ public class FloppyImageHelperTest {
 	static File FILES_FOR_MODIFICATION = new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification");
 	
 	static File FILES_FOR_MODIFICATION_WITH_ERROR = new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification_with_error");
+	
+	static File FLOPPY_IMAGE = new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification/FLOPPY144.IMA");
 
 	/**
 	 * @throws java.lang.Exception
@@ -79,10 +81,8 @@ public class FloppyImageHelperTest {
 	public void testMigrateAndCreateImage() {
 		ZipResult zipResult = FileUtils.createZipFileWithChecksum(FILES_TO_INJECT, OUT_DIR, "test.zip"); 
 		File zipFile = zipResult.getZipFile();
-		long check = zipResult.getChecksum();
-		Checksum checksum = new Checksum("Adler32", Long.toString(check));
 		Content content = Content.asStream(zipFile);
-		content.setChecksum(checksum);
+		content.setChecksum(zipResult.getChecksum());
 		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("zip")).title("test.zip").build();
 		List<Parameter> parameters = new ArrayList<Parameter> ();
 		parameters.add(new Parameter("modifyImage", "false"));
@@ -100,10 +100,8 @@ public class FloppyImageHelperTest {
 	public void testMigrateAndModifyImage() {
 		ZipResult modZipResult = FileUtils.createZipFileWithChecksum(FILES_FOR_MODIFICATION, OUT_DIR, "test_mod.zip");
 		File zipFile = modZipResult.getZipFile();
-		long check = modZipResult.getChecksum();
-		Checksum checksum = new Checksum("Adler32", Long.toString(check));
 		Content content = Content.asStream(zipFile);
-		content.setChecksum(checksum);
+		content.setChecksum(modZipResult.getChecksum());
 		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("zip")).title("test_mod.zip").build();
 		List<Parameter> parameters = new ArrayList<Parameter> ();
 		parameters.add(new Parameter("modifyImage", "true"));
@@ -120,10 +118,8 @@ public class FloppyImageHelperTest {
 	public void testMigrateAndModifyImageWithError() {
 		ZipResult modZipResult = FileUtils.createZipFileWithChecksum(FILES_FOR_MODIFICATION_WITH_ERROR, OUT_DIR, "test_mod_err.zip");
 		File zipFile = modZipResult.getZipFile();
-		long check = modZipResult.getChecksum();
-		Checksum checksum = new Checksum("Adler32", Long.toString(check));
 		Content content = Content.asStream(zipFile);
-		content.setChecksum(checksum);
+		content.setChecksum(modZipResult.getChecksum());
 		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("zip")).title("test_mod_err.zip").build();
 		List<Parameter> parameters = new ArrayList<Parameter> ();
 		parameters.add(new Parameter("modifyImage", "true"));
@@ -131,5 +127,21 @@ public class FloppyImageHelperTest {
 		assertTrue("Resulting DigitalObject should be NULL!", migrateResult.getDigitalObject()==null);
 		ServiceReport report = migrateResult.getReport();
 		System.out.println(report);
+	}
+	
+	@Test
+	public void testMigrateExtractFilesFromFloppy() {
+		Content content = Content.asStream(FLOPPY_IMAGE);
+		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("ima")).title(FLOPPY_IMAGE.getName()).build();
+		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, Format.extensionToURI("ima"), Format.extensionToURI("zip"), null);
+		ServiceReport report = migrateResult.getReport();
+		System.out.println(report);
+		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);
+		DigitalObject resultDigObj = migrateResult.getDigitalObject();
+		File resultFile = new File(OUT_DIR, resultDigObj.getTitle());
+		FileUtils.writeInputStreamToFile(resultDigObj.getContent().read(), resultFile);
+		Content resultContent = (Content)resultDigObj.getContent();
+		long resultChecksum = Long.parseLong(resultContent.getChecksum().getValue());
+		FileUtils.extractFilesFromZipAndCheck(resultFile, OUT_DIR, resultChecksum);
 	}
 }
