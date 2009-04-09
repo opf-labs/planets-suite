@@ -449,8 +449,10 @@
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
+      <!--
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
+      -->
       <!-- Test config -->
       <sysproperty key="pserv.test.context" value="local"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
@@ -472,8 +474,10 @@
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
+      <!--
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
+      -->
       <!-- Test config -->
       <sysproperty key="pserv.test.context" value="standalone"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
@@ -510,8 +514,10 @@
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
+      <!--
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
+      -->
       <!-- Test config -->
       <sysproperty key="pserv.test.context" value="server"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
