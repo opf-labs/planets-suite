@@ -29,6 +29,7 @@ import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
+import eu.planets_project.services.utils.ZipResult;
 
 /**
  * @author Peter Melms
@@ -50,6 +51,7 @@ public class FloppyImageHelper implements Migrate {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 		FileUtils.deleteTempFiles(TEMP_FOLDER, log);
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
+		EXTRACTED_FILES_DIR = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTION_OUT_FOLDER_NAME);
 	}
 	                 
 	public static final String NAME = "FloppyImageHelper";
@@ -57,6 +59,9 @@ public class FloppyImageHelper implements Migrate {
 //	private static File TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp("FLOPPY_IMAGE_HELPER_TMP");
 	private static File TEMP_FOLDER = null;
 	private static String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER";
+	
+	private static File EXTRACTED_FILES_DIR = null;
+	private static String EXTRACTION_OUT_FOLDER_NAME = "EXTRACTED_FILES";
 	private static String FLOPPY_IMAGE_TOOLS_HOME = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
 	private static String DEFAULT_INPUT_NAME = "inputFile";
 	private static String INPUT_EXT = null;
@@ -67,6 +72,7 @@ public class FloppyImageHelper implements Migrate {
 	private static final long FLOPPY_SIZE = 1474560;
 	
 	private static boolean MODIFY_IMAGE = false;
+	private static boolean ENABLE_EXTRACTION_MODE = false;
 	
 	private static String PROCESS_ERROR = null;
 	private static String PROCESS_OUT = null;
@@ -97,6 +103,9 @@ public class FloppyImageHelper implements Migrate {
 			TOOL_DIR = new File(FLOPPY_IMAGE_TOOLS_HOME);
 		}
 		
+		String inFormat = getFormatExtension(inputFormat).toUpperCase();
+		String outFormat = getFormatExtension(outputFormat).toUpperCase();
+		
 		for (Parameter parameter : parameters) {
 			if(parameter.name.equalsIgnoreCase("modifyImage")) {
 				if(parameter.value.equalsIgnoreCase("true")) {
@@ -122,30 +131,56 @@ public class FloppyImageHelper implements Migrate {
 		
 		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
 		
-		String inFormat = getFormatExtension(inputFormat).toUpperCase();
-		String outFormat = getFormatExtension(outputFormat).toUpperCase();
-		
 		File imageFile = null;
 		
 		File floppyImage = null;
 		
+		ZipResult zippedResult = null;
+		
+		if(inFormat.endsWith(".IMA")) {
+			zippedResult = this.extractFilesFromFloppyImage(inputFile, EXTRACTED_FILES_DIR);
+			
+			Content zipContent = Content.asStream(zippedResult.getZipFile());
+			zipContent.setChecksum(new Checksum("Adler32", Long.toString(zippedResult.getChecksum())));
+			
+			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
+			.format(Format.extensionToURI("zip"))
+			.title(zippedResult.getZipFile().getName())
+			.build();
+
+			ServiceReport report = new ServiceReport();
+			report.setErrorState(0);
+			log.info("Created Service report...");
+			return new MigrateResult(resultDigObj, report);
+			
+		}
+		
+		// Check if we have a ZIP file?
 		if(inFormat.endsWith("ZIP")) {// x-fmt/263
+			// if yes, extract files from this ZIP and use these files for floppy image creation
 			 extractedFiles = FileUtils.extractFilesFromZipAndCheck(inputFile, TEMP_FOLDER, check);
+			 
+			 // If the modifyImage parameter has been passed, look for an ".ima" file and make that
+			 // the image that will be modified.
 			 if(MODIFY_IMAGE) {
 				 for (File file : extractedFiles) {
 					 String name = file.getName();
 					 name = name.toUpperCase();
+					 // Success! We have found an "ima" file
 					 if(name.endsWith(".IMA") || name.endsWith(".IMG")) {
 						 floppyImage = file;
 						 extractedFiles.remove(file);
 						 break;
 					 }
+					 // otherwise we pass NULL to the addFilesToFloppyImage method which will then
+					 // create a new image from scratch and write all extracted files to it!
 				}
 				imageFile = this.addFilesToFloppyImage(floppyImage, extractedFiles);
 				if(imageFile==null) {
 					return this.returnWithErrorMessage(PROCESS_ERROR, null);
 				}
 			 }
+			 // If no MODIFY parameter is passed, we will create a floppy image from scratch...
 			 else {
 				 imageFile = this.createFloppyImageAndInjectFiles(extractedFiles);
 				 if(imageFile==null) {
@@ -154,6 +189,8 @@ public class FloppyImageHelper implements Migrate {
 			 }
 			 
 		}
+		// the file in the digitalObject is NOT a Zip, so we have just one file to write ;-)
+		// Put that in a List and pass it to the creation-method as usual...
 		else {
 			List<File> tmpList = new ArrayList<File>();
 			tmpList.add(inputFile);
@@ -163,6 +200,8 @@ public class FloppyImageHelper implements Migrate {
 			}
 		}
 		
+		// If we have reached this line, we should have an image file created, so wrap a DigObj around that and return 
+		// a MigrateResult...
 		DigitalObject resultDigObj = new DigitalObject.Builder(Content.asStream(imageFile))
 										.format(outputFormat)
 										.title(imageFile.getName())
@@ -174,6 +213,26 @@ public class FloppyImageHelper implements Migrate {
 		return new MigrateResult(resultDigObj, report);
 	}
 	
+	private ZipResult extractFilesFromFloppyImage(File image, File outputFolder) {
+		ProcessRunner cmd = new ProcessRunner();
+		cmd.setCommand(this.getExtractCommandLine(image, EXTRACTED_FILES_DIR));
+		cmd.setStartingDir(TEMP_FOLDER);
+		cmd.run();
+		PROCESS_OUT = cmd.getProcessOutputAsString();
+		log.info("Tool output:\n" + PROCESS_OUT);
+		PROCESS_ERROR = cmd.getProcessErrorAsString();
+		log.info("Tool errors:\n" + PROCESS_ERROR);
+		return FileUtils.createZipFileWithChecksum(EXTRACTED_FILES_DIR, TEMP_FOLDER, "extractedFiles.zip");
+	}
+	
+	private ArrayList<String> getExtractCommandLine(File image, File outputFolder) {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add("\"" + TOOL_DIR.getAbsolutePath() + File.separator + "EXTRACT.EXE" + "\"");
+		commands.add("-oe");
+		commands.add("\"" + image.getName() + "\"");
+		commands.add("\"" + outputFolder.getName() + "\"");
+		return commands;
+	}
 	
 	private File createFloppyImageAndInjectFiles(List<File> filesToInject) {
 			if(FileUtils.filesTooLargeForMedium(filesToInject, FLOPPY_SIZE)) {
