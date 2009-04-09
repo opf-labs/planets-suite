@@ -275,6 +275,34 @@ public class FileUtils {
     }
 
     /**
+	 * This method deletes all the content in a folder, without the need of
+	 * passing it a PlanetsLogger instance!
+	 * @param workFolder the folder you wish to delete. All contained folders
+	 *        will be deleted recursively
+	 * @return true, if all folders were deleted and false, if not.
+	 */
+	public static boolean deleteTempFiles(File workFolder) {
+	    if (workFolder.isDirectory()) {
+	        File[] entries = workFolder.listFiles();
+	        for (int i = 0; i < entries.length; i++) {
+	            File current = entries[i];
+	            deleteTempFiles(current);
+	        }
+	        if (workFolder.delete()) {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    } else {
+	        if (workFolder.delete()) {
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+	}
+
+	/**
      * @param workFolder the folder you wish to delete. All contained folders
      *        will be deleted recursively
      * @param plogger a PlanetsLogger instance to log the deletion of that
@@ -306,34 +334,6 @@ public class FileUtils {
     }
 
     /**
-     * This method deletes all the content in a folder, without the need of
-     * passing it a PlanetsLogger instance!
-     * @param workFolder the folder you wish to delete. All contained folders
-     *        will be deleted recursively
-     * @return true, if all folders were deleted and false, if not.
-     */
-    public static boolean deleteTempFiles(File workFolder) {
-        if (workFolder.isDirectory()) {
-            File[] entries = workFolder.listFiles();
-            for (int i = 0; i < entries.length; i++) {
-                File current = entries[i];
-                deleteTempFiles(current);
-            }
-            if (workFolder.delete()) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            if (workFolder.delete()) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    /**
      * @param inputStream
      * @return byte array from stream
      */
@@ -353,27 +353,6 @@ public class FileUtils {
         }
         
         return null;
-    }
-
-    /**
-     * @param inputStream
-     * @param fileName
-     * @param suffix
-     * @return tmp file from stream
-     */
-    public static File writeInputStreamToTmpFile(InputStream inputStream,
-            String fileName, String suffix) {
-        if (suffix != null) {
-            if (!suffix.startsWith(".")) {
-                suffix = "." + suffix;
-            }
-        }
-        File file = getTempFile(fileName, suffix);
-
-        // Write:
-        writeInputStreamToFile(inputStream, file);
-
-        return file;
     }
 
     /**
@@ -409,34 +388,55 @@ public class FileUtils {
 	}
 
 	/**
-     * This method writes an InputStream to a file. If a file with the same name
-     * and path exists already, a random number is appended to the filename and
-     * the "renamed" file is returned.
-     * @param in the inputstream to write to a file
-     * @param parentFolder the folder the file should be created in
-     * @param fileName the name of the file to be created
-     * @return a File object with the given name and path
+	 * This method writes an InputStream to a file. If a file with the same name
+	 * and path exists already, a random number is appended to the filename and
+	 * the "renamed" file is returned.
+	 * @param in the inputstream to write to a file
+	 * @param parentFolder the folder the file should be created in
+	 * @param fileName the name of the file to be created
+	 * @return a File object with the given name and path
+	 */
+	public static File writeInputStreamToFile(InputStream in,
+	        File parentFolder, String fileName) {
+	    File target = new File(parentFolder, fileName);
+	    if (target.exists()) {
+	        long randonNr = (long) (Math.random() * 1000000);
+	        if (fileName.contains(".")) {
+	            fileName = fileName.substring(0, fileName.lastIndexOf("."))
+	                    + "_" + randonNr
+	                    + fileName.substring(fileName.lastIndexOf("."));
+	        } else {
+	            fileName = fileName + randonNr;
+	        }
+	        // target.delete();
+	        target = new File(parentFolder, fileName);
+	    }
+	
+	    // Write:
+	    writeInputStreamToFile(in, target);
+	
+	    return target;
+	}
+
+	/**
+     * @param inputStream
+     * @param fileName
+     * @param suffix
+     * @return tmp file from stream
      */
-    public static File writeInputStreamToFile(InputStream in,
-            File parentFolder, String fileName) {
-        File target = new File(parentFolder, fileName);
-        if (target.exists()) {
-            long randonNr = (long) (Math.random() * 1000000);
-            if (fileName.contains(".")) {
-                fileName = fileName.substring(0, fileName.lastIndexOf("."))
-                        + "_" + randonNr
-                        + fileName.substring(fileName.lastIndexOf("."));
-            } else {
-                fileName = fileName + randonNr;
+    public static File writeInputStreamToTmpFile(InputStream inputStream,
+            String fileName, String suffix) {
+        if (suffix != null) {
+            if (!suffix.startsWith(".")) {
+                suffix = "." + suffix;
             }
-            // target.delete();
-            target = new File(parentFolder, fileName);
         }
+        File file = getTempFile(fileName, suffix);
 
         // Write:
-        writeInputStreamToFile(in, target);
+        writeInputStreamToFile(inputStream, file);
 
-        return target;
+        return file;
     }
 
     /**
@@ -565,7 +565,102 @@ public class FileUtils {
 	    // Getting a reference to the new ZIP file
 	    return resultZIP;
 	}
-//
+/**
+		 * @param srcFolder the resulting zip file will contain all files in this
+		 *        folder
+		 * @param destFolder The folder where the created Zip file should live
+		 * @param zipFileName the name, the returned zip file should have
+		 * @return a ZipResult including:<br/>
+		 * 			1) the zip file, which is containing all files in 'srcFolder'<br/>
+		 * 			or null, if the folder does not contain a file.<br/>
+		 * 			2) the checksum value of that zip file
+		 * @throws IOException
+		 */
+			public static ZipResult createZipFileWithChecksum(File srcFolder, File destFolder, String zipFileName) {
+			// The target zip file
+			File resultZIP = new File(destFolder, zipFileName);
+			CheckedOutputStream checksum = null;
+		    
+			// Creating an empty ArrayList for calling the listAllFiles method with
+		    // "resultFolder" as root.
+		    ArrayList<String> listOfFiles = new ArrayList<String>();
+		    
+	//	    listOfFiles.add(srcFolder + "/");
+		
+		    // Calling the recursive method listAllFiles, which lists all files in
+		    // all folders in the resultFolder.
+		    ArrayList<String> resultFileList;
+		    // try {
+		    resultFileList = listAllFilesAndFolders(srcFolder, listOfFiles);
+		
+		    if (resultFileList.size() == 0) {
+		        return null;
+		    } else {
+		        // "Normalize" the paths in resultFileList for creation of
+		        // ZipEntries
+		        ArrayList<String> normalizedPaths = new ArrayList<String>();
+		
+		        for (int i = 0; i < resultFileList.size(); i++) {
+		            String currentPath = resultFileList.get(i);
+		            // Strip the beginning of the String, except the "[FOLDER-NAME]
+		            // itself\"....
+		            int index = currentPath.indexOf(srcFolder.getName());
+		            currentPath = currentPath.substring(index);
+		            // Delete the [FOLDER-NAME] part of the paths
+		            currentPath = currentPath.replace(srcFolder.getName() + File.separator, "");
+		            // add the normalized path to the list
+		            normalizedPaths.add(currentPath);
+		        }
+		
+		        
+		        // Write the output ZIP
+		        ZipOutputStream zipWriter;
+		        
+		        try {
+		        	checksum = new CheckedOutputStream(new FileOutputStream(resultZIP), new Adler32());
+		            zipWriter = new ZipOutputStream(new BufferedOutputStream(checksum));
+		            log.info("Checksum algorithm: Adler32");
+	//	            zipWriter.setMethod(ZipOutputStream.DEFLATED);
+		            zipWriter.setLevel(9); //Best compression
+		            
+		            // writing the resultFiles to the ZIP
+		            for (int i = 0; i < normalizedPaths.size(); i++) {
+		                // Creating the ZipEntries using the normalizedList
+		            	ZipEntry zipEntry = new ZipEntry(normalizedPaths.get(i));
+		            	if(zipEntry.isDirectory()) {
+		            		zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
+		            		zipWriter.closeEntry();
+		            	}
+		            	else {
+			                // And getting the files to write for the ZipEntry from the
+			                // resultFileList
+			                File currentFile = new File(resultFileList.get(i));
+			                // getting the byte[] to write
+		                	zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
+		                	
+			                byte[] current = writeInputStreamToBinary(new FileInputStream(currentFile));
+			                zipWriter.write(current);
+			                zipWriter.flush();
+			                zipWriter.closeEntry();
+		            	}
+		            }
+		            zipWriter.flush();
+		            zipWriter.finish();
+		            zipWriter.close();
+		            System.out.println("[createSimpleZipFile()] Checksum: " + checksum.getChecksum().getValue());
+		        } catch (FileNotFoundException e) {
+		            e.printStackTrace();
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        }
+		    }
+		
+		    // Getting a reference to the new ZIP file
+		    ZipResult zipResult = new ZipResult(resultZIP, checksum.getChecksum().getValue());
+		    return zipResult;
+		}
+
+	//
 	/**
 	 * Extracts all files from a given Zip file.
 	 * 
@@ -620,102 +715,6 @@ public class FileUtils {
 		return extractedFiles;
     }
 	
-	/**
-	 * @param srcFolder the resulting zip file will contain all files in this
-	 *        folder
-	 * @param destFolder The folder where the created Zip file should live
-	 * @param zipFileName the name, the returned zip file should have
-	 * @return a ZipResult including:<br/>
-	 * 			1) the zip file, which is containing all files in 'srcFolder'<br/>
-	 * 			or null, if the folder does not contain a file.<br/>
-	 * 			2) the checksum value of that zip file
-	 * @throws IOException
-	 */
-		public static ZipResult createZipFileWithChecksum(File srcFolder, File destFolder, String zipFileName) {
-		// The target zip file
-		File resultZIP = new File(destFolder, zipFileName);
-		CheckedOutputStream checksum = null;
-	    
-		// Creating an empty ArrayList for calling the listAllFiles method with
-	    // "resultFolder" as root.
-	    ArrayList<String> listOfFiles = new ArrayList<String>();
-	    
-//	    listOfFiles.add(srcFolder + "/");
-	
-	    // Calling the recursive method listAllFiles, which lists all files in
-	    // all folders in the resultFolder.
-	    ArrayList<String> resultFileList;
-	    // try {
-	    resultFileList = listAllFilesAndFolders(srcFolder, listOfFiles);
-	
-	    if (resultFileList.size() == 0) {
-	        return null;
-	    } else {
-	        // "Normalize" the paths in resultFileList for creation of
-	        // ZipEntries
-	        ArrayList<String> normalizedPaths = new ArrayList<String>();
-	
-	        for (int i = 0; i < resultFileList.size(); i++) {
-	            String currentPath = resultFileList.get(i);
-	            // Strip the beginning of the String, except the "[FOLDER-NAME]
-	            // itself\"....
-	            int index = currentPath.indexOf(srcFolder.getName());
-	            currentPath = currentPath.substring(index);
-	            // Delete the [FOLDER-NAME] part of the paths
-	            currentPath = currentPath.replace(srcFolder.getName() + File.separator, "");
-	            // add the normalized path to the list
-	            normalizedPaths.add(currentPath);
-	        }
-	
-	        
-	        // Write the output ZIP
-	        ZipOutputStream zipWriter;
-	        
-	        try {
-	        	checksum = new CheckedOutputStream(new FileOutputStream(resultZIP), new Adler32());
-	            zipWriter = new ZipOutputStream(new BufferedOutputStream(checksum));
-	            log.info("Checksum algorithm: Adler32");
-//	            zipWriter.setMethod(ZipOutputStream.DEFLATED);
-	            zipWriter.setLevel(9); //Best compression
-	            
-	            // writing the resultFiles to the ZIP
-	            for (int i = 0; i < normalizedPaths.size(); i++) {
-	                // Creating the ZipEntries using the normalizedList
-	            	ZipEntry zipEntry = new ZipEntry(normalizedPaths.get(i));
-	            	if(zipEntry.isDirectory()) {
-	            		zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
-	            		zipWriter.closeEntry();
-	            	}
-	            	else {
-		                // And getting the files to write for the ZipEntry from the
-		                // resultFileList
-		                File currentFile = new File(resultFileList.get(i));
-		                // getting the byte[] to write
-	                	zipWriter.putNextEntry(new ZipEntry(normalizedPaths.get(i)));
-	                	
-		                byte[] current = writeInputStreamToBinary(new FileInputStream(currentFile));
-		                zipWriter.write(current);
-		                zipWriter.flush();
-		                zipWriter.closeEntry();
-	            	}
-	            }
-	            zipWriter.flush();
-	            zipWriter.finish();
-	            zipWriter.close();
-	            System.out.println("[createSimpleZipFile()] Checksum: " + checksum.getChecksum().getValue());
-	        } catch (FileNotFoundException e) {
-	            e.printStackTrace();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	    }
-	
-	    // Getting a reference to the new ZIP file
-	    ZipResult zipResult = new ZipResult(resultZIP, checksum.getChecksum().getValue());
-	    return zipResult;
-	}
-		
-		
 	/**
 	 * Extracts all files from a given Zip file.
 	 * 
@@ -788,6 +787,42 @@ public class FileUtils {
     }	
 	
 	
+	
+	/**
+	 * Calculates the overall size of a given list of files
+	 * 
+	 * @param files the list of files for which the size should be calculated
+	 * @return the size in bytes as <strong>long</strong>
+	 */
+	public static long calculateSize(List<File> files) {
+		long size = 0; 
+		for (File file : files) {
+			size = size + file.length();
+		}
+		log.info("Calculated file size: " + size + " bytes.");
+		return size;
+	}	
+	
+	
+	/**
+	 * Calculates the overall size of a given list of files and checks, whether these files will fit on a medium
+	 * with a specific space (--> targetMediaSizeInBytes).
+	 * 
+	 * @param files a list of files which size should be calculated
+	 * @param targetMediaSizeInBytes the size of the target medium (e.g. Floppy 1.44 MB = 1474560 bytes)
+	 * @return true if the file compilation will fit on the target medium, false if not.
+	 */
+	public static boolean filesTooLargeForMedium(List<File> files, long targetMediaSizeInBytes) {
+		long size = calculateSize(files);
+		boolean filesToLarge = size > targetMediaSizeInBytes; 
+		if(filesToLarge) {
+			log.error("Attention: files size (" + size + " bytes) too big for target medium (" + targetMediaSizeInBytes + " bytes) !");
+		}
+		else {
+			log.info("Summed up file size: " + size + " bytes. All files will fit on target medium with " + targetMediaSizeInBytes + " bytes capacity.");
+		}
+		return filesToLarge;
+	}
 
     private static ArrayList<String> listAllFilesAndFolders(File dir,
             ArrayList<String> list) {
