@@ -2,7 +2,6 @@ package eu.planets_project.tb.gui.backing;
 
 import java.io.FileNotFoundException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -18,54 +17,30 @@ import javax.el.ExpressionFactory;
 import javax.el.MethodExpression;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIData;
 import javax.faces.component.UIParameter;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.DateTimeConverter;
 import javax.faces.component.UIPanel;
 
 import javax.faces.component.html.HtmlCommandLink;
 import javax.faces.component.html.HtmlGraphicImage;
-import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlOutputLink;
 import javax.faces.component.html.HtmlOutputText;
-import javax.faces.el.ValueBinding;
 import javax.faces.event.ActionEvent;
-import javax.faces.event.MethodExpressionValueChangeListener;
 import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
 
-import org.ajax4jsf.component.html.HtmlActionParameter;
-import org.ajax4jsf.component.html.HtmlAjaxCommandLink;
-import org.ajax4jsf.component.html.HtmlAjaxSupport;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.myfaces.custom.datascroller.HtmlDataScroller;
-import org.richfaces.component.html.HtmlColumn;
-import org.richfaces.component.html.HtmlColumnGroup;
-import org.richfaces.component.html.HtmlDataTable;
-import org.richfaces.component.html.HtmlInplaceInput;
-import org.richfaces.component.html.HtmlInplaceSelect;
-import org.richfaces.component.html.HtmlSubTable;
-
 import com.googlecode.charts4j.AxisLabels;
 import com.googlecode.charts4j.AxisLabelsFactory;
-import com.googlecode.charts4j.AxisStyle;
-import com.googlecode.charts4j.AxisTextAlignment;
 import com.googlecode.charts4j.Color;
 import com.googlecode.charts4j.Data;
 import com.googlecode.charts4j.DataUtil;
-import com.googlecode.charts4j.Fills;
 import com.googlecode.charts4j.GCharts;
-import com.googlecode.charts4j.Line;
-import com.googlecode.charts4j.LinearGradientFill;
 import com.googlecode.charts4j.Plots;
 import com.googlecode.charts4j.ScatterPlot;
 import com.googlecode.charts4j.ScatterPlotData;
 import com.googlecode.charts4j.Shape;
-import com.googlecode.charts4j.LineChart;
-
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -79,9 +54,9 @@ import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.backing.exp.DigitalObjectBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
-import eu.planets_project.tb.gui.backing.exp.MeasurementBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementPropertyResultsBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -103,9 +78,6 @@ import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
-
-import static com.googlecode.charts4j.Color.WHITE;
-import static com.googlecode.charts4j.UrlUtil.normalize;
 
 
 /**
@@ -537,6 +509,19 @@ public class ExperimentBean {
     public Map<String,String> getExperimentInputData() {
         log.debug("getting experiment input data: "+this.inputData);
         return this.inputData;
+    }
+    
+    /**
+     * fetches a jsf usable list of the experimentInputData values 
+     * @return
+     */
+    public List<DigitalObjectBean> getExperimentInputDataValues(){
+    	List<DigitalObjectBean> ret = new ArrayList<DigitalObjectBean>();
+    	for(String val : this.getExperimentInputData().values()){
+    		DigitalObjectBean digoBean = new DigitalObjectBean(val);
+    		ret.add(digoBean);
+    	}
+    	return ret;
     }
     
     /**
@@ -1754,240 +1739,59 @@ public class ExperimentBean {
         log.debug("Created experiment if necessary, now passing it back.");    
         return true;
     }
-
     
-    HtmlDataTable manualMeasurementsOverviewTable = null;
-    public void setManualMeasurementsOverviewTable(HtmlDataTable table){
-    	this.manualMeasurementsOverviewTable = table;
+    private String selDigORefStep5OverviewTable = null;
+    public void setSelDigitalObjectRefInStep5OverviewTable(String inputDigObjRef){
+    	this.selDigORefStep5OverviewTable = inputDigObjRef;
     }
     
-    public HtmlDataTable getManualMeasurementsOverviewTable(){
-    	if(this.manualMeasurementsOverviewTable==null)
-    		initManualMeasurementsOverviewTable();
-    	return this.manualMeasurementsOverviewTable;
-    }
-    
-    /**
-     * Some info regarding bindings, etc.
-     * http://www.coderanch.com/t/213697/JSF/java/with-Dynamic-DataTable
-     */
-    public void initManualMeasurementsOverviewTable(){
-    	manualMeasurementsOverviewTable = new HtmlDataTable();
-    	manualMeasurementsOverviewTable.setId("manualMOverviewTable");
-    	manualMeasurementsOverviewTable.setRows(10); 
-    	//manualMeasurementsOverviewTable.setValue(this.getAllManualExecutionRecords());
-    	manualMeasurementsOverviewTable.setValue(this.getStages());
-    	manualMeasurementsOverviewTable.setVar("myVar");  
-    	manualMeasurementsOverviewTable.setStyleClass("tbTable");
-    	
-    	List<Calendar> execDates = this.getAllRunDates();
-    	
-    	//Define a ColumnHeader Group:
-    	HtmlColumnGroup colGroup = new HtmlColumnGroup();
-    	colGroup.setId("colGroupID");
-    	
-    	HtmlColumn propCol = new HtmlColumn();
-    	propCol.setId("colheaderMeasure");
-    	propCol.setColspan(2);
-    	HtmlOutputText headerMeasure = new HtmlOutputText();
-    	headerMeasure.setId("headerMeasure");
-    	headerMeasure.setValue("Property Information");
-    	propCol.getChildren().add(headerMeasure);
-    	
-    	HtmlColumn runsCol = new HtmlColumn();
-    	runsCol.setId("colheaderRuns");
-    	runsCol.setColspan(execDates.size());
-    	HtmlOutputText headerRuns = new HtmlOutputText();
-    	headerRuns.setId("headerRuns");
-    	headerRuns.setValue("Experiment Execution Measurements Runs");
-    	runsCol.getChildren().add(headerRuns);
-    	
-    	colGroup.getChildren().add(propCol);
-    	colGroup.getChildren().add(runsCol);
-    	manualMeasurementsOverviewTable.getFacets().put("header", colGroup);
-    	
-    	//add stage name information
-    	HtmlColumn colStageInfo = new HtmlColumn();
-    	colStageInfo.setId("col1propidsID");
-    	colStageInfo.setColspan(2+execDates.size());
-    	colStageInfo.setBreakBefore(true);
-    	HtmlOutputText stageText = new HtmlOutputText();
-    	stageText.setId("stagetextID");
-    	ValueBinding stageValueBinding = FacesContext.getCurrentInstance().getApplication().createValueBinding("#{myVar.name}");  
-    	stageText.setValueBinding("value", stageValueBinding);
-    	colStageInfo.getChildren().add(stageText);
-    	manualMeasurementsOverviewTable.getChildren().add(colStageInfo);
-    	 
-    	//add subtable containing the actual information
-    	HtmlSubTable subTable = new HtmlSubTable();
-    	subTable.setId("subTable");
-    	ExperimentStageBean stagebean = (ExperimentStageBean)manualMeasurementsOverviewTable.getRowData();
-    	subTable.setValue(this.getAllManualExecutionRecords(stagebean.getName()));
-    	subTable.setVar("subVar"); 
-    	subTable.setOnRowMouseOver("this.style.backgroundColor='#F8F8F8'");
-    	subTable.setOnRowMouseOut("this.style.backgroundColor='#FFFFFF'");
-    	subTable.setRows(10);
-    	// FIXME ANJ Hacked this in to cope when there are no manual properties.
-    	/**
-    	 * 
-Caused by: java.lang.IllegalArgumentException
-    at javax.faces.model.ListDataModel.getRowData(ListDataModel.java:139)
-    at org.ajax4jsf.model.SequenceDataModel.getRowData(SequenceDataModel.java:147)
-    at org.richfaces.model.ModifiableModel.getRowData(ModifiableModel.java:67)
-    at org.ajax4jsf.component.UIDataAdaptor.getRowData(UIDataAdaptor.java:258)
-    at eu.planets_project.tb.gui.backing.ExperimentBean.initManualMeasurementsOverviewTable(ExperimentBean.java:1832)
-    at eu.planets_project.tb.gui.backing.ExperimentBean.getManualMeasurementsOverviewTable(ExperimentBean.java:1766)
-    	 * 
-    	 */
-    	try {
-    	MeasurementPropertyResultsBean subTableVar = (MeasurementPropertyResultsBean)subTable.getRowData();
-    	manualMeasurementsOverviewTable.getChildren().add(subTable);
-    	
-    	//START ADDING THE DATA
-    	// create first column to display the property ID
-    	HtmlColumn col1 = new HtmlColumn();
-    	col1.setId("col1propidsID");
-    	//col1.setBreakBefore(true);
-    	// create the columns header
-    	HtmlOutputText header1 = new HtmlOutputText();
-    	header1.setId("col1headerID");
-    	header1.setValue("identifier");
-    	col1.setHeader(header1);
-    	// create the columns output and value binding
-    	HtmlOutputText col1Text = new HtmlOutputText();
-    	col1Text.setId("col1TextID");
-    	ValueBinding col1ValueBinding = FacesContext.getCurrentInstance()
-    		.getApplication().createValueBinding("#{subVar.measurementPropertyID}");  
-    	col1Text.setValueBinding("value",col1ValueBinding);
-    	col1.getChildren().add(col1Text); 
-    	subTable.getChildren().add(col1);
-    	
-    	// FIXME - move this to other external component 
-    	//colum two displays the porperty's name
-    	HtmlColumn col2 = new HtmlColumn();
-    	col2.setId("col2propidsID");
-    	// create the columns header
-    	HtmlOutputText header2 = new HtmlOutputText();
-    	header2.setId("col2headerID");
-    	header2.setValue("name");
-    	col2.setHeader(header2);
-    	// create the columns output and value binding
-    	HtmlOutputText col2Text = new HtmlOutputText();
-    	col2Text.setId("col2TextID");
-    	String name = subTableVar.getMeasurementInfo().getName();
-    	/*ValueBinding col2ValueBinding = FacesContext.getCurrentInstance()
-    		.getApplication().createValueBinding("#{subVar.measurementInfo.name}");  
-    	col2Text.setValueBinding("value",col2ValueBinding);*/
-    	col2Text.setValue(name);
-    	col2.getChildren().add(col2Text); 
-    	col2.setSortBy(name);
-    	col2.setSortable(true);
-    	subTable.getChildren().add(col2);
-    	
-    	for(int i=0; i < execDates.size(); i++)
-    	{
-	    	// create col
-	    	HtmlColumn colx = new HtmlColumn();
-	    	colx.setId("colxID"+i);
-	    	// create col header
-	    	HtmlOutputText header = new HtmlOutputText();
-	    	header.setId("headerColxID"+i);
-	    	Calendar columnName = execDates.get(i);
-	    	DateTimeConverter c = new DateTimeConverter();
-	    	c.setDateStyle("short");
-	    	c.setType("both");
-	    	//c.setPattern("dd.MM.YYYY");
-	    	header.setConverter(c) ;
-	    	header.setValue(columnName.getTime());
-	    	colx.setHeader(header);
-	
-	    	// create the inplaceSelect and its binding
-	    	HtmlInplaceInput inplaceInput = this.getInplaceInput(subTableVar.getMeasurementPropertyID(), stagebean.getName(), execDates.get(i));    
-	    	String value = "test";
-	    	if(((subTableVar.getAllResults()!=null)&&(subTableVar.getAllResults().get(columnName.getTimeInMillis())!=null)&&(subTableVar.getAllResults().get(columnName.getTimeInMillis())).getValue()!=null)){
-	    		value = (subTableVar.getAllResults().get(columnName.getTimeInMillis())).getValue();
-	    	}
-	    	inplaceInput.setValue(value);
-	    	inplaceInput.setLayout("block");
-	    	inplaceInput.setSelectOnEdit(true);
-	    	inplaceInput.setEditClass("onclick");
-	    	inplaceInput.setDefaultLabel("click to enter");
-	    	Class[] parms2 = new Class[]{ValueChangeEvent.class};
-	        ExpressionFactory ef = FacesContext.getCurrentInstance().getApplication().getExpressionFactory();
-	        MethodExpression mb = ef.createMethodExpression(FacesContext.getCurrentInstance().getELContext(), 
-	                "#{NewExp_Controller.processManualDataEntryChange}", null, parms2);
-	        MethodExpressionValueChangeListener vcl = new MethodExpressionValueChangeListener(mb);
-	        inplaceInput.addValueChangeListener(vcl);
-	    	
-	    	/*Class[] params = new Class[]{};
-	    	MethodExpression actionExpression = FacesContext.getCurrentInstance().getApplication().getExpressionFactory()
-            .createMethodExpression(FacesContext.getCurrentInstance().getELContext(),
-                    "#{NewExp_Controller.processManualDataEntryChange}", null, params);*/
-	    	
-	    	HtmlAjaxSupport ajaxSupport = new HtmlAjaxSupport();
-	 		ajaxSupport.setId("ajax"+i);
-	 		ajaxSupport.setEvent("onviewactivated");
-	 		ajaxSupport.setEventsQueue("foo");
-	 		ajaxSupport.setIgnoreDupResponses(true);
-	 		ajaxSupport.setAjaxSingle(true);
-	 		//ajaxSupport.setReRender(this.manualMeasurementsOverviewTable.getId());
-	 		//ajaxSupport.setActionExpression(actionExpression);
-	 		inplaceInput.getChildren().add(ajaxSupport);
-	 		
-	 		//don't use the ValueChange ActionExpression as this can only be fired for all fields - send relevant data instead
-	 		HtmlActionParameter p1 = new HtmlActionParameter();
-	 		p1.setId("param1"+inplaceInput.getId());
-	 		p1.setName("propertyID");
-	 		p1.setValue(subTableVar.getMeasurementPropertyID());
-	 		HtmlActionParameter p2 = new HtmlActionParameter();
-	 		p2.setId("param2"+inplaceInput.getId());
-	 		p2.setName("stageName");
-	 		p2.setValue(stagebean.getName());
-	 		HtmlActionParameter p3 = new HtmlActionParameter();
-	 		p3.setId("param3"+inplaceInput.getId());
-	 		p3.setName("runDateMillis");
-	 		p3.setValue(execDates.get(i).getTimeInMillis());
-	 		HtmlActionParameter p4 = new HtmlActionParameter();
-	 		p4.setId("param4"+inplaceInput.getId());
-	 		p4.setName("diObjRef");
-	 		//FIXME AL working on: p4.setValue(this.getSelDigitalObjectRefInStep5OverviewTable());
-	 		
-	 		
-	 		ajaxSupport.getChildren().add(p1);
-	 		ajaxSupport.getChildren().add(p2);
-	 		ajaxSupport.getChildren().add(p3);
-
-	 		colx.getChildren().add(inplaceInput); 
-	    	//add column
-	    	subTable.getChildren().add(colx); 
+    public String getSelDigitalObjectRefPageInStep5OverviewTable(){
+    	if(this.selDigORefStep5OverviewTable==null){
+    		if(!this.getExperimentInputDataValues().isEmpty()){
+    			selDigORefStep5OverviewTable = this.getExperimentInputDataValues().iterator().next().getDigitalObject();
+    		}
     	}
-        } catch ( Exception e ) {
-            log.error("FAILED with exception: "+e);
-            e.printStackTrace();
-        }
-    	
+    	return this.selDigORefStep5OverviewTable;
     }
     
-    /*//FIXME AL working on:  public String getSelDigitalObjectRefInStep5OverviewTable(){
-    	FOR INPUT DIGITAL OBJECT - also display all OUTPUT DIGITAL OBJECTS and allow navigating (prev, next)
+    public void processDigitalObjectRefInStep5OverviewTable(ActionEvent e){
+    	for(UIComponent c : e.getComponent().getChildren()){
+    		if(c instanceof UIParameter){
+    			UIParameter p = (UIParameter)c;
+    			if(p.getName().equals("selInputDataRef")){
+    				this.setSelDigitalObjectRefInStep5OverviewTable((String)p.getValue());
+    			}
+    		}
+    	}
     }
     
-    public int getSelDigitalObjectRefPageInStep5OverviewTable(){
-    	
-    }*/
+    //TODO continue when time, fetch digital object and use ImageThumbnail class to generate a thumbnail
+    /*public String getDigitalObjectRefInStep5OverviewTableThumbnail(){
+    	try {
+			DigitalObject digo = new DataHandlerImpl().getDigitalObject(this.getSelDigitalObjectRefPageInStep5OverviewTable());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return null;
+    }´*/
     
     /**
-     * Gathers all results in the different experiment runs for a given property and collects it in 
-     * the MeasuremenPropertyResultBean
-     * @param manualProps
+     * Gathers all manual experiment results over all experiment runs for a given measurement property and a selected inputDigitalObject (selDigORefStep5OverviewTable)
+     * and groups this data by the stage name  
+     * @param
      * @return
      */
-    public List<MeasurementPropertyResultsBean> getAllManualExecutionRecords(String stageName){
-    	return this.getAllManualExecutionRecordsHelper(stageName,true);
+    public HashMap<String, List<MeasurementPropertyResultsBean>> getAllManualExecutionRecords(){
+    	HashMap<String, List<MeasurementPropertyResultsBean>> ret = new HashMap<String, List<MeasurementPropertyResultsBean>>();
+    	for(ExperimentStageBean stage : this.getStages()){
+    		ret.put(stage.getName(), this.getAllManualExecutionRecordsHelper(this.getSelDigitalObjectRefPageInStep5OverviewTable(), stage.getName(),true));
+    	}
+    	return ret;
     }
     
     
-    private List<MeasurementPropertyResultsBean> getAllManualExecutionRecordsHelper(String stageName, boolean manualProps){
+    private List<MeasurementPropertyResultsBean> getAllManualExecutionRecordsHelper(String inputDigoRef, String stageName, boolean manualProps){
     	List<MeasurementPropertyResultsBean> ret = new ArrayList<MeasurementPropertyResultsBean>();
     	String etype = this.getEtype();
 		ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(etype);
@@ -2007,33 +1811,42 @@ Caused by: java.lang.IllegalArgumentException
 		
 		//2. build the results on a per property basis
 		for(String propertyID : propertyIDs){
-			MeasurementPropertyResultsBean resBean = new MeasurementPropertyResultsBean(propertyID);
+			
+			MeasurementPropertyResultsBean resBean = new MeasurementPropertyResultsBean(inputDigoRef, propertyID,this.getAllRunDates());
 			
 			//2a. now iterate over the results and filter out the relevant ones for this property
 			for(BatchExecutionRecordImpl batchr : this.getExperiment().getExperimentExecutable().getBatchExecutionRecords()){
 				Calendar runDate = batchr.getEndDate();
 				for(ExecutionRecordImpl execRec : batchr.getRuns()){
-					for(ExecutionStageRecordImpl execStageRec : execRec.getStages()){
-						List<MeasurementRecordImpl> mRecords=null;
-						if(manualProps){
-							//fetch the manual properties
-							mRecords = execStageRec.getManualMeasurements();
-						}
-						else{
-							//fetch the automatically measured properties
-							mRecords = execStageRec.getMeasurements();
-						}
-						for(MeasurementRecordImpl mr : mRecords){
-							if(mr.getIdentifier().equals(propertyID)){
-								//found the measurementRecord for this property in this run
-								resBean.addResult(runDate, mr);
+					//filter out by the selected inputDigitalObject
+					if(execRec.getDigitalObjectReferenceCopy().equals(inputDigoRef)){
+						
+						for(ExecutionStageRecordImpl execStageRec : execRec.getStages()){
+							//filter out the selected stage
+							if(execStageRec.getStage().equals(stageName)){
+								List<MeasurementRecordImpl> mRecords=null;
+								if(manualProps){
+									//fetch the manual properties
+									mRecords = execStageRec.getManualMeasurements();
+								}
+								else{
+									//fetch the automatically measured properties
+									mRecords = execStageRec.getMeasurements();
+								}
+								for(MeasurementRecordImpl mr : mRecords){
+									if(mr.getIdentifier().equals(propertyID)){
+										//log.info("adding "+inputDigoRef+ " "+runDate.getTimeInMillis()+" "+execStageRec.getStage()+" "+mr.getIdentifier() +" "+ mr.getValue());
+										//found the measurementRecord for this property in this run
+										resBean.addResult(runDate, mr);
+									}
+								}
 							}
 						}
 					}
 				}
 			}
 			
-			//finally add the MeasurementInfo data (name, description, etc.
+			//finally add the MeasurementInfo data (name, description, for the propertyID etc.
 			if(manualProps){
 				OntologyProperty ontop = OntologyHandlerImpl.getInstance().getProperty(propertyID);
 				//create a MeasurementImpl from the OntologyProperty
@@ -2064,16 +1877,18 @@ Caused by: java.lang.IllegalArgumentException
 		return ret;
     }
     
-    private HashMap<String,HtmlInplaceInput> stage5OverviewTableInplaceInputs = new HashMap<String, HtmlInplaceInput>();
-    private HtmlInplaceInput getInplaceInput(String propURI, String stageName, Calendar runDate){
-    	String key = propURI+stageName+runDate.getTimeInMillis();
-    	if(!this.stage5OverviewTableInplaceInputs.containsKey(key)){
-    		//no inplace select generated until now
-    		HtmlInplaceInput newIps = new HtmlInplaceInput();
-    		newIps.setId("ips"+runDate.getTimeInMillis()+stage5OverviewTableInplaceInputs.size());
-    		this.stage5OverviewTableInplaceInputs.put(key, newIps);
-    	}
-    	return stage5OverviewTableInplaceInputs.get(key);
+    public int getAllRunDatesSize(){
+    	return this.getAllRunDates().size();
+    }
+    
+    public boolean isRunDateBatchRunSucceeded(Calendar runDate){
+    	boolean b = false;
+    	for(BatchExecutionRecordImpl batchr : this.getExperiment().getExperimentExecutable().getBatchExecutionRecords()){		
+			if(batchr.getEndDate().getTime().equals(runDate.getTime())){
+				b = batchr.isBatchRunSucceeded();
+			}
+		}
+    	return b;
     }
     
 }

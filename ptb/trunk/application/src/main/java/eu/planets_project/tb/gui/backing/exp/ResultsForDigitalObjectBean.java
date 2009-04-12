@@ -19,64 +19,17 @@ import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class ResultsForDigitalObjectBean {
+public class ResultsForDigitalObjectBean extends DigitalObjectBean{
     private PlanetsLogger log = PlanetsLogger.getLogger(ResultsForDigitalObjectBean.class, "testbed-log4j.xml");
-    
-    private String digitalObject;
-    
-    private String downloadURL;
-    
-    private String digitalObjectName;
-    
+
     private List<ExecutionRecordImpl> executionRecords = new Vector<ExecutionRecordImpl>();
 
     /**
      * @param input
      */
     public ResultsForDigitalObjectBean( String input ) {
-        this.init(input);
-    }
-    
-    /**
-     * @return the digitalObject
-     */
-    public String getDigitalObject() {
-        return digitalObject;
-    }
-
-    /**
-     * @param digitalObject the digitalObject to set
-     */
-    public void setDigitalObject(String digitalObject) {
-        this.digitalObject = digitalObject;
-    }
-
-    /**
-     * @return the downloadURL
-     */
-    public String getDownloadURL() {
-        return downloadURL;
-    }
-
-    /**
-     * @param downloadURL the downloadURL to set
-     */
-    public void setDownloadURL(String downloadURL) {
-        this.downloadURL = downloadURL;
-    }
-
-    /**
-     * @return the digitalObjectName
-     */
-    public String getDigitalObjectName() {
-        return digitalObjectName;
-    }
-
-    /**
-     * @param digitalObjectName the digitalObjectName to set
-     */
-    public void setDigitalObjectName(String digitalObjectName) {
-        this.digitalObjectName = digitalObjectName;
+    	super(input);
+    	this.init(input);
     }
 
     /**
@@ -94,26 +47,9 @@ public class ResultsForDigitalObjectBean {
     }
     
     
-    /**
-     * 
-     */
-    private void init( String file ) {
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        // Populate using the results:
-        DataHandler dh = new DataHandlerImpl();
-        // Set up the DO name, etc
-        setDigitalObject(file);
-        try {
-            setDownloadURL(dh.getDownloadURI(file).toString());
-        } catch (FileNotFoundException e) {
-            setDownloadURL("");
-        }
-        try {
-            setDigitalObjectName(DataHandlerImpl.createShortDOName(dh.getName(file)));
-        } catch (FileNotFoundException e) {
-            setDigitalObjectName(DataHandlerImpl.createShortDOName(file));
-        }
-        // Loop over results and patch them in:
+    private void init(String file){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	// Loop over results and patch them in:
         for( BatchExecutionRecordImpl batch : expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords() ) {
             for( ExecutionRecordImpl run : batch.getRuns() ) {
                 if( file.equals( run.getDigitalObjectReferenceCopy() ) ) {
@@ -123,5 +59,6 @@ public class ResultsForDigitalObjectBean {
         }
         log.info("Result object initialised.");
     }
+    
 
 }

@@ -1959,29 +1959,32 @@ public class NewExpWizardController{
      * updates the experiment with this value.
      */
     public void processManualDataEntryChange(ValueChangeEvent vce){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	
     	String value = (String)vce.getNewValue();
+    	if(value.equals(""))
+    		return;
+    	
     	FacesContext context = FacesContext.getCurrentInstance();
 		Object o1 = context.getExternalContext().getRequestParameterMap().get("propertyID");
 		Object o2 = context.getExternalContext().getRequestParameterMap().get("stageName");
 		Object o3 = context.getExternalContext().getRequestParameterMap().get("runDateMillis");
-		Object o4 = context.getExternalContext().getRequestParameterMap().get("diObjRef");
+		Object o4 = context.getExternalContext().getRequestParameterMap().get("inputDigoRef");
 		
 		if((o1!=null)&&(o2!=null)&&(o3!=null)&&(o4!=null)){
 			//fetch the parameters from the requestParameterMap
 			String manualpropID = (String)o1; 
 			String stageName = (String)o2; 
 			String expRunInMillis = (String)o3; 
-			String digObjRef = (String)o4; 
+			String inputDigoRef = (String)o4;
 			Calendar c = new GregorianCalendar();
 			c.setTimeInMillis(Long.parseLong(expRunInMillis));
 			
 			//now create or update an MeasurementRecordImpl record
-			this.updateManualPropertyMeasurementRecord(manualpropID, digObjRef, stageName, c,value);
+			this.updateManualPropertyMeasurementRecord(manualpropID, inputDigoRef, stageName, c,value);
 			
 			//store the updated experiment
 	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
-	    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
 	        Experiment exp = expBean.getExperiment();
 	    	testbedMan.updateExperiment(expBean.getExperiment());
 			
@@ -2017,7 +2020,7 @@ public class NewExpWizardController{
 		        					if(mRec.getIdentifier().equals(propertyID)){
 		        						mRec.setValue(value);
 		        						bFound = true;
-		        						log.info("updating measurement for time: "+runEndDate.getTimeInMillis()+" stage: "+stageName+" propID: "+propertyID);
+		        						log.info("updating measurement for input: "+digObjectRefCopy+" time: "+runEndDate.getTimeInMillis()+" stage: "+stageName+" propID: "+propertyID+" value: "+value);
 		        					}	
 		        				}
 	        					if(!bFound){
@@ -2026,7 +2029,7 @@ public class NewExpWizardController{
 	        						mRec.setIdentifier(propertyID);
 	        						mRec.setValue(value);
 	        						execStageRec.addManualMeasurement(mRec);
-	        						log.info("created new measurement for time: "+runEndDate.getTimeInMillis()+" stage: "+stageName+" propID: "+propertyID);
+	        						log.info("created new measurement for input: "+digObjectRefCopy+" time: "+runEndDate.getTimeInMillis()+" stage: "+stageName+" propID: "+propertyID+" value: "+value);
 	        					}
 	        				}
 	        			}

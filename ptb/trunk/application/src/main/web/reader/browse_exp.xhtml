@@ -25,6 +25,11 @@
 <div class="innertubemain">
 
 <a4j:form>
+	<a4j:status>
+   		<f:facet name="start">
+    		<h:graphicImage  value="/graphics/spinner.gif"/>
+        </f:facet>
+    </a4j:status>
     <t:dataTable id="dataTable_allExp"
                  styleClass="tbTable"
                  var="exp"
@@ -48,7 +53,7 @@
                 <h:panelGroup>
                 <a4j:commandLink action="#{ListExp_Backing.readerExperimentAction}">
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
-                	<rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="server">
+                	<rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
 	               		<rich:menuItem id="contextViewExp" action="#{ListExp_Backing.readerExperimentAction}">
 							<b>view</b> experiment
 						</rich:menuItem>

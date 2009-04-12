@@ -25,6 +25,11 @@
 	<div class="innertubemain">
 		
 	<a4j:form>
+		<a4j:status>
+    		<f:facet name="start">
+                  <h:graphicImage  value="/graphics/spinner.gif"/>
+            </f:facet>
+        </a4j:status>
      <t:dataTable id="dataTable_myExp"
                   styleClass="tbTable"
                   var="exp"
@@ -46,9 +51,9 @@
 		          #{res['expList.colHeader.expName']}
     	      </t:commandSortHeader>
     	    </f:facet>
-            <a4j:commandLink action="#{ListExp_Backing.editMyExperimentAction}">
+            <a4j:commandLink id="editExpAction" action="#{ListExp_Backing.editMyExperimentAction}">
 	            <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}"/>
-	            <rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="server">
+	            <rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
 	               	<rich:menuItem id="contextOpenExp" action="#{ListExp_Backing.editMyExperimentAction}">
 						<b>edit</b> experiment
 					</rich:menuItem>
