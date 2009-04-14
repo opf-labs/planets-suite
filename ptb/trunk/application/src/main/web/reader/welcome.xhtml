@@ -52,6 +52,10 @@
 							<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_corpora.gif" 
                             	alt="#{res['welcome.browse_corpora']}" title="#{res['welcome.browse_corpora']}" style="margin:5px 5px 5px 5px;" />
 							</h:commandLink>
+							<h:commandLink action="browse_ontology"  rendered="#{UserBean.reader}">
+							<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_browse_ontology.gif" 
+                            	alt="#{res['welcome.browse_ontology']}" title="#{res['welcome.browse_ontology']}" style="margin:5px 5px 5px 5px;" />
+							</h:commandLink>
 							<h:commandLink action="#{Manager_Backing.initExperimentAction}" rendered="#{UserBean.experimenter}">
 							<img src="${facesContext.externalContext.requestContextPath}/graphics/btn_en_perform_exp.gif" 
                             	alt="#{res['welcome.perform_exp']}" title="#{res['welcome.perform_exp']}" style="margin:5px 5px 5px 5px;" />
