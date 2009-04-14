@@ -440,8 +440,12 @@
     <echo message="Wrote summary test report to: ${summary.dir}" />
   </target>
   
-  <!-- This is required for Java 6, which ships with JAXB 2.0 not 2.1. -->
-  <property name="test.vmarg.boot.classpath" value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar;lib/endorsed/activation.jar;lib/endorsed/stax-ex.jar;lib/endorsed/jsr173_api.jar;lib/endorsed/jboss-native-saaj.jar"/>
+  <!-- This is required when running under Java 6, which ships with JAXB 2.0 not 2.1. -->
+  <!-- FIXME This does not seem to work at the moment, and J6 on Linux fails when calling services on the TB.
+        You get: javax.xml.ws.WebServiceException: java.lang.UnsupportedOperationException: setProperty must be overridden by all subclasses of SOAPMessage ...
+   -->
+  <property name="test.vmarg.boot.classpath" 
+    value="-Xbootclasspath/p:lib/endorsed/jaxb-api.jar;lib/endorsed/jaxb-impl.jar;lib/endorsed/activation.jar;lib/endorsed/stax-ex.jar;lib/endorsed/jsr173_api.jar;lib/endorsed/jboss-native-saaj.jar"/>
   
   <target name="test:local" description="executes the included JUnit tests w/o a server" depends="test:src-defined,compile:tests" if="test.local">
     <echo message="TEST:LOCAL: Testing the service code without a server."/>
@@ -517,6 +521,8 @@
       <!--
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
+      <sysproperty key="file.encoding" value="utf-8"/>
+      <sysproperty key="line.separator" value="\n"/>
       -->
       <!-- Test config -->
       <sysproperty key="pserv.test.context" value="server"/>
