@@ -97,7 +97,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 			ExperimentWorkflow ewf = executable.getWorkflow();
 			log.info("Submitting workflow: "+ewf);
 			log.info("Got inputs #"+executable.getInputData().size());
-			String queue_key = tbp.submitBatch( ewf , executable.getInputData());
+			String queue_key = tbp.submitBatch( exp.getEntityID(), ewf , executable.getInputData());
 			executable.setBatchQueueIdentifier("TB#LOCAL");
 			executable.setBatchExecutionIdentifier(queue_key);
             executable.setExecutableInvoked(true);

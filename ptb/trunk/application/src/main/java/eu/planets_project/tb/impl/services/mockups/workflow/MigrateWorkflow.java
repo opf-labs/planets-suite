@@ -4,6 +4,7 @@
 package eu.planets_project.tb.impl.services.mockups.workflow;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -324,41 +325,53 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     throws Exception {
         this.parameters = parameters;
         // Attempt to connect to the Migrate service.
-        migratorEndpoint = new URL(this.parameters.get(PARAM_SERVICE));
-        migrator = new MigrateWrapper( migratorEndpoint );
-        
+        try {
+            migratorEndpoint = new URL(this.parameters.get(PARAM_SERVICE));
+            migrator = new MigrateWrapper( migratorEndpoint );
+        } catch( MalformedURLException e ) {
+            throw new Exception("You did not specify a valid migration service URL!");
+        }
+
         // Also set the pre services:
-        if( this.preIsCharacterise() ) {
-            dpPre = new CharacteriseWrapper(new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
-        } else {
-            dpPre = null;
+        try {
+            if( this.preIsCharacterise() ) {
+                dpPre = new CharacteriseWrapper(new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
+            } else {
+                dpPre = null;
+            }
+            if( this.preIsIdentify() ) {
+                idPre = new IdentifyWrapper( new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
+
+            } else {
+                idPre = null;
+            }
+        } catch( MalformedURLException e ) {
+            throw new Exception("You did not specify a valid pre-migration service URL!");
         }
-        if( this.preIsIdentify() ) {
-            idPre = new IdentifyWrapper( new URL(this.parameters.get(PARAM_PRE_SERVICE)) );
-            
-        } else {
-            idPre = null;
-        }
-        
+
         // Also set the post services:
-        if( this.postIsCharacterise() ) {
-            dpPost = new CharacteriseWrapper(new URL(this.parameters.get(PARAM_POST_SERVICE)) );
-        } else {
-            dpPost = null;
+        try {
+            if( this.postIsCharacterise() ) {
+                dpPost = new CharacteriseWrapper(new URL(this.parameters.get(PARAM_POST_SERVICE)) );
+            } else {
+                dpPost = null;
+            }
+            if( this.postIsIdentify() ) {
+                idPost = new IdentifyWrapper( new URL(this.parameters.get(PARAM_POST_SERVICE)) );
+
+            } else {
+                idPost = null;
+            }
+        } catch( MalformedURLException e ) {
+            throw new Exception("You did not specify a valid post-migration service URL!");
         }
-        if( this.postIsIdentify() ) {
-            idPost = new IdentifyWrapper( new URL(this.parameters.get(PARAM_POST_SERVICE)) );
-            
-        } else {
-            idPost = null;
-        }
-        
+
         // FIXME Also create/record a ServiceRecordImpl? 
-        
+
         // MUST throw an Exception if the input and outputs are not defined!
         if( this.getFromFormat() == null || "".equals(this.getFromFormat()) ||
                 this.getToFormat() == null || "".equals(this.getToFormat()) ) {
-            throw new Exception("You must specify a full pathway!");
+            throw new Exception("You must specify both the input and output format!");
         }
     }
     

@@ -38,8 +38,8 @@
           rendered="#{not NewExp_Controller.experimentExecutable.executionRunning}" styleClass="statusMessage"/>
       <rich:progressBar value="#{NewExp_Controller.executeExperimentProgress}"
           interval="1000" label="#{NewExp_Controller.executeExperimentProgress} %"
-          enabled="true" minValue="0" maxValue="100" styleClass="expRunStatusRun"
-          reRenderAfterComplete="progressPanel,runExperimentForm,executedResults" reRender="runExperimentForm,progressPanel,executedResults">
+          enabled="#{NewExp_Controller.experimentExecutable.executionRunning}" minValue="-1" maxValue="100" styleClass="expRunStatusRun"
+          reRenderAfterComplete="progressPanel,runExperimentForm" reRender="runExperimentForm,progressPanel">
       </rich:progressBar>
       </h:panelGroup>
     </a4j:outputPanel>
@@ -69,14 +69,14 @@
          <h:commandButton action="#{NewExp_Controller.executeExperimentStart}"
                       value="Re-run this experiment to collect more data." 
                       rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }"/>
-        <h:commandButton value="Refresh"
+        <h:commandButton value="Refresh This Page"
                             action="goToStage5" />
      </h:panelGroup>
      <h:panelGroup rendered="#{NewExp_Controller.experimentExecutable.executionRunning}" >
                         <p>
                             Your experiment is currently being executed. Depending on the intensity of your experiment this may take some time.
                             <br/>
-                            <h:commandButton value="Refresh"
+                            <h:commandButton value="Refresh This Page"
                             action="goToStage5" />
                         </p>
      </h:panelGroup>
@@ -85,7 +85,8 @@
 
 <!-- ***************************  -->
 
-<a4j:outputPanel id="executedResults" rendered="#{(not NewExp_Controller.experimentExecutable.executionRunning) and (NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 )}">
+<a4j:outputPanel id="executedResults">
+<h:panelGroup rendered="#{ NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
 <!-- START Automated Results -->
 <a4j:region id="regionAutoMResults" renderRegionOnly="true">
 <rich:simpleTogglePanel label="#{res['exp_stage5.automaticResults']}" opened="true" switchType="ajax">
@@ -232,6 +233,7 @@
      </rich:tabPanel>
 
 </rich:simpleTogglePanel>
+
 </a4j:region>
 <!-- END Automated Results -->
 
@@ -352,12 +354,18 @@
 	 </rich:tabPanel>
 </rich:simpleTogglePanel>
 </a4j:region>
+
+</h:panelGroup>
 </a4j:outputPanel>
+
+<!-- ******************  -->
 
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="5" />
        <ui:param name="PlaceBandAsHeader" value="false" />
     </ui:include>
+
+<!-- ******************  -->
 
         <rich:simpleTogglePanel label="Hacky Development And Debug Options" opened="false" rendered="#{UserBean.admin}">
          <p>
@@ -382,7 +390,10 @@
         
         </rich:simpleTogglePanel>
 
+<!-- ******************  -->
+
 </h:form>
+
         <p>&#160;</p>
         <p>&#160;</p>
         <p>&#160;</p>

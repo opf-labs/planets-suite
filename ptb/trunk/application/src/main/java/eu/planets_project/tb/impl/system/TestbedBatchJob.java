@@ -25,7 +25,8 @@ public class TestbedBatchJob {
     public static final String DONE = "done";
     public static final String FAILED = "failed";
     public static final String NO_SUCH_JOB = "no-such-job";
-    
+
+    private long expID = -1;
     private ExperimentWorkflow workflow;
     private Collection<String> digitalObjects;
     private String status;
@@ -38,12 +39,20 @@ public class TestbedBatchJob {
      * @param workflow
      * @param digitalObjects
      */
-    public TestbedBatchJob(ExperimentWorkflow workflow,
+    public TestbedBatchJob(long expID, ExperimentWorkflow workflow,
             Collection<String> digitalObjects) {
+        this.expID = expID;
         this.workflow = workflow;
         this.digitalObjects = digitalObjects;
         this.status = NOT_STARTED;
         this.percentComplete = 0;
+    }
+    
+    /**
+     * @return the expID
+     */
+    public long getExpID() {
+        return expID;
     }
 
     /**

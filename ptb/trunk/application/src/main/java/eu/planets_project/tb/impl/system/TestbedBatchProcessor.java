@@ -44,8 +44,8 @@ public class TestbedBatchProcessor {
      * @param digitalObjects
      * @return
      */
-    public synchronized String submitBatch( ExperimentWorkflow workflow, Collection<String> digitalObjects ) {
-        TestbedBatchJob testbedBatchJob = new TestbedBatchJob( workflow, digitalObjects );
+    public synchronized String submitBatch( long expID, ExperimentWorkflow workflow, Collection<String> digitalObjects ) {
+        TestbedBatchJob testbedBatchJob = new TestbedBatchJob( expID, workflow, digitalObjects );
         job_id++;
         String job_key ="TBK:"+job_id;
         jobs.put(job_key, testbedBatchJob);

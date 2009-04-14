@@ -11,6 +11,7 @@ import eu.planets_project.tb.api.model.ExperimentResources;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
@@ -626,7 +627,7 @@ public class NewExpWizardController{
             exp.getExperimentExecutable().setWorkflowType(expType);
         } catch( Exception e ) {
             FacesMessage fmsg = new FacesMessage();
-            fmsg.setSummary("There was an error when configuring your experiment. Please check the workflow parameter(s).");
+            fmsg.setSummary("There was an error when configuring your experiment:  "+e.getMessage()+" Please check the workflow parameter(s). ");
             fmsg.setDetail("ERROR: " + e );
             fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
             FacesContext ctx = FacesContext.getCurrentInstance();
@@ -1309,6 +1310,7 @@ public class NewExpWizardController{
 	  public int getExecuteExperimentProgress() {
           TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+          refreshExperimentBean();
           Experiment exp = expBean.getExperiment();
           boolean running = exp.getExperimentExecutable().isExecutionRunning();
           
@@ -1318,6 +1320,7 @@ public class NewExpWizardController{
           }
           
           log.info("Looking for experiment status... "+exp.getExperimentExecutable().getBatchExecutionIdentifier());
+          
           
           TestbedBatchProcessor tbp = (TestbedBatchProcessor)JSFUtil.getManagedObject("TestbedBatchProcessor");
           String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
@@ -1334,26 +1337,26 @@ public class NewExpWizardController{
               return 0;
           } else if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.RUNNING) ) {
               int percent = tbp.getJobPercentComplete(job_key);
+              // Return percentage:
               log.info("Got percent complete:" + percent);
               return percent;
 
           } else {
               log.info("Got job complete.");
-              this.recordExperimentCompleted(tbp.getJob(job_key));
+              // Appears to need to return a number greater that 100 in order to force the progress bar to refresh properly.
               return 101;
           }
 	  }
-	  
-	  private void recordExperimentCompleted(TestbedBatchJob job ) {
+
+	  /**
+	   * Used to ensure that the ExperimentBean reflects changes made in the background.
+	   */
+	  private void refreshExperimentBean() {
           TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-          Experiment exp = expBean.getExperiment();
-
-          // Update the experiment from the job:
-          WorkflowResult.recordJobToExperiment( job, exp );
-          
-          // Store:
-          testbedMan.updateExperiment(exp);
+          ExperimentPersistencyRemote epr = testbedMan.getExperimentPersistencyRemote();
+          Experiment exp = epr.findExperiment(expBean.getExperiment().getEntityID());
+          ExpBeanReqManager.putExperimentIntoSessionExperimentBean( exp );
 	  }
 	  
 	  /*

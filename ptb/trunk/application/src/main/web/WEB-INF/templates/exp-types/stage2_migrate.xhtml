@@ -21,8 +21,6 @@
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.inputFormatList}" />
     </h:selectOneMenu>
-    <h:commandButton value="#{res['button.select']}"
-             action="success"/>
     </h:panelGroup>
     <h:panelGroup rendered="#{ExperimentBean.approved}">
       <h:outputText value="#{ExpTypeMigrate.inputFormat}"/>
@@ -44,8 +42,6 @@
          <f:selectItem itemValue="" itemLabel="Do not characterise." />
          <f:selectItems value="#{ExpTypeMigrate.preMigrationServiceList}" />
     </h:selectOneMenu>
-    <h:commandButton value="#{res['button.select']}"
-             action="success"/>
     </h:panelGroup>
                  
     <h:panelGroup rendered="#{ExperimentBean.approved}">
@@ -67,8 +63,6 @@
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.migrationServiceList}" />
     </h:selectOneMenu>
-    <h:commandButton value="#{res['button.select']}"
-             action="success"/>
     </h:panelGroup>
     
     <h:panelGroup rendered="#{ExperimentBean.approved}">
@@ -90,8 +84,6 @@
          <f:selectItem itemValue="" itemLabel="Do not characterise." />
          <f:selectItems value="#{ExpTypeMigrate.postMigrationServiceList}" />
     </h:selectOneMenu>
-    <h:commandButton value="#{res['button.select']}"
-             action="success"/>
     </h:panelGroup>
 
     <h:panelGroup rendered="#{ExperimentBean.approved}">
@@ -112,8 +104,6 @@
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.outputFormatList}" />
     </h:selectOneMenu>
-    <h:commandButton value="#{res['button.select']}"
-             action="success"/>
     </h:panelGroup>
     <h:panelGroup rendered="#{ExperimentBean.approved}">
       <h:outputText value="#{ExpTypeMigrate.outputFormat}"/>
