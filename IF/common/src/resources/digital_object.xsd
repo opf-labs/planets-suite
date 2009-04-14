@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:element name="digitalObject" type="digitalObject"/>
+  <xs:element name="immutableDigitalObject" type="immutableDigitalObject"/>
 
-  <xs:complexType name="digitalObject" final="extension restriction">
+  <xs:complexType name="immutableDigitalObject" final="extension restriction">
     <xs:sequence>
-      <xs:element name="permanentUrl" type="xs:anyURI" minOccurs="0"/>
       <xs:element name="checksum" type="checksum" minOccurs="0"/>
       <xs:element name="metadata" type="metadata" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="contained" type="digitalObject" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="contained" type="immutableDigitalObject" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="content" type="content"/>
       <xs:element name="events" type="event" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="fragments" type="fragment" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="title" type="xs:string"/>
     <xs:attribute name="format" type="xs:string"/>
+    <xs:attribute name="permanentUrl" type="xs:anyURI"/>
     <xs:attribute name="manifestationOf" type="xs:string"/>
   </xs:complexType>
 
@@ -32,13 +32,16 @@
 
   <xs:complexType name="content" final="extension restriction">
     <xs:sequence>
-      <xs:element name="value" type="xs:base64Binary" minOccurs="0"/>
+      <xs:element name="dataHandler" ns1:expectedContentTypes="application/octet-stream" type="xs:base64Binary" minOccurs="0" xmlns:ns1="http://www.w3.org/2005/05/xmlmime"/>
+      <xs:element name="checksum" type="checksum" minOccurs="0"/>
     </xs:sequence>
     <xs:attribute name="reference" type="xs:anyURI"/>
+    <xs:attribute name="length" type="xs:long" use="required"/>
   </xs:complexType>
 
   <xs:complexType name="event">
     <xs:sequence>
+      <xs:element name="agent" type="agent" minOccurs="0"/>
       <xs:element name="properties" type="property" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="summary" type="xs:string"/>
@@ -46,8 +49,16 @@
     <xs:attribute name="duration" type="xs:double" use="required"/>
   </xs:complexType>
 
+  <xs:complexType name="agent">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:string"/>
+    <xs:attribute name="name" type="xs:string"/>
+    <xs:attribute name="type" type="xs:string"/>
+  </xs:complexType>
+
   <xs:complexType name="property">
     <xs:sequence>
+      <xs:element name="uri" type="xs:string" minOccurs="0"/>
       <xs:element name="name" type="xs:string" minOccurs="0"/>
       <xs:element name="value" type="xs:string" minOccurs="0"/>
       <xs:element name="unit" type="xs:string" minOccurs="0"/>

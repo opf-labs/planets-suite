@@ -1,65 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xs:schema version="1.0" xmlns:ns1="http://purl.org/dc/terms/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.planets-project.eu/services">
+<xs:schema version="1.0" targetNamespace="http://purl.org/dc/terms/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:import namespace="http://purl.org/dc/terms/" schemaLocation="service_description_schema2.xsd"/>
+  <xs:element name="creator" type="xs:string"/>
 
-  <xs:import namespace="http://www.planets-project.eu/services" schemaLocation="service_description_schema1.xsd"/>
+  <xs:element name="description" type="xs:string"/>
 
-  <xs:element name="path" type="migrationPath"/>
+  <xs:element name="identifier" type="xs:string"/>
 
-  <xs:complexType name="serviceDescription" final="extension restriction">
-    <xs:sequence>
-      <xs:element ref="ns1:title"/>
-      <xs:element ref="ns2:classname" minOccurs="0"/>
-      <xs:element ref="ns2:type" minOccurs="0"/>
-      <xs:element ref="ns2:endpoint" minOccurs="0"/>
-      <xs:element ref="ns2:parameters" minOccurs="0"/>
-      <xs:element ref="ns2:tool" minOccurs="0"/>
-      <xs:element ref="ns1:description" minOccurs="0"/>
-      <xs:element ref="ns2:version" minOccurs="0"/>
-      <xs:element ref="ns1:identifier" minOccurs="0"/>
-      <xs:element ref="ns1:creator" minOccurs="0"/>
-      <xs:element ref="ns1:publisher" minOccurs="0"/>
-      <xs:element ref="ns2:instructions" minOccurs="0"/>
-      <xs:element ref="ns2:furtherInfo" minOccurs="0"/>
-      <xs:element ref="ns2:logo" minOccurs="0"/>
-      <xs:element ref="ns2:inputFormat" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element ref="ns2:property" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element ref="ns2:migrationPath" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
+  <xs:element name="publisher" type="xs:string"/>
 
-  <xs:complexType name="parameters">
-    <xs:sequence>
-      <xs:element name="parameter" type="parameter" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="parameter">
-    <xs:sequence>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="value" type="xs:string" minOccurs="0"/>
-      <xs:element name="type" type="xs:string" minOccurs="0"/>
-      <xs:element name="description" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="property">
-    <xs:sequence>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="value" type="xs:string" minOccurs="0"/>
-      <xs:element name="unit" type="xs:string" minOccurs="0"/>
-      <xs:element name="description" type="xs:string" minOccurs="0"/>
-      <xs:element name="type" type="xs:string" minOccurs="0"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="migrationPath">
-    <xs:sequence>
-      <xs:element name="inputFormat" type="xs:string" minOccurs="0"/>
-      <xs:element name="outputFormat" type="xs:string" minOccurs="0"/>
-      <xs:element name="parameters" type="parameter" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
+  <xs:element name="title" type="xs:string"/>
 </xs:schema>
 
