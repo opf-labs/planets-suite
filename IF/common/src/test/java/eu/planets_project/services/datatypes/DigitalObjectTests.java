@@ -248,5 +248,10 @@ public final class DigitalObjectTests {
         }
         return null;
     }
-
+    
+    @Test
+    public void schemaGeneration(){
+        ImmutableDigitalObject.main(null);
+    }
+ 
 }

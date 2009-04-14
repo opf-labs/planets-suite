@@ -201,5 +201,10 @@ public class ServiceDescriptionTest {
         set.add(new ServiceDescription.Builder(sd).author("me").build());
         Assert.assertEquals(2, set.size());
     }
+    
+    @Test
+    public void schemaGeneration(){
+        ServiceDescription.main(null);
+    }
 
 }
