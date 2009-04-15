@@ -206,12 +206,12 @@ public class DroidBean extends AbstractWorkflowBean implements PlanetsService, W
 				URI pronomURI = null;
 				//identify data
 				try {
-		    	URI[] rets = droid.identifyOneBinary(imageData).types;
+		    	List<URI> rets = droid.identifyOneBinary(imageData).types;
 		    	//todo if rets.length = 0 error
 		    	//todo handle multiple pronom ids
-		    	for( int j=0; j<rets.length; j++) {
-		    		logger.debug("Droid reported: "+rets[j]);
-		    		pronomURI = rets[j];
+		    	for( URI furi : rets ) {
+		    		logger.debug("Droid reported: "+furi);
+		    		pronomURI = furi;
 		    	}					
 				} catch(Exception e) {
 						report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
