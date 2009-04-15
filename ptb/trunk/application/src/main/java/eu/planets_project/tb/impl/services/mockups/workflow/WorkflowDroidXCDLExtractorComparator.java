@@ -194,18 +194,18 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
         //invoke the service and extract results
         Types results = droid.identifyOneBinary(array);
         String status = results.status;
-        URI[] result = results.types;
+        List<URI> result = results.types;
         
         if(!status.equals("Positive")){
         	throw new Exception("Service execution failed");
         }
-        if(result.length<1){
+        if(result.size()<1){
         	throw new Exception("The specified file type is currently not supported by this workflow");
         }
         
-        String[] strings = new String[result.length];
-        for (int i = 0; i < result.length; i++) {
-            String string = result[i].toASCIIString();
+        String[] strings = new String[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            String string = result.get(i).toASCIIString();
             //received 1..n Pronom IDs
             strings[i] = string;
         }
