@@ -140,8 +140,8 @@
         </t:column>
         <t:column style="text-align: center;">
         	<rich:effect name="showDiv#{row}"  for="deleteDiv#{row}" type="Appear" />
-            <f:facet name="header">#{res['expList.colHeader.delete']}</f:facet>
-            	&nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="#{res['expList.colHeader.delete']}" title="#{res['expList.colHeader.delete']}" onclick="showDiv#{row}(); "/>
+            <f:facet name="header">#{res['expList.colHeader.requestDelete']}</f:facet>
+            	&nbsp;&nbsp;<img src="${facesContext.externalContext.requestContextPath}/graphics/user_trash.png" alt="#{res['expList.colHeader.requestDelete']}" title="#{res['expList.colHeader.requestDelete']}" onclick="showDiv#{row}(); "/>
         <span id="deleteDiv#{row}" style="display:none">
         	
         	<input name="delReason#{row}" onclick="this.value=''" value="Enter reason" style="display: none"></input>
