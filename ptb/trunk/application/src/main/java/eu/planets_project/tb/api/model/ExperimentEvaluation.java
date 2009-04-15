@@ -3,12 +3,15 @@ package eu.planets_project.tb.api.model;
 import java.io.File;
 import java.net.URI;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.Map.Entry;
 
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
+import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
 
 /**
  * @author alindley
@@ -27,12 +30,35 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	public final String EVALUATION_VALUE_VERY_BAD = "very bad";
 	
 	/**
+	 * All Property Evaluation Records for this Experiment
+	 * @return
+	 */
+	public List<PropertyEvaluationRecordImpl> getPropertyEvaluations();
+	public void addPropertyEvaluation(PropertyEvaluationRecordImpl propEval);
+	public void setPropertyEvaluations(List<PropertyEvaluationRecordImpl> propEvals);
+	
+	/**
+	 * The weights to apply for properties for calculating the experiment's overall evaluation result
+	 * @return
+	 */
+	public HashMap<String,Integer> getOverallPropertyEvalWeights();
+	public void addOverallPropertyEvalWeights(String propertyID, Integer weight);
+	public void setOverallPropertyEvalWeights(HashMap<String,Integer> propertyWeights);
+	
+	public void setExperimentReport(ExperimentReport report);
+	public ExperimentReport getExperimentReport();
+	public File getExperimentReportFile();
+	
+	/**
 	 * Goals to evaluate the entire experiment
 	 * @param addedBenchmarkGoal
 	 * @param value
 	 */
+	@Deprecated
 	public void evaluateExperimentBenchmarkGoal(String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException;
+	@Deprecated
 	public Collection<BenchmarkGoal> getEvaluatedExperimentBenchmarkGoals();
+	@Deprecated
 	public BenchmarkGoal getEvaluatedExperimentBenchmarkGoal(String sGoalXMLID);
 	/**
 	 * Takes a List of Benchmark Objects, extracts their IDs and values to create a new evaluatedExperimentBenchmarkGoal
@@ -40,8 +66,11 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * set in the ExperimentSetup phase are taken into account.
 	 * @param addedBMGoals
 	 */
+	@Deprecated
 	public void setEvaluatedExperimentBenchmarkGoals(List<BenchmarkGoal> lBMGoals) throws InvalidInputException;
+	@Deprecated
 	public void setEvaluatedExperimentSourceBenchmarkGoals (List<BenchmarkGoal> addedSourceBMGoals) throws InvalidInputException;
+	@Deprecated
 	public void setEvaluatedExperimentTargetBenchmarkGoals (List<BenchmarkGoal> addedTargetBMGoals) throws InvalidInputException;
 	
 	
@@ -50,10 +79,15 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * @param addedBenchmarkGoal
 	 * @param value
 	 */
+	@Deprecated
 	public void evaluateFileBenchmarkGoal(URI inputFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException;
+	@Deprecated
 	public void evaluateFileBenchmarkGoal(Entry<URI,URI> ioFile, String addedBenchmarkGoalID, String sSourceValue, String sTargetValue, String sEvaluationValue) throws InvalidInputException;
-    public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile);
-    public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals();
+	@Deprecated
+	public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals(URI inputFile);
+	@Deprecated
+	public Collection<BenchmarkGoal> getEvaluatedFileBenchmarkGoals();
+	@Deprecated
 	public BenchmarkGoal getEvaluatedFileBenchmarkGoal(URI inputFile, String sGoalXMLID);
 	/**
 	 * Takes a List of Benchmark Objects, extracts their IDs and values to create a new evaluatedFileBenchmarkGoal
@@ -61,29 +95,28 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	 * set in the ExperimentSetup phase are taken into account.
 	 * @param addedBMGoals
 	 */
+	@Deprecated
 	public void setEvaluatedFileBenchmarkGoals(Map<URI,List<BenchmarkGoal>> addedFileBMGoals) throws InvalidInputException;
-	
-	
-	public void setExperimentReport(ExperimentReport report);
-	public ExperimentReport getExperimentReport();
-	public File getExperimentReportFile();
 	
 	/**
 	 * This is the setter, handing over a list of File BMGoals, all other evaluation methods may use to evaluate
 	 * @param addedFileBMGoals
 	 */
+	@Deprecated
 	public void setInputFileBenchmarkGoals(Map<URI,Collection<BenchmarkGoal>> addedFileBMGoals);
 	/**
 	 * This is the setter, handing over a list of Experiment Overall BMGoals, all other evaluation methods may use to evaluate
 	 * @param addedFileBMGoals
 	 */
+	@Deprecated
 	public void setInputExperimentBenchmarkGoals(Collection<BenchmarkGoal> addedOverallBMGoals);
 	
 	/**
 	 * Returns the List of inputBenchmarkGoals which the evaluation uses as basis for the experimentBenchmarks as well as for the fileBenchmarks
 	 * @return emty list if either no benchmark was defined in the SetupPhase or when the benchmarkListisFinal is not true
 	 */
+	@Deprecated
 	public Collection<String> getInputBenchmarkGoalIDs();
-	
+	@Deprecated
 	public List<String> getAllAcceptedEvaluationValues();
 }

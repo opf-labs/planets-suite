@@ -51,7 +51,6 @@
                     #{res['expList.colHeader.expName']}
                 </t:commandSortHeader>
             </f:facet>
-                <h:panelGroup>
                 <a4j:commandLink action="#{ListExp_Backing.readerExperimentAction}">
                     <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}" />
                 	<rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
@@ -72,7 +71,6 @@
                 <a4j:commandLink action="#{ListExp_Backing.editExperimentAction}" rendered="#{UserBean.userid == exp.experimentSetup.basicProperties.experimenter}">
                     <t:graphicImage value="/graphics/accessories-text-editor.png" alt="edit" styleClass="expEditIcon"/>
                 </a4j:commandLink>
-                </h:panelGroup>
         </t:column>
         <t:column>
 	        <f:facet name="header">

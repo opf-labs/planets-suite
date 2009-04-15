@@ -5,6 +5,7 @@ package eu.planets_project.tb.impl.model;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -54,6 +55,12 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	@OneToOne(cascade={CascadeType.ALL})
 	private ExperimentReportImpl report;
 	private boolean bExpSetupImputValuesSet;
+	
+	//the property evaluation records
+	private Vector<PropertyEvaluationRecordImpl> propertyEvalRecs = new Vector<PropertyEvaluationRecordImpl>();
+	//the overall experiment evaluation information HashMap<PropertyURI,Integer>
+	private HashMap<String,Integer> overallPropertyEvalWeights = new HashMap<String,Integer>();
+	
 	//a helper reference pointer, for retrieving the experiment in the phase
     @XmlTransient
 	private long lExperimentIDRef;
@@ -627,5 +634,66 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 			this.fileBenchmarkGoals.put(inputFileURI, m);
 		}
 	}
-	
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#addPropertyEvaluation(eu.planets_project.tb.api.model.PropertyEvaluationRecord)
+	 */
+	public void addPropertyEvaluation(PropertyEvaluationRecordImpl propEval) {
+		if(this.propertyEvalRecs!=null){
+			this.propertyEvalRecs.add((PropertyEvaluationRecordImpl)propEval);
+		}
+		
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getPropertyEvaluations()
+	 */
+	public List<PropertyEvaluationRecordImpl> getPropertyEvaluations() {
+		if(this.propertyEvalRecs==null){
+			return new ArrayList<PropertyEvaluationRecordImpl>();
+		}
+		return this.propertyEvalRecs;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setPropertyEvaluations(java.util.List)
+	 */
+	public void setPropertyEvaluations(List<PropertyEvaluationRecordImpl> propEvals) {
+		if((this.propertyEvalRecs!=null)&&(propEvals!=null)){
+			this.propertyEvalRecs = (Vector<PropertyEvaluationRecordImpl>) propEvals;
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#addOverallPropertyEvalWeights(java.lang.String, java.lang.Integer)
+	 */
+	public void addOverallPropertyEvalWeights(String propertyID, Integer weight) {
+		if(overallPropertyEvalWeights!=null){
+			this.overallPropertyEvalWeights.put(propertyID, weight);
+		}
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getOverallPropertyEvalWeights()
+	 */
+	public HashMap<String, Integer> getOverallPropertyEvalWeights() {
+		if(overallPropertyEvalWeights!=null){
+			return overallPropertyEvalWeights;
+		}
+		return new HashMap<String, Integer>();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setOverallPropertyEvalWeights(java.util.HashMap)
+	 */
+	public void setOverallPropertyEvalWeights(HashMap<String, Integer> propertyWeights) {
+		this.overallPropertyEvalWeights = propertyWeights;
+	}
+
 }

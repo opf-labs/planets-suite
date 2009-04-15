@@ -130,9 +130,11 @@ public abstract class ExpTypeBackingBean {
     		
     		String stageName = sb.getName();
     		//for every stage add the static Measurements defined by the Workflow
-    		List<MeasurementImpl> l = staticOps.get(stageName);
-    		if(l ==null){
+    		List<MeasurementImpl> l;
+    		if((staticOps==null)||(staticOps.get(stageName)==null)){
     			l = new ArrayList<MeasurementImpl>();
+    		}else{
+    			l = staticOps.get(stageName);
     		}
     		
     		//as well as the Measurements added from the Ontology (and stored in the Experiment Executable)

@@ -365,8 +365,11 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         	//this is the static list of manual properties - normally empty
         	HashMap<String,List<MeasurementImpl>> staticWFobs = 
         		getWorkflow(AdminManagerImpl.MIGRATE).getManualObservables();
+        	
+        	//FIXME AL: staticWFobs returns wrong items - where are they added - exclude staticWFobs for now
+        	//manualObsCache = mergeManualObservables(staticWFobs, ontoPropIDs);
+        	manualObsCache = mergeManualObservables(null, ontoPropIDs);
 
-        	manualObsCache = mergeManualObservables(staticWFobs, ontoPropIDs);
     	}
     	return manualObsCache;
     }

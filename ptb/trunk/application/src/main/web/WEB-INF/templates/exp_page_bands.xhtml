@@ -76,7 +76,7 @@
       </c:if>
       <c:if test="#{ExperimentPhase == 5}">
          <h:commandButton value="#{res['exp_stage5.button.proceed']}"
-                action="goToStage6"/>
+                action="#{NewExp_Controller.proceedToStep6Evaluation}" disabled="#{NewExp_Controller.experimentExecutable.executionRunning}"/>
       </c:if>
       <c:if test="#{ExperimentPhase == 6}">
       </c:if>

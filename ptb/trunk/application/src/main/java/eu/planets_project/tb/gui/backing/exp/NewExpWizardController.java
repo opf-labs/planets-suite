@@ -1413,6 +1413,7 @@ public class NewExpWizardController{
 		return test+="1";
 	}
     
+	@Deprecated
     public String proceedToEvaluation() {
     	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -1426,6 +1427,17 @@ public class NewExpWizardController{
     		return "goToStage6";
   	  	} else
     		return null;
+    }
+	
+	public String proceedToStep6Evaluation() {
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = expBean.getExperiment(); 
+    	exp.getExperimentExecution().setState(Experiment.STATE_COMPLETED);
+    	exp.getExperimentEvaluation().setState(Experiment.STATE_IN_PROGRESS);  	  	
+  		expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTEVALUATION);
+  		testbedMan.updateExperiment(exp);
+		return "goToStage6";
     }
     
     /**

@@ -65,15 +65,16 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
     }
     
     HashMap<String,List<MeasurementImpl>> manualObsCache;
+    long cacheExperimentID;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getManualObservables()
      */
     @Override
     public HashMap<String,List<MeasurementImpl>> getManualObservables() {
-    	if(manualObsCache==null){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	if(manualObsCache==null||(cacheExperimentID != expBean.getExperiment().getEntityID())){
+    		cacheExperimentID = expBean.getExperiment().getEntityID();
     		
-        	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        	
         	//query for properties that have been added from the Ontology
         	HashMap<String,Vector<String>> ontoPropIDs = new HashMap<String, Vector<String>>();
         	for(ExperimentStageBean stage : expBean.getStages()){
@@ -82,8 +83,10 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
         	
         	//this is the static list of manual properties - normally empty
         	HashMap<String,List<MeasurementImpl>> staticWFobs = getWorkflow(AdminManagerImpl.IDENTIFY).getManualObservables();
-
-        	manualObsCache = mergeManualObservables(staticWFobs, ontoPropIDs);
+        	
+        	//FIXME AL: staticWFobs returns wrong items - where are they added - exclude staticWFobs for now
+        	//manualObsCache = mergeManualObservables(staticWFobs, ontoPropIDs);
+        	manualObsCache = mergeManualObservables(null, ontoPropIDs);
     	}
     	return manualObsCache;
     }
