@@ -3,12 +3,10 @@
  */
 package eu.planets_project.services.datatypes;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -479,38 +477,6 @@ public final class ServiceDescription {
             return this;
         }
         
-        /**
-         * Add or Update automatically generated list of JVM/OS properties.
-         * Embeds information about the service environment inside the service description 
-         * as a property called 'planets:if/srv/java-system-properties'
-         * 
-         * TODO Upgrade this idea to some standardised form for platform/environment/software stacks.
-         */
-        public void addServerDescriptionProperty() {
-            java.util.Properties p = System.getProperties();
-            
-            ByteArrayOutputStream byos = new ByteArrayOutputStream();
-            try {
-                p.storeToXML(byos, "Automatically generated for PLANETS Service "+ this.name, "UTF-8");
-                Property jspp = new Property(ENV_JAVA_SYS_PROP,"Java JVM System Properties", byos.toString("UTF-8") );
-                this.properties.add(jspp);
-            } catch ( Exception e ) {
-                // Fail silently.
-            }
-        }
-        // Some standard property identifiers:
-        // FIXME !!! Move to a standard place?
-        
-        /** A standard ENVIRONMENT identifier for the Java System.getProperties. */
-        public static URI ENV_JAVA_SYS_PROP = null;
-        
-        static {
-            try {
-                ENV_JAVA_SYS_PROP = new URI("planets:if/srv/java-system-properties");
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     /** For JAXB. */

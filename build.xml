@@ -131,7 +131,7 @@
   
   <!-- ================= -->
 
-  <target name="test:all" depends="props:set,deploy:common">
+  <target name="test:all" depends="props:set,deploy:common,test:reports:clean">
     <foreach target="test:sub" param="sub.build" inheritall="false">
       <path refid="all.sub.projects"/>
     </foreach>
@@ -147,7 +147,7 @@
   <!-- ================= -->
   <!-- Also support testing deployment profiles -->
   
-  <target name="test:profile" depends="profile:set,test:profile:set,props:set,deploy:common">
+  <target name="test:profile" depends="profile:set,test:profile:set,props:set,deploy:common,test:reports:clean">
     <if>
       <equals arg1="${pserv.test.profile.pure-java}" arg2="true" />
       <then>
@@ -167,7 +167,7 @@
   
   <!-- ================= -->
 
-  <target name="test:pure-java" depends="props:set,deploy:common">
+  <target name="test:pure-java" depends="props:set,deploy:common,test:reports:clean">
         <foreach target="test:sub:pure-java" param="sub.build"
             inheritall="false">
             <path refid="all.sub.projects" />
@@ -216,7 +216,7 @@
 
   <!-- =================================================================== -->
     
-  <target name="gen:test-summary">
+  <target name="test:gen:summary">
     <!-- collect the results into a summary report -->
     <junitreport todir="tests/summary">
       <fileset dir="tests/reports">
@@ -226,6 +226,13 @@
     </junitreport>
     <echo message="Wrote summary test report to: tests/summary" />
   </target>
-
+  
+  <target name="test:reports:clean">
+    <delete>
+      <fileset dir="tests/reports">
+        <include name="TEST-*.xml"/>
+      </fileset>
+    </delete>
+  </target>
   
 </project>

@@ -136,22 +136,35 @@ public final class ServiceCreator {
      */
     public static <T> T createTestService(QName qname,
             Class<T> serviceImplementation, String wsdlLoc) {
-        
-        // In the standalone case, start up the test endpoint.
-        if ( testInStandaloneMode() ) {
-            return Mode.STANDALONE.create(qname, serviceImplementation,
-                    wsdlLoc);
-        }
-        
-        // In the server case, pick the server config up:
-        else if (testInServerMode()  ) 
-        {
-            return Mode.SERVER.create(qname, serviceImplementation, wsdlLoc);
-        }
-        
-        // If no remote context is configured, invoke locally:
-        else {
-            return Mode.LOCAL.create(qname, serviceImplementation, wsdlLoc);
+        try {
+            // In the standalone case, start up the test endpoint.
+            if ( testInStandaloneMode() ) {
+                return Mode.STANDALONE.create(qname, serviceImplementation,
+                        wsdlLoc);
+            }
+
+            // In the server case, pick the server config up:
+            else if (testInServerMode()  ) 
+            {
+                /*
+                System.setProperty("proxySet","true");
+                System.setProperty("http.proxyHost","loncache.bl.uk");
+                System.setProperty("http.proxyPort","8080");
+                System.setProperty("http.nonProxyHosts","localhost|127.0.0.1|*.ad.bl.uk");
+                */
+                System.out.println("INFO: Proxy is set to "+System.getProperty("http.proxyHost")+":"+System.getProperty("http.proxyPort"));
+                
+                return Mode.SERVER.create(qname, serviceImplementation, wsdlLoc);
+            }
+
+            // If no remote context is configured, invoke locally:
+            else {
+                return Mode.LOCAL.create(qname, serviceImplementation, wsdlLoc);
+            }
+        } catch( Exception e ) {
+            log.fatal("Instanciation of test service failed! "+e);
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -197,8 +210,8 @@ public final class ServiceCreator {
                     .println("WARNING: No system properties set, falling back to default.");
             host = "localhost:8080";
         }
-        System.out.println("INIT: Configuring against server at " + host);
         url = new URL("http://" + host + wsdlLoc);
+        System.out.println("INIT: Configuring against server at " + url );
         return url;
     }
 

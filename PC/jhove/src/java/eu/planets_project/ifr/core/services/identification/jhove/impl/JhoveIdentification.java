@@ -73,11 +73,10 @@ public final class JhoveIdentification implements Identify, Serializable {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "jhove-temp", "bin");
         Types types = identifyOneBinary(file);
-        log.info("JHOVE Identification, got types: "
-                + Arrays.asList(types.types));
+        log.info("JHOVE Identification, got types: " + types.types);
         ServiceReport report = new ServiceReport();
         report.setInfo(types.status);
-        return new IdentifyResult(Arrays.asList(types.types), null, report);
+        return new IdentifyResult(types.types, null, report);
     }
 
     /**
@@ -253,7 +252,9 @@ public final class JhoveIdentification implements Identify, Serializable {
         log.info("Got status: " + status);
         Types t = new Types();
         t.status = status;
-        t.types = new URI[] { uri(mime) };
+        t.types = new ArrayList<URI>();
+        t.types.add( uri(mime) );
+        
         return t;
     }
 

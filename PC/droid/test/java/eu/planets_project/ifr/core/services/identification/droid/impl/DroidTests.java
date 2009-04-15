@@ -2,6 +2,8 @@ package eu.planets_project.ifr.core.services.identification.droid.impl;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,14 +31,6 @@ public class DroidTests {
      */
     @BeforeClass
     public static void localTests() {
-        /*
-        System.setProperty("proxySet","true");
-        System.setProperty("http.proxyHost","loncache.bl.uk");
-        System.setProperty("http.proxyPort","8080");
-        System.setProperty("http.nonProxyHosts","localhost|127.0.0.1|*.ad.bl.uk");
-        System.out.println("Set proxy to "+System.getProperty("http.proxyHost")+":"+System.getProperty("http.proxyPort"));
-        */
-        
         droid = ServiceCreator.createTestService(Identify.QNAME,
                 Droid.class, "/pserv-pc-droid/Droid?wsdl");
     }
@@ -64,6 +58,20 @@ public class DroidTests {
     public void testZIP() {
         test(TestFile.ZIP);
     }
+    
+    /*
+    @Test
+    public void testByReference() throws MalformedURLException {
+        URL url = new URL("http://www.google.com/intl/en_ALL/images/logo.gif");
+        System.out.println("Testing "+url);
+        IdentifyResult result = droid.identify(new DigitalObject.Builder(
+                Content.byReference( url )).build(), null );
+        for( URI f : result.getTypes() ) {
+            System.out.println("Got f="+f);
+        }
+        
+    }
+    */
 
     /**
      * Enum containing files to test the Droid identification with. Each entry
@@ -145,4 +153,7 @@ public class DroidTests {
         }
         return strings;
     }
+	
+	
+	
 }

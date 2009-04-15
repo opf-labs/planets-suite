@@ -29,7 +29,7 @@ import eu.planets_project.services.utils.FileUtils;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * @author Peter Melms (peter.melms@uni-koeln.de)
  */
-public final class Content implements Serializable, DigitalObject.Content {
+public final class Content implements DigitalObject.Content {
     private static Log log = LogFactory.getLog(Content.class);
 
     /***/
@@ -40,13 +40,14 @@ public final class Content implements Serializable, DigitalObject.Content {
     private URL reference;
     
     /*
-     * FIXME: The data handler class is not serializable. If an API consumer
-     * would create content by value and use Java's object serialization, this
+     * The data handler class is not java.io.Serializable, only via XML/MTOM.
+     * If you define it as transient, then the XML serialisation fails.
+     * If an API consumer would create content by value and use Java's object serialization, this
      * would not work. Do our classes need to implement Serializable at all?
+     * No, it seems.  All works once the interface was removed.
      */
     @XmlElement
     @XmlMimeType("application/octet-stream")
-    /* The DataHandler is not serializable, so we define it transient: */
     private DataHandler dataHandler;
 
     /** */

@@ -82,7 +82,7 @@ public final class Droid implements Identify, Serializable {
         else if( AnalysisController.FILE_CLASSIFICATION_TENTATIVE_TEXT.equals(types.status)) {
             method = IdentifyResult.Method.EXTENSION;
         }
-        IdentifyResult result = new IdentifyResult(Arrays.asList(types.types), method, report);
+        IdentifyResult result = new IdentifyResult(types.types, method, report);
         return result;
     }
 

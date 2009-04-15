@@ -31,9 +31,10 @@ public class DiscoveryUtils {
             PlanetsService s = (PlanetsService) createServiceObject(se.getServiceClass(), wsdlLocation);
             if( s == null ) return null;
             ServiceDescription sd = s.describe();
-        return sd;
+            return sd;
         } catch( Exception e ) {
             log.error("Runtime exception while inspecting WSDL: "+wsdlLocation+" : "+e);
+            e.printStackTrace();
             return null;
         }
     }
