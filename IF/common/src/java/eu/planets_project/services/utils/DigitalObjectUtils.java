@@ -7,13 +7,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
@@ -79,36 +79,6 @@ public class DigitalObjectUtils {
      */
     
     
-    public static List<DigitalObject> createContainedAsStream(List<File> files) {
-		List<DigitalObject> list = new ArrayList<DigitalObject>();
-		for (File file : files) {
-			DigitalObject currentDigObj = new DigitalObject.Builder(Content.asStream(file)).title(file.getName()).format(Format.extensionToURI(FileUtils.getExtensionFromFile(file))).build();
-			list.add(currentDigObj);
-		}
-		return list;
-	}
-    
-    
-    public static List<File> getContainedAsFiles (List<DigitalObject> listOfDigObjs, File targetFolder) {
-    	List<File> containedFiles = new ArrayList<File>();
-		
-		if(listOfDigObjs.size()>0) {
-			for (DigitalObject currentDigObj : listOfDigObjs) {
-				String ext = null;
-				String name = currentDigObj.getTitle();
-				if(name==null) {
-					ext = Format.getFirstMatchingFormatExtension(currentDigObj.getFormat());
-					if(ext==null) {
-						return null;
-					}
-				}
-				containedFiles.add(FileUtils.writeInputStreamToFile(currentDigObj.getContent().read(), targetFolder, name));
-			}
-		}
-		return containedFiles;
-    }
-    
-    
     public static void main( String args[] ) {
         try {
             URI uri = new URI("FAQ.html");
@@ -121,5 +91,37 @@ public class DigitalObjectUtils {
             e.printStackTrace();
         }
     }
+
+	public static List<DigitalObject> createContainedAsStream(List<File> files) {
+		List<DigitalObject> list = new ArrayList<DigitalObject>();
+		for (File file : files) {
+//			DigitalObject currentDigObj = new DigitalObject.Builder(Content.asStream(file)).title(file.getName()).format(Format.extensionToURI(FileUtils.getExtensionFromFile(file))).build();
+			DigitalObject currentDigObj = null;
+			try {
+				currentDigObj = new DigitalObject.Builder(Content.asStream(file)).title(file.getName()).format(new URI("planets:fmt/ext/" + FileUtils.getExtensionFromFile(file))).build();
+				list.add(currentDigObj);
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	public static List<File> getContainedAsFiles (List<DigitalObject> listOfDigObjs, File targetFolder) {
+		List<File> containedFiles = new ArrayList<File>();
+		
+		if(listOfDigObjs.size()>0) {
+			for (DigitalObject currentDigObj : listOfDigObjs) {
+//				String ext = null;
+				String name = currentDigObj.getTitle();
+				if(name==null) {
+//					ext = Format.getFirstMatchingFormatExtension(currentDigObj.getFormat());
+					return null;
+				}
+				containedFiles.add(FileUtils.writeInputStreamToFile(currentDigObj.getContent().read(), targetFolder, name));
+			}
+		}
+		return containedFiles;
+	}
     
 }
