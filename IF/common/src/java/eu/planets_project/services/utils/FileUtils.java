@@ -824,7 +824,7 @@ public class FileUtils {
 		return filesToLarge;
 	}
 
-    private static ArrayList<String> listAllFilesAndFolders(File dir,
+    public static ArrayList<String> listAllFilesAndFolders(File dir,
             ArrayList<String> list) {
     	boolean dirIsDir = dir.isDirectory();
 //    	if(dirIsDir) {
@@ -846,7 +846,7 @@ public class FileUtils {
                 	if(currentFile.getName().equalsIgnoreCase("CVS")) {
                 		continue;
                 	}
-                	list.add(currentFile + "/");
+                	list.add(currentFile.getPath() + "/");
                 	listAllFilesAndFolders(currentFile, list);
                 } else {
                     list.add(currentFile.getPath());
@@ -855,5 +855,50 @@ public class FileUtils {
         }
         return list;
     }
+    
+    public static List<File> listAllFilesAndFolders(File dir,
+            List<File> list) {
+    	boolean dirIsDir = dir.isDirectory();
+//    	if(dirIsDir) {
+//    		System.out.println("dir: " + dir.getName() + " is a Directory!");
+//    	}
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+            	File currentFile = files[i];
+            	boolean currentFileIsDir = currentFile.isDirectory();
+//            	if(currentFileIsDir) {
+//            		System.out.println("currentFile: " + currentFile.getName() + " is a Directory!");
+//            	}
+                if (currentFileIsDir) {
+                	// Ignore .svn folders
+                	if(currentFile.getAbsolutePath().contains(".svn")) {
+                		continue;
+                	}
+                	if(currentFile.getName().equalsIgnoreCase("CVS")) {
+                		continue;
+                	}
+                	list.add(currentFile);
+                	listAllFilesAndFolders(currentFile, list);
+                } else {
+                    list.add(currentFile);
+                }
+            }
+        }
+        return list;
+    }
+
+	public static String getExtensionFromFile(File file) {
+		String name = file.getName();
+		String extension = null;
+		if(name.contains(".")) {
+			int index = name.indexOf(".");
+			extension = name.substring(index+1);
+			return extension;
+		}
+		else {
+			return null;
+		}
+	}
 
 }

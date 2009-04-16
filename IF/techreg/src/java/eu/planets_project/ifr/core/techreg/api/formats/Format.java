@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -292,6 +293,34 @@ public class Format implements Serializable {
     public int hashCode() {
         return this.typeURI.hashCode();
     }
+
+	public static String getFirstMatchingFormatExtension (URI formatURI) {
+			if(formatURI==null) {
+				return null;
+			}
+	//        log.info("Getting extension for given format URI: " + formatURI.toASCIIString());
+	        Format f = new Format(formatURI);
+	        String extension = null;
+	        if(isThisAnExtensionURI(formatURI)) {
+	//            log.info("URI is an Extension-URI.");
+	            Set <String> extensions = f.getExtensions();
+	            if(extensions != null){
+	                Iterator <String> iterator = extensions.iterator();
+	                extension = iterator.next();
+	//                log.info("Got Extension for format URI: " + formatURI.toASCIIString() + "--> " + extension );
+	            }
+	        }
+	        else {
+	//            log.info("URI is of another supported type.");
+	            Set <String> extensions = f.getExtensions();
+	            if(extensions != null){
+	                Iterator <String> iterator = extensions.iterator();
+	                extension = iterator.next();
+	//                log.info("Got Extension for format URI: " + formatURI.toASCIIString() + "--> " + extension );
+	            }
+	        }
+	        return extension;
+	    }
     
     
     

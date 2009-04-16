@@ -3,12 +3,17 @@
  */
 package eu.planets_project.services.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
@@ -17,6 +22,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
  *
  */
 public class DigitalObjectUtils {
+	
+	private static Log log = LogFactory.getLog(DigitalObjectUtils.class);
 
     /**
      * @return The total size, in bytes, of the bytestream contained or referred to by this Digital Object.
@@ -70,6 +77,37 @@ public class DigitalObjectUtils {
      *     FIXME DO must know if it has a parent in order to be able to look things up?
      *     FIXME Should DO use URI internally got Content.reference, to allow relative resolution?
      */
+    
+    
+    public static List<DigitalObject> createContainedAsStream(List<File> files) {
+		List<DigitalObject> list = new ArrayList<DigitalObject>();
+		for (File file : files) {
+			DigitalObject currentDigObj = new DigitalObject.Builder(Content.asStream(file)).title(file.getName()).format(Format.extensionToURI(FileUtils.getExtensionFromFile(file))).build();
+			list.add(currentDigObj);
+		}
+		return list;
+	}
+    
+    
+    public static List<File> getContainedAsFiles (List<DigitalObject> listOfDigObjs, File targetFolder) {
+    	List<File> containedFiles = new ArrayList<File>();
+		
+		if(listOfDigObjs.size()>0) {
+			for (DigitalObject currentDigObj : listOfDigObjs) {
+				String ext = null;
+				String name = currentDigObj.getTitle();
+				if(name==null) {
+					ext = Format.getFirstMatchingFormatExtension(currentDigObj.getFormat());
+					if(ext==null) {
+						return null;
+					}
+				}
+				containedFiles.add(FileUtils.writeInputStreamToFile(currentDigObj.getContent().read(), targetFolder, name));
+			}
+		}
+		return containedFiles;
+    }
+    
     
     public static void main( String args[] ) {
         try {

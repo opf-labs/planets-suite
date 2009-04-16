@@ -122,7 +122,7 @@ public class XcdlMigrateTests {
         }
         	
         List<Parameter> parameters = createParameters(false, false,
-                getTestXCEL(getFormatExtension(inputFormat)));
+                getTestXCEL(Format.getFirstMatchingFormatExtension(inputFormat)));
         testMigrate(inputFormat, outputFormat, parameters);
         System.out.println("*******************");
         System.out.println();
@@ -150,7 +150,7 @@ public class XcdlMigrateTests {
         }
         
         parameters = createParameters(true, false,
-                getTestXCEL(getFormatExtension(inputFormat)));
+                getTestXCEL(Format.getFirstMatchingFormatExtension(inputFormat)));
         testMigrate(inputFormat, outputFormat, parameters);
         System.out.println("*******************");
         System.out.println();
@@ -289,7 +289,7 @@ public class XcdlMigrateTests {
 
     private void testMigrate(URI inputFormat, URI outputFormat,
             List<Parameter> parameters) {
-        String extension = getFormatExtension(inputFormat);
+        String extension = Format.getFirstMatchingFormatExtension(inputFormat);
         DigitalObject digObj = createDigitalObject(extension);
 
         MigrateResult mr = extractor.migrate(digObj, inputFormat, outputFormat,
@@ -323,23 +323,6 @@ public class XcdlMigrateTests {
         }
     }
 
-    private String getFormatExtension(URI formatURI) {
-        Format f = new Format(formatURI);
-        String extension = null;
-        if (Format.isThisAnExtensionURI(formatURI)) {
-            extension = f.getExtensions().iterator().next();
-        } else {
-            FormatRegistry formatRegistry = FormatRegistryFactory
-                    .getFormatRegistry();
-            Format fileFormat = formatRegistry.getFormatForURI(formatURI);
-            Set<String> extensions = fileFormat.getExtensions();
-            if (extensions != null) {
-                Iterator<String> iterator = extensions.iterator();
-                extension = iterator.next();
-            }
-        }
-        return extension;
-    }
 
     private URI getUriForFile(File testFile) {
         String fileName = testFile.getAbsolutePath();
