@@ -19,7 +19,7 @@
   <property file="${pserv.root.dir}/build.properties"/>
   
   <!-- Set the target JVM version -->
-  <property name="target.jvm" value="1.6" />
+  <property name="target.jvm" value="1.5" />
   <property name="ant.build.javac.target" value="${target.jvm}" />
   
   <property environment="env"/>
