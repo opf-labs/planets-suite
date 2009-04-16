@@ -8,7 +8,14 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.jws.WebService;
+import javax.xml.ws.BindingType;
+
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -24,9 +31,19 @@ import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
- * @author melmsp
+ * @author Peter Melms
  *
  */
+@Stateless()
+@Local(Modify.class)
+@Remote(Modify.class)
+
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@WebService(
+        name = FloppyImageModify.NAME, 
+        serviceName = Modify.NAME,
+        targetNamespace = PlanetsServices.NS,
+        endpointInterface = "eu.planets_project.services.modify.Modify")
 public class FloppyImageModify implements Modify {
 	
 	

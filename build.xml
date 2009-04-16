@@ -42,6 +42,7 @@
         <echo message="if_server.dir is NOT set - will not deploy, only build."/>
       </else>
     </if>
+  	<ant dir="IF/techreg" inheritAll="false" />
     <ant dir="IF/common" inheritAll="false"/>
     <ant target="deploy:api"/>
   </target>
