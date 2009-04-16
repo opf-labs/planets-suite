@@ -824,7 +824,7 @@ public class FileUtils {
 		return filesToLarge;
 	}
 
-    public static ArrayList<String> listAllFilesAndFolders(File dir,
+    private static ArrayList<String> listAllFilesAndFolders(File dir,
             ArrayList<String> list) {
     	boolean dirIsDir = dir.isDirectory();
 //    	if(dirIsDir) {
@@ -846,7 +846,7 @@ public class FileUtils {
                 	if(currentFile.getName().equalsIgnoreCase("CVS")) {
                 		continue;
                 	}
-                	list.add(currentFile.getPath() + "/");
+                	list.add(currentFile.getPath() + "/"); // the closing "/" has to be there to tell the ZipOutputStream that this is a folder...
                 	listAllFilesAndFolders(currentFile, list);
                 } else {
                     list.add(currentFile.getPath());
