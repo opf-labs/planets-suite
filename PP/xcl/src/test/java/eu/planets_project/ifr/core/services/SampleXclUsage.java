@@ -12,12 +12,10 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Xcdl
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrate;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompare;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompareProperties;
-import eu.planets_project.ifr.core.services.comparison.explorer.impl.XcdlCommonProperties;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
@@ -99,22 +97,27 @@ public class SampleXclUsage {
     }
 
     /**
-     * This is an API usage sketch of how using the XCL services via the
-     * Characterise interface could work once it's all put together.
+     * Sample usage of the XCL services via the Characterise interface.
      */
-    // @Test
+    @Test
     public void viaXcdlCharacterisation() {
         /*
          * We perform the characterisation, this time using the actual
          * Characterise interface. The advantage here, besides the less verbose
          * API compared to using the Migrate interface, is that we can exchange
          * the XcdlCharacterise implementation with a different Characterise
-         * implementation, and compare their results.
+         * implementation, and compare their results in the future (currently,
+         * only these two Implementation work together, i.e.
+         * XcdlCompareProperties will not work with any Characterise
+         * implementation yet).
          */
         Characterise characterisation = new XcdlCharacterise();
         CharacteriseResult gifProps = characterisation.characterise(GIF, null);
         CharacteriseResult jpgProps = characterisation.characterise(JPG, null);
-        /* We set up the comparison. First, the values to compare: */
+        /*
+         * We set up the comparison. First, the values to compare (this API will
+         * change soon two have two values instead of a list):
+         */
         List<ArrayList<Property>> propsToCompare = Arrays.asList(
                 new ArrayList<Property>(gifProps.getProperties()),
                 new ArrayList<Property>(jpgProps.getProperties()));
@@ -130,18 +133,4 @@ public class SampleXclUsage {
         System.out.println("Result: " + result + " " + result.getProperties());
 
     }
-
-    private void commonProperties() {
-        // TODO not sure if this makes any sense here...
-        /*
-         * Next, determine the intersection of common properties to be used to
-         * configure the comparison of the values (this won't work yet, because
-         * the properties here are different from the ones the comparator
-         * currently expects):
-         */
-        CommonProperties commonProps = new XcdlCommonProperties();
-        List<Property> intersection = commonProps.intersection(
-                Arrays.asList(GIF_ID, JPG_ID)).getProperties();
-    }
-
 }

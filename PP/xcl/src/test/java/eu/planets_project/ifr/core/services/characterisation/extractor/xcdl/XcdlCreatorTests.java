@@ -30,10 +30,10 @@ public class XcdlCreatorTests {
         List<Property> norm = Arrays
                 .asList(
                 /* Norm data: */
-                new Property.Builder(XcdlProperties.makePropertyURI("nd1",
+                new Property.Builder(XcdlProperties.makePropertyURI("1",
                         "normData"))
                         .name("normData")
-                        .type("nd1")
+                        .type("normData")
                         .description("image")
                         .value(
                                 "00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 10 11 12 13 14 15")
@@ -41,61 +41,31 @@ public class XcdlCreatorTests {
         /* Property sets: */
         List<Property> sets = Arrays
                 .asList(new Property.Builder(XcdlProperties.makePropertyURI(
-                        "nd1", "propertySet"))
+                        "1", "propertySet"))
                         .name("propertySet")
-                        .type("id_1")
-                        .value(
+                        .type("propertySet")
+                        .description(
                                 "ref i_i1_i217_s4 suggestedPaletteAlpha, ref i_i1_i217_s5 suggestedPaletteFrequency")
                         .build());
-        /*
-         * The ref references a property's value set (see below) via the type:
-         */
-        // Prop.name("ref").type("i_i1_i217_s4").description(
-        // "suggestedPaletteAlpha").build(),
-        // Prop.name("ref").type("i_i1_i217_s5").description(
-        // "suggestedPaletteFrequency").build()).build());
         /* Properties: */
-
         List<Property> properties = Arrays
                 .asList(
                         new Property.Builder(XcdlProperties.makePropertyURI(
-                                "p74", "property"))
+                                "74", "property"))
                                 .name("property")
-                                .type("p74")
-                                .value(
+                                .type("property")
+                                .description(
                                         "raw descr, name id57 suggestedPaletteFrequency, "
                                                 + "valueSet i_i1_i217_s5, labValue 0 int inch, dataRef id_1 global")
                                 .build(),
-                        // new Property.Builder(new
-                        // URI()).name("value").value("raw, descr").build(),
-                        // Prop.name("name").type("id57").description(
-                        // "suggestedPaletteFrequency").build(),
-                        // Prop.name("valueSet").type("i_i1_i217_s5").values(
-                        // Prop.name("labValue").values("0").description(
-                        // "int").unit("inch").build(),
-                        // /*
-                        // * The data ref references a property set (see
-                        // * above) via the type:
-                        // */
-                        // Prop.name("dataRef").type("id_1").description(
-                        // "global").build()).build()).build(),
                         new Property.Builder(XcdlProperties.makePropertyURI(
-                                "p73", "property"))
+                                "73", "property"))
                                 .name("property")
-                                .type("p73")
-                                .value(
+                                .type("property")
+                                .description(
                                         "raw descr, name id56 suggestedPaletteAlpha, "
                                                 + "valueSet i_i1_i217_s4, labValue 255 int inch, dataRef id_1 global")
                                 .build());
-        // Prop.name("value").values("raw", "descr").build(),
-        // Prop.name("name").type("id56").description(
-        // "suggestedPaletteAlpha").build(),
-        // Prop.name("valueSet").type("i_i1_i217_s4").values(
-        // Prop.name("labValue").values("255")
-        // .description("int").unit("inch")
-        // .build(),
-        // Prop.name("dataRef").type("id_1").description(
-        // "global").build()).build()).build());
         List<Property> all = new ArrayList<Property>();
         all.addAll(norm);
         all.addAll(sets);

@@ -57,7 +57,7 @@ public class XcdlCreator {
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller
                     .setProperty("jaxb.schemaLocation",
-                            "http://www.planets-project.eu/xcl/schemas/xcl ../res/xcl/xcdl/XCDLCore.xsd");
+                            "http://www.planets-project.eu/xcl/schemas/xcl res/xcl/xcdl/XCDLCore.xsd");
             marshaller.marshal(xcdl, stringWriter);
             this.xcdlXml = stringWriter.toString();
             System.out.println(String.format("Marshalled %s to:\n%s", xcdl,
@@ -81,9 +81,9 @@ public class XcdlCreator {
     /**
      * Names for XCDL properties.
      */
-    private enum PropertyName {
+    enum PropertyName {
         PROPERTY("property"), PROPERTYSET("propertyset"), NORMDATA("normdata");
-        private String s;
+        String s;
 
         private PropertyName(String s) {
             this.s = s;
@@ -106,23 +106,24 @@ public class XcdlCreator {
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object();
         object.setId("generated_" + String.valueOf(System.currentTimeMillis()));
         for (Property prop : xcdlProps) {
-            if(prop.getName()==null){
-                throw new IllegalArgumentException("Property has no name: " + prop);
+            if (prop.getType() == null) {
+                throw new IllegalArgumentException("Property has no name: "
+                        + prop);
             }
-            if (prop.getName().toLowerCase().equals(PropertyName.NORMDATA.s)) {
+            if (prop.getType().toLowerCase().equals(PropertyName.NORMDATA.s)) {
                 addNormData(object, prop);
-            } else if (prop.getName().toLowerCase().equals(
+            } else if (prop.getType().toLowerCase().equals(
                     PropertyName.PROPERTYSET.s)) {
                 addPropertySet(object, prop);
-            } else if (prop.getName().toLowerCase().equals(
+            } else if (prop.getType().toLowerCase().equals(
                     PropertyName.PROPERTY.s)) {
                 addProperty(object, prop);
             } else {
                 throw new IllegalArgumentException(
                         String
                                 .format(
-                                        "Cannot convert property with name '%s', only know about '%s'",
-                                        prop.getName(), Arrays
+                                        "Cannot convert property with type '%s', only know about '%s'",
+                                        prop.getType(), Arrays
                                                 .asList(PropertyName.values())));
             }
         }
@@ -136,13 +137,13 @@ public class XcdlCreator {
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
             Property prop) {
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property p = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property();
-        p.setId(prop.getType());
-
+        String propId = XcdlProperties.getIdFromUri(prop.getUri());
+        p.setId("p" + propId);
         /*
          * This is where it gets ugly: we map our property values onto the XCDL
          * XML types:
          */
-        String[] levelOneTokens = clean(prop.getValue().split(","));
+        String[] levelOneTokens = clean(prop.getDescription().split(","));
         String[] valueTokens = clean(levelOneTokens[0].split(" "));
         String[] nameTokens = clean(levelOneTokens[1].split(" "));
         String[] valueSetTokens = clean(levelOneTokens[2].split(" "));
@@ -183,34 +184,6 @@ public class XcdlCreator {
 
         p.getValueSets().add(set);
         object.getProperties().add(p);
-
-        // for (Object valSet : prop.getValues("valueset")) {
-        // Prop<Prop> valSetProp = (Prop) valSet;
-        // ValueSet set = new ValueSet();
-        // set.setId(valSetProp.getType());
-        // /* The lab vals: */
-        // for (Prop labProp : valSetProp.getValues("labvalue")) {
-        // LabValue labValue = new LabValue();
-        // Type type = new Type();
-        // type.setValue(determineLabValType(labProp));
-        // labValue.getTypes().add(type);
-        // Val val = new Val();
-        // // val.setUnit(determineMeasureType(labProp));
-        // val.getValues().addAll(labProp.getValues());
-        // labValue.getVals().add(val);
-        // set.setLabValue(labValue);
-        // }
-        // /* The data refs: */
-        // List<Prop> dataRefs = valSetProp.getValues("dataref");
-        // for (Prop dataRefProp : dataRefs) {
-        // DataRef dataRef = new DataRef();
-        // dataRef.setPropertySetId(dataRefProp.getType());
-        // dataRef.setInd(determineDataRef(dataRefProp));
-        // set.getDataReves().add(dataRef);
-        // }
-        // p.getValueSets().add(set);
-        // }
-        // object.getProperties().add(p);
     }
 
     private String[] clean(String[] split) {
@@ -228,10 +201,15 @@ public class XcdlCreator {
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
             Property prop) {
         PropertySet set = new PropertySet();
-        set.setId(prop.getType());
+        String propId = XcdlProperties.getIdFromUri(prop.getUri());
+        set.setId("id" + propId);
         ValueSetRelations rel = new ValueSetRelations();
-        // List<Property> props = prop.getValues("ref");
-        String[] levelOneTokens = prop.getValue().split(",");
+        String desc = prop.getDescription();
+        if (desc == null || !desc.contains(" ")) {
+            throw new IllegalArgumentException(String.format(
+                    "Cannot use description '%s' here", desc));
+        }
+        String[] levelOneTokens = desc.split(",");
         for (String s : levelOneTokens) {
             String[] tokens = s.split(" ");
             Ref ref = new Ref();
@@ -253,7 +231,8 @@ public class XcdlCreator {
                     "Normdata property must have a description");
         }
         normData.setType(InformType.fromValue(description.toLowerCase()));
-        normData.setId(prop.getType());
+        String propId = XcdlProperties.getIdFromUri(prop.getUri());
+        normData.setId("nd" + propId);
         if (prop.getValue() == null) {
             throw new IllegalArgumentException("Normdata must have a value");
         }

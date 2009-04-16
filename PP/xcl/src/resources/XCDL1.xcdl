@@ -73,7 +73,7 @@ ff ff ff ff 00 00 00 00 55 55 55 55 aa aa aa aa </normData>
         </property>
         <property id="p6" source="raw" cat="descr" >
             <name id="id2" >imageHeight</name>
-            <valueSet id="i_i1_s13" >
+            <valueSet id="i_i1_i5" >
                 <labValue>
                     <val>32</val>
                     <type>int</type>

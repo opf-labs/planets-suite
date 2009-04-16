@@ -9,6 +9,7 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.impl.Xcdl
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrateTests;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccessTests;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlCreatorTests;
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlPropertiesTests;
 
 /**
  * Suite to run all tests in the extractor component.
@@ -17,6 +18,7 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.Xcdl
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { Extractor2BinaryTest.class, XcdlAccessTests.class,
-        XcdlCharacteriseTests.class, ExtractorPropertiesListerTest.class,
-        XcdlMigrateTests.class, XcdlCreatorTests.class })
+        XcdlPropertiesTests.class, XcdlCharacteriseTests.class,
+        ExtractorPropertiesListerTest.class, XcdlMigrateTests.class,
+        XcdlCreatorTests.class })
 public class AllExtractorSuite {}

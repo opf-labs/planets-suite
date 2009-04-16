@@ -24,7 +24,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Metric;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -67,8 +66,8 @@ public class XcdlCharacterise implements Characterise, Serializable {
      * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject,
      *      eu.planets_project.services.datatypes.Parameter)
      */
-    public CharacteriseResult characterise(DigitalObject digitalObject,
-            List<Parameter> parameters) {
+    public CharacteriseResult characterise(final DigitalObject digitalObject,
+            final List<Parameter> parameters) {
 
         DigitalObject resultDigOb = null;
         ServiceReport sReport = new ServiceReport();
@@ -84,7 +83,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
         byte[] result = null;
 
         if (parameters != null) {
-            if ( parameters.size() > 0) {
+            if (parameters.size() > 0) {
                 for (Parameter parameter : parameters) {
                     String name = parameter.name;
                     if (name.equalsIgnoreCase("optionalXCELString")) {
@@ -107,7 +106,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
         if (result != null) {
             sizeInKB = result.length / 1024;
             File outputFile = FileUtils.writeByteArrayToTempFile(result);
-            List<Property> properties = new XcdlProperties(outputFile)
+            List<Property> properties = new XcdlParser(outputFile)
                     .getProperties();
             // output Files smaller than 10Mb
             if (sizeInKB < MAX_FILE_SIZE) {
@@ -222,21 +221,12 @@ public class XcdlCharacterise implements Characterise, Serializable {
                     XcdlProperties.makePropertyURI(prop.getType(), prop
                             .getName()), prop.getName(), null);
             // TODO just dummy metrics here
-            // List<Prop> values = prop.getValues();
             List<Metric> metrics = new ArrayList<Metric>();
             Metric o = new Metric();
             o.setDescription("");
             o.setName("");
             o.setId("");
             metrics.add(o);
-            // instead of the real thing:
-            // for (Prop m : values) {
-            // Metric o = new Metric();
-            // o.setDescription(m.getDescription());
-            // o.setName(m.getName());
-            // o.setId(m.getType());
-            // metrics.add(o);
-            // }
             fileFormatProperty.setMetrics(metrics);
             resultProps.add(fileFormatProperty);
         }

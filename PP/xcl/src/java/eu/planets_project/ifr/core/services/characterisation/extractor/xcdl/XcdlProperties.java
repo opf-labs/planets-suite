@@ -13,6 +13,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlCreator.PropertyName;
 import eu.planets_project.services.datatypes.Property;
 
 /**
@@ -22,42 +23,10 @@ import eu.planets_project.services.datatypes.Property;
  */
 public final class XcdlProperties implements XcdlAccess {
 
+    /* XcdlAccess implementation: */
+
     private static final Namespace NS = Namespace
             .getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
-
-    public static final String XCDLPropertyRoot = "planets:pc/xcdl/property/";
-
-    public static URI XCDLPropertyRootUri;
-    static {
-        try {
-            XCDLPropertyRootUri = new URI(XCDLPropertyRoot);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private File xcdlFile;
-
-    /**
-     * @param xcdlFile The XCDL file
-     */
-    public XcdlProperties(final File xcdlFile) {
-        this.xcdlFile = xcdlFile;
-    }
-
-    /**
-     * 
-     */
-    public static URI makePropertyURI(String id, String name) {
-        try {
-            URI propUri = new URI(XcdlProperties.XCDLPropertyRoot + "id" + id
-                    + "/" + name);
-            return propUri;
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /**
      * {@inheritDoc}
@@ -76,7 +45,7 @@ public final class XcdlProperties implements XcdlAccess {
                 Element labVal = e.getChild("valueSet", NS).getChild(
                         "labValue", NS);
                 String value = labVal.getChildText("val", NS);
-                String id = e.getChild("name",NS).getAttributeValue("id")
+                String id = e.getChild("name", NS).getAttributeValue("id")
                         .replaceAll("id", "");
                 URI propUri = XcdlProperties.makePropertyURI(id, name);
                 Property p = new Property(propUri, name, value);
@@ -88,18 +57,89 @@ public final class XcdlProperties implements XcdlAccess {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return properties;
+        return XcdlParser.fixPropertiesForXcdl(properties);
     }
 
     /**
      * @param args unused
      */
     public static void main(final String[] args) {
-        XcdlProperties xcdlProperties = new XcdlProperties(new File(
-                "PC/extractor/src/java/eu/planets_project/xcdl/xcdl.xml"));
+        XcdlProperties xcdlProperties = new XcdlProperties(
+                new File(
+                        "PP/xcl/src/java/eu/planets_project/ifr/core/services/characterisation/extractor/xcdl/xcdl.xml"));
         List<Property> properties = xcdlProperties.getProperties();
         for (Property property : properties) {
             System.out.println(property);
         }
     }
+
+    /* Relatively unrelated: static methods for handling property uris: */
+
+    private static final String URI_ROOT = "planets:pc/xcdl/property/";
+
+    private File xcdlFile;
+
+    /**
+     * @param xcdlFile The XCDL file
+     */
+    public XcdlProperties(final File xcdlFile) {
+        this.xcdlFile = xcdlFile;
+    }
+
+    /**
+     * @param id The property ID
+     * @param name The property name
+     * @return A uniform URI for the property
+     */
+    public static URI makePropertyURI(final String id, final String name) {
+        try {
+            URI propUri = new URI(XcdlProperties.URI_ROOT + "id" + id + "/"
+                    + name);
+            return propUri;
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * @param properties The XCDL properties, possibly including norm data and
+     *        set properties to be filtered
+     * @return A new list containing only the property objects that are actual
+     *         XCDL properties (no norm data or property sets)
+     */
+    public static List<Property> realProperties(final List<Property> properties) {
+        List<Property> result = new ArrayList<Property>();
+        for (Property property : properties) {
+            if (property.getType() != null
+                    && property.getType().equalsIgnoreCase(
+                            PropertyName.PROPERTY.s)) {
+                result.add(property);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @param uri The property URI
+     * @return The raw ID (e.g. 61)
+     */
+    public static String getIdFromUri(final URI uri) {
+        String[] split = tokenize(uri);
+        return split[split.length - 2].replace("id", "");
+    }
+
+    /**
+     * @param uri The property URI
+     * @return The raw property name (e.g. imageHeight)
+     */
+    public static String getNameFromUri(final URI uri) {
+        String[] split = tokenize(uri);
+        return split[split.length - 1];
+    }
+
+    private static String[] tokenize(URI uri) {
+        return uri.toString().split("/");
+    }
+
 }

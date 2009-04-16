@@ -84,10 +84,10 @@ public final class ComparatorWrapper {
         /* And finally, return the result: */
         return result;
     }
-    
+
     public static List<URI> getSupportedInputFormats() {
-    	List<URI> inputFormats = new ArrayList<URI>();
-    	inputFormats.add(Format.extensionToURI("XCDL"));
+        List<URI> inputFormats = new ArrayList<URI>();
+        inputFormats.add(Format.extensionToURI("XCDL"));
         return inputFormats;
     }
 
@@ -239,7 +239,8 @@ public final class ComparatorWrapper {
             while (s.hasNextLine()) {
                 builder.append(s.nextLine()).append(" \n");
             }
-            return builder.toString();
+            String string = builder.toString();
+            return string;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

@@ -8,14 +8,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacterise;
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccess;
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlParser;
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Property;
 
 /**
@@ -29,20 +25,31 @@ public class XcdlAccessTests {
 
     @Test
     public void testProperties() {
+        /*
+         * Test the simple implementation which only picks out the essential
+         * values from the XCDL:
+         */
         check(new XcdlProperties(new File(XCDL)));
     }
 
     @Test
     public void testParser() {
+        /*
+         * Test the full parser which parses the complete XCDL including norm
+         * data and property set:
+         */
         check(new XcdlParser(new File(XCDL)));
     }
 
     @Test
     public void testBoth() {
-        /* Both implementations should return identical results: */
+        /*
+         * Both implementations should not return identical results (see
+         * comments above):
+         */
         List<Property> p1 = new XcdlProperties(new File(XCDL)).getProperties();
         List<Property> p2 = new XcdlParser(new File(XCDL)).getProperties();
-        Assert.assertEquals(p1, p2);
+        Assert.assertNotSame(p1, p2);
     }
 
     @Test
@@ -53,8 +60,9 @@ public class XcdlAccessTests {
                 .getURIsForExtension("png").iterator().next();
         List<Property> extractable = characterise.listProperties(uri);
         /* Now we actually extract a PNG: */
-        CharacteriseResult result = characterise.characterise(new DigitalObject
-                .Builder(Content.byValue(new File(PNG))).build(), null);
+        CharacteriseResult result = characterise.characterise(
+                new DigitalObject.Builder(Content.byValue(new File(PNG)))
+                        .build(), null);
         List<Property> extracted = result.getProperties();
         /* And check if the IDs correspond: */
         assertAllExtractedPropsAreListedAsExtractable(extractable, extracted);
@@ -62,6 +70,7 @@ public class XcdlAccessTests {
 
     private void assertAllExtractedPropsAreListedAsExtractable(
             List<Property> extractable, List<Property> extracted) {
+        extracted = XcdlProperties.realProperties(extracted);
         for (Property property : extracted) {
             /*
              * TODO: In the future, when the types are the same, we can just

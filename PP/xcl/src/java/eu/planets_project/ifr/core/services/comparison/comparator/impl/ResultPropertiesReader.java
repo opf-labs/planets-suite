@@ -2,8 +2,6 @@ package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +12,6 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
-import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
 
 /**
@@ -45,8 +42,10 @@ public final class ResultPropertiesReader {
             Document doc = builder.build(cprFile);
             Element obj = doc.getRootElement().getChild("compSet", NS);
             if (obj == null) {
+                String childText = doc.getRootElement().getChildText("error",
+                        NS);
                 throw new IllegalArgumentException("Can't process document: "
-                        + doc.getRootElement().getChildText("error", NS));
+                        + childText);
             }
             List<?> propElems = obj.getChildren("property", NS);
             for (Object object : propElems) {
@@ -69,12 +68,6 @@ public final class ResultPropertiesReader {
                         name).value(valuesSrc + "," + valuesTar).description(
                         status).unit(unit).build();
                 properties.add(result);
-                // Prop.Builder pBuilder = Prop.name(name).values(valuesSrc,
-                // valuesTar).description(status).unit(unit).type(
-                // valuesType);
-                // List<Prop> subProperties = metrics(e);
-                // pBuilder.values(subProperties.toArray(new Prop[] {}));
-                // properties.add(pBuilder.build());
             }
         } catch (JDOMException e) {
             e.printStackTrace();
@@ -82,23 +75,5 @@ public final class ResultPropertiesReader {
             e.printStackTrace();
         }
         return properties;
-    }
-
-    /**
-     * @param e The parent "property" element
-     * @return A list of properties created from the metrics children
-     */
-    private List<Prop> metrics(final Element e) {
-        /* For each metric, we create a sub-property: */
-        List<?> metrics = e.getChildren("metric", NS);
-        List<Prop> subProperties = new ArrayList<Prop>();
-        for (Object o : metrics) {
-            Element metricElement = (Element) o;
-            String metricName = metricElement.getAttributeValue("name");
-            String metricResult = metricElement.getAttributeValue("result");
-            subProperties.add(Prop.name(metricName).values(metricResult)
-                    .build());
-        }
-        return subProperties;
     }
 }
