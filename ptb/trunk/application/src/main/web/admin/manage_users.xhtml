@@ -51,27 +51,6 @@ You can use the <a target="_blank" href="/users/list.faces">Planets Administrati
 <div class="clear"></div>
 -->
 
-<h:form rendered="false">
-<p>
-You can use this form to test that the Testbed is able to send emails.
-</p>
-<p>
-<h:outputLabel for="emailTestAddress" value="Email Address"/><h:inputText id="emailTestAddress" value="#{Manager_Backing.emailTestAddress}"/>
-</p>
-<p>
-<h:outputLabel for="emailTestSubject" value="Subject"/><h:inputText id="emailTestSubject" value="#{Manager_Backing.emailTestSubject}"/>
-</p>
-<p>
-<h:outputLabel for="emailTestMessage" value="Message"/><h:inputText id="emailTestMessage" value="#{Manager_Backing.emailTestMessage}"/>
-</p>
-<p>
-<h:commandButton action="#{Manager_Backing.sendTestEmail}" value="Send"/>
-</p>
-<p>
-<h:outputText value="#{Manager_Backing.testEmailResult}"/>
-</p>
-</h:form>
-
 <p>&#160;</p>
 <p>&#160;</p>
 <p>&#160;</p>

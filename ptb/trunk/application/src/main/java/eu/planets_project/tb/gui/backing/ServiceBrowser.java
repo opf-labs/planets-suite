@@ -638,15 +638,16 @@ public class ServiceBrowser {
                             ServiceRecordImpl sr = stage.getServiceRecord();
                             if( sr != null ) {
                                 log.info("Got old service name: " + sr.getServiceName() );
-                                log.info("Got old service desc: " + sr.getServiceDescription() );
+                                log.info("Got old service endpoint: " + sr.getEndpoint() );
                                 log.info("Looking to patch in new service record... "+sr.getId());
-                                if( sr.getServiceDescription() != null && sr.getId() == -1 ) {
+                                if( sr.getServiceDescription() != null && sr.getId() <= 0 ) {
                                     log.info("Got old service desc name: " + sr.getServiceDescription().getName() );
                                     ServiceRecordImpl newSR = ServiceRecordImpl.createServiceRecordFromDescription(exp.getEntityID(), sr.getServiceDescription(), exp.getStartDate());
                                     stage.setServiceRecord(newSR);
-                                    ep.updateExperiment(exp);
+                                    // FIXME Removed this for now - ep.updateExperiment(exp);
                                 }
                                 log.info("Got old service host: " + sr.getHost() );
+                                // FIXME Go through and check parameters are consistent?
                             } else {
                                 log.info("Got service record = null!");
                             }
@@ -698,7 +699,7 @@ public class ServiceBrowser {
 
         // Now get the active services and patch these records in:
         List<ServiceDescription> serviceList = getListOfServices(null);
-        log.info("Query result: "+serviceList);
+        //log.info("Query result: "+serviceList);
         if( serviceList != null ) log.info("Matched services = "+serviceList.size());
         for( ServiceDescription sd : serviceList ) {
             if( serviceMap.containsKey(""+sd.hashCode()) ) {
