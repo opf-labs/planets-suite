@@ -42,7 +42,7 @@ public abstract class QuerySource {
     public int ingest(QueryResultListEntry[] results) {
 		// Store in FS-Implementation of the DigitalOjectManager
 		FileSystemDataManager fsdm = new FileSystemDataManager();
-		DigitalObjectManager doManager = DigitalObjectManagerImpl.getInstance("default", new File(fsdm.getRootURI()));
+		DigitalObjectManager doManager; // = DigitalObjectManagerImpl.getInstance("default", new File(fsdm.getRootURI()));
 		
 		int successCtr = 0;
 		for (int i=0; i<results.length; i++) {
