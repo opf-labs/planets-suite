@@ -11,7 +11,7 @@ import javax.xml.bind.Unmarshaller;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.CompSet;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Metric;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.PcRequest;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Access to a complete XCDL comparator config file (PCR), via JAXB-generated
@@ -51,8 +51,8 @@ public final class ComparatorConfigParser {
     /**
      * @return The properties of the comparator config file
      */
-    public List<Prop<Object>> getProperties() {
-        List<Prop<Object>> result = new ArrayList<Prop<Object>>();
+    public List<Parameter> getProperties() {
+        List<Parameter> result = new ArrayList<Parameter>();
         result.addAll(getBasicProperties());
         CompSet compSet = pcr.getCompSets().get(0);
         // TODO what about multiple files in the PCR?
@@ -60,16 +60,20 @@ public final class ComparatorConfigParser {
                 .getProperties();
         for (eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Property property : list) {
             String name = property.getName();
-            List<Prop> metrics = new ArrayList<Prop>();
+            StringBuilder metrics = new StringBuilder();
             List<Metric> pcrMetrics = property.getMetrics();
             for (Metric metric : pcrMetrics) {
                 int metricId = metric.getId();
-                metrics.add(Prop.name("metric").type(String.valueOf(metricId))
-                        .description(metric.getName()).build());
+                metrics.append("metric").append(" ").append(metric.getName())
+                        .append(" ").append(String.valueOf(metricId)).append(
+                                ",");
+            }
+            String mString = metrics.toString();
+            if (mString.endsWith(",")) {
+                mString = mString.substring(0, mString.length() - 1);
             }
             String propId = String.valueOf(property.getId());
-            Prop prop = Prop.name(name).values(metrics.toArray(new Prop[] {}))
-                    .type(propId).build();
+            Parameter prop = new Parameter(name, mString, propId);
             result.add(prop);
         }
         return result;
@@ -78,13 +82,13 @@ public final class ComparatorConfigParser {
     /**
      * @return The basic string properties
      */
-    public List<Prop<Object>> getBasicProperties() {
-        List<Prop<Object>> result = new ArrayList<Prop<Object>>();
+    public List<Parameter> getBasicProperties() {
+        List<Parameter> result = new ArrayList<Parameter>();
         CompSet compSet = pcr.getCompSets().get(0);
-        result.add(Prop.name("source").values(
-                compSet.getSource().getName()).build());
-        result.add(Prop.name("target").values(
-                compSet.getTarget().getName()).build());
+        Parameter p1 = new Parameter("source", compSet.getSource().getName());
+        Parameter p2 = new Parameter("target", compSet.getTarget().getName());
+        result.add(p1);
+        result.add(p2);
         return result;
     }
 

@@ -8,8 +8,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreator;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Tests for the {@link ComparatorConfigCreator}.
@@ -27,23 +26,19 @@ public class ComparatorConfigCreatorTests {
         "normData", "hammingDistance", "RMSE", "levenstheinDistance");
         Iterator<String> i = l.iterator();
         /* We create 4 props for these, using names and specifying the IDs: */
-        Prop<Object> s = Prop.name("source").values(i.next()).build();
-        Prop<Object> t = Prop.name("target").values(i.next()).build();
-        Prop<Object> p1 = Prop.name(i.next()).type("55").values(
-                Prop.name("metric").type("200").description(i.next()).build(),
-                Prop.name("metric").type("201").description(i.next()).build(),
-                Prop.name("metric").type("210").description(i.next()).build())
-                .unit(i.next()).build();
-        Prop<Object> p2 = Prop.name(i.next()).type("35").values(
-                Prop.name("metric").type("10").description(i.next()).build(),
-                Prop.name("metric").type("50").description(i.next()).build(),
-                Prop.name("metric").type("15").description(i.next()).build())
-                .build();
+        Parameter s = new Parameter("source", i.next());
+        Parameter t = new Parameter("target", i.next());
+        Parameter p1 = new Parameter(i.next(), String.format(
+                "metric %s 200, metric %s 201, metric %s 210, metric %s 999", i
+                        .next(), i.next(), i.next(), i.next()), "55");
+        Parameter p2 = new Parameter(i.next(), String.format(
+                "metric %s 10, metric %s 50, metric %s 15", i.next(), i.next(),
+                i.next()), "35");
         /*
          * From this object representation, we can create the PCR XML file
          * required by the XCDL Comparator:
          */
-        List<Prop<Object>> asList = Arrays.asList(s, t, p1, p2);
+        List<Parameter> asList = Arrays.asList(s, t, p1, p2);
         ComparatorConfigCreator creator = new ComparatorConfigCreator(asList);
         String pcr = creator.getComparatorConfigXml();
         for (String string : l) {

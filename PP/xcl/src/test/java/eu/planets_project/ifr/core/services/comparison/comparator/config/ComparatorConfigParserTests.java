@@ -6,8 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Tests for the {@link ComparatorConfigParser} and implementations.
@@ -26,12 +25,11 @@ public class ComparatorConfigParserTests {
      * @param parser The parser to check
      */
     private void check(final ComparatorConfigParser parser) {
-        List<Prop<Object>> properties = parser.getProperties();
+        List<Parameter> properties = parser.getProperties();
         Assert.assertTrue("No properties extracted by "
                 + parser.getClass().getSimpleName(), properties.size() > 0);
-        for (Prop prop : properties) {
-            Assert.assertNotNull(String.format("Prop %s has no type", prop),
-                    prop.getType());
+        for (Parameter prop : properties) {
+            Assert.assertNotNull("Prop is null", prop);
             System.out.println(prop);
         }
     }

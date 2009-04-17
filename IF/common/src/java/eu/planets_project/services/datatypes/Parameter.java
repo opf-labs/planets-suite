@@ -7,58 +7,57 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
- * This wraps the concept of a service parameter.  When retrieved from a service, the default values should be set.
- * 
- * This form does not allow optional v. required parameters, as ALL parameters should be explicitly specified.
- * An 'optional' parameter implies an implicit default that would end up not being recorded in the audit trail.
- * 
+ * This wraps the concept of a service parameter. When retrieved from a service,
+ * the default values should be set. This form does not allow optional v.
+ * required parameters, as ALL parameters should be explicitly specified. An
+ * 'optional' parameter implies an implicit default that would end up not being
+ * recorded in the audit trail.
  * @author AnJackson
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Parameter {
-    
+
     /**
-     * A name for the parameter.  Must be uniquely meaningful to the service, but is not expected to carry any meaning outwith the service.
+     * A name for the parameter. Must be uniquely meaningful to the service, but
+     * is not expected to carry any meaning outwith the service.
      */
     public String name;
 
     /**
-     * The value for this parameter.  Should be set to the default by the service when parameter discovery is happening.
+     * The value for this parameter. Should be set to the default by the service
+     * when parameter discovery is happening.
      */
     public String value;
-    
+
     /**
-     * This is a String to hold the type, which should map to the xsd types and should be assumed to be a String if empty or null.
-     * In the future, we might add limits/validation?  XSD-style?
+     * This is a String to hold the type, which should map to the xsd types and
+     * should be assumed to be a String if empty or null. In the future, we
+     * might add limits/validation? XSD-style?
      */
     public String type;
-    
+
     /**
-     * the description of this parameter/value pair. Might be used to give further
-     * information on the possible values and their meaning.
+     * the description of this parameter/value pair. Might be used to give
+     * further information on the possible values and their meaning.
      */
     public String description;
 
     /* ------------------------------------------------------------------------- */
-    
-    
 
-	/**
+    /**
      * 
      */
-    public Parameter() {
-    }
-    
+    public Parameter() {}
 
     /**
      * @param name
      * @param value
      * @param type
-     * @param description the description of this parameter/value pair. Might be used to give further
-     *                    information on the possible values and their meaning.
+     * @param description the description of this parameter/value pair. Might be
+     *        used to give further information on the possible values and their
+     *        meaning.
      */
-    
+
     /**
      * @param name
      * @param value
@@ -82,11 +81,11 @@ public class Parameter {
     }
 
     /* ------------------------------------------------------------------------- */
-    
+
     /**
      * @return the value
      */
-    protected String getValue() {
+    public String getValue() {
         return value;
     }
 
@@ -100,40 +99,37 @@ public class Parameter {
     /**
      * @return the name
      */
-    protected String getName() {
+    public String getName() {
         return name;
     }
 
     /**
      * @return the type
      */
-    protected String getType() {
+    public String getType() {
         return type;
     }
-    
-    
+
     /**
      * @return the description
      */
     public String getDescription() {
-		return description;
-	}
+        return description;
+    }
 
-	/**
-	 * @param description the new description value
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		String toPrint = this.name + " = " + this.value;
-		return toPrint;
-	}
-    
-    
-    
+    /**
+     * @param description the new description value
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        String toPrint = this.name + " = " + this.value;
+        return toPrint;
+    }
+
 }

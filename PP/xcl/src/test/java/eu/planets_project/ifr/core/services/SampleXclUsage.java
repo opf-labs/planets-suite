@@ -2,8 +2,6 @@ package eu.planets_project.ifr.core.services;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -21,6 +19,7 @@ import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.migrate.Migrate;
@@ -67,7 +66,7 @@ public class SampleXclUsage {
                 .getDigitalObject();
         /* We compare both XCDL files (for details see XcdlCompareTests): */
         Compare comparison = new XcdlCompare();
-        List<Prop<Object>> configProperties = comparison.convert(CONFIG);
+        List<Parameter> configProperties = comparison.convert(CONFIG);
         CompareResult result = comparison.compare(gifXcdl, jpgXcdl,
                 configProperties);
         /* And print the result: */
@@ -87,7 +86,7 @@ public class SampleXclUsage {
         /* Compare the XCDL files: */
         Compare comparison = ServiceCreator.createTestService(Compare.QNAME,
                 XcdlCompare.class, "/pserv-xcl/XcdlCompare?wsdl");
-        List<Prop<Object>> configProperties = comparison.convert(CONFIG);
+        List<Parameter> configProperties = comparison.convert(CONFIG);
         CompareResult compareResult = comparison.compare(gifXcdl, jpgXcdl,
                 configProperties);
         /* Print the result: */
@@ -120,12 +119,11 @@ public class SampleXclUsage {
         List<Property> gifProps = gifResult.getProperties();
         List<Property> jpgProps = jpgResult.getProperties();
         /*
-         * Then we compare the properties of the files. This is still
-         * preliminary as the interfaces will change (List<Parameter> as the
-         * config):
+         * Then we compare the properties of the files, using the config as
+         * parameters:
          */
         CompareProperties comparison = new XcdlCompareProperties();
-        List<Prop<Object>> configProperties = comparison.convertConfig(CONFIG);
+        List<Parameter> configProperties = comparison.convertConfig(CONFIG);
         CompareResult result = comparison.compare(gifProps, jpgProps,
                 configProperties);
         System.out.println("Result: " + result + " " + result.getProperties());

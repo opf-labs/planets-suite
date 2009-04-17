@@ -12,7 +12,7 @@ import eu.planets_project.ifr.core.services.comparison.comparator.config.Compara
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.FileUtils;
@@ -73,14 +73,15 @@ public final class XcdlComparePropertiesTests {
         DigitalObject second = new DigitalObject.Builder(Content.byValue(data2))
                 .build();
         /* The actual config file: */
-        DigitalObject configFile = new DigitalObject.Builder(Content
+        DigitalObject configDigitalObject = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
-        /* We now convert both into properties using our service: */
-        List<Prop<Object>> configProps = new ArrayList<Prop<Object>>(
-                new ComparatorConfigParser(FileUtils
-                        .writeByteArrayToTempFile(FileUtils
-                                .writeInputStreamToBinary(configFile
-                                        .getContent().read()))).getProperties());
+        byte[] configBytes = FileUtils
+                .writeInputStreamToBinary(configDigitalObject.getContent()
+                        .read());
+        File configFile = FileUtils.writeByteArrayToTempFile(configBytes);
+        /* We now convert both into the formats we need using our service: */
+        List<Parameter> configProps = new ArrayList<Parameter>(
+                new ComparatorConfigParser(configFile).getProperties());
         List<Property> properties = new ArrayList<Property>(c.compare(
                 c.convertInput(first), c.convertInput(second), configProps)
                 .getProperties());

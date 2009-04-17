@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.config;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -14,7 +15,7 @@ import eu.planets_project.ifr.core.services.comparison.comparator.config.generat
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Property;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Source;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Target;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Conversion of an XCDL Comparator config object model to a valid config file
@@ -28,7 +29,7 @@ public final class ComparatorConfigCreator {
     /**
      * @param config The config elements
      */
-    public ComparatorConfigCreator(final List<Prop<Object>> config) {
+    public ComparatorConfigCreator(final List<Parameter> config) {
         try {
             JAXBContext jc = JAXBContext
                     .newInstance("eu.planets_project.ifr.core.services."
@@ -52,18 +53,18 @@ public final class ComparatorConfigCreator {
      * @param config The config elements
      * @return Returns a {@link PcRequest} corresponding to the properties
      */
-    private PcRequest createPcrObject(final List<Prop<Object>> config) {
+    private PcRequest createPcrObject(final List<Parameter> config) {
         PcRequest result = new PcRequest();
         CompSet set = new CompSet();
         result.getCompSets().add(set);
-        for (Prop<Object> prop : config) {
+        for (Parameter prop : config) {
             if (prop.getName().equals("source")) {
                 Source s = new Source();
-                s.setName(prop.getValues().get(0).toString());
+                s.setName(prop.getValue());
                 set.setSource(s);
             } else if (prop.getName().equals("target")) {
                 Target t = new Target();
-                t.setName(prop.getValues().get(0).toString());
+                t.setName(prop.getValue());
                 set.setTarget(t);
             } else {
                 addPropertyElement(set, prop);
@@ -76,31 +77,44 @@ public final class ComparatorConfigCreator {
      * @param set The comp set to add the prop to
      * @param prop The prop to add as a property element to the comp set
      */
-    private void addPropertyElement(final CompSet set, final Prop prop) {
+    private void addPropertyElement(final CompSet set, final Parameter prop) {
         Property p = new Property();
         p.setId(Integer.parseInt(prop.getType()));
         p.setName(prop.getName());
-        if (prop.getUnit() != null) {
-            MeasureType[] values = MeasureType.values();
-            for (MeasureType type : values) {
-                if (type.name().toLowerCase().equals(prop.getUnit())) {
-                    p.setUnit(type);
-                    break;
+        if (prop.getValue() != null && prop.getValue().contains("unit")) {
+            String[] tokens = clean(prop.getValue().split(","));
+            for (String string : tokens) {
+                String[] lowerTokens = clean(string.split(" "));
+                if (lowerTokens[0].equals("unit") && lowerTokens.length == 2) {
+                    MeasureType[] values = MeasureType.values();
+                    for (MeasureType type : values) {
+                        if (type.name().toLowerCase().equals(lowerTokens[1])) {
+                            p.setUnit(type);
+                            break;
+                        }
+                    }
                 }
             }
         }
-        List<Prop> metrics = prop.getValues();
-        for (Prop metric : metrics) {
-            if (metric.getName().equals("metric")) {
-                Metric m = new Metric();
-                m.setName(metric.getDescription());
-                String type = metric.getType();
-                if (type.trim().length() == 0) {
-                    throw new IllegalStateException(String.format(
-                            "%s has an empty type", metric));
+        if (prop.getValue() != null) {
+            String[] metrics = clean(prop.getValue().split(","));
+            for (String metric : metrics) {
+                String[] mToks = metric.split(" ");
+                if (mToks.length != 3) {
+                    throw new IllegalArgumentException(
+                            "Cannot work with metric string: " + metric);
                 }
-                m.setId(Integer.parseInt(type));
-                p.getMetrics().add(m);
+                if (mToks[0].equals("metric")) {
+                    Metric m = new Metric();
+                    m.setName(mToks[1]);
+                    String type = mToks[2];
+                    if (type.trim().length() == 0) {
+                        throw new IllegalStateException(String.format(
+                                "%s has an empty type", metric));
+                    }
+                    m.setId(Integer.parseInt(type));
+                    p.getMetrics().add(m);
+                }
             }
         }
         set.getProperties().add(p);
@@ -112,6 +126,17 @@ public final class ComparatorConfigCreator {
      */
     public String getComparatorConfigXml() {
         return pcrXml;
+    }
+
+    private String[] clean(final String[] split) {
+        List<String> result = new ArrayList<String>();
+        for (String string : split) {
+            String clean = string.trim();
+            if (clean.length() > 0) {
+                result.add(clean);
+            }
+        }
+        return result.toArray(new String[] {});
     }
 
 }

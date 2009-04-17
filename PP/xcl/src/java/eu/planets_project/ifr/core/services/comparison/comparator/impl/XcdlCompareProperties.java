@@ -16,7 +16,7 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Prop;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -41,7 +41,7 @@ public final class XcdlCompareProperties implements CompareProperties {
      *      java.util.List)
      */
     public CompareResult compare(final List<Property> first,
-            final List<Property> second, final List<Prop<Object>> config) {
+            final List<Property> second, final List<Parameter> config) {
         String firstXcdl = new XcdlCreator(first).getXcdlXml();
         String secondXcdl = new XcdlCreator(second).getXcdlXml();
         String comparatorConfig = new ComparatorConfigCreator(config)
@@ -66,8 +66,8 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @see eu.planets_project.services.compare.CompareProperties#describe()
      */
     public ServiceDescription describe() {
-        return new ServiceDescription.Builder(NAME,
-                CompareProperties.class.getCanonicalName())
+        return new ServiceDescription.Builder(NAME, CompareProperties.class
+                .getCanonicalName())
                 .classname(this.getClass().getCanonicalName())
                 .author("Fabian Steeg")
                 .description(
@@ -102,7 +102,7 @@ public final class XcdlCompareProperties implements CompareProperties {
      * {@inheritDoc}
      * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
      */
-    public List<Prop<Object>> convertConfig(final DigitalObject configFile) {
+    public List<Parameter> convertConfig(final DigitalObject configFile) {
         File file = FileUtils.writeByteArrayToTempFile(FileUtils
                 .writeInputStreamToBinary(configFile.getContent().read()));
         return new ComparatorConfigParser(file).getProperties();
