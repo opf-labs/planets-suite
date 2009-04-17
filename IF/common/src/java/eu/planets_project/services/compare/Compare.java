@@ -36,7 +36,8 @@ public interface Compare extends PlanetsService {
     QName QNAME = new QName(PlanetsServices.NS, Compare.NAME);
 
     /**
-     * @param objects The digital objects to compare
+     * @param first The first of the two digital objects to compare
+     * @param second The second of the two digital objects to compare
      * @param config A configuration property list
      * @return A list of result properties, the result of comparing the given
      *         digital object, wrapped in a result object
@@ -50,8 +51,10 @@ public interface Compare extends PlanetsService {
     @ResponseWrapper(className = "eu.planets_project.services.compare."
             + Compare.NAME + "Response")
     CompareResult compare(
-            @WebParam(name = "digitalObjects", targetNamespace = PlanetsServices.NS
-                    + "/" + Compare.NAME, partName = "digitalObjects") final List<DigitalObject> objects,
+            @WebParam(name = "first", targetNamespace = PlanetsServices.NS
+                    + "/" + Compare.NAME, partName = "firstDigitalObject") final DigitalObject first,
+            @WebParam(name = "second", targetNamespace = PlanetsServices.NS
+                    + "/" + Compare.NAME, partName = "secondDigitalObject") final DigitalObject second,
             @WebParam(name = "config", targetNamespace = PlanetsServices.NS
                     + "/" + Compare.NAME, partName = "config") final List<Prop<Object>> config);
 

@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -65,12 +64,13 @@ public final class XcdlCompareTests {
             final byte[] configData) {
         Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME,
                 XcdlCompare.class, WSDL);
-        DigitalObject[] objects = new DigitalObject[] {
-                new DigitalObject.Builder(Content.byValue(data1)).build(),
-                new DigitalObject.Builder(Content.byValue(data2)).build() };
+        DigitalObject first = new DigitalObject.Builder(Content.byValue(data1))
+                .build();
+        DigitalObject second = new DigitalObject.Builder(Content.byValue(data2))
+                .build();
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
-        List<Property> properties = c.compare(Arrays.asList(objects),
+        List<Property> properties = c.compare(first, second,
                 c.convert(configFile)).getProperties();
         ComparatorWrapperTests.check(properties);
     }

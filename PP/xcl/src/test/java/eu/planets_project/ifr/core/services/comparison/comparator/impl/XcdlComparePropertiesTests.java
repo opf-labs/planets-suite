@@ -25,12 +25,12 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 public final class XcdlComparePropertiesTests {
 
     private static final String WSDL = "/pserv-xcl/XcdlCompareProperties?wsdl";
-    
+
     @Test
-	public void testDescribe() {
-		CompareProperties c = ServiceCreator.createTestService(XcdlCompareProperties.QNAME,
-                XcdlCompareProperties.class, WSDL);
-		ServiceDescription sd = c.describe();
+    public void testDescribe() {
+        CompareProperties c = ServiceCreator.createTestService(
+                XcdlCompareProperties.QNAME, XcdlCompareProperties.class, WSDL);
+        ServiceDescription sd = c.describe();
         assertTrue("The ServiceDescription should not be NULL.", sd != null);
         System.out.println("test: describe()");
         System.out
@@ -68,23 +68,22 @@ public final class XcdlComparePropertiesTests {
         CompareProperties c = ServiceCreator.createTestService(
                 CompareProperties.QNAME, XcdlCompareProperties.class, WSDL);
         /* The actual XCDL files: */
-        DigitalObject[] objects = new DigitalObject[] {
-                new DigitalObject.Builder(Content.byValue(data1)).build(),
-                new DigitalObject.Builder(Content.byValue(data2)).build() };
+        DigitalObject first = new DigitalObject.Builder(Content.byValue(data1))
+                .build();
+        DigitalObject second = new DigitalObject.Builder(Content.byValue(data2))
+                .build();
         /* The actual config file: */
         DigitalObject configFile = new DigitalObject.Builder(Content
                 .byValue(configData)).build();
         /* We now convert both into properties using our service: */
-        List<ArrayList<Property>> inputProps = new ArrayList<ArrayList<Property>>();
-        for (DigitalObject digitalObject : objects) {
-            inputProps.add(c.convertInput(digitalObject));
-        }
         List<Prop<Object>> configProps = new ArrayList<Prop<Object>>(
-                new ComparatorConfigParser(FileUtils.writeByteArrayToTempFile(FileUtils
-                        .writeInputStreamToBinary(configFile.getContent()
-                                .read()))).getProperties());
-        List<Property> properties = new ArrayList<Property>(c.compare(inputProps,
-                configProps).getProperties());
+                new ComparatorConfigParser(FileUtils
+                        .writeByteArrayToTempFile(FileUtils
+                                .writeInputStreamToBinary(configFile
+                                        .getContent().read()))).getProperties());
+        List<Property> properties = new ArrayList<Property>(c.compare(
+                c.convertInput(first), c.convertInput(second), configProps)
+                .getProperties());
         ComparatorWrapperTests.check(properties);
     }
 }

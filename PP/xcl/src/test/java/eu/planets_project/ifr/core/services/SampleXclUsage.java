@@ -68,8 +68,8 @@ public class SampleXclUsage {
         /* We compare both XCDL files (for details see XcdlCompareTests): */
         Compare comparison = new XcdlCompare();
         List<Prop<Object>> configProperties = comparison.convert(CONFIG);
-        CompareResult result = comparison.compare(Arrays.asList(gifXcdl,
-                jpgXcdl), configProperties);
+        CompareResult result = comparison.compare(gifXcdl, jpgXcdl,
+                configProperties);
         /* And print the result: */
         System.out.println("Result: " + result + " " + result.getProperties());
     }
@@ -88,8 +88,8 @@ public class SampleXclUsage {
         Compare comparison = ServiceCreator.createTestService(Compare.QNAME,
                 XcdlCompare.class, "/pserv-xcl/XcdlCompare?wsdl");
         List<Prop<Object>> configProperties = comparison.convert(CONFIG);
-        CompareResult compareResult = comparison.compare(Arrays.asList(gifXcdl,
-                jpgXcdl), configProperties);
+        CompareResult compareResult = comparison.compare(gifXcdl, jpgXcdl,
+                configProperties);
         /* Print the result: */
         System.out.println("Report: " + compareResult.getReport());
         List<Property> properties = compareResult.getProperties();
@@ -112,25 +112,22 @@ public class SampleXclUsage {
          * implementation yet).
          */
         Characterise characterisation = new XcdlCharacterise();
-        CharacteriseResult gifProps = characterisation.characterise(GIF, null);
-        CharacteriseResult jpgProps = characterisation.characterise(JPG, null);
+        CharacteriseResult gifResult = characterisation.characterise(GIF, null);
+        CharacteriseResult jpgResult = characterisation.characterise(JPG, null);
         /*
-         * We set up the comparison. First, the values to compare (this API will
-         * change soon two have two values instead of a list):
+         * We set up the comparison. First, the values to compare:
          */
-        List<ArrayList<Property>> propsToCompare = Arrays.asList(
-                new ArrayList<Property>(gifProps.getProperties()),
-                new ArrayList<Property>(jpgProps.getProperties()));
+        List<Property> gifProps = gifResult.getProperties();
+        List<Property> jpgProps = jpgResult.getProperties();
         /*
          * Then we compare the properties of the files. This is still
          * preliminary as the interfaces will change (List<Parameter> as the
-         * config and two List<Property> instead of a list of lists):
+         * config):
          */
         CompareProperties comparison = new XcdlCompareProperties();
         List<Prop<Object>> configProperties = comparison.convertConfig(CONFIG);
-        CompareResult result = comparison.compare(propsToCompare,
+        CompareResult result = comparison.compare(gifProps, jpgProps,
                 configProperties);
         System.out.println("Result: " + result + " " + result.getProperties());
-
     }
 }
