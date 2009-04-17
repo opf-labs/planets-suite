@@ -2,6 +2,7 @@ package eu.planets_project.tb.api.model;
 
 import java.io.File;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -30,12 +31,12 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	public final String EVALUATION_VALUE_VERY_BAD = "very bad";
 	
 	/**
-	 * All Property Evaluation Records for this Experiment
+	 * All Property Evaluation Records for this Experiment for a given digitalObjectInputRef
 	 * @return
 	 */
-	public List<PropertyEvaluationRecordImpl> getPropertyEvaluations();
-	public void addPropertyEvaluation(PropertyEvaluationRecordImpl propEval);
-	public void setPropertyEvaluations(List<PropertyEvaluationRecordImpl> propEvals);
+	public HashMap<String,ArrayList<PropertyEvaluationRecordImpl>> getPropertyEvaluations();
+	public void addPropertyEvaluation(String digObjInputRef, PropertyEvaluationRecordImpl propEval);
+	public ArrayList<PropertyEvaluationRecordImpl> getPropertyEvaluation(String inputDigitalObjectRef);
 	
 	/**
 	 * The weights to apply for properties for calculating the experiment's overall evaluation result

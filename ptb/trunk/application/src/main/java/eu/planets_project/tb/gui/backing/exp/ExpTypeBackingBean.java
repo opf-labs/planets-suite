@@ -4,6 +4,8 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
@@ -17,7 +19,13 @@ import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
+import eu.planets_project.tb.impl.model.PropertyRunEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
@@ -159,5 +167,6 @@ public abstract class ExpTypeBackingBean {
     
     	return ret;
     }
+    
 
 }

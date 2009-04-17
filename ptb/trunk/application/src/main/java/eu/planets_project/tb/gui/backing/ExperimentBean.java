@@ -3,6 +3,7 @@ package eu.planets_project.tb.gui.backing;
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
@@ -55,10 +56,12 @@ import eu.planets_project.tb.api.services.ServiceTemplateRegistry;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.exp.DigitalObjectBean;
+import eu.planets_project.tb.gui.backing.exp.EvaluationPropertyResultsBean;
 import eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean;
 import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementPropertyResultsBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
+import eu.planets_project.tb.gui.backing.exp.EvaluationPropertyResultsBean.EvalRecordBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
@@ -66,6 +69,8 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
+import eu.planets_project.tb.impl.model.PropertyRunEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.eval.mockup.TecRegMockup;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -76,8 +81,11 @@ import eu.planets_project.tb.impl.model.finals.DigitalObjectTypesImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
+import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
+import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
+import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 
 
 /**
@@ -1891,4 +1899,218 @@ public class ExperimentBean {
     	return b;
     }
     
+    public List<EvaluationPropertyResultsBean> getEvaluationPropertyResultsBeans(){
+    	
+    	String etype = this.getEtype();
+    	String[] stagesToCompare = null;
+    	
+    	if( etype.equals( AdminManagerImpl.IDENTIFY ) ) {
+            stagesToCompare = new String[]{IdentifyWorkflow.STAGE_IDENTIFY};
+        } else if( etype.equals( AdminManagerImpl.MIGRATE ) ) {
+        	stagesToCompare = new String[]{MigrateWorkflow.STAGE_PRE_MIGRATE,MigrateWorkflow.STAGE_POST_MIGRATE};
+        }
+    	
+    	return this.getEvaluationPropertyResultsBeansHelper(selDigORefStep6DigoEvalTable, stagesToCompare, true);
+    }
+    
+    /**
+     * Gathers all records that are used for evaluation for a given measurement property and a selected inputDigitalObject
+     * and groups them according to the experiment type's evaluation rules in a EvaluationPropertyResultsBean which contains the table line's information
+     * TODO AL: split this method up into sub-methodds and share common parts with getAllManualExecutionRecordsHelper
+     * TODO AL: Implementation for manualProps = false : automatically measured properties still missing
+     * @param
+     * @return
+     */
+    private List<EvaluationPropertyResultsBean> getEvaluationPropertyResultsBeansHelper(String inputDigoRef, String[] comparedStageNames, boolean manualProps){
+    	
+    	List<EvaluationPropertyResultsBean> ret = new ArrayList<EvaluationPropertyResultsBean>();
+    	
+		//1. get all measurement property IDs
+		Vector<String>[] lpropertyIDs = new Vector[comparedStageNames.length];
+		MeasurementImpl measurementInfo = null;
+		if(manualProps){
+			//fetch the manual properties
+			int count = 0;
+			for(String stageName : comparedStageNames){
+				lpropertyIDs[count] = this.getExperiment().getExperimentExecutable().getManualProperties(stageName);
+				count++;
+			}
+		}
+		else{
+			//fetch the automatically measured properties
+			//FIXME: not correct: still need to find out stage information for automatically measured properties
+			//propertyIDs = expBean.getExperiment().getExperimentExecutable().getProperties();
+		}
+		
+		//1b) determine a common set of property IDs that are available in all requested stages
+		List<String> commonPropIDs = new ArrayList<String>();
+		for(int i=0; i<lpropertyIDs.length;i++){
+			Vector<String> propertyIDs = lpropertyIDs[i];
+			if(i==0){
+				commonPropIDs = propertyIDs;
+			}else{
+				List<String> propsForRemoval = new ArrayList<String>();
+				for(String propID : commonPropIDs){
+					if(!propertyIDs.contains(propID)){
+						//property not contained in all requested stages - remove
+						propsForRemoval.add(propID);
+					}
+				}
+				commonPropIDs.removeAll(propsForRemoval);
+			}
+		}
+		
+			
+		//2. build the results on a per property basis
+		for(String propertyID : commonPropIDs){
+			
+			EvaluationPropertyResultsBean evalPropResBean = new EvaluationPropertyResultsBean(inputDigoRef, propertyID,this.getAllRunDates(),comparedStageNames);
+			List<String> lStageNames = Arrays.asList(comparedStageNames);
+			
+			//2a. now iterate over the results and filter out the relevant ones for this property
+			for(BatchExecutionRecordImpl batchr : this.getExperiment().getExperimentExecutable().getBatchExecutionRecords()){
+				Calendar runDate = batchr.getEndDate();
+				for(ExecutionRecordImpl execRec : batchr.getRuns()){
+					//filter out by the selected inputDigitalObject
+					if(execRec.getDigitalObjectReferenceCopy().equals(inputDigoRef)){
+						
+						for(ExecutionStageRecordImpl execStageRec : execRec.getStages()){
+							//filter out the selected stage
+							if(lStageNames.contains(execStageRec.getStage())){
+								List<MeasurementRecordImpl> mRecords=null;
+								if(manualProps){
+									//fetch the manual properties
+									mRecords = execStageRec.getManualMeasurements();
+								}
+								else{
+									//fetch the automatically measured properties
+									mRecords = execStageRec.getMeasurements();
+								}
+								for(MeasurementRecordImpl mr : mRecords){
+									if(mr.getIdentifier().equals(propertyID)){
+										//found the measurementRecord for this property in this run
+										evalPropResBean.addMeasurementResult(runDate, execStageRec.getStage(), mr);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			//2b. now iterate over the evaluation results and filter out the relevant ones
+			List<PropertyEvaluationRecordImpl> propEvalRecordords = this.getExperiment().getExperimentEvaluation().getPropertyEvaluation(inputDigoRef);
+			if(propEvalRecordords!=null){
+				for(PropertyEvaluationRecordImpl propEvalRecordImpl : propEvalRecordords){
+					//filter by the propertyID we're looking for
+					if(propEvalRecordImpl.getPropertyID().equals(evalPropResBean.getMeasurementPropertyID())){
+						//set the line evaluation value
+						evalPropResBean.setPropertyEvalValue(propEvalRecordImpl.getPropertyEvalValue());
+						for(Calendar runDate : this.getAllRunDates()){
+							PropertyRunEvaluationRecordImpl propRunEvalRecImpl = propEvalRecordImpl.getPropertyRunEvalRecord(runDate);
+							if(propRunEvalRecImpl!=null){
+								//set the per run evaluation value
+								evalPropResBean.setEvalResultValue(runDate, comparedStageNames, propRunEvalRecImpl.getRunEvalValue());
+							}
+						}
+					}
+				}
+			}
+			
+			//3.finally add the MeasurementInfo data (name, description, for the propertyID etc.
+			if(manualProps){
+				OntologyProperty ontop = OntologyHandlerImpl.getInstance().getProperty(propertyID);
+				//create a MeasurementImpl from the OntologyProperty
+				try {
+					MeasurementImpl measurementinfo = OntoPropertyUtil.createMeasurementFromOntologyProperty(ontop);
+					evalPropResBean.setMeasurementInfo(measurementinfo);
+				} catch (Exception e) {
+					log.debug("Could not retrieve Ontology Property information for propertyID: "+propertyID);
+				}
+			}
+			else{
+				//TODO: still need to request this information from the workflow authority
+			}
+			
+			//Finally: check requirements if to add this evalProp item
+			//if(checkIfToAddEvaluationPropertyBean(evalPropResBean,comparedStageNames)){
+				ret.add(evalPropResBean);
+			//}
+		}
+		return ret;
+    }
+    
+    /**
+     * Checks if the requirements for this bean have been met through the population process
+     * 1.checks if at least one value for all measured stages has been submitted
+     * 2.if the property is contained in all requested stages
+     * @return
+     */
+    /*private boolean checkIfToAddEvaluationPropertyBean(EvaluationPropertyResultsBean evalPropResBean, String[] comparedStageNames){
+    	boolean atLeastOneFound = false;
+    	for(Calendar runDate : this.getAllRunDates()){
+    		HashMap<String,EvalRecordBean> evalResults = evalPropResBean.getAllEvalResults().get(runDate.getTimeInMillis());
+    		if(evalResults != null){
+    			//c2. check property is contained in all requested stages
+    			if(evalResults.size()!=comparedStageNames.length){
+					//property not measured in all requested stages
+					return false;
+				}
+    			//c1. check if a record value for a certain run date was submitted or extracted
+    			boolean bOK = true;
+    			for(String compStageName : comparedStageNames){
+    				
+    				String recordValue = evalResults.get(compStageName).getRecordValue();
+    				if((recordValue!=null)&&(!recordValue.equals(""))){
+    					//ok - this record is fine - check the other stages for this property
+    				}
+    				else{
+    					bOK = false;
+    				}
+    			}
+    			if(bOK){
+    				atLeastOneFound = true;
+    			}	
+    		}		
+    	}
+    	return atLeastOneFound;
+    }*/
+    
+    private String selDigORefStep6DigoEvalTable = null;
+    public void setSelDigitalObjectRefInStep6DigoEvalTable(String inputDigObjRef){
+    	this.selDigORefStep6DigoEvalTable = inputDigObjRef;
+    }
+    
+    public String getSelDigitalObjectRefInStep6DigoEvalTable(){
+    	if(this.selDigORefStep6DigoEvalTable==null){
+    		if(!this.getExperimentInputDataValues().isEmpty()){
+    			selDigORefStep6DigoEvalTable = this.getExperimentInputDataValues().iterator().next().getDigitalObject();
+    		}
+    	}
+    	return this.selDigORefStep6DigoEvalTable;
+    }
+    
+    public void processDigitalObjectRefInStep6DigoEvalTable(ActionEvent e){
+    	for(UIComponent c : e.getComponent().getChildren()){
+    		if(c instanceof UIParameter){
+    			UIParameter p = (UIParameter)c;
+    			if(p.getName().equals("selInputDataRef")){
+    				this.setSelDigitalObjectRefInStep6DigoEvalTable((String)p.getValue());
+    			}
+    		}
+    	}
+    }
+    
+    List<MeasurementImpl> propertyIDsForExperimentEvaluation = new ArrayList<MeasurementImpl>();
+    /**
+     * Returns a list of all propertyIDs (in form of MeasurementImpl with Name, etc) we're evaluating in step6 of an experiment
+     * @return
+     */
+    public List<MeasurementImpl> getPropertyIDsForOverallExperimentEvaluation(){
+    	if(propertyIDsForExperimentEvaluation.size()<1)
+    		for(EvaluationPropertyResultsBean b : this.getEvaluationPropertyResultsBeans()){
+    			propertyIDsForExperimentEvaluation.add(b.getMeasurementInfo());
+    		}
+    	return propertyIDsForExperimentEvaluation;
+    }
 }

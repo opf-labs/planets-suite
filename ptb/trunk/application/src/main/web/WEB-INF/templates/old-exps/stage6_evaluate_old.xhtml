@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition rendered="ExperimentBean != null}">
+  
+<!-- A: If the execution was successfully: display the results -->
+		<h:panelGroup rendered="#{NewExp_Controller.executionSuccess}">
+			<p>View the experiment's input and output data, evaluate the
+			outcomes of your experiment against the benchmark goals you specified
+			during Stage 3 of the experiment and supply a report about your
+			experiment. You may save and re-edit your evaluation as often as
+			required.</p>
+		</h:panelGroup>	
+		
+		<a4j:form id="form_results" rendered="#{NewExp_Controller.executionSuccess}">	
+
+           <h2 class="main">#{res['exp_stage6.report']}</h2>
+           <p>
+               <h:outputLabel value="#{res['exp_stage6.reportTitle']}" for="repTitle" ></h:outputLabel>
+               <h:inputText required="false" id="repTitle" value="#{ExperimentBean.reportHeader}" size="82" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" />
+               <h:message for="repTitle" errorClass="errorMessage" infoClass="infoMessage"/>
+           </p>
+           <p>
+               <h:outputLabel value="#{res['exp_stage6.reportBody']}" for="repBody" ></h:outputLabel>
+               <h:inputTextarea rows="10" cols="80" required="false" id="repBody" value="#{ExperimentBean.reportBody}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" />
+               <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
+           </p>
+          
+            <!-- please note: absolute DOM id in getElementById -->
+            <p><a4j:commandButton value="#{res['exp_stage6.button']}" action="#{NewExp_Controller.updateBMEvaluationAction}"
+                oncomplete="if (document.getElementById('form_results:hasErrMessages').value=='true') Richfaces.showModalPanel('modelpanel_error');"/>
+               </p>
+             
+            <p><a4j:commandButton value="#{res['exp_stage6.finalize']}" action="#{NewExp_Controller.finalizeBMEvaluationAction}"
+                oncomplete="if (document.getElementById('form_results:hasErrMessages').value=='true') Richfaces.showModalPanel('modelpanel_error');"/>
+               </p>       
+		
+			<a4j:outputPanel ajaxRendered="true">
+					<h:inputHidden id="hasErrMessages" value="#{ExperimentBean.hasErrMessages}" />
+			</a4j:outputPanel>
+			
+		<!--start modal panel: source/target validation error -->    
+		    <rich:modalPanel id="modelpanel_error" width="350" height="100">
+		        <f:facet name="header">
+		            <h:panelGroup>
+		                <h:outputText value="Evaluation Status: Errors Occurred"></h:outputText>
+		            </h:panelGroup>
+		        </f:facet>
+		        <f:facet name="controls">
+		            <h:panelGroup>
+		             	<img id="hideOverlay" src="${facesContext.externalContext.requestContextPath}/graphics/close.png" alt="close" title="close"/>
+		                <rich:componentControl for="modelpanel_error" attachTo="hideOverlay" operation="hide" event="onclick"/>
+		            </h:panelGroup>
+		        </f:facet>
+		        <h:outputText value="The entered Benchmark Goal Evlauation data contained some errors [todo: add a proper error message here]"></h:outputText>
+		        	<a4j:outputPanel ajaxRendered="true">
+						<h:outputText value="#{ExperimentBean.hasErrMessages}" />
+						<h:messages errorClass="errorMessage" infoClass="infoMessage"/>
+					</a4j:outputPanel>
+		    </rich:modalPanel>    
+		<!--end validation error modal panel -->    
+   
+            <h2 class="main">#{res['exp_stage6.headingBG']}</h2>
+            <p>Below are the benchmark goals you specified during stage three
+            of the experiment design. Evaluate the success of your experiment by
+            selecting the level of success of each goal.</p>
+
+            <t:dataTable id="bmTable" var="bm"
+                value="#{ExperimentBean.experimentBenchmarkBeans}" preserveDataModel="false"
+                rowId="#{bm.ID}" cellpadding="2" cellspacing="0" border="1">
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.criteria']}: #{ExperimentBean.BGExperimentText}</f:facet>
+                    #{bm.name}
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.explanation']}</f:facet>
+                    #{bm.definition} <br />
+                    <i>#{bm.description}</i>
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.sourceValue']}</f:facet>
+                                            <h:inputText value="#{bm.sourceValue}" disabled="#{ExperimentBean.finished}"/> <br/>     
+                                                <h:outputText value="#{bm.typename}" />  
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.targetValue']}</f:facet>
+                                            <h:inputText value="#{bm.targetValue}"  disabled="#{ExperimentBean.finished}"/><br/>          
+                                            <h:outputText value="#{bm.typename}" /> 
+                </t:column>
+                <t:column>
+                    <f:facet name="header">#{res['exp_stage6.evaluation']}</f:facet>
+                    <h:selectOneMenu value="#{bm.evaluationValue}" disabled="#{ExperimentBean.finished}">
+                        <f:selectItems value="#{NewExp_Controller.availableEvaluationValues}" />
+                    </h:selectOneMenu>
+                </t:column>
+                
+            </t:dataTable>
+
+		</a4j:form>
+		
+		
+		<!-- A: If the execution was NOT successfully: display an error page -->
+        <h:form rendered="#{(NewExp_Controller.executionSuccess==false}">
+        	<h2 class="main">Error Page</h2>
+			<p>Experiment Execution failed due to malfunctioning of the underlying service!
+			   <h:commandLink immediate="true" value=" Click here " action="#{ExperimentBean.setViewXMLRespondsTrue}"/>to view more details
+        	   <h:commandLink immediate="true" value=" or here to hide details. " action="#{ExperimentBean.setViewXMLRespondsFalse}" rendered="#{ExperimentBean.viewXMLResponds}"/></p>
+        	<p>
+               <h:outputLabel value="service responds: " rendered="#{ExperimentBean.viewXMLResponds}"/>
+               <h:inputTextarea rows="10" cols="80" value="#{ExperimentBean.serviceXMLResponds}" readonly="true" rendered="#{ExperimentBean.viewXMLResponds}"/>
+            </p>
+        </h:form>
+</ui:composition>
+
+</body>
+</html>

@@ -56,8 +56,8 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	private ExperimentReportImpl report;
 	private boolean bExpSetupImputValuesSet;
 	
-	//the property evaluation records
-	private Vector<PropertyEvaluationRecordImpl> propertyEvalRecs = new Vector<PropertyEvaluationRecordImpl>();
+	//the property evaluation records for a given inputDigitalObjectRef over all stages
+	private HashMap<String, ArrayList<PropertyEvaluationRecordImpl>> propertyEvalRecordsByInputDigoRef = new HashMap<String, ArrayList<PropertyEvaluationRecordImpl>>();
 	//the overall experiment evaluation information HashMap<PropertyURI,Integer>
 	private HashMap<String,Integer> overallPropertyEvalWeights = new HashMap<String,Integer>();
 	
@@ -639,9 +639,16 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#addPropertyEvaluation(eu.planets_project.tb.api.model.PropertyEvaluationRecord)
 	 */
-	public void addPropertyEvaluation(PropertyEvaluationRecordImpl propEval) {
-		if(this.propertyEvalRecs!=null){
-			this.propertyEvalRecs.add((PropertyEvaluationRecordImpl)propEval);
+	public void addPropertyEvaluation(String inputDigoRef, PropertyEvaluationRecordImpl propEval) {
+		if(this.propertyEvalRecordsByInputDigoRef!=null){
+			if(propertyEvalRecordsByInputDigoRef.get(inputDigoRef)==null){
+				ArrayList<PropertyEvaluationRecordImpl> l = new ArrayList<PropertyEvaluationRecordImpl>();
+				l.add((PropertyEvaluationRecordImpl)propEval);
+				this.propertyEvalRecordsByInputDigoRef.put(inputDigoRef, l);
+			}
+			else{
+				this.propertyEvalRecordsByInputDigoRef.get(inputDigoRef).add((PropertyEvaluationRecordImpl)propEval);
+			}
 		}
 		
 	}
@@ -650,22 +657,27 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 	/* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getPropertyEvaluations()
 	 */
-	public List<PropertyEvaluationRecordImpl> getPropertyEvaluations() {
-		if(this.propertyEvalRecs==null){
-			return new ArrayList<PropertyEvaluationRecordImpl>();
+	public HashMap<String,ArrayList<PropertyEvaluationRecordImpl>> getPropertyEvaluations() {
+		if(this.propertyEvalRecordsByInputDigoRef==null){
+			return new HashMap<String,ArrayList<PropertyEvaluationRecordImpl>>();
 		}
-		return this.propertyEvalRecs;
+		return this.propertyEvalRecordsByInputDigoRef;
 	}
-
+	
 
 	/* (non-Javadoc)
-	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#setPropertyEvaluations(java.util.List)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getPropertyEvaluation(java.lang.String)
 	 */
-	public void setPropertyEvaluations(List<PropertyEvaluationRecordImpl> propEvals) {
-		if((this.propertyEvalRecs!=null)&&(propEvals!=null)){
-			this.propertyEvalRecs = (Vector<PropertyEvaluationRecordImpl>) propEvals;
+	public ArrayList<PropertyEvaluationRecordImpl> getPropertyEvaluation(String inputDigitalObjectRef){
+		if(this.propertyEvalRecordsByInputDigoRef!=null){
+			if(this.propertyEvalRecordsByInputDigoRef.get(inputDigitalObjectRef)==null){
+				this.propertyEvalRecordsByInputDigoRef.put(inputDigitalObjectRef, new ArrayList<PropertyEvaluationRecordImpl>());
+			}
+			return this.propertyEvalRecordsByInputDigoRef.get(inputDigitalObjectRef);
 		}
+		return null;
 	}
+
 
 
 	/* (non-Javadoc)
@@ -687,6 +699,7 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		}
 		return new HashMap<String, Integer>();
 	}
+	
 
 
 	/* (non-Javadoc)

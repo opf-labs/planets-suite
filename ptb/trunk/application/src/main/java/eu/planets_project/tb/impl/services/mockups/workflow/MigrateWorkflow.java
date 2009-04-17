@@ -63,9 +63,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     public static final String SERVICE_TYPE_IDENTIFY = "Identify";
 
     /** Internal keys for easy referral to the service+stage combinations. */
-    private static final String STAGE_PRE_MIGRATE = "Characterise Before Migration";
-    private static final String STAGE_MIGRATE = "Migrate";
-    private static final String STAGE_POST_MIGRATE = "Characterise After Migration";
+    public static final String STAGE_PRE_MIGRATE = "Characterise Before Migration";
+    public static final String STAGE_MIGRATE = "Migrate";
+    public static final String STAGE_POST_MIGRATE = "Characterise After Migration";
     
     private static HashMap<String,List<MeasurementImpl>> manualObservables;
     /** Statically define the automatically observable properties. */

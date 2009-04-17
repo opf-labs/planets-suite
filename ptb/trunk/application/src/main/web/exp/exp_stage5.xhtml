@@ -55,7 +55,7 @@
 					   </p>    
 					    
                 <h:commandButton id="executeExperimentButton" value="#{res['exp_stage5.button.run']}" 
-                action="#{NewExp_Controller.executeExperiment}" disabled="#{NewExp_Controller.experimentExecutable.executionRunning}" 
+                action="#{NewExp_Controller.executeExperiment}" disabled="#{(NewExp_Controller.experimentExecutable.executionRunning) or (ExperimentBean.experiment.currentPhaseIndex gt 5)}"
                 style="font-size: larger; font-weight: bold; color: green;">
                 </h:commandButton>                        
                     </h:panelGroup>
@@ -69,7 +69,7 @@
      <h:panelGroup rendered="#{! NewExp_Controller.experimentExecutable.executionRunning}" >
          <h:commandButton action="#{NewExp_Controller.executeExperimentStart}"
                       value="Re-run this experiment to collect more data." 
-                      rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }"/>
+                      rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }" disabled="#{ExperimentBean.experiment.currentPhaseIndex gt 5}"/>
         <h:commandButton value="Refresh This Page"
                             action="goToStage5" />
      </h:panelGroup>

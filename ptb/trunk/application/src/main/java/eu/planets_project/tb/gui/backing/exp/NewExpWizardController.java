@@ -34,6 +34,7 @@ import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.model.ExperimentResourcesImpl;
 import eu.planets_project.tb.impl.model.ExperimentSetupImpl;
+import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalImpl;
 import eu.planets_project.tb.impl.model.benchmark.BenchmarkGoalsHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
@@ -2053,6 +2054,130 @@ public class NewExpWizardController{
         	}
         }
     }
-   
-
+    
+    
+    /**
+     * Stage6 update a line evaluation record for a given property and a inputDigoRef
+     * @param vce
+     */
+    public void processLineEvalValChange(ValueChangeEvent vce){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	
+    	Integer value = (Integer)vce.getNewValue();
+    	if(value<1 || value>4)
+    		return;
+    	
+    	FacesContext context = FacesContext.getCurrentInstance();
+		Object o1 = context.getExternalContext().getRequestParameterMap().get("propertyID");
+		Object o4 = context.getExternalContext().getRequestParameterMap().get("inputDigoRef");
+		
+		if((o1!=null)&&(o4!=null)){
+			//fetch the parameters from the requestParameterMap
+			String manualpropID = (String)o1; 
+			String inputDigoRef = (String)o4;
+		
+			//now create or update an EvaluationRecord
+			this.updatePropertyEvaluationRecord(manualpropID, inputDigoRef, value);
+			
+			//store the updated experiment
+	    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+	        Experiment exp = expBean.getExperiment();
+	    	testbedMan.updateExperiment(expBean.getExperiment());
+		
+		}else{
+			log.debug("not all required HtmlActionParameters we're sent along");
+		}
+    }
+    
+    /**
+     * updates an evaluation record for a given property and input digitalObjectRef (line record not per run)
+     * @param propertyID
+     * @param digObjectRefCopy
+     * @param evalValue
+     */
+    private void updatePropertyEvaluationRecord(String propertyID, String digObjectRefCopy, Integer evalValue){
+    	//TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        Experiment exp = expBean.getExperiment();
+        
+        List<PropertyEvaluationRecordImpl> propEvalRecs = exp.getExperimentEvaluation().getPropertyEvaluation(digObjectRefCopy);
+        PropertyEvaluationRecordImpl propEvalRec = null;
+        
+        if(propEvalRecs!=null){
+        	boolean bIsUpdate = false;
+        	for(PropertyEvaluationRecordImpl propEvalR : propEvalRecs){
+        		if(propEvalR.getPropertyID().equals(propertyID)){
+        			propEvalRec = propEvalR;
+        			//update an existing evaluation record
+        			propEvalRec.setPropertyEvalValue(evalValue);
+        			bIsUpdate = true;
+        		}
+        	}
+        	
+        	//create a new evaluation record
+        	if(!bIsUpdate){
+	        	propEvalRec = new PropertyEvaluationRecordImpl(propertyID);
+	        	propEvalRec.setPropertyEvalValue(evalValue);
+        	}
+        	
+        	exp.getExperimentEvaluation().addPropertyEvaluation(digObjectRefCopy, propEvalRec);
+        }
+    	
+    	//TODO AL: not updating the evaluation records for every run - TBC
+    }
+    
+    /**
+     * updates an evaluation record for a given property and input digitalObjectRef per run
+     * @param propertyID
+     * @param digObjectRefCopy
+     * @param stageNames stages to retrieve the property from for comparisson (e.g. pre-characterisae and post-characterise)
+     * @param runEndDate
+     * @param evalValue
+     */
+    private void updatePropertyEvaluationRunRecord(String propertyID, String digObjectRefCopy, String[] stageNames, Calendar runEndDate, String evalValue){
+    	
+    }
+    
+    public String finalizeExperiment(){
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        Experiment exp = expBean.getExperiment();
+        exp.getExperimentEvaluation().setState(Experiment.STATE_COMPLETED);
+        exp.setState(Experiment.STATE_COMPLETED);
+        testbedMan.updateExperiment(exp);
+        expBean.setCurrentStage(ExperimentBean.PHASE_EXPERIMENTFINALIZED);  
+    	return "goToStage6";
+    }
+    
+    
+    public void saveExperiment(){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+    	testbedMan.updateExperiment(expBean.getExperiment());
+    }
+    
+    public int getCalculateOverallEvaluation(){
+    	/* TODO AL: continue here: ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	Experiment exp = expBean.getExperiment();
+    	
+    	//get properties
+    	for(MeasurementImpl m : expBean.getPropertyIDsForOverallExperimentEvaluation()){
+    		String propID = m.getIdentifier()+"";
+    	}
+    	//get property weights
+    	
+    	//get propertie's line evals - iterate over all inputDigitalObjects
+    	for(DigitalObjectBean digo : expBean.getExperimentInputDataValues()){
+    		
+    	}
+    	
+    	//calculate*/
+    	
+    	return 3;
+    }
+    
+    public void setCalculateOverallEvaluation(int i){
+    	//
+    }
+    
 }
