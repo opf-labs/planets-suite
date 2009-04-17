@@ -1914,8 +1914,16 @@ public class ExperimentBean {
     	return b;
     }
     
+    /**
+     * Returns a single list with manual and automatically measured properties for an in the evaluation table usable form
+     * Fetches information for a pre-selected inputDigitalObject Ref
+     * @return
+     */
     public List<EvaluationPropertyResultsBean> getEvaluationPropertyResultsBeans(){
-    	
+    	return getEvaluationPropertyResultsBeans(this.selDigORefStep6DigoEvalTable);
+    }
+    
+    public List<EvaluationPropertyResultsBean> getEvaluationPropertyResultsBeans(String inputDigoRef){
     	String etype = this.getEtype();
     	String[] stagesToCompare = null;
     	
@@ -1924,12 +1932,11 @@ public class ExperimentBean {
         } else if( etype.equals( AdminManagerImpl.MIGRATE ) ) {
         	stagesToCompare = new String[]{MigrateWorkflow.STAGE_PRE_MIGRATE,MigrateWorkflow.STAGE_POST_MIGRATE};
         }
-    	
     	//get the manual property results
-    	List<EvaluationPropertyResultsBean> manualProps = this.getEvaluationPropertyResultsBeansHelper(selDigORefStep6DigoEvalTable, stagesToCompare, true);
+    	List<EvaluationPropertyResultsBean> manualProps = this.getEvaluationPropertyResultsBeansHelper(inputDigoRef, stagesToCompare, true);
     	
     	//get the service extracted property results
-    	List<EvaluationPropertyResultsBean> autoMProps = this.getEvaluationPropertyResultsBeansHelper(selDigORefStep6DigoEvalTable, stagesToCompare,false);
+    	List<EvaluationPropertyResultsBean> autoMProps = this.getEvaluationPropertyResultsBeansHelper(inputDigoRef, stagesToCompare,false);
     	
     	//merge the two - we're doing joint evaluation
     	manualProps.addAll(autoMProps);

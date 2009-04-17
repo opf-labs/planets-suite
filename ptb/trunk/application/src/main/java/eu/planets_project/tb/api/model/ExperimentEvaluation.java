@@ -37,6 +37,7 @@ public interface ExperimentEvaluation extends ExperimentPhase{
 	public HashMap<String,ArrayList<PropertyEvaluationRecordImpl>> getPropertyEvaluations();
 	public void addPropertyEvaluation(String digObjInputRef, PropertyEvaluationRecordImpl propEval);
 	public ArrayList<PropertyEvaluationRecordImpl> getPropertyEvaluation(String inputDigitalObjectRef);
+	public Integer getOverallPropertyEvalWeight(String propertyID);
 	
 	/**
 	 * The weights to apply for properties for calculating the experiment's overall evaluation result

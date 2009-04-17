@@ -700,6 +700,17 @@ implements eu.planets_project.tb.api.model.ExperimentEvaluation, java.io.Seriali
 		return new HashMap<String, Integer>();
 	}
 	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentEvaluation#getOverallPropertyEvalWeight(java.lang.String)
+	 */
+	public Integer getOverallPropertyEvalWeight(String propertyID){
+		if(overallPropertyEvalWeights!=null){
+			return this.overallPropertyEvalWeights.get(propertyID);
+		}else{
+			return -1;
+		}
+	}
+	
 
 
 	/* (non-Javadoc)

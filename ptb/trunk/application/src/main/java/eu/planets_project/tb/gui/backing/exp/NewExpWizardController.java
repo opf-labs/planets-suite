@@ -2156,28 +2156,57 @@ public class NewExpWizardController{
     	testbedMan.updateExperiment(expBean.getExperiment());
     }
     
+    int countEvaluationItems = -1;
+    int countNotEvaluationItems = -1;
     public int getCalculateOverallEvaluation(){
-    	/* TODO AL: continue here: ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	
+    	countEvaluationItems = 0;
+    	int countWeights = 0;
+    	int countWeightEvaluationItems = 0;
+    	countNotEvaluationItems = 0;
+    	
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
     	Experiment exp = expBean.getExperiment();
     	
-    	//get properties
-    	for(MeasurementImpl m : expBean.getPropertyIDsForOverallExperimentEvaluation()){
-    		String propID = m.getIdentifier()+"";
+    	//iterate over all inputDigitalObjects
+    	for(DigitalObjectBean inputDigo : expBean.getExperimentInputDataValues()){
+    		for(EvaluationPropertyResultsBean evalPropResBean: expBean.getEvaluationPropertyResultsBeans(inputDigo.getDigitalObject())){
+    			if(evalPropResBean.getPropertyEvalValue()!=-1){
+    				
+    				String propertyID = evalPropResBean.getMeasurementPropertyID();
+    				//get the value
+    				Integer value = evalPropResBean.getPropertyEvalValue();
+    				
+    				//now gather the property's weight - if none defined the average is used.
+    				Integer propertyWeight = exp.getExperimentEvaluation().getOverallPropertyEvalWeight(propertyID);
+    				log.info(propertyID);
+    				log.info(exp.getExperimentEvaluation().getOverallPropertyEvalWeights());
+    				//also check for -1
+    				if((propertyWeight==null)){
+    					propertyWeight = 3;
+    				}
+    				
+    				//add information for calculation
+    				countEvaluationItems++;
+    				countWeights += value;
+    				countWeightEvaluationItems+=value*propertyWeight;
+    			}
+    			else{
+    				countNotEvaluationItems++;
+    			}
+    		}
     	}
-    	//get property weights
     	
-    	//get propertie's line evals - iterate over all inputDigitalObjects
-    	for(DigitalObjectBean digo : expBean.getExperimentInputDataValues()){
-    		
-    	}
-    	
-    	//calculate*/
-    	
-    	return 3;
+    	return countWeightEvaluationItems/countWeights;
     }
     
-    public void setCalculateOverallEvaluation(int i){
-    	//
+    public int getNumberOfEvaluatedProperties(){
+    	return countEvaluationItems;
     }
+    
+    public int getNumberOfNotEvaluatedProperties(){
+    	return countNotEvaluationItems;
+    }
+    
     
 }
