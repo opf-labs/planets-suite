@@ -66,12 +66,12 @@ public final class ContentTests {
     /** Equality tests for content objects. */
     @Test
     public void equality() {
-        ImmutableContent c1 = ImmutableContent.byReference(url);
+        Content c1 = ImmutableContent.byReference(url);
         Content c2 = ImmutableContent.byReference(url);
         assertEquals("Equal object don't equal;", c1, c2);
         assertEquals("Equal objects have different string representations;", c1
                 .toString(), c2.toString());
-        Set<ImmutableContent> set = new HashSet<ImmutableContent>(Arrays.asList(c1, c1, c1));
+        Set<Content> set = new HashSet<Content>(Arrays.asList(c1, c1, c1));
         assertEquals("Set contains duplicates;", 1, set.size());
 
     }

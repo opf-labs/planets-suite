@@ -65,7 +65,7 @@ public final class ImmutableContent implements Content {
      * @param reference The reference to the actual content value
      * @return A content instance referencing the given location
      */
-    public static ImmutableContent byReference(final URL reference) {
+    public static Content byReference(final URL reference) {
         return new ImmutableContent(reference);
     }
     

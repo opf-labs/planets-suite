@@ -21,6 +21,7 @@ import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -109,7 +110,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
             // output Files smaller than 10Mb
             if (sizeInKB < MAX_FILE_SIZE) {
                 try {
-                    resultDigOb = new DigitalObject.Builder(Content
+                    resultDigOb = new DigitalObject.Builder(ImmutableContent
                             .byValue(result))
                             .permanentUrl(
                                     new URL(
@@ -128,7 +129,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
                 File tmpResult = FileUtils.getTempFile(result, "tmpResult",
                         "tmp");
                 try {
-                    resultDigOb = new DigitalObject.Builder(Content
+                    resultDigOb = new DigitalObject.Builder(ImmutableContent
                             .byReference(tmpResult.toURI().toURL())).build();
                     sReport.setInfo("Success!!!");
                     sReport.setErrorState(0);

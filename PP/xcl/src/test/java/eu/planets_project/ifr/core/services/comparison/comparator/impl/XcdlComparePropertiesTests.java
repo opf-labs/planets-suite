@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
 import eu.planets_project.services.compare.CompareProperties;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -68,12 +68,12 @@ public final class XcdlComparePropertiesTests {
         CompareProperties c = ServiceCreator.createTestService(
                 CompareProperties.QNAME, XcdlCompareProperties.class, WSDL);
         /* The actual XCDL files: */
-        DigitalObject first = new DigitalObject.Builder(Content.byValue(data1))
+        DigitalObject first = new DigitalObject.Builder(ImmutableContent.byValue(data1))
                 .build();
-        DigitalObject second = new DigitalObject.Builder(Content.byValue(data2))
+        DigitalObject second = new DigitalObject.Builder(ImmutableContent.byValue(data2))
                 .build();
         /* The actual config file: */
-        DigitalObject configDigitalObject = new DigitalObject.Builder(Content
+        DigitalObject configDigitalObject = new DigitalObject.Builder(ImmutableContent
                 .byValue(configData)).build();
         byte[] configBytes = FileUtils
                 .writeInputStreamToBinary(configDigitalObject.getContent()
