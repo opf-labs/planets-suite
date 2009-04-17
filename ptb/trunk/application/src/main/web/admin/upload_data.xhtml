@@ -1,60 +1,205 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
 <body>
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
-  <ui:define name="title">
+	<ui:define name="title">
     Testbed : Upload Data
   </ui:define>
 
-<ui:define name="header">
-	<ui:include src="/WEB-INF/templates/header.xhtml">
-		<ui:param name="page" value="upload_data"/>
-	</ui:include>
-</ui:define>
+	<ui:define name="header">
+		<ui:include src="/WEB-INF/templates/header.xhtml">
+			<ui:param name="page" value="upload_data" />
+		</ui:include>
+	</ui:define>
 
-  <ui:define name="content">
+	<ui:define name="content">
 
-<div id="mainwrapper">
-<div id="maincol">
-<div class="innertubemain">
-<p>You may upload a zip / tar.gz file containing multiple folders and files via HTTP using this page.<br />
-Please note that for large amounts of data HTTP upload may timeout and an alternative upload method (see the left panel) may be more appropriate.</p>
-<form method="post" action="#" enctype="multipart/form-data">
-<fieldset>
-<legend>Attach File</legend>
-<p>
-<label for="exfile"><span style="color: red;">*</span>Zip File:</label>
-<input type="file" name="exfile" id="exfile" size="50" />
-</p>
+		<div id="mainwrapper">
+		<div id="maincol">
+		
+		<div class="innertubemain">
+		<h:form id="queryBrowseForm">
+		  <div class="filepane" style="height:445px; border-width:0px; padding:10px; width:100%">
+		   <div class="filebrowse" style="height:445px; margin:0px 10px 0px 0px; border-width:0px 2px 0px 0px; border-color: #579EC2; overflow:hidden;">
+				<t:tree2 id="filerTree" value="#{QueryBrowser.filerTree}" var="do" varNodeToggler="t" showRootNode="false" showLines="true" preserveToggle="true" clientSideToggle="false">
+				
+				<f:facet name="category">
+				        <h:panelGroup>
+				              <!--  h:commandLink action="success" -->
+				                <t:graphicImage value="/graphics/filetype_folder.gif" />
+				                <h:outputText value=" #{do.leafname}"/>
+				                
+				              <!--  /h:commandLink -->
+				        </h:panelGroup>
+				</f:facet>
+				
+				<f:facet name="querysource">
+				        <h:panelGroup>
+				              <h:commandLink action="success">
+				                <t:graphicImage value="/graphics/filetype_file.gif" />
+				                <h:outputText value=" #{do.leafname}"/>
+				                <t:updateActionListener property="#{QueryBrowser.dir}" value="#{do}" />
+				              </h:commandLink>
+				        </h:panelGroup>
+				</f:facet>
+				
+				</t:tree2>
+		   </div>
+		   
+		   <div class="filequery" style="margin-bottom:10px; width:100%; height:80px;">
+			<form>
+				<fieldset style="background-color:#BFDEEB; border-width:0px;">
+					<legend style="background-color:#BFDEEB; padding:4px 10px 4px 10px;">Query #{QueryBrowser.selectedAPI}</legend>
+					<p>
+					    <h:inputText size="50" style="margin-right:10px" value="#{QueryBrowser.query}" disabled="#{QueryBrowser.noAPISelected}" />
+         				
+         				<h:commandButton value="Search" action="#{QueryBrowser.startQuery}" disabled="#{QueryBrowser.noAPISelected}"/>
+					</p>
+				</fieldset>
+			</form>
+		   </div>
+		   
+		   <div class="filemain" style="height:345px; overflow:auto;">
+  
+    <div id="dataRegistryBrowser">
 
-</fieldset>
-<p class="submit"><input type="submit" value="Upload" /></p>
-</form>
+                <p>
+
+                <h:commandLink style="#{QueryBrowser.previousCSS}" action="#{QueryBrowser.previous}">
+                	previous
+                </h:commandLink>
+                &nbsp;|&nbsp;        
+                <h:commandLink style="#{QueryBrowser.nextCSS}" action="#{QueryBrowser.next}">
+                	next
+                </h:commandLink>
+                
+                <t:dataTable id="FileBrowserList" var="do" value="#{QueryBrowser.list}">
+                
+                <h:column>
+                  <h:selectBooleanCheckbox value="#{do.selected}"/> 
+                </h:column>
+                       
+                <h:column>
+                <f:facet name="header">#{res['browse_data.name']}</f:facet>
+                <h:panelGroup>
+                  <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+                  	<h:outputLink value="#{do.url}" target="_blank"><h:outputText value=" #{do.name}"/></h:outputLink>
+                </h:panelGroup>
+                </h:column>
+
+                <h:column>
+                <f:facet name="header">#{res['browse_data.size']}</f:facet>
+                #{do.size} kB
+                </h:column>
+                
+                <h:column>
+                <f:facet name="header">#{res['browse_data.type']}</f:facet>
+                #{do.format}
+                </h:column>
+                
+                </t:dataTable>
+                
+                </p>
+                
+                <p>
+                <h:commandLink style="#{QueryBrowser.previousCSS}" action="#{QueryBrowser.previous}">
+                	previous
+                </h:commandLink>
+                &nbsp;|&nbsp;        
+                <h:commandLink style="#{QueryBrowser.nextCSS}" action="#{QueryBrowser.next}">
+                	next
+                </h:commandLink>
+                </p>
+                
+                <p style="padding-top:20px">
+                <h:commandButton style="margin:2px" action="#{QueryBrowser.selectAll}" 
+                  value="#{res['browse_data.selectAll']}" disabled="#{QueryBrowser.resultListEmpty}"/>
+                <h:commandButton style="margin:2px" action="#{QueryBrowser.selectNone}"
+                  value="#{res['browse_data.selectNone']}" disabled="#{QueryBrowser.resultListEmpty}"/>
+                <h:commandButton style="margin:2px" action="#{QueryBrowser.ingest}"
+                  value="Ingest!" disabled="#{QueryBrowser.resultListEmpty}"/>
+                
+                </p>                
+    </div>
+   </div>
+		   
+		  </div>
+		</h:form>
+		</div>
+		
+		<!--  <div class="innertubemain"> -->
+		<!-- <fieldset><legend>OR: Harvest Remote Sources...</legend> <h:form --> 
+		<!--	method="post"> -->
+
+		<!--	<p><h:commandLink action=" HarvestYahooBean.start}"> -->
+		<!--		<h:outputText value=" HarvestYahooBean.name}" /> -->
+		<!--	</h:commandLink></p> -->
+
+		<!--	<p><h:commandLink action=" HarvestBlueMarbleBean.start}"> -->
+		<!--		<h:outputText value=" HarvestBlueMarbleBean.name}" /> -->
+		<!--	</h:commandLink></p> -->
+			
+		<!--	<p><h:commandLink action=" HarvestSRUBean.start}"> -->
+		<!--		<h:outputText value=" HarvestSRUBean.name}" /> -->
+		<!--	</h:commandLink></p> -->
+			
+		<!--	<p style="color:#ff0000"> -->
+		<!--		 HarvestYahooBean.lastStatusMessage} -->
+		<!--		 HarvestBlueMarbleBean.lastStatusMessage} -->
+		<!--		 HarvestSRUBean.lastStatusMessage} -->
+		<!--	</p> -->
+
+		<!-- </h:form></fieldset> -->
+		<!-- <p /> -->
+		<!-- </div> -->
+
+		<div class="innertubemain">
+		<p>You may upload a zip / tar.gz file containing multiple folders
+		and files via HTTP using this page.<br />
+		Please note that for large amounts of data HTTP upload may timeout and
+		an alternative upload method (see the left panel) may be more
+		appropriate.</p>
+		<form method="post" action="#" enctype="multipart/form-data">
+		<fieldset><legend>Attach File</legend>
+		<p><label for="exfile"><span style="color: red;">*</span>Zip
+		File:</label> <input type="file" name="exfile" id="exfile" size="50" /></p>
+
+		</fieldset>
+		<p class="submit"><input type="submit" value="Upload" /></p>
+		</form>
 
 
-</div>
-</div>
-</div>
+		</div>
+
+		</div>
+		</div>
 
 
-<div id="leftcol">
+		<div id="leftcol">
 
-<h3 class="leftcol">FTP Upload</h3>
-<div class="innertube">
-<p class="leftcol">Instructions for using FTP to upload files will go here.</p>
+		<h3 class="leftcol">FTP Upload</h3>
+		<div class="innertube">
+		<p class="leftcol">Instructions for using FTP to upload files will
+		go here.</p>
 
-</div>
+		</div>
 
-<h3 class="leftcol">SSH Upload</h3>
-<div class="innertube">
-<p class="leftcol">Instructions for using SSH / SCP to upload files will go here.</p>
+		<h3 class="leftcol">SSH Upload</h3>
+		<div class="innertube">
+		<p class="leftcol">Instructions for using SSH / SCP to upload
+		files will go here.</p>
 
-</div>
-</div>
-  </ui:define>
-  <ui:define name="footer">
-		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+		</div>
+		</div>
+	</ui:define>
+	<ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml" />
 	</ui:define>
 </ui:composition>
 
