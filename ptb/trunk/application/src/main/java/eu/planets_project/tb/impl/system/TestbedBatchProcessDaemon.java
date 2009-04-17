@@ -3,20 +3,15 @@
  */
 package eu.planets_project.tb.impl.system;
 
-import java.io.File;
 import java.util.Calendar;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
-import eu.planets_project.tb.gui.backing.ExperimentBean;
-import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
@@ -187,7 +182,7 @@ public class TestbedBatchProcessDaemon extends Thread {
     private void storeWorkflowResults(TestbedBatchJob job, WorkflowResult wfr,
             DigitalObject dob, String filename, BatchExecutionRecordImpl batch, Experiment exp ) {
         // Update the experiment from the job:
-        WorkflowResult.recordWorkflowResultToExperiment( wfr, filename, batch );
+        WorkflowResult.recordWorkflowResultToExperiment( exp.getEntityID(), wfr, filename, batch );
         edao.updateExperiment(exp);
     }
 

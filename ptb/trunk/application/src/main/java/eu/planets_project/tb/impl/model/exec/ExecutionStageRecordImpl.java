@@ -12,7 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 //import javax.persistence.OneToMany;
 //import javax.persistence.OneToOne;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,8 +47,8 @@ public class ExecutionStageRecordImpl implements Serializable {
     /** */
     private static final long serialVersionUID = 5405314146855620431L;
 
-//    @Id
-//    @GeneratedValue
+    @Id
+    @GeneratedValue
     @XmlTransient
     private long id;
     
@@ -53,14 +59,11 @@ public class ExecutionStageRecordImpl implements Serializable {
     private URL endpoint;
 
     /** The record of the service description at this time */
-//   @OneToOne(cascade={CascadeType.ALL})
-//    @OneToOne
+    @ManyToOne
     private ServiceRecordImpl serviceRecord;
     
     // The set of measured properties.
-//    @OneToMany
     private Vector<MeasurementRecordImpl> measurements = new Vector<MeasurementRecordImpl>();
-//    private List<MeasurementRecordImpl> measurements;
     private Vector<MeasurementRecordImpl> manualMeasurements = new Vector<MeasurementRecordImpl>();
     
     /** for JAXB */

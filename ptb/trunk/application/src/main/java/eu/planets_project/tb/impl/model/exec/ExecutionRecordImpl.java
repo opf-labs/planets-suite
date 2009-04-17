@@ -97,9 +97,7 @@ public class ExecutionRecordImpl implements Serializable {
     private Calendar date;
     
     /** The sequence of stages of this experiment. */
-//    @OneToMany
     private Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
-//    private List<ExecutionStageRecordImpl> stages;
    
     // The 'Result'
     private String resultType;
@@ -182,6 +180,7 @@ public class ExecutionRecordImpl implements Serializable {
      * @return the stages
      */
     public List<ExecutionStageRecordImpl> getStages() {
+        //if( stages == null ) stages = new Vector<ExecutionStageRecordImpl>();
         return stages;
     }
 

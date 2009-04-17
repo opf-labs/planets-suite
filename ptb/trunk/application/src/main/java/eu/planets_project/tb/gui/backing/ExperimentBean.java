@@ -1547,6 +1547,8 @@ public class ExperimentBean {
      */
     public void setSelectedExecutionRecord(
             ExecutionRecordImpl selectedExecutionRecord) {
+        if( selectedExecutionRecord != null )
+            log.info("Setting exec record: "+selectedExecutionRecord.getDigitalObjectSource());
         this.selectedExecutionRecord = selectedExecutionRecord;
     }
     
@@ -1554,6 +1556,9 @@ public class ExperimentBean {
      * @return the selectedBatchExecutionRecord
      */
     public BatchExecutionRecordImpl getSelectedBatchExecutionRecord() {
+        log.info("Getting exec record: "+selectedBatchExecutionRecord);
+        if( selectedExecutionRecord != null )
+            log.info("Getting exec record: "+selectedBatchExecutionRecord.getRuns().size());
         return selectedBatchExecutionRecord;
     }
 
@@ -1562,6 +1567,11 @@ public class ExperimentBean {
      */
     public void setSelectedBatchExecutionRecord(
             BatchExecutionRecordImpl selectedBatchExecutionRecord) {
+        log.info("Setting batch record: "+selectedBatchExecutionRecord);
+        if( selectedBatchExecutionRecord != null  ) {
+            log.info("Setting batch record runs: "+selectedBatchExecutionRecord.getRuns().size());
+        }
+        log.info("Setting batch record: "+selectedBatchExecutionRecord);
         this.selectedBatchExecutionRecord = selectedBatchExecutionRecord;
     }
     
@@ -1797,7 +1807,7 @@ public class ExperimentBean {
 			e.printStackTrace();
 		}
     	return null;
-    }´*/
+    }ï¿½*/
     
     /**
      * Gathers all manual experiment results over all experiment runs for a given measurement property and a selected inputDigitalObject (selDigORefStep5OverviewTable)

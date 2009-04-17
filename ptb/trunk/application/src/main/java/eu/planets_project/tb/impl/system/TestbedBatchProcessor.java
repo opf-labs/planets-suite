@@ -6,7 +6,7 @@ package eu.planets_project.tb.impl.system;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Queue;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,7 +23,7 @@ public class TestbedBatchProcessor {
     
     private TestbedBatchProcessDaemon daemon;
     private HashMap<String,TestbedBatchJob> jobs = new HashMap<String,TestbedBatchJob>();
-    private Queue<String> jobsQueued = new PriorityBlockingQueue<String>();
+    private Queue<String> jobsQueued = new LinkedBlockingQueue<String>();
     private int job_id = 0;
     
     public TestbedBatchProcessor() {

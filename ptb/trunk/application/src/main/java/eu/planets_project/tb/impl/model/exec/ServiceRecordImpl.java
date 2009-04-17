@@ -5,11 +5,18 @@ package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
-import javax.persistence.Embeddable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,16 +26,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
-import eu.planets_project.tb.gui.backing.ServiceBrowser;
-import eu.planets_project.tb.impl.TestbedManagerImpl;
+import eu.planets_project.tb.api.persistency.ServiceRecordPersistencyRemote;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
+import eu.planets_project.tb.impl.persistency.ServiceRecordPersistencyImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-@Embeddable
+@Entity
 @XmlRootElement(name = "ExecutionRecord")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ServiceRecordImpl implements Serializable {
@@ -37,18 +45,25 @@ public class ServiceRecordImpl implements Serializable {
     /** */
     private static final long serialVersionUID = -510307823143330587L;
     
-//    @Id
-//    @GeneratedValue
+    @Id
+    @GeneratedValue
     @XmlTransient
-    private long id;
+    private long id = -1;
 
     private String serviceName;
     
     private String serviceVersion;
     
-    private String toolVersion;
+    private String serviceType;
     
-    @Id
+    private String endpoint;
+    
+    private String toolIdentifier;
+
+    private String toolName;
+
+    private String toolVersion;
+
     private String serviceHash;
     
     private String host;
@@ -56,6 +71,9 @@ public class ServiceRecordImpl implements Serializable {
     private String serviceDescription;
     
     private Calendar dateFirstSeen;
+    
+    // List of experiment IDs that saw this service record.
+    HashSet<Long> experimentIds = new HashSet<Long>();
 
     /**
      * @return the id
@@ -86,6 +104,20 @@ public class ServiceRecordImpl implements Serializable {
     }
 
     /**
+     * @param serviceType the serviceType to set
+     */
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+    /**
+     * @return the serviceType
+     */
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    /**
      * @return the serviceVersion
      */
     public String getServiceVersion() {
@@ -97,6 +129,48 @@ public class ServiceRecordImpl implements Serializable {
      */
     public void setServiceVersion(String serviceVersion) {
         this.serviceVersion = serviceVersion;
+    }
+
+    /**
+     * @return the endpoint
+     */
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    /**
+     * @param endpoint the endpoint to set
+     */
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    /**
+     * @param toolName the toolName to set
+     */
+    public void setToolName(String toolName) {
+        this.toolName = toolName;
+    }
+
+    /**
+     * @return the toolName
+     */
+    public String getToolName() {
+        return toolName;
+    }
+
+    /**
+     * @param toolIdentifier the toolIdentifier to set
+     */
+    public void setToolIdentifier(String toolIdentifier) {
+        this.toolIdentifier = toolIdentifier;
+    }
+
+    /**
+     * @return the toolIdentifier
+     */
+    public String getToolIdentifier() {
+        return toolIdentifier;
     }
 
     /**
@@ -178,33 +252,11 @@ public class ServiceRecordImpl implements Serializable {
     }
     
     /**
-     * 
-     * @param sd
-     * @return
+     * @return the invocations
      */
-    public static ServiceRecordImpl createServiceRecordFromDescription( ServiceDescription sd ) {
-        log.info("Creating service record for SD = "+sd.getName());
-        // This is the unique service identifier:
-        String serviceHash = ""+sd.hashCode();
-        
-        // Look to see if there is already a matching ServiceRecord...
-        TestbedManagerImpl managerImpl = TestbedManagerImpl.getInstance();
-        ExperimentPersistencyRemote epr = managerImpl.getExperimentPersistencyRemote();
-        // FIXME Make this work so service records are recorded.
-        //ServiceRecordImpl esr = epr.findServiceRecordByHashcode(serviceHash);
-        //if( esr != null ) return esr;
-
-        // Otherwise, create a new one.
-        ServiceRecordImpl sr = new ServiceRecordImpl();
-        // Fill out:
-        sr.setServiceName( sd.getName() );
-        sr.setServiceVersion( sd.getVersion() );
-        //sr.setToolVersion(sd.getProperties().get(index)); ???
-        sr.setServiceHash(serviceHash);
-        sr.setHost(sd.getEndpoint().getHost());
-        sr.setServiceDescription(sd);
-        sr.setDateFirstSeen(Calendar.getInstance());
-        return sr;
+    public Set<Long> getExperimentIds() {
+        if( experimentIds == null ) experimentIds = new HashSet<Long>();
+        return experimentIds;
     }
 
     /* (non-Javadoc)
@@ -275,6 +327,75 @@ public class ServiceRecordImpl implements Serializable {
         return true;
     }
     
+    /* ------------------------------------------------------------------------------- */
+    
+    /**
+     * 
+     * @param sd
+     * @return
+     */
+    public static ServiceRecordImpl createServiceRecordFromDescription( long eid, ServiceDescription sd, Calendar date ) {
+        log.info("Creating service record for SD = "+sd.getName());        
+        // Look to see if there is already a matching ServiceRecord...
+        ServiceRecordPersistencyRemote srp = ServiceRecordPersistencyImpl.getInstance();
+        
+        // This is the unique service identifier:
+        String serviceHash = ""+sd.hashCode();
+        log.info("Looking for existing service record with hash: "+serviceHash);
+        
+        // Ensure service records are recorded.
+        ServiceRecordImpl sr = srp.findServiceRecordByHashcode(serviceHash);
+        if( sr != null ) {
+            log.info("Adding eid "+eid+" to service record for "+sr.getServiceName());
+            sr.getExperimentIds().add(Long.valueOf(eid));
+            log.info("Got "+sr.getExperimentIds().size());
+            srp.updateServiceRecord(sr);
+            return sr;
+        }
+
+        // Otherwise, create a new one.
+        sr = new ServiceRecordImpl();
+        log.info("Creating new Service Record...");
+//      sr.getExperiments().get(0).getExperimentSetup().getBasicProperties().getExperimentName();
+//      sr.getExperiments().get(0).getExperimentExecutable().getNumBatchExecutionRecords();
+        
+        // Fill out:
+        sr.setServiceName( sd.getName() );
+        sr.setServiceVersion( sd.getVersion() );
+        sr.setServiceType( sd.getType() );
+        sr.setEndpoint(sd.getEndpoint().toString());
+        if( sd.getTool() != null ) {
+            sr.setToolName(sd.getTool().getName());
+            sr.setToolVersion(sd.getTool().getVersion());
+            if( sd.getTool().getIdentifier() != null ) {
+                sr.setToolIdentifier(sd.getTool().getIdentifier().toString());
+            }
+        }
+        sr.setServiceHash(serviceHash);
+        sr.setHost(sd.getEndpoint().getHost());
+        sr.setServiceDescription(sd);
+        sr.setDateFirstSeen(date);
+        if( eid > -1 ) {
+            sr.getExperimentIds().add( Long.valueOf(eid));
+        }
+        // Persist:
+        long srid = srp.persistServiceRecord(sr);
+        
+        // Return the persisted record:
+        return srp.findServiceRecord(srid);
+    }
+
+    /**
+     * @return
+     */
+    public List<Experiment> getExperiments() {
+        ExperimentPersistencyRemote ep = ExperimentPersistencyImpl.getInstance();
+        List<Experiment> exps = new Vector<Experiment>();
+        for( Long eid : this.getExperimentIds() ) {
+            exps.add( ep.findExperiment( eid.longValue() ));
+        }
+        return exps;
+    }
     
 
 }

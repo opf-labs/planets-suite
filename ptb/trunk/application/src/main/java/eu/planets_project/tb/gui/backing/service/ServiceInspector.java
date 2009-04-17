@@ -3,9 +3,14 @@
  */
 package eu.planets_project.tb.gui.backing.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
@@ -23,14 +28,20 @@ public class ServiceInspector {
 
     private String serviceName;
     
+    private String serviceHash;
+    
     private ServiceRecordBean srb = null;
+    
+    private List<ServiceRecordBean> srbs = new ArrayList<ServiceRecordBean>();
 
     /**
      * @param serviceName
      */
     public void setServiceName(String serviceName) { 
         this.serviceName = serviceName; 
-        lookForService(); 
+        if( serviceName != null && ! "".equals(serviceName)) {
+            lookForService(); 
+        }
     }
 
     /**
@@ -39,13 +50,33 @@ public class ServiceInspector {
     public String getServiceName() { 
         return serviceName; 
     }
+    
+    
+    /**
+     * @param serviceHash the serviceHash to set
+     */
+    public void setServiceHash(String serviceHash) {
+        this.serviceHash = serviceHash;
+        if( serviceHash != null && ! "".equals(serviceHash)) {
+            lookForServiceByHash(); 
+        }
+    }
+
+    /**
+     * @return the serviceHash
+     */
+    public String getServiceHash() {
+        return serviceHash;
+    }
+
 
     /**
      * 
      */
     private void lookForService() {
         log.info("Looking up service: " + this.serviceName);
-        if( this.serviceName == null ) this.srb = null;
+        this.srbs = new ArrayList<ServiceRecordBean>();
+        if( this.serviceName == null ) return;
         
         // Get the service browser:
         ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
@@ -53,19 +84,94 @@ public class ServiceInspector {
         // Need a consistent way of getting the full record...
         for( ServiceRecordBean srb : sb.getAllServicesAndRecords() ) {
             if( this.serviceName.equals(srb.getName()) ) {
-                 this.srb = srb;
-                 // FIXME Return the first hit:
-                 return;
+                log.info("Found matching Service Record Bean: "+srb.getName()+" : "+srb.getServiceRecord() );
+                 this.srbs.add(srb);
             }
         }
-        this.srb = null;
     }
+
+    /**
+     * 
+     */
+    private void lookForServiceByHash() {
+        log.info("Looking up service: " + this.serviceHash);
+        if( this.serviceHash == null ) return;
+        
+        // Get the service browser:
+        ServiceBrowser sb = (ServiceBrowser)JSFUtil.getManagedObject("ServiceBrowser");
+        
+        // Need a consistent way of getting the full record...
+        for( ServiceRecordBean srb : sb.getAllServicesAndRecords() ) {
+            if( this.serviceHash.equals(srb.getServiceHash()) ) {
+                log.info("Found matching Service Record Bean: "+srb.getName()+" : "+srb.getServiceRecord() );
+                 this.srb = srb;
+            }
+        }
+    }
+
 
     /**
      * @return
      */
     public ServiceRecordBean getService() {
+        if( this.srb == null ) {
+            if( this.srbs.size() > 0 ) {
+                return this.srbs.get(0);
+            }
+        }
+        
         return this.srb;
+    }
+    
+    public List<Experiment> getExperiments() {
+        // Single Services:
+        if( this.srb != null ) {
+            if( srb.getServiceRecord() != null ) {
+                return srb.getServiceRecord().getExperiments();
+            } else {
+                return new ArrayList<Experiment>();
+            }
+        }
+        // Lists:
+        HashMap<Long,Experiment> exps = new HashMap<Long,Experiment>();
+        if( this.srbs != null ) {
+            for( ServiceRecordBean srb : srbs ) {
+                if( srb.getServiceRecord() != null ) {
+                    for( Experiment exp : srb.getServiceRecord().getExperiments() ) {
+                        exps.put(Long.valueOf(exp.getEntityID()), exp);
+                    }
+                }
+            }
+        }
+        return new ArrayList<Experiment>(exps.values());
+    }
+    
+    public int getNumberOfExperiments() {
+        // Single Services:
+        if( this.srb != null ) {
+            if( srb.getServiceRecord() != null ) {
+                return srb.getServiceRecord().getExperimentIds().size();
+            } else {
+                return 0;
+            }
+        }
+        // Lists:
+        int n = 0;
+        if( this.srbs != null ) {
+            for( ServiceRecordBean srb : srbs ) {
+                if( srb.getServiceRecord() != null ) {
+                    n += srb.getServiceRecord().getExperimentIds().size();
+                }
+            }
+        }
+        return n;
+    }
+
+    /**
+     * @return
+     */
+    public List<ServiceRecordBean> getServiceVersions() {
+       return this.srbs;
     }
 
 }

@@ -29,10 +29,10 @@
             <p>The following services are currently available for experimentation in the Testbed.  Click on a service name to find out more about it.</p>
     <h:form>
    
-    <!--  # ServiceBrowser.experimentServiceRecordFixLog -->
+    <!-- This is a hack to update the DB : # ServiceBrowser.experimentServiceRecordFixLog  (ANJ) -->
 
-        <rich:dataTable value="#{ServiceBrowser.allServicesAndRecords}" var="sd"
-        reRender="services_ds" styleClass="tbTable">
+        <rich:dataTable value="#{ServiceBrowser.allServiceRecordsByName}" var="sd"
+         styleClass="tbTable" sortMode="single"><!-- reRender="services_ds"  -->
         
                     
             <rich:column sortBy="#{sd.name}"> 
@@ -45,11 +45,18 @@
                 </h:outputLink>
             </rich:column>
             
-            <rich:column sortBy="#{sd.type}" sortOrder="ASCENDING">
+            <rich:column sortBy="#{sd.nameRecord.type}" sortOrder="ASCENDING">
                 <f:facet name="header">
                     <h:outputText value="Type"/>
                 </f:facet>
-                <h:outputText value="#{sd.type}"/> 
+                <h:outputText value="#{sd.nameRecord.type}"/> 
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.numberOfExperiments}" sortOrder="ASCENDING">
+                <f:facet name="header">
+                    <h:outputText value="# Experiments"/>
+                </f:facet>
+                <h:outputText value="#{sd.numberOfExperiments}"/> 
             </rich:column>
             
             <rich:column>
@@ -57,12 +64,12 @@
                     <h:outputText value="Description"/>
                 </f:facet>
                 
-                <h:panelGroup rendered="#{sd.logo != null}">
-                  <img src="#{sd.logo}" height="32" style="float: right; height: 32px;" title="#{sd.name}" alt="#{sd.name}"/>
+                <h:panelGroup rendered="#{sd.nameRecord.logo != null}">
+                  <img src="#{sd.nameRecord.logo}" height="32" style="float: right; height: 32px;" title="#{sd.name}" alt="#{sd.name}"/>
                 </h:panelGroup>
                 
-                <h:outputText value="#{sd.description}"/>
-                <h:outputLink rendered="#{sd.furtherInfo != null}" value="#{sd.furtherInfo}" target="_new"> <t:graphicImage value="/graphics/external-link.png" alt="Open service info in new window..."/></h:outputLink>
+                <h:outputText value="#{sd.nameRecord.description}"/>
+                <h:outputLink rendered="#{sd.nameRecord.furtherInfo != null}" value="#{sd.nameRecord.furtherInfo}" target="_new"> <t:graphicImage value="/graphics/external-link.png" alt="Open service info in new window..."/></h:outputLink>
             </rich:column>
             
 <!-- 

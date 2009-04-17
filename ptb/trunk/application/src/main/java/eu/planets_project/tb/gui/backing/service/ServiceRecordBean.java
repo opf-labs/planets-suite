@@ -5,6 +5,7 @@ package eu.planets_project.tb.gui.backing.service;
 
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -32,12 +33,16 @@ public class ServiceRecordBean {
     
     /** Is this service usable given current GUI parameters? */
     private boolean enabled = true;
+    
+    /** Experiments that used this service: */
+    private List<Experiment> experiments = new ArrayList<Experiment>();;
 
     /**
      * @param sr
      */
     public ServiceRecordBean(ServiceRecordImpl sr) {
         this.sr = sr;
+        this.experiments = sr.getExperiments();
     }
 
     /**
@@ -132,7 +137,14 @@ public class ServiceRecordBean {
      * @return
      */
     public List<Experiment> getExperiments() {
-        return null;
+        return experiments;
+    }
+
+    /**
+     * @return
+     */
+    public long getNumberOfExperiments() {
+        return experiments.size();
     }
 
     /**
@@ -225,6 +237,7 @@ public class ServiceRecordBean {
 
     /* (non-Javadoc)
      * @see java.lang.Object#hashCode()
+     * FIXME Is this appropriate?
      */
     @Override
     public int hashCode() {
@@ -236,6 +249,7 @@ public class ServiceRecordBean {
 
     /* (non-Javadoc)
      * @see java.lang.Object#equals(java.lang.Object)
+     * FIXME Is this appropriate?
      */
     @Override
     public boolean equals(Object obj) {
@@ -244,6 +258,15 @@ public class ServiceRecordBean {
             return this.getEndpoint().equals(srb.getEndpoint());
         }
         return super.equals(obj);
+    }
+
+    /**
+     * @return
+     */
+    public String getServiceHash() {
+        if( sd != null ) return ""+sd.hashCode();
+        if( this.sr != null ) return sr.getServiceHash();
+        return null;
     }
     
     

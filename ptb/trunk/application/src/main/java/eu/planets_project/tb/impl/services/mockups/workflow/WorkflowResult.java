@@ -114,7 +114,7 @@ public class WorkflowResult {
      * @param wfr
      * @param exp
      */
-    public static void recordWorkflowResultToExperiment(WorkflowResult wfr, String filename,
+    public static void recordWorkflowResultToExperiment(long eid, WorkflowResult wfr, String filename,
             BatchExecutionRecordImpl batch ) {
         DataHandler dh = new DataHandlerImpl();
         try {
@@ -151,8 +151,10 @@ public class WorkflowResult {
                 // Now pull out the stages, which include the measurements etc:
                 for( ExecutionStageRecordImpl stage : wfr.getStages() ) {
                     // FIXME Can this be done from the session's Service Registry instead, please!
-                    log.info("Recording info about endpoint: "+stage.getEndpoint());
-                    stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( stage.getEndpoint()) );
+                    if( stage.getEndpoint() != null ) {
+                        log.info("Recording info about endpoint: "+stage.getEndpoint());
+                        stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( eid, stage.getEndpoint(), Calendar.getInstance() ) );
+                    }
                     // Re-reference this stage object from the Experiment:
                     stages.add(stage);
                 }

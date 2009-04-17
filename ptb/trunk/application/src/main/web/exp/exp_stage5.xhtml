@@ -141,7 +141,7 @@
         <f:facet name="header">Execution Date</f:facet>
         <a4j:commandLink reRender="execResultsDetailPanel,batchExecRecordsTable">
           	<f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
-        	<h:outputText value="#{batch.endDate.time}" styleClass="#{ ( ExperimentBean.selectedBatchExecutionRecord.endDate.time eq batch.endDate.time ) ? 'isSelected' : 'isNotSelected'}" >
+        	<h:outputText value="#{batch.startDate.time}" styleClass="#{ ( ExperimentBean.selectedBatchExecutionRecord.startDate.time eq batch.startDate.time ) ? 'isSelected' : 'isNotSelected'}" >
           		<f:convertDateTime type="both" dateStyle="short"/>
         	</h:outputText>
         </a4j:commandLink>

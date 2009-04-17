@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,14 +35,19 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
+import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
+import eu.planets_project.tb.api.persistency.ServiceRecordPersistencyRemote;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.backing.service.PathwayBean;
 import eu.planets_project.tb.gui.backing.service.ServiceRecordBean;
+import eu.planets_project.tb.gui.backing.service.ServiceRecordsByNameBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
+import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
+import eu.planets_project.tb.impl.persistency.ServiceRecordPersistencyImpl;
 import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
 import eu.planets_project.ifr.core.registry.api.Registry;
@@ -588,7 +594,7 @@ public class ServiceBrowser {
      * @param string
      * @return
      */
-    public static ServiceRecordImpl createServiceRecordFromEndpoint(URL endpoint) {
+    public static ServiceRecordImpl createServiceRecordFromEndpoint(long eid, URL endpoint, Calendar date) {
         if( endpoint == null ) return null;
         
         ServiceRecordImpl sr = null;
@@ -601,7 +607,7 @@ public class ServiceBrowser {
         
         if( result != null && result.size() > 0 ) {
             ServiceDescription sd = result.get(0);
-            sr = ServiceRecordImpl.createServiceRecordFromDescription(sd);
+            sr = ServiceRecordImpl.createServiceRecordFromDescription(eid, sd, date);
         }
         
         return sr;
@@ -615,8 +621,9 @@ public class ServiceBrowser {
     public String getExperimentServiceRecordFixLog() {
         log.info("Looking through the experiments...");
         long start = System.currentTimeMillis();
-        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-        Collection<Experiment> allExps = testbedMan.getAllExperiments();
+        
+        ExperimentPersistencyRemote ep = ExperimentPersistencyImpl.getInstance();
+        Collection<Experiment> allExps = ep.queryAllExperiments();
         log.debug("Found "+allExps.size()+" experiment(s).");
         
         // Loop through, looking for missing service records.
@@ -632,8 +639,12 @@ public class ServiceBrowser {
                             if( sr != null ) {
                                 log.info("Got old service name: " + sr.getServiceName() );
                                 log.info("Got old service desc: " + sr.getServiceDescription() );
-                                if( sr.getServiceDescription() != null ) {
+                                log.info("Looking to patch in new service record... "+sr.getId());
+                                if( sr.getServiceDescription() != null && sr.getId() == -1 ) {
                                     log.info("Got old service desc name: " + sr.getServiceDescription().getName() );
+                                    ServiceRecordImpl newSR = ServiceRecordImpl.createServiceRecordFromDescription(exp.getEntityID(), sr.getServiceDescription(), exp.getStartDate());
+                                    stage.setServiceRecord(newSR);
+                                    ep.updateExperiment(exp);
                                 }
                                 log.info("Got old service host: " + sr.getHost() );
                             } else {
@@ -648,6 +659,28 @@ public class ServiceBrowser {
         log.info("Done looking: in " + (finish-start)/1000.0 + "s");
         return null;
     }
+
+    /**
+     * @return
+     */
+    public List<ServiceRecordsByNameBean> getAllServiceRecordsByName() {
+        HashMap<String,ServiceRecordsByNameBean> sbn = new HashMap<String,ServiceRecordsByNameBean>();
+        
+        // Get all the known, unique service records.
+        List<ServiceRecordBean> records = this.getAllServicesAndRecords();
+
+        // Aggregate those into a list of new service-by-name:
+        for( ServiceRecordBean srb : records ) {
+            if( sbn.containsKey(srb.getName()) ) {
+                // Add this SRB to the content:
+                sbn.get(srb.getName()).addServiceRecord(srb);
+            } else {
+                sbn.put(srb.getName(), new ServiceRecordsByNameBean(srb) );
+            }
+        }
+        
+        return new ArrayList<ServiceRecordsByNameBean>( sbn.values() );
+    }
     
     /**
      * 
@@ -657,26 +690,23 @@ public class ServiceBrowser {
         // Use a hash map to build up the list.
         HashMap<String,ServiceRecordBean> serviceMap = new HashMap<String,ServiceRecordBean>();
         // Get the historical service records:
-        /* FIXME Make this work properly.
-        TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
-        List<ServiceRecordImpl> serviceRecords = testbedMan.getExperimentPersistencyRemote().getServiceRecords();
-        for( ServiceRecordImpl sr : serviceRecords ) {
-            if( sr != null ) {
-                serviceMap.put(sr.getServiceHash(), new ServiceRecordBean(sr) );
-            }
+        ServiceRecordPersistencyRemote srp = ServiceRecordPersistencyImpl.getInstance();
+        for( ServiceRecordImpl sr : srp.getAllServiceRecords() ) {
+            log.info("Putting service record: "+sr.getServiceName()+" : '"+sr.getServiceHash()+"'");
+            serviceMap.put(sr.getServiceHash(), new ServiceRecordBean(sr) );
         }
-        */
 
         // Now get the active services and patch these records in:
         List<ServiceDescription> serviceList = getListOfServices(null);
         log.info("Query result: "+serviceList);
         if( serviceList != null ) log.info("Matched services = "+serviceList.size());
         for( ServiceDescription sd : serviceList ) {
-            log.info("Looking at service: "+sd.getName());
-            if( serviceMap.containsKey(sd.hashCode()) ) {
-                serviceMap.get(sd.hashCode()).setServiceDescription(sd);
+            if( serviceMap.containsKey(""+sd.hashCode()) ) {
+                log.info("Updating bean for service: "+sd.getName()+" : '"+sd.hashCode()+"'");
+                serviceMap.get(""+sd.hashCode()).setServiceDescription(sd);
             } else {
                 serviceMap.put(""+sd.hashCode(), new ServiceRecordBean(sd) );
+                log.info("Putting in service: "+sd.getName()+" : '"+sd.hashCode()+"'");
             }
         }
 

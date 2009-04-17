@@ -32,10 +32,12 @@ import org.apache.myfaces.custom.tree2.TreeWalker;
  *
  */
 public class CommentBacking implements java.io.Serializable {
-    static final long serialVerionUID = 1283216316723l;
+    
+    /** */
+    private static final long serialVersionUID = 1283216316723l;
     
     // A logger for this bean
-    private Log log = LogFactory.getLog(CommentBacking.class);
+    private transient Log log = LogFactory.getLog(CommentBacking.class);
 
     // The currently-being-edited comment:
     String commentId;
@@ -46,7 +48,7 @@ public class CommentBacking implements java.io.Serializable {
     String time;
     
     // The comment manager:
-    CommentManager cm = CommentManagerImpl.getInstance();
+    transient CommentManager cm = CommentManagerImpl.getInstance();
     
     // The experimental phase this comment pertains to
     String expPhase = ExperimentPhase.PHASENAME_EXPERIMENTSETUP;
@@ -55,7 +57,7 @@ public class CommentBacking implements java.io.Serializable {
     private String parentURI = null;
 
     // UI Data
-    HtmlTree htmlTree;
+    transient HtmlTree htmlTree;
     
     // Default maximum title length
     static int TITLE_LENGTH = 30;
@@ -87,7 +89,7 @@ public class CommentBacking implements java.io.Serializable {
         Comment c = cm.getComment(getlCommentID());
         this.title = c.getTitle();
         this.comment = c.getComment();
-        this.parentId = new Long(c.getParentID()).toString();
+        this.parentId = Long.valueOf(c.getParentID()).toString();
         this.author = c.getAuthorID();
         this.expPhase = c.getExperimentPhaseID();
         // Format the date:
@@ -314,7 +316,7 @@ public class CommentBacking implements java.io.Serializable {
             CommentTreeNode cnode = new CommentTreeNode();
             cnode.setTitle(c.getTitle());
             cnode.setBody(c.getComment());
-            cnode.setIdentifier(new Long(c.getCommentID()).toString());
+            cnode.setIdentifier(Long.valueOf( c.getCommentID() ).toString() );
             cnode.setAuthor(c.getAuthorID());
             // Format the date:
             java.text.DateFormat df = java.text.DateFormat.getDateTimeInstance();

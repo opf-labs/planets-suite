@@ -1357,7 +1357,9 @@ public class NewExpWizardController{
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
           ExperimentPersistencyRemote epr = testbedMan.getExperimentPersistencyRemote();
           Experiment exp = epr.findExperiment(expBean.getExperiment().getEntityID());
-          ExpBeanReqManager.putExperimentIntoSessionExperimentBean( exp );
+          expBean.setExperiment(exp);
+          // Only updates the exp itself, as only the BG data might have changed.
+//          ExpBeanReqManager.putExperimentIntoSessionExperimentBean( exp );
 	  }
 	  
 	  /*

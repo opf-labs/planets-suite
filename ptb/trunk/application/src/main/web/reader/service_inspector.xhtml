@@ -12,7 +12,7 @@
 
 <ui:composition template="/WEB-INF/templates/main_template.xhtml">
   <ui:define name="title">
-        #{res.title} - #{res['browse_services.pageTitle']}
+        #{res.title} - Inspecting Service #{ServiceInspector.serviceName}
   </ui:define>
 
 	<ui:define name="header">
@@ -28,8 +28,121 @@
 	<div class="innertubemain">
 
     <h:form>
+
+    <!-- Persist the service name through POST, if any. -->    
+    <input type="hidden" name="serviceName" value="#{ServiceInspector.service.name}" />
+
+    <h:panelGroup rendered="#{ServiceInspector.service != null}">
     
-    <h:panelGroup id="serviceInspector" styleClass="serviceInspectorPanel" rendered="#{ServiceInspector.service != null}">
+<h:panelGrid columns="2" columnClasses="serviceInspectorCol">
+<rich:panel>
+<f:facet name="header">In The Testbed</f:facet>
+
+      <h3>Experiments</h3>
+        
+      <p>
+       <h:outputText value="#{ServiceInspector.service.name} has been used in #{ServiceInspector.numberOfExperiments} experiments."/>
+      </p>
+
+      <rich:dataTable var="exp" value="#{ServiceInspector.experiments}" styleClass="tbTable" width="100%" sortMode="single">
+
+       <rich:column sortBy="#{exp.experimentSetup.basicProperties.experimentName}" sortOrder="ASCENDING">
+         <f:facet name="header">
+          <h:outputText value="Name"/>
+         </f:facet>
+        <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}"/>
+       </rich:column>
+        
+       <rich:column sortBy="#{exp.experimentSetup.experimentTypeName}">
+         <f:facet name="header">
+          <h:outputText value="Type"/>
+         </f:facet>
+         <h:outputText value="#{exp.experimentSetup.experimentTypeName}" />
+       </rich:column>
+       
+       <rich:column sortBy="#{exp.experimentSetup.basicProperties.experimenter}">
+         <f:facet name="header">
+          <h:outputText value="User"/>
+         </f:facet>
+        <h:outputText value="#{exp.experimentSetup.basicProperties.experimenter}"/>
+       </rich:column>
+       
+       <rich:column sortBy="#{exp.experimentExecutable.numberOfInputs}">
+         <f:facet name="header">
+          <h:outputText value="Inputs"/>
+         </f:facet>
+        <h:outputText value="#{exp.experimentExecutable.numberOfInputs}"/>
+       </rich:column>
+
+       <rich:column sortBy="#{exp.experimentExecutable.numBatchExecutionRecords}">
+         <f:facet name="header">
+          <h:outputText value="Runs"/>
+         </f:facet>
+         <h:outputText value="#{exp.experimentExecutable.numBatchExecutionRecords}" />
+       </rich:column>
+
+      </rich:dataTable>
+            
+        <a4j:status>
+            <f:facet name="start">
+                  <h:graphicImage value="/graphics/spinner.gif"/>
+            </f:facet>
+        </a4j:status>
+        
+        
+      <h3>Versions</h3>
+
+        <rich:dataTable value="#{ServiceInspector.serviceVersions}" var="sd"
+         styleClass="tbTable" sortMode="single" width="100%">
+                    
+            <rich:column sortBy="#{sd.name}"> 
+                <f:facet name="header">
+                    <h:outputText value="Name"/>
+                </f:facet>
+                <h:outputLink value="service_inspector.faces">
+                    <f:param name="serviceName" value="#{sd.name}"/>
+                    <f:param name="serviceHash" value="#{sd.serviceHash}"/>
+                    <h:outputText value="#{sd.name}"/>
+                </h:outputLink>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.endpoint.host}"> 
+                <f:facet name="header">
+                    <h:outputText value="Host"/>
+                </f:facet>
+                <h:outputLink value="#{sd.endpoint}">
+                    <h:outputText value="#{sd.endpoint.host}"/>
+                </h:outputLink>
+            </rich:column>
+
+            <rich:column sortBy="#{sd.serviceDescription.version}"> 
+                <f:facet name="header">
+                    <h:outputText value="Version"/>
+                </f:facet>
+                <h:outputText value="#{sd.serviceDescription.version}"/>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.active}" sortOrder="DESCENDING"> 
+                <f:facet name="header">
+                    <h:outputText value="Active?"/>
+                </f:facet>
+                <h:outputText value="#{sd.active}"/>
+            </rich:column>
+            
+            <rich:column sortBy="#{sd.used}"> 
+                <f:facet name="header">
+                    <h:outputText value="Used?"/>
+                </f:facet>
+                <h:outputText value="#{sd.used}"/>
+            </rich:column>
+            
+        </rich:dataTable>
+        
+</rich:panel>
+<rich:panel>
+<f:facet name="header">Service Description</f:facet>
+
+     <h:panelGroup id="serviceInspector" styleClass="serviceInspectorPanel">    
       <h:panelGroup rendered="#{ServiceInspector.service.logo != null}">
         <img src="#{ServiceInspector.service.logo}" style="float: right;" title="#{ServiceInspector.service.name}" alt="#{ServiceInspector.service.name}"/>
       </h:panelGroup>
@@ -93,16 +206,23 @@
       
        <dt>Paths, Parameters &amp; Properties...</dt>
        <dd>To Be Added...</dd>
+
+       <dt>Testbed Service Instance Identifier</dt>
+       <dd>Hashcode of service description: #{ServiceInspector.service.serviceHash}</dd>
       
       </dl>
 
-      
-      <rich:simpleTogglePanel switchType="client" label="Raw Service Description" opened="false">
+       
+      <rich:simpleTogglePanel id="rawServiceDescriptionPanel" switchType="client" label="Raw Service Description" opened="false">
         <pre class="rawServiceDescription">
 <h:outputText value="#{ServiceInspector.service.serviceDescriptionAsXml}"/>
         </pre>
       </rich:simpleTogglePanel>
       
+     </h:panelGroup>
+</rich:panel>
+</h:panelGrid>
+
     </h:panelGroup>
     
     <h:panelGroup rendered="#{ServiceInspector.service == null}">
@@ -110,9 +230,6 @@
     </h:panelGroup>
     
 
-    <!-- Persist the service name through POST, if any. -->    
-    <h:inputHidden id="serviceName" value="#{ServiceInspector.serviceName}" />
-    
     </h:form>
     
     
