@@ -48,7 +48,7 @@
        <ui:param name="ExperimentPhase" value="2" />
        <ui:param name="PlaceBandAsHeader" value="true" />
     </ui:include>
-
+    <p>At this stage you can specify the design your experiment.  This involves selecting an <b>experiment type</b> and one or more <b>preservation services</b> in the left-hand section of the page, and selecting the <b>digital objects</b> you wish to pass through your chosen services in the right-hand section of the page.</p>
       <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
   
         <c:if test="#{ExperimentBean.oldExperiment}">
@@ -105,11 +105,15 @@
            <ui:param name="ExperimentPhase" value="2" />
         </ui:include>
 		
-		<h3 class="leftcol">Planets FTP Area</h3>
+		<h3 class="leftcol">Testbed FTP Area</h3>
         <div class="innertube">        
-        <p class="leftcol">You may upload data to the PLANETS FTP area using your wiki username and password and the following host name and port number:</p>        
-		<p class="leftcol">Host name: <br/><b>ftp://www.planets-project.eu</b></p>     
-		<p class="leftcol">Port number: <br/><b>1924</b></p>           
+        <p class="leftcol">you may upload data to the Testbed FTP area using the details provided during registration.
+</p>        
+                </div>
+		<h3 class="leftcol">Connection Details</h3>
+        <div class="innertube">        
+		<p class="leftcol">Host name: <br /><b>ftp://testbed.planets-project.eu</b></p>     
+		<p class="leftcol">Port number: <br /><b>21</b></p>           
         </div>
 
 		</div>

@@ -125,7 +125,15 @@
 <!-- the manually measured properties -->
 <a4j:region id="regionManualPropsTogglePanel" renderRegionOnly="true">
 <rich:simpleTogglePanel id="manualprops" label="#{res['exp_stage3.ontologyProps']}" opened="true" switchType="client">  
-	<p>These are the selected properties that the Testbed <b>cannot</b> automatically measure during your experiment, and so must be measured manually instead.</p>
+    <p>These are the selected properties that the Testbed <b>cannot</b> automatically measure during your experiment, and so must be measured manually instead.</p>
+    <p><b>How to add manually measured properties:</b></p>
+    <ol>
+        <li>Click on 'open digital object property selector'</li>
+        <li>Browse the ontology of properties to find those you would like to manually measure</li>
+        <li>Copy each property to your clipboard by either <b>double-clicking</b> on it or <b>drag and dropping</b> it into the clipboard</li>
+        <li>For each property click on the 'true' button to select which stage of the workflow you'd like to measure the property (if your experiment only uses one service select 'true' for this)</li>
+        <li>Once you have added all required properties and specified where they are to be measured click the 'add to experiment' button.</li>
+    </ol>
     <a4j:region id="regionManualProps" renderRegionOnly="true">
     <h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
 	    <rich:panel styleClass="expExecLogPanel">
