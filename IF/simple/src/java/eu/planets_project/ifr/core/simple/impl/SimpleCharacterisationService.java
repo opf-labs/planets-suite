@@ -16,7 +16,6 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -75,7 +74,7 @@ public class SimpleCharacterisationService implements Characterise
      */
     public List<Property> listProperties(URI format) {
         List<Property> props = new ArrayList<Property>();
-        props.add( new FileFormatProperty( makePropertyURI(MIME_PROP_URI), MIME_PROP_URI, null) );
+        props.add( new Property( makePropertyURI(MIME_PROP_URI), MIME_PROP_URI, null) );
         return props;
     }
 

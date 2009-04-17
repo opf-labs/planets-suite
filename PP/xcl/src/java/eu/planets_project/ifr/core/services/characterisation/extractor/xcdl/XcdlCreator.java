@@ -26,7 +26,6 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.gene
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue.Val;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.PropertySet.ValueSetRelations;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.PropertySet.ValueSetRelations.Ref;
-import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
 
 /**
@@ -255,7 +254,7 @@ public class XcdlCreator {
         return type;
     }
 
-    private MeasureType determineMeasureType(Prop labProp) {
+    private MeasureType determineMeasureType(Property labProp) {
         String d = labProp.getUnit();
         MeasureType type = MeasureType.BIT;
         try {

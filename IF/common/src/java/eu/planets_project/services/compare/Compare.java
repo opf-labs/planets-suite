@@ -16,16 +16,11 @@ import javax.xml.ws.ResponseWrapper;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Prop;
 
 /**
- * Comparison of digital objects. NOTE: The {@link Prop} class used in this
- * interface (and therefore the interface itself, too) is work in progress.
- * Eventually, the input of this interface will be of the same class as the
- * output of the {@link Characterise} interface.
+ * Comparison of digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @WebService(name = Compare.NAME, targetNamespace = PlanetsServices.NS)

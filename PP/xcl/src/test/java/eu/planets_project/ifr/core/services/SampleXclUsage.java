@@ -20,7 +20,6 @@ import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.test.ServiceCreator;

@@ -37,7 +37,6 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -106,7 +105,7 @@ public final class MetadataExtractor implements Characterise {
                 /* For that, get the extractable properties: */
                 List<String> listProperties = listProperties(metadataType);
                 for (String string : listProperties) {
-                    result.add(new FileFormatProperty( makePropertyURI(string), string, null));
+                    result.add(new Property( makePropertyURI(string), string, null));
                 }
             }
         }

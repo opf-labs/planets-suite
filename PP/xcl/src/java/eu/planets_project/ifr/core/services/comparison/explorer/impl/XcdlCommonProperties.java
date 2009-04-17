@@ -15,7 +15,6 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.compare.CompareResult;
-import eu.planets_project.services.datatypes.Prop;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;

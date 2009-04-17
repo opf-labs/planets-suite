@@ -21,8 +21,6 @@ import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperty;
-import eu.planets_project.services.datatypes.Metric;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -217,17 +215,9 @@ public class XcdlCharacterise implements Characterise, Serializable {
          */
         List<Property> resultProps = new ArrayList<Property>();
         for (Property prop : list) {
-            FileFormatProperty fileFormatProperty = new FileFormatProperty(
-                    XcdlProperties.makePropertyURI(prop.getType(), prop
-                            .getName()), prop.getName(), null);
-            // TODO just dummy metrics here
-            List<Metric> metrics = new ArrayList<Metric>();
-            Metric o = new Metric();
-            o.setDescription("");
-            o.setName("");
-            o.setId("");
-            metrics.add(o);
-            fileFormatProperty.setMetrics(metrics);
+            Property fileFormatProperty = new Property(XcdlProperties
+                    .makePropertyURI(prop.getType(), prop.getName()), prop
+                    .getName(), null);
             resultProps.add(fileFormatProperty);
         }
         return resultProps;
