@@ -56,7 +56,7 @@ public abstract class QuerySource {
 			}
 		}
 		*/
-		return 0; // successCtr;
+		return 1; // successCtr;
     }
 
 }
