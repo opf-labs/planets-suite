@@ -30,7 +30,8 @@
     <h:form>
 
     <!-- Persist the service name through POST, if any. -->    
-    <input type="hidden" name="serviceName" value="#{ServiceInspector.service.name}" />
+    <input type="hidden" name="serviceName" value="#{ServiceInspector.serviceName}" />
+    <input type="hidden" name="serviceHash" value="#{ServiceInspector.serviceHash}" />
 
     <h:panelGroup rendered="#{ServiceInspector.service != null}">
     
