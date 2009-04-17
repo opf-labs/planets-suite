@@ -95,7 +95,7 @@
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'my_exp' and UserBean.experimenter == true}">
+			<c:if test="${page != 'my_exp' and page != 'import_exp' and UserBean.experimenter == true}">
 				<li>
 				<h:commandLink action="my_experiments" rendered="#{UserBean.experimenter}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_my.gif" class="toolbar"/>
