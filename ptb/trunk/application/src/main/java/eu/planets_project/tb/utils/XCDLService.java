@@ -16,7 +16,6 @@ import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.FileFormatProperty;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -89,6 +88,7 @@ public class XCDLService implements Characterise {
     }
     
     // FIXME Unify this construction: See also XCDLParser.parseXCDL
+    /*
     private Property createPropertyFromFFProp( FileFormatProperty ffp ) {
         Property p = new Property( 
                 XCDLParser.makePropertyUri(ffp.getId(), ffp.getName()), 
@@ -99,6 +99,7 @@ public class XCDLService implements Characterise {
         p.setUnit(ffp.getUnit());
         return p;
     }
+    */
     
     /* (non-Javadoc)
      * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
