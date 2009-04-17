@@ -18,6 +18,8 @@ import javax.xml.soap.SOAPException;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
@@ -36,6 +38,11 @@ public class BlueMarbleDataManager implements DataManagerLocal {
      */
     private static PlanetsLogger log = PlanetsLogger.getLogger(BlueMarbleDataManager.class, "testbed-log4j.xml");
     
+    /**
+     * HttpClient timeout in ms
+     */
+    private static final int TIMEOUT = 10000;
+
     /**
      * Mirror site base URL
      */   
@@ -84,7 +91,13 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     		if (pdURI.equals(rootURI)) {
        	    	try {
        				// Top level directory
+    				httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
+    				httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+    				httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
+    				httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
        				GetMethod dirRequest = new GetMethod(MIRROR_BASE_URL);
+    				dirRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+	
        				httpClient.executeMethod(dirRequest);
        				
        				// Scrape directory names
@@ -98,9 +111,15 @@ public class BlueMarbleDataManager implements DataManagerLocal {
        		} else if (!(pdURI.toString().endsWith("png") || pdURI.toString().endsWith("jpg"))) {
        			try {
        	   			// Sub-directory
-    				GetMethod dirRequest = new GetMethod(pdURI.toString());
+    				httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
+    				httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+    				httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
+    				httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
     				
-    				httpClient.executeMethod(dirRequest);
+    				GetMethod dirRequest = new GetMethod(pdURI.toString());
+    				dirRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+
+				httpClient.executeMethod(dirRequest);
     				
     				// Scrape file names
     				URI[] subDirs = scrapeSubDir(dirRequest.getResponseBodyAsString(), pdURI.toString());
