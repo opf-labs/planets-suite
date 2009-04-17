@@ -47,6 +47,11 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     private URI rootURI = null; 
     
     /**
+     * The HTTP client:
+     */
+    HttpClient httpClient = new HttpClient();
+    
+    /**
      * Local buffer for the remote directory structure to increase responsiveness of the GUI 
      */
     private Hashtable<URI, URI[]> directoryCache = new Hashtable<URI, URI[]>();
@@ -57,6 +62,13 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     	} catch (URISyntaxException e) {
     		log.error("This should never happen: " + e.getMessage());
     	}
+    	
+    	// Set up the proxy.
+    	String host = System.getProperty("http.proxyHost");
+        String port = System.getProperty("http.proxyPort");
+        if( host != null && port != null ) {
+            httpClient.getHostConfiguration().setProxy(host, Integer.parseInt(port)); 
+        }
     }
     
     public URI[] list(URI pdURI) throws SOAPException {
@@ -72,7 +84,6 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     		if (pdURI.equals(rootURI)) {
        	    	try {
        				// Top level directory
-       				HttpClient httpClient = new HttpClient();
        				GetMethod dirRequest = new GetMethod(MIRROR_BASE_URL);
        				httpClient.executeMethod(dirRequest);
        				
@@ -87,7 +98,6 @@ public class BlueMarbleDataManager implements DataManagerLocal {
        		} else if (!(pdURI.toString().endsWith("png") || pdURI.toString().endsWith("jpg"))) {
        			try {
        	   			// Sub-directory
-    				HttpClient httpClient = new HttpClient();
     				GetMethod dirRequest = new GetMethod(pdURI.toString());
     				
     				httpClient.executeMethod(dirRequest);
