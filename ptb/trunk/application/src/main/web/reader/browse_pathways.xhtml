@@ -51,15 +51,15 @@
             <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
               <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBInputFormatActionListener"/>
               <h:panelGroup rendered="#{fb.selected}">
-                <input type="radio" checked="checked"/>
+                <input type="checkbox" checked="checked"/>
               </h:panelGroup>
               <h:panelGroup rendered="#{!fb.selected}">
-                <input type="radio"/>
+                <input type="checkbox"/>
               </h:panelGroup>
               <b><h:outputText value="#{fb.summary} "/></b>
             </h:commandLink>
             <h:panelGroup rendered="#{!fb.enabled}" styleClass="selectableDisabled">
-              <input type="radio" disabled="disabled"/>
+              <input type="checkbox" disabled="disabled"/>
               <h:outputText value="#{fb.summary} "/>
             </h:panelGroup>
             
@@ -79,16 +79,16 @@
             <h:commandLink rendered="#{srb.enabled}" styleClass="selectableEnabled">
               <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBServiceActionListener"/>
               <h:panelGroup rendered="#{srb.selected}">
-                <input type="radio" checked="checked"/>
+                <input type="checkbox" checked="checked"/>
               </h:panelGroup>
               <h:panelGroup rendered="#{!srb.selected}">
-                <input type="radio"/>
+                <input type="checkbox"/>
               </h:panelGroup>
               <b><h:outputText value="#{srb.serviceDescription.name}"/></b>
             </h:commandLink>
             
             <h:panelGroup rendered="#{!srb.enabled}" styleClass="selectableDisabled">
-              <input type="radio" disabled="disabled"/>
+              <input type="checkbox" disabled="disabled"/>
               <h:outputText value="#{srb.serviceDescription.name}"/>
             </h:panelGroup>
 
@@ -110,15 +110,15 @@
             <h:commandLink rendered="#{fb.enabled}" styleClass="selectableEnabled">
               <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectSBOutputFormatActionListener"/>
               <h:panelGroup rendered="#{fb.selected}">
-                <input type="radio" checked="checked"/>
+                <input type="checkbox" checked="checked"/>
               </h:panelGroup>
               <h:panelGroup rendered="#{!fb.selected}">
-                <input type="radio"/>
+                <input type="checkbox"/>
               </h:panelGroup>
               <b><h:outputText value="#{fb.summary} "/></b>
             </h:commandLink>
             <h:panelGroup rendered="#{!fb.enabled}" styleClass="selectableDisabled">
-              <input type="radio" disabled="disabled"/>
+              <input type="checkbox" disabled="disabled"/>
               <h:outputText value="#{fb.summary} "/>
             </h:panelGroup>
             

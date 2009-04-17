@@ -657,7 +657,7 @@ public class ServiceBrowser {
         }
         long finish = System.currentTimeMillis();
         log.info("Done looking: in " + (finish-start)/1000.0 + "s");
-        return null;
+        return "success";
     }
 
     /**

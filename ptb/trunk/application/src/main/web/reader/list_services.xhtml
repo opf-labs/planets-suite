@@ -29,8 +29,6 @@
             <p>The following services are currently available for experimentation in the Testbed.  Click on a service name to find out more about it.</p>
     <h:form>
    
-    <!-- This is a hack to update the DB : # ServiceBrowser.experimentServiceRecordFixLog  (ANJ) -->
-
         <rich:dataTable value="#{ServiceBrowser.allServiceRecordsByName}" var="sd"
          styleClass="tbTable" sortMode="single"><!-- reRender="services_ds"  -->
         
