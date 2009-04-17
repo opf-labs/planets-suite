@@ -28,7 +28,7 @@ public class CliMigrationPaths {
         return paths.add(cliMigrationPath);
     }
 
-    protected static File defaultPath = new File(".");
+    protected final static File defaultPath = new File(".");
 
     public static CliMigrationPaths initialiseFromFile(String resourceName) throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
 

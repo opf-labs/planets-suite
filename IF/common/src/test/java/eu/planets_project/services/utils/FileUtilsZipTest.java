@@ -3,20 +3,13 @@
  */
 package eu.planets_project.services.utils;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-
-import eu.planets_project.services.datatypes.Checksum;
 
 /**
  * @author melmsp
@@ -25,10 +18,10 @@ import eu.planets_project.services.datatypes.Checksum;
 public class FileUtilsZipTest {
 
 //	public static File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/testFileUtils");
-	public static File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/test_zip");
+	public final static File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/test_zip");
 	
-	public static File OUTPUT_FOLDER = FileUtils.createWorkFolderInSysTemp("FileUtilsZipTest_OUT");
-	public static File EXTRACT_RESULT_OUT = FileUtils.createFolderInWorkFolder(OUTPUT_FOLDER, "EXTRACTED");
+	public final static File OUTPUT_FOLDER = FileUtils.createWorkFolderInSysTemp("FileUtilsZipTest_OUT");
+	public final static File EXTRACT_RESULT_OUT = FileUtils.createFolderInWorkFolder(OUTPUT_FOLDER, "EXTRACTED");
 	public static File zip = null;
 	public static ZipResult zipResult = null;
 //	public static Checksum checksum = null;

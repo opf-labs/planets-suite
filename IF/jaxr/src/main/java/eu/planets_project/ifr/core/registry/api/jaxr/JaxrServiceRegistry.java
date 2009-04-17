@@ -683,7 +683,6 @@ public final class JaxrServiceRegistry implements ServiceRegistry {
     public ServiceTaxonomy findTaxonomy(final String username,
             final String password) {
         String message = "Getting taxonomy; ";
-        PsSchema planetsServiceScheme = new PsSchema();
         ServiceTaxonomy st = findTaxonomy();
         log.info(message);
         return st;

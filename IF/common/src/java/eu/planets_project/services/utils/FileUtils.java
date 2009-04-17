@@ -125,7 +125,7 @@ public class FileUtils {
 	        folder.mkdirs();
 	    } else {
 	        boolean madeFolder = folder.mkdir();
-	        if (!madeFolder & !folder.exists()) {
+	        if (!madeFolder && !folder.exists()) {
 	            System.err.println("ERROR: Could not create Folder!");
 	        }
 	    }

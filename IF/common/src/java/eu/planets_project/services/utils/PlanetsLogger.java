@@ -54,7 +54,7 @@ public class PlanetsLogger implements Log
 	public static PlanetsLogger getLogger(Class<?> clazz)
 	{
 		if(clazz == null)
-			getRootLogger();
+			return getRootLogger();
 		return getLogger(clazz.getName(), null, true);
 	}
 	
@@ -82,7 +82,7 @@ public class PlanetsLogger implements Log
 	public static PlanetsLogger getLogger(Class<?> clazz, String config)
 	{
 		if(clazz == null)
-			getRootLogger();
+			return getRootLogger();
 		return getLogger(clazz.getName(), config, true);
 	}
 	
