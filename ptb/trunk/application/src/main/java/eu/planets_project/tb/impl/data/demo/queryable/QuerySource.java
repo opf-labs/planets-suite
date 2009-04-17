@@ -6,7 +6,7 @@ import java.net.URI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+// import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 // import eu.planets_project.ifr.core.storage.impl.file.DigitalObjectManagerImpl;
 import eu.planets_project.tb.gui.backing.QueryResultListEntry;
 import eu.planets_project.tb.impl.data.FileSystemDataManager;
