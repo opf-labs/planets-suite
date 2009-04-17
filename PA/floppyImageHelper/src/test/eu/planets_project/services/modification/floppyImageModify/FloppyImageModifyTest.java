@@ -17,20 +17,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.services.datatypes.Checksum;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.migration.imagemagick.ImageMagickMigrate;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -95,7 +88,7 @@ public class FloppyImageModifyTest {
 		List<File> fileList = FileUtils.listAllFilesAndFolders(FILES_FOR_MODIFICATION, new ArrayList<File>());
 		fileList.remove(FLOPPY_IMAGE);
 //		fileList.remove(new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification/FLOPPY144.IMA"));
-		DigitalObject inputDigObj = new DigitalObject.Builder(Content.asStream(FLOPPY_IMAGE))
+		DigitalObject inputDigObj = new DigitalObject.Builder(ImmutableContent.asStream(FLOPPY_IMAGE))
 									.title(FLOPPY_IMAGE.getName())
 									.contains(DigitalObjectUtils.createContainedAsStream(fileList).toArray(new DigitalObject[] {}))
 									.format(Format.extensionToURI(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)))

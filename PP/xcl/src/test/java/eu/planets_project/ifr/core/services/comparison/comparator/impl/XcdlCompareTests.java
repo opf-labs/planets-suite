@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import eu.planets_project.services.compare.Compare;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -64,11 +64,11 @@ public final class XcdlCompareTests {
             final byte[] configData) {
         Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME,
                 XcdlCompare.class, WSDL);
-        DigitalObject first = new DigitalObject.Builder(Content.byValue(data1))
+        DigitalObject first = new DigitalObject.Builder(ImmutableContent.byValue(data1))
                 .build();
-        DigitalObject second = new DigitalObject.Builder(Content.byValue(data2))
+        DigitalObject second = new DigitalObject.Builder(ImmutableContent.byValue(data2))
                 .build();
-        DigitalObject configFile = new DigitalObject.Builder(Content
+        DigitalObject configFile = new DigitalObject.Builder(ImmutableContent
                 .byValue(configData)).build();
         List<Property> properties = c.compare(first, second,
                 c.convert(configFile)).getProperties();

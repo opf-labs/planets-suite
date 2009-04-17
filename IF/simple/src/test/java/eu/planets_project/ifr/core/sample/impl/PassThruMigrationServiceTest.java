@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.simple.impl.PassThruMigrationService;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
@@ -67,7 +67,7 @@ public final class PassThruMigrationServiceTest extends TestCase {
              * To test usability of the digital object instance in web services,
              * we simply pass one into the service and expect one back:
              */
-            DigitalObject input = new DigitalObject.Builder(Content
+            DigitalObject input = new DigitalObject.Builder(ImmutableContent
                     .byReference(new URL("http://some"))).permanentUrl(
                     new URL("http://some")).build();
             System.out.println("Input: " + input);

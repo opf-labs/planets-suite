@@ -3,10 +3,10 @@
  */
 package eu.planets_project.services.datatypes;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
 
 /**
  * A Report From A Preservation Service 
@@ -31,16 +31,19 @@ public class ServiceReport {
     /**
      * Information returned by a Service, roughly corresponding to Standard Out.
      */
+    @XmlElement
     public String info;
     
     /**
      * Warnings returned by a Service.  Things the user should be aware of, but are not fatal and do not imply significant data loss.
      */
+    @XmlElement
     public String warn;
     
     /**
      * Errors returned by a Service.  Serious problems invoking the service, implying that no valid output will exist and the workflow should not continue.
      */
+    @XmlElement
     public String error;
     
     /**
@@ -61,6 +64,7 @@ public class ServiceReport {
     /** Also allow properties to be returned, to permit extensible behaviour.
      * @deprecated, should be moved to the individual reports
      */
+    @XmlElement(name="property")
     public List<Property> properties;
 
     /**

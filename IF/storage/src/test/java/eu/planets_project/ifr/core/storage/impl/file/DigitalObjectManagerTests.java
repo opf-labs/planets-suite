@@ -3,25 +3,23 @@
  */
 package eu.planets_project.ifr.core.storage.impl.file;
 
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
-import eu.planets_project.ifr.core.storage.impl.file.DigitalObjectManagerImpl;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * @author CFWilson
@@ -86,7 +84,7 @@ public class DigitalObjectManagerTests {
 		System.out.println("Testing storage of Digital Object");
 		URL purl = new File("IF/storage/src/test/resources/testdata/test_word.doc").toURI().toURL();
         /* Create the content: */
-        Content c1 = Content.byReference(purl);
+        Content c1 = ImmutableContent.byReference(purl);
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl).build();
         // Now store it
@@ -94,7 +92,7 @@ public class DigitalObjectManagerTests {
 		// Then retrieve it and check it's the same
 		DigitalObject retObject = _dom.retrieve(new URI("planets://localhost:8080/dr/test/test_word.doc"));
 		URL newPurl = new File("IF/storage/src/test/resources/testroot/test_word.doc").toURI().toURL();
-		Content c2 = Content.byReference(newPurl);
+		Content c2 = ImmutableContent.byReference(newPurl);
 		DigitalObject expectedObject = new DigitalObject.Builder(c2).permanentUrl(newPurl).build(); 
 		assertEquals("Retrieve Digital Object doesn't match that stored", expectedObject, retObject);
 		

@@ -1,38 +1,21 @@
 package eu.planets_project.services.migration.floppyImageHelper;
 
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.*;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
-import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.Checksum;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.MigrationPath;
-import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.Tool;
-import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
-import eu.planets_project.services.utils.ProcessRunner;
-import eu.planets_project.services.utils.ServiceUtils;
-import eu.planets_project.services.utils.ZipResult;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Peter Melms
@@ -146,7 +129,7 @@ public class FloppyImageHelperWin implements Migrate {
 
 		String fileName = digitalObject.getTitle();
 		
-		Content content = (Content)digitalObject.getContent();
+		ImmutableContent content = (ImmutableContent)digitalObject.getContent();
 		
 		Checksum checksum = content.getChecksum();
 		
@@ -175,7 +158,7 @@ public class FloppyImageHelperWin implements Migrate {
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
 			zippedResult = this.extractFilesFromFloppyImage(inputFile);
 			
-			Content zipContent = Content.asStream(zippedResult.getZipFile());
+			Content zipContent = ImmutableContent.asStream(zippedResult.getZipFile());
 			zipContent.setChecksum(zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
@@ -215,7 +198,7 @@ public class FloppyImageHelperWin implements Migrate {
 		
 		// If we have reached this line, we should have an image file created, so wrap a DigObj around that and return 
 		// a MigrateResult...
-		DigitalObject resultDigObj = new DigitalObject.Builder(Content.asStream(imageFile))
+		DigitalObject resultDigObj = new DigitalObject.Builder(ImmutableContent.asStream(imageFile))
 										.format(outputFormat)
 										.title(imageFile.getName())
 										.build();

@@ -10,44 +10,40 @@
  */
 package eu.planets_project.services.datatypes;
 
+import eu.planets_project.services.PlanetsServices;
+
+import javax.xml.bind.annotation.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * A richer tool description, so that the system can work in the absence of a tool registry.
  *
  * @author  <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
-@XmlRootElement(name = "tool")
+@XmlType(namespace = PlanetsServices.TOOLS_NS)
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class Tool {
-    // A namespace for the tool elements:
-    private static final String TOOLS_NS = "http://www.planets-project.eu/services/tools";
 
     /** An identifier for this tool, should be resolvable via a tool registry. */
-    @XmlElement(namespace = TOOLS_NS)
+    @XmlElement(namespace = PlanetsServices.TOOLS_NS)
     URI identifier;
 
     /** The tool name */
-    @XmlElement(namespace = TOOLS_NS)
+    @XmlElement(namespace = PlanetsServices.TOOLS_NS)
     String name;
     
     /** The tool version */
-    @XmlElement(namespace = TOOLS_NS)
+    @XmlElement(namespace = PlanetsServices.TOOLS_NS)
     String version;
     
     /** A tool description */
-    @XmlElement(namespace = TOOLS_NS)
+    @XmlElement(namespace = PlanetsServices.TOOLS_NS)
     String description;
     
     /** A link to the tool homepage. */
-    @XmlElement(namespace = TOOLS_NS)
+    @XmlElement(namespace = PlanetsServices.TOOLS_NS)
     URL homepage;
 
     /** For JAXB */

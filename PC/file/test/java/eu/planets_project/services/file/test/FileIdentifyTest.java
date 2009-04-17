@@ -3,27 +3,26 @@
  */
 package eu.planets_project.services.file.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.file.FileIdentify;
 import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * Tests for the file identification service
@@ -94,7 +93,7 @@ public class FileIdentifyTest {
     
     private void testIdentifyThis(URL purl, URI type) {
         /* Create the content: */
-        Content c1 = Content.byReference(purl);
+        Content c1 = ImmutableContent.byReference(purl);
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl).build();
         

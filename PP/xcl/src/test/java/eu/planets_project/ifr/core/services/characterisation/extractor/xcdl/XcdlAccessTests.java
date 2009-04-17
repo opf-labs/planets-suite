@@ -10,7 +10,7 @@ import org.junit.Test;
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacterise;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
 
@@ -61,7 +61,7 @@ public class XcdlAccessTests {
         List<Property> extractable = characterise.listProperties(uri);
         /* Now we actually extract a PNG: */
         CharacteriseResult result = characterise.characterise(
-                new DigitalObject.Builder(Content.byValue(new File(PNG)))
+                new DigitalObject.Builder(ImmutableContent.byValue(new File(PNG)))
                         .build(), null);
         List<Property> extracted = result.getProperties();
         /* And check if the IDs correspond: */

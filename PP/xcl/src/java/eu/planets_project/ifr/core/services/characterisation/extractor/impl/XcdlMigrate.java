@@ -1,5 +1,15 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.utils.ServiceUtils;
+
+import javax.ejb.Stateless;
+import javax.jws.WebService;
 import java.io.File;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -8,23 +18,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.ejb.Stateless;
-import javax.jws.WebService;
-
-import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.MigrationPath;
-import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
-import eu.planets_project.services.utils.ServiceUtils;
 
 /**
  * XCL extractor service based on the Migrate interface.
@@ -183,11 +176,11 @@ public class XcdlMigrate implements Migrate, Serializable {
             // output Files smaller than 10Mb
             if (sizeInKB < MAX_FILE_SIZE) {
                 try {
-                    resultDigOb = new DigitalObject.Builder(Content
+                    resultDigOb = new DigitalObject.Builder(ImmutableContent
                             .byValue(result))
                             .permanentUrl(
                                     new URL(
-                                            "http://planets-project.eu/services/pserv-pc-xcdlExtractor"))
+                                            PlanetsServices.NS+"/pserv-pc-xcdlExtractor"))
                             .build();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
@@ -199,7 +192,7 @@ public class XcdlMigrate implements Migrate, Serializable {
                 File tmpResult = FileUtils.getTempFile(result, "tmpResult",
                         "tmp");
                 try {
-                    resultDigOb = new DigitalObject.Builder(Content
+                    resultDigOb = new DigitalObject.Builder(ImmutableContent
                             .byReference(tmpResult.toURI().toURL())).build();
                     sReport.setInfo("Success!!!");
                     sReport.setErrorState(0);

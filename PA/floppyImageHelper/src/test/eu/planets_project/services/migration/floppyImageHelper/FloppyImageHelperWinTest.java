@@ -3,30 +3,22 @@
  */
 package eu.planets_project.services.migration.floppyImageHelper;
 
-import static org.junit.Assert.*;
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.ZipResult;
+import eu.planets_project.services.utils.test.ServiceCreator;
+import static org.junit.Assert.assertTrue;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.services.datatypes.Checksum;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.migration.imagemagick.ImageMagickMigrate;
-import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.ZipResult;
-import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * @author melmsp
@@ -92,7 +84,7 @@ public class FloppyImageHelperWinTest {
 		System.out.println("****************************************************");
 		ZipResult zipResult = FileUtils.createZipFileWithChecksum(FILES_TO_INJECT, OUT_DIR, "test.zip"); 
 		File zipFile = zipResult.getZipFile();
-		Content content = Content.asStream(zipFile);
+		Content content = ImmutableContent.asStream(zipFile);
 		content.setChecksum(zipResult.getChecksum());
 		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("zip")).title("test.zip").build();
 		List<Parameter> parameters = new ArrayList<Parameter> ();
@@ -112,7 +104,7 @@ public class FloppyImageHelperWinTest {
 		System.out.println("********************************************");
 		System.out.println("* Testing: Extract Files from Floppy Image *");
 		System.out.println("********************************************");
-		Content content = Content.asStream(FLOPPY_IMAGE);
+		Content content = ImmutableContent.asStream(FLOPPY_IMAGE);
 		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("ima")).title(FLOPPY_IMAGE.getName()).build();
 		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, Format.extensionToURI("ima"), Format.extensionToURI("zip"), null);
 		ServiceReport report = migrateResult.getReport();
@@ -121,7 +113,7 @@ public class FloppyImageHelperWinTest {
 		DigitalObject resultDigObj = migrateResult.getDigitalObject();
 		File resultFile = new File(OUT_DIR, resultDigObj.getTitle());
 		FileUtils.writeInputStreamToFile(resultDigObj.getContent().read(), resultFile);
-		Content resultContent = (Content)resultDigObj.getContent();
+		ImmutableContent resultContent = (ImmutableContent)resultDigObj.getContent();
 		long resultChecksum = Long.parseLong(resultContent.getChecksum().getValue());
 		FileUtils.extractFilesFromZipAndCheck(resultFile, OUT_DIR, resultChecksum);
 	}

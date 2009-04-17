@@ -3,26 +3,21 @@
  */
 package eu.planets_project.ifr.core.sample.impl;
 
+import eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService;
+import eu.planets_project.services.characterise.Characterise;
+import eu.planets_project.services.characterise.CharacteriseResult;
+import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.test.ServiceCreator;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import eu.planets_project.ifr.core.simple.impl.SimpleCharacterisationService;
-import eu.planets_project.services.characterise.Characterise;
-import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -65,7 +60,7 @@ public class SimpleCharacterisationServiceTest {
         byte[] binary = new byte[(int)(Math.random()*1024*10)];
         
         /* Create the content: */
-        Content c1 = Content.byValue(binary);
+        Content c1 = ImmutableContent.byValue(binary);
         
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).build();
@@ -86,7 +81,7 @@ public class SimpleCharacterisationServiceTest {
         File file = FileUtils.writeByteArrayToTempFile(binary);
         
         /* Create the content: */
-        Content c1 = Content.byReference(file.toURI().toURL());
+        Content c1 = ImmutableContent.byReference(file.toURI().toURL());
         
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).build();

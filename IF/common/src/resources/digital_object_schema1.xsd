@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://planets-project.eu/services/datatypes" xmlns:tns="http://planets-project.eu/services/datatypes" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="property" type="tns:property"/>
+
+  <xs:complexType name="property">
+    <xs:sequence>
+      <xs:element name="uri" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="name" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="value" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="unit" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="description" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="type" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

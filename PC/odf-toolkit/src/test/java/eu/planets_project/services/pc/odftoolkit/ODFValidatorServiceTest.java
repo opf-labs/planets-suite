@@ -12,7 +12,7 @@ import java.net.URL;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -58,7 +58,7 @@ public class ODFValidatorServiceTest {
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
         testValidateThis(null, new URI("http://some"), false );
-        testValidateThis(new DigitalObject.Builder( Content.byReference(new URL("http://someother") ) ).build() , new URI("ext"), 
+        testValidateThis(new DigitalObject.Builder( ImmutableContent.byReference(new URL("http://someother") ) ).build() , new URI("ext"),
                 true);
     }
     

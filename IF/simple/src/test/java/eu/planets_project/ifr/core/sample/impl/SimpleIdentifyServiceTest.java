@@ -3,23 +3,23 @@
  */
 package eu.planets_project.ifr.core.sample.impl;
 
-import static org.junit.Assert.*;
+import eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.utils.test.ServiceCreator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import eu.planets_project.ifr.core.simple.impl.SimpleIdentifyService;
-import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.utils.test.ServiceCreator;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -79,7 +79,7 @@ public class SimpleIdentifyServiceTest {
      */
     private void testIdentifyThis(URL purl, URI type) {
         /* Create the content: */
-        Content c1 = Content.byReference(purl);
+        Content c1 = ImmutableContent.byReference(purl);
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl)
                 .build();

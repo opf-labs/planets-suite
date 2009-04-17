@@ -12,7 +12,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -192,7 +192,7 @@ public class MetadataExtractorTests {
         if (binary.length == 0) {
             throw new IllegalStateException("Empty file: " + file);
         }
-        DigitalObject digitalObject = new DigitalObject.Builder(Content
+        DigitalObject digitalObject = new DigitalObject.Builder(ImmutableContent
                 .byValue(binary)).build();
         CharacteriseResult characteriseResult = characterizer.characterise(
                 digitalObject, null);

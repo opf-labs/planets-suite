@@ -1,11 +1,13 @@
 package eu.planets_project.services.datatypes;
 
-import java.io.Serializable;
-import java.net.URI;
+import eu.planets_project.services.PlanetsServices;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
+import java.net.URI;
 
 /**
  * Represents immutable tagged metadata.
@@ -16,6 +18,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(namespace = PlanetsServices.OBJECTS_NS)
 public final class Metadata implements Comparable<Metadata>, Serializable {
     /** Generated UID. */
     private static final long serialVersionUID = 1299020544765389245L;

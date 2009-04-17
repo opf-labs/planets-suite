@@ -16,7 +16,7 @@ import javax.xml.ws.BindingType;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -132,7 +132,7 @@ public class FloppyImageModify implements Modify {
 		
 		File modifiedImage = this.addFilesToFloppyImage(originalImageFile, containedFiles);
 		
-		DigitalObject result = new DigitalObject.Builder(Content.asStream(modifiedImage))
+		DigitalObject result = new DigitalObject.Builder(ImmutableContent.asStream(modifiedImage))
 														.title(modifiedImage.getName())
 														.format(Format.extensionToURI(FileUtils.getExtensionFromFile(modifiedImage)))
 														.build();

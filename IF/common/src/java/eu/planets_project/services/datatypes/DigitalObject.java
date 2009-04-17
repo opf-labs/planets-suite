@@ -1,15 +1,12 @@
 package eu.planets_project.services.datatypes;
 
-import java.io.InputStream;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * A representation of a digital object. Instances are created using a builder
@@ -38,6 +35,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlJavaTypeAdapter(DigitalObject.Adapter.class)
 public interface DigitalObject {
+
     /** @return The title of this digital object. */
     String getTitle();
 
@@ -91,50 +89,7 @@ public interface DigitalObject {
      */
     String toXml();
 
-    @XmlJavaTypeAdapter(DigitalObject.Content.Adapter.class)
-    interface Content {
-        /**
-         * @return An input stream for this content; this is either created for
-         *         the actual value (if this is value content) or a stream for
-         *         reading the reference (if this is a reference content)
-         */
-        public InputStream read();
 
-        /*
-         * The current solution to be able to pass this into web service
-         * methods: We tell JAXB which adapter to use for converting from the
-         * interface to the implementation. While this does tightly couple the
-         * interface and the implementation, it still allows us to hide the
-         * implementation class, e.g. keeping it out of our web service
-         * interfaces. Also, for using the IF API outside of a web service stack
-         * or JAXB, i.e. as a plain Java library, this is perfectly fine.
-         */
-        /**
-         * Adapter for serialization of DigitalObject.Content interface
-         * instances.
-         */
-        static class Adapter
-                extends
-                XmlAdapter<eu.planets_project.services.datatypes.Content, DigitalObject.Content> {
-            /**
-             * {@inheritDoc}
-             * @see javax.xml.bind.annotation.adapters.XmlAdapter#unmarshal(java.lang.Object)
-             */
-            public DigitalObject.Content unmarshal(
-                    final eu.planets_project.services.datatypes.Content c) {
-                return c;
-            }
-
-            /**
-             * {@inheritDoc}
-             * @see javax.xml.bind.annotation.adapters.XmlAdapter#marshal(java.lang.Object)
-             */
-            public eu.planets_project.services.datatypes.Content marshal(
-                    final DigitalObject.Content c) {
-                return (eu.planets_project.services.datatypes.Content) c;
-            }
-        }
-    }
 
     /* Same approach as above, but for the DigitalObject itself. */
     /** Adapter for serialization of DigitalObject interface instances. */
@@ -386,34 +341,6 @@ public interface DigitalObject {
          */
         public String getTitle() {
             return title;
-        }
-    }
-
-    /**
-     * A digital object fragment.
-     */
-    public static final class Fragment {
-        /** The fragment ID. */
-        @XmlAttribute
-        private String id;
-
-        /** No-arg constructor for JAXB. Client should not use this. */
-        @SuppressWarnings("unused")
-        private Fragment() {
-        }
-
-        /**
-         * @param id The ID
-         */
-        public Fragment(final String id) {
-            this.id = id;
-        }
-
-        /**
-         * @return The ID
-         */
-        public String getId() {
-            return id;
         }
     }
 

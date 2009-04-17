@@ -3,14 +3,15 @@
  */
 package eu.planets_project.services.datatypes;
 
-import java.net.URI;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
+import eu.planets_project.services.PlanetsServices;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -20,7 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author  <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
-@XmlRootElement(name = "path")
+@XmlType(name = "path", namespace = PlanetsServices.SERVICES_NS)
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class MigrationPath {
     /**

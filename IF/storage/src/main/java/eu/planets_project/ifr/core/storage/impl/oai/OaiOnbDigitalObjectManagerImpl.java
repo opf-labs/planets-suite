@@ -7,7 +7,7 @@ package eu.planets_project.ifr.core.storage.impl.oai;
 import ORG.oclc.oai.harvester2.verb.GetRecord;
 import ORG.oclc.oai.harvester2.verb.ListIdentifiers;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.utils.FileUtils;
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
 
             byte[] binary = fetch(doc, "/pmh:OAI-PMH/pmh:GetRecord/pmh:record/pmh:metadata/xb:digital_entity/pmh:urls/pmh:url[@type='stream']");
 
-            DigitalObject dio =new DigitalObject.Builder(Content.byValue(binary)).title(parseRecordString(dcRecordString, "dcterms:alternative")).build();
+            DigitalObject dio =new DigitalObject.Builder(ImmutableContent.byValue(binary)).title(parseRecordString(dcRecordString, "dcterms:alternative")).build();
 
             return dio;
 

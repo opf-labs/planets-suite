@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -89,7 +89,7 @@ public class GenericCLIMigrationWrapper {
 				serviceReport.setInfo("Successfully migrated object with title '" + sourceObject.getTitle() + "' from format URI: " + sourceFormat + " to " + destinationFormat + " Standard error output: " + toolProcessRunner.getProcessErrorAsString());
 			}
 
-			final DigitalObject destinationObject = new DigitalObject.Builder(Content.byValue(destinationObjectBytes)).build();
+			final DigitalObject destinationObject = new DigitalObject.Builder(ImmutableContent.byValue(destinationObjectBytes)).build();
 
 			return new MigrateResult(destinationObject, serviceReport);
 

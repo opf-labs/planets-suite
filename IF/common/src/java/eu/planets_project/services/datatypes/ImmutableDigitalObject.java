@@ -1,5 +1,12 @@
 package eu.planets_project.services.datatypes;
 
+
+import eu.planets_project.services.PlanetsServices;
+
+import javax.xml.bind.*;
+import javax.xml.bind.annotation.*;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
@@ -8,19 +15,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.SchemaOutputResolver;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
 
 /**
  * Representation of an immutable, comparable concrete digital object, to be
@@ -37,9 +31,10 @@ import javax.xml.transform.stream.StreamResult;
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  * @see DigitalObjectTests
  */
-@XmlRootElement
+@XmlRootElement(name = "digitalObject",namespace = PlanetsServices.OBJECTS_NS)
+@XmlType(namespace = PlanetsServices.OBJECTS_NS)
 @XmlAccessorType(value = XmlAccessType.FIELD)
-final class ImmutableDigitalObject implements
+public final class ImmutableDigitalObject implements
         Comparable<ImmutableDigitalObject>, Serializable, DigitalObject {
 
     /** Generated UID. */
@@ -61,28 +56,26 @@ final class ImmutableDigitalObject implements
     @XmlAttribute
     private URI manifestationOf;
 
-    /** @see {@link #getChecksum()} */
-    @XmlElement
-    private Checksum checksum;
+
 
     /** @see {@link #getMetadata()} */
-    @XmlElement
+    @XmlElement(namespace =  PlanetsServices.OBJECTS_NS)
     private List<Metadata> metadata;
 
     /** @see {@link #getContained()} */
-    @XmlElement
+    @XmlElement(namespace =  PlanetsServices.OBJECTS_NS)
     private List<DigitalObject> contained;
 
     /** @see {@link #getContent()} */
-    @XmlElement(required = true)
+    @XmlElement(namespace =  PlanetsServices.OBJECTS_NS,required = true)
     private Content content;
 
     /** @see {@link #getEvents()} */
-    @XmlElement
+    @XmlElement(namespace =  PlanetsServices.OBJECTS_NS)
     private List<Event> events;
 
     /** @see {@link #getFragments()} */
-    @XmlElement
+    @XmlElement(namespace =  PlanetsServices.OBJECTS_NS)
     private List<Fragment> fragments;
 
     /**
@@ -108,7 +101,7 @@ final class ImmutableDigitalObject implements
      * args...build();}
      */
     @SuppressWarnings("unused")
-    private ImmutableDigitalObject() {
+    public ImmutableDigitalObject() {
     }
 
     /**
@@ -156,6 +149,7 @@ final class ImmutableDigitalObject implements
      */
     public String toString() {
         int contentSize = content == null ? 0 : 1;
+        String checksum = content == null || content.getChecksum() == null ? "" : content.getChecksum().toString();
         int containedSize = contained == null ? 0 : contained.size();
         int eventsSize = events == null ? 0 : events.size();
         int fragmentsSize = fragments == null ? 0 : fragments.size();
@@ -243,13 +237,6 @@ final class ImmutableDigitalObject implements
         return manifestationOf;
     }
 
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.services.datatypes.DigitalObject#getChecksum()
-     */
-    public Checksum getChecksum() {
-        return checksum;
-    }
 
     /**
      * {@inheritDoc}
@@ -309,7 +296,10 @@ final class ImmutableDigitalObject implements
          */
         public Result createOutput(final String namespaceUri,
                 final String suggestedFileName) throws IOException {
-            return new StreamResult(new java.io.File(baseDir, schemaFileName));
+            return new StreamResult(new java.io.File(baseDir, schemaFileName
+                    .split("\\.")[0]
+                    + "_" + suggestedFileName));
+            
         }
     }
 

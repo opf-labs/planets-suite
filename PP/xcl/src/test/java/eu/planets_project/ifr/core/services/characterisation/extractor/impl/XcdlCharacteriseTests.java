@@ -22,7 +22,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
@@ -252,7 +252,7 @@ public class XcdlCharacteriseTests {
 
     private static DigitalObject createDigitalObjectByValue(URL permanentURL,
             byte[] resultFileBlob) {
-        DigitalObject digObj = new DigitalObject.Builder(Content
+        DigitalObject digObj = new DigitalObject.Builder(ImmutableContent
                 .byValue(resultFileBlob)).build();
         return digObj;
     }

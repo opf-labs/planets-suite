@@ -1,10 +1,13 @@
 /**
- * 
+ *
  */
 package eu.planets_project.services.datatypes;
 
+import eu.planets_project.services.PlanetsServices;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * This wraps the concept of a service parameter. When retrieved from a service,
@@ -15,6 +18,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @author AnJackson
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(namespace = PlanetsServices.SERVICES_NS)
 public class Parameter {
 
     /**
@@ -44,10 +48,15 @@ public class Parameter {
 
     /* ------------------------------------------------------------------------- */
 
-    /**
-     * 
+
+
+	/**
+     *
      */
-    public Parameter() {}
+    public Parameter() {
+    }
+
+
 
     /**
      * @param name
@@ -110,26 +119,29 @@ public class Parameter {
         return type;
     }
 
+
     /**
      * @return the description
      */
     public String getDescription() {
-        return description;
-    }
+		return description;
+	}
 
-    /**
-     * @param description the new description value
-     */
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	/**
+	 * @param description the new description value
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        String toPrint = this.name + " = " + this.value;
-        return toPrint;
-    }
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		String toPrint = this.name + " = " + this.value;
+		return toPrint;
+	}
+
+
 
 }

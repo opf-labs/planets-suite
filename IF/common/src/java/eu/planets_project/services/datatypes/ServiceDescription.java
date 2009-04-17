@@ -3,6 +3,12 @@
  */
 package eu.planets_project.services.datatypes;
 
+import eu.planets_project.services.PlanetsServices;
+
+import javax.xml.bind.*;
+import javax.xml.bind.annotation.*;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -12,18 +18,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.SchemaOutputResolver;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
 
 /**
  * A entity to hold metadata about services. The content of this object was
@@ -66,62 +60,60 @@ import javax.xml.transform.stream.StreamResult;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>, <a
  *         href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  */
-@XmlRootElement(name = "ServiceDescription", namespace = "http://www.planets-project.eu/services")
+@XmlRootElement(namespace = PlanetsServices.SERVICES_NS)
+@XmlType(namespace = PlanetsServices.SERVICES_NS)
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public final class ServiceDescription {
 
-    private static final String TERMS_NS = "http://purl.org/dc/terms/";
-
-    private static final String SERVICES_NS = "http://www.planets-project.eu/services";
 
     /**
      * A brief name by which this service is known.
      */
-    @XmlElement(name = "title", namespace = TERMS_NS, required = true)
+    @XmlElement(name = "title", namespace = PlanetsServices.TERMS_NS, required = true)
     String name;
 
     /**
      * The name of the concrete implementation class.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     String classname;
 
     /**
      * The type of the service, which is the fully qualified name of the service
      * interface.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     String type;
 
     /**
      * The endpoint of the service.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     URL endpoint;
 
     /**
      * Declared Parameters: [name, type, value (default)]*n.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     List<Parameter> parameters;
 
     /**
      * The link to the Tool registry.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.TOOLS_NS)
     Tool tool;
 
     /**
      * Human readable description of the service. Allow to be HTML, using a
      * <![CDATA[ <b>Hi</b> ]]>
      */
-    @XmlElement(name = "description", namespace = TERMS_NS)
+    @XmlElement(namespace = PlanetsServices.TERMS_NS)
     String description;
 
     /**
      * Wrapper version.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     String version;
 
     /**
@@ -131,20 +123,20 @@ public final class ServiceDescription {
      * of class impl service, Version of service and ID of Tool (URI) or makes
      * them unnecessary."
      */
-    @XmlElement(name = "identifier", namespace = TERMS_NS)
+    @XmlElement(namespace = PlanetsServices.TERMS_NS)
     String identifier;
 
     /**
      * Who wrote the wrapper. Preferred form would be a URI or a full email
      * address, like: "Full Name <fullname@server.com>".
      */
-    @XmlElement(name = "creator", namespace = TERMS_NS)
+    @XmlElement(name = "creator", namespace = PlanetsServices.TERMS_NS)
     String author;
 
     /**
      * The organisation that is publishing this service endpoint.
      */
-    @XmlElement(name = "publisher", namespace = TERMS_NS)
+    @XmlElement(name = "publisher", namespace = PlanetsServices.TERMS_NS)
     String serviceProvider;
 
     // FIXME Add service status....???
@@ -154,27 +146,27 @@ public final class ServiceDescription {
      * Allow to be HTML, using non-parsed embedding, like this: <![CDATA[
      * <b>Hi</b> ]]>. JAXB should handle this.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     String instructions;
 
     /**
      * Link to further information about this service wrapper.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     URI furtherInfo;
 
     /**
      * A link to a web-browsable logo for this service. Used when presenting the
      * service to the user.
      */
-    @XmlElement(namespace = SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     URI logo;
 
     /**
      * Services may specify what types they can take as inputs. [input]*n This
      * is particularly useful for Validate and Characterise.
      */
-    @XmlElement(name = "inputFormat", required = false, namespace = SERVICES_NS)
+    @XmlElement(name = "inputFormat", required = false, namespace = PlanetsServices.SERVICES_NS)
     List<URI> inputFormats;
 
     /**
@@ -182,14 +174,14 @@ public final class ServiceDescription {
      * this should list all the digital object properties that the service can
      * deal with.
      */
-    @XmlElement(name = "property", required = false, namespace = SERVICES_NS)
+    @XmlElement(name = "property", required = false, namespace = PlanetsServices.SERVICES_NS)
     List<Property> properties;
 
     /**
      * If this service performs migrations, they can be listed herein: Migration
      * Matrix: [input, output]*n.
      */
-    @XmlElement(name = "migrationPath", required = false, namespace = SERVICES_NS)
+    @XmlElement(name = "migrationPath", required = false, namespace = PlanetsServices.SERVICES_NS)
     List<MigrationPath> paths;
 
     /**

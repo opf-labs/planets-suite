@@ -1,8 +1,10 @@
 package eu.planets_project.services.datatypes;
 
-import java.io.Serializable;
+import eu.planets_project.services.PlanetsServices;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * Immutable representation of a checksum, containing of the algorithm used and
@@ -13,6 +15,7 @@ import javax.xml.bind.annotation.XmlAttribute;
  * @author Fabian Steeg
  * 
  */
+@XmlType(namespace = PlanetsServices.OBJECTS_NS)
 public final class Checksum implements Comparable<Checksum>, Serializable {
     /** Generated UID. */
     private static final long serialVersionUID = 8799717233710485566L;

@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.validate.Validate;
@@ -159,7 +159,7 @@ public class JhoveValidationTests {
         boolean result = false;
         try {
             ValidateResult vr = jhove.validate(
-                    new DigitalObject.Builder(Content.byReference(new File(
+                    new DigitalObject.Builder(ImmutableContent.byReference(new File(
                             location).toURI().toURL())).build(),
                     new URI(type.getPronom()), null );
             result = vr.isOfThisFormat() && vr.isValidInRegardToThisFormat();

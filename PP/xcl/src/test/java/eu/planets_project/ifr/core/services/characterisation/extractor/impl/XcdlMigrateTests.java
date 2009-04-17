@@ -8,24 +8,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrate;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.MigrationPath;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.*;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
@@ -275,7 +267,7 @@ public class XcdlMigrateTests {
         DigitalObject input = null;
 
         try {
-            input = new DigitalObject.Builder(Content.byValue(inputFile))
+            input = new DigitalObject.Builder(ImmutableContent.byValue(inputFile))
                     .permanentUrl(new URL("http://xcdlExtractorMigrationTest.eu"))
                     .title(inputFile.getName())
                     .build();
@@ -340,7 +332,7 @@ public class XcdlMigrateTests {
     @SuppressWarnings("unused")
     private DigitalObject createDigitalObjectByReference(URL permanentURL,
             URL reference) {
-        DigitalObject digObj = new DigitalObject.Builder(Content
+        DigitalObject digObj = new DigitalObject.Builder(ImmutableContent
                 .byReference(reference)).build();
         return digObj;
     }

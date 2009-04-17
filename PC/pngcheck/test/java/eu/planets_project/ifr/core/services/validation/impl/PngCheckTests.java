@@ -11,7 +11,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -67,11 +67,11 @@ public final class PngCheckTests {
      */
     private void test(final Validate pngCheck) {
         try {
-            DigitalObject inPng = new DigitalObject.Builder(Content
+            DigitalObject inPng = new DigitalObject.Builder(ImmutableContent
                     .byReference(new File(
                             "PC/pngcheck/src/resources/planets.png").toURI().toURL()))
                     .build();
-            DigitalObject inJpg = new DigitalObject.Builder(Content
+            DigitalObject inJpg = new DigitalObject.Builder(ImmutableContent
                     .byReference(new File(
                             "PC/pngcheck/src/resources/planets.jpg").toURI().toURL()))
                     .build();

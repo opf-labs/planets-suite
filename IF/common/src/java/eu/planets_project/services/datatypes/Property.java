@@ -1,26 +1,36 @@
 /**
- * 
+ *
  */
 package eu.planets_project.services.datatypes;
 
-import java.net.URI;
+import eu.planets_project.services.PlanetsServices;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+import java.net.URI;
 
 /**
  * @author Andrew Jackson, Fabian Steeg
  */
+@XmlType(name="property",namespace = PlanetsServices.DATATYPES_NS)
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Property {
 
     public static class Builder {
 
+
         URI uri;
+
         String name;
+
         String value;
+
         String description;
+
         String unit;
+
         String type;
 
         public Builder(URI uri) {
@@ -58,16 +68,22 @@ public class Property {
 
     }
 
+    @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     private URI uri = null;
 
+    @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     private String name = "";
 
+    @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     private String value = "";
 
+    @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     protected String unit = "";
 
+    @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     protected String description = "";
 
+    @XmlElement(namespace = PlanetsServices.DATATYPES_NS)
     protected String type = "";
 
     /**

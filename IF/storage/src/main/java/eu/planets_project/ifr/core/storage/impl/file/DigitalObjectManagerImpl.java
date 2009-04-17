@@ -3,28 +3,19 @@
  */
 package eu.planets_project.ifr.core.storage.impl.file;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.PDURI;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Implementation of the DigitalObjectManager interface based upon a file system
@@ -213,7 +204,7 @@ public class DigitalObjectManagerImpl implements DigitalObjectManager {
 			// First we need to update the purl and the content object reference
 			URL purl = doBinary.toURI().toURL();
 	        /* Create the content: */
-	        Content c1 = Content.byReference(purl);
+	        Content c1 = ImmutableContent.byReference(purl);
 	        /* Given these, we can instantiate our object: */
 	        DigitalObject object = new DigitalObject.Builder(digitalObject).permanentUrl(purl).content(c1).build();
 			OutputStream outStream = new FileOutputStream(doMetadata);

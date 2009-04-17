@@ -3,10 +3,10 @@
  */
 package eu.planets_project.services.datatypes;
 
-import java.util.List;
+import eu.planets_project.services.PlanetsServices;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.*;
+import java.util.List;
 
 /**
  * <h2>A Planets Event</h2>
@@ -32,17 +32,18 @@ import javax.xml.bind.annotation.XmlElement;
  *
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  */
+@XmlType(namespace = PlanetsServices.OBJECTS_NS)
 public class Event {
     
     /** 
      * A human-readable description of the event.
      */
-    @XmlAttribute public String summary;
+    @XmlAttribute private String summary;
 
     /** 
      * The date and time at which this Event began.
      */
-    @XmlAttribute public String datetime;
+    @XmlAttribute private String datetime;
     
     /** 
      * The total duration of this event, 
@@ -56,18 +57,20 @@ public class Event {
      * Only really known to the caller, so maybe this does not belong here.
      * </p>
      */
-    @XmlAttribute public double duration;
+    @XmlAttribute private double duration;
 
     /** 
      * The Agent that caused this Event. 
      */
-    public Agent agent;
+    @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
+    private Agent agent;
     
     /**
      * Name-value pairs for extra properties.  
      * This is an expansion point for future functionality.
      */
-    @XmlElement public List<Property> properties;
+    @XmlElement(name="property",namespace = PlanetsServices.DATATYPES_NS)
+    private List<Property> properties;
 
     /**
      * 
@@ -75,7 +78,32 @@ public class Event {
     public Event() {
         super();
     }
-    
-    
-    
+
+    public Event(String summary, String datetime, double duration, Agent agent, List<Property> properties) {
+        this.summary = summary;
+        this.datetime = datetime;
+        this.duration = duration;
+        this.agent = agent;
+        this.properties = properties;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public double getDuration() {
+        return duration;
+    }
+
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public List<Property> getProperties() {
+        return properties;
+    }
 }

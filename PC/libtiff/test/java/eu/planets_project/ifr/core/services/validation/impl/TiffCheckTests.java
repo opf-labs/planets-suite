@@ -1,21 +1,19 @@
 package eu.planets_project.ifr.core.services.validation.impl;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.MalformedURLException;
-
-import org.junit.Test;
-
-import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.validate.Validate;
-import eu.planets_project.services.validate.ValidateResult;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.ServiceCreator.Mode;
+import eu.planets_project.services.validate.Validate;
+import eu.planets_project.services.validate.ValidateResult;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Local and client tests of the LibTiffCheck functionality.
@@ -60,8 +58,8 @@ public final class TiffCheckTests
 		Content pngContent = null;
 		Content tifContent = null;
 		try {
-			pngContent = Content.byReference(pngFile.toURL());
-			tifContent = Content.byReference(tifFile.toURL());
+			pngContent = ImmutableContent.byReference(pngFile.toURL());
+			tifContent = ImmutableContent.byReference(tifFile.toURL());
 		}
 		catch (MalformedURLException e)
 		{
