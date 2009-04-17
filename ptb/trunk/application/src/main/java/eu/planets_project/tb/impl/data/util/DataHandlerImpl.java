@@ -19,16 +19,14 @@ import java.util.UUID;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.soap.SOAPException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.tb.impl.system.BackendProperties;
@@ -219,7 +217,7 @@ public class DataHandlerImpl implements DataHandler {
             throws FileNotFoundException {
         CachedFile cf = new CachedFile(id);
         File f = cf.getFile();
-        DigitalObject.Builder dob = new DigitalObject.Builder(Content.byValue(f));
+        DigitalObject.Builder dob = new DigitalObject.Builder(ImmutableContent.byValue(f));
         if( cf.getName() != null ) {
             dob.title(cf.getName());
         } else {

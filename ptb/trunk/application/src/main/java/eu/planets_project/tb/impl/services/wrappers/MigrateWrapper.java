@@ -12,8 +12,8 @@ import javax.xml.ws.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -117,7 +117,7 @@ public class MigrateWrapper implements Migrate {
             // Basic Migrate One Binary:
             byte[] bresult = bmob.basicMigrateOneBinary(binary);
 
-            DigitalObject ndo = new DigitalObject.Builder( Content.byValue(bresult) )
+            DigitalObject ndo = new DigitalObject.Builder( ImmutableContent.byValue(bresult) )
                 .permanentUrl( digitalObject.getPermanentUrl() ).build();
 
             return new MigrateResult(ndo, new ServiceReport());

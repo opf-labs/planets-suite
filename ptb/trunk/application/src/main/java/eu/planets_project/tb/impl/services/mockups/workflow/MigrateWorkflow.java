@@ -21,8 +21,8 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.identify.Identify;
@@ -514,7 +514,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             doTmp.deleteOnExit();
             FileUtils.writeInputStreamToFile(migrated.getDigitalObject().getContent().read(), doTmp);
             DigitalObject.Builder newdob = new DigitalObject.Builder(migrated.getDigitalObject());
-            newdob.content( Content.byReference(doTmp) );
+            newdob.content( ImmutableContent.byReference(doTmp) );
             // FIXME The above need to be a full recursive storage operation!
             if( to != null ) {
                 Format f = ServiceBrowser.fr.getFormatForURI(to);

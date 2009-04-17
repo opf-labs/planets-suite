@@ -13,8 +13,8 @@ import javax.xml.soap.SOAPException;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.tb.impl.data.demo.BlueMarbleDataManager;
 
 /**
@@ -156,7 +156,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         DigitalObject.Builder dob;
         
         try {
-            dob = new DigitalObject.Builder( Content.byValue( dm.retrieveBinary(pdURI)) );
+            dob = new DigitalObject.Builder( ImmutableContent.byValue( dm.retrieveBinary(pdURI)) );
         } catch (SOAPException e1) {
             e1.printStackTrace();
             log.error("Could not retrieve the binary for " + pdURI);

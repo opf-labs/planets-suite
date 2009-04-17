@@ -11,7 +11,6 @@ import java.util.List;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -20,8 +19,8 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.xpath.XPath;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.tb.gui.backing.QueryResultListEntry;
 
 
@@ -85,7 +84,7 @@ public class GenericSRUQuerySource extends QuerySource {
     			
     			// Create DigitalObject
     			try {
-    				DigitalObject digObject = new DigitalObject.Builder(Content.byReference(new URL("http://"))).build();
+    				DigitalObject digObject = new DigitalObject.Builder(ImmutableContent.byReference(new URL("http://"))).build();
     				results.add(new QueryResultListEntry(digObject, title, "#", "-", "-"));
     			} catch (MalformedURLException mue) {
     				log.error(mue.getClass() + ": " + mue.getMessage());

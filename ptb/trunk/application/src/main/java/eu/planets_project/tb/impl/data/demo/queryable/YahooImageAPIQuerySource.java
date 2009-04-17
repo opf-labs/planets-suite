@@ -20,8 +20,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.tb.gui.backing.QueryResultListEntry;
 
 /**
@@ -135,7 +135,7 @@ public class YahooImageAPIQuerySource extends QuerySource {
         			
         			// If all relevant data was retrieved, create DigitalObject
 			    	try {
-			    		DigitalObject digObject = new DigitalObject.Builder(Content.byReference(new URL(imgUrl))).build();
+			    		DigitalObject digObject = new DigitalObject.Builder(ImmutableContent.byReference(new URL(imgUrl))).build();
 			    		resultList.add(new QueryResultListEntry(digObject, imgName, imgUrl, Double.toString(imgSize), imgFormat));
 			    	} catch (MalformedURLException e) {
 			    		log.warn(e.getClass() + ": " + e.getMessage());
