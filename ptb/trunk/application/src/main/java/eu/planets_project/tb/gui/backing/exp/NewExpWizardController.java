@@ -57,6 +57,7 @@ import javax.faces.application.FacesMessage;
 
 import java.io.File;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.FieldPosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -2178,12 +2179,17 @@ public class NewExpWizardController{
     				String propertyID = evalPropResBean.getMeasurementPropertyID();
     				//get the value
     				Integer value = evalPropResBean.getPropertyEvalValue();
-    				
     				//now gather the property's weight - if none defined the average is used.
-    				Integer propertyWeight = exp.getExperimentEvaluation().getOverallPropertyEvalWeight(propertyID);
-    				log.info(exp.getExperimentEvaluation().getOverallPropertyEvalWeights().containsValue(propertyID));
+    				int propertyWeight =-1;
+    				try {
+    					Object o = exp.getExperimentEvaluation().getOverallPropertyEvalWeights().get(new URI(propertyID));
+    					propertyWeight = Integer.valueOf((String)o);
+    				} catch (Exception e) {
+    					log.debug(e);
+    				}
+
     				//also check for -1
-    				if((propertyWeight==null)){
+    				if((propertyWeight==-1)){
     					propertyWeight = 3;
     				}
     				
