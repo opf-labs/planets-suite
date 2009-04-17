@@ -127,4 +127,29 @@ public class SampleXclUsage {
                 configProperties);
         System.out.println("Result: " + result + " " + result.getProperties());
     }
+
+    /**
+     * Sample usage of the XCL services via the Characterise interface, using
+     * remote objects retrieved via web service.
+     */
+    @Test
+    public void viaXcdlCharacterisationWithServiceCreator() {
+        /* Characterise: */
+        Characterise characterisation = ServiceCreator.createTestService(
+                Characterise.QNAME, XcdlCharacterise.class,
+                "/pserv-xcl/XcdlCharacterise?wsdl");
+        CharacteriseResult gifResult = characterisation.characterise(GIF, null);
+        CharacteriseResult jpgResult = characterisation.characterise(JPG, null);
+        /* We set up the comparison. First, the values to compare: */
+        List<Property> gifProps = gifResult.getProperties();
+        List<Property> jpgProps = jpgResult.getProperties();
+        /* CompareProperties: */
+        CompareProperties comparison = ServiceCreator.createTestService(
+                CompareProperties.QNAME, XcdlCompareProperties.class,
+                "/pserv-xcl/XcdlCompareProperties?wsdl");
+        List<Parameter> configProperties = comparison.convertConfig(CONFIG);
+        CompareResult result = comparison.compare(gifProps, jpgProps,
+                configProperties);
+        System.out.println("Result: " + result + " " + result.getProperties());
+    }
 }
