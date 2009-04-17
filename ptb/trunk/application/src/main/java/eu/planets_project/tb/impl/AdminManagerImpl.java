@@ -327,7 +327,9 @@ public class AdminManagerImpl implements AdminManager {
         message.addRecipient(user.getFullName() + "<" + user.getEmail() + ">");
         
         // Determine the Testbed URL:
-        String testbedURL = "http://"+AdminManagerImpl.getAuthority()+"/testbed/";
+        // FIXME This is a HACK for the TB Service URL in emails:
+        String testbedURL = "http://testbed.planets-project.eu/testbed/";
+//        String testbedURL = "http://"+AdminManagerImpl.getAuthority()+"/testbed/";
 
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("user", user);
