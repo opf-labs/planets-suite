@@ -183,6 +183,9 @@
 			</h:panelGroup>
 			<h:panelGrid columns="3" styleClass="expDesignerPanel">
 				<rich:panel id="overallWeightsPanel">
+					<f:facet name="header">
+	                	<h:outputText value="Property Weights"/>
+	                </f:facet>
 					 <fieldset>
 	                    <legend><h:outputText value="overall weights"/></legend>
 		                 <a4j:repeat value="#{ExperimentBean.propertyIDsForOverallExperimentEvaluation}" var="property">
@@ -208,13 +211,14 @@
 				            </h:panelGrid>
 				            <rich:spacer height="20px"/>
 		            	</a4j:repeat>
-		            	<a4j:commandButton value="save weights" action="#{NewExp_Controller.saveExperiment}" reRender="overallEvalCalcPanel" disabled="#{ExperimentBean.currentStage gt 6}"></a4j:commandButton>
 	            	</fieldset>
 				</rich:panel>
 				<rich:panel id="overallEvalCalcPanel">
+					<f:facet name="header">
+	                	<h:outputText value="Experiment Overview"/>
+	                </f:facet>
 					 <fieldset>
 	                    <legend><h:outputText value="experiment indicator"/></legend>
-	                    <h:commandButton value="recalculate" action="goToStage6" disabled="#{ExperimentBean.currentStage gt 6}"/>
 	                    The experiment's measured objectives have been evaluated with the overall score of: <b>#{NewExp_Controller.calculateOverallEvaluation}</b><br/>
 	                    <t:graphicImage value="/graphics/expEval1.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 2) and (NewExp_Controller.calculateOverallEvaluation >= 1)}" alt="1 - very good" title="1 - very good"/>
     					<t:graphicImage value="/graphics/expEval2.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 3) and (NewExp_Controller.calculateOverallEvaluation >= 2)}" alt="2 - good" title="2 - good"/>
@@ -246,6 +250,7 @@
 		               </h:inputTextarea>
 		               <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
 		           </p>
+		           <a4j:commandButton value="save" action="#{NewExp_Controller.saveExperiment}" reRender="overallEvalCalcPanel" disabled="#{ExperimentBean.currentStage gt 6}"></a4j:commandButton>
            		</rich:panel>
 			</h:panelGrid>
 		</rich:simpleTogglePanel>

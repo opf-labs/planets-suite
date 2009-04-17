@@ -49,6 +49,7 @@ import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ExperimentEvaluation;
 import eu.planets_project.tb.api.model.ExperimentPhase;
+import eu.planets_project.tb.api.model.ExperimentReport;
 import eu.planets_project.tb.api.model.ExperimentSetup;
 import eu.planets_project.tb.api.model.benchmark.BenchmarkGoal;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
@@ -69,6 +70,7 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.model.ExperimentReportImpl;
 import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.PropertyRunEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
@@ -1112,8 +1114,10 @@ public class ExperimentBean {
     }
     
     public void setReportHeader(String text) {
-        log.debug("set Report Header: "+text);
+    	initExpReport();
         this.ereportTitle = text;
+        ExperimentReport exReport = this.getExperiment().getExperimentEvaluation().getExperimentReport();
+        exReport.setHeader(ereportTitle);
     }
     
     public String getReportBody() {
@@ -1121,7 +1125,18 @@ public class ExperimentBean {
     }
     
     public void setReportBody(String text) {
+    	initExpReport();
+    	ExperimentReport exReport = this.getExperiment().getExperimentEvaluation().getExperimentReport();
         this.ereportBody = text;
+        exReport.setBodyText(ereportBody);
+    }
+    
+    private void initExpReport(){
+    	if(this.getExperiment().getExperimentEvaluation().getExperimentReport()==null){
+    		ExperimentReport exReport = new ExperimentReportImpl();
+    		this.getExperiment().getExperimentEvaluation().setExperimentReport(exReport);
+    	}
+    	
     }
     
     /**
@@ -1910,7 +1925,16 @@ public class ExperimentBean {
         	stagesToCompare = new String[]{MigrateWorkflow.STAGE_PRE_MIGRATE,MigrateWorkflow.STAGE_POST_MIGRATE};
         }
     	
-    	return this.getEvaluationPropertyResultsBeansHelper(selDigORefStep6DigoEvalTable, stagesToCompare, true);
+    	//get the manual property results
+    	List<EvaluationPropertyResultsBean> manualProps = this.getEvaluationPropertyResultsBeansHelper(selDigORefStep6DigoEvalTable, stagesToCompare, true);
+    	
+    	//get the service extracted property results
+    	List<EvaluationPropertyResultsBean> autoMProps = this.getEvaluationPropertyResultsBeansHelper(selDigORefStep6DigoEvalTable, stagesToCompare,false);
+    	
+    	//merge the two - we're doing joint evaluation
+    	manualProps.addAll(autoMProps);
+    
+    	return manualProps;
     }
     
     /**
@@ -1940,6 +1964,11 @@ public class ExperimentBean {
 			//fetch the automatically measured properties
 			//FIXME: not correct: still need to find out stage information for automatically measured properties
 			//propertyIDs = expBean.getExperiment().getExperimentExecutable().getProperties();
+			int count = 0;
+			for(String stageName : comparedStageNames){
+				lpropertyIDs[count] = helperBuildAutoPropertyPerStage().get(stageName);
+				count++;
+			}
 		}
 		
 		//1b) determine a common set of property IDs that are available in all requested stages
@@ -1977,6 +2006,12 @@ public class ExperimentBean {
 						for(ExecutionStageRecordImpl execStageRec : execRec.getStages()){
 							//filter out the selected stage
 							if(lStageNames.contains(execStageRec.getStage())){
+							
+								/*
+								 * FIXME: change this code - as a MeasurementImpl m 
+								 * from execStageRec.getMeasuredObservables() 
+								 * already has the value contained - accessible through m.getValue
+								 */
 								List<MeasurementRecordImpl> mRecords=null;
 								if(manualProps){
 									//fetch the manual properties
@@ -2030,6 +2065,8 @@ public class ExperimentBean {
 			}
 			else{
 				//TODO: still need to request this information from the workflow authority
+				MeasurementImpl measurementinfo = helperQueryAutoMeasurementAuthority(propertyID);
+				evalPropResBean.setMeasurementInfo(measurementinfo);
 			}
 			
 			//Finally: check requirements if to add this evalProp item
@@ -2038,6 +2075,67 @@ public class ExperimentBean {
 			//}
 		}
 		return ret;
+    }
+    
+    
+    /**
+     * Builds a map of all measured property IDs per stage, which isn't explicitly stored.
+     * Map<StageName,List<PropertyID>
+     * @return
+     */
+    private HashMap<String,Vector<String>> helperBuildAutoPropertyPerStage(){
+    	HashMap<String,Vector<String>> ret = new HashMap<String,Vector<String>>();
+    	Iterator<String> it = helperBuildAutoPropertyAuthority().keySet().iterator();
+    	while(it.hasNext()){
+    		String stageName = it.next();
+    		Vector<String> propIDs = new Vector<String>();
+    		for(MeasurementImpl m : helperBuildAutoPropertyAuthority().get(stageName)){
+    			propIDs.add(m.getIdentifier()+"");
+    		}
+    		ret.put(stageName, propIDs);
+    	}
+    	return ret;
+    }
+    
+    /**
+     * A dirty workaround 
+     * @param propertyID
+     * @return
+     */
+    private MeasurementImpl helperQueryAutoMeasurementAuthority(String propertyID){
+    	Iterator<String> it = helperBuildAutoPropertyAuthority().keySet().iterator();
+    	while(it.hasNext()){
+    		String stageName = it.next();
+    		for(MeasurementImpl m : helperBuildAutoPropertyAuthority().get(stageName)){
+    			if((m.getIdentifier()+"").equals(propertyID)){
+    				return new MeasurementImpl(m);
+    			}
+    		}
+    	}
+    	return null;
+    }
+    
+    HashMap<String,Vector<MeasurementImpl>> tempAutoPropAuthority = null;
+    private HashMap<String,Vector<MeasurementImpl>> helperBuildAutoPropertyAuthority(){
+    	if(tempAutoPropAuthority==null){
+	    	HashMap<String,Vector<MeasurementImpl>> ret = new HashMap<String,Vector<MeasurementImpl>>();
+	    	for(BatchExecutionRecordImpl batchr : this.getExperiment().getExperimentExecutable().getBatchExecutionRecords()){
+	    		//filter out the inputDigo's we're looking for
+	    		for(ExecutionRecordImpl execRec : batchr.getRuns()){
+		    		for(ExecutionStageRecordImpl stage : execRec.getStages()){
+		    			Vector<MeasurementImpl> propIDs = new Vector<MeasurementImpl>();
+		    			for(MeasurementImpl measurement : stage.getMeasuredObservables()){
+		    				//copy to avaid any cross refs and add copy for authority
+		    				MeasurementImpl m = new MeasurementImpl(measurement);
+		    				propIDs.add(m);
+		    			}
+		    			ret.put(stage.getStage(), propIDs);
+		    		}
+	    		}
+	    	}
+	    	tempAutoPropAuthority = ret;
+    	}
+    	return tempAutoPropAuthority;
     }
     
     /**

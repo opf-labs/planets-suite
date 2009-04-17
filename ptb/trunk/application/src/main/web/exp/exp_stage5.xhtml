@@ -135,23 +135,23 @@
 <h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
             <rich:panel styleClass="expExecLogPanel">
                 
-     <rich:dataTable value="#{NewExp_Controller.experimentExecutable.batchExecutionRecords}" 
+     <rich:dataTable id="batchExecRecordsTable" value="#{NewExp_Controller.experimentExecutable.batchExecutionRecords}" 
          var="batch" styleClass="tbTable" reRender="prop_ds" rows="10" rowKeyVar="counter">
       <rich:column sortBy="#{batch.endDate}" sortOrder="DESCENDING">
         <f:facet name="header">Execution Date</f:facet>
-        <h:commandLink>
+        <a4j:commandLink reRender="execResultsDetailPanel,batchExecRecordsTable">
           	<f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
         	<h:outputText value="#{batch.endDate.time}" styleClass="#{ ( ExperimentBean.selectedBatchExecutionRecord.endDate.time eq batch.endDate.time ) ? 'isSelected' : 'isNotSelected'}" >
           		<f:convertDateTime type="both" dateStyle="short"/>
         	</h:outputText>
-        </h:commandLink>
+        </a4j:commandLink>
       </rich:column>
       <rich:column>
         <f:facet name="header">Execution Success</f:facet>
-        <h:commandLink>
+        <a4j:commandLink reRender="execResultsDetailPanel,batchExecRecordsTable">
           <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
           <h:outputText value="#{batch.batchRunSucceeded}"/>
-        </h:commandLink>
+        </a4j:commandLink>
       </rich:column>
       
       <f:facet name="footer">
@@ -161,7 +161,7 @@
     </rich:dataTable>
     
     </rich:panel>
-    <rich:panel styleClass="expMeasurementPanel">
+    <rich:panel id="execResultsDetailPanel" styleClass="expMeasurementPanel">
                 <f:facet name="header">
                 Execution Results In Detail
                 </f:facet>

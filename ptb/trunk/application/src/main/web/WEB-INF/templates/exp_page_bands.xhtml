@@ -83,6 +83,7 @@
        		action="goToStage6" rendered="#{ExperimentBean.currentStage gt 6}"/>
       </c:if>
       <c:if test="#{ExperimentPhase == 6}">
+      <h:commandButton value="refresh page" action="goToStage6" rendered="#{ExperimentBean.currentStage lt 7}"/>
       <h:commandButton value="#{res['exp_stage6.finalize']}"
                 action="#{NewExp_Controller.finalizeExperiment}" rendered="#{ExperimentBean.currentStage lt 7}"/>
        <h:commandButton value="#{res['reader_exp.buttonStage6']}"
