@@ -2179,8 +2179,7 @@ public class NewExpWizardController{
     				
     				//now gather the property's weight - if none defined the average is used.
     				Integer propertyWeight = exp.getExperimentEvaluation().getOverallPropertyEvalWeight(propertyID);
-    				log.info(propertyID);
-    				log.info(exp.getExperimentEvaluation().getOverallPropertyEvalWeights());
+    				log.info(exp.getExperimentEvaluation().getOverallPropertyEvalWeights().containsValue(propertyID));
     				//also check for -1
     				if((propertyWeight==null)){
     					propertyWeight = 3;
@@ -2188,7 +2187,7 @@ public class NewExpWizardController{
     				
     				//add information for calculation
     				countEvaluationItems++;
-    				countWeights += value;
+    				countWeights += propertyWeight;
     				countWeightEvaluationItems+=value*propertyWeight;
     			}
     			else{
@@ -2196,8 +2195,13 @@ public class NewExpWizardController{
     			}
     		}
     	}
+    	if((countWeightEvaluationItems!=0)&&(countWeights!=0)){
+    		log.info("calculated value: "+countWeightEvaluationItems+" "+countWeights+" = "+countWeightEvaluationItems/countWeights);
+    		return countWeightEvaluationItems/countWeights;
+    	}else{
+    		return -1;
+    	}
     	
-    	return countWeightEvaluationItems/countWeights;
     }
     
     public int getNumberOfEvaluatedProperties(){

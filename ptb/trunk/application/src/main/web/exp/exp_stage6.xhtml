@@ -221,7 +221,7 @@
 	                    <legend><h:outputText value="experiment indicator"/></legend>
 	                    The experiment's measured objectives have been evaluated with the overall score of: <b>#{NewExp_Controller.calculateOverallEvaluation}</b><br/> and took into account: <br/><b>
 	                    <h:outputText value="#{NewExp_Controller.numberOfEvaluatedProperties}" rendered="#{NewExp_Controller.numberOfEvaluatedProperties != -1}"/> evaluated records</b>.<br/><b>
-	                    <h:outputText value="#{NewExp_Controller.numberOfEvaluatedProperties}" rendered="#{NewExp_Controller.numberOfNotEvaluatedProperties != -1}"/> still not evaluated records</b>.<br/>
+	                    <h:outputText value="#{NewExp_Controller.numberOfNotEvaluatedProperties}" rendered="#{NewExp_Controller.numberOfNotEvaluatedProperties != -1}"/> still not evaluated records</b>.<br/>
 	                    <t:graphicImage value="/graphics/expEval1.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 2) and (NewExp_Controller.calculateOverallEvaluation >= 1)}" alt="1 - very good" title="1 - very good"/>
     					<t:graphicImage value="/graphics/expEval2.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 3) and (NewExp_Controller.calculateOverallEvaluation >= 2)}" alt="2 - good" title="2 - good"/>
     					<t:graphicImage value="/graphics/expEval3.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 4) and (NewExp_Controller.calculateOverallEvaluation >= 3)}" alt="3 - bad" title="3 - bad"/>
