@@ -2,10 +2,7 @@ package eu.planets_project.services.datatypes;
 
 import eu.planets_project.services.PlanetsServices;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.net.URI;
 
@@ -22,11 +19,24 @@ import java.net.URI;
 public final class Metadata implements Comparable<Metadata>, Serializable {
     /** Generated UID. */
     private static final long serialVersionUID = 1299020544765389245L;
-    /** @see #getContent() */
-    @XmlAttribute
+
+
+    /**
+     * The block of metadata.
+     *  @see #getContent()
+     * */
+    @XmlElement(namespace = PlanetsServices.OBJECTS_NS,required = true)
     private String content;
-    /** @see Metadata#getType() */
-    @XmlAttribute
+
+    /**
+     * This field represents the type of metadata. The URI could be the
+     * namespace of a xml schema, or a xml datatype like integer. But in short,
+     *  given the URI, you should be able to figure out how to understand the
+     * metadata. No URI means that the metadata is readily readable, ie. clear
+     * text.
+     * @see Metadata#getType()
+     *  */
+    @XmlAttribute(required = true)
     private URI type;
 
     /**

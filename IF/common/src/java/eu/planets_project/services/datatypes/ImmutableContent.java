@@ -29,7 +29,7 @@ import java.net.URL;
 public final class ImmutableContent implements Content {
     private static Log log = LogFactory.getLog(ImmutableContent.class);
 
-    /***/
+
     private static final long serialVersionUID = 7135127983024589335L;
 
     /***/
@@ -43,6 +43,8 @@ public final class ImmutableContent implements Content {
     /***/
     @XmlAttribute
     private long length = -1;
+
+   
     private Checksum checksum = null;
 
     /*
