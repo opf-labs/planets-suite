@@ -3,9 +3,12 @@
  */
 package eu.planets_project.services.datatypes;
 
+import eu.planets_project.services.PlanetsServices;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * A Report From A Preservation Service 
@@ -25,19 +28,20 @@ import javax.xml.bind.annotation.XmlElement;
  *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(namespace = PlanetsServices.SERVICES_NS)
 public class ServiceReport {
     
     /**
      * Information returned by a Service, roughly corresponding to Standard Out.
      */
-    @XmlElement
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     public String info;
     
     /**
      * Warnings returned by a Service.  Things the user should be aware of, but
      * are not fatal and do not imply significant data loss.
      */
-    @XmlElement
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     public String warn;
     
     /**
@@ -55,7 +59,7 @@ public class ServiceReport {
      * @see #info
      * @see #warn
      */
-    @XmlElement
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
     public String error;
 
 
@@ -110,6 +114,7 @@ public class ServiceReport {
      * @see #TOOL_ERROR
      * @see #INSTALLATION_ERROR
      */
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS,required = true)
     public int error_state = SUCCESS;
 
 

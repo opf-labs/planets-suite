@@ -75,14 +75,14 @@ public final class ServiceDescription {
     /**
      * The name of the concrete implementation class.
      */
-    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS, required = true)
     String classname;
 
     /**
      * The type of the service, which is the fully qualified name of the service
      * interface.
      */
-    @XmlElement(namespace = PlanetsServices.SERVICES_NS)
+    @XmlElement(namespace = PlanetsServices.SERVICES_NS, required = true)
     String type;
 
     /**
@@ -100,7 +100,7 @@ public final class ServiceDescription {
     /**
      * The link to the Tool registry.
      */
-    @XmlElement(namespace = PlanetsServices.TOOLS_NS)
+    @XmlElement(namespace = PlanetsServices.TOOLS_NS, required = true)
     Tool tool;
 
     /**
@@ -130,7 +130,7 @@ public final class ServiceDescription {
      * Who wrote the wrapper. Preferred form would be a URI or a full email
      * address, like: "Full Name <fullname@server.com>".
      */
-    @XmlElement(name = "creator", namespace = PlanetsServices.TERMS_NS)
+    @XmlElement(name = "creator", namespace = PlanetsServices.TERMS_NS, required = true)
     String author;
 
     /**

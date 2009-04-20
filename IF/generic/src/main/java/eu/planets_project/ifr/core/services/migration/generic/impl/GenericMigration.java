@@ -57,7 +57,7 @@ public class GenericMigration implements Migrate, Serializable
     }
 
     /**
-     * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)
+ 
      */
     public MigrateResult migrate( DigitalObject dob , URI inputFormat,
             URI outputFormat, List<Parameter> parameters) 
@@ -120,12 +120,6 @@ public class GenericMigration implements Migrate, Serializable
 			log.error = pr.getProcessErrorAsString();
 			log.info = pr.getProcessOutputAsString();
 			log.warn = pr.getProcessOutputAsString();
-			log.properties = new ArrayList<Property>();
-			try {
-                log.properties.add( new Property(new URI("planets:uri"), "name", "value") );
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
 			return new MigrateResult(readDestination(outputFile), log);
 		}
 		catch(IOException e)

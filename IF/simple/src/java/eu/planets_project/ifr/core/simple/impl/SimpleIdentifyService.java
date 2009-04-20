@@ -90,7 +90,7 @@ public class SimpleIdentifyService implements Identify {
         ServiceReport rep = new ServiceReport();
         List<URI> type = null;
         log.error(message);
-        rep.setErrorState(ServiceReport.ERROR);
+        rep.setErrorState(ServiceReport.TOOL_ERROR);
         rep.setError("message");
         return new IdentifyResult(type, null, rep);
     }

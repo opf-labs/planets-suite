@@ -1,5 +1,11 @@
 package eu.planets_project.services.datatypes;
 
+import eu.planets_project.services.PlanetsServices;
+
+import javax.xml.bind.*;
+import javax.xml.bind.annotation.*;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -7,22 +13,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.SchemaOutputResolver;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
-
-import eu.planets_project.services.PlanetsServices;
 
 /**
  * Representation of an immutable, comparable concrete digital object, to be
@@ -49,7 +39,7 @@ public final class ImmutableDigitalObject implements
     private static final long serialVersionUID = -893249048201058999L;
 
     /** @see {@link #getTitle()} */
-    @XmlAttribute
+    @XmlAttribute(required = true)
     private String title;
 
     /** @see {@link #getFormat()} */

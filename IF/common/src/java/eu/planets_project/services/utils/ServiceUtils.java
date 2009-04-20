@@ -33,7 +33,7 @@ public class ServiceUtils {
      */
     public static ServiceReport createExceptionErrorReport(String message, Exception e) {
         ServiceReport sr = new ServiceReport();
-        sr.setErrorState(ServiceReport.ERROR);
+        sr.setErrorState(ServiceReport.TOOL_ERROR);
         sr.setError(message + "\n" + e.toString());
         return sr;
     }
@@ -45,7 +45,7 @@ public class ServiceUtils {
      */
     public static ServiceReport createErrorReport(String message) {
         ServiceReport sr = new ServiceReport();
-        sr.setErrorState(ServiceReport.ERROR);
+        sr.setErrorState(ServiceReport.TOOL_ERROR);
         sr.setError(message);
         return sr;
     }
