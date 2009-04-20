@@ -6,7 +6,6 @@ package eu.planets_project.services.datatypes;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import java.util.List;
 
 /**
  * A Report From A Preservation Service 
@@ -35,37 +34,84 @@ public class ServiceReport {
     public String info;
     
     /**
-     * Warnings returned by a Service.  Things the user should be aware of, but are not fatal and do not imply significant data loss.
+     * Warnings returned by a Service.  Things the user should be aware of, but
+     * are not fatal and do not imply significant data loss.
      */
     @XmlElement
     public String warn;
     
     /**
-     * Errors returned by a Service.  Serious problems invoking the service, implying that no valid output will exist and the workflow should not continue.
+     * Errors returned by a Service.  Serious problems invoking the service,
+     * implying that no valid output will exist and the workflow should not
+     * continue.<br>
+     *
+     * This field should only be used, if the error_state is != SUCCESS. If
+     * this field is used, the info and warn fields should not be used
+     *
+     * @see #error_state
+     * @see #SUCCESS
+     * @see #TOOL_ERROR
+     * @see #INSTALLATION_ERROR
+     * @see #info
+     * @see #warn
      */
     @XmlElement
     public String error;
-    
+
+
     /**
-     * An integer indicating the output error state.
-     * 
-     * In the manner of the process exit status on UNIX, or errorlevel in DOS.
-     * 
-     * A value of 0 indicates success.
-     * A non-zero value (usually 1-255) indicates failure, and may perhaps be used as an error code.
-     * 
-     * {@link "http://en.wikipedia.org/wiki/Exit_status"}
+     * The service was invoced succesfully. This does not guarantee
+     * that the service did what it was supposed to do, just that
+     * the service wrapping registred no errors.
+     *
+     * For futher detail, examine the info stringm and the warn string
+     *
+     * @see #info
+     * @see #warn
+     * @see #error_state
      */
     public static final int SUCCESS = 0;
-    /** Default non zero error value */
-    public static final int ERROR = 1;
-    /** The error state for the service invocation */
-    public int error_state;
-    /** Also allow properties to be returned, to permit extensible behaviour.
-     * @deprecated, should be moved to the individual reports
+
+
+    /**
+     * The service failed. For further details, examine the error string
+     *
+     * @see #error_state
+     * @see #error
      */
-    @XmlElement(name="property")
-    public List<Property> properties;
+    public static final int TOOL_ERROR = 1;
+
+
+    /**
+     * The service failed in such a way, that further invocations of this
+     * service will also likely fail. Do not invoke the service again<br>
+     * This is the correct error state, if the service has unfulfilled
+     * dependencies from the enviroment, or suffers a catastrophic error
+     * like OutOfMemory
+     *
+     * For futher detail on the error, examine the error string
+     *
+     * @see #error
+     * @see #error_state
+     */
+    public static final int INSTALLATION_ERROR = 2;
+
+
+    /**
+     * The error state for the service invocation. Restricted to
+     * three values
+     * <ul>
+     * <li> SUCCESS
+     * <li> TOOL_ERROR
+     * <li> INSTALLATION_ERROR
+     * <ul>
+     *
+     * @see #SUCCESS
+     * @see #TOOL_ERROR
+     * @see #INSTALLATION_ERROR
+     */
+    public int error_state = SUCCESS;
+
 
     /**
      * No arg constructor
@@ -129,19 +175,6 @@ public class ServiceReport {
         this.error_state = error_state;
     }
 
-    /**
-     * @return the properties
-     */
-    public List<Property> getProperties() {
-        return properties;
-    }
-
-    /**
-     * @param properties the properties to set
-     */
-    public void setProperties(List<Property> properties) {
-        this.properties = properties;
-    }
 
     /**
      * @see java.lang.Object#toString()
@@ -162,12 +195,6 @@ public class ServiceReport {
         }
         if( this.info != null ) {
             rep.append("INFO: "+this.info+"\n");
-        }
-        // Properties?
-        if( this.properties != null ) {
-            for( Property p : this.properties ) {
-                rep.append("PROPERTY: "+p.getName()+" = "+p.getValue()+"\n");
-            }
         }
         return rep.toString();
     }
