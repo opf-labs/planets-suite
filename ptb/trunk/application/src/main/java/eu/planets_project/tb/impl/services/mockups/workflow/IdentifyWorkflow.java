@@ -233,7 +233,8 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
 
         // Create a ServiceReport from the exception.
         ServiceReport sr = new ServiceReport();
-        sr.setErrorState(ServiceReport.ERROR);
+      //TODO can we distinguish tool and install error here?
+        sr.setErrorState(ServiceReport.TOOL_ERROR);
         sr.setError(exceptionReport);
         if( identify != null && identify.getReport() != null )
             sr.setInfo(identify.getReport().toString());

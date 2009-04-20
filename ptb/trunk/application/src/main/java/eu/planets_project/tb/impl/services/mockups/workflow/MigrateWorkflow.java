@@ -460,7 +460,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         } catch (Exception e ) {
             // Create a ServiceReport from the exception.
             ServiceReport sr = new ServiceReport();
-            sr.setErrorState(ServiceReport.ERROR);
+            //TODO can we distinguish tool and install error here?
+            sr.setErrorState(ServiceReport.TOOL_ERROR);
             sr.setError(e.toString());
             wr.setReport(sr);
             log.error("Migration failed! "+e);
