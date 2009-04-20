@@ -2,7 +2,7 @@ package eu.planets_project.ifr.core.registry.gui;
 
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -59,7 +59,7 @@ public class EndpointBackingBean {
 		// Now iterate over the internal endpoint list
 		for (PlanetsServiceEndpoint endpoint : _endpoints) {
 			// Check that either the selected category matches or that the category is all
-			if ((this._selectedCategory.equals(EndpointBackingBean.ALL_CATEGORY)) |
+			if ((this._selectedCategory.equals(EndpointBackingBean.ALL_CATEGORY)) ||
 					(this._selectedCategory.equals(endpoint.getCategory()))) {
 				// If the name or the category of the endpoint match the search string
 				if ((endpoint.getCategory().toLowerCase().indexOf(this._searchStr.toLowerCase()) > -1) ||
@@ -258,7 +258,7 @@ public class EndpointBackingBean {
     	// Get the endpoints from ServiceLookup we need to initialise the endpoint list
     	// then a hash set of URIs to keep track of duplicates
     	this._endpoints = new ArrayList<PlanetsServiceEndpoint>();
-    	HashSet<URL> uris = new HashSet<URL>();
+    	HashSet<URI> uris = new HashSet<URI>();
 
     	// Create hash map for categories and add all
     	SortedSet<String> _cats = new TreeSet<String>();
@@ -277,7 +277,11 @@ public class EndpointBackingBean {
     			continue;
     		}
     		this._endpoints.add(_endpoint);
-    		uris.add(desc.getEndpoint());
+    		try {
+                uris.add(desc.getEndpoint().toURI());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
     		// Add the category as well
     		_cats.add(_endpoint.getCategory());
     	}
@@ -289,7 +293,7 @@ public class EndpointBackingBean {
     	for (URI location : serviceEndpoints) {
     		try {
 	    		// If we've already got this endpoint then push on to the next
-				if (uris.contains(location.toURL())) {
+				if (uris.contains(location.toURL().toURI())) {
 					_log.info("Service registered->" + location);
 					continue;
 				}
@@ -309,7 +313,9 @@ public class EndpointBackingBean {
 			} catch (IllegalArgumentException e) {
 				_log.error("Null or bad PlanetsServiceExplorer used as constructor for PlanetsServiceEndpoint");
 				_log.error(e.getStackTrace());
-			}
+			} catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
 		}
 		// Create a new list for all of the categories
 		this ._serviceCategories = new ArrayList<SelectItem>(_cats.size());
