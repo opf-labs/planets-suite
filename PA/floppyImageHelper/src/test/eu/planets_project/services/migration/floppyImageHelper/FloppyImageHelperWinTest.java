@@ -84,8 +84,7 @@ public class FloppyImageHelperWinTest {
 		System.out.println("****************************************************");
 		ZipResult zipResult = FileUtils.createZipFileWithChecksum(FILES_TO_INJECT, OUT_DIR, "test.zip"); 
 		File zipFile = zipResult.getZipFile();
-		Content content = ImmutableContent.asStream(zipFile);
-		content.setChecksum(zipResult.getChecksum());
+		Content content = ImmutableContent.asStream(zipFile).withChecksum(zipResult.getChecksum());
 		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("zip")).title("test.zip").build();
 		List<Parameter> parameters = new ArrayList<Parameter> ();
 		parameters.add(new Parameter("modifyImage", "false"));

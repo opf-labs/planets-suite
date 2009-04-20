@@ -6,7 +6,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
-     * A digital object fragment.
+ * A digital object fragment.
+ * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
 public final class Fragment {
@@ -16,8 +17,7 @@ public final class Fragment {
 
     /** No-arg constructor for JAXB. Client should not use this. */
     @SuppressWarnings("unused")
-    public Fragment() {
-    }
+    private Fragment() {}
 
     /**
      * @param id The ID

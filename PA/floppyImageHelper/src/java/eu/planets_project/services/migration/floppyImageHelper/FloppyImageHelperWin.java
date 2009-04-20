@@ -158,8 +158,9 @@ public class FloppyImageHelperWin implements Migrate {
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
 			zippedResult = this.extractFilesFromFloppyImage(inputFile);
 			
-			Content zipContent = ImmutableContent.asStream(zippedResult.getZipFile());
-			zipContent.setChecksum(zippedResult.getChecksum());
+			Content zipContent = ImmutableContent.asStream(
+                    zippedResult.getZipFile()).withChecksum(
+                    zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
 			.format(Format.extensionToURI("zip"))

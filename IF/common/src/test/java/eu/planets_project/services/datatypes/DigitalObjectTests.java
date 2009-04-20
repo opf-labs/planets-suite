@@ -21,6 +21,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,8 +48,8 @@ public final class DigitalObjectTests {
                 .permanentUrl(id).build();
         assertEquals(o, new DigitalObject.Builder(o.toXml()).build());
         /* Or use the factory method to create...: */
-        o = new DigitalObject.Builder(ImmutableContent.byValue(new File("build.xml")))
-                .build();
+        o = new DigitalObject.Builder(ImmutableContent.byValue(new File(
+                "build.xml"))).build();
         assertEquals(o, new DigitalObject.Builder(o.toXml()).build());
         /* Or to copy a digital object: */
         o = new DigitalObject.Builder(o).build();
@@ -73,22 +74,24 @@ public final class DigitalObjectTests {
         /* For a more complex sample, we set up a few things we need: */
         URL purl = new URL("http://id");
         URL data1 = new URL("http://some.reference");
+        /* Create an optional checksum: */
+        String algorithm = "MD5";
+        String value = "the checksum data";
+        Checksum checksum = new Checksum(algorithm, value);
         // byte[] data2 = new byte[] {};// see ContentTests for a real sample
         /* Create the content: */
-        Content c1 = ImmutableContent.byReference(data1);
+        Content c1 = ImmutableContent.byReference(data1).withChecksum(checksum);
         // Content c2 = Content.byValue(data2);
         /* Create some optional metadata: */
         URI type = URI.create("meta:/data.type");
         String metaContent = "the meta data";
         Metadata meta = new Metadata(type, metaContent);
-        /* Create an optional checksum: */
-        String algorithm = "MD5";
-        String value = "the checksum data";
-        Checksum checksum = new Checksum(algorithm, value);
-        c1.setChecksum(checksum);
+        Assert.assertNotNull(c1.getChecksum());
+        Assert.assertEquals(algorithm, c1.getChecksum().getAlgorithm());
+        Assert.assertEquals(value, c1.getChecksum().getValue());
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(c1)
-                .permanentUrl(purl).metadata(meta).build();
+        DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl)
+                .metadata(meta).build();
         System.out.println("Created: " + object);
 
     }
@@ -97,8 +100,7 @@ public final class DigitalObjectTests {
     private static final String SOME_URL_2 = "http://url2";
     private static final Checksum CHECKSUM = new Checksum("algo", "checksum");
     private static final Event EVENT = new Event();
-    private static final Fragment FRAGMENT = new Fragment(
-            "ID");
+    private static final Fragment FRAGMENT = new Fragment("ID");
     private static final Metadata META = new Metadata(URI.create(SOME_URL_1),
             "meta");
     private static final String TITLE = "title";
@@ -122,10 +124,9 @@ public final class DigitalObjectTests {
             /* Creation with all optional arguments: */
             digitalObject1 = new DigitalObject.Builder(ImmutableContent
                     .byReference(permanentUrl)).permanentUrl(permanentUrl)
-                    .events(EVENT).fragments(FRAGMENT)
-                    .manifestationOf(manifestationOf).format(planetsFormatUri)
-                    .metadata(META).title(TITLE).contains(digitalObject2)
-                    .build();
+                    .events(EVENT).fragments(FRAGMENT).manifestationOf(
+                            manifestationOf).format(planetsFormatUri).metadata(
+                            META).title(TITLE).contains(digitalObject2).build();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -248,10 +249,10 @@ public final class DigitalObjectTests {
         }
         return null;
     }
-    
+
     @Test
-    public void schemaGeneration(){
+    public void schemaGeneration() {
         ImmutableDigitalObject.main(null);
     }
- 
+
 }
