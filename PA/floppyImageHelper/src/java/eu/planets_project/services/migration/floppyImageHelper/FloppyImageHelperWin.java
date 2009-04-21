@@ -35,7 +35,7 @@ public class FloppyImageHelperWin implements Migrate {
 	
 	public FloppyImageHelperWin() {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		FileUtils.deleteTempFiles(TEMP_FOLDER, log);
+		FileUtils.deleteTempFiles(TEMP_FOLDER);
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 		EXTRACTED_FILES_DIR = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTION_OUT_FOLDER_NAME);
 	}

@@ -68,7 +68,7 @@ public class FloppyImageModify implements Modify {
     public FloppyImageModify() {
     	// clean the temp folder for this app at startup...
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		FileUtils.deleteTempFiles(TEMP_FOLDER, log);
+		FileUtils.deleteTempFiles(TEMP_FOLDER);
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 	}
 
