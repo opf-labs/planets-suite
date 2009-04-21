@@ -95,6 +95,7 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     				httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
     				httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
     				httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
+    				
        				GetMethod dirRequest = new GetMethod(MIRROR_BASE_URL);
     				dirRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
 	
@@ -119,7 +120,7 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     				GetMethod dirRequest = new GetMethod(pdURI.toString());
     				dirRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
 
-				httpClient.executeMethod(dirRequest);
+    				httpClient.executeMethod(dirRequest);
     				
     				// Scrape file names
     				URI[] subDirs = scrapeSubDir(dirRequest.getResponseBodyAsString(), pdURI.toString());
