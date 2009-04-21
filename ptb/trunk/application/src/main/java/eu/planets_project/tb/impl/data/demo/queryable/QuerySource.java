@@ -1,15 +1,15 @@
 package eu.planets_project.tb.impl.data.demo.queryable;
 
-import java.io.File;
-import java.net.URI;
+// import java.io.File;
+// import java.net.URI;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+// import org.apache.commons.logging.Log;
+// import org.apache.commons.logging.LogFactory;
 
 // import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 // import eu.planets_project.ifr.core.storage.impl.file.DigitalObjectManagerImpl;
 import eu.planets_project.tb.gui.backing.QueryResultListEntry;
-import eu.planets_project.tb.impl.data.FileSystemDataManager;
+// import eu.planets_project.tb.impl.data.FileSystemDataManager;
 
 /**
  * Abstract base class for all query-able data sources
@@ -22,7 +22,7 @@ public abstract class QuerySource {
 	/**
 	 * A logger
 	 */
-	private Log log = LogFactory.getLog(QuerySource.class);
+	// private Log log = LogFactory.getLog(QuerySource.class);
 	
 	/**
 	 * Display name of this data source
@@ -40,8 +40,7 @@ public abstract class QuerySource {
     public abstract QueryResultListEntry[] query(String query, int limit, int offset);
     
     public int ingest(QueryResultListEntry[] results) {
-		// Store in FS-Implementation of the DigitalOjectManager
-    	/*
+		/* Store in FS-Implementation of the DigitalOjectManager
 		FileSystemDataManager fsdm = new FileSystemDataManager();
 		DigitalObjectManager doManager = DigitalObjectManagerImpl.getInstance("default", new File(fsdm.getRootURI()));
 		
@@ -56,7 +55,7 @@ public abstract class QuerySource {
 			}
 		}
 		*/
-		return 1; // successCtr;
+		return -1; // successCtr;
     }
 
 }
