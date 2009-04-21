@@ -54,9 +54,9 @@ public class ProcessRunner implements Runnable{
     private final List<Thread> threads =
             Collections.synchronizedList(new LinkedList<Thread>());
 
-    private final int MAXINITIALBUFFER = 1000000;
-    private final int THREADTIMEOUT = 1000; // Milliseconds
-    private final int POLLING_INTERVAL = 100;//milli
+    private static final int MAXINITIALBUFFER = 1000000;
+    private static final int THREADTIMEOUT = 1000; // Milliseconds
+    private static final int POLLING_INTERVAL = 100;//milli
 
     private final ProcessBuilder pb;
 
@@ -126,7 +126,7 @@ public class ProcessRunner implements Runnable{
      * begun.
      * @param processInput to read from.
      */
-    public void setInputStream(InputStream processInput){
+    public synchronized void setInputStream(InputStream processInput){
         this.processInput = processInput;
     }
 
@@ -152,7 +152,7 @@ public class ProcessRunner implements Runnable{
      * Set the timeout. Default to Long.MAX_VALUE in millisecs
      * @param timeout the new timeout in millisecs
      */
-    public void setTimeout(long timeout){
+    public synchronized void setTimeout(long timeout){
         this.timeout = timeout;
     }
 
