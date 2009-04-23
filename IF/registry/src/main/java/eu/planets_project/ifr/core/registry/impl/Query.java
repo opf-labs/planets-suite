@@ -2,13 +2,18 @@ package eu.planets_project.ifr.core.registry.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Queryable;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
@@ -147,6 +152,16 @@ public final class Query {
         int matched = 0;
         for (Object sample : samps) {
             for (Object candidate : cands) {
+                /*
+                 * If we are dealing with URIs, we want to map the different
+                 * kinds (extension URIs, Pronom URIs) onto each other:
+                 */
+                if (candidate instanceof URI && sample instanceof URI) {
+                    if (mappable((URI) candidate, (URI) sample, mode)) {
+                        matched++;
+                        break;
+                    }
+                }
                 if (mode.matches(candidate.toString(), sample.toString())) {
                     matched++;
                     break;
@@ -154,5 +169,63 @@ public final class Query {
             }
         }
         return matched == samps.size();
+    }
+
+    /**
+     * @param candidate The candidate registry entry
+     * @param sample The query sample pattern
+     * @param mode The query mode
+     * @return True, if the sample can be mapped onto the candidate URI
+     */
+    private static boolean mappable(final URI candidate, final URI sample,
+            final MatchingMode mode) {
+        /* Case 0: no mapping required: */
+        if (mode.matches(candidate.toString(), sample.toString())) {
+            return true;
+        }
+        /* Case 1: map extension to pronom: */
+        if (Format.isThisAnExtensionURI(sample)
+                && Format.isThisAPronomURI(candidate)) {
+            return pronomMatchesExtension(candidate, sample, mode);
+        }
+        /* Case 2: map pronom to extension: */
+        if (Format.isThisAPronomURI(sample)
+                && Format.isThisAnExtensionURI(candidate)) {
+            return pronomMatchesExtension(sample, candidate, mode);
+        }
+        return false;
+    }
+
+    /**
+     * @param pronomUri The PRONOM URI
+     * @param extensionUri The Planets extension URI
+     * @param mode The matching mode
+     * @return True, if one of the PRONOM IDs of the given extension URI matches
+     *         the given PRONOM URI.
+     */
+    private static boolean pronomMatchesExtension(final URI pronomUri,
+            final URI extensionUri, final MatchingMode mode) {
+        // TODO move this to Format or FormatRegistry?
+        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
+        String extension = extensionFromExtensionUri(extensionUri);
+        /* We get the pronom IDs that correspond to the extension: */
+        Set<URI> samplePronomIds = registry.getURIsForExtension(extension);
+        for (URI uri : samplePronomIds) {
+            /* If one of these match the candidate ID, we have a hit: */
+            if (mode.matches(pronomUri.toString(), uri.toString())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param uri The extension URI
+     * @return The actual extension string (e.g. 'png')
+     */
+    private static String extensionFromExtensionUri(final URI uri) {
+        // TODO move this to Format or FormatRegistry?
+        String[] tokens = uri.toString().split("/");
+        return tokens[tokens.length - 1];
     }
 }

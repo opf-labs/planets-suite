@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.MatchingMode;
+import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -26,8 +27,9 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class CoreRegistryTests {
     static final String TEST_ROOT = "IF/registry/src/test/resources/service-description-registry/";
-    static final String PRONOM1 = "pronom:fmt/10";
-    static final String PRONOM2 = "pronom:fmt/11";
+    static final URI PRONOM_TIFF = Format.pronomIdToURI("fmt/10");
+    static final URI EXT_TIFF = Format.extensionToURI("tiff");
+    static final URI PRONOM_PNG = Format.pronomIdToURI("fmt/11");
     static final String DESCRIPTION = "description";
     static final String TYPE1 = "type1";
     static final String TYPE2 = "type2";
@@ -59,12 +61,13 @@ public class CoreRegistryTests {
             e.printStackTrace();
         }
         registry.clear();
+        /* We register one service using the TIFF pronom ID as input format: */
         description1 = new ServiceDescription.Builder(NAME, TYPE1).description(
-                DESCRIPTION).inputFormats(URI.create(PRONOM1),
-                URI.create(PRONOM2)).endpoint(endpoint1).build();
+                DESCRIPTION).inputFormats(PRONOM_TIFF, PRONOM_PNG).endpoint(
+                endpoint1).build();
+        /* We register another one using the TIFF extension ID as input format: */
         description2 = new ServiceDescription.Builder(NAME, TYPE2)
-                .inputFormats(URI.create(PRONOM1), URI.create(PRONOM2))
-                .endpoint(endpoint2).build();
+                .inputFormats(EXT_TIFF, PRONOM_PNG).endpoint(endpoint2).build();
         Response register = registry.register(description1);
         if (!register.success) {
             System.err.println(register.message);
@@ -153,10 +156,42 @@ public class CoreRegistryTests {
     public void findByInputFormat() {
         List<ServiceDescription> services = registry
                 .query(new ServiceDescription.Builder(null, null).inputFormats(
-                        URI.create(PRONOM1)).build());
+                        PRONOM_PNG).build());
         /*
          * This should retrieve both descriptions, as both of them support the
          * specified input format (among others):
+         */
+        Assert.assertEquals(2, services.size());
+    }
+
+    /**
+     * Test query by input format, mapping from extension to pronom ID.
+     */
+    @Test
+    public void findByInputFormatMappingExtensionToPronom() {
+        /* We use an extension URI for querying instead of a pronom URI: */
+        List<ServiceDescription> services = registry
+                .query(new ServiceDescription.Builder(null, null).inputFormats(
+                        EXT_TIFF).build());
+        /*
+         * This should retrieve both descriptions, even if we query using the
+         * extension and the services had been registered using the pronom ID:
+         */
+        Assert.assertEquals(2, services.size());
+    }
+
+    /**
+     * Test query by input format, mapping from pronom ID to extension.
+     */
+    @Test
+    public void findByInputFormatMappingPronomToExtension() {
+        /* We use the pronom URI for querying instead of an extension URI: */
+        List<ServiceDescription> services = registry
+                .query(new ServiceDescription.Builder(null, null).inputFormats(
+                        PRONOM_TIFF).build());
+        /*
+         * This should retrieve both descriptions, even if we query using the
+         * pronom ID and the services had been registered using the extension:
          */
         Assert.assertEquals(2, services.size());
     }
@@ -168,7 +203,7 @@ public class CoreRegistryTests {
     public void findByInputFormatAndType() {
         List<ServiceDescription> services = registry
                 .query(new ServiceDescription.Builder(null, TYPE1)
-                        .inputFormats(URI.create(PRONOM1)).build());
+                        .inputFormats(PRONOM_TIFF).build());
         /*
          * While this should only retrieve the first description, as the type is
          * only corresponding to the first description:
