@@ -1,24 +1,13 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.net.URI;
-import java.net.URL;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.Date;
 
-import javax.faces.context.FacesContext;
-
-import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.apache.myfaces.custom.tree2.TreeModel;
 import org.apache.myfaces.custom.tree2.TreeModelBase;
-import org.apache.myfaces.custom.tree2.TreeNode;
-
-import com.hp.hpl.jena.shared.QueryStageException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.demo.queryable.QuerySourceManager;
@@ -38,12 +27,6 @@ public class QueryBrowser {
     // A logger for this:
     private static PlanetsLogger log = PlanetsLogger.getLogger(QueryBrowser.class, "testbed-log4j.xml");
     
-    // The Data model
-    private QuerySourceManager qsm = new QuerySourceManager();
-
-    // The current URI/position
-    private URI location = null;
-    
     // Currently selected query API
     private static final String NO_API_SELECTED = "[please select a query source first]";
     private QuerySource currentAPI = null;
@@ -53,6 +36,12 @@ public class QueryBrowser {
     
     // Query offset
     private int queryOffset = 0;
+    
+    // Start date for time-based queries
+    private Date from = new Date();
+    
+    // End date for time-based queries
+    private Date until = new Date();
     
     // Maximum results displayed on a single page
     private static final int MAX_RESULTS = 20;
@@ -79,8 +68,9 @@ public class QueryBrowser {
     		this.currentAPI = node.getQuerySource();
     	} else {
     		this.currentAPI = null;
-    		this.currentResults = null;
     	}
+    	this.queryOffset = 0;
+		this.currentResults = null;
     }
     
     public QueryResultListEntry[] getList() {
@@ -108,7 +98,11 @@ public class QueryBrowser {
     
     public String startQuery() {
     	if (currentAPI != null) {
-    		currentResults = this.currentAPI.query(this.query, MAX_RESULTS, queryOffset);
+    		if (currentAPI.useOAIQueryMode()) {
+    			currentResults = this.currentAPI.query(from, until);
+    		} else {
+	    		currentResults = this.currentAPI.query(this.query, MAX_RESULTS, queryOffset);
+    		}
     		if (currentResults.length == 0)
     			currentResults = null;
     	}
@@ -141,18 +135,32 @@ public class QueryBrowser {
         return "success";
     }
     
-    public String ingest() {
-    	if (currentResults != null) {
-	    	ArrayList<QueryResultListEntry> rList = new ArrayList<QueryResultListEntry>();
-	    	for (QueryResultListEntry r : currentResults) {
-	    		if (r.isSelected())
-	    			rList.add(r);
-	    	}
-	    	
-	    	int success = currentAPI.ingest(rList.toArray(new QueryResultListEntry[rList.size()]));
-	    	log.info("Successfully ingested " + success + " of " + rList.size() + " items");
-    	}
-    	return "success";
+    public String addToExperiment() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        if( expBean == null ) return "failure";
+        
+        // Add each of the selected items to the experiment:
+        for (QueryResultListEntry res : getList()) {
+        	if (res.isSelected()) {
+                try {
+                	DataHandler dh = new DataHandlerImpl();
+                	String ref = dh.addByURI(new URI(res.getUrl()));
+                    // DataHandler dh = new DataHandlerImpl();
+                	// String ref = dh.addFromDataRegistry(fb.dr , dob.getUri());
+                	//add reference to the new experiment's backing bean
+                	expBean.addExperimentInputData(ref);
+                } catch (Exception e) {
+                  log.error("Failed to add to experiment: " + res.getName());
+                  log.error(e.getClass() + ": " + e.getMessage());
+                }	
+        	}
+        }
+        
+        // Clear any selection:
+        selectNone();
+        
+        // Return: gotoStage2 in the browse new experiment wizard
+        return "goToStage2";
     }
     
     public boolean queryHasNext() {
@@ -195,6 +203,29 @@ public class QueryBrowser {
     		return "color:#dddddd;";
     	
     	return "";
+    }
+    
+    public boolean getUseOAIQueryGUI() {
+    	if (currentAPI == null)
+    		return false;
+    	
+    	return currentAPI.useOAIQueryMode();
+    }
+    
+    public Date getFromDate() {
+    	return from;
+    }
+    
+    public void setFromDate(Date date) {
+    	this.from = date;
+    }
+    
+    public Date getUntilDate() {
+    	return until;
+    }
+    
+    public void setUntilDate(Date date) {
+    	this.until = date;
     }
     
 }
