@@ -179,6 +179,11 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>browse_data_remote</from-outcome>
+			<to-view-id>/reader/browse_data_remote.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>browse_ontology</from-outcome>
 			<to-view-id>/reader/browse_ontology.xhtml</to-view-id>
 			<redirect />
@@ -346,6 +351,11 @@
   <navigation-case>
    <from-outcome>browse_data</from-outcome>
    <to-view-id>/reader/browse_data.xhtml</to-view-id>
+   <redirect/>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>browse_data_remote</from-outcome>
+   <to-view-id>/reader/browse_data_remote.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>
@@ -615,18 +625,6 @@
    <to-view-id>/reader/browse_exp.xhtml</to-view-id>
   </navigation-case>
  </navigation-rule>
-
-	<!--                                                          -->
-	<!-- DUMMY INSERT - NAVIGATION RULE FOR WEB SOURCE HARVESTING -->
-	<!-- by Rainer Simon...                                       -->
-
-	<navigation-rule>
-		<from-view-id>/admin/upload_data.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/admin/upload_data.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
 
 	<!-- navigation rules for NEW_EXPERIMENT pages -->
 	<navigation-rule>
