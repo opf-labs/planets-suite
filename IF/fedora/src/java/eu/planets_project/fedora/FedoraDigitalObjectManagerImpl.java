@@ -41,8 +41,43 @@ public class FedoraDigitalObjectManagerImpl implements DigitalObjectManager {
         this.server = server;
     }
 
+
+    /**
+     * Dumps the object back into Fedora. Not implemented
+     *
+     * <br>
+     * First examines whether or not the object exist in the repository already
+     * If it does, update the object.
+     * If not, create a new object.
+     * <br>
+     * TODO
+     * This method has several major issues, that must be resolved beforehand
+     *
+     * <ul>
+     * <li>How to handle contained objects
+     * <li>How to handle Metadata. Should the type-URI be the datastream name?
+     * <li>Content ref, the export makes a link to Fedora. This cannot be stored back...
+     * <li>Which datastream to use for content
+     * <li>Should the object be associated with the content model.
+     * <li>How to figure out references, or relations
+     * <li>And there is probably more....
+     * </ul>
+     *
+     * @param pdURI
+     *            The URI which uniquely identifies the persisted DigitalObject
+     * @param digitalObject
+     * @throws DigitalObjectNotStoredException
+     */
     public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new DigitalObjectNotStoredException("Not implemented yet");
+    }
+
+    private void createNewObject(){
+
+    }
+
+    private void updateExistingObject(){
+        
     }
 
     /**
