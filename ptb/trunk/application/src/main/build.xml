@@ -244,6 +244,10 @@
           <include name="jena.jar" />
           <include name="iri.jar" />
           <include name="icu4j_3_4.jar" />
+		  <!-- additional libs for OAI harvesting -->
+          <include name="oai4j-0.6b1.jar" />
+          <include name="dom4j-1.6.1.jar" />
+          <include name="jaxen-1.1.1.jar" />
 		</fileset>
 	</move>
 
