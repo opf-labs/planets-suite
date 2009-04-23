@@ -6,13 +6,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,8 +28,6 @@ import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.tb.gui.backing.QueryResultListEntry;
 
 /**
- * A DataManagerLocal demo implementation that interfaces directly to a 
- * mirror site of the NASA Blue Marble Next Generation image collection.
  *  
  * @author <a href="mailto:rainer.simon@arcs.ac.at">Rainer Simon</a>
  *
@@ -45,16 +46,38 @@ public class YahooImageAPIQuerySource extends QuerySource {
     private static String Y_APP_ID = "Oc5vBjrV34EdL30ngS_5VnW9PVk0jRSkwyzQO0IDDNXCsBJE4OSq5NE1NF4FToohppPX";
     private static String BASE_URL = API_BASE_URL + "?appid=" + Y_APP_ID + "&";
     
+    /**
+     * HttpClient timeout in ms
+     */
+    private static final int TIMEOUT = 10000;
+    
+    /**
+     * The HTTP client
+     */
+    private HttpClient httpClient = new HttpClient();
+    
     public YahooImageAPIQuerySource() {
     	super("Yahoo! Image Search");
+    	
+    	// Set up HTTP client
+    	String host = System.getProperty("http.proxyHost");
+        String port = System.getProperty("http.proxyPort");
+        if( host != null && port != null ) {
+            httpClient.getHostConfiguration().setProxy(host, Integer.parseInt(port)); 
+        }
+		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
+		httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
+		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
     }
     
     public QueryResultListEntry[] query(String query, int limit, int offset) {
-    	try {
+    	try {   		
     		// Fire GET requets to Yahoo image search API
-    		String queryString = BASE_URL + "query=" + URLEncoder.encode(query, "UTF-8") + "&results=" + limit + "&start=" + offset; 		
+    		String queryString = BASE_URL + "query=" + URLEncoder.encode(query, "UTF-8") + "&results=" + limit + "&start=" + offset;   		
 			GetMethod yahooRequest = new GetMethod(queryString);
-			new HttpClient().executeMethod(yahooRequest);
+			yahooRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+			httpClient.executeMethod(yahooRequest);
 			
 			// Create XML DOM
 	        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -74,6 +97,11 @@ public class YahooImageAPIQuerySource extends QuerySource {
     	}
     	
     	return new QueryResultListEntry[0];
+    }
+    
+    public QueryResultListEntry[] query(Date from, Date until) {
+		// Need to re-think the way QuerySources are modeled... 
+    	return new QueryResultListEntry[0];    	
     }
     
     private QueryResultListEntry[] createDigitalObjects(Document dom) {	

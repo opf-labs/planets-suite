@@ -6,11 +6,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -22,7 +25,6 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.tb.gui.backing.QueryResultListEntry;
-
 
 /**
  * A DataManagerLocal demo implementation that interfaces directly to a 
@@ -43,18 +45,39 @@ public class GenericSRUQuerySource extends QuerySource {
      */
     private static String BASE_URL = "http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrieve";
     
+    /**
+     * HttpClient timeout in ms
+     */
+    private static final int TIMEOUT = 10000;
+    
+    /**
+     * The HTTP client
+     */
+    private HttpClient httpClient = new HttpClient();
+    
     public GenericSRUQuerySource() {
     	super("LoC SRU Test Service");
+    	
+    	// Set up HTTP client
+    	String host = System.getProperty("http.proxyHost");
+        String port = System.getProperty("http.proxyPort");
+        if( host != null && port != null ) {
+            httpClient.getHostConfiguration().setProxy(host, Integer.parseInt(port)); 
+        }
+		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
+		httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
+		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
     }
     
     public QueryResultListEntry[] query(String query, int limit, int offset) {
 		try {
 			String url = BASE_URL + "&query=" + URLEncoder.encode(query, "UTF-8") +
 						 "&maximumRecords=" + limit + "&recordSchema=dc";
-			log.debug(url);
 			
 			GetMethod sruRequest = new GetMethod(url);
-			new HttpClient().executeMethod(sruRequest);
+			sruRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+			httpClient.executeMethod(sruRequest);
 			
 			SAXBuilder builder = new SAXBuilder();
 			return createDigitalObjects(builder.build(sruRequest.getResponseBodyAsStream()));
@@ -68,6 +91,11 @@ public class GenericSRUQuerySource extends QuerySource {
 			log.error(e.getClass().toString() + ": " + e.getMessage());
 		}
 		return new QueryResultListEntry[0];
+    }
+    
+    public QueryResultListEntry[] query(Date from, Date until) {
+		// Need to re-think the way QuerySources are modeled... 
+    	return new QueryResultListEntry[0];    	
     }
     
     private QueryResultListEntry[] createDigitalObjects(Document dom) {

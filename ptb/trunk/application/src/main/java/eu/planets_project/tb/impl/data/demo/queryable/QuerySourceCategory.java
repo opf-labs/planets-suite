@@ -1,6 +1,7 @@
 package eu.planets_project.tb.impl.data.demo.queryable;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import eu.planets_project.tb.gui.backing.QueryResultListEntry;
 
@@ -48,5 +49,10 @@ public class QuerySourceCategory extends QuerySource {
 		// Need to find a better way of building the tree model...
     	return new QueryResultListEntry[0];
 	}
+    
+    public QueryResultListEntry[] query(Date from, Date until) {
+		// Need to find a better way of building the tree model...
+    	return new QueryResultListEntry[0];    	
+    }
 	
 }

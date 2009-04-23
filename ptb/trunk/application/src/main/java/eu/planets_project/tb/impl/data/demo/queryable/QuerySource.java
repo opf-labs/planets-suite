@@ -8,6 +8,8 @@ package eu.planets_project.tb.impl.data.demo.queryable;
 
 // import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 // import eu.planets_project.ifr.core.storage.impl.file.DigitalObjectManagerImpl;
+import java.util.Date;
+
 import eu.planets_project.tb.gui.backing.QueryResultListEntry;
 // import eu.planets_project.tb.impl.data.FileSystemDataManager;
 
@@ -37,7 +39,13 @@ public abstract class QuerySource {
     	return sourceName;
     }
     
+    public boolean useOAIQueryMode() {
+    	return false;
+    }
+    
     public abstract QueryResultListEntry[] query(String query, int limit, int offset);
+    
+    public abstract QueryResultListEntry[] query(Date from, Date until);
     
     public int ingest(QueryResultListEntry[] results) {
 		/* Store in FS-Implementation of the DigitalOjectManager
