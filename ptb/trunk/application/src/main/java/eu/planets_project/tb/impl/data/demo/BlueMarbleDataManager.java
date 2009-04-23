@@ -56,7 +56,7 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     /**
      * The HTTP client:
      */
-    HttpClient httpClient = new HttpClient();
+    private HttpClient httpClient = new HttpClient();
     
     /**
      * Local buffer for the remote directory structure to increase responsiveness of the GUI 
@@ -70,12 +70,16 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     		log.error("This should never happen: " + e.getMessage());
     	}
     	
-    	// Set up the proxy.
+    	// Set up HTTP client
     	String host = System.getProperty("http.proxyHost");
         String port = System.getProperty("http.proxyPort");
         if( host != null && port != null ) {
             httpClient.getHostConfiguration().setProxy(host, Integer.parseInt(port)); 
         }
+		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
+		httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
+		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
     }
     
     public URI[] list(URI pdURI) throws SOAPException {
@@ -91,14 +95,8 @@ public class BlueMarbleDataManager implements DataManagerLocal {
     		if (pdURI.equals(rootURI)) {
        	    	try {
        				// Top level directory
-    				httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
-    				httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
-    				httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
-    				httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
-    				
        				GetMethod dirRequest = new GetMethod(MIRROR_BASE_URL);
     				dirRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
-	
        				httpClient.executeMethod(dirRequest);
        				
        				// Scrape directory names
@@ -111,15 +109,9 @@ public class BlueMarbleDataManager implements DataManagerLocal {
        	    	}
        		} else if (!(pdURI.toString().endsWith("png") || pdURI.toString().endsWith("jpg"))) {
        			try {
-       	   			// Sub-directory
-    				httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
-    				httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
-    				httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
-    				httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
-    				
+       	   			// Sub-directory    				
     				GetMethod dirRequest = new GetMethod(pdURI.toString());
     				dirRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
-
     				httpClient.executeMethod(dirRequest);
     				
     				// Scrape file names
