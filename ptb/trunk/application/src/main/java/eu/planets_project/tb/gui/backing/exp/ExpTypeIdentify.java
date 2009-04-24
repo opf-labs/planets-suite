@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Vector;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.impl.formats.Format;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -167,7 +167,7 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
          */
         public String getSummary() {
             try {
-                Format f = ServiceBrowser.fr.getFormatForURI(new URI(format));
+                Format f = new Format(new URI(format));
                 if( f.getExtensions() != null && f.getExtensions().size() > 0 ) {
                     String fs = ""; // Use the (1st) longest extension:
                     for( String ext : f.getExtensions() ) {

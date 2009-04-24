@@ -18,7 +18,9 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.techreg.impl.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -103,6 +105,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     Identify idPost = null;
     
     /* ------------------------------------------------------------- */
+    
+    private static final FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 
     /* (non-Javadoc)
      * @see eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow#getStages()
@@ -296,17 +300,17 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private List<URI> getPronomURIAliases(URI typeURI) {
         Set<URI> turis = new HashSet<URI>();
         
-        if( Format.isThisAMimeURI(typeURI) ) {
+        if( format.isMimeUri(typeURI) ) {
             Format mime = new Format(typeURI);
-            Set<URI> furis = ServiceBrowser.fr.getURIsForMimeType(mime.getMimeTypes().iterator().next());
+            Set<URI> furis = ServiceBrowser.fr.getUrisForMimeType(mime.getMimeTypes().iterator().next());
             turis.addAll(furis);
-        } else if( Format.isThisAnExtensionURI(typeURI)) {
+        } else if( format.isExtensionUri(typeURI)) {
             Format ext = new Format(typeURI);
-            Set<URI> furis = ServiceBrowser.fr.getURIsForExtension(ext.getExtensions().iterator().next());
+            Set<URI> furis = ServiceBrowser.fr.getUrisForExtension(ext.getExtensions().iterator().next());
             turis.addAll(furis);
         } else {
             // This is a known format, ID, so add it, any aliases, and the ext and mime forms:
-            Format f = ServiceBrowser.fr.getFormatForURI(typeURI);
+            Format f = new Format(typeURI);
             // Aliases:
             for( URI uri : f.getAliases() ) {
                 turis.add(uri);
@@ -518,7 +522,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             newdob.content( ImmutableContent.byReference(doTmp) );
             // FIXME The above need to be a full recursive storage operation!
             if( to != null ) {
-                Format f = ServiceBrowser.fr.getFormatForURI(to);
+                Format f = new Format(to);
                 String title = dob.getTitle()+"."+f.getExtensions().iterator().next();
                 title = title.substring( title.lastIndexOf("/") + 1);
                 newdob.title( title );

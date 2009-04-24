@@ -54,9 +54,9 @@ import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.MatchingMode;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.techreg.impl.formats.Format;
 
 
 /**
@@ -337,8 +337,8 @@ public class ServiceBrowser {
         for( ServiceDescription sd : sds ) {
             for( MigrationPath path : sd.getPaths() ) {
                 ServiceRecordBean srb = new ServiceRecordBean(sd);
-                FormatBean in = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getInputFormat() ) );
-                FormatBean out = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getOutputFormat() ) );
+                FormatBean in = new FormatBean( new Format( path.getInputFormat() ) );
+                FormatBean out = new FormatBean( new Format( path.getOutputFormat() ) );
                 PathwayBean pb = new PathwayBean( srb, in, out );
                 paths.add(pb);
             }
@@ -390,7 +390,7 @@ public class ServiceBrowser {
             for( MigrationPath path : sd.getPaths() ) {
                 if( ( endpoint == null ) || endpoint.equals(sd.getEndpoint().toString()) ) {
                     if( ( outputFormat == null ) || outputFormat.equals(path.getOutputFormat().toString()) ) {
-                        Format fmt = ServiceBrowser.fr.getFormatForURI( path.getInputFormat() );
+                        Format fmt = new Format( path.getInputFormat() );
                         formats.add(fmt);
                     }
                 }
@@ -412,7 +412,7 @@ public class ServiceBrowser {
             for( MigrationPath path : sd.getPaths() ) {
                 if( ( endpoint == null ) || endpoint.equals(sd.getEndpoint().toString()) ) {
                     if( ( inputFormat == null ) || inputFormat.equals(path.getInputFormat().toString()) ) {
-                        Format fmt = ServiceBrowser.fr.getFormatForURI( path.getOutputFormat() );
+                        Format fmt = new Format( path.getOutputFormat() );
                         formats.add(fmt);
                     }
                 }
