@@ -11,7 +11,6 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Queryable;
@@ -183,14 +182,15 @@ public final class Query {
         if (mode.matches(candidate.toString(), sample.toString())) {
             return true;
         }
+        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         /* Case 1: map extension to pronom: */
-        if (Format.isThisAnExtensionURI(sample)
-                && Format.isThisAPronomURI(candidate)) {
+        if (registry.isExtensionUri(sample)
+                && registry.isPronomUri(candidate)) {
             return pronomMatchesExtension(candidate, sample, mode);
         }
         /* Case 2: map pronom to extension: */
-        if (Format.isThisAPronomURI(sample)
-                && Format.isThisAnExtensionURI(candidate)) {
+        if (registry.isPronomUri(sample)
+                && registry.isExtensionUri(candidate)) {
             return pronomMatchesExtension(sample, candidate, mode);
         }
         return false;
@@ -209,7 +209,7 @@ public final class Query {
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         String extension = extensionFromExtensionUri(extensionUri);
         /* We get the pronom IDs that correspond to the extension: */
-        Set<URI> samplePronomIds = registry.getURIsForExtension(extension);
+        Set<URI> samplePronomIds = registry.getUrisForExtension(extension);
         for (URI uri : samplePronomIds) {
             /* If one of these match the candidate ID, we have a hit: */
             if (mode.matches(pronomUri.toString(), uri.toString())) {

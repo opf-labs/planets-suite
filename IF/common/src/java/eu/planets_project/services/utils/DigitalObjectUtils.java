@@ -13,9 +13,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -102,10 +102,15 @@ public final class DigitalObjectUtils {
         List<DigitalObject> list = new ArrayList<DigitalObject>();
         for (File file : files) {
             DigitalObject currentDigObj = new DigitalObject.Builder(
-                    ImmutableContent.asStream(file)).title(file.getName())
+                    ImmutableContent.asStream(file))
+                    .title(file.getName())
                     .format(
-                            Format.extensionToURI(FileUtils
-                                    .getExtensionFromFile(file))).build();
+                            FormatRegistryFactory
+                                    .getFormatRegistry()
+                                    .createExtensionUri(
+                                            FileUtils
+                                                    .getExtensionFromFile(file)))
+                    .build();
             list.add(currentDigObj);
         }
         return list;

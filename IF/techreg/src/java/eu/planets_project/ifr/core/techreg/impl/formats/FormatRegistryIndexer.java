@@ -21,7 +21,6 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

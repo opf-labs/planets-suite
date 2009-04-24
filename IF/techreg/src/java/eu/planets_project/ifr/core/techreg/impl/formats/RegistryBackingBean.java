@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.gui;
+package eu.planets_project.ifr.core.techreg.impl.formats;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -12,8 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.richfaces.component.html.HtmlDataTable;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 
 /**
@@ -23,7 +21,7 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 public class RegistryBackingBean {
     private static Log log = LogFactory.getLog(RegistryBackingBean.class);
 
-    FormatRegistry ftr = null;
+    FormatRegistryImpl ftr = null;
     
     private String searchStr = "pdf";
     
@@ -36,7 +34,7 @@ public class RegistryBackingBean {
      */
     public RegistryBackingBean() {
     	log.debug("Instanciating the Format Registry.");
-        ftr = FormatRegistryFactory.getFormatRegistry();
+        ftr = (FormatRegistryImpl)FormatRegistryFactory.getFormatRegistry();
     }
     
     /**
@@ -45,7 +43,7 @@ public class RegistryBackingBean {
      */
     public synchronized List<Format> getFormats() {
         ArrayList<Format> fmts = new ArrayList<Format>();
-        Set<URI> uris = ftr.getURIsForExtension(searchStr);
+        Set<URI> uris = ftr.getUrisForExtension(searchStr);
         if( uris == null ) return fmts;
         for( URI puri : uris ) {
             Format fmt = ftr.getFormatForURI(puri);

@@ -14,7 +14,8 @@ import org.junit.Test;
 
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.MatchingMode;
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -27,9 +28,10 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class CoreRegistryTests {
     static final String TEST_ROOT = "IF/registry/src/test/resources/service-description-registry/";
-    static final URI PRONOM_TIFF = Format.pronomIdToURI("fmt/10");
-    static final URI EXT_TIFF = Format.extensionToURI("tiff");
-    static final URI PRONOM_PNG = Format.pronomIdToURI("fmt/11");
+    private static FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
+    static final URI PRONOM_TIFF = formatRegistry.createPronomUri("fmt/10");
+    static final URI EXT_TIFF = formatRegistry.createExtensionUri("tiff");
+    static final URI PRONOM_PNG = formatRegistry.createPronomUri("fmt/11");
     static final String DESCRIPTION = "description";
     static final String TYPE1 = "type1";
     static final String TYPE2 = "type2";
