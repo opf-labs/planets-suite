@@ -213,7 +213,7 @@ public class MetadataExtractorTests {
         Assert.assertTrue("No props read for adapter: " + type.adapter, props
                 .size() > 0);
         System.out.println("Testing properties listing for " + type);
-        URI puidToUri = FORMAT_REGISTRY.puidToUri(type.samplePuid);
+        URI puidToUri = FORMAT_REGISTRY.createPronomUri(type.samplePuid);
         System.out.println("URI: " + puidToUri);
         List<Property> listProperties = characterizer
                 .listProperties(puidToUri);

@@ -47,9 +47,9 @@ public class SampleXclUsage {
     /* We get a PRONOM ID for the original and the converted file: */
     private static final FormatRegistry REGISTRY = FormatRegistryFactory
             .getFormatRegistry();
-    private static final URI GIF_ID = REGISTRY.getURIsForExtension("gif")
+    private static final URI GIF_ID = REGISTRY.getUrisForExtension("gif")
             .iterator().next();
-    private static final URI JPG_ID = REGISTRY.getURIsForExtension("jpg")
+    private static final URI JPG_ID = REGISTRY.getUrisForExtension("jpg")
             .iterator().next();
     /* We identify the XCDL format somehow: */
     private static final URI XCDL_ID = URI.create("planets:/xcdl"); // not used

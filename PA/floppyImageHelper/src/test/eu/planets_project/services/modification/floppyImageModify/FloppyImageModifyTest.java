@@ -3,7 +3,7 @@
  */
 package eu.planets_project.services.modification.floppyImageModify;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.URI;
@@ -16,9 +16,10 @@ import java.util.logging.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
@@ -88,12 +89,13 @@ public class FloppyImageModifyTest {
 		List<File> fileList = FileUtils.listAllFilesAndFolders(FILES_FOR_MODIFICATION, new ArrayList<File>());
 		fileList.remove(FLOPPY_IMAGE);
 //		fileList.remove(new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification/FLOPPY144.IMA"));
-		DigitalObject inputDigObj = new DigitalObject.Builder(ImmutableContent.asStream(FLOPPY_IMAGE))
+		FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
+        DigitalObject inputDigObj = new DigitalObject.Builder(ImmutableContent.asStream(FLOPPY_IMAGE))
 									.title(FLOPPY_IMAGE.getName())
 									.contains(DigitalObjectUtils.createContainedAsStream(fileList).toArray(new DigitalObject[] {}))
-									.format(Format.extensionToURI(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)))
+									.format(format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)))
 									.build();
-		ModifyResult result = FLOPPY_IMAGE_MODIFY.modify(inputDigObj, Format.extensionToURI(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)), new URI("planets:mod/modify"), null);
+		ModifyResult result = FLOPPY_IMAGE_MODIFY.modify(inputDigObj, format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)), new URI("planets:mod/modify"), null);
 		
 		System.out.println("Got report: " + result.getReport());
 		DigitalObject digObjres = result.getDigitalObject();

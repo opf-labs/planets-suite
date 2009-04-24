@@ -79,7 +79,7 @@ public class XcdlCommonPropertiesTests {
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         List<URI> puids = new ArrayList<URI>();
         for (String suffix : suffixes) {
-            puids.addAll(registry.getURIsForExtension(suffix));
+            puids.addAll(registry.getUrisForExtension(suffix));
         }
         System.out.println("PUIDS: " + puids);
         testIntersection(commonProperties, puids);

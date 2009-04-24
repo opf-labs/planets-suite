@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
@@ -87,7 +87,8 @@ public final class ComparatorWrapper {
 
     public static List<URI> getSupportedInputFormats() {
         List<URI> inputFormats = new ArrayList<URI>();
-        inputFormats.add(Format.extensionToURI("XCDL"));
+        inputFormats.add(FormatRegistryFactory.getFormatRegistry()
+                .createExtensionUri("XCDL"));
         return inputFormats;
     }
 

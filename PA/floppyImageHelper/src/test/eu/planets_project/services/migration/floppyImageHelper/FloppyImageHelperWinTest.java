@@ -3,22 +3,30 @@
  */
 package eu.planets_project.services.migration.floppyImageHelper;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.services.datatypes.*;
-import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.ZipResult;
-import eu.planets_project.services.utils.test.ServiceCreator;
 import static org.junit.Assert.assertTrue;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.ZipResult;
+import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * @author melmsp
@@ -42,6 +50,7 @@ public class FloppyImageHelperWinTest {
 	
 	static File FLOPPY_IMAGE = new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification/FLOPPY144.IMA");
 
+	FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -85,10 +94,10 @@ public class FloppyImageHelperWinTest {
 		ZipResult zipResult = FileUtils.createZipFileWithChecksum(FILES_TO_INJECT, OUT_DIR, "test.zip"); 
 		File zipFile = zipResult.getZipFile();
 		Content content = ImmutableContent.asStream(zipFile).withChecksum(zipResult.getChecksum());
-		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("zip")).title("test.zip").build();
+        DigitalObject input = new DigitalObject.Builder(content).format(format.createExtensionUri("zip")).title("test.zip").build();
 		List<Parameter> parameters = new ArrayList<Parameter> ();
 		parameters.add(new Parameter("modifyImage", "false"));
-		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, Format.extensionToURI("zip"), Format.extensionToURI("ima"), parameters);
+		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, format.createExtensionUri("zip"), format.createExtensionUri("ima"), parameters);
 		ServiceReport report = migrateResult.getReport();
 		System.out.println(report);
 		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);
@@ -104,8 +113,8 @@ public class FloppyImageHelperWinTest {
 		System.out.println("* Testing: Extract Files from Floppy Image *");
 		System.out.println("********************************************");
 		Content content = ImmutableContent.asStream(FLOPPY_IMAGE);
-		DigitalObject input = new DigitalObject.Builder(content).format(Format.extensionToURI("ima")).title(FLOPPY_IMAGE.getName()).build();
-		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, Format.extensionToURI("ima"), Format.extensionToURI("zip"), null);
+		DigitalObject input = new DigitalObject.Builder(content).format(format.createExtensionUri("ima")).title(FLOPPY_IMAGE.getName()).build();
+		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, format.createExtensionUri("ima"), format.createExtensionUri("zip"), null);
 		ServiceReport report = migrateResult.getReport();
 		System.out.println(report);
 		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);

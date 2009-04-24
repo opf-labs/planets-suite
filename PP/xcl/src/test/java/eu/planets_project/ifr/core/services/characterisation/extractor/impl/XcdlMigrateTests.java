@@ -13,11 +13,14 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlMigrate;
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
@@ -50,6 +53,9 @@ public class XcdlMigrateTests {
     static MigrationPath[] migrationPaths;
 
     static File testOutFolder = null;
+
+    private static final FormatRegistry format = FormatRegistryFactory
+            .getFormatRegistry();
 
     /**
      * Set up the testing environment: create files and directories for testing.
@@ -100,27 +106,29 @@ public class XcdlMigrateTests {
                 + outputFormat.toASCIIString() + "]");
         System.out.println();
 
-        
-        
         System.out
                 .println("PARAMS: disableNormData = FALSE, enableRawData = FALSE, XCEL = YES");
-        
-        if(inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/gif") 
-        	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/bmp")
-        	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/jpg")
-        	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/jpeg")) {
-        		System.err.println("NOTE: NO Xcel will be passed for this input format. " +
-        				"Extractor will find the proper one itself!");
+
+        if (inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/gif")
+                || inputFormat.toASCIIString().equalsIgnoreCase(
+                        "planets:fmt/ext/bmp")
+                || inputFormat.toASCIIString().equalsIgnoreCase(
+                        "planets:fmt/ext/jpg")
+                || inputFormat.toASCIIString().equalsIgnoreCase(
+                        "planets:fmt/ext/jpeg")) {
+            System.err
+                    .println("NOTE: NO Xcel will be passed for this input format. "
+                            + "Extractor will find the proper one itself!");
         }
-        	
-        List<Parameter> parameters = createParameters(false, false,
-                getTestXCEL(Format.getFirstMatchingFormatExtension(inputFormat)));
+
+        List<Parameter> parameters = createParameters(
+                false,
+                false,
+                getTestXCEL(format.getFirstExtension(inputFormat)));
         testMigrate(inputFormat, outputFormat, parameters);
         System.out.println("*******************");
         System.out.println();
 
-        
-        
         System.out
                 .println("PARAMS: disableNormData = FALSE, enableRawData = FALSE, XCEL = NO");
         parameters = createParameters(false, false, null);
@@ -128,21 +136,23 @@ public class XcdlMigrateTests {
         System.out.println("*******************");
         System.out.println();
 
-        
-        
         System.out
                 .println("PARAMS: disableNormData = TRUE, enableRawData = FALSE, XCEL = YES");
-        
-        if(inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/gif") 
-            	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/bmp")
-            	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/jpg")
-            	|| inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/jpeg")) {
-            		System.err.println("NOTE: NO Xcel will be passed for this input format. " +
-            				"Extractor will find the proper one itself!");
+
+        if (inputFormat.toASCIIString().equalsIgnoreCase("planets:fmt/ext/gif")
+                || inputFormat.toASCIIString().equalsIgnoreCase(
+                        "planets:fmt/ext/bmp")
+                || inputFormat.toASCIIString().equalsIgnoreCase(
+                        "planets:fmt/ext/jpg")
+                || inputFormat.toASCIIString().equalsIgnoreCase(
+                        "planets:fmt/ext/jpeg")) {
+            System.err
+                    .println("NOTE: NO Xcel will be passed for this input format. "
+                            + "Extractor will find the proper one itself!");
         }
-        
-        parameters = createParameters(true, false,
-                getTestXCEL(Format.getFirstMatchingFormatExtension(inputFormat)));
+
+        parameters = createParameters(true, false, getTestXCEL(format
+                .getFirstExtension(inputFormat)));
         testMigrate(inputFormat, outputFormat, parameters);
         System.out.println("*******************");
         System.out.println();
@@ -193,15 +203,15 @@ public class XcdlMigrateTests {
         }
 
         if (srcExtension.equalsIgnoreCase("BMP")) {
-        	return null;
-//            return FileUtils
-//                    .readTxtFileIntoString(XcdlMigrateUnitHelper.BMP_XCEL);
+            return null;
+            // return FileUtils
+            // .readTxtFileIntoString(XcdlMigrateUnitHelper.BMP_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("GIF")) {
-        	return null;
-//            return FileUtils
-//                    .readTxtFileIntoString(XcdlMigrateUnitHelper.GIF_XCEL);
+            return null;
+            // return FileUtils
+            // .readTxtFileIntoString(XcdlMigrateUnitHelper.GIF_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("PDF")) {
@@ -211,9 +221,9 @@ public class XcdlMigrateTests {
 
         if (srcExtension.equalsIgnoreCase("JPEG")
                 || srcExtension.equalsIgnoreCase("JPG")) {
-        	return null;
-//            return FileUtils
-//                    .readTxtFileIntoString(XcdlMigrateUnitHelper.JPEG_XCEL);
+            return null;
+            // return FileUtils
+            // .readTxtFileIntoString(XcdlMigrateUnitHelper.JPEG_XCEL);
         }
 
         if (srcExtension.equalsIgnoreCase("PNG")) {
@@ -267,10 +277,10 @@ public class XcdlMigrateTests {
         DigitalObject input = null;
 
         try {
-            input = new DigitalObject.Builder(ImmutableContent.byValue(inputFile))
-                    .permanentUrl(new URL("http://xcdlExtractorMigrationTest.eu"))
-                    .title(inputFile.getName())
-                    .build();
+            input = new DigitalObject.Builder(ImmutableContent
+                    .byValue(inputFile)).permanentUrl(
+                    new URL("http://xcdlExtractorMigrationTest.eu")).title(
+                    inputFile.getName()).build();
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -281,7 +291,7 @@ public class XcdlMigrateTests {
 
     private void testMigrate(URI inputFormat, URI outputFormat,
             List<Parameter> parameters) {
-        String extension = Format.getFirstMatchingFormatExtension(inputFormat);
+        String extension = format.getFirstExtension(inputFormat);
         DigitalObject digObj = createDigitalObject(extension);
 
         MigrateResult mr = extractor.migrate(digObj, inputFormat, outputFormat,
@@ -315,7 +325,6 @@ public class XcdlMigrateTests {
         }
     }
 
-
     private URI getUriForFile(File testFile) {
         String fileName = testFile.getAbsolutePath();
         String testFileExtension = null;
@@ -326,7 +335,7 @@ public class XcdlMigrateTests {
             System.err.println("Could not find file extension!!!");
             return null;
         }
-        return Format.extensionToURI(testFileExtension);
+        return format.createExtensionUri(testFileExtension);
     }
 
     @SuppressWarnings("unused")

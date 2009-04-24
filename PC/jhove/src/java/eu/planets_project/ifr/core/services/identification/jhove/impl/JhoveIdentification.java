@@ -171,7 +171,7 @@ public final class JhoveIdentification implements Identify, Serializable {
             FormatRegistry formatRegistry = FormatRegistryFactory
                     .getFormatRegistry();
             result.addAll(formatRegistry
-                    .getURIsForExtension(split[split.length - 1]));
+                    .getUrisForExtension(split[split.length - 1]));
         }
         return result.toArray(new URI[] {});
     }

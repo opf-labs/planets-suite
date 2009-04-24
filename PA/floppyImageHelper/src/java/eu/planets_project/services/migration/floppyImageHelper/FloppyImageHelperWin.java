@@ -1,21 +1,35 @@
 package eu.planets_project.services.migration.floppyImageHelper;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.*;
-import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.*;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.Checksum;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.MigrationPath;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.utils.ProcessRunner;
+import eu.planets_project.services.utils.ServiceUtils;
+import eu.planets_project.services.utils.ZipResult;
 
 /**
  * @author Peter Melms
@@ -86,10 +100,11 @@ public class FloppyImageHelperWin implements Migrate {
 
         sd.tool( Tool.create(null, "Extract.exe", "v2.10", null, "http://www.winimage.com/extract.htm"));
         List<MigrationPath> pathways = new ArrayList<MigrationPath>();
-        pathways.add(new MigrationPath(Format.extensionToURI("ZIP"), Format.extensionToURI("IMA"), null));
-        pathways.add(new MigrationPath(Format.extensionToURI("ANY"), Format.extensionToURI("IMA"), null));
-        pathways.add(new MigrationPath(Format.extensionToURI("IMA"), Format.extensionToURI("ZIP"), null));
-        pathways.add(new MigrationPath(Format.extensionToURI("IMG"), Format.extensionToURI("ZIP"), null));
+        FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
+        pathways.add(new MigrationPath(format.createExtensionUri("ZIP"), format.createExtensionUri("IMA"), null));
+        pathways.add(new MigrationPath(format.createExtensionUri("ANY"), format.createExtensionUri("IMA"), null));
+        pathways.add(new MigrationPath(format.createExtensionUri("IMA"), format.createExtensionUri("ZIP"), null));
+        pathways.add(new MigrationPath(format.createExtensionUri("IMG"), format.createExtensionUri("ZIP"), null));
         
         sd.paths(pathways.toArray(new MigrationPath[] {}));
         return sd.build();
@@ -112,8 +127,9 @@ public class FloppyImageHelperWin implements Migrate {
 			TOOL_DIR = new File(FLOPPY_IMAGE_TOOLS_HOME);
 		}
 		
-		String inFormat = Format.getFirstMatchingFormatExtension(inputFormat).toUpperCase();
-		String outFormat = Format.getFirstMatchingFormatExtension(outputFormat).toUpperCase();
+		FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
+        String inFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
+		String outFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
 		
 		if(parameters!=null && parameters.size()>0) {
 			for (Parameter parameter : parameters) {
@@ -143,7 +159,7 @@ public class FloppyImageHelperWin implements Migrate {
 		}
 		
 		if(fileName==null) {
-			INPUT_EXT = Format.getFirstMatchingFormatExtension(inputFormat);
+			INPUT_EXT = formatRegistry.getExtensions(inputFormat).iterator().next();
 			fileName = DEFAULT_INPUT_NAME + "." + INPUT_EXT;
 		}
 		
@@ -163,7 +179,7 @@ public class FloppyImageHelperWin implements Migrate {
                     zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
-			.format(Format.extensionToURI("zip"))
+			.format(formatRegistry.createExtensionUri("zip"))
 			.title(zippedResult.getZipFile().getName())
 			.build();
 

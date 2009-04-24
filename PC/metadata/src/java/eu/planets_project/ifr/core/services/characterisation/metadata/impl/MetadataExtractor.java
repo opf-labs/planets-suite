@@ -30,7 +30,6 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
@@ -94,8 +93,7 @@ public final class MetadataExtractor implements Characterise {
         ArrayList<Property> result = new ArrayList<Property>();
         /* Get the extensions for the supplied Pronom ID: */
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
-        Format format = registry.getFormatForURI(formatURI);
-        Set<String> extensions = format.getExtensions();
+        Set<String> extensions = registry.getExtensions(formatURI);
         /* Find the corresponding metadata file type: */
         MetadataType[] types = MetadataType.values();
         for (MetadataType metadataType : types) {
@@ -133,7 +131,7 @@ public final class MetadataExtractor implements Characterise {
              */
             String[] split = metadataType.sample.split("\\.");
             String extension = split[split.length - 1];
-            inputFormats.addAll(formatRegistry.getURIsForExtension(extension));
+            inputFormats.addAll(formatRegistry.getUrisForExtension(extension));
         }
         return new ServiceDescription.Builder(
                 "New Zealand Metadata Extractor Service", Characterise.class

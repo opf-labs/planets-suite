@@ -57,7 +57,7 @@ public class XcdlAccessTests {
         XcdlCharacterise characterise = new XcdlCharacterise();
         /* Check what we can expect for PNG: */
         URI uri = FormatRegistryFactory.getFormatRegistry()
-                .getURIsForExtension("png").iterator().next();
+                .getUrisForExtension("png").iterator().next();
         List<Property> extractable = characterise.listProperties(uri);
         /* Now we actually extract a PNG: */
         CharacteriseResult result = characterise.characterise(

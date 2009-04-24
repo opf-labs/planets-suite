@@ -16,8 +16,8 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.XMLOutputter;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
@@ -41,6 +41,7 @@ public class CoreExtractor {
     private static boolean NORM_DATA_DISABLED = false;
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
     private static String OPTIONAL_XCEL_PARAM = "optionalXCELString";
+    private static final FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 
     /**
      * @param extractorName
@@ -102,12 +103,12 @@ public class CoreExtractor {
     
     public static List<URI> getSupportedInputFormats() {
     	List<URI> inputFormats = new ArrayList<URI>();
-    	inputFormats.add(Format.extensionToURI("JPEG"));
-        inputFormats.add(Format.extensionToURI("TIFF"));
-        inputFormats.add(Format.extensionToURI("GIF"));
-        inputFormats.add(Format.extensionToURI("PNG"));
-        inputFormats.add(Format.extensionToURI("BMP"));
-        inputFormats.add(Format.extensionToURI("PDF"));
+    	inputFormats.add(format.createExtensionUri("JPEG"));
+        inputFormats.add(format.createExtensionUri("TIFF"));
+        inputFormats.add(format.createExtensionUri("GIF"));
+        inputFormats.add(format.createExtensionUri("PNG"));
+        inputFormats.add(format.createExtensionUri("BMP"));
+        inputFormats.add(format.createExtensionUri("PDF"));
         // inputFormats.add(Format.extensionToURI("DOC"));
         // inputFormats.add(Format.extensionToURI("DOCX"));
         return inputFormats;
@@ -115,7 +116,7 @@ public class CoreExtractor {
     
     public static List<URI> getSupportedOutputFormats() {
     	List<URI> outputFormats = new ArrayList<URI>();
-    	outputFormats.add(Format.extensionToURI("XCDL"));
+    	outputFormats.add(format.createExtensionUri("XCDL"));
     	return outputFormats;
     }
 

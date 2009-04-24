@@ -240,7 +240,7 @@ public class XcdlCharacteriseTests {
         }
         FormatRegistry formatRegistry = FormatRegistryFactory
                 .getFormatRegistry();
-        Set<URI> uriSet = formatRegistry.getURIsForExtension(testFileExtension);
+        Set<URI> uriSet = formatRegistry.getUrisForExtension(testFileExtension);
         URI fileFormatURI = null;
         if (uriSet != null) {
             if (!uriSet.isEmpty()) {

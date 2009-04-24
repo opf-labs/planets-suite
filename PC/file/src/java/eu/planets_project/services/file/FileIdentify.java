@@ -14,7 +14,7 @@ import javax.jws.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -23,7 +23,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
-import eu.planets_project.services.identify.IdentifyResult.Method;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
@@ -113,7 +112,7 @@ public class FileIdentify implements Identify {
         ServiceReport rep = new ServiceReport();
         rep.setErrorState(0);
         List<URI> types = new ArrayList<URI>();
-        URI mimeURI = Format.mimeToURI(mime);
+        URI mimeURI = FormatRegistryFactory.getFormatRegistry().createMimeUri(mime);
         types.add(mimeURI);
         return new IdentifyResult(types, IdentifyResult.Method.MAGIC, rep);
 	}

@@ -14,10 +14,11 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -86,7 +87,8 @@ public class FloppyImageModify implements Modify {
         sd.version("1.0");
 
         sd.tool( Tool.create(null, "fat_imgen.exe", "v1.0.4", null, "http://wiki.osdev.org/Fat_imgen"));
-        sd.inputFormats(Format.extensionToURI("IMA"), Format.extensionToURI("IMG"));
+        FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
+        sd.inputFormats(formatRegistry.createExtensionUri("IMA"), formatRegistry.createExtensionUri("IMG"));
         return sd.build();
 	}
 
@@ -106,12 +108,13 @@ public class FloppyImageModify implements Modify {
 			TOOL_DIR = new File(FLOPPY_IMAGE_TOOLS_HOME);
 		}
 		
-		String inFormat = Format.getFirstMatchingFormatExtension(inputFormat).toUpperCase();
+		FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
+        String inFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
 		
 		String fileName = digitalObject.getTitle();
 		
 		if(fileName==null) {
-			INPUT_EXT = Format.getFirstMatchingFormatExtension(inputFormat);
+			INPUT_EXT = formatRegistry.getExtensions(inputFormat).iterator().next();
 			fileName = DEFAULT_INPUT_NAME + "." + INPUT_EXT;
 		}
 		
@@ -134,7 +137,7 @@ public class FloppyImageModify implements Modify {
 		
 		DigitalObject result = new DigitalObject.Builder(ImmutableContent.asStream(modifiedImage))
 														.title(modifiedImage.getName())
-														.format(Format.extensionToURI(FileUtils.getExtensionFromFile(modifiedImage)))
+														.format(formatRegistry.createExtensionUri(FileUtils.getExtensionFromFile(modifiedImage)))
 														.build();
 		
 		ServiceReport report = new ServiceReport();
