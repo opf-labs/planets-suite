@@ -134,7 +134,7 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         DocumentBuilder parser = docuFactory.newDocumentBuilder();
 
         //XPath
-        XPath xpath = XPathFactory.newInstance().newXPath();
+        //XPath xpath = XPathFactory.newInstance().newXPath();
 
         if (record != null) {
             StringReader dcStringReader = new StringReader(record);

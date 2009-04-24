@@ -41,4 +41,19 @@ public class ViewActionResult {
         this.actionResult = actionResult;
         this.properties = properties;
     }
+
+    /**
+     * @return the actionResult
+     */
+    public ActionResult getActionResult() {
+        return actionResult;
+    }
+
+    /**
+     * @return the properties
+     */
+    public List<Property> getProperties() {
+        return properties;
+    }
+    
 }

@@ -14,9 +14,8 @@ import eu.planets_project.services.datatypes.Event;
  */
 public class MigrateStreamResponse {
     
-    Event event;
-    
+    private Event event;
     @XmlMimeType("application/octet-stream")
-    DataHandler outStream;
+    private DataHandler stream;
 
 }

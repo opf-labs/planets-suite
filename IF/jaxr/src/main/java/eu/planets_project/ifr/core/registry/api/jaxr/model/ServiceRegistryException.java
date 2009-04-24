@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
 *  created :  27.05.2008
  */
 @ApplicationException(rollback=true)
-public class ServiceRegistryException extends Throwable{
+public class ServiceRegistryException extends RuntimeException{
 	private static final long serialVersionUID = -4480441948962754123L;
 	private static Log plogger = LogFactory.getLog(ServiceRegistryException.class.getName());
 

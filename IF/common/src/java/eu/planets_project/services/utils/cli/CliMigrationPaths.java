@@ -1,6 +1,8 @@
 package eu.planets_project.services.utils.cli;
 
 import eu.planets_project.services.datatypes.MigrationPath;
+import eu.planets_project.services.utils.FileUtils;
+
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -72,6 +74,7 @@ public class CliMigrationPaths {
                 }
             }
         }
+        FileUtils.close(instream);
         return paths;
     }
 
@@ -146,7 +149,6 @@ public class CliMigrationPaths {
 
 
         List<MigrationPath> planetspaths = new ArrayList<MigrationPath>();
-        int i=0;
         for (CliMigrationPath mypath: paths){
             planetspaths.addAll(
                     Arrays.asList(

@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.users.gui;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -416,7 +417,7 @@ public class UserBackingBean {
 	 * @param roles the roles to set
 	 */
 	public void setUserRoles(String[] roles) {
-		this.userRoles = roles;
+		this.userRoles = Arrays.asList(roles).toArray(new String[]{});
 	}
 
 	private void arrangeUserRoles() {
@@ -484,7 +485,7 @@ public class UserBackingBean {
 	 * @return the roles
 	 */
 	public String[] getUserRoles() {
-		return userRoles;
+		return Arrays.asList(userRoles).toArray(new String[]{});
 	}
 
 	/**

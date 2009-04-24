@@ -136,17 +136,6 @@ public class JhoveIdentificationTests {
     }
 
     /**
-     * The old approach: iterate over the enum types...
-     */
-    @SuppressWarnings("unused")
-    private void test() {
-        /* We check all the enumerated file types: */
-        for (FileType type : FileType.values()) {
-            test(type);
-        }
-    }
-
-    /**
      * @param type The enum type to test
      */
     private void test(final FileType type) {

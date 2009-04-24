@@ -89,7 +89,8 @@ public final class ByteArrayDataSource implements DataSource {
      * 		The MIME type of the content
      */
      public ByteArrayDataSource(byte[] buf, int start, int length, String contentType) {
-        this.buf = buf;
+        // primitive and shallow, so clone is OK
+        this.buf = (byte[]) buf.clone();
         this.start = start;
         this.len = length;
         this.contentType = contentType;

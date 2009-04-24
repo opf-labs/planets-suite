@@ -221,15 +221,4 @@ public class MetadataExtractorTests {
                 listProperties.size() > 0);
         System.out.println("Found " + listProperties.size() + " properties");
     }
-
-    /**
-     * Old approach: iterate over all enum types...
-     */
-    @SuppressWarnings("unused")
-    private void test() {
-        /* Test all file types supported by the tool */
-        for (MetadataType type : MetadataType.values()) {
-            test(type);
-        }
-    }
 }

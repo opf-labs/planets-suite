@@ -5,6 +5,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -94,7 +95,7 @@ public final class FileUtils {
             suffixCopy = "." + suffix;
         }
         File input = getTempFile(name, suffixCopy);
-        FileOutputStream fos;
+        FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(input);
             fos.write(data);
@@ -104,6 +105,8 @@ public final class FileUtils {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            close(fos);
         }
         return input;
     }
@@ -827,6 +830,49 @@ public final class FileUtils {
         } else {
             return null;
         }
+    }
+
+    /**
+     * @param out The closeable (Writer, Stream, etc.) to close
+     */
+    public static void close(final Closeable out) {
+        if (out != null) {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    /**
+     * @param file The file to call mkdir on and check for the result
+     * @return The result of calling mkdirs on the given file
+     * @throws IllegalArgumentException if the creation was not successful and
+     *         the file does not already exist
+     */
+    public static boolean mkdir(final File file) {
+        boolean mkdir = file.mkdir();
+        handle(mkdir, file);
+        return mkdir;
+    }
+
+    /**
+     * @param file The file to call mkdirs on and check for the result
+     * @return The result of calling mkdirs on the given file
+     * @throws IllegalArgumentException if the creation was not successful and
+     *         the file does not already exist
+     */
+    public static boolean mkdirs(final File file) {
+        boolean mkdirs = file.mkdirs();
+        handle(mkdirs, file);
+        return mkdirs;
+    }
+
+    private static void handle(boolean mkdir, File file) {
+        if (!mkdir && !file.exists()) {
+            throw new IllegalArgumentException("Could not create " + file);
+        }
+
     }
 
 }

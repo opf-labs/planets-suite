@@ -24,14 +24,14 @@ import javax.naming.InitialContext;
 public class PlanetsMailMessage {
     private Session session = null;
     private InternetAddress sender = null;
-    private String subject = new String();
-    private String body = new String();
+    private String subject = "";
+    private String body = "";
     private List<InternetAddress> recipients = new ArrayList<InternetAddress>();
     private List<InternetAddress> ccRecipients = new ArrayList<InternetAddress>();
     private List<InternetAddress> bccRecipients = new ArrayList<InternetAddress>();
 
     /**
-     * No arg constructor
+     * No arg constructor.
      */
     public PlanetsMailMessage() 
     {

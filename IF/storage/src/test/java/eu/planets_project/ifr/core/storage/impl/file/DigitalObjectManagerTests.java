@@ -37,7 +37,10 @@ public class DigitalObjectManagerTests {
 		// Set up directory for file based instance if it doesn't exist
 		File rootDir = new File("IF/storage/src/test/resources/testroot");
 		if (!rootDir.exists()){
-			rootDir.mkdir();
+			boolean mkdir = rootDir.mkdir();
+			if(!mkdir&&!rootDir.exists()){
+			    throw new IllegalStateException("Could not create: " + rootDir);
+			}
 		}
 		// Instantiate a file based data registry instance
 		// Point it at a root directory in resources, the registry will create the dir if necessary
@@ -117,17 +120,13 @@ public class DigitalObjectManagerTests {
 	/**
 	 * Testing that a file not found exception is thrown if the object doesn't exist
 	 * @throws URISyntaxException
+	 * @throws DigitalObjectNotFoundException 
 	 */
-	@Test
-	public final void testFileNotFound() throws URISyntaxException {
-		try {
+	@Test(expected=DigitalObjectNotFoundException.class)
+	public final void testFileNotFound() throws URISyntaxException, DigitalObjectNotFoundException {
 			System.out.println("Testing that DigitalObjectNotFoundException is generated as expected");
 			// Let's retrieve an object we know doesn't exist
 			_dom.retrieve(new URI("planets://localhost:8080/dr/test/noneexistentobject"));
-		} catch (DigitalObjectNotFoundException e) {
-			return;
-		}
-		fail("Expected DigitalObjectNotFoundException");
 	}
 	
 	/**

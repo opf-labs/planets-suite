@@ -7,8 +7,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-class JAXRException {
+class JAXRException extends RuntimeException {
 
+    /** Generated. */
+    private static final long serialVersionUID = -1595737814080437805L;
     protected boolean available;
     protected String message;
     protected String requestId;

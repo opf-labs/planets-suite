@@ -4,14 +4,16 @@
  */
 package eu.planets_project.ifr.core.storage.impl.oai;
 
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.services.datatypes.DigitalObject;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  *
@@ -30,12 +32,12 @@ public class OaiOnbDigitalObjectManagerImplTest {
     public static void tearDownClass() throws Exception {
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void testStore() throws Exception {
         System.out.println("store");
         URI pdURI = null;
         DigitalObject digitalObject = null;
-        OaiOnbDigitalObjectManagerImpl instance = new OaiOnbDigitalObjectManagerImpl();
+        DigitalObjectManager instance = new OaiOnbDigitalObjectManagerImpl();
         instance.store(pdURI, digitalObject);
     }
 
