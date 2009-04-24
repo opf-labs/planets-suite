@@ -66,7 +66,7 @@ public class YahooImageAPIQuerySource extends QuerySource {
             httpClient.getHostConfiguration().setProxy(host, Integer.parseInt(port)); 
         }
 		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
-		httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+		httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, Integer.valueOf(TIMEOUT));
 		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
 		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
     }
@@ -76,7 +76,7 @@ public class YahooImageAPIQuerySource extends QuerySource {
     		// Fire GET requets to Yahoo image search API
     		String queryString = BASE_URL + "query=" + URLEncoder.encode(query, "UTF-8") + "&results=" + limit + "&start=" + offset;   		
 			GetMethod yahooRequest = new GetMethod(queryString);
-			yahooRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+			yahooRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, Integer.valueOf(TIMEOUT));
 			httpClient.executeMethod(yahooRequest);
 			
 			// Create XML DOM

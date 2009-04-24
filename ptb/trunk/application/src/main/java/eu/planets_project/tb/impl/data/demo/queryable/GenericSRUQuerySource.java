@@ -65,7 +65,7 @@ public class GenericSRUQuerySource extends QuerySource {
             httpClient.getHostConfiguration().setProxy(host, Integer.parseInt(port)); 
         }
 		httpClient.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(1, false));
-		httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+		httpClient.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, Integer.valueOf(TIMEOUT));
 		httpClient.getHttpConnectionManager().getParams().setConnectionTimeout(TIMEOUT);
 		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
     }
@@ -76,7 +76,7 @@ public class GenericSRUQuerySource extends QuerySource {
 						 "&maximumRecords=" + limit + "&recordSchema=dc";
 			
 			GetMethod sruRequest = new GetMethod(url);
-			sruRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, new Integer(TIMEOUT));
+			sruRequest.getParams().setParameter(HttpMethodParams.SO_TIMEOUT, Integer.valueOf(TIMEOUT));
 			httpClient.executeMethod(sruRequest);
 			
 			SAXBuilder builder = new SAXBuilder();
