@@ -35,7 +35,7 @@ public class FloppyImageModifyTest {
 	
 	static Modify FLOPPY_IMAGE_MODIFY;
 	
-	static String WSDL = "/pserv-pa-floppy-image-helper/FloppyImageHelperWin?wsdl";
+	static String WSDL = "/pserv-pa-floppy-image-helper/FloppyImageModify?wsdl";
 	
 	static String OUT_DIR_NAME = "FLOPPY_IMAGE_HELPER_TEST_OUT";
 	
@@ -56,9 +56,9 @@ public class FloppyImageModifyTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		
-//		System.setProperty("pserv.test.context", "server");
-//        System.setProperty("pserv.test.host", "localhost");
-//        System.setProperty("pserv.test.port", "8080");
+		System.setProperty("pserv.test.context", "server");
+        System.setProperty("pserv.test.host", "localhost");
+        System.setProperty("pserv.test.port", "8080");
         
 		// Config the logger:
         Logger.getLogger("").setLevel( Level.FINE );

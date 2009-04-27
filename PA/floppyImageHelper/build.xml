@@ -15,10 +15,14 @@
 	<property name="src.dir" value="${appDir}/src/java" />
 	<property name="lib.dir" value="${appDir}/lib" />
 	<property name="src.resources" value="${appDir}/src/resources" />
-
+	
 	<!-- Include the build targets etc -->
 	<property name="pserv.root.dir" value="../.." />
 	<import file="${pserv.root.dir}/build.common.xml" />
+	
+	<!-- Define the API part-->
+	<property name="src.api.includes" value="eu/planets_project/services/migration/floppyImageHelper/**" />
+	<property name="src.api.includes" value="eu/planets_project/services/modification/floppyImageModify/**" />
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test" />

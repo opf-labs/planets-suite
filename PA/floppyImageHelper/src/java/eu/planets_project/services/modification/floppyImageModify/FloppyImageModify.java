@@ -76,6 +76,9 @@ public class FloppyImageModify implements Modify {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.services.PlanetsService#describe()
 	 */
+	/* (non-Javadoc)
+	 * @see eu.planets_project.services.modification.floppyImageModify.FloppyImageModifyApi#describe()
+	 */
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Modify.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
@@ -94,6 +97,9 @@ public class FloppyImageModify implements Modify {
 
 	/* (non-Javadoc)
 	 * @see eu.planets_project.services.modify.Modify#modify(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.util.List)
+	 */
+	/* (non-Javadoc)
+	 * @see eu.planets_project.services.modification.floppyImageModify.FloppyImageModifyApi#modify(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)
 	 */
 	public ModifyResult modify(DigitalObject digitalObject, URI inputFormat, URI actionURI,
 			List<Parameter> parameters) {

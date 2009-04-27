@@ -27,6 +27,8 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.datatypes.Checksum;
+
 /**
  * Utilities for reading and writing data.
  * @author Thomas Kraemer (thomas.kraemer@uni-koeln.de), Peter Melms
@@ -280,6 +282,25 @@ public final class FileUtils {
             e.printStackTrace();
         }
         return result;
+    }
+    
+    /**
+     * @param content The content to write to destination
+     * @param destination The destination to write content to
+     * @return file A file at destination with the given content
+     */
+    public static File writeStringToFile(final String content,
+            final File target) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(target),
+                    BUFFER);
+            writer.write(content);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return target;
     }
 
     /**
@@ -710,6 +731,75 @@ public final class FileUtils {
             log.error("Wrong checksum. Zip file might has been damaged!");
         }
         return extractedFiles;
+    }
+    
+    
+    /**
+     * Extracts all files from a given Zip file. Convenience method that takes a Planets-IF Checksum instead of a long.
+     * @param zipFile the zip file to extract files from
+     * @param destDir the folder where the extracted files should be placed in
+     * @param planetsChecksum a Checksum object 
+     * @return All extracted files if the actual checksum is equal to the passed
+     *         planetsChecksum<br/>
+     *         - <strong>null</strong> if not!
+     */
+    public static List<File> extractFilesFromZipAndCheck(final File zipFile,
+            final File destDir, final Checksum planetsChecksum) {
+    	
+    	long checksumValue = Long.parseLong(planetsChecksum.getValue());
+        List<File> extractedFiles = new ArrayList<File>();
+        CheckedInputStream checksum = null;
+        // Open the ZIP file
+        try {
+            checksum = new CheckedInputStream(new FileInputStream(zipFile),
+                    new Adler32());
+            ZipInputStream in = new ZipInputStream(new BufferedInputStream(
+                    checksum));
+            log.info("Checksum algorithm: Adler32");
+            ZipEntry entry = null;
+            while ((entry = in.getNextEntry()) != null) {
+                // Get the first entry
+                File outFile = null;
+                if (entry.isDirectory()) {
+                    outFile = new File(destDir, entry.getName());
+                    boolean createdFolder = outFile.mkdir();
+                    checkCreation(outFile, createdFolder);
+                } else {
+                    // Open the output file
+                    outFile = new File(destDir, entry.getName());
+                    writeInputStreamToFile(in, outFile);
+                    // Add extracted Files to List
+                    extractedFiles.add(outFile);
+                }
+            }
+            in.close();
+            log.info("[extractFilesFromZip()] Checksum correct: "
+                    + checksum.getChecksum().getValue());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (checksumValue != checksum.getChecksum().getValue()) {
+            log.error("Wrong checksum. Zip file might has been damaged!");
+        }
+        return extractedFiles;
+    }
+    
+    
+    public static File truncateNameAndRenameFile(final File file) {
+    	String newName = file.getName();
+    	String parent = file.getParent();
+    	String ext = "";
+    	if(newName.contains(".")) {
+    		ext = newName.substring(newName.lastIndexOf("."));
+    	}
+    	if(file.getName().length()>8) {
+    		newName = newName.substring(0, 8) + ext;
+    	}
+    	File renamedFile = new File(new File(parent), newName);
+    	boolean renamed = file.renameTo(renamedFile);
+    	return renamedFile;
     }
 
     /**

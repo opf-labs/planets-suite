@@ -113,6 +113,9 @@ public class FloppyImageHelperWin implements Migrate {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameters)
 	 */
+	/* (non-Javadoc)
+	 * @see eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelper#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)
+	 */
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, List<Parameter> parameters) {
 		
@@ -282,45 +285,6 @@ public class FloppyImageHelperWin implements Migrate {
 		commands.add("-F144");
 		return commands;
 	}
-	
-//	private File addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
-//		if(FileUtils.filesTooLargeForMedium(filesToAdd, FLOPPY_SIZE)) {
-//			log.error("Sorry! File compilation too large to be written to a Floppy (1.44 MB). Returning with error: " + PROCESS_ERROR);
-//			return null;
-//		}
-//		if(floppyImage == null) {
-//			return this.createFloppyImageAndInjectFiles(filesToAdd);
-//		}
-//		else {
-//			for (File file : filesToAdd) {
-//				log.info("Writing file to image: " + file.getName());
-//				ProcessRunner cmd = new ProcessRunner();
-//				cmd.setCommand(this.getModifyCommandLine(floppyImage, file));
-//				cmd.setStartingDir(TEMP_FOLDER);
-//				cmd.run();
-//				PROCESS_OUT = cmd.getProcessOutputAsString();
-//				log.info("Tool output: \n" + PROCESS_OUT);
-//				PROCESS_ERROR = cmd.getProcessErrorAsString();
-//				
-//				if(!PROCESS_ERROR.equalsIgnoreCase("")) {
-//					log.error(PROCESS_ERROR);
-//					return null;
-//				}
-//			}
-//			return floppyImage.getAbsoluteFile();
-//		}
-//	}
-
-//	private ArrayList<String> getModifyCommandLine(File floppyImage, File fileToAdd) {
-//		ArrayList<String> commands = new ArrayList<String>();
-//		commands.add("\"" + TOOL_DIR.getAbsolutePath() + File.separator + "FAT_IMGEN.EXE" + "\"");
-//		commands.add("modify");
-//		commands.add("\"" + floppyImage.getAbsolutePath() + "\"");
-//		commands.add("-f");
-//		commands.add("\"" + fileToAdd.getAbsolutePath() + "\"");
-//		return commands;
-//	}
-	
 	
 
 	/**
