@@ -18,9 +18,9 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
-import eu.planets_project.ifr.core.techreg.impl.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;

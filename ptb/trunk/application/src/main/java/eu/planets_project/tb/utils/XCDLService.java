@@ -12,7 +12,7 @@ import java.util.Vector;
 
 import javax.xml.ws.Service;
 
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;

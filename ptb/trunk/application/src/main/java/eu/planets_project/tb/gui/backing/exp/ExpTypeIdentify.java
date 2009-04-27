@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Vector;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.techreg.impl.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;

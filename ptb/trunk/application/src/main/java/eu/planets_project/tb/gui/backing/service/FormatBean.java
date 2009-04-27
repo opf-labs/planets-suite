@@ -5,7 +5,7 @@ package eu.planets_project.tb.gui.backing.service;
 
 import java.net.URI;
 
-import eu.planets_project.ifr.core.techreg.impl.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.Format;
 
 /**
  * 

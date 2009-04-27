@@ -54,9 +54,9 @@ import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.MatchingMode;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
-import eu.planets_project.ifr.core.techreg.impl.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 
 
 /**

@@ -25,7 +25,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
-import eu.planets_project.ifr.core.techreg.impl.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.Format;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
