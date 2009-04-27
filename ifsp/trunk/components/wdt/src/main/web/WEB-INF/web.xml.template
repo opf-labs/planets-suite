@@ -42,6 +42,40 @@
 		</param-name>
 		<param-value>/faces/extensionResource</param-value>
 	</context-param>
+	
+    <!-- Extension for RichFaces-JSF  -->
+    <context-param>
+        <param-name>org.richfaces.SKIN</param-name>
+        <param-value>blueSky</param-value>
+    </context-param>
+    <!-- Faclelet always needs to be the first View_Handler -->
+    <!-- when more than one framework (except RichFaces) is used - these param can be used to define their order  -->
+    <context-param>
+      <param-name>org.ajax4jsf.VIEW_HANDLERS</param-name>
+      <param-value>com.sun.facelets.FaceletViewHandler</param-value>
+    </context-param>
+     
+    <!-- Extension for RichFaces-JSF: in combination with myFaces it must be the first one in the filter chain  -->
+    <filter>
+        <filter-name>richfaces</filter-name> 
+        <filter-class>org.ajax4jsf.Filter</filter-class> 
+ 		<init-param>
+        	<param-name>createTempFiles</param-name>
+        	<param-value>true</param-value>
+		</init-param>
+  		<init-param>
+        	<param-name>maxRequestSize</param-name>
+        	<param-value>100000</param-value>
+		</init-param>
+    </filter>
+
+    <!-- Filter Mapping for RichFaces-JSF  -->
+    <filter-mapping> 
+        <filter-name>richfaces</filter-name> 
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+    	
+	
 	<filter>
 		<filter-name>extensionsFilter</filter-name>
 		<filter-class>
@@ -53,7 +87,7 @@
 		</init-param>
 		<init-param>
 			<param-name>uploadThresholdSize</param-name>
-			<param-value>100m</param-value>
+			<param-value>100k</param-value>
 		</init-param>
 		<init-param>
 			<param-name>uploadRepositoryPath</param-name>

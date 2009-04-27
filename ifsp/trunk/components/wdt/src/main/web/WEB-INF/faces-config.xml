@@ -7,98 +7,55 @@
 <faces-config>
 	<!-- include facelets-->
 	<application>
-    <view-handler>
-      com.sun.facelets.FaceletViewHandler
-    </view-handler>    
-  </application> 
-  <!-- /facelets-->
-	<!-- managed beans of loadWF -->
- 	<managed-bean>
-    <managed-bean-name>templateContainer</managed-bean-name>
-    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.TemplateContainer</managed-bean-class>
-    <managed-bean-scope>session</managed-bean-scope>
-    <!-- managed-property>
-      <property-name>workDir</property-name>
-      <value>../server/default/deploy/jbossweb-tomcat55.sar/ROOT.war/planets/sample</value>
-    </managed-property-->  
-  </managed-bean>
-  <!-- managed beans of chooseFile -->  
-  <managed-bean>
-  	<managed-bean-name>fileBrowser</managed-bean-name>
-  	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.FileBrowser</managed-bean-class>
-  	<managed-bean-scope>session</managed-bean-scope>
- 	</managed-bean>
- 	<!-- managed beans for workflow execution-->
-  <managed-bean>
-  	<managed-bean-name>beanExecutor</managed-bean-name>
-  	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.BeanExecutor</managed-bean-class>  																															
-  	<managed-bean-scope>request</managed-bean-scope>
- 	</managed-bean>
- 	<!-- generic wrapper for accessing the currently loaded workflow -->  
-  <managed-bean>
-  	<managed-bean-name>currentWorkflowBean</managed-bean-name>
-  	<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.CurrentWorkflowBean</managed-bean-class>
-  	<managed-bean-scope>request</managed-bean-scope>
- 	</managed-bean>  
- 	<!-- managed bean for service registry - exposed only for test purpose -->  
-  <managed-bean>
-  	<managed-bean-name>serviceRegistry</managed-bean-name>
-  	<managed-bean-class>eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry</managed-bean-class>
-  	<managed-bean-scope>request</managed-bean-scope>
- 	</managed-bean>  
- 	<!-- ############################ -->
-	<!-- put your workflow beans here -->  
-  <managed-bean>
-    <managed-bean-name>characterizationWorkflowBean</managed-bean-name>
-    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DemoCharacterizationWorkflowBean</managed-bean-class>                        
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-  <managed-bean>
-    <managed-bean-name>demoSimpleConvertBean</managed-bean-name>
-    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DemoSimpleConvertBean</managed-bean-class>                        
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-  <managed-bean>
-    <managed-bean-name>level1ConvertBean</managed-bean-name>
-    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.Level1ConvertBean</managed-bean-class>                        
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-  <managed-bean>
-    <managed-bean-name>droidBean</managed-bean-name>
-    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.DroidBean</managed-bean-class>                        
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>
-  <managed-bean>
-    <managed-bean-name>review1Bean</managed-bean-name>
-    <managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.views.ReviewConvertBean</managed-bean-class>                        
-    <managed-bean-scope>session</managed-bean-scope>
-  </managed-bean>    
-	<!-- navigation rules for helloWorld.jsp -->
+		<view-handler>
+			com.sun.facelets.FaceletViewHandler
+    	</view-handler>
+	</application>
+	<!-- /facelets-->
+
+	<!-- managed bean for general Planets -->
+	<managed-bean>
+		<managed-bean-name>PlanetsSharedBean</managed-bean-name>
+		<managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+	
+	<!-- managed bean for workflow management-->
+	<managed-bean>
+		<managed-bean-name>theWorkflow</managed-bean-name>
+		<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.WorkflowBackingBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<!-- navigation rules for editParamter pop-up window-->
 	<navigation-rule>
-		<from-view-id>/hello.jsp</from-view-id>
+		<from-view-id>/weehome.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>success</from-outcome>
-			<to-view-id>/page2.jsp</to-view-id>
+			<from-outcome>edit</from-outcome>
+			<to-view-id>/editParameter.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
-	<!-- navigation rules for page2.jsp -->
+	
 	<navigation-rule>
-		<from-view-id>/page2.jsp</from-view-id>
+		<from-view-id>/editParameter.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>back</from-outcome>
-			<to-view-id>/hello.jsp</to-view-id>
+			<to-view-id>/weehome.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	
 	<!-- navigation rules for loadWF.jsp-->
 	<navigation-rule>
-    <from-view-id>/*</from-view-id>
-    <navigation-case>
-    	<!--from-action>#{templateContainer.selectTemplate}</from-action-->
-      <from-outcome>displayView</from-outcome>
-      <to-view-id>/displayView.xhtml</to-view-id>
-      <redirect/>
-    </navigation-case>
-  </navigation-rule>  
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<!--from-action>#{templateContainer.selectTemplate}</from-action-->
+			<from-outcome>displayView</from-outcome>
+			<to-view-id>/displayView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 	<!-- navigation rules for executeWF.xhtml -->
 	<navigation-rule>
 		<from-view-id>/executeWF.xhtml</from-view-id>
@@ -115,4 +72,10 @@
 			<to-view-id>/executeWF.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+
+	<converter>
+		<converter-id>DateTimeConverter</converter-id>
+		<converter-class>javax.faces.convert.DateTimeConverter</converter-class>
+	</converter>
+
 </faces-config>
