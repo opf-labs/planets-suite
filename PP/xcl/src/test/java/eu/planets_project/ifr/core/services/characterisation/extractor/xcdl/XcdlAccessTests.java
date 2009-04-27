@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.impl.XcdlCharacterise;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;

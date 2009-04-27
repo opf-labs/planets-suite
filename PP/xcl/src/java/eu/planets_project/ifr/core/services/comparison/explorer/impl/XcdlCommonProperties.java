@@ -10,8 +10,8 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 
 import eu.planets_project.ifr.core.services.comparison.explorer.config.ExplorerResultReader;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.compare.CompareResult;
