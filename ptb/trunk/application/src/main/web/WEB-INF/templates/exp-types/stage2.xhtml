@@ -68,6 +68,13 @@
                            disabled="#{ExperimentBean.approved}"
                            readonly="#{ExperimentBean.approved}"/>
                          </p>
+                         
+                         <p class="center">
+                          <h:commandButton value="#{res['browse_data.selectRemoteData']}"
+                           action="browseForRemoteData"
+                           disabled="#{ExperimentBean.approved}"
+                           readonly="#{ExperimentBean.approved}"/>
+                         </p>
 
                 <fieldset>
                         <legend>#{res['exp_stage3.uploadFile']}</legend>
