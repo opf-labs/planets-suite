@@ -6,7 +6,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -178,54 +177,22 @@ public final class Query {
      */
     private static boolean mappable(final URI candidate, final URI sample,
             final MatchingMode mode) {
-        /* Case 0: no mapping required: */
+        /* No mapping required: */
         if (mode.matches(candidate.toString(), sample.toString())) {
             return true;
         }
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
-        /* Case 1: map extension to pronom: */
-        if (registry.isExtensionUri(sample)
-                && registry.isPronomUri(candidate)) {
-            return pronomMatchesExtension(candidate, sample, mode);
-        }
-        /* Case 2: map pronom to extension: */
-        if (registry.isPronomUri(sample)
-                && registry.isExtensionUri(candidate)) {
-            return pronomMatchesExtension(sample, candidate, mode);
-        }
-        return false;
-    }
-
-    /**
-     * @param pronomUri The PRONOM URI
-     * @param extensionUri The Planets extension URI
-     * @param mode The matching mode
-     * @return True, if one of the PRONOM IDs of the given extension URI matches
-     *         the given PRONOM URI.
-     */
-    private static boolean pronomMatchesExtension(final URI pronomUri,
-            final URI extensionUri, final MatchingMode mode) {
-        // TODO move this to Format or FormatRegistry?
-        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
-        String extension = extensionFromExtensionUri(extensionUri);
-        /* We get the pronom IDs that correspond to the extension: */
-        Set<URI> samplePronomIds = registry.getUrisForExtension(extension);
-        for (URI uri : samplePronomIds) {
-            /* If one of these match the candidate ID, we have a hit: */
-            if (mode.matches(pronomUri.toString(), uri.toString())) {
-                return true;
+        List<URI> candidateAliases = registry.getFormatUriAliases(candidate);
+        List<URI> sampleAliases = registry.getFormatUriAliases(sample);
+        /* If one of the aliases of the candidate and the sample match we're OK: */
+        for (URI sampleAlias : sampleAliases) {
+            for (URI candidateAlias : candidateAliases) {
+                if (mode.matches(candidateAlias.toString(), sampleAlias
+                        .toString())) {
+                    return true;
+                }
             }
         }
         return false;
-    }
-
-    /**
-     * @param uri The extension URI
-     * @return The actual extension string (e.g. 'png')
-     */
-    private static String extensionFromExtensionUri(final URI uri) {
-        // TODO move this to Format or FormatRegistry?
-        String[] tokens = uri.toString().split("/");
-        return tokens[tokens.length - 1];
     }
 }

@@ -28,16 +28,20 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  */
 public class CoreRegistryTests {
     static final String TEST_ROOT = "IF/registry/src/test/resources/service-description-registry/";
-    private static FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
+    private static FormatRegistry formatRegistry = FormatRegistryFactory
+            .getFormatRegistry();
     static final URI PRONOM_TIFF = formatRegistry.createPronomUri("fmt/10");
     static final URI EXT_TIFF = formatRegistry.createExtensionUri("tiff");
+    static final URI MIME_TIFF = formatRegistry.createMimeUri("image/tiff");
     static final URI PRONOM_PNG = formatRegistry.createPronomUri("fmt/11");
+
     static final String DESCRIPTION = "description";
     static final String TYPE1 = "type1";
     static final String TYPE2 = "type2";
     static final String NAME = "name";
     private URL endpoint1;
     private URL endpoint2;
+    private URL endpoint3;
     static Registry registry;
 
     /**
@@ -59,6 +63,7 @@ public class CoreRegistryTests {
         try {
             endpoint1 = new URL("http://some.dummy.endpoint");
             endpoint2 = new URL("http://another.dummy.endpoint");
+            endpoint3 = new URL("http://third.dummy.endpoint");
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -82,6 +87,12 @@ public class CoreRegistryTests {
         Assert.assertFalse("Could register when it should not work",
                 fail.success);
         registry.register(description2);
+        /* We finally register one service using the mime URI: */
+        Assert
+                .assertTrue("Failed to register using mime type",
+                        registry.register(new ServiceDescription.Builder(
+                                "third", TYPE2).inputFormats(MIME_TIFF)
+                                .endpoint(endpoint3).build()).success);
     }
 
     /**
@@ -98,7 +109,7 @@ public class CoreRegistryTests {
     @Test
     public void registerServiceDescription() {
         Response message = registry.register(description1);
-        Assert.assertEquals("Double registration!", 2, registry.query(null)
+        Assert.assertEquals("Double registration!", 3, registry.query(null)
                 .size());
         Assert.assertNotNull("No result message;", message);
         System.out.println("Registered: " + message);
@@ -170,32 +181,51 @@ public class CoreRegistryTests {
      * Test query by input format, mapping from extension to pronom ID.
      */
     @Test
-    public void findByInputFormatMappingExtensionToPronom() {
-        /* We use an extension URI for querying instead of a pronom URI: */
+    public void findByInputFormatMappingExtension() {
+        /* We use an extension URI for querying: */
         List<ServiceDescription> services = registry
                 .query(new ServiceDescription.Builder(null, null).inputFormats(
                         EXT_TIFF).build());
         /*
-         * This should retrieve both descriptions, even if we query using the
-         * extension and the services had been registered using the pronom ID:
+         * This should retrieve all three descriptions, even if we query using
+         * the extension and the services had been registered using the pronom
+         * ID or mime type:
          */
-        Assert.assertEquals(2, services.size());
+        Assert.assertEquals(3, services.size());
     }
 
     /**
      * Test query by input format, mapping from pronom ID to extension.
      */
     @Test
-    public void findByInputFormatMappingPronomToExtension() {
-        /* We use the pronom URI for querying instead of an extension URI: */
+    public void findByInputFormatMappingPronom() {
+        /* We use the pronom URI for querying: */
         List<ServiceDescription> services = registry
                 .query(new ServiceDescription.Builder(null, null).inputFormats(
                         PRONOM_TIFF).build());
         /*
-         * This should retrieve both descriptions, even if we query using the
-         * pronom ID and the services had been registered using the extension:
+         * This should retrieve all three descriptions, even if we query using
+         * the pronom ID and the services had been registered using the
+         * extension or mime type:
          */
-        Assert.assertEquals(2, services.size());
+        Assert.assertEquals(3, services.size());
+    }
+
+    /**
+     * Test query by input format, mapping from pronom ID to extension.
+     */
+    @Test
+    public void findByInputFormatMappingMime() {
+        /* We use the mime type for querying: */
+        List<ServiceDescription> services = registry
+                .query(new ServiceDescription.Builder(null, null).inputFormats(
+                        MIME_TIFF).build());
+        /*
+         * This should retrieve all three descriptions, even if we query using
+         * the mime type and the services had been registered using the
+         * extension or pronom ID:
+         */
+        Assert.assertEquals(3, services.size());
     }
 
     /**
@@ -267,7 +297,7 @@ public class CoreRegistryTests {
                 null, TYPE1).endpoint(endpoint1).build());
         Assert.assertTrue(response.success);
         List<ServiceDescription> services = registry.query(null);
-        Assert.assertEquals(1, services.size());
+        Assert.assertEquals(2, services.size());
     }
 
     /**
@@ -279,7 +309,7 @@ public class CoreRegistryTests {
                 null, TYPE1).endpoint(endpoint1).build());
         Assert.assertFalse(response.success);
         List<ServiceDescription> services = registry.query(null);
-        Assert.assertEquals(2, services.size());
+        Assert.assertEquals(3, services.size());
     }
 
     /**
