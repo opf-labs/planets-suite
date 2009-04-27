@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.techreg.api.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.net.URI;
 import java.util.List;

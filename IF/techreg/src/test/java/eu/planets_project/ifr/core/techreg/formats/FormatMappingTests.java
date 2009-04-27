@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.techreg.api.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.net.URI;
 import java.util.Set;
@@ -7,6 +7,9 @@ import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 
 /**
  * Format registry format mapping tests.

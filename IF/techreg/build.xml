@@ -20,7 +20,7 @@
 	<property name="src.resources" value="${appDir}/src/resources" />
 	<property name="src.web" value="${appDir}/src/web" />
 
-	<property name="src.api.includes" value="eu/planets_project/ifr/core/techreg/api/**" />
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/techreg/**" />
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />

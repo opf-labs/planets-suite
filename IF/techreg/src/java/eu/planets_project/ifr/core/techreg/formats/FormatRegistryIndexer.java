@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.impl.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.net.URI;
 import java.util.Set;
@@ -22,11 +22,12 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
 
+
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class FormatRegistryIndexer {
+class FormatRegistryIndexer {
     
     Directory directory;
     

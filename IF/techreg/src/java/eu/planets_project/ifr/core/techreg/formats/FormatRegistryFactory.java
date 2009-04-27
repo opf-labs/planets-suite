@@ -1,9 +1,8 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.api.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
-import eu.planets_project.ifr.core.techreg.impl.formats.FormatRegistryImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

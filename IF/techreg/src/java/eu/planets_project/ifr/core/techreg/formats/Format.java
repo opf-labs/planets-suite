@@ -1,15 +1,13 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.impl.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -48,13 +46,13 @@ public class Format implements Serializable {
      */
     public Format(URI typeURI) {
         this.typeURI = typeURI;
-        if (isThisAMimeURI(typeURI)) {
-            String mime = typeURI.toString().replace(MIME_URI_PREFIX, "");
+        if (FormatUtils.isMimeUri(typeURI)) {
+            String mime = typeURI.toString().replace(FormatUtils.MIME_URI_PREFIX, "");
             this.mimeTypes = new HashSet<String>();
             this.mimeTypes.add(mime);
             this.summary = mime.toLowerCase();
-        } else if (Format.isThisAnExtensionURI(typeURI)) {
-            String ext = typeURI.toString().replace(EXT_URI_PREFIX, "");
+        } else if (FormatUtils.isExtensionUri(typeURI)) {
+            String ext = typeURI.toString().replace(FormatUtils.EXT_URI_PREFIX, "");
             this.extensions = new HashSet<String>();
             this.extensions.add(ext);
             this.summary = ext.toUpperCase();
@@ -174,90 +172,7 @@ public class Format implements Serializable {
     public void setExtensions(Set<String> extensions) {
         this.extensions = extensions;
     }
-
-    /** The prefix for MIME format URIs */
-    static final String MIME_URI_PREFIX = "planets:fmt/mime/";
-    /** The prefix for extension format URIs */
-    static final String EXT_URI_PREFIX = "planets:fmt/ext/";
-    /** The prefix for PRONOM format URIs */
-    static final String PRONOM_URI_PREFIX = "info:pronom/";
     
-    static String getFirstMatchingFormatExtension(URI formatURI) {
-        if (formatURI == null) {
-            return null;
-        }
-        Set<String> set = new Format(formatURI).getExtensions();
-        if (set != null) {
-            return set.iterator().next();
-        }
-        return null;
-    }
-
-    /**
-     * Static helper to construct appropriate URIs for file-extensions format
-     * specifiers.
-     * @param ext
-     * @return the extension as a format URI
-     */
-    static URI extensionToURI(String ext) {
-        try {
-            return new URI(EXT_URI_PREFIX + ext.toLowerCase());
-        } catch (URISyntaxException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Static helper to construct appropriate URIs for mime-type format
-     * specifiers.
-     * @param mime
-     * @return the MIME type as a format URI
-     */
-    static URI mimeToURI(String mime) {
-        try {
-            return new URI(MIME_URI_PREFIX + mime.toLowerCase());
-        } catch (URISyntaxException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Static helper to convert a short-form PRONOM ID into a PRONOM URI.
-     * @param pronomID Short-form PUID, e.g. 'fmt/95'
-     * @return A full PRONOM Format URI, e.g. 'info:pronom/fmt/95'
-     */
-     static URI pronomIdToURI(String pronomID) {
-        try {
-            return new URI(PRONOM_URI_PREFIX + pronomID.toLowerCase());
-        } catch (URISyntaxException e) {
-            return null;
-        }
-    }
-
-    /**
-     * @param typeURI
-     * @return true if a MIME URI
-     */
-    static boolean isThisAMimeURI(URI typeURI) {
-        return typeURI.toString().startsWith(MIME_URI_PREFIX);
-    }
-
-    /**
-     * @param typeURI
-     * @return true if an extension URI
-     */
-    static boolean isThisAnExtensionURI(URI typeURI) {
-        return typeURI.toString().startsWith(EXT_URI_PREFIX);
-    }
-
-    /**
-     * @param typeURI
-     * @return true if a PRONOM URI
-     */
-    static boolean isThisAPronomURI(URI typeURI) {
-        return typeURI.toString().startsWith(PRONOM_URI_PREFIX);
-    }
-
     /**
      * {@inheritDoc}
      * @see java.lang.Object#equals(java.lang.Object)
@@ -283,5 +198,4 @@ public class Format implements Serializable {
     public int hashCode() {
         return this.typeURI.hashCode();
     }
-
 }

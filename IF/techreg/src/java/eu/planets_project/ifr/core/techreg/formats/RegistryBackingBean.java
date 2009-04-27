@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.impl.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.richfaces.component.html.HtmlDataTable;
 
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistryFactory;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

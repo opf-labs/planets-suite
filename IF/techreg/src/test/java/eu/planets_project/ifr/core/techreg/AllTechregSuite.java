@@ -3,7 +3,7 @@ package eu.planets_project.ifr.core.techreg;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import eu.planets_project.ifr.core.techreg.api.formats.FormatMappingTests;
+import eu.planets_project.ifr.core.techreg.formats.FormatMappingTests;
 
 /**
  * All tests for the techreg component.

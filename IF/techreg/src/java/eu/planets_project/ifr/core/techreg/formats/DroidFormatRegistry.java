@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.impl.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -16,7 +16,6 @@ import org.apache.commons.logging.LogFactory;
 import uk.gov.nationalarchives.droid.AnalysisController;
 import uk.gov.nationalarchives.droid.signatureFile.FFSignatureFile;
 import uk.gov.nationalarchives.droid.signatureFile.FileFormat;
-import eu.planets_project.ifr.core.techreg.api.formats.droid.DroidConfig;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

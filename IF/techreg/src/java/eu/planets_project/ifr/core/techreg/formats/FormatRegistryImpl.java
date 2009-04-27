@@ -1,29 +1,25 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.impl.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.ejb.cache.Cache;
-
-import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 
 /**
  * This is the Planets Format Registry and Resolver.
@@ -35,23 +31,23 @@ import eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry;
 @LocalBinding(jndiBinding = "planets-project.eu/FormatRegistry/local")
 @Remote(FormatRegistry.class)
 @RemoteBinding(jndiBinding = "planets-project.eu/FormatRegistry/remote")
-public class FormatRegistryImpl implements FormatRegistry {
+class FormatRegistryImpl implements FormatRegistry {
     private static Log log = LogFactory.getLog(FormatRegistryImpl.class);
 
     /**
-     * Main index, 1-2-1 mapping the type URIs to the FileFormat objects:
+     * Main index, 1-2-1 mapping the type URIs to the FileFormat objects.
      */
-    Map<URI, Format> uriMap = new HashMap<URI, Format>();
+    private Map<URI, Format> uriMap = new HashMap<URI, Format>();
 
     /**
      * Map a file extension onto one or more type URIs.
      */
-    Map<String, Set<URI>> extMap = new HashMap<String, Set<URI>>();
+    private Map<String, Set<URI>> extMap = new HashMap<String, Set<URI>>();
 
     /**
      * Map a mime type onto one or more type URIs.
      */
-    Map<String, Set<URI>> mimeMap = new HashMap<String, Set<URI>>();
+    private Map<String, Set<URI>> mimeMap = new HashMap<String, Set<URI>>();
 
     /**
      * Constructor loads the format data in and builds the look-up tables.
@@ -107,10 +103,10 @@ public class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatForURI(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFormatForURI(java.net.URI)
      */
     public Format getFormatForURI(URI puri) {
-        if (Format.isThisAMimeURI(puri) || Format.isThisAnExtensionURI(puri)) {
+        if (isMimeUri(puri) || isExtensionUri(puri)) {
             return new Format(puri);
         } else {
             return uriMap.get(puri);
@@ -118,7 +114,7 @@ public class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getUrisForExtension(java.lang.String)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getUrisForExtension(java.lang.String)
      */
     public Set<URI> getUrisForExtension(String ext) {
         ext = ext.toLowerCase();
@@ -126,14 +122,14 @@ public class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getURIsForMimeType(java.lang.String)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getURIsForMimeType(java.lang.String)
      */
     public Set<URI> getUrisForMimeType(String mimetype) {
         return mimeMap.get(mimetype);
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#search(java.lang.String)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#search(java.lang.String)
      */
     public List<URI> search(String query) {
         ArrayList<URI> found = new ArrayList<URI>(this
@@ -143,18 +139,18 @@ public class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatUriAliases(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFormatUriAliases(java.net.URI)
      */
     public List<URI> getFormatUriAliases(URI typeURI) {
         Set<URI> turis = new HashSet<URI>();
         turis.add(typeURI);
 
-        if (Format.isThisAMimeURI(typeURI)) {
+        if (isMimeUri(typeURI)) {
             Format mime = new Format(typeURI);
             Set<URI> furis = getUrisForMimeType(mime.getMimeTypes().iterator()
                     .next());
             turis.addAll(furis);
-        } else if (Format.isThisAnExtensionURI(typeURI)) {
+        } else if (isExtensionUri(typeURI)) {
             Format ext = new Format(typeURI);
             Set<URI> furis = getUrisForExtension(ext.getExtensions().iterator()
                     .next());
@@ -169,18 +165,18 @@ public class FormatRegistryImpl implements FormatRegistry {
             }
             // Ext:
             for (String ext : f.getExtensions()) {
-                turis.add(Format.extensionToURI(ext));
+                turis.add(createExtensionUri(ext));
             }
             // Mime:
             for (String mime : f.getMimeTypes()) {
-                turis.add(Format.mimeToURI(mime));
+                turis.add(createMimeUri(mime));
             }
         }
         return new ArrayList<URI>(turis);
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFormatAliases(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFormatAliases(java.net.URI)
      */
     public List<Format> getFormatAliases(URI typeURI) {
         List<Format> fmts = new ArrayList<Format>();
@@ -192,7 +188,7 @@ public class FormatRegistryImpl implements FormatRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#puidToUri(java.lang.String)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#puidToUri(java.lang.String)
      */
     public URI puidToUri(final String puid) {
         return DroidFormatRegistry.PUIDtoURI(puid);
@@ -200,7 +196,7 @@ public class FormatRegistryImpl implements FormatRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#convertUriToPronom(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#convertUriToPronom(java.net.URI)
      */
     public String convertUriToPronom(final URI uri) {
         return DroidFormatRegistry.URItoPUID(uri);
@@ -208,47 +204,47 @@ public class FormatRegistryImpl implements FormatRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#createExtensionUri(java.lang.String)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#createExtensionUri(java.lang.String)
      */
     public URI createExtensionUri(String extensionFromFile) {
-        return Format.extensionToURI(extensionFromFile);
+        return FormatUtils.createExtensionUri(extensionFromFile);
     }
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#isPronomUri(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#isPronomUri(java.net.URI)
      */
     public Boolean isPronomUri(URI uri) {
-        return Format.isThisAPronomURI(uri);
+        return FormatUtils.isPronomUri(uri);
     }
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#isExtensionUri(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#isExtensionUri(java.net.URI)
      */
     public Boolean isExtensionUri(URI uri) {
-        return Format.isThisAnExtensionURI(uri);
+        return FormatUtils.isExtensionUri(uri);
     }
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#createMimeUri(java.lang.String)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#createMimeUri(java.lang.String)
      */
     public URI createMimeUri(String type) {
-        return Format.mimeToURI(type);
+        return FormatUtils.createMimeUri(type);
     }
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#createPronomUri(java.lang.String)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#createPronomUri(java.lang.String)
      */
     public URI createPronomUri(String string) {
-        return Format.pronomIdToURI(string);
+        return FormatUtils.createPronomUri(string);
     }
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getExtensions(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getExtensions(java.net.URI)
      */
     public Set<String> getExtensions(URI puidToUri) {
         return getFormatForURI(puidToUri).getExtensions();
@@ -256,18 +252,18 @@ public class FormatRegistryImpl implements FormatRegistry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#getFirstExtension(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFirstExtension(java.net.URI)
      */
     public String getFirstExtension(URI uri) {
-        return Format.getFirstMatchingFormatExtension(uri);
+        return FormatUtils.getFirstExtension(uri);
     }
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.techreg.api.formats.FormatRegistry#isMimeUri(java.net.URI)
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#isMimeUri(java.net.URI)
      */
     public Boolean isMimeUri(URI typeURI) {
-        return Format.isThisAMimeURI(typeURI);
+        return FormatUtils.isMimeUri(typeURI);
     }
 
 }

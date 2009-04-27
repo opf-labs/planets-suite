@@ -10,7 +10,7 @@
 	<managed-bean>
 		<managed-bean-name>Registry</managed-bean-name>
 		<managed-bean-class>
-            eu.planets_project.ifr.core.techreg.impl.formats.RegistryBackingBean
+            eu.planets_project.ifr.core.techreg.formats.RegistryBackingBean
 		</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
         <!-- managed-bean-scope>application</managed-bean-scope -->

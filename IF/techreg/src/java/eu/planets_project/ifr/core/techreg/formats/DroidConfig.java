@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.api.formats.droid;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,7 +10,7 @@ import org.apache.commons.logging.LogFactory;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class DroidConfig {
+class DroidConfig {
     private static Log log = LogFactory.getLog(DroidConfig.class);
     
     /***/

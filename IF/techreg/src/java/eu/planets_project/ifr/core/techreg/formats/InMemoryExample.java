@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.techreg.impl.formats;
+package eu.planets_project.ifr.core.techreg.formats;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -24,7 +24,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class InMemoryExample {
+class InMemoryExample {
 
 	/**
 	 * Main method
