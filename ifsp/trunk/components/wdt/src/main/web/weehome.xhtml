@@ -1,0 +1,384 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<body>
+<ui:composition template="/WEB-INF/planets/page-template.xhtml">
+    <ui:param name="pagetitle" value="Workflow Control Panel"/>
+    
+    <rich:tabPanel selectedTab="#{theWorkflow.currentTab}" id="clientTabPanel" switchType="client">
+         <rich:tab id="manageTemplateTab" name="manageTemplateTab" label="Manage Templates">
+			<h:panelGrid columns="2">
+		        <rich:panel>
+				    <f:facet name="header">
+				    	<h:outputText styleClass="headerText" value="Registered Templates" />
+				    </f:facet>
+				    <rich:dataTable id="templates" value="#{theWorkflow.templates}" var="temps" >
+				    	<rich:column>
+					        <f:facet name="header">
+					          <h:outputText value="Template Name" />
+					        </f:facet>
+				    		<a4j:form id="chooseTemplateForm">
+					            <h:commandLink actionListener="#{theWorkflow.selectTemplate}" value="#{temps}"/>
+				            </a4j:form>
+				    	</rich:column>
+				    </rich:dataTable>
+		        </rich:panel>
+				<rich:panel>
+		            <f:facet name="header">
+		                <h:outputText value="Register a Template Class"/>
+		            </f:facet>
+					<a4j:form enctype="multipart/form-data" id="uploadTemplateForm" name="uploadTemplateForm">
+						<t:inputFileUpload 
+						  id="myUploadedTemplate" 
+						  storage="file" 
+						  value="#{theWorkflow.myUploadedFile}"/>
+				        <h:outputText value=" "/>
+				        <h:commandButton value="Add Template" action="#{theWorkflow.processTemplate}"/>
+				        <h:outputText value=" "/>
+					</a4j:form>
+        		</rich:panel>
+    		</h:panelGrid>
+        </rich:tab>
+        
+        <rich:tab id="loadWorkflowTab" name="loadWorkflowTab" label="Load Workflow">
+			<rich:panel>
+	            <f:facet name="header">
+	                <h:outputText value="Select a workflow XML"/>
+	            </f:facet>
+				<a4j:form enctype="multipart/form-data" id="uploadForm" name="uploadForm">
+					<t:inputFileUpload 
+					  id="myUploadedFile" 
+					  storage="file" accept="text/*" 
+					  value="#{theWorkflow.myUploadedFile}"/>
+			        <h:outputText value=" "/>
+			        <h:commandButton value="Add Workflow" action="#{theWorkflow.processFile}"/>
+			        <h:outputText value=" "/>
+				</a4j:form>
+	            <f:facet name="footer">
+	                <h:outputText value="Warning: adding a workflow file will overwrite any existing workflow. Save first?"/>
+	            </f:facet>
+       		</rich:panel>
+        </rich:tab>
+        
+        <rich:tab id="editWorkflowTab" name="editWorkflowTab" label="Edit Workflow">
+
+        <h:panelGrid columns="1">
+        	<f:facet name="header">Edit an XML Workflow description</f:facet>
+	        <h:column>
+                <rich:dataTable id="serviceListTable"
+                    onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                    onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+                    var="service" value="#{theWorkflow.serviceBeans}">
+                
+                    <f:facet name="header">
+                        <rich:columnGroup>
+                            <rich:column colspan="3">
+                                <h:outputText value="Services" />
+                            </rich:column>
+                            <rich:column colspan="2">
+                                <h:outputText value="Parameters" />
+                            </rich:column>
+                            <rich:column breakBefore="true">
+                                <h:outputText value="Service ID" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Type" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Endpoint" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Name/Value Pairs" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Add Parameter" />
+                            </rich:column>
+                        </rich:columnGroup>
+                    </f:facet>               
+                    <rich:column>
+                    	<h:outputText value="#{service.serviceId}" />
+                    </rich:column>
+                    <rich:column>
+                    	<h:outputText value="#{service.serviceType}" />
+                    </rich:column>     
+                    <rich:column>
+                    	<h:panelGrid columns="2">
+	                    	<h:outputText value="#{service.serviceName}" />
+	                    	<h:form>
+							    <h:selectOneMenu 
+							    	label="#{service.serviceId}"
+							    	valueChangeListener="#{theWorkflow.serviceSelectionChanged}"
+							    	immediate="true"
+							    	onchange="this.form.submit();">
+							    	<f:selectItems value="#{service.endpointOptions}"/>
+							    </h:selectOneMenu>
+							</h:form>
+						</h:panelGrid>
+                    </rich:column>  
+                    <rich:column>
+	                    <rich:dataTable var="params" value="#{service.serviceParameters}">
+		                    <f:facet name="header">
+		                        <rich:columnGroup>
+		                            <rich:column>
+		                                <h:outputText value="Name" />
+		                            </rich:column>
+		                            <rich:column>
+		                                <h:outputText value="Value" />
+		                            </rich:column>
+		                        </rich:columnGroup>
+		                    </f:facet>
+	                        <rich:column>
+	                            <h:outputText value="#{params.name}"></h:outputText>
+	                        </rich:column>
+	                        <rich:column>
+	                            <h:outputText value="#{params.value}"></h:outputText>
+	                        </rich:column>
+	                    </rich:dataTable>
+	                </rich:column>	                    
+	                <rich:column>
+	                    <h:form>
+							<h:commandButton
+								onclick="window.open('editParameter.xhtml?id=#{service.serviceId}', 'Edit Parameters', 'height=600,width=800,status=no,toolbar=no,menubar=no,location=no,scrollbars=yes'); return false;"
+								value="Edit Parameters">
+							</h:commandButton>
+						</h:form>
+	                </rich:column>	                   
+	            </rich:dataTable>
+			</h:column>
+			
+            <h:column>
+            	<h:panelGrid columns="2">
+					<rich:panel>
+					    <f:facet name="header">Save Workflow</f:facet>
+						<a4j:form id="createXMLForm">
+							<h:commandButton
+								disabled="#{theWorkflow.disableWorkflowButtons}"
+								actionListener="#{theWorkflow.buildXMLWorkflowDescription}"
+								value="Export XML"/>
+						</a4j:form>
+					</rich:panel>
+					<rich:panel>
+					    <f:facet name="header">Clear Workflow</f:facet>
+						<a4j:form id="clearWorkflowForm">
+							<h:commandButton
+								disabled="#{theWorkflow.disableWorkflowButtons}"
+								actionListener="#{theWorkflow.clearWorkflow}"
+								value="Reset"/>
+						</a4j:form>
+					</rich:panel>
+				</h:panelGrid>
+			</h:column>
+			
+		</h:panelGrid>
+    </rich:tab>
+        
+        <rich:tab id="selectObjectsTab" name="selectObjectsTab" label="Select Digital Objects">
+        	<h:panelGrid columns="2">
+        		<rich:panel>
+		            <f:facet name="header">
+		                <h:outputText value="Data Registry Browser"/>
+		            </f:facet>
+		            <h:form id="drBrowserForm">
+					    <t:tree2 id="filerTree" value="#{theWorkflow.filerTree}" var="do" varNodeToggler="t" showRootNode="false" showLines="true" preserveToggle="true" clientSideToggle="false">
+							<f:facet name="folder">
+							   <h:panelGroup>
+							     <h:commandLink action="success">
+							       <t:graphicImage value="/imgs/filetype_folder.gif" />
+							       <h:outputText value=" #{do.leafname}"/>
+							       <t:updateActionListener property="#{theWorkflow.dir}" value="#{do}" />
+							     </h:commandLink>
+							   </h:panelGroup>
+							</f:facet>
+				            <f:facet name="file">
+							  <h:panelGroup>
+							    <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+							    <h:outputText value=" #{do.leafname}"/>
+							  </h:panelGroup>
+						    </f:facet>
+						</t:tree2>
+						<t:dataTable id="fileBrowserList" var="do" value="#{theWorkflow.list}">   
+							<h:column>
+								<f:facet name="header">Select</f:facet>
+							    <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}"/>
+							</h:column>
+							<h:column>
+								<f:facet name="header">Type</f:facet>
+								<h:panelGroup rendered="#{do.directory}">
+			                    	<t:graphicImage value="/imgs/filetype_folder.gif" />
+								</h:panelGroup>
+								<h:panelGroup rendered="#{not do.directory}">
+									<t:graphicImage value="/imgs/filetype_file.png" />
+								</h:panelGroup>
+							 </h:column>
+							<h:column>
+								<f:facet name="header">Object Name</f:facet>
+								<h:panelGroup rendered="#{do.directory}">
+									<h:commandLink action="success">
+								    	<h:outputText value=" #{do.leafname}"/>
+								        <t:updateActionListener property="#{theWorkflow.dir}" value="#{do}" />
+								    </h:commandLink>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{not do.directory}">
+									<h:outputText value=" #{do.leafname}"/>
+								</h:panelGroup>
+							 </h:column>
+						</t:dataTable>
+						<h:panelGroup>
+							<h:commandButton action="#{theWorkflow.selectAll}" value="Select All"/>
+							<h:commandButton action="#{theWorkflow.selectNone}" value="Select None"/>
+						</h:panelGroup>
+						<h:panelGroup>
+							<h:commandButton action="#{theWorkflow.addToWorkflow}" value="Add to Workflow"/>
+						</h:panelGroup>
+					</h:form>
+				</rich:panel>
+				<rich:panel>
+				  <h:form id="clearSelectedObjectsForm">
+				    <rich:dataTable id="objects" value="#{theWorkflow.objects}" var="dos" >
+				    	<rich:column>
+				            <f:facet name="header">
+				              <h:outputText styleClass="headerText" value="Included Objects" />
+				            </f:facet>
+				            <h:commandLink action="#{theWorkflow.selectObject}" >
+					            <h:outputText value="#{dos.uri}"/>
+				            </h:commandLink>
+				    	</rich:column>
+				    </rich:dataTable>
+					<h:panelGroup>
+						<h:commandButton action="#{theWorkflow.clearObjects}" value="Clear Objects"/>
+					</h:panelGroup>				
+				  </h:form> 
+				</rich:panel>
+			</h:panelGrid>
+        </rich:tab>
+        
+        <rich:tab id="listWorkflowsTab" name="listWorkflowsTab" label="Workflow Status">
+			<h:panelGrid columns="1">
+				<h:form>
+					<rich:panel>
+			        	<f:facet name="header">
+			            	<h:outputText value="Workflow in progress" />
+			        	</f:facet>
+				        <a4j:outputPanel id="WorkflowProgressPanel">
+				            <rich:progressBar value="#{theWorkflow.currentProgress}"
+				                interval="1000"
+				                immediate="true"
+				                enabled="#{theWorkflow.workflowStarted}"
+				                minValue="0" maxValue="99"
+				                reRenderAfterComplete="WorkflowListPanel">
+				                <f:facet name="initial">
+				                    <br />
+				                    <h:outputText value="None Active" />
+				                </f:facet>
+				            </rich:progressBar>
+				        </a4j:outputPanel>
+					</rich:panel>
+			    </h:form>
+			    <rich:panel id="WorkflowListPanel">
+		        	<f:facet name="header">
+		            	<h:outputText value="Submitted Workflows" />
+		        	</f:facet>
+		            <rich:dataTable var="workflows" value="#{theWorkflow.submittedWorkflows}">
+		            	<f:facet name="header">
+		                    <rich:columnGroup>
+		                        <rich:column>
+		                            <h:outputText value="Configuration" />
+		                        </rich:column>
+		                        <rich:column>
+		                            <h:outputText value="Number of Objects" />
+		                        </rich:column>
+		                        <rich:column>
+		                            <h:outputText value="Status" />
+		                        </rich:column>
+		                         <rich:column>
+		                            <h:outputText value="Start Time" />
+		                        </rich:column>
+		                        <rich:column>
+		                            <h:outputText value="Stop Time" />
+		                        </rich:column>
+		                        <rich:column>
+		                            <h:outputText value="Execution Time (ms)" />
+		                        </rich:column>
+		                    </rich:columnGroup>
+		                </f:facet>
+		                <rich:column>
+		                	<h:outputText value="#{workflows.xmlConfigName}" />
+		                </rich:column>
+		                <rich:column>
+		                	<h:outputText value="#{workflows.numberObjects}" />
+		                </rich:column>
+		                <rich:column>
+		                	<h:outputText value="#{workflows.status}" />
+		                </rich:column>
+		                <rich:column>
+		                	<h:outputText value="#{workflows.startTime}" />
+		                </rich:column>
+		                <rich:column>
+		                	<h:outputText value="#{workflows.stopTime}" />
+		                </rich:column>
+		                <rich:column>
+		                	<h:outputText value="#{workflows.executionTime}" />
+		                </rich:column>
+		            </rich:dataTable>
+	            </rich:panel>
+			</h:panelGrid>
+        </rich:tab>
+
+    </rich:tabPanel>
+
+	<h:panelGrid columns="4" >
+        <rich:panel>
+            <f:facet name="header">
+                <h:outputText value="Active Template"/>
+            </f:facet>
+            <h:outputText id="templateName" value="#{theWorkflow.selectedTemplateQname}" />
+        </rich:panel>
+        <rich:panel>
+            <f:facet name="header">
+                <h:outputText value="Active Workflow"/>
+            </f:facet>
+           	<h:outputText value="#{theWorkflow.workflowName}" />
+           	<h:outputText value="#{theWorkflow.workflowStatus}" />
+        </rich:panel>
+        <rich:panel>
+            <f:facet name="header">
+                <h:outputText value="Input Objects Selected"/>
+            </f:facet>
+            <h:outputText value="#{theWorkflow.inputDataSelected}" />
+        </rich:panel>
+        <rich:panel>
+		    <h:form id="executeWorkflowForm">
+            	<h:commandButton disabled="#{theWorkflow.cannotExecute}"
+                	action="#{theWorkflow.executeWorkflow}"
+                    value="Submit Workflow" />
+		    </h:form>
+        </rich:panel>
+	</h:panelGrid>
+	
+	<h:panelGrid columns="1" id="ErrorPanel">
+        <rich:panel>
+            <rich:dataTable var="errors" value="#{theWorkflow.errorMessageString}">
+             <f:facet name="header">
+                 <rich:columnGroup>
+                     <rich:column>
+                         <h:outputText value="Error Messages" />
+                     </rich:column>
+                 </rich:columnGroup>
+             </f:facet>
+                <rich:column>
+                    <h:outputText value="#{errors}"></h:outputText>
+                </rich:column>
+            </rich:dataTable>
+        </rich:panel>
+	</h:panelGrid>
+
+</ui:composition>
+</body>
+</html>
