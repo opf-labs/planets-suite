@@ -1,23 +1,22 @@
-/**
- * 
- */
 package eu.planets_project.ifr.core.wdt.gui.faces;
 
-import java.net.URI;
-import org.apache.myfaces.custom.tree2.TreeNodeBase;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.wdt.api.data.DigitalObject;
+import java.net.URI;
+
+import eu.planets_project.ifr.core.wdt.api.data.DigitalObjectReference;
+
+import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 /**
  * @author AnJackson
  *
  */
 public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
-    static final long serialVersionUID = 82362318283823293l;
+    static final long serialVersionUID = 82362318283823295l;
     
     static private PlanetsLogger log = PlanetsLogger.getLogger(FileTreeNode.class);
     
-    private DigitalObject dob;
+    private DigitalObjectReference dob;
     private String displayName;
     private String owner;
     private String size;
@@ -25,24 +24,25 @@ public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     private String dateModified;
     private boolean selected;
     private boolean selectable;
+    private boolean expanded = false;
     
     /**
      * Constructor based on Digital Object:
      */
-    public FileTreeNode( DigitalObject dob ) {
+    public FileTreeNode( DigitalObjectReference dob ) {
         this.setDob(dob);
     }
     
     /**
      * @return the dob
      */
-    public DigitalObject getDob() {
+    public DigitalObjectReference getDob() {
         return dob;
     }
     /**
      * @param dob the dob to set
      */
-    public void setDob(DigitalObject dob) {
+    public void setDob(DigitalObjectReference dob) {
         this.dob = dob;
         // Pick up configuration from the DO:
         if( this.isDirectory() ) {
@@ -54,7 +54,7 @@ public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
             this.setLeaf(true);
             this.setSelectable(true);
         }
-        if( dob != null ) this.displayName = dob.getLeafname();
+        this.displayName = dob.getLeafname();
     }
     
     /**
@@ -105,5 +105,51 @@ public class FileTreeNode extends TreeNodeBase implements java.io.Serializable {
     public void setSelectable(boolean selectable) {
         this.selectable = selectable;
     }
+
+    /**
+     * @return the expanded
+     */
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    /**
+     * @param expanded the expanded to set
+     */
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((dob == null) ? 0 : dob.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final FileTreeNode other = (FileTreeNode) obj;
+        if (dob == null) {
+            if (other.dob != null)
+                return false;
+        } else if (!dob.equals(other.dob))
+            return false;
+        return true;
+    }
  
+    
 }
