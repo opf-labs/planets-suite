@@ -66,6 +66,7 @@ import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -358,6 +359,38 @@ public class WorkflowBackingBean {
 					.add("Unable to lookup service name for endpoint: "
 							+ selServiceEndpoint);
 			return;
+		}
+		theServiceBean.clearParameters();
+		URL sendsURL;
+		try {
+			sendsURL = new URL(selServiceEndpoint);
+			List<ServiceDescription> regSer = registry
+			.query(new ServiceDescription.Builder(null,
+					null).endpoint(sendsURL).build());
+			if (regSer.size()<1) {
+				errorMessageString.add("No service with endpoint: "
+						+ selServiceEndpoint + " found in service registry.");	
+			} else if (regSer.size()>1) {
+				errorMessageString.add("Service lookup with endpoint: "
+						+ selServiceEndpoint + " yielded more than one result!");
+			} else {
+				ServiceDescription sd = regSer.get(0);
+				List<Parameter> pList = sd.getParameters();
+				if (pList!=null) {
+					Iterator<Parameter> it = pList.iterator();
+					while (it.hasNext()) {
+						Parameter par = it.next();
+						ServiceParameter spar = new ServiceParameter(par.name,par.value);
+						theServiceBean.addParameter(spar);
+					}
+				} else {
+					errorMessageString.add("Service: "
+							+ selServiceName + " has no default parameters.");					
+				}
+			}
+		} catch (MalformedURLException e) {
+			errorMessageString.add("Unable to lookup service with endpoint: "
+					+ selServiceEndpoint);
 		}
 		theServiceBean.setServiceName(selServiceName);
 		theServiceBean.setServiceEndpoint(selServiceEndpoint);
@@ -1125,6 +1158,7 @@ public class WorkflowBackingBean {
 		private String serviceName;
 		private String serviceEndpoint;
 		private ArrayList<ServiceParameter> serviceParameters;
+		private ArrayList<SelectItem> serviceNames;
 
 		public ServiceBean() {
 			this.serviceName = "None";
@@ -1163,6 +1197,23 @@ public class WorkflowBackingBean {
 
 		public void setServiceType(String type) {
 			this.serviceType = type;
+			serviceNames = new ArrayList<SelectItem>();
+			serviceNames.add(new SelectItem("None", "Select an Endpoint..."));
+			serviceNames.add(new SelectItem("None", "None"));
+			if (serviceType != null) {
+				String serviceClass = serviceTypes.get(serviceType);
+				List<ServiceDescription> services = registry
+						.query(new ServiceDescription.Builder(null,
+								serviceClass).build());
+				Iterator<ServiceDescription> it = services.iterator();
+				while (it.hasNext()) {
+					ServiceDescription sd = it.next();
+					serviceNames.add(new SelectItem(
+							sd.getEndpoint().toString(), sd.getName()));
+					serviceNameMap.put(sd.getEndpoint().toString(), sd
+							.getName());
+				}
+			}
 		}
 
 		public void setServiceName(String name) {
@@ -1182,24 +1233,16 @@ public class WorkflowBackingBean {
 		}
 
 		public List<SelectItem> getEndpointOptions() {
-			ArrayList<SelectItem> serviceNames = new ArrayList<SelectItem>();
-			serviceNames.add(new SelectItem("None", "Select an Endpoint..."));
-			serviceNames.add(new SelectItem("None", "None"));
-			if (serviceType != null) {
-				String serviceClass = serviceTypes.get(serviceType);
-				List<ServiceDescription> services = registry
-						.query(new ServiceDescription.Builder(null,
-								serviceClass).build());
-				Iterator<ServiceDescription> it = services.iterator();
-				while (it.hasNext()) {
-					ServiceDescription sd = it.next();
-					serviceNames.add(new SelectItem(
-							sd.getEndpoint().toString(), sd.getName()));
-					serviceNameMap.put(sd.getEndpoint().toString(), sd
-							.getName());
-				}
+			if (serviceNames==null) {
+				serviceNames = new ArrayList<SelectItem>();
+				serviceNames.add(new SelectItem("None", "Select an Endpoint..."));
+				serviceNames.add(new SelectItem("None", "None"));
 			}
 			return serviceNames;
+		}
+		
+		public void clearParameters() {
+			this.serviceParameters.clear();
 		}
 	}
 
