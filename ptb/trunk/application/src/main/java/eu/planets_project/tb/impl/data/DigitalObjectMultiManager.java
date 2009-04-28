@@ -5,6 +5,9 @@ package eu.planets_project.tb.impl.data;
 
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -13,6 +16,7 @@ import javax.xml.soap.SOAPException;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.tb.impl.data.demo.BlueMarbleDataManager;
@@ -27,6 +31,7 @@ import eu.planets_project.tb.impl.data.demo.BlueMarbleDataManager;
  *
  */
 public class DigitalObjectMultiManager implements DigitalObjectManager {
+
     // A logger:
     private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectMultiManager.class);
 
@@ -122,13 +127,13 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
      */
-    public URI[] list(URI pdURI) {
+    public List<URI> list(URI pdURI) {
         
         // If null, list the known DRs
         if( pdURI == null ) {
-            URI[] childs = new URI[dss.length];
+            List<URI> childs = new ArrayList<URI>();
             for( int i = 0; i < dss.length; i++ ) {
-                childs[i] = dss[i].uri;
+                childs.add(i, dss[i].uri);
             }
             return childs;
         }
@@ -139,7 +144,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         
         // return the listing.
         try {
-            return dm.list(pdURI);
+            return new ArrayList<URI>( Arrays.asList( dm.list(pdURI) ) );
         } catch (SOAPException e) {
             e.printStackTrace();
             return null;
@@ -184,6 +189,29 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         
         throw new DigitalObjectNotStoredException("Could not store the digital object at " + pdURI);
 
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
+     */
+    public List<Class<? extends Query>> getQueryModes() {
+        // FIXME TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
+    public boolean isWritable(URI pdURI) {
+        // FIXME TODO Auto-generated method stub
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#setQuery(eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    public void setQuery(Query q) {
+        // FIXME TODO Auto-generated method stub
     }
 
 }
