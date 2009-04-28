@@ -65,6 +65,7 @@ import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -600,7 +601,7 @@ public class WorkflowBackingBean {
 								.add("\nSelected digital object has an invalid URL!");
 						e.printStackTrace();
 					}
-					DigitalObject o = new DigitalObject.Builder(Content
+					DigitalObject o = new DigitalObject.Builder(ImmutableContent
 							.byReference(dobURL)).build();
 					digObjs.add(o);
 				}

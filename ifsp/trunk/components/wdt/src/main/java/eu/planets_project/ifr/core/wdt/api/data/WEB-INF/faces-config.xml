@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.1//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd" >
+
+<faces-config>
+	<!-- include facelets-->
+	<application>
+		<view-handler>
+			com.sun.facelets.FaceletViewHandler
+    </view-handler>
+	</application>
+	<!-- /facelets-->
+
+	<!-- managed bean for general Planets -->
+	<managed-bean>
+		<managed-bean-name>PlanetsSharedBean</managed-bean-name>
+		<managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
+
+	<!-- managed beans of chooseFile -->
+	<managed-bean>
+		<managed-bean-name>FileBrowser</managed-bean-name>
+		<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.FileBrowser</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	
+	<!-- managed bean for workflow management-->
+	<managed-bean>
+		<managed-bean-name>theWorkflow</managed-bean-name>
+		<managed-bean-class>eu.planets_project.ifr.core.wdt.gui.faces.WorkflowBackingBean</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
+
+	<!-- navigation rules for loadWF.jsp-->
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<!--from-action>#{templateContainer.selectTemplate}</from-action-->
+			<from-outcome>displayView</from-outcome>
+			<to-view-id>/displayView.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<!-- navigation rules for executeWF.xhtml -->
+	<navigation-rule>
+		<from-view-id>/executeWF.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>fileChooser</from-outcome>
+			<to-view-id>/chooseFile.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<!-- navigation rules for fileChooser.xhtml -->
+	<navigation-rule>
+		<from-view-id>/chooseFile.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>back</from-outcome>
+			<to-view-id>/executeWF.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<converter>
+		<converter-id>DateTimeConverter</converter-id>
+		<converter-class>javax.faces.convert.DateTimeConverter</converter-class>
+	</converter>
+
+</faces-config>
