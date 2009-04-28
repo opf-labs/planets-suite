@@ -231,9 +231,9 @@
 	<classpathentry kind="lib" path="PA/pdfbox/lib/PDFBox-0.7.3.jar"/>
 	<classpathentry kind="lib" path="PA/jj2000/lib/jj2000-4.1.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/harvester2.jar" sourcepath="IF/storage/lib/harvester2-src.zip"/>
-	<classpathentry kind="lib" path="lib/commons-io-1.4/commons-io-1.4.jar" sourcepath="lib/commons-io-1.4/commons-io-1.4-sources.jar">
+	<classpathentry kind="lib" path="IF/fedora/lib/commons-io-1.4/commons-io-1.4.jar" sourcepath="IF/fedora/lib/commons-io-1.4/commons-io-1.4-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/pserv/lib/commons-io-1.4/commons-io-1.4-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/pserv/IF/fedora/lib/commons-io-1.4/commons-io-1.4-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/apache-commons-io-1.4"/>
