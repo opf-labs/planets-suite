@@ -192,19 +192,19 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
-     */
-    public List<Class<? extends Query>> getQueryModes() {
-        // FIXME TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
      */
     public boolean isWritable(URI pdURI) {
         // FIXME TODO Auto-generated method stub
         return false;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
+     */
+    public List<Class<? extends Query>> getQueryModes() {
+        // FIXME TODO Auto-generated method stub
+        return null;
     }
 
     /* (non-Javadoc)

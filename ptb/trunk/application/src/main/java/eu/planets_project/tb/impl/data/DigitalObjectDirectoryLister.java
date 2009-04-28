@@ -50,7 +50,7 @@ public class DigitalObjectDirectoryLister {
             
             // Mark that DigitalObject as a Directory if listing it returns NULL:
             List<URI> grandchilds = dsm.list(childs.get(i));
-            if( grandchilds == null || grandchilds.size() == 0 ) {
+            if( grandchilds == null ) {
                 dobs[i].setDirectory(false);
             } else {
                 dobs[i].setDirectory(true);
