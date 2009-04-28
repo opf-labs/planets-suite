@@ -20,6 +20,7 @@ import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.InvocationEvent;
 import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
 import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
+import eu.planets_project.ifr.core.wdt.api.data.FileSystemDataManager;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
