@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+    <classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="IF/admin/src/java"/>
 	<classpathentry kind="src" path="IF/admin/src/test/java"/>
 	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
@@ -95,9 +96,10 @@
 	<classpathentry kind="src" path="PC/pngcheck/test/java"/>
 	<classpathentry kind="src" path="PP/xcl/src/java"/>
 	<classpathentry kind="src" path="PP/xcl/src/test/java"/>
-	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="PA/dioscuri/src/java"/>
 	<classpathentry kind="src" path="PA/dioscuri/test/java"/>
+	<classpathentry kind="src" path="PA/shotgun/src"/>
+	<classpathentry kind="src" path="PA/shotgun/src-test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/standalone/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/jaxen.jar"/>
