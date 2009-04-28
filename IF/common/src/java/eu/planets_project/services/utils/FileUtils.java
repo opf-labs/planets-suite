@@ -112,6 +112,39 @@ public final class FileUtils {
         }
         return input;
     }
+    
+    public static InputStream getInputStreamFromFile(File src) {
+    	BufferedInputStream fileIn = null;
+    	
+    	try {
+			fileIn = new BufferedInputStream(new FileInputStream(src));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return fileIn;
+    }
+    
+    public static OutputStream getOutputStreamToFile(File dest) {
+    	BufferedOutputStream fileOut = null;
+    	try {
+			fileOut = new BufferedOutputStream(new FileOutputStream(dest));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return fileOut;
+    }
+    
+    public static boolean copyFileTo(File src, File dest) {
+    	long destSize = writeInputStreamToOutputStream(getInputStreamFromFile(src), getOutputStreamToFile(dest));
+    	if(destSize==src.length()) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+    }
 
     /**
      * @param folderName The name of the folder to be created in the System-Temp
@@ -793,10 +826,13 @@ public final class FileUtils {
     	String ext = "";
     	if(newName.contains(".")) {
     		ext = newName.substring(newName.lastIndexOf("."));
+    		newName = newName.substring(0, newName.lastIndexOf("."));
     	}
-    	if(file.getName().length()>8) {
-    		newName = newName.substring(0, 8) + ext;
+    	if(newName.length()>8) {
+    		newName = newName.substring(0, 8);
+    		log.info("File name longer than 8 chars. Truncated file name to: " + newName + " to avoid problems with long file names in DOS!");
     	}
+    	newName = newName + ext;
     	File renamedFile = new File(new File(parent), newName);
     	boolean renamed = file.renameTo(renamedFile);
     	return renamedFile;
