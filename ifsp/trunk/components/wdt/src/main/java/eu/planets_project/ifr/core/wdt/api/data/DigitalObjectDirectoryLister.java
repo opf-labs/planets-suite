@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.wdt.api.data;
 
 import java.net.URI;
+import java.util.List;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
@@ -33,18 +34,18 @@ public class DigitalObjectDirectoryLister {
      */
     public DigitalObjectReference[] list( URI puri ) {
         // List from the appropriate registry.
-        URI[] childs = dsm.list(puri);
+        List<URI> childs = dsm.list(puri);
         
         if( childs == null ) return new DigitalObjectReference[0];
         
         // Create a DigitalObject for each URI.
-        DigitalObjectReference[] dobs = new DigitalObjectReference[childs.length];
-        for( int i = 0; i < childs.length; i ++ ) {
+        DigitalObjectReference[] dobs = new DigitalObjectReference[childs.size()];
+        for( int i = 0; i < childs.size(); i ++ ) {
             // Create a DOB from the URI:
-            dobs[i] = new DigitalObjectReference( childs[i] );
+            dobs[i] = new DigitalObjectReference( childs.get(i) );
             
             // Mark that DigitalObject as a Directory if listing it returns NULL:
-            URI[] grandchilds = dsm.list(childs[i]);
+            List<URI> grandchilds = dsm.list(childs.get(i));
             if( grandchilds == null ) {
                 dobs[i].setDirectory(false);
             } else {
