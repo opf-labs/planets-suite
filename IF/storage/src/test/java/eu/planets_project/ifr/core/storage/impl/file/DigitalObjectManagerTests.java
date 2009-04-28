@@ -20,6 +20,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author CFWilson
@@ -63,14 +65,15 @@ public class DigitalObjectManagerTests {
 	@Test
 	public final void testList() throws URISyntaxException {
 		// Get the root URI
-		URI[] rootResults = _dom.list(null);
+		List<URI> rootResults = _dom.list(null);
 		System.out.println("Performing the null URI test to obtain root URI");
-		URI[] expectedResults = new URI[]{new URI("planets://localhost:8080/dr/test")};
+		List<URI> expectedResults = new ArrayList<URI>();
+		expectedResults.add( new URI("planets://localhost:8080/dr/test") );
 		// We should only have a single URI in the returned results
-		assertEquals("Too many results returned, expecting one and got " + rootResults.length,
-				expectedResults.length,	rootResults.length);
-		for (int iLoop = 0; iLoop < expectedResults.length; iLoop++) {
-			assertEquals("URI Entries not equal", expectedResults[iLoop], rootResults[iLoop]);
+		assertEquals("Too many results returned, expecting one and got " + rootResults.size(),
+				expectedResults.size(),	rootResults.size());
+		for (int iLoop = 0; iLoop < expectedResults.size(); iLoop++) {
+			assertEquals("URI Entries not equal", expectedResults.get(iLoop), rootResults.get(iLoop));
 		}
 	}
 
@@ -101,19 +104,20 @@ public class DigitalObjectManagerTests {
 		
 		// We can test that the list method works properly now also
 		// Get the root URI
-		URI[] rootResults = _dom.list(null);
-		URI[] expectedResults = new URI[]{new URI("planets://localhost:8080/dr/test/test_word.doc")};
+		List<URI> rootResults = _dom.list(null);
+		List<URI> expectedResults = new ArrayList<URI>();
+		expectedResults.add(new URI("planets://localhost:8080/dr/test/test_word.doc"));
 		// We should only have a single URI in the returned results
-		assertEquals("Too many results returned, expecting one and got " + rootResults.length,
-				expectedResults.length,	rootResults.length);
+		assertEquals("Too many results returned, expecting one and got " + rootResults.size(),
+				expectedResults.size(),	rootResults.size());
 		// We have the root so let's get what's below
-		URI[] testResults = _dom.list(rootResults[0]);
+		List<URI> testResults = _dom.list(rootResults.get(0));
 		// We should only have a single URI in the returned results
-		assertEquals("Too many results returned, expecting one and got " + rootResults.length,
-				expectedResults.length,	testResults.length);
+		assertEquals("Too many results returned, expecting one and got " + rootResults.size(),
+				expectedResults.size(),	testResults.size());
 		// Now loop through the returned URIs and make sure they're equal
-		for (int iLoop = 0; iLoop < expectedResults.length; iLoop++) {
-			assertEquals("URI Entries not equal", expectedResults[iLoop], testResults[iLoop]);
+		for (int iLoop = 0; iLoop < expectedResults.size(); iLoop++) {
+			assertEquals("URI Entries not equal", expectedResults.get(iLoop), testResults.get(iLoop));
 		}
 	}
 	

@@ -7,6 +7,7 @@ package eu.planets_project.ifr.core.storage.impl.oai;
 import ORG.oclc.oai.harvester2.verb.GetRecord;
 import ORG.oclc.oai.harvester2.verb.ListIdentifiers;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.utils.FileUtils;
@@ -19,6 +20,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.NamespaceContext;
@@ -82,7 +84,7 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         return null;
     }
 
-    public URI[] list(URI pdURI) {
+    public List<URI> list(URI pdURI) {
         String baseURL = "http://archiv-test.onb.ac.at:8881/OAI-PUB";
         String from = "2009-03-19T10:50:20Z";
         String until = "2009-03-19T19:10:20Z";
@@ -110,7 +112,30 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         } catch (URISyntaxException ex) {
             Logger.getLogger(OaiOnbDigitalObjectManagerImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return ids.toArray(new URI[ids.size()]);
+        return ids;
+    }
+    
+    
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
+     */
+    public List<Class<? extends Query>> getQueryModes() {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
+    public boolean isWritable(URI pdURI) {
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#setQuery(eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    public void setQuery(Query q) {
+        
     }
 
     private byte[] fetch(Document urls, String xpathExp) throws XPathExpressionException, MalformedURLException, IOException {

@@ -24,6 +24,20 @@ public class ServiceUtils {
     /** */
     private static Log log = LogFactory.getLog(ServiceUtils.class);
 
+    /**
+     * @param message A message that described the error.
+     * @param e The Exception that caused the error - can be NULL.
+     * @param errorType The kind of error, ServiceReport.TOOL_ERROR, ServiceReport.INSTALLATION_ERROR, ...
+     * @return
+     */
+    public static ServiceReport createExceptionErrorReport(String message, Exception e, int errorType ) {
+        ServiceReport sr = new ServiceReport();
+        sr.setErrorState( errorType );
+        String error = message;
+        if( e != null ) message += "\n" + e.toString();
+        sr.setError(error);
+        return sr;
+    }
     
     /**
      * 

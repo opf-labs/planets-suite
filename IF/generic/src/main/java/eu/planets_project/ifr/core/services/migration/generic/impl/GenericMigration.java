@@ -120,6 +120,10 @@ public class GenericMigration implements Migrate, Serializable
 			log.error = pr.getProcessErrorAsString();
 			log.info = pr.getProcessOutputAsString();
 			log.warn = pr.getProcessOutputAsString();
+			/*
+			log.properties = new ArrayList<Property>();
+            log.properties.add( new Property( URI.create("planets:uri"), "name", "value") );
+            */
 			return new MigrateResult(readDestination(outputFile), log);
 		}
 		catch(IOException e)

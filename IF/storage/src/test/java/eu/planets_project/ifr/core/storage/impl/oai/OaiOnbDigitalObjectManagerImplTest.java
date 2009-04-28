@@ -6,6 +6,7 @@ package eu.planets_project.ifr.core.storage.impl.oai;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -46,7 +47,7 @@ public class OaiOnbDigitalObjectManagerImplTest {
         System.out.println("list");
         URI pdURI = null;
         OaiOnbDigitalObjectManagerImpl instance = new OaiOnbDigitalObjectManagerImpl();
-        URI[] result = instance.list(pdURI);
+        List<URI> result = instance.list(pdURI);
 
         for (URI uri : result) {
             String id = uri.toString();

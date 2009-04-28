@@ -5,6 +5,7 @@ package eu.planets_project.ifr.core.storage.impl.file;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.PDURI;
+import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
@@ -16,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of the DigitalObjectManager interface based upon a file system
@@ -65,18 +67,18 @@ public class DigitalObjectManagerImpl implements DigitalObjectManager {
 	/**
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
 	 */
-	public URI[] list(URI pdURI) {
+	public List<URI> list(URI pdURI) {
 		// The return array of URIs contains the contents for the passed URI
-		URI[] retVal = null;
+		ArrayList<URI> retVal = null;
 
 		// First lets look at the passed URI, if it's null then we need to return the root 
 		DigitalObjectManagerImpl._log.debug("Testing for null URI");
 		if (pdURI == null)
 		{
 			DigitalObjectManagerImpl._log.debug("URI is empty so return root URI only");
-			retVal = new URI[1];
+			retVal = new ArrayList<URI>();
 			try {
-				retVal[0] = PDURI.formDataRegistryRootURI("localhost", "8080", this._name);
+				retVal.add( PDURI.formDataRegistryRootURI("localhost", "8080", this._name) );
 			} catch (URISyntaxException e) {
 				DigitalObjectManagerImpl._log.error("URI Syntax exception");
 				DigitalObjectManagerImpl._log.error(e.getMessage());
@@ -100,13 +102,11 @@ public class DigitalObjectManagerImpl implements DigitalObjectManager {
 					}
 				};
 				String[] contents = searchRoot.list(filter);
-				ArrayList<URI> provContents = new ArrayList<URI>();
+				retVal = new ArrayList<URI>();
 				for (String s : contents) {
 					realPdURI.replaceDecodedPath(s);
-					provContents.add(realPdURI.getURI());
+					retVal.add(realPdURI.getURI());
 				}
-				retVal = new URI[provContents.size()];
-				provContents.toArray(retVal);
 			}
 		} catch (URISyntaxException e) {
 			DigitalObjectManagerImpl._log.error("URI Syntax exception");
@@ -228,7 +228,29 @@ public class DigitalObjectManagerImpl implements DigitalObjectManager {
 		}
 	}
 	
-	//=============================================================================================
+	
+	
+	/* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
+     */
+    public List<Class<? extends Query>> getQueryModes() {
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
+    public boolean isWritable(URI pdURI) {
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#setQuery(eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    public void setQuery(Query q) {
+    }
+
+    //=============================================================================================
 	// PRIVATE METHODS
 	//=============================================================================================
 	/**

@@ -1,7 +1,9 @@
 package eu.planets_project.ifr.core.storage.api;
 
 import java.net.URI;
+import java.util.List;
 
+import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
@@ -22,6 +24,27 @@ public interface DigitalObjectManager {
 	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException;
 
 	/**
+	 * Test if Digital Objects can be persisted.
+	 * 
+	 * @param pdURI The URI that we wish to write to, or NULL to test if the whole repository is read-only.
+	 * @return false if the 'store' method should work for this URI. If 
+	 * the whole DOM is a read-only system, then return false when pdURI == NULL.
+	 * If some parts are writable, return true when pdURI == NULL.
+	 */
+    public boolean isWritable( URI pdURI );
+	
+    /**
+     * Returns the URIs of Digital Objects matching the given parent pdURI.
+     * 
+     * If the Query has been set, only return matching Digital Objects.
+     * 
+     * @param pdURI
+     *            URI that identifies an Digital Object or folder
+     * @return an array of all child URIs
+     */
+    public List<URI> list(URI pdURI);
+
+	/**
 	 * Retrieve a DigitalObject from the DataRegistry
 	 * 
 	 * @param pdURI
@@ -32,13 +55,16 @@ public interface DigitalObjectManager {
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException;
 
 	/**
-	 * 
-	 * @param pdURI
-	 *            URI that identifies an Digital Object or folder
-	 * @return an array of all child URIs
+	 * If your interface does not support queries, please return null.
+	 * @return An array of the types of query that are supported.
 	 */
-	public URI[] list(URI pdURI);
+	public List<Class<? extends Query>> getQueryModes();
 
+	/**
+	 * @param q The Query to be executed.  Use 'NULL' to un-set.
+	 */
+	public void setQuery( Query q );
+	
 	/**
 	 * Exception thrown when a DigitalObject requested by URI cannot be found in the Data Registry
 	 *

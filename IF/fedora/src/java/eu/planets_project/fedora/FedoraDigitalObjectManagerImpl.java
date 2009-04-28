@@ -1,6 +1,7 @@
 package eu.planets_project.fedora;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableDigitalObject;
 import org.apache.commons.httpclient.*;
@@ -14,6 +15,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 
 
@@ -182,7 +184,33 @@ public class FedoraDigitalObjectManagerImpl implements DigitalObjectManager {
      *            URI that identifies an Digital Object or folder
      * @return
      */
-    public URI[] list(URI pdURI) {
-        return new URI[0];  //To change body of implemented methods use File | Settings | File Templates.
+    public List<URI> list(URI pdURI) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
+     */
+    public List<Class<? extends Query>> getQueryModes() {
+        return null;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
+    public boolean isWritable(URI pdURI) {
+        return false;
+    }
+
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#setQuery(eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    public void setQuery(Query q) {
+        
+    }
+    
+    
 }
