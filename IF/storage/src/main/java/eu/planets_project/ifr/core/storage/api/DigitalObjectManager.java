@@ -36,11 +36,16 @@ public interface DigitalObjectManager {
     /**
      * Returns the URIs of Digital Objects matching the given parent pdURI.
      * 
+     * If the pdURI points to a 'file' (A Digital Object)
+     * then this should return null.
+     * 
+     * If the pdURI points to a 'directory', then this should return a valid List object, with zero or more entries.
+     * 
      * If the Query has been set, only return matching Digital Objects.
      * 
      * @param pdURI
      *            URI that identifies an Digital Object or folder
-     * @return an array of all child URIs
+     * @return an array of all child URIs.  Empty folders return an empty list, and files return null.
      */
     public List<URI> list(URI pdURI);
 
