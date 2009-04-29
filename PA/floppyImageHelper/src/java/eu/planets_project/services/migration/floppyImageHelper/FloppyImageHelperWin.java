@@ -64,7 +64,6 @@ public class FloppyImageHelperWin implements Migrate {
 	private static String FLOPPY_IMAGE_TOOLS_HOME = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
 	private static String DEFAULT_INPUT_NAME = "inputFile";
 	private static String INPUT_EXT = null;
-	private static String OUTPUT_EXT = ".ima";
 	
 	private static String DEFAULT_FLOPPY_IMAGE_NAME = "floppy144.ima";
 	private static File TOOL_DIR = null;
@@ -127,7 +126,6 @@ public class FloppyImageHelperWin implements Migrate {
 		
 		FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
         String inFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
-		String outFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
 		
 		List<File> extractedFiles = null;
 
@@ -154,8 +152,6 @@ public class FloppyImageHelperWin implements Migrate {
 		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
 		
 		File imageFile = null;
-		
-		File floppyImage = null;
 		
 		ZipResult zippedResult = null;
 		
