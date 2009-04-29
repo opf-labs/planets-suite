@@ -56,14 +56,12 @@ public class FloppyImageHelperWin implements Migrate {
 	                 
 	public static final String NAME = "FloppyImageHelperWin";
 	
-//	private static File TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp("FLOPPY_IMAGE_HELPER_TMP");
 	private static File TEMP_FOLDER = null;
 	private static String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER";
 	
 	private static File EXTRACTED_FILES_DIR = null;
 	private static String EXTRACTION_OUT_FOLDER_NAME = "EXTRACTED_FILES";
 	private static String FLOPPY_IMAGE_TOOLS_HOME = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
-//	private static String FLOPPY_IMAGE_TOOLS_HOME = "PA/floppyImageHelper/src/resources/FLOPPY_IMAGE_TOOLS";
 	private static String DEFAULT_INPUT_NAME = "inputFile";
 	private static String INPUT_EXT = null;
 	private static String OUTPUT_EXT = ".ima";
@@ -71,9 +69,6 @@ public class FloppyImageHelperWin implements Migrate {
 	private static String DEFAULT_FLOPPY_IMAGE_NAME = "floppy144.ima";
 	private static File TOOL_DIR = null;
 	private static final long FLOPPY_SIZE = 1474560;
-	
-	private static boolean MODIFY_IMAGE = false;
-	private static boolean ENABLE_EXTRACTION_MODE = false;
 	
 	private static String PROCESS_ERROR = null;
 	private static String PROCESS_OUT = null;
@@ -134,16 +129,6 @@ public class FloppyImageHelperWin implements Migrate {
         String inFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
 		String outFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
 		
-		if(parameters!=null && parameters.size()>0) {
-			for (Parameter parameter : parameters) {
-				if(parameter.name.equalsIgnoreCase("modifyImage")) {
-					if(parameter.value.equalsIgnoreCase("true")) {
-						MODIFY_IMAGE = true;
-					}
-				}
-			}
-		}
-		
 		List<File> extractedFiles = null;
 
 		String fileName = digitalObject.getTitle();
@@ -191,7 +176,6 @@ public class FloppyImageHelperWin implements Migrate {
 			report.setInfo(PROCESS_OUT);
 			log.info("Created Service report...");
 			return new MigrateResult(resultDigObj, report);
-			
 		}
 		
 		// Check if we have a ZIP file?
