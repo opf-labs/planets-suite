@@ -137,4 +137,16 @@ public final class DigitalObjectUtils {
         return containedFiles;
     }
 
+    /**
+     * @param digitalObject The digital object
+     * @return A temporary file containing the content of the given digital
+     *         object (Note: As a temporary file, this file will not persist)
+     */
+    public static File getContentAsTempFile(final DigitalObject digitalObject) {
+        File inputFile = FileUtils.getTempFile("digital-object-content", "bin");
+        FileUtils.writeInputStreamToFile(digitalObject.getContent().read(),
+                inputFile);
+        return inputFile;
+    }
+
 }
