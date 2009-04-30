@@ -19,6 +19,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
  * @author <a href="mailto:rainer.simon@arcs.ac.at">Rainer Simon</a>
  *
  */
+@Deprecated
 public class GenericOAIQuerySource extends QuerySource {
 	
 	/**

@@ -1,5 +1,6 @@
 package eu.planets_project.tb.impl.data.demo.queryable;
 
+@Deprecated
 public class QuerySourceManager {
 	
 	/**

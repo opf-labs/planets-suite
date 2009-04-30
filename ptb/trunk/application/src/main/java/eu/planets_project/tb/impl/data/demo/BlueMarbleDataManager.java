@@ -31,6 +31,7 @@ import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
  * @author <a href="mailto:rainer.simon@arcs.ac.at">Rainer Simon</a>
  *
  */
+@Deprecated
 public class BlueMarbleDataManager implements DataManagerLocal {
 
     /**
@@ -196,7 +197,9 @@ public class BlueMarbleDataManager implements DataManagerLocal {
 			m.find(); // Skip every odd match
 			match = m.group(1);
 			try {
-				dirs.add(new URI(MIRROR_BASE_URL + match.substring(match.indexOf('>') + 1)));
+				if (match.indexOf("_big") < 0) {
+					dirs.add(new URI(MIRROR_BASE_URL + match.substring(match.indexOf('>') + 1)));
+				}
 			} catch (URISyntaxException e) {
 				log.warn("Error parsing Blue Marble dir: " + match);
 			}

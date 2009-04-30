@@ -19,6 +19,7 @@ import eu.planets_project.tb.gui.backing.QueryResultListEntry;
  * @author SimonR
  *
  */
+@Deprecated
 public abstract class QuerySource {
 	
 	/**

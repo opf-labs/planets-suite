@@ -32,6 +32,7 @@ import eu.planets_project.tb.gui.backing.QueryResultListEntry;
  * @author <a href="mailto:rainer.simon@arcs.ac.at">Rainer Simon</a>
  *
  */
+@Deprecated
 public class YahooImageAPIQuerySource extends QuerySource {
 	
 	/**
