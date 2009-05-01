@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 
 import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
@@ -63,12 +64,18 @@ public interface DigitalObjectManager {
 	 * If your interface does not support queries, please return null.
 	 * @return An array of the types of query that are supported.
 	 */
-	public List<Class<? extends Query>> getQueryModes();
+	public List<Class<? extends Query>> getQueryTypes();
 
 	/**
-	 * @param q The Query to be executed.  Use 'NULL' to un-set.
+	 * Execute a more complex query, at some point in the URI tree.
+	 * If the query does not make sense, throw an exception.
+	 * Ideally, include a message in said exception that can be shown to the 
+	 * user so that they might improve their query.
+	 * 
+	 * @param pdURI The URI in the repository at which the query should be executed.  Can be null, meaning at the top-level.
+	 * @param q The Query to be executed.
 	 */
-	public void setQuery( Query q );
+	public List<URI> list( URI pdURI, Query q ) throws QueryValidationException;
 	
 	/**
 	 * Exception thrown when a DigitalObject requested by URI cannot be found in the Data Registry

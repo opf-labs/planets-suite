@@ -8,6 +8,7 @@ import ORG.oclc.oai.harvester2.verb.GetRecord;
 import ORG.oclc.oai.harvester2.verb.ListIdentifiers;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.utils.FileUtils;
@@ -120,7 +121,7 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
      */
-    public List<Class<? extends Query>> getQueryModes() {
+    public List<Class<? extends Query>> getQueryTypes() {
         return null;
     }
 
@@ -132,11 +133,12 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#setQuery(eu.planets_project.ifr.core.storage.api.query.Query)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
-    public void setQuery(Query q) {
-        
+    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+        return null;
     }
+
 
     private byte[] fetch(Document urls, String xpathExp) throws XPathExpressionException, MalformedURLException, IOException {
         //XPath
