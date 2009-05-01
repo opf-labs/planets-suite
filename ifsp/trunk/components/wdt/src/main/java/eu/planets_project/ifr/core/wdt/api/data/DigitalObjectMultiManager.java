@@ -14,7 +14,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
 
@@ -183,21 +183,21 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         // TODO Auto-generated method stub
         return false;
     }
-    
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
      */
-    public List<Class<? extends Query>> getQueryModes() {
-        // FIXME TODO Auto-generated method stub
+    public List<Class<? extends Query>> getQueryTypes() {
+        // TODO Auto-generated method stub
         return null;
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#setQuery(eu.planets_project.ifr.core.storage.api.query.Query)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
-    public void setQuery(Query q) {
-        // FIXME TODO Auto-generated method stub
+    public List<URI> list(URI arg0, Query arg1) throws QueryValidationException {
+        // TODO Auto-generated method stub
+        return null;
     }
-
+    
 }
