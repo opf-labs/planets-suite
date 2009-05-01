@@ -28,6 +28,7 @@ import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryString;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 
 /**
@@ -107,24 +108,28 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 		}
 	}
 
-	public List<Class<? extends Query>> getQueryModes(){
+	public List<Class<? extends Query>> getQueryTypes(){
 		ArrayList<Class<? extends Query>> qTypes = new ArrayList<Class<? extends Query>>();
 		qTypes.add(Query.STRING);
 		return qTypes;
 	}
 
-	public void setQuery(Query q) {
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
 		if (q == null) {
 			this.query = null;
-			return;
 		}
-		
-		if (q instanceof QueryString) {
-			this.query = (QueryString) q;
-		} else {
-			// Could throw suitable exception here
-			this.query = null;
-		}		
+		else {
+		    if (q instanceof QueryString) {
+		        this.query = (QueryString) q;
+		    } else {
+		        // Could throw suitable exception here
+		        this.query = null;
+		    }
+		}
+		return this.list(pdURI);
 	}
 	
 	public class YahooResultList extends AbstractList<URI> {

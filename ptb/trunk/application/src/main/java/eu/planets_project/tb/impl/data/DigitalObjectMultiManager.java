@@ -17,6 +17,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.tb.impl.data.demo.BlueMarbleDataManager;
@@ -143,12 +144,15 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         if( dm == null ) return null;
         
         // return the listing.
+        URI[] uris = null;
         try {
-            return new ArrayList<URI>( Arrays.asList( dm.list(pdURI) ) );
+            uris = dm.list(pdURI);
         } catch (SOAPException e) {
             e.printStackTrace();
             return null;
         }
+        if( uris == null ) return null;
+        return new ArrayList<URI>( Arrays.asList(uris) );
     }
 
     /* (non-Javadoc)
@@ -202,16 +206,17 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
      */
-    public List<Class<? extends Query>> getQueryModes() {
+    public List<Class<? extends Query>> getQueryTypes() {
         // FIXME TODO Auto-generated method stub
         return null;
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#setQuery(eu.planets_project.ifr.core.storage.api.query.Query)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
-    public void setQuery(Query q) {
+    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
         // FIXME TODO Auto-generated method stub
+        return null;
     }
 
 }

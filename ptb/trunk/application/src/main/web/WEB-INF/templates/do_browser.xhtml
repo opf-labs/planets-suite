@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jsp/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition rendered="#{DobBrowser != null}">
+
+        <div id="mainwrapper">
+        <div id="maincol">
+        <div class="innertubemain">
+
+  
+  <h:form id="doBrowserForm">
+                
+  <div class="dopane">
+  
+  <div class="domain">
+  
+    <div id="digitalObjectRegistryBrowser">
+
+       <rich:toolBar height="34" itemSeparator="line"  styleClass="tbTable">
+            <rich:toolBarGroup>
+            
+            <rich:dropDownMenu submitMode="none">
+                <f:facet name="label"> 
+                    <h:panelGroup>
+                      <h:commandLink action="#{DobBrowser.goHome}">
+                        <h:graphicImage value="/graphics/toolbar_home.png" />
+                        <h:outputText value="Location"/>
+                      </h:commandLink>
+                    </h:panelGroup>
+                </f:facet>
+                          
+              <rich:menuItem rendered="#{DobBrowser.breadcrumb != null}">
+                <f:facet name="icon">
+                    <h:graphicImage value="/graphics/filetype_folder.gif" alt="directory" title="directory" />
+                </f:facet>
+                <a4j:repeat value="#{DobBrowser.breadcrumb}" var="do">        
+                    <h:commandLink action="success">
+                      <h:outputText value="/#{do.leafname}"/>
+                      <t:updateActionListener property="#{DobBrowser.dir}" value="#{do}" />
+                    </h:commandLink>
+                </a4j:repeat>
+              </rich:menuItem>
+              
+            </rich:dropDownMenu>
+
+            </rich:toolBarGroup>
+            
+            <rich:toolBarGroup location="right">
+                <h:inputText styleClass="barsearch" />
+                <h:commandButton styleClass="barsearchbutton" onclick="return false;"  value="Search" />
+            </rich:toolBarGroup>
+        </rich:toolBar>
+
+            <h:panelGrid columns="2" columnClasses="listContent,infoContent">
+                
+                <rich:dataTable id="DobBrowserList" var="do" value="#{DobBrowser.list}" 
+                 rows="10" reRender="dobrow_ds" styleClass="tbTable" style="height: 400; width: 100%">
+        
+                <rich:column>
+                  <f:facet name="header"><h:selectBooleanCheckbox /></f:facet>
+                  <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}"/>
+                </rich:column>
+                       
+                <rich:column>
+                <f:facet name="header">#{res['browse_data.name']}</f:facet>
+                <h:panelGroup rendered="#{do.directory}">
+                  <h:commandLink action="success">
+                    <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_folder.gif" alt="directory" title="directory"/>
+                    <h:outputText value=" #{do.leafname}"/>
+                    <t:updateActionListener property="#{DobBrowser.dir}" value="#{do}" />
+                  </h:commandLink>
+                </h:panelGroup>
+                <h:panelGroup rendered="#{not do.directory}">
+                  <img src="${facesContext.externalContext.requestContextPath}/graphics/filetype_file.png" alt="directory" title="directory"/>
+                  <h:outputText value=" #{do.leafname}"/>
+                </h:panelGroup>
+                </rich:column>
+
+                <rich:column>
+                <f:facet name="header">#{res['browse_data.size']}</f:facet>
+                  <h:outputText value=" #{do.size}"/>
+                </rich:column>
+                
+                <rich:column>
+                <f:facet name="header">#{res['browse_data.type']}</f:facet>
+                <h:panelGroup rendered="#{do.directory}">
+                #{res['browse_data.folder']}
+                </h:panelGroup>
+                <h:panelGroup rendered="#{not do.directory}">
+                #{res['browse_data.file']}
+                </h:panelGroup>
+                </rich:column>
+                
+            <f:facet name="footer">
+                <rich:datascroller for="DobBrowserList" id="dobrow_ds" renderIfSinglePage="false"></rich:datascroller>
+            </f:facet>
+                
+                </rich:dataTable>
+                
+    <rich:panelBar height="400" width="100%">
+        <rich:panelBarItem label="Inspector">
+            Detailed object properties to be presented here.
+            If no object selected, then info about the 
+        </rich:panelBarItem>
+        
+        <rich:panelBarItem label="Selection">
+            Selected objects will go here.
+        </rich:panelBarItem>
+        
+        <rich:panelBarItem label="Services &amp; Experiments">
+           Services related to this object?  Experiments? 
+        </rich:panelBarItem>
+        
+        <rich:panelBarItem label="Additional Corpora">
+           Add further corpora from here?
+        </rich:panelBarItem>
+        
+    </rich:panelBar>
+                
+         </h:panelGrid>
+         
+                <h:commandButton action="#{DobBrowser.selectAll}" 
+                  value="#{res['browse_data.selectAll']}"/>
+                <h:commandButton action="#{DobBrowser.selectNone}"
+                  value="#{res['browse_data.selectNone']}"/>
+                  
+                <h:panelGroup rendered="#{isInExperiment}">
+                <p>
+                <h:commandButton action="#{DobBrowser.addToExperiment}"
+                  value="#{res['browse_data.addToExperiment']}"/>
+                </p>
+                <p>
+                <h:commandButton action="goToStage2"
+                  value="#{res['browse_data.returnToExperiment']}"/>
+                </p>
+                </h:panelGroup>
+                
+    </div>
+   </div>
+  </div>
+  </h:form>
+  
+        
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+    
+        </div>
+        </div>
+        </div>
+        
+        
+        <div id="leftcol">
+		
+		<h3 class="leftcol">Testbed FTP Area</h3>
+                <div class="innertube">        
+                    <p class="leftcol">If you are logged in as an <b>experimenter</b> you may upload data to the Testbed FTP area using the details provided during registration.</p>
+                </div>
+		<h3 class="leftcol">Connection Details</h3>
+        <div class="innertube">        
+		<p class="leftcol">Host name: <br/><b>ftp://testbed.planets-project.eu</b></p>     
+		<p class="leftcol">Port number: <br/><b>21</b></p>           
+        </div>
+		
+        </div>
+  
+  </ui:composition>
+</body>
+</html>
+    

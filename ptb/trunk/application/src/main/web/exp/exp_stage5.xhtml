@@ -136,7 +136,7 @@
             <rich:panel styleClass="expExecLogPanel">
                 
      <rich:dataTable id="batchExecRecordsTable" value="#{NewExp_Controller.experimentExecutable.batchExecutionRecords}" 
-         var="batch" styleClass="tbTable" reRender="prop_ds" rows="10" rowKeyVar="counter">
+         var="batch" styleClass="tbTable" reRender="exelog_ds" rows="10" rowKeyVar="counter">
       <rich:column sortBy="#{batch.endDate}" sortOrder="DESCENDING">
         <f:facet name="header">Execution Date</f:facet>
         <a4j:commandLink reRender="execResultsDetailPanel,batchExecRecordsTable">

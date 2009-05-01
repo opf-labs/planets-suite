@@ -62,11 +62,16 @@
 		<managed-bean-class>eu.planets_project.tb.gui.backing.PaginatingAllExperiments</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>FileBrowser</managed-bean-name>
-		<managed-bean-class>eu.planets_project.tb.gui.backing.FileBrowser</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
+    <managed-bean>
+        <managed-bean-name>FileBrowser</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.FileBrowser</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>DobBrowser</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.data.DigitalObjectBrowser</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 	<managed-bean>
 		<managed-bean-name>Comment_Backing</managed-bean-name>
 		<managed-bean-class>eu.planets_project.tb.gui.backing.CommentBacking</managed-bean-class>

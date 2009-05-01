@@ -13,6 +13,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.impl.data.demo.queryable.GenericOAIDigitalObjectManagerImpl;
 
@@ -43,7 +44,7 @@ public class GenericOAIDigitalObjectManagerImplTest {
     }
 
     @Test
-    public void testListAndRetrieve() {
+    public void testListAndRetrieve() throws QueryValidationException {
         System.out.println("list with no query");
         
         DigitalObjectManager instance = new GenericOAIDigitalObjectManagerImpl("http://www.diva-portal.org/oai/OAI");
@@ -53,8 +54,7 @@ public class GenericOAIDigitalObjectManagerImplTest {
 		Calendar start = Calendar.getInstance();
 		start.add(Calendar.YEAR, -1);
 		Calendar now = Calendar.getInstance();
-		instance.setQuery(new QueryDateRange(start, now));
-		result = instance.list(null);
+		result = instance.list(null, new QueryDateRange(start, now));
         System.out.println("number of results (with 1 yr query): " + result.size());
         
         for (URI uri : result) {

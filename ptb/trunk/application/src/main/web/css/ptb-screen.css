@@ -1006,3 +1006,14 @@ pre.rawServiceDescription {
   background-color: #f8f8f8;
   width: 400px;
 }
+#digitalObjectRegistryBrowser table {
+  width: 100%;
+}
+#digitalObjectRegistryBrowser .listContent {
+  width: 70%;
+  vertical-align: top;
+}
+#digitalObjectRegistryBrowser .infoContent {
+  width: 25%;
+  vertical-align: top;
+}

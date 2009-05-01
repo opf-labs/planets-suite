@@ -21,6 +21,7 @@ import eu.planets_project.services.datatypes.ImmutableContent;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 
 /**
@@ -169,13 +170,16 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
 		}
 	}
 
-	public List<Class<? extends Query>> getQueryModes() {
+	public List<Class<? extends Query>> getQueryTypes() {
 		return null;
 	}
 
-	public void setQuery(Query q) {
-		// Querying not supported in this implementation
-	}
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+        return null;
+    }
 	
 	private List<URI> scrapeTopLvlDirs(String html) {
 		Pattern worldDirPattern = Pattern.compile("<a href=\"world_((.|\n)*?)</a>");

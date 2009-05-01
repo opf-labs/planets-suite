@@ -27,6 +27,7 @@ import eu.planets_project.services.datatypes.DigitalObject.Builder;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 
 /**
@@ -172,25 +173,30 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 		}
 	}
 
-	public List<Class<? extends Query>> getQueryModes() {
+	public List<Class<? extends Query>> getQueryTypes() {
 		ArrayList<Class<? extends Query>> qTypes = new ArrayList<Class<? extends Query>>();
 		qTypes.add(Query.DATE_RANGE);
 		return qTypes;
 	}
 
-	public void setQuery(Query q) {
-		if (q == null) {
-			this.query = null;
-			return;
-		}
-		
-		if (q instanceof QueryDateRange) {
-			// Do plausibility checks (startdate < enddate)?
-			this.query = (QueryDateRange) q;
-		} else {
-			// Could throw suitable exception here
-			this.query = null;
-		}
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+        if (q == null) {
+            this.query = null;
+        }
+        else 
+        {
+            if (q instanceof QueryDateRange) {
+                // Do plausibility checks (startdate < enddate)?
+                this.query = (QueryDateRange) q;
+            } else {
+                // Could throw suitable exception here
+                this.query = null;
+            }
+        }
+		return this.list(pdURI);
 	}
 	
 	/*
