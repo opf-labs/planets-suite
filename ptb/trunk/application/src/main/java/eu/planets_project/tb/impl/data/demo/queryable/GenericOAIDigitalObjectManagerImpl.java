@@ -62,11 +62,6 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
     private String baseURL;
     
     private String metaDataPrefix = "oai_dc";
-    
-    /**
-     * The query
-     */
-    private QueryDateRange query = null;
 
     public GenericOAIDigitalObjectManagerImpl(String baseURL) {
     	this.baseURL = baseURL;
@@ -86,16 +81,32 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
     }
 	
     public List<URI> list(URI pdURI) {
-    	if (query == null)
-    		return new ArrayList<URI>(); // No query means empty result
-    	
+    	// Perform OAI-PMH request without time range ('from' and 'until' are optional in OAI-PMH!)
+    	try {
+    		return list(pdURI, null);
+    	} catch (QueryValidationException e) {
+    		// Since query is null, this can never happen
+    		return new ArrayList<URI>();
+    	}
+    }
+    
+    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
     	if (pdURI == null) {
     		// OAI hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
 	    	ArrayList<URI> resultList = new ArrayList<URI>();
 	    	
 	    	OaiPmhServer server = new OaiPmhServer(baseURL);
 	    	try {
-	    		IdentifiersList list = server.listIdentifiers(metaDataPrefix, dateFormat.format(query.getStartDate().getTime()), dateFormat.format(query.getEndDate().getTime()), null);
+	    		IdentifiersList list;
+	    		if (q == null) {
+		    		list = server.listIdentifiers(metaDataPrefix);	    			
+	    		} else {
+	    			if (!(q instanceof QueryDateRange))
+	    				throw new QueryValidationException("Unsupported query type");
+	    			
+	    			list = server.listIdentifiers(metaDataPrefix, dateFormat.format(((QueryDateRange) q).getStartDate().getTime()), dateFormat.format(((QueryDateRange) q).getEndDate().getTime()), null);	
+	    		}
+	    		
 	    		for (Header header : list.asList()) {
 	    			try {
 	    				resultList.add(new URI(header.getIdentifier()));
@@ -110,7 +121,7 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
     	} else {
     		return new ArrayList<URI>();
     	}
-    }
+	}
 
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
 		try {
@@ -178,26 +189,6 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 		qTypes.add(Query.DATE_RANGE);
 		return qTypes;
 	}
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
-     */
-    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
-        if (q == null) {
-            this.query = null;
-        }
-        else 
-        {
-            if (q instanceof QueryDateRange) {
-                // Do plausibility checks (startdate < enddate)?
-                this.query = (QueryDateRange) q;
-            } else {
-                // Could throw suitable exception here
-                this.query = null;
-            }
-        }
-		return this.list(pdURI);
-	}
 	
 	/*
 	public static void main(String[] args) {
@@ -207,22 +198,23 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 		start.add(Calendar.MONTH, -6);
 		Calendar now = Calendar.getInstance();
 		
-		// Set query
-		oaiImpl.setQuery(new QueryDateRange(start, now));
-		
 		// ListIdentifiers
 		System.out.println("starting query.");
-		List<URI> identifiers = oaiImpl.list(null);
-		System.out.println(identifiers.size() + " found.");
-		
-		// GetRecord for each identifier
-		for (URI id : identifiers) {
-			try {
-				DigitalObject dob = oaiImpl.retrieve(id);
-				System.out.println("retrieved file: " + dob.getTitle());
-			} catch (DigitalObjectNotFoundException e) {
-				System.out.println("couldn't retrieve file: " + e.getMessage());
+		try {
+			List<URI> identifiers = oaiImpl.list(null, new QueryDateRange(start, now));
+			System.out.println(identifiers.size() + " found.");
+			
+			// GetRecord for each identifier
+			for (URI id : identifiers) {
+				try {
+					DigitalObject dob = oaiImpl.retrieve(id);
+					System.out.println("retrieved file: " + dob.getTitle());
+				} catch (DigitalObjectNotFoundException e) {
+					System.out.println("couldn't retrieve file: " + e.getMessage());
+				}
 			}
+		} catch (QueryValidationException e) {
+			System.out.println("QueryValidationException: " + e.getMessage());
 		}
 		
 		System.out.println("done.");
