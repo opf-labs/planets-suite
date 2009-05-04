@@ -23,6 +23,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
@@ -146,9 +148,7 @@ public class FloppyImageModify implements Modify {
 														.format(formatRegistry.createExtensionUri(FileUtils.getExtensionFromFile(modifiedImage)))
 														.build();
 		
-		ServiceReport report = new ServiceReport();
-        report.setErrorState(0);
-        report.setInfo(PROCESS_OUT);
+		ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
         log.info("Created Service report...");
 		return new ModifyResult(result, report);
 	}

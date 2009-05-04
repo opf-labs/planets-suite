@@ -7,6 +7,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
@@ -45,13 +47,9 @@ public final class JhoveValidation implements Validate, Serializable {
             final URI format,
             List<Parameter> parameters) {
         boolean valid = basicValidateOneBinary(digitalObject, format);
-
-
-
-        ValidateResult result = new ValidateResult.Builder(format,new ServiceReport())
-                .ofThisFormat(valid)
-                .build();
-
+        ValidateResult result = new ValidateResult.Builder(format,
+                new ServiceReport(Type.INFO, Status.SUCCESS, "OK"))
+                .ofThisFormat(valid).build();
         return result;
     }
 

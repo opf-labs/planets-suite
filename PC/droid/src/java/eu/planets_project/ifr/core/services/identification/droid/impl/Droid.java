@@ -27,6 +27,8 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.Types;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.FileUtils;
@@ -73,8 +75,7 @@ public final class Droid implements Identify, Serializable {
         File file = FileUtils.writeInputStreamToTmpFile(stream, "droid-temp",
                 "bin");
         Types types = identifyOneBinary(file);
-        ServiceReport report = new ServiceReport();
-        report.setInfo(types.status);
+        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, types.status);
         IdentifyResult.Method method = null;
         if( AnalysisController.FILE_CLASSIFICATION_POSITIVE_TEXT.equals(types.status)) {
             method = IdentifyResult.Method.MAGIC;

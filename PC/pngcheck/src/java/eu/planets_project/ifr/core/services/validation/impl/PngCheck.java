@@ -6,6 +6,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -118,9 +120,9 @@ public final class PngCheck implements Validate, Serializable {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "pngcheck-temp", "bin");
         boolean valid = basicValidateOneBinary(file, format);
-        ValidateResult result = new ValidateResult.Builder(format, new ServiceReport())
-                .ofThisFormat(valid)
-                .build();
+        ValidateResult result = new ValidateResult.Builder(format,
+                new ServiceReport(Type.INFO, Status.SUCCESS, "OK"))
+                .ofThisFormat(valid).build();
         return result;
     }
 }

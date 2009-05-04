@@ -20,6 +20,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.file.util.FileServiceSetup;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
@@ -109,8 +111,7 @@ public class FileIdentify implements Identify {
         }
         
         // Create the service report
-        ServiceReport rep = new ServiceReport();
-        rep.setErrorState(0);
+        ServiceReport rep = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
         List<URI> types = new ArrayList<URI>();
         URI mimeURI = FormatRegistryFactory.getFormatRegistry().createMimeUri(mime);
         types.add(mimeURI);
@@ -130,13 +131,11 @@ public class FileIdentify implements Identify {
 	 */
     private IdentifyResult returnWithErrorMessage(String message, int errorState) {
     	// Create and empty service report and a null type list
-        ServiceReport rep = new ServiceReport();
         List<URI> type = null;
         // Log the message
         FileIdentify._log.error(message);
         // Set the error state and message in the service report
-        rep.setErrorState(errorState);
-        rep.setError(message);
+        ServiceReport rep = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, message);
         // Return a new IdentifyResult created from the ServiceReport and the null types
         return new IdentifyResult(type, null, rep);
     }

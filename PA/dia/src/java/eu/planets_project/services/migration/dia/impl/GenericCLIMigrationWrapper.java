@@ -14,6 +14,8 @@ import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -64,10 +66,18 @@ public class GenericCLIMigrationWrapper {
 				processStandardInput = sourceObject.getContent().read();
 			}
 
-			final ServiceReport serviceReport = executeToolProcess(toolProcessRunner, command, processStandardInput);
+			ServiceReport serviceReport = executeToolProcess(toolProcessRunner, command, processStandardInput);
 
 			if (serviceReport.getErrorState() != 0){
-				serviceReport.setError("Failed migrating object with title '" + sourceObject.getTitle() + "' from format URI: " + sourceFormat + " to " + destinationFormat + " Standard output: " + toolProcessRunner.getProcessOutputAsString() + "\nStandard error output: " + toolProcessRunner.getProcessErrorAsString());
+				String message = "Failed migrating object with title '"
+                        + sourceObject.getTitle() + "' from format URI: "
+                        + sourceFormat + " to " + destinationFormat
+                        + " Standard output: "
+                        + toolProcessRunner.getProcessOutputAsString()
+                        + "\nStandard error output: "
+                        + toolProcessRunner.getProcessErrorAsString();
+                serviceReport = new ServiceReport(Type.ERROR,
+                        Status.TOOL_ERROR, message);
 				return new MigrateResult(null, serviceReport);
 			}
 
@@ -81,12 +91,27 @@ public class GenericCLIMigrationWrapper {
 				sourceTempFile.delete();
 				destinationTempFile.delete();
 
-				serviceReport.setInfo("Successfully migrated object with title '" + sourceObject.getTitle() + "' from format URI: " + sourceFormat + " to " + destinationFormat + " Standard output: " + toolProcessRunner.getProcessOutputAsString() + "\nStandard error output: " + toolProcessRunner.getProcessErrorAsString());
+				String message = "Successfully migrated object with title '"
+                        + sourceObject.getTitle() + "' from format URI: "
+                        + sourceFormat + " to " + destinationFormat
+                        + " Standard output: "
+                        + toolProcessRunner.getProcessOutputAsString()
+                        + "\nStandard error output: "
+                        + toolProcessRunner.getProcessErrorAsString();
+                serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                        message);
+			
 			} else {
 				// Collect the output from stdout of the migration tool process.
 				destinationObjectBytes = FileUtils.writeInputStreamToBinary(toolProcessRunner.getProcessOutput());
 
-				serviceReport.setInfo("Successfully migrated object with title '" + sourceObject.getTitle() + "' from format URI: " + sourceFormat + " to " + destinationFormat + " Standard error output: " + toolProcessRunner.getProcessErrorAsString());
+				String message = "Successfully migrated object with title '"
+                        + sourceObject.getTitle() + "' from format URI: "
+                        + sourceFormat + " to " + destinationFormat
+                        + " Standard error output: "
+                        + toolProcessRunner.getProcessErrorAsString();
+                serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                        message);
 			}
 
 			final DigitalObject destinationObject = new DigitalObject.Builder(ImmutableContent.byValue(destinationObjectBytes)).build();
@@ -105,15 +130,21 @@ public class GenericCLIMigrationWrapper {
 	private ServiceReport executeToolProcess(ProcessRunner toolProcessRunner,
 			String command, InputStream processStandardInput) {
 
-		final ServiceReport serviceReport = new ServiceReport();
 		toolProcessRunner.setInputStream(processStandardInput);
 		toolProcessRunner.setCommand(Arrays.asList("/bin/sh", "-c", command));
 		toolProcessRunner.setCollection(true);
 		toolProcessRunner.setOutputCollectionByteSize(-1);
 
 		toolProcessRunner.run();
-
-		serviceReport.setErrorState(toolProcessRunner.getReturnCode());
+		ServiceReport serviceReport;
+		boolean toolError = toolProcessRunner.getReturnCode() == -1;
+		if(toolError){
+		    serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
+                    toolProcessRunner.getProcessErrorAsString());
+		}else{
+		    serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                    toolProcessRunner.getProcessOutputAsString());
+		}
 		return serviceReport;
 	}
 

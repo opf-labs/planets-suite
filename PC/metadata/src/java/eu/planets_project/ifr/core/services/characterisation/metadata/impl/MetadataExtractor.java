@@ -41,6 +41,8 @@ import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -81,7 +83,8 @@ public final class MetadataExtractor implements Characterise {
         byte[] binary = FileUtils.writeInputStreamToBinary(stream);
         String resultString = basicCharacteriseOneBinary(binary);
         List<Property> props = readProperties(resultString);
-        return new CharacteriseResult(props, new ServiceReport());
+        return new CharacteriseResult(props, new ServiceReport(Type.INFO,
+                Status.SUCCESS, "OK"));
     }
 
     /**
@@ -103,7 +106,8 @@ public final class MetadataExtractor implements Characterise {
                 /* For that, get the extractable properties: */
                 List<String> listProperties = listProperties(metadataType);
                 for (String string : listProperties) {
-                    result.add(new Property( makePropertyURI(string), string, null));
+                    result.add(new Property(makePropertyURI(string), string,
+                            null));
                 }
             }
         }

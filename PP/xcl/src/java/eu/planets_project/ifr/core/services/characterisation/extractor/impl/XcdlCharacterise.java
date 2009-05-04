@@ -26,6 +26,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
@@ -69,7 +71,7 @@ public class XcdlCharacterise implements Characterise, Serializable {
             final List<Parameter> parameters) {
 
         DigitalObject resultDigOb = null;
-        ServiceReport sReport = new ServiceReport();
+        ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
         CharacteriseResult characteriseResult = null;
         String optionalFormatXCEL = null;
 
@@ -119,8 +121,6 @@ public class XcdlCharacterise implements Characterise, Serializable {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                sReport.setInfo("Success!!! Extracted XCDL from ");
-                sReport.setErrorState(0);
                 characteriseResult = new CharacteriseResult(properties, sReport);
                 // TODO this is just to avoid braking the testbed and no longer
                 // needed if no deprecated API is used there:
@@ -131,8 +131,6 @@ public class XcdlCharacterise implements Characterise, Serializable {
                 try {
                     resultDigOb = new DigitalObject.Builder(ImmutableContent
                             .byReference(tmpResult.toURI().toURL())).build();
-                    sReport.setInfo("Success!!!");
-                    sReport.setErrorState(0);
                     characteriseResult = new CharacteriseResult(properties,
                             sReport);
                     // TODO this is just to avoid braking the testbed and no

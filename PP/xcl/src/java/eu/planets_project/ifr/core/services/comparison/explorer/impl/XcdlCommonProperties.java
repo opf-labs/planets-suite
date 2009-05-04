@@ -18,6 +18,8 @@ import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -55,8 +57,7 @@ public final class XcdlCommonProperties implements CommonProperties {
         }
         String result = basicCompareFormatProperties(builder.toString());
         List<Property> resultProperties = ExplorerResultReader.properties(result);
-        ServiceReport report = new ServiceReport();
-        report.setInfo(result);
+        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, result);
         return new CompareResult(resultProperties, report);
     }
 
@@ -77,8 +78,8 @@ public final class XcdlCommonProperties implements CommonProperties {
             propsOfEach.add(resultProperties);
         }
         List<Property> result = intersectionOf(propsOfEach);
-        ServiceReport report = new ServiceReport();
-        report.setInfo(fullResult.toString());
+        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS,
+                fullResult.toString());
         return new CompareResult(result, report);
     }
 

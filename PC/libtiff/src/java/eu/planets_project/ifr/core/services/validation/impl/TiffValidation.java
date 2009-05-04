@@ -30,6 +30,8 @@ import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
 
 import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 
 
@@ -104,7 +106,8 @@ public class TiffValidation implements Validate, Serializable
 			"image", "tif");
 		boolean valid = basicValidateOneBinary(tempFile, fmt);
 
-		result = new ValidateResult.Builder(fmt, new ServiceReport()).ofThisFormat(valid).build();
+		result = new ValidateResult.Builder(fmt, new ServiceReport(Type.INFO,
+                Status.SUCCESS, "OK")).ofThisFormat(valid).build();
 
 		return result;
 	}

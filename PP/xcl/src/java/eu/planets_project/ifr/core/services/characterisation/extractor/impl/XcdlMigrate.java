@@ -2,6 +2,8 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
@@ -137,7 +139,7 @@ public class XcdlMigrate implements Migrate, Serializable {
             URI outputFormat, List<Parameter> parameters) {
         System.out.println("Working on file: " + digitalObject.getTitle());
     	DigitalObject resultDigOb = null;
-        ServiceReport sReport = new ServiceReport();
+        ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
         MigrateResult migrateResult = null;
         String optionalFormatXCEL = null;
 
@@ -185,8 +187,6 @@ public class XcdlMigrate implements Migrate, Serializable {
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
-                sReport.setInfo("Success!!! Extracted XCDL from ");
-                sReport.setErrorState(0);
                 migrateResult = new MigrateResult(resultDigOb, sReport);
             } else {
                 File tmpResult = FileUtils.getTempFile(result, "tmpResult",
@@ -194,8 +194,6 @@ public class XcdlMigrate implements Migrate, Serializable {
                 try {
                     resultDigOb = new DigitalObject.Builder(ImmutableContent
                             .byReference(tmpResult.toURI().toURL())).build();
-                    sReport.setInfo("Success!!!");
-                    sReport.setErrorState(0);
                     migrateResult = new MigrateResult(resultDigOb, sReport);
                 } catch (MalformedURLException e) {
                     // TODO Auto-generated catch block

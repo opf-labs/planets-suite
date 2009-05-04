@@ -20,6 +20,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -49,7 +51,8 @@ public final class XcdlCompareProperties implements CompareProperties {
         String result = ComparatorWrapper.compare(firstXcdl, Arrays
                 .asList(secondXcdl), comparatorConfig);
         List<Property> props = propertiesFrom(result);
-        return new CompareResult(props, new ServiceReport());
+        return new CompareResult(props, new ServiceReport(Type.INFO,
+                Status.SUCCESS, "OK"));
     }
 
     /**
