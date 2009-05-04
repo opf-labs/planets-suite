@@ -26,6 +26,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHelper;
@@ -170,9 +172,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 			.title(zippedResult.getZipFile().getName())
 			.build();
 
-			ServiceReport report = new ServiceReport();
-			report.setErrorState(0);
-			report.setInfo(PROCESS_OUT);
+			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
 			log.info("Created Service report...");
 			return new MigrateResult(resultDigObj, report);
 		}
@@ -206,9 +206,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 										.title(imageFile.getName())
 										.build();
 		
-		ServiceReport report = new ServiceReport();
-        report.setErrorState(0);
-        report.setInfo(PROCESS_OUT);
+		ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
         log.info("Created Service report...");
 		return new MigrateResult(resultDigObj, report);
 	}
