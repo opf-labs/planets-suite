@@ -68,7 +68,7 @@ public class GenericCLIMigrationWrapper {
 
 			ServiceReport serviceReport = executeToolProcess(toolProcessRunner, command, processStandardInput);
 
-			if (serviceReport.getErrorState() != 0){
+			if (serviceReport.getType() == Type.ERROR) {
 				String message = "Failed migrating object with title '"
                         + sourceObject.getTitle() + "' from format URI: "
                         + sourceFormat + " to " + destinationFormat

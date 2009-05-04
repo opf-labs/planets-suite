@@ -109,7 +109,7 @@ public class XcdlCommonPropertiesTests {
     private void commonCheck(final CompareResult compareResult,
             final List<Property> list) {
         assertNotNull("response was null", list);
-        String info = compareResult.getReport().getInfo();
+        String info = compareResult.getReport().getMessage();
         assertTrue("Result contains an error: " + info, !info.contains("Error"));
         assertTrue("Wrong result: " + info, info
                 .startsWith("<fpmResponse><format puid="));
