@@ -68,11 +68,13 @@ public final class XcdlParser implements XcdlAccess {
                     List<Val> val = labValue.getVals();
                     String id = property.getName().getId().replaceAll("id", "");
                     URI propUri = XcdlProperties.makePropertyURI(id, name);
-                    eu.planets_project.services.datatypes.Property p = new eu.planets_project.services.datatypes.Property(
-                            propUri, name, val.get(0).getValues().get(0));
-                    p.setType(PropertyName.PROPERTY.s);
-                    p.setUnit(labValue.getTypes().get(0).getValue().value());
-                    p.setDescription(createDescription(property, valueSet));
+                    String value = val.get(0).getValues().get(0);
+                    String type = PropertyName.PROPERTY.s;
+                    String unit = labValue.getTypes().get(0).getValue().value();
+                    String description = createDescription(property, valueSet);
+                    eu.planets_project.services.datatypes.Property p = new eu.planets_project.services.datatypes.Property.Builder(
+                            propUri).name(name).value(value).type(type).unit(
+                            unit).description(description).build();
                     result.add(p);
                 }
             }

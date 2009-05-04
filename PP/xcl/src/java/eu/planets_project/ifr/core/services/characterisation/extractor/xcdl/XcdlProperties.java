@@ -48,8 +48,8 @@ public final class XcdlProperties implements XcdlAccess {
                 String id = e.getChild("name", NS).getAttributeValue("id")
                         .replaceAll("id", "");
                 URI propUri = XcdlProperties.makePropertyURI(id, name);
-                Property p = new Property(propUri, name, value);
-                p.setType(labVal.getChildText("type", NS));
+                Property p = new Property.Builder(propUri).name(name).value(
+                        value).type(labVal.getChildText("type", NS)).build();
                 properties.add(p);
             }
         } catch (JDOMException e) {
