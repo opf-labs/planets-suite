@@ -127,13 +127,6 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	
-	<!-- Beans added by rsimon for external data source integration -->
-	<managed-bean>
-		<managed-bean-name>QueryBrowser</managed-bean-name>
-		<managed-bean-class>eu.planets_project.tb.gui.backing.QueryBrowser</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	
 	<!--End Managed Beans -->
 
 	<!-- Start Navigation Rules: General Navigation Rules -->
@@ -181,11 +174,6 @@
 		<navigation-case>
 			<from-outcome>browse_data</from-outcome>
 			<to-view-id>/reader/browse_data.xhtml</to-view-id>
-			<redirect />
-		</navigation-case>
-		<navigation-case>
-			<from-outcome>browse_data_remote</from-outcome>
-			<to-view-id>/reader/browse_data_remote.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
@@ -306,10 +294,6 @@
 			<to-view-id>/exp/browse_data.xhtml</to-view-id>
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>browseForRemoteData</from-outcome>
-			<to-view-id>/reader/browse_data_remote.xhtml</to-view-id>
-		</navigation-case>
-		<navigation-case>
 			<from-outcome>configAutoEvalSer</from-outcome>
 			<to-view-id>/exp/bmGoalAutoEvaluation/config_auto_eval_ser.xhtml</to-view-id>
 		</navigation-case>
@@ -360,11 +344,6 @@
   <navigation-case>
    <from-outcome>browse_data</from-outcome>
    <to-view-id>/reader/browse_data.xhtml</to-view-id>
-   <redirect/>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>browse_data_remote</from-outcome>
-   <to-view-id>/reader/browse_data_remote.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>

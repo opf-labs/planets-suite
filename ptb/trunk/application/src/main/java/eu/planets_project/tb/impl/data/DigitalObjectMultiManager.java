@@ -20,7 +20,6 @@ import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
-import eu.planets_project.tb.impl.data.demo.BlueMarbleDataManager;
 
 /**
  * This class managers all of the Data Registries known to the Testbed.
@@ -50,7 +49,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      */
     public DigitalObjectMultiManager() {
         // Allocate the data sources:
-        dss = new DataSource[3];
+        dss = new DataSource[2];
         
         // The Planets Data Registry:
         try {
@@ -68,18 +67,6 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         dss[1] = new DataSource();
         dss[1].dm = fsdm;
         dss[1].uri = fsdm.getRootURI();
-        
-        // NASA Blue Marble Collection
-        try {
-	        BlueMarbleDataManager bmdm = new BlueMarbleDataManager();
-	        dss[2] = new DataSource();
-	        dss[2].dm = bmdm;
-	       	dss[2].uri = dss[2].dm.list(null)[0];
-        } catch( SOAPException e ) {
-            log.error("Error creating data registry URI: " + e );
-            dss = null;
-            return;
-        }
     }
     
     /**
