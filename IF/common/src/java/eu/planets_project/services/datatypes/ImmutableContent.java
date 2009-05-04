@@ -44,7 +44,7 @@ public final class ImmutableContent implements Content {
     @XmlAttribute
     private long length = -1;
 
-   
+    @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
     private Checksum checksum = null;
 
     /*

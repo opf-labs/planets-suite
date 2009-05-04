@@ -10,6 +10,7 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -99,7 +100,7 @@ public final class DigitalObjectTests {
     private static final String SOME_URL_1 = "http://url1";
     private static final String SOME_URL_2 = "http://url2";
     private static final Checksum CHECKSUM = new Checksum("algo", "checksum");
-    private static final Event EVENT = new Event();
+    private static final Event EVENT = new Event(null, null, 0d, null, null);
     private static final Fragment FRAGMENT = new Fragment("ID");
     private static final Metadata META = new Metadata(URI.create(SOME_URL_1),
             "meta");
@@ -122,11 +123,13 @@ public final class DigitalObjectTests {
                     .byReference(new URL(SOME_URL_2))).permanentUrl(
                     new URL(SOME_URL_2)).build();
             /* Creation with all optional arguments: */
-            digitalObject1 = new DigitalObject.Builder(ImmutableContent
-                    .byReference(permanentUrl)).permanentUrl(permanentUrl)
-                    .events(EVENT).fragments(FRAGMENT).manifestationOf(
-                            manifestationOf).format(planetsFormatUri).metadata(
-                            META).title(TITLE).contains(digitalObject2).build();
+            Content content = ImmutableContent.byReference(permanentUrl)
+                    .withChecksum(CHECKSUM);
+            digitalObject1 = new DigitalObject.Builder(content).permanentUrl(
+                    permanentUrl).events(EVENT).fragments(FRAGMENT)
+                    .manifestationOf(manifestationOf).format(planetsFormatUri)
+                    .metadata(META).title(TITLE).contains(digitalObject2)
+                    .build();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

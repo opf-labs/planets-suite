@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.net.URI;
 
 /**
- * Represents immutable tagged metadata.
+ * Representation of immutable tagged metadata.
  * 
  * @see MetadataTests
  * 
@@ -19,13 +19,12 @@ import java.net.URI;
 public final class Metadata implements Comparable<Metadata>, Serializable {
     /** Generated UID. */
     private static final long serialVersionUID = 1299020544765389245L;
-
-
+    
     /**
      * The block of metadata.
      *  @see #getContent()
      * */
-    @XmlElement(namespace = PlanetsServices.OBJECTS_NS,required = true)
+    @XmlElement(namespace = PlanetsServices.OBJECTS_NS, required = true)
     private String content;
 
     /**
@@ -57,6 +56,13 @@ public final class Metadata implements Comparable<Metadata>, Serializable {
      */
     public String getContent() {
         return content;
+    }
+    
+    /**
+     * @return The metadata type.
+     */
+    public URI getType() {
+        return type;
     }
 
     /**
@@ -97,21 +103,14 @@ public final class Metadata implements Comparable<Metadata>, Serializable {
     }
 
     /**
-     * @return The metadata type.
-     */
-    public URI getType() {
-        return type;
-    }
-
-    /**
-     * @param o the metadata 
+     * @param other the metadata 
      * @return 0 if equal
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
-    public int compareTo(Metadata o) {
-        if (this.type.equals(o.type)) {
-            return this.content.compareTo(o.content);
+    public int compareTo(final Metadata other) {
+        if (this.type.equals(other.type)) {
+            return this.content.compareTo(other.content);
         }
-        return this.type.compareTo(o.type);
+        return this.type.compareTo(other.type);
     }
 }
