@@ -65,9 +65,11 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
 
 //            System.out.println(parseRecordString(dcRecordString, "dcterms:alternative"));
 
-            byte[] binary = fetch(doc, "/pmh:OAI-PMH/pmh:GetRecord/pmh:record/pmh:metadata/xb:digital_entity/pmh:urls/pmh:url[@type='stream']");
+            //byte[] binary = fetch(doc, "/pmh:OAI-PMH/pmh:GetRecord/pmh:record/pmh:metadata/xb:digital_entity/pmh:urls/pmh:url[@type='stream']");
 
-            DigitalObject dio =new DigitalObject.Builder(ImmutableContent.byValue(binary)).title(parseRecordString(dcRecordString, "dcterms:alternative")).build();
+            //DigitalObject dio =new DigitalObject.Builder(ImmutableContent.byValue(binary)).title(parseRecordString(dcRecordString, "dcterms:alternative")).build();
+            String url = evaluateURL(doc, "/pmh:OAI-PMH/pmh:GetRecord/pmh:record/pmh:metadata/xb:digital_entity/pmh:urls/pmh:url[@type='stream']");
+            DigitalObject dio = new DigitalObject.Builder(ImmutableContent.byReference(new URL(url))).title(parseRecordString(dcRecordString, "dcterms:alternative")).build();
 
             return dio;
 
@@ -115,8 +117,6 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         }
         return ids;
     }
-    
-    
 
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
@@ -139,19 +139,29 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         return null;
     }
 
-
     private byte[] fetch(Document urls, String xpathExp) throws XPathExpressionException, MalformedURLException, IOException {
+        //XPath
+//        XPath xpath = XPathFactory.newInstance().newXPath();
+//        xpath.setNamespaceContext(ctx);
+//
+//        String toFetch = xpath.evaluate(xpathExp, urls);
+//        System.out.println("fetch:" + toFetch);
+//        System.out.println(toFetch);
+        String toFetch = evaluateURL(urls, xpathExp);
+        URL url = new URL(toFetch);
+        InputStream is = url.openStream();
+        byte[] binary = FileUtils.writeInputStreamToBinary(is);
+        return binary;
+    }
+
+    private String evaluateURL(Document urls, String xpathExp) throws XPathExpressionException {
         //XPath
         XPath xpath = XPathFactory.newInstance().newXPath();
         xpath.setNamespaceContext(ctx);
 
         String toFetch = xpath.evaluate(xpathExp, urls);
-//        System.out.println("fetch:" + toFetch);
-//        System.out.println(toFetch);
-        URL url = new URL(toFetch);
-        InputStream is = url.openStream();
-        byte[] binary = FileUtils.writeInputStreamToBinary(is);
-        return binary;
+
+        return toFetch;
     }
 
     private static String parseRecordString(String record, String titleNode) throws ParserConfigurationException, SAXException, IOException {
