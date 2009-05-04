@@ -174,11 +174,8 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
 		return null;
 	}
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
-     */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
-        return null;
+        throw new QueryValidationException("This implementation does not support queries.");
     }
 	
 	private List<URI> scrapeTopLvlDirs(String html) {

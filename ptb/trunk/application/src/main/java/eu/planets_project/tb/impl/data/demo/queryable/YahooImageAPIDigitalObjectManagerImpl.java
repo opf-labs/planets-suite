@@ -76,11 +76,6 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
      */
     private static final int TIMEOUT = 10000;
 	
-    /**
-     * The query
-     */
-    private QueryString query = null;
-	
 	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");		
 	}
@@ -90,12 +85,8 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
     }
 	
     public List<URI> list(URI pdURI) {
-    	if (pdURI == null) {
-    		// Hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
-    		return new YahooResultList(query);
-    	} else {
-    		return new YahooResultList(null);
-    	}
+    	// list() without query not supported - empty result list 
+    	return new YahooResultList(null);
     }
 
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
@@ -118,18 +109,21 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
-		if (q == null) {
-			this.query = null;
-		}
-		else {
-		    if (q instanceof QueryString) {
-		        this.query = (QueryString) q;
-		    } else {
-		        // Could throw suitable exception here
-		        this.query = null;
-		    }
-		}
-		return this.list(pdURI);
+    	if (q == null) {
+    		// list() without query not supported - empty result list 
+    		throw new QueryValidationException("null query not allowed");
+    	}
+    	
+    	if (pdURI == null) {
+    		// Hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
+       		if (q instanceof QueryString) {
+       			return new YahooResultList((QueryString) q);
+       		} else {
+       			throw new QueryValidationException("Unsupported query type");
+       		}
+    	} else {
+    		return new YahooResultList(null);
+    	}
 	}
 	
 	public class YahooResultList extends AbstractList<URI> {
@@ -152,7 +146,7 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 	    /**
 	     * Total number of results
 	     */
-	    private int size;
+	    private int size = 0;
 		
 		public YahooResultList(QueryString query) {
 			// Set query string
