@@ -20,6 +20,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
@@ -137,7 +139,7 @@ public class XCDLService implements Characterise {
         
         // FIXME Interface is a problem!  We really want to return simpler entities than full property descriptions.
 
-        ServiceReport report = new ServiceReport();
+        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
         
         return new CharacteriseResult(mprops, report);
     }

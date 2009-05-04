@@ -27,6 +27,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
@@ -463,10 +465,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             
         } catch (Exception e ) {
             // Create a ServiceReport from the exception.
-            ServiceReport sr = new ServiceReport();
             //TODO can we distinguish tool and install error here?
-            sr.setErrorState(ServiceReport.TOOL_ERROR);
-            sr.setError(e.toString());
+            ServiceReport sr = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, e.toString());
             wr.setReport(sr);
             log.error("Migration failed! "+e);
             e.printStackTrace();

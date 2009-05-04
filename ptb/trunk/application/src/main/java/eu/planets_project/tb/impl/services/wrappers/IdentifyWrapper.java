@@ -20,6 +20,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Types;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.identify.BasicIdentifyOneBinary;
@@ -133,7 +135,7 @@ public class IdentifyWrapper implements Identify {
             }
             List<URI> uris = new ArrayList<URI>();
             uris.add(bresult);
-            return new IdentifyResult(uris, null, new ServiceReport());
+            return new IdentifyResult(uris, null, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
 
         } else if (pse.getQName().equals(IdentifyOneBinary.QNAME)) {
             Types types = iob.identifyOneBinary(binary);
@@ -141,7 +143,7 @@ public class IdentifyWrapper implements Identify {
             for( URI type : types.types ) {
                 uris.add(type);
             }
-            return new IdentifyResult(uris, null, new ServiceReport());
+            return new IdentifyResult(uris, null, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
             
         } else {
             // Identify:
