@@ -22,6 +22,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 
@@ -77,8 +79,7 @@ public class SimpleIdentifyService implements Identify {
         }
         // URL, can deal with this:
         String type = ftr.getMIMEType(dob.getPermanentUrl());
-        ServiceReport rep = new ServiceReport();
-        rep.setErrorState(ServiceReport.SUCCESS);
+        ServiceReport rep = new ServiceReport(Type.INFO, Status.SUCCESS, "Nothing checked");
 
         List<URI> types = new ArrayList<URI>();
         types.add(FormatRegistryFactory.getFormatRegistry().createMimeUri(type));
@@ -87,11 +88,9 @@ public class SimpleIdentifyService implements Identify {
     }
     
     private IdentifyResult returnWithErrorMessage(String message) {
-        ServiceReport rep = new ServiceReport();
+        ServiceReport rep = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, message);
         List<URI> type = null;
         log.error(message);
-        rep.setErrorState(ServiceReport.TOOL_ERROR);
-        rep.setError("message");
         return new IdentifyResult(type, null, rep);
     }
 

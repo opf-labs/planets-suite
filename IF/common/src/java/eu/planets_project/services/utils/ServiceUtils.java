@@ -5,6 +5,8 @@ package eu.planets_project.services.utils;
 
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,11 +33,14 @@ public class ServiceUtils {
      * @return
      */
     public static ServiceReport createExceptionErrorReport(String message, Exception e, int errorType ) {
-        ServiceReport sr = new ServiceReport();
-        sr.setErrorState( errorType );
         String error = message;
-        if( e != null ) message += "\n" + e.toString();
-        sr.setError(error);
+        if( e != null ) error += "\n" + e.toString();
+        /*
+         * This weird usage of the enum is temporary (the int param and probably
+         * this whole method should probably be replaced with enum usage)
+         */
+        ServiceReport sr = new ServiceReport(Type.ERROR,
+                Status.values()[errorType], error);
         return sr;
     }
     
@@ -45,11 +50,10 @@ public class ServiceUtils {
      * @param e
      * @return service report from exception and message
      */
-    public static ServiceReport createExceptionErrorReport(String message, Exception e) {
-        ServiceReport sr = new ServiceReport();
-        sr.setErrorState(ServiceReport.TOOL_ERROR);
-        sr.setError(message + "\n" + e.toString());
-        return sr;
+    public static ServiceReport createExceptionErrorReport(String message,
+            Exception e) {
+        return new ServiceReport(Type.ERROR, Status.TOOL_ERROR, message + "\n"
+                + e.toString());
     }
     
     /**
@@ -58,10 +62,7 @@ public class ServiceUtils {
      * @return service report from message
      */
     public static ServiceReport createErrorReport(String message) {
-        ServiceReport sr = new ServiceReport();
-        sr.setErrorState(ServiceReport.TOOL_ERROR);
-        sr.setError(message);
-        return sr;
+        return new ServiceReport(Type.ERROR, Status.TOOL_ERROR, message);
     }
     
     

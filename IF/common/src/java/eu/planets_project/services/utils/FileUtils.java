@@ -112,38 +112,38 @@ public final class FileUtils {
         }
         return input;
     }
-    
+
     public static InputStream getInputStreamFromFile(File src) {
-    	BufferedInputStream fileIn = null;
-    	
-    	try {
-			fileIn = new BufferedInputStream(new FileInputStream(src));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return fileIn;
+        BufferedInputStream fileIn = null;
+
+        try {
+            fileIn = new BufferedInputStream(new FileInputStream(src));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return fileIn;
     }
-    
+
     public static OutputStream getOutputStreamToFile(File dest) {
-    	BufferedOutputStream fileOut = null;
-    	try {
-			fileOut = new BufferedOutputStream(new FileOutputStream(dest));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return fileOut;
+        BufferedOutputStream fileOut = null;
+        try {
+            fileOut = new BufferedOutputStream(new FileOutputStream(dest));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return fileOut;
     }
-    
+
     public static boolean copyFileTo(File src, File dest) {
-    	long destSize = writeInputStreamToOutputStream(getInputStreamFromFile(src), getOutputStreamToFile(dest));
-    	if(destSize==src.length()) {
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
+        long destSize = writeInputStreamToOutputStream(
+                getInputStreamFromFile(src), getOutputStreamToFile(dest));
+        if (destSize == src.length()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -316,14 +316,13 @@ public final class FileUtils {
         }
         return result;
     }
-    
+
     /**
      * @param content The content to write to destination
      * @param destination The destination to write content to
      * @return file A file at destination with the given content
      */
-    public static File writeStringToFile(final String content,
-            final File target) {
+    public static File writeStringToFile(final String content, final File target) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(target),
                     BUFFER);
@@ -765,21 +764,21 @@ public final class FileUtils {
         }
         return extractedFiles;
     }
-    
-    
+
     /**
-     * Extracts all files from a given Zip file. Convenience method that takes a Planets-IF Checksum instead of a long.
+     * Extracts all files from a given Zip file. Convenience method that takes a
+     * Planets-IF Checksum instead of a long.
      * @param zipFile the zip file to extract files from
      * @param destDir the folder where the extracted files should be placed in
-     * @param planetsChecksum a Checksum object 
+     * @param planetsChecksum a Checksum object
      * @return All extracted files if the actual checksum is equal to the passed
      *         planetsChecksum<br/>
      *         - <strong>null</strong> if not!
      */
     public static List<File> extractFilesFromZipAndCheck(final File zipFile,
             final File destDir, final Checksum planetsChecksum) {
-    	
-    	long checksumValue = Long.parseLong(planetsChecksum.getValue());
+
+        long checksumValue = Long.parseLong(planetsChecksum.getValue());
         List<File> extractedFiles = new ArrayList<File>();
         CheckedInputStream checksum = null;
         // Open the ZIP file
@@ -818,24 +817,25 @@ public final class FileUtils {
         }
         return extractedFiles;
     }
-    
-    
+
     public static File truncateNameAndRenameFile(final File file) {
-    	String newName = file.getName();
-    	String parent = file.getParent();
-    	String ext = "";
-    	if(newName.contains(".")) {
-    		ext = newName.substring(newName.lastIndexOf("."));
-    		newName = newName.substring(0, newName.lastIndexOf("."));
-    	}
-    	if(newName.length()>8) {
-    		newName = newName.substring(0, 8);
-    		log.info("File name longer than 8 chars. Truncated file name to: " + newName + " to avoid problems with long file names in DOS!");
-    	}
-    	newName = newName + ext;
-    	File renamedFile = new File(new File(parent), newName);
-    	boolean renamed = file.renameTo(renamedFile);
-    	return renamedFile;
+        String newName = file.getName();
+        String parent = file.getParent();
+        String ext = "";
+        if (newName.contains(".")) {
+            ext = newName.substring(newName.lastIndexOf("."));
+            newName = newName.substring(0, newName.lastIndexOf("."));
+        }
+        if (newName.length() > 8) {
+            newName = newName.substring(0, 8);
+            log.info("File name longer than 8 chars. Truncated file name to: "
+                    + newName
+                    + " to avoid problems with long file names in DOS!");
+        }
+        newName = newName + ext;
+        File renamedFile = new File(new File(parent), newName);
+        boolean renamed = file.renameTo(renamedFile);
+        return renamedFile;
     }
 
     /**
@@ -970,6 +970,7 @@ public final class FileUtils {
             }
         }
     }
+
     /**
      * @param file The file to call mkdir on and check for the result
      * @return The result of calling mkdirs on the given file
@@ -997,6 +998,19 @@ public final class FileUtils {
     private static void handle(boolean mkdir, File file) {
         if (!mkdir && !file.exists()) {
             throw new IllegalArgumentException("Could not create " + file);
+        }
+
+    }
+
+    /**
+     * @param file The file to delete
+     * @throws IllegalArgumentException if the deletion was not successful and
+     *         the file still exist
+     */
+    public static void delete(final File file) {
+        boolean ok = file.delete();
+        if (!ok && file.exists()) {
+            throw new IllegalArgumentException("Could not delete: " + file);
         }
 
     }

@@ -20,6 +20,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 
 /**
@@ -85,7 +87,7 @@ public class SimpleCharacterisationService implements Characterise
         log.info("Start...");
         // Set up property list:
         List<Property> measured = new ArrayList<Property>();
-        ServiceReport sr = new ServiceReport();
+        ServiceReport sr = new ServiceReport(Type.INFO, Status.SUCCESS, "Nothing checked");
         
         // Attempt to measure size:
         measured.add( new Property( makePropertyURI(MIME_PROP_URI), MIME_PROP_URI, ""+DigitalObjectUtils.getContentSize( digitalObject ) ));
