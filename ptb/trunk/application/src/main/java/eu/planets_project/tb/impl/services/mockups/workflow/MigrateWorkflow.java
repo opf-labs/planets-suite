@@ -543,7 +543,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         wr.setReport(migrated.getReport());
         
         // FIXME Should now throw an Exception, as the WF cannot proceed?
-        throw new Exception("Migration failed.  No Digital Object was created. "+migrated.getReport().getError());
+        throw new Exception("Migration failed.  No Digital Object was created. "+migrated.getReport().getMessage());
         
         // FIXME Add a 'toString' on the report that makes a text summary of the whole state?
         
