@@ -21,8 +21,9 @@
 	<import file="${pserv.root.dir}/build.common.xml" />
 	
 	<!-- Define the API part-->
-	<property name="src.api.includes" value="eu/planets_project/services/migration/floppyImageHelper/**" />
-	<property name="src.api.includes" value="eu/planets_project/services/modification/floppyImageModify/**" />
+	<property name="src.api.includes" value="eu/planets_project/services/migration/floppyImageHelper/api/**" />
+	<property name="src.api.includes" value="eu/planets_project/services/modification/floppyImageModify/api/**" />
+	
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test" />

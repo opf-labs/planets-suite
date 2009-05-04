@@ -21,6 +21,7 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModifyWin;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
@@ -35,7 +36,7 @@ public class FloppyImageModifyTest {
 	
 	static Modify FLOPPY_IMAGE_MODIFY;
 	
-	static String WSDL = "/pserv-pa-floppy-image-helper/FloppyImageModify?wsdl";
+	static String WSDL = "/pserv-pa-floppy-image-helper/FloppyImageModifyWin?wsdl";
 	
 	static String OUT_DIR_NAME = "FLOPPY_IMAGE_HELPER_TEST_OUT";
 	
@@ -63,12 +64,12 @@ public class FloppyImageModifyTest {
 		// Config the logger:
         Logger.getLogger("").setLevel( Level.FINE );
         OUT_DIR = FileUtils.createWorkFolderInSysTemp(OUT_DIR_NAME); 
-        FLOPPY_IMAGE_MODIFY = ServiceCreator.createTestService(Modify.QNAME, FloppyImageModify.class, WSDL);
+        FLOPPY_IMAGE_MODIFY = ServiceCreator.createTestService(Modify.QNAME, FloppyImageModifyWin.class, WSDL);
         
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelperWin#describe()}.
+	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin#describe()}.
 	 */
 	@Test
 	public void testDescribe() {

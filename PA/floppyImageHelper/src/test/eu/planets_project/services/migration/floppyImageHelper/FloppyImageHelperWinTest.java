@@ -24,6 +24,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ZipResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
@@ -69,7 +70,7 @@ public class FloppyImageHelperWinTest {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelperWin#describe()}.
+	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin#describe()}.
 	 */
 	@Test
 	public void testDescribe() {
@@ -84,7 +85,7 @@ public class FloppyImageHelperWinTest {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelperWin#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)}.
+	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)}.
 	 */
 	@Test
 	public void testMigrateAndCreateImage() {
