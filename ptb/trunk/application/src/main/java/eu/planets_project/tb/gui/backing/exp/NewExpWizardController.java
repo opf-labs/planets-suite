@@ -2058,6 +2058,40 @@ public class NewExpWizardController{
         }
     }
     
+    /**
+     * A convenience method in step5 (fill in manual results) to copy a value to all execution
+     * runs. This method is made available through a 'right-click' context menu
+     * @param event
+     */
+    public void processCopyManualPropertyResultForAllExecutions(ActionEvent event){	
+    	//1)get the passed Attributes "propertyID", "value" etc., which are passed along
+    	FacesContext context = FacesContext.getCurrentInstance();
+    	Object o1 = context.getExternalContext().getRequestParameterMap().get("propertyID");
+		Object o2 = context.getExternalContext().getRequestParameterMap().get("value");
+		Object o3 = context.getExternalContext().getRequestParameterMap().get("inputDigoRef");
+		Object o4 = context.getExternalContext().getRequestParameterMap().get("stageName");
+		
+		if((o1!=null)&&(o2!=null)&&(o3!=null)&&(o4!=null)){
+			String sPropertyID = (String)o1;
+			String sValue = (String)o2;
+			String sInputDigoRef = (String)o3;
+			String sStageName = (String)o4;
+			
+			if(sValue.equals(""))
+	    		return;
+	
+			//2)iterate over all runDates and fill in the value
+			ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+			for(Calendar runDate : expBean.getAllRunDates()){
+				updateManualPropertyMeasurementRecord(sPropertyID, sInputDigoRef, sStageName, runDate, sValue);
+			}
+			log.info("completed copy manual property result for all run dates");
+		}
+		else{
+			log.debug("copy manual proeprty results for all run dates failed - 1..n parameters were not properly sent along");
+		}
+    }
+    
     
     /**
      * Stage6 update a line evaluation record for a given property and a inputDigoRef

@@ -245,11 +245,12 @@
 	<h:panelGroup rendered="#{! NewExp_Controller.experimentExecutable.executionRunning}">
 		<p>Please fill in the properties you have selected to measure manually for this experiment.</p>
 		<h:outputText value="No manually measured properties have been selected for this experiment" rendered="#{empty NewExp_Controller.manualObservables}"/>
-	
+		
 		<rich:tabPanel switchType="ajax" rendered="#{not empty NewExp_Controller.manualObservables}">
 	        <rich:tab label="Overview of Entered Data">
 	        	TODO enter a short description on how data is entered
 	        	<!-- TODO create some custom styleclasses for this screen -->
+
 	        	<h:panelGrid columns="3" styleClass="expDesignerPanel">
 		        	<rich:dataTable value="#{ExperimentBean.experimentInputDataValues}" var="inputDigoItem" rows="10" 
 			        reRender="propmanual_ds" styleClass="tbTable"
@@ -324,12 +325,21 @@
 				              <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 6}">
 				              	<rich:inplaceInput layout="block" selectOnEdit="true" editClass="onclick" defaultLabel="click to enter" 
 				              	value="#{subVar.allResults[rundatesColVar.timeInMillis].recordValue}" valueChangeListener="#{NewExp_Controller.processManualDataEntryChange}">
-				              		<a4j:support event="onviewactivated" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true"> 
+				              		<a4j:support event="onviewactivated" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true" reRender="infopanel,inputDigObjectRefTable,manualMeasurementsStep5Table"> 
 				              			<a4j:actionparam name="propertyID" value="#{subVar.measurementPropertyID}"/>
 				              			<a4j:actionparam name="stageName" value="#{tableVar.name}"/>
 				              			<a4j:actionparam name="runDateMillis" value="#{rundatesColVar.timeInMillis}"/>
 				              			<a4j:actionparam name="inputDigoRef" value="#{subVar.inputDigoRef}"/>
 				              		</a4j:support>
+				              		<rich:contextMenu event="oncontextmenu" attached="true" submitMode="ajax">	         
+						               	<rich:menuItem actionListener="#{NewExp_Controller.processCopyManualPropertyResultForAllExecutions}" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true" reRender="infopanel,inputDigObjectRefTable,manualMeasurementsStep5Table">
+											<b>copy value</b> for all executions
+											<a4j:actionparam name="propertyID" value="#{subVar.measurementPropertyID}"/>
+					              			<a4j:actionparam name="stageName" value="#{tableVar.name}"/>
+					              			<a4j:actionparam name="value" value="#{subVar.allResults[rundatesColVar.timeInMillis].recordValue}"/>
+					              			<a4j:actionparam name="inputDigoRef" value="#{subVar.inputDigoRef}"/>
+										</rich:menuItem>
+				              		</rich:contextMenu>
 				              	</rich:inplaceInput>
 				              </h:panelGroup>
 				              <!-- read only outputText elements if stage currentPhase is 6 -->
