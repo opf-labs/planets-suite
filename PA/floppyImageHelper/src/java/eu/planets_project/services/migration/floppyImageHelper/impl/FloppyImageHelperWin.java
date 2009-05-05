@@ -5,14 +5,9 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -215,7 +210,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 		ProcessRunner cmd = new ProcessRunner();
 		cmd.setCommand(this.getExtractCommandLine(image));
 		cmd.setStartingDir(EXTRACTED_FILES_DIR);
-		cmd.setTimeout(5000);
+		cmd.setTimeout(2500);
 		cmd.run();
 		PROCESS_OUT = cmd.getProcessOutputAsString();
 		log.info("Tool output:\n" + PROCESS_OUT);
