@@ -9,7 +9,6 @@ import java.util.ArrayList;
 // import java.util.Calendar;
 import java.util.List;
 
-// import org.dom4j.Document;
 import org.dom4j.Element;
 // import org.dom4j.io.OutputFormat;
 // import org.dom4j.io.XMLWriter;
@@ -192,10 +191,11 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 	
 	/*
 	public static void main(String[] args) {
-		GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://www.diva-portal.org/oai/OAI");
+		// GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://www.diva-portal.org/oai/OAI");
+		GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://localhost:8881/OAI-PUB", "de2aleph");
 		
 		Calendar start = Calendar.getInstance();
-		start.add(Calendar.MONTH, -6);
+		start.add(Calendar.MONTH, -1);
 		Calendar now = Calendar.getInstance();
 		
 		// ListIdentifiers
