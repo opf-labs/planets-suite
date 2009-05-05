@@ -11,29 +11,28 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
 
 /**
+ * Result type for migration services.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
  */
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class MigrateResult {
+public final class MigrateResult {
 
-    private DigitalObject digitalObject;    
-
+    private DigitalObject digitalObject;
     private ServiceReport report;
-    
-    
-    /**
-     *  For JAXB.
-     */
-    public MigrateResult() { }
 
     /**
-     * @param digitalObject
-     * @param report
+     * For JAXB.
      */
-    public MigrateResult(DigitalObject digitalObject, ServiceReport report) {
-        super();
+    @SuppressWarnings("unused")
+    private MigrateResult() {}
+
+    /**
+     * @param digitalObject The resulting digital object
+     * @param report The report for this migration
+     */
+    public MigrateResult(final DigitalObject digitalObject,
+            final ServiceReport report) {
         this.digitalObject = digitalObject;
         this.report = report;
     }

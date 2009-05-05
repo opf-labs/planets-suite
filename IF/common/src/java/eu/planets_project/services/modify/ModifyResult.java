@@ -11,47 +11,44 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
 
 /**
+ * Result type for modification services.
  * @author <a href="mailto:Peter.Melms@uni-koeln.de">Peter Melms</a>
- *
  */
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class ModifyResult {
-	
-	private DigitalObject digitalObject;    
+public final class ModifyResult {
 
-	private ServiceReport report;
-	 
-	 
-	 /**
-	 * for JAXB
-	 */
-	public ModifyResult () {};
-	
-	
-	/**
-     * @param digitalObject
-     * @param report
+    private DigitalObject digitalObject;
+    private ServiceReport report;
+
+    /**
+     * for JAXB.
      */
-    public ModifyResult(DigitalObject digitalObject, ServiceReport report) {
-        super();
+    @SuppressWarnings("unused")
+    private ModifyResult() {};
+
+    /**
+     * @param digitalObject The modified digital object
+     * @param report The report for the modification
+     */
+    public ModifyResult(final DigitalObject digitalObject,
+            final ServiceReport report) {
         this.digitalObject = digitalObject;
         this.report = report;
     }
 
     /**
-     * @return the digitalObject
+     * @return The digital object
      */
     public DigitalObject getDigitalObject() {
         return digitalObject;
     }
 
     /**
-     * @return the event
+     * @return The report
      */
     public ServiceReport getReport() {
         return report;
     }
-
 
 }
