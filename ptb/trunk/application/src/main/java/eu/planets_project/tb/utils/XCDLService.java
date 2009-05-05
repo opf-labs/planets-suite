@@ -22,6 +22,8 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
@@ -32,30 +34,40 @@ import eu.planets_project.tb.impl.system.BackendProperties;
 public class XCDLService implements Characterise {
 
     /** */
-    private URL extractorWsdl;
+    private URL extractorWsdlCharacterise;
     /** */
-    private Characterise extractor;
+    private Characterise extractorCharacterise;
+    
+    /** */
+    private URL extractorWsdlMigrate;
+    /** */
+    private Migrate extractorMigrate;
+    
     
     /** */
     public XCDLService() {
         BackendProperties bp = new BackendProperties();
         try {
-            extractorWsdl = new URL( bp.getProperty("extractor.endpoint.xcdl") );
+            extractorWsdlCharacterise = new URL( bp.getProperty("extractor.endpoint.xcdl.characterise") );
+            extractorWsdlMigrate = new URL( bp.getProperty("extractor.endpoint.xcdl.migrate") );
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return;
         }
-        System.out.println("Got Extractor endpoint: "+extractorWsdl);
+        System.out.println("Got Extractor endpoint: "+extractorWsdlCharacterise);
         // extractorWsdl = new URI( "http://localhost:8080/pserv-pc-extractor/Extractor?wsdl" );
-        Service srv = Service.create(extractorWsdl, Characterise.QNAME);
-        extractor = srv.getPort(Characterise.class);
+        Service srv = Service.create(extractorWsdlCharacterise, Characterise.QNAME);
+        extractorCharacterise = srv.getPort(Characterise.class);
+        
+        srv = Service.create(extractorWsdlMigrate, Migrate.QNAME);
+        extractorMigrate = srv.getPort(Migrate.class);
     }
 
     /** */
     public XCDLService( URL endpoint ) {
-        this.extractorWsdl = endpoint;
-        Service srv = Service.create(extractorWsdl, Characterise.QNAME);
-        extractor = srv.getPort(Characterise.class);
+        this.extractorWsdlCharacterise = endpoint;
+        Service srv = Service.create(extractorWsdlCharacterise, Characterise.QNAME);
+        extractorCharacterise = srv.getPort(Characterise.class);
     }
 
     /* (non-Javadoc)
@@ -75,7 +87,7 @@ public class XCDLService implements Characterise {
         }
         
         // Extract the list:
-        List<Property> properties = extractor.listProperties(formatURI);
+        List<Property> properties = extractorCharacterise.listProperties(formatURI);
         
         /*
         if( properties == null ) return null;
@@ -107,9 +119,13 @@ public class XCDLService implements Characterise {
      * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameters)
      */
     public CharacteriseResult characterise(DigitalObject dob, List<Parameter> params) {
+        /* Result properties are available here: */
+        CharacteriseResult characteriseResult = extractorCharacterise.characterise(dob, params);
+        List<Property> properties = characteriseResult.getProperties();
+        System.out.println(properties);
+        /* But the code below wants the XCDL as a DigitalObject, so we use Migrate: */
+        MigrateResult migrateResult = extractorMigrate.migrate(dob, null, null, params);
         
-        CharacteriseResult characteriseResult = extractor.characterise(dob, params);
-
         // FIXME Use the properties interface / generally update the invoker as this code is not needed now...
         /*
         for( Property p : characteriseResult.getProperties() ) {
@@ -119,7 +135,7 @@ public class XCDLService implements Characterise {
 
         List<MeasurementRecordImpl> list;
         try {
-            list = XCDLParser.parseXCDL(characteriseResult.getDigitalObject().getContent().read());
+            list = XCDLParser.parseXCDL(migrateResult.getDigitalObject().getContent().read());
         } catch (Exception e) {
             e.printStackTrace();
             list = null;
