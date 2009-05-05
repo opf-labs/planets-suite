@@ -35,6 +35,7 @@ public final class ServiceReport {
      * Type of information returned by a service.
      * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
      */
+    @XmlType(name="ServiceReportType", namespace = PlanetsServices.SERVICES_NS)
     public static enum Type {
         /** Roughly corresponding to Standard Out. */
         INFO,
@@ -54,6 +55,7 @@ public final class ServiceReport {
      * Service report status.
      * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
      */
+    @XmlType(name="ServiceReportStatus", namespace = PlanetsServices.SERVICES_NS)
     public static enum Status {
         /**
          * The service was invoked successfully. This does not guarantee that
