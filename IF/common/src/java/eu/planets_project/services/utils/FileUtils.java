@@ -941,6 +941,47 @@ public final class FileUtils {
         }
         return list;
     }
+    
+    
+    /**
+     * This method returns all the free/available Drive letters on your System, based on File.listRoots()
+     * @return a List<String> containing all free drive letters ona windows system OR null, if all letters are beeing used.
+     * NOTE: On Unix/Linux based systems "/" the root is returned, as we don't have drive letters.
+     */
+    public static List<String> listAvailableDriveLetters() {
+    	ArrayList<String> freeLetters = new ArrayList<String>();
+    	if(!System.getProperty("os.name").toLowerCase().contains("windows")) {
+    		freeLetters.add("/");
+    		log.info("Running on Non-Windows OS, so we don't have DriveLetters ;-)");
+    		return freeLetters;
+    	}
+    	File[] roots = File.listRoots();
+    	
+    	ArrayList<String> usedLetters = new ArrayList<String>(roots.length);
+    	
+    	for(int i=0;i<roots.length;i++) {
+    		usedLetters.add(roots[i].getAbsolutePath());
+    	}
+    	
+    	// Fill the template Arraylist
+    	for(char ch='A';ch <= 'Z'; ch++) {
+    		freeLetters.add(ch + ":\\");
+    	}
+    	
+    	// Remove the used letters from our template list of ALL possible letters
+    	for (String currentLetter : usedLetters) {
+    		if(freeLetters.contains(currentLetter)) {
+    			freeLetters.remove(currentLetter);
+    		}
+		}
+    	// return the un-used letters for further use ;-)
+    	if(freeLetters.size()>0) {
+    		return freeLetters;
+    	}
+    	else {
+    		return null;
+    	}
+    }
 
     /**
      * @param file The file to determine the extension from

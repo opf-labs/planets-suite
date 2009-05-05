@@ -68,6 +68,14 @@ public class FloppyImageHelperWinTest {
         FLOPPY_IMAGE_HELPER = ServiceCreator.createTestService(Migrate.QNAME, FloppyImageHelperWin.class, WSDL);
         
 	}
+	
+	@Test
+	public void testListAvailableDriveLetters() {
+		List<String> letters = FileUtils.listAvailableDriveLetters();
+		for (String string : letters) {
+			System.out.println(string);
+		}
+	}
 
 	/**
 	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin#describe()}.
