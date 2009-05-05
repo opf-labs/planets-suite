@@ -1,8 +1,12 @@
 package eu.planets_project.services.migration.floppyImageHelper;
 
 import eu.planets_project.ifr.core.techreg.api.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.*;
@@ -36,7 +40,7 @@ import java.util.List;
 
 @BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 @WebService(
-        name = FloppyImageHelperWin.NAME, 
+        name = FloppyImageHelperUnix.NAME, 
         serviceName = Migrate.NAME,
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.migrate.Migrate")
@@ -68,6 +72,8 @@ public class FloppyImageHelperUnix implements Migrate {
 	
 	private static PlanetsLogger log = PlanetsLogger.getLogger(FloppyImageHelperUnix.class);
 	private static int LOOP_DEV_MAX = 5;
+	
+	private static FormatRegistry formatReg = FormatRegistryFactory.getFormatRegistry();
 
 	static {
 		TEMP_FOLDER = new File("/tmp");
@@ -102,10 +108,10 @@ public class FloppyImageHelperUnix implements Migrate {
        		sd.version("1.0");
 
         	List<MigrationPath> pathways = new ArrayList<MigrationPath>();
-		pathways.add(new MigrationPath(Format.extensionToURI("ZIP"), Format.extensionToURI("IMA"), null));
-		pathways.add(new MigrationPath(Format.extensionToURI("ANY"), Format.extensionToURI("IMA"), null));
-		pathways.add(new MigrationPath(Format.extensionToURI("IMA"), Format.extensionToURI("ZIP"), null));
-		pathways.add(new MigrationPath(Format.extensionToURI("IMG"), Format.extensionToURI("ZIP"), null));
+		pathways.add(new MigrationPath(formatReg.createExtensionUri("ZIP"), formatReg.createExtensionUri("IMA"), null));
+		pathways.add(new MigrationPath(formatReg.createExtensionUri("ANY"), formatReg.createExtensionUri("IMA"), null));
+		pathways.add(new MigrationPath(formatReg.createExtensionUri("IMA"), formatReg.createExtensionUri("ZIP"), null));
+		pathways.add(new MigrationPath(formatReg.createExtensionUri("IMG"), formatReg.createExtensionUri("ZIP"), null));
         
 		sd.paths(pathways.toArray(new MigrationPath[] {}));
 		return sd.build();
@@ -119,8 +125,8 @@ public class FloppyImageHelperUnix implements Migrate {
 			URI outputFormat, List<Parameter> parameters) 
 	{
 		
-		String inFormat = Format.getFirstMatchingFormatExtension(inputFormat).toUpperCase();
-		String outFormat = Format.getFirstMatchingFormatExtension(outputFormat).toUpperCase();
+		String inFormat = formatReg.getFirstExtension(inputFormat).toUpperCase();
+		String outFormat = formatReg.getFirstExtension(outputFormat).toUpperCase();
 		
 		if(parameters!=null && parameters.size()>0) {
 			for (Parameter parameter : parameters) {
@@ -138,7 +144,7 @@ public class FloppyImageHelperUnix implements Migrate {
 		String fileName = digitalObject.getTitle();
 		if(fileName == null) 
 		{
-			INPUT_EXT = Format.getFirstMatchingFormatExtension(inputFormat);
+			INPUT_EXT = formatReg.getFirstExtension(inputFormat);
 			fileName = DEFAULT_INPUT_NAME + "." + INPUT_EXT;
 		}
 		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
@@ -149,13 +155,11 @@ public class FloppyImageHelperUnix implements Migrate {
 			Content zipContent = ImmutableContent.asStream(zippedResult.getZipFile()).withChecksum(zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
-			.format(Format.extensionToURI("zip"))
+			.format(formatReg.createExtensionUri("zip"))
 			.title(zippedResult.getZipFile().getName())
 			.build();
 
-			ServiceReport report = new ServiceReport();
-			report.setErrorState(0);
-			report.setInfo(PROCESS_OUT);
+			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
 			return new MigrateResult(resultDigObj, report);
 		}
 		
@@ -184,9 +188,7 @@ public class FloppyImageHelperUnix implements Migrate {
 										.title(floppy.getName())
 										.build();
 		
-		ServiceReport report = new ServiceReport();
-        	report.setErrorState(0);
-        	report.setInfo(PROCESS_OUT);
+		ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
 		return new MigrateResult(resultDigObj, report);
 	}
 	
