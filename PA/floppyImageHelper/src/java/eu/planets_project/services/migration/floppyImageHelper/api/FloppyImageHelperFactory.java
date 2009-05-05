@@ -37,7 +37,7 @@ public final class FloppyImageHelperFactory {
 			floppyHelper = new FloppyImageHelperUnix();
 			return floppyHelper;
 		}
-		log.error("Sorry, your Operating System " + OS + " " + VERSION + " " + ARCHITECTURE +  " is not supported by this service!");
+		log.error("Sorry, your Operating System " + OS.toUpperCase() + " " + VERSION + " " + ARCHITECTURE +  " is not supported by this service!");
 		return null;
 	}
 }
