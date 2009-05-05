@@ -1,25 +1,36 @@
 package eu.planets_project.services.migration.floppyImageHelper;
 
-import eu.planets_project.ifr.core.techreg.api.formats.Format;
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.*;
-import eu.planets_project.services.datatypes.ServiceReport.Status;
-import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.utils.*;
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
+import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.datatypes.Checksum;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.MigrationPath;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.utils.PlanetsLogger;
+import eu.planets_project.services.utils.ProcessRunner;
+import eu.planets_project.services.utils.ServiceUtils;
+import eu.planets_project.services.utils.ZipResult;
 
 /**
  * @author Peter Melms
