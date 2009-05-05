@@ -53,24 +53,28 @@ public class FileSystemDataManager implements DataManagerLocal {
         Properties properties = new Properties();
 
         try {
-            java.io.InputStream ResourceFile = getClass().getClassLoader()
-                    .getResourceAsStream(
-                            "eu/planets_project/tb/impl/BackendResources.properties"
-                    );
-            properties.load(ResourceFile); 
-            
             String localDataDir;
-            // See http://wiki.jboss.org/wiki/Wiki.jsp?page=JBossProperties for more JBoss properties.
-			if (properties.getProperty("JBoss.AltLocalDataDir") != null) { 
-				localDataDir = properties.getProperty("JBoss.AltLocalDataDir");
-			}
-			else {
+            java.io.InputStream ResourceFile = getClass().getClassLoader()
+                    .getResourceAsStream("BackendResources.properties");
+            if (ResourceFile!=null){
+	            properties.load(ResourceFile); 
+	            
+	            // See http://wiki.jboss.org/wiki/Wiki.jsp?page=JBossProperties for more JBoss properties.
+				if (properties.getProperty("JBoss.AltLocalDataDir") != null) { 
+					localDataDir = properties.getProperty("JBoss.AltLocalDataDir");
+				}
+				else {
+	                localDataDir = System.getProperty("jboss.home.dir") +
+					System.getProperty("file.separator") +
+					properties.getProperty("JBoss.LocalDataDir");
+				}
+	            
+	            ResourceFile.close();
+            } else {
                 localDataDir = System.getProperty("jboss.home.dir") +
 				System.getProperty("file.separator") +
-				properties.getProperty("JBoss.LocalDataDir");
-			}
-            
-            ResourceFile.close();
+				"planets-ftp";            	
+            }
             
             // Open the localDataDir
             File ldd = new File(localDataDir);

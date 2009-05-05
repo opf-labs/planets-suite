@@ -129,7 +129,12 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         
         // return the listing.
         try {
-            return new ArrayList<URI>( Arrays.asList( dm.list(pdURI) ) );
+        	URI[] dml = dm.list(pdURI);
+        	if (dml!=null) {
+        		return new ArrayList<URI>( Arrays.asList( dml ) );
+        	} else {
+        		return null;
+        	}
         } catch (SOAPException e) {
             e.printStackTrace();
             return null;
