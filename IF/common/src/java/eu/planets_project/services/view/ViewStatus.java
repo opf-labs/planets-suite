@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import eu.planets_project.services.datatypes.Property;
 
@@ -23,7 +24,9 @@ import eu.planets_project.services.datatypes.Property;
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class ViewStatus {
-    
+
+    // Give it a suitable different name from the other Status class.
+    @XmlType( name = "view-status" )
     public enum Status { ACTIVE, INACTIVE, UNKNOWN };
     
     private Status state;
