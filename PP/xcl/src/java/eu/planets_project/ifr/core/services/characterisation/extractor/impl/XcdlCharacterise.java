@@ -2,9 +2,7 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,9 +17,7 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.CompareResult;
-import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -39,7 +35,7 @@ import eu.planets_project.services.utils.ServiceUtils;
  */
 @WebService(name = XcdlCharacterise.NAME, serviceName = Characterise.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.characterise.Characterise")
 @Stateless
-public class XcdlCharacterise implements Characterise, Serializable {
+public final class XcdlCharacterise implements Characterise, Serializable {
 
     private static final long serialVersionUID = -8537596616209516979L;
 
@@ -70,8 +66,8 @@ public class XcdlCharacterise implements Characterise, Serializable {
     public CharacteriseResult characterise(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
 
-        DigitalObject resultDigOb = null;
-        ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
+        ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                "OK");
         CharacteriseResult characteriseResult = null;
         String optionalFormatXCEL = null;
 
@@ -102,45 +98,11 @@ public class XcdlCharacterise implements Characterise, Serializable {
             result = coreExtractor.extractXCDL(inputData, null, parameters);
         }
 
-        int sizeInKB = 0;
-
         if (result != null) {
-            sizeInKB = result.length / 1024;
             File outputFile = FileUtils.writeByteArrayToTempFile(result);
             List<Property> properties = new XcdlParser(outputFile)
                     .getProperties();
-            // output Files smaller than 10Mb
-            if (sizeInKB < MAX_FILE_SIZE) {
-                try {
-                    resultDigOb = new DigitalObject.Builder(ImmutableContent
-                            .byValue(result))
-                            .permanentUrl(
-                                    new URL(
-                                            "http://planets-project.eu/services/pc/planets-extractor-service"))
-                            .build();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                characteriseResult = new CharacteriseResult(properties, sReport);
-                // TODO this is just to avoid braking the testbed and no longer
-                // needed if no deprecated API is used there:
-                characteriseResult.setDigitalObject(resultDigOb);
-            } else {
-                File tmpResult = FileUtils.getTempFile(result, "tmpResult",
-                        "tmp");
-                try {
-                    resultDigOb = new DigitalObject.Builder(ImmutableContent
-                            .byReference(tmpResult.toURI().toURL())).build();
-                    characteriseResult = new CharacteriseResult(properties,
-                            sReport);
-                    // TODO this is just to avoid braking the testbed and no
-                    // longer needed if no deprecated API is used there:
-                    characteriseResult.setDigitalObject(resultDigOb);
-                } catch (MalformedURLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
+            characteriseResult = new CharacteriseResult(properties, sReport);
         } else {
             this.returnWithErrorMessage("ERROR: No XCDL created!", null);
         }
@@ -165,7 +127,8 @@ public class XcdlCharacterise implements Characterise, Serializable {
     }
 
     /**
-     * @see eu.planets_project.services.characterise.Characterise#describe()
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(
@@ -200,9 +163,10 @@ public class XcdlCharacterise implements Characterise, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
-    public final List<Property> listProperties(final URI formatURI) {
+    public List<Property> listProperties(final URI formatURI) {
         XcdlCommonProperties commonProperties = new XcdlCommonProperties();
         CompareResult result = commonProperties.union(Arrays.asList(formatURI));
         List<Property> list = result.getProperties();
