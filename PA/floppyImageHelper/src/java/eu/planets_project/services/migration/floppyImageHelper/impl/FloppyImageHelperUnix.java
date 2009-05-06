@@ -140,16 +140,6 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		String inFormat = formatReg.getFirstExtension(inputFormat).toUpperCase();
 		String outFormat = formatReg.getFirstExtension(outputFormat).toUpperCase();
 		
-		if(parameters!=null && parameters.size()>0) {
-			for (Parameter parameter : parameters) {
-				if(parameter.name.equalsIgnoreCase("modifyImage")) {
-					if(parameter.value.equalsIgnoreCase("true")) {
-						MODIFY_IMAGE = true;
-					}
-				}
-			}
-		}
-		
 		ImmutableContent content = (ImmutableContent)digitalObject.getContent();
 		Checksum checksum = content.getChecksum();
 		

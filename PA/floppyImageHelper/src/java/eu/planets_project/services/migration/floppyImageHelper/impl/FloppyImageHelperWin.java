@@ -59,7 +59,10 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	
 	private File EXTRACTED_FILES_DIR = null;
 	private String EXTRACTION_OUT_FOLDER_NAME = "EXTRACTED_FILES";
-	private String FLOPPY_IMAGE_TOOLS_HOME = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
+	private String FITOOLS_HOME_PATH = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
+	
+	private String VFD_TOOL_NAME = "VFD.EXE";
+	
 	private String DEFAULT_INPUT_NAME = "inputFile";
 	private String INPUT_EXT = null;
 	
@@ -67,8 +70,8 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	private File TOOL_DIR = null;
 	private static final long FLOPPY_SIZE = 1474560;
 	
-	private String PROCESS_ERROR = null;
-	private String PROCESS_OUT = null;
+	private String PROCESS_ERROR = "";
+	private String PROCESS_OUT = "";
 	
     private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
 
@@ -113,15 +116,15 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, List<Parameter> parameters) {
 		
-		if(FLOPPY_IMAGE_TOOLS_HOME == null) {
-			log.error("FLOPPY_IMAGE_TOOLS_HOME = null! " +
+		if(FITOOLS_HOME_PATH == null) {
+			log.error("FITOOLS_HOME_PATH = null! " +
 					"\nCould not find floppy image tools! " +
 					"\nPlease install 'extract' and 'fat_imgen' on your system and point a System variable to the installation folder!" +
 					"\nOtherwise this service will carry on to refuse to do its work!");
-			return this.returnWithErrorMessage("FLOPPY_IMAGE_TOOLS_HOME is NOT set! Nothing done, sorry!", null);
+			return this.returnWithErrorMessage("FITOOLS_HOME_PATH is NOT set! Nothing done, sorry!", null);
 		}
 		else {
-			TOOL_DIR = new File(FLOPPY_IMAGE_TOOLS_HOME);
+			TOOL_DIR = new File(FITOOLS_HOME_PATH);
 		}
 		
 		FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
@@ -156,7 +159,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 		ZipResult zippedResult = null;
 		
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
-			zippedResult = this.extractFilesFromFloppyImage(inputFile);
+			zippedResult = this.openImageWithVfdAndGetFiles(inputFile);
 			
 			Content zipContent = ImmutableContent.asStream(
                     zippedResult.getZipFile()).withChecksum(
@@ -181,14 +184,15 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 			else {
 				extractedFiles = FileUtils.extractFilesFromZip(inputFile, TEMP_FOLDER);
 			}
-			imageFile = this.createFloppyImageAndInjectFiles(extractedFiles);
+//			imageFile = this.createFloppyImageAndInjectFiles(extractedFiles);
+			imageFile = this.createImageWithVfdAndInjectFiles(extractedFiles);
 		}
 		// the file in the digitalObject is NOT a Zip, so we have just one file to write ;-)
 		// Put that in a List and pass it to the creation-method as usual...
 		else {
 			List<File> tmpList = new ArrayList<File>();
 			tmpList.add(inputFile);
-			imageFile = this.createFloppyImageAndInjectFiles(tmpList);
+			imageFile = this.createImageWithVfdAndInjectFiles(tmpList);
 			if(imageFile==null) {
 				 return this.returnWithErrorMessage(PROCESS_ERROR, null);
 			}
@@ -229,27 +233,28 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	}
 	
 	private File createFloppyImageAndInjectFiles(List<File> filesToInject) {
-			if(FileUtils.filesTooLargeForMedium(filesToInject, FLOPPY_SIZE)) {
-				log.error("Sorry! File compilation too large to be written to a Floppy (1.44 MB). Returning with error: " + PROCESS_ERROR);
-				return null;
-			}
-			
-			ProcessRunner cmd = new ProcessRunner();
-			cmd.setCommand(this.getCreationAndInjectCommandLine(filesToInject));
-			cmd.setStartingDir(TEMP_FOLDER);
-			cmd.run();
-			PROCESS_OUT = cmd.getProcessOutputAsString();
-			log.info("Tool output:\n" + PROCESS_OUT);
-			PROCESS_ERROR = cmd.getProcessErrorAsString();
-			log.info("Tool errors:\n" + PROCESS_ERROR);
-			
-			File resultImage = new File(TEMP_FOLDER, DEFAULT_FLOPPY_IMAGE_NAME);
-			if(!resultImage.exists()) {
-				log.error("No floppy image created! Returning with error: " + PROCESS_ERROR);
-				return null;
-			}
-			return resultImage;
+		if(FileUtils.filesTooLargeForMedium(filesToInject, FLOPPY_SIZE)) {
+			log.error("Sorry! File compilation too large to be written to a Floppy (1.44 MB). Returning with error: " + PROCESS_ERROR);
+			return null;
 		}
+		
+		ProcessRunner cmd = new ProcessRunner();
+		cmd.setCommand(this.getCreationAndInjectCommandLine(filesToInject));
+		cmd.setStartingDir(TEMP_FOLDER);
+		cmd.run();
+		PROCESS_OUT = cmd.getProcessOutputAsString();
+		log.info("Tool output:\n" + PROCESS_OUT);
+		PROCESS_ERROR = cmd.getProcessErrorAsString();
+		log.info("Tool errors:\n" + PROCESS_ERROR);
+		
+		File resultImage = new File(TEMP_FOLDER, DEFAULT_FLOPPY_IMAGE_NAME);
+		if(!resultImage.exists()) {
+			log.error("No floppy image created! Returning with error: " + PROCESS_ERROR);
+			return null;
+		}
+		return resultImage;
+	}
+	
 
 	private ArrayList<String> getCreationAndInjectCommandLine(List<File> files) {
 		ArrayList<String> commands = new ArrayList<String>();
@@ -263,6 +268,235 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 		return commands;
 	}
 	
+	private File createImageWithVfdAndInjectFiles(List<File> filesToInject) {
+		if(FileUtils.filesTooLargeForMedium(filesToInject, FLOPPY_SIZE)) {
+			log.error("Sorry! File compilation too large to be written to a Floppy (1.44 MB). Returning with error: " + PROCESS_ERROR);
+			return null;
+		}
+		ProcessRunner cmd = new ProcessRunner();
+		cmd.setStartingDir(TEMP_FOLDER);
+		cmd.setCommand(installVfdDriver());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(startVfdDriver());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(createNewImageWithVfd());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(formatVfdDrive());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		String driveLetter = getDriveLetter();
+		if(driveLetter==null) {
+			PROCESS_ERROR = "Could not assign drive letter to virtual floppy drive, all letters are in use!";
+			return null;
+		}
+		cmd.setCommand(linkDriveLetterToVfdDrive(driveLetter));
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		
+		File floppy = new File(driveLetter);
+		
+		for (File currentFile : filesToInject) {
+			File target = new File(floppy, currentFile.getName());
+			FileUtils.copyFileTo(currentFile, target);
+		}
+		
+//		File newfloppyImage = new File(TEMP_FOLDER, DEFAULT_FLOPPY_IMAGE_NAME);
+		
+		cmd.setCommand(saveImageInVfdDriveTo(DEFAULT_FLOPPY_IMAGE_NAME));
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(closeImageInVfd());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		
+		File newfloppyImage = new File(TEMP_FOLDER, DEFAULT_FLOPPY_IMAGE_NAME);
+		
+		return newfloppyImage;
+	}
+	
+	private ZipResult openImageWithVfdAndGetFiles(File imageFile) {
+		ProcessRunner cmd = new ProcessRunner();
+		cmd.setStartingDir(TEMP_FOLDER);
+		cmd.setCommand(installVfdDriver());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(startVfdDriver());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		String driveLetter = getDriveLetter();
+		if(driveLetter==null) {
+			PROCESS_ERROR = "Could not assign drive letter to virtual floppy drive, all letters are in use!";
+			return null;
+		}
+		cmd.setCommand(linkDriveLetterToVfdDrive(driveLetter));
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(openImageInVfd(imageFile));
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		
+		File floppy = new File(driveLetter);
+		System.out.println("Floppy Path name: " + floppy.getName());
+		
+		File[] filesOnFloppy = floppy.listFiles();
+		
+		for (File file : filesOnFloppy) {
+			File dest = new File(EXTRACTED_FILES_DIR, file.getName());
+			FileUtils.copyFileTo(file, dest);
+		}
+		
+		ZipResult zip = FileUtils.createZipFileWithChecksum(EXTRACTED_FILES_DIR, TEMP_FOLDER, "extracedFiles.zip");
+		cmd.setCommand(closeImageInVfd());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.run();
+		appendProcessOutAndError(cmd);
+//		cmd.setCommand(stopVfdDriver());
+//		cmd.run();
+		return zip;
+	}
+	
+	private void appendProcessOutAndError(ProcessRunner processRunner) {
+		PROCESS_OUT = PROCESS_OUT + "\n" + processRunner.getProcessOutputAsString();
+		PROCESS_ERROR = PROCESS_ERROR + "\n" + processRunner.getProcessErrorAsString();
+	}
+	
+	private String getDriveLetter() {
+		List<String> freeDriveLetters = FileUtils.listAvailableDriveLetters();
+		String driveLetter = null;
+		if(freeDriveLetters!=null) {
+			driveLetter = freeDriveLetters.get(0);
+		}
+		else { 
+			PROCESS_ERROR = "Virtual floppy drive could not be mapped to a drive letter; all drive letters are in use!!!" +
+			   				"\nReturning NULL";
+			return null;
+		}
+		return driveLetter;
+	}
+	
+	
+	private ArrayList<String> startVfdDriver() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("START");
+		return commands;
+	}
+	
+	private ArrayList<String> stopVfdDriver() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("STOP");
+		commands.add("/FORCE");
+		return commands;
+	}
+	
+	private ArrayList<String> installVfdDriver() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("INSTALL");
+		commands.add("/AUTO");
+		return commands;
+	}
+	
+	private ArrayList<String> removeVfdDriver() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("REMOVE");
+		commands.add("/FORCE");
+		return commands;
+	}
+	
+	private ArrayList<String> openImageInVfd(File floppyImage) {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("OPEN");
+		commands.add(floppyImage.getName());
+		commands.add("/W");
+		commands.add("/FORCE");
+		return commands;
+	}
+	
+	private ArrayList<String> createNewImageWithVfd() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("OPEN");
+		commands.add("0:");
+		commands.add("/NEW");
+		commands.add("/W");
+		commands.add("/1.44");
+		commands.add("/FORCE");
+		return commands;
+	} 
+	
+	private ArrayList<String> closeImageInVfd() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("CLOSE");
+		commands.add("0:");
+		commands.add("/FORCE");
+		return commands;
+	} 
+	
+	private ArrayList<String> uLinkDriveLetterFromVfdDrive() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("ULINK");
+		return commands;
+	}
+
+	private ArrayList<String> linkDriveLetterToVfdDrive(String driveLetter) {
+		if(driveLetter.endsWith("\\")) {
+			driveLetter = driveLetter.replace("\\", "");
+		}
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("LINK");
+		commands.add("0:");
+		commands.add(driveLetter);
+//		commands.add("/L");
+		return commands;
+	}
+	
+	private ArrayList<String> saveImageInVfdDriveTo(String destFileName) {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("SAVE");
+		commands.add("0:");
+		commands.add(destFileName);
+//		commands.add("/OVER");
+		commands.add("/FORCE");
+		return commands;
+	}
+	
+	private ArrayList<String> statusOfVfdDrive() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("STATUS");
+		return commands;
+	}
+	
+	private ArrayList<String> formatVfdDrive() {
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
+		commands.add("FORMAT");
+		commands.add("0:");
+		commands.add("/FORCE");
+		return commands;
+	} 
 
 	/**
 	 * @param message an optional message on what happened to the service

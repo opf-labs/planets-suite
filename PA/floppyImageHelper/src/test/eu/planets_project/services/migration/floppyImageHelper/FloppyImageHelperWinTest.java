@@ -50,6 +50,8 @@ public class FloppyImageHelperWinTest {
 	static File FILES_FOR_MODIFICATION_WITH_ERROR = new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification_with_error");
 	
 	static File FLOPPY_IMAGE = new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification/FLOPPY144.IMA");
+	
+	static File RESULT_FILE = null;
 
 	FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
 	/**
@@ -111,8 +113,8 @@ public class FloppyImageHelperWinTest {
 		System.out.println(report);
 		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);
 		DigitalObject resultDigObj = migrateResult.getDigitalObject();
-		File resultFile = new File(OUT_DIR, resultDigObj.getTitle());
-		FileUtils.writeInputStreamToFile(resultDigObj.getContent().read(), resultFile);
+		RESULT_FILE = new File(OUT_DIR, resultDigObj.getTitle());
+		FileUtils.writeInputStreamToFile(resultDigObj.getContent().read(), RESULT_FILE);
 	}
 	
 	
@@ -121,8 +123,8 @@ public class FloppyImageHelperWinTest {
 		System.out.println("********************************************");
 		System.out.println("* Testing: Extract Files from Floppy Image *");
 		System.out.println("********************************************");
-		Content content = ImmutableContent.asStream(FLOPPY_IMAGE);
-		DigitalObject input = new DigitalObject.Builder(content).format(format.createExtensionUri("ima")).title(FLOPPY_IMAGE.getName()).build();
+		Content content = ImmutableContent.asStream(RESULT_FILE);
+		DigitalObject input = new DigitalObject.Builder(content).format(format.createExtensionUri("ima")).title(RESULT_FILE.getName()).build();
 		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, format.createExtensionUri("ima"), format.createExtensionUri("zip"), null);
 		ServiceReport report = migrateResult.getReport();
 		System.out.println(report);

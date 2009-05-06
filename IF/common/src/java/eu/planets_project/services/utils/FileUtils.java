@@ -137,11 +137,19 @@ public final class FileUtils {
     }
 
     public static boolean copyFileTo(File src, File dest) {
-        long destSize = writeInputStreamToOutputStream(
-                getInputStreamFromFile(src), getOutputStreamToFile(dest));
+        InputStream in = getInputStreamFromFile(src);
+        OutputStream out = getOutputStreamToFile(dest);
+    	long destSize = writeInputStreamToOutputStream(
+                in, out);
         if (destSize == src.length()) {
+        	close(in);
+        	flush(out);
+        	close(out);
             return true;
         } else {
+        	close(in);
+        	flush(out);
+        	close(out);
             return false;
         }
     }
@@ -1006,6 +1014,19 @@ public final class FileUtils {
         if (out != null) {
             try {
                 out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    /**
+     * @param out The closeable (Writer, Stream, etc.) to close
+     */
+    public static void flush(final OutputStream out) {
+        if (out != null) {
+            try {
+                out.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
