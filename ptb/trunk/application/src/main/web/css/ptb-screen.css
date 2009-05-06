@@ -1006,14 +1006,23 @@ pre.rawServiceDescription {
   background-color: #f8f8f8;
   width: 400px;
 }
+
+#digitalObjectRegistryBrowser .rich-toolbar a {
+  color: white;
+  text-decoration: underline;
+}
+#digitalObjectRegistryBrowser .rich-toolbar .dr-menu-label:hover a {
+  color: black;
+}
+
 #digitalObjectRegistryBrowser table {
   width: 100%;
 }
 #digitalObjectRegistryBrowser .listContent {
-  width: 70%;
+  width: 65%;
   vertical-align: top;
 }
 #digitalObjectRegistryBrowser .infoContent {
-  width: 25%;
+  width: 35%;
   vertical-align: top;
 }

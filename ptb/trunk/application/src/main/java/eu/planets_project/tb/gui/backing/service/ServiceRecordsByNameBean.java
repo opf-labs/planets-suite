@@ -52,7 +52,14 @@ public class ServiceRecordsByNameBean {
      * @return
      */
     public ServiceRecordBean getNameRecord() {
-        return srbs.get(0);
+        // This should get an 'active' one if possible.
+        for( ServiceRecordBean sr : srbs ) {
+            if( sr.isActive() ) {
+                return sr;
+            }
+        }
+        // Otherwise, return the one at the end of the list.
+        return srbs.get(srbs.size()-1);
     }
 
     /**

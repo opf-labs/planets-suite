@@ -27,7 +27,10 @@ public class ServiceRecordBean {
     
     /** Any tested service should have a service record. */
     private ServiceRecordImpl sr = null;
-    
+
+    /** The description to display, drawn from the sr if no sd */
+    private ServiceDescription sr_sd = null;
+
     /** Is this record currently selected, in the GUI? */
     private boolean selected = false;
     
@@ -41,7 +44,7 @@ public class ServiceRecordBean {
      * @param sr
      */
     public ServiceRecordBean(ServiceRecordImpl sr) {
-        this.sr = sr;
+        this.setServiceRecord(sr);
         this.experiments = sr.getExperiments();
     }
 
@@ -86,6 +89,7 @@ public class ServiceRecordBean {
      * @return
      */
     private String mapTypeName( String type ) {
+        if( type == null ) return "";
         return type.substring( type.lastIndexOf(".")+1 );
     }
 
@@ -152,7 +156,7 @@ public class ServiceRecordBean {
      */
     public ServiceDescription getServiceDescription() {
         if( sd == null ) {
-            return sr.getServiceDescription();
+            return sr_sd;
         }
         return sd;
     }
@@ -184,6 +188,7 @@ public class ServiceRecordBean {
      */
     public void setServiceRecord(ServiceRecordImpl sr) {
         this.sr = sr;
+        this.sr_sd = sr.getServiceDescription();
     }
 
     /**

@@ -38,10 +38,8 @@ public class ServiceInspector {
      * @param serviceName
      */
     public void setServiceName(String serviceName) { 
-        this.serviceName = serviceName; 
-        if( serviceName != null && ! "".equals(serviceName)) {
-            lookForService(); 
-        }
+        this.serviceName = serviceName;
+        lookForService();
     }
 
     /**
@@ -57,9 +55,7 @@ public class ServiceInspector {
      */
     public void setServiceHash(String serviceHash) {
         this.serviceHash = serviceHash;
-        if( serviceHash != null && ! "".equals(serviceHash)) {
-            lookForServiceByHash(); 
-        }
+        lookForService();
     }
 
     /**
@@ -70,10 +66,22 @@ public class ServiceInspector {
     }
 
 
+    /** */
+    private void lookForService() {
+        // By Hash takes precedence:
+        if( serviceHash != null && ! "".equals(serviceHash)) {
+            lookForServiceByHash(); 
+            return;
+        }
+        if( serviceName != null && ! "".equals(serviceName)) {
+            lookForServiceByName(); 
+        }
+    }
+    
     /**
      * 
      */
-    private void lookForService() {
+    private void lookForServiceByName() {
         log.info("Looking up service: " + this.serviceName);
         this.srbs = new ArrayList<ServiceRecordBean>();
         if( this.serviceName == null ) return;
@@ -94,7 +102,7 @@ public class ServiceInspector {
      * 
      */
     private void lookForServiceByHash() {
-        log.info("Looking up service: " + this.serviceHash);
+        log.info("Looking up service by hash: " + this.serviceHash);
         if( this.serviceHash == null ) return;
         
         // Get the service browser:

@@ -111,10 +111,14 @@
 		<managed-bean-name>ServiceInspector</managed-bean-name>
 		<managed-bean-class>eu.planets_project.tb.gui.backing.service.ServiceInspector</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
-		<managed-property>
-			<property-name>serviceName</property-name>
-			<value>#{param['serviceName']}</value>
-		</managed-property>
+        <managed-property>
+            <property-name>serviceName</property-name>
+            <value>#{param['serviceName']}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>serviceHash</property-name>
+            <value>#{param['serviceHash']}</value>
+        </managed-property>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>PlanetsSharedBean</managed-bean-name>

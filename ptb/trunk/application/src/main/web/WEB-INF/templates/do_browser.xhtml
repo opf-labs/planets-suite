@@ -24,10 +24,10 @@
   
     <div id="digitalObjectRegistryBrowser">
 
-       <rich:toolBar height="34" itemSeparator="line"  styleClass="tbTable">
+       <rich:toolBar id="dobrowseToolbar" height="34" itemSeparator="line" style="background-color: #{a4jSkin.headerBackgroundColor}">
             <rich:toolBarGroup>
             
-            <rich:dropDownMenu submitMode="none">
+            <rich:dropDownMenu submitMode="none" showDelay="500">
                 <f:facet name="label"> 
                     <h:panelGroup>
                       <h:commandLink action="#{DobBrowser.goHome}">
@@ -64,12 +64,12 @@
                 <rich:dataTable id="DobBrowserList" var="do" value="#{DobBrowser.list}" 
                  rows="10" reRender="dobrow_ds" styleClass="tbTable" style="height: 400; width: 100%">
         
-                <rich:column>
+                <rich:column width="1%">
                   <f:facet name="header"><h:selectBooleanCheckbox /></f:facet>
                   <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}"/>
                 </rich:column>
                        
-                <rich:column>
+                <rich:column width="100%">
                 <f:facet name="header">#{res['browse_data.name']}</f:facet>
                 <h:panelGroup rendered="#{do.directory}">
                   <h:commandLink action="success">
@@ -84,12 +84,12 @@
                 </h:panelGroup>
                 </rich:column>
 
-                <rich:column>
+                <rich:column width="1%">
                 <f:facet name="header">#{res['browse_data.size']}</f:facet>
                   <h:outputText value=" #{do.size}"/>
                 </rich:column>
                 
-                <rich:column>
+                <rich:column width="1%">
                 <f:facet name="header">#{res['browse_data.type']}</f:facet>
                 <h:panelGroup rendered="#{do.directory}">
                 #{res['browse_data.folder']}

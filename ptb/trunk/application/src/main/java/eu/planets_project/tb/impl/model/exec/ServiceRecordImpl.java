@@ -4,6 +4,10 @@
 package eu.planets_project.tb.impl.model.exec;
 
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,6 +30,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.api.persistency.ServiceRecordPersistencyRemote;
@@ -219,7 +224,42 @@ public class ServiceRecordImpl implements Serializable {
      * @return the serviceDescription
      */
     public ServiceDescription getServiceDescription() {
-        return ServiceDescription.of(serviceDescription);
+        // FIXME Stop doing this over and over?
+        ServiceDescription new_sd = null;
+        try {
+            new_sd = ServiceDescription.of(serviceDescription);
+        }  catch( Exception e ) {
+            log.error("Failed to parse serviceDescription: "+e);
+            new_sd = null;
+        }
+        if( new_sd == null ) {
+            new_sd = this.serviceDescriptionFromRecord();
+        }
+        return new_sd;
+    }
+
+    /** */
+    private ServiceDescription serviceDescriptionFromRecord() {
+        ServiceDescription.Builder sdb = new ServiceDescription.Builder(this.serviceName, this.serviceType);
+        sdb.description("This old service is not longer available.");
+        sdb.version(this.serviceVersion);
+        // The endpoint:
+        try {
+            sdb.endpoint( new URL(this.endpoint));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        // Tool info:
+        URI toolUri = null;
+        try {
+            if( this.toolIdentifier != null ) {
+                toolUri = new URI(this.toolIdentifier);
+            }
+        } catch (URISyntaxException e1) {
+            e1.printStackTrace();
+        }
+        sdb.tool( new Tool(toolUri, this.toolName, this.toolVersion) );
+        return sdb.build();
     }
 
     /**
