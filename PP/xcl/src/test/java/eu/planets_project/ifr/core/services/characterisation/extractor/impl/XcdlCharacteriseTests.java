@@ -180,28 +180,26 @@ public class XcdlCharacteriseTests {
         List<Parameter> parameterList = new ArrayList<Parameter>();
 
         if (disableNormDataFlag) {
-            Parameter normDataFlag = new Parameter(
+            Parameter normDataFlag = new Parameter.Builder(
                     "disableNormDataInXCDL",
-                    "-n",
-                    null,
-                    "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
+                    "-n").description(
+                    "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'").build();
             parameterList.add(normDataFlag);
         }
 
         if (enableRawDataFlag) {
-            Parameter enableRawData = new Parameter("enableRawDataInXCDL",
-                    "-r", null,
-                    "Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
+            Parameter enableRawData = new Parameter.Builder("enableRawDataInXCDL",
+                    "-r").description(
+                    "Enables the output of RAW Data in XCDL file. Allowed value: '-r'").build();
             parameterList.add(enableRawData);
         }
 
         if (optionalXCELString != null) {
-            Parameter xcelStringParam = new Parameter(
+            Parameter xcelStringParam = new Parameter.Builder(
                     "optionalXCELString",
-                    optionalXCELString,
-                    null,
+                    optionalXCELString).description(
                     "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
-                            + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.");
+                            + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.").build();
             parameterList.add(xcelStringParam);
         }
 

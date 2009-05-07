@@ -73,7 +73,7 @@ public final class ComparatorConfigParser {
                 mString = mString.substring(0, mString.length() - 1);
             }
             String propId = String.valueOf(property.getId());
-            Parameter prop = new Parameter(name, mString, propId);
+            Parameter prop = new Parameter.Builder(name, mString).type(propId).build();
             result.add(prop);
         }
         return result;

@@ -28,12 +28,12 @@ public class ComparatorConfigCreatorTests {
         /* We create 4 props for these, using names and specifying the IDs: */
         Parameter s = new Parameter("source", i.next());
         Parameter t = new Parameter("target", i.next());
-        Parameter p1 = new Parameter(i.next(), String.format(
+        Parameter p1 = new Parameter.Builder(i.next(), String.format(
                 "metric %s 200, metric %s 201, metric %s 210, metric %s 999", i
-                        .next(), i.next(), i.next(), i.next()), "55");
-        Parameter p2 = new Parameter(i.next(), String.format(
+                        .next(), i.next(), i.next(), i.next())).type("55").build();
+        Parameter p2 = new Parameter.Builder(i.next(), String.format(
                 "metric %s 10, metric %s 50, metric %s 15", i.next(), i.next(),
-                i.next()), "35");
+                i.next())).type("35").build();
         /*
          * From this object representation, we can create the PCR XML file
          * required by the XCDL Comparator:

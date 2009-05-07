@@ -1,7 +1,23 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.jws.WebService;
+
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.*;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.MigrationPath;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
@@ -9,17 +25,6 @@ import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
-
-import javax.ejb.Stateless;
-import javax.jws.WebService;
-import java.io.File;
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * XCL extractor service based on the Migrate interface.
@@ -109,24 +114,21 @@ public final class XcdlMigrate implements Migrate {
         sd.version("0.1");
 
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        Parameter normDataFlag = new Parameter(
+        Parameter normDataFlag = new Parameter.Builder(
                 "disableNormDataInXCDL",
-                "-n",
-                null,
-                "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
+                "-n").description(
+                "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'").build();
         parameterList.add(normDataFlag);
 
-        Parameter enableRawData = new Parameter("enableRawDataInXCDL", "-r",
-                null,
-                "Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
+        Parameter enableRawData = new Parameter.Builder("enableRawDataInXCDL", "-r").description(
+                "Enables the output of RAW Data in XCDL file. Allowed value: '-r'").build();
         parameterList.add(enableRawData);
 
-        Parameter optionalXCELString = new Parameter(
+        Parameter optionalXCELString = new Parameter.Builder(
                 "optionalXCELString",
-                "the XCEL file as a String",
-                null,
+                "the XCEL file as a String").description(
                 "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
-                        + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.");
+                        + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.").build();
         parameterList.add(optionalXCELString);
 
         sd.parameters(parameterList);
