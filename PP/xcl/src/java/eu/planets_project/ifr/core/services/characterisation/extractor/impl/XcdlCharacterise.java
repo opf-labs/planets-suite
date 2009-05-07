@@ -82,9 +82,9 @@ public final class XcdlCharacterise implements Characterise, Serializable {
         if (parameters != null) {
             if (parameters.size() > 0) {
                 for (Parameter parameter : parameters) {
-                    String name = parameter.name;
+                    String name = parameter.getName();
                     if (name.equalsIgnoreCase("optionalXCELString")) {
-                        optionalFormatXCEL = parameter.value;
+                        optionalFormatXCEL = parameter.getValue();
                         break;
                     }
                 }
@@ -143,14 +143,16 @@ public final class XcdlCharacterise implements Characterise, Serializable {
         sd.version("0.1");
 
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        Parameter normDataFlag = new Parameter("disableNormDataInXCDL", "-n");
-        normDataFlag
-                .setDescription("Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
+        Parameter normDataFlag = new Parameter(
+                "disableNormDataInXCDL",
+                "-n",
+                null,
+                "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
         parameterList.add(normDataFlag);
 
-        Parameter enableRawData = new Parameter("enableRawDataInXCDL", "-r");
-        enableRawData
-                .setDescription("Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
+        Parameter enableRawData = new Parameter("enableRawDataInXCDL", "-r",
+                null,
+                "Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
         parameterList.add(enableRawData);
 
         sd.parameters(parameterList);

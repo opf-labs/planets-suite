@@ -221,28 +221,28 @@ public class CoreExtractor {
 	        	plogger.info("Got additional parameters: ");
 	        	for (Iterator<Parameter> iterator = parameters.iterator(); iterator.hasNext();) {
 					Parameter parameter = (Parameter) iterator.next();
-					String name = parameter.name;
+					String name = parameter.getName();
 					if(name.equalsIgnoreCase(OPTIONAL_XCEL_PARAM)) {
 						plogger.info("Optional XCEL passed! Using specified XCEL.");
 						continue;
 					}
 					
 					if(name.equalsIgnoreCase(RAW_DATA_FLAG)) {
-						plogger.info("Got Parameter: " + name + " = " + parameter.value);
+						plogger.info("Got Parameter: " + name + " = " + parameter.getValue());
 						plogger.info("Configuring Extractor to write RAW data!");
-						extractor_arguments.add(parameter.value);
+						extractor_arguments.add(parameter.getValue());
 						continue;
 					}
 					
 					else if(name.equalsIgnoreCase(NO_NORM_DATA_FLAG)) {
-						plogger.info("Got Parameter: " + name + " = " + parameter.value);
+						plogger.info("Got Parameter: " + name + " = " + parameter.getValue());
 						plogger.info("Configuring Extractor to skip NormData!");
-						extractor_arguments.add(parameter.value);
+						extractor_arguments.add(parameter.getValue());
 						NORM_DATA_DISABLED = true;
 						continue;
 					}
 					else {
-						plogger.warn("Invalid parameter: " + name + " = '" + parameter.value + "'. Ignoring parameter...!");
+						plogger.warn("Invalid parameter: " + name + " = '" + parameter.getValue() + "'. Ignoring parameter...!");
 						continue;
 					}
 	        	}

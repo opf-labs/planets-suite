@@ -86,10 +86,10 @@ public class XcdlMigrateTests {
         System.out.println();
         System.out.println("Received ServiceDescription from: "
                 + extractor.getClass().getName());
+        assertTrue("The ServiceDescription should not be NULL.", sd != null);
         System.out.println(sd.toXmlFormatted());
         System.out
                 .println("--------------------------------------------------------------------");
-        assertTrue("The ServiceDescription should not be NULL.", sd != null);
     }
 
     @Test
@@ -122,9 +122,7 @@ public class XcdlMigrateTests {
                             + "Extractor will find the proper one itself!");
         }
 
-        List<Parameter> parameters = createParameters(
-                false,
-                false,
+        List<Parameter> parameters = createParameters(false, false,
                 getTestXCEL(format.getFirstExtension(inputFormat)));
         testMigrate(inputFormat, outputFormat, parameters);
         System.out.println("*******************");
@@ -171,25 +169,27 @@ public class XcdlMigrateTests {
         List<Parameter> parameterList = new ArrayList<Parameter>();
 
         if (disableNormDataFlag) {
-            Parameter normDataFlag = new Parameter("disableNormDataInXCDL",
-                    "-n");
-            normDataFlag
-                    .setDescription("Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
+            Parameter normDataFlag = new Parameter(
+                    "disableNormDataInXCDL",
+                    "-n",
+                    null,
+                    "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
             parameterList.add(normDataFlag);
         }
 
         if (enableRawDataFlag) {
-            Parameter enableRawData = new Parameter("enableRawDataInXCDL", "-r");
-            enableRawData
-                    .setDescription("Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
+            Parameter enableRawData = new Parameter("enableRawDataInXCDL",
+                    "-r", null,
+                    "Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
             parameterList.add(enableRawData);
         }
 
         if (optionalXCELString != null) {
-            Parameter xcelStringParam = new Parameter("optionalXCELString",
-                    optionalXCELString);
-            xcelStringParam
-                    .setDescription("Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
+            Parameter xcelStringParam = new Parameter(
+                    "optionalXCELString",
+                    optionalXCELString,
+                    null,
+                    "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
                             + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.");
             parameterList.add(xcelStringParam);
         }

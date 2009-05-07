@@ -26,13 +26,9 @@ import java.util.List;
  * @author melmsp
  * @see XcdlCharacterise
  */
-@WebService(
-        name = XcdlMigrate.NAME, 
-        serviceName = Migrate.NAME, 
-        targetNamespace = PlanetsServices.NS, 
-        endpointInterface = "eu.planets_project.services.migrate.Migrate")
+@WebService(name = XcdlMigrate.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
 @Stateless
-public class XcdlMigrate implements Migrate, Serializable {
+public final class XcdlMigrate implements Migrate {
 
     private static final long serialVersionUID = -8231114442082962651L;
 
@@ -56,21 +52,23 @@ public class XcdlMigrate implements Migrate, Serializable {
     public static final int MAX_FILE_SIZE = 75420028;
 
     private MigrationPath[] createMigrationPathwayMatrix(
-    		List<URI> inputFormats, List<URI> outputFormats) {
-        	List<MigrationPath> paths = new ArrayList<MigrationPath>();
+            List<URI> inputFormats, List<URI> outputFormats) {
+        List<MigrationPath> paths = new ArrayList<MigrationPath>();
 
-        	for (Iterator<URI> iterator = inputFormats.iterator(); iterator.hasNext();) {
-        		URI input = iterator.next();
+        for (Iterator<URI> iterator = inputFormats.iterator(); iterator
+                .hasNext();) {
+            URI input = iterator.next();
 
-        		for (Iterator<URI> iterator2 = outputFormats.iterator(); iterator2.hasNext();) {
-        			URI output = iterator2.next();
-        			MigrationPath path = new MigrationPath(input, output,null);
-        			// Debug...
-        			// System.out.println(path.getInputFormat() + " --> " +
-        			// path.getOutputFormat());
-        			paths.add(path);
-        		}
-        	}
+            for (Iterator<URI> iterator2 = outputFormats.iterator(); iterator2
+                    .hasNext();) {
+                URI output = iterator2.next();
+                MigrationPath path = new MigrationPath(input, output, null);
+                // Debug...
+                // System.out.println(path.getInputFormat() + " --> " +
+                // path.getOutputFormat());
+                paths.add(path);
+            }
+        }
         return paths.toArray(new MigrationPath[] {});
     }
 
@@ -91,45 +89,52 @@ public class XcdlMigrate implements Migrate, Serializable {
     }
 
     /**
-     * @see eu.planets_project.services.characterise.Characterise#describe()
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(
                 XcdlMigrate.NAME, Migrate.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
-        sd.description("A wrapper for the Extractor tool developed by UzK (University at Cologne)."
+        sd
+                .description("A wrapper for the Extractor tool developed by UzK (University at Cologne)."
                         + "The tool returns a XCDL file (as byte[]) in which includes all data of the input file in a machine readable way (xml)."
                         + "This XCDL file could be automatically compared by the Comparator tool (UzK) to evaluate how successful a migration has been."
                         + "(Example: migrate a TIFF to PNG. Create a XCDL for the TIFF input file and create a XCDL for the PNG output file"
-                        + "and compare them using the Comparator. How much information has been lost?)" +
-                        "IMPORTANT NOTE: To receive the Extractor results as a list of properties, in order to enable the comparison" +
-                        "of different characterisation tools, please use the XcdlCharacterise Service!");
+                        + "and compare them using the Comparator. How much information has been lost?)"
+                        + "IMPORTANT NOTE: To receive the Extractor results as a list of properties, in order to enable the comparison"
+                        + "of different characterisation tools, please use the XcdlCharacterise Service!");
 
         sd.classname(this.getClass().getCanonicalName());
         sd.version("0.1");
 
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        Parameter normDataFlag = new Parameter("disableNormDataInXCDL", "-n");
-        normDataFlag
-                .setDescription("Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
+        Parameter normDataFlag = new Parameter(
+                "disableNormDataInXCDL",
+                "-n",
+                null,
+                "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'");
         parameterList.add(normDataFlag);
 
-        Parameter enableRawData = new Parameter("enableRawDataInXCDL", "-r");
-        enableRawData
-                .setDescription("Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
+        Parameter enableRawData = new Parameter("enableRawDataInXCDL", "-r",
+                null,
+                "Enables the output of RAW Data in XCDL file. Allowed value: '-r'");
         parameterList.add(enableRawData);
 
-        Parameter optionalXCELString = new Parameter("optionalXCELString",
-                "the XCEL file as a String");
-        optionalXCELString
-                .setDescription("Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
+        Parameter optionalXCELString = new Parameter(
+                "optionalXCELString",
+                "the XCEL file as a String",
+                null,
+                "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
                         + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.");
         parameterList.add(optionalXCELString);
 
         sd.parameters(parameterList);
 
         // Migration Paths: List all combinations:
-        sd.paths(createMigrationPathwayMatrix(CoreExtractor.getSupportedInputFormats(), CoreExtractor.getSupportedOutputFormats()));
+        sd.paths(createMigrationPathwayMatrix(CoreExtractor
+                .getSupportedInputFormats(), CoreExtractor
+                .getSupportedOutputFormats()));
         sd.serviceProvider("The Planets Consortium");
 
         return sd.build();
@@ -138,8 +143,9 @@ public class XcdlMigrate implements Migrate, Serializable {
     public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
             URI outputFormat, List<Parameter> parameters) {
         System.out.println("Working on file: " + digitalObject.getTitle());
-    	DigitalObject resultDigOb = null;
-        ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
+        DigitalObject resultDigOb = null;
+        ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                "OK");
         MigrateResult migrateResult = null;
         String optionalFormatXCEL = null;
 
@@ -151,12 +157,12 @@ public class XcdlMigrate implements Migrate, Serializable {
         byte[] result = null;
 
         if (parameters != null) {
-            if ( parameters.size() != 0) {
+            if (parameters.size() != 0) {
                 for (Parameter currentParameter : parameters) {
-                    String currentName = currentParameter.name;
+                    String currentName = currentParameter.getName();
 
                     if (currentName.equalsIgnoreCase("optionalXCELString")) {
-                        optionalFormatXCEL = currentParameter.value;
+                        optionalFormatXCEL = currentParameter.getValue();
                     }
                 }
 
@@ -179,11 +185,9 @@ public class XcdlMigrate implements Migrate, Serializable {
             if (sizeInKB < MAX_FILE_SIZE) {
                 try {
                     resultDigOb = new DigitalObject.Builder(ImmutableContent
-                            .byValue(result))
-                            .permanentUrl(
-                                    new URL(
-                                            PlanetsServices.NS+"/pserv-pc-xcdlExtractor"))
-                            .build();
+                            .byValue(result)).permanentUrl(
+                            new URL(PlanetsServices.NS
+                                    + "/pserv-pc-xcdlExtractor")).build();
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
