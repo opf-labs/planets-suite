@@ -380,7 +380,8 @@ public class WorkflowBackingBean {
 					Iterator<Parameter> it = pList.iterator();
 					while (it.hasNext()) {
 						Parameter par = it.next();
-						ServiceParameter spar = new ServiceParameter(par.name,par.value);
+						ServiceParameter spar = new ServiceParameter(par
+                                .getName(), par.getValue());
 						theServiceBean.addParameter(spar);
 					}
 				} else {
