@@ -53,7 +53,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         DigitalObjectManager s3dm = new S3DataManager();
         dss[1] = new DataSource();
         dss[1].dm = s3dm;
-        dss[1].uri = ((S3DataManager)fsdm).getRootURI().normalize();
+        dss[1].uri = ((S3DataManager)s3dm).getRootURI().normalize();
         
         /*
         // The Planets Data Registry:
