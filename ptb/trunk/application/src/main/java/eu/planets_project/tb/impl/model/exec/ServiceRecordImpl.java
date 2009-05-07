@@ -258,7 +258,7 @@ public class ServiceRecordImpl implements Serializable {
         } catch (URISyntaxException e1) {
             e1.printStackTrace();
         }
-        sdb.tool( new Tool(toolUri, this.toolName, this.toolVersion) );
+        sdb.tool( new Tool(toolUri, this.toolName, this.toolVersion, null, null) );
         return sdb.build();
     }
 
