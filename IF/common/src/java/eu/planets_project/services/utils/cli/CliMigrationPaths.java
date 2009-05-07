@@ -149,15 +149,9 @@ public class CliMigrationPaths {
 
 
         List<MigrationPath> planetspaths = new ArrayList<MigrationPath>();
-        for (CliMigrationPath mypath: paths){
-            planetspaths.addAll(
-                    Arrays.asList(
-                            MigrationPath.constructPaths(
-                                    mypath.getIn(),
-                                    mypath.getOut()
-                            )
-                    )
-            );
+        for (CliMigrationPath mypath : paths) {
+            planetspaths.addAll(MigrationPath.constructPaths(mypath.getIn(),
+                    mypath.getOut()));
         }
         return planetspaths.toArray(new MigrationPath[0]);
 

@@ -130,7 +130,7 @@ public class DiaMigrationServiceTest extends TestCase {
 		// TODO: More intelligent test needed.
 		assertNotNull("The migration service does not provide a list of migration paths.", migrationPaths);
 
-		final MigrationPath[] testPaths = MigrationPath.constructPaths(inputFormatURIs, outputFormatURIs);
+		final List<MigrationPath> testPaths = MigrationPath.constructPaths(inputFormatURIs, outputFormatURIs);
 		for (MigrationPath migrationPath : testPaths) {
 			System.out.println("///"+migrationPath.toString());
 		}
