@@ -77,7 +77,7 @@ public class GenericMigration implements Migrate, Serializable {
         MultiProperties mp = MultiProperties.load(p);
         Map<String, String> params = new HashMap<String, String>();
         for (Parameter param : parameters) {
-            params.put(param.name, param.value);
+            params.put(param.getName(), param.getValue());
         }
         Map<String, String> toolParams = mp.get(params.get("tool-name"));
         try {

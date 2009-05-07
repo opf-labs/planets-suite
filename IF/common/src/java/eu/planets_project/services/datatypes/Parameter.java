@@ -19,72 +19,66 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(namespace = PlanetsServices.SERVICES_NS)
-public class Parameter {
+public final class Parameter {
 
-    /**
-     * A name for the parameter. Must be uniquely meaningful to the service, but
-     * is not expected to carry any meaning outwith the service.
-     */
-    public String name;
-
-    /**
-     * The value for this parameter. Should be set to the default by the service
-     * when parameter discovery is happening.
-     */
-    public String value;
-
-    /**
-     * This is a String to hold the type, which should map to the xsd types and
-     * should be assumed to be a String if empty or null. In the future, we
-     * might add limits/validation? XSD-style?
-     */
-    public String type;
-
-    /**
-     * the description of this parameter/value pair. Might be used to give
-     * further information on the possible values and their meaning.
-     */
-    public String description;
+    private String name;
+    private String value;
+    private String type;
+    private String description;
 
     /* ------------------------------------------------------------------------- */
 
-
-
-	/**
-     *
+    /**
+     * For JAXB.
      */
-    public Parameter() {
-    }
-
-
+    @SuppressWarnings("unused")
+    private Parameter() {}
 
     /**
-     * @param name
-     * @param value
-     * @param type
-     * @param description the description of this parameter/value pair. Might be
+     * @param name A name for the parameter. Must be uniquely meaningful to the
+     *        service, but is not expected to carry any meaning outwith the
+     *        service.
+     * @param value The value for this parameter. Should be set to the default
+     *        by the service when parameter discovery is happening.
+     * @param type This is a String to hold the type, which should map to the
+     *        xsd types and should be assumed to be a String if empty or null.
+     *        In the future, we might add limits/validation? XSD-style?
+     * @param description The description of this parameter/value pair. Might be
      *        used to give further information on the possible values and their
      *        meaning.
      */
+    public Parameter(final String name, final String value, final String type,
+            final String description) {
+        this.name = name;
+        this.value = value;
+        this.type = type;
+        this.description = description;
+    }
 
     /**
-     * @param name
-     * @param value
-     * @param type
+     * @param name A name for the parameter. Must be uniquely meaningful to the
+     *        service, but is not expected to carry any meaning outwith the
+     *        service.
+     * @param value The value for this parameter. Should be set to the default
+     *        by the service when parameter discovery is happening.
+     * @param type This is a String to hold the type, which should map to the
+     *        xsd types and should be assumed to be a String if empty or null.
+     *        In the future, we might add limits/validation? XSD-style?
      */
-    public Parameter(String name, String value, String type) {
-        super();
+    public Parameter(final String name, final String value, final String type) {
         this.name = name;
         this.value = value;
         this.type = type;
     }
 
     /**
-     * @param name
-     * @param value
+     * @param name A name for the parameter. Must be uniquely meaningful to the
+     *        service, but is not expected to carry any meaning outwith the
+     *        service.
+     * @param value The value for this parameter. Should be set to the default
+     *        by the service when parameter discovery is happening.
      */
-    public Parameter(String name, String value) {
-        super();
+    public Parameter(final String name, final String value) {
         this.name = name;
         this.value = value;
     }
@@ -96,13 +90,6 @@ public class Parameter {
      */
     public String getValue() {
         return value;
-    }
-
-    /**
-     * @param value the value to set
-     */
-    protected void setValue(String value) {
-        this.value = value;
     }
 
     /**
@@ -119,29 +106,19 @@ public class Parameter {
         return type;
     }
 
-
     /**
      * @return the description
      */
     public String getDescription() {
-		return description;
-	}
+        return description;
+    }
 
-	/**
-	 * @param description the new description value
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		String toPrint = this.name + " = " + this.value;
-		return toPrint;
-	}
-
-
+    /**
+     * {@inheritDoc}
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return this.name + " = " + this.value;
+    }
 
 }
