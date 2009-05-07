@@ -5,11 +5,8 @@ package eu.planets_project.services.modification.floppyImageModify.impl;
 
 import java.io.File;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.xml.ws.BindingType;
@@ -25,13 +22,14 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.migration.floppyImageHelper.impl.VfdCommandWrapper;
+import eu.planets_project.services.migration.floppyImageHelper.impl.VfdCommandWrapperResult;
 import eu.planets_project.services.modification.floppyImageModify.api.FloppyImageModify;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
-import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -51,20 +49,17 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	
 	public static final String NAME = "FloppyImageModifyWin";
 	
-	private static File TEMP_FOLDER = null;
-	private static String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_MODIFY";
+	private File TEMP_FOLDER = null;
+	private String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_MODIFY";
 	
-	private static String FLOPPY_IMAGE_TOOLS_HOME = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
-	private static String DEFAULT_INPUT_NAME = "floppy144.ima";
-	private static String INPUT_EXT = null;
-	
-	private static File TOOL_DIR = null;
-	private static final long FLOPPY_SIZE = 1474560;
-	
-	private static String PROCESS_ERROR = null;
-	private static String PROCESS_OUT = null;
+	private String DEFAULT_INPUT_NAME = "floppy144.ima";
+	private String INPUT_EXT = null;
 	
     private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
+    
+    private static FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
+    
+    private static VfdCommandWrapper vfd = new VfdCommandWrapper();
 
     
     public FloppyImageModifyWin() {
@@ -83,6 +78,12 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.services.modification.floppyImageModify.FloppyImageModify#describe()
 	 */
+	/* (non-Javadoc)
+	 * @see eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModify#describe()
+	 */
+	/* (non-Javadoc)
+	 * @see eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModify#describe()
+	 */
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Modify.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
@@ -92,9 +93,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
         				"The Service returns the modified input floppy image");
         sd.classname(this.getClass().getCanonicalName());
         sd.version("1.0");
-
         sd.tool( Tool.create(null, "fat_imgen.exe", "v1.0.4", null, "http://wiki.osdev.org/Fat_imgen"));
-        FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
         sd.inputFormats(formatRegistry.createExtensionUri("IMA"), formatRegistry.createExtensionUri("IMG"));
         return sd.build();
 	}
@@ -108,20 +107,15 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.services.modification.floppyImageModify.FloppyImageModify#modify(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)
 	 */
+	/* (non-Javadoc)
+	 * @see eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModify#modify(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)
+	 */
+	/* (non-Javadoc)
+	 * @see eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModify#modify(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)
+	 */
 	public ModifyResult modify(DigitalObject digitalObject, URI inputFormat, URI actionURI,
 			List<Parameter> parameters) {
-		if(FLOPPY_IMAGE_TOOLS_HOME == null) {
-			log.error("FLOPPY_IMAGE_TOOLS_HOME = null! " +
-					  "\nCould not find floppy image tools! " +
-					  "\nPlease install 'fat_imgen' on your system and point a System variable to the installation folder!" +
-					  "\nOtherwise this service will carry on to refuse to do its work!");
-			return this.returnWithErrorMessage("FLOPPY_IMAGE_TOOLS_HOME is NOT set! Nothing done, sorry!", null);
-		}
-		else {
-			TOOL_DIR = new File(FLOPPY_IMAGE_TOOLS_HOME);
-		}
 		
-		FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
         String inFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
 		
 		String fileName = digitalObject.getTitle();
@@ -146,65 +140,84 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		
 		List<File> containedFiles = DigitalObjectUtils.getContainedAsFiles(contained, TEMP_FOLDER);
 		
-		File modifiedImage = this.addFilesToFloppyImage(originalImageFile, containedFiles);
+		VfdCommandWrapperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
 		
-		DigitalObject result = new DigitalObject.Builder(ImmutableContent.asStream(modifiedImage))
-														.title(modifiedImage.getName())
-														.format(formatRegistry.createExtensionUri(FileUtils.getExtensionFromFile(modifiedImage)))
-														.build();
+		File modifiedImage = vfdResult.getResultFile();
 		
-		ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
-        log.info("Created Service report...");
-		return new ModifyResult(result, report);
-	}
-
-	private File addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
-		if(FileUtils.filesTooLargeForMedium(filesToAdd, FLOPPY_SIZE)) {
-			log.error("Sorry! File compilation too large to be written to a Floppy (1.44 MB). Returning with error: " + PROCESS_ERROR);
-			return null;
-		}
-		if(floppyImage == null) {
-			return null;
+		DigitalObject result = null;
+		
+		if(modifiedImage!=null) {
+			result = new DigitalObject.Builder(ImmutableContent.asStream(modifiedImage))
+									.title(modifiedImage.getName())
+									.format(formatRegistry.createExtensionUri(FileUtils.getExtensionFromFile(modifiedImage)))
+									.build();
 		}
 		else {
-			for (File file : filesToAdd) {
-				log.info("Writing file to image: " + file.getName());
-				String fileName = file.getName();
-				if(fileName.contains(".")) {
-					String suffix = fileName.substring(fileName.lastIndexOf("."));
-					String prefix = fileName.substring(0, fileName.indexOf("."));
-					if(prefix.length()>8) {
-						String truncated = prefix.substring(0, 8) + suffix;
-						log.warn("Warning: file name '" + fileName + "' longer then 8 characters. Name will be truncated to: " + truncated);
-					}
-				}
-				
-				ProcessRunner cmd = new ProcessRunner();
-				cmd.setCommand(this.getModifyCommandLine(floppyImage, file));
-				cmd.setStartingDir(TEMP_FOLDER);
-				cmd.run();
-				PROCESS_OUT = cmd.getProcessOutputAsString();
-				log.info("Tool output: \n" + PROCESS_OUT);
-				PROCESS_ERROR = cmd.getProcessErrorAsString();
-				
-				if(!PROCESS_ERROR.equalsIgnoreCase("")) {
-					log.error(PROCESS_ERROR);
-					return null;
-				}
-			}
-			return floppyImage;
+			return this.returnWithErrorMessage("Received NO result file from service. Something went terribly wrong somewhere!", null);
 		}
+		
+		
+		
+		if(vfdResult.getState()==VfdCommandWrapperResult.SUCCESS) {
+			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, vfdResult.getMessage());
+	        log.info("Created Service report...");
+	        return new ModifyResult(result, report);
+		}
+		else {
+			return this.returnWithErrorMessage(vfdResult.getMessage(), null);
+		}
+		
+		
+		
 	}
+
+//	private File addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
+//		if(FileUtils.filesTooLargeForMedium(filesToAdd, FLOPPY_SIZE)) {
+//			log.error("Sorry! File compilation too large to be written to a Floppy (1.44 MB). Returning with error: " + PROCESS_ERROR);
+//			return null;
+//		}
+//		if(floppyImage == null) {
+//			return null;
+//		}
+//		else {
+//			for (File file : filesToAdd) {
+//				log.info("Writing file to image: " + file.getName());
+//				String fileName = file.getName();
+//				if(fileName.contains(".")) {
+//					String suffix = fileName.substring(fileName.lastIndexOf("."));
+//					String prefix = fileName.substring(0, fileName.indexOf("."));
+//					if(prefix.length()>8) {
+//						String truncated = prefix.substring(0, 8) + suffix;
+//						log.warn("Warning: file name '" + fileName + "' longer then 8 characters. Name will be truncated to: " + truncated);
+//					}
+//				}
+//				
+//				ProcessRunner cmd = new ProcessRunner();
+//				cmd.setCommand(this.getModifyCommandLine(floppyImage, file));
+//				cmd.setStartingDir(TEMP_FOLDER);
+//				cmd.run();
+//				PROCESS_OUT = cmd.getProcessOutputAsString();
+//				log.info("Tool output: \n" + PROCESS_OUT);
+//				PROCESS_ERROR = cmd.getProcessErrorAsString();
+//				
+//				if(!PROCESS_ERROR.equalsIgnoreCase("")) {
+//					log.error(PROCESS_ERROR);
+//					return null;
+//				}
+//			}
+//			return floppyImage;
+//		}
+//	}
 	
-	private ArrayList<String> getModifyCommandLine(File floppyImage, File fileToAdd) {
-		ArrayList<String> commands = new ArrayList<String>();
-		commands.add("\"" + TOOL_DIR.getAbsolutePath() + File.separator + "FAT_IMGEN.EXE" + "\"");
-		commands.add("modify");
-		commands.add("\"" + floppyImage.getAbsolutePath() + "\"");
-		commands.add("-f");
-		commands.add("\"" + fileToAdd.getAbsolutePath() + "\"");
-		return commands;
-	}
+//	private ArrayList<String> getModifyCommandLine(File floppyImage, File fileToAdd) {
+//		ArrayList<String> commands = new ArrayList<String>();
+//		commands.add("\"" + TOOL_DIR.getAbsolutePath() + File.separator + "FAT_IMGEN.EXE" + "\"");
+//		commands.add("modify");
+//		commands.add("\"" + floppyImage.getAbsolutePath() + "\"");
+//		commands.add("-f");
+//		commands.add("\"" + fileToAdd.getAbsolutePath() + "\"");
+//		return commands;
+//	}
 	
 	
 	

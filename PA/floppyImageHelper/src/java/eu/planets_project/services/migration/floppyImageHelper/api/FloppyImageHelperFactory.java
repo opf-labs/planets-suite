@@ -6,7 +6,6 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperUnix;
 import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin;
-import eu.planets_project.services.utils.FileUtils;
 
 public final class FloppyImageHelperFactory {
 
