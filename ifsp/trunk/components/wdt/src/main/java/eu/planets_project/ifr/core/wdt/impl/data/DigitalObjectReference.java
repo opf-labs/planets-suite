@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.wdt.api.data;
+package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import eu.planets_project.ifr.core.wdt.api.data.DigitalObjectDirectoryLister;
+import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 

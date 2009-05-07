@@ -3,7 +3,7 @@ package eu.planets_project.ifr.core.wdt.gui.faces;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import java.net.URI;
 
-import eu.planets_project.ifr.core.wdt.api.data.DigitalObjectReference;
+import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectReference;
 
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 

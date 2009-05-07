@@ -1,14 +1,11 @@
-package eu.planets_project.ifr.core.wdt.api.data;
+package eu.planets_project.ifr.core.wdt.impl.data;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
-import javax.xml.soap.SOAPException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
@@ -16,10 +13,9 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
 
 /**
- * This class managers all of the Data Registries known to the Testbed.
+ * This class manages all of the Data Registries known to the Workflow Workbench.
  * 
  * It uses the same DigitalObjectManager interface as any other Data Registry, but
  * transparently switches between different underlying DRs based on the URI.
@@ -34,7 +30,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     // A simple class to wrap a DR with it's base URI:
     private class DataSource {
         URI uri = null;
-        DataManagerLocal dm = null;
+        DigitalObjectManager dm = null;
     }
     
     // The array of data source:
@@ -47,6 +43,19 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         // Allocate the data sources:
         dss = new DataSource[2];
         
+        // The File System Data Registry:
+        DigitalObjectManager fsdm = new FileSystemDataManager();
+        dss[0] = new DataSource();
+        dss[0].dm = fsdm;
+        dss[0].uri = ((FileSystemDataManager)fsdm).getRootURI().normalize();
+        
+        // The File System Data Registry:
+        DigitalObjectManager s3dm = new S3DataManager();
+        dss[1] = new DataSource();
+        dss[1].dm = s3dm;
+        dss[1].uri = ((S3DataManager)fsdm).getRootURI().normalize();
+        
+        /*
         // The Planets Data Registry:
         try {
             dss[0] = new DataSource();
@@ -57,13 +66,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
             dss = null;
             return;
         }
-        
-        // The File System Data Registry:
-        FileSystemDataManager fsdm = new FileSystemDataManager();
-        dss[1] = new DataSource();
-        dss[1].dm = fsdm;
-        dss[1].uri = fsdm.getRootURI();
-        
+        */
     }
     
     /**
@@ -92,7 +95,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      * @param puri The URI of the resource of interest.
      * @return The DataManagerLocal instance that is responsible for that URI.
      */
-    private DataManagerLocal findDataManager( URI puri ) {
+    private DigitalObjectManager findDataManager( URI puri ) {
         if( puri == null ) return null;
         
         // First, normalise the URI to ensure people can't peek inside using /../../..
@@ -124,21 +127,11 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         }
         
         // Otherwise, list from the appropriate DR:
-        DataManagerLocal dm = findDataManager(pdURI);
+        DigitalObjectManager dm = findDataManager(pdURI);
         if( dm == null ) return null;
         
-        // return the listing.
-        try {
-        	URI[] dml = dm.list(pdURI);
-        	if (dml!=null) {
-        		return new ArrayList<URI>( Arrays.asList( dml ) );
-        	} else {
-        		return null;
-        	}
-        } catch (SOAPException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return dm.list(pdURI);
+        
     }
 
     /* (non-Javadoc)
@@ -146,26 +139,10 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      */
     public DigitalObject retrieve(URI pdURI)
             throws DigitalObjectNotFoundException {
-        DataManagerLocal dm = findDataManager(pdURI);
+    	DigitalObjectManager dm = findDataManager(pdURI);
         if( dm == null ) return null;
-        DigitalObject.Builder dob;
         
-        try {
-            dob = new DigitalObject.Builder(ImmutableContent.byValue( dm.retrieveBinary(pdURI)) );
-        } catch (SOAPException e1) {
-            e1.printStackTrace();
-            log.error("Could not retrieve the binary for " + pdURI);
-            throw new DigitalObjectNotFoundException( "Could not retrieve the binary for " + pdURI );
-        }
-        
-        // FIXME Ensure that the DOB is set up correctly.
-        try {
-            dob.permanentUrl( pdURI.toURL() );
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        
-        return dob.build();
+        return dm.retrieve(pdURI);
     }
 
     /* (non-Javadoc)

@@ -1,16 +1,20 @@
-package eu.planets_project.ifr.core.wdt.api.data;
+package eu.planets_project.ifr.core.wdt.impl.data;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.jcr.LoginException;
@@ -20,7 +24,10 @@ import javax.xml.soap.SOAPException;
 
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.services.datatypes.DigitalObject;
 
 
 
@@ -28,7 +35,7 @@ import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
  * @author AnJackson
  *
  */
-public class FileSystemDataManager implements DataManagerLocal {
+public class FileSystemDataManager implements DigitalObjectManager {
 
     // A logger for this:
     private static PlanetsLogger log = PlanetsLogger.getLogger(FileSystemDataManager.class, "testbed-log4j.xml");
@@ -126,7 +133,7 @@ public class FileSystemDataManager implements DataManagerLocal {
      * 
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#list(java.net.URI)
      */
-    public URI[] list(URI pdURI) throws SOAPException {
+    public List<URI> list(URI pdURI) {
         // Set up the uri, coping with null etc
         pdURI = checkURI(pdURI);
         log.debug("Listing "+pdURI);
@@ -146,8 +153,7 @@ public class FileSystemDataManager implements DataManagerLocal {
                 }
             }
         }
-        URI ado[] = new URI[aldo.size()];
-        return aldo.toArray( ado );
+        return aldo;
     }
 
     /* (non-Javadoc)
@@ -169,18 +175,43 @@ public class FileSystemDataManager implements DataManagerLocal {
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#retrieve(java.net.URI)
      */
-    public InputStream retrieve(URI pdURI) throws PathNotFoundException,
-            URISyntaxException {
-        try {
+    public DigitalObject retrieve(URI pdURI)
+		throws DigitalObjectNotFoundException {
+ 
+    	DigitalObject retObj = null;
+	
+		try {
             File f = new File( pdURI );
             log.info("Got file: "+f.getAbsolutePath());
             log.info("Got something that exists? "+f.exists());
-            FileInputStream fin = new FileInputStream( f );
-            log.info("Got FileInputStream: "+fin);
-            return fin;
-        } catch ( FileNotFoundException e ) {
-            throw new PathNotFoundException(pdURI.toString());
-        }
+			BufferedReader reader = new BufferedReader(new FileReader(f));
+			StringBuilder fileData = new StringBuilder(1024);
+			char[] buf = new char[1024];
+			int numRead = 0;
+			while((numRead=reader.read(buf)) != -1) {
+				fileData.append(buf, 0, numRead);
+			}
+			reader.close();
+			retObj = new DigitalObject.Builder(fileData.toString()).build();
+		} catch (UnsupportedEncodingException e) {
+			log.error("Unsupported encoding exception");
+			log.error(e.getMessage());
+			log.error(e.getStackTrace());
+			throw new DigitalObjectNotFoundException("Couldn't retrieve Digital Object due to unupported encoding error", e);
+		} catch (FileNotFoundException e) {
+			log.error("File Not Found exception");
+			log.error(e.getMessage());
+			log.error(e.getStackTrace());
+			throw new DigitalObjectNotFoundException("The DigitalObject was not found", e);
+		} catch (IOException e) {
+			log.error("IO exception");
+			log.error(e.getMessage());
+			log.error(e.getStackTrace());
+			throw new DigitalObjectNotFoundException("Couldn't retrieve Digital Object due to IO problem", e);
+		}
+		
+		return retObj;    
+    
     }
 
     /* (non-Javadoc)
@@ -230,17 +261,10 @@ public class FileSystemDataManager implements DataManagerLocal {
         
         try {
             File f = new File( pdURI );
+            FileInputStream fin = new FileInputStream(f);
             bin = new byte[(int)f.length()];
-            this.retrieve(pdURI).read(bin);
+            fin.read(bin);
         } catch( IOException e ) {
-            log.error("Failed to list DR URI." + e);
-            bin = null;
-            throw new SOAPException(e);
-        } catch( URISyntaxException e ) {
-            log.error("Failed to list DR URI." + e);
-            bin = null;
-            throw new SOAPException(e);
-        } catch( PathNotFoundException e ) {
             log.error("Failed to list DR URI." + e);
             bin = null;
             throw new SOAPException(e);
@@ -249,40 +273,25 @@ public class FileSystemDataManager implements DataManagerLocal {
         return bin;
     }
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#storeBinary(java.net.URI, byte[])
-     */
-    public void storeBinary(URI pdURI, byte[] binary) throws LoginException,
-            RepositoryException, URISyntaxException {
-        // Store it:
-        this.store(pdURI, new ByteArrayInputStream(binary));
-    }
+	public List<Class<? extends Query>> getQueryTypes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#findFilesWithExtension(java.net.URI, java.lang.String)
-     */
-    public URI[] findFilesWithExtension(URI pdURI, String ext)
-            throws SOAPException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public boolean isWritable(URI pdURI) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#findFilesWithNameContaining(java.net.URI, java.lang.String)
-     */
-    public URI[] findFilesWithNameContaining(URI pdURI, String name)
-            throws SOAPException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DataManagerRemote#listDownladURI(java.net.URI)
-     */
-    public URI listDownladURI(URI pdURI) throws SOAPException {
-        return pdURI;
-    }
-
+	public void store(URI pdURI, DigitalObject digitalObject)
+			throws DigitalObjectNotStoredException {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

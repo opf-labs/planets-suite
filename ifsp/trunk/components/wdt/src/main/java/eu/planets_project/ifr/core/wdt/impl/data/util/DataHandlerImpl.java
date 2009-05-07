@@ -30,8 +30,8 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjec
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
-import eu.planets_project.ifr.core.wdt.api.data.DigitalObjectDirectoryLister;
 import eu.planets_project.ifr.core.wdt.api.data.util.DataHandler;
+import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.ifr.core.wdt.impl.system.BackendProperties;
 
 /**
