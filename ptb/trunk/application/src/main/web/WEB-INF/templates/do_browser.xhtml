@@ -43,13 +43,10 @@
                 <f:facet name="icon">
                     <h:graphicImage value="/graphics/filetype_folder.gif" alt="directory" title="directory" />
                 </f:facet>
-                <a4j:repeat value="#{DobBrowser.breadcrumb}" var="do">
-                    <h:outputText value=" "/>
-                    <h:commandLink action="success" styleClass="locationLeaf">
-                      <h:outputText value="/#{do.leafname}"/>
-                      <t:updateActionListener property="#{DobBrowser.dir}" value="#{do}" />
-                    </h:commandLink>
-                </a4j:repeat>
+                <ui:include src="/WEB-INF/templates/do_breadcrumb.xhtml">
+                  <ui:param name="dobs" value="#{DobBrowser.breadcrumb}"/>
+                </ui:include>
+                
               </rich:menuItem>
               
             </rich:dropDownMenu>
@@ -124,7 +121,7 @@
                 </rich:dataTable>
     </h:panelGroup>
                 
-    <rich:panelBar height="500" width="100%">
+    <rich:panelBar height="400" width="100%">
         <rich:dropSupport acceptedTypes="dobUri" reRender="dobSelList,DobBrowserList" dropListener="#{DobBrowser.addDobByDrop}"/>
         <rich:dragIndicator id="dobDragIndicator" rejectClass="dobDropIndicatorReject" acceptClass="dobDropIndicatorAccept" styleClass="dobDropIndicatorClass">
          <f:facet name="single">
@@ -133,20 +130,27 @@
         </rich:dragIndicator>
                         
         <rich:panelBarItem label="Inspector">
+                   
             <ui:fragment rendered="#{DobBrowser.dob == null}">
               <ui:fragment rendered="#{DobBrowser.location == null}">
-            <p>
-            Click on an item to select it for inspection.
-            </p>
+                <p>Click on an item to select it for inspection.</p>
+                <p>Also show services related to this object?  Experiments?</p>
               </ui:fragment>
+              
               <ui:fragment rendered="#{DobBrowser.location != null}">
-                <h:outputText value="#{DobBrowser.location}"/>
+                <ui:include src="/WEB-INF/templates/do_inspector.xhtml">
+                  <ui:param name="dob" value="#{DobBrowser.locationDob}"/>
+                </ui:include>
               </ui:fragment>
+              
             </ui:fragment>
             
             <ui:fragment rendered="#{DobBrowser.dob != null}">
-              <h:outputText value="#{DobBrowser.dob.leafname}"/>
+             <ui:include src="/WEB-INF/templates/do_inspector.xhtml">
+              <ui:param name="dob" value="#{DobBrowser.dob}"/>
+             </ui:include>
             </ui:fragment>
+            
         </rich:panelBarItem>
         
         <rich:panelBarItem label="Selection">
@@ -175,28 +179,8 @@
             <p>
                 <h:commandButton action="#{DobBrowser.clearSelection}"
                   value="Remove All Items From Selection"/>
-            </p>            
-            </ui:fragment>
+            </p>
             
-            <ui:fragment rendered="#{DobBrowser.selectionSize == 0}">
-              <p>Drag objects here to add them to the current selection.</p>
-            </ui:fragment>
-            
-            </a4j:outputPanel>
-        </rich:panelBarItem>
-        
-        <rich:panelBarItem label="Services &amp; Experiments">
-           Services related to this object?  Experiments? 
-        </rich:panelBarItem>
-        
-        <rich:panelBarItem label="Additional Corpora">
-           Add further corpora from here?
-        </rich:panelBarItem>
-        
-    </rich:panelBar>
-                
-         </h:panelGrid>
-         
                 <h:panelGroup rendered="#{isInExperiment}">
                 <p>
                 <h:commandButton action="#{DobBrowser.addToExperiment}"
@@ -207,6 +191,24 @@
                   value="#{res['browse_data.returnToExperiment']}"/>
                 </p>
                 </h:panelGroup>
+
+            </ui:fragment>
+            
+            <ui:fragment rendered="#{DobBrowser.selectionSize == 0}">
+              <p>Drag objects here to add them to the current selection.</p>
+            </ui:fragment>
+            
+            </a4j:outputPanel>
+        </rich:panelBarItem>
+        
+        <rich:panelBarItem label="Additional Corpora">
+           Add further corpora from here?
+        </rich:panelBarItem>
+        
+    </rich:panelBar>
+                
+         </h:panelGrid>
+         
                 
     </div>
    </div>

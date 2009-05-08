@@ -5,8 +5,11 @@ package eu.planets_project.tb.gui.backing.data;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.tb.gui.util.JSFUtil;
 
 import java.net.URI;
+import java.util.List;
+
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 /**
@@ -83,6 +86,14 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      */
     public URI getUri() {
         return uri;
+    }
+
+    /**
+     * @return
+     */
+    public List<DigitalObjectTreeNode> getParents() {
+        DigitalObjectBrowser db = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
+        return db.getBreadcrumb(this.getUri());
     }
     
     /**

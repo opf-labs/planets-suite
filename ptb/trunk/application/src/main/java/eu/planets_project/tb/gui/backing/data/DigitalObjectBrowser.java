@@ -26,7 +26,7 @@ public class DigitalObjectBrowser {
     // The Data Registry:
     private DigitalObjectRepositoryLister<DigitalObjectTreeNode> dr = null;
     
-    private URI currentDob;
+    private DigitalObjectTreeNode currentDob;
     
     private List<URI> selectedDobs = new ArrayList<URI>();
 
@@ -52,18 +52,26 @@ public class DigitalObjectBrowser {
     public  List<DigitalObjectTreeNode> getBreadcrumb() { 
         // NULL if no location is set:
         if( this.getLocation() == null ) return null;
+        return this.getBreadcrumb(this.getLocation());
+    }
+
+    /**
+     * @param location
+     * @return
+     */
+    protected  List<DigitalObjectTreeNode> getBreadcrumb( URI location ) { 
         // Build a list:
         List<DigitalObjectTreeNode> b = new ArrayList<DigitalObjectTreeNode>();
         b.add( this.getRootTreeNode() );
         // Get the path and trim any trailing slash:
-        String path = this.getLocation().getPath().replaceFirst("/$", "");
+        String path = location.getPath().replaceFirst("/$", "");
         log.info("Getting breadcrumb for path " +path);
         // Split and descend...
         String[] parts = path.split("/");
         for( int i = 0; i < parts.length; i++ ) {
             String relative = "./";
             for( int j = 1; j < parts.length-i; j++ ) relative += "../";
-            URI newloc = this.getLocation().resolve(relative);
+            URI newloc = location.resolve(relative);
             if( this.dr.canAccessURI( newloc ) ) {
                 log.debug("Adding parent location: "+newloc);
                 b.add( new DigitalObjectTreeNode( newloc ) );
@@ -89,19 +97,12 @@ public class DigitalObjectBrowser {
 
     /** Define the current digital object */
     public void setDob( DigitalObjectTreeNode tfn ) {
-        if( tfn == null ) {
-            this.currentDob = null;
-        } else {
-            this.currentDob = tfn.getUri();
-        }
+        this.currentDob = tfn;
     }
     
     /** Get the currently inspected digital object */
     public DigitalObjectTreeNode getDob() {
-        if( currentDob != null ) {
-            return new DigitalObjectTreeNode(this.currentDob);
-        }
-        return null;
+        return currentDob;
     }
     
     /**
@@ -109,6 +110,13 @@ public class DigitalObjectBrowser {
      */
     public URI getLocation() {
         return dr.getLocation();
+    }
+    
+    public DigitalObjectTreeNode getLocationDob() {
+        if( this.getLocation() != null ) {
+            return new DigitalObjectTreeNode(this.getLocation());
+        }
+        return null;
     }
     
     /**
