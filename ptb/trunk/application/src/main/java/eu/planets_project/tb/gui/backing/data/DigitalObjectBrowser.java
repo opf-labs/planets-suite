@@ -187,6 +187,24 @@ public class DigitalObjectBrowser {
         return this.selectedDobs;
     }
 
+    /** */
+    public boolean getAllSelected() {
+        List<DigitalObjectTreeNode> dobs = getList();
+        for( int i = 0; i < dobs.size(); i ++ ) {
+            if( ! dobs.get(i).isDirectory() ) {
+                if( ! this.selectedDobs.contains( dobs.get(i).getUri() ) ){
+                    log.info("Returning false for: "+dobs.get(i).getUri());
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    /** */
+    public void setAllSelected( boolean selected ) {
+    }
+
 
     /**
      * @param event
@@ -227,7 +245,7 @@ public class DigitalObjectBrowser {
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
         List<DigitalObjectTreeNode> dobs = fb.getList();
         for( int i = 0; i < dobs.size(); i ++ ) {
-            if( dobs.get(i).isLeaf() ) {
+            if( ! dobs.get(i).isDirectory() ) {
                 fb.addToSelection( dobs.get(i).getUri() );
             }
         }
@@ -241,7 +259,7 @@ public class DigitalObjectBrowser {
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
         List<DigitalObjectTreeNode> dobs = fb.getList();
         for( int i = 0; i < dobs.size(); i ++ ) {
-            if( dobs.get(i).isLeaf() ) {
+            if( ! dobs.get(i).isDirectory() ) {
                 fb.removeFromSelection( dobs.get(i).getUri() );
             }
         }

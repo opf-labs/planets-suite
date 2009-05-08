@@ -64,7 +64,7 @@
         
                 <rich:column width="1%">
                   <f:facet name="header"><h:selectBooleanCheckbox immediate="true" onchange="this.form.submit();"
-       valueChangeListener="#{DobBrowser.toggleSelectAll}" /></f:facet>
+       valueChangeListener="#{DobBrowser.toggleSelectAll}" value="#{DobBrowser.allSelected}"/></f:facet>
                   <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}" disabled="true"/>
                 </rich:column>
                        
@@ -121,8 +121,8 @@
                 
                 </rich:dataTable>
                 <p>
-                  <h:commandButton action="#{DobBrowser.selectAll}" value="Add All Items To Selection"/>
-                  <h:commandButton action="#{DobBrowser.unselectAll}" value="Remove All Items From Selection"/>
+                  <h:commandButton action="#{DobBrowser.selectAll}" value="Select All These Items"/>
+                  <h:commandButton action="#{DobBrowser.unselectAll}" value="Remove All These Items From Selection"/>
                 </p>
                 
     </h:panelGroup>
