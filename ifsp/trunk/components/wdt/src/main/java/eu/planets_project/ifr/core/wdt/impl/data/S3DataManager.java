@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.wdt.impl.data;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,8 +34,10 @@ public class S3DataManager implements DigitalObjectManager {
 
     private static AWSCredentials awsCredentials;
     private static URI localDataURI;
+    private String bucket;
     private S3Service s3Service;
     private Date expiryDate;
+    private S3Bucket planetsBucket = null;
     
     public S3DataManager() {  
     	awsCredentials = null;
@@ -58,6 +61,14 @@ public class S3DataManager implements DigitalObjectManager {
 				log.error(e.getStackTrace());
 			}
     	}
+		if (s3Service!=null) {
+			try {
+				planetsBucket = s3Service.getBucket(bucket);
+			} catch (S3ServiceException e) {
+				e.printStackTrace();
+				log.error("S3DataManager: unable to load planets bucket: " + bucket);
+			}
+		}
     }
     
 	public List<Class<? extends Query>> getQueryTypes() {
@@ -71,24 +82,83 @@ public class S3DataManager implements DigitalObjectManager {
 	}
 
 	public List<URI> list(URI pdURI) {
-		System.out.println("list method called with URI: " + pdURI);
-		if (s3Service!=null) {
+//		System.out.println("list method called with URI: " + pdURI);
+		String query = pdURI.getQuery();
+		if (query!=null) {
+			// This is a file - S3 directories do not have a query association
+			return null;
+		}
+		String path = pdURI.getPath();
+		if (!path.startsWith(new String("/"+bucket))) {
+			log.error("S3DataManager URI Exception: does not refer to configured planets bucket: " + pdURI);
+			return null;
+		}
+		if (planetsBucket==null) {
+			log.error("S3DataManager: unable to load planets bucket: " + bucket);
+			return null;
+		}
+		ArrayList<URI> aldo = new ArrayList<URI>();
+		int i = path.lastIndexOf('/');
+		String filter = "";
+		if (i>bucket.length()) {
+			filter = path.substring(bucket.length()+2,i+1);
+		}
+		S3Object[] filteredObjects = null;
+		if (filter.equals("")) {
 			try {
-				S3Bucket[] myBuckets = s3Service.listAllBuckets();
-				for (int i=0; i<myBuckets.length; i++) {
-					System.out.println("Found a bucket: " + myBuckets[i].getName());
-		            S3Object[] objects = s3Service.listObjects(myBuckets[i], "input-data", null);
-		            // Print out each object's key and size.
-		            for (int o = 0; o < objects.length; o++) {
-		                System.out.println(" " + objects[o].getKey() + " (" + objects[o].getContentLength() + " bytes)");
-		            }
-				}
+				filteredObjects = s3Service.listObjects(planetsBucket);
+			} catch (S3ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				filteredObjects = s3Service.listObjects(planetsBucket, filter, null);
 			} catch (S3ServiceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		return null;
+		if (filteredObjects!=null) {
+	        for (int o = 0; o < filteredObjects.length; o++) {
+	        	String key = filteredObjects[o].getKey();
+	        	String modkey = key;
+	            if (!filter.equals("")) {
+		            int k = key.indexOf(filter) + filter.length();
+		            modkey = key.substring(k);
+	            }
+	            int j = modkey.lastIndexOf('/');
+	            if (modkey.length()>0) {
+		            if (j==modkey.length()-1) {
+	            		// it is a directory
+	            		String dirUrl = localDataURI.toString() + "/" + filter + modkey;
+		                try {
+							aldo.add(new URI(dirUrl));
+						} catch (URISyntaxException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	            	} else if (j==-1){
+	            		// it is a file
+		                String signedUrl = "";
+						try {
+							signedUrl = S3Service.createSignedGetUrl(planetsBucket.getName(), key, 
+							        awsCredentials, expiryDate, false);
+						} catch (S3ServiceException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		                try {
+							aldo.add(new URI(signedUrl));
+						} catch (URISyntaxException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	            	}
+	            }
+	        }
+		}
+		return aldo;
 	}
 
 	public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
@@ -150,6 +220,7 @@ public class S3DataManager implements DigitalObjectManager {
             testProperties.getProperty(AWS_SECRET_KEY_PROPERTY_NAME));
         
         String uriString = testProperties.getProperty(AWS_S3_ENDPOINT);
+        bucket = uriString.substring(uriString.lastIndexOf('/')+1);
         
         try {
 			localDataURI = new URI(uriString);
