@@ -63,7 +63,8 @@
                  rows="15" reRender="dobrow_ds" styleClass="tbTable" style="width: 100%">
         
                 <rich:column width="1%">
-                  <f:facet name="header"><h:selectBooleanCheckbox disabled="true"/></f:facet>
+                  <f:facet name="header"><h:selectBooleanCheckbox immediate="true" onchange="this.form.submit();"
+       valueChangeListener="#{DobBrowser.toggleSelectAll}" /></f:facet>
                   <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}" disabled="true"/>
                 </rich:column>
                        
@@ -119,6 +120,11 @@
             </f:facet>
                 
                 </rich:dataTable>
+                <p>
+                  <h:commandButton action="#{DobBrowser.selectAll}" value="Add All Items To Selection"/>
+                  <h:commandButton action="#{DobBrowser.unselectAll}" value="Remove All Items From Selection"/>
+                </p>
+                
     </h:panelGroup>
                 
     <rich:panelBar height="400" width="100%">

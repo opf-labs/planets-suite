@@ -7,6 +7,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.event.ValueChangeEvent;
+
 import org.richfaces.event.DropEvent;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
@@ -190,11 +192,22 @@ public class DigitalObjectBrowser {
      * @param event
      */
     public void addDobByDrop(DropEvent event) {
-        URI nuri = (URI) event.getDragValue();
+        this.addToSelection( (URI) event.getDragValue() );
+    }
+
+    /** */
+    private void addToSelection( URI nuri ) {
         // Only add if not already selected:
         if( ! this.selectedDobs.contains(nuri) ) {
-          log.info("Adding selection: "+nuri);
-          this.selectedDobs.add(0,nuri);
+            log.info("Adding selection: "+nuri);
+            this.selectedDobs.add(0,nuri);
+        }
+    }
+
+    /** */
+    private void removeFromSelection( URI nuri ) {
+        if( this.selectedDobs.contains( nuri ) ) {
+            this.selectedDobs.remove(nuri);
         }
     }
     
@@ -208,14 +221,41 @@ public class DigitalObjectBrowser {
     }
     
     /**
-     * Controller that selects all of the current items.
+     * Controller that selects all of the current items at the current level.
      */
     public static String selectAll() {
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
-        for( DigitalObjectTreeNode dob: fb.getList() ) {
-            if( dob.isSelectable() ) dob.setSelected(true);
+        List<DigitalObjectTreeNode> dobs = fb.getList();
+        for( int i = 0; i < dobs.size(); i ++ ) {
+            if( dobs.get(i).isLeaf() ) {
+                fb.addToSelection( dobs.get(i).getUri() );
+            }
         }
         return "success";
+    }
+
+    /**
+     * @return
+     */
+    public static String unselectAll() {
+        DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
+        List<DigitalObjectTreeNode> dobs = fb.getList();
+        for( int i = 0; i < dobs.size(); i ++ ) {
+            if( dobs.get(i).isLeaf() ) {
+                fb.removeFromSelection( dobs.get(i).getUri() );
+            }
+        }
+        return "success";
+    }
+
+    /** */
+    public static void toggleSelectAll( ValueChangeEvent event ) {
+        Boolean newValue = (Boolean) event.getNewValue();
+        if( newValue.booleanValue() == true ) {
+            DigitalObjectBrowser.selectAll();
+        } else {
+            DigitalObjectBrowser.unselectAll();
+        }
     }
 
     /**
@@ -223,9 +263,7 @@ public class DigitalObjectBrowser {
      */
     public static String selectNone() {
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
-        for( DigitalObjectTreeNode dob: fb.getList() ) {
-            if( dob.isSelectable() ) dob.setSelected(false);
-        }
+        fb.clearSelection();
         return "success";
     }
     
@@ -246,25 +284,12 @@ public class DigitalObjectBrowser {
         ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         if( expBean == null ) return "failure";
         // Add each of the selected items to the experiment:
-        for( DigitalObjectTreeNode dob: fb.getList() ) {
-          // Only include selected items that are eligible:
-          if( dob.isSelectable() && dob.isSelected() ) {
-              /*
-            try {
-                DataHandler dh = new DataHandlerImpl();
-                // FIXME: Add this method
-//            	String ref = dh.addFromDataRegistry(fb.dr , dob.getUri());
+        for( URI uri : fb.getSelectedUris() ) {
             	//add reference to the new experiment's backing bean
-          		expBean.addExperimentInputData(ref);
-            } catch( IOException e ) {
-              log.error("Failed to add to experiment: "+dob.getUri());
-              log.error("Exception: "+e);
-            }
-            */
-          }
+          		expBean.addExperimentInputData(uri.toString());
         }
         // Clear any selection:
-        DigitalObjectBrowser.selectNone();
+        fb.clearSelection();
         // Return: gotoStage2 in the browse new experiment wizard
         return "goToStage2";
     }
