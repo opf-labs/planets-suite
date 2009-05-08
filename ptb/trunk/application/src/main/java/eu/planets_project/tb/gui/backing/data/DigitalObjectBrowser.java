@@ -183,8 +183,11 @@ public class DigitalObjectBrowser {
      */
     public void addDobByDrop(DropEvent event) {
         URI nuri = (URI) event.getDragValue();
-        log.info("Adding selection: "+nuri);
-        this.selectedDobs.add(0,nuri);
+        // Only add if not already selected:
+        if( ! this.selectedDobs.contains(nuri) ) {
+          log.info("Adding selection: "+nuri);
+          this.selectedDobs.add(0,nuri);
+        }
     }
     
     /**
