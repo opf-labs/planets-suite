@@ -246,9 +246,9 @@
 				            <f:facet name="header">
 				              <h:outputText styleClass="headerText" value="Included Objects" />
 				            </f:facet>
-				            <h:commandLink action="#{theWorkflow.selectObject}" >
-					            <h:outputText value="#{dos.uri}"/>
-				            </h:commandLink>
+					        <h:outputLink value="#{dos.uri}">
+					        	<h:outputText value="#{dos.uri}"/>
+					        </h:outputLink>
 				    	</rich:column>
 				    </rich:dataTable>
 					<h:panelGroup>
