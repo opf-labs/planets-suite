@@ -58,11 +58,16 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     /** */
     private void setUri( URI uri ) {
         this.uri = uri;
-        this.leafname = uri.getPath();
-        if( this.leafname != null ) {
-            String[] parts = this.leafname.split("/");
-            if( parts != null && parts.length > 0 )
-                this.leafname = parts[parts.length-1];
+        if( this.uri != null ) {
+            this.leafname = uri.getPath();
+            if( this.leafname != null ) {
+                String[] parts = this.leafname.split("/");
+                if( parts != null && parts.length > 0 )
+                    this.leafname = parts[parts.length-1];
+            }
+        }
+        else {
+            this.leafname = "/";
         }
     }
     
@@ -87,6 +92,13 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
         return this.leafname;
     }
     
+    /**
+     * @param string
+     */
+    protected void setLeafname(String leafname) {
+        this.leafname = leafname;
+    }
+ 
     /**
      * @return the size of the object.
      */
@@ -173,6 +185,6 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
             return false;
         return true;
     }
- 
+
     
 }

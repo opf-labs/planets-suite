@@ -1026,3 +1026,15 @@ pre.rawServiceDescription {
   width: 35%;
   vertical-align: top;
 }
+.dobDropIndicatorClass {
+  padding: 2px;
+  border: 1px dotted #ddd;
+  opacity: 0.8;
+}  
+.dobDropIndicatorAccept {
+  border: 1px dotted green;
+  background-image: url('../graphics/list-add.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  padding-left: 16px;
+}

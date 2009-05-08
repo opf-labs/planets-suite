@@ -110,8 +110,15 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         
         return null;
     }
+
+    /** */
+    public boolean hasDataManager( URI puri ) {
+        if( this.findDataManager(puri) == null ) return false;
+        return true;
+    }
     
 
+    // FIXME Should all items NOT be returned with a trailing slash?
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
      */
@@ -163,6 +170,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         try {
             dob.permanentUrl( pdURI.toURL() );
         } catch (MalformedURLException e) {
+            log.error("Could not convert "+pdURI+" to URL.");
             e.printStackTrace();
         }
         

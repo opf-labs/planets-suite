@@ -4,23 +4,14 @@
 package eu.planets_project.tb.gui.backing.data;
 
 import java.net.URI;
-import java.net.URL;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import javax.faces.context.FacesContext;
-
-import org.apache.myfaces.custom.fileupload.UploadedFile;
+import org.richfaces.event.DropEvent;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 /**
  * This class is the backing bean that provides the interface to 
@@ -33,12 +24,17 @@ public class DigitalObjectBrowser {
     private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectBrowser.class);
     
     // The Data Registry:
-    private DigitalObjectRepositoryLister<DigitalObjectTreeNode> dr = new DigitalObjectRepositoryLister<DigitalObjectTreeNode>();
+    private DigitalObjectRepositoryLister<DigitalObjectTreeNode> dr = null;
+    
+    private URI currentDob;
+    
+    private List<URI> selectedDobs = new ArrayList<URI>();
 
     /**
      * Constructor to set up the initial tree model.
      */
     public DigitalObjectBrowser() {
+        dr = new DigitalObjectRepositoryLister<DigitalObjectTreeNode>(this);
     }
     
     /**
@@ -54,19 +50,32 @@ public class DigitalObjectBrowser {
      * @return
      */
     public  List<DigitalObjectTreeNode> getBreadcrumb() { 
+        // NULL if no location is set:
+        if( this.getLocation() == null ) return null;
+        // Build a list:
         List<DigitalObjectTreeNode> b = new ArrayList<DigitalObjectTreeNode>();
-        if( this.getLocation() == null ) return b;
-        log.info("Getting breadcrumb for:" +this.getLocation());
+        b.add( this.getRootTreeNode() );
+        // Get the path and trim any trailing slash:
+        String path = this.getLocation().getPath().replaceFirst("/$", "");
+        log.info("Getting breadcrumb for path " +path);
         // Split and descend...
-        String[] parts = this.getLocation().getPath().split("/");
+        String[] parts = path.split("/");
         for( int i = 0; i < parts.length; i++ ) {
             String relative = "./";
             for( int j = 1; j < parts.length-i; j++ ) relative += "../";
             URI newloc = this.getLocation().resolve(relative);
-            log.info("Adding parent location: "+newloc);
-            b.add( new DigitalObjectTreeNode( newloc ) );
+            if( this.dr.canAccessURI( newloc ) ) {
+                log.debug("Adding parent location: "+newloc);
+                b.add( new DigitalObjectTreeNode( newloc ) );
+            }
         }
         return b;
+    }
+    
+    private DigitalObjectTreeNode getRootTreeNode() {
+        DigitalObjectTreeNode root = new DigitalObjectTreeNode(null);
+        root.setLeafname("~");
+        return root;
     }
     
     public void setDir( DigitalObjectTreeNode tfn ) {
@@ -74,6 +83,25 @@ public class DigitalObjectBrowser {
         setLocation(tfn.getUri());
         // Also add childs:
         tfn.setExpanded(true);
+        // Clear any current selected digital object:
+        this.setDob(null);
+    }
+
+    /** Define the current digital object */
+    public void setDob( DigitalObjectTreeNode tfn ) {
+        if( tfn == null ) {
+            this.currentDob = null;
+        } else {
+            this.currentDob = tfn.getUri();
+        }
+    }
+    
+    /** Get the currently inspected digital object */
+    public DigitalObjectTreeNode getDob() {
+        if( currentDob != null ) {
+            return new DigitalObjectTreeNode(this.currentDob);
+        }
+        return null;
     }
     
     /**
@@ -121,6 +149,50 @@ public class DigitalObjectBrowser {
      */
     public String gotoParentLocation() {
         this.setLocation(this.getParentUri());
+        return "success";
+    }
+    
+    /**
+     * @return
+     */
+    public int getSelectionSize() {
+        return this.selectedDobs.size();
+    }
+
+    /**
+     * @return
+     */
+    public List<DigitalObjectTreeNode> getSelectedDobs() {
+        List<DigitalObjectTreeNode> b = new ArrayList<DigitalObjectTreeNode>();
+        for( URI doburi : this.selectedDobs ) {
+            b.add( new DigitalObjectTreeNode(doburi) );
+        }
+        return b;
+    }
+    
+    /**
+     * @return
+     */
+    public List<URI> getSelectedUris() {
+        return this.selectedDobs;
+    }
+
+
+    /**
+     * @param event
+     */
+    public void addDobByDrop(DropEvent event) {
+        URI nuri = (URI) event.getDragValue();
+        log.info("Adding selection: "+nuri);
+        this.selectedDobs.add(0,nuri);
+    }
+    
+    /**
+     * Controller that clears the selected items.
+     * @return
+     */
+    public String clearSelection() {
+        this.selectedDobs.clear();
         return "success";
     }
     
@@ -187,8 +259,9 @@ public class DigitalObjectBrowser {
     }
     
     public static String redirectToDataRegistry() {
+        /*
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
-/*        try {
+        try {
           FacesContext.getCurrentInstance().getExternalContext().redirect(fb.getRootUrl().toString());
         } catch( java.io.IOException e ) {
           log.debug("Caught exception on redirectToDataRegistry: " + e );

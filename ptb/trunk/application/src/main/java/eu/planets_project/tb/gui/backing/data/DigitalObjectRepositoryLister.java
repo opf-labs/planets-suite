@@ -28,7 +28,7 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
     private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectRepositoryLister.class);
     
     // The data sources are managed here:
-    DigitalObjectManager dsm = new DigitalObjectMultiManager();
+    DigitalObjectMultiManager dsm = new DigitalObjectMultiManager();
     
     public DigitalObjectTreeNode getRootDigitalObject() {
         return new DigitalObjectTreeNode();
@@ -40,9 +40,15 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
     // The children of the current location:
     private List<URI> children;
     
-    /** */
-    public DigitalObjectRepositoryLister() {
+    // The parent Browser, if known:
+    private DigitalObjectBrowser digitalObjectBrowser;
+    
+    /**
+     * @param digitalObjectBrowser
+     */
+    public DigitalObjectRepositoryLister( DigitalObjectBrowser digitalObjectBrowser) {
         super();
+        this.digitalObjectBrowser = digitalObjectBrowser;
         this.setLocation(null);
     }
 
@@ -66,9 +72,9 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
      * @return
      */
     public boolean canAccessURI( URI puri ) {
-        // If the URI sanitiser does not change the URI, then its okay:
-        //if( puri == this.checkURI(puri)) return true;
-        //return false;
+        // Do not allow paths above the root to be accessed:
+        if( ! this.dsm.hasDataManager(puri) ) return false;
+        // Default to accessible:
         return true;
     }
     
@@ -77,7 +83,7 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
      * @param puri
      * @return
      */
-    public DigitalObjectManager getDataManager( URI puri ) {
+    public DigitalObjectMultiManager getDataManager( URI puri ) {
         return dsm;
     }
     
@@ -142,22 +148,36 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
     @SuppressWarnings("unchecked")
     public E get(int index) {
         if( this.children != null ) {
-            URI item = children.get(index);
-            if( dsm.list(item) == null ) {
-                // This is a DO:
-                try {
-                    return (E) new DigitalObjectTreeNode(item, dsm.retrieve(item));
-                } catch (DigitalObjectNotFoundException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            } else {
-                // This is a location:
-                return (E) new DigitalObjectTreeNode(item);
-            }
+            return (E) this.createDobFromUri(children.get(index));
+            
         } else {
             return null;
         }
+    }
+    
+    /** */
+    private DigitalObjectTreeNode createDobFromUri( URI item ) {
+        // Object or folder?
+        if( dsm.list(item) == null ) {
+            // This is a DO:
+            try {
+                DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm.retrieve(item));
+                // Mark as selected if it is in the selection:
+                if( digitalObjectBrowser != null && digitalObjectBrowser.getSelectedUris().contains(item) ) {
+                    itemNode.setSelected(true);
+                }
+                
+                return itemNode;
+                
+            } catch (DigitalObjectNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+        } else {
+            // This is a location:
+            return new DigitalObjectTreeNode(item);
+        }
+        
     }
 
     /* (non-Javadoc)

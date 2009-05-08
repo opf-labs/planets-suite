@@ -9,18 +9,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,7 +40,7 @@ import eu.planets_project.tb.impl.persistency.ServiceRecordPersistencyImpl;
  */
 @Entity
 @XmlRootElement(name = "ExecutionRecord")
-@XmlAccessorType(XmlAccessType.FIELD) 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ServiceRecordImpl implements Serializable {
     /** */
     private static final Log log = LogFactory.getLog(ServiceRecordImpl.class);
@@ -77,8 +74,14 @@ public class ServiceRecordImpl implements Serializable {
     
     private Calendar dateFirstSeen;
     
-    // List of experiment IDs that saw this service record.
+    /** List of experiment IDs that saw this service record. */
     HashSet<Long> experimentIds = new HashSet<Long>();
+    
+    
+    /** Also cache the expanded service description */
+    @Transient
+    @XmlTransient
+    ServiceDescription cached_sd = null;
 
     /**
      * @return the id
@@ -224,18 +227,23 @@ public class ServiceRecordImpl implements Serializable {
      * @return the serviceDescription
      */
     public ServiceDescription getServiceDescription() {
-        // FIXME Stop doing this over and over?
-        ServiceDescription new_sd = null;
-        try {
-            new_sd = ServiceDescription.of(serviceDescription);
-        }  catch( Exception e ) {
-            log.error("Failed to parse serviceDescription: "+e);
-            new_sd = null;
+        this.createCachedServiceDescription();
+        return cached_sd;
+    }
+
+    /** */
+    private void createCachedServiceDescription() {
+        if( cached_sd == null ) {
+            try {
+                cached_sd = ServiceDescription.of(serviceDescription);
+            }  catch( Exception e ) {
+                log.error("Failed to parse serviceDescription: "+e);
+                cached_sd = null;
+            }
+            if( cached_sd == null ) {
+                cached_sd = this.serviceDescriptionFromRecord();
+            }
         }
-        if( new_sd == null ) {
-            new_sd = this.serviceDescriptionFromRecord();
-        }
-        return new_sd;
     }
 
     /** */
