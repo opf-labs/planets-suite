@@ -139,6 +139,7 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         return null;
     }
 
+    @SuppressWarnings("unused")
     private byte[] fetch(Document urls, String xpathExp) throws XPathExpressionException, MalformedURLException, IOException {
         //XPath
 //        XPath xpath = XPathFactory.newInstance().newXPath();
@@ -205,7 +206,7 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         }
 
         // Dummy implementation - not used!
-        public Iterator getPrefixes(String val) {
+        public Iterator<?> getPrefixes(String val) {
             return null;
         }
 

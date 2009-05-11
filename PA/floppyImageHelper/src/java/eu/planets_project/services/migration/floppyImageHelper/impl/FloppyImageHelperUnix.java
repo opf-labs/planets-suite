@@ -61,23 +61,22 @@ import eu.planets_project.services.utils.ZipResult;
 public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	
 	public FloppyImageHelperUnix() {
-		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 		FileUtils.deleteTempFiles(TEMP_FOLDER);
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 	}
 	                 
 	public static final String NAME = "FloppyImageHelperUnix";
 	
-	private static File TEMP_FOLDER = null;
 	private static String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER";
+	private static File TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 	
 	private static String DEFAULT_INPUT_NAME = "inputFile";
-	private static String INPUT_EXT = null;
+	private String inputExt = null;
 	
 	private static String DEFAULT_FLOPPY_IMAGE_NAME = "floppy144.ima";
 	private static final long FLOPPY_SIZE = 1474560;
 	
-	private static boolean MODIFY_IMAGE = false;
+//	private static boolean MODIFY_IMAGE = false;
 	
 	private static String PROCESS_ERROR = null;
 	private static String PROCESS_OUT = null;
@@ -86,10 +85,6 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	private static int LOOP_DEV_MAX = 5;
 	
 	private static FormatRegistry formatReg = FormatRegistryFactory.getFormatRegistry();
-
-	static {
-		TEMP_FOLDER = new File("/tmp");
-	}
 
 	/**
 	* @see eu.planets_project.services.migrate.Migrate#describe()
@@ -138,21 +133,21 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	{
 		
 		String inFormat = formatReg.getFirstExtension(inputFormat).toUpperCase();
-		String outFormat = formatReg.getFirstExtension(outputFormat).toUpperCase();
+//		String outFormat = formatReg.getFirstExtension(outputFormat).toUpperCase();
 		
 		ImmutableContent content = (ImmutableContent)digitalObject.getContent();
 		Checksum checksum = content.getChecksum();
-		
+
 		String fileName = digitalObject.getTitle();
 		if(fileName == null) 
 		{
-			INPUT_EXT = formatReg.getFirstExtension(inputFormat);
-			fileName = DEFAULT_INPUT_NAME + "." + INPUT_EXT;
+			inputExt = formatReg.getFirstExtension(inputFormat);
+			fileName = DEFAULT_INPUT_NAME + "." + inputExt;
 		}
 		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
 		
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
-			ZipResult zippedResult = this.extractFilesFromFloppyImage(inputFile);
+			ZipResult zippedResult = FloppyImageHelperUnix.extractFilesFromFloppyImage(inputFile);
 			
 			Content zipContent = ImmutableContent.asStream(zippedResult.getZipFile()).withChecksum(zippedResult.getChecksum());
 			
@@ -181,7 +176,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 			files.add(inputFile);
 		}
 
-		File floppy = this.createFloppyImageWithFiles(files);
+		File floppy = FloppyImageHelperUnix.createFloppyImageWithFiles(files);
 		if(floppy == null) 
 			return this.returnWithErrorMessage(PROCESS_ERROR, null);
 

@@ -31,14 +31,14 @@ public class CoreExtractor {
     private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
 //    private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
 //    private static final String SYSTEM_TEMP = null;
-    private static String EXTRACTOR_WORK = null;
+    private String extractorWork = null;
     private static String EXTRACTOR_IN = "INPUT";
     private static String EXTRACTOR_OUT = "OUTPUT";
-    private static String OUTPUTFILE_NAME;
-    private static String EXTRACTOR_NAME;
+    private String outputFileName;
+    private String thisExtractorName;
     private PlanetsLogger plogger;
     private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
-    private static boolean NORM_DATA_DISABLED = false;
+    private boolean normDataDisabled = false;
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
     private static String OPTIONAL_XCEL_PARAM = "optionalXCELString";
     private static final FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
@@ -50,9 +50,9 @@ public class CoreExtractor {
     public CoreExtractor(String extractorName, PlanetsLogger logger) {
         this.plogger = logger;
 //        SYSTEM_TEMP = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
-        EXTRACTOR_NAME = extractorName;
-        OUTPUTFILE_NAME = EXTRACTOR_NAME.toLowerCase() + "_xcdl_out.xcdl";
-        EXTRACTOR_WORK = extractorName.toUpperCase();
+        thisExtractorName = extractorName;
+        outputFileName = thisExtractorName.toLowerCase() + "_xcdl_out.xcdl";
+        extractorWork = extractorName.toUpperCase();
     }
     
     // this is a work around to disable norm data output in XCDL, 
@@ -97,7 +97,7 @@ public class CoreExtractor {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		NORM_DATA_DISABLED = false;
+		normDataDisabled = false;
 		return result;
     }
     
@@ -136,7 +136,7 @@ public class CoreExtractor {
     	}
     	
 
-        plogger.info("Starting " + EXTRACTOR_NAME + " Service...");
+        plogger.info("Starting " + thisExtractorName + " Service...");
 
         List<String> extractor_arguments = null;
         File srcFile = null;
@@ -146,17 +146,17 @@ public class CoreExtractor {
         File extractor_out_folder = null;
 
         try {
-            extractor_work_folder = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
+            extractor_work_folder = FileUtils.createWorkFolderInSysTemp(extractorWork);
             
-            plogger.info(EXTRACTOR_NAME + " work folder created: "
-                    + EXTRACTOR_WORK);
+            plogger.info(thisExtractorName + " work folder created: "
+                    + extractorWork);
             
             extractor_in_folder = FileUtils.createFolderInWorkFolder(extractor_work_folder, EXTRACTOR_IN);
-            plogger.info(EXTRACTOR_NAME + " input folder created: "
+            plogger.info(thisExtractorName + " input folder created: "
                     + EXTRACTOR_IN);
             
             extractor_out_folder = FileUtils.createFolderInWorkFolder(extractor_work_folder, EXTRACTOR_OUT);
-            plogger.info(EXTRACTOR_NAME + " output folder created: "
+            plogger.info(thisExtractorName + " output folder created: "
                     + EXTRACTOR_OUT);
 
             srcFile = new File(extractor_in_folder, "extractor_image_in.bin");
@@ -195,7 +195,7 @@ public class CoreExtractor {
         plogger.info("Input-Image file path: " + srcFilePath);
         extractor_arguments.add(srcFilePath);
         
-        String outputFilePath = extractor_out_folder.getAbsolutePath() + File.separator + OUTPUTFILE_NAME;
+        String outputFilePath = extractor_out_folder.getAbsolutePath() + File.separator + outputFileName;
         outputFilePath = outputFilePath.replace('\\', '/');
         // System.out.println("Output-file path: " + outputFilePath);
 
@@ -238,7 +238,7 @@ public class CoreExtractor {
 						plogger.info("Got Parameter: " + name + " = " + parameter.getValue());
 						plogger.info("Configuring Extractor to skip NormData!");
 						extractor_arguments.add(parameter.getValue());
-						NORM_DATA_DISABLED = true;
+						normDataDisabled = true;
 						continue;
 					}
 					else {
@@ -275,7 +275,7 @@ public class CoreExtractor {
         
         byte[] cleanedXCDL = null;
         
-        if(NORM_DATA_DISABLED) {
+        if(normDataDisabled) {
         	cleanedXCDL = removeNormData(binary_out);
         	binary_out = cleanedXCDL;
         }

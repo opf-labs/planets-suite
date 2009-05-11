@@ -38,6 +38,9 @@ package eu.planets_project.services.utils;
  */
 public class DigestException extends RuntimeException {
 
+    /** Generated ID. */
+    private static final long serialVersionUID = 1921532045016030988L;
+
     public DigestException (String message) {
         super (message);
     }

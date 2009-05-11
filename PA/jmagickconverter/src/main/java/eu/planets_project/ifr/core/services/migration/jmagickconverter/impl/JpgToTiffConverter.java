@@ -43,7 +43,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @WebService(name = "JpgToTiffConverter", serviceName = BasicMigrateOneBinary.NAME, targetNamespace = PlanetsServices.NS)
 @SOAPBinding(parameterStyle = SOAPBinding.ParameterStyle.BARE, style = SOAPBinding.Style.RPC)
 @Deprecated
-public class JpgToTiffConverter implements Serializable, BasicMigrateOneBinary {
+public class JpgToTiffConverter implements BasicMigrateOneBinary {
 
     private static final long serialVersionUID = -8344078893579549092L;
     // Creating a PlanetsLogger...

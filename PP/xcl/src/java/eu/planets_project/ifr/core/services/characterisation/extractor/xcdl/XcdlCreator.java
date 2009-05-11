@@ -15,7 +15,6 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.gene
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.InformType;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValType;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue;
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.MeasureType;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Name;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.NormData;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.PropertySet;
@@ -254,20 +253,20 @@ public class XcdlCreator {
         return type;
     }
 
-    private MeasureType determineMeasureType(Property labProp) {
-        String d = labProp.getUnit();
-        MeasureType type = MeasureType.BIT;
-        try {
-            type = MeasureType.fromValue(d);
-        } catch (IllegalArgumentException e) {
-            System.err
-                    .println(String
-                            .format(
-                                    "Warning: could not create a MeasureType for '%s', defaulting to '%s'",
-                                    d, type));
-        }
-        return type;
-    }
+//    private MeasureType determineMeasureType(Property labProp) {
+//        String d = labProp.getUnit();
+//        MeasureType type = MeasureType.BIT;
+//        try {
+//            type = MeasureType.fromValue(d);
+//        } catch (IllegalArgumentException e) {
+//            System.err
+//                    .println(String
+//                            .format(
+//                                    "Warning: could not create a MeasureType for '%s', defaulting to '%s'",
+//                                    d, type));
+//        }
+//        return type;
+//    }
 
     private LabValType determineLabValType(String description) {
         LabValType labValType = LabValType.STRING;

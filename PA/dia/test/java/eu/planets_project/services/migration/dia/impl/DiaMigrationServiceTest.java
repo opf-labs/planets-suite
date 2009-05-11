@@ -40,7 +40,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	/**
 	 * Name of the Dia test file used by this test class.
 	 */
-	private final String diaTestFileName = "Arrows_doublestraight_arrow2.dia";
+	private static final String diaTestFileName = "Arrows_doublestraight_arrow2.dia";
 
 	/**
 	 * Full path to the Dia file used by this test class.
@@ -76,12 +76,11 @@ public class DiaMigrationServiceTest extends TestCase {
 	public void testMigrate() throws Exception {
 
 
-		DigitalObject digitalObject;
 		DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(ImmutableContent.byValue(diaTestFile));
 		digitalObjectBuilder.format(new URI("info:pronom/x-fmt/381"));
-		digitalObjectBuilder.title(diaTestFileName).
-		build();
-
+		digitalObjectBuilder.title(diaTestFileName);
+		DigitalObject digitalObject = digitalObjectBuilder.build();
+		System.out.println(digitalObject);
 		//		migrationService.migrate(digitalObject, inputFormat, outputFormat, parameters)
 	}
 

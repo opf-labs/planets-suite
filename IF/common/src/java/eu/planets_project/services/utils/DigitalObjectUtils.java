@@ -134,6 +134,7 @@ public final class DigitalObjectUtils {
                         currentDigObj.getContent().read(), targetFolder, name));
             }
         }
+        LOG.debug(String.format("Returning %s files", containedFiles.size()));
         return containedFiles;
     }
 

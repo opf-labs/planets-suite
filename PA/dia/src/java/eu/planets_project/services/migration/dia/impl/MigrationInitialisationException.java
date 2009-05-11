@@ -2,7 +2,10 @@ package eu.planets_project.services.migration.dia.impl;
 
 public class MigrationInitialisationException extends Exception {
 
-	public MigrationInitialisationException() {
+	/***/
+    private static final long serialVersionUID = -2716032282079515285L;
+
+    public MigrationInitialisationException() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

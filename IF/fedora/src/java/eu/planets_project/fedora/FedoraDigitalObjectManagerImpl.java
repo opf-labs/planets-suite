@@ -1,22 +1,29 @@
 package eu.planets_project.fedora;
 
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.query.Query;
-import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableDigitalObject;
-import org.apache.commons.httpclient.*;
+import java.io.IOException;
+import java.net.URI;
+import java.util.List;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.apache.commons.httpclient.Credentials;
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.xml.sax.InputSource;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.IOException;
-import java.net.URI;
-import java.util.List;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableDigitalObject;
 
 
 
@@ -73,14 +80,6 @@ public class FedoraDigitalObjectManagerImpl implements DigitalObjectManager {
      */
     public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
         throw new DigitalObjectNotStoredException("Not implemented yet");
-    }
-
-    private void createNewObject(){
-
-    }
-
-    private void updateExistingObject(){
-        
     }
 
     /**

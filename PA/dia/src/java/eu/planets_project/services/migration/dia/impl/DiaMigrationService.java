@@ -1,6 +1,5 @@
 package eu.planets_project.services.migration.dia.impl;
 
-import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
@@ -14,6 +13,7 @@ import javax.jws.WebService;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
@@ -35,7 +35,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
 		targetNamespace = PlanetsServices.NS,
 		endpointInterface = "eu.planets_project.services.migrate.Migrate" )
 
-public final class DiaMigrationService implements Migrate, Serializable {
+public final class DiaMigrationService implements Migrate {
 
 	/** The service name */
 	static final String NAME = "DiaMigrationService";
@@ -78,7 +78,12 @@ public final class DiaMigrationService implements Migrate, Serializable {
 			serviceDescriptionBuilder.classname(this.getClass().getCanonicalName());
 			serviceDescriptionBuilder.description("File migration service using Dia.");
 			serviceDescriptionBuilder.author("Bolette Ammitzbøll Jurik <bam@statsbiblioteket.dk>, Thomas Skou Hansen <tsh@statsbiblioteket.dk>");
-			//		serviceDescriptionBuilder.furtherInfo(null);
+			serviceDescriptionBuilder.inputFormats(getAllowedInputFormatURIs()
+                    .toArray(new URI[] {}));
+            serviceDescriptionBuilder.paths(MigrationPath.constructPaths(
+                    getAllowedInputFormatURIs(), getAllowedOutputFormatURIs())
+                    .toArray(new MigrationPath[] {}));
+            //		serviceDescriptionBuilder.furtherInfo(null);
 			//serviceDescriptionBuilder.identifier(null);
 
 

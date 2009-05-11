@@ -44,7 +44,6 @@ import eu.planets_project.ifr.core.registry.api.jaxr.model.OrganizationList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsBinding;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsCategory;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsOrganization;
-import eu.planets_project.ifr.core.registry.api.jaxr.model.PsSchema;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.PsService;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceList;
 import eu.planets_project.ifr.core.registry.api.jaxr.model.ServiceRegistryMessage;

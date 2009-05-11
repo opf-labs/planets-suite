@@ -11,6 +11,7 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.gen
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;

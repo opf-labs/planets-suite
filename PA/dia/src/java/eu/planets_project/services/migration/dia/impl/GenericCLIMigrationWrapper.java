@@ -88,8 +88,8 @@ public class GenericCLIMigrationWrapper {
 				destinationObjectBytes = FileUtils.writeInputStreamToBinary(new FileInputStream(destinationTempFile));
 
 				// Delete the temporary files again.
-				sourceTempFile.delete();
-				destinationTempFile.delete();
+				FileUtils.delete(sourceTempFile);
+				FileUtils.delete(destinationTempFile);
 
 				String message = "Successfully migrated object with title '"
                         + sourceObject.getTitle() + "' from format URI: "

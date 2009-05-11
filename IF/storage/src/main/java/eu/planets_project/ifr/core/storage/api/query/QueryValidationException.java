@@ -16,6 +16,9 @@ package eu.planets_project.ifr.core.storage.api.query;
  */
 public class QueryValidationException extends Exception {
 
+    /***/
+    private static final long serialVersionUID = 4956266507595623621L;
+
     /**
      * 
      */

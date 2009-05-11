@@ -826,6 +826,10 @@ public final class FileUtils {
         return extractedFiles;
     }
 
+    /**
+     * @param file The file to rename to an 8-digit file name
+     * @return The renamed file
+     */
     public static File truncateNameAndRenameFile(final File file) {
         String newName = file.getName();
         String parent = file.getParent();
@@ -843,6 +847,9 @@ public final class FileUtils {
         newName = newName + ext;
         File renamedFile = new File(new File(parent), newName);
         boolean renamed = file.renameTo(renamedFile);
+        if(!renamed){
+            throw new IllegalArgumentException("Could not rename: " + file);
+        }
         return renamedFile;
     }
 

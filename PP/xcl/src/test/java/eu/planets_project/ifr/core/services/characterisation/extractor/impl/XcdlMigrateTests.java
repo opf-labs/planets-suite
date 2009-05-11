@@ -38,11 +38,11 @@ public class XcdlMigrateTests {
     /***/
     static final String WSDL = "/pserv-xcl/XcdlMigrate?wsdl";
     /***/
-    static String xcelString;
-    /***/
-    static File outputXcdl;
-    /***/
-    static byte[] binary;
+//    static String xcelString;
+//    /***/
+//    static File outputXcdl;
+//    /***/
+//    static byte[] binary;
 
     /**
      * the service
@@ -324,18 +324,18 @@ public class XcdlMigrateTests {
         }
     }
 
-    private URI getUriForFile(File testFile) {
-        String fileName = testFile.getAbsolutePath();
-        String testFileExtension = null;
-        if (fileName.contains(".")) {
-            testFileExtension = fileName
-                    .substring(fileName.lastIndexOf(".") + 1);
-        } else {
-            System.err.println("Could not find file extension!!!");
-            return null;
-        }
-        return format.createExtensionUri(testFileExtension);
-    }
+//    private URI getUriForFile(File testFile) {
+//        String fileName = testFile.getAbsolutePath();
+//        String testFileExtension = null;
+//        if (fileName.contains(".")) {
+//            testFileExtension = fileName
+//                    .substring(fileName.lastIndexOf(".") + 1);
+//        } else {
+//            System.err.println("Could not find file extension!!!");
+//            return null;
+//        }
+//        return format.createExtensionUri(testFileExtension);
+//    }
 
     @SuppressWarnings("unused")
     private DigitalObject createDigitalObjectByReference(URL permanentURL,

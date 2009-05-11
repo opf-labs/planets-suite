@@ -23,7 +23,6 @@ public class PlanetsSharedBackingBean {
      * 
      * @return String containing the absolute file URI.
      */
-    @SuppressWarnings("deprecation")
 	public String getSharedFileBasePath() {
         File homedir = new File(System.getProperty("jboss.server.home.dir"));
         File shareddir = new File( homedir, "deploy/jboss-web.deployer/ROOT.war");

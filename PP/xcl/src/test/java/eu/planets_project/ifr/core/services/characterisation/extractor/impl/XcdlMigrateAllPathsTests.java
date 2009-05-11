@@ -1,7 +1,5 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
-import static org.junit.Assert.assertTrue;
-
 import java.net.URISyntaxException;
 
 import org.junit.Test;
