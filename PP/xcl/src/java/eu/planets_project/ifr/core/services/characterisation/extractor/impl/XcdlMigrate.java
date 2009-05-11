@@ -12,6 +12,7 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 
 import eu.planets_project.services.PlanetsServices;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.MigrationPath;
@@ -114,25 +115,31 @@ public final class XcdlMigrate implements Migrate {
         sd.version("0.1");
 
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        Parameter normDataFlag = new Parameter.Builder(
-                "disableNormDataInXCDL",
-                "-n").description(
-                "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'").build();
+        Parameter normDataFlag = new Parameter.Builder("disableNormDataInXCDL",
+                "-n")
+                .description(
+                        "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'")
+                .build();
         parameterList.add(normDataFlag);
 
-        Parameter enableRawData = new Parameter.Builder("enableRawDataInXCDL", "-r").description(
-                "Enables the output of RAW Data in XCDL file. Allowed value: '-r'").build();
+        Parameter enableRawData = new Parameter.Builder("enableRawDataInXCDL",
+                "-r")
+                .description(
+                        "Enables the output of RAW Data in XCDL file. Allowed value: '-r'")
+                .build();
         parameterList.add(enableRawData);
 
         Parameter optionalXCELString = new Parameter.Builder(
-                "optionalXCELString",
-                "the XCEL file as a String").description(
-                "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
-                        + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.").build();
+                "optionalXCELString", "the XCEL file as a String")
+                .description(
+                        "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
+                                + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.")
+                .build();
         parameterList.add(optionalXCELString);
 
         sd.parameters(parameterList);
-
+        sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(
+                new URI[] {}));
         // Migration Paths: List all combinations:
         sd.paths(createMigrationPathwayMatrix(CoreExtractor
                 .getSupportedInputFormats(), CoreExtractor
@@ -144,6 +151,11 @@ public final class XcdlMigrate implements Migrate {
 
     public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
             URI outputFormat, List<Parameter> parameters) {
+        URI format = inputFormat;
+        if (!CoreExtractor.supported(inputFormat, parameters)) {
+            return new MigrateResult(null, CoreExtractor
+                    .unsupportedInputFormatReport(inputFormat));
+        }
         System.out.println("Working on file: " + digitalObject.getTitle());
         DigitalObject resultDigOb = null;
         ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,

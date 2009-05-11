@@ -61,8 +61,8 @@ public class XcdlAccessTests {
         List<Property> extractable = characterise.listProperties(uri);
         /* Now we actually extract a PNG: */
         CharacteriseResult result = characterise.characterise(
-                new DigitalObject.Builder(ImmutableContent.byValue(new File(PNG)))
-                        .build(), null);
+                new DigitalObject.Builder(ImmutableContent
+                        .byValue(new File(PNG))).format(uri).build(), null);
         List<Property> extracted = result.getProperties();
         /* And check if the IDs correspond: */
         assertAllExtractedPropsAreListedAsExtractable(extractable, extracted);

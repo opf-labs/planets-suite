@@ -27,6 +27,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
@@ -164,6 +165,23 @@ public class XcdlCharacteriseTests {
         }
     }
 
+    @Test
+    public void testRejectInvalidFormat() {
+        DigitalObject.Builder builder = new DigitalObject.Builder(
+                ImmutableContent.byValue(new byte[] {}));
+        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
+        /* And we can't characterise any format (= no format set): */
+        CharacteriseResult result = extractor.characterise(builder.build(),
+                null);
+        Assert.assertEquals(Type.ERROR, result.getReport().getType());
+        Assert.assertEquals(null, result.getProperties());
+        /* And we can't characterise unsupported formats: */
+        result = extractor.characterise(builder.format(
+                registry.createExtensionUri("svg")).build(), null);
+        Assert.assertEquals(Type.ERROR, result.getReport().getType());
+        Assert.assertEquals(null, result.getProperties());
+    }
+
     // Helper methods:
 
     /**
@@ -181,25 +199,29 @@ public class XcdlCharacteriseTests {
 
         if (disableNormDataFlag) {
             Parameter normDataFlag = new Parameter.Builder(
-                    "disableNormDataInXCDL",
-                    "-n").description(
-                    "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'").build();
+                    "disableNormDataInXCDL", "-n")
+                    .description(
+                            "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'")
+                    .build();
             parameterList.add(normDataFlag);
         }
 
         if (enableRawDataFlag) {
-            Parameter enableRawData = new Parameter.Builder("enableRawDataInXCDL",
-                    "-r").description(
-                    "Enables the output of RAW Data in XCDL file. Allowed value: '-r'").build();
+            Parameter enableRawData = new Parameter.Builder(
+                    "enableRawDataInXCDL", "-r")
+                    .description(
+                            "Enables the output of RAW Data in XCDL file. Allowed value: '-r'")
+                    .build();
             parameterList.add(enableRawData);
         }
 
         if (optionalXCELString != null) {
             Parameter xcelStringParam = new Parameter.Builder(
-                    "optionalXCELString",
-                    optionalXCELString).description(
-                    "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
-                            + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.").build();
+                    "optionalXCELString", optionalXCELString)
+                    .description(
+                            "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
+                                    + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.")
+                    .build();
             parameterList.add(xcelStringParam);
         }
 
@@ -251,8 +273,13 @@ public class XcdlCharacteriseTests {
 
     private static DigitalObject createDigitalObjectByValue(URL permanentURL,
             byte[] resultFileBlob) {
+        String extension = XcdlCharacteriseUnitHelper.SAMPLE_FILE
+                .substring(XcdlCharacteriseUnitHelper.SAMPLE_FILE
+                        .lastIndexOf(".") + 1);
         DigitalObject digObj = new DigitalObject.Builder(ImmutableContent
-                .byValue(resultFileBlob)).build();
+                .byValue(resultFileBlob)).format(
+                FormatRegistryFactory.getFormatRegistry().createExtensionUri(
+                        extension)).build();
         return digObj;
     }
 }

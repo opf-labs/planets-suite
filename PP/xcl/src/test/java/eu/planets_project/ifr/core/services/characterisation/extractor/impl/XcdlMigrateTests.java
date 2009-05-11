@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,12 +39,11 @@ public class XcdlMigrateTests {
     /***/
     static final String WSDL = "/pserv-xcl/XcdlMigrate?wsdl";
     /***/
-//    static String xcelString;
-//    /***/
-//    static File outputXcdl;
-//    /***/
-//    static byte[] binary;
-
+    // static String xcelString;
+    // /***/
+    // static File outputXcdl;
+    // /***/
+    // static byte[] binary;
     /**
      * the service
      */
@@ -95,6 +95,22 @@ public class XcdlMigrateTests {
     @Test
     public void testMigration() throws URISyntaxException {
         testPath(migrationPaths[0]);
+    }
+
+    @Test
+    public void testRejectInvalidFormat() {
+        DigitalObject o = new DigitalObject.Builder(ImmutableContent
+                .byValue(new byte[] {})).build();
+        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
+        /* And we can't migrate any format (= no format set): */
+        MigrateResult result = extractor.migrate(o, null, null, null);
+        Assert.assertEquals(Type.ERROR, result.getReport().getType());
+        Assert.assertEquals(null, result.getDigitalObject());
+        /* And we can't migrate unsupported formats: */
+        result = extractor.migrate(o, registry.createExtensionUri("svg"), null,
+                null);
+        Assert.assertEquals(Type.ERROR, result.getReport().getType());
+        Assert.assertEquals(null, result.getDigitalObject());
     }
 
     protected void testPath(MigrationPath path) throws URISyntaxException {
@@ -170,25 +186,29 @@ public class XcdlMigrateTests {
 
         if (disableNormDataFlag) {
             Parameter normDataFlag = new Parameter.Builder(
-                    "disableNormDataInXCDL",
-                    "-n").description(
-                    "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'").build();
+                    "disableNormDataInXCDL", "-n")
+                    .description(
+                            "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'")
+                    .build();
             parameterList.add(normDataFlag);
         }
 
         if (enableRawDataFlag) {
-            Parameter enableRawData = new Parameter.Builder("enableRawDataInXCDL",
-                    "-r").description(
-                    "Enables the output of RAW Data in XCDL file. Allowed value: '-r'").build();
+            Parameter enableRawData = new Parameter.Builder(
+                    "enableRawDataInXCDL", "-r")
+                    .description(
+                            "Enables the output of RAW Data in XCDL file. Allowed value: '-r'")
+                    .build();
             parameterList.add(enableRawData);
         }
 
         if (optionalXCELString != null) {
             Parameter xcelStringParam = new Parameter.Builder(
-                    "optionalXCELString",
-                    optionalXCELString).description(
-                    "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
-                            + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.").build();
+                    "optionalXCELString", optionalXCELString)
+                    .description(
+                            "Could contain an optional XCEL String which is passed to the Extractor tool.\n\r"
+                                    + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.")
+                    .build();
             parameterList.add(xcelStringParam);
         }
 
@@ -324,18 +344,18 @@ public class XcdlMigrateTests {
         }
     }
 
-//    private URI getUriForFile(File testFile) {
-//        String fileName = testFile.getAbsolutePath();
-//        String testFileExtension = null;
-//        if (fileName.contains(".")) {
-//            testFileExtension = fileName
-//                    .substring(fileName.lastIndexOf(".") + 1);
-//        } else {
-//            System.err.println("Could not find file extension!!!");
-//            return null;
-//        }
-//        return format.createExtensionUri(testFileExtension);
-//    }
+    // private URI getUriForFile(File testFile) {
+    // String fileName = testFile.getAbsolutePath();
+    // String testFileExtension = null;
+    // if (fileName.contains(".")) {
+    // testFileExtension = fileName
+    // .substring(fileName.lastIndexOf(".") + 1);
+    // } else {
+    // System.err.println("Could not find file extension!!!");
+    // return null;
+    // }
+    // return format.createExtensionUri(testFileExtension);
+    // }
 
     @SuppressWarnings("unused")
     private DigitalObject createDigitalObjectByReference(URL permanentURL,

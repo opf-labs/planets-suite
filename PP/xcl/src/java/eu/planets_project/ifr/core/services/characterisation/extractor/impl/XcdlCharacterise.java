@@ -65,7 +65,11 @@ public final class XcdlCharacterise implements Characterise, Serializable {
      */
     public CharacteriseResult characterise(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
-
+        URI format = digitalObject.getFormat();
+        if (!CoreExtractor.supported(format, parameters)) {
+            return new CharacteriseResult(null, CoreExtractor
+                    .unsupportedInputFormatReport(format));
+        }
         ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,
                 "OK");
         CharacteriseResult characteriseResult = null;
@@ -143,15 +147,18 @@ public final class XcdlCharacterise implements Characterise, Serializable {
         sd.version("0.1");
 
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        Parameter normDataFlag = new Parameter.Builder(
-                "disableNormDataInXCDL",
-                "-n").description(
-                "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'").build();
+        Parameter normDataFlag = new Parameter.Builder("disableNormDataInXCDL",
+                "-n")
+                .description(
+                        "Disables NormData output in result XCDL. Reduces file size. Allowed value: '-n'")
+                .build();
         parameterList.add(normDataFlag);
 
-        Parameter enableRawData = new Parameter.Builder("enableRawDataInXCDL", "-r")
+        Parameter enableRawData = new Parameter.Builder("enableRawDataInXCDL",
+                "-r")
                 .description(
-                "Enables the output of RAW Data in XCDL file. Allowed value: '-r'").build();
+                        "Enables the output of RAW Data in XCDL file. Allowed value: '-r'")
+                .build();
         parameterList.add(enableRawData);
 
         sd.parameters(parameterList);

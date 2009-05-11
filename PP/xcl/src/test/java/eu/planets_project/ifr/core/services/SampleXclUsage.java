@@ -37,13 +37,6 @@ public class SampleXclUsage {
     private static final String ORIGINAL = SAMPLES + "gif/basketball.gif";
     private static final String CONVERTED = SAMPLES + "jpeg/basketball.jpg";
     private static final String COCO = RESOURCES + "sampleComparatorConfig.xml";
-    /* We wrap them as digital objects for later usage: */
-    private static final DigitalObject GIF = new DigitalObject.Builder(ImmutableContent
-            .byReference(new File(ORIGINAL))).build();
-    private static final DigitalObject JPG = new DigitalObject.Builder(ImmutableContent
-            .byReference(new File(CONVERTED))).build();
-    private static final DigitalObject CONFIG = new DigitalObject.Builder(
-            ImmutableContent.byReference(new File(COCO))).build();
     /* We get a PRONOM ID for the original and the converted file: */
     private static final FormatRegistry REGISTRY = FormatRegistryFactory
             .getFormatRegistry();
@@ -51,6 +44,15 @@ public class SampleXclUsage {
             .iterator().next();
     private static final URI JPG_ID = REGISTRY.getUrisForExtension("jpg")
             .iterator().next();
+    /* We wrap them as digital objects for later usage: */
+    private static final DigitalObject GIF = new DigitalObject.Builder(
+            ImmutableContent.byReference(new File(ORIGINAL))).format(GIF_ID)
+            .build();
+    private static final DigitalObject JPG = new DigitalObject.Builder(
+            ImmutableContent.byReference(new File(CONVERTED))).format(JPG_ID)
+            .build();
+    private static final DigitalObject CONFIG = new DigitalObject.Builder(
+            ImmutableContent.byReference(new File(COCO))).build();
     /* We identify the XCDL format somehow: */
     private static final URI XCDL_ID = URI.create("planets:/xcdl"); // not used
 

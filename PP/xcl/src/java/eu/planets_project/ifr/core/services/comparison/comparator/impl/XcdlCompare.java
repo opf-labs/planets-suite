@@ -40,6 +40,10 @@ public final class XcdlCompare implements Compare {
      */
     public CompareResult compare(final DigitalObject first,
             final DigitalObject second, final List<Parameter> config) {
+        if (first == null || second == null) {
+            throw new IllegalArgumentException(
+                    "Digital objects to compare must not be null");
+        }
         String pcr = new ComparatorConfigCreator(config)
                 .getComparatorConfigXml();
         String result = ComparatorWrapper.compare(read(first), Arrays
@@ -63,6 +67,9 @@ public final class XcdlCompare implements Compare {
      * @return A string representing the content of the digital objects
      */
     private String read(final DigitalObject digitalObject) {
+        if (digitalObject == null) {
+            throw new IllegalArgumentException("Digital object is null!");
+        }
         InputStream stream = digitalObject.getContent().read();
         String content = new String(FileUtils.writeInputStreamToBinary(stream));
         return content;
