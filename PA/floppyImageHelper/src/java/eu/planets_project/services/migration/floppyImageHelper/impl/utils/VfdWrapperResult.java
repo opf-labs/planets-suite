@@ -1,10 +1,10 @@
-package eu.planets_project.services.migration.floppyImageHelper.impl;
+package eu.planets_project.services.migration.floppyImageHelper.impl.utils;
 
 import java.io.File;
 
 import eu.planets_project.services.utils.ZipResult;
 
-public class VfdCommandWrapperResult {
+public class VfdWrapperResult {
 	
 	private int status = -1;
 	private String message = null;

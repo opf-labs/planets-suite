@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.services.migration.floppyImageHelper.impl;
+package eu.planets_project.services.migration.floppyImageHelper.impl.utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import eu.planets_project.services.utils.ZipResult;
  * @author melmsp
  *
  */
-public class VfdCommandWrapper {
+public class VfdWrapper {
 	
 	private static File TOOL_DIR = null;
 	private static String VFD_TOOL_NAME = "VFD.EXE";
@@ -39,14 +39,14 @@ public class VfdCommandWrapper {
 	
 	private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
 	
-	public VfdCommandWrapper() {
+	public VfdWrapper() {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 		FileUtils.deleteTempFiles(TEMP_FOLDER);
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 		EXTRACTED_FILES_DIR = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTION_OUT_FOLDER_NAME);
 	}
 	
-	public VfdCommandWrapperResult createImageWithVfdAndInjectFiles(List<File> filesToInject) {
+	public VfdWrapperResult createImageWithVfdAndInjectFiles(List<File> filesToInject) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -141,7 +141,7 @@ public class VfdCommandWrapper {
 
 	// Open an existing floppy image file and mount it with vfd.exe to
 	// get the files on it. Then return them as a ZIP.
-	public VfdCommandWrapperResult openImageWithVfdAndGetFiles(File imageFile) {
+	public VfdWrapperResult openImageWithVfdAndGetFiles(File imageFile) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -211,7 +211,7 @@ public class VfdCommandWrapper {
 		return this.returnWithSuccess(process_output.toString(), null, zip);
 	}
 	
-	public VfdCommandWrapperResult addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
+	public VfdWrapperResult addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -437,17 +437,17 @@ public class VfdCommandWrapper {
 		}
 	}
 
-	private VfdCommandWrapperResult returnWithError(String message) {
-		VfdCommandWrapperResult vfdResult = new VfdCommandWrapperResult();
+	private VfdWrapperResult returnWithError(String message) {
+		VfdWrapperResult vfdResult = new VfdWrapperResult();
 		vfdResult.setMessage(message);
 		vfdResult.setResultFile(null);
 		vfdResult.setZipResult(null);
-		vfdResult.setState(VfdCommandWrapperResult.ERROR);
+		vfdResult.setState(VfdWrapperResult.ERROR);
 		return vfdResult;
 	}
 
-	private VfdCommandWrapperResult returnWithSuccess(String message, File resultFile, ZipResult zip) {
-		VfdCommandWrapperResult vfdResult = new VfdCommandWrapperResult();
+	private VfdWrapperResult returnWithSuccess(String message, File resultFile, ZipResult zip) {
+		VfdWrapperResult vfdResult = new VfdWrapperResult();
 		vfdResult.setMessage(message);
 		if(resultFile!=null) {
 			vfdResult.setResultFile(resultFile);
@@ -455,7 +455,7 @@ public class VfdCommandWrapper {
 		else {
 			vfdResult.setZipResult(zip);
 		}
-		vfdResult.setState(VfdCommandWrapperResult.SUCCESS);
+		vfdResult.setState(VfdWrapperResult.SUCCESS);
 		return vfdResult;
 	}
 

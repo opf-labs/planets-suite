@@ -26,6 +26,8 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHelper;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VfdWrapper;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VfdWrapperResult;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
@@ -64,7 +66,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	
     private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
     
-    private VfdCommandWrapper vfd = new VfdCommandWrapper();
+    private VfdWrapper vfd = new VfdWrapper();
     
     public FloppyImageHelperWin() {
     	// clean the temp folder for this app at startup...
@@ -116,7 +118,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, List<Parameter> parameters) {
 		
-		VfdCommandWrapperResult vfdResult = null;
+		VfdWrapperResult vfdResult = null;
         String inFormat = format.getExtensions(inputFormat).iterator().next().toUpperCase();
 		
 		List<File> extractedFiles = null;

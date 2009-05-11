@@ -22,8 +22,8 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.migration.floppyImageHelper.impl.VfdCommandWrapper;
-import eu.planets_project.services.migration.floppyImageHelper.impl.VfdCommandWrapperResult;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VfdWrapper;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VfdWrapperResult;
 import eu.planets_project.services.modification.floppyImageModify.api.FloppyImageModify;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
@@ -55,11 +55,13 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	private String DEFAULT_INPUT_NAME = "floppy144.ima";
 	private String INPUT_EXT = null;
 	
+	private String br = System.getProperty("line.separator");
+	
     private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
     
     private static FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
     
-    private static VfdCommandWrapper vfd = new VfdCommandWrapper();
+    private static VfdWrapper vfd = new VfdWrapper();
 
     
     public FloppyImageModifyWin() {
@@ -87,13 +89,17 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Modify.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
-        sd.description("This service is a wrapper for the 'fat_imgen' Windows Commandline tool.\n" +
-        				"This tool is able to add files to existing Floppy disk images (1.44 MB).\n" +
-        				"The service accepts: 1) IMA or IMG files as input floppy image. The files you like to add to that image should be embedded as \"contained\" DigitalObjects and could be of ANY type/format!" +
-        				"The Service returns the modified input floppy image");
+        sd.description("This service is a wrapper for the 'Virtual Floppy Drive' Commandline tool for Windows." + br +
+				"This tools is able to create Floppy disk images - 1.44 MB - from scratch, containing files of your choice." + br +
+				"This is the first possible direction. The other one is the Extraction of files from a floppy disk image." +
+				"This service accepts:" + br +
+				"1) ZIP files, containing the files you want to be written on the floppy image. The service will unpack the ZIP file and write the contained files to the floppy image, " +
+				"which is returned, if the files in the ZIP do not exceed the capacity limit of 1.44 MB." + br +
+				"2) a single file which should be written on the floppy image. This file could be of ANY type/format (except the '.ima/.img' type!)" + br +
+				"3) An '.IMA'/'.IMG' file. In this case, the service will extract all files from that floppy image and return a set of files (as a ZIP).");
         sd.classname(this.getClass().getCanonicalName());
         sd.version("1.0");
-        sd.tool( Tool.create(null, "fat_imgen.exe", "v1.0.4", null, "http://wiki.osdev.org/Fat_imgen"));
+        sd.tool( Tool.create(null, "Virtual Floppy Drive (vfd.exe)", "v2.1.2008.0206", null, "http://chitchat.at.infoseek.co.jp/vmware/vfd.html"));
         sd.inputFormats(formatRegistry.createExtensionUri("IMA"), formatRegistry.createExtensionUri("IMG"));
         return sd.build();
 	}
@@ -140,7 +146,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		
 		List<File> containedFiles = DigitalObjectUtils.getContainedAsFiles(contained, TEMP_FOLDER);
 		
-		VfdCommandWrapperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
+		VfdWrapperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
 		
 		File modifiedImage = vfdResult.getResultFile();
 		
@@ -158,7 +164,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		
 		
 		
-		if(vfdResult.getState()==VfdCommandWrapperResult.SUCCESS) {
+		if(vfdResult.getState()==VfdWrapperResult.SUCCESS) {
 			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, vfdResult.getMessage());
 	        log.info("Created Service report...");
 	        return new ModifyResult(result, report);
