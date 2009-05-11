@@ -8,11 +8,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.List;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
@@ -22,14 +19,15 @@ import eu.planets_project.services.datatypes.DigitalObject;
 public class DigitalObjectUtilsTest {
 	
 	static File testFolder = new File("tests/test-files/documents/test_pdf");
+	File resultZip = new File("IF/common/src/test/resources/test_zip/DigObUtilsTestZip.zip");
 
 //	/**
 //	 * @throws java.lang.Exception
 //	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		FormatRegistry reg = FormatRegistryFactory.getFormatRegistry();
-	}
+//	@BeforeClass
+//	public static void setUpBeforeClass() throws Exception {
+////		FormatRegistry reg = FormatRegistryFactory.getFormatRegistry();
+//	}
 
 	/**
 	 * Test method for {@link eu.planets_project.services.utils.DigitalObjectUtils#createContainedAsStream(java.util.List)}.
@@ -73,5 +71,19 @@ public class DigitalObjectUtilsTest {
 			System.out.println(digitalObject);
 		}
 	}
+	
+	@Test
+	public void testGetZipDigitalObjectFromFileByReference() {
+		DigitalObject result = DigitalObjectUtils.getZipDigitalObjectFromZipfile(resultZip, true);
+		assertTrue("DigitalObject should NOT be NULL!", result!=null);
+		System.out.println(result);
+		List<DigitalObject> contained = result.getContained();
+		assertTrue("The contained list should NOT be NULL", contained!=null);
+		for (DigitalObject digitalObject : contained) {
+			System.out.println(digitalObject);
+		}
+	}
+	
+	
 
 }

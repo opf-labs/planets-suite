@@ -26,6 +26,9 @@ public final class DigitalObjectUtils {
 
     private static final Log LOG = LogFactory.getLog(DigitalObjectUtils.class);
     
+    private final static FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
+    
+    
     /**
      * @return The total size, in bytes, of the bytestream contained or referred
      *         to by this Digital Object. Does not include the size of any
@@ -100,13 +103,12 @@ public final class DigitalObjectUtils {
      */
     public static List<DigitalObject> createContainedAsStream(
             final List<File> files) {
-    	FormatRegistry formatReg = FormatRegistryFactory.getFormatRegistry(); 
         List<DigitalObject> list = new ArrayList<DigitalObject>();
         for (File file : files) {
             DigitalObject currentDigObj = new DigitalObject.Builder(
                     ImmutableContent.asStream(file))
                     .title(file.getName())
-                    .format(formatReg.createExtensionUri(FileUtils.getExtensionFromFile(file)))
+                    .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
                     .build();
             list.add(currentDigObj);
         }
@@ -120,13 +122,12 @@ public final class DigitalObjectUtils {
      */
     public static List<DigitalObject> createContainedbyReference(
             final List<File> files) {
-    	FormatRegistry formatReg = FormatRegistryFactory.getFormatRegistry(); 
         List<DigitalObject> list = new ArrayList<DigitalObject>();
         for (File file : files) {
             DigitalObject currentDigObj = new DigitalObject.Builder(
                     ImmutableContent.byReference(file))
                     .title(file.getName())
-                    .format(formatReg.createExtensionUri(FileUtils.getExtensionFromFile(file)))
+                    .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
                     .build();
             list.add(currentDigObj);
         }
@@ -167,8 +168,21 @@ public final class DigitalObjectUtils {
         return inputFile;
     }
     
+    private static File extractFilesFromZip(File zipFile) {
+    	File tmp = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
+    	String zipName = zipFile.getName();
+    	String folderName = zipName.substring(0, zipName.lastIndexOf("."));
+    	File extZip = FileUtils.createFolderInWorkFolder(tmp, folderName); 
+    	FileUtils.extractFilesFromZip(zipFile, extZip);
+    	return extZip;
+    }
+    
+    public static DigitalObject getZipDigitalObjectFromZipfile(File zipFile, boolean createByReference) {
+    	File folder = extractFilesFromZip(zipFile);
+    	return getZipDigitalObjectFromFolder(folder, folder.getName(), createByReference);
+    }
+    
     public static DigitalObject getZipDigitalObjectFromFolder(File folder, String destZipName, boolean createByReference) {
-    	FormatRegistry formatReg = FormatRegistryFactory.getFormatRegistry(); 
     	List<DigitalObject> containedDigObs = null;
     	List<File> filesInFolder = new ArrayList<File>();
     	FileUtils.listAllFiles(folder, filesInFolder);
@@ -177,7 +191,6 @@ public final class DigitalObjectUtils {
     		zipName = folder.getName() + ".zip";
     	}
     	else {
-    		zipName = null;
     		if(destZipName.contains(".")) {
     			String tmpName = destZipName.substring(0, destZipName.lastIndexOf(".")) + ".zip";
     			zipName = tmpName;
@@ -185,7 +198,6 @@ public final class DigitalObjectUtils {
     		else {
     			zipName = destZipName + ".zip";
     		}
-    		
     	}
     	
     	if(createByReference) {
@@ -195,7 +207,7 @@ public final class DigitalObjectUtils {
     		DigitalObject digOb = new DigitalObject.Builder(ImmutableContent.byReference(zipResult.getZipFile())
 					.withChecksum(zipResult.getChecksum()))
 					.title(zipName)
-					.format(formatReg.createExtensionUri("zip"))
+					.format(format.createExtensionUri("zip"))
 					.contains(containedDigObs.toArray(new DigitalObject[]{}))
 					.build();
     		return digOb;
@@ -207,7 +219,7 @@ public final class DigitalObjectUtils {
     		DigitalObject digOb = new DigitalObject.Builder(ImmutableContent.byValue(zipResult.getZipFile())
 					.withChecksum(zipResult.getChecksum()))
 					.title(zipName)
-					.format(formatReg.createExtensionUri("zip"))
+					.format(format.createExtensionUri("zip"))
 					.contains(containedDigObs.toArray(new DigitalObject[]{}))
 					.build();
     		return digOb;
