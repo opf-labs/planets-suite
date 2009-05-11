@@ -26,8 +26,6 @@ public final class DigitalObjectUtils {
 
     private static final Log LOG = LogFactory.getLog(DigitalObjectUtils.class);
     
-    private FormatRegistry formatReg = FormatRegistryFactory.getFormatRegistry(); 
-
     /**
      * @return The total size, in bytes, of the bytestream contained or referred
      *         to by this Digital Object. Does not include the size of any
@@ -169,15 +167,30 @@ public final class DigitalObjectUtils {
         return inputFile;
     }
     
-    public static DigitalObject getZipDigitalObjectFromFolder(File folder, boolean createByReference) {
+    public static DigitalObject getZipDigitalObjectFromFolder(File folder, String destZipName, boolean createByReference) {
     	FormatRegistry formatReg = FormatRegistryFactory.getFormatRegistry(); 
     	List<DigitalObject> containedDigObs = null;
     	List<File> filesInFolder = new ArrayList<File>();
-    	FileUtils.listAllFilesAndFolders(folder, filesInFolder);
+    	FileUtils.listAllFiles(folder, filesInFolder);
+    	String zipName = null;
+    	if(destZipName==null) {
+    		zipName = folder.getName() + ".zip";
+    	}
+    	else {
+    		zipName = null;
+    		if(destZipName.contains(".")) {
+    			String tmpName = destZipName.substring(0, destZipName.lastIndexOf(".")) + ".zip";
+    			zipName = tmpName;
+    		}
+    		else {
+    			zipName = destZipName + ".zip";
+    		}
+    		
+    	}
+    	
     	if(createByReference) {
     		containedDigObs = createContainedbyReference(filesInFolder);
     		File tmp = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
-        	String zipName = folder.getName() + ".zip";
         	ZipResult zipResult = FileUtils.createZipFileWithChecksum(folder, tmp, zipName);
     		DigitalObject digOb = new DigitalObject.Builder(ImmutableContent.byReference(zipResult.getZipFile())
 					.withChecksum(zipResult.getChecksum()))
@@ -190,7 +203,6 @@ public final class DigitalObjectUtils {
     	else {
     		containedDigObs = createContainedAsStream(filesInFolder);
     		File tmpFolder = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
-        	String zipName = folder.getName() + ".zip";
         	ZipResult zipResult = FileUtils.createZipFileWithChecksum(folder, tmpFolder, zipName);
     		DigitalObject digOb = new DigitalObject.Builder(ImmutableContent.byValue(zipResult.getZipFile())
 					.withChecksum(zipResult.getChecksum()))

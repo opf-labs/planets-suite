@@ -957,6 +957,35 @@ public final class FileUtils {
         return list;
     }
     
+    /**
+     * @param dir The dir to list
+     * @param list The list to add the contents of dir to
+     * @return The given list, with the contents of dir added
+     */
+    public static List<File> listAllFiles(final File dir,
+            final List<File> list) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                File currentFile = files[i];
+                boolean currentFileIsDir = currentFile.isDirectory();
+                if (currentFileIsDir) {
+                    // Ignore hidden folders
+                    if (currentFile.isHidden()) {
+                        continue;
+                    }
+                    if (currentFile.getName().equalsIgnoreCase("CVS")) {
+                        continue;
+                    }
+//                    list.add(currentFile);
+                    listAllFiles(currentFile, list);
+                } else {
+                    list.add(currentFile);
+                }
+            }
+        }
+        return list;
+    }
     
     /**
      * This method returns all the free/available Drive letters on your System, based on File.listRoots()

@@ -8,8 +8,11 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
@@ -23,10 +26,10 @@ public class DigitalObjectUtilsTest {
 //	/**
 //	 * @throws java.lang.Exception
 //	 */
-//	@BeforeClass
-//	public static void setUpBeforeClass() throws Exception {
-//		
-//	}
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		FormatRegistry reg = FormatRegistryFactory.getFormatRegistry();
+	}
 
 	/**
 	 * Test method for {@link eu.planets_project.services.utils.DigitalObjectUtils#createContainedAsStream(java.util.List)}.
@@ -49,7 +52,7 @@ public class DigitalObjectUtilsTest {
 	 */
 	@Test
 	public void testGetZipDigitalObjectFromFolderAsStream() {
-		DigitalObject result = DigitalObjectUtils.getZipDigitalObjectFromFolder(testFolder, false);
+		DigitalObject result = DigitalObjectUtils.getZipDigitalObjectFromFolder(testFolder, "zip-from-folder", false);
 		assertTrue("DigitalObject should NOT be NULL!", result!=null);
 		System.out.println(result);
 		List<DigitalObject> contained = result.getContained();
@@ -61,7 +64,7 @@ public class DigitalObjectUtilsTest {
 	
 	@Test
 	public void testGetZipDigitalObjectFromFolderByReference() {
-		DigitalObject result = DigitalObjectUtils.getZipDigitalObjectFromFolder(testFolder, true);
+		DigitalObject result = DigitalObjectUtils.getZipDigitalObjectFromFolder(testFolder, "zip-from-folder.zip", true);
 		assertTrue("DigitalObject should NOT be NULL!", result!=null);
 		System.out.println(result);
 		List<DigitalObject> contained = result.getContained();
