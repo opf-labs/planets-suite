@@ -167,12 +167,15 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         }
         
         // FIXME Ensure that the DOB is set up correctly.
+        // This currently causes lots of stack trace dumps because planets: is not a valid scheme for URLs.
+        /*
         try {
             dob.permanentUrl( pdURI.toURL() );
         } catch (MalformedURLException e) {
             log.error("Could not convert "+pdURI+" to URL.");
             e.printStackTrace();
         }
+        */
         
         return dob.build();
     }

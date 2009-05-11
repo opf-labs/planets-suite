@@ -162,11 +162,6 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
             // This is a DO:
             try {
                 DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm.retrieve(item));
-                // Mark as selected if it is in the selection:
-                if( digitalObjectBrowser != null && digitalObjectBrowser.getSelectedUris().contains(item) ) {
-                    itemNode.setSelected(true);
-                }
-                
                 return itemNode;
                 
             } catch (DigitalObjectNotFoundException e) {

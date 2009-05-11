@@ -31,6 +31,11 @@ public class DigitalObjectBrowser {
     private DigitalObjectTreeNode currentDob;
     
     private List<URI> selectedDobs = new ArrayList<URI>();
+    
+    protected static final String INSPECTOR_PANEL = "dob_pan_inspector";
+    protected static final String SELECTION_PANEL = "dob_pan_selection";
+    protected static final String CORPORA_PANEL = "dob_pan_corpora";
+    private String selectedPanel = "";
 
     /**
      * Constructor to set up the initial tree model.
@@ -99,6 +104,7 @@ public class DigitalObjectBrowser {
 
     /** Define the current digital object */
     public void setDob( DigitalObjectTreeNode tfn ) {
+        if( tfn != null ) this.setSelectedPanel(DigitalObjectBrowser.INSPECTOR_PANEL);
         this.currentDob = tfn;
     }
     
@@ -210,11 +216,12 @@ public class DigitalObjectBrowser {
      * @param event
      */
     public void addDobByDrop(DropEvent event) {
+        setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
         this.addToSelection( (URI) event.getDragValue() );
     }
 
     /** */
-    private void addToSelection( URI nuri ) {
+    protected void addToSelection( URI nuri ) {
         // Only add if not already selected:
         if( ! this.selectedDobs.contains(nuri) ) {
             log.info("Adding selection: "+nuri);
@@ -223,7 +230,7 @@ public class DigitalObjectBrowser {
     }
 
     /** */
-    private void removeFromSelection( URI nuri ) {
+    protected void removeFromSelection( URI nuri ) {
         if( this.selectedDobs.contains( nuri ) ) {
             this.selectedDobs.remove(nuri);
         }
@@ -234,6 +241,7 @@ public class DigitalObjectBrowser {
      * @return
      */
     public String clearSelection() {
+        setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
         this.selectedDobs.clear();
         return "success";
     }
@@ -243,6 +251,7 @@ public class DigitalObjectBrowser {
      */
     public static String selectAll() {
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
+        fb.setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
         List<DigitalObjectTreeNode> dobs = fb.getList();
         for( int i = 0; i < dobs.size(); i ++ ) {
             if( ! dobs.get(i).isDirectory() ) {
@@ -257,6 +266,7 @@ public class DigitalObjectBrowser {
      */
     public static String unselectAll() {
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
+        fb.setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
         List<DigitalObjectTreeNode> dobs = fb.getList();
         for( int i = 0; i < dobs.size(); i ++ ) {
             if( ! dobs.get(i).isDirectory() ) {
@@ -293,6 +303,38 @@ public class DigitalObjectBrowser {
         fb.setLocation(null);
         return "success";
     }
+    
+    /**
+     * @return the selectedPanel
+     */
+    public String getSelectedPanel() {
+        log.info("Getting panel: "+this.selectedPanel);
+        return this.selectedPanel;
+    }
+    
+    public void setSelectedPanelInspector() {
+        this.setSelectedPanel(DigitalObjectBrowser.INSPECTOR_PANEL);
+    }
+    public void setSelectedPanelSelection() {
+        this.setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
+    }
+    public void setSelectedPanelCorpora() {
+        this.setSelectedPanel(DigitalObjectBrowser.CORPORA_PANEL);
+    }
+
+    /**
+     * @param selectedPanel the selectedPanel to set
+     */
+    public void setSelectedPanel(String selectedPanel) {
+        log.info("Setting panel from "+this.selectedPanel+" to "+selectedPanel);
+        this.selectedPanel = selectedPanel;
+    }
+
+    /** */
+    public static void panelSelectEvent( ValueChangeEvent event ) {
+        log.info("Got panel event: "+event);
+    }
+
     
     /**
      * Controller that adds the currently selected items to the experiment.

@@ -63,9 +63,18 @@
                  rows="15" reRender="dobrow_ds" styleClass="tbTable" style="width: 100%">
         
                 <rich:column width="1%">
-                  <f:facet name="header"><h:selectBooleanCheckbox immediate="true" onchange="this.form.submit();"
-       valueChangeListener="#{DobBrowser.toggleSelectAll}" value="#{DobBrowser.allSelected}"/></f:facet>
-                  <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}" disabled="true"/>
+                  <f:facet name="header">
+                    <a4j:region>
+                      <h:selectBooleanCheckbox valueChangeListener="#{DobBrowser.toggleSelectAll}" value="#{DobBrowser.allSelected}">
+                        <a4j:support event="onchange" reRender="DobBrowserDetailsPanelBar,DobBrowserList" />
+                      </h:selectBooleanCheckbox>
+                    </a4j:region>
+                  </f:facet>
+                  <a4j:region>
+                    <h:selectBooleanCheckbox value="#{do.selected}" rendered="#{do.selectable}">
+                        <a4j:support event="onchange" reRender="DobBrowserDetailsPanelBar,DobBrowserList" />
+                    </h:selectBooleanCheckbox>
+                  </a4j:region>
                 </rich:column>
                        
                 <rich:column width="100%">
@@ -127,15 +136,16 @@
                 
     </h:panelGroup>
                 
-    <rich:panelBar height="400" width="100%">
-        <rich:dropSupport acceptedTypes="dobUri" reRender="dobSelList,DobBrowserList" dropListener="#{DobBrowser.addDobByDrop}"/>
+    <rich:panelBar id="DobBrowserDetailsPanelBar" height="400" width="100%" 
+      selectedPanel="#{DobBrowser.selectedPanel}" valueChangeListener="#{DobBrowser.panelSelectEvent}">
+        <rich:dropSupport acceptedTypes="dobUri" reRender="DobBrowserDetailsPanelBar,DobBrowserList" dropListener="#{DobBrowser.addDobByDrop}"/>
         <rich:dragIndicator id="dobDragIndicator" rejectClass="dobDropIndicatorReject" acceptClass="dobDropIndicatorAccept" styleClass="dobDropIndicatorClass">
          <f:facet name="single">
           {dragImage} {dragName}
          </f:facet>
         </rich:dragIndicator>
                         
-        <rich:panelBarItem label="Inspector">
+        <rich:panelBarItem id="dob_pan_inspector" label="Inspector">
                    
             <ui:fragment rendered="#{DobBrowser.dob == null}">
               <ui:fragment rendered="#{DobBrowser.location == null}">
@@ -159,7 +169,7 @@
             
         </rich:panelBarItem>
         
-        <rich:panelBarItem label="Selection">
+        <rich:panelBarItem id="dob_pan_selection" label="Selection">
             <a4j:outputPanel id="dobSelList">
             
             <ui:fragment rendered="#{DobBrowser.selectionSize > 0}">
@@ -173,8 +183,7 @@
                 <h:outputText value="#{do.leafname}"/>
             </rich:column>
             <rich:column width="1%">
-                <h:commandLink title="Remove this Digital Object." disabled="true">
-                    <f:actionListener type="eu.planets_project.tb.gui.backing.exp.RemoveDigitalObjectActionListener"/>
+                <h:commandLink title="Remove this Digital Object." action="#{do.deselectThis}">
                     <t:graphicImage value="/graphics/user_trash.png" alt="Delete"/>
                 </h:commandLink>
             </rich:column>
@@ -207,7 +216,7 @@
             </a4j:outputPanel>
         </rich:panelBarItem>
         
-        <rich:panelBarItem label="Additional Corpora">
+        <rich:panelBarItem id="dob_pan_corpora" label="Additional Corpora">
            Add further corpora from here?
         </rich:panelBarItem>
         

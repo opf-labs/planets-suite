@@ -28,7 +28,6 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     private String size;
     private String dateAdded;
     private String dateModified;
-    private boolean selected;
     private boolean selectable;
     private boolean expanded = false;
     
@@ -128,14 +127,33 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * @return the selected
      */
     public boolean isSelected() {
-        return selected;
+        DigitalObjectBrowser db = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
+        if( db.getSelectedUris().contains(this.getUri()) ) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
     /**
      * @param selected the selected to set
      */
     public void setSelected(boolean selected) {
-        this.selected = selected;
+        DigitalObjectBrowser db = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
+        if( selected == true ) {
+            db.addToSelection(this.getUri());
+        } else {
+            db.removeFromSelection(this.getUri());
+        }
+        log.info("Setting 'Selected' to: "+selected);
+        db.setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
+    }
+
+    /**
+     * 
+     */
+    public void deselectThis() {
+        this.setSelected(false);
     }
     
     /**
