@@ -20,6 +20,7 @@ public class DigitalObjectUtilsTest {
 	
 	static File testFolder = new File("tests/test-files/documents/test_pdf");
 	File resultZip = new File("IF/common/src/test/resources/test_zip/DigObUtilsTestZip.zip");
+	File work_folder = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtilsTest_TMP"); 
 
 //	/**
 //	 * @throws java.lang.Exception
@@ -69,7 +70,10 @@ public class DigitalObjectUtilsTest {
 		assertTrue("The contained list should NOT be NULL", contained!=null);
 		for (DigitalObject digitalObject : contained) {
 			System.out.println(digitalObject);
+			File current = new File(work_folder, digitalObject.getTitle());
+			FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), current);
 		}
+		
 	}
 	
 	@Test
@@ -81,6 +85,8 @@ public class DigitalObjectUtilsTest {
 		assertTrue("The contained list should NOT be NULL", contained!=null);
 		for (DigitalObject digitalObject : contained) {
 			System.out.println(digitalObject);
+			File current = new File(work_folder, digitalObject.getTitle());
+			FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), current);
 		}
 	}
 	

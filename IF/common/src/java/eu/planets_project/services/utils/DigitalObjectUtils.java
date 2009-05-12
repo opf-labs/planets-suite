@@ -6,6 +6,7 @@ package eu.planets_project.services.utils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,7 @@ public final class DigitalObjectUtils {
     }
 
     /**
-     * @param files The files to wrap as stram-based digital objects
+     * @param files The files to wrap as stream-based digital objects
      * @return A list of digital object wrapping the given files, streaming the
      *         content when read
      */
@@ -108,7 +109,7 @@ public final class DigitalObjectUtils {
             DigitalObject currentDigObj = new DigitalObject.Builder(
                     ImmutableContent.asStream(file))
                     .title(file.getName())
-                    .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
+//                    .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
                     .build();
             list.add(currentDigObj);
         }
@@ -124,11 +125,17 @@ public final class DigitalObjectUtils {
             final List<File> files) {
         List<DigitalObject> list = new ArrayList<DigitalObject>();
         for (File file : files) {
-            DigitalObject currentDigObj = new DigitalObject.Builder(
-                    ImmutableContent.byReference(file))
-                    .title(file.getName())
-                    .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
-                    .build();
+            DigitalObject currentDigObj = null;
+			try {
+				currentDigObj = new DigitalObject.Builder(
+				        ImmutableContent.byReference(file.toURI().toURL()))
+				        .title(file.getName())
+				        .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
+				        .build();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             list.add(currentDigObj);
         }
         return list;
@@ -168,20 +175,6 @@ public final class DigitalObjectUtils {
         return inputFile;
     }
     
-    private static File extractFilesFromZip(File zipFile) {
-    	File tmp = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
-    	String zipName = zipFile.getName();
-    	String folderName = zipName.substring(0, zipName.lastIndexOf("."));
-    	File extZip = FileUtils.createFolderInWorkFolder(tmp, folderName); 
-    	FileUtils.extractFilesFromZip(zipFile, extZip);
-    	return extZip;
-    }
-    
-    public static DigitalObject getZipDigitalObjectFromZipfile(File zipFile, boolean createByReference) {
-    	File folder = extractFilesFromZip(zipFile);
-    	return getZipDigitalObjectFromFolder(folder, folder.getName(), createByReference);
-    }
-    
     public static DigitalObject getZipDigitalObjectFromFolder(File folder, String destZipName, boolean createByReference) {
     	List<DigitalObject> containedDigObs = null;
     	List<File> filesInFolder = new ArrayList<File>();
@@ -204,12 +197,18 @@ public final class DigitalObjectUtils {
     		containedDigObs = createContainedbyReference(filesInFolder);
     		File tmp = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
         	ZipResult zipResult = FileUtils.createZipFileWithChecksum(folder, tmp, zipName);
-    		DigitalObject digOb = new DigitalObject.Builder(ImmutableContent.byReference(zipResult.getZipFile())
-					.withChecksum(zipResult.getChecksum()))
-					.title(zipName)
-					.format(format.createExtensionUri("zip"))
-					.contains(containedDigObs.toArray(new DigitalObject[]{}))
-					.build();
+    		DigitalObject digOb = null;
+			try {
+				digOb = new DigitalObject.Builder(ImmutableContent.byReference(zipResult.getZipFile().toURI().toURL())
+						.withChecksum(zipResult.getChecksum()))
+						.title(zipName)
+						.format(format.createExtensionUri("zip"))
+						.contains(containedDigObs.toArray(new DigitalObject[]{}))
+						.build();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     		return digOb;
     	}
     	else {
@@ -225,5 +224,19 @@ public final class DigitalObjectUtils {
     		return digOb;
     	}
     }
+
+	public static DigitalObject getZipDigitalObjectFromZipfile(File zipFile, boolean createByReference) {
+		File folder = extractFilesFromZip(zipFile);
+		return getZipDigitalObjectFromFolder(folder, folder.getName(), createByReference);
+	}
+
+	private static File extractFilesFromZip(File zipFile) {
+		File tmp = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
+		String zipName = zipFile.getName();
+		String folderName = zipName.substring(0, zipName.lastIndexOf("."));
+		File extZip = FileUtils.createFolderInWorkFolder(tmp, folderName); 
+		FileUtils.extractFilesFromZip(zipFile, extZip);
+		return extZip;
+	}
 
 }
