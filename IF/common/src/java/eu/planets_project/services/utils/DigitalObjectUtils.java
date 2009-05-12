@@ -215,7 +215,7 @@ public final class DigitalObjectUtils {
     		containedDigObs = createContainedAsStream(filesInFolder);
     		File tmpFolder = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
         	ZipResult zipResult = FileUtils.createZipFileWithChecksum(folder, tmpFolder, zipName);
-    		DigitalObject digOb = new DigitalObject.Builder(ImmutableContent.byValue(zipResult.getZipFile())
+    		DigitalObject digOb = new DigitalObject.Builder(ImmutableContent.asStream(zipResult.getZipFile())
 					.withChecksum(zipResult.getChecksum()))
 					.title(zipName)
 					.format(format.createExtensionUri("zip"))
