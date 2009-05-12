@@ -67,10 +67,13 @@ public class TestbedBatchProcessDaemon extends Thread {
         BatchExecutionRecordImpl batch = this.createExperimentBatch(job, exp);
         
         try {
+            // FIXME, Some experiment types may take all DOBs into one workflow?  Emulation?
+            
             // Set up the basics:
             DataHandler dh = new DataHandlerImpl();
             int total = job.getDigitalObjects().size();
             int i = 0;
+            
             
             // Process each in turn:
             for( String filename : job.getDigitalObjects() ) {
@@ -106,6 +109,7 @@ public class TestbedBatchProcessDaemon extends Thread {
                 i++;
                 job.setPercentComplete((int)(100.0*i/total));
             }
+            
             // Record that all went well:
             log.info("Status: DONE - All went well.");
             // Set the job status:

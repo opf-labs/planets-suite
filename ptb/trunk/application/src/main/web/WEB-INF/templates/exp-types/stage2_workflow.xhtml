@@ -27,6 +27,14 @@
         
         </c:if>
                 
+        <c:if test="#{ExperimentBean.etype == 'emulate'}">
+
+    <ui:include src="/WEB-INF/templates/exp-types/stage2_createview.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+    </ui:include>
+        
+        </c:if>
+        
   </ui:composition>
 </body>
 </html>

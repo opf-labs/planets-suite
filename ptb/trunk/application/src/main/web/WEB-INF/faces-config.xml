@@ -52,6 +52,11 @@
 		<managed-bean-class>eu.planets_project.tb.gui.backing.exp.ExpTypeMigrate</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+    <managed-bean>
+        <managed-bean-name>ExpTypeViewer</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.exp.ExpTypeViewer</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 	<managed-bean>
 		<managed-bean-name>ListExp_Backing</managed-bean-name>
 		<managed-bean-class>eu.planets_project.tb.gui.backing.ListExp</managed-bean-class>
@@ -107,6 +112,20 @@
 		<managed-bean-class>eu.planets_project.tb.gui.backing.ServiceBrowser</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+    <managed-bean>
+        <managed-bean-name>EmulationInspector</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.exp.view.EmulationInspector</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+        <managed-property>
+            <property-name>experimentId</property-name>
+            <value>#{param['eid']}</value>
+        </managed-property>
+        <managed-property>
+            <property-name>sessionId</property-name>
+            <value>#{param['sid']}</value>
+        </managed-property>
+    </managed-bean>
+	
 	<managed-bean>
 		<managed-bean-name>ServiceInspector</managed-bean-name>
 		<managed-bean-class>eu.planets_project.tb.gui.backing.service.ServiceInspector</managed-bean-class>

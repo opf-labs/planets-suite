@@ -104,15 +104,25 @@
         </ui:include>
           
         </c:if>
+
                 
         <c:if test="#{ExperimentBean.etype == 'migrate'}">
         
         <ui:include src="/WEB-INF/templates/exp-types/stage5_migrate_result.xhtml">
            <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
         </ui:include>
-          
         
         </c:if>
+
+     
+        <c:if test="#{ExperimentBean.etype == 'emulate'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_createview_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
+        
+        </c:if>
+
      
         <p>
         The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.

@@ -5,9 +5,11 @@ package eu.planets_project.tb.impl.services.mockups.workflow;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
 
@@ -16,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.view.CreateViewResult;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
@@ -39,10 +42,13 @@ public class WorkflowResult {
     String resultType;
     public static final String RESULT_URI = "uri";
     public static final String RESULT_DIGITAL_OBJECT = "digital_object";
+    public static final String RESULT_CREATEVIEW_RESULT = "createview_result";
     
     Object result;
     
     ServiceReport report;
+    
+    URL mainEndpoint;
     
     /** */
     protected WorkflowResult() {}
@@ -109,6 +115,22 @@ public class WorkflowResult {
     public void setReport(ServiceReport report) {
         this.report = report;
     }
+    
+    /**
+     * @return the mainEndpoint
+     */
+    public URL getMainEndpoint() {
+        return mainEndpoint;
+    }
+
+
+    /**
+     * @param mainEndpoint the mainEndpoint to set
+     */
+    public void setMainEndpoint(URL mainEndpoint) {
+        this.mainEndpoint = mainEndpoint;
+    }
+
 
     /**
      * @param wfr
@@ -132,25 +154,23 @@ public class WorkflowResult {
             if( wfr != null && wfr.getStages() != null ) {
                 // Examine the result:
                 if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wfr.getResultType())) {
-                    DigitalObject dob = (DigitalObject) wfr.getResult();
-                    try {
-                        // FIXME Check dob.getContent().read() != null?
-                        String storeKey = dh.addBytestream(dob.getContent().read(), dob.getTitle());
-                        rec.setResult(storeKey);
-                        rec.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
-                        /* FIXME In the future, store the whole DO in the TB DR.
-                Add dob.gatherBinaries/embedBinaries method?
-                         */
-                    } catch (IOException e) {
-                        log.error("Could not store result DigitalObject - "+dob);
-                        e.printStackTrace();
-                    }
+                    rec.setDigitalObjectResult( (DigitalObject) wfr.getResult() );
+                    
+                } else if(WorkflowResult.RESULT_CREATEVIEW_RESULT.equals(wfr.getResultType()) ) {
+                    CreateViewResult cvr = (CreateViewResult) wfr.getResult( );
+                    Properties vp = new Properties();
+                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_SESSION_ID, cvr.getSessionIdentifier());
+                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_VIEW_URL, cvr.getViewURL().toString());
+                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_ENDPOINT_URL, wfr.getMainEndpoint().toString() );
+                    rec.setPropertiesListResult(vp);
+                    
                 } else {
                     rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
                 }
+                
                 // Now pull out the stages, which include the measurements etc:
                 for( ExecutionStageRecordImpl stage : wfr.getStages() ) {
-                    // FIXME Can this be done from the session's Service Registry instead, please!
+                    // FIXME Can this be done from the session's Service Registry instead, please!?
                     if( stage.getEndpoint() != null ) {
                         log.info("Recording info about endpoint: "+stage.getEndpoint());
                         stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( eid, stage.getEndpoint(), Calendar.getInstance() ) );
@@ -168,4 +188,5 @@ public class WorkflowResult {
         }
         
     }
+    
 }

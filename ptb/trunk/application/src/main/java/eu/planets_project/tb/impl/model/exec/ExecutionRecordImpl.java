@@ -3,15 +3,19 @@
  */
 package eu.planets_project.tb.impl.model.exec;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.persistence.Embeddable;
@@ -22,6 +26,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
+import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -31,6 +42,8 @@ import org.apache.commons.codec.binary.Hex;
 @XmlRootElement(name = "ExecutionRecord")
 @XmlAccessorType(XmlAccessType.FIELD) 
 public class ExecutionRecordImpl implements Serializable {
+    private static Log log = LogFactory.getLog(ExecutionRecordImpl.class);
+
     /** */
     private static final long serialVersionUID = -6230965529849585615L;
 
@@ -39,6 +52,17 @@ public class ExecutionRecordImpl implements Serializable {
 
     /** If the execution lead to a file that is stored in the local file store. */
     public static final String RESULT_DATAHANDLER_REF = "DataHandlerRef";
+    
+    /** If the execution lead to a list of properties. */
+    public static final String RESULT_PROPERTIES_LIST = "PropertiesList";
+    
+    /* Properties the TB understands */
+    public static final String RESULT_PROPERTY_URI = "tb.result.uri";
+    public static final String RESULT_PROPERTY_DIGITAL_OBJECT = "tb.result.digital_object";
+    public static final String RESULT_PROPERTY_CREATEVIEW_SESSION_ID = "tb.result.createview.session_id";
+    public static final String RESULT_PROPERTY_CREATEVIEW_VIEW_URL = "tb.result.createview.view_url";
+    public static final String RESULT_PROPERTY_CREATEVIEW_ENDPOINT_URL = "tb.result.createview.endpoint";
+    
     
     /** If the execution did not have any output other than the measurements */
     public static final String RESULT_MEASUREMENTS_ONLY = "MeasurmentsOnly";
@@ -275,4 +299,47 @@ public class ExecutionRecordImpl implements Serializable {
         return im;
     }
 
+    
+    /* ---- Additional methods for setting and getting particular types of result ---- */
+    
+    public void setPropertiesListResult( Properties props ) throws IOException {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        props.storeToXML(bout, "Property List Testbed Result", "UTF-8");
+        this.setResult(bout.toString("UTF-8"));
+        this.setResultType(RESULT_PROPERTIES_LIST);
+    }
+    
+    public Properties getPropertiesListResult() throws IOException {
+        if( ! RESULT_PROPERTIES_LIST.equalsIgnoreCase(this.getResultType())) {
+            return null;
+        }
+        Properties props = new Properties();
+        ByteArrayInputStream bin = new ByteArrayInputStream( this.getResult().getBytes("UTF-8") );
+        props.loadFromXML(bin);
+        return props;
+    }
+    
+    /* -- */
+    
+    public void setDigitalObjectResult( DigitalObject dob ) {
+        try {
+            DataHandler dh = new DataHandlerImpl();
+            // FIXME Check dob.getContent().read() != null?
+            String storeKey = dh.addBytestream(dob.getContent().read(), dob.getTitle());
+            this.setResult(storeKey);
+            this.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
+            /* FIXME In the future, store the whole DO in the TB DR.
+    Add dob.gatherBinaries/embedBinaries method?
+             */
+        } catch (IOException e) {
+            log.error("Could not store result DigitalObject - "+dob);
+            e.printStackTrace();
+        }
+    }
+    
+    public void setDobRefResult( String storeKey ) {
+        this.setResult(storeKey);
+        this.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
+    }
+    
 }

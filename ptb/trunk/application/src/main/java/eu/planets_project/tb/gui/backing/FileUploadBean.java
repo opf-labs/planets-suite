@@ -70,13 +70,13 @@ public class FileUploadBean
     public String upload(boolean keep) throws IOException
     {
     	log.info("Uploading...");
-        FacesContext facesContext = FacesContext.getCurrentInstance();
         if (_upFile == null)
         	return "error-deploy";
         else ;
-        facesContext.getExternalContext().getApplicationMap().put("fileupload_bytes", _upFile.getBytes());
-        facesContext.getExternalContext().getApplicationMap().put("fileupload_type", _upFile.getContentType());
-        facesContext.getExternalContext().getApplicationMap().put("fileupload_name", _upFile.getName());
+        //FacesContext facesContext = FacesContext.getCurrentInstance();
+        //facesContext.getExternalContext().getApplicationMap().put("fileupload_bytes", _upFile.getBytes());
+        //facesContext.getExternalContext().getApplicationMap().put("fileupload_type", _upFile.getContentType());
+        //facesContext.getExternalContext().getApplicationMap().put("fileupload_name", _upFile.getName());
         log.debug("upfile.name: " + _upFile.getName());
         log.debug("upfile.contentType: " + _upFile.getContentType());
         log.debug("upfile.size: " + _upFile.getSize());

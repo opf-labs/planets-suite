@@ -31,6 +31,7 @@ import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
+import eu.planets_project.tb.impl.services.mockups.workflow.ViewerWorkflow;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -59,6 +60,7 @@ public abstract class ExpTypeBackingBean {
     public abstract List<ExperimentStageBean> getStageBeans();
     
     /**
+     * TODO Note that this is also a point that requires expantions when adding types.
      * @param etype
      * @return
      */
@@ -68,6 +70,8 @@ public abstract class ExpTypeBackingBean {
             exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeIdentify");
         } else if( etype.equals( AdminManagerImpl.MIGRATE ) ) {
             exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeMigrate");
+        } else if( etype.equals( AdminManagerImpl.EMULATE ) ) {
+            exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeViewer");
         } else {
             // For unrecognised experiment types, set to NULL:
             exptype = null;
@@ -76,6 +80,8 @@ public abstract class ExpTypeBackingBean {
     }
     
     /**
+     * TODO Record that this is one of the bits to change when adding experiment types.
+     * 
      * @param etype
      * @return
      */
@@ -91,6 +97,11 @@ public abstract class ExpTypeBackingBean {
             log.info("Running a Migrate experiment.");
             if( ewfCache == null || ( ! (ewfCache instanceof MigrateWorkflow) ) )
                 ewfCache = new MigrateWorkflow();
+            
+        } else if( AdminManagerImpl.EMULATE.equals(etype)) {
+            log.info("Running a Emulate experiment.");
+            if( ewfCache == null || ( ! (ewfCache instanceof ViewerWorkflow) ) )
+                ewfCache = new ViewerWorkflow();
             
         } else {
             log.error("Unknown experiment type: "+etype);

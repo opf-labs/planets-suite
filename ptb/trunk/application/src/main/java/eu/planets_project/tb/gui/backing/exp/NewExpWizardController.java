@@ -635,6 +635,8 @@ public class NewExpWizardController{
             FacesContext ctx = FacesContext.getCurrentInstance();
             ctx.addMessage("etype",fmsg);
             result = "failed";
+            log.info("Experiment configuration error: "+e);
+            e.printStackTrace();
         }
         
         // Warn if experiment will require approval.

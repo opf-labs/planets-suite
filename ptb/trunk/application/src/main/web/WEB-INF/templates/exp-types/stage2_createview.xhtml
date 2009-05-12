@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition>
+
+<fieldset>
+    <legend>Emulation Experiment</legend>
+    
+    <div class="expStartDO">
+    For each Digital Object...
+    </div>
+    
+    <div class="expSimpleStep">
+      <t:graphicImage value="/graphics/go-down.png" alt="...then..."/>
+    </div>
+    
+    <div class="expChooseService">
+    <div class="expStageHeader">Create View In Emulator</div>
+    Pass Through This Viewer Service:<br/>
+    
+    <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeViewer.viewerService}" onchange="submit();">
+         <f:selectItem itemValue="" itemLabel="Select..."/>
+         <f:selectItems value="#{ServiceBrowser.createViewServicesSelectList}" />
+    </h:selectOneMenu>
+    </h:panelGroup>
+    
+    <h:panelGroup rendered="#{ExperimentBean.approved}">
+    #{ExpTypeViewer.viewerService}
+    </h:panelGroup>
+    
+    </div>
+    
+    <div class="expSimpleStep">
+      <t:graphicImage value="/graphics/go-down.png" alt="...then..."/>
+    </div>
+    
+    <div class="expResultBox">
+    <div class="expStageHeader">View</div>
+    View Digital Object in the emulated environment.    
+    </div>
+    
+</fieldset>
+
+  </ui:composition>
+</body>
+</html>

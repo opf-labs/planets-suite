@@ -268,7 +268,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
      * Recursive method for computing the total size.
      * TODO A badly-formed DigitalObject could cause this method to recurse forever. Can that be stopped?
      */
-    private static long getContentSize( DigitalObject dob ) {
+    static long getContentSize( DigitalObject dob ) {
         long bytes = 0;
         // Get the size at this level:
         if( dob.getContent() != null ) {

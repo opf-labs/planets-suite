@@ -3,15 +3,12 @@
  */
 package eu.planets_project.tb.gui.backing.exp;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Vector;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
-import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 
@@ -19,7 +16,7 @@ import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
-public class ResultsForDigitalObjectBean extends DigitalObjectBean{
+public class ResultsForDigitalObjectBean extends DigitalObjectBean {
     private PlanetsLogger log = PlanetsLogger.getLogger(ResultsForDigitalObjectBean.class, "testbed-log4j.xml");
 
     private List<ExecutionRecordImpl> executionRecords = new Vector<ExecutionRecordImpl>();

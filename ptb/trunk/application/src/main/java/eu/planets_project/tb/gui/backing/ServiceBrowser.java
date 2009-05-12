@@ -32,6 +32,7 @@ import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.view.CreateView;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
@@ -277,7 +278,14 @@ public class ServiceBrowser {
     public List<SelectItem> getIdentifyServicesSelectList() {
         return createServiceList(Identify.class.getCanonicalName());
     }
-    
+
+    /**
+     * @return A list of Create View services
+     */
+    public List<SelectItem> getCreateViewServicesSelectList() {
+        return createServiceList(CreateView.class.getCanonicalName());
+    }
+
     /**
      * @return A list of SelectItems populated with the identify service endpoints.
      */

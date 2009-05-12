@@ -43,7 +43,7 @@ public class AdminManagerImpl implements AdminManager {
     public static final String VALIDATE = "validate";
     public static final String CHARACTERISE = "characterise";
     public static final String MIGRATE = "migrate";
-    public static final String EMULATE = "migrate";
+    public static final String EMULATE = "emulate";
 	
 	//e.g. key:"identify" -> "Identify"
 	private static HashMap<String,String> hmExperimentTypes;
@@ -54,7 +54,7 @@ public class AdminManagerImpl implements AdminManager {
         hmExperimentTypes.put(MIGRATE, "Migrate");
         //hmExperimentTypes.put(VALIDATE, "Validate");
         //hmExperimentTypes.put(CHARACTERISE, "Characterise");
-        //hmExperimentTypes.put(EMULATE, "View in Emulator");
+        hmExperimentTypes.put(EMULATE, "View in Emulator");
 	}
 
     private static HashMap<String,String> hmOldExperimentTypes;
