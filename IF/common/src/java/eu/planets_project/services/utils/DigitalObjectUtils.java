@@ -130,7 +130,7 @@ public final class DigitalObjectUtils {
 				currentDigObj = new DigitalObject.Builder(
 				        ImmutableContent.byReference(file.toURI().toURL()))
 				        .title(file.getName())
-				        .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
+//				        .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
 				        .build();
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
