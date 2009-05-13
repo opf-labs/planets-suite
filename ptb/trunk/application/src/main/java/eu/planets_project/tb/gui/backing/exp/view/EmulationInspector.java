@@ -8,9 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.ws.Service;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.view.CreateView;
+import eu.planets_project.services.view.ViewStatus;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
@@ -38,6 +42,9 @@ public class EmulationInspector {
     
     private ViewResultBean vrb;
     
+    private CreateView viewService = null;
+    
+    private ViewStatus.Status viewStatus = ViewStatus.Status.UNKNOWN;
     /**
      * @return the experimentId
      */
@@ -112,7 +119,54 @@ public class EmulationInspector {
                 this.vrb = vrb;
             }
         }
+        
+        // Also fire up the connection to the service:
+        try {
+          Service serv = Service.create(vrb.getEndpoint(), CreateView.QNAME);
+          this.viewService = serv.getPort(CreateView.class);
+        } catch( Exception e ){
+            e.printStackTrace();
+        }
     }
     
-
+    /**
+     * @return
+     */
+    public String getViewTitle() {
+        if(  ! this.isValid() ) {
+            return "PLANETS Testbed Emulation Experiment: No view found.";
+        } else {
+            return "PLANETS Testbed Emulation Experiment: "+experiment.getExperimentSetup().getBasicProperties().getExperimentName();
+        }
+    }
+    
+    public ViewStatus.Status getViewStatus() {
+        if( this.viewService == null ) {
+            this.viewStatus = ViewStatus.Status.UNKNOWN;
+            return this.viewStatus;
+        }
+        // Otherwise, probe:
+        try {
+            ViewStatus status = this.viewService.getViewStatus(this.sessionId);
+            this.viewStatus = status.getState();
+            return this.viewStatus;
+        } catch( Exception e ) {
+            e.printStackTrace();
+            this.viewStatus = ViewStatus.Status.UNKNOWN;
+            return this.viewStatus;
+        }
+        
+    }
+    
+    public boolean isViewActive() {
+        return this.viewStatus.equals(ViewStatus.Status.ACTIVE);
+    }
+    
+    public boolean isViewInactive() {
+        return this.viewStatus.equals(ViewStatus.Status.INACTIVE);
+    }
+    
+    public boolean isViewUnknown() {
+        return this.viewStatus.equals(ViewStatus.Status.UNKNOWN);
+    }
 }

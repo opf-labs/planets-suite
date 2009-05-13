@@ -8,7 +8,7 @@
     xmlns:a4j="http://richfaces.org/a4j"
     xmlns:rich="http://richfaces.org/rich">
 <head>
-  <title></title>
+  <title>#{EmulationInspector.viewTitle}</title>
   <style type="text/css">
 iframe {
   width: 100%;
@@ -28,8 +28,23 @@ table tr, table td {
   padding: 0;
   margin: 0;
 }
-#header {
-  border-bottom: 1px solid black;
+#headerRow {
+  height: 24px;
+  background: transparent url('/images/PlanetsColourBar.png') center repeat-x;
+  overflow: hidden;
+}
+#header a {
+  float: left;
+}
+#header img {
+  border: none;
+}
+#headerControls {
+  float: right;
+  margin-right: 10px;
+}
+#frameRow {
+  top: 24px;
 }
 iframe {
 /*  border: 1px solid red;*/
@@ -41,14 +56,20 @@ iframe {
 <ui:fragment rendered="#{EmulationInspector.viewResultBean != null}">
 
 <table height="100%">
-<tr height="4%">
+<tr id="headerRow" height="24">
 <td id="header">
-<h:outputLink value="exp_stage5.faces">
-<h:outputText value="Return to experiment."/>
-</h:outputLink>
+ <h:outputLink value="exp_stage5.faces" title="Return to experiment.">
+  <t:graphicImage value="/graphics/planets-testbed-vsml.png" alt="Return to experiment."/>
+ </h:outputLink>
+ <h:panelGroup id="headerControls">
+  <h:outputText value="#{EmulationInspector.viewStatus},"/>
+  <h:outputText value="#{EmulationInspector.viewActive},"/>
+  <h:outputText value="#{EmulationInspector.viewInactive},"/>
+  <h:outputText value="#{EmulationInspector.viewUnknown}"/>
+ </h:panelGroup>
 </td>
 </tr>
-<tr height="96%"><td>
+<tr id="frameRow" height="99%"><td>
 <iframe src="#{EmulationInspector.viewResultBean.viewUrl}" frameborder="0" width="100%" height="100%">
 </iframe>
 </td></tr>

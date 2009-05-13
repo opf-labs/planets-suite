@@ -120,7 +120,7 @@ public class MigrateWrapper implements Migrate {
             byte[] bresult = bmob.basicMigrateOneBinary(binary);
 
             DigitalObject ndo = new DigitalObject.Builder( ImmutableContent.byValue(bresult) )
-                .permanentUrl( digitalObject.getPermanentUrl() ).build();
+                .permanentUri( digitalObject.getPermanentUri() ).build();
 
             return new MigrateResult(ndo, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
 

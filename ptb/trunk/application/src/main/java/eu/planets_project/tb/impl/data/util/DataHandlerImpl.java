@@ -223,13 +223,7 @@ public class DataHandlerImpl implements DataHandler {
         } else {
             dob.title(id);
         }
-        try {
-            dob.permanentUrl(cf.getDownload().toURL());
-        } catch (Exception e) {
-            // This has been known to throw a 'URI is not absolute' exception, so catching the generic one here.
-            log.error("Could not set Permanent URL based on " + cf.getDownload() + " :: " +e );
-            dob.permanentUrl(null);
-        }
+        dob.permanentUri(cf.getDownload());
         return dob.build();
     }
 
