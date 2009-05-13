@@ -1,0 +1,52 @@
+iframe {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+html,body,form,#pageTable {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border-collapse: collapse;
+}
+#pageTable tr, #pageTable td {
+  padding: 0;
+  margin: 0;
+}
+#headerRow {
+  height: 24px;
+  background: transparent url('/images/PlanetsColourBar.png') center repeat-x;
+  overflow: hidden;
+}
+#header:hover {
+/*  height: 32px;*/
+}
+#header a {
+  float: left;
+}
+#header img {
+  border: none;
+}
+.headerControls {
+  float: right;
+  padding-right: 10px;
+}
+.headerControls .homeButton {
+  padding: 3px 10px;
+}
+.headerControls .actionButton {
+  padding: 3px 10px;
+}
+.headerControls .statusButton {
+  padding: 3px 10px;
+}
+#frameRow {
+  top: 24px;
+}
+#frameRow iframe {
+/*  border: 1px solid red;*/
+  height: 100%;
+}

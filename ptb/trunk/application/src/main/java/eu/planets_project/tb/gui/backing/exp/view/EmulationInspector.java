@@ -133,13 +133,27 @@ public class EmulationInspector {
      * @return
      */
     public String getViewTitle() {
-        if(  ! this.isValid() ) {
-            return "PLANETS Testbed Emulation Experiment: No view found.";
+        if(  this.isValid() ) {
+            return "PLANETS Testbed Emulation Experiment: "+this.getExperimentName();
         } else {
-            return "PLANETS Testbed Emulation Experiment: "+experiment.getExperimentSetup().getBasicProperties().getExperimentName();
+            return "PLANETS Testbed Emulation Experiment: No view found.";
         }
     }
     
+    /**
+     * @return
+     */
+    public String getExperimentName() {
+        if(  this.isValid() ) {
+            return experiment.getExperimentSetup().getBasicProperties().getExperimentName();
+        } else {
+            return "";
+        }
+    }
+    
+    /**
+     * @return
+     */
     public ViewStatus.Status getViewStatus() {
         if( this.viewService == null ) {
             this.viewStatus = ViewStatus.Status.UNKNOWN;
@@ -158,14 +172,32 @@ public class EmulationInspector {
         
     }
     
+    /**
+     * Controller to issue a shutdown request.
+     * @return
+     */
+    public String doShutdownAction() {
+        log.info("Issuing shutdown request on session"+this.sessionId);
+        return "success";
+    }
+
+    /**
+     * @return
+     */
     public boolean isViewActive() {
         return this.viewStatus.equals(ViewStatus.Status.ACTIVE);
     }
     
+    /**
+     * @return
+     */
     public boolean isViewInactive() {
         return this.viewStatus.equals(ViewStatus.Status.INACTIVE);
     }
     
+    /**
+     * @return
+     */
     public boolean isViewUnknown() {
         return this.viewStatus.equals(ViewStatus.Status.UNKNOWN);
     }

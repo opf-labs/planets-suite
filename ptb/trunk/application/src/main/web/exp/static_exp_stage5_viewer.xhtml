@@ -9,79 +9,60 @@
     xmlns:rich="http://richfaces.org/rich">
 <head>
   <title>#{EmulationInspector.viewTitle}</title>
-  <style type="text/css">
-iframe {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  border: none;
-}
-html,body,table {
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  border-collapse: collapse;
-}
-table tr, table td {
-  padding: 0;
-  margin: 0;
-}
-#headerRow {
-  height: 24px;
-  background: transparent url('/images/PlanetsColourBar.png') center repeat-x;
-  overflow: hidden;
-}
-#header a {
-  float: left;
-}
-#header img {
-  border: none;
-}
-#headerControls {
-  float: right;
-  margin-right: 10px;
-}
-#frameRow {
-  top: 24px;
-}
-iframe {
-/*  border: 1px solid red;*/
-}
-  </style>
+  <link rel="icon" href="${facesContext.externalContext.requestContextPath}/graphics/plavicon.png"/>
+  <link rel="stylesheet" type="text/css" href="../css/viewer.css" media="screen"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
 
 <ui:fragment rendered="#{EmulationInspector.viewResultBean != null}">
+<a4j:form>
 
-<table height="100%">
-<tr id="headerRow" height="24">
-<td id="header">
- <h:outputLink value="exp_stage5.faces" title="Return to experiment.">
-  <t:graphicImage value="/graphics/planets-testbed-vsml.png" alt="Return to experiment."/>
+<input type="hidden" name="eid" value="#{EmulationInspector.experimentId}"/>
+<input type="hidden" name="sid" value="#{EmulationInspector.sessionId}"/>
+
+<table height="100%" id="pageTable">
+<tr id="headerRow">
+<td id="header" height="24">
+ <h:outputLink value="exp_stage5.faces" title="Return to experiment '#{EmulationInspector.experimentName}'.">
+  <t:graphicImage value="/graphics/planets-testbed-vsml-cropped.png" alt="Return to experiment '#{EmulationInspector.experimentName}'"/>
  </h:outputLink>
- <h:panelGroup id="headerControls">
-  <h:outputText value="#{EmulationInspector.viewStatus},"/>
-  <h:outputText value="#{EmulationInspector.viewActive},"/>
-  <h:outputText value="#{EmulationInspector.viewInactive},"/>
-  <h:outputText value="#{EmulationInspector.viewUnknown}"/>
+ <h:panelGroup styleClass="headerControls">
+ 
+  <h:outputLink class="homeButton" value="exp_stage5.faces" title="Return to experiment '#{EmulationInspector.experimentName}'">
+    <t:graphicImage value="/graphics/toolbar_home.png" alt="Return to experiment '#{EmulationInspector.experimentName}'"/>
+  </h:outputLink>
+
+  <a4j:commandLink styleClass="actionButton" action="#{EmulationInspector.doShutdownAction}" title="Action">
+    <t:graphicImage value="/graphics/preferences-system.png" alt="Action"/>
+  </a4j:commandLink>
+ 
+  <t:graphicImage value="/graphics/state_ok.gif" styleClass="statusButton"
+    title="View status: #{EmulationInspector.viewStatus}" rendered="#{EmulationInspector.viewActive}"/>
+    
+  <t:graphicImage value="/graphics/toolbar_logout.gif" styleClass="statusButton"
+    title="View status: #{EmulationInspector.viewStatus}" rendered="#{EmulationInspector.viewInactive}"/>
+    
+  <t:graphicImage value="/graphics/toolbar_help.png" styleClass="statusButton"
+    title="View status: #{EmulationInspector.viewStatus}" rendered="#{EmulationInspector.viewUnknown}"/>
+      
  </h:panelGroup>
 </td>
 </tr>
-<tr id="frameRow" height="99%"><td>
+<tr id="frameRow"><td height="100%">
 <iframe src="#{EmulationInspector.viewResultBean.viewUrl}" frameborder="0" width="100%" height="100%">
 </iframe>
 </td></tr>
 </table>
 
+</a4j:form>
 </ui:fragment>
 
 <ui:fragment rendered="#{EmulationInspector.viewResultBean == null}">
 <p>No view found.</p>
 <p>
 <h:outputLink value="my_exp.faces">
-<h:outputText value="Return to experiment list."/>
+<h:outputText value="Return to experiments."/>
 </h:outputLink>
 </p>
 </ui:fragment>
