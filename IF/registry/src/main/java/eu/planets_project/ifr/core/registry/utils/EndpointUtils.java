@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.common.conf.PlanetsServerConfig;
+
 /**
  * @author <a href="mailto:andrew.jackson@bl.uk">Andy Jackson</a>
  */
@@ -149,27 +151,4 @@ public class EndpointUtils {
         return ret;
     }
 
-    /**
-     * FIXME This is a real bodge at the moment and hard codes localhost:8080
-     * change to properties
-     * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
-     */
-    public static class PlanetsServerConfig {
-
-        /**
-         * FIXME Correct hard coded localhost reference
-         * @return host name of the if server
-         */
-        public static String getHostname() {
-            return "localhost";
-        }
-
-        /**
-         * FIXME correct hard coded bodge of port number
-         * @return the port number of the if server
-         */
-        public static int getPort() {
-            return 8080;
-        }
-    }
 }

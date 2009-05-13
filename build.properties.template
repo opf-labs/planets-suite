@@ -16,9 +16,10 @@ if_server.dir=@if_server.dir@
 #server.deploy.dir=
 #server.deploy.lib.dir=
 
-# Also, you should set these properties to run unit tests against a running server.
+# Also, you should set these properties to point to your IF, for unit tests and production deployments.
 #if_server.host=localhost
 #if_server.port=8080
+#if_server.ssl.port=8443
 
 # Test against a running server (default is true):
 test.on.server=false
