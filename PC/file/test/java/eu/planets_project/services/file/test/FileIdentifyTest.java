@@ -79,10 +79,10 @@ public class FileIdentifyTest {
     	// Run the tests if on a windows box, they'll currently fail otherwise
     	if ((FileServiceSetup.isWindows()) && (FileServiceSetup.isCygwinFileDetected())) {
     		System.out.println("OS is windows based and cygwin file.exe detected so run the tests");
-	        testIdentifyThis(new File("PC/file/test/resources/test_word.doc").toURI().toURL(), new URI("planets:fmt/mime/application/msword"));
-	        testIdentifyThis(new File("PC/file/test/resources/test_pdf.pdf").toURI().toURL(), new URI("planets:fmt/mime/application/pdf"));
-	        testIdentifyThis(new File("PC/file/test/resources/test_jpeg.jpg").toURI().toURL(), new URI("planets:fmt/mime/image/jpeg"));
-	        testIdentifyThis(new File("PC/file/test/resources/test_png.png").toURI().toURL(), new URI("planets:fmt/mime/image/png"));
+	        testIdentifyThis(new File("PC/file/test/resources/test_word.doc").toURI(), new URI("planets:fmt/mime/application/msword"));
+	        testIdentifyThis(new File("PC/file/test/resources/test_pdf.pdf").toURI(), new URI("planets:fmt/mime/application/pdf"));
+	        testIdentifyThis(new File("PC/file/test/resources/test_jpeg.jpg").toURI(), new URI("planets:fmt/mime/image/jpeg"));
+	        testIdentifyThis(new File("PC/file/test/resources/test_png.png").toURI(), new URI("planets:fmt/mime/image/png"));
     	} else if (FileServiceSetup.isWindows()) {
     		System.out.println("OS is windows but cygwin file exe is not detected.");
     		System.out.println("No identification tests run.");
@@ -91,11 +91,11 @@ public class FileIdentifyTest {
     	}
     }
     
-    private void testIdentifyThis(URL purl, URI type) {
+    private void testIdentifyThis(URI purl, URI type) throws MalformedURLException {
         /* Create the content: */
-        Content c1 = ImmutableContent.byReference(purl);
+        Content c1 = ImmutableContent.byReference(purl.toURL());
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl).build();
+        DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl).build();
         
         /* Now pass this to the service */
         IdentifyResult ir = doi.identify(object,null);

@@ -80,7 +80,7 @@ public class OaiOnbDigitalObjectManagerImpl_OAI4JTest {
             if (dio != null) {
 
                 System.out.println("title: " + dio.getTitle());
-                System.out.println("url: " + dio.getPermanentUrl());
+                System.out.println("uri: " + dio.getPermanentUri());
 
             }
             System.out.println("---");

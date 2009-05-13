@@ -203,11 +203,11 @@ public class DigitalObjectManagerImpl implements DigitalObjectManager {
 			
 			// Now write the Digital Object metadata to the file
 			// First we need to update the purl and the content object reference
-			URL purl = doBinary.toURI().toURL();
+			URI purl = doBinary.toURI();
 	        /* Create the content: */
-	        Content c1 = ImmutableContent.byReference(purl);
+	        Content c1 = ImmutableContent.byReference(purl.toURL());
 	        /* Given these, we can instantiate our object: */
-	        DigitalObject object = new DigitalObject.Builder(digitalObject).permanentUrl(purl).content(c1).build();
+	        DigitalObject object = new DigitalObject.Builder(digitalObject).permanentUri(purl).content(c1).build();
 			OutputStream outStream = new FileOutputStream(doMetadata);
 			outStream.write(object.toXml().getBytes());
 			outStream.close();

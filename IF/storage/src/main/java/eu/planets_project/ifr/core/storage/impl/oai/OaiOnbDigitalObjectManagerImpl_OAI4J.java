@@ -135,7 +135,7 @@ public class OaiOnbDigitalObjectManagerImpl_OAI4J implements DigitalObjectManage
                 if (dcNode != null && urlNode != null) {
                     String title = parseRecordString(dcNode.getText(), "dcterms:alternative");
                     String url = urlNode.getText();
-                    DigitalObject dio = new DigitalObject.Builder(ImmutableContent.byReference(new URL(url))).title(title).permanentUrl(new URL(url)).build();
+                    DigitalObject dio = new DigitalObject.Builder(ImmutableContent.byReference(new URL(url))).title(title).permanentUri(URI.create(url)).build();
 
                     return dio;
                 }

@@ -19,7 +19,6 @@ import org.junit.Test;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -65,23 +64,24 @@ public class SimpleIdentifyServiceTest {
     @Test
     public void testIdentify() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
-        testIdentifyThis(new URL(
+        testIdentifyThis(URI.create(
                 "http://www.planets-project.eu/fake/adocument.pdf"), new URI(
                 "planets:fmt/mime/application/pdf"));
         testIdentifyThis(
-                new URL("http://www.planets-project.eu/fake/image.png"),
+                URI.create("http://www.planets-project.eu/fake/image.png"),
                 new URI("planets:fmt/mime/image/png"));
     }
 
     /**
      * @param purl
      * @param type
+     * @throws MalformedURLException 
      */
-    private void testIdentifyThis(URL purl, URI type) {
+    private void testIdentifyThis(URI purl, URI type) throws MalformedURLException {
         /* Create the content: */
-        Content c1 = ImmutableContent.byReference(purl);
+        Content c1 = ImmutableContent.byReference(purl.toURL());
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl)
+        DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl)
                 .build();
 
         /* Now pass this to the service */

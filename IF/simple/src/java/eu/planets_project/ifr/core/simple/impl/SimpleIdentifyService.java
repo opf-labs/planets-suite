@@ -3,6 +3,7 @@
  */
 package eu.planets_project.ifr.core.simple.impl;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +79,12 @@ public class SimpleIdentifyService implements Identify {
                     .returnWithErrorMessage("The Content of the DigitalObject should not be NULL.");
         }
         // URL, can deal with this:
-        String type = ftr.getMIMEType(dob.getPermanentUrl());
+        String type = null;
+        try {
+            type = ftr.getMIMEType(dob.getPermanentUri().toURL());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         ServiceReport rep = new ServiceReport(Type.INFO, Status.SUCCESS, "Nothing checked");
 
         List<URI> types = new ArrayList<URI>();

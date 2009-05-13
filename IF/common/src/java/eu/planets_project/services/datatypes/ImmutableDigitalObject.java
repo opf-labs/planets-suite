@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,9 +45,9 @@ public final class ImmutableDigitalObject implements
     @XmlAttribute
     private URI format;
 
-    /** @see {@link #getPermanentUrl()} */
+    /** @see {@link #getPermanentUri()} */
     @XmlAttribute
-    private URL permanentUrl;
+    private URI permanentUri;
 
     /** @see {@link #getManifestationOf()} */
     @XmlAttribute
@@ -78,7 +77,7 @@ public final class ImmutableDigitalObject implements
      * @param builder The builder to construct a digital object from
      */
     ImmutableDigitalObject(final Builder builder) {
-        permanentUrl = builder.getPermanentUrl();
+        permanentUri = builder.getPermanentUri();
         content = builder.getContent();
         contained = builder.getContained();
         events = builder.getEvents();
@@ -155,7 +154,7 @@ public final class ImmutableDigitalObject implements
                         "DigitalObject: id '%s', title '%s'; %s content elements, "
                                 + "%s contained objects, %s events, %s fragments; "
                                 + "type '%s', manifestation of '%s', checksum '%s', metadata '%s'",
-                        permanentUrl, title, contentSize, containedSize,
+                        permanentUri, title, contentSize, containedSize,
                         eventsSize, fragmentsSize, format, manifestationOf,
                         checksum, metaSize);
     }
@@ -165,11 +164,11 @@ public final class ImmutableDigitalObject implements
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(final ImmutableDigitalObject o) {
-        if (this.permanentUrl != null && o.permanentUrl != null) {
+        if (this.permanentUri != null && o.permanentUri != null) {
             /* The ID is optional, so if we have one we use it: */
-            return this.permanentUrl.toString().compareTo(
-                    o.permanentUrl.toString());
-        } else if (this.permanentUrl != null || o.permanentUrl != null) {
+            return this.permanentUri.toString().compareTo(
+                    o.permanentUri.toString());
+        } else if (this.permanentUri != null || o.permanentUri != null) {
             /* If only one of them is defined, they are not equal: */
             return -1;
         } else {
@@ -194,8 +193,8 @@ public final class ImmutableDigitalObject implements
      */
     @Override
     public int hashCode() {
-        if (permanentUrl != null) {
-            return permanentUrl.toString().hashCode();
+        if (permanentUri != null) {
+            return permanentUri.toString().hashCode();
         } else {
             return this.toXml().hashCode();
         }
@@ -219,10 +218,10 @@ public final class ImmutableDigitalObject implements
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.services.datatypes.DigitalObject#getPermanentUrl()
+     * @see eu.planets_project.services.datatypes.DigitalObject#getPermanentUri()
      */
-    public URL getPermanentUrl() {
-        return permanentUrl;
+    public URI getPermanentUri() {
+        return permanentUri;
     }
 
     /**

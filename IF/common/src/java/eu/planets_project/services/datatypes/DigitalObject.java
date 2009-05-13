@@ -3,7 +3,6 @@ package eu.planets_project.services.datatypes;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,7 +42,7 @@ public interface DigitalObject {
     URI getFormat();
 
     /** @return The unique identifier. Required. */
-    URL getPermanentUrl();
+    URI getPermanentUri();
 
     /** @return The URI that this digital object is a manifestation of. */
     URI getManifestationOf();
@@ -122,7 +121,7 @@ public interface DigitalObject {
         /* Required parameter: */
         private Content content;
         /* Optional parameters, initialized to default values: */
-        private URL permanentUrl = null;
+        private URI permanentUri = null;
         private List<Event> events = new ArrayList<Event>();
         private List<Fragment> fragments = new ArrayList<Fragment>();
         private List<DigitalObject> contained = new ArrayList<DigitalObject>();
@@ -172,7 +171,7 @@ public interface DigitalObject {
              */
             ImmutableDigitalObject digitalObject = ImmutableDigitalObject
                     .of(digitalObjectXml);
-            permanentUrl = digitalObject.getPermanentUrl();
+            permanentUri = digitalObject.getPermanentUri();
             content = digitalObject.getContent();
             contained = digitalObject.getContained();
             events = digitalObject.getEvents();
@@ -202,8 +201,8 @@ public interface DigitalObject {
          *        this digital object.
          * @return The builder, for cascaded calls
          */
-        public Builder permanentUrl(final URL permanentUrl) {
-            this.permanentUrl = permanentUrl;
+        public Builder permanentUri(final URI permanentUri) {
+            this.permanentUri = permanentUri;
             return this;
         }
 
@@ -280,11 +279,11 @@ public interface DigitalObject {
         }
 
         /**
-         * @return The permanent URL
-         * @see DigitalObject#getPermanentUrl()
+         * @return The permanent URI
+         * @see DigitalObject#getPermanentUri()
          */
-        public URL getPermanentUrl() {
-            return permanentUrl;
+        public URI getPermanentUri() {
+            return permanentUri;
         }
 
         /**

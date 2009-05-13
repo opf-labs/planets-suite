@@ -41,11 +41,11 @@ public final class DigitalObjectTests {
     @Test
     public void usage1() throws MalformedURLException {
         /* A simple example with only required values: */
-        URL id = new URL("http://id");
+        URI id = URI.create("http://id");
         /* Either by reference: */
         DigitalObject o = new DigitalObject.Builder(ImmutableContent
                 .byReference(new URL("http://some.reference")))
-                .permanentUrl(id).build();
+                .permanentUri(id).build();
         assertEquals(o, new DigitalObject.Builder(o.toXml()).build());
         /* Or use the factory method to create...: */
         o = new DigitalObject.Builder(ImmutableContent.byValue(new File(
@@ -56,7 +56,7 @@ public final class DigitalObjectTests {
         assertEquals(o, new DigitalObject.Builder(o.toXml()).build());
         /* Or by value: */
         o = new DigitalObject.Builder(ImmutableContent.byValue(new File(
-                "build.xml"))).permanentUrl(id).build();
+                "build.xml"))).permanentUri(id).build();
         /*
          * These objects can be serialized to XML and instantiated from that
          * form:
@@ -72,7 +72,7 @@ public final class DigitalObjectTests {
     @Test
     public void usage2() throws MalformedURLException {
         /* For a more complex sample, we set up a few things we need: */
-        URL purl = new URL("http://id");
+        URI purl = URI.create("http://id");
         URL data1 = new URL("http://some.reference");
         /* Create an optional checksum: */
         String algorithm = "MD5";
@@ -90,7 +90,7 @@ public final class DigitalObjectTests {
         Assert.assertEquals(algorithm, c1.getChecksum().getAlgorithm());
         Assert.assertEquals(value, c1.getChecksum().getValue());
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl)
+        DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl)
                 .metadata(meta).build();
         System.out.println("Created: " + object);
 
@@ -114,17 +114,17 @@ public final class DigitalObjectTests {
     @Before
     public void createInstances() {
         try {
-            URL permanentUrl = new URL(SOME_URL_1);
+            URI permanentUrl = URI.create(SOME_URL_1);
             URI manifestationOf = URI.create(SOME_URL_1);
             URI planetsFormatUri = URI.create(SOME_URL_1);
             /* Creation with only required arguments: */
             digitalObject2 = new DigitalObject.Builder(ImmutableContent
-                    .byReference(new URL(SOME_URL_2))).permanentUrl(
-                    new URL(SOME_URL_2)).build();
+                    .byReference(new URL(SOME_URL_2))).permanentUri(
+                    URI.create(SOME_URL_2)).build();
             /* Creation with all optional arguments: */
-            Content content = ImmutableContent.byReference(permanentUrl)
+            Content content = ImmutableContent.byReference(permanentUrl.toURL())
                     .withChecksum(CHECKSUM);
-            digitalObject1 = new DigitalObject.Builder(content).permanentUrl(
+            digitalObject1 = new DigitalObject.Builder(content).permanentUri(
                     permanentUrl).events(EVENT).fragments(FRAGMENT)
                     .manifestationOf(manifestationOf).format(planetsFormatUri)
                     .metadata(META).title(TITLE).contains(digitalObject2)

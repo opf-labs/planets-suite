@@ -88,18 +88,18 @@ public class DigitalObjectManagerTests {
 	public final void testStoreAndRetrieve() throws MalformedURLException, DigitalObjectNotStoredException, URISyntaxException, DigitalObjectNotFoundException {
 		// OK we can create an Digital Object from the test resource data, we need a URL
 		System.out.println("Testing storage of Digital Object");
-		URL purl = new File("IF/storage/src/test/resources/testdata/test_word.doc").toURI().toURL();
+		URI purl = new File("IF/storage/src/test/resources/testdata/test_word.doc").toURI();
         /* Create the content: */
-        Content c1 = ImmutableContent.byReference(purl);
+        Content c1 = ImmutableContent.byReference(purl.toURL());
         /* Given these, we can instantiate our object: */
-        DigitalObject object = new DigitalObject.Builder(c1).permanentUrl(purl).build();
+        DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl).build();
         // Now store it
 		_dom.store(new URI("planets://localhost:8080/dr/test/test_word.doc"), object);
 		// Then retrieve it and check it's the same
 		DigitalObject retObject = _dom.retrieve(new URI("planets://localhost:8080/dr/test/test_word.doc"));
-		URL newPurl = new File("IF/storage/src/test/resources/testroot/test_word.doc").toURI().toURL();
-		Content c2 = ImmutableContent.byReference(newPurl);
-		DigitalObject expectedObject = new DigitalObject.Builder(c2).permanentUrl(newPurl).build(); 
+		URI newPurl = new File("IF/storage/src/test/resources/testroot/test_word.doc").toURI();
+		Content c2 = ImmutableContent.byReference(newPurl.toURL());
+		DigitalObject expectedObject = new DigitalObject.Builder(c2).permanentUri(newPurl).build(); 
 		assertEquals("Retrieve Digital Object doesn't match that stored", expectedObject, retObject);
 		
 		// We can test that the list method works properly now also

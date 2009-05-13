@@ -295,15 +295,10 @@ public class XcdlMigrateTests {
 
         DigitalObject input = null;
 
-        try {
-            input = new DigitalObject.Builder(ImmutableContent
-                    .byValue(inputFile)).permanentUrl(
-                    new URL("http://xcdlExtractorMigrationTest.eu")).title(
+        input = new DigitalObject.Builder(ImmutableContent
+                    .byValue(inputFile)).permanentUri(
+                    URI.create("http://xcdlExtractorMigrationTest.eu")).title(
                     inputFile.getName()).build();
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
         return input;
     }

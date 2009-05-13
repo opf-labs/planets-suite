@@ -197,14 +197,10 @@ public final class XcdlMigrate implements Migrate {
 
             // output Files smaller than 10Mb
             if (sizeInKB < MAX_FILE_SIZE) {
-                try {
-                    resultDigOb = new DigitalObject.Builder(ImmutableContent
-                            .byValue(result)).permanentUrl(
-                            new URL(PlanetsServices.NS
+                resultDigOb = new DigitalObject.Builder(ImmutableContent
+                            .byValue(result)).permanentUri(
+                            URI.create(PlanetsServices.NS
                                     + "/pserv-pc-xcdlExtractor")).build();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
                 migrateResult = new MigrateResult(resultDigOb, sReport);
             } else {
                 File tmpResult = FileUtils.getTempFile(result, "tmpResult",
