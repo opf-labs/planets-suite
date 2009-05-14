@@ -6,12 +6,18 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-// import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
 
+import org.dom4j.Document;
 import org.dom4j.Element;
-// import org.dom4j.io.OutputFormat;
-// import org.dom4j.io.XMLWriter;
+import org.dom4j.Node;
+import org.jaxen.SimpleNamespaceContext;
+import org.jaxen.XPath;
+import org.jaxen.dom4j.Dom4jXPath;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.Header;
@@ -121,8 +127,17 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
     		return new ArrayList<URI>();
     	}
 	}
+    
+    public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
+    	if (metaDataPrefix.equals("de2aleph")) {
+    		return retrieveDe2Aleph(pdURI);
+    	} else {
+    		// Assume default 'oai_dc'
+    		return retrieveDC(pdURI);
+    	}
+    }
 
-	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
+	private DigitalObject retrieveDC(URI pdURI) throws DigitalObjectNotFoundException {
 		try {
 			OaiPmhServer server = new OaiPmhServer(baseURL);
 			Record record = server.getRecord(pdURI.toString(), metaDataPrefix);
@@ -182,6 +197,58 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 			throw new DigitalObjectNotFoundException(e.getMessage());
 		}
 	}
+	
+    private DigitalObject retrieveDe2Aleph(URI pdURI) throws DigitalObjectNotFoundException {
+        try {
+        	OaiPmhServer server = new OaiPmhServer(baseURL);
+            Record record = server.getRecord(pdURI.toString(), metaDataPrefix);
+            Element metadata = record.getMetadata();
+            
+            OutputFormat screenOutFormat = OutputFormat.createPrettyPrint();
+            XMLWriter writer = new XMLWriter(System.out, screenOutFormat);
+			writer.setIndentLevel(2);
+			writer.write(metadata);
+			            
+            if (metadata != null) {
+				// Namespace URI
+				URI namespaceURI = null;
+				try {
+					namespaceURI = new URI(metadata.getNamespaceURI());
+				} catch (URISyntaxException e) {
+					log.warn("Error parsing namespace URI: " + metadata.getNamespaceURI() + " (should never happen...)");
+				}
+				
+                HashMap<String, String> map = new HashMap<String, String> ();
+                map.put("pmh", "http://www.openarchives.org/OAI/2.0/");
+                map.put("xb", "http://com/exlibris/digitool/repository/api/xmlbeans");
+
+                Document doc = metadata.getDocument();
+
+                XPath xpathURL = new Dom4jXPath("/pmh:OAI-PMH/pmh:GetRecord/pmh:record/pmh:metadata/xb:digital_entity/pmh:urls/pmh:url[@type='stream']");
+                xpathURL.setNamespaceContext(new SimpleNamespaceContext(map));
+
+                XPath xpathLabel = new Dom4jXPath("/pmh:OAI-PMH/pmh:GetRecord/pmh:record/pmh:metadata/xb:digital_entity/pmh:control/pmh:label");
+                xpathLabel.setNamespaceContext(new SimpleNamespaceContext(map));
+
+                Node urlNode = (Node) xpathURL.selectSingleNode(doc);
+                Node dcNode = (Node) xpathLabel.selectSingleNode(doc);
+
+                if (dcNode != null && urlNode != null) {
+                    String title = dcNode.getText();
+                    String url = urlNode.getText();
+                    
+					Builder builder = new DigitalObject.Builder(ImmutableContent.byReference(new URL(url)));
+					builder.title(title);
+					builder.metadata(new Metadata(namespaceURI, record.getMetadataAsString()));
+					return builder.build();
+                }
+            }
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+        }
+
+        return null;
+    }
 
 	public List<Class<? extends Query>> getQueryTypes() {
 		ArrayList<Class<? extends Query>> qTypes = new ArrayList<Class<? extends Query>>();
@@ -189,9 +256,9 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 		return qTypes;
 	}
 	
-	/*
 	public static void main(String[] args) {
 		// GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://www.diva-portal.org/oai/OAI");
+		// GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://archiv-test.onb.ac.at:8881/OAI-PUB", "de2aleph");
 		GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://localhost:8881/OAI-PUB", "de2aleph");
 		
 		Calendar start = Calendar.getInstance();
@@ -219,6 +286,5 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 		
 		System.out.println("done.");
 	}
-	*/
 	
 }
