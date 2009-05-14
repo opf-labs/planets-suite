@@ -198,6 +198,13 @@
         <include name="**/*" />
       </fileset>
     </copy>
+
+    <!-- Also copy .properties files if they exist! -->
+    <copy toDir="${build.classes.dir}" flatten="false" failonerror="false">
+      <fileset dir="${src.dir}">
+        <include name="**/*.properties" />
+      </fileset>
+    </copy>
     
     <!-- build the jar -->
     <jar jarfile="${build.dir}/${jar.base.name}">
