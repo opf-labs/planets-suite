@@ -17,7 +17,6 @@ import org.jdom.input.SAXBuilder;
 
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 
@@ -173,6 +172,7 @@ public class GenericSRUDigitalObjectManagerImpl implements DigitalObjectManager 
 		URI uri = null;
 	}
     
+	/*
 	public static void main(String[] args) {
 		System.out.println("starting query.");
 		GenericSRUDigitalObjectManagerImpl sruImpl = new GenericSRUDigitalObjectManagerImpl("http://z3950.loc.gov:7090/voyager?version=1.1&operation=searchRetrieve");
@@ -184,5 +184,6 @@ public class GenericSRUDigitalObjectManagerImpl implements DigitalObjectManager 
 		
 		System.out.println("done.");
 	}
+	*/
 	
 }

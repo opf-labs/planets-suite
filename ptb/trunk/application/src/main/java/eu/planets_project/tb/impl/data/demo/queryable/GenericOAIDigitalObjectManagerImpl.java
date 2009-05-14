@@ -7,7 +7,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Calendar;
+// import java.util.Calendar;
 import java.util.List;
 
 import org.dom4j.Document;
@@ -16,8 +16,8 @@ import org.dom4j.Node;
 import org.jaxen.SimpleNamespaceContext;
 import org.jaxen.XPath;
 import org.jaxen.dom4j.Dom4jXPath;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
+// import org.dom4j.io.OutputFormat;
+// import org.dom4j.io.XMLWriter;
 
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.Header;
@@ -204,10 +204,12 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
             Record record = server.getRecord(pdURI.toString(), metaDataPrefix);
             Element metadata = record.getMetadata();
             
+            /*
             OutputFormat screenOutFormat = OutputFormat.createPrettyPrint();
             XMLWriter writer = new XMLWriter(System.out, screenOutFormat);
 			writer.setIndentLevel(2);
 			writer.write(metadata);
+			*/
 			            
             if (metadata != null) {
 				// Namespace URI
@@ -256,13 +258,14 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 		return qTypes;
 	}
 	
+	/*
 	public static void main(String[] args) {
-		// GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://www.diva-portal.org/oai/OAI");
+		GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://www.bibliovault.org/perl/oai2");
 		// GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://archiv-test.onb.ac.at:8881/OAI-PUB", "de2aleph");
-		GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://localhost:8881/OAI-PUB", "de2aleph");
+		// GenericOAIDigitalObjectManagerImpl oaiImpl = new GenericOAIDigitalObjectManagerImpl("http://localhost:8881/OAI-PUB", "de2aleph");
 		
 		Calendar start = Calendar.getInstance();
-		start.add(Calendar.MONTH, -1);
+		start.add(Calendar.MONTH, -24);
 		Calendar now = Calendar.getInstance();
 		
 		// ListIdentifiers
@@ -286,5 +289,6 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 		
 		System.out.println("done.");
 	}
+	*/
 	
 }
