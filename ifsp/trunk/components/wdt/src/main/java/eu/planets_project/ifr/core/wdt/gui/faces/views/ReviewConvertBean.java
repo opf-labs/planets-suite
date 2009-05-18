@@ -1,77 +1,41 @@
 package eu.planets_project.ifr.core.wdt.gui.faces.views;
 
 
-import java.util.List;
-import java.util.Iterator;
-import java.util.Vector;
-import java.util.Properties;
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URI;
 
-//Workflow Logging
-import javax.naming.InitialContext;
-import javax.naming.Context;
-import eu.planets_project.ifr.core.storage.api.WorkflowManager;
-import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
-import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
-import eu.planets_project.ifr.core.storage.api.InvocationEvent;
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
-import java.io.ByteArrayInputStream;
-import org.w3c.dom.Document;
-import org.jdom.input.SAXBuilder;
-import org.xml.sax.SAXException;
-import org.apache.xerces.parsers.DOMParser;
-import java.io.IOException;
-import org.xml.sax.InputSource;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-//import javax.rmi.PortableRemoteObject;
-
-import javax.faces.component.*;
-import javax.faces.model.SelectItem;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.xml.namespace.QName;
+import javax.faces.model.SelectItem;
+import javax.naming.InitialContext;
 
 import org.apache.commons.logging.Log;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.api.PlanetsService;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
-import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
+import eu.planets_project.ifr.core.storage.api.InvocationEvent;
+import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
+import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
+import eu.planets_project.ifr.core.storage.api.WorkflowManager;
+import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
+import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGenerationService;
+import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGenerationService_Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry;
-import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
-
-import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
-//import eu.planets_project.ifr.core.wdt.common.services.characterisation.*;
-//import eu.planets_project.ifr.core.wdt.common.services.magicTiff2Jpeg.*;
-//import eu.planets_project.ifr.core.wdt.common.services.openXMLMigration.*;
-import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.*;
-//new service interface - call by value
-//import eu.planets_project.ifr.core.wdt.common.services.jpeg2tiff.*;
-import eu.planets_project.services.migrate.BasicMigrateOneBinary;
-import eu.planets_project.services.identify.BasicIdentifyOneBinary;
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.URL; 
+import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.utils.FileUtils;
 	
 /**
  *    characterization workflow bean <br>
@@ -289,23 +253,23 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
 				
 			//create migration service 1
 			logger.debug("creating 1st service for: "+migService1.getEndpoint());
-			javax.xml.ws.Service service = javax.xml.ws.Service.create(new URL(migService1.getEndpoint()), BasicMigrateOneBinary.QNAME);
+			javax.xml.ws.Service service = javax.xml.ws.Service.create(new URL(migService1.getEndpoint()), Migrate.QNAME);
 			logger.debug("mig service created: "+service);
-			BasicMigrateOneBinary converter1 = service.getPort(BasicMigrateOneBinary.class);
+			Migrate converter1 = service.getPort(Migrate.class);
 			logger.debug("converter1: "+converter1);			
 			
 			//create migration service 2
 			logger.debug("creating 2nd service for: "+migService2.getEndpoint());
-			service = javax.xml.ws.Service.create(new URL(migService2.getEndpoint()), BasicMigrateOneBinary.QNAME);
+			service = javax.xml.ws.Service.create(new URL(migService2.getEndpoint()), Migrate.QNAME);
 			logger.debug("mig service created: "+service);
-			BasicMigrateOneBinary converter2 = service.getPort(BasicMigrateOneBinary.class);
+			Migrate converter2 = service.getPort(Migrate.class);
 			logger.debug("converter2: "+converter2);		
 			
 			//create XCL Characterization service
 			logger.debug("creating char service for: "+charService.getEndpoint());
-			service = javax.xml.ws.Service.create(new URL(charService.getEndpoint()), BasicCharacteriseOneBinaryXCELtoURI.QNAME);
+			service = javax.xml.ws.Service.create(new URL(charService.getEndpoint()), Migrate.QNAME);
 			logger.debug("char service created: "+service);
-			BasicCharacteriseOneBinaryXCELtoURI extractor = service.getPort(BasicCharacteriseOneBinaryXCELtoURI.class);
+			Migrate extractor = service.getPort(Migrate.class);
 			logger.debug("extractor: "+extractor);		
 			
 			URI xcelPath = null;
@@ -332,8 +296,9 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
     		    Date d1 = new Date();
     		    byte[] out1 = null;
     		    
-    			try {								
-    		        out1 = converter1.basicMigrateOneBinary(sourceData);
+    			try {					
+    			    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(sourceData)).build();
+    		        out1 = FileUtils.writeInputStreamToBinary(converter1.migrate(dob, null,null,null).getDigitalObject().getContent().read());
     		    } catch(Exception e) {
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
 						"<b>Status: </b><font color=#FF0000>Error could migrate file</font><br>" +
@@ -377,8 +342,9 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
     		    d1 = new Date();
     		    byte[] out2 = null;
     		     		    
-    			try {								
-    		        out2 = converter2.basicMigrateOneBinary(out1);
+    			try {			
+    			    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(out1)).build();
+    		        out2 = FileUtils.writeInputStreamToBinary(converter2.migrate(dob,null,null,null).getDigitalObject().getContent().read());
     		    } catch(Exception e) {
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+resultPath+"</i></legend><table><tr><td>"+
 						"<b>Status: </b><font color=#FF0000>Error could migrate file</font><br>" +
@@ -427,9 +393,11 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
         		    logger.debug( "The xcelPath URI is: " + xcelPath );
         		    d1 = new Date();
         		    URI xcdlUri = null;
-        		     		    
-        			try {								
-        		        xcdlUri = extractor.basicCharacteriseOneBinaryXCELtoURI(resultPath2, xcelPath);
+        		    String xcelString = FileUtils.readTxtFileIntoString(new File(xcelPath));
+        		    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byReference(resultPath2.toURL())).build();
+        			try {	
+        			    DigitalObject result = extractor.migrate(dob, null,null, Arrays.asList(new Parameter("optionalXCELString", xcelString))).getDigitalObject();
+        		        xcdlUri = FileUtils.writeInputStreamToTmpFile(result.getContent().read(), "result", "tmp").toURI();
         		    } catch(Exception e) {
     					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+resultPath2+"</i></legend><table><tr><td>"+
     						"<b>Status: </b><font color=#FF0000>Error could not characterize file</font><br>" +

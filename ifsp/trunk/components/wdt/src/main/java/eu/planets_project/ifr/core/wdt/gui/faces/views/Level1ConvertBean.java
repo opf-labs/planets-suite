@@ -1,75 +1,39 @@
 package eu.planets_project.ifr.core.wdt.gui.faces.views;
 
 
-import java.util.List;
-import java.util.Vector;
-import java.util.Properties;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URI;
 
-//Workflow Logging
-import javax.naming.InitialContext;
-import javax.naming.Context;
-import eu.planets_project.ifr.core.storage.api.WorkflowManager;
-import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
-import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
-import eu.planets_project.ifr.core.storage.api.InvocationEvent;
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
-import java.io.ByteArrayInputStream;
-import org.w3c.dom.Document;
-import org.jdom.input.SAXBuilder;
-import org.xml.sax.SAXException;
-import org.apache.xerces.parsers.DOMParser;
-import java.io.IOException;
-import org.xml.sax.InputSource;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.*;
-import org.xml.sax.*;
-//import javax.rmi.PortableRemoteObject;
-
-import javax.faces.component.*;
-import javax.faces.model.SelectItem;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.xml.namespace.QName;
+import javax.faces.model.SelectItem;
+import javax.naming.InitialContext;
 
 import org.apache.commons.logging.Log;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.api.PlanetsService;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
-import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
+import eu.planets_project.ifr.core.storage.api.InvocationEvent;
+import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
+import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
+import eu.planets_project.ifr.core.storage.api.WorkflowManager;
+import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
+import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGenerationService;
+import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGenerationService_Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry;
-import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
-
-import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
-//import eu.planets_project.ifr.core.wdt.common.services.characterisation.*;
-//import eu.planets_project.ifr.core.wdt.common.services.magicTiff2Jpeg.*;
-//import eu.planets_project.ifr.core.wdt.common.services.openXMLMigration.*;
-import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.*;
-//new service interface - call by value
-//import eu.planets_project.ifr.core.wdt.common.services.jpeg2tiff.*;
-import eu.planets_project.services.migrate.BasicMigrateOneBinary;
-import eu.planets_project.services.identify.BasicIdentifyOneBinary;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.URL; 
+import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.utils.FileUtils;
 	
 /**
  *    characterization workflow bean <br>
@@ -255,17 +219,17 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 			logger.debug("reportID: "+reportID);			
 			
 			//create a characterization service
-    	javax.xml.ws.Service service = javax.xml.ws.Service.create(new URL(charService.getEndpoint()), BasicIdentifyOneBinary.QNAME);
+    	javax.xml.ws.Service service = javax.xml.ws.Service.create(new URL(charService.getEndpoint()), Identify.QNAME);
     	logger.debug("charService URL: "+charService.getEndpoint());
-    	BasicIdentifyOneBinary identifier = service.getPort(BasicIdentifyOneBinary.class);
+    	Identify identifier = service.getPort(Identify.class);
 			logger.debug("basicIdentifier: "+identifier);    	
 				
 			//create a migration service
 			//String serviceEndpoint = "http://localhost:8080/ifr-jmagickconverter-ejb/JpgToTiffConverter?wsdl";
 			logger.debug("creating service for: "+migService.getEndpoint());
-			service = javax.xml.ws.Service.create(new URL(migService.getEndpoint()), BasicMigrateOneBinary.QNAME);
+			service = javax.xml.ws.Service.create(new URL(migService.getEndpoint()), Migrate.QNAME);
 			logger.debug("mig service created: "+service);
-			BasicMigrateOneBinary converter = service.getPort(BasicMigrateOneBinary.class);
+			Migrate converter = service.getPort(Migrate.class);
 			logger.debug("converter: "+converter);			
 			
 												
@@ -295,8 +259,9 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 
 				//identify file		    		    
 		    URI resultType = null;
-				try {								
-			    resultType = identifier.basicIdentifyOneBinary(imageData);
+				try {					
+				    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(imageData)).build();
+			    resultType = identifier.identify(dob,null).getTypes().get(0);
 		    } catch(Exception e) {
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
 						"<b>Status: </b><font color=#FF0000>Error could identify file</font><br>" +
@@ -310,8 +275,9 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		    Date d1 = new Date();
 		    byte[] out = null;
 		    
-				try {								
-				 	out = converter.basicMigrateOneBinary(imageData);
+				try {		
+				    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(imageData)).build();
+				 	out = FileUtils.writeInputStreamToBinary(converter.migrate(dob,null,null,null).getDigitalObject().getContent().read());
 				 	if(out == null) throw new Exception("migrated file is empty");				 	
 		    } catch(Exception e) {
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+

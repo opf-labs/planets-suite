@@ -1,60 +1,36 @@
 package eu.planets_project.ifr.core.wdt.gui.faces.views;
 
 
-import java.util.List;
-import java.util.Vector;
-import java.util.Properties;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URI;
+import java.util.List;
+import java.util.Properties;
 
-//Workflow Logging
-import javax.naming.InitialContext;
-import javax.naming.Context;
-import eu.planets_project.ifr.core.storage.api.WorkflowManager;
-import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
-import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
-import eu.planets_project.ifr.core.storage.api.InvocationEvent;
-import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
-
-import javax.faces.component.*;
-import javax.faces.model.SelectItem;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
-import javax.xml.namespace.QName;
+import javax.faces.model.SelectItem;
+import javax.naming.InitialContext;
 
 import org.apache.commons.logging.Log;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.common.api.PlanetsService;
-import eu.planets_project.ifr.core.common.api.PlanetsException;
-import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
-import eu.planets_project.ifr.core.wdt.impl.wf.WFTemplate;
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
+import eu.planets_project.ifr.core.storage.api.InvocationEvent;
+import eu.planets_project.ifr.core.storage.api.WorkflowDefinition;
+import eu.planets_project.ifr.core.storage.api.WorkflowExecution;
+import eu.planets_project.ifr.core.storage.api.WorkflowManager;
+import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
+import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGenerationService;
+import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGenerationService_Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry;
-import eu.planets_project.ifr.core.wdt.api.WorkflowBean;
-
-import eu.planets_project.ifr.core.wdt.common.faces.JSFUtil;
-import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.*;
-import eu.planets_project.services.identify.BasicIdentifyOneBinary;
-//--
-//import eu.planets_project.ifr.core.wdt.common.services.droid.*;
-import eu.planets_project.services.identify.IdentifyOneBinary;
-import eu.planets_project.services.datatypes.Types;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.URL; 
+import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.identify.Identify;
 	
 /**
  *    characterization workflow bean 
@@ -178,9 +154,9 @@ public class DroidBean extends AbstractWorkflowBean implements PlanetsService, W
 			//	new Droid_Service(new URL(charService.getEndpoint()),charService.getQName() );
 			//Droid droid = locator.getDroidPort();
 						//create a characterization service
-    	javax.xml.ws.Service service = javax.xml.ws.Service.create(new URL(charService.getEndpoint()), IdentifyOneBinary.QNAME);
+    	javax.xml.ws.Service service = javax.xml.ws.Service.create(new URL(charService.getEndpoint()), Identify.QNAME);
     	logger.debug("charService URL: "+charService.getEndpoint());
-    	IdentifyOneBinary droid = service.getPort(IdentifyOneBinary.class);
+    	Identify droid = service.getPort(Identify.class);
 			logger.debug("droid: "+droid);    	
 				
 			for (int i=0; i<inputData.size();i++) {
@@ -206,7 +182,8 @@ public class DroidBean extends AbstractWorkflowBean implements PlanetsService, W
 				URI pronomURI = null;
 				//identify data
 				try {
-		    	List<URI> rets = droid.identifyOneBinary(imageData).types;
+				    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(imageData)).build();
+		    	List<URI> rets = droid.identify(dob,null).getTypes();
 		    	//todo if rets.length = 0 error
 		    	//todo handle multiple pronom ids
 		    	for( URI furi : rets ) {
