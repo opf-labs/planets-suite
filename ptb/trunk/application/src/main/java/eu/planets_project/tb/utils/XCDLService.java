@@ -13,6 +13,7 @@ import java.util.Vector;
 import javax.xml.ws.Service;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -82,7 +83,7 @@ public class XCDLService implements Characterise {
      */
     public List<Property> listProperties(URI formatURI) {
         // Only cope with PRONOM IDs:
-        if( ! FormatRegistryFactory.getFormatRegistry().isPronomUri(formatURI) ) {
+        if( ! FormatRegistryFactory.getFormatRegistry().isUriOfType(formatURI, UriType.PRONOM) ) {
             return null;
         }
         
