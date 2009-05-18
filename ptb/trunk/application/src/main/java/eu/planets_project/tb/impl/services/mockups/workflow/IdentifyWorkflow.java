@@ -14,7 +14,7 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
@@ -287,7 +287,7 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
     /*
      * Attempts to determine the size of the content of a particular DigitalObject.
      */
-    private static long getSizeOfContent( Content con ) {
+    private static long getSizeOfContent( DigitalObjectContent con ) {
         if( con == null ) return 0;
         try {
             return con.read().available();   

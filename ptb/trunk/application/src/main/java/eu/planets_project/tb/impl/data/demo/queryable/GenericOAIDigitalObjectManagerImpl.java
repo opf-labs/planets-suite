@@ -26,7 +26,7 @@ import se.kb.oai.pmh.OaiPmhServer;
 import se.kb.oai.pmh.Record;
 
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.DigitalObject.Builder;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
@@ -183,7 +183,7 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
 				}
 				
 				if (url != null) {
-					Builder builder = new DigitalObject.Builder(ImmutableContent.byReference(new URL(url)));
+					Builder builder = new DigitalObject.Builder(Content.byReference(new URL(url)));
 					builder.title(title);
 					builder.metadata(new Metadata(namespaceURI, record.getMetadataAsString()));
 					return builder.build();
@@ -239,7 +239,7 @@ public class GenericOAIDigitalObjectManagerImpl implements DigitalObjectManager 
                     String title = dcNode.getText();
                     String url = urlNode.getText();
                     
-					Builder builder = new DigitalObject.Builder(ImmutableContent.byReference(new URL(url)));
+					Builder builder = new DigitalObject.Builder(Content.byReference(new URL(url)));
 					builder.title(title);
 					builder.metadata(new Metadata(namespaceURI, record.getMetadataAsString()));
 					return builder.build();

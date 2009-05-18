@@ -18,7 +18,7 @@ import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.identify.Identify;
@@ -196,7 +196,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
         byte[] array = FileUtils.readFileIntoByteArray(f1);
         
         //invoke the service and extract results
-        IdentifyResult identify = droid.identify(new DigitalObject.Builder(ImmutableContent.byValue(array)).build(), null);
+        IdentifyResult identify = droid.identify(new DigitalObject.Builder(Content.byValue(array)).build(), null);
         List<URI> result = identify.getTypes();
         String status = identify.getReport().getMessage();
         
@@ -239,7 +239,7 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	        
 	        //the service call and it's result
             DigitalObject digitalObject = extractor.migrate(
-                    new DigitalObject.Builder(ImmutableContent.byValue(array))
+                    new DigitalObject.Builder(Content.byValue(array))
                             .build(), null, null, null).getDigitalObject();
             byte[] results = FileUtils.writeInputStreamToBinary(digitalObject
                     .getContent().read());
@@ -283,8 +283,8 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	    	Compare comparator = service.getPort(Compare.class);
 
 	        //the service call and it's result
-	        DigitalObject x1 = new DigitalObject.Builder(ImmutableContent.byValue(xcdl1.getBytes())).build();
-	        DigitalObject x2 = new DigitalObject.Builder(ImmutableContent.byValue(xcdl2.getBytes())).build();
+	        DigitalObject x1 = new DigitalObject.Builder(Content.byValue(xcdl1.getBytes())).build();
+	        DigitalObject x2 = new DigitalObject.Builder(Content.byValue(xcdl2.getBytes())).build();
 	        List<Property> result = comparator.compare(x1, x2, null).getProperties();
 	        
 	        if(result==null){

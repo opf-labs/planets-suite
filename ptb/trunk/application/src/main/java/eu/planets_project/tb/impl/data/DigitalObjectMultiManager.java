@@ -19,7 +19,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 
 /**
  * This class managers all of the Data Registries known to the Testbed.
@@ -159,7 +159,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         DigitalObject.Builder dob;
         
         try {
-            dob = new DigitalObject.Builder( ImmutableContent.byValue( dm.retrieveBinary(pdURI)) );
+            dob = new DigitalObject.Builder( Content.byValue( dm.retrieveBinary(pdURI)) );
         } catch (SOAPException e1) {
             e1.printStackTrace();
             log.error("Could not retrieve the binary for " + pdURI);
