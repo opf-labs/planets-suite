@@ -13,9 +13,9 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Checksum;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -125,7 +125,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 
 		String fileName = digitalObject.getTitle();
 		
-		ImmutableContent content = (ImmutableContent)digitalObject.getContent();
+		DigitalObjectContent content = digitalObject.getContent();
 		
 		Checksum checksum = content.getChecksum();
 		
@@ -158,7 +158,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 				return this.returnWithErrorMessage(vfdResult.getMessage(), null);
 			}
 			
-			Content zipContent = ImmutableContent.asStream(zippedResult.getZipFile())
+			DigitalObjectContent zipContent = Content.asStream(zippedResult.getZipFile())
 												 .withChecksum(zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
@@ -205,7 +205,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 		
 		// If we have reached this line, we should have an image file created, so wrap a DigObj around that and return 
 		// a MigrateResult...
-		DigitalObject resultDigObj = new DigitalObject.Builder(ImmutableContent.asStream(imageFile))
+		DigitalObject resultDigObj = new DigitalObject.Builder(Content.asStream(imageFile))
 										.format(outputFormat)
 										.title(imageFile.getName())
 										.build();

@@ -17,7 +17,7 @@ import org.junit.Test;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -99,7 +99,7 @@ public class XcdlMigrateTests {
 
     @Test
     public void testRejectInvalidFormat() {
-        DigitalObject o = new DigitalObject.Builder(ImmutableContent
+        DigitalObject o = new DigitalObject.Builder(Content
                 .byValue(new byte[] {})).build();
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         /* And we can't migrate any format (= no format set): */
@@ -295,7 +295,7 @@ public class XcdlMigrateTests {
 
         DigitalObject input = null;
 
-        input = new DigitalObject.Builder(ImmutableContent
+        input = new DigitalObject.Builder(Content
                     .byValue(inputFile)).permanentUri(
                     URI.create("http://xcdlExtractorMigrationTest.eu")).title(
                     inputFile.getName()).build();
@@ -355,7 +355,7 @@ public class XcdlMigrateTests {
     @SuppressWarnings("unused")
     private DigitalObject createDigitalObjectByReference(URL permanentURL,
             URL reference) {
-        DigitalObject digObj = new DigitalObject.Builder(ImmutableContent
+        DigitalObject digObj = new DigitalObject.Builder(Content
                 .byReference(reference)).build();
         return digObj;
     }

@@ -17,7 +17,7 @@ import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.compare.CompareResult;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
@@ -46,13 +46,13 @@ public class SampleXclUsage {
             .iterator().next();
     /* We wrap them as digital objects for later usage: */
     private static final DigitalObject GIF = new DigitalObject.Builder(
-            ImmutableContent.byReference(new File(ORIGINAL))).format(GIF_ID)
+            Content.byReference(new File(ORIGINAL))).format(GIF_ID)
             .build();
     private static final DigitalObject JPG = new DigitalObject.Builder(
-            ImmutableContent.byReference(new File(CONVERTED))).format(JPG_ID)
+            Content.byReference(new File(CONVERTED))).format(JPG_ID)
             .build();
     private static final DigitalObject CONFIG = new DigitalObject.Builder(
-            ImmutableContent.byReference(new File(COCO))).build();
+            Content.byReference(new File(COCO))).build();
     /* We identify the XCDL format somehow: */
     private static final URI XCDL_ID = URI.create("planets:/xcdl"); // not used
 

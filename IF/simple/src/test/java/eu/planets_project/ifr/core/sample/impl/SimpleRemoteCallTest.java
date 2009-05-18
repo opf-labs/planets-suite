@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
@@ -49,7 +49,7 @@ public class SimpleRemoteCallTest {
             }
             Identify droid = (Identify) service.getPort( Identify.class );
             IdentifyResult result = droid.identify(new DigitalObject.Builder(
-                    ImmutableContent.byValue(new File("PC/droid/src/resources/Licence.rtf"))).build(), null);
+                    Content.byValue(new File("PC/droid/src/resources/Licence.rtf"))).build(), null);
             System.out.println("Result: "+result.getTypes());
             System.exit(1);
         } catch (MalformedURLException e) {

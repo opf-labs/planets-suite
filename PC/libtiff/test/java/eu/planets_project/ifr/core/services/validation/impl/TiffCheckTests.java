@@ -1,8 +1,8 @@
 package eu.planets_project.ifr.core.services.validation.impl;
 
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.utils.test.ServiceCreator;
 import eu.planets_project.services.utils.test.ServiceCreator.Mode;
 import eu.planets_project.services.validate.Validate;
@@ -55,11 +55,11 @@ public final class TiffCheckTests
 	{
 		File pngFile = new File("PC/libtiff/src/resources/image01.png");
 		File tifFile = new File("PC/libtiff/src/resources/image01.tif");
-		Content pngContent = null;
-		Content tifContent = null;
+		DigitalObjectContent pngContent = null;
+		DigitalObjectContent tifContent = null;
 		try {
-			pngContent = ImmutableContent.byReference(pngFile.toURL());
-			tifContent = ImmutableContent.byReference(tifFile.toURL());
+			pngContent = Content.byReference(pngFile.toURL());
+			tifContent = Content.byReference(tifFile.toURL());
 		}
 		catch (MalformedURLException e)
 		{

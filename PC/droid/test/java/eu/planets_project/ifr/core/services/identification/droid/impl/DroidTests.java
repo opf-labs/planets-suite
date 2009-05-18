@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
@@ -142,7 +142,7 @@ public class DroidTests {
 	private static String[] test(final Identify identify, final String location)
             throws MalformedURLException {
         IdentifyResult result = identify.identify(new DigitalObject.Builder(
-                ImmutableContent.byValue(new File(location) )).build(), null );
+                Content.byValue(new File(location) )).build(), null );
         String[] strings = new String[result.getTypes().size()];
         for (int i = 0; i < result.getTypes().size(); i++) {
             String string = result.getTypes().get(i).toASCIIString();

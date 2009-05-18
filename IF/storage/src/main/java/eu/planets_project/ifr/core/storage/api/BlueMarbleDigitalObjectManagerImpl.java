@@ -19,7 +19,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
@@ -164,7 +164,7 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
 		try {
 			// Will simply attempt to download the object at the provided URI,
 			// no matter whether located at the NASA mirror or not
-			return new DigitalObject.Builder(ImmutableContent.byReference(pdURI.toURL())).build();
+			return new DigitalObject.Builder(Content.byReference(pdURI.toURL())).build();
 		} catch (Exception e) {
 			throw new DigitalObjectNotFoundException("Error retrieving object from " + pdURI.toString() + " (" + e.getMessage() + ")");
 		}

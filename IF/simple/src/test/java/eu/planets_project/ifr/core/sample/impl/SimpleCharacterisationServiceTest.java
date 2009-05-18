@@ -60,7 +60,7 @@ public class SimpleCharacterisationServiceTest {
         byte[] binary = new byte[(int)(Math.random()*1024*10)];
         
         /* Create the content: */
-        Content c1 = ImmutableContent.byValue(binary);
+        DigitalObjectContent c1 = Content.byValue(binary);
         
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).build();
@@ -81,7 +81,7 @@ public class SimpleCharacterisationServiceTest {
         File file = FileUtils.writeByteArrayToTempFile(binary);
         
         /* Create the content: */
-        Content c1 = ImmutableContent.byReference(file.toURI().toURL());
+        DigitalObjectContent c1 = Content.byReference(file.toURI().toURL());
         
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).build();

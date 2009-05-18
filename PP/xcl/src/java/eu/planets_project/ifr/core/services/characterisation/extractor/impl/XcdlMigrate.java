@@ -14,7 +14,7 @@ import javax.jws.WebService;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -197,7 +197,7 @@ public final class XcdlMigrate implements Migrate {
 
             // output Files smaller than 10Mb
             if (sizeInKB < MAX_FILE_SIZE) {
-                resultDigOb = new DigitalObject.Builder(ImmutableContent
+                resultDigOb = new DigitalObject.Builder(Content
                             .byValue(result)).permanentUri(
                             URI.create(PlanetsServices.NS
                                     + "/pserv-pc-xcdlExtractor")).build();
@@ -206,7 +206,7 @@ public final class XcdlMigrate implements Migrate {
                 File tmpResult = FileUtils.getTempFile(result, "tmpResult",
                         "tmp");
                 try {
-                    resultDigOb = new DigitalObject.Builder(ImmutableContent
+                    resultDigOb = new DigitalObject.Builder(Content
                             .byReference(tmpResult.toURI().toURL())).build();
                     migrateResult = new MigrateResult(resultDigOb, sReport);
                 } catch (MalformedURLException e) {

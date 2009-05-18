@@ -26,7 +26,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 
 /**
@@ -91,7 +91,7 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 		try {
 			// Will simply attempt to download the object at the provided URI,
 			// no matter whether it was part of the query result or not
-			return new DigitalObject.Builder(ImmutableContent.byReference(pdURI.toURL())).build();
+			return new DigitalObject.Builder(Content.byReference(pdURI.toURL())).build();
 		} catch (Exception e) {
 			throw new DigitalObjectNotFoundException("Error retrieving object from " + pdURI.toString() + " (" + e.getMessage() + ")");
 		}

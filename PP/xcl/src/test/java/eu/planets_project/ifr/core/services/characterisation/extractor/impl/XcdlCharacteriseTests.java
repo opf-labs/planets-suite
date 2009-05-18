@@ -22,7 +22,7 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
@@ -168,7 +168,7 @@ public class XcdlCharacteriseTests {
     @Test
     public void testRejectInvalidFormat() {
         DigitalObject.Builder builder = new DigitalObject.Builder(
-                ImmutableContent.byValue(new byte[] {}));
+                Content.byValue(new byte[] {}));
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         /* And we can't characterise any format (= no format set): */
         CharacteriseResult result = extractor.characterise(builder.build(),
@@ -276,7 +276,7 @@ public class XcdlCharacteriseTests {
         String extension = XcdlCharacteriseUnitHelper.SAMPLE_FILE
                 .substring(XcdlCharacteriseUnitHelper.SAMPLE_FILE
                         .lastIndexOf(".") + 1);
-        DigitalObject digObj = new DigitalObject.Builder(ImmutableContent
+        DigitalObject digObj = new DigitalObject.Builder(Content
                 .byValue(resultFileBlob)).format(
                 FormatRegistryFactory.getFormatRegistry().createExtensionUri(
                         extension)).build();

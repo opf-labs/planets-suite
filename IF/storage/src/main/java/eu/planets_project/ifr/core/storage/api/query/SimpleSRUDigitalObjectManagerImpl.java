@@ -24,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 
 
 public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
@@ -81,7 +81,7 @@ public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
 		try {
 			// Will simply attempt to download the object at the provided URI,
 			// no matter whether it was part of the query result or not
-			return new DigitalObject.Builder(ImmutableContent.byReference(pdURI.toURL())).build();
+			return new DigitalObject.Builder(Content.byReference(pdURI.toURL())).build();
 		} catch (Exception e) {
 			throw new DigitalObjectNotFoundException("Error retrieving object from " + pdURI.toString() + " (" + e.getMessage() + ")");
 		}

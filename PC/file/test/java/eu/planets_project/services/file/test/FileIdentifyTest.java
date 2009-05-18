@@ -3,9 +3,9 @@
  */
 package eu.planets_project.services.file.test;
 
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.file.FileIdentify;
 import eu.planets_project.services.file.util.FileServiceSetup;
@@ -93,7 +93,7 @@ public class FileIdentifyTest {
     
     private void testIdentifyThis(URI purl, URI type) throws MalformedURLException {
         /* Create the content: */
-        Content c1 = ImmutableContent.byReference(purl.toURL());
+        DigitalObjectContent c1 = Content.byReference(purl.toURL());
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl).build();
         

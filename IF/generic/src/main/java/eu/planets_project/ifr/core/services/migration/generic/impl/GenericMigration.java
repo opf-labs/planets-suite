@@ -20,7 +20,7 @@ import javax.jws.WebService;
 import eu.planets_project.ifr.core.services.migration.generic.common.MultiProperties;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -137,7 +137,7 @@ public class GenericMigration implements Migrate, Serializable {
         byte[] output = new byte[(int) outputFile.length()];
         fis.read(output);
         fis.close();
-        DigitalObject ndo = new DigitalObject.Builder(ImmutableContent
+        DigitalObject ndo = new DigitalObject.Builder(Content
                 .byValue(output)).build();
         return ndo;
     }

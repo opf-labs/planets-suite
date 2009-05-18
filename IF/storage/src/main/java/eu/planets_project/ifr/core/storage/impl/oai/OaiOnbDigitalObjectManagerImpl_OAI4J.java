@@ -9,7 +9,7 @@ import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import java.io.IOException;
 import java.io.StringReader;
 import java.net.URI;
@@ -135,7 +135,7 @@ public class OaiOnbDigitalObjectManagerImpl_OAI4J implements DigitalObjectManage
                 if (dcNode != null && urlNode != null) {
                     String title = parseRecordString(dcNode.getText(), "dcterms:alternative");
                     String url = urlNode.getText();
-                    DigitalObject dio = new DigitalObject.Builder(ImmutableContent.byReference(new URL(url))).title(title).permanentUri(URI.create(url)).build();
+                    DigitalObject dio = new DigitalObject.Builder(Content.byReference(new URL(url))).title(title).permanentUri(URI.create(url)).build();
 
                     return dio;
                 }

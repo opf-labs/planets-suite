@@ -7,9 +7,9 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.PDURI;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -205,7 +205,7 @@ public class DigitalObjectManagerImpl implements DigitalObjectManager {
 			// First we need to update the purl and the content object reference
 			URI purl = doBinary.toURI();
 	        /* Create the content: */
-	        Content c1 = ImmutableContent.byReference(purl.toURL());
+	        DigitalObjectContent c1 = Content.byReference(purl.toURL());
 	        /* Given these, we can instantiate our object: */
 	        DigitalObject object = new DigitalObject.Builder(digitalObject).permanentUri(purl).content(c1).build();
 			OutputStream outStream = new FileOutputStream(doMetadata);

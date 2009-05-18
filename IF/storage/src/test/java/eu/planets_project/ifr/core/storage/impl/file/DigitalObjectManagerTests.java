@@ -6,9 +6,9 @@ package eu.planets_project.ifr.core.storage.impl.file;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -90,7 +90,7 @@ public class DigitalObjectManagerTests {
 		System.out.println("Testing storage of Digital Object");
 		URI purl = new File("IF/storage/src/test/resources/testdata/test_word.doc").toURI();
         /* Create the content: */
-        Content c1 = ImmutableContent.byReference(purl.toURL());
+        DigitalObjectContent c1 = Content.byReference(purl.toURL());
         /* Given these, we can instantiate our object: */
         DigitalObject object = new DigitalObject.Builder(c1).permanentUri(purl).build();
         // Now store it
@@ -98,7 +98,7 @@ public class DigitalObjectManagerTests {
 		// Then retrieve it and check it's the same
 		DigitalObject retObject = _dom.retrieve(new URI("planets://localhost:8080/dr/test/test_word.doc"));
 		URI newPurl = new File("IF/storage/src/test/resources/testroot/test_word.doc").toURI();
-		Content c2 = ImmutableContent.byReference(newPurl.toURL());
+		DigitalObjectContent c2 = Content.byReference(newPurl.toURL());
 		DigitalObject expectedObject = new DigitalObject.Builder(c2).permanentUri(newPurl).build(); 
 		assertEquals("Retrieve Digital Object doesn't match that stored", expectedObject, retObject);
 		

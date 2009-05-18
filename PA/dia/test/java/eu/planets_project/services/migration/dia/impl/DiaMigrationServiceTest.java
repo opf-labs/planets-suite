@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -76,7 +76,7 @@ public class DiaMigrationServiceTest extends TestCase {
 	public void testMigrate() throws Exception {
 
 
-		DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(ImmutableContent.byValue(diaTestFile));
+		DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(Content.byValue(diaTestFile));
 		digitalObjectBuilder.format(new URI("info:pronom/x-fmt/381"));
 		digitalObjectBuilder.title(diaTestFileName);
 		DigitalObject digitalObject = digitalObjectBuilder.build();

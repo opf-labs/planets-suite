@@ -15,7 +15,7 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -153,7 +153,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		DigitalObject result = null;
 		
 		if(modifiedImage!=null) {
-			result = new DigitalObject.Builder(ImmutableContent.asStream(modifiedImage))
+			result = new DigitalObject.Builder(Content.asStream(modifiedImage))
 									.title(modifiedImage.getName())
 									.format(formatRegistry.createExtensionUri(FileUtils.getExtensionFromFile(modifiedImage)))
 									.build();

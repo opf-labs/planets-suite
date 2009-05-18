@@ -19,7 +19,7 @@ import org.junit.Test;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModifyWin;
 import eu.planets_project.services.modify.Modify;
@@ -91,7 +91,7 @@ public class FloppyImageModifyTest {
 		fileList.remove(FLOPPY_IMAGE);
 //		fileList.remove(new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification/FLOPPY144.IMA"));
 		FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
-        DigitalObject inputDigObj = new DigitalObject.Builder(ImmutableContent.asStream(FLOPPY_IMAGE))
+        DigitalObject inputDigObj = new DigitalObject.Builder(Content.asStream(FLOPPY_IMAGE))
 									.title(FLOPPY_IMAGE.getName())
 									.contains(DigitalObjectUtils.createContainedAsStream(fileList).toArray(new DigitalObject[] {}))
 									.format(format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)))

@@ -15,9 +15,9 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Checksum;
-import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -135,7 +135,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		String inFormat = formatReg.getFirstExtension(inputFormat).toUpperCase();
 //		String outFormat = formatReg.getFirstExtension(outputFormat).toUpperCase();
 		
-		ImmutableContent content = (ImmutableContent)digitalObject.getContent();
+		DigitalObjectContent content = digitalObject.getContent();
 		Checksum checksum = content.getChecksum();
 
 		String fileName = digitalObject.getTitle();
@@ -149,7 +149,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
 			ZipResult zippedResult = FloppyImageHelperUnix.extractFilesFromFloppyImage(inputFile);
 			
-			Content zipContent = ImmutableContent.asStream(zippedResult.getZipFile()).withChecksum(zippedResult.getChecksum());
+			DigitalObjectContent zipContent = Content.asStream(zippedResult.getZipFile()).withChecksum(zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
 			.format(formatReg.createExtensionUri("zip"))
@@ -180,7 +180,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if(floppy == null) 
 			return this.returnWithErrorMessage(PROCESS_ERROR, null);
 
-		DigitalObject resultDigObj = new DigitalObject.Builder(ImmutableContent.asStream(floppy))
+		DigitalObject resultDigObj = new DigitalObject.Builder(Content.asStream(floppy))
 										.format(outputFormat)
 										.title(floppy.getName())
 										.build();
