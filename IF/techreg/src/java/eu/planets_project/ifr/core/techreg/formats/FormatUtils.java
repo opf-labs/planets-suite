@@ -7,7 +7,7 @@ import java.util.Set;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  */
-public final class FormatUtils {
+final class FormatUtils {
     /** Util classes providing static methods should not be instantiated. */
     private FormatUtils() {/* Enforce non-instantiability */}
 
@@ -70,7 +70,7 @@ public final class FormatUtils {
      * @param uri The URI to check
      * @return true if a MIME URI
      */
-    public static boolean isMimeUri(final URI uri) {
+    static boolean isMimeUri(final URI uri) {
         return uri.toString().startsWith(MIME_URI_PREFIX);
     }
 
@@ -78,7 +78,7 @@ public final class FormatUtils {
      * @param uri The URI to check
      * @return true if an extension URI
      */
-    public static boolean isExtensionUri(final URI uri) {
+    static boolean isExtensionUri(final URI uri) {
         return uri.toString().startsWith(EXT_URI_PREFIX);
     }
 
@@ -86,7 +86,7 @@ public final class FormatUtils {
      * @param uri The URI to check
      * @return true if a PRONOM URI
      */
-    public static boolean isPronomUri(final URI uri) {
+    static boolean isPronomUri(final URI uri) {
         return uri.toString().startsWith(PRONOM_URI_PREFIX);
     }
 }
