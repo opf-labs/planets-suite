@@ -19,12 +19,8 @@ import org.xml.sax.SAXException;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.characterise.Characterise;
-import eu.planets_project.services.identify.BasicIdentifyOneBinary;
 import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyOneBinary;
-import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.view.CreateView;
 
@@ -41,12 +37,8 @@ public class PlanetsServiceExplorer {
     private static HashMap<QName, Class<?>> classmap = new HashMap<QName, Class<?>>();
     static {
         classmap.put( Migrate.QNAME, Migrate.class );
-        classmap.put( BasicMigrateOneBinary.QNAME, BasicMigrateOneBinary.class );
         classmap.put( Identify.QNAME, Identify.class );
-        classmap.put( IdentifyOneBinary.QNAME, IdentifyOneBinary.class);
-        classmap.put( BasicIdentifyOneBinary.QNAME, BasicIdentifyOneBinary.class);
         classmap.put( Validate.QNAME, Validate.class );
-        classmap.put( BasicValidateOneBinary.QNAME, BasicValidateOneBinary.class );
         classmap.put( Characterise.QNAME, Characterise.class );
         classmap.put( CreateView.QNAME, CreateView.class );
     }

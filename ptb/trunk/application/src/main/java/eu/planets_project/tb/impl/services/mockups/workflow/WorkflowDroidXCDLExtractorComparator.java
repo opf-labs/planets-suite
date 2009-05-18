@@ -16,11 +16,15 @@ import javax.xml.ws.Service;
 
 import eu.planets_project.services.PlanetsException;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
-import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
+import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.Types;
-import eu.planets_project.services.identify.IdentifyOneBinary;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.tb.api.model.eval.EvaluationExecutable;
 import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
@@ -187,14 +191,14 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
             throw e;
         }
         Service service = Service.create(url, new QName(PlanetsServices.NS,
-                IdentifyOneBinary.NAME));
-        IdentifyOneBinary droid = service.getPort(IdentifyOneBinary.class);
+                Identify.NAME));
+        Identify droid = service.getPort(Identify.class);
         byte[] array = FileUtils.readFileIntoByteArray(f1);
         
         //invoke the service and extract results
-        Types results = droid.identifyOneBinary(array);
-        String status = results.status;
-        List<URI> result = results.types;
+        IdentifyResult identify = droid.identify(new DigitalObject.Builder(ImmutableContent.byValue(array)).build(), null);
+        List<URI> result = identify.getTypes();
+        String status = identify.getReport().getMessage();
         
         if(!status.equals("Positive")){
         	throw new Exception("Service execution failed");
@@ -227,14 +231,18 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	    	url = new URL(URL_XCDLEXTRACTOR);
 	    	
 	    	Service service = Service.create(url, new QName(PlanetsServices.NS,
-		        		BasicCharacteriseOneBinaryXCELtoBinary.NAME));
-	        BasicCharacteriseOneBinaryXCELtoBinary extractor = service.getPort(BasicCharacteriseOneBinaryXCELtoBinary.class);
+		        		Migrate.NAME));
+	        Migrate extractor = service.getPort(Migrate.class);
 	        
 	        //the service's input
 	        byte[] array = FileUtils.readFileIntoByteArray(f1);
 	        
 	        //the service call and it's result
-	        byte[] results = extractor.basicCharacteriseOneBinaryXCELtoBinary(array,/*xcel*/null);
+            DigitalObject digitalObject = extractor.migrate(
+                    new DigitalObject.Builder(ImmutableContent.byValue(array))
+                            .build(), null, null, null).getDigitalObject();
+            byte[] results = FileUtils.writeInputStreamToBinary(digitalObject
+                    .getContent().read());
 			String xcdl = new String(results,"UTF-8");
 			
 			if(xcdl==null){
@@ -271,17 +279,19 @@ public class WorkflowDroidXCDLExtractorComparator implements Workflow{
 	    	url = new URL(URL_XCDLCOMPARATOR);
 	    	
 	    	Service service = Service.create(url, new QName(PlanetsServices.NS,
-	    			BasicCompareTwoXcdlValues.NAME));
-	        BasicCompareTwoXcdlValues comparator = service.getPort(BasicCompareTwoXcdlValues.class);
+	    			Compare.NAME));
+	    	Compare comparator = service.getPort(Compare.class);
 
 	        //the service call and it's result
-	        String result = comparator.basicCompareTwoXcdlValues(xcdl1, xcdl2);
+	        DigitalObject x1 = new DigitalObject.Builder(ImmutableContent.byValue(xcdl1.getBytes())).build();
+	        DigitalObject x2 = new DigitalObject.Builder(ImmutableContent.byValue(xcdl2.getBytes())).build();
+	        List<Property> result = comparator.compare(x1, x2, null).getProperties();
 	        
 	        if(result==null){
 	        	throw new Exception("XCDL comparison failed - please check service logs for details");
 	        }
 			
-			return result;
+			return result.toString();
 	
 	    } catch (MalformedURLException e) {
 	    	e.printStackTrace();

@@ -19,7 +19,6 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.ServiceUtils;
@@ -40,7 +39,6 @@ public class MigrateWrapper implements Migrate {
     PlanetsServiceExplorer pse = null;
     Service service = null;
     Migrate m = null;
-    BasicMigrateOneBinary bmob = null;
     
     /**
      * @param wsdl The WSDL to wrap as a service.
@@ -64,14 +62,9 @@ public class MigrateWrapper implements Migrate {
     private void init() {
         service = Service.create(pse.getWsdlLocation(), pse.getQName());
         try {
-            if (pse.getQName().equals(BasicMigrateOneBinary.QNAME)) {
-                bmob = (BasicMigrateOneBinary) service.getPort(pse.getServiceClass());
-            } else {
-                m = (Migrate) service.getPort(pse.getServiceClass());
-            }
+            m = (Migrate) service.getPort(pse.getServiceClass());
         } catch( Exception e ) {
             log.error("Failed to instanciate service "+ pse.getQName() +" at "+pse.getWsdlLocation() + " : Exception - "+e);
-            bmob = null;
             m = null;
         }
     }
@@ -82,17 +75,7 @@ public class MigrateWrapper implements Migrate {
      * @see eu.planets_project.services.migrate.Migrate#describe()
      */
     public ServiceDescription describe() {
-        if ( pse.getQName().equals(BasicMigrateOneBinary.QNAME)) {
-            ServiceDescription.Builder sd = new ServiceDescription.Builder(
-                    pse.getWsdlLocation().getPath(), pse
-                            .getServiceClass().getCanonicalName() );
-            sd.description("This is a basic migration service with no service description or other metadata.");
-            sd.author("[unknown]");
-            sd.serviceProvider(pse.getWsdlLocation().getAuthority());
-            return sd.build();
-        } else {
-            return m.describe();
-        }
+        return m.describe();
     }
 
     /*
@@ -113,22 +96,7 @@ public class MigrateWrapper implements Migrate {
             return new MigrateResult(null, ServiceUtils
                     .createErrorReport("This service cannot deal with composite digital objects.") );
         }
-
-        // Invoke the service based on the type (QName):
-        if (pse.getQName().equals(BasicMigrateOneBinary.QNAME)) {
-            // Basic Migrate One Binary:
-            byte[] bresult = bmob.basicMigrateOneBinary(binary);
-
-            DigitalObject ndo = new DigitalObject.Builder( ImmutableContent.byValue(bresult) )
-                .permanentUri( digitalObject.getPermanentUri() ).build();
-
-            return new MigrateResult(ndo, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
-
-        } else {
-            // Migrate:
-            return m.migrate(digitalObject, inputFormat, outputFormat,
-                    parameters);
-        }
+        return m.migrate(digitalObject, inputFormat, outputFormat, parameters);
     }
 
 }
