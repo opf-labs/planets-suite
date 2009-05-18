@@ -43,19 +43,19 @@ public final class DigitalObjectTests {
         /* A simple example with only required values: */
         URI id = URI.create("http://id");
         /* Either by reference: */
-        DigitalObject o = new DigitalObject.Builder(ImmutableContent
+        DigitalObject o = new DigitalObject.Builder(Content
                 .byReference(new URL("http://some.reference")))
                 .permanentUri(id).build();
         assertEquals(o, new DigitalObject.Builder(o.toXml()).build());
         /* Or use the factory method to create...: */
-        o = new DigitalObject.Builder(ImmutableContent.byValue(new File(
+        o = new DigitalObject.Builder(Content.byValue(new File(
                 "build.xml"))).build();
         assertEquals(o, new DigitalObject.Builder(o.toXml()).build());
         /* Or to copy a digital object: */
         o = new DigitalObject.Builder(o).build();
         assertEquals(o, new DigitalObject.Builder(o.toXml()).build());
         /* Or by value: */
-        o = new DigitalObject.Builder(ImmutableContent.byValue(new File(
+        o = new DigitalObject.Builder(Content.byValue(new File(
                 "build.xml"))).permanentUri(id).build();
         /*
          * These objects can be serialized to XML and instantiated from that
@@ -80,7 +80,7 @@ public final class DigitalObjectTests {
         Checksum checksum = new Checksum(algorithm, value);
         // byte[] data2 = new byte[] {};// see ContentTests for a real sample
         /* Create the content: */
-        Content c1 = ImmutableContent.byReference(data1).withChecksum(checksum);
+        DigitalObjectContent c1 = Content.byReference(data1).withChecksum(checksum);
         // Content c2 = Content.byValue(data2);
         /* Create some optional metadata: */
         URI type = URI.create("meta:/data.type");
@@ -118,11 +118,11 @@ public final class DigitalObjectTests {
             URI manifestationOf = URI.create(SOME_URL_1);
             URI planetsFormatUri = URI.create(SOME_URL_1);
             /* Creation with only required arguments: */
-            digitalObject2 = new DigitalObject.Builder(ImmutableContent
+            digitalObject2 = new DigitalObject.Builder(Content
                     .byReference(new URL(SOME_URL_2))).permanentUri(
                     URI.create(SOME_URL_2)).build();
             /* Creation with all optional arguments: */
-            Content content = ImmutableContent.byReference(permanentUrl.toURL())
+            DigitalObjectContent content = Content.byReference(permanentUrl.toURL())
                     .withChecksum(CHECKSUM);
             digitalObject1 = new DigitalObject.Builder(content).permanentUri(
                     permanentUrl).events(EVENT).fragments(FRAGMENT)
@@ -160,7 +160,7 @@ public final class DigitalObjectTests {
         set.add(digitalObject1);
         set.add(digitalObject1);
         /* The permanent URL is optional: */
-        DigitalObject anon = new DigitalObject.Builder(ImmutableContent
+        DigitalObject anon = new DigitalObject.Builder(Content
                 .byReference(new URL(SOME_URL_1))).build();
         set.add(anon);
         set.add(anon);
@@ -201,14 +201,14 @@ public final class DigitalObjectTests {
     public void contentSizeCalculation() {
         int size1 = 23823, size2 = 1283;
         // Construct a shallow object:
-        DigitalObject bytes1 = new DigitalObject.Builder(ImmutableContent
+        DigitalObject bytes1 = new DigitalObject.Builder(Content
                 .byValue(new byte[size1])).build();
         long bytes = DigitalObjectUtils.getContentSize(bytes1);
         assertEquals("Counted, shallow byte[] size is not correct.", size1,
                 bytes);
 
         // construct a deeper object:
-        DigitalObject bytes2 = new DigitalObject.Builder(ImmutableContent
+        DigitalObject bytes2 = new DigitalObject.Builder(Content
                 .byValue(new byte[size2])).contains(bytes1).build();
         bytes = DigitalObjectUtils.getContentSize(bytes2);
         assertEquals("Counted, 2-level byte[] size is not correct.",

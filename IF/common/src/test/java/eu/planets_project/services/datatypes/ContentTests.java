@@ -47,8 +47,8 @@ public final class ContentTests {
          * We create a content by reference and a content by value for the same
          * content (on the disk):
          */
-        Content reference = ImmutableContent.byReference(url);
-        Content value = ImmutableContent.byValue(bytes);
+        DigitalObjectContent reference = Content.byReference(url);
+        DigitalObjectContent value = Content.byValue(bytes);
         System.out.println("Created: " + reference);
         System.out.println("Created: " + value);
         /* Then, we read both contents: */
@@ -66,12 +66,12 @@ public final class ContentTests {
     /** Equality tests for content objects. */
     @Test
     public void equality() {
-        Content c1 = ImmutableContent.byReference(url);
-        Content c2 = ImmutableContent.byReference(url);
+        DigitalObjectContent c1 = Content.byReference(url);
+        DigitalObjectContent c2 = Content.byReference(url);
         assertEquals("Equal object don't equal;", c1, c2);
         assertEquals("Equal objects have different string representations;", c1
                 .toString(), c2.toString());
-        Set<Content> set = new HashSet<Content>(Arrays.asList(c1, c1, c1));
+        Set<DigitalObjectContent> set = new HashSet<DigitalObjectContent>(Arrays.asList(c1, c1, c1));
         assertEquals("Set contains duplicates;", 1, set.size());
 
     }

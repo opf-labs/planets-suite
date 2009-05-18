@@ -63,7 +63,7 @@ public final class ImmutableDigitalObject implements
 
     /** @see {@link #getContent()} */
     @XmlElement(namespace = PlanetsServices.OBJECTS_NS, required = true)
-    private Content content;
+    private DigitalObjectContent content;
 
     /** @see {@link #getEvents()} */
     @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
@@ -253,7 +253,7 @@ public final class ImmutableDigitalObject implements
      * {@inheritDoc}
      * @see eu.planets_project.services.datatypes.DigitalObject#getContent()
      */
-    public Content getContent() {
+    public DigitalObjectContent getContent() {
         return content;
     }
 

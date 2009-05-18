@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
+import eu.planets_project.services.datatypes.Content;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -107,7 +107,7 @@ public final class DigitalObjectUtils {
         List<DigitalObject> list = new ArrayList<DigitalObject>();
         for (File file : files) {
             DigitalObject currentDigObj = new DigitalObject.Builder(
-                    ImmutableContent.asStream(file))
+                    Content.asStream(file))
                     .title(file.getName())
 //                    .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
                     .build();
@@ -128,7 +128,7 @@ public final class DigitalObjectUtils {
             DigitalObject currentDigObj = null;
 			try {
 				currentDigObj = new DigitalObject.Builder(
-				        ImmutableContent.byReference(file.toURI().toURL()))
+				        Content.byReference(file.toURI().toURL()))
 				        .title(file.getName())
 //				        .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
 				        .build();
@@ -199,7 +199,7 @@ public final class DigitalObjectUtils {
         	ZipResult zipResult = FileUtils.createZipFileWithChecksum(folder, tmp, zipName);
     		DigitalObject digOb = null;
 			try {
-				digOb = new DigitalObject.Builder(ImmutableContent.byReference(zipResult.getZipFile().toURI().toURL())
+				digOb = new DigitalObject.Builder(Content.byReference(zipResult.getZipFile().toURI().toURL())
 						.withChecksum(zipResult.getChecksum()))
 						.title(zipName)
 						.format(format.createExtensionUri("zip"))
@@ -215,7 +215,7 @@ public final class DigitalObjectUtils {
     		containedDigObs = createContainedAsStream(filesInFolder);
     		File tmpFolder = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
         	ZipResult zipResult = FileUtils.createZipFileWithChecksum(folder, tmpFolder, zipName);
-    		DigitalObject digOb = new DigitalObject.Builder(ImmutableContent.asStream(zipResult.getZipFile())
+    		DigitalObject digOb = new DigitalObject.Builder(Content.asStream(zipResult.getZipFile())
 					.withChecksum(zipResult.getChecksum()))
 					.title(zipName)
 					.format(format.createExtensionUri("zip"))

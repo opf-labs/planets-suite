@@ -1,74 +1,95 @@
 package eu.planets_project.services.datatypes;
 
-import eu.planets_project.services.PlanetsServices;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
+
+import eu.planets_project.services.utils.FileUtils;
 
 /**
- * Representation of digital object content.
+ * Static factory methods for content creation.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@XmlJavaTypeAdapter(Content.Adapter.class)
-@XmlType(namespace = PlanetsServices.OBJECTS_NS)
-public interface Content {
-    /**
-     * @return An input stream for this content; this is either created for the
-     *         actual value (if this is value content) or a stream for reading
-     *         the reference (if this is a reference content)
-     */
-    InputStream read();
+public final class Content {
 
-    /**
-     * @return The checksum for this content
-     */
-    @XmlElement(name = "checksum", namespace = PlanetsServices.OBJECTS_NS)
-    Checksum getChecksum();
+    private Content() {/* enforce non-instantiability */};
 
     /*
-     * TODO This solution to maintain immutability is probably not the best way
-     * to go. Maybe we should reconsider our decision to move the checksum from
-     * digital object to content, makes things less straightforward...
+     * We use static factory methods to provide named constructors for the
+     * different kinds of content instances:
      */
-    /**
-     * As checksum calculation is optional, this functionality is supported via
-     * this method, not the factory methods. To maintain immutability, this
-     * method does not alter this content, but returns a copy with the given
-     * checksum set.
-     * @param checksum the checksum to set
-     * @return A copy of this content, with the given Checksum set
-     * @see ImmutableContent#getChecksum()
-     */
-    Content withChecksum(Checksum checksum);
 
     /**
-     * @return The content length
+     * Create content by reference.
+     * @param reference The reference to the actual content value
+     * @return A content instance referencing the given location
      */
-    long length();
+    public static DigitalObjectContent byReference(final URL reference) {
+        return new ImmutableContent(reference);
+    }
 
-    /*
-     * The current solution to be able to pass this into web service methods: We
-     * tell JAXB which adapter to use for converting from the interface to the
-     * implementation. While this does tightly couple the interface and the
-     * implementation, it still allows us to hide the implementation class, e.g.
-     * keeping it out of our web service interfaces. Also, for using the IF API
-     * outside of a web service stack or JAXB, i.e. as a plain Java library,
-     * this is perfectly fine.
-     */
     /**
-     * Adapter for serialization of Content interface instances.
+     * Create content by reference, from a File. Note that the file must be left
+     * in place long enough for the web service client to complete the access.
+     * @param reference The reference to the actual content value, using a File
+     *        whose content will be streamed over the connection.
+     * @return A content instance referencing the given location.
      */
-    static class Adapter extends XmlAdapter<ImmutableContent, Content> {
-        public Content unmarshal(ImmutableContent immutableContent)
-                throws Exception {
-            return immutableContent;
-        }
+    public static DigitalObjectContent byReference(final File reference) {
+        return new ImmutableContent(reference);
+    }
 
-        public ImmutableContent marshal(Content content) throws Exception {
-            return (ImmutableContent) content;
-        }
+    /**
+     * Create content by value, which means actually embedded in the request.
+     * @param value The value for the content
+     * @return A content instance with the specified value
+     */
+    public static DigitalObjectContent byValue(final byte[] value) {
+        return new ImmutableContent(value);
+    }
+
+    /**
+     * Create content by value, embedding a file.
+     * @param value The value for the content, a File that should be read into a
+     *        byte array.
+     * @return A content instance with the specified value
+     */
+    public static DigitalObjectContent byValue(final File value) {
+        byte[] bytes = FileUtils.readFileIntoByteArray(value);
+        return new ImmutableContent(bytes);
+    }
+
+    /**
+     * Create content by value, embedding the contents of an input stream.
+     * @param inputStream The InputStream containing the value for the content.
+     *        The InputStream is written to a byte[]
+     * @return A content instance with the specified value
+     */
+    public static DigitalObjectContent byValue(final InputStream inputStream) {
+        File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
+                "tempContent", ".dat");
+        return new ImmutableContent(FileUtils.readFileIntoByteArray(tmpFile));
+    }
+
+    /**
+     * Create content as a stream, drawn from a File.
+     * @param value The value for the content, a File that should be read.
+     * @return A content instance with the specified value
+     */
+    public static DigitalObjectContent asStream(final File value) {
+        return new ImmutableContent(value);
+    }
+
+    /**
+     * Pass content as a stream, from an input stream.
+     * @param inputStream The InputStream containing the value for the content.
+     * @return A content instance with the specified value
+     */
+    public static DigitalObjectContent asStream(final InputStream inputStream) {
+        // create a File from the InputStream and call the Content.byValue(File)
+        // to avoid having the whole (maybe large) file in memory
+        File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
+                "tempContent", ".dat");
+        return new ImmutableContent(tmpFile);
     }
 }

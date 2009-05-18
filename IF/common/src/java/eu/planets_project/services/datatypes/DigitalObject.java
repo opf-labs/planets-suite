@@ -66,7 +66,7 @@ public interface DigitalObject {
      *         copy, changes to the obtained list won't affect this digital
      *         object.
      */
-    Content getContent();
+    DigitalObjectContent getContent();
 
     /**
      * @return The 0..n events that happened to this digital object. Returns a
@@ -119,7 +119,7 @@ public interface DigitalObject {
      */
     public static final class Builder {
         /* Required parameter: */
-        private Content content;
+        private DigitalObjectContent content;
         /* Optional parameters, initialized to default values: */
         private URI permanentUri = null;
         private List<Event> events = new ArrayList<Event>();
@@ -139,7 +139,7 @@ public interface DigitalObject {
          * Constructs an anonymous (permanentUrl == null) digital object.
          * @param content The content of the digital object.
          */
-        public Builder(final Content content) {
+        public Builder(final DigitalObjectContent content) {
             this.content = content;
         }
 
@@ -191,7 +191,7 @@ public interface DigitalObject {
          * @param content The new content for the digital object to be created
          * @return The builder, for cascaded calls
          */
-        public Builder content(final Content content) {
+        public Builder content(final DigitalObjectContent content) {
             this.content = content;
             return this;
         }
@@ -274,7 +274,7 @@ public interface DigitalObject {
          * @return The content
          * @see DigitalObject#getContent()
          */
-        public Content getContent() {
+        public DigitalObjectContent getContent() {
             return content;
         }
 
