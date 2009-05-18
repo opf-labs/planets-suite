@@ -53,7 +53,7 @@ public final class XcdlCommonProperties implements CommonProperties {
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         StringBuilder builder = new StringBuilder();
         for (URI uri : formatIds) {
-            builder.append(registry.convertUriToPronom(uri)).append(":");
+            builder.append(registry.getValueFromUri(uri)).append(":");
         }
         String result = basicCompareFormatProperties(builder.toString());
         List<Property> resultProperties = ExplorerResultReader.properties(result);
@@ -71,7 +71,7 @@ public final class XcdlCommonProperties implements CommonProperties {
         StringBuilder fullResult = new StringBuilder();
         for (URI uri : formatIds) {
             String result = basicCompareFormatProperties(registry
-                    .convertUriToPronom(uri)
+                    .getValueFromUri(uri)
                     + ":");
             fullResult.append(result).append("\n");
             List<Property> resultProperties = ExplorerResultReader.properties(result);

@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Set;
 
+import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
+
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
@@ -70,34 +72,30 @@ public interface FormatRegistry {
      */
     URI createMimeUri(String mime);
 
-    /* Planets URI info methods: */
+    /**
+     * @return A URI representing any format.
+     */
+    URI createAnyFormatUri();
 
     /**
-     * @param uri The URI to check
-     * @return True, if the given URI is an extension URI (represents a simple
-     *         extension, e.g. 'txt')
+     * @return A URI representing an unknown format.
      */
-    Boolean isExtensionUri(URI uri);
+    URI createUnknownFormatUri();
+
+    /* Planets URI info method: */
 
     /**
-     * @param uri The URI to check
-     * @return True, if the given URI is a pronom URI (represents a promon ID,
-     *         e.g. 'fmt/10')
+     * @param uri The URI to test
+     * @param type The URI type to test for
+     * @return True, if the given URI is of the given type
      */
-    Boolean isPronomUri(URI uri);
-
-    /**
-     * @param uri The URI to check
-     * @return True, if the given URI is a mime URI (represents a mime type,
-     *         e.g. 'text/plain')
-     */
-    Boolean isMimeUri(URI uri);
+    Boolean isUriOfType(URI uri, UriType type);
 
     /* Conversion back from Planets URIs: */
 
     /**
-     * @param uri A URI representing a Pronom ID
-     * @return The Pronom ID, e.g. "fmt/101"
+     * @param uri The URI
+     * @return The raw value the URI was created with or null
      */
-    String convertUriToPronom(URI uri);
+    String getValueFromUri(URI uri);
 }

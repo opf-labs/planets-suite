@@ -21,6 +21,8 @@ import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
 
+import eu.planets_project.ifr.core.techreg.formats.Format.UriType;
+
 /**
  * This is the Planets Format Registry and Resolver.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -264,6 +266,59 @@ class FormatRegistryImpl implements FormatRegistry {
      */
     public Boolean isMimeUri(URI typeURI) {
         return FormatUtils.isMimeUri(typeURI);
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#isUriOfType(java.net.URI,
+     *      eu.planets_project.ifr.core.techreg.formats.Format.UriType)
+     */
+    public Boolean isUriOfType(URI uri, UriType type) {
+        switch (type) {
+        case MIME:
+            return isMimeUri(uri);
+        case PRONOM:
+            return isPronomUri(uri);
+        case EXTENSION:
+            return isExtensionUri(uri);
+        case ANY:
+            return uri.toString().equals(Format.ANY.toString());
+        case UNKNOWN:
+            return uri.toString().equals(Format.UNKNOWN.toString());
+        }
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#createAnyFormatUri()
+     */
+    public URI createAnyFormatUri() {
+        return Format.ANY;
+    }
+
+    public URI createUnknownFormatUri() {
+        return Format.UNKNOWN;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getValueFromUri(java.net.URI)
+     */
+    public String getValueFromUri(URI uri) {
+        String marker = null;
+        if (isUriOfType(uri, UriType.PRONOM)) {
+            marker = "pronom/";
+        } else if (isUriOfType(uri, UriType.EXTENSION)) {
+            marker = "ext/";
+        } else if (isUriOfType(uri, UriType.MIME)) {
+            marker = "mime/";
+        }
+        if (marker != null) {
+            return uri.toString().substring(
+                    uri.toString().lastIndexOf(marker) + marker.length());
+        }
+        return null;
     }
 
 }

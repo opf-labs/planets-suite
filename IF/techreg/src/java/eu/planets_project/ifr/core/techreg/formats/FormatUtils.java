@@ -11,6 +11,10 @@ final class FormatUtils {
     /** Util classes providing static methods should not be instantiated. */
     private FormatUtils() {/* Enforce non-instantiability */}
 
+    /** The string representing "any format". */
+    static final String ANY_FORMAT = "planets:fmt/any";
+    /** The string representing "unknown format". */
+    static final String UNKNOWN_FORMAT = "planets:fmt/unknown";
     /** The prefix for MIME format URIs. */
     static final String MIME_URI_PREFIX = "planets:fmt/mime/";
     /** The prefix for extension format URIs. */

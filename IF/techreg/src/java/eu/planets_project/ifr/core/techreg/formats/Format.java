@@ -25,6 +25,26 @@ import java.util.Set;
  */
 public class Format implements Serializable {
 
+    /**
+     * Different types of format URIs supported by Planets services.
+     * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
+     */
+    public static enum UriType {
+        MIME, PRONOM, EXTENSION, ANY, UNKNOWN
+    }
+
+    /**
+     * A format URI representing any format, e.g. to define that a service can
+     * process any format.
+     */
+    public static final URI ANY = URI.create(FormatUtils.ANY_FORMAT);
+
+    /**
+     * A format URI representing an unknown format, e.g. to set the format of a
+     * digital object to be identified.
+     */
+    public static final URI UNKNOWN = URI.create(FormatUtils.UNKNOWN_FORMAT);
+
     private static final long serialVersionUID = -4713590391811379383L;
 
     private URI typeURI;
@@ -47,12 +67,14 @@ public class Format implements Serializable {
     public Format(URI typeURI) {
         this.typeURI = typeURI;
         if (FormatUtils.isMimeUri(typeURI)) {
-            String mime = typeURI.toString().replace(FormatUtils.MIME_URI_PREFIX, "");
+            String mime = typeURI.toString().replace(
+                    FormatUtils.MIME_URI_PREFIX, "");
             this.mimeTypes = new HashSet<String>();
             this.mimeTypes.add(mime);
             this.summary = mime.toLowerCase();
         } else if (FormatUtils.isExtensionUri(typeURI)) {
-            String ext = typeURI.toString().replace(FormatUtils.EXT_URI_PREFIX, "");
+            String ext = typeURI.toString().replace(FormatUtils.EXT_URI_PREFIX,
+                    "");
             this.extensions = new HashSet<String>();
             this.extensions.add(ext);
             this.summary = ext.toUpperCase();
@@ -172,7 +194,7 @@ public class Format implements Serializable {
     public void setExtensions(Set<String> extensions) {
         this.extensions = extensions;
     }
-    
+
     /**
      * {@inheritDoc}
      * @see java.lang.Object#equals(java.lang.Object)
