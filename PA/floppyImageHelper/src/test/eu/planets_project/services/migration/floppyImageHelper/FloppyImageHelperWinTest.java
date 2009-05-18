@@ -104,7 +104,7 @@ public class FloppyImageHelperWinTest {
 		System.out.println("****************************************************");
 		ZipResult zipResult = FileUtils.createZipFileWithChecksum(FILES_TO_INJECT, OUT_DIR, "test.zip"); 
 		File zipFile = zipResult.getZipFile();
-		DigitalObjectContent content = Content.asStream(zipFile).withChecksum(zipResult.getChecksum());
+		DigitalObjectContent content = Content.byReference(zipFile).withChecksum(zipResult.getChecksum());
         DigitalObject input = new DigitalObject.Builder(content).format(format.createExtensionUri("zip")).title("test.zip").build();
 		List<Parameter> parameters = new ArrayList<Parameter> ();
 		parameters.add(new Parameter("modifyImage", "false"));
@@ -123,7 +123,7 @@ public class FloppyImageHelperWinTest {
 		System.out.println("********************************************");
 		System.out.println("* Testing: Extract Files from Floppy Image *");
 		System.out.println("********************************************");
-		DigitalObjectContent content = Content.asStream(RESULT_FILE);
+		DigitalObjectContent content = Content.byReference(RESULT_FILE);
 		DigitalObject input = new DigitalObject.Builder(content).format(format.createExtensionUri("ima")).title(RESULT_FILE.getName()).build();
 		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, format.createExtensionUri("ima"), format.createExtensionUri("zip"), null);
 		ServiceReport report = migrateResult.getReport();

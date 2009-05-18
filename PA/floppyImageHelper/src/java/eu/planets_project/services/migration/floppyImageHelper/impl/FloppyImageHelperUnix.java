@@ -149,7 +149,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
 			ZipResult zippedResult = FloppyImageHelperUnix.extractFilesFromFloppyImage(inputFile);
 			
-			DigitalObjectContent zipContent = Content.asStream(zippedResult.getZipFile()).withChecksum(zippedResult.getChecksum());
+			DigitalObjectContent zipContent = Content.byReference(zippedResult.getZipFile()).withChecksum(zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
 			.format(formatReg.createExtensionUri("zip"))
@@ -180,7 +180,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if(floppy == null) 
 			return this.returnWithErrorMessage(PROCESS_ERROR, null);
 
-		DigitalObject resultDigObj = new DigitalObject.Builder(Content.asStream(floppy))
+		DigitalObject resultDigObj = new DigitalObject.Builder(Content.byReference(floppy))
 										.format(outputFormat)
 										.title(floppy.getName())
 										.build();

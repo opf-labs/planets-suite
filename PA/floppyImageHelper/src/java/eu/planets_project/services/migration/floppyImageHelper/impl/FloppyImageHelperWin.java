@@ -158,7 +158,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 				return this.returnWithErrorMessage(vfdResult.getMessage(), null);
 			}
 			
-			DigitalObjectContent zipContent = Content.asStream(zippedResult.getZipFile())
+			DigitalObjectContent zipContent = Content.byReference(zippedResult.getZipFile())
 												 .withChecksum(zippedResult.getChecksum());
 			
 			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
@@ -205,7 +205,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 		
 		// If we have reached this line, we should have an image file created, so wrap a DigObj around that and return 
 		// a MigrateResult...
-		DigitalObject resultDigObj = new DigitalObject.Builder(Content.asStream(imageFile))
+		DigitalObject resultDigObj = new DigitalObject.Builder(Content.byReference(imageFile))
 										.format(outputFormat)
 										.title(imageFile.getName())
 										.build();

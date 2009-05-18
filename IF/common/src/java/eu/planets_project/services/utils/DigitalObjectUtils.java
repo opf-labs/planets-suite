@@ -107,7 +107,7 @@ public final class DigitalObjectUtils {
         List<DigitalObject> list = new ArrayList<DigitalObject>();
         for (File file : files) {
             DigitalObject currentDigObj = new DigitalObject.Builder(
-                    Content.asStream(file))
+                    Content.byReference(file))
                     .title(file.getName())
 //                    .format(format.createExtensionUri(FileUtils.getExtensionFromFile(file)))
                     .build();
@@ -215,7 +215,7 @@ public final class DigitalObjectUtils {
     		containedDigObs = createContainedAsStream(filesInFolder);
     		File tmpFolder = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtils-tmp");
         	ZipResult zipResult = FileUtils.createZipFileWithChecksum(folder, tmpFolder, zipName);
-    		DigitalObject digOb = new DigitalObject.Builder(Content.asStream(zipResult.getZipFile())
+    		DigitalObject digOb = new DigitalObject.Builder(Content.byReference(zipResult.getZipFile())
 					.withChecksum(zipResult.getChecksum()))
 					.title(zipName)
 					.format(format.createExtensionUri("zip"))

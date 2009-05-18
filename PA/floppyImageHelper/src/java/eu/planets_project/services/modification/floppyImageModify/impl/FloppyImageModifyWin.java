@@ -153,7 +153,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		DigitalObject result = null;
 		
 		if(modifiedImage!=null) {
-			result = new DigitalObject.Builder(Content.asStream(modifiedImage))
+			result = new DigitalObject.Builder(Content.byReference(modifiedImage))
 									.title(modifiedImage.getName())
 									.format(formatRegistry.createExtensionUri(FileUtils.getExtensionFromFile(modifiedImage)))
 									.build();

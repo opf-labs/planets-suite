@@ -91,7 +91,7 @@ public class FloppyImageModifyTest {
 		fileList.remove(FLOPPY_IMAGE);
 //		fileList.remove(new File("PA/floppyImageHelper/src/test/resources/input_files/for_modification/FLOPPY144.IMA"));
 		FormatRegistry format = FormatRegistryFactory.getFormatRegistry();
-        DigitalObject inputDigObj = new DigitalObject.Builder(Content.asStream(FLOPPY_IMAGE))
+        DigitalObject inputDigObj = new DigitalObject.Builder(Content.byReference(FLOPPY_IMAGE))
 									.title(FLOPPY_IMAGE.getName())
 									.contains(DigitalObjectUtils.createContainedAsStream(fileList).toArray(new DigitalObject[] {}))
 									.format(format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)))

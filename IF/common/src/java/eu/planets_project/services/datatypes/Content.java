@@ -20,7 +20,7 @@ public final class Content {
      */
 
     /**
-     * Create content by reference.
+     * Create (streamed) content by reference.
      * @param reference The reference to the actual content value
      * @return A content instance referencing the given location
      */
@@ -29,14 +29,26 @@ public final class Content {
     }
 
     /**
-     * Create content by reference, from a File. Note that the file must be left
-     * in place long enough for the web service client to complete the access.
+     * Create (streamed) content by reference, from a File. Note that the file
+     * must be left in place long enough for the web service client to complete
+     * the access.
      * @param reference The reference to the actual content value, using a File
      *        whose content will be streamed over the connection.
      * @return A content instance referencing the given location.
      */
     public static DigitalObjectContent byReference(final File reference) {
         return new ImmutableContent(reference);
+    }
+
+    /**
+     * Create (streamed) content by reference, from an input stream.
+     * @param inputStream The InputStream containing the value for the content.
+     * @return A content instance with the specified value
+     */
+    public static DigitalObjectContent byReference(final InputStream inputStream) {
+        File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
+                "tempContent", ".dat");
+        return new ImmutableContent(tmpFile);
     }
 
     /**
@@ -69,27 +81,5 @@ public final class Content {
         File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
                 "tempContent", ".dat");
         return new ImmutableContent(FileUtils.readFileIntoByteArray(tmpFile));
-    }
-
-    /**
-     * Create content as a stream, drawn from a File.
-     * @param value The value for the content, a File that should be read.
-     * @return A content instance with the specified value
-     */
-    public static DigitalObjectContent asStream(final File value) {
-        return new ImmutableContent(value);
-    }
-
-    /**
-     * Pass content as a stream, from an input stream.
-     * @param inputStream The InputStream containing the value for the content.
-     * @return A content instance with the specified value
-     */
-    public static DigitalObjectContent asStream(final InputStream inputStream) {
-        // create a File from the InputStream and call the Content.byValue(File)
-        // to avoid having the whole (maybe large) file in memory
-        File tmpFile = FileUtils.writeInputStreamToTmpFile(inputStream,
-                "tempContent", ".dat");
-        return new ImmutableContent(tmpFile);
     }
 }
