@@ -3,9 +3,6 @@
 	<classpathentry kind="src" path="tests"/>
 	<classpathentry kind="src" path="IF/admin/src/java"/>
 	<classpathentry kind="src" path="IF/admin/src/test/java"/>
-	<classpathentry kind="src" path="IF/clients/BasicCharacteriseOneBinaryXCEL/src/java"/>
-	<classpathentry kind="src" path="IF/clients/BasicIdentifyOneBinary/src/java"/>
-	<classpathentry kind="src" path="IF/clients/BasicMigrateOneBinary/src/java"/>
 	<classpathentry kind="src" path="IF/common/src/java"/>
 	<classpathentry kind="src" path="IF/common/src/test/java"/>
 	<classpathentry kind="src" path="IF/fedora/src/java"/>
@@ -50,8 +47,6 @@
 	<classpathentry kind="src" path="PA/java-se/test/java"/>
 	<classpathentry kind="src" path="PA/jj2000/src/java"/>
 	<classpathentry kind="src" path="PA/jj2000/src/test/java"/>
-	<classpathentry kind="src" path="PA/jmagickconverter/src/main/java"/>
-	<classpathentry kind="src" path="PA/jmagickconverter/src/test/java"/>
 	<classpathentry kind="src" path="PA/jtidy/src/java"/>
 	<classpathentry kind="src" path="PA/jtidy/src/resources"/>
 	<classpathentry kind="src" path="PA/jtidy/test/java"/>
@@ -140,7 +135,6 @@
 	<classpathentry kind="lib" path="PC/metadata/lib/wordperfect_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="PC/metadata/lib/xml_adapter_1_0.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.4.jar"/>
-	<classpathentry kind="lib" path="PA/jmagickconverter/lib/jmagick.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/richfaces-api-3.2.1.GA.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/richfaces-impl-3.2.1.GA.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/richfaces-ui-3.2.1.GA.jar"/>

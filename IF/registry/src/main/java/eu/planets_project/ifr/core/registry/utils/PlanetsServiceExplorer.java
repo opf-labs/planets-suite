@@ -15,21 +15,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import eu.planets_project.services.PlanetsService;
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinary;
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoBinary;
-import eu.planets_project.services.characterise.BasicCharacteriseOneBinaryXCELtoURI;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.compare.CommonProperties;
-import eu.planets_project.services.compare.BasicCompareTwoXcdlReferences;
-import eu.planets_project.services.compare.BasicCompareTwoXcdlValues;
-import eu.planets_project.services.compare.CompareMultipleXcdlReferences;
-import eu.planets_project.services.compare.CompareMultipleXcdlValues;
-import eu.planets_project.services.identify.BasicIdentifyOneBinary;
 import eu.planets_project.services.identify.Identify;
-import eu.planets_project.services.identify.IdentifyOneBinary;
-import eu.planets_project.services.migrate.BasicMigrateOneBinary;
 import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.services.validate.BasicValidateOneBinary;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.view.CreateView;
 
@@ -38,7 +27,6 @@ import eu.planets_project.services.view.CreateView;
  * @author <a href="mailto:andrew.jackson@bl.uk">Andy Jackson</a>
  *
  */
-@SuppressWarnings("deprecation")
 public class PlanetsServiceExplorer {
 	private static Log log = LogFactory.getLog(PlanetsServiceExplorer.class);
 
@@ -48,20 +36,9 @@ public class PlanetsServiceExplorer {
     // Create a static hashmap, mapping QNames to the interfaces:
     private static HashMap<QName, Class<?>> classmap = new HashMap<QName, Class<?>>();
     static {
-    	classmap.put(BasicCharacteriseOneBinary.QNAME, BasicCharacteriseOneBinary.class);
-    	classmap.put(BasicCharacteriseOneBinaryXCELtoBinary.QNAME, BasicCharacteriseOneBinaryXCELtoBinary.class);
-    	classmap.put(BasicCharacteriseOneBinaryXCELtoURI.QNAME, BasicCharacteriseOneBinaryXCELtoURI.class);
         classmap.put(CommonProperties.QNAME, CommonProperties.class);
-        classmap.put(BasicCompareTwoXcdlReferences.QNAME, BasicCompareTwoXcdlReferences.class);
-        classmap.put(BasicCompareTwoXcdlValues.QNAME, BasicCompareTwoXcdlValues.class);
-        classmap.put(CompareMultipleXcdlReferences.QNAME, CompareMultipleXcdlReferences.class);
-        classmap.put(CompareMultipleXcdlValues.QNAME, CompareMultipleXcdlValues.class);
-        classmap.put(BasicIdentifyOneBinary.QNAME, BasicIdentifyOneBinary.class);
         classmap.put(Identify.QNAME, Identify.class);
-        classmap.put(IdentifyOneBinary.QNAME, IdentifyOneBinary.class);
-        classmap.put(BasicMigrateOneBinary.QNAME, BasicMigrateOneBinary.class);
         classmap.put(Migrate.QNAME, Migrate.class);
-        classmap.put(BasicValidateOneBinary.QNAME, BasicValidateOneBinary.class);
         classmap.put(Validate.QNAME, Validate.class);
         classmap.put(Characterise.QNAME, Characterise.class);
         classmap.put(CreateView.QNAME, CreateView.class);
