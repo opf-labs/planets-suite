@@ -31,8 +31,8 @@ import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGe
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry;
 import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.FileUtils;
@@ -297,7 +297,7 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
     		    byte[] out1 = null;
     		    
     			try {					
-    			    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(sourceData)).build();
+    			    DigitalObject dob = new DigitalObject.Builder(Content.byValue(sourceData)).build();
     		        out1 = FileUtils.writeInputStreamToBinary(converter1.migrate(dob, null,null,null).getDigitalObject().getContent().read());
     		    } catch(Exception e) {
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
@@ -343,7 +343,7 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
     		    byte[] out2 = null;
     		     		    
     			try {			
-    			    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(out1)).build();
+    			    DigitalObject dob = new DigitalObject.Builder(Content.byValue(out1)).build();
     		        out2 = FileUtils.writeInputStreamToBinary(converter2.migrate(dob,null,null,null).getDigitalObject().getContent().read());
     		    } catch(Exception e) {
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+resultPath+"</i></legend><table><tr><td>"+
@@ -394,7 +394,7 @@ public class ReviewConvertBean extends AbstractWorkflowBean implements PlanetsSe
         		    d1 = new Date();
         		    URI xcdlUri = null;
         		    String xcelString = FileUtils.readTxtFileIntoString(new File(xcelPath));
-        		    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byReference(resultPath2.toURL())).build();
+        		    DigitalObject dob = new DigitalObject.Builder(Content.byReference(resultPath2.toURL())).build();
         			try {	
         			    DigitalObject result = extractor.migrate(dob, null,null, Arrays.asList(new Parameter("optionalXCELString", xcelString))).getDigitalObject();
         		        xcdlUri = FileUtils.writeInputStreamToTmpFile(result.getContent().read(), "result", "tmp").toURI();

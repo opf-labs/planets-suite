@@ -28,8 +28,8 @@ import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGe
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry;
 import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.identify.Identify;
 	
 /**
@@ -182,7 +182,7 @@ public class DroidBean extends AbstractWorkflowBean implements PlanetsService, W
 				URI pronomURI = null;
 				//identify data
 				try {
-				    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(imageData)).build();
+				    DigitalObject dob = new DigitalObject.Builder(Content.byValue(imageData)).build();
 		    	List<URI> rets = droid.identify(dob,null).getTypes();
 		    	//todo if rets.length = 0 error
 		    	//todo handle multiple pronom ids

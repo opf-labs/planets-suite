@@ -29,8 +29,8 @@ import eu.planets_project.ifr.core.wdt.common.services.reportGeneration.ReportGe
 import eu.planets_project.ifr.core.wdt.impl.registry.Service;
 import eu.planets_project.ifr.core.wdt.impl.registry.WorkflowServiceRegistry;
 import eu.planets_project.ifr.core.wdt.impl.wf.AbstractWorkflowBean;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableContent;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.FileUtils;
@@ -260,7 +260,7 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 				//identify file		    		    
 		    URI resultType = null;
 				try {					
-				    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(imageData)).build();
+				    DigitalObject dob = new DigitalObject.Builder(Content.byValue(imageData)).build();
 			    resultType = identifier.identify(dob,null).getTypes().get(0);
 		    } catch(Exception e) {
 					report.appendCDATA(reportID, "<fieldset><legend><b>File:</b><i> "+pdURI+"</i></legend><table><tr><td>"+
@@ -276,7 +276,7 @@ public class Level1ConvertBean extends AbstractWorkflowBean implements PlanetsSe
 		    byte[] out = null;
 		    
 				try {		
-				    DigitalObject dob = new DigitalObject.Builder(ImmutableContent.byValue(imageData)).build();
+				    DigitalObject dob = new DigitalObject.Builder(Content.byValue(imageData)).build();
 				 	out = FileUtils.writeInputStreamToBinary(converter.migrate(dob,null,null,null).getDigitalObject().getContent().read());
 				 	if(out == null) throw new Exception("migrated file is empty");				 	
 		    } catch(Exception e) {
