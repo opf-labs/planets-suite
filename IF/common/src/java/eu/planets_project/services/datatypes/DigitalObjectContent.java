@@ -53,7 +53,7 @@ public interface DigitalObjectContent {
      * The current solution to be able to pass this into web service methods: We
      * tell JAXB which adapter to use for converting from the interface to the
      * implementation. While this does tightly couple the interface and the
-     * implementation, it still allows us to hide the implementation class, e.g.
+     * implementation, it still allows us to hide the implementation class, i.e.
      * keeping it out of our web service interfaces. Also, for using the IF API
      * outside of a web service stack or JAXB, i.e. as a plain Java library,
      * this is perfectly fine.
@@ -61,13 +61,15 @@ public interface DigitalObjectContent {
     /**
      * Adapter for serialization of Content interface instances.
      */
-    static class Adapter extends XmlAdapter<ImmutableContent, DigitalObjectContent> {
+    static class Adapter extends
+            XmlAdapter<ImmutableContent, DigitalObjectContent> {
         public DigitalObjectContent unmarshal(ImmutableContent immutableContent)
                 throws Exception {
             return immutableContent;
         }
 
-        public ImmutableContent marshal(DigitalObjectContent content) throws Exception {
+        public ImmutableContent marshal(DigitalObjectContent content)
+                throws Exception {
             return (ImmutableContent) content;
         }
     }

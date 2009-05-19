@@ -41,7 +41,7 @@ public interface DigitalObject {
     /** @return The type of this digital object. */
     URI getFormat();
 
-    /** @return The unique identifier. Required. */
+    /** @return The unique identifier. */
     URI getPermanentUri();
 
     /** @return The URI that this digital object is a manifestation of. */
@@ -62,8 +62,8 @@ public interface DigitalObject {
     List<DigitalObject> getContained();
 
     /**
-     * @return The actual content references. Required. Returns a defensive
-     *         copy, changes to the obtained list won't affect this digital
+     * @return The actual content reference. Required. Returns a defensive copy,
+     *         changes to the obtained instance won't affect this digital
      *         object.
      */
     DigitalObjectContent getContent();
@@ -84,11 +84,9 @@ public interface DigitalObject {
 
     /**
      * @return An XML representation of this digital object (can be used to
-     *         instantiate an object using the builder)
+     *         instantiate an object using the builder constructor)
      */
     String toXml();
-
-
 
     /* Same approach as above, but for the DigitalObject itself. */
     /** Adapter for serialization of DigitalObject interface instances. */
@@ -136,8 +134,12 @@ public interface DigitalObject {
         }
 
         /**
-         * Constructs an anonymous (permanentUrl == null) digital object.
-         * @param content The content of the digital object.
+         * Constructs an anonymous (permanentUri == null) digital object. To set
+         * further attributes, call the desired methods on the resulting
+         * builder.
+         * @param content The content of the digital object, see static factory
+         *        methods in {@link Content} for different ways of content
+         *        creation, e.g. {@code Content.byReference(file)}.
          */
         public Builder(final DigitalObjectContent content) {
             this.content = content;
@@ -145,7 +147,7 @@ public interface DigitalObject {
 
         /**
          * @param digitalObject An existing digital object to copy into an new
-         *        anonymous (permanentUrl == null) digital object.
+         *        anonymous (permanentUri == null) digital object.
          */
         public Builder(final DigitalObject digitalObject) {
             content = digitalObject.getContent();
@@ -159,8 +161,8 @@ public interface DigitalObject {
         }
 
         /**
-         * Creates an builder that will build a digital object identical to the
-         * given object, including the permanent URL.
+         * Creates a builder that will build a digital object identical to the
+         * given object, including the permanent URI.
          * @param digitalObjectXml An XML representation of a digital object.
          */
         public Builder(final String digitalObjectXml) {
@@ -182,13 +184,15 @@ public interface DigitalObject {
             format = digitalObject.getFormat();
         }
 
-        /** No-arg constructor for JAXB. API clients should not use this. */
+        /** No-arg constructor for JAXB. */
         @SuppressWarnings("unused")
-        private Builder() {
-        }
+        private Builder() {}
 
         /**
-         * @param content The new content for the digital object to be created
+         * @param content The new content for the digital object to be created,
+         *        see static factory methods in {@link Content} for different
+         *        ways of content creation, e.g. {@code
+         *        Content.byReference(file)}.
          * @return The builder, for cascaded calls
          */
         public Builder content(final DigitalObjectContent content) {
@@ -197,8 +201,8 @@ public interface DigitalObject {
         }
 
         /**
-         * @param permanentUrl The globally unique locator and identifier for
-         *        this digital object.
+         * @param permanentUrl The globally unique identifier for this digital
+         *        object.
          * @return The builder, for cascaded calls
          */
         public Builder permanentUri(final URI permanentUri) {

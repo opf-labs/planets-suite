@@ -31,7 +31,11 @@ import java.util.List;
 @XmlRootElement(name = "digitalObject", namespace = PlanetsServices.OBJECTS_NS)
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public final class ImmutableDigitalObject implements
+/*
+ * NOTE: This class is intentionally NOT PUBLIC. Clients should use a
+ * DigitalObject.Builder to instantiate digital objects.
+ */
+final class ImmutableDigitalObject implements
         Comparable<ImmutableDigitalObject>, DigitalObject {
 
     /** Generated UID. */

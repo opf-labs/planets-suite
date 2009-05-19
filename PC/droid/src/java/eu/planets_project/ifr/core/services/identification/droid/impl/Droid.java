@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,7 +26,6 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
-import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
@@ -66,6 +66,8 @@ public final class Droid implements Identify, Serializable {
     /***/
     private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
 
+    private String classificationText;
+
     /* (non-Javadoc)
      * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
      */
@@ -73,16 +75,16 @@ public final class Droid implements Identify, Serializable {
         InputStream stream = digitalObject.getContent().read();
         File file = FileUtils.writeInputStreamToTmpFile(stream, "droid-temp",
                 "bin");
-        Types types = identifyOneBinary(file);
-        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, types.status);
+        List<URI> types = identifyOneBinary(file);
+        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, classificationText);
         IdentifyResult.Method method = null;
-        if( AnalysisController.FILE_CLASSIFICATION_POSITIVE_TEXT.equals(types.status)) {
+        if( AnalysisController.FILE_CLASSIFICATION_POSITIVE_TEXT.equals(classificationText)) {
             method = IdentifyResult.Method.MAGIC;
         }
-        else if( AnalysisController.FILE_CLASSIFICATION_TENTATIVE_TEXT.equals(types.status)) {
+        else if( AnalysisController.FILE_CLASSIFICATION_TENTATIVE_TEXT.equals(classificationText)) {
             method = IdentifyResult.Method.EXTENSION;
         }
-        IdentifyResult result = new IdentifyResult(types.types, method, report);
+        IdentifyResult result = new IdentifyResult(types, method, report);
         return result;
     }
 
@@ -111,7 +113,7 @@ public final class Droid implements Identify, Serializable {
      * @return Returns the Pronom IDs found for the file as URIs in a Types
      *         object
      */
-    private Types identifyOneBinary(final File tempFile) {
+    private List<URI> identifyOneBinary(final File tempFile) {
         // Determine the config directory:
         String sigFileLocation = configFolder();
         // Here we start using the Droid API:
@@ -129,7 +131,6 @@ public final class Droid implements Identify, Serializable {
         controller.runFileFormatAnalysis();
         Iterator<IdentificationFile> iterator = controller.getFileCollection()
                 .getIterator();
-        Types retVal = null;
         // We identify one file only:
         if (iterator.hasNext()) {
             IdentificationFile file = iterator.next();
@@ -146,21 +147,11 @@ public final class Droid implements Identify, Serializable {
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-            retVal = new Types(uris, file.getClassificationText());
+            List<URI>result = Arrays.asList(uris);
+            classificationText = file.getClassificationText();
+            return result;
         }
-        return retVal;
-    }
-
-    /**
-     * Identify a file represented as a file name using Droid. This is a utility
-     * method to enable SOAP-based testing, it converts the specified file into
-     * a byte array and calls the actual identify method with that
-     * @param fileName The file name of the file to identify
-     * @return Returns a Types object containing an array with the Pronom IDs as
-     *         URIs for the specified file
-     */
-    public Types identifyOneFile(final String fileName) {
-        return identifyOneBinary(new File(fileName));
+        return null;
     }
 
     /**

@@ -9,11 +9,8 @@ import java.io.Serializable;
 /**
  * Immutable representation of a checksum, containing of the algorithm used and
  * the actual value.
- * 
  * @see ChecksumTests
- * 
  * @author Fabian Steeg
- * 
  */
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
 public final class Checksum implements Comparable<Checksum>, Serializable {
@@ -35,7 +32,7 @@ public final class Checksum implements Comparable<Checksum>, Serializable {
         this.value = value;
     }
 
-    /** No-args constructor for JAXB usage. Not to be used by API clients. */
+    /** No-args constructor for JAXB usage. */
     @SuppressWarnings("unused")
     private Checksum() {}
 
@@ -55,7 +52,6 @@ public final class Checksum implements Comparable<Checksum>, Serializable {
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
@@ -69,7 +65,6 @@ public final class Checksum implements Comparable<Checksum>, Serializable {
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -80,7 +75,6 @@ public final class Checksum implements Comparable<Checksum>, Serializable {
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Comparable#compareTo(java.lang.Object)
      */
     public int compareTo(final Checksum o) {
@@ -92,7 +86,6 @@ public final class Checksum implements Comparable<Checksum>, Serializable {
 
     /**
      * {@inheritDoc}
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override

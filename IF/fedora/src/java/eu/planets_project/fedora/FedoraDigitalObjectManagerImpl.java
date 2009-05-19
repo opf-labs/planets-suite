@@ -23,7 +23,6 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.ImmutableDigitalObject;
 
 
 
@@ -163,7 +162,7 @@ public class FedoraDigitalObjectManagerImpl implements DigitalObjectManager {
 
             getobject.releaseConnection();
             if (objectxml.startsWith("<?xml")){
-                DigitalObject retrieved = ImmutableDigitalObject.of(objectxml);
+                DigitalObject retrieved = new DigitalObject.Builder(objectxml).build();
                 return retrieved;
             } else{
                 throw new DigitalObjectNotFoundException("The object could not be ported to planets");

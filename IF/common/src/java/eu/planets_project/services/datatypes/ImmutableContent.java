@@ -20,19 +20,19 @@ import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.utils.ByteArrayDataSource;
 
 /**
- * Content for digital objects, either by reference or by value. Create content
- * by reference or value: {@code Content c = ImmutableContent.byReference(url);}
- * or {@code Content c = ImmutableContent.byValue(bytes); } However created, you
- * can read the content form the instance: {@code InputStream s = c.read();}
+ * Content for digital objects, either by reference or by value.
  * @see ContentTests
  * @author Asger Blekinge-Rasmussen (abr@statsbiblioteket.dk)
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  * @author Peter Melms (peter.melms@uni-koeln.de)
  */
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
+/*
+ * NOTE: This class is intentionally NOT PUBLIC. Clients should use the factory
+ * methods in the Content class to instantiate content.
+ */
 final class ImmutableContent implements DigitalObjectContent {
     private static Log log = LogFactory.getLog(ImmutableContent.class);
-
 
     private static final long serialVersionUID = 7135127983024589335L;
 
@@ -104,6 +104,7 @@ final class ImmutableContent implements DigitalObjectContent {
 
     /**
      * {@inheritDoc}
+     * @see eu.planets_project.services.datatypes.DigitalObjectContent#read()
      */
     public InputStream read() {
         try {
@@ -142,8 +143,8 @@ final class ImmutableContent implements DigitalObjectContent {
     }
 
     /**
-     * @return The size of the Content, in bytes. Returns -1 if this is a 'by
-     *         reference' Content object.
+     * {@inheritDoc}
+     * @see eu.planets_project.services.datatypes.DigitalObjectContent#length()
      */
     public long length() {
         return length;
@@ -158,8 +159,8 @@ final class ImmutableContent implements DigitalObjectContent {
     }
 
     /**
-     * @return The checksum
-     * @see ImmutableContent#getChecksum()
+     * {@inheritDoc}
+     * @see eu.planets_project.services.datatypes.DigitalObjectContent#getChecksum()
      */
     public Checksum getChecksum() {
         return checksum;

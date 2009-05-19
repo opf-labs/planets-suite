@@ -30,7 +30,6 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
-import eu.planets_project.services.datatypes.Types;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.Identify;
@@ -65,17 +64,23 @@ public final class JhoveIdentification implements Identify, Serializable {
     private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
     /***/
     private static final String OUTPUT = "planets-jhove-output";
+    private String status;
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
+    /*
+     * (non-Javadoc)
+     * @see
+     * eu.planets_project.services.identify.Identify#identify(eu.planets_project
+     * .services.datatypes.DigitalObject, java.util.List)
      */
-    public IdentifyResult identify(DigitalObject digitalObject, List<Parameter> parameters) {
+    public IdentifyResult identify(DigitalObject digitalObject,
+            List<Parameter> parameters) {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "jhove-temp", "bin");
-        Types types = identifyOneBinary(file);
-        log.info("JHOVE Identification, got types: " + types.types);
-        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, types.status);
-        return new IdentifyResult(types.types, null, report);
+        List<URI> types = identifyOneBinary(file);
+        log.info("JHOVE Identification, got types: " + types);
+        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS,
+                status);
+        return new IdentifyResult(types, null, report);
     }
 
     /**
@@ -89,7 +94,8 @@ public final class JhoveIdentification implements Identify, Serializable {
         sd.classname(this.getClass().getCanonicalName());
         sd.description("Identification service using JHOVE (1.1).");
         sd.author("Fabian Steeg");
-        sd.tool( Tool.create(null, "JHOVE", "1.1", null, "http://hul.harvard.edu/jhove/") );
+        sd.tool(Tool.create(null, "JHOVE", "1.1", null,
+                "http://hul.harvard.edu/jhove/"));
         sd.furtherInfo(URI.create("http://hul.harvard.edu/jhove/"));
         sd.inputFormats(inputFormats());
         sd.serviceProvider("The Planets Consortium");
@@ -181,7 +187,7 @@ public final class JhoveIdentification implements Identify, Serializable {
      * @return Returns a Types object containing the result of the JHOVE
      *         identification
      */
-    private Types identifyOneBinary(final File temporary) {
+    private List<URI> identifyOneBinary(final File temporary) {
         try {
             /* And use the JHOVE API to identify it: */
             JhoveBase base = new JhoveBase();
@@ -215,7 +221,7 @@ public final class JhoveIdentification implements Identify, Serializable {
      * @param base The JhoveBase to get the results from
      * @return Returns a Types object with the result for the JhoveBase
      */
-    private Types result(final JhoveBase base) {
+    private List<URI> result(final JhoveBase base) {
         String file = base.getOuputFile();
         File f = new File(file);
         Scanner s = null;
@@ -249,12 +255,10 @@ public final class JhoveIdentification implements Identify, Serializable {
         }
         log.info("Got mime type: " + mime);
         log.info("Got status: " + status);
-        Types t = new Types();
-        t.status = status;
-        t.types = new ArrayList<URI>();
-        t.types.add( uri(mime) );
-        
-        return t;
+        this.status = status;
+        List<URI> types = new ArrayList<URI>();
+        types.add(uri(mime));
+        return types;
     }
 
     /**

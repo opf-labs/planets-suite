@@ -114,7 +114,7 @@ public final class Tool {
      * @param version The tool version.
      * @param description An optional description of the tool.
      * @param homepageUrl An optional pointer to the homepage of the tool.
-     * @return
+     * @return A Tool instance for the given values
      */
     public static Tool create(URI identifier, String name, String version,
             String description, String homepageUrl) {

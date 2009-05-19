@@ -21,7 +21,7 @@ public final class Content {
 
     /**
      * Create (streamed) content by reference.
-     * @param reference The reference to the actual content value
+     * @param reference The URL reference to the actual content
      * @return A content instance referencing the given location
      */
     public static DigitalObjectContent byReference(final URL reference) {
@@ -29,7 +29,7 @@ public final class Content {
     }
 
     /**
-     * Create (streamed) content by reference, from a File. Note that the file
+     * Create (streamed) content by reference, from a file. Note that the file
      * must be left in place long enough for the web service client to complete
      * the access.
      * @param reference The reference to the actual content value, using a File
@@ -52,8 +52,8 @@ public final class Content {
     }
 
     /**
-     * Create content by value, which means actually embedded in the request.
-     * @param value The value for the content
+     * Create content by value (actually embedded in the request).
+     * @param value The value bytes for the content
      * @return A content instance with the specified value
      */
     public static DigitalObjectContent byValue(final byte[] value) {
@@ -61,9 +61,8 @@ public final class Content {
     }
 
     /**
-     * Create content by value, embedding a file.
-     * @param value The value for the content, a File that should be read into a
-     *        byte array.
+     * Create content by value (actually embedded in the request).
+     * @param value The value file for the content.
      * @return A content instance with the specified value
      */
     public static DigitalObjectContent byValue(final File value) {
@@ -72,9 +71,8 @@ public final class Content {
     }
 
     /**
-     * Create content by value, embedding the contents of an input stream.
+     * Create content by value (actually embedded in the request).
      * @param inputStream The InputStream containing the value for the content.
-     *        The InputStream is written to a byte[]
      * @return A content instance with the specified value
      */
     public static DigitalObjectContent byValue(final InputStream inputStream) {
