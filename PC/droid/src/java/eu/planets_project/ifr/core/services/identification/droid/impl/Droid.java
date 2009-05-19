@@ -68,20 +68,32 @@ public final class Droid implements Identify, Serializable {
 
     private String classificationText;
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
+    /*
+     * (non-Javadoc)
+     * @see
+     * eu.planets_project.services.identify.Identify#identify(eu.planets_project
+     * .services.datatypes.DigitalObject, java.util.List)
      */
-    public IdentifyResult identify(DigitalObject digitalObject, List<Parameter> parameters) {
+    public IdentifyResult identify(DigitalObject digitalObject,
+            List<Parameter> parameters) {
         InputStream stream = digitalObject.getContent().read();
         File file = FileUtils.writeInputStreamToTmpFile(stream, "droid-temp",
                 "bin");
         List<URI> types = identifyOneBinary(file);
-        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, classificationText);
-        IdentifyResult.Method method = null;
-        if( AnalysisController.FILE_CLASSIFICATION_POSITIVE_TEXT.equals(classificationText)) {
-            method = IdentifyResult.Method.MAGIC;
+        ServiceReport report = null;
+        if (types == null) {
+            report = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
+                    "Result is null!");
+        } else {
+            report = new ServiceReport(Type.INFO, Status.SUCCESS,
+                    classificationText);
         }
-        else if( AnalysisController.FILE_CLASSIFICATION_TENTATIVE_TEXT.equals(classificationText)) {
+        IdentifyResult.Method method = null;
+        if (AnalysisController.FILE_CLASSIFICATION_POSITIVE_TEXT
+                .equals(classificationText)) {
+            method = IdentifyResult.Method.MAGIC;
+        } else if (AnalysisController.FILE_CLASSIFICATION_TENTATIVE_TEXT
+                .equals(classificationText)) {
             method = IdentifyResult.Method.EXTENSION;
         }
         IdentifyResult result = new IdentifyResult(types, method, report);
@@ -100,9 +112,12 @@ public final class Droid implements Identify, Serializable {
         sd
                 .description("Identification service based on Droid (DROID 3.0, Signature File 16).");
         sd.author("Carl Wilson, Fabian Steeg");
-        sd.tool( Tool.create(null, "DROID", "3.0-16", null, "http://droid.sourceforge.net/") );
+        sd.tool(Tool.create(null, "DROID", "3.0-16", null,
+                "http://droid.sourceforge.net/"));
         sd.furtherInfo(URI.create("http://droid.sourceforge.net/"));
-        sd.logo(URI.create("http://droid.sourceforge.net/wiki/skins/snaphouston/droidlogo.gif"));
+        sd
+                .logo(URI
+                        .create("http://droid.sourceforge.net/wiki/skins/snaphouston/droidlogo.gif"));
         sd.serviceProvider("The Planets Consortium.");
         return sd.build();
     }
@@ -147,7 +162,7 @@ public final class Droid implements Identify, Serializable {
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
-            List<URI>result = Arrays.asList(uris);
+            List<URI> result = Arrays.asList(uris);
             classificationText = file.getClassificationText();
             return result;
         }

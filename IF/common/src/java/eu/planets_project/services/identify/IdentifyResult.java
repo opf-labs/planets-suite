@@ -119,7 +119,7 @@ public final class IdentifyResult {
      * @return A copy of the types
      */
     public List<URI> getTypes() {
-        return new ArrayList<URI>(types);
+        return types == null ? new ArrayList<URI>() : new ArrayList<URI>(types);
     }
 
     /**

@@ -11,6 +11,7 @@ import eu.planets_project.services.datatypes.PropertyTests;
 import eu.planets_project.services.datatypes.ServiceDescriptionTest;
 import eu.planets_project.services.datatypes.ServiceReportTests;
 import eu.planets_project.services.utils.FileUtilsZipTest;
+import eu.planets_project.services.utils.test.FileAccessTests;
 
 /**
  * Suite to run all tests in the common component.
@@ -21,5 +22,5 @@ import eu.planets_project.services.utils.FileUtilsZipTest;
 @Suite.SuiteClasses( { ChecksumTests.class, DigitalObjectTests.class,
         MetadataTests.class, ContentTests.class, ServiceDescriptionTest.class,
         ServiceReportTests.class, PropertyTests.class, PropertyTests.class,
-        FileUtilsZipTest.class })
+        FileUtilsZipTest.class, FileAccessTests.class })
 public class AllCommonSuite {}

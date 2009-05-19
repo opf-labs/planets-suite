@@ -2,19 +2,22 @@ package eu.planets_project.ifr.core.services.identification.droid.impl;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
+import eu.planets_project.services.utils.test.FileAccess;
 
 /**
  * Tests of the Droid functionality.
@@ -29,48 +32,10 @@ public class DroidTests {
      */
     @BeforeClass
     public static void localTests() {
-        droid = ServiceCreator.createTestService(Identify.QNAME,
-                Droid.class, "/pserv-pc-droid/Droid?wsdl");
-    }
-
-    /**
-     * test rich text format id
-     */
-    @Test
-    public void testRTF() {
-        test(TestFile.RTF);
-    }
-
-    /**
-     * test xml id
-     */
-    @Test
-    public void testXML() {
-        test(TestFile.XML);
-    }
-
-    /**
-     * test zip id
-     */
-    @Test
-    public void testZIP() {
-        test(TestFile.ZIP);
+        droid = ServiceCreator.createTestService(Identify.QNAME, Droid.class,
+                "/pserv-pc-droid/Droid?wsdl");
     }
     
-    /*
-    @Test
-    public void testByReference() throws MalformedURLException {
-        URL url = new URL("http://www.google.com/intl/en_ALL/images/logo.gif");
-        System.out.println("Testing "+url);
-        IdentifyResult result = droid.identify(new DigitalObject.Builder(
-                Content.byReference( url )).build(), null );
-        for( URI f : result.getTypes() ) {
-            System.out.println("Got f="+f);
-        }
-        
-    }
-    */
-
     /**
      * Enum containing files to test the Droid identification with. Each entry
      * contains the file location and the expected results. In the tests, we
@@ -78,30 +43,45 @@ public class DroidTests {
      * received results with the expected ones
      */
     private enum TestFile {
-        /**
-         * Rich Text Format.
+        /*
+         * CAUTION: adding an extension here without adding a corresponding file
+         * to the test files folder of PSERV will cause all these tests to fail!
          */
-        RTF(Droid.LOCAL + "Licence.rtf", "info:pronom/fmt/50", "info:pronom/fmt/51"),
-        /**
-         * Extensible Mark-up Language.
-         */
-        XML(Droid.LOCAL + "DROID_SignatureFile_Planets.xml", "info:pronom/fmt/101"),
-        /**
-         * ZIP archive files.
-         */
-        ZIP(Droid.LOCAL + "Licence.zip", "info:pronom/x-fmt/263");
-        /***/
-        private String location;
-        /***/
-        private List<String> expected;
+        BMP, RTF, XML, ZIP, PDF, GIF, JPG, TIF, PCX, JP2, RAW, TGA, PNM, PNG, ARJ;
+        /** We retrieve test files and correct PRONOM IDs automatically. */
+        private String location = FileAccess.INSTANCE.get(toString())
+                .getAbsolutePath();
+        private Set<URI> expected = FormatRegistryFactory.getFormatRegistry()
+                .getUrisForExtension(toString());
+    }
+    /*
+     * To get more informative test reports, we wrap every enum element into its
+     * own test. We could iterate over the enum elements instead (see below).
+     */
+    @Test public void testRtf() { test(TestFile.RTF); }
+    @Test public void testBmp() { test(TestFile.BMP); }
+    @Test public void testXml() { test(TestFile.XML); }
+    @Test public void testZip() { test(TestFile.ZIP); }
+    @Test public void testPdf() { test(TestFile.PDF); }
+    @Test public void testGif() { test(TestFile.GIF); }
+    @Test public void testJpg() { test(TestFile.JPG); }
+    @Test public void testTif() { test(TestFile.TIF); }
+    @Test public void testPcx() { test(TestFile.PCX); }
+    @Test public void testJp2() { test(TestFile.JP2); }
+    @Test public void testRaw() { test(TestFile.RAW); }
+    @Test public void testTga() { test(TestFile.TGA); }
+    @Test public void testPnm() { test(TestFile.PNM); }
+    @Test public void testPng() { test(TestFile.PNG); }
+    @Test public void testArj() { test(TestFile.ARJ); }
 
-        /**
-         * @param location The sample file location
-         * @param expected The expected pronom URI
-         */
-        private TestFile(final String location, final String... expected) {
-            this.location = location;
-            this.expected = new ArrayList<String>(Arrays.asList(expected));
+    // @Test
+    public void testByReference() throws MalformedURLException {
+        URL url = new URL("http://www.google.com/intl/en_ALL/images/logo.gif");
+        System.out.println("Testing " + url);
+        IdentifyResult result = droid.identify(new DigitalObject.Builder(
+                Content.byReference(url)).build(), null);
+        for (URI f : result.getTypes()) {
+            System.out.println("Got f=" + f);
         }
     }
 
@@ -119,39 +99,18 @@ public class DroidTests {
      */
     private static void test(TestFile f) {
         System.out.println("Testing " + f);
-        String[] identify = null;
-        try {
-            identify = test(droid, f.location);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        List<URI> identify = droid
+                .identify(
+                        new DigitalObject.Builder(Content.byReference(new File(
+                                f.location))).build(), null).getTypes();
         if (identify != null) {
-            for (int i = 0; i < identify.length; i++) {
-                Assert.assertTrue("Identification failed for " + f.location,
-                        f.expected.contains(identify[i]));
+            for (URI uri : identify) {
+                String message = String
+                        .format(
+                                "Identification failed for %s, expected one of %s but was %s ",
+                                f.location, f.expected, uri);
+                Assert.assertTrue(message, f.expected.contains(uri));
             }
         }
     }
-
-    /**
-     * @param identify The Identify instance to test
-     * @param location The location of the file to test with the instance
-     * @return Returns the resulting URI as ASCII strings
-     * @throws MalformedURLException
-     */
-	private static String[] test(final Identify identify, final String location)
-            throws MalformedURLException {
-        IdentifyResult result = identify.identify(new DigitalObject.Builder(
-                Content.byValue(new File(location) )).build(), null );
-        String[] strings = new String[result.getTypes().size()];
-        for (int i = 0; i < result.getTypes().size(); i++) {
-            String string = result.getTypes().get(i).toASCIIString();
-            System.out.println(string);
-            strings[i] = string;
-        }
-        return strings;
-    }
-	
-	
-	
 }
