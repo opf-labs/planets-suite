@@ -19,6 +19,8 @@ final class FormatUtils {
     static final String MIME_URI_PREFIX = "planets:fmt/mime/";
     /** The prefix for extension format URIs. */
     static final String EXT_URI_PREFIX = "planets:fmt/ext/";
+    /** The prefix for modification Action-URIs. */
+    static final String ACTION_URI_PREFIX = "planets:mod/";
     /** The prefix for PRONOM format URIs. */
     static final String PRONOM_URI_PREFIX = "info:pronom/";
 
@@ -55,6 +57,17 @@ final class FormatUtils {
      */
     static URI createMimeUri(final String mime) {
         return URI.create(MIME_URI_PREFIX + mime.toLowerCase());
+    }
+    
+    
+    /**
+     * Static helper to construct appropriate URIs for Planets modification actions.
+     * (e.g. for a Modify-rotate service: "planets:mod/rotate")
+     * @param action the action the service can perform
+     * @return the Action-URI
+     */
+    static URI createActionUri(final String action) {
+    	return URI.create(ACTION_URI_PREFIX + action.toLowerCase());
     }
 
     /**

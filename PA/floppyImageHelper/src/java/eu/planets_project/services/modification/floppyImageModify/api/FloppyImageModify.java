@@ -19,6 +19,6 @@ public interface FloppyImageModify {
 	
 
 	public abstract ModifyResult modify(DigitalObject digitalObject,
-			URI inputFormat, URI actionURI, List<Parameter> parameters);
+			URI inputFormat, List<Parameter> parameters);
 
 }

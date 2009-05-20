@@ -211,6 +211,14 @@ class FormatRegistryImpl implements FormatRegistry {
     public URI createExtensionUri(String extensionFromFile) {
         return FormatUtils.createExtensionUri(extensionFromFile);
     }
+    
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#createActionUri(java.lang.String)
+     */
+    public URI createActionUri (String action) {
+    	return FormatUtils.createActionUri(action);
+    }
 
     /**
      * {@inheritDoc}

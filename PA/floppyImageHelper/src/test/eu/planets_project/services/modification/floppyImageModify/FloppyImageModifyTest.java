@@ -6,7 +6,6 @@ package eu.planets_project.services.modification.floppyImageModify;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,7 +95,7 @@ public class FloppyImageModifyTest {
 									.contains(DigitalObjectUtils.createContainedAsStream(fileList).toArray(new DigitalObject[] {}))
 									.format(format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)))
 									.build();
-		ModifyResult result = FLOPPY_IMAGE_MODIFY.modify(inputDigObj, format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)), new URI("planets:mod/modify"), null);
+		ModifyResult result = FLOPPY_IMAGE_MODIFY.modify(inputDigObj, format.createExtensionUri(FileUtils.getExtensionFromFile(FLOPPY_IMAGE)), null);
 		
 		System.out.println("Got report: " + result.getReport());
 		DigitalObject digObjres = result.getDigitalObject();

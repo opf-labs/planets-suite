@@ -14,8 +14,8 @@ import javax.xml.ws.BindingType;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -88,6 +88,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	 */
 	public ServiceDescription describe() {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Modify.class.getCanonicalName());
+//		sd.properties(new Property.Builder(URI.create("")).value("").build());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
         sd.description("This service is a wrapper for the 'Virtual Floppy Drive' Commandline tool for Windows." + br +
 				"This tools is able to create Floppy disk images - 1.44 MB - from scratch, containing files of your choice." + br +
@@ -119,8 +120,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	/* (non-Javadoc)
 	 * @see eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModify#modify(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)
 	 */
-	public ModifyResult modify(DigitalObject digitalObject, URI inputFormat, URI actionURI,
-			List<Parameter> parameters) {
+	public ModifyResult modify(DigitalObject digitalObject, URI inputFormat, List<Parameter> parameters) {
 		
         String inFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
 		

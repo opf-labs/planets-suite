@@ -59,6 +59,13 @@ public interface FormatRegistry {
      * @return A URI representing the extension
      */
     URI createExtensionUri(String extension);
+    
+    
+    /**
+     * @param action the action a modify service can perform (e.g.: "repair", "rotate", "crop" ...)
+     * @return a URI representing this action
+     */
+    URI createActionUri(String action);
 
     /**
      * @param pronom The pronom ID to create URI for, e.g. "fmt/101"

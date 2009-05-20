@@ -48,9 +48,6 @@ public interface Modify extends PlanetsService {
     		@WebParam(name = "inputFormat", targetNamespace = PlanetsServices.NS
     				+ "/" + Modify.NAME, partName = "inputFormat")
     				final URI inputFormat,
-    		@WebParam(name = "actionURI", targetNamespace = PlanetsServices.NS
-    				+ "/" + Modify.NAME, partName = "actionURI")
-    				final URI actionURI,
     		@WebParam(name = "parameters", targetNamespace = PlanetsServices.NS
     	            + "/" + Modify.NAME, partName = "parameters") 
     	            List<Parameter> parameters );
