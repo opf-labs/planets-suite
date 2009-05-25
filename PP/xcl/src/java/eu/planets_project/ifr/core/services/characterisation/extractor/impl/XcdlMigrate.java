@@ -155,7 +155,7 @@ public final class XcdlMigrate implements Migrate {
             return new MigrateResult(null, CoreExtractor
                     .unsupportedInputFormatReport(inputFormat));
         }
-        System.out.println("Working on file: " + digitalObject.getTitle());
+        LOG.debug("Working on digital object: " + digitalObject);
         DigitalObject resultDigOb = null;
         ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,
                 "OK");
