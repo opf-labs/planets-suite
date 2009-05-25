@@ -10,6 +10,9 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlParser;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.ifr.core.services.comparison.explorer.impl.XcdlCommonProperties;
@@ -25,7 +28,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -51,8 +53,7 @@ public final class XcdlCharacterise implements Characterise, Serializable {
     /**
      * the logger.
      */
-    public static final PlanetsLogger LOG = PlanetsLogger
-            .getLogger(XcdlCharacterise.class);
+    public static final Log LOG = LogFactory.getLog(XcdlCharacterise.class);
     /**
      * a max file size.
      */

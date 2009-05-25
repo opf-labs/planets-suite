@@ -9,6 +9,9 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.services.comparison.explorer.config.ExplorerResultReader;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -21,7 +24,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
@@ -39,8 +41,7 @@ import eu.planets_project.services.utils.ProcessRunner;
 @Stateless
 public final class XcdlCommonProperties implements CommonProperties {
     static final String NAME = "XcdlCommonProperties";
-    private static final PlanetsLogger LOG = PlanetsLogger
-            .getLogger(XcdlCommonProperties.class);
+    private static final Log LOG = LogFactory.getLog(XcdlCommonProperties.class);
     private static final String FPMTOOL_HOME = System.getenv("FPMTOOL_HOME")
             + File.separator;
     private static final String FPMTOOL_OUT = "fpm.fpm";

@@ -10,8 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
@@ -31,8 +33,7 @@ public final class ComparatorWrapper {
     /** The filename of the result file. */
     private static final String RESULT_FILENAME = "cpr.cpr";
     /** A planets logger. */
-    private static final PlanetsLogger LOG = PlanetsLogger
-            .getLogger(ComparatorWrapper.class);
+    private static final Log LOG = LogFactory.getLog(ComparatorWrapper.class);
     /** The home of the comparator command-line tool. */
     static final String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME")
             + (System.getenv("COMPARATOR_HOME").endsWith(File.separator) ? ""

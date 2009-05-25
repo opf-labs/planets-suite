@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,10 +10,12 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.characterise.CharacteriseResult;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -24,7 +25,6 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
@@ -50,8 +50,7 @@ public final class XcdlMigrate implements Migrate {
     /**
      * the logger.
      */
-    public static final PlanetsLogger LOG = PlanetsLogger
-            .getLogger(XcdlMigrate.class);
+    public static final Log LOG = LogFactory.getLog(XcdlMigrate.class);
     /**
      * a max file size.
      */

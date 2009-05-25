@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -41,7 +42,7 @@ public class CoreExtractor {
     private static String EXTRACTOR_OUT = "OUTPUT";
     private String outputFileName;
     private String thisExtractorName;
-    private PlanetsLogger plogger;
+    private Log plogger;
     private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
     private boolean normDataDisabled = false;
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
@@ -53,7 +54,7 @@ public class CoreExtractor {
      * @param extractorName
      * @param logger
      */
-    public CoreExtractor(String extractorName, PlanetsLogger logger) {
+    public CoreExtractor(String extractorName, Log logger) {
         this.plogger = logger;
         // SYSTEM_TEMP = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
         thisExtractorName = extractorName;
