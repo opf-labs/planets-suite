@@ -6,12 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.LogFactory;
+
+import org.apache.commons.logging.Log;
+
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.Header;
 import se.kb.oai.pmh.IdentifiersList;
 import se.kb.oai.pmh.OaiPmhServer;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -21,7 +24,7 @@ public abstract class AbstractOAIDigitalObjectManagerImpl implements DigitalObje
 	/**
 	 * Logger
 	 */
-    protected static PlanetsLogger log = PlanetsLogger.getLogger(AbstractOAIDigitalObjectManagerImpl.class);
+    protected static Log log = LogFactory.getLog(AbstractOAIDigitalObjectManagerImpl.class);
 	
     /**
      * OAI-style date format
