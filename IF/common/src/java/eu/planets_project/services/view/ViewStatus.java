@@ -14,28 +14,34 @@ import eu.planets_project.services.datatypes.Property;
 
 /**
  * This is returned when a viewing session is polled for it's current status.
- * 
- * Any properties determined during the viewing session can be returned here,
- * or queried directly using the doAction interface.
- * 
+ * Any properties determined during the viewing session can be returned here, or
+ * queried directly using the doAction interface.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
  */
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class ViewStatus {
 
     // Give it a suitable different name from the other Status class.
-    @XmlType( name = "view-status" )
-    public enum Status { ACTIVE, INACTIVE, UNKNOWN };
-    
+    /**
+     * Possible states.
+     */
+    @XmlType(name = "view-status")
+    public enum Status {
+        ACTIVE, INACTIVE, UNKNOWN
+    };
+
     private Status state;
     private List<Property> properties;
-    
+
     /* for JAXB */
-    protected ViewStatus() { }
-    
-    public ViewStatus( Status state, List<Property> properties ) {
+    protected ViewStatus() {}
+
+    /**
+     * @param state The state
+     * @param properties The properties
+     */
+    public ViewStatus(Status state, List<Property> properties) {
         this.state = state;
         this.properties = properties;
     }
@@ -53,5 +59,5 @@ public class ViewStatus {
     public List<Property> getProperties() {
         return properties;
     }
-    
+
 }

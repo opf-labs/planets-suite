@@ -6,14 +6,12 @@
  */
 package eu.planets_project.services.utils;
 
-
-
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- *
+ * Checksums util class.
  */
 public class Checksums {
 

@@ -32,7 +32,7 @@ import eu.planets_project.services.datatypes.Checksum;
 /**
  * Utilities for reading and writing data.
  * @author Thomas Kraemer (thomas.kraemer@uni-koeln.de), Peter Melms
- *         (peter.melms@uni-koeln.de), Fabian Steeg (fabian.steeg@uni-koeln.de)
+ *         (peter.melms@uni-koeln.de)
  */
 public final class FileUtils {
     private static final int ZIP_COMPRESSION_LEVEL = 9; // Best compression
@@ -113,43 +113,53 @@ public final class FileUtils {
         return input;
     }
 
+    /**
+     * @param src The source file
+     * @return An input stream created from the file
+     */
     public static InputStream getInputStreamFromFile(File src) {
         BufferedInputStream fileIn = null;
 
         try {
             fileIn = new BufferedInputStream(new FileInputStream(src));
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return fileIn;
     }
 
+    /**
+     * @param dest The destination file
+     * @return A stream to the given file
+     */
     public static OutputStream getOutputStreamToFile(File dest) {
         BufferedOutputStream fileOut = null;
         try {
             fileOut = new BufferedOutputStream(new FileOutputStream(dest));
         } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return fileOut;
     }
 
+    /**
+     * @param src The source file
+     * @param dest The destination file
+     * @return True, if successful
+     */
     public static boolean copyFileTo(File src, File dest) {
         InputStream in = getInputStreamFromFile(src);
         OutputStream out = getOutputStreamToFile(dest);
-    	long destSize = writeInputStreamToOutputStream(
-                in, out);
+        long destSize = writeInputStreamToOutputStream(in, out);
         if (destSize == src.length()) {
-        	close(in);
-        	flush(out);
-        	close(out);
+            close(in);
+            flush(out);
+            close(out);
             return true;
         } else {
-        	close(in);
-        	flush(out);
-        	close(out);
+            close(in);
+            flush(out);
+            close(out);
             return false;
         }
     }
@@ -327,7 +337,7 @@ public final class FileUtils {
 
     /**
      * @param content The content to write to destination
-     * @param destination The destination to write content to
+     * @param target The destination to write content to
      * @return file A file at destination with the given content
      */
     public static File writeStringToFile(final String content, final File target) {
@@ -847,7 +857,7 @@ public final class FileUtils {
         newName = newName + ext;
         File renamedFile = new File(new File(parent), newName);
         boolean renamed = file.renameTo(renamedFile);
-        if(!renamed){
+        if (!renamed) {
             throw new IllegalArgumentException("Could not rename: " + file);
         }
         return renamedFile;
@@ -956,14 +966,13 @@ public final class FileUtils {
         }
         return list;
     }
-    
+
     /**
      * @param dir The dir to list
      * @param list The list to add the contents of dir to
      * @return The given list, with the contents of dir added
      */
-    public static List<File> listAllFiles(final File dir,
-            final List<File> list) {
+    public static List<File> listAllFiles(final File dir, final List<File> list) {
         File[] files = dir.listFiles();
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
@@ -977,7 +986,7 @@ public final class FileUtils {
                     if (currentFile.getName().equalsIgnoreCase("CVS")) {
                         continue;
                     }
-//                    list.add(currentFile);
+                    // list.add(currentFile);
                     listAllFiles(currentFile, list);
                 } else {
                     list.add(currentFile);
@@ -986,45 +995,49 @@ public final class FileUtils {
         }
         return list;
     }
-    
+
     /**
-     * This method returns all the free/available Drive letters on your System, based on File.listRoots()
-     * @return a List<String> containing all free drive letters ona windows system OR null, if all letters are beeing used.
-     * NOTE: On Unix/Linux based systems "/" the root is returned, as we don't have drive letters.
+     * This method returns all the free/available Drive letters on your System,
+     * based on File.listRoots().
+     * @return a List of String containing all free drive letters on a windows
+     *         system OR null, if all letters are beeing used. NOTE: On
+     *         Unix/Linux based systems "/" the root is returned, as we don't
+     *         have drive letters.
      */
     public static List<String> listAvailableDriveLetters() {
-    	ArrayList<String> freeLetters = new ArrayList<String>();
-    	if(!System.getProperty("os.name").toLowerCase().contains("windows")) {
-    		freeLetters.add("/");
-    		log.info("Running on Non-Windows OS, so we don't have DriveLetters ;-)");
-    		return freeLetters;
-    	}
-    	File[] roots = File.listRoots();
-    	
-    	ArrayList<String> usedLetters = new ArrayList<String>(roots.length);
-    	
-    	for(int i=0;i<roots.length;i++) {
-    		usedLetters.add(roots[i].getAbsolutePath());
-    	}
-    	
-    	// Fill the template Arraylist
-    	for(char ch='A';ch <= 'Z'; ch++) {
-    		freeLetters.add(ch + ":\\");
-    	}
-    	
-    	// Remove the used letters from our template list of ALL possible letters
-    	for (String currentLetter : usedLetters) {
-    		if(freeLetters.contains(currentLetter)) {
-    			freeLetters.remove(currentLetter);
-    		}
-		}
-    	// return the un-used letters for further use ;-)
-    	if(freeLetters.size()>0) {
-    		return freeLetters;
-    	}
-    	else {
-    		return null;
-    	}
+        ArrayList<String> freeLetters = new ArrayList<String>();
+        if (!System.getProperty("os.name").toLowerCase().contains("windows")) {
+            freeLetters.add("/");
+            log
+                    .info("Running on Non-Windows OS, so we don't have DriveLetters ;-)");
+            return freeLetters;
+        }
+        File[] roots = File.listRoots();
+
+        ArrayList<String> usedLetters = new ArrayList<String>(roots.length);
+
+        for (int i = 0; i < roots.length; i++) {
+            usedLetters.add(roots[i].getAbsolutePath());
+        }
+
+        // Fill the template Arraylist
+        for (char ch = 'A'; ch <= 'Z'; ch++) {
+            freeLetters.add(ch + ":\\");
+        }
+
+        // Remove the used letters from our template list of ALL possible
+        // letters
+        for (String currentLetter : usedLetters) {
+            if (freeLetters.contains(currentLetter)) {
+                freeLetters.remove(currentLetter);
+            }
+        }
+        // return the un-used letters for further use ;-)
+        if (freeLetters.size() > 0) {
+            return freeLetters;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -1055,7 +1068,7 @@ public final class FileUtils {
             }
         }
     }
-    
+
     /**
      * @param out The closeable (Writer, Stream, etc.) to close
      */

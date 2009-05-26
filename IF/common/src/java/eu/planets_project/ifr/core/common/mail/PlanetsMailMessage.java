@@ -18,6 +18,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 /**
+ * A Planets mail message.
  * @author AnJackson
  *
  */
@@ -31,7 +32,7 @@ public class PlanetsMailMessage {
     private List<InternetAddress> bccRecipients = new ArrayList<InternetAddress>();
 
     /**
-     * No arg constructor.
+     * Creates a Planets mail message.
      */
     public PlanetsMailMessage() 
     {
@@ -46,7 +47,7 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * @param sender
+     * @param sender The message sender
      */
     public void setSender(String sender) 
     {
@@ -54,14 +55,14 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * @param subject
+     * @param subject The message subject
      */
     public void setSubject(String subject) {
         this.subject = subject;
     }
     
     /**
-     * @param body
+     * @param body The message body
      */
     public void setBody(String body) 
     {
@@ -69,7 +70,7 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * @param recipient
+     * @param recipient The message recipient
      */
     public void addRecipient(String recipient)
     {
@@ -77,7 +78,7 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * @param recipients
+     * @param recipients The message recipients
      */
     public void setRecipients(List<InternetAddress> recipients) 
     {
@@ -86,7 +87,7 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * @param recipient
+     * @param recipient The CC recipient to add
      */
     public void addCcRecipient(String recipient) 
     {
@@ -94,7 +95,7 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * @param ccRecipients
+     * @param ccRecipients The CC recipients to set
      */
     public void setCcRecipients(List<InternetAddress> ccRecipients)
     {
@@ -103,7 +104,7 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * @param recipient
+     * @param recipient The BCC recipient to add
      */
     public void addBccRecipient(String recipient) 
     {
@@ -111,7 +112,7 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * @param bccRecipients
+     * @param bccRecipients The BCC recipients to set
      */
     public void setBccRecipients(List<InternetAddress> bccRecipients)
     {
@@ -162,7 +163,7 @@ public class PlanetsMailMessage {
     }
 
     /**
-     * 
+     * Sends the message
      */
     public void send() 
     {

@@ -1,7 +1,5 @@
 package eu.planets_project.services.utils;
 
-
-
 /** Utillity class for working with bytes, bytearrays, and strings. */
 public class ByteString {
     /** The number of bits in a nibble (used for shifting). */

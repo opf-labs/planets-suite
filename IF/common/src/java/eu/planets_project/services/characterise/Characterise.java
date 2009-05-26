@@ -19,13 +19,11 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 
 /**
- * Characterisation of one digital object. This is intended to become the
+ * Characterisation of one digital object. This is the
  * generic characterisation interface for characterisation tools like the XCL
- * Extractor and the New Zealand Metadata Extractor. It should: - cover (at
- * least) those two characterisation tools under one interface - Support service
- * description to facilitate discovery. - Allow parameters to be discovered and
- * submitted to control the underlying tools (if needed). - Allow
- * Files/bitstreams passed by value OR by reference.
+ * Extractor and the New Zealand Metadata Extractor. It supports service
+ * description to facilitate discovery, allows parameters to be discovered and
+ * submitted to control the underlying tools (if needed).
  * @author Peter Melms (peter.melms@uni-koeln.de), Andrew Jackson
  *         <Andrew.Jackson@bl.uk>
  */

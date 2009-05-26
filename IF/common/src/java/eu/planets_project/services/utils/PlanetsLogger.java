@@ -6,7 +6,7 @@ import org.apache.commons.logging.*;
 import org.apache.log4j.*;
 
 /**
- * PlanetsLogger
+ * PlanetsLogger.
  *
  * @author Klaus Rechert, ALUF
  */
@@ -145,6 +145,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#isDebugEnabled()
 	 */
 	public boolean isDebugEnabled()
@@ -153,6 +154,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#isErrorEnabled()
 	 */
 	public boolean isErrorEnabled()
@@ -161,6 +163,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#isFatalEnabled()
 	 */
 	public boolean isFatalEnabled()
@@ -169,6 +172,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#isInfoEnabled()
 	 */
 	public boolean isInfoEnabled()
@@ -177,6 +181,7 @@ public class PlanetsLogger implements Log
 	}
 	
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#isWarnEnabled()
 	 */
 	public boolean isWarnEnabled()
@@ -185,6 +190,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#isTraceEnabled()
 	 */
 	public boolean isTraceEnabled()
@@ -194,6 +200,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#trace(java.lang.Object)
 	 */
 	public void trace(Object message)
@@ -202,6 +209,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#trace(java.lang.Object, java.lang.Throwable)
 	 */
 	public void trace(Object message, Throwable t)
@@ -210,6 +218,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#debug(java.lang.Object)
 	 */
 	public void debug(Object message)
@@ -218,6 +227,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#debug(java.lang.Object, java.lang.Throwable)
 	 */
 	public void debug(Object message, Throwable t)
@@ -226,6 +236,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#warn(java.lang.Object)
 	 */
 	public void warn(Object message)
@@ -234,6 +245,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#warn(java.lang.Object, java.lang.Throwable)
 	 */
 	public void warn(Object message, Throwable t)
@@ -242,6 +254,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#error(java.lang.Object)
 	 */
 	public void error(Object message)
@@ -250,6 +263,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#error(java.lang.Object, java.lang.Throwable)
 	 */
 	public void error(Object message, Throwable t)
@@ -258,6 +272,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
 	 */
 	public void fatal(Object message)
@@ -266,6 +281,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#fatal(java.lang.Object, java.lang.Throwable)
 	 */
 	public void fatal(Object message, Throwable t)
@@ -274,6 +290,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#info(java.lang.Object)
 	 */
 	public void info(Object message)
@@ -282,6 +299,7 @@ public class PlanetsLogger implements Log
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.apache.commons.logging.Log#info(java.lang.Object, java.lang.Throwable)
 	 */
 	public void info(Object message, Throwable t)

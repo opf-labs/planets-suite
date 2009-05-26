@@ -27,16 +27,23 @@ import eu.planets_project.services.datatypes.Property;
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class ViewActionResult {
     
+    /**
+     * Possible result types.
+     */
     public enum ActionResult { SUCCESS, FAILURE, UNKNOWN_ACTION };
     
     ActionResult actionResult;
     
     List<Property> properties;
     
-    /** For JAXB */
+    /** For JAXB. */
     @SuppressWarnings("unused")
     private ViewActionResult() { }
     
+    /**
+     * @param actionResult The action result
+     * @param properties The properties
+     */
     public ViewActionResult( ActionResult actionResult, List<Property> properties ) {
         this.actionResult = actionResult;
         this.properties = properties;
@@ -50,7 +57,7 @@ public class ViewActionResult {
     }
 
     /**
-     * @return the properties
+     * @return the properties 
      */
     public List<Property> getProperties() {
         return properties;

@@ -141,7 +141,7 @@ public class ProcessRunner implements Runnable{
 
 
     /**
-     * Set the command for this ProcessRunner
+     * Set the command for this ProcessRunner.
      * @param commands the new command.
      */
     public void setCommand(List<String> commands){
@@ -187,7 +187,7 @@ public class ProcessRunner implements Runnable{
     /**
      * The OutputStream will either be the OutputStream directly from the
      * execution of the native commands or a cache with the output of the
-     * execution of the native commands
+     * execution of the native commands.
      * @return the output of the native commands.
      */
     public InputStream getProcessOutput() {
@@ -197,7 +197,7 @@ public class ProcessRunner implements Runnable{
     /**
      * The OutputStream will either be the error-OutputStream directly from the
      * execution of the native commands  or a cache with the error-output of
-     * the execution of the native commands
+     * the execution of the native commands.
      * @return the error-output of the native commands.
      */
     public InputStream getProcessError() {
@@ -225,7 +225,7 @@ public class ProcessRunner implements Runnable{
 
     /**
      * Return what was printed on the output channel of a _finished_ process,
-     *  as a string, including newlines
+     *  as a string, including newlines.
      * @return the output as a string
      */
     public String getProcessOutputAsString() {
@@ -234,7 +234,7 @@ public class ProcessRunner implements Runnable{
 
     /**
      * Return what was printed on the error channel of a _finished_ process,
-     * as a string, including newlines
+     * as a string, including newlines.
      * @return the error as a string
      */
     public String getProcessErrorAsString() {
@@ -258,7 +258,7 @@ public class ProcessRunner implements Runnable{
 
     /**
      * Utility Method for reading a stream into a string, for returning
-     * @param stream the string to read
+     * @param stream the string to read.
      * @return A string with the contents of the stream.
      */
     private String getStringContent(InputStream stream) {
@@ -280,9 +280,10 @@ public class ProcessRunner implements Runnable{
     }
 
 
-    /**
-     * Run the method, feeding it input, and killing it if the timeout is exceeded.
+    /**Run the method, feeding it input, and killing it if the timeout is exceeded.
      * Blocking.
+     * {@inheritDoc}
+     * @see java.lang.Runnable#run()
      */
     public void run() {
         try {

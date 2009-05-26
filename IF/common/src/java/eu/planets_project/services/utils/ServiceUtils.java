@@ -30,7 +30,7 @@ public class ServiceUtils {
      * @param message A message that described the error.
      * @param e The Exception that caused the error - can be NULL.
      * @param errorType The kind of error, ServiceReport.TOOL_ERROR, ServiceReport.INSTALLATION_ERROR, ...
-     * @return
+     * @return The service report
      */
     public static ServiceReport createExceptionErrorReport(String message, Exception e, int errorType ) {
         String error = message;
@@ -46,8 +46,8 @@ public class ServiceUtils {
     
     /**
      * 
-     * @param message
-     * @param e
+     * @param message The message
+     * @param e The exception
      * @return service report from exception and message
      */
     public static ServiceReport createExceptionErrorReport(String message,
@@ -58,7 +58,7 @@ public class ServiceUtils {
     
     /**
      * 
-     * @param message
+     * @param message The message
      * @return service report from message
      */
     public static ServiceReport createErrorReport(String message) {
@@ -104,11 +104,20 @@ public class ServiceUtils {
 		return day + "/" + month + "/" + year + " - " + hour + ":" + minute + ":" + second + "," + millisecond;
     }
     
+    /**
+     * @param startTime the start time
+     * @param endTime The end time
+     * @return The duration
+     */
     public static double calculateDuration(long startTime, long endTime) {
     	double duration = endTime - startTime;
     	return duration;
     }
     
+    /**
+     * @param uris The URIs
+     * @return The uris as a set
+     */
     public static Set<URI> asSet(URI... uris){
         return new HashSet<URI>(Arrays.asList(uris));
     }

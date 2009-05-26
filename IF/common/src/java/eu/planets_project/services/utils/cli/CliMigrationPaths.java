@@ -16,22 +16,23 @@ import java.net.URL;
 import java.util.*;
 
 /**
- * TODO abr forgot to document this class
+ * Create migration paths from an XML config file.
+ * @author Asger Blekinge-Rasmussen
  */
 public class CliMigrationPaths {
 
     private List<CliMigrationPath> paths;
 
-    private CliMigrationPaths() {
-        paths = new ArrayList<CliMigrationPath>();
-    }
-
-    private boolean add(CliMigrationPath cliMigrationPath) {
-        return paths.add(cliMigrationPath);
-    }
-
     protected final static File defaultPath = new File(".");
 
+    /**
+     * @param resourceName The XML file containing the path configuration
+     * @return The paths defined in the XML file
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     * @throws URISyntaxException
+     */
     public static CliMigrationPaths initialiseFromFile(String resourceName) throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
 
 
@@ -78,6 +79,11 @@ public class CliMigrationPaths {
         return paths;
     }
 
+    /**
+     * @param in The input format
+     * @param out The output format
+     * @return The tool of the path corresponding to the given input and output
+     */
     public String findMigrationCommand(URI in, URI out){
         for (CliMigrationPath path: paths){
             if (path.getIn().contains(in) && path.getOut().contains(out)){
@@ -85,6 +91,30 @@ public class CliMigrationPaths {
             }
         }
         return null;
+    }
+    
+    /**
+     * @return The migration paths as planets paths
+     */
+    public MigrationPath[] getAsPlanetsPaths(){
+
+
+        List<MigrationPath> planetspaths = new ArrayList<MigrationPath>();
+        for (CliMigrationPath mypath : paths) {
+            planetspaths.addAll(MigrationPath.constructPaths(mypath.getIn(),
+                    mypath.getOut()));
+        }
+        return planetspaths.toArray(new MigrationPath[0]);
+
+    }
+
+    
+    private CliMigrationPaths() {
+        paths = new ArrayList<CliMigrationPath>();
+    }
+
+    private boolean add(CliMigrationPath cliMigrationPath) {
+        return paths.add(cliMigrationPath);
     }
 
     private static CliMigrationPath decodePathNode(Node path) throws URISyntaxException {
@@ -145,18 +175,7 @@ public class CliMigrationPaths {
         return "";
     }
 
-    public MigrationPath[] getAsPlanetsPaths(){
-
-
-        List<MigrationPath> planetspaths = new ArrayList<MigrationPath>();
-        for (CliMigrationPath mypath : paths) {
-            planetspaths.addAll(MigrationPath.constructPaths(mypath.getIn(),
-                    mypath.getOut()));
-        }
-        return planetspaths.toArray(new MigrationPath[0]);
-
-    }
-
+    
 
 
 }

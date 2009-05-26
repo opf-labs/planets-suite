@@ -167,21 +167,7 @@ public final class ServiceCreator {
             return null;
         }
     }
-
-    public static final String TEST_MODE_SERVER = "server";
-    public static final String TEST_MODE_STANDALONE = "standalone";
-    public static final String TEST_MODE_CONTEXT_FLAG = "pserv.test.context";
     
-    public static boolean testInServerMode() {
-        if( TEST_MODE_SERVER.equals( System.getProperty( TEST_MODE_CONTEXT_FLAG ))) return true;
-        return false;
-    }
-
-    public static boolean testInStandaloneMode() {
-        if( TEST_MODE_STANDALONE.equals( System.getProperty( TEST_MODE_CONTEXT_FLAG ))) return true;
-        return false;
-    }
-
     /**
      * This code handles the grotty details when instanciating a Planets service
      * class for testing.
@@ -198,6 +184,20 @@ public final class ServiceCreator {
     public static <T> T createTestService(QName qname,
             Class<T> serviceImplementation, String wsdlLoc, Mode mode) {
         return mode.create(qname, serviceImplementation, wsdlLoc);
+    }
+
+    static final String TEST_MODE_SERVER = "server";
+    static final String TEST_MODE_STANDALONE = "standalone";
+    static final String TEST_MODE_CONTEXT_FLAG = "pserv.test.context";
+    
+    static boolean testInServerMode() {
+        if( TEST_MODE_SERVER.equals( System.getProperty( TEST_MODE_CONTEXT_FLAG ))) return true;
+        return false;
+    }
+
+    static boolean testInStandaloneMode() {
+        if( TEST_MODE_STANDALONE.equals( System.getProperty( TEST_MODE_CONTEXT_FLAG ))) return true;
+        return false;
     }
 
     private static URL setupServer(String wsdlLoc) throws MalformedURLException {

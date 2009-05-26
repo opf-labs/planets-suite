@@ -46,7 +46,7 @@ public class PlanetsFaceletsResourceResolver extends DefaultResourceResolver {
     }
 
     /**
-     * @param path 
+     * @param path The path to resolve
      * @return the resolved URL for passed path
      */
     public URL resolveUrl(String path) {

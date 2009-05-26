@@ -17,6 +17,7 @@ package eu.planets_project.services.view;
  */
 public class ViewAction {
 
+    /**Shutdown identifier.*/
     public static final String SHUTDOWN = "planets:if/srv/view/action/shutdown";
     
 }

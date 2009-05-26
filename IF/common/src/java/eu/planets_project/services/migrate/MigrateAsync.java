@@ -95,7 +95,7 @@ public interface MigrateAsync extends PlanetsService {
 
     
     /**
-     * @param ticket
+     * @param ticket The ticket
      * @return the current status enum
      */
     @WebMethod(operationName = MigrateAsync.NAME + "_status", action = PlanetsServices.NS
@@ -109,7 +109,7 @@ public interface MigrateAsync extends PlanetsService {
             String ticket );
     
     /**
-     * @param ticket
+     * @param ticket The ticket
      * @return the completed job MigrateResult
      */
     @WebResult(name = MigrateAsync.NAME + "Result", targetNamespace = PlanetsServices.NS

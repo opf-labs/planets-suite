@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
+ * Planets server configuration.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
@@ -22,7 +23,7 @@ public class PlanetsServerConfig {
     private static final String PLANETS_SSL_PORT = "planets.server.ssl.port";
 
     /**
-     * Static property loader
+     * Static property loader.
      * @return The Properties array:
      */
     private static Properties loadProps() {

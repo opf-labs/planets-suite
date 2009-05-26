@@ -74,7 +74,7 @@ public interface UserManager {
     public void addUser(User user) throws UserNotValidException;
     
     /**
-     * Saves a user's information
+     * Saves a user's information.
      * @param user the object to be saved
      */
     public void saveUser(User user);
@@ -112,7 +112,7 @@ public interface UserManager {
     public List<User> listUsersInRole( String role );
 
     /**
-     * Assign a role to a user
+     * Assign a role to a user.
      * @param user The user to bless.
      * @param role The role the user should be blessed with.
      */

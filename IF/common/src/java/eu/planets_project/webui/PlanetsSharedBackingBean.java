@@ -44,7 +44,7 @@ public class PlanetsSharedBackingBean {
     }
 
     /**
-     * Boolean getter for the nav bar to check whether the current user is in the admin role
+     * Boolean getter for the nav bar to check whether the current user is in the admin role.
      * 
      * @return true if the user is in the admin role, false otherwise
      */

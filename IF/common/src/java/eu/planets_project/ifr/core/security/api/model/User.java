@@ -123,17 +123,17 @@ public interface User {
     public String firstRole();
 
     /**
-     * @param firstrole
+     * @param firstrole The first role
      */
     public void firstRole(String firstrole);
 
     /**
-     * @param role
+     * @param role The role to add
      */
     public void addRole(Role role);
 
     /**
-     * @param role
+     * @param role The role to remove
      */
     public void removeRole(Role role);
 
@@ -143,22 +143,22 @@ public interface User {
     public boolean appliedAsProvider();
 
     /**
-     * @param appliesAsProvider
+     * @param appliesAsProvider 
      */
     public void applyingAsProvider(boolean appliesAsProvider);
 
     /**
-     * @param id
+     * @param id The id to set
      */
     public void setId(Long id);
 
     /**
-     * @param username
+     * @param username The username to set
      */
     public void setUsername(String username);
 
     /**
-     * @param password
+     * @param password The password to set
      */
     public void setPassword(String password);
 
@@ -167,79 +167,79 @@ public interface User {
      * and hashes it for the database.  The hash is a simple "unsalted" MD5 hash
      * so it's not particularly secure.
      * 
-     * @param password	The entered password to be hashed
+     * @param password The entered password to be hashed
      * 
-     * @throws NoSuchAlgorithmException	Ahould never happen while MD5 is the identifier
+     * @throws NoSuchAlgorithmException	Should never happen while MD5 is the identifier
      */
     public void hashPassword(String password) throws NoSuchAlgorithmException;
 
     /**
-     * @param confirmPassword
+     * @param confirmPassword The confirmation password to set
      */
     public void setConfirmPassword(String confirmPassword);
 
     /**
-     * @param firstName
+     * @param firstName The first name to set
      */
     public void setFirstName(String firstName);
     
     /**
-     * @param lastName
+     * @param lastName The last name to set
      */
     public void setLastName(String lastName);
 
     /**
-     * @param address
+     * @param address The address to set
      */
     public void setAddress(Address address);
 
     /**
-     * @param email
+     * @param email The email to set
      */
     public void setEmail(String email);
 
     /**
-     * @param phoneNumber
+     * @param phoneNumber The phone number to set
      */
     public void setPhoneNumber(String phoneNumber);
 
     /**
-     * @param website
+     * @param website The website to set
      */
     public void setWebsite(String website);
 
     /**
-     * @param passwordHint
+     * @param passwordHint The password hint to set
      */
     public void setPasswordHint(String passwordHint);
     
     /**
-     * @param roles
+     * @param roles The roles to set
      */
     public void setRoles(Set<Role> roles);
 
     /**
-     * @param version
+     * @param version The version to set
      */
     public void setVersion(Integer version);
 
     /**
-     * @param enabled
+     * @param enabled The desired enablement state
      */
     public void setAccountEnabled(boolean enabled);
 
     /**
-     * @param accountExpired
+     * @param accountExpired The desired expiration state
      */
     public void setAccountExpired(boolean accountExpired);
 
     /**
-     * @param accountLocked
+     * @param accountLocked The desired locked state
      */
     public void setAccountLocked(boolean accountLocked);
 
     /**
-     * @param credentialsExpired
+     * @param credentialsExpired The desired credentials expired state
      */
     public void setCredentialsExpired(boolean credentialsExpired);
 }

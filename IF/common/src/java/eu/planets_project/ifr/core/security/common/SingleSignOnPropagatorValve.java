@@ -40,7 +40,8 @@ public class SingleSignOnPropagatorValve extends ValveBase {
 
 
     /**
-     * @see org.apache.catalina.Valve#invoke(org.apache.catalina.connector.Request, org.apache.catalina.connector.Response)
+     * {@inheritDoc}
+     * @see org.apache.catalina.valves.ValveBase#invoke(org.apache.catalina.connector.Request, org.apache.catalina.connector.Response)
      */
     public void invoke(Request request, Response response) throws IOException,
     ServletException { 

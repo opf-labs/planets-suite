@@ -21,7 +21,8 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
- * @author melmsp
+ * Interface for services modifying digital objects.
+ * @author Peter Melms
  *
  */
 @WebService(
@@ -34,6 +35,13 @@ public interface Modify extends PlanetsService {
     /** The qualified name */
     QName QNAME = new QName(PlanetsServices.NS, Modify.NAME);
     
+    /**
+     * Modify a given object.
+     * @param digitalObject the digital object
+     * @param inputFormat The input format (this will probably be removed in a subsequent release)
+     * @param parameters The parameters, if any
+     * @return A modify result response object
+     */
     @WebMethod(operationName = Modify.NAME, action = PlanetsServices.NS
             + "/" + Modify.NAME)
     @WebResult(name = Modify.NAME + "Result", targetNamespace = PlanetsServices.NS

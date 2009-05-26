@@ -22,8 +22,6 @@
  */
 package eu.planets_project.services.utils;
 
-
-
 /**
  * A {@link RuntimeException} thrown when there is unexpected errors
  * computing a digest.
@@ -41,10 +39,17 @@ public class DigestException extends RuntimeException {
     /** Generated ID. */
     private static final long serialVersionUID = 1921532045016030988L;
 
+    /**
+     * @param message The message
+     */
     public DigestException (String message) {
         super (message);
     }
 
+    /**
+     * @param message The message
+     * @param t The throwable
+     */
     public DigestException (String message, Throwable t) {
         super (message, t);
     }
