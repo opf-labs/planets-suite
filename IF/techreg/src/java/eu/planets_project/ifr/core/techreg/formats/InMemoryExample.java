@@ -30,7 +30,7 @@ class InMemoryExample {
 	 * Main method
 	 * @param args
 	 */
-    public static void main(String[] args) {
+    static void main(String[] args) {
         // Construct a RAMDirectory to hold the in-memory representation
         // of the index.
         RAMDirectory idx = new RAMDirectory();

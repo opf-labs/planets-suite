@@ -38,13 +38,13 @@ class FormatRegistryIndexer {
      * @throws IOException
      * @throws ParseException
      */
-    public static void main(String[] args) throws IOException, ParseException {
+    static void main(String[] args) throws IOException, ParseException {
     }
     
     /**
      * no arg constructor, initialisation
      */
-    public FormatRegistryIndexer() {
+    FormatRegistryIndexer() {
         // Init the index:
         // Store the index in memory:
         directory = new RAMDirectory();
@@ -56,7 +56,7 @@ class FormatRegistryIndexer {
      * 
      * @param fmt
      */
-    public void add( Format fmt ) {
+    void add( Format fmt ) {
         // Add a Format to the index.
         try {
             IndexWriter iwriter = openWriter();
@@ -72,7 +72,7 @@ class FormatRegistryIndexer {
      * 
      * @param fmts
      */
-    public void add( Set<Format> fmts ) {
+    void add( Set<Format> fmts ) {
         
     }
 
@@ -106,7 +106,7 @@ class FormatRegistryIndexer {
      * @param query
      * @return a List of matching format URIs
      */
-    public List<URI> search( String query ) {
+    List<URI> search( String query ) {
         // Return the matching Format URIs:
         try {
             // Now search the index:
@@ -136,7 +136,7 @@ class FormatRegistryIndexer {
     /**
      * 
      */
-    public void closeIndex() {
+    void closeIndex() {
         // As this is a in-memory directory, closing it will also forget it forever.
         try {
             directory.close();

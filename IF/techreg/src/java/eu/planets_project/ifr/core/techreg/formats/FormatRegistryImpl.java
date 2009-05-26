@@ -74,12 +74,14 @@ class FormatRegistryImpl implements FormatRegistry {
             if (ff.getMimeTypes() != null) {
                 for (String mimeType : ff.getMimeTypes()) {
                     Set<URI> mimeSet = mimeMap.get(mimeType);
-                    if (mimeSet == null)
+                    if (mimeSet == null) {
                         mimeSet = new HashSet<URI>();
+                    }
                     mimeSet.add(ff.getTypeURI());
                     if (ff.getAliases() != null) {
-                        for (URI furi : ff.getAliases())
+                        for (URI furi : ff.getAliases()) {
                             mimeSet.add(furi);
+                        }
                     }
                     mimeMap.put(mimeType, mimeSet);
                     // log.debug("Referenced under MIME: "+mimeType);
@@ -89,12 +91,14 @@ class FormatRegistryImpl implements FormatRegistry {
             if (ff.getExtensions() != null) {
                 for (String ext : ff.getExtensions()) {
                     Set<URI> extSet = extMap.get(ext);
-                    if (extSet == null)
+                    if (extSet == null) {
                         extSet = new HashSet<URI>();
+                    }
                     extSet.add(ff.getTypeURI());
                     if (ff.getAliases() != null) {
-                        for (URI furi : ff.getAliases())
+                        for (URI furi : ff.getAliases()) {
                             extSet.add(furi);
+                        }
                     }
                     extMap.put(ext, extSet);
                     // log.debug("Referenced under extension: "+ext);
@@ -105,7 +109,8 @@ class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFormatForURI(java.net.URI)
+     * @param puri The Planets URI (see FormatRegistry)
+     * @return A format instance for the given URI
      */
     public Format getFormatForURI(URI puri) {
         if (isMimeUri(puri) || isExtensionUri(puri)) {
@@ -116,6 +121,7 @@ class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getUrisForExtension(java.lang.String)
      */
     public Set<URI> getUrisForExtension(String ext) {
@@ -124,13 +130,15 @@ class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getURIsForMimeType(java.lang.String)
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getUrisForMimeType(java.lang.String)
      */
     public Set<URI> getUrisForMimeType(String mimetype) {
         return mimeMap.get(mimetype);
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#search(java.lang.String)
      */
     public List<URI> search(String query) {
@@ -141,6 +149,7 @@ class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFormatUriAliases(java.net.URI)
      */
     public List<URI> getFormatUriAliases(URI typeURI) {
@@ -178,7 +187,8 @@ class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFormatAliases(java.net.URI)
+     * @param typeURI The type URI
+     * @return All aliases (in other format types) for the given URI
      */
     public List<Format> getFormatAliases(URI typeURI) {
         List<Format> fmts = new ArrayList<Format>();
@@ -211,13 +221,13 @@ class FormatRegistryImpl implements FormatRegistry {
     public URI createExtensionUri(String extensionFromFile) {
         return FormatUtils.createExtensionUri(extensionFromFile);
     }
-    
+
     /**
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#createActionUri(java.lang.String)
      */
-    public URI createActionUri (String action) {
-    	return FormatUtils.createActionUri(action);
+    public URI createActionUri(String action) {
+        return FormatUtils.createActionUri(action);
     }
 
     /**
@@ -305,6 +315,10 @@ class FormatRegistryImpl implements FormatRegistry {
         return Format.ANY;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#createUnknownFormatUri()
+     */
     public URI createUnknownFormatUri() {
         return Format.UNKNOWN;
     }

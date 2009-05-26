@@ -62,7 +62,7 @@ public class Format implements Serializable {
     private Set<String> extensions = new HashSet<String>();
 
     /**
-     * @param typeURI
+     * @param typeURI The type URI (see FormatRegistry)
      */
     public Format(URI typeURI) {
         this.typeURI = typeURI;

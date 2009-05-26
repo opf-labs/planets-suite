@@ -14,6 +14,7 @@ import org.richfaces.component.html.HtmlDataTable;
 
 
 /**
+ * GUI backing bean for the format registry.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
@@ -29,7 +30,7 @@ public class RegistryBackingBean {
     private Format currentFormat = null;
     
     /**
-     * Constructor, initialised the format registry:
+     * Constructor, initialised the format registry.
      */
     public RegistryBackingBean() {
     	log.debug("Instanciating the Format Registry.");
@@ -37,7 +38,6 @@ public class RegistryBackingBean {
     }
     
     /**
-     * 
      * @return the List of matching formats
      */
     public synchronized List<Format> getFormats() {
@@ -52,14 +52,14 @@ public class RegistryBackingBean {
     }
 
     /**
-     * @return the searchStr
+     * @return the search string
      */
     public String getSearchStr() {
         return searchStr;
     }
 
     /**
-     * @param searchStr the searchStr to set
+     * @param searchStr the search string to set
      */
     public void setSearchStr(String searchStr) {
         this.searchStr = searchStr;

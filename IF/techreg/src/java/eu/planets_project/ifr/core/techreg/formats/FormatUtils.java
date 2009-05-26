@@ -58,16 +58,15 @@ final class FormatUtils {
     static URI createMimeUri(final String mime) {
         return URI.create(MIME_URI_PREFIX + mime.toLowerCase());
     }
-    
-    
+
     /**
-     * Static helper to construct appropriate URIs for Planets modification actions.
-     * (e.g. for a Modify-rotate service: "planets:mod/rotate")
+     * Static helper to construct appropriate URIs for Planets modification
+     * actions. (e.g. for a Modify-rotate service: "planets:mod/rotate")
      * @param action the action the service can perform
      * @return the Action-URI
      */
     static URI createActionUri(final String action) {
-    	return URI.create(ACTION_URI_PREFIX + action.toLowerCase());
+        return URI.create(ACTION_URI_PREFIX + action.toLowerCase());
     }
 
     /**

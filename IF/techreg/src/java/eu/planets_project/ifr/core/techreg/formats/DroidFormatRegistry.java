@@ -32,7 +32,7 @@ class DroidFormatRegistry  {
     int numFormats = 0;
     
     /**
-     * Constructor to set up the look-up tables:
+     * Constructor to set up the look-up tables.
      */
     public DroidFormatRegistry() {
         // Grab a Droid analyser:
@@ -46,8 +46,8 @@ class DroidFormatRegistry  {
     
     /**
      * 
-     * @param PUID
-     * @return
+     * @param PUID The PUID string
+     * @return A URI representation of the given PUID
      */
     static URI PUIDtoURI( String PUID ) {
         URI puidURI = null;
@@ -63,8 +63,8 @@ class DroidFormatRegistry  {
     
     /**
      * 
-     * @param puri
-     * @return
+     * @param puri A planets URI
+     * @return The raw PUID
      */
     static String URItoPUID( URI puri ) {
         if( puri == null ) return null;
@@ -73,8 +73,8 @@ class DroidFormatRegistry  {
     
     /**
      * 
-     * @param ff
-     * @return
+     * @param ff The droid file format
+     * @return A Planets format created from the given droid format
      */
     private Format fillFormatFromPRONOM( FileFormat ff ) {
         if( ff == null ) return null;
