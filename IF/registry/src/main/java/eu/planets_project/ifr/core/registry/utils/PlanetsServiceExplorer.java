@@ -96,7 +96,7 @@ public class PlanetsServiceExplorer {
      * the QName of the wsdl:service.
      * 
      * @param wsdlLocation
-     * @return
+     * @return the QName
      */
     private QName determineServiceQNameFromWsdl() {
     	log.debug("determining qname");

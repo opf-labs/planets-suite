@@ -75,24 +75,24 @@ public class CoreRegistryTests {
         /* We register another one using the TIFF extension ID as input format: */
         description2 = new ServiceDescription.Builder(NAME, TYPE2)
                 .inputFormats(EXT_TIFF, PRONOM_PNG).endpoint(endpoint2).build();
-        Response register = registry.register(description1);
-        if (!register.success) {
-            System.err.println(register.message);
+        RegistryResponse register = registry.register(description1);
+        if (!register.success()) {
+            System.err.println(register.getMessage());
         }
         Assert.assertTrue("Could not register when it should work",
-                register.success);
+                register.success());
         /* But we can't register descriptions without an endpoint: */
-        Response fail = registry.register(new ServiceDescription.Builder(NAME,
+        RegistryResponse fail = registry.register(new ServiceDescription.Builder(NAME,
                 TYPE1).build());
         Assert.assertFalse("Could register when it should not work",
-                fail.success);
+                fail.success());
         registry.register(description2);
         /* We finally register one service using the mime URI: */
         Assert
                 .assertTrue("Failed to register using mime type",
                         registry.register(new ServiceDescription.Builder(
                                 "third", TYPE2).inputFormats(MIME_TIFF)
-                                .endpoint(endpoint3).build()).success);
+                                .endpoint(endpoint3).build()).success());
     }
 
     /**
@@ -108,7 +108,7 @@ public class CoreRegistryTests {
      */
     @Test
     public void registerServiceDescription() {
-        Response message = registry.register(description1);
+        RegistryResponse message = registry.register(description1);
         Assert.assertEquals("Double registration!", 3, registry.query(null)
                 .size());
         Assert.assertNotNull("No result message;", message);
@@ -293,9 +293,9 @@ public class CoreRegistryTests {
      */
     @Test
     public void deleteByExample() {
-        Response response = registry.delete(new ServiceDescription.Builder(
+        RegistryResponse response = registry.delete(new ServiceDescription.Builder(
                 null, TYPE1).endpoint(endpoint1).build());
-        Assert.assertTrue(response.success);
+        Assert.assertTrue(response.success());
         List<ServiceDescription> services = registry.query(null);
         Assert.assertEquals(2, services.size());
     }
@@ -305,9 +305,9 @@ public class CoreRegistryTests {
      */
     @Test
     public void duplicateEndpointGuard() {
-        Response response = registry.register(new ServiceDescription.Builder(
+        RegistryResponse response = registry.register(new ServiceDescription.Builder(
                 null, TYPE1).endpoint(endpoint1).build());
-        Assert.assertFalse(response.success);
+        Assert.assertFalse(response.success());
         List<ServiceDescription> services = registry.query(null);
         Assert.assertEquals(3, services.size());
     }

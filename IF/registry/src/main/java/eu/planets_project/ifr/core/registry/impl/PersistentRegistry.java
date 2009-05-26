@@ -14,12 +14,12 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.Response;
+import eu.planets_project.ifr.core.registry.api.RegistryResponse;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * ServiceDecriptionRegistry implementation persisting the descriptions as XML
- * files.
+ * files. NOTE: Most clients should use the RegistryFactory to instantiate a Registry
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class PersistentRegistry implements Registry {
@@ -47,6 +47,7 @@ public final class PersistentRegistry implements Registry {
     private long updated;
 
     /**
+     * NOTE: Most clients should use the RegistryFactory to instantiate a Registry
      * @param registry The backing registry, e.g. a CoreRegistry
      * @return A persistent service description registry
      */
@@ -55,6 +56,7 @@ public final class PersistentRegistry implements Registry {
     }
 
     /**
+     * NOTE: Most clients should use the RegistryFactory to instantiate a Registry
      * @param registry The backing registry, e.g. a CoreRegistry
      * @param location The full path to the folder that should be used to store
      *        the service descriptions in
@@ -79,8 +81,8 @@ public final class PersistentRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public Response delete(final ServiceDescription example) {
-        Response response = registry.delete(example);
+    public RegistryResponse delete(final ServiceDescription example) {
+        RegistryResponse response = registry.delete(example);
         List<ServiceDescription> list = registry.query(null);
         clear();
         for (ServiceDescription serviceDescription : list) {
@@ -104,9 +106,9 @@ public final class PersistentRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#register(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public Response register(final ServiceDescription serviceDescription) {
-        Response response = registry.register(serviceDescription);
-        if (response.success) {
+    public RegistryResponse register(final ServiceDescription serviceDescription) {
+        RegistryResponse response = registry.register(serviceDescription);
+        if (response.success()) {
             String xml = serviceDescription.toXml();
             File f = new File(root, filename(serviceDescription));
             writeTo(xml, f);
@@ -119,7 +121,7 @@ public final class PersistentRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#clear()
      */
-    public Response clear() {
+    public RegistryResponse clear() {
         String[] list = root.list();
         for (String name : list) {
             File file = new File(root, name);

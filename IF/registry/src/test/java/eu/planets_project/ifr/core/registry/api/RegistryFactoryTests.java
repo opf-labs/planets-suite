@@ -7,6 +7,6 @@ package eu.planets_project.ifr.core.registry.api;
 public class RegistryFactoryTests extends PersistentRegistryTests {
     @Override
     Registry createRegistry() {
-        return RegistryFactory.getInstance();
+        return RegistryFactory.getRegistry();
     }
 }

@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.Response;
+import eu.planets_project.ifr.core.registry.api.RegistryResponse;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
@@ -40,7 +40,7 @@ public final class RegistryWebservice implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#clear()
      */
-    public Response clear() {
+    public RegistryResponse clear() {
         return registry.clear();
     }
 
@@ -56,7 +56,7 @@ public final class RegistryWebservice implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#register(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public Response register(final ServiceDescription serviceDescription) {
+    public RegistryResponse register(final ServiceDescription serviceDescription) {
         if (serviceDescription == null) {
             throw new IllegalArgumentException(
                     "Can't register a service description that is null!");
@@ -68,7 +68,7 @@ public final class RegistryWebservice implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public Response delete(final ServiceDescription example) {
+    public RegistryResponse delete(final ServiceDescription example) {
         return registry.delete(example);
     }
 

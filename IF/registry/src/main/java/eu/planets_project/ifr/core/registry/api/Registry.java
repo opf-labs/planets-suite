@@ -34,7 +34,7 @@ public interface Registry {
      */
     @WebMethod
     @WebResult
-    Response register(@WebParam ServiceDescription serviceDescription);
+    RegistryResponse register(@WebParam ServiceDescription serviceDescription);
 
     /**
      * Query by example registry lookup.
@@ -70,7 +70,7 @@ public interface Registry {
      */
     @WebMethod
     @WebResult
-    Response clear();
+    RegistryResponse clear();
 
     /**
      * @param example The sample of the service descriptions to delete
@@ -78,25 +78,5 @@ public interface Registry {
      */
     @WebMethod
     @WebResult
-    Response delete(@WebParam ServiceDescription example);
-
-    // **********************************************************************
-
-    // TODO Do XML-based methods make sense at all here?
-    // /**
-    // * @param xmlServiceDescription The service description XML to register
-    // * @return A status message
-    // */
-    // ServiceRegistryMessage register(String xmlServiceDescription);
-
-    // TODO Do XML-based methods make sense at all here?
-    // /**
-    // * Query by example registry lookup.
-    // * @param sampleXmlServiceDescription The sample service description XML
-    // * @return The services for which all non-null values correspond to the
-    // * values of the given sample object
-    // */
-    // List<ServiceDescription> query(String sampleXmlServiceDescription);
-
-    // **********************************************************************
+    RegistryResponse delete(@WebParam ServiceDescription example);
 }

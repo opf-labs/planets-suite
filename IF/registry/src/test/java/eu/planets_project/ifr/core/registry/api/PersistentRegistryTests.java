@@ -93,12 +93,12 @@ public class PersistentRegistryTests extends CoreRegistryTests {
         /* We create one registry and register one description: */
         description = ServiceDescription.create("Test", "Type").endpoint(
                 new URL("http://no.where")).build();
-        Response register = registry.register(description);
-        if (!register.success) {
-            String message = register.message;
+        RegistryResponse register = registry.register(description);
+        if (!register.success()) {
+            String message = register.getMessage();
             System.err.println(message);
         }
-        Assert.assertEquals(true, register.success);
+        Assert.assertEquals(true, register.success());
         /* Some client instantiates a registry backed by the same directory: */
         newRegistry = createRegistry();
         checkIfPresent(description, newRegistry);

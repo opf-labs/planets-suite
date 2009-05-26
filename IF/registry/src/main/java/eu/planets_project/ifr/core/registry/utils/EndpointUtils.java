@@ -70,9 +70,9 @@ public class EndpointUtils {
 
     /**
      * Takes a given http URI and extracts the page's content which is returned
-     * as String
-     * @param uri
-     * @return
+     * as String.
+     * @param uri The URI
+     * @return the page's content
      * @throws FileNotFoundException
      * @throws IOException
      */
@@ -116,9 +116,8 @@ public class EndpointUtils {
      * As the wsdl content is not well-formed we're not able to use DOM here.
      * Parse through the xml manually to return a list of given
      * ServiceEndpointAddresses
-     * @param xhtml
-     * @return
-     * @throws Exception
+     * @param xhtml The xml
+     * @return a list of given ServiceEndpointAddresses
      */
     private static Set<URI> extractEndpointsFromWebPage(String xhtml) {
         log.info("ServiceLookup.extractEndpointsFromWebPage()");

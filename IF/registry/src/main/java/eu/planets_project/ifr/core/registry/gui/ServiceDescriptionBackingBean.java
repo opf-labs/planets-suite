@@ -105,7 +105,7 @@ public class ServiceDescriptionBackingBean {
 		return _serviceProvider;
 	}
 	/**
-	 * 
+	 * Update the service descriptions.
 	 */
     public void updateDescription() {
     	ServiceDescription.Builder sb = new ServiceDescription.Builder(this._serviceDescription);

@@ -43,7 +43,7 @@ public class EndpointBackingBean {
 	private String _selectedCategory = EndpointBackingBean.ALL_CATEGORY;
 
 	/**
-	 * Default constructor
+	 * Create an EndpointBackingBean.
 	 */
 	public EndpointBackingBean() {
 		// Populate the list of endpoints deployed on this server
@@ -180,7 +180,7 @@ public class EndpointBackingBean {
 	}
 
 	/**
-	 * @param endpoint
+	 * @param endpoint The endpoint to add
 	 */
 	public void addEndpoint(PlanetsServiceEndpoint endpoint) {
 		this._currentEndpoint = endpoint;
@@ -238,7 +238,7 @@ public class EndpointBackingBean {
     }
     
     /**
-     * 
+     * Sets the endpoints to registered.
      */
     public void recordRegistration() {
     	this._currentEndpoint.setRegistered(true);

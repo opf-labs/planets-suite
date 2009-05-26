@@ -26,7 +26,7 @@ public class RegistrySampleUsage {
     @Test
     public void usage() throws MalformedURLException {
         /* We retrieve an instance of the registry: */
-        Registry registry = RegistryFactory.getInstance();
+        Registry registry = RegistryFactory.getRegistry();
         URL endpoint1 = new URL("http://some.dummy.endpoint");
         URL endpoint2 = new URL("http://another.dummy.endpoint");
         /* We register service descriptions: */

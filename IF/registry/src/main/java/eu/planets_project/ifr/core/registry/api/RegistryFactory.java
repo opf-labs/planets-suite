@@ -9,7 +9,7 @@ import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
 
 /**
- * Registry factory.
+ * Service Registry factory.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class RegistryFactory {
@@ -17,7 +17,7 @@ public final class RegistryFactory {
     private RegistryFactory() {}
 
     /** @return A registry instance */
-    public static Registry getInstance() {
+    public static Registry getRegistry() {
         return PersistentRegistry.getInstance(CoreRegistry.getInstance());
     }
 
@@ -25,7 +25,7 @@ public final class RegistryFactory {
      * @param wsdlLocation The location of the WSDL
      * @return A registry instance running on the specified location
      */
-    public static Registry getInstance(final String wsdlLocation) {
+    public static Registry getRegistry(final String wsdlLocation) {
         URL url = null;
         try {
             url = new URL(wsdlLocation);

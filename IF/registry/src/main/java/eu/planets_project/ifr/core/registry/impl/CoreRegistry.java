@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.Response;
+import eu.planets_project.ifr.core.registry.api.RegistryResponse;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * Core in-memory (non-persistent) registry for service description instances.
+ * NOTE: Most clients should use the RegistryFactory to instantiate a Registry
  * @see ServiceDescription
  * @see Registry
  * @see PersistentRegistry
@@ -24,6 +25,7 @@ public final class CoreRegistry implements Registry {
     }
 
     /**
+     * NOTE: Most clients should use the RegistryFactory to instantiate a Registry
      * @return A simple, non-persistent registry for service descriptions.
      */
     public static Registry getInstance() {
@@ -34,9 +36,9 @@ public final class CoreRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#clear()
      */
-    public Response clear() {
+    public RegistryResponse clear() {
         descriptions.clear();
-        return new Response("Cleared in-memory registry.", true);
+        return new RegistryResponse("Cleared in-memory registry.", true);
     }
 
     /**
@@ -51,9 +53,9 @@ public final class CoreRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#register(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public Response register(final ServiceDescription serviceDescription) {
+    public RegistryResponse register(final ServiceDescription serviceDescription) {
         if (serviceDescription.getEndpoint() == null) {
-            return new Response(
+            return new RegistryResponse(
                     String
                             .format(
                                     "Could not add service description %s, as it has no endpoint",
@@ -62,9 +64,9 @@ public final class CoreRegistry implements Registry {
         if (!endpointPresent(serviceDescription)
                 && !descriptions.contains(serviceDescription)) {
             descriptions.add(serviceDescription);
-            return new Response("Registered: " + serviceDescription, true);
+            return new RegistryResponse("Registered: " + serviceDescription, true);
         }
-        return new Response("Already registered: " + serviceDescription, false);
+        return new RegistryResponse("Already registered: " + serviceDescription, false);
     }
 
     /**
@@ -87,10 +89,10 @@ public final class CoreRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public Response delete(final ServiceDescription description) {
+    public RegistryResponse delete(final ServiceDescription description) {
         List<ServiceDescription> list = query(description);
         boolean removed = descriptions.removeAll(list);
-        return new Response("Attempted to delete: " + description, removed);
+        return new RegistryResponse("Attempted to delete: " + description, removed);
     }
 
     /**

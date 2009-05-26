@@ -4,7 +4,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * Helper class for the Service Registry, it stores the registered service information in
- * a web GUI friendly form
+ * a web GUI friendly form.
  * 
  * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  */
@@ -14,7 +14,7 @@ public class ServiceInfo {
 	
 	/**
 	 * 
-	 * @param description
+	 * @param description The service description
 	 */
 	public ServiceInfo(ServiceDescription description) {
 		this.setDescription(description);
