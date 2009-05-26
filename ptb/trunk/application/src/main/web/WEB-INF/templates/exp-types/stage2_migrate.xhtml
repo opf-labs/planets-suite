@@ -15,8 +15,9 @@
     <legend>Migration Experiment</legend>
     
     <div class="expStartDO">
-    For each Digital Object of format:<br/>
+    For every Digital Object, migrate from input format:<br/>
     <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <span style="color:red;font-weight:bold;"> *</span>
     <h:selectOneMenu id="inputFormatSelectMenu" value="#{ExpTypeMigrate.inputFormat}" onchange="submit();">
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.inputFormatList}" />
@@ -59,6 +60,7 @@
     Pass Through This Migration Service:<br/>
     
     <h:panelGroup rendered="#{!ExperimentBean.approved}">
+    <span style="color:red;font-weight:bold;"> *</span>
     <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeMigrate.migrationService}" onchange="submit();">
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.migrationServiceList}" />
@@ -99,6 +101,7 @@
     <div class="expResultBox">
     <div class="expStageHeader">Result</div>
     A new Digital Object of format:<br/>
+    <span style="color:red;font-weight:bold;"> *</span>
     <h:panelGroup rendered="#{!ExperimentBean.approved}">
     <h:selectOneMenu id="outputFormatSelectMenu" value="#{ExpTypeMigrate.outputFormat}" onchange="submit();">
          <f:selectItem itemValue="" itemLabel="[undefined]" />

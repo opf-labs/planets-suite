@@ -21,7 +21,7 @@
 <h:panelGroup rendered="#{ ! ExperimentBean.approved}">
   <p>
     <h:outputLabel value="#{res['new_exp.expEtype']}" for="etype" ><span style="color:red;font-weight:bold;"> *</span></h:outputLabel>
-        <h:selectOneMenu id="etype" onchange="submit();" required="true"
+        <h:selectOneMenu id="etype" onchange="submit();" required="false"
         value="#{ExperimentBean.etype}"  style="width: 23em;"
  readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}">
                 <f:selectItem itemValue="" itemLabel="Select..."/>
