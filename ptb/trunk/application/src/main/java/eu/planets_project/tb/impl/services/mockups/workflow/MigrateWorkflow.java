@@ -524,7 +524,10 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             // FIXME The above need to be a full recursive storage operation!
             if( to != null ) {
                 Format f = new Format(to);
-                String title = dob.getTitle()+"."+f.getExtensions().iterator().next();
+                String title = dob.getTitle();
+                if(f.getExtensions().iterator().hasNext()){
+                	title += "."+f.getExtensions().iterator().next();
+                }
                 title = title.substring( title.lastIndexOf("/") + 1);
                 newdob.title( title );
             }
