@@ -79,7 +79,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			FilesystemDigitalObjectManagerImpl._log.debug("URI is empty so return root URI only");
 			retVal = new ArrayList<URI>();
 			try {
-				retVal.add( PDURI.formDataRegistryRootURI("localhost", "8080", this._name) );
+				retVal.add( PDURI.formDataRegistryRootURI("localhost", "8080", this._name+"/") );
 			} catch (URISyntaxException e) {
 				FilesystemDigitalObjectManagerImpl._log.error("URI Syntax exception");
 				FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
@@ -95,6 +95,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			realPdURI = new PDURI(pdURI);
 			fullPath = this._root.getCanonicalPath() + File.separator + realPdURI.getDataRegistryPath();
 			File searchRoot = new File(fullPath);
+			FilesystemDigitalObjectManagerImpl._log.info("Looking at: "+pdURI+" -> "+searchRoot.getCanonicalPath());	
 			if (searchRoot.exists() && searchRoot.isDirectory()) {
 				// Create a filter to avoid do metadata files
 				FilenameFilter filter = new FilenameFilter() {
@@ -105,8 +106,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 				String[] contents = searchRoot.list(filter);
 				retVal = new ArrayList<URI>();
 				for (String s : contents) {
-					realPdURI.replaceDecodedPath(s);
-					retVal.add(realPdURI.getURI());
+					retVal.add(new URI(pdURI+"/"+s));
 				}
 			}
 		} catch (URISyntaxException e) {
@@ -148,7 +148,11 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 				fileData.append(buf, 0, numRead);
 			}
 			reader.close();
-			retObj = new DigitalObject.Builder(fileData.toString()).build();
+			DigitalObject.Builder dob = new DigitalObject.Builder(fileData.toString());
+			// Also turn the content reference into a real file stream:
+			DigitalObjectContent c = Content.byReference(dob.getContent().read());
+			dob.content(c);
+			retObj = dob.build();
 		} catch (UnsupportedEncodingException e) {
 			FilesystemDigitalObjectManagerImpl._log.error("Unsupported encoding exception");
 			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
@@ -187,6 +191,8 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			// We need to append the path to the root dir of this registry for the data
 			File doBinary = new File(this._root.getCanonicalPath() + 
 					File.separator + path);
+            File doDir = doBinary.getParentFile();
+            if( ! doDir.exists() ) doDir.mkdirs();
 			File doMetadata = new File(this._root.getCanonicalPath() + 
 					File.separator + path + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
 			
