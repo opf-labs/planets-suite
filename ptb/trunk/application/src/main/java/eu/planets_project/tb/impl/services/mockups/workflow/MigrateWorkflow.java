@@ -522,11 +522,13 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             DigitalObject.Builder newdob = new DigitalObject.Builder(migrated.getDigitalObject());
             newdob.content( Content.byReference(doTmp) );
             // FIXME The above need to be a full recursive storage operation!
+            
             if( to != null ) {
-                Format f = new Format(to);
+                //Format f = new Format(to);
+            	Set<String> extensionsTo = ServiceBrowser.fr.getExtensions(to);
                 String title = dob.getTitle();
-                if(f.getExtensions().iterator().hasNext()){
-                	title += "."+f.getExtensions().iterator().next();
+                if(extensionsTo.iterator().hasNext()){
+                	title += "."+extensionsTo.iterator().next();
                 }
                 title = title.substring( title.lastIndexOf("/") + 1);
                 newdob.title( title );
