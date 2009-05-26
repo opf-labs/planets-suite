@@ -39,6 +39,8 @@ import eu.planets_project.tb.impl.services.util.ServiceTemplateImporterImpl;
 
 
 /**
+ * FIXME Old Code? Remove this class?
+ * 
  * This bean implements the following logic: controller + JSF backing
  *   (backing bean is used for render and update mode)
  *   a)  

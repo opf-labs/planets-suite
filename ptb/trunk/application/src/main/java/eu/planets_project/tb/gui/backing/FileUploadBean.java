@@ -11,8 +11,6 @@ import org.apache.myfaces.custom.fileupload.UploadedFile;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
-import javax.faces.context.FacesContext;
-
 /**
  * This bean handles file upload from the local FS
  */
@@ -58,7 +56,7 @@ public class FileUploadBean
      * @throws Exception
      */
     public URI getURI() throws Exception {
-    	return dh.getDownloadURI(this._name);
+    	return dh.get(this._name).getDownloadUri();
     }
     
     /**
@@ -90,7 +88,7 @@ public class FileUploadBean
         // If keeping, submit to the data handler.
         if( keep ) {
           try {        	
-            this._name = dh.addBytestream(_upFile.getInputStream(), _upFile.getName());
+            this._name = dh.storeBytestream(_upFile.getInputStream(), _upFile.getName()).toString();
           } catch (IOException e) {e.printStackTrace(); return "error-upload";}
 
         } else {

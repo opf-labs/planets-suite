@@ -25,8 +25,15 @@
         
         <ui:fragment rendered="#{!dob.directory}">
         
+        <ui:fragment rendered="#{dob.size >= 0}">
         <dt>Size</dt>
         <dd><h:outputText value="#{dob.size}"/></dd>
+        </ui:fragment>
+        
+        <ui:fragment rendered="#{dob.downloadUri != null}">
+        <dt>Download</dt>
+        <dd><h:outputLink value="#{dob.downloadUri}">Click here to download.</h:outputLink></dd>
+        </ui:fragment>
         
         </ui:fragment>
                 

@@ -14,9 +14,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
+import java.util.List;
 import java.util.Properties;
-import java.util.UUID;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,11 +25,18 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.tb.api.data.util.DataHandler;
-import eu.planets_project.tb.impl.data.DigitalObjectDirectoryLister;
+import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
+import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.gui.UserBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.data.DataSource;
+import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
@@ -50,6 +58,9 @@ import eu.planets_project.tb.impl.system.BackendProperties;
  * 
  */ 
 public class DataHandlerImpl implements DataHandler {
+    
+    // A reference to the data manager itself:
+    DigitalObjectMultiManager dommer = new DigitalObjectMultiManager();
 
 	// A logger for this:
     private Log log = LogFactory.getLog(DataHandlerImpl.class);
@@ -91,46 +102,18 @@ public class DataHandlerImpl implements DataHandler {
         FileStoreDir = localFileDirBase + FILE_DIR_PATH;
 	}
 	
-    /**
-     * Use java.util.UUID to create unique file name for uploaded file.
-     * 
-     * Version 4 UUIDs are generated from a large random number and do 
-     *not include the MAC address. The implementation of java.util.UUID
-     * creates version 4 UUIDs.
-     * There are 122 significant bits in a type 4 UUID. 2^122 is a *very* 
-     * large number. Assuming a random distribution of these bits, the 
-     * probability of collission is *very* low.
-     */
-	private String generateUniqueName(String name) {
-	    // create unique filename
-	    
-        String ext = "_no_ext";
-        if( name != null ) {
-            if( name.lastIndexOf('.') != -1 )
-                ext = name.substring(name.lastIndexOf('.'));
-        }
-        return UUID.randomUUID().toString() + ext;
-	}
-	
     /* -------------------------------------------------------------------------------------------------- */
 	
 	/* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#addBytestream(java.io.InputStream, java.lang.String)
      */
-    public String addBytestream(InputStream in, String name) throws IOException {
-        File dir = new File(FileStoreDir);
-        dir.mkdirs();    
+    public URI storeBytestream(InputStream in, String name) throws IOException {
         
-        String refname = this.generateUniqueName(name);
-        
-        File f = new File(dir, refname );
-        
-        DataHandlerImpl.storeStreamInFile(in, f);
-        
-        //create an index entry mapping the logical to the physical file name
-        this.setIndexFileEntryName(refname, name);
-        
+        DigitalObject.Builder dob = new DigitalObject.Builder( Content.byReference(in) );
+        dob.title(name);
+        URI refname = this.storeDigitalObject(dob.build());
         log.debug("Stored file '"+name+"' under reference: "+refname);
+        
         return refname;
     }
     
@@ -139,21 +122,21 @@ public class DataHandlerImpl implements DataHandler {
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#addBytearray(byte[], java.lang.String)
      */
-    public String addBytearray(byte[] b, String name) throws IOException {
+    public URI storeBytearray(byte[] b, String name) throws IOException {
         ByteArrayInputStream bin = new ByteArrayInputStream(b);
-        return this.addBytestream(bin, name);
+        return this.storeBytestream(bin, name);
     }
 
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#addByURI(java.net.URI)
      */
-    public String addByURI(URI u) throws MalformedURLException, IOException {
-        String ref = null;
+    public URI storeUriContent(URI u) throws MalformedURLException, IOException {
+        URI ref = null;
         InputStream in = null;
         try{
             URLConnection c = u.toURL().openConnection();
             in = c.getInputStream();
-            ref = this.addBytestream(in, u.toString());
+            ref = this.storeBytestream(in, u.toString());
         }
         finally{
             in.close();
@@ -164,161 +147,182 @@ public class DataHandlerImpl implements DataHandler {
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.data.util.DataHandler#addFile(java.io.File)
      */
-    public String addFile(File f) throws FileNotFoundException, IOException {
-        return this.addBytestream(new FileInputStream(f), f.getName());
+    public URI storeFile(File f) throws FileNotFoundException, IOException {
+        return this.storeBytestream(new FileInputStream(f), f.getName());
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.data.util.DataHandler#addFromDataRegistry(eu.planets_project.tb.impl.data.DataRegistryManagerImpl, java.net.URI)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#storeDigitalObject(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.tb.api.model.Experiment)
      */
-    public String addFromDataRegistry(DigitalObjectDirectoryLister dr, URI pduri) throws IOException {
-        InputStream in = null;
-        log.info("Adding from URI: "+pduri );
-        try {
-            in = dr.getDataManager(pduri).retrieve(pduri).getContent().read();
-        } catch (DigitalObjectNotFoundException e) {
-            e.printStackTrace();
-            throw new IOException("Caught "+ e.getMessage()+" on " + pduri );
+    public URI storeDigitalObject(DigitalObject dob, Experiment exp) {
+        DataSource defstore = dommer.getDefaultStorageSpace();
+        log.info("Attempting to store in data registry: "+defstore.getUri());
+        UserBean currentUser = (UserBean) JSFUtil.getManagedObject("UserBean");
+        String userid = ".";
+        if( currentUser != null && currentUser.getUserid() != null ) {
+            userid = currentUser.getUserid();
         }
-        return this.addBytestream(in, pduri.toString());
-    }
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.data.util.DataHandler#getDownloadURI(java.lang.String)
-     */
-    public URI getDownloadURI(String id) throws FileNotFoundException {
-        CachedFile cf = new CachedFile(id);
-        return cf.getDownload();
-    }
-
-    
-    /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.data.util.DataHandler#getFile(java.lang.String)
-     */
-    public File getFile(String id) throws FileNotFoundException {
-        CachedFile cf = new CachedFile(id);
-        return cf.getFile();
-    }
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.data.util.DataHandler#getName(java.lang.String)
-     */
-    public String getName(String id) throws FileNotFoundException {
-        CachedFile cf = new CachedFile(id);
-        return cf.getName();
-    }
-    
-    
-
-    /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.data.util.DataHandler#getDigitalObject(java.lang.String)
-     */
-    public DigitalObject getDigitalObject(String id)
-            throws FileNotFoundException {
-        CachedFile cf = new CachedFile(id);
-        File f = cf.getFile();
-        DigitalObject.Builder dob = new DigitalObject.Builder(Content.byValue(f));
-        if( cf.getName() != null ) {
-            dob.title(cf.getName());
+        // Store new DO in the user space, with path based on experiment details.
+        // URGENT USE new URI instead of URI.create
+        URI baseUri = null;
+        if( exp == null ) { 
+            baseUri = URI.create(defstore.getUri().toString() + "/testbed/"+userid+"/digitalobjects/");
         } else {
-            dob.title(id);
+            baseUri = URI.create(defstore.getUri().toString() + "/testbed/"+userid+"/experiments/experiment-"+exp.getEntityID()+"/");
         }
-        dob.permanentUri(cf.getDownload());
-        return dob.build();
+        log.info("Attempting to store in: "+baseUri);
+        
+        // Pick a name for the object.
+        String name = dob.getTitle();
+        if( name == null || "".equals(name) ) {
+            name = exp.getExperimentSetup().getBasicProperties().getExperimentName()+".digitalObject";
+        }
+        
+        // look at the location and pick a unique name.
+        URI dobUri = URI.create( baseUri.toString()+"/"+name );
+        List<URI> storedDobs = dommer.list(baseUri);
+        if( storedDobs != null ) {
+          int unum = 1;
+          while( storedDobs.contains(dobUri) ) {
+            dobUri = URI.create( baseUri.toString()+"/"+unum+"-"+name);
+            unum++;
+          }
+        }
+        
+        try {
+            this.storeDigitalObject(dobUri, dob);
+        } catch (DigitalObjectNotStoredException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+        
+        return dobUri;
+    }
+    private URI storeDigitalObject(DigitalObject dob) {
+        return this.storeDigitalObject(dob, null);
+    }
+    
+    private void storeDigitalObject( URI domUri, DigitalObject dob ) throws DigitalObjectNotStoredException {
+        dommer.store(domUri, dob);
     }
 
 
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.data.util.DataHandler#get(java.lang.String)
+     */
+    public DigitalObjectRefBean get(String id) {
+        DigitalObjectRefBean dobr = null;
+        // Lookup in Data Registry:
+        try {
+            dobr = this.findDOinDataRegistry(id);
+        } catch (FileNotFoundException e1) {
+            log.warn("File "+id+" not found in Data Registry. "+e1);
+        }
+        // If failed, attempt to use the older store:
+        if( dobr == null ) {
+            try {
+                dobr = this.findDOinTestbedCache(id);
+            } catch (FileNotFoundException e) {
+                log.warn("File "+id+" not found in Testbed File Cache. "+e);
+            }
+        }
+        return dobr;
+    }
 
     /* -------------------------------------------------------------------------------------------------- */
-    public class CachedFile {
-        File file;
-        String name;
-        URI download;
+
+    private DigitalObjectRefBean findDOinTestbedCache( String id ) throws FileNotFoundException {
+        log.debug("Looking for "+id+" in the TB file cache.");
         
-        /**
-         * Constructor resolved the file ID.
-         * Normalises to /planets-testbed/filestore/RAND.ext 
-         * @param id
-         * @throws FileNotFoundException 
-         */
-        public CachedFile(String id) throws FileNotFoundException {
-            log.debug("Looking for "+id+" in the TB file cache.");
-            
-            // Reduce the name if this is one of the old-form names, containing the full path:
-            if( id.contains("ROOT.war/planets-testbed") ) {
-                id = id.substring(id.lastIndexOf("ROOT.war")+8);
-                file = new File(localFileDirBase, id);
-                name = getInputFileIndexEntryName(file);
-            } else if( id.contains("ROOT.war\\planets-testbed") ) {
-                id = id.substring(id.lastIndexOf("ROOT.war")+8);
-                file = new File(localFileDirBase, id);
-                name = getOutputFileIndexEntryName(file);
-            } else {
-                file = new File(FileStoreDir, id);
-                name = getIndexFileEntryName(file);
-            }
-            
-            // Also fix old forms that start with '\', escaped:
-            if( id.startsWith("\\")) {
-                // Regex form needs double-escaping - 4 backslashes become one:
-                id.replaceAll("\\\\", "/");
-            }
-            
-            // Check in the known locations for the files - look in each directory.
-            if( file.exists() ) {
-                log.debug("Found file: "+file.getAbsolutePath());
-            } else {
-                log.warn("Could not find file: "+file.getAbsolutePath());
+        
+        // Reduce the name if this is one of the old-form names, containing the full path:
+        File file = null;
+        String name = null;
+        if( id.contains("ROOT.war/planets-testbed") ) {
+            id = id.substring(id.lastIndexOf("ROOT.war")+8);
+            file = new File(localFileDirBase, id);
+            name = getInputFileIndexEntryName(file);
+        } else if( id.contains("ROOT.war\\planets-testbed") ) {
+            id = id.substring(id.lastIndexOf("ROOT.war")+8);
+            file = new File(localFileDirBase, id);
+            name = getOutputFileIndexEntryName(file);
+        } else {
+            file = new File(FileStoreDir, id);
+            name = getIndexFileEntryName(file);
+        }
+        
+        // Also fix old forms that start with '\', escaped:
+        if( id.startsWith("\\")) {
+            // Regex form needs double-escaping - 4 backslashes become one:
+            id.replaceAll("\\\\", "/");
+        }
+        
+        // Check in the known locations for the files - look in each directory.
+        if( file.exists() ) {
+            log.debug("Found file: "+file.getAbsolutePath());
+            // URGENT The file must be lodged somewhere!
+            return new DigitalObjectRefBean(name, this.createDownloadUri(id, name), file);
+        } else {
+            throw new FileNotFoundException("Could not find file "+id);
+        }
+        
+    }
+
+    private DigitalObjectRefBean findDOinDataRegistry( String id ) throws FileNotFoundException {
+        // Attempt to look-up in the data registry.
+        URI domUri = null;
+        try {
+            domUri = new URI( id );
+        } catch (URISyntaxException e) {
+            throw new FileNotFoundException("Could not find file "+id);
+        }
+        // Got a URI, is it owned?
+        if( dommer.hasDataManager(domUri)) {
+            try {
+                DigitalObject digitalObject = dommer.retrieve(domUri);
+                URI downloadUri = this.createDownloadUri(id, digitalObject.getTitle());
+                return new DigitalObjectRefBean(digitalObject.getTitle(), downloadUri, domUri, digitalObject);
+            } catch (DigitalObjectNotFoundException e) {
                 throw new FileNotFoundException("Could not find file "+id);
             }
-            
-            log.debug("For id: "+id+" got name: "+name);
-            
-            // Define the download URI:
-            log.debug("Creating the download URL.");
-            String context = "/testbed";
-            if( FacesContext.getCurrentInstance() != null ) {
-                HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-                context = req.getContextPath();
-            }
-            try {
-                /* FIXME Restore this, allowing TB config so that the fact that we are proxied can be dealt with.
-                download = new URI( "http", 
-                        PlanetsServerConfig.getHostname()+":"+PlanetsServerConfig.getPort(), 
-                        context+"/reader/download.jsp","fid="+id, null);
-                        */
-                download = new URI( null, null, 
-                        context+"/reader/download.jsp","fid="+id, null);
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-                download = null;
-            }
-        }
-
-        /**
-         * @return the file
-         */
-        public File getFile() {
-            return file;
-        }
-
-        /**
-         * @return the name
-         */
-        public String getName() {
-            return name;
-        }
-
-        /**
-         * @return the download
-         */
-        public URI getDownload() {
-            return download;
+        } else {
+            throw new FileNotFoundException("Could not find file "+id);
         }
         
         
     }
-    
+
+    /* -------------------------------------------------------------------------------------------------- */
+
+    private URI createDownloadUri(String id, String name ) {
+        log.debug("For id: "+id+" got name: "+name);
+        
+        // Define the download URI:
+        log.debug("Creating the download URL.");
+        String context = "/testbed";
+        if( FacesContext.getCurrentInstance() != null ) {
+            HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            context = req.getContextPath();
+        }
+        URI download = null;
+        try {
+            download = new URI( "https", 
+                    PlanetsServerConfig.getHostname()+":"+PlanetsServerConfig.getSSLPort(), 
+                    context+"/reader/download.jsp","fid="+id, null);
+            /* This can be used if the above is causing problems
+            download = new URI( null, null, 
+                    context+"/reader/download.jsp","fid="+id, null);
+                    */
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            download = null;
+        }
+        return download;
+    }
+
+
     /* -------------------------------------------------------------------------------------------------- */
 	
     /**
@@ -380,53 +384,6 @@ public class DataHandlerImpl implements DataHandler {
     	//else if no name was found return the physical file name
 		return localFileRef.getName();
     }
-    
-    /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.data.util.DataHandler#setInputFileIndexEntryName(java.lang.String, java.lang.String)
-     */
-    /*
-    private void setInputFileIndexEntryName(String sFileRandomNumber, String sFileName){
-        setFileEntryName(sFileRandomNumber, sFileName,true);
-    }
-    */
-    
-    /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.data.util.DataHandler#setOutputFileIndexEntryName(java.lang.String, java.lang.String)
-     */
-    /*
-    private void setOutputFileIndexEntryName(String sFileRandomNumber, String sFileName){
-        setFileEntryName(sFileRandomNumber, sFileName,false);
-    }
-    */
-    
-    /**
-     * @param sFileRandomNumber
-     * @param sFileName
-     * @param inputIndex indicates if this shall be written to the (true) inputFileIndex or (false) outputFileIndex
-     */
-    /*
-    private void setFileEntryName(String sFileRandomNumber, String sFileName, boolean inputIndex){
-        if((sFileRandomNumber!=null)&&(sFileName!=null)){
-            try{
-                Properties props;
-                File dir;
-                //check if written to input or output file index
-                if(inputIndex){
-                    props = this.getInputDirIndex();
-                    dir = new File(FileInDir);
-                }
-                else{
-                    props = this.getOutputDirIndex();
-                    dir = new File(FileOutDir);
-                }
-                props.put(sFileRandomNumber,sFileName);
-                props.store(new FileOutputStream(new File(dir, "index_names.properties")), null);
-            }catch(Exception e){
-                //TODO: loog
-            }
-        }
-    }
-    */
     
     /**
      * checks if for the input files an index file exists and if not creates it. As for the input
@@ -511,25 +468,6 @@ public class DataHandlerImpl implements DataHandler {
     }
     
     /**
-     * Creates a mapping between the resources's physical file name (random number) and its
-     * original logical name.
-     * @param sFileRandomNumber
-     * @param sFileName
-     */
-    private void setIndexFileEntryName(String sFileRandomNumber, String sFileName){
-        if((sFileRandomNumber!=null)&&(sFileName!=null)){
-            try{
-                Properties props = this.getIndex();
-                props.put(sFileRandomNumber,sFileName);
-                 File dir = new File(FileStoreDir);
-                props.store(new FileOutputStream(new File(dir, "index_names.properties")), null);
-            }catch(Exception e){
-                //TODO: loog
-            }
-        }
-    }
-    
-    /**
      * Fetches for a given file (the resource's physical file name on the disk) its
      * original logical name which is stored within an index.
      * e.g. ce37d69b-64c0-4476-9040-72512f07bb49.TIF to Test1.TIF
@@ -605,6 +543,14 @@ public class DataHandlerImpl implements DataHandler {
             fos.flush();
         }
         fos.close();
+    }
+
+    /**
+     * TODO A factory that looks up the DataHandler in the context:
+     * @return The DataHandler
+     */
+    public static DataHandler findDataHandler() {
+        return new DataHandlerImpl();
     }
 
 }

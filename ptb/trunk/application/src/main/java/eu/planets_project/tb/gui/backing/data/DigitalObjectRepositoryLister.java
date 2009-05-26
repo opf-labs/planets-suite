@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 
@@ -41,7 +40,7 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
     private List<URI> children;
     
     // The parent Browser, if known:
-    private DigitalObjectBrowser digitalObjectBrowser;
+    protected DigitalObjectBrowser digitalObjectBrowser;
     
     /**
      * @param digitalObjectBrowser
@@ -157,7 +156,7 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
     
     /** */
     private DigitalObjectTreeNode createDobFromUri( URI item ) {
-        // Object or folder?
+        // Object or folder? If null, or empty folder, 
         if( dsm.list(item) == null ) {
             // This is a DO:
             try {

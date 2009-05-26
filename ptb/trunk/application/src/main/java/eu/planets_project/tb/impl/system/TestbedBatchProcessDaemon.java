@@ -78,7 +78,7 @@ public class TestbedBatchProcessDaemon extends Thread {
             // Process each in turn:
             for( String filename : job.getDigitalObjects() ) {
                 log.info("Running job: "+(i+1)+"/"+total);
-                DigitalObject dob = dh.getDigitalObject(filename);
+                DigitalObject dob = dh.get(filename).getDigitalObject();
                 WorkflowResult wfr = null;
                 
                 // Actually run the workflow:
@@ -186,7 +186,7 @@ public class TestbedBatchProcessDaemon extends Thread {
     private void storeWorkflowResults(TestbedBatchJob job, WorkflowResult wfr,
             DigitalObject dob, String filename, BatchExecutionRecordImpl batch, Experiment exp ) {
         // Update the experiment from the job:
-        WorkflowResult.recordWorkflowResultToExperiment( exp.getEntityID(), wfr, filename, batch );
+        WorkflowResult.recordWorkflowResultToExperiment( exp.getEntityID(), wfr, filename, batch, exp );
         edao.updateExperiment(exp);
     }
 

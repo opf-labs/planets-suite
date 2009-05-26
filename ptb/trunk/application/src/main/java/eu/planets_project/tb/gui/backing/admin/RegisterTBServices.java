@@ -79,6 +79,8 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 
 /**
  * 
+ * FIXME Old Code? Remove this class?
+ * 
  * This class implements the following logic:
  * 
  *  - the service's operation deployer for the application
@@ -930,8 +932,8 @@ public class RegisterTBServices{
 					//get file ref
 					String sFileRef = this.addedFileRefs.values().iterator().next();
 					try{
-						File f = dh.getFile(sFileRef);
-						sFileRef = f.getAbsolutePath();
+//						File f = dh.getFile(sFileRef);
+//						sFileRef = f.getAbsolutePath();
 					}catch(Exception e){}	
 					
 					//build return String
@@ -958,8 +960,8 @@ public class RegisterTBServices{
 						//convert from URI to absolute local file reference
 						String sFileRef = this.addedFileRefs.get(i+"");
 						try{
-							File f = dh.getFile(sFileRef);
-							sFileRef = f.getAbsolutePath();
+//							File f = dh.getFile(sFileRef);
+//							sFileRef = f.getAbsolutePath();
 						}catch(Exception e){}	
 						sRet+=sArrayLineStart + sFileRef + sArrayLineEnd;
 					}
@@ -981,8 +983,8 @@ public class RegisterTBServices{
 				String sFileRef = this.addedFileRefs.values().iterator().next();
 				String sBase64File ="";
 				try{
-					File f = dh.getFile(sFileRef);
-					sBase64File = DataHandlerImpl.encodeToBase64ByteArrayString(f);
+//					File f = dh.getFile(sFileRef);
+//					sBase64File = DataHandlerImpl.encodeToBase64ByteArrayString(f);
 				}catch(Exception e){
 				    log.error("Could not create the base64 encoded file: "+sFileRef);
 				    log.error("Caught exception: "+e);
@@ -1546,15 +1548,15 @@ public class RegisterTBServices{
 					//get the input file URIs original local file name
 					boolean b = false;
 					try {
-						File f = dh.getFile(input);
-						if((f!=null)&&(f.canRead())){
+//						File f = dh.getFile(input);
+//						if((f!=null)&&(f.canRead())){
 							//in this case let's use the original file name as Link label
-							String name = dh.getName(input);
+							String name = dh.get(input).getName();
 							if((name!=null)&&(!name.equals(""))){
 								link_text.setValue(name);
 								b=true;
 							}
-						}
+//						}
 					} catch (Exception e) {} 
 					
 					if(!b){

@@ -25,6 +25,7 @@ public class JSFUtil
     public static Object getManagedObject(String objectName)
   {
     FacesContext context = FacesContext.getCurrentInstance();
+    if( context == null ) return null;
     ELResolver resolver = context.getApplication().getELResolver();
     Object requestedObject =  resolver.getValue(context.getELContext(), null, objectName);
     return  requestedObject;

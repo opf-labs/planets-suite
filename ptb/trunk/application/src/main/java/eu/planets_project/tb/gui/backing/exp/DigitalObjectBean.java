@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
@@ -71,23 +72,20 @@ public class DigitalObjectBean {
      * 
      */
     private void init( String file ) {
-        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         // Populate using the results:
-        DataHandler dh = new DataHandlerImpl();
+        DataHandler dh = DataHandlerImpl.findDataHandler();
         // Set up the DO name, etc
         setDigitalObject(file);
+        DigitalObjectRefBean bean;
         try {
-            setDownloadURL(dh.getDownloadURI(file).toString());
+            bean = dh.get(file);
+            setDownloadURL(bean.getDownloadUri().toString());
+            setDigitalObjectName(DataHandlerImpl.createShortDOName(bean.getName()));
         } catch (FileNotFoundException e) {
             setDownloadURL("");
-        }
-        try {
-            setDigitalObjectName(DataHandlerImpl.createShortDOName(dh.getName(file)));
-        } catch (FileNotFoundException e) {
             setDigitalObjectName(DataHandlerImpl.createShortDOName(file));
         }
         log.info("DigitalObjectBean initialised.");
-        
     }
 
 }

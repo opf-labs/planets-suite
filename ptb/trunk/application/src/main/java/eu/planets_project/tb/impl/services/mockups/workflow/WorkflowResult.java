@@ -137,13 +137,13 @@ public class WorkflowResult {
      * @param exp
      */
     public static void recordWorkflowResultToExperiment(long eid, WorkflowResult wfr, String filename,
-            BatchExecutionRecordImpl batch ) {
+            BatchExecutionRecordImpl batch, Experiment exp ) {
         DataHandler dh = new DataHandlerImpl();
         try {
             ExecutionRecordImpl rec = new ExecutionRecordImpl();
             rec.setDigitalObjectReferenceCopy(filename);
             try {
-                rec.setDigitalObjectSource(dh.getName(filename));
+                rec.setDigitalObjectSource(dh.get(filename).getName());
             } catch (FileNotFoundException e) {
                 rec.setDigitalObjectSource(filename);
             }
@@ -154,7 +154,7 @@ public class WorkflowResult {
             if( wfr != null && wfr.getStages() != null ) {
                 // Examine the result:
                 if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wfr.getResultType())) {
-                    rec.setDigitalObjectResult( (DigitalObject) wfr.getResult() );
+                    rec.setDigitalObjectResult( (DigitalObject) wfr.getResult(), exp );
                     
                 } else if(WorkflowResult.RESULT_CREATEVIEW_RESULT.equals(wfr.getResultType()) ) {
                     CreateViewResult cvr = (CreateViewResult) wfr.getResult( );

@@ -1,4 +1,4 @@
-<%@ page import= "java.io.*, java.net.URLDecoder, javax.activation.MimetypesFileTypeMap, eu.planets_project.tb.impl.data.util.DataHandlerImpl" %><% 
+<%@ page import= "java.io.*, java.net.URLDecoder, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
 
 //
 // For a model download servlet, see http://balusc.blogspot.com/2007/07/fileservlet.html
@@ -11,20 +11,17 @@ String fid = request.getParameter("fid");
 fid = URLDecoder.decode(fid, "UTF-8");
 
 // Start up the testbed data handler:
-DataHandlerImpl dh = new DataHandlerImpl();
+DigitalObjectRefBean dh = new DataHandlerImpl().get(fid);
 
 // Get the full filename, and the real filename:
-String filename = dh.getName(fid); 
-
-// Open the file:
-File f = dh.getFile(fid);
+String filename = dh.getName(); 
 
 // Guess the mime type:
-String mimetype = new MimetypesFileTypeMap().getContentType(f);
+String mimetype = dh.getMimeType();
 
 // Set the headers appropriately:
 response.setContentType( (mimetype != null) ? mimetype : "application/octet-stream" );
-response.setContentLength( ((Long)f.length()).intValue() );
+response.setContentLength( ((Long)dh.getSize()).intValue() );
 // This should allow the content to be rendered by the browser, but the filename is ignored.
 response.setHeader( "Content-Disposition", "inline; filename=\"" + filename + "\"" );
 // The following alternative forces a download:
@@ -32,7 +29,7 @@ response.setHeader( "Content-Disposition", "inline; filename=\"" + filename + "\
 
 // Now stream out the data:
 byte[] bbuf = new byte[2*1024];
-DataInputStream in = new DataInputStream(new FileInputStream(f));
+DataInputStream in = new DataInputStream(dh.getContentAsStream());
 int length = 0;
 ServletOutputStream op = response.getOutputStream();
 

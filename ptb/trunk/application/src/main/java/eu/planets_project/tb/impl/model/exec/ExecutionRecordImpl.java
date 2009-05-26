@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.security.DigestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 
@@ -321,20 +323,11 @@ public class ExecutionRecordImpl implements Serializable {
     
     /* -- */
     
-    public void setDigitalObjectResult( DigitalObject dob ) {
-        try {
-            DataHandler dh = new DataHandlerImpl();
-            // FIXME Check dob.getContent().read() != null?
-            String storeKey = dh.addBytestream(dob.getContent().read(), dob.getTitle());
-            this.setResult(storeKey);
-            this.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
-            /* FIXME In the future, store the whole DO in the TB DR.
-    Add dob.gatherBinaries/embedBinaries method?
-             */
-        } catch (IOException e) {
-            log.error("Could not store result DigitalObject - "+dob);
-            e.printStackTrace();
-        }
+    public void setDigitalObjectResult( DigitalObject dob, Experiment exp ) {
+        DataHandler dh = new DataHandlerImpl();
+        URI storeUri = dh.storeDigitalObject(dob, exp);
+        this.setResult(storeUri.toString());
+        this.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
     }
     
     public void setDobRefResult( String storeKey ) {

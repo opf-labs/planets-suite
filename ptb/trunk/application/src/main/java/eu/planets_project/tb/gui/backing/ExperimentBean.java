@@ -44,6 +44,7 @@ import com.googlecode.charts4j.ScatterPlotData;
 import com.googlecode.charts4j.Shape;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.BasicProperties;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
@@ -302,7 +303,7 @@ public class ExperimentBean {
 	    			    // Clean up the localFileRef, so that the TB can cope with it's data store being moved.
 	    				//store a set of file BMGoals for every record item
 	    				DataHandler dh = new DataHandlerImpl();
-	    				URI inputFileURI = dh.getDownloadURI(localFileRef);
+	    				URI inputFileURI = dh.get(localFileRef).getDownloadUri();
 	    				Collection<BenchmarkGoal> colFileBMGoals = exp.getExperimentEvaluation().getEvaluatedFileBenchmarkGoals(inputFileURI);
 	    				if(colFileBMGoals==null)
 	    					throw new Exception("Exception while setting file benchmarks for record: "+inputFileURI);
@@ -558,9 +559,10 @@ public class ExperimentBean {
     			Map<String,String> map = new HashMap<String,String>();
     			//retrieve URI
     		    String fInput = localFileRefs.get(key);
-				URI uri = dh.getDownloadURI(fInput);
-				map.put("uri", uri.toString());
-				map.put("name", this.createShortDoName(dh.getName(fInput)));
+    		    DigitalObjectRefBean dobr = dh.get(fInput);
+				URI uri = dobr.getDownloadUri();
+				map.put("uri", uri.toString()) ;
+				map.put("name", this.createShortDoName(dobr.getName()) );
 				map.put("inputID", key);
 				ret.add(map);
 			} catch (FileNotFoundException e) {
@@ -575,6 +577,7 @@ public class ExperimentBean {
      * @return
      */
     private String createShortDoName( String name ) {
+        if( name == null ) return "no-name";
         int lastSlash = name.lastIndexOf("/");
         if( lastSlash != -1 ) {
             return name.substring( lastSlash + 1, name.length() );
@@ -682,10 +685,11 @@ public class ExperimentBean {
     	 //For the Input:
     		try{
     		//test: convert input to URI
-    			URI uriInput = dh.getDownloadURI(input);
+                DigitalObjectRefBean dobr = dh.get(input);
+    			URI uriInput = dobr.getDownloadUri();
     			//add "inputURI" and "inputName" into ret hashmap
     			hm.put("input", uriInput.toString());
-    			hm.put("inputName", dh.getName(input));
+    			hm.put("inputName", dobr.getName());
     			hm.put("inputTypeURI", "URI");
     			
     		}
@@ -699,10 +703,11 @@ public class ExperimentBean {
     	 //For the Output:
     		try{
         		//test: convert output to URI
-        		URI uriOutput = dh.getDownloadURI(output);
+                DigitalObjectRefBean dobr = dh.get(output);
+        		URI uriOutput = dobr.getDownloadUri();
         		//add "outputURI" and "outputName" "outputType" into ret hashmap
     			hm.put("output", uriOutput.toString());
-    			hm.put("outputName", dh.getName(output));
+    			hm.put("outputName", dobr.getName());
     			hm.put("outputTypeURI", "URI");
         	}
         	catch(Exception e){
@@ -1215,14 +1220,15 @@ public class ExperimentBean {
             HtmlOutputText outputText = (HtmlOutputText) facesContext
                     .getApplication().createComponent(
                             HtmlOutputText.COMPONENT_TYPE);
-            outputText.setValue(" "+dh.getName(fileRef));
+            DigitalObjectRefBean dobr = dh.get(fileRef);
+            outputText.setValue(" "+dobr.getName());
             outputText.setId("fileName" + key);
             //file name
             HtmlOutputLink link_src = (HtmlOutputLink) facesContext
                     .getApplication().createComponent(
                             HtmlOutputLink.COMPONENT_TYPE);
             link_src.setId("fileRef" + key);
-            URI URIFileRef = dh.getDownloadURI(fileRef);
+            URI URIFileRef = dobr.getDownloadUri();
             link_src.setValue(URIFileRef);
             link_src.setTarget("_new");
 

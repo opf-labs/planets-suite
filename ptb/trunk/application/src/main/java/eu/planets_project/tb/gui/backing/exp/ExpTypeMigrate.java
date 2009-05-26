@@ -31,6 +31,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -448,18 +449,17 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
             String summary = "Run "+batchId+": ";
             if( dobRef != null ) {
                 DataHandler dh = new DataHandlerImpl();
-                DigitalObject dob;
+                DigitalObjectRefBean dobr;
                 try {
-                    dob = dh.getDigitalObject(dobRef);
+                    dobr = dh.get(dobRef);
                 } catch (FileNotFoundException e) {
                     log.error("Could not find file. "+e);
                     return "";
                 }
-                summary += dob.getTitle();
-                try {
-                    summary += " ("+dob.getContent().read().available()+" bytes)";
-                } catch (IOException e) {
-                    log.error("Failed to read stream. "+e);
+                summary += dobr.getName();
+                long size = dobr.getSize();
+                if( size >= 0 ) {
+                    summary += " ("+size+" bytes)";
                 }
                 return summary;
             }
@@ -475,7 +475,8 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
             if( dobRef != null ) {
                 DataHandler dh = new DataHandlerImpl();
                 try {
-                    return dh.getDownloadURI(dobRef).toString();
+                    DigitalObjectRefBean dobr = dh.get(dobRef);
+                    return dobr.getDownloadUri().toString();
                 } catch (FileNotFoundException e) {
                     log.error("Failed to generate download URL. " + e);
                     return "";

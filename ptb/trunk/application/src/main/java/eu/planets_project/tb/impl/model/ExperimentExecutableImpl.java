@@ -338,7 +338,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 		DataHandler dh = new DataHandlerImpl();
 		if(localFileRef!=null){
 			try {
-				return dh.getDownloadURI(localFileRef);
+				return dh.get(localFileRef).getDownloadUri();
 				
 			} catch (FileNotFoundException e) {
 				log.debug("Exception while building URI for InputFile");
@@ -357,7 +357,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 		Iterator<String> itInputData =  this.getInputData().iterator();
 		while(itInputData.hasNext()){
 			try {
-				URI uri = dh.getDownloadURI(itInputData.next());
+				URI uri = dh.get(itInputData.next()).getDownloadUri();
 				if(uri!=null){
 					ret.add(uri);
 				}
@@ -377,7 +377,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 		DataHandler dh = new DataHandlerImpl();
 		if(localFileRef!=null){
 			try {
-				return dh.getDownloadURI(localFileRef);
+				return dh.get(localFileRef).getDownloadUri();
 				
 			} catch (FileNotFoundException e) {
 				log.debug("Exception while building URI for OutputFile");
@@ -396,7 +396,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 		Iterator<String> itOutputData =  this.getOutputData().iterator();
 		while(itOutputData.hasNext()){
 			try {
-				URI uri = dh.getDownloadURI(itOutputData.next());
+				URI uri = dh.get(itOutputData.next()).getDownloadUri();
 				if(uri!=null){
 					ret.add(uri);
 				}

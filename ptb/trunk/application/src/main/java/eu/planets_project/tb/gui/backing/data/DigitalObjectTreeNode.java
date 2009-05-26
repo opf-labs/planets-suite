@@ -5,8 +5,12 @@ package eu.planets_project.tb.gui.backing.data;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
+import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
+import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.List;
 
@@ -31,6 +35,8 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     private boolean selectable;
     private boolean expanded = false;
     
+    private DataHandler dh = DataHandlerImpl.findDataHandler();
+    
     /**
      * Constructor based on Digital Object:
      */
@@ -41,7 +47,8 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
         this.setType("file");
         this.setLeaf(true);
         this.setSelectable(true);
-        this.size = ""+dob.getContent().length();
+        DigitalObjectContent con = dob.getContent();
+        this.size = ""+con.length();
     }
     
     public DigitalObjectTreeNode( URI uri ) {
@@ -78,6 +85,18 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      */
     public DigitalObject getDob() {
         return dob;
+    }
+
+    /**
+     * @return a TB download URI:
+     */
+    public URI getDownloadUri() {
+        try {
+            return dh.get(this.getUri().toString()).getDownloadUri();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -154,6 +173,13 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      */
     public void deselectThis() {
         this.setSelected(false);
+    }
+    
+    /**
+     * 
+     */
+    public void selectThis() {
+        this.setSelected(true);
     }
     
     /**

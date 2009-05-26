@@ -46,6 +46,7 @@ public class UploadManager {
     	catch(Exception e){
     		//In this case an error occured ("error-upload"): just reload the page without adding any information
     		log.error("error uploading file to Testbed's input folder: "+e.toString());
+    		e.printStackTrace();
     		return null;
     	}
     	

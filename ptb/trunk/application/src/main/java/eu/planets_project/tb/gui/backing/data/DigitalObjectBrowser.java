@@ -14,6 +14,7 @@ import org.richfaces.event.DropEvent;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 
 /**
  * This class is the backing bean that provides the interface to 
@@ -42,6 +43,13 @@ public class DigitalObjectBrowser {
      */
     public DigitalObjectBrowser() {
         dr = new DigitalObjectRepositoryLister<DigitalObjectTreeNode>(this);
+    }
+
+    /**
+     * @return The multiManager
+     */
+    public DigitalObjectMultiManager getDom() {
+        return dr.dsm;
     }
     
     /**

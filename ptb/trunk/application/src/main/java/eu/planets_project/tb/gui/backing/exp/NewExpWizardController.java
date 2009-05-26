@@ -484,7 +484,7 @@ public class NewExpWizardController{
 	    	try {
 	    		while(itLocalInputFileRefs.hasNext()){
 					String localInputFileRef = itLocalInputFileRefs.next();
-					URI inputURI = dh.getDownloadURI(localInputFileRef);
+					URI inputURI = dh.get(localInputFileRef).getDownloadUri();
 					List<BenchmarkGoal> lbmgs = new ArrayList<BenchmarkGoal>();
 					
 					for(BenchmarkBean b : mBMBs.values()){

@@ -284,7 +284,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 						throw new IOException("Error reading migration output file from file ref for key: "+key);
 					}
 					//now copy its binary data
-					String ref  = dh.addFile(fMigrationOutput);
+					String ref  = dh.storeFile(fMigrationOutput).toString();
 					
 					//finally update the returned migration output reference
 					ret.put(key, ref);
@@ -298,7 +298,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 						URI uriRef = new URI(suriRef);
 						
                         //write the file's content as read from the stream
-                        String newFileName = dh.addByURI(uriRef);
+                        String newFileName = dh.storeUriContent(uriRef).toString();
 						
 						//finally update the returned migration output reference
 						ret.put(key, newFileName);
@@ -419,7 +419,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 				sOutputFileName = origInputFileMathNr+"."+outputFileType;
 				
 				//now copy the byteArray into the file-location
-				String ref = dh.addBytearray(b, sOutputFileName);
+				String ref = dh.storeBytearray(b, sOutputFileName).toString();
 				
 				//finally update the returned migration output reference
 				ret.put(key, ref);
@@ -450,7 +450,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 		for(Entry<String,String> dataEntry : data){
 			DataHandler dh = new DataHandlerImpl();
 			try {
-				URI inputFileURI = dh.getDownloadURI(dataEntry.getKey());
+				URI inputFileURI = dh.get(dataEntry.getKey()).getDownloadUri();
 				//URI outputFileURI = dh.getHttpFileRef(new File(dataEntry.getValue()), false);
 				File fInputFile = new File(dataEntry.getKey());
 				File fOutputFile = new File(dataEntry.getValue());

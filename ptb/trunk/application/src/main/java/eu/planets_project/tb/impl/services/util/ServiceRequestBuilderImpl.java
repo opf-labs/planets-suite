@@ -18,6 +18,7 @@ import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 /**
+ * FIXME Old Code? Remove this class?
  * @author Andrew Lindley, ARC
  * The following restrictions apply:
  *  - File, FileArrays and Base64ByteArray are currently supported
@@ -274,6 +275,8 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 	 * @throws FileNotFoundException 
 	 */
 	private String convertToAbsoluteFileRef(String localFileRef) throws FileNotFoundException{
+	    return dh.get(localFileRef).getDownloadUri().toString();
+	    /*
 		File f = dh.getFile(localFileRef);
 		if(!f.canRead()){
 			log.error("error retrieving file ref "+localFileRef+" to absolute path");
@@ -283,6 +286,7 @@ public class ServiceRequestBuilderImpl implements ServiceRequestBuilder{
 		else{
 			return f.getAbsolutePath();
 		}
+		*/
 	}
 
 	/* (non-Javadoc)

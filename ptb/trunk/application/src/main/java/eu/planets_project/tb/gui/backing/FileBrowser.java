@@ -232,15 +232,8 @@ public class FileBrowser {
         for( FileTreeNode dob: fb.getList() ) {
           // Only include selected items that are eligible:
           if( dob.isSelectable() && dob.isSelected() ) {
-            try {
-                DataHandler dh = new DataHandlerImpl();
-            	String ref = dh.addFromDataRegistry(fb.dr , dob.getUri());
-            	//add reference to the new experiment's backing bean
-          		expBean.addExperimentInputData(ref);
-            } catch( IOException e ) {
-              log.error("Failed to add to experiment: "+dob.getUri());
-              log.error("Exception: "+e);
-            }
+              //add reference to the new experiment's backing bean
+              expBean.addExperimentInputData(dob.getUri().toString());
           }
         }
         // Clear any selection:
