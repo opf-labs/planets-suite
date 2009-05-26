@@ -34,7 +34,7 @@ public interface Registry {
      */
     @WebMethod
     @WebResult
-    RegistryResponse register(@WebParam ServiceDescription serviceDescription);
+    Response register(@WebParam ServiceDescription serviceDescription);
 
     /**
      * Query by example registry lookup.
@@ -70,7 +70,7 @@ public interface Registry {
      */
     @WebMethod
     @WebResult
-    RegistryResponse clear();
+    Response clear();
 
     /**
      * @param example The sample of the service descriptions to delete
@@ -78,5 +78,5 @@ public interface Registry {
      */
     @WebMethod
     @WebResult
-    RegistryResponse delete(@WebParam ServiceDescription example);
+    Response delete(@WebParam ServiceDescription example);
 }

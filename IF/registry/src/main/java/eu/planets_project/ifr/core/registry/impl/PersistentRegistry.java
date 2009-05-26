@@ -14,7 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.RegistryResponse;
+import eu.planets_project.ifr.core.registry.api.Response;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -81,8 +81,8 @@ public final class PersistentRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public RegistryResponse delete(final ServiceDescription example) {
-        RegistryResponse response = registry.delete(example);
+    public Response delete(final ServiceDescription example) {
+        Response response = registry.delete(example);
         List<ServiceDescription> list = registry.query(null);
         clear();
         for (ServiceDescription serviceDescription : list) {
@@ -106,8 +106,8 @@ public final class PersistentRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#register(eu.planets_project.services.datatypes.ServiceDescription)
      */
-    public RegistryResponse register(final ServiceDescription serviceDescription) {
-        RegistryResponse response = registry.register(serviceDescription);
+    public Response register(final ServiceDescription serviceDescription) {
+        Response response = registry.register(serviceDescription);
         if (response.success()) {
             String xml = serviceDescription.toXml();
             File f = new File(root, filename(serviceDescription));
@@ -121,7 +121,7 @@ public final class PersistentRegistry implements Registry {
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#clear()
      */
-    public RegistryResponse clear() {
+    public Response clear() {
         String[] list = root.list();
         for (String name : list) {
             File file = new File(root, name);

@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public final class RegistryResponse {
+public final class Response {
 
     /** The response message. */
     private String message;
@@ -18,7 +18,7 @@ public final class RegistryResponse {
      * @param message The response message
      * @param success The status of the registry request
      */
-    public RegistryResponse(final String message, final Boolean success) {
+    public Response(final String message, final Boolean success) {
         this.message = message;
         this.success = success;
     }
@@ -27,7 +27,7 @@ public final class RegistryResponse {
      * For JAXB.
      */
     @SuppressWarnings("unused")
-    private RegistryResponse() {}
+    private Response() {}
 
     /**
      * {@inheritDoc}

@@ -93,7 +93,7 @@ public class PersistentRegistryTests extends CoreRegistryTests {
         /* We create one registry and register one description: */
         description = ServiceDescription.create("Test", "Type").endpoint(
                 new URL("http://no.where")).build();
-        RegistryResponse register = registry.register(description);
+        Response register = registry.register(description);
         if (!register.success()) {
             String message = register.getMessage();
             System.err.println(message);
