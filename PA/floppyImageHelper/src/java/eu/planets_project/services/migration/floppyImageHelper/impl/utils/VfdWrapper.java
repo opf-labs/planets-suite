@@ -421,11 +421,11 @@ public class VfdWrapper {
 
 	private boolean toolInstalledProperly() {
 		if(FLOPPY_IMAGE_TOOLS_HOME_PATH == null) {
-			log.error("FLOPPY_IMAGE_TOOLS_HOME_PATH = null! " +
+			log.error("FLOPPY_IMAGE_TOOLS_HOME = null! " +
 					br + "Could not find floppy image tools! " +
 					br + "Please install 'extract' and 'fat_imgen' on your system and point a System variable to the installation folder!" +
 					br + "Otherwise this service will carry on to refuse to do its work!");
-			process_error.append("FLOPPY_IMAGE_TOOLS_HOME_PATH = null! " +
+			process_error.append("FLOPPY_IMAGE_TOOLS_HOME = null! " +
 					br + "Could not find floppy image tools! " +
 					br + "Please install 'extract' and 'fat_imgen' on your system and point a System variable to the installation folder!" +
 					br + "Otherwise this service will carry on to refuse to do its work!");

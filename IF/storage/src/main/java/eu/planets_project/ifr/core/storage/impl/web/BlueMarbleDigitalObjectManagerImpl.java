@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.storage.api;
+package eu.planets_project.ifr.core.storage.impl.web;
 
 import java.io.IOException;
 
@@ -21,6 +21,9 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
 
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 

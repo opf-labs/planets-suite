@@ -46,7 +46,7 @@ public class DigitalObjectManagerTests {
 		}
 		// Instantiate a file based data registry instance
 		// Point it at a root directory in resources, the registry will create the dir if necessary
-		_dom = DigitalObjectManagerImpl.getInstance("test", rootDir);
+		_dom = FilesystemDigitalObjectManagerImpl.getInstance("test", rootDir);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class DigitalObjectManagerTests {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.file.DigitalObjectManagerImpl#list(java.net.URI)}.
+	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl#list(java.net.URI)}.
 	 * @throws URISyntaxException 
 	 */
 	@Test
@@ -78,7 +78,7 @@ public class DigitalObjectManagerTests {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.file.DigitalObjectManagerImpl#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)}.
+	 * Test method for {@link eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)}.
 	 * @throws MalformedURLException 
 	 * @throws URISyntaxException 
 	 * @throws DigitalObjectNotStoredException 
@@ -143,7 +143,7 @@ public class DigitalObjectManagerTests {
 		try {
 			File rootDir = null;
 			// Not doing too much here, just setting up a bad instance and catching the exception
-			DigitalObjectManagerImpl.getInstance("test", rootDir);
+			FilesystemDigitalObjectManagerImpl.getInstance("test", rootDir);
 		} catch (IllegalArgumentException e) {
 			return;
 		}
@@ -160,7 +160,7 @@ public class DigitalObjectManagerTests {
 		try {
 			File rootDir = new File("IF/storage/src/test/resources/nonexistentroot");
 			// Not doing too much here, just setting up a bad instance and catching the exception
-			DigitalObjectManagerImpl.getInstance("test", rootDir);
+			FilesystemDigitalObjectManagerImpl.getInstance("test", rootDir);
 		} catch (IllegalArgumentException e) {
 			return;
 		}
@@ -177,7 +177,7 @@ public class DigitalObjectManagerTests {
 		try {
 			File rootDir = new File("IF/storage/src/test/resources/testroot");
 			// Not doing too much here, just setting up a bad instance and catching the exception
-			DigitalObjectManagerImpl.getInstance(null, rootDir);
+			FilesystemDigitalObjectManagerImpl.getInstance(null, rootDir);
 		} catch (IllegalArgumentException e) {
 			return;
 		}
@@ -194,7 +194,7 @@ public class DigitalObjectManagerTests {
 		try {
 			File rootDir = new File("IF/storage/src/test/resources/testroot");
 			// Not doing too much here, just setting up a bad instance and catching the exception
-			DigitalObjectManagerImpl.getInstance("", rootDir);
+			FilesystemDigitalObjectManagerImpl.getInstance("", rootDir);
 		} catch (IllegalArgumentException e) {
 			return;
 		}

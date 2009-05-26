@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.storage.api.query;
+package eu.planets_project.ifr.core.storage.impl.web;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,10 +23,22 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryString;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
 
-
+/**
+ * 
+ * SRU is a standard XML-focused search protocol for Internet search queries,
+ * utilizing CQL (Contextual Query Language), a standard syntax for representing
+ * queries.
+ * 
+ * @see http://www.loc.gov/standards/sru/
+ * 
+ * 
+ */
 public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
 	
     /**

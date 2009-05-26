@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://java.sun.com/jstl/core">
+
+<head>
+    <link rel="stylesheet" href="/css/planets.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="/css/planets_print.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="${facesContext.externalContext.requestContextPath}/css/screen.css" type="text/css" media="screen" />
+    <link rel="icon" href="${facesContext.externalContext.requestContextPath}/graphics/plavicon.png"/>
+    <link rel="stylesheet" href="#{PlanetsSharedBean.sharedFileContext}css/planets-top-nav.css" type="text/css" media="screen" />
+	<title><ui:insert name="title">Placeholder Title</ui:insert></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+
+<body>
+    <ui:include src="#{PlanetsSharedBean.sharedFileBasePath}WEB-INF/templates/planets-header.xhtml">
+        <ui:param name="homeUrl" value="/testbed/"/>
+        <ui:param name="loginUrl" value="/testbed/login-redirect.jsp"/>
+        <ui:param name="logoutUrl" value="/testbed/logout-redirect.jsp"/>
+        <ui:param name="helpUrl" value="/testbed/reader/help.faces"/>
+        <ui:param name="contactUrl" value="mailto:helpdesktb@planets-project.eu"/>
+    </ui:include>
+        
+    <div id="page">
+
+        <h2 class="subnav"><ui:insert name="title">Placeholder Title</ui:insert></h2>
+        
+        <ui:insert name="content">Placeholder Content</ui:insert>
+       
+    </div>
+
+<div id="pl-footer">
+<c:if test="${pageContext.request.remoteUser != null}">
+Logged in as <a href="/admin/">${pageContext.request.remoteUser}</a> |
+</c:if>
+ The Planets Suite | <a href="http://www.planets-project.eu/">www.planets-project.eu</a> | &copy; The Planets Consortium 2006-2010.
+</div>
+
+<div id="pl-logos">
+ <a target="_blank" href="http://www.cordis.lu/ist/" rel="external"><div title="Information Society Technologies" id="istLogo"></div></a>
+</div>
+
+
+
+</body>
+</html>

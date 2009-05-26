@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.storage.api.query;
+package eu.planets_project.ifr.core.storage.impl.web;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -28,6 +28,9 @@ import org.xml.sax.SAXException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryString;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 
 /**
  * Implements the DigitalObjectManager interface for the Yahoo Image API. This

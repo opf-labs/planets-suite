@@ -11,7 +11,7 @@
 	<property name="appDir" value="." />
 
 	<!-- Specify the build type: ejb, war or ear. -->
-	<property name="pserv.app.build.type" value="ejb" />
+    <property name="pserv.app.build.type" value="ear"/>
 
 	<!-- Specify how this application should be deployed -->
 	<property name="pserv.app.deploy.mode" value="pure-java" />
@@ -23,7 +23,7 @@
 	<property name="src.web" value="${appDir}/src/web" />
 
 	<!-- Define the API part-->
-	<property name="src.api.includes" value="eu/planets_project/ifr/core/storage/api/**" />
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/storage/api/** eu/planets_project/ifr/core/storage/impl/** eu/planets_project/ifr/core/storage/utils/**" />
 
 	<!-- Unit testing definitions -->
 	<property name="test.src.dir" value="${appDir}/src/test/java" />

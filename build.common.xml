@@ -570,6 +570,9 @@
 
   <target name="clean" description="cleans the build dir">
     <delete dir="${build.dir}"/>
+  </target>
+  
+  <target name="clean:build" description="cleans the top-level PServ build" depends="clean">
     <delete dir="${pserv.root.dir}/build"/>
   </target>
 
