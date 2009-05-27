@@ -168,31 +168,31 @@
 				
                 <p style="color:#006699;"><b>#{res['new_exp.litRef']}</b></p>
                 <t:dataList var="refurl" value="#{ExperimentBean.litRefURI}" rowIndexVar="rowi">
-                <rich:simpleTogglePanel switchType="client" label="#{ExperimentBean.litRefDesc[rowi]}">               
+                <rich:simpleTogglePanel switchType="client" label="#{ExperimentBean.litRefDesc[rowi]}">            
+                <h:panelGroup>
+                    <h:outputLabel for="litRefAuthor_#{rowi+1}" value="#{res['new_exp.litRef_Author']}"/>
+                    <h:inputText id="litRefAuthor_#{rowi+1}" value="#{ExperimentBean.litRefAuthor[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+                    <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefAuthor']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+                    <h:message for="litRefAuthor_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" />	
+                </h:panelGroup>   
+                <h:panelGroup>
+                    <h:outputLabel for="litRefTitle_#{rowi+1}" value="#{res['new_exp.litRef_Title']}"/>
+                    <h:inputText id="litRefTitle_#{rowi+1}" value="#{ExperimentBean.litRefTitle[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+                    <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefTitle']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+                    <h:message for="litRefTitle_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" />	
+                </h:panelGroup>
                	<h:panelGroup>
-                       <h:outputLabel for="litRefDesc_#{rowi+1}" value="#{res['new_exp.litRef_Desc']}"/>
-                       <h:inputText id="litRefDesc_#{rowi+1}" required="#{((ExperimentBean.litRefURI[rowi]!=null) and (ExperimentBean.litRefURI[rowi]!=''))}" value="#{ExperimentBean.litRefDesc[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                       <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefDesc']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                       <h:message for="litRefDesc_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage"/>			
-                   </h:panelGroup>
-                   <h:panelGroup>
-                       <h:outputLabel for="litRefURI_#{rowi+1}" value="#{res['new_exp.litRef_URI']}"/>
-                       <h:inputText id="litRefURI_#{rowi+1}" required="#{((ExperimentBean.litRefDesc[rowi]!=null) and (ExperimentBean.litRefDesc[rowi]!=''))}" value="#{ExperimentBean.litRefURI[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                       <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefURI']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                       <h:message for="litRefURI_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" />	
-                   </h:panelGroup>
-                   <h:panelGroup>
-                       <h:outputLabel for="litRefTitle_#{rowi+1}" value="#{res['new_exp.litRef_Title']}"/>
-                       <h:inputText id="litRefTitle_#{rowi+1}" value="#{ExperimentBean.litRefTitle[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                       <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefTitle']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                       <h:message for="litRefTitle_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" />	
-                   </h:panelGroup>
-                   <h:panelGroup>
-                       <h:outputLabel for="litRefAuthor_#{rowi+1}" value="#{res['new_exp.litRef_Author']}"/>
-                       <h:inputText id="litRefAuthor_#{rowi+1}" value="#{ExperimentBean.litRefAuthor[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
-                       <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefAuthor']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
-                       <h:message for="litRefAuthor_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" />	
-                   </h:panelGroup>
+                    <h:outputLabel for="litRefDesc_#{rowi+1}" value="#{res['new_exp.litRef_Desc']}"/>
+                    <h:inputText id="litRefDesc_#{rowi+1}" required="#{((ExperimentBean.litRefURI[rowi]!=null) and (ExperimentBean.litRefURI[rowi]!=''))}" value="#{ExperimentBean.litRefDesc[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+                    <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefDesc']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+                    <h:message for="litRefDesc_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage"/>			
+                </h:panelGroup>
+                <h:panelGroup>
+                    <h:outputLabel for="litRefURI_#{rowi+1}" value="#{res['new_exp.litRef_URI']}"/>
+                    <h:inputText id="litRefURI_#{rowi+1}" required="#{((ExperimentBean.litRefDesc[rowi]!=null) and (ExperimentBean.litRefDesc[rowi]!=''))}" value="#{ExperimentBean.litRefURI[rowi]}" size="50" readonly="#{ExperimentBean.approved}" disabled="#{ExperimentBean.approved}"/>
+                    <img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['new_exp.tooltipLitRefURI']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
+                    <h:message for="litRefURI_#{rowi+1}" errorClass="errorMessage" infoClass="infoMessage" />	
+                </h:panelGroup>
                 <div class="clear"></div>
                 </rich:simpleTogglePanel>
                 </t:dataList>                
