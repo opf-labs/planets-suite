@@ -40,7 +40,8 @@
       <td class="headerButtons">
 	  
       <h:commandButton value="#{res['button.saveas']}"
-                                    action="#{NewExp_Controller.commandSaveAs}" rendered="#{ExperimentBean.currentStage > 1 and not PlaceBandAsHeader}" />
+         action="#{NewExp_Controller.commandSaveAs}" rendered="#{ExperimentBean.currentStage > 1 and not PlaceBandAsHeader}"
+         title="#{res['button.saveAsTitle']}" />
       
       <c:if test="#{ExperimentPhase == 1}">
       <h:commandButton value="#{res['button.save']}"
