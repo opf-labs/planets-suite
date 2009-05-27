@@ -3,6 +3,7 @@ package eu.planets_project.services.datatypes;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 
 import javax.activation.DataHandler;
@@ -31,7 +32,7 @@ import eu.planets_project.services.utils.ByteArrayDataSource;
  * NOTE: This class is intentionally NOT PUBLIC. Clients should use the factory
  * methods in the Content class to instantiate content.
  */
-final class ImmutableContent implements DigitalObjectContent {
+final class ImmutableContent implements DigitalObjectContent, Serializable {
     private static Log log = LogFactory.getLog(ImmutableContent.class);
 
     private static final long serialVersionUID = 7135127983024589335L;
@@ -42,6 +43,13 @@ final class ImmutableContent implements DigitalObjectContent {
 
     @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
     @XmlMimeType("application/octet-stream")
+    /*
+     * FIXME: This field is non-serializable and non-transient. We can't make it
+     * serializable because it's not ours and we can't make it transient because
+     * then JAXB complains. Support for Java Serialization is currently required
+     * by GUI components. Possible solutions: using different UI components;
+     * using some sort of wrapper object in the GUI (SerializableDigitalObject).
+     */
     private DataHandler dataHandler;
 
     /***/

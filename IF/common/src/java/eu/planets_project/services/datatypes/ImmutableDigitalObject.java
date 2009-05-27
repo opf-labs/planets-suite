@@ -1,23 +1,30 @@
 package eu.planets_project.services.datatypes;
 
-import eu.planets_project.services.PlanetsServices;
-
-import javax.xml.bind.*;
-import javax.xml.bind.annotation.*;
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.SchemaOutputResolver;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
+
+import eu.planets_project.services.PlanetsServices;
+
 /**
- * NOTE: This class is actually intended to be NOT PUBLIC. Clients should use a
- * DigitalObject.Builder to instantiate digital objects. It is only public as a
- * temporary solution to be accessible by GUI components.
- * <p/>
  * Representation of an immutable, comparable concrete digital object, to be
  * passed through web services and serializable with JAXB. As the other planets
  * data types, it uses XmlAccessType.FIELD instead of getters and setters. This
@@ -32,17 +39,21 @@ import java.util.List;
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  * @see DigitalObjectTests
  */
-@XmlRootElement(name = "digitalObject", namespace = PlanetsServices.OBJECTS_NS)
-@XmlType(namespace = PlanetsServices.OBJECTS_NS)
-@XmlAccessorType(value = XmlAccessType.FIELD)
-public final class ImmutableDigitalObject implements
-        Comparable<ImmutableDigitalObject>, DigitalObject {
+@XmlRootElement( name = "digitalObject", namespace = PlanetsServices.OBJECTS_NS )
+@XmlType( namespace = PlanetsServices.OBJECTS_NS )
+@XmlAccessorType( value = XmlAccessType.FIELD )
+/*
+ * NOTE: This class is intentionally NOT PUBLIC. Clients should use a
+ * DigitalObject.Builder to instantiate digital objects.
+ */
+final class ImmutableDigitalObject implements
+        Comparable<ImmutableDigitalObject>, DigitalObject, Serializable {
 
     /** Generated UID. */
     private static final long serialVersionUID = -893249048201058999L;
 
     /** @see {@link #getTitle()} */
-    @XmlAttribute(required = true)
+    @XmlAttribute( required = true )
     private String title;
 
     /** @see {@link #getFormat()} */
@@ -58,23 +69,23 @@ public final class ImmutableDigitalObject implements
     private URI manifestationOf;
 
     /** @see {@link #getMetadata()} */
-    @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
+    @XmlElement( namespace = PlanetsServices.OBJECTS_NS )
     private List<Metadata> metadata;
 
     /** @see {@link #getContained()} */
-    @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
+    @XmlElement( namespace = PlanetsServices.OBJECTS_NS )
     private List<DigitalObject> contained;
 
     /** @see {@link #getContent()} */
-    @XmlElement(namespace = PlanetsServices.OBJECTS_NS, required = true)
-    private DigitalObjectContent content;
+    @XmlElement( namespace = PlanetsServices.OBJECTS_NS, required = true )
+    private ImmutableContent content;
 
     /** @see {@link #getEvents()} */
-    @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
+    @XmlElement( namespace = PlanetsServices.OBJECTS_NS )
     private List<Event> events;
 
     /** @see {@link #getFragments()} */
-    @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
+    @XmlElement( namespace = PlanetsServices.OBJECTS_NS )
     private List<Fragment> fragments;
 
     /**
@@ -82,7 +93,17 @@ public final class ImmutableDigitalObject implements
      */
     ImmutableDigitalObject(final Builder builder) {
         permanentUri = builder.getPermanentUri();
-        content = builder.getContent();
+        /*
+         * FIXME: We cast here to allow using the concrete content
+         * implementation class in this digital object implementation in order
+         * to avoid having to make the content interface serializable (which
+         * this digital object implementation is, but not digital objects in
+         * general). While this is safe in our current setup, it is not ideal,
+         * because this digital object implementation can't be combined with a
+         * different content implementation. We currently need Java
+         * Serialization support since GUI components we use require it.
+         */
+        content = (ImmutableContent) builder.getContent();
         contained = builder.getContained();
         events = builder.getEvents();
         fragments = builder.getFragments();
@@ -99,19 +120,15 @@ public final class ImmutableDigitalObject implements
      * {@code new DigitalObject.Builder(required args...)optional
      * args...build();}
      */
-    @SuppressWarnings("unused")
+    @SuppressWarnings( "unused" )
     private ImmutableDigitalObject() {}
 
     /**
-     * NOTE: This class is actually intended to be NOT PUBLIC. Clients should
-     * use a DigitalObject.Builder to instantiate digital objects. It is only
-     * public as a temporary solution to be accessible by GUI components.
-     * <p/>
      * @param xml The XML representation of a digital object (as created from
      *            calling toXml)
      * @return A digital object instance created from the given XML
      */
-    public static ImmutableDigitalObject of(final String xml) {
+    static ImmutableDigitalObject of(final String xml) {
         try {
             /* Unmarshall with JAXB: */
             JAXBContext context = JAXBContext
@@ -151,8 +168,8 @@ public final class ImmutableDigitalObject implements
      */
     public String toString() {
         int contentSize = content == null ? 0 : 1;
-        String checksum = content == null || content.getChecksum() == null ? ""
-                : content.getChecksum().toString();
+        String checksum = content == null || content.getChecksum() == null
+                ? "" : content.getChecksum().toString();
         int containedSize = contained == null ? 0 : contained.size();
         int eventsSize = events == null ? 0 : events.size();
         int fragmentsSize = fragments == null ? 0 : fragments.size();
