@@ -41,6 +41,18 @@ public interface FormatRegistry {
     List<URI> getFormatUriAliases(URI typeUri);
 
     /**
+     * @param typeURI The type URI
+     * @return All aliases (in other format types) for the given URI
+     */
+    List<Format> getFormatAliases(URI typeURI);
+
+    /**
+     * @param puri The Planets URI (see FormatRegistry)
+     * @return A format instance for the given URI
+     */
+    Format getFormatForURI(URI puri);
+    
+    /**
      * @param uri The URI to find extensions for
      * @return Extensions corresponding to the given URI
      */

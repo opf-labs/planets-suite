@@ -106,7 +106,12 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 				String[] contents = searchRoot.list(filter);
 				retVal = new ArrayList<URI>();
 				for (String s : contents) {
-					retVal.add(new URI(pdURI+s+"/"));
+				    File sf = new File( searchRoot, s );
+				    if( sf.isDirectory() ) {
+				        retVal.add(new URI(pdURI+s+"/"));
+				    } else {
+                        retVal.add(new URI(pdURI+s));
+				    }
 				}
 			}
 		} catch (URISyntaxException e) {
@@ -135,23 +140,33 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	public DigitalObject retrieve(URI pdURI)
 			throws DigitalObjectNotFoundException {
 		DigitalObject retObj = null;
+        DigitalObject.Builder dob;
 	
 		try {
 			PDURI parsedURI = new PDURI(pdURI);
 			parsedURI.replaceDecodedPath(parsedURI.getDataRegistryPath() + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
 			String fullPath = this._root.getCanonicalPath() + File.separator + parsedURI.getDataRegistryPath();
 			StringBuilder fileData = new StringBuilder(1024);
-			BufferedReader reader = new BufferedReader(new FileReader(fullPath));
-			char[] buf = new char[1024];
-			int numRead = 0;
-			while((numRead=reader.read(buf)) != -1) {
-				fileData.append(buf, 0, numRead);
+			File xmlf = new File(fullPath);
+			if( xmlf.exists() ) {
+			    BufferedReader reader = new BufferedReader(new FileReader(xmlf));
+			    char[] buf = new char[1024];
+			    int numRead = 0;
+			    while((numRead=reader.read(buf)) != -1) {
+			        fileData.append(buf, 0, numRead);
+			    }
+			    reader.close();
+			    dob = new DigitalObject.Builder(fileData.toString());
+			    DigitalObjectContent c = Content.byReference(dob.getContent().read());
+			    dob.content(c);
+			} else {
+			    // Files without an associated metadata file are patched in like this:
+			    File binFile = new File( this._root.getCanonicalPath() + File.separator + ( new PDURI(pdURI).getDataRegistryPath() ) );
+	            DigitalObjectContent c = Content.byReference( binFile );
+	            dob = new DigitalObject.Builder( c );
+	            dob.title( binFile.getName() );
 			}
-			reader.close();
-			DigitalObject.Builder dob = new DigitalObject.Builder(fileData.toString());
 			// Also turn the content reference into a real file stream:
-			DigitalObjectContent c = Content.byReference(dob.getContent().read());
-			dob.content(c);
 			retObj = dob.build();
 		} catch (UnsupportedEncodingException e) {
 			FilesystemDigitalObjectManagerImpl._log.error("Unsupported encoding exception");

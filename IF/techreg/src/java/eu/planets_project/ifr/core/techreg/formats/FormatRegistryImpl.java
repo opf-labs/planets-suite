@@ -109,8 +109,8 @@ class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @param puri The Planets URI (see FormatRegistry)
-     * @return A format instance for the given URI
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFormatForURI(java.net.URI)
      */
     public Format getFormatForURI(URI puri) {
         if (isMimeUri(puri) || isExtensionUri(puri)) {
@@ -187,8 +187,8 @@ class FormatRegistryImpl implements FormatRegistry {
     }
 
     /**
-     * @param typeURI The type URI
-     * @return All aliases (in other format types) for the given URI
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#getFormatAliases(java.net.URI)
      */
     public List<Format> getFormatAliases(URI typeURI) {
         List<Format> fmts = new ArrayList<Format>();
