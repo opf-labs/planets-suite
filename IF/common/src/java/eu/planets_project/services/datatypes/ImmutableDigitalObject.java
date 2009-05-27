@@ -14,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * NOTE: This class is actually intended to be NOT PUBLIC. Clients should use a
+ * DigitalObject.Builder to instantiate digital objects. It is only public as a
+ * temporary solution to be accessible by GUI components.
+ * <p/>
  * Representation of an immutable, comparable concrete digital object, to be
  * passed through web services and serializable with JAXB. As the other planets
  * data types, it uses XmlAccessType.FIELD instead of getters and setters. This
@@ -31,11 +35,7 @@ import java.util.List;
 @XmlRootElement(name = "digitalObject", namespace = PlanetsServices.OBJECTS_NS)
 @XmlType(namespace = PlanetsServices.OBJECTS_NS)
 @XmlAccessorType(value = XmlAccessType.FIELD)
-/*
- * NOTE: This class is intentionally NOT PUBLIC. Clients should use a
- * DigitalObject.Builder to instantiate digital objects.
- */
-final class ImmutableDigitalObject implements
+public final class ImmutableDigitalObject implements
         Comparable<ImmutableDigitalObject>, DigitalObject {
 
     /** Generated UID. */
@@ -103,8 +103,12 @@ final class ImmutableDigitalObject implements
     private ImmutableDigitalObject() {}
 
     /**
+     * NOTE: This class is actually intended to be NOT PUBLIC. Clients should
+     * use a DigitalObject.Builder to instantiate digital objects. It is only
+     * public as a temporary solution to be accessible by GUI components.
+     * <p/>
      * @param xml The XML representation of a digital object (as created from
-     *        calling toXml)
+     *            calling toXml)
      * @return A digital object instance created from the given XML
      */
     public static ImmutableDigitalObject of(final String xml) {
