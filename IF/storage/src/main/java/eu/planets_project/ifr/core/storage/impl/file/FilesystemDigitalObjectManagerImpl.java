@@ -106,7 +106,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 				String[] contents = searchRoot.list(filter);
 				retVal = new ArrayList<URI>();
 				for (String s : contents) {
-					retVal.add(new URI(pdURI+"/"+s));
+					retVal.add(new URI(pdURI+s+"/"));
 				}
 			}
 		} catch (URISyntaxException e) {
