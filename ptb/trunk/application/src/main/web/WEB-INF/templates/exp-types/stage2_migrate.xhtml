@@ -11,6 +11,8 @@
 <body>
   <ui:composition rendered="#{ExperimentBean.etype == 'migrate'}">
 
+<h:panelGroup id="workflowRegion">
+
 <fieldset>
     <legend>Migration Experiment</legend>
     
@@ -18,10 +20,13 @@
     For every Digital Object, migrate from input format:<br/>
     <h:panelGroup rendered="#{!ExperimentBean.approved}">
     <span style="color:red;font-weight:bold;"> *</span>
-    <h:selectOneMenu id="inputFormatSelectMenu" value="#{ExpTypeMigrate.inputFormat}" onchange="submit();">
+    <a4j:region>
+    <h:selectOneMenu id="inputFormatSelectMenu" value="#{ExpTypeMigrate.inputFormat}">
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.inputFormatList}" />
+         <a4j:support event="onchange" reRender="workflowRegion" />
     </h:selectOneMenu>
+    </a4j:region>
     </h:panelGroup>
     <h:panelGroup rendered="#{ExperimentBean.approved}">
       <h:outputText value="#{ExpTypeMigrate.inputFormat}"/>
@@ -38,11 +43,14 @@
     <div class="expStageHeader">Characterise Before</div>
     
     <h:panelGroup rendered="#{!ExperimentBean.approved}">
-    <h:selectOneMenu id="preServiceSelectMenu" value="#{ExpTypeMigrate.preMigrationService}" onchange="submit();" 
+    <a4j:region>
+    <h:selectOneMenu id="preServiceSelectMenu" value="#{ExpTypeMigrate.preMigrationService}"
             disabled="#{ExperimentBean.approved}">
          <f:selectItem itemValue="" itemLabel="Do not characterise." />
          <f:selectItems value="#{ExpTypeMigrate.preMigrationServiceList}" />
+         <a4j:support event="onchange" reRender="workflowRegion" />
     </h:selectOneMenu>
+    </a4j:region>
     </h:panelGroup>
                  
     <h:panelGroup rendered="#{ExperimentBean.approved}">
@@ -61,10 +69,13 @@
     
     <h:panelGroup rendered="#{!ExperimentBean.approved}">
     <span style="color:red;font-weight:bold;"> *</span>
-    <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeMigrate.migrationService}" onchange="submit();">
+    <a4j:region>
+    <h:selectOneMenu id="serviceSelectMenu" value="#{ExpTypeMigrate.migrationService}">
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.migrationServiceList}" />
+         <a4j:support event="onchange" reRender="workflowRegion" />
     </h:selectOneMenu>
+    </a4j:region>
     </h:panelGroup>
     
     <h:panelGroup rendered="#{ExperimentBean.approved}">
@@ -81,11 +92,14 @@
     <div class="expStageHeader">Characterise After</div>
     
     <h:panelGroup rendered="#{!ExperimentBean.approved}">
-    <h:selectOneMenu id="postServiceSelectMenu" value="#{ExpTypeMigrate.postMigrationService}" onchange="submit();"
+    <a4j:region>
+    <h:selectOneMenu id="postServiceSelectMenu" value="#{ExpTypeMigrate.postMigrationService}"
             disabled="#{ExperimentBean.approved}">
          <f:selectItem itemValue="" itemLabel="Do not characterise." />
          <f:selectItems value="#{ExpTypeMigrate.postMigrationServiceList}" />
+         <a4j:support event="onchange" reRender="workflowRegion" />
     </h:selectOneMenu>
+    </a4j:region>
     </h:panelGroup>
 
     <h:panelGroup rendered="#{ExperimentBean.approved}">
@@ -103,10 +117,13 @@
     A new Digital Object of format:<br/>
     <span style="color:red;font-weight:bold;"> *</span>
     <h:panelGroup rendered="#{!ExperimentBean.approved}">
-    <h:selectOneMenu id="outputFormatSelectMenu" value="#{ExpTypeMigrate.outputFormat}" onchange="submit();">
+    <a4j:region>
+    <h:selectOneMenu id="outputFormatSelectMenu" value="#{ExpTypeMigrate.outputFormat}">
          <f:selectItem itemValue="" itemLabel="[undefined]" />
          <f:selectItems value="#{ExpTypeMigrate.outputFormatList}" />
+         <a4j:support event="onchange" reRender="workflowRegion" />
     </h:selectOneMenu>
+    </a4j:region>
     </h:panelGroup>
     <h:panelGroup rendered="#{ExperimentBean.approved}">
       <h:outputText value="#{ExpTypeMigrate.outputFormat}"/>
@@ -115,6 +132,8 @@
     </div>
     
 </fieldset>
+
+</h:panelGroup>
 
   </ui:composition>
 </body>

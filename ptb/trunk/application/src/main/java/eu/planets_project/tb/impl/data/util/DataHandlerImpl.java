@@ -167,9 +167,9 @@ public class DataHandlerImpl implements DataHandler {
         // URGENT USE new URI instead of URI.create
         URI baseUri = null;
         if( exp == null ) { 
-            baseUri = URI.create(defstore.getUri().toString() + "/testbed/"+userid+"/digitalobjects/");
+            baseUri = URI.create(defstore.getUri().toString() + "/testbed/users/"+userid+"/digitalobjects/");
         } else {
-            baseUri = URI.create(defstore.getUri().toString() + "/testbed/"+userid+"/experiments/experiment-"+exp.getEntityID()+"/");
+            baseUri = URI.create(defstore.getUri().toString() + "/testbed/experiments/experiment-"+exp.getEntityID()+"/");
         }
         log.info("Attempting to store in: "+baseUri);
         

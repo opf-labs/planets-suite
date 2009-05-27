@@ -398,7 +398,7 @@ public class ServiceBrowser {
             for( MigrationPath path : sd.getPaths() ) {
                 if( ( endpoint == null ) || endpoint.equals(sd.getEndpoint().toString()) ) {
                     if( ( outputFormat == null ) || outputFormat.equals(path.getOutputFormat().toString()) ) {
-                        Format fmt = new Format( path.getInputFormat() );
+                        Format fmt = fr.getFormatForURI( path.getInputFormat() );
                         formats.add(fmt);
                     }
                 }
@@ -420,7 +420,7 @@ public class ServiceBrowser {
             for( MigrationPath path : sd.getPaths() ) {
                 if( ( endpoint == null ) || endpoint.equals(sd.getEndpoint().toString()) ) {
                     if( ( inputFormat == null ) || inputFormat.equals(path.getInputFormat().toString()) ) {
-                        Format fmt = new Format( path.getOutputFormat() );
+                        Format fmt = fr.getFormatForURI( path.getOutputFormat() );
                         formats.add(fmt);
                     }
                 }
