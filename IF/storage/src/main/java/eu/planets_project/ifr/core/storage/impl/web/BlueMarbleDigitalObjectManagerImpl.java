@@ -156,7 +156,7 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
        			}
        		} else {
        			// Leaf node
-       			return new ArrayList<URI>();
+       			return null;
        		}
     	} else {
     		return bufferedList;
