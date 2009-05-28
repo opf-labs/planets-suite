@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadMXBean;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -26,6 +28,7 @@ import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
 import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.FormatUtils;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -103,12 +106,39 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
     public List<SelectItem> getPreMigrationServiceList() {
         List<SelectItem> slist = new ArrayList<SelectItem>();
         for( ServiceDescription sd : this.listAllCharacteriseServices() ) {
-            slist.add( createCharServiceSelectItem(sd) );
+            if( ! this.isInputSet() || this.inputsMatchFormat(sd, this.getInputFormat() )) {
+                slist.add( createCharServiceSelectItem(sd) );
+            }
         }
         for( ServiceDescription sd : this.listAllIdentificationServices() ) {
-            slist.add( createIdentifyServiceSelectItem(sd) );
+            if( ! this.isInputSet() || this.inputsMatchFormat(sd, this.getInputFormat() )) {
+                slist.add( createIdentifyServiceSelectItem(sd) );
+            }
         }
         return slist;
+    }
+    
+    private boolean inputsMatchFormat( ServiceDescription sd, String format ) {
+        URI formatUri;
+        try {
+            formatUri = new URI( format );
+        } catch (URISyntaxException e) {
+            return false;
+        }
+
+        // Accepts any input?
+        if( sd.getInputFormats() == null 
+                || sd.getInputFormats().size() == 0 
+                || sd.getInputFormats().contains( FormatUtils.ANY_FORMAT ) ) return true;
+        
+        // Examine accepted inputs:
+        for( URI sinf : sd.getInputFormats() ) {
+            // Examine aliases for that format:
+            for( Format alias : ServiceBrowser.fr.getFormatAliases(sinf) ) {
+                if( alias.getTypeURI().equals( formatUri )) return true;
+            }
+        }
+        return false;
     }
     
     /**
@@ -145,7 +175,18 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
      * @return
      */
     public List<SelectItem> getPostMigrationServiceList() {
-        return this.getPreMigrationServiceList();
+        List<SelectItem> slist = new ArrayList<SelectItem>();
+        for( ServiceDescription sd : this.listAllCharacteriseServices() ) {
+            if( ! this.isOutputSet() || this.inputsMatchFormat(sd, this.getOutputFormat() )) {
+                slist.add( createCharServiceSelectItem(sd) );
+            }
+        }
+        for( ServiceDescription sd : this.listAllIdentificationServices() ) {
+            if( ! this.isOutputSet() || this.inputsMatchFormat(sd, this.getOutputFormat() )) {
+                slist.add( createIdentifyServiceSelectItem(sd) );
+            }
+        }
+        return slist;
     }
  
     /** Name to store the look-up tables under. */

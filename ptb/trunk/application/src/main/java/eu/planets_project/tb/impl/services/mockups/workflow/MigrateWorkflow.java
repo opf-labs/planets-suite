@@ -303,19 +303,16 @@ public class MigrateWorkflow implements ExperimentWorkflow {
     private List<URI> getPronomURIAliases(URI typeURI) {
         Set<URI> turis = new HashSet<URI>();
         
+        Format fmt = format.getFormatForURI(typeURI);
         if( format.isUriOfType(typeURI,UriType.MIME) ) {
-            Format mime = new Format(typeURI);
-            Set<URI> furis = ServiceBrowser.fr.getUrisForMimeType(mime.getMimeTypes().iterator().next());
+            Set<URI> furis = ServiceBrowser.fr.getUrisForMimeType(fmt.getMimeTypes().iterator().next());
             turis.addAll(furis);
         } else if( format.isUriOfType(typeURI, UriType.EXTENSION)) {
-            Format ext = new Format(typeURI);
-            Set<URI> furis = ServiceBrowser.fr.getUrisForExtension(ext.getExtensions().iterator().next());
+            Set<URI> furis = ServiceBrowser.fr.getUrisForExtension(fmt.getExtensions().iterator().next());
             turis.addAll(furis);
         } else {
-            // This is a known format, ID, so add it, any aliases, and the ext and mime forms:
-            Format f = new Format(typeURI);
             // Aliases:
-            for( URI uri : f.getAliases() ) {
+            for( URI uri : fmt.getAliases() ) {
                 turis.add(uri);
             }
         }

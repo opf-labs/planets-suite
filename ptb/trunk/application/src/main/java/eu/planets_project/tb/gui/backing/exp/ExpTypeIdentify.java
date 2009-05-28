@@ -167,7 +167,7 @@ public class ExpTypeIdentify extends ExpTypeBackingBean {
          */
         public String getSummary() {
             try {
-                Format f = new Format(new URI(format));
+                Format f = ServiceBrowser.fr.getFormatForURI(new URI(format));
                 if( f.getExtensions() != null && f.getExtensions().size() > 0 ) {
                     String fs = ""; // Use the (1st) longest extension:
                     for( String ext : f.getExtensions() ) {

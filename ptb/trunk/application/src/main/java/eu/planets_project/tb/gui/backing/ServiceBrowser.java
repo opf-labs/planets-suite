@@ -345,8 +345,8 @@ public class ServiceBrowser {
         for( ServiceDescription sd : sds ) {
             for( MigrationPath path : sd.getPaths() ) {
                 ServiceRecordBean srb = new ServiceRecordBean(sd);
-                FormatBean in = new FormatBean( new Format( path.getInputFormat() ) );
-                FormatBean out = new FormatBean( new Format( path.getOutputFormat() ) );
+                FormatBean in = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getInputFormat() ) );
+                FormatBean out = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getOutputFormat() ) );
                 PathwayBean pb = new PathwayBean( srb, in, out );
                 paths.add(pb);
             }
