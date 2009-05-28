@@ -68,7 +68,7 @@ public class DigitalObjectManagerTests {
 		List<URI> rootResults = _dom.list(null);
 		System.out.println("Performing the null URI test to obtain root URI");
 		List<URI> expectedResults = new ArrayList<URI>();
-		expectedResults.add( new URI("planets://localhost:8080/dr/test") );
+		expectedResults.add( new URI("planets://localhost:8080/dr/test/") );
 		// We should only have a single URI in the returned results
 		assertEquals("Too many results returned, expecting one and got " + rootResults.size(),
 				expectedResults.size(),	rootResults.size());
