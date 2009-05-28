@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 /**
- * TODO abr forgot to document this class
+ * Tests for the {@link FedoraDigitalObjectManagerImpl}.
  */
 public class FedoraDigitalObjectManagerImplTest extends TestCase{
 

@@ -1,31 +1,26 @@
 package eu.planets_project.ifr.core.storage.impl.web;
 
 import java.io.IOException;
-
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Content;
-
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * Implements the DigitalObjectManager interface for the NASA Blue Marble
@@ -55,35 +50,38 @@ import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager {
 	
     /**
-     * Logger
+     * Logger.
      */
     private static Log _log = LogFactory.getLog(BlueMarbleDigitalObjectManagerImpl.class);
 	
     /**
-     * HttpClient timeout in ms
+     * HttpClient timeout in ms.
      */
     private static final int TIMEOUT = 10000;
 
     /**
-     * Mirror site base URL
+     * Mirror site base URL.
      */   
     private static final String MIRROR_BASE_URL = "http://mirrors.arsc.edu/nasa/";
     
     /**
-     * Mirror site base URI
+     * Mirror site base URI.
      */
     private URI rootURI = null; 
     
     /**
-     * The HTTP client:
+     * The HTTP client.
      */
     private HttpClient httpClient = new HttpClient();
     
     /**
-     * Local buffer for the remote directory structure to increase responsiveness of the GUI 
+     * Local buffer for the remote directory structure to increase responsiveness of the GUI.
      */
     private HashMap<URI, List<URI>> directoryCache = new HashMap<URI, List<URI>>();
 	
+    /**
+     * Create a blue marble digital object manager.
+     */
     public BlueMarbleDigitalObjectManagerImpl() {
     	try {
     		this.rootURI = new URI(MIRROR_BASE_URL);
@@ -103,14 +101,26 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
 		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
     }
 	
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+	 */
 	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");
 	}
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
     public boolean isWritable( URI pdURI ) {
     	return false;
     }
     
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
+     */
     public List<URI> list(URI pdURI) {    	
     	// 'null' - return mirror base URL
     	if (pdURI == null) {
@@ -163,6 +173,10 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
     	}
     }
 
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
+	 */
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
 		try {
 			// Will simply attempt to download the object at the provided URI,
@@ -173,10 +187,18 @@ public class BlueMarbleDigitalObjectManagerImpl implements DigitalObjectManager 
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
+	 */
 	public List<Class<? extends Query>> getQueryTypes() {
 		return null;
 	}
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+     */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
         throw new QueryValidationException("This implementation does not support queries.");
     }

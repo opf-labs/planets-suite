@@ -6,7 +6,6 @@ package eu.planets_project.ifr.core.storage.impl.web;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -35,7 +34,8 @@ public class GoogleDigitalObjectManager implements DigitalObjectManager {
     private static final String GOOGLE_QUERY_REFERER = "http://testbed.planets-project.eu/";
 
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
      */
     public List<Class<? extends Query>> getQueryTypes() {
@@ -44,14 +44,16 @@ public class GoogleDigitalObjectManager implements DigitalObjectManager {
         return qmodes;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
      */
     public boolean isWritable(URI pdURI) {
         return false;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
@@ -103,14 +105,16 @@ public class GoogleDigitalObjectManager implements DigitalObjectManager {
     }
     
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
      */
     public List<URI> list(URI pdURI) {
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
      */
     public DigitalObject retrieve(URI pdURI)
@@ -119,7 +123,8 @@ public class GoogleDigitalObjectManager implements DigitalObjectManager {
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
      */
     public void store(URI pdURI, DigitalObject digitalObject)

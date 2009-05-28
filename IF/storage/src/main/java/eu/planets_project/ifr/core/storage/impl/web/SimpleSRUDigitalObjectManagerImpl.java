@@ -42,25 +42,28 @@ import eu.planets_project.services.datatypes.Content;
 public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
 	
     /**
-     * Logger
+     * Logger.
      */
     private static Log _log = LogFactory.getLog(SimpleSRUDigitalObjectManagerImpl.class);
     
 	/**
-     * SRU endpoint base URL
+     * SRU endpoint base URL.
      */
     private String baseURL;
     
     /**
-     * HttpClient timeout in ms
+     * HttpClient timeout in ms.
      */
     private static final int TIMEOUT = 10000;
     
     /**
-     * The HTTP client
+     * The HTTP client.
      */
     private HttpClient httpClient = new HttpClient();
 
+    /**
+     * @param baseURL The base URL
+     */
     public SimpleSRUDigitalObjectManagerImpl(String baseURL) {
     	this.baseURL = baseURL;
     	
@@ -76,19 +79,35 @@ public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
 		httpClient.getHttpConnectionManager().getParams().setSoTimeout(TIMEOUT);
     }
     
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+	 */
 	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");		
 	}
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
     public boolean isWritable( URI pdURI ) {
     	return false;
     }
 	
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
+     */
     public List<URI> list(URI pdURI) {
     	// list() without query not supported - empty result list 
     	return new ArrayList<URI>();
     }
 
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
+	 */
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
 		try {
 			// Will simply attempt to download the object at the provided URI,
@@ -99,12 +118,20 @@ public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
+	 */
 	public List<Class<? extends Query>> getQueryTypes() {
 		ArrayList<Class<? extends Query>> qTypes = new ArrayList<Class<? extends Query>>();
 		qTypes.add(Query.STRING);
 		return qTypes;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+	 */
 	public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
     	if (q == null) 
     		throw new QueryValidationException("null query not allowed");

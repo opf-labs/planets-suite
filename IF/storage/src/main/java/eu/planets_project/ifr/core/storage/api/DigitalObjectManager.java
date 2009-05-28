@@ -8,14 +8,14 @@ import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
- * Interface for storage and retrieval of Digital Objects in an IF Data Registry
+ * Interface for storage and retrieval of Digital Objects in an IF Data Registry.
  * 
  * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  * 
  */
 public interface DigitalObjectManager {
 	/**
-	 * Persist a DigitalObject to the Data Registry
+	 * Persist a DigitalObject to the Data Registry.
 	 * 
 	 * @param pdURI
 	 *            The URI which uniquely identifies the persisted DigitalObject
@@ -51,7 +51,7 @@ public interface DigitalObjectManager {
     public List<URI> list(URI pdURI);
 
 	/**
-	 * Retrieve a DigitalObject from the DataRegistry
+	 * Retrieve a DigitalObject from the DataRegistry.
 	 * 
 	 * @param pdURI
 	 *            URI that uniquely identifies the DigitalObject
@@ -78,7 +78,7 @@ public interface DigitalObjectManager {
 	public List<URI> list( URI pdURI, Query q ) throws QueryValidationException;
 	
 	/**
-	 * Exception thrown when a DigitalObject requested by URI cannot be found in the Data Registry
+	 * Exception thrown when a DigitalObject requested by URI cannot be found in the Data Registry.
 	 *
 	 * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
 	 */
@@ -113,7 +113,7 @@ public interface DigitalObjectManager {
 	}
 	
 	/**
-	 * Exception thrown when a DigitalObject cannot be stored in the Data Registry 
+	 * Exception thrown when a DigitalObject cannot be stored in the Data Registry.
 	 *
 	 * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
 	 */

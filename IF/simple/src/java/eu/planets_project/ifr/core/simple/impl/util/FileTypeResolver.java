@@ -188,7 +188,7 @@ public class FileTypeResolver {
 
     
     /**
-    * @param file 
+    * @param file the file
     * @return the mime-type for the passed file or null if no mapping was found.
     */
     public String getMIMEType( File file ) 
@@ -198,7 +198,7 @@ public class FileTypeResolver {
     
     
     /**    
-    * @param _mimetype 
+    * @param _mimetype the mime type
     * @return true if the passes mime-type is known by this file type resolver.
     */
     public boolean isKnownMIMEType( String _mimetype ) 
@@ -210,7 +210,7 @@ public class FileTypeResolver {
     }
 
     /**
-     * @param fileName 
+     * @param fileName the file name
      * @return the mime-type for the passed filename or null if no mapping was
      *         found.
      */
@@ -220,7 +220,7 @@ public class FileTypeResolver {
     }
 
     /**
-     * @param url 
+     * @param url the url
      * @return the mime-type for the passed filename or null if no mapping was
      *         found.
      */
@@ -231,7 +231,7 @@ public class FileTypeResolver {
 
 
     /**
-     * @param mimetype 
+     * @param mimetype the mime type
      * @return the pretty print mime-type for the passed mime-type or the passed mimetype if no mapping was found.
      */
     public String getPrettyPrintMIMEType( String mimetype ) 
@@ -247,7 +247,7 @@ public class FileTypeResolver {
     
 
     /**
-    * @param _mimetype 
+    * @param _mimetype the mime type
     * @return a (array)list of all extensions mapping the passed mime-type.
     */
     public ArrayList<String> getExtensions( String _mimetype ) 
@@ -301,7 +301,7 @@ public class FileTypeResolver {
 
     /**
     * for testing purposes only
-    * @param args 
+    * @param args unused
     */    
     public static void main(String[] args)
     {

@@ -31,13 +31,14 @@ import java.util.List;
 @WebService(name = AlwaysSaysValidService.NAME, serviceName = Validate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.validate.Validate")
 public class AlwaysSaysValidService implements Validate {
 
-    /** The service name */
+    /** The service name. */
     public static final String NAME = "AlwaysSaysValidService";
 
     private static Log log = LogFactory.getLog(AlwaysSaysValidService.class);
 
     /**
-     * @see eu.planets_project.services.validate.Validate#describe()
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder mds = new ServiceDescription.Builder(NAME,
@@ -49,6 +50,10 @@ public class AlwaysSaysValidService implements Validate {
         return mds.build();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.validate.Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.util.List)
+     */
     public ValidateResult validate(DigitalObject dob, URI format,
             List<Parameter> parameters) {
         String message = "This service always says yes, unless the digital object is null.";

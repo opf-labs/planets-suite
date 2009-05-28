@@ -63,7 +63,8 @@ public final class PassThruMigrationService implements Migrate, Serializable {
     }
 
     /**
-     * @see eu.planets_project.services.migrate.Migrate#describe()
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder mds = new ServiceDescription.Builder(NAME,

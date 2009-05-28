@@ -19,7 +19,7 @@ public class QueryString extends Query {
     String query = null;
 
     /**
-     * @param query
+     * @param query the query
      */
     public QueryString(String query) {
         super();

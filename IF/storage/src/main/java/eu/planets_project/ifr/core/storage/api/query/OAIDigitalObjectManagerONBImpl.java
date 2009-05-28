@@ -30,6 +30,10 @@ import eu.planets_project.ifr.core.storage.impl.oai.OaiOnbDigitalObjectManagerIm
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
+/**
+ * ONB implementation of the OAI digital object manager.
+ *
+ */
 public class OAIDigitalObjectManagerONBImpl extends AbstractOAIDigitalObjectManagerImpl {
 	
 	/**
@@ -48,6 +52,10 @@ public class OAIDigitalObjectManagerONBImpl extends AbstractOAIDigitalObjectMana
 		super(endpoint, "de2aleph", "dtl2aleph");
 	}
 	
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
+     */
     public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
         OaiPmhServer server = new OaiPmhServer(baseURL);
         try {
@@ -117,6 +125,10 @@ public class OAIDigitalObjectManagerONBImpl extends AbstractOAIDigitalObjectMana
         return "";
     }
     
+	/**
+	 * Basic tests.
+	 * @param args unused
+	 */
 	public static void main(String[] args) {
 		OAIDigitalObjectManagerONBImpl oaiImpl = new OAIDigitalObjectManagerONBImpl("http://localhost:8881/OAI-PUB");
 		Calendar start = Calendar.getInstance();

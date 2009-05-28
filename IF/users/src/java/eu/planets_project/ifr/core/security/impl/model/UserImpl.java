@@ -77,13 +77,13 @@ public class UserImpl implements User, Serializable {
     private boolean credentialsExpired;
     private boolean appliesAsProvider = false;
     /**
-     * no arg default
+     * no arg default.
      */
     public UserImpl() {
     }
 
     /**
-     * Basic constructor sets username only
+     * Basic constructor sets username only.
      * @param username used to set username property
      */
     public UserImpl(String username) {
@@ -91,6 +91,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getId()
      */
     @Id
@@ -101,6 +102,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getVersion()
      */
     @Version
@@ -109,6 +111,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getUsername()
      */
     @Column(name = "username", length = 50, nullable = false, unique = true)
@@ -117,6 +120,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getPassword()
      */
     @Column(name = "password", nullable = false)
@@ -125,6 +129,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getFirstName()
      */
     @Column(name = "first_name", length = 50, nullable = false)
@@ -133,6 +138,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getLastName()
      */
     @Column(name = "last_name", length = 50, nullable = false)
@@ -141,6 +147,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getAddress()
      */
     @Embedded
@@ -150,6 +157,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getEmail()
      */
     @Column(name = "email", nullable = false, unique = true)
@@ -158,6 +166,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getPhoneNumber()
      */
     @Column(name = "phone_number", nullable = true)
@@ -166,6 +175,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getWebsite()
      */
     @Column(name = "website", nullable = true)
@@ -174,6 +184,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getPasswordHint()
      */
     public String getPasswordHint() {
@@ -181,6 +192,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getRoles()
      */
     @ManyToMany(
@@ -196,6 +208,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getAccountEnabled()
      */
     @Column(name = "account_enabled", nullable = false)
@@ -205,6 +218,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getAccountExpired()
      */
     @Column(name = "account_expired", nullable = false)
@@ -214,6 +228,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getAccountLocked()
      */
     @Column(name = "account_locked", nullable = false)
@@ -223,6 +238,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getCredentialsExpired()
      */
     @Column(name = "credentials_expired", nullable = false)
@@ -232,6 +248,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#getFullName()
      */
     @Transient
@@ -240,6 +257,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#confirmPassword()
      */
     public String confirmPassword() {
@@ -247,6 +265,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#rolesAsStrings()
      */
     public String[] rolesAsStrings() {
@@ -272,6 +291,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#firstRole()
      */
     public String firstRole() {
@@ -283,12 +303,14 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#firstRole(java.lang.String)
      */
     public void firstRole(String firstrole) {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#addRole(eu.planets_project.ifr.core.security.api.model.Role)
      */
     public void addRole(Role role) {
@@ -296,6 +318,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#removeRole(eu.planets_project.ifr.core.security.api.model.Role)
      */
     public void removeRole(Role role) {
@@ -303,6 +326,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#appliedAsProvider()
      */
     public boolean appliedAsProvider() {
@@ -310,6 +334,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#applyingAsProvider(boolean)
      */
     public void applyingAsProvider(boolean appliesAsProvider) {
@@ -317,6 +342,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setId(java.lang.Long)
      */
     public void setId(Long id) {
@@ -324,6 +350,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setUsername(java.lang.String)
      */
     public void setUsername(String username) {
@@ -331,6 +358,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setPassword(java.lang.String)
      */
     public void setPassword(String password) {
@@ -359,6 +387,7 @@ public class UserImpl implements User, Serializable {
 		this.password = Util.encodeBase16(hash);
     }
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setConfirmPassword(java.lang.String)
      */
     public void setConfirmPassword(String confirmPassword) {
@@ -366,6 +395,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setFirstName(java.lang.String)
      */
     public void setFirstName(String firstName) {
@@ -373,6 +403,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setLastName(java.lang.String)
      */
     public void setLastName(String lastName) {
@@ -380,6 +411,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setAddress(eu.planets_project.ifr.core.security.api.model.Address)
      */
     public void setAddress(Address address) {
@@ -387,6 +419,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setEmail(java.lang.String)
      */
     public void setEmail(String email) {
@@ -394,6 +427,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setPhoneNumber(java.lang.String)
      */
     public void setPhoneNumber(String phoneNumber) {
@@ -401,6 +435,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setWebsite(java.lang.String)
      */
     public void setWebsite(String website) {
@@ -408,6 +443,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setPasswordHint(java.lang.String)
      */
     public void setPasswordHint(String passwordHint) {
@@ -415,20 +451,23 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
-     * {@link eu.planets_project.ifr.core.security.api.model.User#setRoles(Set)}
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.security.api.model.User#setRoles(java.util.Set)
      */
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
     /**
-     * @see eu.planets_project.ifr.core.security.api.model.User#setVersion(Integer)
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.security.api.model.User#setVersion(java.lang.Integer)
      */
     public void setVersion(Integer version) {
         this.version = version;
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setAccountEnabled(boolean)
      */
     public void setAccountEnabled(boolean enabled) {
@@ -436,6 +475,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setAccountExpired(boolean)
      */
     public void setAccountExpired(boolean accountExpired) {
@@ -443,6 +483,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setAccountLocked(boolean)
      */
     public void setAccountLocked(boolean accountLocked) {
@@ -450,6 +491,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.User#setCredentialsExpired(boolean)
      */
     public void setCredentialsExpired(boolean credentialsExpired) {
@@ -457,6 +499,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
@@ -475,6 +518,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
@@ -482,6 +526,7 @@ public class UserImpl implements User, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see java.lang.Object#toString()
      */
     public String toString() {

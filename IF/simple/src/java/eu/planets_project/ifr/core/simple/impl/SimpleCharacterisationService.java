@@ -39,8 +39,7 @@ import eu.planets_project.services.utils.DigitalObjectUtils;
         serviceName = Characterise.NAME, 
         targetNamespace = PlanetsServices.NS,
         endpointInterface = "eu.planets_project.services.characterise.Characterise" )
-public class SimpleCharacterisationService implements Characterise
-{
+public class SimpleCharacterisationService implements Characterise {
     private final Log log = LogFactory.getLog(getClass().getName());
     
     /** A unique name for this service. */
@@ -50,7 +49,8 @@ public class SimpleCharacterisationService implements Characterise
     public static final String MIME_PROP_URI = "planets:pc/basic/bytestream/size";
 
     /**
-     * 
+     * @param name The desired property name
+     * @return A property URI representation for the given name
      */
     public static URI makePropertyURI( String name) {
         try {
@@ -63,7 +63,8 @@ public class SimpleCharacterisationService implements Characterise
     }
 
     /**
-     * @see eu.planets_project.services.characterise.DetermineProperties#describe()
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder( NAME, Characterise.class.getCanonicalName() );
@@ -72,7 +73,8 @@ public class SimpleCharacterisationService implements Characterise
     }
 
     /**
-     * @see eu.planets_project.services.characterise.DetermineProperties#getMeasurableProperties(java.net.URI)
+     * {@inheritDoc}
+     * @see eu.planets_project.services.characterise.Characterise#listProperties(java.net.URI)
      */
     public List<Property> listProperties(URI format) {
         List<Property> props = new ArrayList<Property>();
@@ -81,7 +83,8 @@ public class SimpleCharacterisationService implements Characterise
     }
 
     /**
-     * @see eu.planets_project.services.characterise.DetermineProperties#measure(eu.planets_project.services.datatypes.DigitalObject, eu.planets_project.services.datatypes.Properties, eu.planets_project.services.datatypes.Parameter)
+     * {@inheritDoc}
+     * @see eu.planets_project.services.characterise.Characterise#characterise(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
      */
     public CharacteriseResult characterise(DigitalObject digitalObject, List<Parameter> parameters) {
         log.info("Start...");

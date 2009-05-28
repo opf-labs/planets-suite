@@ -87,7 +87,7 @@ public class UserBackingBean {
 	}
 
 	/**
-	 * Returns the user object
+	 * Returns the user object.
 	 * 
 	 * @return The currently loaded user object
 	 */
@@ -96,7 +96,7 @@ public class UserBackingBean {
 	}
 
 	/**
-	 * Setter for the user object
+	 * Setter for the user object.
 	 * 
 	 * @param value A User ref
 	 */
@@ -121,7 +121,7 @@ public class UserBackingBean {
 
 	/**
 	 * The cancel method simply handles the pressing of the cancel button by the user
-	 * when editing a profile.  We simply reload the user and redisplay
+	 * when editing a profile.  We simply reload the user and redisplay.
 	 * @return the canceledit JSF outcome
 	 * 
 	 * @throws UserNotFoundException When the user cannot be found in the database
@@ -147,7 +147,7 @@ public class UserBackingBean {
 //	}
 
 	/**
-	 * Getter for the original password
+	 * Getter for the original password.
 	 * 
 	 * @return	The original password from the user loaded at construction
 	 */
@@ -157,7 +157,7 @@ public class UserBackingBean {
 
 	/**
 	 * 
-	 * @param password
+	 * @param password the original password to set
 	 */
 	public void setOriginalPassword(String password) {
 		this.originalPassword = password;
@@ -173,9 +173,9 @@ public class UserBackingBean {
 	}
 
 	/**
-	 * Setter for the confirm password
+	 * Setter for the confirm password.
 	 * 
-	 * @param password
+	 * @param password the confirm password to set
 	 */
 	public void setConfirmPassword(String password) {
 		this.confirmPassword = password;
@@ -191,9 +191,9 @@ public class UserBackingBean {
 	}
 
 	/**
-	 * Setter for the confirm password
+	 * Setter for the confirm password.
 	 * 
-	 * @param password
+	 * @param password the user password to set
 	 */
 	public void setUserPassword(String password) {
 		this.userPassword = password;
@@ -214,7 +214,7 @@ public class UserBackingBean {
 		return !(this._context == UserBackingBean.Context.NEWUSER);
 	}
 	/**
-	 * Method to save the user details
+	 * Method to save the user details.
 	 * 
 	 * @return	An outcome string for use in navigation
 	 * 			saved - user was successfully saved
@@ -335,7 +335,7 @@ public class UserBackingBean {
 		return true;
 	}
 	/**
-	 * @param refresh
+	 * @param refresh the desired refresh state
 	 */
 	public void setRefreshUserList(boolean refresh) {
 	}
@@ -378,9 +378,9 @@ public class UserBackingBean {
 
 	/**
 	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
+	 * @param context the context
+	 * @param toValidate the component to validate
+	 * @param value the value
 	 */
 	public void validateUsername(FacesContext context, 
 			UIComponent toValidate,
@@ -396,9 +396,9 @@ public class UserBackingBean {
 
 	/**
 	 * 
-	 * @param context
-	 * @param toValidate
-	 * @param value
+	 * @param context the context
+	 * @param toValidate the component to validate
+	 * @param value the value
 	 */
 	public void validateEmail(FacesContext context, 
 			UIComponent toValidate,

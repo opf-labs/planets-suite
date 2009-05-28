@@ -20,29 +20,29 @@ public class QueryValidationException extends Exception {
     private static final long serialVersionUID = 4956266507595623621L;
 
     /**
-     * 
+     * Create a query validation exception.
      */
     public QueryValidationException() {
         super();
     }
 
     /**
-     * @param message
-     * @param cause
+     * @param message the message
+     * @param cause the cause
      */
     public QueryValidationException(String message, Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * @param message
+     * @param message the message
      */
     public QueryValidationException(String message) {
         super(message);
     }
 
     /**
-     * @param cause
+     * @param cause the cause
      */
     public QueryValidationException(Throwable cause) {
         super(cause);

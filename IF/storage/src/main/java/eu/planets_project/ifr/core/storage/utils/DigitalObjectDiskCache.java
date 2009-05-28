@@ -35,8 +35,8 @@ public class DigitalObjectDiskCache {
             .getProperty("java.io.tmpdir"), "planets-tmp-dob-cache/");
 
     /**
-     * @param digitalObjects
-     * @return
+     * @param digitalObjects the digital objects
+     * @return the session ID
      */
     public static String cacheDigitalObject(DigitalObject dob) {
         String sessionId = UUID.randomUUID().toString();
@@ -58,7 +58,7 @@ public class DigitalObjectDiskCache {
     }
 
     /**
-     * @param sessionId
+     * @param sessionId The session ID
      * @return The digital object, with a local file:// reference to the binary.
      */
     public static DigitalObject recoverDigitalObject(String sessionId) 
@@ -104,8 +104,8 @@ public class DigitalObjectDiskCache {
 	}
 
     /**
-     * @param digitalObjects
-     * @return
+     * @param digitalObjects The digital objects
+     * @return The session ID
      */
     public static String cacheDigitalObjects(List<DigitalObject> digitalObjects) {
         // URGENT Make the multi-entity storage.
@@ -136,8 +136,8 @@ public class DigitalObjectDiskCache {
     }
 
     /**
-     * @param sessionIdentifier
-     * @return
+     * @param sessionID The session ID
+     * @return The recovered digital object
      */
     public static List<DigitalObject> recoverDigitalObjects(String sessionId) {
         // Open the list file, stored as properties:

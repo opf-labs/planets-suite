@@ -44,14 +44,26 @@ import se.kb.oai.pmh.Record;
  */
 public class OaiOnbDigitalObjectManagerImpl_OAI4J implements DigitalObjectManager {
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
     public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
         throw new UnsupportedOperationException("Not supported via OAI.");
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
     public boolean isWritable(URI pdURI) {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
+     */
     public List<URI> list(URI pdURI) {
         // Perform OAI-PMH request without time range ('from' and 'until' are optional in OAI-PMH!)
         try {
@@ -62,6 +74,10 @@ public class OaiOnbDigitalObjectManagerImpl_OAI4J implements DigitalObjectManage
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+     */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
         String baseURL = "http://archiv-test.onb.ac.at:8881/OAI-PUB";
         String from = "2009-03-19T10:50:20Z";
@@ -102,6 +118,10 @@ public class OaiOnbDigitalObjectManagerImpl_OAI4J implements DigitalObjectManage
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
+     */
     public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
         String baseURL = "http://archiv-test.onb.ac.at:8881/OAI-PUB";
         String metadataPrefix = "de2aleph";
@@ -149,6 +169,10 @@ public class OaiOnbDigitalObjectManagerImpl_OAI4J implements DigitalObjectManage
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
+     */
     public List<Class<? extends Query>> getQueryTypes() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

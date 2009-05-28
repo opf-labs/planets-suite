@@ -74,9 +74,7 @@ public class UserManagerImpl implements UserManager {
 	@Resource SessionContext ctx;
 
 	/**
-	 * @see eu.planets_project.tb.api.UserManagerInterface#getUser(java.lang.Long)
-	 */
-	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#getUser(java.lang.Long)
 	 */
 	@RolesAllowed( { "user" })
@@ -85,6 +83,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#isUsernameAvailable(java.lang.String)
 	 */
 	@PermitAll
@@ -110,6 +109,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#getUsers()
 	 */
 	@RolesAllowed( { "user" })
@@ -120,6 +120,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#getUsernames()
 	 */
 	@RolesAllowed( { "user" })
@@ -132,6 +133,7 @@ public class UserManagerImpl implements UserManager {
 
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#getUserByUsername(java.lang.String)
 	 */
 	@RolesAllowed( { "user" })
@@ -191,6 +193,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#addUser(eu.planets_project.ifr.core.security.api.model.User)
 	 */
 	@RolesAllowed( { "admin" })
@@ -207,6 +210,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#removeUser(java.lang.Long)
 	 */
 	@RolesAllowed( { "admin" })
@@ -215,6 +219,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#saveUser(eu.planets_project.ifr.core.security.api.model.User)
 	 */
 	@RolesAllowed( { "user" })
@@ -231,6 +236,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#sendUserMessage(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@RolesAllowed( { "user" })
@@ -254,6 +260,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#assignRoleToUser(eu.planets_project.ifr.core.security.api.model.User, java.lang.String)
 	 */
 	@RolesAllowed( { "admin", "testbed.admin" })
@@ -263,6 +270,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#listRoles()
 	 */
 	@PermitAll
@@ -279,6 +287,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#listUsersInRole(java.lang.String)
 	 */
 	@RolesAllowed( { "user" })
@@ -300,6 +309,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.security.api.services.UserManager#revokeRoleFromUser(eu.planets_project.ifr.core.security.api.model.User, java.lang.String)
 	 */
 	@RolesAllowed( { "admin", "testbed.admin" })

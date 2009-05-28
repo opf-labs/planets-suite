@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of the DigitalObjectManager interface based upon a file system
+ * Implementation of the DigitalObjectManager interface based upon a file system.
  * 
  * @author <a href="mailto:carl.wilson@bl.uk">Carl Wilson</a>
  *
@@ -52,7 +52,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	}
 
 	/**
-	 * A convenience instantiator that create the File object for the user
+	 * A convenience instantiator that create the File object for the user.
 	 * @param name
 	 * 		The name of the data registry
 	 * @param rootPath
@@ -66,6 +66,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
 	 */
 	public List<URI> list(URI pdURI) {
@@ -135,6 +136,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
 	 */
 	public DigitalObject retrieve(URI pdURI)
@@ -197,7 +199,9 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	}
 
 	/**
-	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+	 * @param pdURI the URI
+	 * @param digitalObject the object
+	 * @throws DigitalObjectNotStoredException
 	 */
 	public void store(URI pdURI, DigitalObject digitalObject)
 			throws DigitalObjectNotStoredException {
@@ -255,21 +259,24 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	
 	
 	
-	/* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
      */
     public List<Class<? extends Query>> getQueryTypes() {
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
      */
     public boolean isWritable(URI pdURI) {
         return true;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {

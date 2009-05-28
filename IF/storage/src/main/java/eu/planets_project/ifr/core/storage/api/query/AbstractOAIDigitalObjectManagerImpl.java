@@ -19,52 +19,73 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 
+/**
+ * Abstract superclass for OAI digital object managers.
+ */
 public abstract class AbstractOAIDigitalObjectManagerImpl implements DigitalObjectManager {
 	
-	/**
-	 * Logger
-	 */
     protected static Log log = LogFactory.getLog(AbstractOAIDigitalObjectManagerImpl.class);
 	
     /**
-     * OAI-style date format
+     * OAI-style date format.
      */
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
-     * OAI endpoint base URL
+     * OAI endpoint base URL.
      */
     protected String baseURL;
     
     /**
-     * OAI metadata prefix
+     * OAI metadata prefix.
      */
     protected String metaDataPrefix;
     
     /**
-     * OAI set (may be null)
+     * OAI set (may be null).
      */
     protected String set = null;
 	
+    /**
+     * @param baseURL The base URL
+     * @param metaDataPrefix The meta data prefix
+     */
     public AbstractOAIDigitalObjectManagerImpl(String baseURL, String metaDataPrefix) {
     	this.baseURL = baseURL;
     	this.metaDataPrefix = metaDataPrefix;
     }
     
+    /**
+     * @param baseURL The base URL
+     * @param metaDataPrefix The meta data prefix
+     * @param set The set
+     */
     public AbstractOAIDigitalObjectManagerImpl(String baseURL, String metaDataPrefix, String set) {
     	this.baseURL = baseURL;
     	this.metaDataPrefix = metaDataPrefix;
     	this.set = set;
     }
 	
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
     public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
         throw new UnsupportedOperationException("Not supported by this implementation");
     }
     
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
     public boolean isWritable(URI pdURI) {
         return false;
     }
     
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
+     */
     public List<URI> list(URI pdURI) {
         // Perform OAI-PMH request without time range ('from' and 'until' are optional in OAI-PMH!)
         try {
@@ -75,6 +96,10 @@ public abstract class AbstractOAIDigitalObjectManagerImpl implements DigitalObje
         }
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+     */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
     	if (pdURI == null) {
     		// OAI hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
@@ -108,6 +133,10 @@ public abstract class AbstractOAIDigitalObjectManagerImpl implements DigitalObje
     	}
 	}
     
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
+	 */
 	public List<Class<? extends Query>> getQueryTypes() {
 		ArrayList<Class<? extends Query>> qTypes = new ArrayList<Class<? extends Query>>();
 		qTypes.add(Query.DATE_RANGE);

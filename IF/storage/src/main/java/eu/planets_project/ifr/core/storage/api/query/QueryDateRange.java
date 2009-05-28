@@ -22,8 +22,8 @@ public class QueryDateRange extends Query {
     Calendar endDate;
     
     /**
-     * @param startDate
-     * @param endDate
+     * @param startDate the start date
+     * @param endDate the end date
      */
     public QueryDateRange(Calendar startDate, Calendar endDate) {
         super();

@@ -61,35 +61,51 @@ import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManager {
 	
     /**
-     * Logger
+     * Logger.
      */
     private static Log _log = LogFactory.getLog(SimpleSRUDigitalObjectManagerImpl.class);
 
 	/**
-     * API base URL (incl. Yahoo App ID)
+     * API base URL (incl. Yahoo App ID).
      */
     private static String API_BASE_URL = "http://search.yahooapis.com/ImageSearchService/V1/imageSearch";
     private static String Y_APP_ID = "Oc5vBjrV34EdL30ngS_5VnW9PVk0jRSkwyzQO0IDDNXCsBJE4OSq5NE1NF4FToohppPX";
     private static String BASE_URL = API_BASE_URL + "?appid=" + Y_APP_ID + "&";
     
     /**
-     * HttpClient timeout in ms
+     * HttpClient timeout in ms.
      */
     private static final int TIMEOUT = 10000;
 	
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+	 */
 	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
 		throw new DigitalObjectNotStoredException("Storing not supported by this implementation.");		
 	}
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
+     */
     public boolean isWritable( URI pdURI ) {
     	return false;
     }
 	
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
+     */
     public List<URI> list(URI pdURI) {
     	// list() without query not supported - empty result list 
     	return new YahooResultList(null);
     }
 
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
+	 */
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
 		try {
 			// Will simply attempt to download the object at the provided URI,
@@ -100,13 +116,18 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
+	 */
 	public List<Class<? extends Query>> getQueryTypes(){
 		ArrayList<Class<? extends Query>> qTypes = new ArrayList<Class<? extends Query>>();
 		qTypes.add(Query.STRING);
 		return qTypes;
 	}
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
@@ -127,28 +148,35 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
     	}
 	}
 	
+	/**
+	 * Yahoo result list representation.
+	 *
+	 */
 	public class YahooResultList extends AbstractList<URI> {
 
 	    /**
-	     * Query string
+	     * Query string.
 	     */
 		private String queryString = null;
 		
 	    /**
-	     * The HTTP client
+	     * The HTTP client.
 	     */
 	    private HttpClient httpClient = new HttpClient();
 	    
 	    /**
-	     * ArrayList storing all retrieved URIs so far
+	     * ArrayList storing all retrieved URIs so far.
 	     */
 	    private ArrayList<YahooResult> bufferedQueryResults = new ArrayList<YahooResult>();
 	    
 	    /**
-	     * Total number of results
+	     * Total number of results.
 	     */
 	    private int size = 0;
 		
+		/**
+		 * @param query The query
+		 */
 		public YahooResultList(QueryString query) {
 			// Set query string
 			if (query != null)
@@ -170,6 +198,10 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 				this.size = nextFiftyResults(0);
 		}
 		
+		/**
+		 * {@inheritDoc}
+		 * @see java.util.AbstractList#get(int)
+		 */
 		public URI get(int index) {
 			if (index >= bufferedQueryResults.size()) {
 				// Not yet in cache - lazy load
@@ -185,6 +217,10 @@ public class YahooImageAPIDigitalObjectManagerImpl implements DigitalObjectManag
 			return bufferedQueryResults.get(index).uri;
 		}
 		
+		/**
+		 * {@inheritDoc}
+		 * @see java.util.AbstractCollection#size()
+		 */
 		public int size() {
 			return this.size;
 		}

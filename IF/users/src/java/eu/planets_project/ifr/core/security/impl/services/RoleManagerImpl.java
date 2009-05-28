@@ -27,7 +27,7 @@ import eu.planets_project.ifr.core.security.api.model.Role;
 import eu.planets_project.ifr.core.security.api.services.RoleManager;
 
 /**
- * Class to manage Planets IF security Roles
+ * Class to manage Planets IF security Roles.
  * @author CFWilson
  *
  */

@@ -33,7 +33,7 @@ import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
 
 /**
- *
+ * Generic Migration.
  */
 @Stateless
 @Remote(Migrate.class)
@@ -42,12 +42,13 @@ public class GenericMigration implements Migrate, Serializable {
     private static final long serialVersionUID = -2186431821310098736L;
 
     /**
-     * service name
+     * service name.
      */
     public static final String NAME = "GenericMigration";
 
     /**
-     * @see eu.planets_project.services.migrate.Migrate#describe()
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
         return new ServiceDescription.Builder(
@@ -56,7 +57,8 @@ public class GenericMigration implements Migrate, Serializable {
     }
 
     /**
- 
+     * {@inheritDoc}
+     * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)
      */
     public MigrateResult migrate(DigitalObject dob, URI inputFormat,
             URI outputFormat, List<Parameter> parameters) {

@@ -34,19 +34,20 @@ public class RoleImpl implements Role,  Serializable {
     private String description;
 
     /**
-     * No arg constructor
+     * No arg constructor.
      */
     public RoleImpl() {}
 
     /**
-     * Constructor to create with name
-     * @param name
+     * Constructor to create with name.
+     * @param name the name
      */
     public RoleImpl(String name) {
         this.name = name;
     }
 
-    /** 
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.Role#getId()
      */
     @Id
@@ -55,7 +56,8 @@ public class RoleImpl implements Role,  Serializable {
         return id;
     }
 
-    /** 
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.Role#getName()
      */
     @Column(name="name", length=20, nullable=false, unique=true)
@@ -63,7 +65,8 @@ public class RoleImpl implements Role,  Serializable {
         return this.name;
     }
 
-    /** 
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.Role#getDescription()
      */
     @Column(name="description", length=64)
@@ -71,21 +74,24 @@ public class RoleImpl implements Role,  Serializable {
         return this.description;
     }
 
-    /** 
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.Role#setId(java.lang.Long)
      */
     public void setId(Long id) {
         this.id = id;
     }
 
-    /** 
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.Role#setName(java.lang.String)
      */
     public void setName(String name) {
         this.name = name;
     }
 
-    /** 
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.security.api.model.Role#setDescription(java.lang.String)
      */
     public void setDescription(String description) {
@@ -94,8 +100,8 @@ public class RoleImpl implements Role,  Serializable {
 
     /**
      * Compare two Roles. Names must be unique.
-     * @param o object to compare
-     * @return true if objects equal
+     * {@inheritDoc}
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,7 +114,8 @@ public class RoleImpl implements Role,  Serializable {
 
     /**
      * Compute a hashcode. Names must be unique.
-     * @return int hashcode
+     * {@inheritDoc}
+     * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
         return (name != null ? name.hashCode() : 0);
@@ -116,7 +123,8 @@ public class RoleImpl implements Role,  Serializable {
 
     /**
      * Convert to a String, using the name.
-     * @return String representation
+     * {@inheritDoc}
+     * @see java.lang.Object#toString()
      */
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)

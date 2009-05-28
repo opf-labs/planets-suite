@@ -43,13 +43,14 @@ import eu.planets_project.services.identify.IdentifyResult;
         
 public class SimpleIdentifyService implements Identify {
 
-    /** The name of the service */
+    /** The name of the service. */
     public static final String NAME="SimpleIdentifyService";
     
     private static Log log = LogFactory.getLog(SimpleIdentifyService.class);
 
     /**
-     * @see eu.planets_project.services.identify.Identify#describe()
+     * {@inheritDoc}
+     * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
         ServiceDescription.Builder mds = new ServiceDescription.Builder(NAME, Identify.class.getCanonicalName());
@@ -60,7 +61,8 @@ public class SimpleIdentifyService implements Identify {
     }
 
     /**
-     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject)
+     * {@inheritDoc}
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject, java.util.List)
      */
     public IdentifyResult identify(DigitalObject dob, List<Parameter> parameters ) {
         // Initialise the result:

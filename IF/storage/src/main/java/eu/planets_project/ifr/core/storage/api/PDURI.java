@@ -32,7 +32,7 @@ public class PDURI {
 
 	/**
 	 * 
-	 * @param pdURI
+	 * @param pdURI the URI
 	 * @throws URISyntaxException
 	 * @throws UnsupportedEncodingException 
 	 */
@@ -98,7 +98,7 @@ public class PDURI {
 	
 	/**
 	 * Checks to see if a URI is a PLANETS Data Registry URI
-	 * The URI argument must be of the following form:
+	 * The URI argument must be of the following form.
 	 * <p/>
 	 * <code>planets://<i>server:port</i>/dr/</code>
 	 * 
@@ -143,9 +143,9 @@ public class PDURI {
 
 	/**
 	 * 
-	 * @param host
-	 * @param port
-	 * @param registryName
+	 * @param host the host
+	 * @param port the port
+	 * @param registryName the registry name
 	 * @return
 	 * 		A Planets Data Registry format URI
 	 * @throws URISyntaxException
@@ -182,7 +182,7 @@ public class PDURI {
 	
 	/**
 	 * 
-	 * @param path
+	 * @param path the path
 	 * @throws URISyntaxException
 	 */
 	public void replaceDecodedPath(String path) throws URISyntaxException {

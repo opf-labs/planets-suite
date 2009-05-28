@@ -7,7 +7,7 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * A map of maps to support multiple properties
+ * A map of maps to support multiple properties.
  */
 public class MultiProperties implements Map<String, Map<String, String>>
 {
@@ -32,6 +32,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#clear()
 	 */
 	public void clear()
@@ -40,6 +41,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#containsKey(java.lang.Object)
 	 */
 	public boolean containsKey(Object key_)
@@ -48,6 +50,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#containsValue(java.lang.Object)
 	 */
 	public boolean containsValue(Object value_)
@@ -56,6 +59,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#entrySet()
 	 */
 	public Set<Entry<String, Map<String, String>>> entrySet()
@@ -64,6 +68,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object o_)
@@ -72,6 +77,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
 	public Map<String, String> get(Object key_)
@@ -80,6 +86,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode()
@@ -88,6 +95,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#isEmpty()
 	 */
 	public boolean isEmpty()
@@ -96,6 +104,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#keySet()
 	 */
 	public Set<String> keySet()
@@ -104,9 +113,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
-	 * @param key_ the key for the map entry
-	 * @param value_ the value for the map
-	 * @return the map
+	 * {@inheritDoc}
 	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */
 	public Map<String, String> put(String key_, Map<String, String> value_)
@@ -115,6 +122,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#putAll(java.util.Map)
 	 */
 	public void putAll(Map<? extends String, ? extends Map<String, String>> t_)
@@ -123,6 +131,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#remove(java.lang.Object)
 	 */
 	public Map<String, String> remove(Object key_)
@@ -131,6 +140,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#size()
 	 */
 	public int size()
@@ -139,6 +149,7 @@ public class MultiProperties implements Map<String, Map<String, String>>
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see java.util.Map#values()
 	 */
 	public Collection<Map<String, String>> values()

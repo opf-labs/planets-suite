@@ -28,7 +28,7 @@ public class AddressImpl implements Address, Serializable {
     private String postalCode;
 
     /**
-     * Default no-arg constructor
+     * Default no-arg constructor.
      */
     public AddressImpl() {
     	
@@ -36,7 +36,7 @@ public class AddressImpl implements Address, Serializable {
     
     /**
      * 
-     * @param address
+     * @param address The address
      */
     public AddressImpl(Address address) {
         if( address != null ) {
@@ -134,6 +134,7 @@ public class AddressImpl implements Address, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
@@ -152,6 +153,7 @@ public class AddressImpl implements Address, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see java.lang.Object#hashCode()
      */
     public int hashCode() {
@@ -165,6 +167,7 @@ public class AddressImpl implements Address, Serializable {
     }
 
     /**
+     * {@inheritDoc}
      * @see java.lang.Object#toString()
      */
     @Override

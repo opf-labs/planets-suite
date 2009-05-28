@@ -17,12 +17,22 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.DigitalObject.Builder;
 
+/**
+ * DC implementation of the OAI digital object manager.
+ */
 public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManagerImpl {
 	
+	/**
+	 * @param baseURL The base URL
+	 */
 	public OAIDigitalObjectManagerDCImpl(String baseURL) {
 		super(baseURL, "oai_dc");
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
+	 */
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
 		try {
 			OaiPmhServer server = new OaiPmhServer(baseURL);

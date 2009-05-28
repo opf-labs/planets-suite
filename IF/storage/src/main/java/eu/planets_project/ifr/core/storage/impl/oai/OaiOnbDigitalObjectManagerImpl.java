@@ -45,10 +45,18 @@ import org.xml.sax.SAXException;
  */
 public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#store(java.net.URI, eu.planets_project.services.datatypes.DigitalObject)
+     */
     public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
         throw new UnsupportedOperationException("Not supported via OAI.");
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
+     */
     public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
         String baseURL = "http://archiv-test.onb.ac.at:8881/OAI-PUB";
         String metadataPrefix = "de2aleph";
@@ -87,6 +95,10 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI)
+     */
     public List<URI> list(URI pdURI) {
         String baseURL = "http://archiv-test.onb.ac.at:8881/OAI-PUB";
         String from = "2009-03-19T10:50:20Z";
@@ -118,21 +130,24 @@ public class OaiOnbDigitalObjectManagerImpl implements DigitalObjectManager {
         return ids;
     }
 
-    /* (non-Javadoc)
-     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryModes()
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#getQueryTypes()
      */
     public List<Class<? extends Query>> getQueryTypes() {
         return null;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#isWritable(java.net.URI)
      */
     public boolean isWritable(URI pdURI) {
         return false;
     }
 
-    /* (non-Javadoc)
+    /**
+     * {@inheritDoc}
      * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
      */
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
