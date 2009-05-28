@@ -160,12 +160,12 @@ class FormatRegistryImpl implements FormatRegistry {
             Format mime = new Format(typeURI);
             Set<URI> furis = getUrisForMimeType(mime.getMimeTypes().iterator()
                     .next());
-            turis.addAll(furis);
+            if( furis != null && furis.size() > 0 ) turis.addAll(furis);
         } else if (isExtensionUri(typeURI)) {
             Format ext = new Format(typeURI);
             Set<URI> furis = getUrisForExtension(ext.getExtensions().iterator()
                     .next());
-            turis.addAll(furis);
+            if( furis != null && furis.size() > 0 ) turis.addAll(furis);
         } else {
             // This is a known format, ID, so add it, any aliases, and the ext
             // and mime forms:
