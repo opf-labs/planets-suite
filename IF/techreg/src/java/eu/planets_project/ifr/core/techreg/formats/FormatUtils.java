@@ -7,32 +7,33 @@ import java.util.Set;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a>
  */
-final class FormatUtils {
+public final class FormatUtils {
     /** Util classes providing static methods should not be instantiated. */
     private FormatUtils() {/* Enforce non-instantiability */}
 
     /** The string representing "any format". */
-    static final String ANY_FORMAT = "planets:fmt/any";
+    public static final String ANY_FORMAT = "planets:fmt/any";
     /** The string representing "unknown format". */
-    static final String UNKNOWN_FORMAT = "planets:fmt/unknown";
+    public static final String UNKNOWN_FORMAT = "planets:fmt/unknown";
     /** The prefix for MIME format URIs. */
-    static final String MIME_URI_PREFIX = "planets:fmt/mime/";
+    public static final String MIME_URI_PREFIX = "planets:fmt/mime/";
     /** The prefix for extension format URIs. */
-    static final String EXT_URI_PREFIX = "planets:fmt/ext/";
+    public static final String EXT_URI_PREFIX = "planets:fmt/ext/";
     /** The prefix for modification Action-URIs. */
-    static final String ACTION_URI_PREFIX = "planets:mod/";
+    public static final String ACTION_URI_PREFIX = "planets:mod/";
     /** The prefix for PRONOM format URIs. */
-    static final String PRONOM_URI_PREFIX = "info:pronom/";
+    public static final String PRONOM_URI_PREFIX = "info:pronom/";
 
     /**
      * @param uri The pronom URI
      * @return The first corresponding extension (e.g. 'txt')
      */
-    static String getFirstExtension(final URI uri) {
+    public static String getFirstExtension(final URI uri) {
         if (uri == null) {
             return null;
         }
-        Set<String> set = new Format(uri).getExtensions();
+        FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
+        Set<String> set = fr.getFormatForURI(uri).getExtensions();
         if (set != null) {
             return set.iterator().next();
         }
@@ -45,7 +46,7 @@ final class FormatUtils {
      * @param ext The extension (e.g. 'txt')
      * @return the extension as a format URI
      */
-    static URI createExtensionUri(final String ext) {
+    public static URI createExtensionUri(final String ext) {
         return URI.create(EXT_URI_PREFIX + ext.toLowerCase());
     }
 
@@ -55,7 +56,7 @@ final class FormatUtils {
      * @param mime The mime type (e.g. 'image/tiff')
      * @return the MIME type as a format URI
      */
-    static URI createMimeUri(final String mime) {
+    public static URI createMimeUri(final String mime) {
         return URI.create(MIME_URI_PREFIX + mime.toLowerCase());
     }
 
@@ -65,7 +66,7 @@ final class FormatUtils {
      * @param action the action the service can perform
      * @return the Action-URI
      */
-    static URI createActionUri(final String action) {
+    public static URI createActionUri(final String action) {
         return URI.create(ACTION_URI_PREFIX + action.toLowerCase());
     }
 
@@ -74,7 +75,7 @@ final class FormatUtils {
      * @param pronomID Short-form PUID, e.g. 'fmt/95'
      * @return A full PRONOM Format URI, e.g. 'info:pronom/fmt/95'
      */
-    static URI createPronomUri(final String pronomID) {
+    public static URI createPronomUri(final String pronomID) {
         return URI.create(PRONOM_URI_PREFIX + pronomID.toLowerCase());
     }
 
@@ -82,7 +83,7 @@ final class FormatUtils {
      * @param uri The URI to check
      * @return true if a MIME URI
      */
-    static boolean isMimeUri(final URI uri) {
+    public static boolean isMimeUri(final URI uri) {
         return uri.toString().startsWith(MIME_URI_PREFIX);
     }
 
@@ -90,7 +91,7 @@ final class FormatUtils {
      * @param uri The URI to check
      * @return true if an extension URI
      */
-    static boolean isExtensionUri(final URI uri) {
+    public static boolean isExtensionUri(final URI uri) {
         return uri.toString().startsWith(EXT_URI_PREFIX);
     }
 
@@ -98,7 +99,7 @@ final class FormatUtils {
      * @param uri The URI to check
      * @return true if a PRONOM URI
      */
-    static boolean isPronomUri(final URI uri) {
+    public static boolean isPronomUri(final URI uri) {
         return uri.toString().startsWith(PRONOM_URI_PREFIX);
     }
 }

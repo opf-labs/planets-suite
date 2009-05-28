@@ -64,7 +64,7 @@ public class Format implements Serializable {
     /**
      * @param typeURI The type URI (see FormatRegistry)
      */
-    public Format(URI typeURI) {
+    protected Format(URI typeURI) {
         this.typeURI = typeURI;
         if (FormatUtils.isMimeUri(typeURI)) {
             String mime = typeURI.toString().replace(
