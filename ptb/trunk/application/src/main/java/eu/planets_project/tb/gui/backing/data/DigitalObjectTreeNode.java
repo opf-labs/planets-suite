@@ -29,7 +29,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     private URI uri;
     private String leafname;
     private String owner;
-    private String size;
+    private long size;
     private String dateAdded;
     private String dateModified;
     private boolean selectable;
@@ -48,7 +48,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
         this.setLeaf(true);
         this.setSelectable(true);
         DigitalObjectContent con = dob.getContent();
-        this.size = ""+con.length();
+        this.size = con.length();
     }
     
     public DigitalObjectTreeNode( URI uri ) {
@@ -57,7 +57,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
         this.setType("folder");
         this.setLeaf(false);
         this.setSelectable(false);
-        this.size = "-";
+        this.size = -1;
     }
 
     public DigitalObjectTreeNode() {
@@ -131,7 +131,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     /**
      * @return the size of the object.
      */
-    public String getSize() {
+    public long getSize() {
         return size;
     }
     

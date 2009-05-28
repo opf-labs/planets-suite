@@ -28,7 +28,6 @@ import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
 import eu.planets_project.ifr.core.techreg.formats.Format;
-import eu.planets_project.ifr.core.techreg.formats.FormatUtils;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -129,7 +128,7 @@ public class ExpTypeMigrate extends ExpTypeBackingBean {
         // Accepts any input?
         if( sd.getInputFormats() == null 
                 || sd.getInputFormats().size() == 0 
-                || sd.getInputFormats().contains( FormatUtils.ANY_FORMAT ) ) return true;
+                || sd.getInputFormats().contains( Format.ANY ) ) return true;
         
         // Examine accepted inputs:
         for( URI sinf : sd.getInputFormats() ) {

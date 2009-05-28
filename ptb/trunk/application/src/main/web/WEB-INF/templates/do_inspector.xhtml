@@ -13,15 +13,15 @@
   
     <h:panelGroup styleClass="dobInspector">
     <dl>
-        <dt>Name</dt>
-        <dd><h:outputText value="#{dob.leafname}"/></dd>
-        
         <dt>Location</dt>
         <dd>
               <ui:include src="/WEB-INF/templates/do_breadcrumb.xhtml">
                 <ui:param name="dobs" value="#{dob.parents}"/>
               </ui:include>
         </dd>
+        
+        <dt>Name</dt>
+        <dd><h:outputText value="#{dob.leafname}"/></dd>
         
         <ui:fragment rendered="#{!dob.directory}">
         

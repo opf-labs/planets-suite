@@ -147,8 +147,21 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
     @SuppressWarnings("unchecked")
     public E get(int index) {
         if( this.children != null ) {
-            return (E) this.createDobFromUri(children.get(index));
-            
+            // Patch in '..':
+            if( this.getLocation() != null ) {
+                if( index == 0 ) {
+                    URI parentUri = this.getLocation().resolve("..");
+                    if( ! dsm.hasDataManager(parentUri )) parentUri = null;
+                    DigitalObjectTreeNode treeNode = new DigitalObjectTreeNode( parentUri );
+                    treeNode.setLeafname("..");
+                    return (E) treeNode;
+                } else {
+                    return (E) this.createDobFromUri(children.get(index-1));
+                }
+                
+            } else {
+                return (E) this.createDobFromUri(children.get(index));
+            }
         } else {
             return null;
         }
@@ -267,7 +280,13 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
      * @see java.util.List#size()
      */
     public int size() {
-        if( this.children != null ) return this.children.size();
+        if( this.children != null ) {
+            if( this.getLocation() != null ) {
+                return this.children.size() + 1;
+            } else {
+                return this.children.size();
+            }
+        }
         return 0;
     }
 

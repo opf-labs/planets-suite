@@ -26,30 +26,15 @@
 
       <h:panelGrid columns="2" columnClasses="listContent,infoContent">
             <h:panelGroup id="DobBrowserPanel">
-       <rich:toolBar id="dobrowseToolbar" height="34" itemSeparator="line" style="background-color: #{a4jSkin.headerBackgroundColor}">
+       <rich:toolBar id="dobrowseToolbar" itemSeparator="line" style="background-color: #{a4jSkin.headerBackgroundColor}">
             <rich:toolBarGroup>
-            
-            <rich:dropDownMenu submitMode="none">
-                <f:facet name="label"> 
+           
                     <h:panelGroup>
                       <h:commandLink action="#{DobBrowser.goHome}">
                         <h:graphicImage value="/graphics/toolbar_home.png" />
-                        <h:outputText value="Location"/>
+                        <h:outputText value="/~ Home"/>
                       </h:commandLink>
                     </h:panelGroup>
-                </f:facet>
-                          
-              <rich:menuItem rendered="#{DobBrowser.breadcrumb != null}">
-                <f:facet name="icon">
-                    <h:graphicImage value="/graphics/filetype_folder.gif" alt="directory" title="directory" />
-                </f:facet>
-                <ui:include src="/WEB-INF/templates/do_breadcrumb.xhtml">
-                  <ui:param name="dobs" value="#{DobBrowser.breadcrumb}"/>
-                </ui:include>
-                
-              </rich:menuItem>
-              
-            </rich:dropDownMenu>
 
             </rich:toolBarGroup>
             
@@ -58,7 +43,7 @@
                 <h:commandButton styleClass="barsearchbutton" onclick="return false;"  value="Search" disabled="true"/>
             </rich:toolBarGroup>
         </rich:toolBar>
-                
+        
                 <rich:dataTable id="DobBrowserList" var="do" value="#{DobBrowser.list}" 
                  rows="15" reRender="dobrow_ds" styleClass="tbTable" style="width: 100%">
         
@@ -82,7 +67,7 @@
                     
                 </rich:column>
                        
-                <rich:column width="100%">
+                <rich:column width="100%" sortBy="#{do.leafname}" sortOrder="ASCENDING">
                 <f:facet name="header">#{res['browse_data.name']}</f:facet>
                 <h:panelGroup rendered="#{do.directory}">
                   <h:commandLink action="success">
@@ -114,12 +99,13 @@
                 </h:panelGroup>
                 </rich:column>
 
-                <rich:column width="1%">
+                <rich:column width="1%" sortBy="#{do.size}">
                 <f:facet name="header">#{res['browse_data.size']}</f:facet>
-                  <h:outputText value=" #{do.size}"/>
+                  <h:outputText value=" #{do.size}" rendered="#{do.size >= 0}"/>
+                  <h:outputText value="-" rendered="#{do.size == -1}"/>
                 </rich:column>
                 
-                <rich:column width="1%">
+                <rich:column width="1%" sortBy="#{do.directory}">
                 <f:facet name="header">#{res['browse_data.type']}</f:facet>
                 <h:panelGroup rendered="#{do.directory}">
                 #{res['browse_data.folder']}
