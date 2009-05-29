@@ -121,8 +121,12 @@ public class DigitalObjectRefBean {
         if( this.file != null ) 
             mimetype = new MimetypesFileTypeMap().getContentType(file);
         
+        // Based only on URI:
+        if( this.domUri != null ) 
+            mimetype = new MimetypesFileTypeMap().getContentType(this.domUri.getPath());
+        
         // Digital Object Case:
-        if( this.dob != null ) 
+        if( this.dob != null && dob.getTitle() != null ) 
             mimetype = new MimetypesFileTypeMap().getContentType(dob.getTitle());
         
        return mimetype;

@@ -182,7 +182,10 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
             }
         } else {
             // This is a location:
-            return new DigitalObjectTreeNode(item);
+            DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item);
+            itemNode.setDescription( dsm.getDescriptionForUri(item) );
+            log.info("Item description was set to: "+itemNode.getDescription());
+            return itemNode;
         }
         
     }

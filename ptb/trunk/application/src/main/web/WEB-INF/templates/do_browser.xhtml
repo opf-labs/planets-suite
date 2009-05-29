@@ -93,10 +93,17 @@
                     <h:outputText value=" #{do.leafname}"/>
                     <t:updateActionListener property="#{DobBrowser.dob}" value="#{do}" />
                   </h:commandLink>
-
+                  
                   </a4j:outputPanel>
                   
                 </h:panelGroup>
+                
+                <ui:fragment rendered="#{do.description != null}">
+                    <p class="description" style="margin-left: 2em">
+                      <h:outputText value="#{do.description}"/>
+                    </p>
+                </ui:fragment>
+                  
                 </rich:column>
 
                 <rich:column width="1%" sortBy="#{do.size}">
@@ -206,7 +213,7 @@
             </a4j:outputPanel>
         </rich:panelBarItem>
         
-        <rich:panelBarItem id="dob_pan_corpora" label="Additional Corpora">
+        <rich:panelBarItem id="dob_pan_corpora" label="Additional Corpora" rendered="false">
            Add further corpora from here?
         </rich:panelBarItem>
         

@@ -18,6 +18,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 public class DataSource {
     private URI uri = null;
     private DigitalObjectManager dom = null;
+    private String description = null;
     
 
     /**
@@ -60,6 +61,20 @@ public class DataSource {
         puri = puri.normalize();
         if( puri.toString().startsWith(this.getUri().toString())) return true;
         return false;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

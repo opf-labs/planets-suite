@@ -20,6 +20,8 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.impl.file.FilesystemDigitalObjectManagerImpl;
+import eu.planets_project.ifr.core.storage.impl.web.BlueMarbleDigitalObjectManagerImpl;
+import eu.planets_project.ifr.core.storage.impl.web.YahooImageAPIDigitalObjectManagerImpl;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
 
@@ -38,20 +40,21 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectMultiManager.class);
 
     // The array of data source:
-    private DataSource[] dss;
+    private List<DataSource> dss;
     
     /**
      * The constructor create the list of known DRs:
      */
     public DigitalObjectMultiManager() {
         // Allocate the data sources:
-        dss = new DataSource[3];
+        dss = new ArrayList<DataSource>();
         
         // The Planets Data Registry:
         DataManagerLocal dm;
         try {
             dm = DigitalObjectMultiManager.getPlanetsDataManager();
-            dss[0] = new DataSource(dm.list(null)[0], new DOMDataManager(dm) );
+            dss.add(0, new DataSource(dm.list(null)[0], new DOMDataManager(dm) ));
+            dss.get(0).setDescription("The Planets shared storage area.");
         } catch( SOAPException e ) {
             log.error("Error creating data registry URI: " + e );
             dss = null;
@@ -60,7 +63,8 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         
         // The File System Data Registry:
         FileSystemDataManager fsdm = new FileSystemDataManager();
-        dss[1] = new DataSource(fsdm.getRootURI(), new DOMDataManager(fsdm));
+        dss.add( 1, new DataSource(fsdm.getRootURI(), new DOMDataManager(fsdm)) );
+        dss.get(1).setDescription("The Testbed FTP area.");
         
         // The DOMs supported...
         String fsname = "experiment-files";
@@ -68,14 +72,27 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         File fsf = new File( fsloc );
         if( ! fsf.exists() ) fsf.mkdirs();
         DigitalObjectManager fdom = FilesystemDigitalObjectManagerImpl.getInstance( fsname, fsf );
-        dss[2] = new DataSource( fdom.list(null).get(0), fdom);
+        dss.add(2, new DataSource( fdom.list(null).get(0), fdom));
+        dss.get(2).setDescription("The Testbed upload and result storage space.");
+        
+        // Blue Marble:
+        DigitalObjectManager bmdom = new BlueMarbleDigitalObjectManagerImpl();
+        dss.add(3, new DataSource( bmdom.list(null).get(0), bmdom ));
+        dss.get(3).setDescription("The Blue Marble image collection, from NASA.");
+
+/*        // Yahoo Image Search:
+        DigitalObjectManager ydom = new YahooImageAPIDigitalObjectManagerImpl();
+        dss.add(4, new DataSource( ydom.list(null).get(0), ydom ));
+        dss.get(4).setDescription("Yahoo image search data source.");
+*/        
     }
+    
     
     /**
      * @return
      */
     public DataSource getDefaultStorageSpace() {
-        return this.dss[2];
+        return this.dss.get(2);
     }
     
     /**
@@ -106,9 +123,9 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      */
     private DigitalObjectManager findDom( URI puri ) {
         // Find the (1st) matching data registry:
-        for( int i = 0; i < dss.length; i++ ) {
-            if( dss[i].matchesURI(puri) ) {
-                return dss[i].getDom();
+        for( int i = 0; i < dss.size(); i++ ) {
+            if( dss.get(i).matchesURI(puri) ) {
+                return dss.get(i).getDom();
             }
         }
         
@@ -121,6 +138,20 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         return true;
     }
     
+    /**
+     * @param item
+     * @return
+     */
+    public String getDescriptionForUri(URI item) {
+        for( DataSource ds: this.dss ) {
+            if( ds.getUri().equals(item)) {
+                log.info("Found "+item+", "+ds.getDescription() );
+                return ds.getDescription();
+            }
+        }
+        return null;
+    }
+
 
     // FIXME Should all items NOT be returned with a trailing slash?
     /* (non-Javadoc)
@@ -131,8 +162,8 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         // If null, list the known DRs
         if( pdURI == null ) {
             List<URI> childs = new ArrayList<URI>();
-            for( int i = 0; i < dss.length; i++ ) {
-                childs.add(i, dss[i].getUri());
+            for( int i = 0; i < dss.size(); i++ ) {
+                childs.add(i, dss.get(i).getUri());
             }
             return childs;
         }
@@ -196,5 +227,6 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         if( dm == null ) return null;
         return dm.list(pdURI, q);
     }
+
 
 }

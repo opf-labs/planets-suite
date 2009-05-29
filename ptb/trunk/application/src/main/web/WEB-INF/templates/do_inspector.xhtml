@@ -23,6 +23,11 @@
         <dt>Name</dt>
         <dd><h:outputText value="#{dob.leafname}"/></dd>
         
+        <ui:fragment rendered="#{dob.description != null}">
+        <dt>Description</dt>
+        <dd><h:outputText value="#{dob.description}"/></dd>
+        </ui:fragment>
+        
         <ui:fragment rendered="#{!dob.directory}">
         
         <ui:fragment rendered="#{dob.size >= 0}">

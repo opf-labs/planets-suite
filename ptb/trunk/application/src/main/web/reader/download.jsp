@@ -1,8 +1,4 @@
-<%@ page import= "java.io.*, java.net.URLDecoder, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
-
-//
-// For a model download servlet, see http://balusc.blogspot.com/2007/07/fileservlet.html
-//
+<%@ page import= "java.io.*, java.net.URLDecoder, eu.planets_project.services.utils.FileUtils, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
 
 // Pick up the parameters:
 String fid = request.getParameter("fid");
@@ -21,25 +17,24 @@ String mimetype = dh.getMimeType();
 
 // Set the headers appropriately:
 response.setContentType( (mimetype != null) ? mimetype : "application/octet-stream" );
-response.setContentLength( ((Long)dh.getSize()).intValue() );
+if( dh.getSize() >= 0 ) {
+    response.setContentLength( ((Long)dh.getSize()).intValue() );
+}
 // This should allow the content to be rendered by the browser, but the filename is ignored.
 response.setHeader( "Content-Disposition", "inline; filename=\"" + filename + "\"" );
 // The following alternative forces a download:
 //response.setHeader( "Content-Disposition", "attachment; filename=\"" + filename + "\"" );
 
 // Now stream out the data:
-byte[] bbuf = new byte[2*1024];
-DataInputStream in = new DataInputStream(dh.getContentAsStream());
-int length = 0;
+InputStream in = dh.getContentAsStream();
 ServletOutputStream op = response.getOutputStream();
 
 try {
-    while ((in != null) && ((length = in.read(bbuf)) != -1))
-    {
-        op.write(bbuf,0,length);
-    }
+    
+    FileUtils.writeInputStreamToOutputStream(in,op);
+    
 } finally {
-    in.close();
+    if( in != null ) in.close();
     op.flush();
     op.close();
 }
