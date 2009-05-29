@@ -37,6 +37,9 @@ public class DigitalObjectBrowser {
     protected static final String SELECTION_PANEL = "dob_pan_selection";
     protected static final String CORPORA_PANEL = "dob_pan_corpora";
     private String selectedPanel = "";
+    
+    // FIXME Hard-coded upper limit on automatic select-all size:
+    private static final int SELECT_ALL_MAX_SIZE = 400;
 
     /**
      * Constructor to set up the initial tree model.
@@ -203,20 +206,29 @@ public class DigitalObjectBrowser {
 
     /** */
     public boolean getAllSelected() {
-        List<DigitalObjectTreeNode> dobs = getList();
-        for( int i = 0; i < dobs.size(); i ++ ) {
-            if( ! dobs.get(i).isDirectory() ) {
-                if( ! this.selectedDobs.contains( dobs.get(i).getUri() ) ){
-                    log.info("Returning false for: "+dobs.get(i).getUri());
+        if( this.getList().size() > SELECT_ALL_MAX_SIZE ) return false;
+        for( DigitalObjectTreeNode dob :  getList() ) {
+                if( ! this.selectedDobs.contains( dob.getUri() ) ){
+                    log.info("Returning false for: "+dob.getUri());
                     return false;
                 }
-            }
         }
         return true;
     }
     
     /** */
     public void setAllSelected( boolean selected ) {
+        // This deliberately does nothing, as the action is handled by toggleSelectAll.
+    }
+
+    /** */
+    public boolean isListSelectable() {
+        if( this.getList().size() > SELECT_ALL_MAX_SIZE ) return false;
+        // Otherwise, see if any are selectable...
+        for( DigitalObjectTreeNode dob : getList() ) {
+            if( dob.isSelectable() ) return true;
+        }
+        return false;
     }
 
 
@@ -260,6 +272,9 @@ public class DigitalObjectBrowser {
     public static String selectAll() {
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
         fb.setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
+        
+        if( fb.getList().size() > SELECT_ALL_MAX_SIZE ) return "failure";
+
         List<DigitalObjectTreeNode> dobs = fb.getList();
         for( int i = 0; i < dobs.size(); i ++ ) {
             if( ! dobs.get(i).isDirectory() ) {
@@ -275,6 +290,9 @@ public class DigitalObjectBrowser {
     public static String unselectAll() {
         DigitalObjectBrowser fb = (DigitalObjectBrowser) JSFUtil.getManagedObject("DobBrowser");
         fb.setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
+        
+        if( fb.getList().size() > SELECT_ALL_MAX_SIZE ) return "failure";
+        
         List<DigitalObjectTreeNode> dobs = fb.getList();
         for( int i = 0; i < dobs.size(); i ++ ) {
             if( ! dobs.get(i).isDirectory() ) {

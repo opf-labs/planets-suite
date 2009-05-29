@@ -184,7 +184,6 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
             // This is a location:
             DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item);
             itemNode.setDescription( dsm.getDescriptionForUri(item) );
-            log.info("Item description was set to: "+itemNode.getDescription());
             return itemNode;
         }
         
@@ -211,8 +210,40 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
      * @see java.util.List#iterator()
      */
     public Iterator<E> iterator() {
-        log.warn("Called unimplemented method: .iterator().");
-        return null;
+        return new SimpleIterator<E>( this );
+    }
+    
+    private class SimpleIterator<F> implements Iterator<E> {
+        List<E> list = null;
+        int i = 0;
+        
+        public SimpleIterator( List<E> list ) {
+            this.list = list;
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#hasNext()
+         */
+        public boolean hasNext() {
+            if( i < list.size() ) return true;
+            return false;
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#next()
+         */
+        public E next() {
+            i++;
+            return list.get(i-1);
+        }
+
+        /* (non-Javadoc)
+         * @see java.util.Iterator#remove()
+         */
+        public void remove() {
+            log.warn("Called unimplemented method: .iterator().remove().");
+        }
+        
     }
 
     /* (non-Javadoc)

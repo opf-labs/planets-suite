@@ -50,7 +50,7 @@
                 <rich:column width="1%">
                   <f:facet name="header">
                     <a4j:region>
-                      <h:selectBooleanCheckbox valueChangeListener="#{DobBrowser.toggleSelectAll}" value="#{DobBrowser.allSelected}">
+                      <h:selectBooleanCheckbox valueChangeListener="#{DobBrowser.toggleSelectAll}" value="#{DobBrowser.allSelected}" disabled="#{!DobBrowser.listSelectable}">
                         <a4j:support event="onchange" reRender="DobBrowserDetailsPanelBar,DobBrowserList" />
                       </h:selectBooleanCheckbox>
                     </a4j:region>
@@ -99,7 +99,7 @@
                 </h:panelGroup>
                 
                 <ui:fragment rendered="#{do.description != null}">
-                    <p class="description" style="margin-left: 2em">
+                    <p class="description" style="margin-left: 2em;">
                       <h:outputText value="#{do.description}"/>
                     </p>
                 </ui:fragment>
@@ -128,8 +128,8 @@
                 
                 </rich:dataTable>
                 <p>
-                  <h:commandButton action="#{DobBrowser.selectAll}" value="Select All These Items"/>
-                  <h:commandButton action="#{DobBrowser.unselectAll}" value="Remove All These Items From Selection"/>
+                  <h:commandButton action="#{DobBrowser.selectAll}" value="Select All These Items"  disabled="#{!DobBrowser.listSelectable}"/>
+                  <h:commandButton action="#{DobBrowser.unselectAll}" value="Remove All These Items From Selection"  disabled="#{!DobBrowser.listSelectable}"/>
                 </p>
                 
     </h:panelGroup>
