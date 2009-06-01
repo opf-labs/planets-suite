@@ -52,6 +52,12 @@
       <param-name>org.ajax4jsf.VIEW_HANDLERS</param-name>
       <param-value>com.sun.facelets.FaceletViewHandler</param-value>
     </context-param>
+    <!-- Tell RF to take action when the session expires and AJAX request are failing. 
+         See https://www.jboss.org/file-access/default/members/jbossrichfaces/freezone/docs/devguide/en/html/ArchitectureOverview.html -->
+    <context-param>
+        <param-name>org.ajax4jsf.handleViewExpiredOnClient</param-name>
+        <param-value>true</param-value>
+    </context-param>
     
 	
 	<!-- Extension for RichFaces-JSF: in combination with myFaces it must be the first one in the filter chain  -->

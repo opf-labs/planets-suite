@@ -69,7 +69,8 @@ public class EvaluationPropertyResultsBean extends MeasurementPropertyResultsBea
 			for (String stage : stageNames){
 				HashMap<String,EvalRecordBean> hm = new HashMap<String,EvalRecordBean>();
 				hm.put(stage, new EvalRecordBean());
-				this.evalresults.put(runDate.getTimeInMillis(), hm);
+				if( runDate != null )
+				    this.evalresults.put(runDate.getTimeInMillis(), hm);
 			}
 		}
 	}

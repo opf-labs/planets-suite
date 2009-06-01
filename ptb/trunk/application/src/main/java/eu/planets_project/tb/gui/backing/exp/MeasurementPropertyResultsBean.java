@@ -54,7 +54,9 @@ public class MeasurementPropertyResultsBean {
 	}
 	
 	public void addResult(Calendar runDate, MeasurementRecordImpl result){
-		this.results.put(runDate.getTimeInMillis(), new RecordBean(result));
+	    if( this.results != null ) {
+	        this.results.put(runDate.getTimeInMillis(), new RecordBean(result));
+	    }
 	}
 	
 	
@@ -76,9 +78,13 @@ public class MeasurementPropertyResultsBean {
 	 * @param allRunDates
 	 */
 	private void initResultsHM(List<Calendar> allRunDates){	
-		for(Calendar runDate : allRunDates){
-			this.results.put(runDate.getTimeInMillis(), new RecordBean());
-		}
+	    if( this.results != null && allRunDates != null ) {
+	        for(Calendar runDate : allRunDates){
+	            if( runDate != null ) {
+	                this.results.put(runDate.getTimeInMillis(), new RecordBean());
+	            }
+	        }
+	    }
 	}
 	
 	public class RecordBean{
