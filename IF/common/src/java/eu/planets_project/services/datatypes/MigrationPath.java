@@ -101,7 +101,9 @@ public final class MigrationPath {
                     inputFormats.size() * outputFormats.size());
             for (URI in : inputFormats) {
                 for (URI out : outputFormats) {
-                    paths.add(new MigrationPath(in, out, null));
+                    if( in != null && out != null) {
+                        paths.add(new MigrationPath(in, out, null));
+                    }
                 }
             }
             return paths;
