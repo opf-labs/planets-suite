@@ -63,15 +63,21 @@ public class FormatBean implements Comparable<FormatBean> {
      * @return
      */
     public String getSummary() {
-        if( format.getVersion() != null )
-            return format.getSummaryAndVersion();
-        return format.getSummary();
+        if( format != null ) {
+            if( format.getVersion() != null ) {
+              return format.getSummaryAndVersion();
+	    } else {
+              return format.getSummary();
+            }
+        }
+	return "";
     }
 
     /**
      * @return
      */
     public URI getUri() {
+        if( format == null ) return null;
         return format.getTypeURI();
     }
 
@@ -97,7 +103,11 @@ public class FormatBean implements Comparable<FormatBean> {
     public boolean equals(Object obj) {
         if( obj instanceof FormatBean ) {
             FormatBean fb = (FormatBean) obj;
-            return format.getTypeURI().equals( fb.getFormat().getTypeURI() );
+            if( format != null && format.getTypeURI() != null && fb != null && fb.getFormat() != null ) {
+              return format.getTypeURI().equals( fb.getFormat().getTypeURI() );
+            } else {
+              return super.equals(obj);
+            }
         } else {
             return super.equals(obj);
         }
