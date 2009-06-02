@@ -2016,6 +2016,7 @@ public class ExperimentBean {
 		
 			
 		//2. build the results on a per property basis
+		if( commonPropIDs != null ) {
 		for(String propertyID : commonPropIDs){
 			
 			EvaluationPropertyResultsBean evalPropResBean = new EvaluationPropertyResultsBean(inputDigoRef, propertyID,this.getAllRunDates(),comparedStageNames);
@@ -2098,6 +2099,7 @@ public class ExperimentBean {
 			//if(checkIfToAddEvaluationPropertyBean(evalPropResBean,comparedStageNames)){
 				ret.add(evalPropResBean);
 			//}
+		}
 		}
 		return ret;
     }
