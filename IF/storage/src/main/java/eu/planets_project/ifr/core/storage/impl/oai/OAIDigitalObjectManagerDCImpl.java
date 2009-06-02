@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.storage.api.query;
+package eu.planets_project.ifr.core.storage.impl.oai;
 
 import java.io.IOException;
 import java.net.URI;

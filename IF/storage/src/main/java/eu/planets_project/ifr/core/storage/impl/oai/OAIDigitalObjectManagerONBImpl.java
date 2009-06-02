@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.storage.api.query;
+package eu.planets_project.ifr.core.storage.impl.oai;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -7,8 +7,6 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,6 +24,8 @@ import org.xml.sax.SAXException;
 
 import se.kb.oai.pmh.Record;
 import se.kb.oai.pmh.OaiPmhServer;
+import eu.planets_project.ifr.core.storage.api.query.QueryDateRange;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
