@@ -108,7 +108,9 @@ public class FormatBean implements Comparable<FormatBean> {
      */
     @Override
     public int hashCode() {
-        return format.getTypeURI().hashCode();
+        if( format != null && format.getTypeURI() != null )
+            return format.getTypeURI().hashCode();
+        return super.hashCode();
     }
     
 }
