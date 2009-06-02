@@ -1708,7 +1708,12 @@ public class ExperimentBean {
      */
     public List<ExperimentStageBean> getStages() {
         ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(getEtype());
-        return exptype.getStageBeans();
+        if( exptype != null ) {
+            return exptype.getStageBeans();
+        } else {
+            log.warn("Got experiment type NULL: "+this.getEtype());
+            return null;
+        }
     }
 
     /**
