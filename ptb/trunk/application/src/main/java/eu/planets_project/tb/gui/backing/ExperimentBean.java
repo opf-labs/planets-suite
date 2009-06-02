@@ -211,6 +211,8 @@ public class ExperimentBean {
         this.litrefuri.add("");
         this.litreftitle.add("");
         this.litrefauthor.add("");
+        // log
+        log.info("New ExperimentBean constructed.");
     }
     
     public void fill(Experiment exp) {
