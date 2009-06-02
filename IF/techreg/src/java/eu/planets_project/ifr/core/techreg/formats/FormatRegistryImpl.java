@@ -116,7 +116,14 @@ class FormatRegistryImpl implements FormatRegistry {
         if (isMimeUri(puri) || isExtensionUri(puri)) {
             return new Format(puri);
         } else {
-            return uriMap.get(puri);
+            if( uriMap.containsKey(puri ) ) {
+                return uriMap.get(puri);
+            } else {
+                // Unknown format:
+                Format fmt = new Format(puri);
+                fmt.setSummary("Unrecognised format URI.");
+                return fmt;
+            }
         }
     }
 
