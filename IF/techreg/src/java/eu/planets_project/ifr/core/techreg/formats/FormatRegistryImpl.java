@@ -121,7 +121,7 @@ class FormatRegistryImpl implements FormatRegistry {
             } else {
                 // Unknown format:
                 Format fmt = new Format(puri);
-                fmt.setSummary("Unrecognised format URI.");
+                fmt.setSummary(""+puri);
                 return fmt;
             }
         }
