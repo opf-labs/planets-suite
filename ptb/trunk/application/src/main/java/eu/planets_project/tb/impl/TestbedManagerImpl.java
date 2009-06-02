@@ -54,7 +54,7 @@ public class TestbedManagerImpl
 	ExperimentPersistencyRemote edao;
 	
 	// The version number of the Testbed.  Can be overridden in BackendResources.properties.
-	private String tbVersion = "0.8";
+	private String tbVersion = "0.9";
 	
 	
 	/**

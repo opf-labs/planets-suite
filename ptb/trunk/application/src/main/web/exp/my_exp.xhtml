@@ -57,9 +57,11 @@
 	              <h:outputText value="#{exp.experimentSetup.basicProperties.experimentName}"/>
 	            <rich:contextMenu event="oncontextmenu" attached="true" id="expcontextmenu" submitMode="ajax">
 	               	<rich:menuItem id="contextOpenExp" action="#{ListExp_Backing.editMyExperimentAction}">
+                        <f:facet name="icon"><t:graphicImage value="/graphics/accessories-text-editor.png"/></f:facet>
 						<b>edit</b> experiment
 					</rich:menuItem>
 					<rich:menuItem id="contextSaveAs" action="#{NewExp_Controller.commandSaveAs}">
+                        <f:facet name="icon"><t:graphicImage value="/graphics/edit-copy.png"/></f:facet>
 						<b>save configuration as</b> new experiment
 					</rich:menuItem>
 					<!-- rich:menuGroup value="open and go to" direction="right-down">
@@ -71,6 +73,7 @@
 						<rich:menuItem value="#{res['new_exp.stage2']}" rendered="#{exp.currentPhaseIndex >= 6}" action="goToStage6"/>
 					</rich:menuGroup-->
 					<rich:menuItem id="contextExportExp" action="#{ListExp_Backing.exportMyExperimentAction}">
+                        <f:facet name="icon"><t:graphicImage value="/graphics/go-down.png"/></f:facet>
 						<b>export</b> experiment
 					</rich:menuItem>
 	          	</rich:contextMenu>
