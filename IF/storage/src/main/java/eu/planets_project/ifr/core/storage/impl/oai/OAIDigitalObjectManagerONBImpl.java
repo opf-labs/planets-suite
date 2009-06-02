@@ -91,7 +91,7 @@ public class OAIDigitalObjectManagerONBImpl extends AbstractOAIDigitalObjectMana
                 }
             }
         } catch (Exception ex) {
-            Logger.getLogger(OaiOnbDigitalObjectManagerImpl_OAI4J.class.getName()).log(Level.SEVERE, null, ex);
+            log.warn(ex.getMessage());
             return null;
         }
 
