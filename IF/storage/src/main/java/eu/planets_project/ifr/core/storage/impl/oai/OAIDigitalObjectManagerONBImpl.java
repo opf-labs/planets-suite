@@ -26,7 +26,6 @@ import org.xml.sax.SAXException;
 
 import se.kb.oai.pmh.Record;
 import se.kb.oai.pmh.OaiPmhServer;
-import eu.planets_project.ifr.core.storage.impl.oai.OaiOnbDigitalObjectManagerImpl_OAI4J;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
