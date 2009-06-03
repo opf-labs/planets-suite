@@ -315,7 +315,7 @@ public class ServiceRecordBean {
     /**
      * @return
      */
-    private List<URI> getOutputs() {
+    public List<URI> getOutputs() {
         ServiceDescription sd = this.getServiceDescription();
         List<URI> uris = new ArrayList<URI>();
         if( sd != null ) {
@@ -330,7 +330,7 @@ public class ServiceRecordBean {
     /**
      * @return
      */
-    private List<URI> getInputs() {
+    public List<URI> getInputs() {
         ServiceDescription sd = this.getServiceDescription();
         List<URI> uris = new ArrayList<URI>();
         if( sd != null ) {

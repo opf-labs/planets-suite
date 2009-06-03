@@ -42,6 +42,7 @@ import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.backing.service.PathwayBean;
 import eu.planets_project.tb.gui.backing.service.ServiceRecordBean;
 import eu.planets_project.tb.gui.backing.service.ServiceRecordsByNameBean;
+import eu.planets_project.tb.gui.backing.service.ServiceRecordsByFormatBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
@@ -689,6 +690,38 @@ public class ServiceBrowser {
         }
         
         return new ArrayList<ServiceRecordsByNameBean>( sbn.values() );
+    }
+
+    /**
+     * @return
+     */
+    public List<ServiceRecordsByFormatBean> getAllServiceRecordsByFormat() {
+        HashMap<URI,ServiceRecordsByFormatBean> sbn = new HashMap<URI,ServiceRecordsByFormatBean>();
+
+        // Get all the known, unique service records.
+        List<ServiceRecordBean> records = this.getAllServicesAndRecords();
+
+        // Aggregate those into a list of new service-by-name:
+        for( ServiceRecordBean srb : records ) {
+            if( srb.getInputs() != null ) {
+                for( URI fmt : srb.getInputs() ) {
+                    if( sbn.get(fmt) == null ) {
+                        sbn.put(fmt, new ServiceRecordsByFormatBean( fr.getFormatForURI(fmt) ) );
+                    }
+                    sbn.get(fmt).addAsInputService(srb);
+                }
+            }
+            if( srb.getOutputs() != null ) {
+                for( URI fmt : srb.getOutputs() ) {
+                    if( sbn.get(fmt) == null ) {
+                        sbn.put(fmt, new ServiceRecordsByFormatBean( fr.getFormatForURI(fmt) ) );
+                    }
+                    sbn.get(fmt).addAsOutputService(srb);
+                }
+            }
+        }
+
+        return new ArrayList<ServiceRecordsByFormatBean>( sbn.values() );
     }
     
     /**

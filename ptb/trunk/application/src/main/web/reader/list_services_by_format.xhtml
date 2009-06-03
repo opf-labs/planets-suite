@@ -29,55 +29,61 @@
             <p>The following services are currently available for experimentation in the Testbed.  Click on a service name to find out more about it.</p>
     <h:form>
    
-        <rich:dataTable value="#{ServiceBrowser.allServiceRecordsByName}" var="sd"
+        <rich:dataTable value="#{ServiceBrowser.allServiceRecordsByFormat}" var="sf"
          styleClass="tbTable" sortMode="single"><!-- reRender="services_ds"  -->
         
                     
-            <rich:column width="20%" sortBy="#{sd.name}"> 
+            <rich:column width="40%" sortBy="#{sf.format.summary}" sortOrder="ASCENDING"> 
                 <f:facet name="header">
-                    <h:outputText value="Name"/>
-                </f:facet>
-                <h:outputLink value="service_inspector.faces">
-                    <f:param name="serviceName" value="#{sd.name}"/>
-                    <h:outputText value="#{sd.name}"/>
-                </h:outputLink>
-            </rich:column>
-            
-            <rich:column sortBy="#{sd.nameRecord.type}" sortOrder="ASCENDING">
-                <f:facet name="header">
-                    <h:outputText value="Type"/>
-                </f:facet>
-                <h:outputText value="#{sd.nameRecord.type}"/> 
-            </rich:column>
-            
-            <rich:column sortBy="#{sd.numberOfExperiments}" sortOrder="ASCENDING">
-                <f:facet name="header">
-                    <h:outputText value="# Experiments"/>
-                </f:facet>
-                <h:outputText value="#{sd.numberOfExperiments}"/> 
-            </rich:column>
-            
-            <rich:column width="20%" sortBy="#{sd.nameRecord.toolSummary}"> 
-                <f:facet name="header">
-                    <h:outputText value="Tool"/>
-                </f:facet>
-                <h:outputText value="#{sd.nameRecord.toolSummary}"/>
-            </rich:column>
-            
-            <rich:column width="50%">
-                <f:facet name="header">
-                    <h:outputText value="Description"/>
+                    <h:outputText value="Format"/>
                 </f:facet>
                 
-                <h:panelGroup rendered="#{sd.nameRecord.logo != null}">
-                  <img src="#{sd.nameRecord.logo}" height="32" style="float: right; height: 32px;" title="#{sd.name}" alt="#{sd.name}"/>
-                </h:panelGroup>
-                
-                <h:outputText value="#{sd.nameRecord.description}"/>
-                <h:outputLink rendered="#{sd.nameRecord.furtherInfo != null}" value="#{sd.nameRecord.furtherInfo}" target="_new"> <t:graphicImage value="/graphics/external-link.png" alt="Open service info in new window..."/></h:outputLink>
+                <h:outputText value="#{sf.format.summaryAndVersion}" rendered="#{sf.format.summary != null}"/>
+                <h:outputText value="#{sf.format.typeURI}" rendered="#{sf.format.summary == null}"/>
                 
             </rich:column>
 
+            <rich:column width="10%"> 
+                <f:facet name="header">
+                    <h:outputText value="Extensions"/>
+                </f:facet>
+                
+                <h:outputText value="#{sf.format.extensions}" rendered="#{sf.format.extensions != null}"/>
+                
+            </rich:column>
+            
+            <rich:column width="20%"> 
+                <f:facet name="header">
+                    <h:outputText value="As Input"/>
+                </f:facet>
+
+                  <a4j:repeat var="sd" value="#{sf.asInput}"> 
+                   <h:outputLink value="service_inspector.faces">
+                    <f:param name="serviceName" value="#{sd.name}"/>
+                    <h:outputText value="#{sd.name}"/>
+                   </h:outputLink>
+                   <h:outputText value=" (#{sd.type})"/>
+                   <br/>
+                  </a4j:repeat>
+                  
+            </rich:column>
+
+            <rich:column width="20%"> 
+                <f:facet name="header">
+                    <h:outputText value="As Output"/>
+                </f:facet>
+  
+                  <a4j:repeat var="sd" value="#{sf.asOutput}"> 
+                   <h:outputLink value="service_inspector.faces">
+                    <f:param name="serviceName" value="#{sd.name}"/>
+                    <h:outputText value="#{sd.name}"/>
+                   </h:outputLink>
+                   <h:outputText value=" (#{sd.type})"/>
+                   <br/>
+                  </a4j:repeat>
+                  
+            </rich:column>
+            
 <!-- 
             <f:facet name="footer">
                 <rich:datascroller id="services_ds" renderIfSinglePage="false"></rich:datascroller>
