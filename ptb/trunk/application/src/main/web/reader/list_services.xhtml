@@ -80,25 +80,30 @@
 
             <rich:column> 
                 <f:facet name="header">
-                    <h:outputText value="Supported Formats"/>
+                    <h:outputText value="Inputs"/>
                 </f:facet>
 
-                <rich:simpleTogglePanel switchType="client" label="Inputs" opened="false" rendered="#{sd.nameRecord.inputFormats != null}">
+                <h:panelGroup rendered="#{sd.nameRecord.inputFormats != null}">
                   <a4j:repeat var="fmt" value="#{sd.nameRecord.inputFormats}"> 
                     <h:outputText value="#{fmt.summaryAndVersion}" rendered="#{fmt.summary != null}"/>
                     <h:outputText value="#{fmt.typeURI}" rendered="#{fmt.summary == null}"/>
                     <br/>
                   </a4j:repeat>
-                </rich:simpleTogglePanel>
+                </h:panelGroup>
+            </rich:column>
+
+            <rich:column> 
+                <f:facet name="header">
+                    <h:outputText value="Outputs"/>
+                </f:facet>
   
-                <rich:simpleTogglePanel switchType="client" label="Outputs" opened="false" rendered="#{sd.nameRecord.outputFormats != null}">
+                <h:panelGroup rendered="#{sd.nameRecord.outputFormats != null}">
                   <a4j:repeat var="fmt" value="#{sd.nameRecord.outputFormats}"> 
                     <h:outputText value="#{fmt.summaryAndVersion}" rendered="#{fmt.summary != null}"/>
                     <h:outputText value="#{fmt.typeURI}" rendered="#{fmt.summary == null}"/>
                     <br/>
                   </a4j:repeat>
-                </rich:simpleTogglePanel>
-                
+                </h:panelGroup>
             </rich:column>
             
 <!-- 
