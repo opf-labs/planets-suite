@@ -206,6 +206,7 @@ public class ZipUtils {
 					i++;
 				}
 			}
+			zip64File.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -232,10 +233,8 @@ public class ZipUtils {
 			FileEntry targetEntry = getFileEntry(zip, targetPathInZipfile);
 			
 			if(targetEntry!=null) {
-				log.info("[getFileFrom] Found entry: " + targetEntry.getName());
 				if(!targetEntry.isDirectory()) {
 					target = new File(destFolder, getEntryFileName(targetEntry));
-//					target.createNewFile();
 					InputStream in = zipFile.openEntryInputStream(targetEntry.getName());
 					OutputStream out = new FileOutputStream(target);
 					FileUtils.writeInputStreamToOutputStream(in, out);
@@ -373,7 +372,7 @@ public class ZipUtils {
 					out.close();
 				}
 			}
-			log.info("[insertFileInto] Done! Added " + toInsert.getName() + "to zip.");
+			log.info("[insertFileInto] Done! Added " + toInsert.getName() + " to zip.");
 			zip64File.close();
 			
 		} catch (FileNotFoundException e) {
@@ -398,7 +397,7 @@ public class ZipUtils {
 		Zip64File zip64File = null;
 		try {
 			zip64File = new Zip64File(zipFile);
-	
+			
 			FileEntry testEntry = getFileEntry(zipFile, fileToRemove);
 			
 			if(testEntry==null) {
@@ -424,6 +423,24 @@ public class ZipUtils {
 			e.printStackTrace();
 		}
 		return new File(zip64File.getDiskFile().getFileName());
+	}
+	
+	public static boolean isZipFile(File file) {
+		try {
+			Zip64File zip = new Zip64File(file);
+			List<FileEntry> entries = zip.getListFileEntries();
+			if(entries==null) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	
@@ -624,6 +641,9 @@ public class ZipUtils {
                     if (currentFile.getName().equalsIgnoreCase("CVS")) {
                         continue;
                     }
+                    if (currentFile.getName().equalsIgnoreCase(".svn")) {
+                        continue;
+                    }
                     list.add(currentFile.getPath() + "/");
                     /*
                      * the closing "/" has to be there to tell the
@@ -663,8 +683,8 @@ public class ZipUtils {
 	        int index = currentPath.indexOf(folder.getName());
 	        currentPath = currentPath.substring(index);
 	        // Delete the [FOLDER-NAME] part of the paths
-	        currentPath = currentPath.replace(folder.getName()
-	                + File.separator, "");
+//	        currentPath = currentPath.replace(folder.getName()
+//	                + File.separator, "");
 	        // add the normalized path to the list
 	        normalizedPaths.add(currentPath);
 	    }

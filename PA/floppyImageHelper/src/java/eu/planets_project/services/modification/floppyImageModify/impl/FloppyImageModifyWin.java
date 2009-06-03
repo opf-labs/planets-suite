@@ -71,18 +71,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 	}
 
-	/* (non-Javadoc)
-	 * @see eu.planets_project.services.PlanetsService#describe()
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.services.modification.floppyImageModify.FloppyImageModifyApi#describe()
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.services.modification.floppyImageModify.FloppyImageModify#describe()
-	 */
-	/* (non-Javadoc)
-	 * @see eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModify#describe()
-	 */
+	
 	/* (non-Javadoc)
 	 * @see eu.planets_project.services.modification.floppyImageModify.impl.FloppyImageModify#describe()
 	 */
@@ -144,7 +133,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		
 		List<DigitalObject> contained = digitalObject.getContained();
 		
-		List<File> containedFiles = DigitalObjectUtils.getContainedAsFiles(contained, TEMP_FOLDER);
+		List<File> containedFiles = DigitalObjectUtils.getDigitalObjectsAsFiles(contained, TEMP_FOLDER);
 		
 		VfdWrapperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
 		
