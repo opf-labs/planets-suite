@@ -96,6 +96,7 @@ public class ZipUtilsTest {
 	 */
 	@Test
 	public void testInsertFile() {
+		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
 		int inputFileCount = FileUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
 		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestInsert.zip");
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());

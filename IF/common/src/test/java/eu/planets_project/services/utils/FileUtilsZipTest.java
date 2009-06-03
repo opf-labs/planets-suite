@@ -96,7 +96,7 @@ public class FileUtilsZipTest {
         System.out.println("Checksum before Extraction: "
                 + zipResult.getChecksum());
         List<File> files = FileUtils.extractFilesFromZipAndCheck(zip,
-                EXTRACT_RESULT_OUT, zipResult.getChecksumAsLong());
+                EXTRACT_RESULT_OUT, zipResult.getChecksum());
         if (files != null) {
             for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {
                 File file = iterator.next();

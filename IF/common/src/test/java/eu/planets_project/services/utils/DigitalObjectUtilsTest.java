@@ -21,8 +21,8 @@ import eu.planets_project.services.datatypes.Fragment;
 public class DigitalObjectUtilsTest {
 	
 	static File testFolder = new File("tests/test-files/documents/test_pdf");
-	File testZip = new File("IF/common/src/test/resources/test_zip/test_pdf.zip");
-	File removeZip = new File("IF/common/src/test/resources/test_zip/insertFragmentTest.zip");
+	File testZip = new File("tests/test-files/archives/test_pdf.zip");
+	File removeZip = new File("tests/test-files/archives/insertFragmentTest.zip");
 	File work_folder = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtilsTest_TMP".toUpperCase()); 
 	
 	@Test

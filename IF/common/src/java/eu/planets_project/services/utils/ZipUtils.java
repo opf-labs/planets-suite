@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.zip.ZipException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -230,7 +231,7 @@ public class ZipUtils {
 		File target = null;
 		try {
 			Zip64File zipFile = new Zip64File(zip);
-			FileEntry targetEntry = getFileEntry(zip, targetPathInZipfile);
+			FileEntry targetEntry = getFileEntry(zipFile, targetPathInZipfile);
 			
 			if(targetEntry!=null) {
 				if(!targetEntry.isDirectory()) {
@@ -280,8 +281,10 @@ public class ZipUtils {
 		Zip64File zip64File = null;
 		try {
 			zip64File = new Zip64File(zipFile);
+			
+			processAndCreateFolderEntries(zip64File, parseTargetPath(targetPath, toInsert));
 	
-			FileEntry testEntry = getFileEntry(zipFile, targetPath);
+			FileEntry testEntry = getFileEntry(zip64File, targetPath);
 			
 			if(testEntry!=null) {
 				log.info("[insertFileInto] Entry exists: " + testEntry.getName());
@@ -383,6 +386,61 @@ public class ZipUtils {
 		return new File(zip64File.getDiskFile().getFileName());
 	}
 	
+	private static List<String> parseTargetPath(String targetPath, File toInsert) {
+		List<String> cleanedParts = new ArrayList<String>();
+		
+		if(targetPath.contains("\\")) {
+			targetPath = targetPath.replace("\\", "#");
+			String[] parts = targetPath.split("#");
+			if(parts.length > 1) {
+				String accumulatedPath = "";
+				for (int i = 0; i < parts.length-1; i++) {
+					String thisPath = accumulatedPath + "\\" + parts[i] + "/";
+					cleanedParts.add(thisPath.substring(1));
+					accumulatedPath = accumulatedPath + "\\" + parts[i];
+				}
+			}
+			else {
+				return null;
+			}
+			return cleanedParts;
+		}
+		else {
+			return null;
+		}
+	}
+	
+	private static void processAndCreateFolderEntries(Zip64File zip64File, List<String> pathParts) {
+		if(pathParts==null) {
+			return;
+		}
+		for (String string : pathParts) {
+			FileEntry currentEntry = zip64File.getFileEntry(string);
+			if(currentEntry!=null) {
+				continue;
+			}
+			else {
+				currentEntry = zip64File.getFileEntry(string + "/");
+				if(currentEntry!=null) {
+					continue;
+				}
+				else {
+					try {
+						EntryOutputStream entryWriter = zip64File.openEntryOutputStream(string, FileEntry.iMETHOD_STORED, null);
+						entryWriter.flush();
+						entryWriter.close();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (ZipException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
 
 	
 	/**
@@ -398,7 +456,7 @@ public class ZipUtils {
 		try {
 			zip64File = new Zip64File(zipFile);
 			
-			FileEntry testEntry = getFileEntry(zipFile, fileToRemove);
+			FileEntry testEntry = getFileEntry(zip64File, fileToRemove);
 			
 			if(testEntry==null) {
 				log.info("File not found: " + fileToRemove);
@@ -536,19 +594,12 @@ public class ZipUtils {
 	 * @param entryPath the FileEntry to find
 	 * @return the found FileEntry or null, if entryPath is not a valid location.
 	 */
-	private static FileEntry getFileEntry(File zip, String entryPath) {
+	private static FileEntry getFileEntry(Zip64File zip64File, String entryPath) {
 		FileEntry testEntry = null;
-		try {
-			Zip64File zip64File = new Zip64File(zip);
-			testEntry = zip64File.getFileEntry(entryPath);
-			if(testEntry==null) {
-				log.info("[getFileEntry] " + entryPath + " not found. Maybe it is a directory? Testing for directory entries (ending with \"/\") ");
-				testEntry = zip64File.getFileEntry(entryPath + "/");
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		testEntry = zip64File.getFileEntry(entryPath);
+		if(testEntry==null) {
+			log.info("[getFileEntry] " + entryPath + " not found. Maybe it is a directory? Testing for directory entries (ending with \"/\") ");
+			testEntry = zip64File.getFileEntry(entryPath + "/");
 		}
 		if(testEntry!=null) {
 			log.info("[getFileEntry] Found entry; " + testEntry.getName());
@@ -683,8 +734,8 @@ public class ZipUtils {
 	        int index = currentPath.indexOf(folder.getName());
 	        currentPath = currentPath.substring(index);
 	        // Delete the [FOLDER-NAME] part of the paths
-//	        currentPath = currentPath.replace(folder.getName()
-//	                + File.separator, "");
+	        currentPath = currentPath.replace(folder.getName()
+	                + File.separator, "");
 	        // add the normalized path to the list
 	        normalizedPaths.add(currentPath);
 	    }
