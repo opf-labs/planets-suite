@@ -33,7 +33,7 @@
          styleClass="tbTable" sortMode="single"><!-- reRender="services_ds"  -->
         
                     
-            <rich:column sortBy="#{sd.name}"> 
+            <rich:column width="20%" sortBy="#{sd.name}"> 
                 <f:facet name="header">
                     <h:outputText value="Name"/>
                 </f:facet>
@@ -57,7 +57,14 @@
                 <h:outputText value="#{sd.numberOfExperiments}"/> 
             </rich:column>
             
-            <rich:column>
+            <rich:column width="20%" sortBy="#{sd.nameRecord.toolSummary}"> 
+                <f:facet name="header">
+                    <h:outputText value="Tool"/>
+                </f:facet>
+                <h:outputText value="#{sd.nameRecord.toolSummary}"/>
+            </rich:column>
+            
+            <rich:column width="50%">
                 <f:facet name="header">
                     <h:outputText value="Description"/>
                 </f:facet>
@@ -68,6 +75,30 @@
                 
                 <h:outputText value="#{sd.nameRecord.description}"/>
                 <h:outputLink rendered="#{sd.nameRecord.furtherInfo != null}" value="#{sd.nameRecord.furtherInfo}" target="_new"> <t:graphicImage value="/graphics/external-link.png" alt="Open service info in new window..."/></h:outputLink>
+                
+            </rich:column>
+
+            <rich:column> 
+                <f:facet name="header">
+                    <h:outputText value="Supported Formats"/>
+                </f:facet>
+
+                <rich:simpleTogglePanel switchType="client" label="Inputs" opened="false" rendered="#{sd.nameRecord.inputFormats != null}">
+                  <a4j:repeat var="fmt" value="#{sd.nameRecord.inputFormats}"> 
+                    <h:outputText value="#{fmt.summaryAndVersion}" rendered="#{fmt.summary != null}"/>
+                    <h:outputText value="#{fmt.typeURI}" rendered="#{fmt.summary == null}"/>
+                    <br/>
+                  </a4j:repeat>
+                </rich:simpleTogglePanel>
+  
+                <rich:simpleTogglePanel switchType="client" label="Outputs" opened="false" rendered="#{sd.nameRecord.outputFormats != null}">
+                  <a4j:repeat var="fmt" value="#{sd.nameRecord.outputFormats}"> 
+                    <h:outputText value="#{fmt.summaryAndVersion}" rendered="#{fmt.summary != null}"/>
+                    <h:outputText value="#{fmt.typeURI}" rendered="#{fmt.summary == null}"/>
+                    <br/>
+                  </a4j:repeat>
+                </rich:simpleTogglePanel>
+                
             </rich:column>
             
 <!-- 

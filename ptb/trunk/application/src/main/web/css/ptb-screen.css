@@ -467,6 +467,7 @@ border:1px solid #BFDEEB;
 }
 table.tbTable td {
 border:1px solid #BFDEEB;
+vertical-align: top;
 }
 table.tbTable td.passive {
 background-color:#579EC2;

@@ -8,8 +8,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.gui.backing.ServiceBrowser;
 import eu.planets_project.tb.impl.model.exec.ServiceRecordImpl;
 
 /**
@@ -238,6 +242,133 @@ public class ServiceRecordBean {
     public URI getLogo() {
         if( sd != null ) return sd.getLogo();
         return null;
+    }
+
+    /**
+     * @return
+     */
+    public String getToolSummary() {
+        Tool st = null;
+        if( sd != null ) 
+            st = sd.getTool();
+        if( sr != null ) 
+            st = sr.getServiceDescription().getTool();
+        if( st == null )
+            return null;
+        // Return a tool description;
+        String desc = "";
+        if( st.getName() != null ) {
+            desc += st.getName();
+            if( st.getVersion() != null ) {
+                desc += " "+st.getVersion();
+            }
+        } else {
+            if( st.getIdentifier() != null ) {
+                desc += st.getIdentifier().toString();
+            }
+        }
+        return desc;
+    }
+
+    /**
+     * @return
+     */
+    public String getInputsSummary() {
+        return formatList(this.getInputs());
+    }
+
+    /**
+     * @return
+     */
+    public String getOutputsSummary() {
+        return formatList(this.getOutputs());
+    }
+
+    /**
+     * @return
+     */
+    public List<Format> getOutputFormats() {
+       return this.urisToFormats( this.getOutputs() );
+    }
+    
+    /**
+     * @return
+     */
+    public List<Format> getInputFormats() {
+       return this.urisToFormats( this.getInputs() );
+    }
+    
+    /**
+     * @param uris
+     * @return
+     */
+    private List<Format> urisToFormats( List<URI> uris ) {
+        if( uris == null ) return null;
+        List<Format> fmts = new ArrayList<Format>();
+        for( URI fmturi: uris ) {
+            Format fmt = ServiceBrowser.fr.getFormatForURI( fmturi );
+            fmts.add(fmt);
+        }
+        return fmts;
+    }
+    
+    /**
+     * @return
+     */
+    private List<URI> getOutputs() {
+        ServiceDescription sd = this.getServiceDescription();
+        List<URI> uris = new ArrayList<URI>();
+        if( sd != null ) {
+            for( MigrationPath mp : sd.getPaths() ) {
+                if( ! uris.contains( mp.getOutputFormat() ) ) uris.add(mp.getOutputFormat());
+            }
+        }
+        if( uris.size() == 0 ) return null;
+        return uris;
+    }
+
+    /**
+     * @return
+     */
+    private List<URI> getInputs() {
+        ServiceDescription sd = this.getServiceDescription();
+        List<URI> uris = new ArrayList<URI>();
+        if( sd != null ) {
+            for( URI fmturi : sd.getInputFormats() ) {
+                if( ! uris.contains( fmturi ) ) uris.add(fmturi);
+            }
+            for( MigrationPath mp : sd.getPaths() ) {
+                if( ! uris.contains( mp.getInputFormat() ) ) uris.add(mp.getInputFormat());
+            }
+        }
+        if( uris.size() == 0 ) return null;
+        return uris;
+    }
+
+    /**
+     * @param uris
+     * @return
+     */
+    private String formatList( List<URI> uris ) {
+        String fmts = "";
+        for( URI uri : uris ) {
+            if( ! "".equals(fmts) ) fmts += "<br/> ";
+            fmts += this.formatSummary(uri);
+        }
+        return fmts;
+    }
+    
+    /**
+     * @param fmturi
+     * @return
+     */
+    private String formatSummary( URI fmturi ) {
+        Format fmt = ServiceBrowser.fr.getFormatForURI( fmturi );
+        if( fmt.getSummary() != null ) {
+            return fmt.getSummaryAndVersion();
+        } else {
+            return fmt.getTypeURI().toString();
+        }
     }
 
     /* (non-Javadoc)
