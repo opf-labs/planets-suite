@@ -261,24 +261,15 @@
         
         <rich:tab id="listWorkflowsTab" name="listWorkflowsTab" label="Workflow Status">
 			<h:panelGrid columns="1">
+			<a4j:region>
 				<h:form>
-					<rich:panel>
+					<a4j:poll id="poll" interval="1000" enabled="#{theWorkflow.workflowStarted}"
+					reRender="progressPanel,WorkflowListPanel"/>
+					<rich:panel id="progressPanel">
 			        	<f:facet name="header">
 			            	<h:outputText value="Workflow in progress" />
 			        	</f:facet>
-				        <a4j:outputPanel id="WorkflowProgressPanel">
-				            <rich:progressBar value="#{theWorkflow.currentProgress}"
-				                interval="1000"
-				                immediate="true"
-				                enabled="#{theWorkflow.workflowStarted}"
-				                minValue="0" maxValue="99"
-				                reRenderAfterComplete="WorkflowListPanel">
-				                <f:facet name="initial">
-				                    <br />
-				                    <h:outputText value="None Active" />
-				                </f:facet>
-				            </rich:progressBar>
-				        </a4j:outputPanel>
+				        <h:outputText value="#{theWorkflow.currentProgress}" />
 					</rich:panel>
 			    </h:form>
 			    <rich:panel id="WorkflowListPanel">
@@ -328,6 +319,7 @@
 		                </rich:column>
 		            </rich:dataTable>
 	            </rich:panel>
+			</a4j:region>
 			</h:panelGrid>
         </rich:tab>
 

@@ -270,10 +270,10 @@ public class WorkflowBackingBean {
 			errorMessageString.add("Unable to build workflow XML String - cannote execute!");
 			return;
 		}
+//		System.out.println("Calling executeWorkflow with: " + selectedTemplateQname);
 		try {
 			workflowUUID = weeService.submitWorkflow(digObjs,
 					selectedTemplateQname, xmlWorkflowConfig);
-			workflowUUID = UUID.randomUUID();
 			SubmittedWorkflowBean swb = new SubmittedWorkflowBean();
 			swb.setStartTime(System.currentTimeMillis());
 			swb.setStopTime(0l);
@@ -291,47 +291,29 @@ public class WorkflowBackingBean {
 		}
 	}
 
-	public int getCurrentProgress() {
-		int progInt = -1;
-		System.out.println("Call getCurrentProgress with workflowUUID: " + workflowUUID);
+	public String getCurrentProgress() {
+		String progString = "None Active";
+//		System.out.println("Call getCurrentProgress with workflowUUID: " + workflowUUID);
 		if (workflowUUID != null) {
 			SubmittedWorkflowBean swb = workflowLookup.get(workflowUUID);
-			/*
 			try {
 				String status = weeService.getStatus(workflowUUID);
 				swb.setStatus(status);
-				if (status.equals("SUBMITTED"))
-					progInt = 1;
-				if (status.equals("RUNNING"))
-					progInt = 2;
-				if (status.equals("COMPLETED"))
-					progInt = 3;
+				progString = status;
+//				System.out.println("Status is: " + progString);
+				if ( status.equals("COMPLETED") || status.equals("FAILED") ) {
 					swb.setStopTime(System.currentTimeMillis());
-					swb.setIsActive(Boolean.FALSE);
-				if (status.equals("FAILED"))
-					progInt = 3;
-					swb.setStopTime(System.currentTimeMillis());
-					swb.setIsActive(Boolean.FALSE);
+					workflowUUID = null;
+					workflowStarted = false;
+					wfCount = -1;
+				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.out.println("Unidentified UUID: "+ workflowUUID);
 				errorMessageString
 						.add("Unable to retrieve workflow status from execution service.");
 			}
-			*/
-			wfCount++;
-			int numObj = new Integer(swb.getNumberObjects()).intValue();
-			progInt = (wfCount*100)/numObj;
-			swb.setStatus("RUNNING");
-			System.out.println("count: " + wfCount + ", progress: " + progInt);
-			if (wfCount==numObj) {
-				swb.setStopTime(System.currentTimeMillis());
-				swb.setStatus("COMPLETE");
-				workflowUUID = null;
-				workflowStarted = false;
-				wfCount = -1;
-			}
 		}
-		return progInt;
+		return progString;
 	}
 
 	public void serviceSelectionChanged(ValueChangeEvent event) {
