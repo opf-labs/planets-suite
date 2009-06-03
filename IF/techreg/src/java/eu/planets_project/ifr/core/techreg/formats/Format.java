@@ -38,6 +38,12 @@ public class Format implements Serializable {
      * process any format.
      */
     public static final URI ANY = URI.create(FormatUtils.ANY_FORMAT);
+    
+
+    /**
+     * A format URI representing a "folder"
+     */
+    public static final URI FOLDER = URI.create(FormatUtils.FOLDER_TYPE);
 
     /**
      * A format URI representing an unknown format, e.g. to set the format of a

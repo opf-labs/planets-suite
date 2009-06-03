@@ -1,9 +1,9 @@
 package eu.planets_project.services.datatypes;
 
-import eu.planets_project.services.PlanetsServices;
-
-import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+
+import eu.planets_project.services.PlanetsServices;
 
 /**
  * A digital object fragment.
@@ -31,5 +31,9 @@ public final class Fragment {
      */
     public String getId() {
         return id;
+    }
+    
+    public String toString() {
+    	return "Fragment: " + id;
     }
 }

@@ -321,6 +321,15 @@ class FormatRegistryImpl implements FormatRegistry {
     public URI createAnyFormatUri() {
         return Format.ANY;
     }
+    
+    
+    /** 
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.techreg.formats.FormatRegistry#createFolderTypeUri()
+     */
+    public URI createFolderTypeUri() {
+    	return Format.FOLDER;
+    }
 
     /**
      * {@inheritDoc}

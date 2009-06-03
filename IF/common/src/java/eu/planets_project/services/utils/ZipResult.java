@@ -4,6 +4,7 @@
 package eu.planets_project.services.utils;
 
 import java.io.File;
+import java.util.Arrays;
 
 import eu.planets_project.services.datatypes.Checksum;
 
@@ -17,16 +18,8 @@ public class ZipResult {
     private long checksum = 0;
 
     private Checksum check = null;
-
-    /**
-     * @param zipFile The ZIP file
-     * @param checksum The checksum
-     */
-    public ZipResult(File zipFile, long checksum) {
-        this.zipFile = zipFile;
-        this.checksum = checksum;
-        check = new Checksum("Adler32", Long.toString(checksum));
-    }
+    
+    private byte[] digest = null;
 
     /**
      * @param zipFile The ZIP file
@@ -79,6 +72,17 @@ public class ZipResult {
      */
     public void setChecksum(long checksum) {
         this.checksum = checksum;
-        check = new Checksum("Adler32", Long.toString(checksum));
+        check = new Checksum("MD5", Long.toString(checksum));
+    }
+    
+    /**
+     * @param checksum The Planets Checksum to set
+     */
+    public void setChecksum(Checksum checksum) {
+        this.check = checksum;
+    }
+    
+    public void setChecksum(String algorithm, byte[] digest) {
+    	check = new Checksum(algorithm, Arrays.toString(digest));
     }
 }

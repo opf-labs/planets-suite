@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -20,10 +20,11 @@ public class FileUtilsZipTest {
             .createWorkFolderInSysTemp("FileUtilsZipTest_OUT");
     private static final File EXTRACT_RESULT_OUT = FileUtils
             .createFolderInWorkFolder(OUTPUT_FOLDER, "EXTRACTED");
-    private File zip = null;
+    private static File zip = null;
 
-    @Before
-    public void setup() {
+    @BeforeClass
+    public static void setup() {
+    	FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
         zip = FileUtils.createSimpleZipFile(TEST_FILE_FOLDER, OUTPUT_FOLDER,
                 TEST_FILE_FOLDER.getName() + ".zip");
     }

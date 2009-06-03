@@ -95,6 +95,12 @@ public interface FormatRegistry {
      * @return A URI representing any format.
      */
     URI createAnyFormatUri();
+    
+    
+    /**
+     * @return a URI representing a folder.
+     */
+    URI createFolderTypeUri();
 
     /**
      * @return A URI representing an unknown format.

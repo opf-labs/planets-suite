@@ -13,6 +13,8 @@ final class FormatUtils {
 
     /** The string representing "any format". */
     static final String ANY_FORMAT = "planets:fmt/any";
+    /** The string representing a "folder". */
+    static final String FOLDER_TYPE = "planets:fmt/folder";
     /** The string representing "unknown format". */
     static final String UNKNOWN_FORMAT = "planets:fmt/unknown";
     /** The prefix for MIME format URIs. */
