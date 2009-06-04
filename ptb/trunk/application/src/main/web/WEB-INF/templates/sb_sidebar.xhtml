@@ -36,12 +36,6 @@
     <a4j:form styleClass="serviceFilterForm">
      <div class="leftcol">
      
-      <a4j:status>
-        <f:facet name="start">
-          <h:graphicImage value="/graphics/spinner.gif" style="float: right;"/>
-        </f:facet>
-      </a4j:status>
-   
       <h:selectManyCheckbox id="serviceTypesFilter" layout="pageDirection" value="#{ServiceBrowser.selectedServiceTypes}">
         <f:selectItems value="#{ServiceBrowser.serviceTypes}"/>
       </h:selectManyCheckbox> 
