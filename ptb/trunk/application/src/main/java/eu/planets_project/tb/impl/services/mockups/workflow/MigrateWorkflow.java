@@ -435,8 +435,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         WorkflowResult wr = new WorkflowResult();
 
         // Pre-migrate characterise
+        ExecutionStageRecordImpl preStage = new ExecutionStageRecordImpl(STAGE_PRE_MIGRATE);
         try {
-            ExecutionStageRecordImpl preStage = new ExecutionStageRecordImpl(STAGE_PRE_MIGRATE);
             wr.getStages().add( preStage );
             if( this.preIsCharacterise() ) {
                 executeCharacteriseStage(wr, dob, preStage, dpPre );
@@ -450,8 +450,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
          
         // Migrate Stage:
+        ExecutionStageRecordImpl migrateStage = new ExecutionStageRecordImpl(STAGE_MIGRATE);
         try {
-            ExecutionStageRecordImpl migrateStage = new ExecutionStageRecordImpl(STAGE_MIGRATE);
             wr.getStages().add( migrateStage );
             executeMigrateStage(wr, migrateStage, dob);
         } catch (Exception e ) {
@@ -465,8 +465,8 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         }
 
         // Post-migrate characterise
+        ExecutionStageRecordImpl postStage = new ExecutionStageRecordImpl(STAGE_POST_MIGRATE);
         try {
-            ExecutionStageRecordImpl postStage = new ExecutionStageRecordImpl(STAGE_POST_MIGRATE);
             wr.getStages().add( postStage );
             if( this.postIsCharacterise() ) {
                 executeCharacteriseStage(wr, (DigitalObject)wr.getResult(), postStage, dpPost );
@@ -504,6 +504,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         URI from = null, to = null;
         msBefore = System.currentTimeMillis();
         try {
+            log.info("Migrating "+dob);
             from = new URI(getFromFormat());
             to = new URI(getToFormat());
             migrated = migrator.migrate(dob, from, to, null);
@@ -579,6 +580,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         long msBefore = 0, msAfter = 0;
         msBefore = System.currentTimeMillis();
         try {
+            log.info("Characterising "+dob);
             result = dp.characterise(dob, null);
         } catch( Exception e ) {
             success = false;
@@ -624,6 +626,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         long msBefore = 0, msAfter = 0;
         msBefore = System.currentTimeMillis();
         try {
+            log.info("Identifying "+dob);
             result = identify.identify(dob,null);
         } catch( Exception e ) {
             success = false;
