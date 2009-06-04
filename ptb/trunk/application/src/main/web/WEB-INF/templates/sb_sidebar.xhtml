@@ -29,19 +29,26 @@
     
 
    <ui:fragment rendered="#{ShowServiceFilter}">
-    <h3 class="leftcol">Filters</h3>
+    <h3 class="leftcol">Service Types</h3>
     <div class="innertube">
     
     
-    <a4j:form>
-     <p class="leftcol">
+    <a4j:form styleClass="serviceFilterForm">
+     <div class="leftcol">
+     
+      <a4j:status>
+        <f:facet name="start">
+          <h:graphicImage value="/graphics/spinner.gif" style="float: right;"/>
+        </f:facet>
+      </a4j:status>
+   
       <h:selectManyCheckbox id="serviceTypesFilter" layout="pageDirection" value="#{ServiceBrowser.selectedServiceTypes}">
         <f:selectItems value="#{ServiceBrowser.serviceTypes}"/>
       </h:selectManyCheckbox> 
       
       <a4j:commandButton value="Filter" reRender="serviceListTable" />
       
-     </p>
+     </div>
     </a4j:form>
         
     </div>
