@@ -434,24 +434,38 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Initialise the result:
         WorkflowResult wr = new WorkflowResult();
 
-        // Attempt to ru each stage:
+        // Pre-migrate characterise
         try {
             ExecutionStageRecordImpl preStage = new ExecutionStageRecordImpl(STAGE_PRE_MIGRATE);
             wr.getStages().add( preStage );
-            // Pre-migrate characterise
             if( this.preIsCharacterise() ) {
                 executeCharacteriseStage(wr, dob, preStage, dpPre );
             }
             if( this.preIsIdentify()) {
                 executeIdentifyStage(wr, dob, preStage, idPre );
             }
-            
-            // Migrate Stage:
+        } catch (Exception e ) {
+            log.error("Pre-migrate stage failed! "+e);
+            e.printStackTrace();
+        }
+         
+        // Migrate Stage:
+        try {
             ExecutionStageRecordImpl migrateStage = new ExecutionStageRecordImpl(STAGE_MIGRATE);
             wr.getStages().add( migrateStage );
             executeMigrateStage(wr, migrateStage, dob);
-            
-            // Post-migrate characterise
+        } catch (Exception e ) {
+            // Create a ServiceReport from the exception.
+            //TODO can we distinguish tool and install error here?
+            ServiceReport sr = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, e.toString());
+            wr.setReport(sr);
+            log.error("Migration failed! "+e);
+            e.printStackTrace();
+            return wr;
+        }
+
+        // Post-migrate characterise
+        try {
             ExecutionStageRecordImpl postStage = new ExecutionStageRecordImpl(STAGE_POST_MIGRATE);
             wr.getStages().add( postStage );
             if( this.postIsCharacterise() ) {
@@ -460,18 +474,11 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             if( this.postIsIdentify()) {
                 executeIdentifyStage(wr, (DigitalObject)wr.getResult(), postStage, idPost );
             }
-            
-            
-            // URGENT Make MIGRATE work, even if the CHARs FAIL.
-            
         } catch (Exception e ) {
-            // Create a ServiceReport from the exception.
-            //TODO can we distinguish tool and install error here?
-            ServiceReport sr = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, e.toString());
-            wr.setReport(sr);
-            log.error("Migration failed! "+e);
+            log.error("Post-Migrate stage failed! "+e);
             e.printStackTrace();
         }
+        
         return wr;
     }
 
@@ -584,7 +591,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         // Record results:
         if( success ) {
             stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
-            if( result != null ) {
+            if( result != null && result.getProperties() != null ) {
                 for( Property p : result.getProperties() ) {
                     log.info("Recording measurement: "+p.getUri()+":"+p.getName()+" = "+p.getValue());
                     stage_m.add(new MeasurementRecordImpl( p.getUri(), p.getValue() ));
