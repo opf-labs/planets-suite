@@ -2010,7 +2010,7 @@ public class ExperimentBean {
 			}else{
 				List<String> propsForRemoval = new ArrayList<String>();
 				for(String propID : commonPropIDs){
-					if(!propertyIDs.contains(propID)){
+					if(propertyIDs != null && !propertyIDs.contains(propID)){
 						//property not contained in all requested stages - remove
 						propsForRemoval.add(propID);
 					}

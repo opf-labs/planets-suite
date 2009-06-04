@@ -218,15 +218,20 @@ public class DataHandlerImpl implements DataHandler {
         try {
             dobr = this.findDOinDataRegistry(id);
         } catch (FileNotFoundException e1) {
-            log.warn("File "+id+" not found in Data Registry. "+e1);
+            log.info("File "+id+" not found in Data Registry. "+e1);
         }
         // If failed, attempt to use the older store:
         if( dobr == null ) {
             try {
                 dobr = this.findDOinTestbedCache(id);
             } catch (FileNotFoundException e) {
-                log.warn("File "+id+" not found in Testbed File Cache. "+e);
+                log.info("File "+id+" not found in Testbed File Cache. "+e);
             }
+        }
+        
+        // If ALL Failed, that's the BAD.
+        if( dobr == null ) {
+          log.error("Could not find any content for "+id);
         }
         return dobr;
     }

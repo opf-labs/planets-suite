@@ -28,8 +28,13 @@
 	<div class="innertubemain">
             <p>The following services are currently available for experimentation in the Testbed.  Click on a service name to find out more about it.</p>
     <h:form>
-   
-        <rich:dataTable value="#{ServiceBrowser.allServiceRecordsByFormat}" var="sf"
+        <a4j:status>
+            <f:facet name="start">
+                  <h:graphicImage value="/graphics/spinner.gif" style="float: right;"/>
+            </f:facet>
+        </a4j:status>
+        
+        <rich:dataTable id="serviceListTable" value="#{ServiceBrowser.allServiceRecordsByFormat}" var="sf"
          styleClass="tbTable" sortMode="single"><!-- reRender="services_ds"  -->
         
                     
@@ -112,8 +117,9 @@
 	
 	<div id="leftcol">
 
-      <ui:include src="/WEB-INF/templates/sb_sidebar.xhtml"/>
-      
+      <ui:include src="/WEB-INF/templates/sb_sidebar.xhtml">
+        <ui:param name="ShowServiceFilter" value="true"/>
+      </ui:include>
       
 	</div>
 	

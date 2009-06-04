@@ -84,6 +84,7 @@ public class ServiceBrowser {
     private FormatBean selectedInputFormat = null;
     private FormatBean selectedOutputFormat = null;
     private ServiceRecordBean selectedServiceRecord = null;
+    private List<String> selectedServiceTypes = null;
     
     private String nodeTitle;
     
@@ -681,12 +682,14 @@ public class ServiceBrowser {
 
         // Aggregate those into a list of new service-by-name:
         for( ServiceRecordBean srb : records ) {
+          if( this.getSelectedServiceTypes().contains( srb.getType() ) ) {
             if( sbn.containsKey(srb.getName()) ) {
                 // Add this SRB to the content:
                 sbn.get(srb.getName()).addServiceRecord(srb);
             } else {
                 sbn.put(srb.getName(), new ServiceRecordsByNameBean(srb) );
             }
+          }
         }
         
         return new ArrayList<ServiceRecordsByNameBean>( sbn.values() );
@@ -703,6 +706,7 @@ public class ServiceBrowser {
 
         // Aggregate those into a list of new service-by-name:
         for( ServiceRecordBean srb : records ) {
+          if( this.getSelectedServiceTypes().contains( srb.getType() ) ) {
             if( srb.getInputs() != null ) {
                 for( URI fmt : srb.getInputs() ) {
                     if( sbn.get(fmt) == null ) {
@@ -719,16 +723,83 @@ public class ServiceBrowser {
                     sbn.get(fmt).addAsOutputService(srb);
                 }
             }
+          }
         }
 
         return new ArrayList<ServiceRecordsByFormatBean>( sbn.values() );
     }
+
+    /**
+     * @return
+     */
+    public List<String> getSelectedServiceTypes() {
+        if( this.selectedServiceTypes == null ) {
+            this.selectedServiceTypes = this.getServiceTypeValues();
+        }
+        return this.selectedServiceTypes;
+    }
+    
+    /**
+     * @param selectedServiceTypes
+     */
+    public void setSelectedServiceTypes( List<String> selectedServiceTypes ) {
+         this.selectedServiceTypes = selectedServiceTypes;
+    }
+    
+    /**
+     * @return
+     */
+    public List<SelectItem> getServiceTypes() {
+        List<SelectItem> stypes = new ArrayList<SelectItem>();
+        
+        for( String type : this.getServiceTypeValues() ) {
+            stypes.add( new SelectItem( type ) );
+        }
+        return stypes;
+    }
+
+    /**
+     * @return
+     */
+    private List<String> getServiceTypeValues() {
+        List<String> stypes = new ArrayList<String>();
+        
+        List<ServiceRecordBean> records = this.getAllServicesAndRecords();
+        for( ServiceRecordBean srb : records ) {
+            String s  =  srb.getType() ;
+            if( ! stypes.contains( s )) stypes.add( s );
+        }
+        return stypes;
+    }
+    
+    
+    /** Name to store the look-up tables under. */
+    private final static String ALL_SERVICES_SD_CACHE_NAME = "CacheAllServicesCache";
     
     /**
      * 
      * @return
      */
+    @SuppressWarnings("unchecked")
     public List<ServiceRecordBean> getAllServicesAndRecords() {
+        Map<String,Object> reqmap =
+            FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        
+        // Lookup or re-build:
+        List<ServiceRecordBean> all_sd = (List<ServiceRecordBean>) reqmap.get(ALL_SERVICES_SD_CACHE_NAME);
+        if( all_sd == null ) {
+            log.info("Refreshing list of all services...");
+            all_sd = this.lookupAllServicesAndRecords();
+            reqmap.put(ALL_SERVICES_SD_CACHE_NAME, all_sd);
+            log.info("Refreshed.");
+        }
+        return all_sd;
+    }
+    
+    /**
+     * @return
+     */
+    private List<ServiceRecordBean> lookupAllServicesAndRecords() {
         // Use a hash map to build up the list.
         HashMap<String,ServiceRecordBean> serviceMap = new HashMap<String,ServiceRecordBean>();
         // Get the historical service records:

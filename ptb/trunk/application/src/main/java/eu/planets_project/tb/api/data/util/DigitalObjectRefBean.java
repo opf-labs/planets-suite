@@ -19,6 +19,7 @@ import java.net.URI;
 
 import javax.activation.MimetypesFileTypeMap;
 
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
@@ -55,6 +56,7 @@ public class DigitalObjectRefBean {
         this.name = name;
         this.download = downloadUri;
         this.file = file;
+        this.dob = new DigitalObject.Builder( Content.byReference( file ) ).title(name).build();
     }
 
     /**

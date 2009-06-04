@@ -461,6 +461,9 @@ public class MigrateWorkflow implements ExperimentWorkflow {
                 executeIdentifyStage(wr, (DigitalObject)wr.getResult(), postStage, idPost );
             }
             
+            
+            // URGENT Make MIGRATE work, even if the CHARs FAIL.
+            
         } catch (Exception e ) {
             // Create a ServiceReport from the exception.
             //TODO can we distinguish tool and install error here?
