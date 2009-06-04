@@ -57,6 +57,7 @@ public class DigitalObjectRefBean {
         this.download = downloadUri;
         this.file = file;
         this.dob = new DigitalObject.Builder( Content.byReference( file ) ).title(name).build();
+        //this.dob = new DigitalObject.Builder( Content.byValue( file ) ).title(name).build();
     }
 
     /**
