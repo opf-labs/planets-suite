@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -65,18 +64,9 @@ public class ZipUtils {
 			for(int i=0;i<normalizedPaths.size();i++) {
 				String currentZipEntryPath = normalizedPaths.get(i);
 				FileEntry entry = new FileEntry(currentZipEntryPath);
-				EntryOutputStream entryWriter = zipFile.openEntryOutputStream(entry.getName(), FileEntry.iMETHOD_STORED, null);
-				
-				FileInputStream fileReader = null;
 				File currentFile = new File(listOfFiles.get(i));
-				if(!entry.isDirectory()) {
-					fileReader = new FileInputStream(currentFile);
-					FileUtils.writeInputStreamToOutputStream(fileReader, entryWriter);
-					fileReader.close();
-				}
-				log.info("[createZip] Written entry to zip: " + entry.getName());
-				entryWriter.flush();
-				entryWriter.close();
+				
+				FileEntry currentEntry = writeEntry(zipFile, entry, currentFile);
 			}
 			log.info("[createZip] All Files written to zip file: " + zipName);
 			zipFile.close();
@@ -132,20 +122,10 @@ public class ZipUtils {
 			List<FileEntry> entries = zip64File.getListFileEntries();
 			extractedFiles = new ArrayList<File>();
 			for (FileEntry fileEntry : entries) {
-				log.info("[unzipTo] extracting file: " + fileEntry.getName());
-				File currentFile = new File(destFolder, fileEntry.getName());
 				
-				if(!fileEntry.isDirectory()) {
-					FileOutputStream fileOut = new FileOutputStream(currentFile);
-					EntryInputStream entryReader = zip64File.openEntryInputStream(fileEntry.getName());
-					FileUtils.writeInputStreamToOutputStream(entryReader, fileOut);
-					entryReader.close();
-					fileOut.close();
-				}
-				else {
-					currentFile.mkdirs();
-				}
+				File currentFile = readEntry(zip64File, fileEntry, destFolder);
 				extractedFiles.add(currentFile);
+				
 			}
 			zip64File.close();
 		} catch (FileNotFoundException e) {
@@ -154,6 +134,49 @@ public class ZipUtils {
 			e.printStackTrace();
 		}
 		return extractedFiles;
+	}
+	
+	private static void readFileEntry(Zip64File zip64File, FileEntry fileEntry, File destFolder) {
+		FileOutputStream fileOut;
+		File target = new File(destFolder, fileEntry.getName());
+		File targetsParent = target.getParentFile();
+		if(targetsParent!=null) {
+			targetsParent.mkdirs();
+		}
+		try {
+//			boolean madeFolder = target.createNewFile();
+			fileOut = new FileOutputStream(target);
+			log.info("[readFileEntry] writing file entry: " + fileEntry.getName());
+			EntryInputStream entryReader = zip64File.openEntryInputStream(fileEntry.getName());
+			FileUtils.writeInputStreamToOutputStream(entryReader, fileOut);
+			entryReader.close();
+			fileOut.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void readFolderEntry(Zip64File zip64File, FileEntry folderEntry, File dest) {
+		log.info("[getFileFrom] The target you have specified is a folder: " + folderEntry.getName());
+		File currentFolder = new File(dest, folderEntry.getName());
+		boolean dirsCreated = currentFolder.mkdirs();
+		List<String> containedFiles = getFileEntryChildren(zip64File, folderEntry);
+		
+		if(containedFiles.size()>0) {
+			for (String currentFilePath : containedFiles) {
+				FileEntry currentEntry = zip64File.getFileEntry(currentFilePath);
+				File destination = new File(dest, currentEntry.getName());
+				if(!currentEntry.isDirectory()) {
+					readFileEntry(zip64File, currentEntry, dest);
+				}
+				else {
+					dirsCreated = destination.mkdirs();
+//					readFolderEntry(zip64File, currentEntry, destination);
+				}
+			}
+		}
 	}
 
 	
@@ -230,31 +253,14 @@ public class ZipUtils {
 	public static File getFileFrom(File zip, String targetPathInZipfile, File destFolder) {
 		File target = null;
 		try {
-			Zip64File zipFile = new Zip64File(zip);
-			FileEntry targetEntry = getFileEntry(zipFile, targetPathInZipfile);
+			Zip64File zip64File = new Zip64File(zip);
+			FileEntry targetEntry = getFileEntry(zip64File, targetPathInZipfile);
 			
 			if(targetEntry!=null) {
-				if(!targetEntry.isDirectory()) {
-					target = new File(destFolder, getEntryFileName(targetEntry));
-					InputStream in = zipFile.openEntryInputStream(targetEntry.getName());
-					OutputStream out = new FileOutputStream(target);
-					FileUtils.writeInputStreamToOutputStream(in, out);
-					out.flush();
-					out.close();
-					in.close();
-				}
-				else {
-					log.info("[getFileFrom] The target you have specified is a folder. Extracting all contained files as well.");
-					target = new File(destFolder, targetEntry.getName());
-					boolean dirsCreated = target.mkdirs();
-					List<String> containedFiles = getFileEntryChildren(zipFile, targetEntry);
-					if(containedFiles.size()>0) {
-						for (String currentFilePath : containedFiles) {
-							File destination = new File(destFolder, currentFilePath);
-							File currentContained = getFileFrom(zip, currentFilePath, destination.getParentFile());
-						}
-					}
-				}
+				target = readEntry(zip64File, targetEntry, destFolder);
+			}
+			else {
+				log.error("[getFileFrom] Sorry, the file/folder you ask for could not be found in this zip: " + targetPathInZipfile);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -264,6 +270,23 @@ public class ZipUtils {
 		return target;
 	}
 	
+	
+	private static List<String> checkFilesForDeletion(Zip64File zip64File, FileEntry parentFolderEntry, File folderToInsert) {
+		List<String> entryChildren = getFileEntryChildren(zip64File, parentFolderEntry);
+		List<String> filesToAdd = normalizePaths(folderToInsert);
+		
+		List<String> filesToDelete = new ArrayList<String>();
+		
+		for (String currentChild : entryChildren) {
+			for (String currentToAdd : filesToAdd) {
+				if(currentChild.endsWith(currentToAdd)) {
+					filesToDelete.add(currentChild);
+				}
+			}
+		}
+		
+		return filesToDelete;
+	}
 	
 	
 	/**
@@ -526,8 +549,155 @@ public class ZipUtils {
 		}
 		return entryList;
 	}
+	
+
+	private static File readEntry(Zip64File zip64File, FileEntry toRead, File destFolder) {
+		InputStream in = null;
+		File target = new File(destFolder, toRead.getName());
+		if(!toRead.isDirectory()) {
+			readFileEntry(zip64File, toRead, destFolder);
+		}
+		else {
+			readFolderEntry(zip64File, toRead, destFolder);
+		}
+		return target;
+	}
+	
+	
+	private static FileEntry writeEntry(Zip64File zip64File, FileEntry targetPath, File toWrite) {
+		InputStream in = null;
+		EntryOutputStream out = null;
+		
+		processAndCreateFolderEntries(zip64File, parseTargetPath(targetPath.getName(), toWrite));
+		
+		try {
+			
+			out = zip64File.openEntryOutputStream(targetPath.getName(), FileEntry.iMETHOD_STORED, getFileDate(toWrite));
+			
+			if(!targetPath.isDirectory()) {
+				in = new FileInputStream(toWrite);
+				FileUtils.writeInputStreamToOutputStream(in, out);
+				in.close();
+			}
+			out.flush();
+			out.close();
+			if(targetPath.isDirectory()) {
+				log.info("[createZip] Written folder entry to zip: " + targetPath.getName());
+			}
+			else {
+				log.info("[createZip] Written file entry to zip: " + targetPath.getName());
+			}
+				
+			
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (ZipException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return targetPath;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	
+	
+	private static Date getFileDate(File file) {
+		Date date = new Date(file.lastModified());
+		return date;
+	}
+	
+	
+	private static FileEntry testFileEntry(Zip64File zip64File, String targetPath) {
+		FileEntry fileEntry = zip64File.getFileEntry(targetPath);
+		return fileEntry;
+	}
+	
+	private static FileEntry testFolderEntry(Zip64File zip64File, String targetPath) {
+		FileEntry folderEntry = zip64File.getFileEntry(targetPath + "/");
+		return folderEntry;
+	}
+	
+	
+	private static boolean containsEntry(Zip64File zip64File, String targetPath) {
+		FileEntry result = testFileEntry(zip64File, targetPath);
+		if(result!=null) {
+			return true; 
+		}
+		else {
+			result = testFolderEntry(zip64File, targetPath);
+			if(result!=null) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/**
 	 * Private method to delete a FileEntry including all nested entries "below" tje FileEntry toDelete.
 	 * @param zip the zip64File to delete the FileEntry toDelete from
@@ -560,6 +730,9 @@ public class ZipUtils {
 			if(toDelete.isDirectory()) {
 				log.info("[deleteEntriesRecursively] The FileEntry to delete is a folder. Deleting all nested entries: ");
 				List<String> containedFiles = getFileEntryChildren(zip, toDelete);
+				
+				// TODO Listen vergleichen, um nicht den kompletten Ordner löschen zu müssen...!!
+
 				if(containedFiles.size()>0) {
 					for (String currentEntryPath : containedFiles) {
 						FileEntry current = zip.getFileEntry(currentEntryPath);
@@ -598,11 +771,11 @@ public class ZipUtils {
 		FileEntry testEntry = null;
 		testEntry = zip64File.getFileEntry(entryPath);
 		if(testEntry==null) {
-			log.info("[getFileEntry] " + entryPath + " not found. Maybe it is a directory? Testing for directory entries (ending with \"/\") ");
+//			log.info("[getFileEntry] " + entryPath + " not found. Maybe it is a directory? Testing for directory entries (ending with \"/\") ");
 			testEntry = zip64File.getFileEntry(entryPath + "/");
 		}
 		if(testEntry!=null) {
-			log.info("[getFileEntry] Found entry; " + testEntry.getName());
+			log.info("[getFileEntry] Found entry: " + testEntry.getName());
 		}
 		else {
 			log.error("[getFileEntry] Entry NOT found: " + entryPath);

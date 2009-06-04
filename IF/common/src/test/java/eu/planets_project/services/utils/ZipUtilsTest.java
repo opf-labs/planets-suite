@@ -5,7 +5,6 @@ package eu.planets_project.services.utils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -21,7 +20,7 @@ public class ZipUtilsTest {
 			new File("IF/common/src/test/resources/test_zip");
 	
 	private static final File OUTPUT_FOLDER = 
-		FileUtils.createWorkFolderInSysTemp("ZipUtilsTest_Tmp");
+		FileUtils.createWorkFolderInSysTemp("ZipUtils_Test_Tmp".toUpperCase());
 	
 	private static final File EXTRACT_RESULT_OUT = 
 		FileUtils.createFolderInWorkFolder(OUTPUT_FOLDER, "EXTRACTED");
@@ -39,6 +38,7 @@ public class ZipUtilsTest {
 	 */
 	@Test
 	public void testCreateZipAndUnzipTo() {
+		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
 		int inputFileCount = FileUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
 		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTest.zip");
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
@@ -97,18 +97,12 @@ public class ZipUtilsTest {
 	@Test
 	public void testInsertFile() {
 		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
-		int inputFileCount = FileUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
 		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestInsert.zip");
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
-		String folderName = zip.getName().substring(0, zip.getName().lastIndexOf("."));
-		File extract = FileUtils.createFolderInWorkFolder(OUTPUT_FOLDER, folderName);
-		List<File> extracted = ZipUtils.unzipTo(zip, extract);
-		Date date = new Date(50,9,30);
-		File toInsert = new File("tests/test-files/documents/test_pdf/nested_folder/nested3.pdf");
-		toInsert.setLastModified(date.getDate());
-		File modifiedZip = ZipUtils.insertFileInto(zip, toInsert, "documents\\test_pdf\\nested_folder\\eingefuegtesPDF.pdf");
-		File insertMore = new File("tests/test-files/documents/test_pdf/");
-		modifiedZip = ZipUtils.insertFileInto(zip, insertMore, "documents\\test_pdf");
+		File toInsert = new File("IF/common/src/test/resources/test_zip/images/Kopie von test_gif");
+		File modifiedZip = ZipUtils.insertFileInto(zip, toInsert, "images\\test_gif");
+//		File insertMore = new File("tests/test-files/documents/test_pdf/");
+//		modifiedZip = ZipUtils.insertFileInto(zip, insertMore, "documents\\test_pdf");
 		System.out.println("Zip modified. Please find it here: " + zip.getAbsolutePath());
 	}
 	
@@ -119,14 +113,10 @@ public class ZipUtilsTest {
 	@Test
 	public void testGetFileFrom() {
 		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
-		int inputFileCount = FileUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
 		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestGetFile.zip");
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
-		String folderName = zip.getName().substring(0, zip.getName().lastIndexOf("."));
-		File extract = FileUtils.createFolderInWorkFolder(OUTPUT_FOLDER, folderName);
-		List<File> extracted = ZipUtils.unzipTo(zip, extract);
 		
-		File fromZip = ZipUtils.getFileFrom(zip, "images\\test_jpeg\\fujifilm-mx1700.jpg", OUTPUT_FOLDER);
+		File fromZip = ZipUtils.getFileFrom(zip, "images\\test_gif", OUTPUT_FOLDER);
 		System.out.println("File extracted. Please find it here: " + fromZip.getAbsolutePath());
 	}
 
