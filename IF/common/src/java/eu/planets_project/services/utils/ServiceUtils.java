@@ -3,6 +3,7 @@
  */
 package eu.planets_project.services.utils;
 
+import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
@@ -112,6 +113,26 @@ public class ServiceUtils {
     public static double calculateDuration(long startTime, long endTime) {
     	double duration = endTime - startTime;
     	return duration;
+    }
+    
+    /**
+     * Creates a simple MigrationPath Matrix needed by most Migrate services. 
+     * It's not possible to add Parameters per Path...
+     * @param inputFormats List of URIs with possible Inputformats
+     * @param outputFormats List of URIs with possible Outputformats
+     * @return a MigrationPath[] containing all possible combinations of formats
+     */
+    public static MigrationPath[] createMigrationPathways (List<URI> inputFormats, List<URI> outputFormats) {
+        List<MigrationPath> paths = new ArrayList<MigrationPath>();
+        
+        for (URI currentInputFormat : inputFormats) {
+			for (URI currentOutputFormat : outputFormats) {
+				MigrationPath path = new MigrationPath(currentInputFormat, currentOutputFormat, null);
+				paths.add(path);
+			}
+		}
+
+        return paths.toArray(new MigrationPath[]{});
     }
     
     /**
