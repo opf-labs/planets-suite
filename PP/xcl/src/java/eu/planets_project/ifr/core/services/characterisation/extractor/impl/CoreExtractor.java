@@ -286,9 +286,10 @@ public class CoreExtractor {
         String processOutput = shell.getProcessOutputAsString();
         String processError = shell.getProcessErrorAsString();
         plogger.info("Process Output: " + processOutput);
+        System.out.println("Process Output: "+processOutput);
         if( ! "".equals(processError ) ) {
             plogger.error("Process Error: " + processError);
-            System.err.println("Process Errror: "+processError);
+            System.err.println("Process Error: "+processError);
         }
         // StringWriter sWriter = new StringWriter();
 
