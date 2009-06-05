@@ -24,7 +24,6 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
-import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 
 /**
@@ -287,7 +286,8 @@ public class CoreExtractor {
         String processOutput = shell.getProcessOutputAsString();
         String processError = shell.getProcessErrorAsString();
         plogger.info("Process Output: " + processOutput);
-        plogger.info("Process Error: " + processError);
+        if( ! "".equals(processError ) )
+            plogger.error("Process Error: " + processError);
         // StringWriter sWriter = new StringWriter();
 
         byte[] binary_out = null;
