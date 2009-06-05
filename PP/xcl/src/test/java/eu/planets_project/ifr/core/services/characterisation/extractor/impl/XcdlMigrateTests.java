@@ -257,8 +257,10 @@ public class XcdlMigrateTests {
     }
 
     private File getTestFile(String srcExtension) {
+        System.out.println("Looking for file matching extension: "+srcExtension);
 
-        if (srcExtension.equalsIgnoreCase("TIFF")) {
+        if (srcExtension.equalsIgnoreCase("TIFF") 
+                || srcExtension.equalsIgnoreCase("TIF") ) {
             return XcdlMigrateUnitHelper.TIFF_INPUT;
         }
 
@@ -286,6 +288,8 @@ public class XcdlMigrateTests {
         // if (srcExtension.equalsIgnoreCase("DOC")) {
         // return XcdlExtractorUnitHelper.DOC_INPUT;
         // }
+        
+        System.err.println("Found no file matching extension: "+srcExtension);
         return null;
     }
 
