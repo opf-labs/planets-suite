@@ -211,7 +211,7 @@ public class EndpointBackingBean {
     	if (_matches.size() > 0) {
         	descBean.setServiceDescription(_matches.get(0));
         // If it's a new style endpoint then we can get the description and set the bean
-        } else if (! _currentEndpoint.isDepracated()) {
+        } else if (! _currentEndpoint.isDeprecated()) {
         	_log.info("");
         	// Get the service description and add the endpoint
         	ServiceDescription servDev = DiscoveryUtils.getServiceDescription(_currentEndpoint.getLocation());
@@ -264,6 +264,7 @@ public class EndpointBackingBean {
     	SortedSet<String> _cats = new TreeSet<String>();
     	_cats.add(EndpointBackingBean.ALL_CATEGORY);
     	
+    	// URGENT, refactor this out/away.
     	// First get services from the service registry, get a registry instance
     	Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
     	// Iterate over the descriptions and add a new endpoint for each

@@ -1,3 +1,3 @@
 <%
-response.sendRedirect("endpoints.faces");
+response.sendRedirect("services.faces");
 %>

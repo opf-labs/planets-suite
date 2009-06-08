@@ -17,6 +17,7 @@ import org.w3c.dom.Element;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.compare.CommonProperties;
+import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.validate.Validate;
@@ -81,6 +82,19 @@ public class PlanetsServiceExplorer {
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * @return the service description for this service, or null.
+     */
+    public ServiceDescription getServiceDescription() {
+        Service service = Service.create(wsdlLocation, qName);
+        PlanetsService s = (PlanetsService) service.getPort(getServiceClass());
+        if ( s  != null ) {
+            return s.describe();
+        } else {
+            return null;
         }
     }
 

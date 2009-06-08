@@ -92,7 +92,7 @@ public final class CoreRegistry implements Registry {
     public Response delete(final ServiceDescription description) {
         List<ServiceDescription> list = query(description);
         boolean removed = descriptions.removeAll(list);
-        return new Response("Attempted to delete: " + description, removed);
+        return new Response("Attempted to delete " +list.size() + " matches for " + description, removed);
     }
 
     /**

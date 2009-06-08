@@ -17,6 +17,10 @@
     <div id="trContent">
     <h:form styleClass="serviceform">
 
+      <ui:include src="/WEB-INF/templates/navigation.xhtml">
+        <ui:param name="page" value="external"/>
+      </ui:include>
+
 		<rich:toolBar id="endpointToolbar" height="34" itemSeparator="line">
             <rich:toolBarGroup location="left">
 				<h:inputText id="externalURL" styleClass="externalURL" value="#{ExternalBean.externalUrl}" />

@@ -16,6 +16,12 @@
     
     <div id="content">
     <h:form>
+    
+      <ui:include src="/WEB-INF/templates/navigation.xhtml">
+        <ui:param name="page" value="endpoints"/>
+      </ui:include>
+    
+    
 		<rich:toolBar height="34" itemSeparator="line">
 			<rich:toolBarGroup>
 				<h:selectOneMenu id="categoryfilter"
@@ -46,7 +52,7 @@
 	 	    <rich:dataTable id="endpointResults" rows="0" width="100%"
 	 	    value="#{EndpointBean.endpoints}" var="endpoint" styleClass="endpointTable"
 	 	    binding="#{EndpointBean.endpointsDataTable}">
-	  	      <rich:column sortBy="#{endpoint.name}" sortOrder="ASCENDING"
+	  	      <rich:column sortBy="#{endpoint.name}"
 	  	      	 styleClass="#{ ( EndpointBean.currentEndpoint.location == endpoint.location ) ? 'isCurrent' : 'isNotCurrent'}">
 		  	    <f:facet name="header">Name</f:facet>
 				<h:commandLink action="#{EndpointBean.selectAnEndpoint}"
@@ -62,6 +68,20 @@
 	  	      	 styleClass="#{ ( EndpointBean.currentEndpoint.location == endpoint.location ) ? 'isCurrent' : 'isNotCurrent'}">
 		  	    <f:facet name="header">Registered</f:facet>
 		  	    <h:graphicImage value="#{endpoint.regGraphic}"/>
+              </rich:column>
+              
+              <rich:column 
+                 styleClass="#{ ( EndpointBean.currentEndpoint.location == endpoint.location ) ? 'isCurrent' : 'isNotCurrent'}">
+                <f:facet name="header">Action</f:facet>
+            
+                <h:commandLink action="#{endpoint.registerService}" rendered="#{!endpoint.registered}">
+                  <h:graphicImage value="/images/cog_add.png"/>
+                </h:commandLink>
+
+                <h:commandLink action="#{endpoint.deregisterService}" rendered="#{endpoint.registered}">
+                  <h:graphicImage value="/images/cog_delete.png"/>
+                </h:commandLink>
+                
 		  	  </rich:column>
 	  	  </rich:dataTable>
 		  <rich:tabPanel switchType="ajax" id="endpointDetailPanel">
@@ -133,7 +153,7 @@
                     It is not advisable to add multiple registrations for the same service.</p>
                   </div>
 			    </c:when>
-			    <c:when test="#{! EndpointBean.currentEndpoint.depracated}">
+			    <c:when test="#{! EndpointBean.currentEndpoint.deprecated}">
                   <h3><h:outputText value="Automatically Register the #{EndpointBean.currentEndpoint.name} #{EndpointBean.currentEndpoint.category} Service"/></h3>
                   <div>
                     <p>
@@ -142,6 +162,8 @@
                     <p>
                       It is possible to automatically register this service based on its description.
                       You can either:
+                    </p>
+                    
                       <ul>
                         <li>Edit the service description for the
 				          <h:commandLink action="#{EndpointBean.editADescription}">
@@ -156,7 +178,7 @@
 				          </h:commandLink> automatically.
 				        </li>
                       </ul>
-                    </p>
+                      
                   </div>
 			    </c:when>
 			    <c:otherwise>

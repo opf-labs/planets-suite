@@ -1,5 +1,9 @@
 package eu.planets_project.ifr.core.registry.gui;
 
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.el.ELResolver;
 import javax.faces.context.FacesContext;
 
@@ -9,6 +13,8 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
+import eu.planets_project.ifr.core.registry.impl.PlanetsServiceEndpoint;
+import eu.planets_project.ifr.core.registry.utils.PlanetsServiceExplorer;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -20,6 +26,9 @@ public class RegistryBackingBean {
 	// keeping the logger just in case
 	private static Log log = LogFactory.getLog(RegistryBackingBean.class);
 
+    public static Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    
+
 	// TODO This shouldn't be hard coded, review role info and setup before V4
 	private final static String adminRole = "admin";
 	private final static String providerRole = "provider";
@@ -29,7 +38,6 @@ public class RegistryBackingBean {
 	 */
 	public RegistryBackingBean() {
 		// this clear is useful for dev purposes, we don't really want to clear the registry
-		//Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
 		//registry.clear();
 	}
 	/**
@@ -38,7 +46,6 @@ public class RegistryBackingBean {
 	 *     The number of services registered with this IF server
 	 */
 	public int getRegisteredCount() {
-		Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
 		return registry.query(null).size();
 	}
 
@@ -52,6 +59,39 @@ public class RegistryBackingBean {
     public boolean getCanRegisterServices() {
     	return (FacesContext.getCurrentInstance().getExternalContext().isUserInRole(adminRole) ||
     			FacesContext.getCurrentInstance().getExternalContext().isUserInRole(providerRole));
+    }
+    
+    /**
+     * @return
+     */
+    public  List<PlanetsServiceEndpoint> getRegisteredServices() {
+        // First get services from the service registry, get a registry instance
+        List<PlanetsServiceEndpoint> endpoints = new ArrayList<PlanetsServiceEndpoint>();
+        // Iterate over the descriptions and add a new endpoint for each
+        for (ServiceDescription desc : registry.query(null)) {
+            PlanetsServiceEndpoint _endpoint = null;
+            try {
+                _endpoint = new PlanetsServiceEndpoint(desc);
+            } catch (IllegalArgumentException e) {
+                log.error("Null or bad service description used to construct endpoint");
+                log.error(e.getStackTrace());
+                continue;
+            }
+            // Check if the current service description is up to date:
+            _endpoint.checkUpToDate();
+            // Add to the list:
+            endpoints.add(_endpoint);
+            /*
+            try {
+                uris.add(desc.getEndpoint().toURI());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            // Add the category as well
+            cats.add(_endpoint.getCategory());
+            */
+        }
+        return endpoints;
     }
 
     //====================================================================================
@@ -88,7 +128,7 @@ public class RegistryBackingBean {
     	endBean.addEndpoint(extBean.getEndpoint());
     	// And the service description
     	descBean.setServiceDescription(extBean.getServiceDescription());
-		Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    	
 		registry.register(extBean.getServiceDescription());
 
     	// Update the Endpoint List
@@ -118,7 +158,7 @@ public class RegistryBackingBean {
 
     	// Register the service
 		log.info("registering description");
-		Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+		
 		registry.register(desc);
 
     	// Update the Endpoint List

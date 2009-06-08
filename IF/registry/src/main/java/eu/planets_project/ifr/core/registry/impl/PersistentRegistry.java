@@ -86,6 +86,7 @@ public final class PersistentRegistry implements Registry {
         List<ServiceDescription> list = registry.query(null);
         clear();
         for (ServiceDescription serviceDescription : list) {
+            // log.info("Re-registering... "+serviceDescription.getEndpoint() );
             register(serviceDescription);
         }
         return response;
@@ -216,7 +217,7 @@ public final class PersistentRegistry implements Registry {
         try {
             s = new Scanner(new BufferedInputStream(new FileInputStream(file)));
             while (s.hasNextLine()) {
-                builder.append(s.nextLine()).append(" ");
+                builder.append(s.nextLine()).append("\n");
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

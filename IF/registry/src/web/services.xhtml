@@ -17,10 +17,14 @@
     <div id="content">
     <h:form>
 
+      <ui:include src="/WEB-INF/templates/navigation.xhtml">
+        <ui:param name="page" value="services"/>
+      </ui:include>
+
       <c:choose>
       	<c:when test="#{RegistryBean.registeredCount > 0}">
 	 	    <rich:dataTable id="serviceResults" rows="0" width="100%"
-	 	    value="#{RegistryBean.services}" var="info" styleClass="endpointTable">
+	 	    value="#{RegistryBean.registeredServices}" var="info" >
 	  	      <rich:column sortBy="#{info.description.name}" sortOrder="ASCENDING"
 	  	      	 styleClass="isNotCurrent">
 		  	    <f:facet name="header">Name</f:facet>
@@ -34,11 +38,31 @@
 		  	    <f:facet name="header">Description</f:facet>
   	            <h:outputText value="#{info.description.description}"/>
 	  	      </rich:column>
-	  	      <rich:column sortBy="#{info.description.endpoint}" sortOrder="ASCENDING"
-	  	      	 styleClass="isNotCurrent">
-		  	    <f:facet name="header">Endpoint</f:facet>
-  	            <h:outputText value="#{info.description.endpoint}"/>
-	  	      </rich:column>
+              <rich:column sortBy="#{info.description.endpoint}" sortOrder="ASCENDING"
+                 styleClass="isNotCurrent">
+                <f:facet name="header">Endpoint</f:facet>
+                <h:outputLink value="#{info.description.endpoint}" target="_blank">
+                <h:outputText value="@#{info.description.endpoint.host}"/>
+                </h:outputLink>
+              </rich:column>
+              <rich:column styleClass="isNotCurrent">
+                <f:facet name="header">Status</f:facet>
+                
+                <h:outputText value="#{info.descriptionStatus}"/>
+                
+                <h:panelGroup rendered="#{!info.upToDate}">
+                 <h:outputText value=" "/>
+                 <h:commandLink action="#{info.updateDescription}" title="Update" alt="Update">
+                  <h:graphicImage value="/images/arrow_refresh_small.png"/>
+                 </h:commandLink>
+                </h:panelGroup>
+                
+                <br/>
+                <h:commandLink action="#{info.deregisterService}" alt="De-Register" title="De-Register">
+                  <h:graphicImage value="/images/cog_delete.png"/>
+                </h:commandLink>
+              </rich:column>
+            
 	  	  </rich:dataTable>
       	</c:when>
       	<c:when test="#{RegistryBean.canRegisterServices}">
@@ -48,14 +72,14 @@
       	  case then visit the <h:commandLink value="endpoint browser" action="gotoEndpoints" />.
       	   This will help you find and register Planets services deployed on this server.</p>
       	   <p>If you want to register services running on other servers then you should use 
-      	   the <h:commandLink value=" manual registration" action="gotoManual" /> page.</p>
+      	   the <h:commandLink value=" manual registration" action="gotoAddExternal" /> page.</p>
       	  <p>If you've read down to here then either:</p>
-      	  <p>
+      	  
       	    <ul>
       	      <li>Something is currently broken.</li>
       	      <li>You or someone has cleared this Service Registry.</li>
       	    </ul>
-      	  </p>
+      	  
       	  <p>You should check the server logs for errors or rebuild your registry from scratch.</p>
       	  <p>We plan to provide some extra help here in the next release of the IF.</p>
       	</c:when>
@@ -64,13 +88,14 @@
       	  <p>There are currently no services registered with this Planets Service Registry.</p>
       	  <p>If this is a recent installation of the Planets Interoperability Framework 
       	  then the administrator probably needs to register some services.</p>
-      	  <p>If you've previously successfully used the Service Registry on this server then either:
+      	  <p>If you've previously successfully used the Service Registry on this server then either:</p>
+          
       	    <ul>
       	      <li>Something is currently broken.</li>
       	      <li>Someone has cleared this Service Registry.</li>
       	    </ul>
       	    In either case you should contact the administrator for this IF instance.
-      	  </p>
+      	  
       	</c:otherwise>
       </c:choose>
    

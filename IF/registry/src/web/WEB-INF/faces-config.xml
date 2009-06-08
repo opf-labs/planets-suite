@@ -50,6 +50,11 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
+            <from-outcome>gotoServices</from-outcome>
+            <to-view-id>/services.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
             <from-outcome>editDescription</from-outcome>
             <to-view-id>/description.xhtml</to-view-id>
             <redirect/>
