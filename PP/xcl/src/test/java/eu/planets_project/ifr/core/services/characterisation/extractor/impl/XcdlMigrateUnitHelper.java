@@ -18,9 +18,9 @@ import eu.planets_project.services.PlanetsServices;
 public final class XcdlMigrateUnitHelper {
     private static final String RESOURCES = "PP/xcl/src/test/resources/";
     /** Local host address of the JBoss instance. */
-    static final String LOCALHOST = "http://localhost:8080";
+    //static final String LOCALHOST = "http://localhost:8080";
     /** Test server address of the JBoss instance. */
-    static final String PLANETARIUM = "http://planetarium.hki.uni-koeln.de:8080";
+    //static final String PLANETARIUM = "http://planetarium.hki.uni-koeln.de:8080";
     /** System Temp folder */
     
     //private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
