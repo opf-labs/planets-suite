@@ -345,6 +345,7 @@ public class ServiceBrowser {
         List<ServiceDescription> sds = this.listAllMigrationServices();
         List<PathwayBean> paths = new ArrayList<PathwayBean>();
         for( ServiceDescription sd : sds ) {
+            log.info("Inspecting "+sd.getName());
             for( MigrationPath path : sd.getPaths() ) {
                 ServiceRecordBean srb = new ServiceRecordBean(sd);
                 FormatBean in = new FormatBean( ServiceBrowser.fr.getFormatForURI( path.getInputFormat() ) );

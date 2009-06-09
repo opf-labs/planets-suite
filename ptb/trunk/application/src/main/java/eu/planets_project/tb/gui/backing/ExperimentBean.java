@@ -199,13 +199,8 @@ public class ExperimentBean {
         
         // Add in default data:
         UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
-        if( user != null ) {
-            this.eparticipants = user.getUserid();
-            this.econtactname = user.getFullname();
-            this.econtactemail = user.getEmail();
-            this.econtacttel = user.getTelephone();
-            this.econtactaddress = user.getAddress();
-        }
+        this.setUserData(user);
+        
         // Default spaces:
         this.litrefdesc.add("");
         this.litrefuri.add("");
@@ -213,6 +208,16 @@ public class ExperimentBean {
         this.litrefauthor.add("");
         // log
         log.info("New ExperimentBean constructed.");
+    }
+    
+    public void setUserData( UserBean user ) {
+        if( user != null ) {
+            this.eparticipants = user.getUserid();
+            this.econtactname = user.getFullname();
+            this.econtactemail = user.getEmail();
+            this.econtacttel = user.getTelephone();
+            this.econtactaddress = user.getAddress();
+        }
     }
     
     public void fill(Experiment exp) {
@@ -564,7 +569,7 @@ public class ExperimentBean {
     		    DigitalObjectRefBean dobr = dh.get(fInput);
 				URI uri = dobr.getDownloadUri();
 				map.put("uri", uri.toString()) ;
-				map.put("name", this.createShortDoName(dobr.getName()) );
+				map.put("name", this.createShortDoName(dobr) );
 				map.put("inputID", key);
 				ret.add(map);
 			} catch (FileNotFoundException e) {
@@ -578,7 +583,9 @@ public class ExperimentBean {
      * @param name
      * @return
      */
-    private String createShortDoName( String name ) {
+    private String createShortDoName( DigitalObjectRefBean dobr ) {
+        String name = dobr.getName();
+        if( name == null ) return dobr.getDomUri().getPath();
         if( name == null ) return "no-name";
         int lastSlash = name.lastIndexOf("/");
         if( lastSlash != -1 ) {

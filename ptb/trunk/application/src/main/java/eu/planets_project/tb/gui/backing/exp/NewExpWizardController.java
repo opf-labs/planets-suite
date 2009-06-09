@@ -829,6 +829,10 @@ public class NewExpWizardController{
         // Place new experiment bean into session:
         ExperimentBean newExpBean = ExpBeanReqManager.putExperimentIntoSessionExperimentBean(exp);
         
+        // Make the current user the owner:
+        UserBean user = (UserBean)JSFUtil.getManagedObject("UserBean");
+        newExpBean.setUserData(user);
+        
         log.info("commandSaveExperimentAs: ExpBean: "+oldExpBean.getEname()+" saved as "+newExpBean.getEname());
 
         // Test hard redirect:
