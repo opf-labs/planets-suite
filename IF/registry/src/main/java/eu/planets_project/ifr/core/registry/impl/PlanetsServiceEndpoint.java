@@ -314,6 +314,10 @@ public class PlanetsServiceEndpoint {
      */
     public String registerService() {
         if( this.getDescription() != null ) {
+            if( this.getDescription().getEndpoint() == null ) {
+                this._serviceDescription  = new ServiceDescription.Builder( 
+                        this.getDescription().toXml() ).endpoint( this.getLocation() ).build();
+            }
             this.addToServiceRegistry();
             // Also add to the Registry cache:
             RegistryBackingBean reg = (RegistryBackingBean) RegistryBackingBean.getManagedObject("RegistryBean");
