@@ -24,6 +24,8 @@ import eu.planets_project.ifr.core.storage.impl.web.BlueMarbleDigitalObjectManag
 import eu.planets_project.ifr.core.storage.impl.web.YahooImageAPIDigitalObjectManagerImpl;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.tb.api.system.TestbedStatelessAdmin;
+import eu.planets_project.tb.impl.system.TestbedStatelessAdminBean;
 
 /**
  * This class managers all of the Data Registries known to the Testbed.
@@ -42,6 +44,9 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     // The array of data source:
     private List<DataSource> dss;
     
+    // The EJB used to get access:
+    TestbedStatelessAdmin tba = TestbedStatelessAdminBean.getTestbedAdminBean();
+    
     /**
      * The constructor create the list of known DRs:
      */
@@ -52,7 +57,8 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         // The Planets Data Registry:
         DataManagerLocal dm;
         try {
-            dm = DigitalObjectMultiManager.getPlanetsDataManager();
+            dm = this.getPlanetsDataManager();
+            // URGENT This was causing an authentication exception!
             dss.add(0, new DataSource(dm.list(null)[0], new DOMDataManager(dm) ));
             dss.get(0).setDescription("The Planets shared storage area.");
         } catch( SOAPException e ) {
@@ -75,12 +81,13 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         dss.add(2, new DataSource( fdom.list(null).get(0), fdom));
         dss.get(2).setDescription("The Testbed upload and result storage space.");
         
+        
         // Blue Marble:
         DigitalObjectManager bmdom = new BlueMarbleDigitalObjectManagerImpl();
         dss.add(3, new DataSource( bmdom.list(null).get(0), bmdom ));
         dss.get(3).setDescription("The Blue Marble image collection, from NASA.");
-
-/*        // Yahoo Image Search:
+/*
+        // Yahoo Image Search:
         DigitalObjectManager ydom = new YahooImageAPIDigitalObjectManagerImpl();
         dss.add(4, new DataSource( ydom.list(null).get(0), ydom ));
         dss.get(4).setDescription("Yahoo image search data source.");
@@ -104,7 +111,9 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      * 
      * @return A DataManagerLocal, as discovered via JNDI.
      */
-    public static DataManagerLocal getPlanetsDataManager() {
+    public DataManagerLocal getPlanetsDataManager() {
+        return this.tba.getPlanetsDataManagerAsAdmin(); 
+        /*
         try{
             Context jndiContext = new javax.naming.InitialContext();
             DataManagerLocal um = (DataManagerLocal) 
@@ -114,6 +123,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
             log.error("Failure during lookup of the local DataManager: "+e.toString());
             return null;
         }
+        */
     }
     
     /**

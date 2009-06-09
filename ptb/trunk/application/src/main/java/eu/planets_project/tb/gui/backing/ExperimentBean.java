@@ -951,9 +951,12 @@ public class ExperimentBean {
     }
     
     public String getEtype() {
-        log.info("Getting EtypeID:"+ this.exp.getExperimentSetup().getExperimentTypeID() );
-        log.info("Also EtypeName:"+ this.exp.getExperimentSetup().getExperimentTypeName());
-        return this.exp.getExperimentSetup().getExperimentTypeID();
+        if( this.exp != null && this.exp.getExperimentSetup() != null ) {
+            log.info("Getting EtypeID:"+ this.exp.getExperimentSetup().getExperimentTypeID() );
+            log.info("Also EtypeName:"+ this.exp.getExperimentSetup().getExperimentTypeName());
+            return this.exp.getExperimentSetup().getExperimentTypeID();
+        } 
+        return "";
     }
     
     public String getEtypeName() {
