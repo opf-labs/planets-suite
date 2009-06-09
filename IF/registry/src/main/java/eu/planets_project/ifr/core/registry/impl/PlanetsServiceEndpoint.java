@@ -261,9 +261,9 @@ public class PlanetsServiceEndpoint {
                 this.setDescriptionStatus( DescriptionStatus.OK );
             } else {
                 // First, de-register.
-                this.deregisterService();
+                this.removeFromServiceRegistry();
                 this._serviceDescription = csd;
-                this.registerService();
+                this.addToServiceRegistry();
                 this.setDescriptionStatus( DescriptionStatus.UPDATED );
             }
         } else {
@@ -272,10 +272,20 @@ public class PlanetsServiceEndpoint {
         return "success";
     }
     
-    /**
-     * @return
-     */
-    public String deregisterService() {
+    private void addToServiceRegistry() {
+        // Attempt to register:
+        ServiceDescription toReg =  new ServiceDescription.Builder( this.getDescription() ).endpoint( 
+                this.getLocation() ).build();
+        Response response = RegistryBackingBean.registry.register( toReg );
+        _log.info("Got response success: "+response.success());
+        _log.info("Got response: "+response.getMessage());
+        if( response.success() ) {
+            _log.info("Updated. "+this.getDescription().getEndpoint());
+        }
+        this.setRegistered(true);
+    }
+    
+    private void removeFromServiceRegistry() {
         Response response = RegistryBackingBean.registry.delete( 
                 new ServiceDescription.Builder( this.getDescription().getName(), this.getDescription().getType() 
                         ).endpoint( this.getDescription().getEndpoint() ).build() );
@@ -284,7 +294,14 @@ public class PlanetsServiceEndpoint {
         if( response.success() )
             _log.info("Deregistered: "+this.getLocation());
         this.setRegistered(false);
-        // Also remove from the Registry:
+    }
+    
+    /**
+     * @return
+     */
+    public String deregisterService() {
+        this.removeFromServiceRegistry();
+        // Also remove from the Registry cache:
         RegistryBackingBean reg = (RegistryBackingBean) RegistryBackingBean.getManagedObject("RegistryBean");
         List<PlanetsServiceEndpoint> servs = reg.getRegisteredServices();
         if( servs.contains( this ) ) {
@@ -298,17 +315,8 @@ public class PlanetsServiceEndpoint {
      */
     public String registerService() {
         if( this.getDescription() != null ) {
-            // Attempt to register:
-            ServiceDescription toReg =  new ServiceDescription.Builder( this.getDescription() ).endpoint( 
-                    this.getLocation() ).build();
-            Response response = RegistryBackingBean.registry.register( toReg );
-            _log.info("Got response success: "+response.success());
-            _log.info("Got response: "+response.getMessage());
-            if( response.success() ) {
-                _log.info("Updated. "+this.getDescription().getEndpoint());
-            }
-            this.setRegistered(true);
-            // Also add to the Registry:
+            this.addToServiceRegistry();
+            // Also add to the Registry cache:
             RegistryBackingBean reg = (RegistryBackingBean) RegistryBackingBean.getManagedObject("RegistryBean");
             List<PlanetsServiceEndpoint> servs = reg.getRegisteredServices();
             if( ! servs.contains( this ) ) {
