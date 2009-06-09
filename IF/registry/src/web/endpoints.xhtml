@@ -70,15 +70,15 @@
 		  	    <h:graphicImage value="#{endpoint.regGraphic}"/>
               </rich:column>
               
-              <rich:column 
+              <rich:column rendered="#{RegistryBean.canRegisterServices}"
                  styleClass="#{ ( EndpointBean.currentEndpoint.location == endpoint.location ) ? 'isCurrent' : 'isNotCurrent'}">
                 <f:facet name="header">Action</f:facet>
             
-                <h:commandLink action="#{endpoint.registerService}" rendered="#{!endpoint.registered}">
+                <h:commandLink action="#{endpoint.registerService}" rendered="#{!endpoint.registered}" disabled="#{! RegistryBean.canRegisterServices}">
                   <h:graphicImage value="/images/cog_add.png"/>
                 </h:commandLink>
 
-                <h:commandLink action="#{endpoint.deregisterService}" rendered="#{endpoint.registered}">
+                <h:commandLink action="#{endpoint.deregisterService}" rendered="#{endpoint.registered}" disabled="#{! RegistryBean.canRegisterServices}">
                   <h:graphicImage value="/images/cog_delete.png"/>
                 </h:commandLink>
                 

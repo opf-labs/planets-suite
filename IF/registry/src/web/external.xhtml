@@ -52,7 +52,7 @@
 			      <h3><h:outputText value="#{ExternalBean.endpoint.name} Service Endpoint Information"/></h3>
                   <h:outputText value="WSDL: #{ExternalBean.endpoint.location}"/><br/>
                   <h:outputText value="Status: #{ExternalBean.endpoint.status}" /><br/>
-                  <h:commandLink action="#{RegistryBean.registerExternalService}">
+                  <h:commandLink action="#{RegistryBean.registerExternalService}" disabled="#{! RegistryBean.canRegisterServices}">
                     <h:graphicImage id="imgRegister" value="/images/applications-system.png" />
                     <h:outputText value=" Register Service"/>
                   </h:commandLink>

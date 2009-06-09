@@ -29,11 +29,11 @@
               </h:commandLink>
             </rich:toolBarGroup>
             <rich:toolBarGroup  location="right">
-              <h:commandLink action="#{RegistryBean.checkAllServiceDescriptions}">
+              <h:commandLink action="#{RegistryBean.checkAllServiceDescriptions}" disabled="#{! RegistryBean.canRegisterServices}">
                 <h:graphicImage value="/images/arrow_refresh_small.png" alt="Check Service Descriptions" title="Check Service Descriptions"/>
                 <h:outputText value="Check Service Status"/>
               </h:commandLink>
-              <h:commandLink action="#{RegistryBean.updateAllServiceDescriptions}">
+              <h:commandLink action="#{RegistryBean.updateAllServiceDescriptions}" disabled="#{! RegistryBean.canRegisterServices}">
                 <h:graphicImage value="/images/arrow_refresh_small.png" alt="Update All Service Descriptions" title="Update All Service Descriptions"/>
                 <h:outputText value="Update Service Descriptions"/>
               </h:commandLink>
@@ -65,22 +65,22 @@
                 <h:outputText value="@#{info.description.endpoint.host}"/>
                 </h:outputLink>
               </rich:column>
-              <rich:column sortBy="#{info.descriptionStatus}" styleClass="isNotCurrent">
+              <rich:column sortBy="#{info.descriptionStatus}" styleClass="isNotCurrent" rendered="#{RegistryBean.canRegisterServices}">
                 <f:facet name="header">Status</f:facet>
 
                 <h:panelGroup rendered="#{info.registered}">
                 
                   <h:outputText value="#{info.descriptionStatus}"/>
-                
+
                   <h:panelGroup rendered="#{!info.upToDate}">
                    <h:outputText value=" "/>
-                   <h:commandLink action="#{info.updateDescription}" title="Update" alt="Update">
+                   <h:commandLink action="#{info.updateDescription}" title="Update" alt="Update" disabled="#{! RegistryBean.canRegisterServices}">
                     <h:graphicImage value="/images/arrow_refresh_small.png"/>
                    </h:commandLink>
                   </h:panelGroup>
-                
+                  
                   <br/>
-                  <h:commandLink action="#{info.deregisterService}" alt="De-Register" title="De-Register">
+                  <h:commandLink action="#{info.deregisterService}" alt="De-Register" title="De-Register" disabled="#{! RegistryBean.canRegisterServices}">
                     <h:graphicImage value="/images/cog_delete.png"/>
                   </h:commandLink>
                 </h:panelGroup>
