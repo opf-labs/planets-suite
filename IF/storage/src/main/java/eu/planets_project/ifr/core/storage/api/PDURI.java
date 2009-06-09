@@ -221,4 +221,18 @@ public class PDURI {
 		PDURI._log.debug("returning :" + _retVal);
 		return _retVal;
 	}
+
+	/**
+	 * @param fullpath
+	 * @return
+	 */
+	public static String extractLeafname( String fullpath ) {
+	    if( fullpath == null ) return null;
+        int lastSlash = fullpath.lastIndexOf("/");
+        if( lastSlash != -1 ) {
+            return fullpath.substring( lastSlash + 1, fullpath.length() );
+        }
+        return fullpath;
+	}
+	
 }
