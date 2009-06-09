@@ -72,14 +72,21 @@
                 
                   <h:outputText value="#{info.descriptionStatus}"/>
 
+                  <br/>
+
                   <h:panelGroup rendered="#{!info.upToDate}">
                    <h:outputText value=" "/>
-                   <h:commandLink action="#{info.updateDescription}" title="Update" alt="Update" disabled="#{! RegistryBean.canRegisterServices}">
+                   <h:commandLink action="#{info.checkUpToDate}" title="Check For Update" alt="Check For Update" disabled="#{! RegistryBean.canRegisterServices}">
                     <h:graphicImage value="/images/arrow_refresh_small.png"/>
+                   </h:commandLink>
+                   
+                   <h:outputText value=" "/>
+                   <h:commandLink action="#{info.updateDescription}" title="Update" alt="Update" disabled="#{! RegistryBean.canRegisterServices}">
+                    <h:graphicImage value="/images/cog_add.png"/>
                    </h:commandLink>
                   </h:panelGroup>
                   
-                  <br/>
+                  <h:outputText value=" "/>
                   <h:commandLink action="#{info.deregisterService}" alt="De-Register" title="De-Register" disabled="#{! RegistryBean.canRegisterServices}">
                     <h:graphicImage value="/images/cog_delete.png"/>
                   </h:commandLink>
