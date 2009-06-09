@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import javax.el.ELResolver;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.logging.Log;
@@ -197,10 +195,7 @@ public class EndpointBackingBean {
      */
     public String selectAnEndpoint() {
     	// get the ServiceDescription backing bean
-    	_log.info("Getting context");
-    	FacesContext ctx = FacesContext.getCurrentInstance();
-    	ELResolver res = ctx.getApplication().getELResolver();
-    	ServiceDescriptionBackingBean descBean = (ServiceDescriptionBackingBean) res.getValue(ctx.getELContext(), null, "DescriptionBean");
+    	ServiceDescriptionBackingBean descBean = (ServiceDescriptionBackingBean) RegistryBackingBean.getManagedObject("DescriptionBean");
     	// get the selected endpoint
     	_log.info("Getting Row data");
         _currentEndpoint = (PlanetsServiceEndpoint) this._endpointsDataTable.getRowData();
@@ -264,22 +259,12 @@ public class EndpointBackingBean {
     	SortedSet<String> _cats = new TreeSet<String>();
     	_cats.add(EndpointBackingBean.ALL_CATEGORY);
     	
-    	// URGENT, refactor this out/away.
-    	// First get services from the service registry, get a registry instance
-    	Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
-    	// Iterate over the descriptions and add a new endpoint for each
-    	for (ServiceDescription desc : registry.query(null)) {
-        	PlanetsServiceEndpoint _endpoint = null;
+    	RegistryBackingBean reg = (RegistryBackingBean) RegistryBackingBean.getManagedObject("RegistryBean");
+    	// Iterate over the known descriptions and remember the endpoint for each
+    	for (PlanetsServiceEndpoint _endpoint : reg.getRegisteredServices() ) {
+    	    this._endpoints.add( _endpoint );
     		try {
-    			_endpoint = new PlanetsServiceEndpoint(desc);
-    		} catch (IllegalArgumentException e) {
-    			_log.error("Null or bad service description used to construct endpoint");
-    			_log.error(e.getStackTrace());
-    			continue;
-    		}
-    		this._endpoints.add(_endpoint);
-    		try {
-                uris.add(desc.getEndpoint().toURI());
+                uris.add(_endpoint.getLocation().toURI());
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
@@ -324,6 +309,19 @@ public class EndpointBackingBean {
 		for (String value : _cats) {
 			this._serviceCategories.add(new SelectItem(value, value));
 		}
+    }
+
+    //====================================================================================
+    // -----Action Methods ---
+    //====================================================================================
+    
+    public String refreshEndpointList() {
+        // Refresh the registry
+        RegistryBackingBean reg = (RegistryBackingBean) RegistryBackingBean.getManagedObject("RegistryBean");
+        reg.refreshServiceListCache();
+        // And the endpoint list...
+        this.findEndpoints();
+        return "gotoEndpoints";
     }
 
 }

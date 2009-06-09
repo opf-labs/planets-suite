@@ -28,6 +28,22 @@
     <li><h:commandLink value="Unregistered Services." action="gotoEndpoints" /></li>
     </ul>
     
+              <h3>Service Registry Information</h3>
+              <div>
+                <p>
+                  <h:outputText value="There are #{EndpointBean.endpointCount} Planets service endpoints deployed on this IF instance."/>
+                </p>
+                <p>
+                  <h:outputText value="#{EndpointBean.registeredEndpointCount} of these are registered."/>
+                </p>
+                <p>
+                  <h:outputText value="There are #{RegistryBean.registeredCount} Planets services recorded in this Service Registry."/><br/>
+                </p>
+                <p>
+                  <h:outputText value="There are #{EndpointBean.unregisteredEndpointCount} Planets service endpoints deployed on this IF instance that are not recorded in this Service Registry."/><br/>
+                </p>
+              </div>
+    
     </h:form>
     </div>
     

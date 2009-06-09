@@ -32,9 +32,9 @@
 				</h:selectOneMenu>
 			</rich:toolBarGroup>
 			<rich:toolBarGroup>
-              <h:commandLink action="gotoAddExternal">
-              	<h:graphicImage id="addExtern" value="/images/add.png" />
-              	<h:outputText value="Add External Service" />
+              <h:commandLink action="#{EndpointBean.refreshEndpointList}">
+              	<h:graphicImage value="/images/arrow_refresh_small.png" alt="Refresh List" title="Refresh List"/>
+                <h:outputText value="Refresh List"/>
               </h:commandLink>
 			</rich:toolBarGroup>
 			<rich:toolBarGroup location="right">
@@ -84,22 +84,12 @@
                 
 		  	  </rich:column>
 	  	  </rich:dataTable>
-		  <rich:tabPanel switchType="ajax" id="endpointDetailPanel">
-
-		    <rich:tab label="Info">
+        
+          <rich:panel header="Service Details">
+          
 		      <c:choose>
 		        <c:when test="#{EndpointBean.currentEndpoint == null}">
-			  <h3>Service Registry Information</h3>
 			  <div>
-			    <p>
-                  <h:outputText value="There are #{EndpointBean.endpointCount} Planets service endpoints deployed on this IF instance."/>
-			    </p>
-			    <p>
-			      <h:outputText value="#{EndpointBean.registeredEndpointCount} of these are recorded in this service registry."/>
-			    </p>
-			    <p>
-			      <h:outputText value="There are #{RegistryBean.registeredCount} Planets services recorded in this Service Registry."/><br/>
-			    </p>
 			    <p>Please choose an endpoint.</p>
 			  </div>
 				</c:when>
@@ -109,9 +99,8 @@
                   <h:outputText value="Status: #{EndpointBean.currentEndpoint.status}" />
 				</c:otherwise>
 		      </c:choose>  
-        	</rich:tab>
 
-			<rich:tab label="Description" disabled="#{(EndpointBean.currentEndpoint == null)}">
+			<h:panelGroup rendered="#{ !(EndpointBean.currentEndpoint == null)}">
 			  <h3><h:outputText value="#{DescriptionBean.serviceDescription.name} #{DescriptionBean.serviceDescription.version}"/></h3>
 			  <span class="fieldname"><h:outputText value="Type"/></span><br/>
 			  <h:outputText value="#{DescriptionBean.serviceDescription.type}"/><br/>
@@ -121,9 +110,7 @@
 			  <h:outputText value="#{DescriptionBean.serviceDescription.serviceProvider}"/><br/>
 			  <span class="fieldname"><h:outputText value="Description"/></span><br/>
 			  <h:outputText value="#{DescriptionBean.serviceDescription.description}"/><br/>
-        	</rich:tab>
-
-			<rich:tab label="Register" disabled="#{EndpointBean.currentEndpoint == null}">
+        	
 			  <c:choose>
 			    <c:when test="#{EndpointBean.justRegistered}">
                   <h3><h:outputText value="You Have Registered #{EndpointBean.currentEndpoint.name}"/></h3>
@@ -203,26 +190,11 @@
                   </div>
 			    </c:otherwise>
 			  </c:choose>
-            </rich:tab>
-		    <rich:tab label="Summary">
-			  <h3>Service Registry Information</h3>
-			  <div>
-			    <p>
-                  <h:outputText value="There are #{EndpointBean.endpointCount} Planets service endpoints deployed on this IF instance."/>
-			    </p>
-			    <p>
-			      <h:outputText value="#{EndpointBean.registeredEndpointCount} of these are registered."/>
-			    </p>
-			    <p>
-			      <h:outputText value="There are #{RegistryBean.registeredCount} Planets services recorded in this Service Registry."/><br/>
-			    </p>
-			    <p>
-			      <h:outputText value="There are #{EndpointBean.unregisteredEndpointCount} Planets service endpoints deployed on this IF instance that are not recorded in this Service Registry."/><br/>
-			    </p>
-			  </div>
-        	</rich:tab>
+        
+            </h:panelGroup>
 
-		 </rich:tabPanel>
+        </rich:panel>
+
   	  </h:panelGrid>
     </h:form>
     </div>

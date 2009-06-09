@@ -4,6 +4,7 @@
 package eu.planets_project.ifr.core.registry.impl;
 
 import java.net.URL;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,7 +52,9 @@ public class PlanetsServiceEndpoint {
         /** Service is live but the description is out of date. */
 	    OUTDATED,
         /** Service description could not be found. */
-	    UNKNOWN
+	    UNKNOWN, 
+	    /** Service description has just been updated. */
+	    UPDATED
 	}
 	/** The URL for the service endpoint location */
 	private URL _location = null;
@@ -254,10 +257,17 @@ public class PlanetsServiceEndpoint {
         _log.info("update: "+this.getLocation());
         ServiceDescription csd = getCurrentServiceDescription();
         if( csd != null ) {
-            // First, de-register.
-            this.deregisterService();
-            this._serviceDescription = csd;
-            this.registerService();
+            if( this.getDescription().equals( csd )) {
+                this.setDescriptionStatus( DescriptionStatus.OK );
+            } else {
+                // First, de-register.
+                this.deregisterService();
+                this._serviceDescription = csd;
+                this.registerService();
+                this.setDescriptionStatus( DescriptionStatus.UPDATED );
+            }
+        } else {
+            this.setDescriptionStatus( DescriptionStatus.UNKNOWN );
         }
         return "success";
     }
@@ -274,6 +284,12 @@ public class PlanetsServiceEndpoint {
         if( response.success() )
             _log.info("Deregistered: "+this.getLocation());
         this.setRegistered(false);
+        // Also remove from the Registry:
+        RegistryBackingBean reg = (RegistryBackingBean) RegistryBackingBean.getManagedObject("RegistryBean");
+        List<PlanetsServiceEndpoint> servs = reg.getRegisteredServices();
+        if( servs.contains( this ) ) {
+            servs.remove(this);
+        }
         return "success";
     }
 
@@ -292,6 +308,12 @@ public class PlanetsServiceEndpoint {
                 _log.info("Updated. "+this.getDescription().getEndpoint());
             }
             this.setRegistered(true);
+            // Also add to the Registry:
+            RegistryBackingBean reg = (RegistryBackingBean) RegistryBackingBean.getManagedObject("RegistryBean");
+            List<PlanetsServiceEndpoint> servs = reg.getRegisteredServices();
+            if( ! servs.contains( this ) ) {
+                servs.add(this);
+            }
         }
         return "success";
     }

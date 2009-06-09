@@ -28,6 +28,7 @@ public class RegistryBackingBean {
 
     public static Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
     
+    List<PlanetsServiceEndpoint> services = null;
 
 	// TODO This shouldn't be hard coded, review role info and setup before V4
 	private final static String adminRole = "admin";
@@ -65,34 +66,25 @@ public class RegistryBackingBean {
      * @return
      */
     public  List<PlanetsServiceEndpoint> getRegisteredServices() {
-        // First get services from the service registry, get a registry instance
-        List<PlanetsServiceEndpoint> endpoints = new ArrayList<PlanetsServiceEndpoint>();
-        // Iterate over the descriptions and add a new endpoint for each
-        for (ServiceDescription desc : registry.query(null)) {
-            PlanetsServiceEndpoint _endpoint = null;
-            try {
-                _endpoint = new PlanetsServiceEndpoint(desc);
-            } catch (IllegalArgumentException e) {
-                log.error("Null or bad service description used to construct endpoint");
-                log.error(e.getStackTrace());
-                continue;
-            }
-            // Check if the current service description is up to date:
-            _endpoint.checkUpToDate();
-            // Add to the list:
-            endpoints.add(_endpoint);
-            /*
-            try {
-                uris.add(desc.getEndpoint().toURI());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-            // Add the category as well
-            cats.add(_endpoint.getCategory());
-            */
+        if( this.services == null ) {
+            this.updateServiceList();
         }
-        return endpoints;
+        return this.services;
     }
+    
+    /**
+     * @param objectName
+     * @return
+     */
+    public static Object getManagedObject(String objectName)
+    {
+      FacesContext context = FacesContext.getCurrentInstance();
+      if( context == null ) return null;
+      ELResolver resolver = context.getApplication().getELResolver();
+      Object requestedObject =  resolver.getValue(context.getELContext(), null, objectName);
+      return  requestedObject;
+    }
+
 
     //====================================================================================
     // -----Action Methods ---
@@ -111,7 +103,7 @@ public class RegistryBackingBean {
      */
     public String registerManually() {
     	this.registerService(true);
-    	return "gotoEndpoints";
+    	return "gotoAddExternal";
     }
     
     /**
@@ -136,8 +128,58 @@ public class RegistryBackingBean {
 		endBean.recordRegistration();
     	return "gotoEndpoints";
     }
+    
+    /**
+     * @return JSF status
+     */
+    public String checkAllServiceDescriptions() {
+        for( PlanetsServiceEndpoint srv : this.getRegisteredServices() ) {
+          // Check if the current service description is up to date:
+          srv.setDescriptionStatus( PlanetsServiceEndpoint.DescriptionStatus.UNKNOWN );
+          srv.checkUpToDate();
+        }
+        return "success";
+    }
+
+    /**
+     * @return JSF status
+     */
+    public String updateAllServiceDescriptions() {
+        for( PlanetsServiceEndpoint srv : this.getRegisteredServices() ) {
+          // Attempt to update every description:
+          srv.updateDescription();
+        }
+        return "success";
+    }
+    
+    /**
+     * @return JSF status
+     */
+    public String refreshServiceListCache() {
+        this.services = null;
+        return "success";
+    }
 
     /* -----Private Methods --- */
+    
+    private void updateServiceList() {
+        // First get services from the service registry, get a registry instance
+        services = new ArrayList<PlanetsServiceEndpoint>();
+        // Iterate over the descriptions and add a new endpoint for each
+        for (ServiceDescription desc : registry.query(null)) {
+            PlanetsServiceEndpoint serv = null;
+            try {
+                serv = new PlanetsServiceEndpoint(desc);
+            } catch (IllegalArgumentException e) {
+                log.error("Null or bad service description used to construct endpoint");
+                log.error(e.getStackTrace());
+                continue;
+            }
+            // Add to the list:
+            services.add(serv);
+        }
+    }
+    
 	private void registerService(boolean updateDesc) {
     	// Get the other beans
     	FacesContext ctx = FacesContext.getCurrentInstance();

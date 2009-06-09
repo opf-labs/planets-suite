@@ -21,6 +21,26 @@
         <ui:param name="page" value="services"/>
       </ui:include>
 
+        <rich:toolBar height="34" itemSeparator="line">
+            <rich:toolBarGroup>
+              <h:commandLink action="#{RegistryBean.refreshServiceListCache}">
+                <h:graphicImage value="/images/arrow_refresh_small.png" alt="Refresh Service List" title="Refresh Service List"/>
+                <h:outputText value="Refresh"/>
+              </h:commandLink>
+            </rich:toolBarGroup>
+            <rich:toolBarGroup  location="right">
+              <h:commandLink action="#{RegistryBean.checkAllServiceDescriptions}">
+                <h:graphicImage value="/images/arrow_refresh_small.png" alt="Check Service Descriptions" title="Check Service Descriptions"/>
+                <h:outputText value="Check Service Status"/>
+              </h:commandLink>
+              <h:commandLink action="#{RegistryBean.updateAllServiceDescriptions}">
+                <h:graphicImage value="/images/arrow_refresh_small.png" alt="Update All Service Descriptions" title="Update All Service Descriptions"/>
+                <h:outputText value="Update Service Descriptions"/>
+              </h:commandLink>
+            </rich:toolBarGroup>
+        </rich:toolBar>
+
+
       <c:choose>
       	<c:when test="#{RegistryBean.registeredCount > 0}">
 	 	    <rich:dataTable id="serviceResults" rows="0" width="100%"
@@ -38,29 +58,33 @@
 		  	    <f:facet name="header">Description</f:facet>
   	            <h:outputText value="#{info.description.description}"/>
 	  	      </rich:column>
-              <rich:column sortBy="#{info.description.endpoint}" sortOrder="ASCENDING"
+              <rich:column sortBy="#{info.description.endpoint}"
                  styleClass="isNotCurrent">
                 <f:facet name="header">Endpoint</f:facet>
                 <h:outputLink value="#{info.description.endpoint}" target="_blank">
                 <h:outputText value="@#{info.description.endpoint.host}"/>
                 </h:outputLink>
               </rich:column>
-              <rich:column styleClass="isNotCurrent">
+              <rich:column sortBy="#{info.descriptionStatus}" styleClass="isNotCurrent">
                 <f:facet name="header">Status</f:facet>
+
+                <h:panelGroup rendered="#{info.registered}">
                 
-                <h:outputText value="#{info.descriptionStatus}"/>
+                  <h:outputText value="#{info.descriptionStatus}"/>
                 
-                <h:panelGroup rendered="#{!info.upToDate}">
-                 <h:outputText value=" "/>
-                 <h:commandLink action="#{info.updateDescription}" title="Update" alt="Update">
-                  <h:graphicImage value="/images/arrow_refresh_small.png"/>
-                 </h:commandLink>
+                  <h:panelGroup rendered="#{!info.upToDate}">
+                   <h:outputText value=" "/>
+                   <h:commandLink action="#{info.updateDescription}" title="Update" alt="Update">
+                    <h:graphicImage value="/images/arrow_refresh_small.png"/>
+                   </h:commandLink>
+                  </h:panelGroup>
+                
+                  <br/>
+                  <h:commandLink action="#{info.deregisterService}" alt="De-Register" title="De-Register">
+                    <h:graphicImage value="/images/cog_delete.png"/>
+                  </h:commandLink>
                 </h:panelGroup>
                 
-                <br/>
-                <h:commandLink action="#{info.deregisterService}" alt="De-Register" title="De-Register">
-                  <h:graphicImage value="/images/cog_delete.png"/>
-                </h:commandLink>
               </rich:column>
             
 	  	  </rich:dataTable>
