@@ -57,7 +57,7 @@ public class ZipUtils {
 				zipFile.close();
 				return new File(zipFile.getDiskFile().getFileName());
 			}
-			
+			log.info("[createZip] Working on zipFile: " + zipFile.getDiskFile().getFileName());
 			log.info("[createZip] Normalizing paths...");
 			List<String> normalizedPaths = normalizePaths(srcFolder);
 			
@@ -68,7 +68,7 @@ public class ZipUtils {
 				
 				FileEntry currentEntry = writeEntry(zipFile, entry, currentFile);
 			}
-			log.info("[createZip] All Files written to zip file: " + zipName);
+			log.info("[createZip] All Files written to zip file: " + zipFile.getDiskFile().getFileName());
 			zipFile.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -146,7 +146,7 @@ public class ZipUtils {
 		try {
 //			boolean madeFolder = target.createNewFile();
 			fileOut = new FileOutputStream(target);
-			log.info("[readFileEntry] writing file entry: " + fileEntry.getName());
+			log.info("[readFileEntry] writing entry: " + fileEntry.getName() + " to file: " + target.getAbsolutePath());
 			EntryInputStream entryReader = zip64File.openEntryInputStream(fileEntry.getName());
 			FileUtils.writeInputStreamToOutputStream(entryReader, fileOut);
 			entryReader.close();
@@ -159,7 +159,7 @@ public class ZipUtils {
 	}
 	
 	private static void readFolderEntry(Zip64File zip64File, FileEntry folderEntry, File dest) {
-		log.info("[getFileFrom] The target you have specified is a folder: " + folderEntry.getName());
+		log.info("[readFolderEntry] The target you have specified is a folder: " + folderEntry.getName());
 		File currentFolder = new File(dest, folderEntry.getName());
 		boolean dirsCreated = currentFolder.mkdirs();
 		List<String> containedFiles = getFileEntryChildren(zip64File, folderEntry);
@@ -173,6 +173,7 @@ public class ZipUtils {
 				}
 				else {
 					dirsCreated = destination.mkdirs();
+					log.info("[readFolderEntry] Created folder in file system: " + destination.getAbsolutePath());
 //					readFolderEntry(zip64File, currentEntry, destination);
 				}
 			}

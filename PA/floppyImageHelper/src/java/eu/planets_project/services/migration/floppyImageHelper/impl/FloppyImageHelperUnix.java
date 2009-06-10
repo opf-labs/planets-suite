@@ -15,9 +15,9 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Checksum;
-import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -27,11 +27,13 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHelper;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ServiceUtils;
 import eu.planets_project.services.utils.ZipResult;
+import eu.planets_project.services.utils.ZipUtils;
 
 /**
  * @author Peter Melms
@@ -149,12 +151,14 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
 			ZipResult zippedResult = FloppyImageHelperUnix.extractFilesFromFloppyImage(inputFile);
 			
-			DigitalObjectContent zipContent = Content.byReference(zippedResult.getZipFile()).withChecksum(zippedResult.getChecksum());
+//			DigitalObjectContent zipContent = Content.byReference(zippedResult.getZipFile()).withChecksum(zippedResult.getChecksum());
 			
-			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
-			.format(formatReg.createExtensionUri("zip"))
-			.title(zippedResult.getZipFile().getName())
-			.build();
+//			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
+//			.format(formatReg.createExtensionUri("zip"))
+//			.title(zippedResult.getZipFile().getName())
+//			.build();
+			
+			DigitalObject resultDigObj = DigitalObjectUtils.createZipTypeDigOb(zippedResult.getZipFile(), zippedResult.getZipFile().getName(), true, true);
 
 			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
 			return new MigrateResult(resultDigObj, report);
@@ -165,11 +169,11 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		{
 			if(checksum != null) 
 			{
-				long check = Long.parseLong(checksum.getValue());
-				files = FileUtils.extractFilesFromZipAndCheck(inputFile, TEMP_FOLDER, check);
+//				long check = Long.parseLong(checksum.getValue());
+				files = ZipUtils.checkAndUnzipTo(inputFile, TEMP_FOLDER, checksum);
 			}
 			else 
-				files = FileUtils.extractFilesFromZip(inputFile, TEMP_FOLDER);
+				files = ZipUtils.unzipTo(inputFile, TEMP_FOLDER);
 		}
 		else {
 			files = new ArrayList<File>();
@@ -213,7 +217,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		log.info("image: " + image + " mounted to " + mountlabel);
 		File srcdir = new File(mountlabel);
-		ZipResult result = FileUtils.createZipFileWithChecksum(srcdir, TEMP_FOLDER, "extractedFiles.zip");
+		ZipResult result = ZipUtils.createZipAndCheck(srcdir, TEMP_FOLDER, "extractedFiles.zip");
 
 		umount(mountlabel);
 		unbindLoop(loopdev);

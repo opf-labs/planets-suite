@@ -12,6 +12,7 @@ import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import eu.planets_project.services.utils.ZipResult;
+import eu.planets_project.services.utils.ZipUtils;
 
 /**
  * @author melmsp
@@ -25,9 +26,9 @@ public class VfdWrapper {
 	
 	private File TEMP_FOLDER = null;
 	private String TEMP_FOLDER_NAME = "VFD_WRAPPER";
-	private String DEFAULT_FLOPPY_IMAGE_NAME = "floppy144.ima";
+	private String DEFAULT_FLOPPY_IMAGE_NAME = FileUtils.randomizeFileName("floppy144.ima");
 	private File EXTRACTED_FILES_DIR = null;
-	private String EXTRACTION_OUT_FOLDER_NAME = "EXTRACTED_FILES";
+	private String EXTRACTION_OUT_FOLDER_NAME = FileUtils.randomizeFileName("EXTRACTED_FILES");
 	
 	private static final long FLOPPY_SIZE = 1474560;
 	
@@ -41,8 +42,10 @@ public class VfdWrapper {
 	
 	public VfdWrapper() {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		FileUtils.deleteTempFiles(TEMP_FOLDER);
-		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
+		if(TEMP_FOLDER.exists()) {
+			FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
+		}
+//		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 		EXTRACTED_FILES_DIR = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTION_OUT_FOLDER_NAME);
 	}
 	
@@ -59,22 +62,6 @@ public class VfdWrapper {
 		
 		ProcessRunner cmd = new ProcessRunner();
 		cmd.setStartingDir(TEMP_FOLDER);
-		// Install the Vfd Driver, if it already is installed, nothing will happen...
-		// FIXME Maybe this should be removed, if we don't have Admin/Poweruser rights on the server instance
-		// where this service is running...?
-		
-		/*cmd.setCommand(installVfdDriver());
-		cmd.run();
-		appendProcessOutAndError(cmd);*/
-		
-		// Start the Vfd Driver (again, if it is already running, nothing will happen.
-		// FIXME Maybe this should be removed, if we don't have Admin/Poweruser rights on the server instance
-		// where this service is running...?
-		
-		// TODO
-		/*cmd.setCommand(startVfdDriver());
-		cmd.run();
-		appendProcessOutAndError(cmd);*/
 		
 		// Create a new, empty 1.44 large floppy image
 		cmd.setCommand(createNewImageWithVfd());
@@ -195,7 +182,8 @@ public class VfdWrapper {
 		}
 		
 		// create a ZIP containing the files on the floppy disk...
-		ZipResult zip = FileUtils.createZipFileWithChecksum(EXTRACTED_FILES_DIR, TEMP_FOLDER, "extracedFiles.zip");
+//		ZipResult zip = FileUtils.createZipFileWithChecksum(EXTRACTED_FILES_DIR, TEMP_FOLDER, "extracedFiles.zip");
+		ZipResult zip = ZipUtils.createZipAndCheck(EXTRACTED_FILES_DIR, TEMP_FOLDER, FileUtils.randomizeFileName("extracedFiles.zip"));
 		cmd.setCommand(closeImageInVfd());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());

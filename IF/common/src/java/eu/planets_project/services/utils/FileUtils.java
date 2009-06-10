@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -157,6 +158,22 @@ public final class FileUtils {
 		}
 		return null;
 	}
+    
+    public static String randomizeFileName(String name) {
+    	Random random = new Random();
+    	String prefix = null;
+    	String postfix = null;
+    	String randomName = null;
+    	if(name.contains(".")) {
+    		prefix = name.substring(0, name.lastIndexOf(".")) + "_";
+    		postfix = name.substring(name.lastIndexOf("."));
+    		randomName = prefix + random.nextLong() + postfix;
+    	}
+    	else {
+    		randomName = name + "_" + random.nextLong();
+    	}
+    	return randomName;
+    }
 
 	/**
      * @param src The source file
