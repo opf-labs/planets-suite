@@ -20,6 +20,7 @@ import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
+import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.view.CreateView;
 
@@ -40,6 +41,7 @@ public class PlanetsServiceExplorer {
         classmap.put(CommonProperties.QNAME, CommonProperties.class);
         classmap.put(Identify.QNAME, Identify.class);
         classmap.put(Migrate.QNAME, Migrate.class);
+        classmap.put(Modify.QNAME, Modify.class);
         classmap.put(Validate.QNAME, Validate.class);
         classmap.put(Characterise.QNAME, Characterise.class);
         classmap.put(CreateView.QNAME, CreateView.class);
