@@ -22,6 +22,7 @@ import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
@@ -63,22 +64,22 @@ import eu.planets_project.services.utils.ZipUtils;
 public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	
 	public FloppyImageHelperUnix() {
-		FileUtils.deleteTempFiles(TEMP_FOLDER);
-		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
+		sessionID = FileUtils.randomizeFileName("");
+		if(TEMP_FOLDER.exists()) {
+			FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
+		}
 	}
 	                 
 	public static final String NAME = "FloppyImageHelperUnix";
 	
-	private static String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER";
+	private static String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER_UNIX";
 	private static File TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-	
-	private static String DEFAULT_INPUT_NAME = "inputFile";
+	private static String sessionID = null;
+	private String DEFAULT_INPUT_NAME = "inputFile" + sessionID;
 	private String inputExt = null;
 	
-	private static String DEFAULT_FLOPPY_IMAGE_NAME = "floppy144.ima";
+	private static String DEFAULT_FLOPPY_IMAGE_NAME = "floppy144" + sessionID + ".ima";
 	private static final long FLOPPY_SIZE = 1474560;
-	
-//	private static boolean MODIFY_IMAGE = false;
 	
 	private static String PROCESS_ERROR = null;
 	private static String PROCESS_OUT = null;
@@ -96,7 +97,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Migrate.class.getCanonicalName());
 		sd.author("Klaus Rechert, mailto:klaus.rechert@rz.uni-freiburg.de");
 		sd.description("This service is a wrapper for creating floppy images with UNIX dd and fs-tools\n" +
-			"This tools is able to create Floppy disk images (1.44 MB) from scratch," + 
+			"This tool is able to create Floppy disk images (1.44 MB) from scratch," + 
 			"containing files of your choice (up to 1.44 MB!).\n" +
         		"This is the first possible direction. The other one is the Extraction of files from a " + 
 			"floppy disk image without mounting that image as a disk drive." +
@@ -110,12 +111,11 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 			"type/format (except the '.ima/.img' type!)\n" +
 
         		"3) An '.IMA'/'.IMG' file. In this case, the service will extract all files from that floppy " + 
-			"image and return a set of files (as a ZIP)." +
-        		"'Extract.exe' is using the WinImage SDK.");
+			"image and return a set of files (as a ZIP)");
 
 	        sd.classname(this.getClass().getCanonicalName());
        		sd.version("1.0");
-
+       		sd.tool(new Tool(null, "UNIX 'dd' and 'fs-tools'", "unknown", null, null ));
         	List<MigrationPath> pathways = new ArrayList<MigrationPath>();
 		pathways.add(new MigrationPath(formatReg.createExtensionUri("ZIP"), formatReg.createExtensionUri("IMA"), null));
 		pathways.add(new MigrationPath(formatReg.createExtensionUri("ANY"), formatReg.createExtensionUri("IMA"), null));

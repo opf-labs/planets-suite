@@ -51,8 +51,8 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	
 	private File TEMP_FOLDER = null;
 	private String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_MODIFY";
-	
-	private String DEFAULT_INPUT_NAME = "floppy144.ima";
+	private String sessionID = FileUtils.randomizeFileName("");
+	private String DEFAULT_INPUT_NAME = "floppy144" + sessionID + ".ima";
 	private String INPUT_EXT = null;
 	
 	private String br = System.getProperty("line.separator");
@@ -67,8 +67,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
     public FloppyImageModifyWin() {
     	// clean the temp folder for this app at startup...
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		FileUtils.deleteTempFiles(TEMP_FOLDER);
-		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
+		FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
 	}
 
 	
@@ -111,7 +110,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 	 */
 	public ModifyResult modify(DigitalObject digitalObject, URI inputFormat, List<Parameter> parameters) {
 		
-        String inFormat = formatRegistry.getExtensions(inputFormat).iterator().next().toUpperCase();
+        String inFormat = formatRegistry.getFirstExtension(inputFormat).toUpperCase();
 		
 		String fileName = digitalObject.getTitle();
 		

@@ -39,7 +39,7 @@ public final class DigitalObjectUtils {
     
     private static final List<URI> containerTypes = new ArrayList<URI>(Arrays.asList(new URI[] {zipType, folderType}));
     
-    private static File utils_tmp = FileUtils.createWorkFolderInSysTemp("digOb_utils_tmp".toUpperCase());
+    private static File utils_tmp = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), "dig-ob-utils-tmp".toUpperCase());
 
     /**
      * @return The total size, in bytes, of the bytestream contained or referred
@@ -219,9 +219,9 @@ public final class DigitalObjectUtils {
     			zipName = destZipName + ".zip";
     		}
     	}
-    	
-    	File zip_tmp = FileUtils.createFolderInWorkFolder(utils_tmp, "zip_from_folder_tmp");
-    	FileUtils.deleteAllFilesInFolder(zip_tmp);
+    	FileUtils.deleteAllFilesInFolder(utils_tmp);
+    	File zip_tmp = FileUtils.createFolderInWorkFolder(utils_tmp, FileUtils.randomizeFileName("zip_from_folder_tmp"));
+//    	FileUtils.deleteAllFilesInFolder(zip_tmp);
     	
     	if(withChecksum) {
 	    	ZipResult zipResult = ZipUtils.createZipAndCheck(folder, zip_tmp, zipName);
@@ -404,8 +404,9 @@ public final class DigitalObjectUtils {
 		}
 		else {
 			List<File> files = new ArrayList<File>();
-			File tmp = FileUtils.createFolderInWorkFolder(utils_tmp, "get-all-files-tmp");
-			FileUtils.deleteAllFilesInFolder(tmp);
+			FileUtils.deleteAllFilesInFolder(utils_tmp);
+			File tmp = FileUtils.createFolderInWorkFolder(utils_tmp, FileUtils.randomizeFileName("get-all-files-tmp"));
+//			FileUtils.deleteAllFilesInFolder(tmp);
 			File content = new File(tmp, getFileNameFromDigObject(digOb)); 
 			FileUtils.writeInputStreamToFile(digOb.getContent().read(), content);
 			files.add(content);
@@ -556,10 +557,7 @@ public final class DigitalObjectUtils {
 	
 	
 	private static File getZipAsFile(DigitalObject digOb) {
-		Random randomNumber;
-	    randomNumber = new Random();
-	    long index = randomNumber.nextLong();
-	    String folderName = getFolderNameFromDigObject(digOb) + index;
+	    String folderName = FileUtils.randomizeFileName(getFolderNameFromDigObject(digOb));
 	    
 		File tmpFolder = FileUtils.createFolderInWorkFolder(utils_tmp, folderName);
 		
@@ -623,7 +621,8 @@ public final class DigitalObjectUtils {
 			return null;
 		}
 		else {
-			File tmpFolder = FileUtils.createFolderInWorkFolder(utils_tmp, "all-files-from-folder-digob");
+			FileUtils.deleteAllFilesInFolder(utils_tmp);
+			File tmpFolder = FileUtils.createFolderInWorkFolder(utils_tmp, FileUtils.randomizeFileName("all-files-from-folder-digob"));
 			List<File> allContainedFiles = new ArrayList<File> ();
 			return getAllFilesFromContainerDigitalObject(digOb, tmpFolder, allContainedFiles);
 		}
@@ -636,7 +635,7 @@ public final class DigitalObjectUtils {
 	 */
 	private static List<File> getAllFilesFromContainerDigitalObject(DigitalObject digOb, File targetFolder, List<File> allContainedFiles) {
 		if(isContainerTypeDigitalObject(digOb)) {
-			File topFolder = FileUtils.createFolderInWorkFolder(targetFolder, getFolderNameFromDigObject(digOb));
+			File topFolder = FileUtils.createFolderInWorkFolder(targetFolder, FileUtils.randomizeFileName(getFolderNameFromDigObject(digOb)));
 			List<DigitalObject> containedDigObs = digOb.getContained();
 			
 			for (DigitalObject digitalObject : containedDigObs) {

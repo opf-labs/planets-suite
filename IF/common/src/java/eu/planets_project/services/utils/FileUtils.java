@@ -36,8 +36,6 @@ import eu.planets_project.services.datatypes.Checksum;
  *
  */
 public final class FileUtils {
-    private static final int ZIP_COMPRESSION_LEVEL = 9; // Best compression
-
     private static final int BUFFER = 32768;
 
     private static Log log = LogFactory.getLog(FileUtils.class);
@@ -45,7 +43,7 @@ public final class FileUtils {
     private static final String SYSTEM_TEMP = System
             .getProperty("java.io.tmpdir");
 
-    private static final String TEMP_STORE_DIR = "planets-if-temp-store";
+    private static final String TEMP_STORE_DIR = "planets-if-temp-store".toUpperCase();
 
     /** We enforce non-instantiability with a private constructor. */
     private FileUtils() {}
@@ -55,6 +53,30 @@ public final class FileUtils {
      */
     public static File getSystemTempFolder() {
         return new File(SYSTEM_TEMP);
+    }
+    
+    /**
+     * @return the central PLANETS temp store folder
+     */
+    public static File getPlanetsTmpStoreFolder() {
+    	File tmpStore = new File(getSystemTempFolder(), TEMP_STORE_DIR);
+    	if(tmpStore.exists()) {
+    		return tmpStore;
+    	}
+    	else {
+    		tmpStore.mkdir();
+    		return tmpStore;
+    	}
+    }
+    
+    public static boolean clearPlanetsTmpStoreFolder() {
+    	File tmpStore = getPlanetsTmpStoreFolder();
+    	if(tmpStore.exists()) {
+    		return deleteAllFilesInFolder(tmpStore);
+    	}
+    	else {
+    		return true;
+    	}
     }
 
     /**
@@ -164,13 +186,16 @@ public final class FileUtils {
     	String prefix = null;
     	String postfix = null;
     	String randomName = null;
+    	if(name==null) {
+    		name = "";
+    	}
     	if(name.contains(".")) {
     		prefix = name.substring(0, name.lastIndexOf(".")) + "_";
     		postfix = name.substring(name.lastIndexOf("."));
-    		randomName = prefix + random.nextLong() + postfix;
+    		randomName = prefix + random.nextInt(Integer.MAX_VALUE) + postfix;
     	}
     	else {
-    		randomName = name + "_" + random.nextLong();
+    		randomName = name + "_" + random.nextInt(Integer.MAX_VALUE);
     	}
     	return randomName;
     }

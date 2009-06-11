@@ -54,10 +54,10 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	private String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER_WIN";
 	
 	private File EXTRACTED_FILES = null;
-	private String EXTRACTED_FILES_DIR = FileUtils.randomizeFileName("EXTRACTED_FILES");
+	private String sessionID = FileUtils.randomizeFileName("");
+	private String EXTRACTED_FILES_DIR = "EXTRACTED_FILES" + sessionID;
 	
-	private String DEFAULT_INPUT_NAME = FileUtils.randomizeFileName("inputFile");
-	private String INPUT_EXT = null;
+	private String DEFAULT_INPUT_NAME = "inputFile" + sessionID;
 	
 	private String PROCESS_ERROR = "";
 	private String PROCESS_OUT = "";
@@ -73,8 +73,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
     public FloppyImageHelperWin() {
     	// clean the temp folder for this app at startup...
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
-		FileUtils.deleteTempFiles(TEMP_FOLDER);
-		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
+		FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
 		EXTRACTED_FILES = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTED_FILES_DIR);
 	}
     
@@ -119,8 +118,6 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	 */
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, List<Parameter> parameters) {
-		
-		
 		
 		VfdWrapperResult vfdResult = null;
         String inFormat = format.getFirstExtension(inputFormat).toUpperCase();

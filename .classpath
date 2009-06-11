@@ -240,5 +240,7 @@
 	<classpathentry kind="lib" path="PA/imagemagick/lib/jmagick.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="IF/storage/lib/oai4j-0.6b1.jar"/>
+	<classpathentry kind="lib" path="IF/common/lib/Zip64File.jar"/>
+
 	<classpathentry kind="output" path="bin"/>
 </classpath>
