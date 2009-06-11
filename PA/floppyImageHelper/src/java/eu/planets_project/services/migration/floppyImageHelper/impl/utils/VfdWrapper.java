@@ -411,12 +411,12 @@ public class VfdWrapper {
 		if(FLOPPY_IMAGE_TOOLS_HOME_PATH == null) {
 			log.error("FLOPPY_IMAGE_TOOLS_HOME = null! " +
 					br + "Could not find floppy image tools! " +
-					br + "Please install 'extract' and 'fat_imgen' on your system and point a System variable to the installation folder!" +
-					br + "Otherwise this service will carry on to refuse to do its work!");
+					br + "Please install the tool 'Virtual Floppy Drive' on your system and point a System variable to the installation folder!" +
+					br + "Otherwise this service will carry on to refuse to do its work! (you can find the tool here: http://chitchat.at.infoseek.co.jp/vmware/vfd.html)");
 			process_error.append("FLOPPY_IMAGE_TOOLS_HOME = null! " +
 					br + "Could not find floppy image tools! " +
-					br + "Please install 'extract' and 'fat_imgen' on your system and point a System variable to the installation folder!" +
-					br + "Otherwise this service will carry on to refuse to do its work!");
+					br + "Please install the tool 'Virtual Floppy Drive' on your system and point a System variable to the installation folder!" +
+					br + "Otherwise this service will carry on to refuse to do its work! (you can find the tool here: http://chitchat.at.infoseek.co.jp/vmware/vfd.html)");
 			return false;
 		}
 		else {
