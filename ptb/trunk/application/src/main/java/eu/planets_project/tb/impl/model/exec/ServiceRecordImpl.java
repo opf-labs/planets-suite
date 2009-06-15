@@ -440,7 +440,9 @@ public class ServiceRecordImpl implements Serializable {
         ExperimentPersistencyRemote ep = ExperimentPersistencyImpl.getInstance();
         List<Experiment> exps = new Vector<Experiment>();
         for( Long eid : this.getExperimentIds() ) {
-            exps.add( ep.findExperiment( eid.longValue() ));
+            Experiment exp = ep.findExperiment( eid.longValue() );
+            if( exp != null )
+                exps.add( exp );
         }
         return exps;
     }
