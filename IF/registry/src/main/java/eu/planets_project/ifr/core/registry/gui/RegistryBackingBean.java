@@ -1,6 +1,5 @@
 package eu.planets_project.ifr.core.registry.gui;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +13,6 @@ import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
 import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
 import eu.planets_project.ifr.core.registry.impl.PlanetsServiceEndpoint;
-import eu.planets_project.ifr.core.registry.utils.PlanetsServiceExplorer;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -26,7 +24,7 @@ public class RegistryBackingBean {
 	// keeping the logger just in case
 	private static Log log = LogFactory.getLog(RegistryBackingBean.class);
 
-    public static Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    public static final Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
     
     List<PlanetsServiceEndpoint> services = null;
 

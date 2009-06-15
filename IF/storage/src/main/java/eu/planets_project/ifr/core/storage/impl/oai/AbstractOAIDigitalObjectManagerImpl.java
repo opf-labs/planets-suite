@@ -27,7 +27,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
  */
 public abstract class AbstractOAIDigitalObjectManagerImpl implements DigitalObjectManager {
 	
-    protected static Log log = LogFactory.getLog(AbstractOAIDigitalObjectManagerImpl.class);
+    protected static final Log log = LogFactory.getLog(AbstractOAIDigitalObjectManagerImpl.class);
 	
     /**
      * OAI-style date format.

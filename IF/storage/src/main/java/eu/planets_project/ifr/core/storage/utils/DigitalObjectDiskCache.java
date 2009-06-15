@@ -30,7 +30,7 @@ import eu.planets_project.services.utils.FileUtils;
  */
 public class DigitalObjectDiskCache {
 
-    public static Log log = LogFactory.getLog(DigitalObjectDiskCache.class);
+    public static final Log log = LogFactory.getLog(DigitalObjectDiskCache.class);
     private static File cachedir = new File(System
             .getProperty("java.io.tmpdir"), "planets-tmp-dob-cache/");
 
