@@ -11,6 +11,7 @@
   <property name="appDir" value="."/>
   <!-- Specify the build type: ejb, war or ear. -->
   <property name="pserv.app.build.type" value="ejb"/>
+  <property name="pserv.app.deploy.mode" value="requires-config" />
       
   <property name="src.dir" value="${appDir}/src/java"/>
   <property name="lib.dir" value="${appDir}/lib"/>
