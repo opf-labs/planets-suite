@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * The BLNewspaperDigitalObjectManagerImpl wraps a newspaper scan with 
@@ -49,8 +51,48 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
      * Create a digital object manager for BL newspaper scans stored on the file system.
      * @param root the directory storing image and XML files
      */
-    public SimpleBLNewspaperDigitalObjectManagerImpl(String root) {
-      	this.root = new File(root).toURI().normalize();
+    public SimpleBLNewspaperDigitalObjectManagerImpl() {
+        Properties properties = new Properties();
+        
+        try {
+            String localDataDir;
+            InputStream ResourceFile = getClass().getClassLoader().getResourceAsStream("BackendResources.properties");
+            if (ResourceFile != null) {
+	            properties.load(ResourceFile); 
+	            
+	            // See http://wiki.jboss.org/wiki/Wiki.jsp?page=JBossProperties for more JBoss properties.
+				if (properties.getProperty("JBoss.AltLocalDataDir") != null) { 
+					localDataDir = properties.getProperty("JBoss.AltLocalDataDir");
+				} else {
+	                localDataDir = System.getProperty("jboss.home.dir") +
+					System.getProperty("file.separator") +
+					properties.getProperty("JBoss.LocalDataDir");
+				}
+	            
+	            ResourceFile.close();
+            } else {
+                localDataDir = System.getProperty("jboss.home.dir") +
+				System.getProperty("file.separator") +
+				"bl-newspaper";            	
+            }
+            
+            // Open the localDataDir
+            File ldd = new File(localDataDir);
+            // Create it if it does not exist:
+            if( ! ldd.exists() ) {
+               ldd.mkdir();
+            } else {
+                if( ldd.isFile() ) throw 
+                    new IOException("The specified Data Registry already exists, but is a file, not a directory! : "+localDataDir);
+            }
+            // Attempt to convert to URI:
+            root = ldd.toURI().normalize();
+            _log.debug("(init) Got local data dir for bl newspaper: " + root);
+            
+        } catch (IOException e) {
+            _log.fatal("Exception: Reading JBoss.LocalDataDir from BackendResources.properties failed!"+e.toString());
+            root = null;
+        }
     }
 	
 	/**
