@@ -30,6 +30,7 @@ public abstract class WorkflowTemplateHelper implements Serializable{
 			"eu.planets_project.services.characterise.DetermineProperties",
 			"eu.planets_project.services.compare.BasicCompareFormatPropertie",
 			"eu.planets_project.services.migrate.Migrate",
+			"eu.planets_project.services.modify.Modify",
 			"eu.planets_project.services.migrate.MigrateAsync"};
 	
 	/* (non-Javadoc)
