@@ -44,9 +44,6 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     // The array of data source:
     private List<DataSource> dss;
     
-    // The EJB used to get access:
-    TestbedStatelessAdmin tba = TestbedStatelessAdminBean.getTestbedAdminBean();
-    
     /**
      * The constructor create the list of known DRs:
      */
@@ -112,7 +109,10 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      * @return A DataManagerLocal, as discovered via JNDI.
      */
     public DataManagerLocal getPlanetsDataManager() {
-        return this.tba.getPlanetsDataManagerAsAdmin(); 
+        // The EJB used to get access:
+        TestbedStatelessAdmin tba = TestbedStatelessAdminBean.getTestbedAdminBean();
+        
+        return tba.getPlanetsDataManagerAsAdmin(); 
         /*
         try{
             Context jndiContext = new javax.naming.InitialContext();
