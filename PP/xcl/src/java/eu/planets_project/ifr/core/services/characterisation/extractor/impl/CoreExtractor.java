@@ -2,7 +2,6 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
@@ -19,6 +18,7 @@ import org.jdom.output.XMLOutputter;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
@@ -37,8 +37,10 @@ public class CoreExtractor {
     // System.getProperty("java.io.tmpdir");
     // private static final String SYSTEM_TEMP = null;
     private String extractorWork = null;
+    private File WORK_TMP = null;
     private static String EXTRACTOR_IN = "INPUT";
     private static String EXTRACTOR_OUT = "OUTPUT";
+    private String defaultInputFileName = FileUtils.randomizeFileName("xcdlMigrateInput.bin");
     private String outputFileName;
     private String thisExtractorName;
     private Log plogger;
@@ -55,29 +57,27 @@ public class CoreExtractor {
      */
     public CoreExtractor(String extractorName, Log logger) {
         this.plogger = logger;
-        // SYSTEM_TEMP = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
+//        SYSTEM_TEMP = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
         thisExtractorName = extractorName;
-        outputFileName = thisExtractorName.toLowerCase() + "_xcdl_out.xcdl";
+//        outputFileName = thisExtractorName.toLowerCase() + "_xcdl_out.xcdl";
         extractorWork = extractorName.toUpperCase();
+//        WORK_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), extractorWork);
     }
 
     // this is a work around to disable norm data output in XCDL,
     // as long as flag in extractor does not work
     @SuppressWarnings("unchecked")
-    private byte[] removeNormData(byte[] XCDLtoRemoveNormDataFrom) {
+    private File removeNormData(File XCDLtoRemoveNormDataFrom) {
         SAXBuilder saxBuilder = new SAXBuilder();
         Document xcdlDoc;
 
         XMLOutputter xmlOut = new XMLOutputter();
         BufferedWriter xmlWriter;
 
-        File xcdlTmp = FileUtils
-                .writeByteArrayToTempFile(XCDLtoRemoveNormDataFrom);
         File cleanedXCDL = FileUtils.getTempFile("cleanedXCDL", "xcdl");
-        byte[] result = null;
 
         try {
-            xcdlDoc = saxBuilder.build(xcdlTmp);
+            xcdlDoc = saxBuilder.build(XCDLtoRemoveNormDataFrom);
 
             Element rootXCDL = xcdlDoc.getRootElement();
 
@@ -95,17 +95,14 @@ public class CoreExtractor {
             }
             xmlWriter = new BufferedWriter(new FileWriter(cleanedXCDL));
             xmlOut.output(xcdlDoc, xmlWriter);
-            result = FileUtils.readFileIntoByteArray(cleanedXCDL);
 
         } catch (JDOMException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         normDataDisabled = false;
-        return result;
+        return cleanedXCDL;
     }
 
     public static List<URI> getSupportedInputFormats() {
@@ -130,12 +127,12 @@ public class CoreExtractor {
     }
 
     /**
-     * @param binary
-     * @param xcel
+     * @param input
+     * @param xcelFile
      * @param parameters
      * @return xcdl as byte array
      */
-    public byte[] extractXCDL(byte[] binary, byte[] xcel,
+    public File extractXCDL(DigitalObject input, File xcelFile,
             List<Parameter> parameters) {
 
         if (EXTRACTOR_HOME == null) {
@@ -150,54 +147,44 @@ public class CoreExtractor {
         plogger.info("Starting " + thisExtractorName + " Service...");
 
         List<String> extractor_arguments = null;
-        File srcFile = null;
-        File xcelFile = null;
+        
+//        File xcelFile = null;
         File extractor_work_folder = null;
         File extractor_in_folder = null;
         File extractor_out_folder = null;
 
-        try {
-            extractor_work_folder = FileUtils
-                    .createWorkFolderInSysTemp(extractorWork);
+        extractor_work_folder = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), extractorWork);
 
-            plogger.info(thisExtractorName + " work folder created: "
-                    + extractorWork);
+		plogger.info(thisExtractorName + " work folder created: "
+		        + extractorWork);
 
-            extractor_in_folder = FileUtils.createFolderInWorkFolder(
-                    extractor_work_folder, EXTRACTOR_IN);
-            plogger.info(thisExtractorName + " input folder created: "
-                    + EXTRACTOR_IN);
+		extractor_in_folder = FileUtils.createFolderInWorkFolder(
+		        extractor_work_folder, EXTRACTOR_IN);
+		plogger.info(thisExtractorName + " input folder created: "
+		        + EXTRACTOR_IN);
 
-            extractor_out_folder = FileUtils.createFolderInWorkFolder(
-                    extractor_work_folder, EXTRACTOR_OUT);
-            plogger.info(thisExtractorName + " output folder created: "
-                    + EXTRACTOR_OUT);
-
-            srcFile = new File(extractor_in_folder, "extractor_image_in.bin");
-            FileOutputStream fos = new FileOutputStream(srcFile);
-            fos.write(binary);
-            fos.flush();
-            fos.close();
-
-            /*
-             * The extractor supports finding the XCEL on its own, so this is
-             * optional:
-             */
-            if (xcel != null) {
-                xcelFile = new File(extractor_in_folder,
-                        "extractor_xcel_in.xcel");
-                FileOutputStream xcelOut = new FileOutputStream(xcelFile);
-                xcelOut.write(xcel);
-                xcelOut.flush();
-                xcelOut.close();
-            }
-
-            // plogger.info("System-Temp folder is: " + SYSTEM_TEMP);
-
-        } catch (IOException e) {
-            plogger.error("Could not create Temp-file!");
-            e.printStackTrace();
+		extractor_out_folder = FileUtils.createFolderInWorkFolder(
+		        extractor_work_folder, EXTRACTOR_OUT);
+		plogger.info(thisExtractorName + " output folder created: "
+		        + EXTRACTOR_OUT);
+		
+		String inputFileName = getFileNameFromDigObject(input);
+        
+		if(inputFileName==null) {
+        	inputFileName = defaultInputFileName;
         }
+		
+		outputFileName = getOutputFileName(inputFileName, format.createExtensionUri("xcdl"));
+        
+        File srcFile = new File(extractor_in_folder, FileUtils.randomizeFileName(inputFileName));
+		FileUtils.writeInputStreamToFile(input.getContent().read(), srcFile);
+
+//            srcFile = new File(extractor_in_folder, "extractor_image_in.bin");
+//            FileOutputStream fos = new FileOutputStream(srcFile);
+//            fos.write(inputFile);
+//            fos.flush();
+//            fos.close();
+
 
         ProcessRunner shell = new ProcessRunner();
         plogger.info("EXTRACTOR_HOME = " + EXTRACTOR_HOME);
@@ -215,8 +202,8 @@ public class CoreExtractor {
         outputFilePath = outputFilePath.replace('\\', '/');
         // System.out.println("Output-file path: " + outputFilePath);
 
-        /* If we have no XCEL, let the extracto find the appropriate one: */
-        if (xcel != null) {
+        /* If we have no XCEL, let the extractor find the appropriate one: */
+        if (xcelFile != null) {
             String xcelFilePath = xcelFile.getAbsolutePath().replace('\\', '/');
             // System.out.println("XCEL-file path: " + xcelFilePath);
             plogger.info("Input-XCEL file path: " + xcelFilePath);
@@ -291,24 +278,76 @@ public class CoreExtractor {
             plogger.error("Process Error: " + processError);
             System.err.println("Process Error: "+processError);
         }
-        // StringWriter sWriter = new StringWriter();
 
-        byte[] binary_out = null;
         plogger.info("Creating byte[] to return...");
 
-        binary_out = FileUtils.readFileIntoByteArray(new File(outputFilePath));
+        File resultXCDL = new File(outputFilePath);
 
-        byte[] cleanedXCDL = null;
+//        byte[] cleanedXCDL = null;
 
         if (normDataDisabled) {
-            cleanedXCDL = removeNormData(binary_out);
-            binary_out = cleanedXCDL;
+            return removeNormData(resultXCDL);
+//            binary_out = cleanedXCDL;
         }
 
-        return binary_out;
+        return resultXCDL;
     }
+    
+    private String getOutputFileName(String inputFileName, URI outputFormat) {
+		String fileName = null;
+		String outputExt = format.getFirstExtension(outputFormat);
+		if(inputFileName.contains(".")) {
+			fileName = inputFileName.substring(0, inputFileName.lastIndexOf(".")) + "." + outputExt;
+		}
+		else {
+			fileName = inputFileName + "." + outputExt;
+		}
+		return fileName;
+	}
+    
 
     /**
+	 * Gets the title from the passed digOb and returns a proper folder name (e.g. strip the extension etc.)
+	 * @param digOb to get the folder name from
+	 * @return the folder name based on "title" in the passed digOb.
+	 */
+	private static String getFolderNameFromDigObject(DigitalObject digOb) {
+		String title = digOb.getTitle();
+		if(title==null) {
+			return null;
+		}
+		if(title.equalsIgnoreCase(".svn")) {
+			return title;
+		}
+		if(title.contains(".")) {
+			title = title.substring(0, title.lastIndexOf("."));
+		}
+		return title;
+	}
+
+	/**
+	 * Gets the title from the passed digOb and returns a proper file name
+	 * @param digOb to get the file name from
+	 * @return the folder name based on "title" in the passed digOb.
+	 */
+	private static String getFileNameFromDigObject(DigitalObject digOb) {
+		String title = digOb.getTitle();
+		String ext = format.getFirstExtension(digOb.getFormat());
+		if(title==null) {
+			return null;
+		}
+		if(title.contains(".")) {
+			return title;
+		}
+		else {
+			if(ext!=null) {
+				title = title + "." + ext;
+			}
+		}
+		return title;
+	}
+
+	/**
      * @param inputFormat The format
      * @return A service report indicating the format is not supported
      */

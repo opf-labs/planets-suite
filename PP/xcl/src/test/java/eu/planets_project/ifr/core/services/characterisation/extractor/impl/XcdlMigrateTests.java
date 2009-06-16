@@ -3,7 +3,6 @@ package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -16,8 +15,8 @@ import org.junit.Test;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -343,18 +342,6 @@ public class XcdlMigrateTests {
         }
     }
 
-    // private URI getUriForFile(File testFile) {
-    // String fileName = testFile.getAbsolutePath();
-    // String testFileExtension = null;
-    // if (fileName.contains(".")) {
-    // testFileExtension = fileName
-    // .substring(fileName.lastIndexOf(".") + 1);
-    // } else {
-    // System.err.println("Could not find file extension!!!");
-    // return null;
-    // }
-    // return format.createExtensionUri(testFileExtension);
-    // }
 
     @SuppressWarnings("unused")
     private DigitalObject createDigitalObjectByReference(URL permanentURL,

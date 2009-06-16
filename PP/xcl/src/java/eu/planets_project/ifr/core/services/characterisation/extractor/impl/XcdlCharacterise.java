@@ -50,6 +50,9 @@ public final class XcdlCharacterise implements Characterise, Serializable {
      */
     public static final String OUT_DIR = NAME.toUpperCase() + "_OUT"
             + File.separator;
+    
+    public static File XCDL_CHARACTERISE_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), NAME + "_TMP");
+    
     /**
      * the logger.
      */
@@ -79,37 +82,61 @@ public final class XcdlCharacterise implements Characterise, Serializable {
         CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME,
                 LOG);
 
-        byte[] inputData = FileUtils.writeInputStreamToBinary(digitalObject
-                .getContent().read());
-
-        byte[] result = null;
-
-        if (parameters != null) {
-            if (parameters.size() > 0) {
-                for (Parameter parameter : parameters) {
-                    String name = parameter.getName();
-                    if (name.equalsIgnoreCase("optionalXCELString")) {
-                        optionalFormatXCEL = parameter.getValue();
-                        break;
-                    }
-                }
-            }
-        }
-
-        if (optionalFormatXCEL != null) {
-            result = coreExtractor.extractXCDL(inputData, optionalFormatXCEL
-                    .getBytes(), parameters);
-        } else {
-            result = coreExtractor.extractXCDL(inputData, null, parameters);
-        }
+//        byte[] inputData = FileUtils.writeInputStreamToBinary(digitalObject
+//                .getContent().read());
+//
+//        byte[] result = null;
+//
+//        if (parameters != null) {
+//            if (parameters.size() > 0) {
+//                for (Parameter parameter : parameters) {
+//                    String name = parameter.getName();
+//                    if (name.equalsIgnoreCase("optionalXCELString")) {
+//                        optionalFormatXCEL = parameter.getValue();
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (optionalFormatXCEL != null) {
+//            result = coreExtractor.extractXCDL(inputData, optionalFormatXCEL
+//                    .getBytes(), parameters);
+//        } else {
+//            result = coreExtractor.extractXCDL(inputData, null, parameters);
+//        }
+        File xcelFile = new File(XCDL_CHARACTERISE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
+        
+        File result = null;
+    	
+	    if (parameters != null) {
+	        if (parameters.size() != 0) {
+	            for (Parameter currentParameter : parameters) {
+	                String currentName = currentParameter.getName();
+	
+	                if (currentName.equalsIgnoreCase("optionalXCELString")) {
+	                    optionalFormatXCEL = currentParameter.getValue();
+	                    FileUtils.writeStringToFile(optionalFormatXCEL, xcelFile);
+	                    break;
+	                }
+	            }
+	
+	        }
+	    }
+	
+	    if (optionalFormatXCEL != null) {
+	        result = coreExtractor.extractXCDL(digitalObject, xcelFile, parameters);
+	    } else {
+	        result = coreExtractor.extractXCDL(digitalObject, null, parameters);
+	    }
 
         if (result != null) {
-            File outputFile = FileUtils.writeByteArrayToTempFile(result);
-            List<Property> properties = new XcdlParser(outputFile)
+//            File outputFile = FileUtils.writeByteArrayToTempFile(result);
+            List<Property> properties = new XcdlParser(result)
                     .getProperties();
             characteriseResult = new CharacteriseResult(properties, sReport);
         } else {
-            this.returnWithErrorMessage("ERROR: No XCDL created!", null);
+            return this.returnWithErrorMessage("ERROR: No XCDL created!", null);
         }
 
         return characteriseResult;

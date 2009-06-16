@@ -1,10 +1,8 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -13,10 +11,11 @@ import javax.jws.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
@@ -42,56 +41,21 @@ public final class XcdlMigrate implements Migrate {
      * the service name.
      */
     public static final String NAME = "XcdlMigrateExtractor";
-    /**
-     * output dir.
-     */
-    public static final String OUT_DIR = NAME.toUpperCase() + "_OUT"
-            + File.separator;
+    
+    public static File XCDL_MIGRATE_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), NAME + "_TMP");
     /**
      * the logger.
      */
     public static final Log LOG = LogFactory.getLog(XcdlMigrate.class);
+    
+    public static FormatRegistry fReg = FormatRegistryFactory.getFormatRegistry(); 
+    
+    
     /**
      * a max file size.
      */
     public static final int MAX_FILE_SIZE = 75420028;
 
-    private MigrationPath[] createMigrationPathwayMatrix(
-            List<URI> inputFormats, List<URI> outputFormats) {
-        List<MigrationPath> paths = new ArrayList<MigrationPath>();
-
-        for (Iterator<URI> iterator = inputFormats.iterator(); iterator
-                .hasNext();) {
-            URI input = iterator.next();
-
-            for (Iterator<URI> iterator2 = outputFormats.iterator(); iterator2
-                    .hasNext();) {
-                URI output = iterator2.next();
-                MigrationPath path = new MigrationPath(input, output, null);
-                // Debug...
-                // System.out.println(path.getInputFormat() + " --> " +
-                // path.getOutputFormat());
-                paths.add(path);
-            }
-        }
-        return paths.toArray(new MigrationPath[] {});
-    }
-
-    /**
-     * @param message an optional message on what happened to the service
-     * @param e the Exception e which causes the problem
-     * @return CharacteriseResult containing a Error-Report
-     */
-    private MigrateResult returnWithErrorMessage(final String message,
-            final Exception e) {
-        if (e == null) {
-            return new MigrateResult(null, ServiceUtils
-                    .createErrorReport(message));
-        } else {
-            return new MigrateResult(null, ServiceUtils
-                    .createExceptionErrorReport(message, e));
-        }
-    }
 
     /**
      * {@inheritDoc}
@@ -140,7 +104,7 @@ public final class XcdlMigrate implements Migrate {
         sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(
                 new URI[] {}));
         // Migration Paths: List all combinations:
-        sd.paths(createMigrationPathwayMatrix(CoreExtractor
+        sd.paths(ServiceUtils.createMigrationPathways(CoreExtractor
                 .getSupportedInputFormats(), CoreExtractor
                 .getSupportedOutputFormats()));
         sd.serviceProvider("The Planets Consortium");
@@ -149,75 +113,77 @@ public final class XcdlMigrate implements Migrate {
     }
 
     public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
-            URI outputFormat, List<Parameter> parameters) {
-        URI format = inputFormat;
-        if (!CoreExtractor.supported(inputFormat, parameters)) {
-            return new MigrateResult(null, CoreExtractor
-                    .unsupportedInputFormatReport(inputFormat));
-        }
-        LOG.debug("Working on digital object: " + digitalObject);
-        DigitalObject resultDigOb = null;
-        ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-                "OK");
-        MigrateResult migrateResult = null;
-        String optionalFormatXCEL = null;
+	        URI outputFormat, List<Parameter> parameters) {
+	    URI format = inputFormat;
+	    if (!CoreExtractor.supported(inputFormat, parameters)) {
+	        return new MigrateResult(null, CoreExtractor
+	                .unsupportedInputFormatReport(inputFormat));
+	    }
+	    LOG.info("Working on digital object: " + digitalObject);
+	    
+	    File xcelFile = new File(XCDL_MIGRATE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
+	    
+	    DigitalObject resultDigOb = null;
+	    
+	    String optionalFormatXCEL = null;
+	
+	    CoreExtractor coreExtractor = new CoreExtractor(XcdlMigrate.NAME, LOG);
+	
+	    File result = null;
+	
+	    if (parameters != null) {
+	        if (parameters.size() != 0) {
+	            for (Parameter currentParameter : parameters) {
+	                String currentName = currentParameter.getName();
+	
+	                if (currentName.equalsIgnoreCase("optionalXCELString")) {
+	                    optionalFormatXCEL = currentParameter.getValue();
+	                    FileUtils.writeStringToFile(optionalFormatXCEL, xcelFile);
+	                    break;
+	                }
+	            }
+	
+	        }
+	    }
+	
+	    if (optionalFormatXCEL != null) {
+	        result = coreExtractor.extractXCDL(digitalObject, xcelFile, parameters);
+	    } else {
+	        result = coreExtractor.extractXCDL(digitalObject, null, parameters);
+	    }
+	
+	    if (result != null) {
+	
+            resultDigOb = new DigitalObject.Builder(Content
+                        .byReference(result))
+            			.title(result.getName())
+            			.format(fReg.createExtensionUri("xcdl"))
+            			.build();
+            
+            ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+            "OK");
+            
+            return new MigrateResult(resultDigOb, sReport);
+	        
+	    } else {
+	        return this.returnWithErrorMessage("ERROR: No XCDL created!", null);
+	    }
+	}
 
-        CoreExtractor coreExtractor = new CoreExtractor(XcdlMigrate.NAME, LOG);
-
-        byte[] inputData = FileUtils.writeInputStreamToBinary(digitalObject
-                .getContent().read());
-
-        byte[] result = null;
-
-        if (parameters != null) {
-            if (parameters.size() != 0) {
-                for (Parameter currentParameter : parameters) {
-                    String currentName = currentParameter.getName();
-
-                    if (currentName.equalsIgnoreCase("optionalXCELString")) {
-                        optionalFormatXCEL = currentParameter.getValue();
-                    }
-                }
-
-            }
-        }
-
-        if (optionalFormatXCEL != null) {
-            result = coreExtractor.extractXCDL(inputData, optionalFormatXCEL
-                    .getBytes(), parameters);
-        } else {
-            result = coreExtractor.extractXCDL(inputData, null, parameters);
-        }
-
-        int sizeInKB = 0;
-
-        if (result != null) {
-            sizeInKB = result.length / 1024;
-
-            // output Files smaller than 10Mb
-            if (sizeInKB < MAX_FILE_SIZE) {
-                resultDigOb = new DigitalObject.Builder(Content
-                            .byValue(result)).permanentUri(
-                            URI.create(PlanetsServices.NS
-                                    + "/pserv-pc-xcdlExtractor")).build();
-                migrateResult = new MigrateResult(resultDigOb, sReport);
-            } else {
-                File tmpResult = FileUtils.getTempFile(result, "tmpResult",
-                        "tmp");
-                try {
-                    resultDigOb = new DigitalObject.Builder(Content
-                            .byReference(tmpResult.toURI().toURL())).build();
-                    migrateResult = new MigrateResult(resultDigOb, sReport);
-                } catch (MalformedURLException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            this.returnWithErrorMessage("ERROR: No XCDL created!", null);
-        }
-
-        return migrateResult;
-    }
+	/**
+	 * @param message an optional message on what happened to the service
+	 * @param e the Exception e which causes the problem
+	 * @return CharacteriseResult containing a Error-Report
+	 */
+	private MigrateResult returnWithErrorMessage(final String message,
+	        final Exception e) {
+	    if (e == null) {
+	        return new MigrateResult(null, ServiceUtils
+	                .createErrorReport(message));
+	    } else {
+	        return new MigrateResult(null, ServiceUtils
+	                .createExceptionErrorReport(message, e));
+	    }
+	}
 
 }
