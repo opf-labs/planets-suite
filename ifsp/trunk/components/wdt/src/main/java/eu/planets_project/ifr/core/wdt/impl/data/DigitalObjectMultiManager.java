@@ -12,6 +12,7 @@ import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.ifr.core.storage.impl.blnewspaper.SimpleBLNewspaperDigitalObjectManagerImpl;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
@@ -41,7 +42,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      */
     public DigitalObjectMultiManager() {
         // Allocate the data sources:
-        dss = new DataSource[2];
+        dss = new DataSource[3];
         
         // The File System Data Registry:
         DigitalObjectManager fsdm = new FileSystemDataManager();
@@ -49,11 +50,17 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         dss[0].dm = fsdm;
         dss[0].uri = ((FileSystemDataManager)fsdm).getRootURI().normalize();
         
-        // The File System Data Registry:
+        // The S3 Data Registry
         DigitalObjectManager s3dm = new S3DataManager();
         dss[1] = new DataSource();
         dss[1].dm = s3dm;
         dss[1].uri = ((S3DataManager)s3dm).getRootURI().normalize();
+        
+        // The BL DigitalObjectManager
+        DigitalObjectManager bln = new SimpleBLNewspaperDigitalObjectManagerImpl();
+        dss[2] = new DataSource();
+        dss[2].dm = bln;
+        dss[2].uri = ((SimpleBLNewspaperDigitalObjectManagerImpl)bln).getRootURI().normalize();
         
         /*
         // The Planets Data Registry:
