@@ -152,7 +152,7 @@ public final class XcdlMigrate implements Migrate {
 	        result = coreExtractor.extractXCDL(digitalObject, null, parameters);
 	    }
 	
-	    if (result != null) {
+	    if (result.exists()) {
 	
             resultDigOb = new DigitalObject.Builder(Content
                         .byReference(result))

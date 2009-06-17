@@ -63,10 +63,10 @@ public class XcdlCharacteriseTests {
         TEST_OUT = XcdlCharacteriseUnitHelper.EXTRACTOR_LOCAL_TEST_OUT;
         File inputImage = new File(XcdlCharacteriseUnitHelper.SAMPLE_FILE);
         File inputXcel = new File(XcdlCharacteriseUnitHelper.SAMPLE_XCEL);
-        binary = FileUtils.readFileIntoByteArray(inputImage);
-        readXcelString(inputXcel);
-        digitalObject = createDigitalObjectByValue(new URL(
-                "http://somePermamentURL"), binary);
+//        binary = FileUtils.readFileIntoByteArray(inputImage);
+        xcelString = FileUtils.readTxtFileIntoString(inputXcel);
+//        readXcelString(inputXcel);
+        digitalObject = new DigitalObject.Builder(Content.byReference(inputImage)).title(inputImage.getName()).format(getUriForFile(inputImage)).build();
         extractor = ServiceCreator.createTestService(Characterise.QNAME,
                 XcdlCharacterise.class, WSDL);
     }
@@ -249,7 +249,7 @@ public class XcdlCharacteriseTests {
         }
     }
 
-    private URI getUriForFile(File testFile) {
+    private static URI getUriForFile(File testFile) {
         String fileName = testFile.getAbsolutePath();
         String testFileExtension = null;
         if (fileName.contains(".")) {

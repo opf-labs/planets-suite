@@ -40,7 +40,7 @@ public class CoreExtractor {
     private File WORK_TMP = null;
     private static String EXTRACTOR_IN = "INPUT";
     private static String EXTRACTOR_OUT = "OUTPUT";
-    private String defaultInputFileName = FileUtils.randomizeFileName("xcdlMigrateInput.bin");
+    private String defaultInputFileName = "xcdlMigrateInput.bin";
     private String outputFileName;
     private String thisExtractorName;
     private Log plogger;
@@ -155,28 +155,31 @@ public class CoreExtractor {
 
         extractor_work_folder = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), extractorWork);
 
-		plogger.info(thisExtractorName + " work folder created: "
-		        + extractorWork);
+//		plogger.info(thisExtractorName + " work folder created: "
+//		        + extractorWork);
 
 		extractor_in_folder = FileUtils.createFolderInWorkFolder(
 		        extractor_work_folder, EXTRACTOR_IN);
-		plogger.info(thisExtractorName + " input folder created: "
-		        + EXTRACTOR_IN);
+//		plogger.info(thisExtractorName + " input folder created: "
+//		        + EXTRACTOR_IN);
 
 		extractor_out_folder = FileUtils.createFolderInWorkFolder(
 		        extractor_work_folder, EXTRACTOR_OUT);
-		plogger.info(thisExtractorName + " output folder created: "
-		        + EXTRACTOR_OUT);
+//		plogger.info(thisExtractorName + " output folder created: "
+//		        + EXTRACTOR_OUT);
 		
 		String inputFileName = getFileNameFromDigObject(input);
-        
-		if(inputFileName==null) {
-        	inputFileName = defaultInputFileName;
-        }
 		
+		if(inputFileName==null || inputFileName.equalsIgnoreCase("")) {
+			inputFileName = FileUtils.randomizeFileName(defaultInputFileName);
+		}
+		else {
+			inputFileName = FileUtils.randomizeFileName(inputFileName);
+		}
+        
 		outputFileName = getOutputFileName(inputFileName, format.createExtensionUri("xcdl"));
         
-        File srcFile = new File(extractor_in_folder, FileUtils.randomizeFileName(inputFileName));
+        File srcFile = new File(extractor_in_folder, inputFileName);
 		FileUtils.writeInputStreamToFile(input.getContent().read(), srcFile);
 
 //            srcFile = new File(extractor_in_folder, "extractor_image_in.bin");
