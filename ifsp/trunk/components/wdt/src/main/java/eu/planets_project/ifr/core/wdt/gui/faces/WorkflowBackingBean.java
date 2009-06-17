@@ -59,6 +59,7 @@ import org.xml.sax.SAXException;
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.api.RegistryFactory;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectReference;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
@@ -609,17 +610,16 @@ public class WorkflowBackingBean {
 					DigitalObjectReference dor = new DigitalObjectReference(dob
 							.getUri());
 					selectedObjects.add(dor);
-					URL dobURL = null;
+					URI dobURI = dob.getUri();
+					DigitalObject o = null;
 					try {
-						dobURL = dob.getUri().toURL();
-					} catch (MalformedURLException e) {
+						o = dr.getDataManager(dobURI).retrieve(dobURI);
+					} catch (DigitalObjectNotFoundException e) {
 						errorMessageString
-								.add("\nSelected digital object has an invalid URL!");
+						.add("\nUnable to retrieve selected digital object!");
 						e.printStackTrace();
 					}
-					DigitalObject o = new DigitalObject.Builder(Content
-							.byReference(dobURL)).build();
-					digObjs.add(o);
+					if (o!=null) digObjs.add(o);
 				}
 			}
 			if (selectedObjects.size() > 0)

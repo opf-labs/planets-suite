@@ -25,8 +25,10 @@ import javax.xml.soap.SOAPException;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 
@@ -180,11 +182,18 @@ public class FileSystemDataManager implements DigitalObjectManager {
  
     	DigitalObject retObj = null;
 	
-		try {
-            File f = new File( pdURI );
-            log.info("Got file: "+f.getAbsolutePath());
-            log.info("Got something that exists? "+f.exists());
-			BufferedReader reader = new BufferedReader(new FileReader(f));
+//		try {
+    		log.info("retrieving: " + pdURI.toString());
+    		File file = new File(pdURI);
+    		if (!file.exists())
+    			throw new DigitalObjectNotFoundException(file.getName() + " not found!");
+    		
+    		// Create DigitalObject from file reference
+            DigitalObject.Builder dob = new DigitalObject.Builder(Content.byReference(file));
+            retObj = dob.build();
+            
+            /* something wrong here
+            BufferedReader reader = new BufferedReader(new FileReader(f));
 			StringBuilder fileData = new StringBuilder(1024);
 			char[] buf = new char[1024];
 			int numRead = 0;
@@ -193,6 +202,8 @@ public class FileSystemDataManager implements DigitalObjectManager {
 			}
 			reader.close();
 			retObj = new DigitalObject.Builder(fileData.toString()).build();
+			
+            
 		} catch (UnsupportedEncodingException e) {
 			log.error("Unsupported encoding exception");
 			log.error(e.getMessage());
@@ -209,7 +220,7 @@ public class FileSystemDataManager implements DigitalObjectManager {
 			log.error(e.getStackTrace());
 			throw new DigitalObjectNotFoundException("Couldn't retrieve Digital Object due to IO problem", e);
 		}
-		
+		*/
 		return retObj;    
     
     }

@@ -1,8 +1,10 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +22,7 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 public class S3DataManager implements DigitalObjectManager {
@@ -168,8 +171,16 @@ public class S3DataManager implements DigitalObjectManager {
 
 	public DigitalObject retrieve(URI pdURI)
 			throws DigitalObjectNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		URL dobURL = null;
+		try {
+			dobURL = pdURI.toURL();
+		} catch (MalformedURLException e) {
+			log.error("\nSelected digital object has an invalid URL!");
+			log.error(e.getStackTrace());
+		}
+		DigitalObject o = new DigitalObject.Builder(Content
+				.byReference(dobURL)).build();
+		return o;
 	}
 
 	public void store(URI pdURI, DigitalObject digitalObject)
