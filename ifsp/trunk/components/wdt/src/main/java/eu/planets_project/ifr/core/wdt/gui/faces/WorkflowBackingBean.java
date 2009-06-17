@@ -124,7 +124,7 @@ public class WorkflowBackingBean {
 	private SAXBuilder builder;
 	private Registry registry;
 	private ArrayList<SubmittedWorkflowBean> submittedWorkflows;
-	private HashMap<UUID,SubmittedWorkflowBean> workflowLookup;
+	private HashMap<UUID, SubmittedWorkflowBean> workflowLookup;
 
 	//
 	// Constructor
@@ -156,7 +156,7 @@ public class WorkflowBackingBean {
 		serviceLookup = new HashMap<String, ServiceBean>();
 		serviceNameMap = new HashMap<String, String>();
 		submittedWorkflows = new ArrayList<SubmittedWorkflowBean>();
-		workflowLookup = new HashMap<UUID,SubmittedWorkflowBean>();
+		workflowLookup = new HashMap<UUID, SubmittedWorkflowBean>();
 		// build service types map
 		serviceTypes = new HashMap<String, String>();
 		serviceTypes.put("Characterise",
@@ -169,6 +169,7 @@ public class WorkflowBackingBean {
 				"eu.planets_project.services.migrate.Migrate");
 		serviceTypes.put("Validate",
 				"eu.planets_project.services.validate.Validate");
+		serviceTypes.put("Modify", "eu.planets_project.services.modify.Modify");
 		serviceTypes.put("CreateView",
 				"eu.planets_project.services.view.CreateView");
 		serviceTypes.put("ViewAction",
@@ -204,7 +205,8 @@ public class WorkflowBackingBean {
 		// System.out.println("Parameter being updated: " + pn + ", in row: " +
 		// dataRow);
 		sbiq.getServiceParameters().remove(dataRow);
-		sbiq.getServiceParameters().add(dataRow,new ServiceParameter(pn, newValue));
+		sbiq.getServiceParameters().add(dataRow,
+				new ServiceParameter(pn, newValue));
 		workflowStatus = " (in memory)";
 	}
 
@@ -233,6 +235,7 @@ public class WorkflowBackingBean {
 		sbiq.addParameter(new ServiceParameter(parameterName, parameterValue));
 		workflowStatus = " (in memory)";
 	}
+
 	public void buildXMLWorkflowDescription(ActionEvent event) {
 		this.currentTab = "editWorkflowTab";
 		errorMessageString.clear();
@@ -268,10 +271,12 @@ public class WorkflowBackingBean {
 		errorMessageString.clear();
 		xmlWorkflowConfig = buildXMLString();
 		if (xmlWorkflowConfig.equals("")) {
-			errorMessageString.add("Unable to build workflow XML String - cannote execute!");
+			errorMessageString
+					.add("Unable to build workflow XML String - cannote execute!");
 			return;
 		}
-//		System.out.println("Calling executeWorkflow with: " + selectedTemplateQname);
+		// System.out.println("Calling executeWorkflow with: " +
+		// selectedTemplateQname);
 		try {
 			workflowUUID = weeService.submitWorkflow(digObjs,
 					selectedTemplateQname, xmlWorkflowConfig);
@@ -279,7 +284,7 @@ public class WorkflowBackingBean {
 			swb.setStartTime(System.currentTimeMillis());
 			swb.setStopTime(0l);
 			swb.setUuid(workflowUUID);
-			swb.setXmlConfigName(workflowName+workflowStatus);
+			swb.setXmlConfigName(workflowName + workflowStatus);
 			swb.setNumberObjects(digObjs.size());
 			swb.setStatus("SUBMITTED");
 			submittedWorkflows.add(swb);
@@ -294,22 +299,23 @@ public class WorkflowBackingBean {
 
 	public String getCurrentProgress() {
 		String progString = "None Active";
-//		System.out.println("Call getCurrentProgress with workflowUUID: " + workflowUUID);
+		// System.out.println("Call getCurrentProgress with workflowUUID: " +
+		// workflowUUID);
 		if (workflowUUID != null) {
 			SubmittedWorkflowBean swb = workflowLookup.get(workflowUUID);
 			try {
 				String status = weeService.getStatus(workflowUUID);
 				swb.setStatus(status);
 				progString = status;
-//				System.out.println("Status is: " + progString);
-				if ( status.equals("COMPLETED") || status.equals("FAILED") ) {
+				// System.out.println("Status is: " + progString);
+				if (status.equals("COMPLETED") || status.equals("FAILED")) {
 					swb.setStopTime(System.currentTimeMillis());
 					workflowUUID = null;
 					workflowStarted = false;
 					wfCount = -1;
 				}
 			} catch (Exception e) {
-				System.out.println("Unidentified UUID: "+ workflowUUID);
+				System.out.println("Unidentified UUID: " + workflowUUID);
 				errorMessageString
 						.add("Unable to retrieve workflow status from execution service.");
 			}
@@ -348,28 +354,30 @@ public class WorkflowBackingBean {
 		try {
 			sendsURL = new URL(selServiceEndpoint);
 			List<ServiceDescription> regSer = registry
-			.query(new ServiceDescription.Builder(null,
-					null).endpoint(sendsURL).build());
-			if (regSer.size()<1) {
+					.query(new ServiceDescription.Builder(null, null).endpoint(
+							sendsURL).build());
+			if (regSer.size() < 1) {
 				errorMessageString.add("No service with endpoint: "
-						+ selServiceEndpoint + " found in service registry.");	
-			} else if (regSer.size()>1) {
-				errorMessageString.add("Service lookup with endpoint: "
-						+ selServiceEndpoint + " yielded more than one result!");
+						+ selServiceEndpoint + " found in service registry.");
+			} else if (regSer.size() > 1) {
+				errorMessageString
+						.add("Service lookup with endpoint: "
+								+ selServiceEndpoint
+								+ " yielded more than one result!");
 			} else {
 				ServiceDescription sd = regSer.get(0);
 				List<Parameter> pList = sd.getParameters();
-				if (pList!=null) {
+				if (pList != null) {
 					Iterator<Parameter> it = pList.iterator();
 					while (it.hasNext()) {
 						Parameter par = it.next();
 						ServiceParameter spar = new ServiceParameter(par
-                                .getName(), par.getValue());
+								.getName(), par.getValue());
 						theServiceBean.addParameter(spar);
 					}
 				} else {
-					errorMessageString.add("Service: "
-							+ selServiceName + " has no default parameters.");					
+					errorMessageString.add("Service: " + selServiceName
+							+ " has no default parameters.");
 				}
 			}
 		} catch (MalformedURLException e) {
@@ -609,17 +617,23 @@ public class WorkflowBackingBean {
 				if (dob.isSelectable() && dob.isSelected()) {
 					DigitalObjectReference dor = new DigitalObjectReference(dob
 							.getUri());
-					selectedObjects.add(dor);
 					URI dobURI = dob.getUri();
 					DigitalObject o = null;
 					try {
 						o = dr.getDataManager(dobURI).retrieve(dobURI);
 					} catch (DigitalObjectNotFoundException e) {
 						errorMessageString
-						.add("\nUnable to retrieve selected digital object!");
+								.add("\nUnable to retrieve selected digital object!");
 						e.printStackTrace();
 					}
-					if (o!=null) digObjs.add(o);
+					if (o != null) {
+						selectedObjects.add(dor);
+						digObjs.add(o);
+					} else {
+						errorMessageString
+								.add("\nRetrieved digital object is null for URI: "
+										+ dobURI);
+					}
 				}
 			}
 			if (selectedObjects.size() > 0)
@@ -829,7 +843,7 @@ public class WorkflowBackingBean {
 	 */
 	private void getChildItems(TreeModel tm, TreeNode parent,
 			DigitalObjectReference[] dobs, int depth) {
-//		this.currentTab = "selectObjectsTab";
+		// this.currentTab = "selectObjectsTab";
 		// Do nothing if there are no comments.
 		if (dobs == null)
 			return;
@@ -944,7 +958,7 @@ public class WorkflowBackingBean {
 				i++;
 			}
 		}
-//		this.currentTab = "selectObjectsTab";
+		// this.currentTab = "selectObjectsTab";
 	}
 
 	//
@@ -1216,14 +1230,15 @@ public class WorkflowBackingBean {
 		}
 
 		public List<SelectItem> getEndpointOptions() {
-			if (serviceNames==null) {
+			if (serviceNames == null) {
 				serviceNames = new ArrayList<SelectItem>();
-				serviceNames.add(new SelectItem("None", "Select an Endpoint..."));
+				serviceNames
+						.add(new SelectItem("None", "Select an Endpoint..."));
 				serviceNames.add(new SelectItem("None", "None"));
 			}
 			return serviceNames;
 		}
-		
+
 		public void clearParameters() {
 			this.serviceParameters.clear();
 		}
@@ -1257,7 +1272,7 @@ public class WorkflowBackingBean {
 			this.value = v;
 		}
 	}
-	
+
 	public class SubmittedWorkflowBean {
 		private UUID uuid;
 		private String xmlConfigName;
@@ -1266,7 +1281,7 @@ public class WorkflowBackingBean {
 		private long stopTime;
 		private int numberObjects;
 		private SimpleDateFormat formatter;
-	    
+
 		public SubmittedWorkflowBean() {
 			formatter = new SimpleDateFormat("MMM yyyy HH:mm:ss");
 		}
@@ -1275,66 +1290,66 @@ public class WorkflowBackingBean {
 		public String getUuid() {
 			return uuid.toString();
 		}
-		
+
 		public String getXmlConfigName() {
 			return xmlConfigName;
 		}
-		
+
 		public String getStatus() {
 			return status;
 		}
-		
+
 		public String getExecutionTime() {
-			if (stopTime>startTime) {
-				return new Long(stopTime-startTime).toString();
+			if (stopTime > startTime) {
+				return new Long(stopTime - startTime).toString();
 			} else {
 				return "";
 			}
 		}
-		
+
 		public String getNumberObjects() {
 			return new Integer(numberObjects).toString();
 		}
 
 		public String getStartTime() {
-			if (startTime >0) {
+			if (startTime > 0) {
 				String s = formatter.format(new Date(this.startTime));
 				return s;
 			} else {
 				return "";
 			}
 		}
-		
+
 		public String getStopTime() {
-			if (stopTime >0) {
+			if (stopTime > 0) {
 				String s = formatter.format(new Date(this.stopTime));
 				return s;
 			} else {
 				return "";
 			}
 		}
-		
+
 		// Setters
 		public void setUuid(UUID id) {
 			this.uuid = id;
 		}
-		
+
 		public void setXmlConfigName(String name) {
 			this.xmlConfigName = name;
 		}
-		
+
 		public void setStatus(String stat) {
 			this.status = stat;
 		}
-		
+
 		public void setStartTime(long time) {
 			this.startTime = time;
 		}
-		
+
 		public void setStopTime(long time) {
 			this.stopTime = time;
 		}
-		
+
 		public void setNumberObjects(int num) {
 			this.numberObjects = num;
 		}

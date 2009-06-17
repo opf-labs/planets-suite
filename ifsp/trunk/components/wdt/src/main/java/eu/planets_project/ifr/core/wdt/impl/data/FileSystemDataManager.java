@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -184,13 +186,16 @@ public class FileSystemDataManager implements DigitalObjectManager {
 	
 //		try {
     		log.info("retrieving: " + pdURI.toString());
-    		File file = new File(pdURI);
-    		if (!file.exists())
-    			throw new DigitalObjectNotFoundException(file.getName() + " not found!");
-    		
+    		URL dobURL = null;
+    		try {
+    			dobURL = pdURI.toURL();
+    		} catch (MalformedURLException e) {
+    			log.error("\nSelected digital object has an invalid URL!");
+    			log.error(e.getStackTrace());
+    		}
     		// Create DigitalObject from file reference
-            DigitalObject.Builder dob = new DigitalObject.Builder(Content.byReference(file));
-            retObj = dob.build();
+            retObj = new DigitalObject.Builder(Content
+    				.byReference(dobURL)).build();
             
             /* something wrong here
             BufferedReader reader = new BufferedReader(new FileReader(f));

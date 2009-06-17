@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,9 +108,10 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         
         // First, normalise the URI to ensure people can't peek inside using /../../..
         puri = puri.normalize();
-        
+//        log.info("findDataManger for: " + puri);
         // Find the (1st) matching data registry:
         for( int i = 0; i < dss.length; i++ ) {
+//        	log.info("findDataManager with root uri: " + dss[i].uri.toString());
             if( puri.toString().startsWith(dss[i].uri.toString())) {
                 return dss[i].dm;
             }
@@ -146,7 +148,17 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      */
     public DigitalObject retrieve(URI pdURI)
             throws DigitalObjectNotFoundException {
-    	DigitalObjectManager dm = findDataManager(pdURI);
+    	DigitalObjectManager dm = null;
+    	if (pdURI.toString().indexOf("amazonaws.com") > 0) {
+    		try {
+				dm = findDataManager(new URI("http://www.amazonaws.com/planets/"));
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	} else {
+    		dm = findDataManager(pdURI);
+    	}
         if( dm == null ) return null;
         
         return dm.retrieve(pdURI);
