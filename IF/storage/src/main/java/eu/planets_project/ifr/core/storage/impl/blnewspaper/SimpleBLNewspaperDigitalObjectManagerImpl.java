@@ -10,6 +10,7 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.Metadata;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -166,8 +167,13 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 			throw new DigitalObjectNotFoundException(file.getName() + " not found!");
 		
 		// Create DigitalObject from file reference
-        DigitalObject.Builder dob = new DigitalObject.Builder(Content.byReference(file));
-        dob.title(file.getName());
+        DigitalObject.Builder dob;
+        try {
+        	dob = new DigitalObject.Builder(Content.byReference(pdURI.toURL()));
+        	dob.title(file.getName());
+        } catch (MalformedURLException e) {
+        	throw new DigitalObjectNotFoundException(e);
+        }
         
         // Open XML file
         String xmlFilename = file.toString().substring(0, file.toString().lastIndexOf('.')) + ".xml";
