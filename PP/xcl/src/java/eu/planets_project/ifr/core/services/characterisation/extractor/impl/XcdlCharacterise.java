@@ -88,29 +88,6 @@ public final class XcdlCharacterise implements Characterise, Serializable {
         CoreExtractor coreExtractor = new CoreExtractor(XcdlCharacterise.NAME,
                 LOG);
 
-//        byte[] inputData = FileUtils.writeInputStreamToBinary(digitalObject
-//                .getContent().read());
-//
-//        byte[] result = null;
-//
-//        if (parameters != null) {
-//            if (parameters.size() > 0) {
-//                for (Parameter parameter : parameters) {
-//                    String name = parameter.getName();
-//                    if (name.equalsIgnoreCase("optionalXCELString")) {
-//                        optionalFormatXCEL = parameter.getValue();
-//                        break;
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (optionalFormatXCEL != null) {
-//            result = coreExtractor.extractXCDL(inputData, optionalFormatXCEL
-//                    .getBytes(), parameters);
-//        } else {
-//            result = coreExtractor.extractXCDL(inputData, null, parameters);
-//        }
         File xcelFile = new File(XCDL_CHARACTERISE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
         
         File result = null;
@@ -131,13 +108,12 @@ public final class XcdlCharacterise implements Characterise, Serializable {
 	    }
 	
 	    if (optionalFormatXCEL != null) {
-	        result = coreExtractor.extractXCDL(digitalObject, xcelFile, parameters);
+	        result = coreExtractor.extractXCDL(digitalObject, null, xcelFile, parameters);
 	    } else {
-	        result = coreExtractor.extractXCDL(digitalObject, null, parameters);
+	        result = coreExtractor.extractXCDL(digitalObject, null, null, parameters);
 	    }
 
-        if (result != null) {
-//            File outputFile = FileUtils.writeByteArrayToTempFile(result);
+        if (result.exists()) {
             List<Property> properties = new XcdlParser(result)
                     .getProperties();
             characteriseResult = new CharacteriseResult(properties, sReport);

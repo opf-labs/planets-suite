@@ -393,7 +393,7 @@ public final class DigitalObjectUtils {
 	public static List<File> getAllFilesFromDigitalObject(DigitalObject digOb) {
 		if(digOb.getFormat().equals(zipType)) {
 			List<File> zipFiles = new ArrayList<File>();
-			File target = FileUtils.getTempFile(getFileNameFromDigObject(digOb), "");
+			File target = FileUtils.getTempFile(getFileNameFromDigObject(digOb, null), "");
 			FileUtils.writeInputStreamToFile(digOb.getContent().read(), target);
 			zipFiles.add(target);
 			return zipFiles;
@@ -406,7 +406,7 @@ public final class DigitalObjectUtils {
 			FileUtils.deleteAllFilesInFolder(utils_tmp);
 			File tmp = FileUtils.createFolderInWorkFolder(utils_tmp, FileUtils.randomizeFileName("get-all-files-tmp"));
 //			FileUtils.deleteAllFilesInFolder(tmp);
-			File content = new File(tmp, getFileNameFromDigObject(digOb)); 
+			File content = new File(tmp, getFileNameFromDigObject(digOb, null)); 
 			FileUtils.writeInputStreamToFile(digOb.getContent().read(), content);
 			files.add(content);
 			
@@ -560,7 +560,7 @@ public final class DigitalObjectUtils {
 	    
 		File tmpFolder = FileUtils.createFolderInWorkFolder(utils_tmp, folderName);
 		
-		File zip = new File(tmpFolder, getFileNameFromDigObject(digOb));
+		File zip = new File(tmpFolder, getFileNameFromDigObject(digOb, null));
 		
 		FileUtils.writeInputStreamToFile(digOb.getContent().read(), zip);
 		
@@ -642,7 +642,7 @@ public final class DigitalObjectUtils {
 			}
 		}
 		else {
-			File currentContent = new File(targetFolder, getFileNameFromDigObject(digOb));
+			File currentContent = new File(targetFolder, getFileNameFromDigObject(digOb, null));
 			FileUtils.writeInputStreamToFile(digOb.getContent().read(), currentContent);
 			allContainedFiles.add(currentContent);
 		}
@@ -678,21 +678,31 @@ public final class DigitalObjectUtils {
 	/**
 	 * Gets the title from the passed digOb and returns a proper file name
 	 * @param digOb to get the file name from
+	 * @param supposedFormatURI TODO
 	 * @return the folder name based on "title" in the passed digOb.
 	 */
-	public static String getFileNameFromDigObject(DigitalObject digOb) {
+	public static String getFileNameFromDigObject(DigitalObject digOb, URI supposedFormatURI) {
 		String title = digOb.getTitle();
+		String ext = null;
 		
-		if(title==null) {
-			String ext = format.getFirstExtension(digOb.getFormat());
-			String defaultTitle = "default_input";
-			
-			if(ext!=null) {
-				title = FileUtils.randomizeFileName(defaultTitle + "." + ext);
+		
+		// I know, this is evil, but this is a workaround for the Zip-DigitalObjectUtils
+		if(supposedFormatURI==null) {
+			URI digObFormat = digOb.getFormat();
+			if(digObFormat==null) {
+				ext = "bin";
 			}
 			else {
-				title = FileUtils.randomizeFileName(defaultTitle + "." + "bin");
+				ext = format.getFirstExtension(digObFormat);
 			}
+		}
+		else {
+			ext = format.getFirstExtension(supposedFormatURI);
+		}
+		
+		if(title==null) {
+			String defaultTitle = "default_input";
+			title = FileUtils.randomizeFileName(defaultTitle + "." + ext);
 		}
 		
 		if(title.contains(" ")) {
@@ -703,13 +713,7 @@ public final class DigitalObjectUtils {
 			return title;
 		}
 		else {
-			String ext = format.getFirstExtension(digOb.getFormat());
-			if(ext!=null) {
-				title = title + "." + ext;
-			}
-			else {
-				title = title + "." + "bin";
-			}
+			title = title + "." + ext;
 		}
 		return title;
 		

@@ -174,12 +174,12 @@ public class XcdlCharacteriseTests {
         CharacteriseResult result = extractor.characterise(builder.build(),
                 null);
         Assert.assertEquals(Type.ERROR, result.getReport().getType());
-        Assert.assertEquals(null, result.getProperties());
+        Assert.assertEquals(0, result.getProperties().size());
         /* And we can't characterise unsupported formats: */
         result = extractor.characterise(builder.format(
                 registry.createExtensionUri("svg")).build(), null);
         Assert.assertEquals(Type.ERROR, result.getReport().getType());
-        Assert.assertEquals(null, result.getProperties());
+        Assert.assertEquals(0, result.getProperties().size());
     }
 
     // Helper methods:

@@ -128,12 +128,13 @@ public class CoreExtractor {
 
     /**
      * @param input
+     * @param inputFormat TODO
      * @param xcelFile
      * @param parameters
      * @return xcdl as byte array
      */
-    public File extractXCDL(DigitalObject input, File xcelFile,
-            List<Parameter> parameters) {
+    public File extractXCDL(DigitalObject input, URI inputFormat,
+            File xcelFile, List<Parameter> parameters) {
 
         if (EXTRACTOR_HOME == null) {
             System.err
@@ -168,7 +169,7 @@ public class CoreExtractor {
 //		plogger.info(thisExtractorName + " output folder created: "
 //		        + EXTRACTOR_OUT);
 		
-		String inputFileName = DigitalObjectUtils.getFileNameFromDigObject(input);
+		String inputFileName = DigitalObjectUtils.getFileNameFromDigObject(input, inputFormat);
 		
 		if(inputFileName==null || inputFileName.equalsIgnoreCase("")) {
 			inputFileName = FileUtils.randomizeFileName(defaultInputFileName);
@@ -282,7 +283,7 @@ public class CoreExtractor {
             System.err.println("Process Error: "+processError);
         }
 
-        plogger.info("Creating byte[] to return...");
+        plogger.info("Creating File to return...");
 
         File resultXCDL = new File(outputFilePath);
 

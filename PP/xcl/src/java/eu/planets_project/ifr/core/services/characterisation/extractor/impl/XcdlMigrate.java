@@ -147,9 +147,9 @@ public final class XcdlMigrate implements Migrate {
 	    }
 	
 	    if (optionalFormatXCEL != null) {
-	        result = coreExtractor.extractXCDL(digitalObject, xcelFile, parameters);
+	        result = coreExtractor.extractXCDL(digitalObject, inputFormat, xcelFile, parameters);
 	    } else {
-	        result = coreExtractor.extractXCDL(digitalObject, null, parameters);
+	        result = coreExtractor.extractXCDL(digitalObject, inputFormat, null, parameters);
 	    }
 	
 	    if (result.exists()) {
