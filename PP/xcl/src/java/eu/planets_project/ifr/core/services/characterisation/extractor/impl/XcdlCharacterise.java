@@ -69,11 +69,17 @@ public final class XcdlCharacterise implements Characterise, Serializable {
      */
     public CharacteriseResult characterise(final DigitalObject digitalObject,
             final List<Parameter> parameters) {
+        // ANJ Whoa, treating this embedded property as a required argument is not consistent with Planets Service behaviour.
+        // i.e. the embedded property URI may be drawn from a different vocabulary than that supported by XCL.
+        // As in the migration case, if this parameter is required it must be passed as an explicit argument. 
+        // TODO Clarify the necessity and manner of this test before re-implementing.
+        /*
         URI format = digitalObject.getFormat();
-        if (!CoreExtractor.supported(format, parameters)) {
+        if (format != null && !CoreExtractor.supported(format, parameters)) {
             return new CharacteriseResult(null, CoreExtractor
                     .unsupportedInputFormatReport(format));
         }
+        */
         ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,
                 "OK");
         CharacteriseResult characteriseResult = null;
