@@ -588,7 +588,14 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             success = false;
         }
         msAfter = System.currentTimeMillis();
-        if( success ) log.info("Characterisation succeeded: "+result);
+        if( success ) {
+            log.info("Characterisation succeeded: "+result);
+            if( result != null ) {
+                log.info("Service Report: "+result.getReport().getMessage());
+                log.info("Service Report: "+result.getReport().getStatus());
+                log.info("Service Report: "+result.getReport().getType());
+            }
+        }
         
         // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
@@ -597,6 +604,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( success ) {
             stage_m.add( new MeasurementRecordImpl( TecRegMockup.PROP_SERVICE_SUCCESS, "true"));
             if( result != null && result.getProperties() != null ) {
+                log.info("Got "+result.getProperties().size()+" properties");
                 for( Property p : result.getProperties() ) {
                     log.info("Recording measurement: "+p.getUri()+":"+p.getName()+" = "+p.getValue());
                     stage_m.add(new MeasurementRecordImpl( p.getUri(), p.getValue() ));
@@ -637,7 +645,14 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             success = false;
         }
         msAfter = System.currentTimeMillis();
-        if( success ) log.info("Identification succeeded: "+result);
+        if( success ) {
+            log.info("Identification succeeded: "+result);
+            if( result != null ) {
+                log.info("Service Report: "+result.getReport().getMessage());
+                log.info("Service Report: "+result.getReport().getStatus());
+                log.info("Service Report: "+result.getReport().getType());
+            }
+        }
         
         // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
