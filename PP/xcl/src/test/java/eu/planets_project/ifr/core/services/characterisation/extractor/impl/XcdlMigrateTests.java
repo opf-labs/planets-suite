@@ -300,7 +300,8 @@ public class XcdlMigrateTests {
 
         input = new DigitalObject.Builder(Content
                     .byReference(inputFile))
-                    .title("test input file with spaces.bin").build();
+                    .title("test input file with spaces.bin")
+        			.build();
 
         return input;
     }

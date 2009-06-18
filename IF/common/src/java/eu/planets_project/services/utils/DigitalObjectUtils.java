@@ -684,7 +684,15 @@ public final class DigitalObjectUtils {
 		String title = digOb.getTitle();
 		
 		if(title==null) {
-			return null;
+			String ext = format.getFirstExtension(digOb.getFormat());
+			String defaultTitle = "default_input";
+			
+			if(ext!=null) {
+				title = FileUtils.randomizeFileName(defaultTitle + "." + ext);
+			}
+			else {
+				title = FileUtils.randomizeFileName(defaultTitle + "." + "bin");
+			}
 		}
 		
 		if(title.contains(" ")) {
