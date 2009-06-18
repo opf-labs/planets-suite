@@ -583,9 +583,12 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             log.info("Characterising "+dob);
             result = dp.characterise(dob, null);
         } catch( Exception e ) {
+            log.error("Characterisation failed with exception: "+e);
+            e.printStackTrace();
             success = false;
         }
         msAfter = System.currentTimeMillis();
+        if( success ) log.info("Characterisation succeeded: "+result);
         
         // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );
@@ -629,9 +632,12 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             log.info("Identifying "+dob);
             result = identify.identify(dob,null);
         } catch( Exception e ) {
+            log.error("Identification failed with exception: "+e);
+            e.printStackTrace();
             success = false;
         }
         msAfter = System.currentTimeMillis();
+        if( success ) log.info("Identification succeeded: "+result);
         
         // Compute the run time.
         stage_m.add(new MeasurementRecordImpl(TecRegMockup.PROP_SERVICE_TIME, ""+((msAfter-msBefore)/1000.0)) );

@@ -1,13 +1,14 @@
-<%@ page import= "java.io.*, java.net.URLDecoder, eu.planets_project.services.utils.FileUtils, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
+<%@ page import= "java.io.*, java.net.URLDecoder, java.net.URI, eu.planets_project.services.utils.FileUtils, eu.planets_project.tb.impl.data.util.DataHandlerImpl, eu.planets_project.tb.api.data.util.DigitalObjectRefBean" %><% 
 
 // Pick up the parameters:
 String fid = request.getParameter("fid");
 
-// Decode the file name (might contain spaces and on) and prepare file object.
-fid = URLDecoder.decode(fid, "UTF-8");
+// Decode the file name (might contain spaces and on) and prepare proper escaped form.
+fid = URLDecoder.decode( fid, "UTF-8" );
+URI duri = new URI( fid );
 
 // Start up the testbed data handler:
-DigitalObjectRefBean dh = new DataHandlerImpl().get(fid);
+DigitalObjectRefBean dh = new DataHandlerImpl().get(duri.toASCIIString());
 
 // Get the full filename, and the real filename:
 String filename = dh.getName(); 

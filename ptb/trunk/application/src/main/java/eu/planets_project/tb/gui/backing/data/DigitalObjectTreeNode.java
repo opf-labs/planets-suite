@@ -90,9 +90,11 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     /**
      * @return a TB download URI:
      */
-    public URI getDownloadUri() {
+    public String getDownloadUri() {
         try {
-            return dh.get(this.getUri().toString()).getDownloadUri();
+            String duri = dh.get(this.getUri().toString()).getDownloadUri().toASCIIString();
+            log.info("Returning download location: "+duri);
+            return duri;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;

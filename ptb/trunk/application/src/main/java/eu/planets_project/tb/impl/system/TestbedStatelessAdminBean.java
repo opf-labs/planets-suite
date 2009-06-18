@@ -13,12 +13,13 @@ package eu.planets_project.tb.impl.system;
 import javax.annotation.security.RunAs;
 import javax.ejb.Local;
 import javax.ejb.Remote;
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
 import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
+import org.jboss.annotation.ejb.cache.simple.CacheConfig;
 import org.jboss.annotation.security.SecurityDomain;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
@@ -26,10 +27,26 @@ import eu.planets_project.ifr.core.storage.api.DataManagerLocal;
 import eu.planets_project.tb.api.system.TestbedStatelessAdmin;
 
 /**
+ * Originally a Stateless bean, but as this caches authentication credentials
+ * it is actually Stateful.
+ * 
+ * This Bean RunsAs the Admin role, which means it has full access to the data stores.
+ * 
+ * It exists so that the background thread that runs experiments can access those data sources
+ * in the absence of any authenticated user session.
+ * 
+ * It is made to time-out reasonably frequently, as otherwise the JOSSO framework 
+ * times out the session, I think.
+ * 
+ * @link http://www.jboss.org/community/wiki/Ejb3DisableSfsbPassivation
+ * 
+ * URGENT Rename to TestbedAdminSessionBean?
+ * 
  * @author AnJackson
  *
  */
-@Stateless
+@Stateful
+@CacheConfig(maxSize=100000, idleTimeoutSeconds=600, removalTimeoutSeconds=300)
 @Local(TestbedStatelessAdmin.class)
 @Remote(TestbedStatelessAdmin.class)
 @LocalBinding(jndiBinding="planets-project.eu/tb/TestbedAdminBean")

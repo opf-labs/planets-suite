@@ -10,10 +10,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Properties;
 
@@ -164,12 +166,16 @@ public class DataHandlerImpl implements DataHandler {
         }
 
         // Store new DO in the user space, with path based on experiment details.
-        // URGENT USE new URI instead of URI.create
         URI baseUri = null;
-        if( exp == null ) { 
-            baseUri = URI.create(defstore.getUri().toString() + "/testbed/users/"+userid+"/digitalobjects/");
-        } else {
-            baseUri = URI.create(defstore.getUri().toString() + "/testbed/experiments/experiment-"+exp.getEntityID()+"/");
+        try {
+            if( exp == null ) { 
+                baseUri = new URI(defstore.getUri().toString() + "/testbed/users/"+userid+"/digitalobjects/");
+            } else {
+                baseUri = new URI(defstore.getUri().toString() + "/testbed/experiments/experiment-"+exp.getEntityID()+"/");
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
         }
         log.info("Attempting to store in: "+baseUri);
         
@@ -180,15 +186,40 @@ public class DataHandlerImpl implements DataHandler {
         }
         
         // look at the location and pick a unique name.
-        URI dobUri = URI.create( baseUri.toString()+"/"+name );
+        URI dobUri;
+        try {
+            dobUri = new URI( 
+                    baseUri.getScheme(), 
+                    baseUri.getUserInfo(),
+                    baseUri.getHost(), 
+                    baseUri.getPort(),
+                    baseUri.getPath() +"/"+ name, 
+                    null, null );
+        } catch (URISyntaxException e1) {
+            e1.printStackTrace();
+            return null;
+        }
         List<URI> storedDobs = dommer.list(baseUri);
         if( storedDobs != null ) {
           int unum = 1;
           while( storedDobs.contains(dobUri) ) {
-            dobUri = URI.create( baseUri.toString()+"/"+unum+"-"+name);
+            try {
+                dobUri = new URI( 
+                        baseUri.getScheme(), 
+                        baseUri.getUserInfo(),
+                        baseUri.getHost(), 
+                        baseUri.getPort(),
+                        baseUri.getPath() + "/" + unum + "-" + name, 
+                        null, null );
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+                return null;
+            }
             unum++;
           }
         }
+        
+        log.info("Attempting to store at: "+dobUri);
         
         try {
             this.storeDigitalObject(dobUri, dob);
@@ -218,14 +249,14 @@ public class DataHandlerImpl implements DataHandler {
         try {
             dobr = this.findDOinDataRegistry(id);
         } catch (FileNotFoundException e1) {
-            log.info("File "+id+" not found in Data Registry. "+e1);
+            log.debug("File "+id+" not found in Data Registry. "+e1);
         }
         // If failed, attempt to use the older store:
         if( dobr == null ) {
             try {
                 dobr = this.findDOinTestbedCache(id);
             } catch (FileNotFoundException e) {
-                log.info("File "+id+" not found in Testbed File Cache. "+e);
+                log.debug("File "+id+" not found in Testbed File Cache. "+e);
             }
         }
         
@@ -287,7 +318,7 @@ public class DataHandlerImpl implements DataHandler {
         if( dommer.hasDataManager(domUri)) {
             try {
                 DigitalObject digitalObject = dommer.retrieve(domUri);
-                URI downloadUri = this.createDownloadUri(id, digitalObject.getTitle());
+                URI downloadUri = this.createDownloadUri(domUri.toString(), digitalObject.getTitle());
                 return new DigitalObjectRefBean(digitalObject.getTitle(), downloadUri, domUri, digitalObject);
             } catch (DigitalObjectNotFoundException e) {
                 throw new FileNotFoundException("Could not find file "+id);
@@ -315,7 +346,7 @@ public class DataHandlerImpl implements DataHandler {
         try {
             download = new URI( "https", 
                     PlanetsServerConfig.getHostname()+":"+PlanetsServerConfig.getSSLPort(), 
-                    context+"/reader/download.jsp","fid="+id, null);
+                    context+"/reader/download.jsp","fid="+URLEncoder.encode( id, "UTF-8") , null);
             /* This can be used if the above is causing problems
             download = new URI( null, null, 
                     context+"/reader/download.jsp","fid="+id, null);
@@ -323,7 +354,11 @@ public class DataHandlerImpl implements DataHandler {
         } catch (URISyntaxException e) {
             e.printStackTrace();
             download = null;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            download = null;
         }
+        log.info("Created download URI: "+download);
         return download;
     }
 
