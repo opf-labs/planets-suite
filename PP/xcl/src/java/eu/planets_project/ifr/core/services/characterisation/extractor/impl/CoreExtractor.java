@@ -333,6 +333,8 @@ public class CoreExtractor {
 	 * @return the folder name based on "title" in the passed digOb.
 	 */
 	private static String getFileNameFromDigObject(DigitalObject digOb) {
+	    return null;
+	    /* ANJ TODO Make this tolerant of the variation in titles, e.g. including spaces etc.
 		String title = digOb.getTitle();
 		String ext = format.getFirstExtension(digOb.getFormat());
 		if(title==null) {
@@ -347,6 +349,7 @@ public class CoreExtractor {
 			}
 		}
 		return title;
+		*/
 	}
 
 	/**
