@@ -23,6 +23,7 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
 
@@ -47,7 +48,7 @@ public class CoreExtractor {
     private boolean normDataDisabled = false;
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
     private static String OPTIONAL_XCEL_PARAM = "optionalXCELString";
-    private static final FormatRegistry format = FormatRegistryFactory
+    public static final FormatRegistry format = FormatRegistryFactory
             .getFormatRegistry();
 
     /**
@@ -167,7 +168,7 @@ public class CoreExtractor {
 //		plogger.info(thisExtractorName + " output folder created: "
 //		        + EXTRACTOR_OUT);
 		
-		String inputFileName = getFileNameFromDigObject(input);
+		String inputFileName = DigitalObjectUtils.getFileNameFromDigObject(input);
 		
 		if(inputFileName==null || inputFileName.equalsIgnoreCase("")) {
 			inputFileName = FileUtils.randomizeFileName(defaultInputFileName);
@@ -309,50 +310,6 @@ public class CoreExtractor {
     
 
     /**
-	 * Gets the title from the passed digOb and returns a proper folder name (e.g. strip the extension etc.)
-	 * @param digOb to get the folder name from
-	 * @return the folder name based on "title" in the passed digOb.
-	 */
-	private static String getFolderNameFromDigObject(DigitalObject digOb) {
-		String title = digOb.getTitle();
-		if(title==null) {
-			return null;
-		}
-		if(title.equalsIgnoreCase(".svn")) {
-			return title;
-		}
-		if(title.contains(".")) {
-			title = title.substring(0, title.lastIndexOf("."));
-		}
-		return title;
-	}
-
-	/**
-	 * Gets the title from the passed digOb and returns a proper file name
-	 * @param digOb to get the file name from
-	 * @return the folder name based on "title" in the passed digOb.
-	 */
-	private static String getFileNameFromDigObject(DigitalObject digOb) {
-	    return null;
-	    /* ANJ TODO Make this tolerant of the variation in titles, e.g. including spaces etc.
-		String title = digOb.getTitle();
-		String ext = format.getFirstExtension(digOb.getFormat());
-		if(title==null) {
-			return null;
-		}
-		if(title.contains(".")) {
-			return title;
-		}
-		else {
-			if(ext!=null) {
-				title = title + "." + ext;
-			}
-		}
-		return title;
-		*/
-	}
-
-	/**
      * @param inputFormat The format
      * @return A service report indicating the format is not supported
      */

@@ -10,7 +10,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -657,11 +656,16 @@ public final class DigitalObjectUtils {
 	 * @param digOb to get the folder name from
 	 * @return the folder name based on "title" in the passed digOb.
 	 */
-	private static String getFolderNameFromDigObject(DigitalObject digOb) {
+	public static String getFolderNameFromDigObject(DigitalObject digOb) {
 		String title = digOb.getTitle();
 		if(title==null) {
 			return null;
 		}
+		
+		if(title.contains(" ")) {
+			title = title.replaceAll(" ", "_");
+		}
+		
 		if(title.equalsIgnoreCase(".svn")) {
 			return title;
 		}
@@ -676,20 +680,30 @@ public final class DigitalObjectUtils {
 	 * @param digOb to get the file name from
 	 * @return the folder name based on "title" in the passed digOb.
 	 */
-	private static String getFileNameFromDigObject(DigitalObject digOb) {
+	public static String getFileNameFromDigObject(DigitalObject digOb) {
 		String title = digOb.getTitle();
-		String ext = format.getFirstExtension(digOb.getFormat());
+		
 		if(title==null) {
 			return null;
 		}
+		
+		if(title.contains(" ")) {
+			title = title.replaceAll(" ", "_");
+		}
+		
 		if(title.contains(".")) {
 			return title;
 		}
 		else {
+			String ext = format.getFirstExtension(digOb.getFormat());
 			if(ext!=null) {
 				title = title + "." + ext;
 			}
+			else {
+				title = title + "." + "bin";
+			}
 		}
 		return title;
+		
 	}
 }

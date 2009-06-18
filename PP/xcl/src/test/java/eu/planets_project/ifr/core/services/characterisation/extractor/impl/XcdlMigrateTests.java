@@ -299,9 +299,8 @@ public class XcdlMigrateTests {
         DigitalObject input = null;
 
         input = new DigitalObject.Builder(Content
-                    .byValue(inputFile)).permanentUri(
-                    URI.create("http://xcdlExtractorMigrationTest.eu")).title(
-                    inputFile.getName()).build();
+                    .byReference(inputFile))
+                    .title("test input file with spaces.bin").build();
 
         return input;
     }
