@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 // import java.util.Calendar;
 // import java.util.List;
 
@@ -12,6 +13,8 @@ import org.dom4j.Element;
 import se.kb.oai.pmh.Record;
 import se.kb.oai.OAIException;
 import se.kb.oai.pmh.OaiPmhServer;
+import eu.planets_project.ifr.core.storage.api.query.Query;
+import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Metadata;
@@ -93,6 +96,14 @@ public class OAIDigitalObjectManagerDCImpl extends AbstractOAIDigitalObjectManag
 			throw new DigitalObjectNotFoundException(e.getMessage());
 		}
 	}
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#list(java.net.URI, eu.planets_project.ifr.core.storage.api.query.Query)
+     */
+    public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 	/*
 	public static void main(String[] args) {

@@ -108,10 +108,25 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 				retVal = new ArrayList<URI>();
 				for (String s : contents) {
 				    File sf = new File( searchRoot, s );
+				    // Create the new URI, using the multiple-argument constructors to ensure characters are properly escaped.
 				    if( sf.isDirectory() ) {
-				        retVal.add(new URI(pdURI+s+"/"));
+				        retVal.add(
+				                new URI( 
+				                        pdURI.getScheme(), 
+				                        pdURI.getUserInfo(),
+				                        pdURI.getHost(), 
+				                        pdURI.getPort(),
+				                        pdURI.getPath() + s + "/", 
+				                        null, null ) );
 				    } else {
-                        retVal.add(new URI(pdURI+s));
+                        retVal.add(
+                                new URI( 
+                                        pdURI.getScheme(), 
+                                        pdURI.getUserInfo(),
+                                        pdURI.getHost(), 
+                                        pdURI.getPort(),
+                                        pdURI.getPath() + s, 
+                                        null, null ) );
 				    }
 				}
 			}
@@ -119,6 +134,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			FilesystemDigitalObjectManagerImpl._log.error("URI Syntax exception");
 			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
 			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			e.printStackTrace();
 			return null;
 		} catch (UnsupportedEncodingException e) {
 			FilesystemDigitalObjectManagerImpl._log.error("Unsupported encoding exception");
@@ -182,6 +198,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			FilesystemDigitalObjectManagerImpl._log.error("URI Syntax exception");
 			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
 			FilesystemDigitalObjectManagerImpl._log.error(e.getStackTrace());
+			e.printStackTrace();
 			throw new DigitalObjectNotFoundException("Couldn't retrieve Digital Object due to URI Syntax error", e);
 		} catch (FileNotFoundException e) {
 			FilesystemDigitalObjectManagerImpl._log.error("File Not Found exception");
@@ -217,6 +234,9 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
             if( ! doDir.exists() ) doDir.mkdirs();
 			File doMetadata = new File(this._root.getCanonicalPath() + 
 					File.separator + path + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
+			
+            _log.info("Storing in binary in "+doBinary.getAbsolutePath());
+            _log.info("And storing in metadata in "+doMetadata.getAbsolutePath());
 			
 			// Persist the object to a file
 			InputStream inStream = digitalObject.getContent().read();
