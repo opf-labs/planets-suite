@@ -37,7 +37,6 @@ public class CoreExtractor {
     // System.getProperty("java.io.tmpdir");
     // private static final String SYSTEM_TEMP = null;
     private String extractorWork = null;
-    private File WORK_TMP = null;
     private static String EXTRACTOR_IN = "INPUT";
     private static String EXTRACTOR_OUT = "OUTPUT";
     private String defaultInputFileName = "xcdlMigrateInput.bin";
