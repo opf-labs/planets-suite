@@ -81,7 +81,7 @@ public class PropertyDnDTreeBean{
     
     private void loadOwlOntology(){
 		this.owlModel = ontoHandler.getOWLModel();
-		OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology1:specificationPropertyNames");
+		OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology:specificationPropertyNames");
 		log.debug("loaded ontology."+startClass.getPrefixedName());
     }
 
@@ -92,13 +92,13 @@ public class PropertyDnDTreeBean{
     	rootNode = new TreeNodeImpl();
 
     	if(this.selectedview.equals(VIEW_STANDARD)){
-    			OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology1:specificationPropertyNames");
+    			OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology:specificationPropertyNames");
     			this.rootNodeName = startClass.getLocalName();
     			TreeViews.standardTraverseTree(startClass, new Vector(), rootNode, applyFilter);
     	}
     	if(this.selectedview.equals(VIEW_ROTHENBERG)){
     		//TODO add rothenbergTraverseTree
-    		OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology1:specificationPropertyNames");
+    		OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology:specificationPropertyNames");
     		this.rootNodeName = startClass.getLocalName();
     		TreeViews.standardTraverseTree(startClass, new Vector(), rootNode, applyFilter);
     	}

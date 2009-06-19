@@ -130,7 +130,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     public List<String> getIsSameAsNames(){
     	List<String> ret = new ArrayList<String>();
     	RDFProperty is_same_as = individual.getOWLModel()
-    	.getRDFProperty("http://www.semanticweb.org/ontologies/2008/7/XCLOntology1.5.owl#is_same_as");
+    	.getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as");
         Object ois_same_as = individual.getPropertyValue(is_same_as);
 
         if(ois_same_as instanceof DefaultOWLIndividual){
@@ -155,7 +155,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     public List<OWLNamedClass> getIsSameAs(){
     	List<OWLNamedClass> ret = new ArrayList<OWLNamedClass>();
     	RDFProperty is_same_as = individual.getOWLModel()
-    	.getRDFProperty("http://www.semanticweb.org/ontologies/2008/7/XCLOntology1.5.owl#is_same_as");
+    	.getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as");
         Object ois_same_as = individual.getPropertyValue(is_same_as);
 
         if(ois_same_as instanceof DefaultOWLIndividual){
@@ -180,7 +180,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
      */
     public String getUnit(){
         RDFProperty unit = individual.getOWLModel()
-        .getRDFProperty("http://www.semanticweb.org/ontologies/2008/7/XCLOntology1.5.owl#Unit");
+        .getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Unit");
         Object oUnit = individual.getPropertyValue(unit);
         if(oUnit instanceof DefaultOWLIndividual){
         	DefaultOWLIndividual dUnit = (DefaultOWLIndividual)individual.getPropertyValue(unit);
@@ -194,7 +194,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
 	 */
 	public String getDataType() {
 		RDFProperty datatype = individual.getOWLModel()
-		.getRDFProperty("http://www.semanticweb.org/ontologies/2008/7/XCLOntology1.5.owl#Datatype");
+		.getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Datatype");
         //System.out.println("<Prop name: "+datatype.getBrowserText() +" value: "+individual.getPropertyValue(datatype)); 
         Object oDatatype = individual.getPropertyValue(datatype);
         if(oDatatype instanceof DefaultOWLIndividual){

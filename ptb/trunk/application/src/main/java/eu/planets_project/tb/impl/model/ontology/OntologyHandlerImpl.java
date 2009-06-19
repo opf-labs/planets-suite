@@ -25,10 +25,10 @@ import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 public class OntologyHandlerImpl {
 	
 	private Log log = LogFactory.getLog(OntologyHandlerImpl.class);
-	private final String owlresource = "eu/planets_project/tb/impl/XCLOntology1.5.owl";
+	private final String owlresource = "eu/planets_project/tb/impl/XCLOntology.owl";
 	private OWLModel owlModel;
 	private static OntologyHandlerImpl instance;
-	public static final String OWLMODEL_ROOT_CLASS = "XCLOntology1:specificationPropertyNames";
+	public static final String OWLMODEL_ROOT_CLASS = "XCLOntology:specificationPropertyNames";
 	
 	private OntologyHandlerImpl(){
 		this.loadModel();
