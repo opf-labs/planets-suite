@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.InvalidPropertiesFormatException;
@@ -16,9 +15,9 @@ import java.util.UUID;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -78,14 +77,7 @@ public class DigitalObjectDiskCache {
 		}
 		// Look for the file:
 		URL binUrl = null;
-        try {
-            binUrl = f.toURL();
-        }
-        catch(MalformedURLException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
+        binUrl = FileUtils.getUrlFromFile(f);
         
         // Build a bare DOB:
         DigitalObject.Builder dob = null;

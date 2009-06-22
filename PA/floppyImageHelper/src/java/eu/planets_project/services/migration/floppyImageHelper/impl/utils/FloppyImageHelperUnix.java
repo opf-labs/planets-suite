@@ -1,19 +1,12 @@
-package eu.planets_project.services.migration.floppyImageHelper.impl;
+package eu.planets_project.services.migration.floppyImageHelper.impl.utils;
 
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.jws.WebService;
-import javax.xml.ws.BindingType;
-
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.Checksum;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -49,16 +42,16 @@ import eu.planets_project.services.utils.ZipUtils;
  * sudo echo '/dev/loop[01234567]' &gt;&gt; /dev/pmount.allow
  * on deb-distris add jboss-user to plugdev, disk
  */
-@Stateless()
-@Local(Migrate.class)
-@Remote(Migrate.class)
-
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
-@WebService(
-        name = FloppyImageHelperUnix.NAME, 
-        serviceName = Migrate.NAME,
-        targetNamespace = PlanetsServices.NS,
-        endpointInterface = "eu.planets_project.services.migrate.Migrate")
+//@Stateless()
+//@Local(Migrate.class)
+//@Remote(Migrate.class)
+//
+//@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+//@WebService(
+//        name = FloppyImageHelperUnix.NAME, 
+//        serviceName = Migrate.NAME,
+//        targetNamespace = PlanetsServices.NS,
+//        endpointInterface = "eu.planets_project.services.migrate.Migrate")
 
 
 public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {

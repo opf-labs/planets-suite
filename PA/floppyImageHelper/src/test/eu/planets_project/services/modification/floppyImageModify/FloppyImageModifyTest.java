@@ -68,7 +68,7 @@ public class FloppyImageModifyTest {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin#describe()}.
+	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyImageHelperWin#describe()}.
 	 */
 	@Test
 	public void testDescribe() {

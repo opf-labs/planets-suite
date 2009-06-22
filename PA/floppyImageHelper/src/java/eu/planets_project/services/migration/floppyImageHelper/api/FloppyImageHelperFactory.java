@@ -4,8 +4,8 @@ package eu.planets_project.services.migration.floppyImageHelper.api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperUnix;
-import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyImageHelperUnix;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyImageHelperWin;
 
 public final class FloppyImageHelperFactory {
 

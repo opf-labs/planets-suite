@@ -24,7 +24,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin;
+import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperService;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ZipResult;
@@ -38,7 +38,7 @@ public class FloppyImageHelperWinTest {
 	
 	static Migrate FLOPPY_IMAGE_HELPER;
 	
-	static String WSDL = "/pserv-pa-floppy-image-helper/FloppyImageHelperWin?wsdl";
+	static String WSDL = "/pserv-pa-floppy-image-helper/FloppyImageHelperService?wsdl";
 	
 	static String OUT_DIR_NAME = "FLOPPY_IMAGE_HELPER_TEST_OUT";
 	
@@ -68,7 +68,7 @@ public class FloppyImageHelperWinTest {
 		// Config the logger:	
         Logger.getLogger("").setLevel( Level.FINE );
         OUT_DIR = FileUtils.createWorkFolderInSysTemp(OUT_DIR_NAME); 
-        FLOPPY_IMAGE_HELPER = ServiceCreator.createTestService(Migrate.QNAME, FloppyImageHelperWin.class, WSDL);
+        FLOPPY_IMAGE_HELPER = ServiceCreator.createTestService(Migrate.QNAME, FloppyImageHelperService.class, WSDL);
         
 	}
 	
@@ -81,7 +81,7 @@ public class FloppyImageHelperWinTest {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin#describe()}.
+	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyImageHelperWin#describe()}.
 	 */
 	@Test
 	public void testDescribe() {
@@ -96,7 +96,7 @@ public class FloppyImageHelperWinTest {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperWin#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)}.
+	 * Test method for {@link eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyImageHelperWin#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, java.util.List)}.
 	 */
 	@Test
 	public void testMigrateAndCreateImage() {
