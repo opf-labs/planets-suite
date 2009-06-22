@@ -1,6 +1,6 @@
 package eu.planets_project.ifr.core.services.identification.jhove.impl;
 
-import static org.junit.Assert.assertEquals;
+import static eu.planets_project.services.utils.test.TestFile.testIdentification;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -11,17 +11,19 @@ import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.identify.IdentifyResult;
+import eu.planets_project.services.utils.test.TestFile;
 
 /**
  * Tests of the JHOVE identification functionality.
  * @author Fabian Steeg
  */
 public class JhoveIdentificationTests {
+    private static final String OCTET_STREAM = "info:pronom/x-fmt/411";
     static Identify jhove;
 
     /**
@@ -39,121 +41,54 @@ public class JhoveIdentificationTests {
     @Test
     public void testServiceDescription() {
         ServiceDescription description = new JhoveIdentification().describe();
-        Assert
-                .assertTrue(
-                        "We have less supported pronom IDs than supported file types",
-                        description.getInputFormats().size() >= FileType
-                                .values().length);
+        Assert.assertTrue("We have no supported pronom IDs", description
+                .getInputFormats().size() > 0);
         System.out.println(description.toXmlFormatted());
     }
-
-    /**
-     * Test AIFF identification.
+    
+    /*
+     * To get more informative test reports, we wrap every enum element into its
+     * own test. We could iterate over the enum elements instead (see below).
      */
+    @Test public void testXml() { test(TestFile.XML, jhove); }
+    @Test public void testPdf() { test(TestFile.PDF, jhove); }
+    @Test public void testGif() { test(TestFile.GIF, jhove); }
+    @Test public void testJpg() { test(TestFile.JPG, jhove); }
+    @Test public void testTif() { test(TestFile.TIF, jhove); }
+    @Test public void testWav() { test(TestFile.WAV, jhove); }
+    @Test public void testTxt() { test(TestFile.TXT, jhove); }
+    @Test public void testHtml(){ test(TestFile.HTML, jhove);}
+    @Test public void testAiff(){ test(TestFile.AIFF, jhove);}
+
+    private void test(TestFile f, Identify identify) {
+        Assert.assertNotNull("File has not types to compare to: " + f, f
+                .getTypes());
+        boolean b = testIdentification(f, identify);
+        Assert.assertTrue("Identification failed for: " + f, b);
+    }
+
     @Test
-    public void testAiff() {
-        test(FileType.AIFF);
+    public void testUnsupportedBmp() throws MalformedURLException {
+        IdentifyResult identify = jhove.identify(new DigitalObject.Builder(
+                Content.byReference(new File(TestFile.BMP.getLocation())
+                        .toURI().toURL())).build(), null);
+        URI uri = identify.getTypes().get(0);
+        /* Jhove identifies unknown files as application/octet-stream (x-fmt/411)*/
+        Assert.assertEquals(OCTET_STREAM, uri.toString());
+        /* More info is available in the report message: */
+        System.err.println(identify.getReport().getMessage());
     }
-
-    /**
-     * Test ASCII identification.
-     */
+    
     @Test
-    public void testAscii() {
-        test(FileType.ASCII);
-    }
-
-    /**
-     * Test GIF identification.
-     */
-    @Test
-    public void testGif() {
-        test(FileType.GIF);
-    }
-
-    /**
-     * Test HTML identifcation.
-     */
-    @Test
-    public void testHtml() {
-        test(FileType.HTML);
-    }
-
-    /**
-     * Test JPEG 1 identification.
-     */
-    @Test
-    public void testJpeg1() {
-        test(FileType.JPEG1);
-    }
-
-    /**
-     * Test JPEG 2 identification.
-     */
-    @Test
-    public void testJpeg2() {
-        test(FileType.JPEG2);
-    }
-
-    /**
-     * Test JPEG identification.
-     */
-    // @Test TODO: There is something wrong with that JPEG file
-    public void testJpeg3() {
-        test(FileType.JPEG3);
-    }
-
-    /**
-     * Test PDF identification.
-     */
-    @Test
-    public void testPdf() {
-        test(FileType.PDF);
-    }
-
-    /**
-     * Test TIFF identification.
-     */
-    @Test
-    public void testTiff() {
-        test(FileType.TIFF);
-    }
-
-    /**
-     * Test wav identification.
-     */
-    @Test
-    public void testWave() {
-        test(FileType.WAVE);
-    }
-
-    /**
-     * Test xml identification.
-     */
-    @Test
-    public void testXml() {
-        test(FileType.XML);
-    }
-
-    /**
-     * @param type The enum type to test
-     */
-    private void test(final FileType type) {
-        System.out.println("Testing identification of: " + type);
-        /* For each we get the sample file: */
-        String location = type.getSample();
-        /* And try identifying it: */
-        URI result = null;
-        try {
-            result = jhove.identify(
-                    new DigitalObject.Builder(Content.byReference(new File(
-                            location).toURI().toURL())).build(), null ).getTypes()
-                    .get(0);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        Assert.assertNotNull(result);
-        assertEquals("Wrong pronom ID;", type.getPronom(), result.toString());
+    public void testUnsupportedPng() throws MalformedURLException {
+        IdentifyResult identify = jhove.identify(new DigitalObject.Builder(
+                Content.byReference(new File(TestFile.PNG.getLocation())
+                        .toURI().toURL())).build(), null);
+        URI uri = identify.getTypes().get(0);
+        /* Jhove identifies unknown files as application/octet-stream (x-fmt/411)*/
+        Assert.assertEquals(OCTET_STREAM, uri.toString());
+        /* More info is available in the report message: */
+        System.err.println(identify.getReport().getMessage());
     }
 
 }

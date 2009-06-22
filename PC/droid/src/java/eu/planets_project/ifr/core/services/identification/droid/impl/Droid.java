@@ -68,22 +68,21 @@ public final class Droid implements Identify, Serializable {
 
     private String classificationText;
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * eu.planets_project.services.identify.Identify#identify(eu.planets_project
-     * .services.datatypes.DigitalObject, java.util.List)
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject,
+     *      java.util.List)
      */
-    public IdentifyResult identify(DigitalObject digitalObject,
-            List<Parameter> parameters) {
+    public IdentifyResult identify(final DigitalObject digitalObject,
+            final List<Parameter> parameters) {
         InputStream stream = digitalObject.getContent().read();
         File file = FileUtils.writeInputStreamToTmpFile(stream, "droid-temp",
                 "bin");
         List<URI> types = identifyOneBinary(file);
         ServiceReport report = null;
-        if (types == null) {
+        if (types == null || types.size() == 0) {
             report = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
-                    "Result is null!");
+                    "No identification result for: " + file);
         } else {
             report = new ServiceReport(Type.INFO, Status.SUCCESS,
                     classificationText);

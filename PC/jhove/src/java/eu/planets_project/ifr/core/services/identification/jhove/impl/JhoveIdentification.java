@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -66,20 +66,25 @@ public final class JhoveIdentification implements Identify, Serializable {
     private static final String OUTPUT = "planets-jhove-output";
     private String status;
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * eu.planets_project.services.identify.Identify#identify(eu.planets_project
-     * .services.datatypes.DigitalObject, java.util.List)
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.services.identify.Identify#identify(eu.planets_project.services.datatypes.DigitalObject,
+     *      java.util.List)
      */
-    public IdentifyResult identify(DigitalObject digitalObject,
-            List<Parameter> parameters) {
+    public IdentifyResult identify(final DigitalObject digitalObject,
+            final List<Parameter> parameters) {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "jhove-temp", "bin");
         List<URI> types = identifyOneBinary(file);
         log.info("JHOVE Identification, got types: " + types);
-        ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS,
-                status);
+        ServiceReport report;
+        if (types == null || types.size() == 0 || types.contains(null)) {
+            report = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
+                    "Could not identify " + file.getAbsolutePath()
+                            + " (is the required Jhove module installed?)");
+        } else {
+            report = new ServiceReport(Type.INFO, Status.SUCCESS, status);
+        }
         return new IdentifyResult(types, null, report);
     }
 
@@ -103,67 +108,43 @@ public final class JhoveIdentification implements Identify, Serializable {
     }
 
     /**
-     * Simple enumeration of MIME types, PRONOM IDs and sample file locations
-     * (for testing, see the tests directory) for types recognized by JHOVE
-     * (this is a simplified version of what JHOVE does, which does not
-     * distinguish between different formats of the same MIME type, but JHOVE
-     * can - this will need to be added in the future).
+     * Simple enumeration of MIME types recognized by JHOVE.
      */
-    public enum FileType {
-        /***/
-        AIFF("audio/x-aiff", "info:pronom/x-fmt/135", "aiff/wind.aiff"),
-        /***/
-        ASCII("text/plain", "info:pronom/x-fmt/111", "ascii/control.txt"),
-        /***/
-        GIF("image/gif", "info:pronom/fmt/3", "gif/AA_Banner.gif"),
-        /***/
-        HTML("text/html", "info:pronom/fmt/96", "html/sample.html"),
-        /***/
-        JPEG1("image/jpeg", "info:pronom/fmt/42", "jpeg/black.jpg"),
-        /***/
-        JPEG2("image/jpeg", "info:pronom/fmt/42", "jpeg/blue.jpg"),
-        /***/
-        JPEG3("image/jpeg", "info:pronom/fmt/42", "jpeg/AA_Banner.jpg"),
-        /***/
-        PDF("application/pdf", "info:pronom/fmt/14", "pdf/AA_Banner-single.pdf"),
-        /***/
-        TIFF("image/tiff", "info:pronom/fmt/10", "tiff/AA_Banner.tif"),
-        /***/
-        WAVE("audio/x-wave", "info:pronom/fmt/6", "wav/comet.wav"),
-        /***/
-        XML("text/xml", "info:pronom/fmt/101", "xml/sample.xml");
-        /***/
-        private String samplePronomId;
+    private static enum SupportedFileType {
+        AIFF("audio/x-aiff"),
+        ASCII("text/plain"),
+        GIF("image/gif"),
+        HTML("text/html"),
+        JPEG("image/jpeg"),
+        PDF("application/pdf"),
+        TIFF("image/tiff"),
+        WAVE("audio/x-wav"),
+        XML("text/xml");
         /***/
         private String mime;
-        /***/
-        private String sample;
 
         /**
          * @param mime The mime type
-         * @param pronom A pronom URI
-         * @param sample A sample file
          */
-        private FileType(final String mime, final String pronom,
-                final String sample) {
+        private SupportedFileType(final String mime) {
             this.mime = mime;
-            this.samplePronomId = pronom;
-            this.sample = sample;
         }
 
-        /**
-         * @return Returns the pronom URI
-         */
-        public String getPronom() {
-            return samplePronomId;
-        }
+        
+    }
 
-        /**
-         * @return Returns the sample file location
-         */
-        public String getSample() {
-            return RESOURCES + sample;
+    /**
+     * @param format The format to check for support
+     * @return True, if the given format is supported
+     */
+    public static boolean supported(final URI format) {
+        for (URI uri : JhoveIdentification.inputFormats()) {
+            FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
+            if (registry.getFormatUriAliases(uri).contains(format)) {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
@@ -171,12 +152,15 @@ public final class JhoveIdentification implements Identify, Serializable {
      */
     public static URI[] inputFormats() {
         List<URI> result = new ArrayList<URI>();
-        for (FileType type : FileType.values()) {
-            String[] split = type.getSample().split("\\.");
+        for (SupportedFileType type : SupportedFileType.values()) {
+            // String[] split = type.getSample().split("\\.");
             FormatRegistry formatRegistry = FormatRegistryFactory
                     .getFormatRegistry();
-            result.addAll(formatRegistry
-                    .getUrisForExtension(split[split.length - 1]));
+            Set<URI> urisForMimeType = formatRegistry
+                    .getUrisForMimeType(type.mime);
+            if (urisForMimeType != null && urisForMimeType.size() > 0) {
+                result.addAll(urisForMimeType);
+            }
         }
         return result.toArray(new URI[] {});
     }
@@ -253,30 +237,16 @@ public final class JhoveIdentification implements Identify, Serializable {
                             + (output.length() == 0 ? "empty output" : output)
                             + ")");
         }
+        /* Jhove output uses 'x-wave' while droid uses 'x-wav': */
+        mime = mime.replace("x-wave", "x-wav");
         log.info("Got mime type: " + mime);
         log.info("Got status: " + status);
         this.status = status;
         List<URI> types = new ArrayList<URI>();
-        types.add(uri(mime));
+        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
+        Set<URI> uris = registry.getUrisForMimeType(mime);
+        types.addAll(uris);
         return types;
-    }
-
-    /**
-     * @param mime The MIME type as retrieved from the JHOVE result file
-     * @return Returns a URI containing a PRONOM ID for the MIME type, or null
-     * @throws URISyntaxException
-     */
-    private URI uri(final String mime) {
-        for (FileType type : FileType.values()) {
-            if (mime.trim().toLowerCase().equals(type.mime)) {
-                try {
-                    return new URI(type.samplePronomId);
-                } catch (URISyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
     }
 
     /**

@@ -1,21 +1,22 @@
 package eu.planets_project.ifr.core.services.validation.jhove.impl;
 
-import static org.junit.Assert.assertTrue;
+import static eu.planets_project.services.utils.test.TestFile.testIdentification;
+import static eu.planets_project.services.utils.test.TestFile.testValidation;
 
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification.FileType;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.identify.Identify;
+import eu.planets_project.services.utils.test.TestFile;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
 
@@ -36,128 +37,60 @@ public class JhoveValidationTests {
     }
 
     /**
-     * test the describe() method
+     * Test the describe() method.
      */
     @Test
     public void testServiceDescription() {
         ServiceDescription description = new JhoveValidation().describe();
-        Assert
-                .assertTrue(
-                        "We have less supported pronom IDs than supported file types",
-                        description.getInputFormats().size() >= FileType
-                                .values().length);
+        Assert.assertTrue("We have no supported pronom IDs", description
+                .getInputFormats().size() > 0);
         System.out.println(description.toXmlFormatted());
     }
-
-    /**
-     * Test AIFF validation
+    
+    /*
+     * To get more informative test reports, we wrap every enum element into its
+     * own test. We could iterate over the enum elements instead (see below).
      */
+    @Test public void testXml() { test(TestFile.XML, jhove); }
+    @Test public void testPdf() { test(TestFile.PDF, jhove); }
+    @Test public void testGif() { test(TestFile.GIF, jhove); }
+    @Test public void testJpg() { test(TestFile.JPG, jhove); }
+    @Test public void testTif() { test(TestFile.TIF, jhove); }
+    @Test public void testWav() { test(TestFile.WAV, jhove); }
+    @Test public void testTxt() { test(TestFile.TXT, jhove); }
+    @Test public void testHtml(){ test(TestFile.HTML, jhove);}
+    @Test public void testAiff(){ test(TestFile.AIFF, jhove);}
+
+    private void test(TestFile f, Validate validate) {
+        boolean b = testValidation(f, validate);
+        Assert.assertTrue("Validation failed for: " + f, b);
+    }
+    
     @Test
-    public void testAiff() {
-        test(FileType.AIFF);
+    public void testUnsupported() throws MalformedURLException {
+        ValidateResult vr = jhove.validate(new DigitalObject.Builder(Content
+                .byReference(new File(TestFile.BMP.getLocation()).toURI()
+                        .toURL())).build(), TestFile.BMP.getTypes().iterator()
+                .next(), null);
+        ServiceReport report = vr.getReport();
+        /*
+         * If validation was attempted for an unsupported format, the report
+         * will be of type ERROR:
+         */
+        Assert.assertEquals(ServiceReport.Type.ERROR, report.getType());
+        /* More info is available in the report message: */
+        System.err.println("Report message: " + report.getMessage());
     }
-
-    /**
-     * Test ASCII validation
-     */
+    
     @Test
-    public void testAscii() {
-        test(FileType.ASCII);
-    }
-
-    /**
-     * Test GIF validation
-     */
-    @Test
-    public void testGif() {
-        test(FileType.GIF);
-    }
-
-    /**
-     * Test HTML validation
-     */
-    @Test
-    public void testHtml() {
-        test(FileType.HTML);
-    }
-
-    /**
-     * Test JPEG validation
-     */
-    @Test
-    public void testJpeg1() {
-        test(FileType.JPEG1);
-    }
-
-    /**
-     * Test JPEG validation again
-     */
-    @Test
-    public void testJpeg2() {
-        test(FileType.JPEG2);
-    }
-
-    /**
-     * Test JPEG validation yet again
-     */
-    // @Test TODO: There is something wrong with that JPEG file
-    public void testJpeg3() {
-        test(FileType.JPEG3);
-    }
-
-    /**
-     * Test PDF validation
-     */
-    @Test
-    public void testPdf() {
-        test(FileType.PDF);
-    }
-
-    /**
-     * Test TIFF validation
-     */
-    @Test
-    public void testTiff() {
-        test(FileType.TIFF);
-    }
-
-    /**
-     * Test WAV validation
-     */
-    @Test
-    public void testWave() {
-        test(FileType.WAVE);
-    }
-
-    /**
-     * test XML validation
-     */
-    @Test
-    public void testXml() {
-        test(FileType.XML);
-    }
-
-    /**
-     * @param type The enum type to test
-     */
-    private void test(FileType type) {
-        System.out.println("Testing validation of: " + type);
-        /* For each we get the sample file: */
-        String location = type.getSample();
-        /* And try validating it: */
-        boolean result = false;
-        try {
-            ValidateResult vr = jhove.validate(
-                    new DigitalObject.Builder(Content.byReference(new File(
-                            location).toURI().toURL())).build(),
-                    new URI(type.getPronom()), null );
-            result = vr.isOfThisFormat() && vr.isValidInRegardToThisFormat();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        assertTrue("Not validated: " + type, result);
+    public void testInvalid() throws MalformedURLException {
+        ValidateResult vr = jhove.validate(new DigitalObject.Builder(Content
+                .byReference(new File(TestFile.XML.getLocation()).toURI()
+                        .toURL())).build(), TestFile.PDF.getTypes().iterator()
+                .next(), null);
+        Assert.assertFalse("Invalid should be invalidated; ", vr
+                .isValidInRegardToThisFormat()
+                && vr.isOfThisFormat());
     }
 
 }

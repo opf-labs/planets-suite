@@ -1,5 +1,15 @@
 package eu.planets_project.ifr.core.services.validation.jhove.impl;
 
+import java.io.Serializable;
+import java.net.URI;
+import java.util.List;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
 import eu.planets_project.ifr.core.services.identification.jhove.impl.JhoveIdentification;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -12,16 +22,6 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.validate.Validate;
 import eu.planets_project.services.validate.ValidateResult;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-import java.io.Serializable;
-import java.net.URI;
-import java.util.List;
-
 
 /**
  * JHOVE validation service.
@@ -38,21 +38,26 @@ public final class JhoveValidation implements Validate, Serializable {
     /***/
     static final String NAME = "JhoveValidation";
 
-
     /**
      * {@inheritDoc}
-     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, eu.planets_project.services.datatypes.Parameter)
+     * @see Validate#validate(eu.planets_project.services.datatypes.DigitalObject,
+     *      java.net.URI, eu.planets_project.services.datatypes.Parameter)
      */
     public ValidateResult validate(final DigitalObject digitalObject,
-            final URI format,
-            List<Parameter> parameters) {
-        boolean valid = basicValidateOneBinary(digitalObject, format);
-        ValidateResult result = new ValidateResult.Builder(format,
-                new ServiceReport(Type.INFO, Status.SUCCESS, "OK"))
+            final URI format, final List<Parameter> parameters) {
+        ServiceReport report;
+        boolean valid = false;
+        if (!JhoveIdentification.supported(format)) {
+            report = new ServiceReport(Type.ERROR, Status.SUCCESS,
+                    "Unsupported format: " + format);
+        } else {
+            valid = basicValidateOneBinary(digitalObject, format);
+            report = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
+        }
+        ValidateResult result = new ValidateResult.Builder(format, report)
                 .ofThisFormat(valid).build();
         return result;
     }
-
 
     /**
      * {@inheritDoc}
@@ -64,7 +69,8 @@ public final class JhoveValidation implements Validate, Serializable {
         sd.classname(this.getClass().getCanonicalName());
         sd.description("Validation service using JHOVE (1.1).");
         sd.author("Fabian Steeg");
-        sd.tool( Tool.create( null, "JHOVE", "1.1" , null, "http://hul.harvard.edu/jhove/") );
+        sd.tool(Tool.create(null, "JHOVE", "1.1", null,
+                "http://hul.harvard.edu/jhove/"));
         sd.inputFormats(JhoveIdentification.inputFormats());
         sd.serviceProvider("The Planets Consortium");
         return sd.build();
@@ -80,18 +86,22 @@ public final class JhoveValidation implements Validate, Serializable {
      */
     private boolean basicValidateOneBinary(final DigitalObject digitalObject,
             final URI fmt) {
-        /* Identify the binary: */
-        JhoveIdentification identification = new JhoveIdentification();
-        IdentifyResult identify = identification.identify(digitalObject,null);
-        
+        IdentifyResult identify = identify(digitalObject);
         /* And check it it is what we expected: */
         for (URI uri : identify.getTypes()) {
-            if (uri.equals(fmt)) {
+            if (uri != null && uri.equals(fmt)) {
                 /* One of the identified types is the one we expected: */
                 return true;
             }
         }
         return false;
+    }
+
+    private IdentifyResult identify(final DigitalObject digitalObject) {
+        /* Identify the binary: */
+        JhoveIdentification identification = new JhoveIdentification();
+        IdentifyResult identify = identification.identify(digitalObject, null);
+        return identify;
     }
 
 }
