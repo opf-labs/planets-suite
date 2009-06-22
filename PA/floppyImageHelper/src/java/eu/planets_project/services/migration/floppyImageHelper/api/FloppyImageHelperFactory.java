@@ -28,12 +28,14 @@ public final class FloppyImageHelperFactory {
     
     private static FloppyImageHelper checkOperatingSystemAndCreateInstance() {
 		FloppyImageHelper floppyHelper = null;
-		if(OS.toLowerCase().contains("windows")) {
+		if(OS.contains("windows")) {
 			floppyHelper = new FloppyImageHelperWin();
+			log.info("Created FloppyImageHelper instance of type: " + floppyHelper.getClass().getCanonicalName());
 			return floppyHelper;
 		}
 		if(OS.contains("linux") || OS.contains("unix") || OS.contains("mac")) {
 			floppyHelper = new FloppyImageHelperUnix();
+			log.info("Created FloppyImageHelper instance of type: " + floppyHelper.getClass().getCanonicalName());
 			return floppyHelper;
 		}
 		log.error("Sorry, your Operating System " + OS.toUpperCase() + " " + VERSION + " " + ARCHITECTURE +  " is not supported by this service!");
