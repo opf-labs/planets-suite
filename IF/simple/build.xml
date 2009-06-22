@@ -13,7 +13,10 @@
   <!-- Specify the build type: ejb, war or ear. -->
   <property name="pserv.app.build.type" value="ejb"/>
       
-  <!-- Specify how this application should be deployed -->
+  <!-- Specify how this application should be deployed. 
+   'pure-java' means that this component can always be deployed, and does not need configuration or require any other software be installed.
+   'requires-config' means that this component needs other configuration or software installation before it can be used.
+   'none' means that this component is not ready for deployment. -->
   <property name="pserv.app.deploy.mode" value="none" />
 
   <!-- Specify the source directories for this component -->
