@@ -170,7 +170,7 @@ public class VfdWrapper {
 		process_output.append(cmd.getProcessOutputAsString());
 		
 		File floppy = new File(driveLetter);
-		System.out.println("Floppy Path name: " + floppy.getName());
+		log.info("Floppy Path name: " + floppy.getAbsolutePath());
 		
 		File[] filesOnFloppy = floppy.listFiles();
 		
@@ -178,6 +178,7 @@ public class VfdWrapper {
 		// Copy files to our working directory...
 		for (File file : filesOnFloppy) {
 			File dest = new File(EXTRACTED_FILES_DIR, file.getName());
+			log.info("Copy file: " + file.getAbsolutePath() + " to : " + dest.getAbsolutePath());
 			FileUtils.copyFileTo(file, dest);
 		}
 		
