@@ -97,9 +97,9 @@ public final class JhoveIdentification implements Identify, Serializable {
                 "JHOVE Identification Service", Identify.class
                         .getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
-        sd.description("Identification service using JHOVE (1.1).");
+        sd.description("Identification service using JHOVE (1.3).");
         sd.author("Fabian Steeg");
-        sd.tool(Tool.create(null, "JHOVE", "1.1", null,
+        sd.tool(Tool.create(null, "JHOVE", "1.3", null,
                 "http://hul.harvard.edu/jhove/"));
         sd.furtherInfo(URI.create("http://hul.harvard.edu/jhove/"));
         sd.inputFormats(inputFormats());
@@ -153,7 +153,6 @@ public final class JhoveIdentification implements Identify, Serializable {
     public static URI[] inputFormats() {
         List<URI> result = new ArrayList<URI>();
         for (SupportedFileType type : SupportedFileType.values()) {
-            // String[] split = type.getSample().split("\\.");
             FormatRegistry formatRegistry = FormatRegistryFactory
                     .getFormatRegistry();
             Set<URI> urisForMimeType = formatRegistry
