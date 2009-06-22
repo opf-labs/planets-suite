@@ -322,7 +322,7 @@
   </target>
   
   <!-- =================================================================== -->
-    
+  
   <target name="compile:tests" depends="compile" if="test.src.dir">
     <!--compile the test-classes, session beans, etc.-->
     <javac source="1.5" target="${target.jvm}"
@@ -835,4 +835,65 @@
   </if>
   </target>
 
+  <!-- =================================================================== -->
+  
+  <target name="show:type">
+    <dirname property="sub.build.dir" file="${ant.file}"/>
+    <basename property="proj.sub.sub" file="${sub.build.dir}"/>
+    
+    <dirname property="proj.sub.sub.dir" file="${sub.build.dir}"/>
+    <basename property="proj.sub" file="${proj.sub.sub.dir}"/>
+    
+    <property name="proj.sub.path" value="${proj.sub}/${proj.sub.sub}"/>
+    
+    <property name="property.list.file" value="${pserv.root.dir}/property-types.txt"/>
+    
+    <if>
+      <not>
+        <isset property="pserv.app.deploy.mode"/>
+      </not>
+      <then>
+        <property name="pserv.app.deploy.mode" value="????????"/>
+      </then>
+    </if>
+    <if>
+      <not>
+        <isset property="pserv.app.build.type"/>
+      </not>
+      <then>
+        <property name="pserv.app.build.type" value="????????"/>
+      </then>
+    </if>
+    
+    <if>
+      <isset property="test.local"/>
+      <then>
+        <property name="test.l" value="y"/>
+      </then>
+      <else>
+        <property name="test.l" value="-"/>
+      </else>
+    </if>
+    <if>
+      <isset property="test.standalone"/>
+      <then>
+        <property name="test.a" value="y"/>
+      </then>
+      <else>
+        <property name="test.a" value="-"/>
+      </else>
+    </if>
+    <if>
+      <isset property="test.server"/>
+      <then>
+        <property name="test.s" value="y"/>
+      </then>
+      <else>
+        <property name="test.s" value="-"/>
+      </else>
+    </if>
+    
+    <echo file="${property.list.file}" message="${proj.sub.path} | ${pserv.app.deploy.mode} | ${pserv.app.build.type} | ${test.l} | ${test.a} | ${test.s} ${line.separator}" append="true"/>
+  </target>
+  
 </project>

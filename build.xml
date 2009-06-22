@@ -218,6 +218,25 @@
 
   <!-- =================================================================== -->
     
+  <target name="list:all" depends="props:set">
+    <property name="property.list.file" value="${basedir}/property-types.txt"/>
+    <echo file="${property.list.file}" message="Name  |  Deploy Mode  |  Deploy Type | Tests Local | Test Standalone | Test Server${line.separator}"/>
+    <echo file="${property.list.file}" message="------|---------------|--------------|-------------|-----------------|------------${line.separator}" append="true"/>
+    <foreach target="list:sub" param="sub.build" inheritall="false">
+      <path refid="all.sub.projects"/>
+    </foreach>
+    <echo message="Generated summary of projects can be found in ${property.list.file}."/>
+  </target>
+  <target name="list:sub">
+    <echo message="In ${sub.build}"/>
+    <dirname property="sub.build.dir" file="${sub.build}"/>
+    <ant antfile="${sub.build}" inheritAll="false" target="show:type" dir="${sub.build.dir}">
+      <property name="have.deployed.common" value="true"/>
+    </ant>
+  </target>
+
+  <!-- =================================================================== -->
+    
   <target name="test:gen:summary">
     <!-- collect the results into a summary report -->
     <junitreport todir="tests/summary">
