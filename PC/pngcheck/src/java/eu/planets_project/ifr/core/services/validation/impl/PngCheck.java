@@ -26,7 +26,6 @@ import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * PngCheck validation service.
  * @author Fabian Steeg
@@ -51,9 +50,9 @@ public final class PngCheck implements Validate, Serializable {
     /***/
     private static final PlanetsLogger LOG = PlanetsLogger
             .getLogger(PngCheck.class);
-    /***/
-    //private byte[] bytes;
 
+    /***/
+    // private byte[] bytes;
     /**
      * Validates that a file is a PNG using PngCheck.
      * @param tempFile The file to verify being a PNG using PngCheck
@@ -107,7 +106,8 @@ public final class PngCheck implements Validate, Serializable {
         sd.description("Validation service based on PngCheck.");
         sd.author("Fabian Steeg");
         sd.inputFormats(PNG_PRONOM.toArray(new URI[] {}));
-        sd.tool( Tool.create(null, "PngCheck", null, null, "http://www.libpng.org/pub/png/apps/pngcheck.html") );
+        sd.tool(Tool.create(null, "PngCheck", null, null,
+                "http://www.libpng.org/pub/png/apps/pngcheck.html"));
         sd.serviceProvider("The Planets Consortium");
         return sd.build();
     }
@@ -116,13 +116,13 @@ public final class PngCheck implements Validate, Serializable {
      * {@inheritDoc}
      */
     public ValidateResult validate(final DigitalObject digitalObject,
-            final URI format, List<Parameter> parameters) {
+            final URI format, final List<Parameter> parameters) {
         File file = FileUtils.writeInputStreamToTmpFile(digitalObject
                 .getContent().read(), "pngcheck-temp", "bin");
         boolean valid = basicValidateOneBinary(file, format);
         ValidateResult result = new ValidateResult.Builder(format,
                 new ServiceReport(Type.INFO, Status.SUCCESS, "OK"))
-                .ofThisFormat(valid).build();
+                .ofThisFormat(valid).validInRegardToThisFormat(valid).build();
         return result;
     }
 }
