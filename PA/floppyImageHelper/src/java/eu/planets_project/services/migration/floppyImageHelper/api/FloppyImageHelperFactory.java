@@ -33,7 +33,7 @@ public final class FloppyImageHelperFactory {
 			log.info("Created FloppyImageHelper instance of type: " + floppyHelper.getClass().getCanonicalName());
 			return floppyHelper;
 		}
-		if(OS.contains("linux") || OS.contains("unix") || OS.contains("mac")) {
+		if(OS.contains("linux") || OS.contains("unix") /*|| OS.contains("mac")*/) {
 			floppyHelper = new FloppyImageHelperUnix();
 			log.info("Created FloppyImageHelper instance of type: " + floppyHelper.getClass().getCanonicalName());
 			return floppyHelper;

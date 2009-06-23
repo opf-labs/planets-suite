@@ -3,7 +3,7 @@ package eu.planets_project.services.migration;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelperWinTest;
+import eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelperServiceTest;
 
 /**
  * Suite to run all tests in the ImageMagickMigrate component.
@@ -11,7 +11,7 @@ import eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelper
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { FloppyImageHelperWinTest.class })
+@Suite.SuiteClasses( { FloppyImageHelperServiceTest.class })
 public class AllFloppyImageHelperWinSuite {}
 
 

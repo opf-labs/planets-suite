@@ -58,6 +58,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	
 	public FloppyImageHelperUnix() {
 		sessionID = FileUtils.randomizeFileName("");
+		DEFAULT_FLOPPY_IMAGE_NAME = "floppy144" + sessionID + ".ima";
 		if(TEMP_FOLDER.exists()) {
 			FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
 		}
@@ -71,7 +72,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	private String DEFAULT_INPUT_NAME = "inputFile" + sessionID;
 	private String inputExt = null;
 	
-	private static String DEFAULT_FLOPPY_IMAGE_NAME = "floppy144" + sessionID + ".ima";
+	private static String DEFAULT_FLOPPY_IMAGE_NAME = null;
 	private static final long FLOPPY_SIZE = 1474560;
 	
 	private static String PROCESS_ERROR = null;
@@ -137,8 +138,12 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if(fileName == null) 
 		{
 			inputExt = formatReg.getFirstExtension(inputFormat);
-			fileName = DEFAULT_INPUT_NAME + "." + inputExt;
+			fileName = FileUtils.randomizeFileName(DEFAULT_INPUT_NAME + "." + inputExt);
 		}
+		else {
+			fileName = FileUtils.randomizeFileName(fileName);  
+		}
+		
 		File inputFile = FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), TEMP_FOLDER, fileName);
 		
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
@@ -210,7 +215,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		log.info("image: " + image + " mounted to " + mountlabel);
 		File srcdir = new File(mountlabel);
-		ZipResult result = ZipUtils.createZipAndCheck(srcdir, TEMP_FOLDER, "extractedFiles.zip");
+		ZipResult result = ZipUtils.createZipAndCheck(srcdir, TEMP_FOLDER, FileUtils.randomizeFileName("extractedFiles.zip"));
 
 		umount(mountlabel);
 		unbindLoop(loopdev);
@@ -229,7 +234,8 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 			return null;
 		}
 			
-		File image = new File("/tmp", DEFAULT_FLOPPY_IMAGE_NAME);
+//		File image = new File("/tmp", DEFAULT_FLOPPY_IMAGE_NAME);
+		File image = new File(FileUtils.getSystemTempFolder(), DEFAULT_FLOPPY_IMAGE_NAME);
 		createFloppy(image);
 		if(!image.exists()) 
 		{

@@ -34,7 +34,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * @author melmsp
  *
  */
-public class FloppyImageHelperWinTest {
+public class FloppyImageHelperServiceTest {
 	
 	static Migrate FLOPPY_IMAGE_HELPER;
 	
