@@ -53,6 +53,11 @@ public interface DigitalObjectManager {
 	/**
 	 * Retrieve a DigitalObject from the DataRegistry.
 	 * 
+	 * Implementations of this method are currently expected to set the Title of the DigitalObject
+	 * to a sensible filename, as this information may be used to write the data to temporary storage systems.
+	 * 
+	 * TODO Perhaps remove the above, as persisted files should really use the leafname from the URI?
+	 * 
 	 * @param pdURI
 	 *            URI that uniquely identifies the DigitalObject
 	 * @return the DigitalObject retrieved from the registry
@@ -61,8 +66,7 @@ public interface DigitalObjectManager {
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException;
 
 	/**
-	 * If your interface does not support queries, please return null.
-	 * @return An array of the types of query that are supported.
+	 * @return An array of the types of query that are supported. If your interface does not support queries, please return null.
 	 */
 	public List<Class<? extends Query>> getQueryTypes();
 
