@@ -191,6 +191,8 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
             throws DigitalObjectNotFoundException {
         DigitalObjectManager dm = findDom(pdURI);
         if( dm == null ) return null;
+        // TODO If title is null, reset it to the leaf of the URI?
+        // dob.title( pdURI.getPath().substring( pdURI.getPath().lastIndexOf('/')+1) );
         return dm.retrieve(pdURI);
     }
 
