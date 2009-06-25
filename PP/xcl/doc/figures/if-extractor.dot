@@ -1,0 +1,46 @@
+digraph comparator {
+
+//    label="Extractor IF integration"
+//  size="5,5"
+  node[shape=record]
+  edge[dir=back, arrowtail=none]
+  
+  subgraph cluster_1{
+    label="Interoperability Framework"
+    Migrate[label = "{Migrate\n\<\<Interface\>\>||}"]
+    Characterise[label = "{Characterise\n\<\<Interface\>\>||}"]
+  }
+  
+  subgraph cluster_2{
+	  label="Extractor Services\nand Utils"
+	  Wrapper[label = "{CoreExtractor||}"]
+	  XcdlMigrate[label = "{XcdlMigrate||}"]
+	  XcdlCharacterise[label = "{XcdlCharacterise||}"]
+	  
+	  XcdlCreator[label = "{XcdlCreator||}"]
+	  XcdlParser[label = "{XcdlParser||}"]
+	  
+	  Migrate->XcdlMigrate[arrowtail=empty]
+	  Characterise->XcdlCharacterise[arrowtail=empty]
+	  
+	  XcdlMigrate->Wrapper[arrowtail=odiamond]
+	  XcdlCharacterise->Wrapper[arrowtail=odiamond]
+	 
+	  XcdlCreator->GeneratedJaxbClasses[arrowtail=odiamond]
+	  XcdlParser->GeneratedJaxbClasses[arrowtail=odiamond]
+	  
+	  GeneratedJaxbClasses[label = "Generated\nJAXB classes" shape=none]
+  }
+  
+  subgraph cluster_3{
+	  label="Extractor Tool"
+	  Extractor[label = "Extractor\nCLI" shape=none]
+	  XSD[label = "XCDL files\nand XSD" shape=none]
+	  
+	  GeneratedJaxbClasses->XSD[style=dashed]
+      Wrapper->Extractor[style=dashed]
+  }
+  
+//  XcdlCompareProperties->ComparatorConfigCreator
+  
+}

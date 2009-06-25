@@ -1,0 +1,30 @@
+digraph comparator {
+
+//    label="Explorer IF integration"
+  node[shape=record]
+  edge[dir=back, arrowtail=none]
+  
+  subgraph cluster_1{
+    label="Interoperability Framework"
+    Interface[label = "{CommonProperties\n\<\<Interface\>\>||}"]
+  }
+  
+  subgraph cluster_2{
+	  label="Explorer Service\nand Utils"
+	  FpmCommonProperties[label = "{XcdlCommonProperties||}"]
+	  
+	  FpmResultReader[label = "{ExplorerResultReader||}"]
+	  Interface->FpmCommonProperties[arrowtail=empty]
+  }
+  
+  subgraph cluster_3{
+	  label="Explorer Tool"
+	  Fpm[label = "Explorer\nCLI" shape=none]
+	  Result[label = "Explorer\nresult file" shape=none]
+	  
+	  FpmResultReader->Result[style=dashed]
+      FpmCommonProperties->Fpm[style=dashed]
+  }
+  
+  
+}

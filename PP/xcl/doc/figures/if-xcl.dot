@@ -1,0 +1,51 @@
+digraph interaction{
+//    label="XCL service interaction in the IF: directly wrapped XCL tools (grey boxes), integration (solid boxes for XCL tools,\ndashed for others), and IF interfaces used (surrounding boxes): a potential experiment setup"
+    node[shape=box width=1.3]
+    edge[arrowhead=open]
+    rankdir=LR
+    
+    Input[shape=none label="Original and\nmigrated files"]
+    Result[shape=none label="4 different results\n(for each different\n path to comparison)"]
+    
+    subgraph cluster_1{
+        label="Characterise"
+        XcdlCharacterise
+        MetadataExtractor[style=dashed label="MetadataExtractor"]
+    }
+    
+    subgraph cluster_2{
+        label="Migrate"
+        XcdlMigrate[style=filled]
+    }
+    
+    subgraph cluster_3{
+        label="Compare"
+        XcdlCompare[style=filled]
+    }
+    
+    subgraph cluster_33{
+        label="CompareProperties"
+        XcdlCompareProperties[label="XcdlCompare\nProperties"]
+    }
+    
+    subgraph cluster_4{
+        label="CommonProperties"
+        FpmCommonProperties[label="XcdlCommon\nProperties"]
+    }
+    
+    Input->FpmCommonProperties[constraint=false]
+//    FpmCommonProperties->XcdlCompareProperties[constraint=false]
+    
+    XcdlMigrate->XcdlCompare[label="XCDL"]
+    XcdlCharacterise->XcdlCompareProperties[label="Prop."]
+    
+    MetadataExtractor->XcdlCompare[label="XCDL via\nXSLT" style=dashed]
+    MetadataExtractor->XcdlCompareProperties[label="Prop."]
+    
+    Input->XcdlMigrate
+    Input->XcdlCharacterise
+    Input->MetadataExtractor
+    
+    XcdlCompareProperties->Result
+    XcdlCompare->Result
+}

@@ -1,0 +1,47 @@
+digraph comparator {
+
+//    label="Comparator IF integration"
+//  size="5,5"
+  node[shape=record]
+  edge[dir=back, arrowtail=none]
+  
+  subgraph cluster_1{
+    label="Interoperability Framework"
+    //compare(e:List\<T\>, c:List\<Prop\>)
+    Interface1[label = "{Compare\n\<\<Interface\>\>||}"]
+    Interface2[label = "{CompareProperties\n\<\<Interface\>\>||}"]
+  }
+  
+  subgraph cluster_2{
+	  label="Comparator Services\nand Utils"
+	  Wrapper[label = "{ComparatorWrapper||}"]
+	  XcdlCompare[label = "{XcdlCompare||}"]
+	  XcdlCompareProperties[label = "{XcdlCompareProperties||}"]
+	  
+	  ComparatorConfigCreator[label = "{ConfigCreator||}"]
+	  ComparatorConfigParser[label = "{ConfigParser||}"]
+	  
+	  Interface1->XcdlCompare[arrowtail=empty]
+	  Interface2->XcdlCompareProperties[arrowtail=empty]
+	  
+	  XcdlCompare->Wrapper[arrowtail=odiamond]
+	  XcdlCompareProperties->Wrapper[arrowtail=odiamond]
+	 
+	  ComparatorConfigCreator->GeneratedJaxbClasses[arrowtail=odiamond]
+	  ComparatorConfigParser->GeneratedJaxbClasses[arrowtail=odiamond]
+	  
+	  GeneratedJaxbClasses[label = "Generated\nJAXB classes" shape=none]
+  }
+  
+  subgraph cluster_3{
+	  label="Comparator Tool"
+	  Comparator[label = "Comparator\nCLI" shape=none]
+	  XSD[label = "config files\nand XSD" shape=none]
+	  
+	  GeneratedJaxbClasses->XSD[style=dashed]
+      Wrapper->Comparator[style=dashed]
+  }
+  
+//  XcdlCompareProperties->ComparatorConfigCreator
+  
+}
