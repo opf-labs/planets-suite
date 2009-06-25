@@ -22,8 +22,8 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
-import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VfdWrapper;
-import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VfdWrapperResult;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VirtualFloppyDrive;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VirtualFloppyDriveResult;
 import eu.planets_project.services.modification.floppyImageModify.api.FloppyImageModify;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
@@ -61,7 +61,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
     
     private static FormatRegistry formatRegistry = FormatRegistryFactory.getFormatRegistry();
     
-    private static VfdWrapper vfd = new VfdWrapper();
+    private static VirtualFloppyDrive vfd = new VirtualFloppyDrive();
 
     
     public FloppyImageModifyWin() {
@@ -134,7 +134,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		
 		List<File> containedFiles = DigitalObjectUtils.getDigitalObjectsAsFiles(contained, TEMP_FOLDER);
 		
-		VfdWrapperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
+		VirtualFloppyDriveResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
 		
 		File modifiedImage = vfdResult.getResultFile();
 		
@@ -152,7 +152,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		
 		
 		
-		if(vfdResult.getState()==VfdWrapperResult.SUCCESS) {
+		if(vfdResult.getState()==VirtualFloppyDriveResult.SUCCESS) {
 			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, vfdResult.getMessage());
 	        log.info("Created Service report...");
 	        return new ModifyResult(result, report);

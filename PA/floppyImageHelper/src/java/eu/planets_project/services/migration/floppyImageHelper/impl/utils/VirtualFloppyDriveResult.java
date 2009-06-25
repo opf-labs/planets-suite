@@ -4,7 +4,7 @@ import java.io.File;
 
 import eu.planets_project.services.utils.ZipResult;
 
-public class VfdWrapperResult {
+public class VirtualFloppyDriveResult {
 	
 	private int status = -1;
 	private String message = null;

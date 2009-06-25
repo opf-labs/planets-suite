@@ -61,7 +61,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	
     private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
     
-    private VfdWrapper vfd = new VfdWrapper();
+    private VirtualFloppyDrive vfd = new VirtualFloppyDrive();
     
     public FloppyImageHelperWin() {
     	// clean the temp folder for this app at startup...
@@ -112,7 +112,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, List<Parameter> parameters) {
 		
-		VfdWrapperResult vfdResult = null;
+		VirtualFloppyDriveResult vfdResult = null;
         String inFormat = format.getFirstExtension(inputFormat).toUpperCase();
 		
 		List<File> extractedFiles = null;
@@ -143,7 +143,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 		ZipResult zippedResult = null;
 		
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
-			vfdResult = vfd.openImageWithVfdAndGetFiles(inputFile);
+			vfdResult = vfd.openImageAndGetFiles(inputFile);
 			if(vfdResult.resultIsZip) {
 				zippedResult = vfdResult.getZipResult();
 			}
@@ -176,9 +176,10 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 			else {
 				extractedFiles = ZipUtils.unzipTo(inputFile, EXTRACTED_FILES);
 			}
-			vfdResult = vfd.createImageWithVfdAndInjectFiles(extractedFiles);
+			vfdResult = vfd.createImageAndInjectFiles(extractedFiles);
 			if(!vfdResult.resultIsZip) {
 				imageFile = vfdResult.getResultFile();
+//				log.info(vfdResult.getMessage());
 			}
 			else {
 				return this.returnWithErrorMessage(vfdResult.getMessage(), null);
@@ -191,7 +192,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 			List<File> tmpList = new ArrayList<File>();
 			tmpList.add(inputFile);
 			
-			vfdResult = vfd.createImageWithVfdAndInjectFiles(tmpList);
+			vfdResult = vfd.createImageAndInjectFiles(tmpList);
 			imageFile = vfdResult.getResultFile();
 			
 			if(imageFile==null) {

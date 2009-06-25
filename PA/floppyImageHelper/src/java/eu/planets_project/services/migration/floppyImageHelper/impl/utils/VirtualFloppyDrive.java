@@ -18,14 +18,14 @@ import eu.planets_project.services.utils.ZipUtils;
  * @author melmsp
  *
  */
-public class VfdWrapper {
+public class VirtualFloppyDrive {
 	
 	private static File TOOL_DIR = null;
 	private static String VFD_TOOL_NAME = "VFD.EXE";
 	private static String FLOPPY_IMAGE_TOOLS_HOME_PATH = System.getenv("FLOPPY_IMAGE_TOOLS_HOME");
 	
 	private File TEMP_FOLDER = null;
-	private String TEMP_FOLDER_NAME = "VFD_WRAPPER";
+	private String TEMP_FOLDER_NAME = "VIRTUAL_FLOPPY_DRIVE_TMP";
 	private String DEFAULT_FLOPPY_IMAGE_NAME = FileUtils.randomizeFileName("floppy144.ima");
 	private File EXTRACTED_FILES_DIR = null;
 	private String EXTRACTION_OUT_FOLDER_NAME = FileUtils.randomizeFileName("EXTRACTED_FILES");
@@ -40,7 +40,7 @@ public class VfdWrapper {
 	
 	private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
 	
-	public VfdWrapper() {
+	public VirtualFloppyDrive() {
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 		if(TEMP_FOLDER.exists()) {
 			FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
@@ -49,7 +49,7 @@ public class VfdWrapper {
 		EXTRACTED_FILES_DIR = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTION_OUT_FOLDER_NAME);
 	}
 	
-	public VfdWrapperResult createImageWithVfdAndInjectFiles(List<File> filesToInject) {
+	public VirtualFloppyDriveResult createImageAndInjectFiles(List<File> filesToInject) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -64,19 +64,19 @@ public class VfdWrapper {
 		cmd.setStartingDir(TEMP_FOLDER);
 		
 		// Create a new, empty 1.44 large floppy image
-		cmd.setCommand(createNewImageWithVfd());
+		cmd.setCommand(createNewImage());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
 		
 		// Format the virtual floppy drive
-		cmd.setCommand(formatVfdDrive());
+		cmd.setCommand(formatFloppyImage());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
 		
 		// Unlink the drive letter from virtual floppy drive
-		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.setCommand(uLinkDriveLetter());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
@@ -88,7 +88,7 @@ public class VfdWrapper {
 			process_error.append("Could not assign drive letter to virtual floppy drive, all letters are in use!");
 			return this.returnWithError(process_error.toString());
 		}
-		cmd.setCommand(linkDriveLetterToVfdDrive(driveLetter));
+		cmd.setCommand(linkDriveLetter(driveLetter));
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
@@ -103,19 +103,19 @@ public class VfdWrapper {
 		}
 		
 		// save the content of the floppy drive to an image file
-		cmd.setCommand(saveImageInVfdDriveTo(DEFAULT_FLOPPY_IMAGE_NAME));
+		cmd.setCommand(saveImageTo(DEFAULT_FLOPPY_IMAGE_NAME));
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
 		
 		// close the current virtual floppy drive 
-		cmd.setCommand(closeImageInVfd());
+		cmd.setCommand(closeImage());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
 		
 		// unlink the drive letter again to make it available for further calls
-		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.setCommand(uLinkDriveLetter());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
@@ -128,7 +128,7 @@ public class VfdWrapper {
 
 	// Open an existing floppy image file and mount it with vfd.exe to
 	// get the files on it. Then return them as a ZIP.
-	public VfdWrapperResult openImageWithVfdAndGetFiles(File imageFile) {
+	public VirtualFloppyDriveResult openImageAndGetFiles(File imageFile) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -149,7 +149,7 @@ public class VfdWrapper {
 		appendProcessOutAndError(cmd);*/
 		
 		// unlink the drive letter it may has, but which we don't know and assign one we know ;-)
-		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.setCommand(uLinkDriveLetter());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
@@ -158,13 +158,13 @@ public class VfdWrapper {
 			process_error.append("Could not assign drive letter to virtual floppy drive, all letters are in use!");
 			return this.returnWithError(process_error.toString());
 		}
-		cmd.setCommand(linkDriveLetterToVfdDrive(driveLetter));
+		cmd.setCommand(linkDriveLetter(driveLetter));
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
 		
 		// Open the passed image file in Vfd.exe
-		cmd.setCommand(openImageInVfd(imageFile));
+		cmd.setCommand(openImage(imageFile));
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
@@ -185,13 +185,13 @@ public class VfdWrapper {
 		// create a ZIP containing the files on the floppy disk...
 //		ZipResult zip = FileUtils.createZipFileWithChecksum(EXTRACTED_FILES_DIR, TEMP_FOLDER, "extracedFiles.zip");
 		ZipResult zip = ZipUtils.createZipAndCheck(EXTRACTED_FILES_DIR, TEMP_FOLDER, FileUtils.randomizeFileName("extracedFiles.zip"));
-		cmd.setCommand(closeImageInVfd());
+		cmd.setCommand(closeImage());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
 		
 		// unlink the drive letter again...
-		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.setCommand(uLinkDriveLetter());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());
 		process_output.append(cmd.getProcessOutputAsString());
@@ -200,7 +200,7 @@ public class VfdWrapper {
 		return this.returnWithSuccess(process_output.toString(), null, zip);
 	}
 	
-	public VfdWrapperResult addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
+	public VirtualFloppyDriveResult addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -213,7 +213,7 @@ public class VfdWrapper {
 		process_output.append(cmd.getProcessOutputAsString());
 		process_error.append(cmd.getProcessErrorAsString());
 		
-		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.setCommand(uLinkDriveLetter());
 		cmd.run();
 		process_output.append(cmd.getProcessOutputAsString());
 		process_error.append(cmd.getProcessErrorAsString());
@@ -223,12 +223,12 @@ public class VfdWrapper {
 			process_error.append("Could not assign drive letter to virtual floppy drive, all letters are in use!");
 			return this.returnWithError(process_error.toString());
 		}
-		cmd.setCommand(linkDriveLetterToVfdDrive(driveLetter));
+		cmd.setCommand(linkDriveLetter(driveLetter));
 		cmd.run();
 		process_output.append(cmd.getProcessOutputAsString());
 		process_error.append(cmd.getProcessErrorAsString());
 		
-		cmd.setCommand(openImageInVfd(floppyImage));
+		cmd.setCommand(openImage(floppyImage));
 		cmd.run();
 		process_output.append(cmd.getProcessOutputAsString());
 		process_error.append(cmd.getProcessErrorAsString());
@@ -259,17 +259,17 @@ public class VfdWrapper {
 			return this.returnWithError(process_error.toString());
 		}
 		
-		cmd.setCommand(saveImageInVfdDriveTo(floppyImage.getAbsolutePath()));
+		cmd.setCommand(saveImageTo(floppyImage.getAbsolutePath()));
 		cmd.run();
 		process_output.append(cmd.getProcessOutputAsString());
 		process_error.append(cmd.getProcessErrorAsString());
 		
-		cmd.setCommand(uLinkDriveLetterFromVfdDrive());
+		cmd.setCommand(uLinkDriveLetter());
 		cmd.run();
 		process_output.append(cmd.getProcessOutputAsString());
 		process_error.append(cmd.getProcessErrorAsString());
 		
-		cmd.setCommand(closeImageInVfd());
+		cmd.setCommand(closeImage());
 		cmd.run();
 		process_output.append(cmd.getProcessOutputAsString());
 		process_error.append(cmd.getProcessErrorAsString());
@@ -330,7 +330,7 @@ public class VfdWrapper {
 		return commands;
 	}
 
-	private ArrayList<String> openImageInVfd(File floppyImage) {
+	private ArrayList<String> openImage(File floppyImage) {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
 		commands.add("OPEN");
@@ -340,7 +340,7 @@ public class VfdWrapper {
 		return commands;
 	}
 
-	private ArrayList<String> createNewImageWithVfd() {
+	private ArrayList<String> createNewImage() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
 		commands.add("OPEN");
@@ -352,7 +352,7 @@ public class VfdWrapper {
 		return commands;
 	}
 
-	private ArrayList<String> closeImageInVfd() {
+	private ArrayList<String> closeImage() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
 		commands.add("CLOSE");
@@ -361,14 +361,14 @@ public class VfdWrapper {
 		return commands;
 	}
 
-	private ArrayList<String> uLinkDriveLetterFromVfdDrive() {
+	private ArrayList<String> uLinkDriveLetter() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
 		commands.add("ULINK");
 		return commands;
 	}
 
-	private ArrayList<String> linkDriveLetterToVfdDrive(String driveLetter) {
+	private ArrayList<String> linkDriveLetter(String driveLetter) {
 			if(driveLetter.endsWith("\\")) {
 				driveLetter = driveLetter.replace("\\", "");
 			}
@@ -381,7 +381,7 @@ public class VfdWrapper {
 			return commands;
 		}
 
-	private ArrayList<String> saveImageInVfdDriveTo(String destFileName) {
+	private ArrayList<String> saveImageTo(String destFileName) {
 			ArrayList<String> commands = new ArrayList<String>();
 			commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
 			commands.add("SAVE");
@@ -392,14 +392,14 @@ public class VfdWrapper {
 			return commands;
 		}
 
-	private ArrayList<String> statusOfVfdDrive() {
+	private ArrayList<String> status() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
 		commands.add("STATUS");
 		return commands;
 	}
 
-	private ArrayList<String> formatVfdDrive() {
+	private ArrayList<String> formatFloppyImage() {
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add(TOOL_DIR + "\\" + VFD_TOOL_NAME);
 		commands.add("FORMAT");
@@ -426,17 +426,17 @@ public class VfdWrapper {
 		}
 	}
 
-	private VfdWrapperResult returnWithError(String message) {
-		VfdWrapperResult vfdResult = new VfdWrapperResult();
+	private VirtualFloppyDriveResult returnWithError(String message) {
+		VirtualFloppyDriveResult vfdResult = new VirtualFloppyDriveResult();
 		vfdResult.setMessage(message);
 		vfdResult.setResultFile(null);
 		vfdResult.setZipResult(null);
-		vfdResult.setState(VfdWrapperResult.ERROR);
+		vfdResult.setState(VirtualFloppyDriveResult.ERROR);
 		return vfdResult;
 	}
 
-	private VfdWrapperResult returnWithSuccess(String message, File resultFile, ZipResult zip) {
-		VfdWrapperResult vfdResult = new VfdWrapperResult();
+	private VirtualFloppyDriveResult returnWithSuccess(String message, File resultFile, ZipResult zip) {
+		VirtualFloppyDriveResult vfdResult = new VirtualFloppyDriveResult();
 		vfdResult.setMessage(message);
 		if(resultFile!=null) {
 			vfdResult.setResultFile(resultFile);
@@ -444,7 +444,7 @@ public class VfdWrapper {
 		else {
 			vfdResult.setZipResult(zip);
 		}
-		vfdResult.setState(VfdWrapperResult.SUCCESS);
+		vfdResult.setState(VirtualFloppyDriveResult.SUCCESS);
 		return vfdResult;
 	}
 
