@@ -66,7 +66,7 @@ public class FloppyImageHelperServiceTest {
 //        System.setProperty("pserv.test.port", "8080");
         
 		// Config the logger:	
-        Logger.getLogger("").setLevel( Level.DEBUG );
+        Logger.getRootLogger().setLevel( Level.DEBUG );
         OUT_DIR = FileUtils.createWorkFolderInSysTemp(OUT_DIR_NAME); 
         FLOPPY_IMAGE_HELPER = ServiceCreator.createTestService(Migrate.QNAME, FloppyImageHelperService.class, WSDL);
         
