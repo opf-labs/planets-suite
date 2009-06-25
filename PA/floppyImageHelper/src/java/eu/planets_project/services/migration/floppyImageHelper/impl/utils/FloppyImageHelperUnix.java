@@ -5,6 +5,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
@@ -63,6 +64,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if(TEMP_FOLDER.exists()) {
 			FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
 		}
+		log.setLevel(Level.DEBUG);
 	}
 	                 
 	public static final String NAME = "FloppyImageHelperUnix";
