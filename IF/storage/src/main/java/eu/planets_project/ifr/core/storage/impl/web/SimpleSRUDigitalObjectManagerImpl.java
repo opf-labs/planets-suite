@@ -112,7 +112,7 @@ public class SimpleSRUDigitalObjectManagerImpl implements DigitalObjectManager {
 		try {
 			// Will simply attempt to download the object at the provided URI,
 			// no matter whether it was part of the query result or not
-			return new DigitalObject.Builder(Content.byReference(pdURI.toURL())).build();
+			return new DigitalObject.Builder(Content.byReference(pdURI.toURL())).title(pdURI.getPath().substring( pdURI.getPath().lastIndexOf('/')+1)).build();
 		} catch (Exception e) {
 			throw new DigitalObjectNotFoundException("Error retrieving object from " + pdURI.toString() + " (" + e.getMessage() + ")");
 		}
