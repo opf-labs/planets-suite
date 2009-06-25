@@ -165,23 +165,6 @@ public class XcdlCharacteriseTests {
         }
     }
 
-    @Test
-    public void testRejectInvalidFormat() {
-        DigitalObject.Builder builder = new DigitalObject.Builder(
-                Content.byValue(new byte[] {}));
-        FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
-        /* And we can't characterise any format (= no format set): */
-        CharacteriseResult result = extractor.characterise(builder.build(),
-                null);
-        Assert.assertEquals(Type.ERROR, result.getReport().getType());
-        Assert.assertEquals(0, result.getProperties().size());
-        /* And we can't characterise unsupported formats: */
-        result = extractor.characterise(builder.format(
-                registry.createExtensionUri("svg")).build(), null);
-        Assert.assertEquals(Type.ERROR, result.getReport().getType());
-        Assert.assertEquals(0, result.getProperties().size());
-    }
-
     // Helper methods:
 
     /**
