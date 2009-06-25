@@ -64,7 +64,6 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		if(TEMP_FOLDER.exists()) {
 			FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
 		}
-		log.setLevel(Level.DEBUG);
 	}
 	                 
 	public static final String NAME = "FloppyImageHelperUnix";
