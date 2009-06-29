@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.registry.impl;
+package eu.planets_project.ifr.core.registry.gui;
 
 import java.net.URL;
 import java.util.List;
@@ -10,7 +10,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.registry.api.Response;
-import eu.planets_project.ifr.core.registry.gui.RegistryBackingBean;
 import eu.planets_project.ifr.core.registry.utils.PlanetsServiceExplorer;
 import eu.planets_project.services.datatypes.ServiceDescription;
 

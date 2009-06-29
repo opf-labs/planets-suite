@@ -9,7 +9,6 @@ import javax.jws.WebService;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 
-import eu.planets_project.ifr.core.registry.impl.MatchingMode;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.ServiceDescription;
 

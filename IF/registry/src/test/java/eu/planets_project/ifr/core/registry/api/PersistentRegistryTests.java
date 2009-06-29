@@ -8,9 +8,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
-import eu.planets_project.ifr.core.registry.impl.MatchingMode;
-import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**

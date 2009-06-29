@@ -10,7 +10,9 @@ import javax.jws.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.ifr.core.registry.api.MatchingMode;
 import eu.planets_project.ifr.core.registry.api.Registry;
+import eu.planets_project.ifr.core.registry.api.RegistryFactory;
 import eu.planets_project.ifr.core.registry.api.Response;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -27,8 +29,7 @@ public final class RegistryWebservice implements Registry {
     /***/
     private static final long serialVersionUID = 1L;
     /***/
-    private Registry registry = PersistentRegistry.getInstance(CoreRegistry
-            .getInstance());
+    private Registry registry = RegistryFactory.getRegistry();
     /***/
     @SuppressWarnings("unused")
     private static Log log = LogFactory.getLog(RegistryWebservice.class

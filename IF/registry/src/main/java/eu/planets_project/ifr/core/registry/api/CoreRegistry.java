@@ -1,21 +1,19 @@
-package eu.planets_project.ifr.core.registry.impl;
+package eu.planets_project.ifr.core.registry.api;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.Response;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * Core in-memory (non-persistent) registry for service description instances.
- * NOTE: Most clients should use the RegistryFactory to instantiate a Registry
+ * NOTE: Clients should use the RegistryFactory to instantiate a Registry
  * @see ServiceDescription
  * @see Registry
  * @see PersistentRegistry
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public final class CoreRegistry implements Registry {
+final class CoreRegistry implements Registry {
 
     private List<ServiceDescription> descriptions = null;
 
@@ -25,10 +23,10 @@ public final class CoreRegistry implements Registry {
     }
 
     /**
-     * NOTE: Most clients should use the RegistryFactory to instantiate a Registry.
+     * NOTE: Clients should use the RegistryFactory to instantiate a Registry.
      * @return A simple, non-persistent registry for service descriptions.
      */
-    public static Registry getInstance() {
+    static Registry getInstance() {
         return new CoreRegistry();
     }
 
@@ -70,22 +68,6 @@ public final class CoreRegistry implements Registry {
     }
 
     /**
-     * @param serviceDescription The description to check
-     * @return True, if a description with the same endpoint is already
-     *         registered
-     */
-    private boolean endpointPresent(final ServiceDescription serviceDescription) {
-        for (ServiceDescription d : descriptions) {
-            if (d.getEndpoint() != null
-                    && d.getEndpoint().toString().equals(
-                            serviceDescription.getEndpoint().toString())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#delete(eu.planets_project.services.datatypes.ServiceDescription)
      */
@@ -103,6 +85,22 @@ public final class CoreRegistry implements Registry {
     public List<ServiceDescription> queryWithMode(
             final ServiceDescription example, final MatchingMode mode) {
         return new Query(descriptions).byExample(example, mode);
+    }
+    
+    /**
+     * @param serviceDescription The description to check
+     * @return True, if a description with the same endpoint is already
+     *         registered
+     */
+    private boolean endpointPresent(final ServiceDescription serviceDescription) {
+        for (ServiceDescription d : descriptions) {
+            if (d.getEndpoint() != null
+                    && d.getEndpoint().toString().equals(
+                            serviceDescription.getEndpoint().toString())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

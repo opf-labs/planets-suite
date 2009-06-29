@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.registry.impl;
+package eu.planets_project.ifr.core.registry.api;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -20,7 +20,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @see eu.planets_project.ifr.core.registry.api.CoreRegistryTests
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public final class Query {
+final class Query {
 
     private List<ServiceDescription> descriptions = null;
     private static Log log = LogFactory.getLog(Query.class.getName());
@@ -28,7 +28,7 @@ public final class Query {
     /**
      * @param descriptions The descriptions to query
      */
-    public Query(final List<ServiceDescription> descriptions) {
+    Query(final List<ServiceDescription> descriptions) {
         this.descriptions = descriptions;
     }
 
@@ -38,7 +38,7 @@ public final class Query {
      * @return Returns the service descriptions corresponding to the given
      *         sample instance
      */
-    public List<ServiceDescription> byExample(final ServiceDescription sample,
+    List<ServiceDescription> byExample(final ServiceDescription sample,
             final MatchingMode mode) {
         List<ServiceDescription> result = new ArrayList<ServiceDescription>();
         for (ServiceDescription description : descriptions) {
@@ -103,8 +103,8 @@ public final class Query {
                              * Now, none of the values are null... we now first
                              * check for Collections:
                              */
-                            if (sampleValue instanceof Collection
-                                    && candidateValue instanceof Collection) {
+                            if (sampleValue instanceof Collection<?>
+                                    && candidateValue instanceof Collection<?>) {
                                 /*
                                  * They need not be equals, but all sample
                                  * values should be in the candidate:

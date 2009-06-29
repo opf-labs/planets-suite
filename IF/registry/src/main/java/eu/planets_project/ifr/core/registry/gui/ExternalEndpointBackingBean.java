@@ -10,7 +10,6 @@ import java.net.URISyntaxException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.registry.impl.PlanetsServiceEndpoint;
 import eu.planets_project.ifr.core.registry.utils.DiscoveryUtils;
 import eu.planets_project.ifr.core.registry.utils.PlanetsServiceExplorer;
 import eu.planets_project.services.datatypes.ServiceDescription;

@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.registry.impl;
+package eu.planets_project.ifr.core.registry.api;
 
 /**
  * Matching modes as a strategy enumeration.

@@ -16,9 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.richfaces.component.html.HtmlDataTable;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
-import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
-import eu.planets_project.ifr.core.registry.impl.PlanetsServiceEndpoint;
+import eu.planets_project.ifr.core.registry.api.RegistryFactory;
 import eu.planets_project.ifr.core.registry.utils.DiscoveryUtils;
 import eu.planets_project.ifr.core.registry.utils.EndpointUtils;
 import eu.planets_project.ifr.core.registry.utils.PlanetsServiceExplorer;
@@ -199,7 +197,7 @@ public class EndpointBackingBean {
     	// get the selected endpoint
     	_log.info("Getting Row data");
         _currentEndpoint = (PlanetsServiceEndpoint) this._endpointsDataTable.getRowData();
-    	Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    	Registry registry = RegistryFactory.getRegistry();
     	ServiceDescription example = new ServiceDescription.Builder(null, null).endpoint(_currentEndpoint.getLocation()).build();
     	List<ServiceDescription> _matches = registry.query(example);  
         // If it's registered then get the description from the registry

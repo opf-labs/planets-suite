@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.registry.impl;
+package eu.planets_project.ifr.core.registry.api;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedWriter;
@@ -13,16 +13,14 @@ import java.util.Scanner;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.api.Response;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
  * ServiceDecriptionRegistry implementation persisting the descriptions as XML
- * files. NOTE: Most clients should use the RegistryFactory to instantiate a Registry
+ * files. NOTE: Clients should use the RegistryFactory to instantiate a Registry.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public final class PersistentRegistry implements Registry {
+final class PersistentRegistry implements Registry {
     private static final String SUFFIX = ".xml";
     private static Log log = LogFactory.getLog(PersistentRegistry.class
             .getName());
@@ -47,22 +45,22 @@ public final class PersistentRegistry implements Registry {
     private long updated;
 
     /**
-     * NOTE: Most clients should use the RegistryFactory to instantiate a Registry
+     * NOTE: Clients should use the RegistryFactory to instantiate a Registry.
      * @param registry The backing registry, e.g. a CoreRegistry
      * @return A persistent service description registry
      */
-    public static Registry getInstance(final Registry registry) {
+    static Registry getInstance(final Registry registry) {
         return new PersistentRegistry(registry);
     }
 
     /**
-     * NOTE: Most clients should use the RegistryFactory to instantiate a Registry
+     * NOTE: Clients should use the RegistryFactory to instantiate a Registry.
      * @param registry The backing registry, e.g. a CoreRegistry
      * @param location The full path to the folder that should be used to store
      *        the service descriptions in
      * @return A persistent service description registry
      */
-    public static Registry getInstance(final Registry registry,
+    static Registry getInstance(final Registry registry,
             final String location) {
         rootLocation = location;
         return new PersistentRegistry(registry);
@@ -173,7 +171,7 @@ public final class PersistentRegistry implements Registry {
     }
 
     /**
-     * 
+     * Updates the last modification time to the current time.
      */
     private void updateRootModified() {
         /*

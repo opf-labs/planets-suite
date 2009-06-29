@@ -5,8 +5,6 @@ import java.net.URL;
 
 import javax.xml.ws.Service;
 
-import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
-import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
 
 /**
  * Service Registry factory.

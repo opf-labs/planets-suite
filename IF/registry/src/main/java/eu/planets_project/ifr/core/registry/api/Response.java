@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 /**
+ * Service registry response type.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -35,7 +36,7 @@ public final class Response {
      */
     @Override
     public String toString() {
-        return message;
+        return message + ", success: " + success;
     }
 
     /**

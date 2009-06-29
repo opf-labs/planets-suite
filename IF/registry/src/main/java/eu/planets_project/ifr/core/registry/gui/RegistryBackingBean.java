@@ -10,9 +10,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
-import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
-import eu.planets_project.ifr.core.registry.impl.PlanetsServiceEndpoint;
+import eu.planets_project.ifr.core.registry.api.RegistryFactory;
+import eu.planets_project.ifr.core.registry.gui.EndpointBackingBean;
+import eu.planets_project.ifr.core.registry.gui.ExternalEndpointBackingBean;
+import eu.planets_project.ifr.core.registry.gui.ServiceDescriptionBackingBean;
+import eu.planets_project.ifr.core.registry.gui.PlanetsServiceEndpoint.DescriptionStatus;
 import eu.planets_project.services.datatypes.ServiceDescription;
 
 /**
@@ -24,7 +26,7 @@ public class RegistryBackingBean {
 	// keeping the logger just in case
 	private static Log log = LogFactory.getLog(RegistryBackingBean.class);
 
-    public static final Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    public static final Registry registry = RegistryFactory.getRegistry();
     
     List<PlanetsServiceEndpoint> services = null;
 
