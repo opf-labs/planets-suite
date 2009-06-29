@@ -33,6 +33,7 @@ public class CliMigrationPaths {
      * @throws SAXException
      * @throws URISyntaxException
      */
+    // TODO: Clean up this exception-mess. Something like "InitialisationException" or "ConfigurationErrorException" should cover all these exceptions.
     public static CliMigrationPaths initialiseFromFile(String resourceName) throws ParserConfigurationException, IOException, SAXException, URISyntaxException {
 
 

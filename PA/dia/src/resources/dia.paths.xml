@@ -160,4 +160,48 @@
 		<command>dia</command>
 	</path>
 
+<!-- Experimental stuff
+        <command>tool1 %param1 > ps2pdf13 %param2 </command>
+		<parameters>
+			<option name="Fantastic">
+			<param name="param1">-d5 -p1</param>
+			<param name="param2">-d2 -p90</param>
+			<description>Fantastic quality.</description>
+			</option>
+			<option name="Crappy">
+			<param name="param1">-x2 -p1</param>
+			<param name="param2">-q2 -e90</param>
+			<description>Crappy quality.</description>
+			</option>
+
+			<option name="custom">
+				<param name="param1"></param>
+				<param name="param2"></param>
+				<description>Quality parameter</description>						
+			</option>
+
+			<option name="custom">
+				<entries>
+					<param name="param1"></param>
+					<param name="param2"></param>
+				</entries>
+				<description>Quality parameter</description>						
+			</option>
+
+			<option name="quality" default="fantastic">
+				<entry value="crappy">
+					<param name="param1">-d5 -p1</param>
+					<param name="param2">-d2 -p90</param>
+				</entry>						
+				<entry name="fantastic">
+					<param name="param1">-x2 -p1</param>
+					<param name="param2">-q2 -e90</param>
+				</entry>
+			
+				<description>Quality parameter</description>						
+			</option>
+			
+			
+		</parameters>
+ -->
 </paths>

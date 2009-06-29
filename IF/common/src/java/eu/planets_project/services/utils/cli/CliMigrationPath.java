@@ -46,6 +46,4 @@ public class CliMigrationPath {
     public String getTool() {
         return tool;
     }
-
-
 }
