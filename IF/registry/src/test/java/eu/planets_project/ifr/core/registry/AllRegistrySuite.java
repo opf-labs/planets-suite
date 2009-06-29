@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 
 import eu.planets_project.ifr.core.registry.api.CoreRegistryTests;
 import eu.planets_project.ifr.core.registry.api.PersistentRegistryTests;
-import eu.planets_project.ifr.core.registry.api.RegistryFactoryTests;
+import eu.planets_project.ifr.core.registry.api.RegistryFactoryLocalTests;
+import eu.planets_project.ifr.core.registry.api.RegistryFactoryWebserviceTests;
 import eu.planets_project.ifr.core.registry.api.RegistryWebserviceTests;
 
 /**
@@ -17,7 +18,8 @@ import eu.planets_project.ifr.core.registry.api.RegistryWebserviceTests;
 @Suite.SuiteClasses( {
 /* Service description registry tests: */
 CoreRegistryTests.class, PersistentRegistryTests.class,
-        RegistryWebserviceTests.class, RegistryFactoryTests.class,
+        RegistryWebserviceTests.class, RegistryFactoryLocalTests.class,
+        RegistryFactoryWebserviceTests.class,
         /* And the sample usage: */
         RegistrySampleUsage.class })
 public class AllRegistrySuite {}

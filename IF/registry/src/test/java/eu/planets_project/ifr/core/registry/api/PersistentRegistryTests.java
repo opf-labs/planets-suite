@@ -25,6 +25,9 @@ public class PersistentRegistryTests extends CoreRegistryTests {
         registry = new PersistentRegistryTests().createRegistry();
     }
 
+    /**
+     * @return The registry instance to use in this test
+     */
     Registry createRegistry() {
         return PersistentRegistry.getInstance(CoreRegistry.getInstance());
     }
