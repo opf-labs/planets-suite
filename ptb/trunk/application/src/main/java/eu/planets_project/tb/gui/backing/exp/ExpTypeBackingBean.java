@@ -4,28 +4,19 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
-import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
+import eu.planets_project.ifr.core.registry.api.RegistryFactory;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
-import eu.planets_project.tb.impl.model.PropertyEvaluationRecordImpl;
-import eu.planets_project.tb.impl.model.PropertyRunEvaluationRecordImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
-import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
-import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
-import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
@@ -45,7 +36,7 @@ public abstract class ExpTypeBackingBean {
     private HashMap<String, String> ewfCacheParameters = null;
 
     /** A Service Registry instance for look-ups. */
-    protected Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    protected Registry registry = RegistryFactory.getRegistry();
 
     /**
      * @return

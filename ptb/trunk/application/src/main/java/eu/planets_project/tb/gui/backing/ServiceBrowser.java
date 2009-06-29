@@ -3,7 +3,6 @@
  */
 package eu.planets_project.tb.gui.backing;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,12 +27,16 @@ import org.richfaces.event.NodeSelectedEvent;
 import org.richfaces.model.TreeNode;
 import org.richfaces.model.TreeNodeImpl;
 
+import eu.planets_project.ifr.core.registry.api.Registry;
+import eu.planets_project.ifr.core.registry.api.RegistryFactory;
+import eu.planets_project.ifr.core.techreg.formats.Format;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.view.CreateView;
-import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
@@ -41,9 +44,8 @@ import eu.planets_project.tb.api.persistency.ServiceRecordPersistencyRemote;
 import eu.planets_project.tb.gui.backing.service.FormatBean;
 import eu.planets_project.tb.gui.backing.service.PathwayBean;
 import eu.planets_project.tb.gui.backing.service.ServiceRecordBean;
-import eu.planets_project.tb.gui.backing.service.ServiceRecordsByNameBean;
 import eu.planets_project.tb.gui.backing.service.ServiceRecordsByFormatBean;
-import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.gui.backing.service.ServiceRecordsByNameBean;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
@@ -52,13 +54,6 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.persistency.ServiceRecordPersistencyImpl;
 import eu.planets_project.tb.impl.services.Service;
 import eu.planets_project.tb.impl.services.ServiceRegistryManager;
-import eu.planets_project.ifr.core.registry.api.Registry;
-import eu.planets_project.ifr.core.registry.impl.CoreRegistry;
-import eu.planets_project.ifr.core.registry.impl.MatchingMode;
-import eu.planets_project.ifr.core.registry.impl.PersistentRegistry;
-import eu.planets_project.ifr.core.techreg.formats.Format;
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 
 
 /**
@@ -93,7 +88,7 @@ public class ServiceBrowser {
 //    public static Format unknown = fr.getFormatForURI( Format.extensionToURI("unknown") );
 
     //Instantiate a registry:
-    Registry registry = PersistentRegistry.getInstance(CoreRegistry.getInstance());
+    Registry registry = RegistryFactory.getRegistry();
     
     /**
      * 
@@ -307,7 +302,7 @@ public class ServiceBrowser {
      * @return Looks up the service registry, cached in ServiceBrowser in Session scope.
      */
     private static Registry instanciateServiceRegistry() {
-        return PersistentRegistry.getInstance(CoreRegistry.getInstance());
+        return RegistryFactory.getRegistry();
     }
 
     /**
