@@ -278,7 +278,7 @@ public class WorkflowFactory{
 			File dir = new File(RegistryUtils.getWeeDirBase()+"/../../lib/");
 			File[] list = dir.listFiles();
 			for(File f : list){
-				classp+=f.getCanonicalPath()+";";
+				classp+=f.getCanonicalPath()+System.getProperty("path.separator");
 			}
 			classpath = classp;
 		}
