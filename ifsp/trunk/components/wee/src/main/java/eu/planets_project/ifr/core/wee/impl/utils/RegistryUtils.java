@@ -93,7 +93,7 @@ public class RegistryUtils {
 	 */
 	public static String getWeeDirBase(){
 		checkInstance();
-		return weeDirBase;
+		return System.getProperty("jboss.home.dir") + "/" + weeDirBase;
 	}
 	
 	/**
