@@ -36,12 +36,18 @@
 
       <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
   
-        <p>Create a new experiment using the form below.  Once you have saved the required information your experiment will be added to your             
+  		<h:panelGroup rendered="#{! (ExperimentBean.experiment.currentPhaseIndex >= 1)}">
+             <p>Create a <b>new experiment</b> using the form below.  Once you have saved the required information your experiment will be added to your             
             <h:commandLink action="my_experiments">
                 <h:outputText value=" #{res['my_exp.pageTitle']}" />
         </h:commandLink> page.</p>
+        </h:panelGroup>
+        
+        <h:panelGroup rendered="#{ExperimentBean.experiment.currentPhaseIndex >= 1}">
+            <p>Edit this <b>existing experiment</b> using the form below.</p>
+        </h:panelGroup>
+       
         <p>You can return to this page to update the information at any point until you submit your experiment for approval so if you don't have all the details to hand at the moment don't worry.  However, filling in as much information as you can before experiment execution is recommended as this will make your experiment more useful in the long-run.</p>
-
 
 	<fieldset>
 		<legend>#{res['new_exp.legendGeneral']}</legend>
