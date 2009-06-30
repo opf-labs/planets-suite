@@ -95,41 +95,10 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 		try {
 			realPdURI = new PDURI(pdURI);
 			fullPath = this._root.getCanonicalPath() + File.separator + realPdURI.getDataRegistryPath();
-			File searchRoot = new File(fullPath);
-			FilesystemDigitalObjectManagerImpl._log.info("Looking at: "+pdURI+" -> "+searchRoot.getCanonicalPath());	
-			if (searchRoot.exists() && searchRoot.isDirectory()) {
-				// Create a filter to avoid do metadata files
-				FilenameFilter filter = new FilenameFilter() {
-					public boolean accept(File f, String name) {
-						return !name.endsWith(FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
-					}
-				};
-				String[] contents = searchRoot.list(filter);
-				retVal = new ArrayList<URI>();
-				for (String s : contents) {
-				    File sf = new File( searchRoot, s );
-				    // Create the new URI, using the multiple-argument constructors to ensure characters are properly escaped.
-				    if( sf.isDirectory() ) {
-				        retVal.add(
-				                new URI( 
-				                        pdURI.getScheme(), 
-				                        pdURI.getUserInfo(),
-				                        pdURI.getHost(), 
-				                        pdURI.getPort(),
-				                        pdURI.getPath() + s + "/", 
-				                        null, null ) );
-				    } else {
-                        retVal.add(
-                                new URI( 
-                                        pdURI.getScheme(), 
-                                        pdURI.getUserInfo(),
-                                        pdURI.getHost(), 
-                                        pdURI.getPort(),
-                                        pdURI.getPath() + s, 
-                                        null, null ) );
-				    }
-				}
-			}
+	        File searchRoot = new File(fullPath);
+	        FilesystemDigitalObjectManagerImpl._log.info("Looking at: " + pdURI + " -> " + searchRoot.getCanonicalPath() );    
+			retVal = this.listFileLocation( pdURI, searchRoot );
+			
 		} catch (URISyntaxException e) {
 			FilesystemDigitalObjectManagerImpl._log.error("URI Syntax exception");
 			FilesystemDigitalObjectManagerImpl._log.error(e.getMessage());
@@ -150,7 +119,52 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 
 		return retVal;
 	}
+	
+	/**
+	 * This code take the actual file location and turns it into a listing.
+	 * 
+	 * @param pdURI
+	 * @param fullPath
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	protected ArrayList<URI> listFileLocation(URI pdURI, File searchRoot ) throws URISyntaxException {
+        ArrayList<URI> retVal = new ArrayList<URI>();
+        if (searchRoot.exists() && searchRoot.isDirectory()) {
+            // Create a filter to avoid do metadata files
+            FilenameFilter filter = new FilenameFilter() {
+                public boolean accept(File f, String name) {
+                    return !name.endsWith(FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
+                }
+            };
+            String[] contents = searchRoot.list(filter);
+            for (String s : contents) {
+                File sf = new File( searchRoot, s );
+                // Create the new URI, using the multiple-argument constructors to ensure characters are properly escaped.
+                if( sf.isDirectory() ) {
+                    retVal.add( createNewPathUri( pdURI, pdURI.getPath() + s + "/" ) );
+                } else {
+                    retVal.add( createNewPathUri( pdURI, pdURI.getPath() + s ) );
+                }
+            }
+        }
+        return retVal;
+	}
 
+	/**
+	 * This is just a helper to create a new URI reliably, using an existing one as a template.
+	 * 
+	 * @param oldPathUri
+	 * @param newPath
+	 * @return
+	 * @throws URISyntaxException
+	 */
+    protected URI createNewPathUri(URI oldPathUri, String newPath)
+            throws URISyntaxException {
+        return new URI(oldPathUri.getScheme(), oldPathUri.getUserInfo(),
+                oldPathUri.getHost(), oldPathUri.getPort(), newPath, null, null);
+    }
+        
 	/**
 	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
