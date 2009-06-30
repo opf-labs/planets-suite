@@ -490,10 +490,8 @@ public class ListExp extends SortableList {
 	            	String expName = selectedExperiment.getExperimentSetup().getBasicProperties().getExperimentName();
 	            	String contactName = selectedExperiment.getExperimentSetup().getBasicProperties().getContactName();
 	            	String contactEmail = selectedExperiment.getExperimentSetup().getBasicProperties().getContactMail();
-	            	
-	            	//how do I get this from the form?
-	            	//String reason = "";
-	            	
+	            	String experimenter = selectedExperiment.getExperimentSetup().getBasicProperties().getExperimenter();
+	            	//send email to admin
 	            	String body = "Experiment deletion request received for experiment:\r\n";
 	            	body += expName+"\r\n";
 	            	body += "The contact for this experiment is "+contactName+" ("+contactEmail+")\r\n";
@@ -506,6 +504,21 @@ public class ListExp extends SortableList {
 	                User user = UserBean.getUser("admin");
 	                mailer.addRecipient(user.getFullName() + "<" + user.getEmail() + ">");
 	                mailer.send();
+	                
+	                //send email to user, explaining that they have *requested* deletion
+	                body = "Experiment deletion request sent for experiment:\r\n";
+	            	body += expName+"\r\n";
+	            	body += "\r\nThe administrator will verify your request and delete the experiment if appropriate.";
+	            	//body += "Reason given for deletion: "+reason;
+	                mailer = new PlanetsMailMessage();
+	                mailer.setSender("noreply@planets-project.eu");
+	                mailer.setSubject("Experiment deletion request: "+expName);
+	                mailer.setBody(body);
+
+	                user = UserBean.getUser(experimenter);
+	                mailer.addRecipient(user.getFullName() + "<" + user.getEmail() + ">");
+	                mailer.send();
+	                
 	                log.info("Deletion request email sent successfully.");
             	}
             } catch( Exception e ) {
