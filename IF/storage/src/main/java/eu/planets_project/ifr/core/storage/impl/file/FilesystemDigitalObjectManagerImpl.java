@@ -4,6 +4,7 @@
 package eu.planets_project.ifr.core.storage.impl.file;
 
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
+
 import eu.planets_project.ifr.core.storage.api.PDURI;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
@@ -16,7 +17,6 @@ import org.apache.commons.logging.LogFactory;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -310,7 +310,8 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	 * We don't want the no arg constructor used as every file based registry should have a
 	 * root directory
 	 */
-	private FilesystemDigitalObjectManagerImpl() {
+	@SuppressWarnings("unused")
+    private FilesystemDigitalObjectManagerImpl() {
 	}
 
 	/**
@@ -323,7 +324,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	 * @throws IllegalArgumentException
 	 * 		When one of the passed parameters doesn't satisfy the criteria documented above
 	 */
-	private FilesystemDigitalObjectManagerImpl(String name, File root) throws IllegalArgumentException {
+	protected FilesystemDigitalObjectManagerImpl(String name, File root) throws IllegalArgumentException {
 		// Check the passed arguments, this will throw the IllegalArgumentException if not OK
 		this.checkConstructorArguments(name, root);
 		
