@@ -31,12 +31,12 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
     private static Log _log = LogFactory.getLog(FilesystemDigitalObjectManagerImpl.class);
     
     /** The extension used for storing digital object metadata */
-    private final static String DO_EXTENSION = ".planets.do";
+    protected final static String DO_EXTENSION = ".planets.do";
 
     /** The name of this data registry instance */
-    private String _name = null;
+    protected String _name = null;
 	/** This is the root directory of this particular Data Registry */
-	private File _root = null;
+	protected File _root = null;
 
 	/**
 	 * @param name
