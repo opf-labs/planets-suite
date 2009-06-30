@@ -5,7 +5,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
@@ -24,6 +23,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHelper;
+import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperService;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -66,8 +66,6 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 		}
 	}
 	                 
-	public static final String NAME = "FloppyImageHelperUnix";
-	
 	private static String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER_UNIX";
 	private static File TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 	private static String sessionID = null;
@@ -90,7 +88,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 	*/
 	public ServiceDescription describe() 
 	{
-		ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Migrate.class.getCanonicalName());
+		ServiceDescription.Builder sd = new ServiceDescription.Builder(FloppyImageHelperService.NAME, Migrate.class.getCanonicalName());
 		sd.author("Klaus Rechert, mailto:klaus.rechert@rz.uni-freiburg.de");
 		sd.description("This service is a wrapper for creating floppy images with UNIX dd and fs-tools\n" +
 			"This tool is able to create Floppy disk images (1.44 MB) from scratch," + 

@@ -21,6 +21,7 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.migration.floppyImageHelper.api.FloppyImageHelper;
+import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageHelperService;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
@@ -40,8 +41,6 @@ import eu.planets_project.services.utils.ZipUtils;
 //        targetNamespace = PlanetsServices.NS,
 //        endpointInterface = "eu.planets_project.services.migrate.Migrate")
 public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
-	
-	public static final String NAME = "FloppyImageHelperWin";
 	
 	private File TEMP_FOLDER = null;
 	private String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER_WIN";
@@ -77,7 +76,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	 * @see eu.planets_project.services.migration.floppyImageHelper.FloppyImageHelper#describe()
 	 */
     public ServiceDescription describe() {
-        ServiceDescription.Builder sd = new ServiceDescription.Builder(NAME, Migrate.class.getCanonicalName());
+        ServiceDescription.Builder sd = new ServiceDescription.Builder(FloppyImageHelperService.NAME, Migrate.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
         sd.description("This service is a wrapper for the 'Virtual Floppy Drive' Commandline tool for Windows." + br +
         				"This tools is able to create Floppy disk images - 1.44 MB - from scratch, containing files of your choice." + br +
