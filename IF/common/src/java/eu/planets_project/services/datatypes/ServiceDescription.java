@@ -165,6 +165,9 @@ public final class ServiceDescription {
     /**
      * Services may specify what types they can take as inputs. [input]*n This
      * is particularly useful for Validate and Characterise.
+     * If the Service perform Migration, this field should not be used. Use
+     * paths instead
+     * @see #paths
      */
     @XmlElement(name = "inputFormat", required = false, namespace = PlanetsServices.SERVICES_NS)
     List<URI> inputFormats;

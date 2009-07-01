@@ -45,6 +45,12 @@ public interface Migrate extends PlanetsService {
     QName QNAME = new QName(PlanetsServices.NS, Migrate.NAME);
 
     /**
+     * Migrate one digital object from inputFormat to outputFormat.
+     *  
+     *
+     * Note: The migration should ignore the formatURI specified in the digital
+     * object.
+     *
      * @param digitalObject The digital object to migrate
      * @param inputFormat the initial format (migrate from)
      * @param outputFormat the required format (migrate to)
