@@ -37,7 +37,16 @@
 
         <ui:fragment rendered="#{dob.thumbnailable}">
         <dt>Preview</dt>
-        <dd><h:graphicImage value="#{dob.thumbnailUri}"/></dd>
+        <dd>
+          <h:panelGrid styleClass="thumbnailPreviewPanel">
+          <h:graphicImage value="#{dob.thumbnailUri}" style="padding: 4px; background-color: #{DobBrowser.previewBackgroundColour}"/>
+          <rich:inputNumberSlider value="#{DobBrowser.previewBackgroundColourIndex}" showInput="false"
+            enableManualInput="false" showBoundaryValues="false"
+            showToolTip="false">
+            <a4j:support event="onchange" reRender="DobBrowserDetailsPanelBar"/>
+          </rich:inputNumberSlider>
+          </h:panelGrid>
+        </dd>
         </ui:fragment>
         
         <ui:fragment rendered="#{dob.downloadUri != null}">

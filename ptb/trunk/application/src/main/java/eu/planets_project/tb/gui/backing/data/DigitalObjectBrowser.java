@@ -38,6 +38,9 @@ public class DigitalObjectBrowser {
     protected static final String CORPORA_PANEL = "dob_pan_corpora";
     private String selectedPanel = "";
     
+    /* Image thumbnail background color setting. */
+    private int previewBackgroundColourIndex = 50;
+    
     // FIXME Hard-coded upper limit on automatic select-all size:
     private static final int SELECT_ALL_MAX_SIZE = 400;
 
@@ -55,6 +58,30 @@ public class DigitalObjectBrowser {
         return dr.dsm;
     }
     
+    /**
+     * @return the previewBackgroundColourIndex
+     */
+    public int getPreviewBackgroundColourIndex() {
+        return previewBackgroundColourIndex;
+    }
+
+    /**
+     * @param previewBackgroundColourIndex the previewBackgroundColourIndex to set
+     */
+    public void setPreviewBackgroundColourIndex(int previewBackgroundColourIndex) {
+        log.info("Setting to "+previewBackgroundColourIndex);
+        this.previewBackgroundColourIndex = previewBackgroundColourIndex;
+    }
+
+    /**
+     * @return the previewBackgroundColour
+     */
+    public String getPreviewBackgroundColour() {
+        String hex = Integer.toHexString((int)(255.0*previewBackgroundColourIndex/100.0));
+        if( hex.length() == 1 ) hex = "0"+hex;
+        return "#"+hex+hex+hex;
+    }
+
     /**
      * Sends back a list of the DOs under the current URI
      * @return
