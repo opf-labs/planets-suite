@@ -1,11 +1,11 @@
 package eu.planets_project.ifr.core.storage.api;
 
-import java.net.URI;
-import java.util.List;
-
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.DigitalObject;
+
+import java.net.URI;
+import java.util.List;
 
 /**
  * Interface for storage and retrieval of Digital Objects in an IF Data Registry.
@@ -19,8 +19,8 @@ public interface DigitalObjectManager {
 	 * 
 	 * @param pdURI
 	 *            The URI which uniquely identifies the persisted DigitalObject
-	 * @param digitalObject
-	 * @throws DigitalObjectNotStoredException 
+	 * @param digitalObject The object to store
+	 * @throws DigitalObjectNotStoredException  if the storing somehow failed
 	 */
 	public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException;
 
@@ -61,7 +61,7 @@ public interface DigitalObjectManager {
 	 * @param pdURI
 	 *            URI that uniquely identifies the DigitalObject
 	 * @return the DigitalObject retrieved from the registry
-	 * @throws DigitalObjectNotFoundException 
+	 * @throws DigitalObjectNotFoundException If the digital object with this URI is not found in the repository
 	 */
 	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException;
 
@@ -78,6 +78,8 @@ public interface DigitalObjectManager {
 	 * 
 	 * @param pdURI The URI in the repository at which the query should be executed.  Can be null, meaning at the top-level.
 	 * @param q The Query to be executed.
+     * @return the List of Digital Object URIs that matched the query
+     * @throws eu.planets_project.ifr.core.storage.api.query.QueryValidationException if the query does not make sense
 	 */
 	public List<URI> list( URI pdURI, Query q ) throws QueryValidationException;
 	
