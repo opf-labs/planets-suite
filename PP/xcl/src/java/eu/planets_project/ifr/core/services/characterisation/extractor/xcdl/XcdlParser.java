@@ -1,6 +1,10 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.xcdl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,26 +27,35 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.gene
  */
 public final class XcdlParser implements XcdlAccess {
 
-    private File xcdlFile;
     private Xcdl xcdl;
 
     /**
      * @param xcdl The XCDL file
      */
     public XcdlParser(final File xcdl) {
-        this.xcdlFile = xcdl;
-        this.xcdl = loadXcdl();
+        try {
+            this.xcdl = loadXcdl(new FileReader( xcdl ));
+        } catch (FileNotFoundException e) {
+            this.xcdl =  null;
+        }
+    }
+    
+    /**
+     * @param xcdl The XCDL, held in a String.
+     */
+    public XcdlParser(final String xcdl ) {
+        this.xcdl = loadXcdl( new StringReader( xcdl ));
     }
 
     /**
      * @return The XCDL root object
      */
-    private Xcdl loadXcdl() {
+    private Xcdl loadXcdl( Reader source ) {
         try {
             JAXBContext jc = JAXBContext
                     .newInstance("eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated");
             Unmarshaller unmarshaller = jc.createUnmarshaller();
-            java.lang.Object object = unmarshaller.unmarshal(xcdlFile);
+            java.lang.Object object = unmarshaller.unmarshal(source);
             return (Xcdl) object;
         } catch (JAXBException e) {
             e.printStackTrace();
