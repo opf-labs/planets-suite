@@ -1055,3 +1055,11 @@ pre.rawServiceDescription {
   background-repeat: no-repeat;
   padding-left: 16px;
 }
+.thumbnailPreviewPanel img {
+  border: 1px solid white;
+}
+.thumbnailPreviewPanel img:hover {
+  background-color: #ffffff !important;
+  border: 1px solid black;
+}
+
