@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="planetsdatastream" type="planetsdatastreamType"/>
+
+    <xs:complexType name="planetsdatastreamType">
+        <xs:sequence>
+            <xs:element type="filedatastreamType" name="filedatastream"/>
+            <xs:element type="titleType" name="title"/>
+            <xs:element type="metadatastreamType" name="metadatastream"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="filedatastreamType">
+        <xs:attribute type="idType" name="name"/>
+        <xs:attribute type="datastreamtype" name="type"/>
+    </xs:complexType>
+
+    <xs:simpleType name="datastreamtype">
+        <xs:restriction base="xs:string" >
+            <xs:enumeration value="managed"/>
+            <xs:enumeration value="external"/>
+            <xs:enumeration value="inline"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="titleType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute type="xs:string" name="datastream"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="metadatastreamType">
+        <xs:attribute type="idType" name="name"/>
+    </xs:complexType>
+
+    <xs:simpleType name="idType">
+        <xs:restriction base="xs:ID">
+            <xs:maxLength value="64"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+</xs:schema>
