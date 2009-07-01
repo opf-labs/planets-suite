@@ -24,28 +24,29 @@ import eu.planets_project.services.utils.PlanetsLogger;
 /**
  * DiaMigrationService testing service.
  * 
- * @author Bolette Ammitzbøll Jurik (bam@statsbiblioteket.dk)
  * @author Thomas Skou Hansen (tsh@statsbiblioteket.dk)
  */
 @Local(Migrate.class)
 @Remote(Migrate.class)
 @Stateless
-@WebService(name = DiaMigrationService.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
-public final class DiaMigrationService implements Migrate, Serializable {
-
-    /** The service name */
-    static final String NAME = "DiaMigrationService";
-
-    static final String configfile = "dia.paths.xml";
+@WebService(name = GenericCLIMigrationWrapperTestService.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
+public final class GenericCLIMigrationWrapperTestService implements Migrate,
+	Serializable {
 
     /** The unique class id */
-    private static final long serialVersionUID = 4596228292063217306L;
+    private static final long serialVersionUID = 2764657361729506384L;
+
+    /** The service name */
+    static final String NAME = "GenericCLIMigrationWrapperTestService";
 
     private PlanetsLogger log = PlanetsLogger
-	    .getLogger(DiaMigrationService.class);
+	    .getLogger(GenericCLIMigrationWrapperTestService.class);
 
     /**
      * {@inheritDoc}
+     * 
+     * <b>Needs a parameter that specifies which configuration file the test
+     * service should use.</b>
      * 
      * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject,
      *      java.net.URI, java.net.URI,
@@ -56,8 +57,12 @@ public final class DiaMigrationService implements Migrate, Serializable {
 
 	MigrateResult migrationResult;
 	try {
+	    // Get the full file path to the configuration file to test from the
+	    // parameter list.
+	    String configFileName = getConfigFileName(parameters);
+
 	    GenericCLIMigrationWrapper genericWrapper = new GenericCLIMigrationWrapper(
-		    configfile);
+		    configFileName);
 	    migrationResult = genericWrapper.migrate(digitalObject,
 		    inputFormat, outputFormat, parameters);
 	} catch (Exception e) {
@@ -67,7 +72,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
 			    + "' from input format URI: " + inputFormat
 			    + " to output format URI: " + outputFormat, e);
 	    return new MigrateResult(null, null); // FIXME! Report failure in a
-						  // proper way.
+	    // proper way.
 	}
 
 	return migrationResult;
@@ -113,6 +118,28 @@ public final class DiaMigrationService implements Migrate, Serializable {
 	} catch (Exception e) {
 	    throw new Error("Failed building migration path information.", e);
 	}
+    }
+
+    /**
+     * Get the value of the &quot;configfile&quot; parameter.
+     * 
+     * @param parameters
+     *            The parameter list passed to this migration service at
+     *            invokation.
+     * @return The string value of the &quot;configfile&quot; parameter.
+     * @throws MigrationException
+     *             if the &quot;configfile&quot; parameter was not defined in
+     *             the parameter list.
+     */
+    private String getConfigFileName(List<Parameter> parameters)
+	    throws MigrationException {
+	for (Parameter parameter : parameters) {
+	    if ("configfile".equals(parameter.getName())) {
+		return parameter.getValue();
+	    }
+	}
+	throw new MigrationException(
+		"No \"configfile\" parameter was specified. Please specify the full path to the configuration file to test.");
     }
 
     private Set<URI> getAllowedInputFormatURIs() throws URISyntaxException {

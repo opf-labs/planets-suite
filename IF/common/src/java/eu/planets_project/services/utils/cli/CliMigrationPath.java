@@ -1,7 +1,10 @@
 package eu.planets_project.services.utils.cli;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
+
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * Migration paths created from a XML config file.
@@ -13,6 +16,7 @@ public class CliMigrationPath {
     private Set<URI> in;
     private Set<URI> out;
     private String tool;
+    //TODO: Should also contain tool parameters
 
     /**
      * @param froms The source formats
@@ -45,5 +49,33 @@ public class CliMigrationPath {
      */
     public String getTool() {
         return tool;
+    }
+
+
+    /**
+     * @return
+     */
+    public boolean useTempSourceFile() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
+
+    /**
+     * @return
+     */
+    public boolean useTempDestinationFile() {
+	// TODO Auto-generated method stub
+	return false;
+    }
+
+
+    /**
+     * @param toolParameters
+     * @return
+     */
+    public String getConmmandLine(List<Parameter> toolParameters) {
+	// TODO Auto-generated method stub
+	return "ls -la";
     }
 }

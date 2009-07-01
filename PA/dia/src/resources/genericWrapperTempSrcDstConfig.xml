@@ -1,0 +1,71 @@
+<paths>
+
+	<!--
+		Silly migration path for conversion of lower case text to upper case
+		text, using 'cat' and 'tr', for demonstration of the usage of
+		temporary source and destination files.
+	-->
+
+	<path>
+		<from>
+			<uri value="info:test/text" />
+		</from>
+
+		<to>
+			<uri value="info:test/hexdump" />
+		</to>
+
+		<commandLine>cat %param1% %tempSource | tr %param2% > %tempDestination </commandLine>
+
+		<!-- TODO: using presets will overrule custom parameters. -->
+
+		<toolparameters>
+			<optionlist>
+			<option name="mode" >
+			<optionlist>
+			<option name="Complete">
+				<param name="param1"></param>
+				<param name="param2">'[:lower:]' '[:upper:]'</param>
+			<description>Uppercase all.</description>
+			</option>
+			
+			<option name="AC-DC">
+				<param name="param1"></param>
+				<param name="param2">'A,D' 'D,A'</param>
+			<description>AC-DC to DC-AC</description>
+			</option>
+
+			<option name="Extra">
+				<param name="param1">-n</param>
+				<param name="param2">'[:lower:]' '[:upper:]'</param>
+				<description>Uppercase all and add line numbers.</description>						
+			</option>
+			</optionlist>
+			</option>
+			
+			<option name="custom">
+				<entries>
+					<param name="param1"></param>
+					<param name="param2"></param>
+				</entries>
+				<description>Quality parameter</description>						
+			</option>
+
+			<option name="quality" default="fantastic">
+				<entry value="crappy">
+					<param name="param1">-d5 -p1</param>
+					<param name="param2">-d2 -p90</param>
+				</entry>						
+				<entry name="fantastic">
+					<param name="param1">-x2 -p1</param>
+					<param name="param2">-q2 -e90</param>
+				</entry>
+			
+				<description>Quality parameter</description>						
+			</option>
+			</optionlist>
+			
+		</toolparameters>
+ 	</path>
+ 
+</paths>

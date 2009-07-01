@@ -91,9 +91,24 @@ public class CliMigrationPaths {
                 return path.getTool();
             }
         }
-        return null;
+        return null; // FIXME! throw exception! Do not return null.
     }
-    
+
+    /**
+     * @param sourceFormat
+     * @param destinationFormat
+     * @return
+     */
+    public CliMigrationPath findMigrationPath(URI sourceFormat,
+	    URI destinationFormat) {
+        for (CliMigrationPath path: paths){
+            if (path.getIn().contains(sourceFormat) && path.getOut().contains(destinationFormat)){
+                return path;
+            }
+        }
+        return null; // FIXME! throw exception! Do not return null.
+    }
+
     /**
      * @return The migration paths as planets paths
      */
@@ -175,6 +190,7 @@ public class CliMigrationPaths {
         }
         return "";
     }
+
 
     
 
