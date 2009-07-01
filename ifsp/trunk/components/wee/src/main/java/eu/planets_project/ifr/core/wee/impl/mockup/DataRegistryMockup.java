@@ -57,13 +57,38 @@ public class DataRegistryMockup implements DataManagerLocal{
     	weeTmpDir = RegistryUtils.getWeeTmpDir();
     }
     
-    private void createWFTemplateDir(){
-    	File root = new File(this.weewfTemplatesDir);
+    private void createWFTemplateDir() {
+   	
+			/* 
+			File root = new File(this.weewfTemplatesDir);
     	String dir = root.getAbsolutePath();
     	if(!(root.canRead()&&root.isDirectory())){
-    		root.mkdirs();
-    		log.debug("DataRegistryMockup: created WFTemplateDir: "+root.getAbsolutePath() + " exists: "+root.exists());
+    	  root.mkdirs();
+    		log.error("DataRegistryMockup: created WFTemplateDir: "+root.getAbsolutePath() + " exists: "+root.exists());
     	}
+    	*/
+
+			File fWeeDirBase = new File(weeDirBase);
+			if( !fWeeDirBase.exists() ) {
+      	if(fWeeDirBase.mkdir()) {
+      		log.info("DataRegistryMockup: created weeDirBase: "+weeDirBase);
+      	} else {
+      		log.error("DataRegistryMockup: unable to create weeDirBase: "+weeDirBase);
+      		return;
+      	}
+			} 
+			
+			String templatesPath = weeDirBase+System.getProperty("file.separator")+weewfTemplatesDir;
+			File fTemplatesPath = new File(templatesPath);
+			if( !fTemplatesPath.exists() ) {
+      	if(fTemplatesPath.mkdir()) {
+      		log.info("DataRegistryMockup: created weeTemplatesDir: "+ templatesPath);
+      	} else {
+      		log.error("DataRegistryMockup: unable to create weeTemplatesDir: "+templatesPath);
+      		return;
+      	}
+			} 
+			    	
     }
 	
 	/**
@@ -107,6 +132,7 @@ public class DataRegistryMockup implements DataManagerLocal{
 			throw new RepositoryException("DataRegistryMockup error storing wftemplate name");
 		}
 		String templateName = uri.substring(p+1, uri.length());
+							
 		try {
 			FileUtil.writeFile(binary, this.weeDirBase+"/"+uri.substring(0,p), templateName);
 		} catch (IOException e) {

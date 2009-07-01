@@ -65,7 +65,7 @@ public class FileUtil {
 	 * @throws IOException
 	 */
 	  public static void writeFile(byte[] data, String dir, String fileName) throws IOException{
-		  
+		 		  
 		  String dirPackages = new File(fileName).getParent();
 		  new File(dir+"/"+dirPackages).mkdirs();
 		  OutputStream out = new FileOutputStream(dir+"/"+fileName);
@@ -75,6 +75,7 @@ public class FileUtil {
 			  out.close();
 		  }
 	  }
+
 	  
 	 /**
 	  * Used to retrieve a file - fetched from the data registry and transferred into the wee's local /temp directory
