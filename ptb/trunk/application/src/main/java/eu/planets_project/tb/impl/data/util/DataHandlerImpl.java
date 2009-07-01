@@ -299,7 +299,7 @@ public class DataHandlerImpl implements DataHandler {
         if( file.exists() ) {
             log.debug("Found file: "+file.getAbsolutePath());
             // URGENT The file must be lodged somewhere!
-            return new DigitalObjectRefBean(name, this.createDownloadUri(id, name), file);
+            return new DigitalObjectRefBean(name, id, file);
         } else {
             throw new FileNotFoundException("Could not find file "+id);
         }
@@ -318,8 +318,7 @@ public class DataHandlerImpl implements DataHandler {
         if( dommer.hasDataManager(domUri)) {
             try {
                 DigitalObject digitalObject = dommer.retrieve(domUri);
-                URI downloadUri = this.createDownloadUri(domUri.toString(), digitalObject.getTitle());
-                return new DigitalObjectRefBean(digitalObject.getTitle(), downloadUri, domUri, digitalObject);
+                return new DigitalObjectRefBean(digitalObject.getTitle(), domUri.toString(), domUri, digitalObject);
             } catch (DigitalObjectNotFoundException e) {
                 throw new FileNotFoundException("Could not find file "+id);
             }
@@ -328,38 +327,6 @@ public class DataHandlerImpl implements DataHandler {
         }
         
         
-    }
-
-    /* -------------------------------------------------------------------------------------------------- */
-
-    private URI createDownloadUri(String id, String name ) {
-        log.debug("For id: "+id+" got name: "+name);
-        
-        // Define the download URI:
-        log.debug("Creating the download URL.");
-        String context = "/testbed";
-        if( FacesContext.getCurrentInstance() != null ) {
-            HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-            context = req.getContextPath();
-        }
-        URI download = null;
-        try {
-            download = new URI( "https", 
-                    PlanetsServerConfig.getHostname()+":"+PlanetsServerConfig.getSSLPort(), 
-                    context+"/reader/download.jsp","fid="+URLEncoder.encode( id, "UTF-8") , null);
-            /* This can be used if the above is causing problems
-            download = new URI( null, null, 
-                    context+"/reader/download.jsp","fid="+id, null);
-                    */
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            download = null;
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            download = null;
-        }
-        log.info("Created download URI: "+download);
-        return download;
     }
 
 

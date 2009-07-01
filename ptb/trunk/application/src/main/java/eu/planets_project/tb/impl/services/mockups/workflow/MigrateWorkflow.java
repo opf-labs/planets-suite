@@ -456,7 +456,7 @@ public class MigrateWorkflow implements ExperimentWorkflow {
             executeMigrateStage(wr, migrateStage, dob);
         } catch (Exception e ) {
             // Create a ServiceReport from the exception.
-            //TODO can we distinguish tool and install error here?
+            // URGENT can we distinguish tool and install error here?
             ServiceReport sr = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, e.toString());
             wr.setReport(sr);
             log.error("Migration failed! "+e);
@@ -591,9 +591,14 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( success ) {
             log.info("Characterisation succeeded: "+result);
             if( result != null ) {
+                // URGENT Formalise and refactor this logic.
                 log.info("Service Report: "+result.getReport().getMessage());
                 log.info("Service Report: "+result.getReport().getStatus());
                 log.info("Service Report: "+result.getReport().getType());
+                if( result.getReport().getStatus() == Status.INSTALLATION_ERROR 
+                        || result.getReport().getStatus() == Status.TOOL_ERROR ) {
+                    success = false;
+                }
             }
         }
         
@@ -648,9 +653,14 @@ public class MigrateWorkflow implements ExperimentWorkflow {
         if( success ) {
             log.info("Identification succeeded: "+result);
             if( result != null ) {
+                // URGENT Formalise and refactor this logic.
                 log.info("Service Report: "+result.getReport().getMessage());
                 log.info("Service Report: "+result.getReport().getStatus());
                 log.info("Service Report: "+result.getReport().getType());
+                if( result.getReport().getStatus() == Status.INSTALLATION_ERROR 
+                        || result.getReport().getStatus() == Status.TOOL_ERROR ) {
+                    success = false;
+                }
             }
         }
         

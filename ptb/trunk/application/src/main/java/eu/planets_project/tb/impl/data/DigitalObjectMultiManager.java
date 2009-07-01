@@ -45,6 +45,8 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     private List<DataSource> dss;
     
     /**
+     * URGENT Refactor this and make it less horribly cut-and-pasty...
+     * 
      * The constructor create the list of known DRs:
      */
     public DigitalObjectMultiManager() {
@@ -83,7 +85,16 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         DigitalObjectManager bmdom = new BlueMarbleDigitalObjectManagerImpl();
         dss.add(3, new DataSource( bmdom.list(null).get(0), bmdom ));
         dss.get(3).setDescription("The Blue Marble image collection, from NASA.");
-/*
+
+        // XCDL Corpus
+        fsname = "xcdl-corpus-files";
+        fsloc  = System.getProperty("jboss.home.dir") + System.getProperty("file.separator") + "planets-xcdl-corpus" + System.getProperty("file.separator");
+        fsf = new File( fsloc );
+        if( ! fsf.exists() ) fsf.mkdirs();
+        DigitalObjectManager xdom = XcdlCorpusDigitalObjectManagerImpl.getInstance( fsname, fsf );
+        dss.add(4, new DataSource( xdom.list(null).get(0), xdom));
+        dss.get(4).setDescription("The XCDL Corpus.");
+ /*
         // Yahoo Image Search:
         DigitalObjectManager ydom = new YahooImageAPIDigitalObjectManagerImpl();
         dss.add(4, new DataSource( ydom.list(null).get(0), ydom ));

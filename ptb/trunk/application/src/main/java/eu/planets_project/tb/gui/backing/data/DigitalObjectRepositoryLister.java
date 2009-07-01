@@ -172,14 +172,9 @@ public class DigitalObjectRepositoryLister<E> implements List<E> {
         // Object or folder? If null, or empty folder, 
         if( dsm.list(item) == null ) {
             // This is a DO:
-            try {
-                DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm.retrieve(item));
-                return itemNode;
-                
-            } catch (DigitalObjectNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            }
+            DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item, dsm );
+            return itemNode;
+            
         } else {
             // This is a location:
             DigitalObjectTreeNode itemNode = new DigitalObjectTreeNode(item);

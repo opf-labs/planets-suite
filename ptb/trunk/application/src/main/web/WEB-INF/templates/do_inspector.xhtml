@@ -34,10 +34,24 @@
         <dt>Size</dt>
         <dd><h:outputText value="#{dob.size}"/></dd>
         </ui:fragment>
+
+        <ui:fragment rendered="#{dob.thumbnailable}">
+        <dt>Preview</dt>
+        <dd><h:graphicImage value="#{dob.thumbnailUri}"/></dd>
+        </ui:fragment>
         
         <ui:fragment rendered="#{dob.downloadUri != null}">
         <dt>Download</dt>
         <dd><h:outputLink value="#{dob.downloadUri}">Click here to download.</h:outputLink></dd>
+        </ui:fragment>
+
+        <ui:fragment rendered="#{dob.properties != null}">
+          <dt>Properties</dt>
+          <dd>
+            <ui:repeat value="#{dob.properties}" var="prop">
+             <h:outputText value=" #{prop.name}"/><h:outputText value=" = #{prop.value}"/><br/>
+            </ui:repeat>
+          </dd>
         </ui:fragment>
         
         </ui:fragment>

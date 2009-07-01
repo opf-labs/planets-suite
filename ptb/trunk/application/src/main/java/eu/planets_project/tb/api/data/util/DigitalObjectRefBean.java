@@ -11,24 +11,35 @@
 package eu.planets_project.tb.api.data.util;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
+import eu.planets_project.ifr.common.conf.PlanetsServerConfig;
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * @author AnJackson
- *
+ * TODO Remove a lot of reproduction of code and logic, c.f. DigitalObjectTreeNode etc etc.
  */
 public class DigitalObjectRefBean {
+    // A logger:
+    private static PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectRefBean.class);
+    
     String name;
-    URI download;
+    String id;
     URI domUri;
     DigitalObject dob;
     File file;
@@ -40,9 +51,9 @@ public class DigitalObjectRefBean {
      * @param domUri
      * @param dob
      */
-    public DigitalObjectRefBean(String name, URI downloadUri, URI domUri, DigitalObject dob ) {
+    public DigitalObjectRefBean(String name, String id, URI domUri, DigitalObject dob ) {
         this.name = name;
-        this.download = downloadUri;
+        this.id = id;
         this.domUri = domUri;
         this.dob = dob;
     }
@@ -52,9 +63,9 @@ public class DigitalObjectRefBean {
      * @param createDownloadUri
      * @param file
      */
-    public DigitalObjectRefBean(String name, URI downloadUri, File file) {
+    public DigitalObjectRefBean(String name, String id, File file) {
         this.name = name;
-        this.download = downloadUri;
+        this.id = id;
         this.file = file;
         this.dob = new DigitalObject.Builder( Content.byReference( file ) ).title(name).build();
         //this.dob = new DigitalObject.Builder( Content.byValue( file ) ).title(name).build();
@@ -71,7 +82,14 @@ public class DigitalObjectRefBean {
      * @return the download
      */
     public URI getDownloadUri() {
-        return download;
+        return createDownloadUri(id, "/reader/download.jsp");
+    }
+
+    /**
+     * @return
+     */
+    public URI getThumbnailUri() {
+        return createDownloadUri(id, "/reader/thumbnail.jsp");
     }
     
     /**
@@ -155,5 +173,34 @@ public class DigitalObjectRefBean {
             }
         }
     }
-   
+
+    /* -------------------------------------------------------------------------------------------------- */
+
+    private URI createDownloadUri( String id, String prefix ) {        
+        // Define the download URI:
+        log.debug("Creating the download URL.");
+        String context = "/testbed";
+        if( FacesContext.getCurrentInstance() != null ) {
+            HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            context = req.getContextPath();
+        }
+        URI download = null;
+        try {
+            download = new URI( "https", 
+                    PlanetsServerConfig.getHostname()+":"+PlanetsServerConfig.getSSLPort(), 
+                    context+prefix,"fid="+URLEncoder.encode( id, "UTF-8") , null);
+            /* This can be used if the above is causing problems
+            download = new URI( null, null, 
+                    context+"/reader/download.jsp","fid="+id, null);
+                    */
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            download = null;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            download = null;
+        }
+        log.info("Created download URI: "+download);
+        return download;
+    }
 }

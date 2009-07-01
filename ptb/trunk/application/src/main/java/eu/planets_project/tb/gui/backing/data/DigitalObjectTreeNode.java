@@ -4,15 +4,21 @@
 package eu.planets_project.tb.gui.backing.data;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.DigitalObjectContent;
+import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
+import eu.planets_project.tb.impl.data.XcdlCorpusDigitalObjectManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.util.List;
+
+import javax.activation.MimetypesFileTypeMap;
 
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
@@ -25,11 +31,11 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     
     static private PlanetsLogger log = PlanetsLogger.getLogger(DigitalObjectTreeNode.class);
     
-    private DigitalObject dob;
+    private DigitalObjectMultiManager dsm;
+    private DigitalObject dob_cache = null;
     private URI uri;
     private String leafname;
     private String owner;
-    private long size;
     private String dateAdded;
     private String dateModified;
     private boolean selectable;
@@ -40,24 +46,21 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     /**
      * Constructor based on Digital Object:
      */
-    public DigitalObjectTreeNode( URI uri, DigitalObject dob ) {
+    public DigitalObjectTreeNode( URI uri, DigitalObjectMultiManager dsm ) {
         log.info("Creating bean for Digital Object at: "+uri);
         this.setUri(uri);
-        this.dob = dob;
+        this.dsm = dsm;
         this.setType("file");
         this.setLeaf(true);
         this.setSelectable(true);
-        DigitalObjectContent con = dob.getContent();
-        this.size = con.length();
     }
     
     public DigitalObjectTreeNode( URI uri ) {
         this.setUri(uri);
-        this.dob = null;
+        this.dsm = null;
         this.setType("folder");
         this.setLeaf(false);
         this.setSelectable(false);
-        this.size = -1;
     }
 
     public DigitalObjectTreeNode() {
@@ -84,7 +87,16 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * @return the dob
      */
     public DigitalObject getDob() {
-        return dob;
+        if( dsm == null ) return null;
+        if( dob_cache == null ) {
+            try {
+                dob_cache = dsm.retrieve(getUri());
+            } catch (DigitalObjectNotFoundException e) {
+                log.error("Could not locate DOB: "+this.getUri());
+                return null;
+            }
+        }
+        return dob_cache;
     }
 
     /**
@@ -134,14 +146,78 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * @return the size of the object.
      */
     public long getSize() {
-        return size;
+        if( dsm == null ) return -1;
+
+        DigitalObject dob = this.getDob();
+        if( dob == null ) return -1;
+        if( dob.getContent() == null ) return -1;
+        return dob.getContent().length();
     }
     
+    /**
+     * Look for properties attached to this DOB.
+     * @return Any properties that this framework understands. NULL if there are none.
+     */
+    public List<Property> getProperties() {
+        if( XcdlCorpusDigitalObjectManagerImpl.hasXcdlPropertied( this.getDob() ) ) {
+            return XcdlCorpusDigitalObjectManagerImpl.getXcdlProperties(this.getDob());
+        }
+        return null;
+    }
+    
+    /**
+     * @return
+     */
+    public String getMimeType() {
+        String mimetype = null;
+        
+        // Based only on URI:
+        if( getUri() != null ) 
+            mimetype =  new MimetypesFileTypeMap().getContentType(getUri().getPath());
+
+        // Return this if it worked.
+        if( mimetype != null ) return mimetype;
+        
+        // Otherwise, inspect content of the Digital Object: Title:
+        if( getDob() != null && getDob().getTitle() != null ) 
+            mimetype = new MimetypesFileTypeMap().getContentType(getDob().getTitle());
+        
+       return mimetype;
+    }
+    
+    /**
+     * @return true if this entity can be displayed as a thumbnail.
+     */
+    public boolean isThumbnailable() {
+        if( 
+                "image/jpeg".equals(this.getMimeType()) ||
+                "image/gif".equals(this.getMimeType()) ||
+                "image/png".equals(this.getMimeType()) 
+                ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return
+     */
+    public String getThumbnailUri() {
+        try {
+            String duri = dh.get(this.getUri().toString()).getThumbnailUri().toASCIIString();
+            log.info("Returning download location: "+duri);
+            return duri;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+     
     /**
      * @return the directory
      */
     public boolean isDirectory() {
-        return (dob == null);
+        return (dsm == null);
     }
     
     /**
@@ -219,7 +295,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((dob == null) ? 0 : dob.hashCode());
+        result = prime * result + ((uri == null) ? 0 : uri.hashCode());
         return result;
     }
 
@@ -234,14 +310,13 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
             return false;
         if (getClass() != obj.getClass())
             return false;
-        final DigitalObjectTreeNode other = (DigitalObjectTreeNode) obj;
-        if (dob == null) {
-            if (other.dob != null)
+        DigitalObjectTreeNode other = (DigitalObjectTreeNode) obj;
+        if (uri == null) {
+            if (other.uri != null)
                 return false;
-        } else if (!dob.equals(other.dob))
+        } else if (!uri.equals(other.uri))
             return false;
         return true;
     }
-
     
 }
