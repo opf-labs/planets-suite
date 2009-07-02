@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +16,10 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
+/**
+ * 
+ * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
+ */
 public class GenericCLIMigrationWrapperTest {
 
     private final String WSDL_LOCATION = "/pserv-pa-dia/GenericCLIMigrationWrapperTestService?wsdl";

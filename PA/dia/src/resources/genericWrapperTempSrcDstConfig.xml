@@ -1,71 +1,150 @@
 <paths>
 
-	<!--
-		Silly migration path for conversion of lower case text to upper case
-		text, using 'cat' and 'tr', for demonstration of the usage of
-		temporary source and destination files.
-	-->
+    <!--
+        Silly migration path for conversion of lower case text to upper case
+        text, using 'cat' and 'tr', for demonstration of the usage of temporary
+        source and destination files.
+    -->
 
-	<path>
-		<from>
-			<uri value="info:test/text" />
-		</from>
+    <path>
+        <!--
+            List of format URIs identifying the valid input formats for the
+            wrapped command(s) in this "path" section. It is recommended to use
+            PRONOM URIs where possible in order to achieve the most accurate
+            description of the formats. File suffixes are inaccurate as most
+            file formats are available in several versions.
+        -->
+        <inputformats>
+            <uri value="info:test/lowercase" />
+        </inputformats>
 
-		<to>
-			<uri value="info:test/hexdump" />
-		</to>
+        <!--
+            List of format URIs identifying the possible output formats of the
+            wrapped wrapped command(s) in this "path" section. It is recommended
+            to use PRONOM URIs where possible in order to achieve the most
+            accurate description of the formats. File suffixes are inaccurate as
+            most file formats are available in several versions.
+        -->
+        <outputformats>
+            <uri value="info:test/uppercase" />
+        </outputformats>
 
-		<commandLine>cat %param1% %tempSource | tr %param2% > %tempDestination </commandLine>
+        <!--
+            This is the exact shell command line to be wrapped, except from that
+            all command parameters are substituted by tags like "%some_label%".
+            The tag name (in this case "some_label") must be defined in the
+            "toolparameters" section.
+        -->
+        <commandLine>cat %param1% %tempSource | tr %param2% > %tempDestination
+        </commandLine>
 
-		<!-- TODO: using presets will overrule custom parameters. -->
+        <!--
+            The tool will terminate with an error if not all tool parameters are
+            defined at invocation. Any specified parameters will overwrite the
+            corresponding parameters from any specified tool preset. That is, if
+            the caller of the tool specifies e.g. mode=complete and param1=-n,
+            then the tool will be invoked with param1=-n and param2=[:lower:]'
+            '[:upper:] which will have the same effect as just specifying
+            mode=extra. Given the definitions of this example file.
+        -->
 
-		<toolparameters>
-			<optionlist>
-			<option name="mode" >
-			<optionlist>
-			<option name="Complete">
-				<param name="param1"></param>
-				<param name="param2">'[:lower:]' '[:upper:]'</param>
-			<description>Uppercase all.</description>
-			</option>
-			
-			<option name="AC-DC">
-				<param name="param1"></param>
-				<param name="param2">'A,D' 'D,A'</param>
-			<description>AC-DC to DC-AC</description>
-			</option>
+        <toolparameters>
+            <!--
+                All these parameters must be specified by the caller if no
+                preset is specified. The occurrences of the parameter names in
+                the above command line will be substituted with the value
+                assigned to them by the caller.
+            -->
+            <parameter name="param1">
+                <description>Command line parameters for the 'cat' command. See
+                    'man cat'.
+                </description>
+            </parameter>
+            <parameter name="param2">
+                <description>Command line parameters for the 'tr' command. See
+                    'man tr'.
+                </description>
+            </parameter>
+        </toolparameters>
 
-			<option name="Extra">
-				<param name="param1">-n</param>
-				<param name="param2">'[:lower:]' '[:upper:]'</param>
-				<description>Uppercase all and add line numbers.</description>						
-			</option>
-			</optionlist>
-			</option>
-			
-			<option name="custom">
-				<entries>
-					<param name="param1"></param>
-					<param name="param2"></param>
-				</entries>
-				<description>Quality parameter</description>						
-			</option>
+        <!--
+            Presets which can be used instead of messing with the command line
+            parameters. These presets can also be used as base settings that can
+            be modified by specifying one or more tool parameters at the same
+            time. That is, any explicitly specified tool parameter will
+            overwrite the one from any chosen preset.
+        -->
+        <toolpresets>
+            <!--
+                This section defines all possible preset types for the tool. The
+                caller may only use one of the preset types when calling, e.g.
+                specifying both mode=AC-DC and quality=good would result in an
+                error. If no parameters or preset is specified by the caller,
+                then the "mode" preset type is automatically chosen.
+            -->
+            <optionlist default="mode">
+                <!--
+                    If no parameters or preset is specified by the caller, then
+                    "mode = complete" is automatically chosen.
+                -->
+                <option name="mode">
+                    <optionlist default="complete">
+                        <option name="complete">
+                            <preset name="param1"></preset>
+                            <preset name="param2">'[:lower:]' '[:upper:]'
+                            </preset>
+                            <description>Uppercase all.</description>
+                        </option>
+                        <option name="AC-DC">
+                            <preset name="param1"></preset>
+                            <preset name="param2">'A,D' 'D,A'</preset>
+                            <description>AC-DC to DC-AC</description>
+                        </option>
+                        <option name="extra">
+                            <preset name="param1">-n</preset>
+                            <preset name="param2">'[:lower:]' '[:upper:]'
+                            </preset>
+                            <description>Uppercase all and add line numbers.
+                            </description>
+                        </option>
+                    </optionlist>
+                    <description>
+                        Mode presets for the test tool.
+                    </description>
+                </option>
 
-			<option name="quality" default="fantastic">
-				<entry value="crappy">
-					<param name="param1">-d5 -p1</param>
-					<param name="param2">-d2 -p90</param>
-				</entry>						
-				<entry name="fantastic">
-					<param name="param1">-x2 -p1</param>
-					<param name="param2">-q2 -e90</param>
-				</entry>
-			
-				<description>Quality parameter</description>						
-			</option>
-			</optionlist>
-			
-		</toolparameters>
- 	</path>
- 
+                <!--
+                    This "quality" preset type is essentially the same as the
+                    "mode" type, and is only included to demonstrate that it is
+                    possible for the caller to have more preset types to choose
+                    from.
+                -->
+                <option name="quality">
+                    <optionlist>
+                        <option name="good">
+                            <preset name="param1"></preset>
+                            <preset name="param2">'[:lower:]' '[:upper:]'
+                            </preset>
+                            <description>Uppercase all.</description>
+                        </option>
+                        <option name="better">
+                            <preset name="param1"></preset>
+                            <preset name="param2">'A,D' 'D,A'</preset>
+                            <description>AC-DC to DC-AC</description>
+                        </option>
+                        <option name="best">
+                            <preset name="param1">-n</preset>
+                            <preset name="param2">'[:lower:]' '[:upper:]'
+                            </preset>
+                            <description>Uppercase all and add line numbers.
+                            </description>
+                        </option>
+                    </optionlist>
+                    <description>
+                        Quality presets for the test tool.
+                    </description>
+                </option>
+            </optionlist>
+        </toolpresets>
+    </path>
 </paths>
