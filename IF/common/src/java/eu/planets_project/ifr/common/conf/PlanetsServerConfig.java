@@ -4,10 +4,13 @@
 package eu.planets_project.ifr.common.conf;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Planets server configuration.
@@ -28,11 +31,14 @@ public class PlanetsServerConfig {
      */
     private static Properties loadProps() {
         Properties props = new Properties();
+        InputStream stream = null;
         try {
-            props.load( PlanetsServerConfig.class.getResourceAsStream(
-                    "/eu/planets_project/ifr/common/conf/planets-server-config.properties" ) );
+            stream = PlanetsServerConfig.class.getResourceAsStream(
+                    "/eu/planets_project/ifr/common/conf/planets-server-config.properties" );
+            props.load( stream );
         } catch( IOException e ) {
             log.error("Server properties failed to load! :: "+e);
+            FileUtils.close(stream);
         }
         return props;
     }

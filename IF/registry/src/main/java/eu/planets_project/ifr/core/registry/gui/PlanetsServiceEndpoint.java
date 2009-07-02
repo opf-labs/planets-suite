@@ -340,7 +340,11 @@ public class PlanetsServiceEndpoint {
             } else {
                 this.setDescriptionStatus(DescriptionStatus.OUTDATED);
                 _log.info("Old: " + this.getDescription().toXmlFormatted());
-                _log.info("New: " + csd.toXmlFormatted() );
+                if (csd != null) {
+                    _log.info("New: " + csd.toXmlFormatted());
+                } else {
+                    _log.info("No new service description");
+                }
             }
         } catch( Exception e ) {
             _log.error("Could not check service description for: "+this.getDescription().getEndpoint());

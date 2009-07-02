@@ -20,6 +20,7 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.gene
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.ValueSet;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Xcdl;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue.Val;
+import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Access to a complete XCDL, via JAXB-generated classes.
@@ -33,10 +34,13 @@ public final class XcdlParser implements XcdlAccess {
      * @param xcdl The XCDL file
      */
     public XcdlParser(final File xcdl) {
+        FileReader fileReader = null;
         try {
-            this.xcdl = loadXcdl(new FileReader( xcdl ));
+            fileReader = new FileReader( xcdl );
+            this.xcdl = loadXcdl(fileReader);
         } catch (FileNotFoundException e) {
             this.xcdl =  null;
+            FileUtils.close(fileReader);
         }
     }
     
