@@ -199,6 +199,24 @@ public final class FileUtils {
     	}
     	return randomName;
     }
+    
+    public static String getOutputFileNameFor(String inputFileName, String outFileExtension) {
+    	String fileName = null;
+    	if(outFileExtension==null) {
+    		outFileExtension = "bin";
+    	}
+		if(inputFileName.contains(" ")) {
+			inputFileName = inputFileName.replaceAll(" ", "_");
+		}
+		
+		if(inputFileName.contains(".")) {
+			fileName = inputFileName.substring(0, inputFileName.lastIndexOf(".")) + "." + outFileExtension;
+		}
+		else {
+			fileName = inputFileName + "." + outFileExtension;
+		}
+		return fileName;
+    }
 
 	/**
      * @param src The source file
