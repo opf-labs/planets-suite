@@ -39,7 +39,7 @@
         <dt>Preview</dt>
         <dd>
           <h:panelGrid styleClass="thumbnailPreviewPanel">
-          <h:graphicImage value="#{dob.thumbnailUri}" style="background-color: #{DobBrowser.previewBackgroundColour}"/>
+          <h:graphicImage styleClass="thumbnailPreviewImage" value="#{dob.thumbnailUri}" style="background-color: #{DobBrowser.previewBackgroundColour}"/>
           <rich:inputNumberSlider value="#{DobBrowser.previewBackgroundColourIndex}" showInput="false"
             enableManualInput="false" showBoundaryValues="false"
             showToolTip="false">
@@ -58,7 +58,12 @@
           <dt>Properties</dt>
           <dd>
             <ui:repeat value="#{dob.properties}" var="prop">
-             <h:outputText value=" #{prop.name}"/><h:outputText value=" = #{prop.value}"/><br/>
+             <a4j:commandLink>
+               <h:outputText value=" #{prop.name}"/>
+               <rich:toolTip value="#{prop.uri}"/>
+             </a4j:commandLink>
+             <h:outputText value=" = "/>
+             <i><h:outputText value="#{prop.value}"/></i><br/>
             </ui:repeat>
           </dd>
         </ui:fragment>
