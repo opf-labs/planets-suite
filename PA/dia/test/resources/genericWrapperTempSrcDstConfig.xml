@@ -1,41 +1,49 @@
 <paths>
 
-    <!--
-        Silly migration path for conversion of lower case text to upper case
-        text, using 'cat' and 'tr', for demonstration of the usage of temporary
-        source and destination files.
-    -->
 
     <path>
         <!--
-            List of format URIs identifying the valid input formats for the
-            wrapped command(s) in this "path" section. It is recommended to use
-            PRONOM URIs where possible in order to achieve the most accurate
-            description of the formats. File suffixes are inaccurate as most
-            file formats are available in several versions.
+            Silly migration path for conversion of lower case text to upper case
+            text, using 'cat' and 'tr', for demonstration of the usage of
+            temporary source and destination files. The migration paths
+            described by a combination of one of the input formats and the
+            output format will overwrite any similar definitions from any
+            earlier path definitions, that is, definitions closer to the top of
+            the configuration file.
         -->
         <inputformats>
+
+            <!--
+                List of format URIs identifying the valid input formats for the
+                wrapped command(s) in this "path" section. It is recommended to
+                use PRONOM URIs where possible in order to achieve the most
+                accurate description of the formats. File suffixes are
+                inaccurate as most file formats are available in several
+                revisions.
+            -->
             <uri value="info:test/lowercase" />
         </inputformats>
 
-        <!--
-            List of format URIs identifying the possible output formats of the
-            wrapped wrapped command(s) in this "path" section. It is recommended
-            to use PRONOM URIs where possible in order to achieve the most
-            accurate description of the formats. File suffixes are inaccurate as
-            most file formats are available in several versions.
-        -->
-        <outputformats>
+        <outputformat>
+            <!--
+                Format URIs identifying the output format of the wrapped
+                command(s) in this "path" section. It is recommended to use a
+                PRONOM URI when possible in order to achieve the most accurate
+                description of the format. File suffixes are inaccurate as most
+                file formats are available in several revisions.
+            -->
             <uri value="info:test/uppercase" />
-        </outputformats>
+        </outputformat>
 
-        <!--
-            This is the exact shell command line to be wrapped, except from that
-            all command parameters are substituted by tags like "%some_label%".
-            The tag name (in this case "some_label") must be defined in the
-            "toolparameters" section.
-        -->
-        <commandLine>cat %param1% %tempSource | tr %param2% > %tempDestination
+
+        <commandLine>
+            <!--
+                This is the exact shell command line to be wrapped, except from
+                that all command parameters are substituted by tags like
+                "%some_label%". The tag name (in this case "some_label") must be
+                defined in the "toolparameters" section.
+            -->
+            cat %param1% %tempSource | tr %param2% > %tempDestination
         </commandLine>
 
         <!--
@@ -74,6 +82,7 @@
             time. That is, any explicitly specified tool parameter will
             overwrite the one from any chosen preset.
         -->
+
         <toolpresets>
             <!--
                 This section defines all possible preset types for the tool. The
@@ -145,6 +154,48 @@
                     </description>
                 </option>
             </optionlist>
+        </toolpresets>
+    </path>
+
+    <!--
+        The following path is just an illustration of the possibility to define
+        multiple migration paths for the same wrapped tool. However, there is no
+        validation of that the tool used in the various path definitions are
+        actually the same, as this is not possible due to the fact that the
+        command lines may be substantially different although the same tool is
+        used for the migration, as different helper tools may be used e.g. for
+        pre- or post-processing. Thus, it is the responsibility of the person
+        writing the configuration file that it is in fact the same migration
+        tool used by all the defined paths.
+    -->
+    <path>
+
+        <inputformats>
+            <uri value="info:test/foo" />
+        </inputformats>
+
+        <outputformat>
+            <uri value="info:test/bar" />
+        </outputformat>
+
+        <commandLine>cat %param1% %tempSource | tr %param2% > %tempDestination
+        </commandLine>
+
+        <toolparameters>
+            <parameter name="param1">
+                <description>Command line parameters for the 'cat' command. See
+                    'man cat'.
+                </description>
+            </parameter>
+            <parameter name="param2">
+                <description>Command line parameters for the 'tr' command. See
+                    'man tr'.
+                </description>
+            </parameter>
+        </toolparameters>
+
+        <toolpresets>
+            <!-- No presets -->
         </toolpresets>
     </path>
 </paths>

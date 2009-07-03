@@ -1,142 +1,152 @@
 package eu.planets_project.services.migration.dia.impl;
 
-import eu.planets_project.services.datatypes.MigrationPath;
-import eu.planets_project.services.utils.FileUtils;
-
-import org.w3c.dom.*;
-import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
 
 /**
  * Create migration paths from an XML config file.
+ * 
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
 public class CliMigrationPaths {
 
-    private List<CliMigrationPath> paths;
-
     /**
-     * @param in The input format
-     * @param out The output format
-     * @return The tool of the path corresponding to the given input and output
+     * <code>PathKey</code> is a utility class used for keys for storage and
+     * look-up of migration paths.
+     * 
+     * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
      */
-    public String findMigrationCommand(URI in, URI out){
-        for (CliMigrationPath path: paths){
-            if (path.getIn().contains(in) && path.getOut().contains(out)){
-                return path.getTool();
-            }
+    private class PathKey {
+        private final URI sourceFormat;
+        private final URI destinationFormat;
+
+        /**
+         * Create a <code>PathKey</code> for a migration path with the
+         * <code>sourceFormat URI</code> and the
+         * <code>destinationFormat URI</code>.
+         */
+        public PathKey(URI sourceFormatURI, URI destinationFormatURI) {
+            this.sourceFormat = sourceFormatURI;
+            this.destinationFormat = destinationFormatURI;
         }
-        return null; // FIXME! throw exception! Do not return null.
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see java.lang.Object#hashCode()
+         */
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + getOuterType().hashCode();
+            result = prime
+                    * result
+                    + ((destinationFormat == null) ? 0 : destinationFormat
+                            .hashCode());
+            result = prime * result
+                    + ((sourceFormat == null) ? 0 : sourceFormat.hashCode());
+            return result;
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (!(obj instanceof PathKey))
+                return false;
+            PathKey other = (PathKey) obj;
+            if (!getOuterType().equals(other.getOuterType()))
+                return false;
+            if (destinationFormat == null) {
+                if (other.destinationFormat != null)
+                    return false;
+            } else if (!destinationFormat.equals(other.destinationFormat))
+                return false;
+            if (sourceFormat == null) {
+                if (other.sourceFormat != null)
+                    return false;
+            } else if (!sourceFormat.equals(other.sourceFormat))
+                return false;
+            return true;
+        }
+
+        private CliMigrationPaths getOuterType() {
+            return CliMigrationPaths.this;
+        }
+    }
+
+    private HashMap<PathKey, CliMigrationPath> migrationPaths;
+
+    public CliMigrationPaths() {
+        migrationPaths = new HashMap<PathKey, CliMigrationPath>();
     }
 
     /**
+     * Get the <code>CliMigrationPath</code> for migration from the format
+     * identified by the <code>sourceFormat URI</code> to the format identified
+     * by the <code>destinationFormat URI</code>.
+     * 
      * @param sourceFormat
+     *            <code>URI</code> identifying the source format of the path to
+     *            get.
      * @param destinationFormat
-     * @return
+     *            <code>URI</code> identifying the destination format of the
+     *            path to get.
+     * @return the migration path found.
+     * @throws MigrationException
+     *             if no matching path was found.
      */
-    public CliMigrationPath findMigrationPath(URI sourceFormat,
-	    URI destinationFormat) {
-        for (CliMigrationPath path: paths){
-            if (path.getIn().contains(sourceFormat) && path.getOut().contains(destinationFormat)){
-                return path;
-            }
+    public CliMigrationPath getMigrationPath(URI sourceFormat,
+            URI destinationFormat) throws MigrationException {
+
+        final PathKey pathKey = new PathKey(sourceFormat, destinationFormat);
+        final CliMigrationPath migrationPath = migrationPaths.get(pathKey);
+        if (migrationPath == null) {
+            throw new MigrationException(
+                    "No migration path found for source format URI=\""
+                            + sourceFormat + "\" and destination format URI=\""
+                            + destinationFormat + "\"");
         }
-        return null; // FIXME! throw exception! Do not return null.
+        return migrationPath;
     }
 
+    // TODO: the getAsPlanetsPaths() functionality should probably go
+    // somewhere....
     /**
      * @return The migration paths as planets paths
      */
-    public MigrationPath[] getAsPlanetsPaths(){
-
-
-        List<MigrationPath> planetspaths = new ArrayList<MigrationPath>();
-        for (CliMigrationPath mypath : paths) {
-            planetspaths.addAll(MigrationPath.constructPaths(mypath.getIn(),
-                    mypath.getOut()));
-        }
-        return planetspaths.toArray(new MigrationPath[0]);
-
+    // public MigrationPath[] getAsPlanetsPaths() {
+    //
+    // List<MigrationPath> planetspaths = new ArrayList<MigrationPath>();
+    // for (CliMigrationPath mypath : migrationPaths) {
+    // planetspaths.addAll(MigrationPath.constructPaths(mypath.getIn(),
+    // mypath.getOut()));
+    // }
+    // return planetspaths.toArray(new MigrationPath[0]);
+    //
+    // }
+    /**
+     * Add <code>cliMigrationPath</code> to this collection of migration paths.
+     * 
+     * @param cliMigrationPath
+     *            the <code>CliMigrationPath</code> to add.
+     * @return the previous <code>CliMigrationPath</code> instance stored for
+     *         this migration path or <code>null</code> if there was no previous
+     *         element.
+     */
+    public CliMigrationPath addPath(CliMigrationPath cliMigrationPath) {
+        final PathKey pathKey = new PathKey(cliMigrationPath.getSourceFormat(),
+                cliMigrationPath.getDestinationFormat());
+        return migrationPaths.put(pathKey, cliMigrationPath);
     }
-
-    
-    protected CliMigrationPaths() {
-        paths = new ArrayList<CliMigrationPath>();
-    }
-
-    private boolean add(CliMigrationPath cliMigrationPath) {
-        return paths.add(cliMigrationPath);
-    }
-
-    private static CliMigrationPath decodePathNode(Node path) throws URISyntaxException {
-        NodeList children = path.getChildNodes();
-        Set<URI> froms = null;
-        Set<URI> tos = null;
-        String command = null;
-        for (int i = 0; i<children.getLength();i++){
-            Node child = children.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE){
-
-                if (child.getNodeName().equals("from")){
-                    froms = decodeFromOrToNode(child);
-                }
-                if (child.getNodeName().equals("to")){
-                    tos = decodeFromOrToNode(child);
-                }
-                if (child.getNodeName().equals("command")){
-                    command = decodeCommandNode(child);
-                }
-
-            }
-        }
-        return new CliMigrationPath(froms,tos,command);
-
-    }
-
-    private static Set<URI> decodeFromOrToNode(Node urilist) throws URISyntaxException {
-        NodeList children = urilist.getChildNodes();
-        Set<URI> uris = new HashSet<URI>();
-        for (int i = 0; i<children.getLength();i++){
-            Node child = children.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE){
-                if (child.getNodeName().equals("uri")){
-                    URI uri = decodeURI(child);
-                    uris.add(uri);
-                }
-            }
-        }
-        return uris;
-    }
-
-    private static URI decodeURI(Node uri) throws URISyntaxException {
-        NamedNodeMap attrs = uri.getAttributes();
-
-
-        Node item = attrs.getNamedItem("value");
-        String urivalue = item.getNodeValue();
-        return new URI(urivalue);
-    }
-
-
-    private static String decodeCommandNode(Node command){
-        Node commandtext = command.getFirstChild();
-        if (commandtext.getNodeType() == Node.TEXT_NODE){
-            return commandtext.getNodeValue();
-        }
-        return "";
-    }
-
-
-    
-
 
 }

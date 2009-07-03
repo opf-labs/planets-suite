@@ -78,4 +78,26 @@ public class CliMigrationPath {
 	// TODO Auto-generated method stub
 	return "ls -la";
     }
+
+
+    /**
+     * @return
+     */
+    public URI getSourceFormat() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    /**
+     * @return
+     */
+    public URI getDestinationFormat() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
+    public String toString() {
+        return "CliMigrationPath: " + in + " -> " + out + " Command: " + tool;
+    }
 }

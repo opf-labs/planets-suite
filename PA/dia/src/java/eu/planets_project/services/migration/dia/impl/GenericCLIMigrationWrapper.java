@@ -10,9 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.w3c.dom.Document;
 
 import eu.planets_project.services.datatypes.Content;
@@ -29,27 +26,16 @@ public class GenericCLIMigrationWrapper {
 
     private CliMigrationPaths migrationPaths;
 
-    public GenericCLIMigrationWrapper(String configResourceName)
+    public GenericCLIMigrationWrapper(Document configuration)
             throws MigrationInitialisationException {
 
         try {
-
-            ResourceLocator configurationLocator = new ResourceLocator(
-                    configResourceName);
-            InputStream configurationStream = configurationLocator
-                    .getResourceStream();
-
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-            DocumentBuilder builder = dbf.newDocumentBuilder();
-            Document doc = builder.parse(configurationStream);
-
             CliMigrationPathsFactory pathsFactory = new CliMigrationPathsFactory();
-            migrationPaths = pathsFactory.getInstance(doc);
+            migrationPaths = pathsFactory.getInstance(configuration);
         } catch (Exception e) {
             throw new MigrationInitialisationException(
-                    "Failed initialising migration path data from the resource: "
-                            + configResourceName, e);
+                    "Failed initialising migration path data from the configuration document: "
+                            + configuration, e);
         }
     }
 
@@ -65,7 +51,7 @@ public class GenericCLIMigrationWrapper {
          */
 
         final CliMigrationPath migrationPath = migrationPaths
-                .findMigrationPath(sourceFormat, destinationFormat);
+                .getMigrationPath(sourceFormat, destinationFormat);
 
         // TODO: May throw exception if the parameters are incorrect or
         // insufficient.

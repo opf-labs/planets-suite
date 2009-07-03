@@ -81,7 +81,7 @@ public class DiaMigrationServiceTest extends TestCase {
 
 		final URI diaFormatURI = new URI("info:pronom/x-fmt/381"); // DIA URI
 		final URI svgFormatURI1 = new URI("info:pronom/fmt/91"); // SVG version 1.0
-		final URI svgFormatURI2 = new URI("info:pronom/fmt/92"); // SVG version 1.1
+		//final URI svgFormatURI2 = new URI("info:pronom/fmt/92"); // SVG version 1.1
 
 
 		DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(Content.byValue(diaTestFile));
@@ -92,6 +92,7 @@ public class DiaMigrationServiceTest extends TestCase {
 		// Test migration from Dia to SVG version 1.0
 		MigrateResult migrationResult = migrationService.migrate(digitalObject, diaFormatURI, svgFormatURI1, null);
 		
+		if(migrationResult == null); //Kill warning
 		// TODO: Validate the output in some brilliant way
 		
 		// Test migration from Dia to SVG version 1.1

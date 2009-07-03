@@ -1,5 +1,6 @@
 package eu.planets_project.services.migration.dia.impl;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -11,6 +12,10 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -59,10 +64,22 @@ public final class GenericCLIMigrationWrapperTestService implements Migrate,
         try {
             // Get the full file path to the configuration file to test from the
             // parameter list.
-            String configFileName = getConfigFileName(parameters);
+            String configResourceName = getConfigFileName(parameters);
 
+            ResourceLocator configurationLocator = new ResourceLocator(
+                    configResourceName);
+            InputStream configurationStream = configurationLocator
+                    .getResourceStream();
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+            Document configDocument = builder.parse(configurationStream);
+
+            
+            
             GenericCLIMigrationWrapper genericWrapper = new GenericCLIMigrationWrapper(
-                    configFileName);
+                    configDocument);
             migrationResult = genericWrapper.migrate(digitalObject,
                     inputFormat, outputFormat, parameters);
         } catch (Exception e) {

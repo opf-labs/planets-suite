@@ -43,8 +43,7 @@ public class ResourceLocator {
      * 
      * @return <code>InputStream</code> containing the resource data.
      * @throws FileNotFoundException
-     *             if the resource could not be loaded as a regular file even
-     *             though it was identified as a regular file.
+     *             if the resource could not be located.
      * @throws IOException
      *             if a input stream could not be initialised with the resource
      *             even though it was found by the class loader.

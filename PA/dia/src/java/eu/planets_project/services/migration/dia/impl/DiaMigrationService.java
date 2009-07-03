@@ -54,10 +54,12 @@ public final class DiaMigrationService implements Migrate, Serializable {
     public MigrateResult migrate(final DigitalObject digitalObject,
 	    URI inputFormat, URI outputFormat, List<Parameter> parameters) {
 
+        final DocumentLocator documentLocator =  new DocumentLocator(configfile);
+
 	MigrateResult migrationResult;
 	try {
 	    GenericCLIMigrationWrapper genericWrapper = new GenericCLIMigrationWrapper(
-		    configfile);
+		    documentLocator.getDocument());
 	    migrationResult = genericWrapper.migrate(digitalObject,
 		    inputFormat, outputFormat, parameters);
 	} catch (Exception e) {
