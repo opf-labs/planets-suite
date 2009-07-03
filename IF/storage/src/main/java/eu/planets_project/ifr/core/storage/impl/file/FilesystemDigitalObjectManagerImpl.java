@@ -96,7 +96,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			realPdURI = new PDURI(pdURI);
 			fullPath = this._root.getCanonicalPath() + File.separator + realPdURI.getDataRegistryPath();
 	        File searchRoot = new File(fullPath);
-	        FilesystemDigitalObjectManagerImpl._log.info("Looking at: " + pdURI + " -> " + searchRoot.getCanonicalPath() );    
+	        FilesystemDigitalObjectManagerImpl._log.debug("Looking at: " + pdURI + " -> " + searchRoot.getCanonicalPath() );    
 			retVal = this.listFileLocation( pdURI, searchRoot );
 			
 		} catch (URISyntaxException e) {
@@ -249,8 +249,8 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			File doMetadata = new File(this._root.getCanonicalPath() + 
 					File.separator + path + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
 			
-            _log.info("Storing in binary in "+doBinary.getAbsolutePath());
-            _log.info("And storing in metadata in "+doMetadata.getAbsolutePath());
+            _log.debug("Storing in binary in "+doBinary.getAbsolutePath());
+            _log.debug("And storing in metadata in "+doMetadata.getAbsolutePath());
 			
 			// Persist the object to a file
 			InputStream inStream = digitalObject.getContent().read();
