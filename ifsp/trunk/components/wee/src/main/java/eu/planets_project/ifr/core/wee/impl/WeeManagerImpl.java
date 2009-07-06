@@ -6,17 +6,9 @@ package eu.planets_project.ifr.core.wee.impl;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.jms.MapMessage;
-import javax.jms.ObjectMessage;
 import javax.jms.Queue;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
@@ -27,25 +19,16 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
-import javax.xml.ws.Endpoint;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.annotation.ejb.LocalBinding;
-import org.jboss.annotation.ejb.RemoteBinding;
-import org.jboss.annotation.security.SecurityDomain;
-//import org.jboss.ws.core.server.ServiceEndpointManager;
-//import org.jboss.ws.core.server.ServiceEndpointManagerFactory;
 
-import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.wee.api.WeeManager;
 import eu.planets_project.ifr.core.wee.api.WorkflowExecutionStatus;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
-import eu.planets_project.ifr.core.wee.impl.workflow.WorkflowInstanceImpl;
 import eu.planets_project.services.PlanetsException;
-import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * 
@@ -210,7 +193,7 @@ public class WeeManagerImpl implements WeeManager, Serializable {
 			//remove workflow from local execution queue
 			removeWorkflowFromLocalQueue(ticket);
 		}
-		log.debug("WEEManager: notify called from execution engine on status: "+executionStatus+" wfReult #"+wfResult.toString()+" ticket #"+ticket);
+		log.debug("WEEManager: notify called from execution engine on status: "+executionStatus+" wfReult #"+wfResult+" ticket #"+ticket);
 	}
 	
 	/* (non-Javadoc)

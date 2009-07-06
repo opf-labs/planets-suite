@@ -1,38 +1,29 @@
 package eu.planets_project.ifr.core.wee.impl.registry;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.UUID;
 
-import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.ws.BindingType;
-import javax.xml.ws.soap.MTOM;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.jboss.annotation.ejb.LocalBinding;
 import org.jboss.annotation.ejb.RemoteBinding;
-
-import eu.planets_project.services.PlanetsServices;
 
 import eu.planets_project.ifr.core.wee.api.WeeManager;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
-import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.ifr.core.wee.impl.WeeManagerImpl;
 import eu.planets_project.ifr.core.wee.impl.workflow.WorkflowFactory;
+import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 @Stateless(name=WeeServiceImpl.NAME)
@@ -101,13 +92,9 @@ public class WeeServiceImpl implements WeeService, Serializable{
 	 */
 	private WorkflowConf unmarshalWorkflowConfig(String xml) throws Exception{
 		try {
-			File fxmlc = File.createTempFile("xmlconf", "tmp");
-			OutputStream baos = new FileOutputStream(fxmlc);
-			baos.write(xml.getBytes());
-			
 			JAXBContext context = JAXBContext.newInstance(WorkflowConf.class); 
 			Unmarshaller um = context.createUnmarshaller(); 
-			WorkflowConf wfc = (WorkflowConf) um.unmarshal(fxmlc); 
+			WorkflowConf wfc = (WorkflowConf) um.unmarshal(new StringReader(xml)); 
 			return wfc;
 		} catch (Exception e) {
 			log.error("unmarshalWorkflowConfig failed",e);
