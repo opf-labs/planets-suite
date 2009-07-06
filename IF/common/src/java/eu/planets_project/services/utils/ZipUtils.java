@@ -732,8 +732,6 @@ public class ZipUtils {
 				log.info("[deleteEntriesRecursively] The FileEntry to delete is a folder. Deleting all nested entries: ");
 				List<String> containedFiles = getFileEntryChildren(zip, toDelete);
 				
-				// TODO Listen vergleichen, um nicht den kompletten Ordner löschen zu müssen...!!
-
 				if(containedFiles.size()>0) {
 					for (String currentEntryPath : containedFiles) {
 						FileEntry current = zip.getFileEntry(currentEntryPath);
