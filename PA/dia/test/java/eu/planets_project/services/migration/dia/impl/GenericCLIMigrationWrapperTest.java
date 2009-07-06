@@ -37,8 +37,8 @@ public class GenericCLIMigrationWrapperTest {
     /**
      */
     public GenericCLIMigrationWrapperTest() throws Exception {
-        sourceFormatURI = new URI("info:pronom/x-fmt/381"); // DIA URI
-        destinationFormatURI = new URI("info:pronom/fmt/91"); // SVG version 1.0
+        sourceFormatURI = new URI("info:test/lowercase"); // DIA URI
+        destinationFormatURI = new URI("info:test/uppercase"); // SVG version 1.0
     }
 
     @Before
@@ -69,7 +69,7 @@ public class GenericCLIMigrationWrapperTest {
                 .getReport().getStatus());
     }
 
-    DigitalObject getDigitalTestObject() {
+    private DigitalObject getDigitalTestObject() {
         final File diaTestFile = new File(TEST_FILE_PATH, TEST_FILE_NAME);
 
         DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(

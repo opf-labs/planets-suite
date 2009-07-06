@@ -9,6 +9,12 @@ package eu.planets_project.services.migration.dia.impl;
  */
 public class MigrationPathConfigException extends Exception {
 
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 5539653164116154839L;
+
     /**
      * TODO: Documentation!!! 
      */

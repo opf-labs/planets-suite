@@ -35,7 +35,7 @@ public class GenericCLIMigrationWrapper {
         } catch (Exception e) {
             throw new MigrationInitialisationException(
                     "Failed initialising migration path data from the configuration document: "
-                            + configuration, e);
+                            + configuration.getNodeName(), e);
         }
     }
 
