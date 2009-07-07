@@ -136,6 +136,7 @@ public class DiaMigrationServiceTest extends TestCase {
 
 	}
 
+	@SuppressWarnings("unused")
 	private void verifyMigrationPaths(List<MigrationPath> migrationPaths) {
 		// TODO: More intelligent test needed.
 		assertNotNull("The migration service does not provide a list of migration paths.", migrationPaths);

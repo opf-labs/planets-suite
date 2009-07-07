@@ -7,8 +7,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.w3c.dom.Document;
@@ -17,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.Parameter.Builder;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 /**
@@ -27,8 +30,48 @@ import eu.planets_project.services.utils.PlanetsLogger;
  */
 public class CliMigrationPathsFactory {
 
+    /**
+     * 
+     */
+    private static final String LABEL_ATTRIBUTE = "label";
+    /**
+     * 
+     */
+    private static final String NAME_ATTRIBUTE = "name";
+    /**
+     * Code will break if the *_ELEMENT constant values are not in lowercase!
+     */
+    private static final String TOOL_PRESETS_ELEMENT = "toolpresets";
+    /**
+     * 
+     */
+    private static final String TOOL_PARAMETERS_ELEMENT = "toolparameters";
+    /**
+     * 
+     */
+    private static final String TEMP_FILES_ELEMENT = "tempfiles";
+    /**
+     * 
+     */
+    private static final String COMMAND_LINE_ELEMENT = "commandline";
+    /**
+     * 
+     */
+    private static final String DESTINATION_FORMAT_ELEMENT = "destinationformat";
+    /**
+     * 
+     */
+    private static final String SOURCE_FORMATS_ELEMENT = "sourceformats";
+    /*
+     * Temp file element names.
+     */
+    private static final String TEMP_INPUT_FILE = "inputfile";
+    private static final String TEMP_OUTPUT_FILE = "outputfile";
+    private static final String TEMP_FILE = "outputfile";
+
+    @SuppressWarnings("unused")
     private PlanetsLogger log = PlanetsLogger
-            .getLogger(CliMigrationPathsFactory.class);
+	    .getLogger(CliMigrationPathsFactory.class);
 
     // TODO: We should create a schema for the configuration file and refer to
     // it in this javadoc. Also, this factory should check the specified config
@@ -43,78 +86,108 @@ public class CliMigrationPathsFactory {
      *             if the contents of <code>pathConfiguration</code> is invalid.
      */
     public CliMigrationPaths getInstance(Document pathConfiguration)
-            throws MigrationPathConfigException {
+	    throws MigrationPathConfigException {
 
-        CliMigrationPaths migrationPaths = new CliMigrationPaths();
+	CliMigrationPaths migrationPaths = new CliMigrationPaths();
 
-        try {
-            NodeList topLevelNodes = pathConfiguration.getChildNodes().item(0)
-                    .getChildNodes();
+	try {
+	    NodeList topLevelNodes = pathConfiguration.getChildNodes().item(0)
+		    .getChildNodes();
 
-            for (int nodeIndex = 0; nodeIndex < topLevelNodes.getLength(); nodeIndex++) {
-                final Node currentNode = topLevelNodes.item(nodeIndex);
-                if (currentNode.getNodeType() == Node.ELEMENT_NODE
-                        && "path".equals(currentNode.getNodeName())) {
-                    for (CliMigrationPath cliMigrationPath : createCliMigrationPathList(currentNode))
-                        migrationPaths.addPath(cliMigrationPath);
-                }
-            }
+	    for (int nodeIndex = 0; nodeIndex < topLevelNodes.getLength(); nodeIndex++) {
+		final Node currentNode = topLevelNodes.item(nodeIndex);
+		if (currentNode.getNodeType() == Node.ELEMENT_NODE
+			&& "path".equals(currentNode.getNodeName())) {
+		    for (CliMigrationPath cliMigrationPath : createCliMigrationPathList(currentNode))
+			migrationPaths.addPath(cliMigrationPath);
+		}
+	    }
 
-            return migrationPaths;
-        } catch (Exception e) {
-            throw new MigrationPathConfigException(
-                    "Failed parsing migration path configuration document.", e);
-        }
+	    return migrationPaths;
+	} catch (Exception e) {
+	    throw new MigrationPathConfigException(
+		    "Failed parsing migration path configuration document.", e);
+	}
     }
 
     private List<CliMigrationPath> createCliMigrationPathList(Node pathNode)
-            throws URISyntaxException, MigrationPathConfigException {
+	    throws URISyntaxException, MigrationPathConfigException {
 
-        final NodeList subNodes = pathNode.getChildNodes();
-        CliMigrationPath pathTemplate = new CliMigrationPath();
-        URI destinationFormatURI = null; // FIXME! FOOO!
-        List<URI> sourceFomatURIs = new ArrayList<URI>();
-        for (int subNodeIndex = 0; subNodeIndex < subNodes.getLength(); subNodeIndex++) {
-            Node currentSubNode = subNodes.item(subNodeIndex);
-            if (currentSubNode.getNodeType() == Node.ELEMENT_NODE) {
-                if ("sourceformats".equals(currentSubNode.getNodeName())) {
-                    sourceFomatURIs = getURIList(currentSubNode);
-                } else if ("destinationformat".equals(currentSubNode
-                        .getNodeName().toLowerCase())) {
-                    destinationFormatURI = getURIList(currentSubNode).get(0);
-                } else if ("commandline".equals(currentSubNode.getNodeName()
-                        .toLowerCase())) {
-                    pathTemplate.setCommandLine(getCommandLine(currentSubNode));
-                } else if ("tempfiles".equals(currentSubNode.getNodeName()
-                        .toLowerCase())) {
-                    pathTemplate = configureTempFileDeclarations(
-                            currentSubNode, pathTemplate);
-                } else if ("toolparameters".equals(currentSubNode.getNodeName()
-                        .toLowerCase())) {
-                    pathTemplate
-                            .setToolParameters(getToolParameters(currentSubNode));
-                } else if ("toolpresets".equals(currentSubNode.getNodeName()
-                        .toLowerCase())) {
-                    pathTemplate = configureToolPresets(currentSubNode,
-                            pathTemplate);
-                }
+	final NodeList subNodes = pathNode.getChildNodes();
+	CliMigrationPath pathTemplate = new CliMigrationPath();
+	URI destinationFormatURI = null; // FIXME! FOOO!
+	List<URI> sourceFomatURIs = new ArrayList<URI>();
+	for (int subNodeIndex = 0; subNodeIndex < subNodes.getLength(); subNodeIndex++) {
+	    Node currentSubNode = subNodes.item(subNodeIndex);
+	    if (currentSubNode.getNodeType() == Node.ELEMENT_NODE) {
+		if (SOURCE_FORMATS_ELEMENT.equals(currentSubNode.getNodeName())) {
+		    sourceFomatURIs = getURIList(currentSubNode);
+		} else if (DESTINATION_FORMAT_ELEMENT.equals(currentSubNode
+			.getNodeName().toLowerCase())) {
+		    destinationFormatURI = getURIList(currentSubNode).get(0);
+		} else if (COMMAND_LINE_ELEMENT.equals(currentSubNode
+			.getNodeName().toLowerCase())) {
+		    pathTemplate.setCommandLine(getCommandLine(currentSubNode));
+		} else if (TEMP_FILES_ELEMENT.equals(currentSubNode
+			.getNodeName().toLowerCase())) {
+		    pathTemplate = configureTempFileDeclarations(
+			    currentSubNode, pathTemplate);
+		} else if (TOOL_PARAMETERS_ELEMENT.equals(currentSubNode
+			.getNodeName().toLowerCase())) {
+		    pathTemplate
+			    .setToolParameters(getToolParameters(currentSubNode));
+		} else if (TOOL_PRESETS_ELEMENT.equals(currentSubNode
+			.getNodeName().toLowerCase())) {
+		    pathTemplate = configureToolPresets(currentSubNode,
+			    pathTemplate);
+		}
 
-            }
-        }
-        return createCliMigrationPathInstances(pathTemplate, sourceFomatURIs,
-                destinationFormatURI);
+	    }
+	}
+	return createCliMigrationPathInstances(pathTemplate, sourceFomatURIs,
+		destinationFormatURI);
     }
 
     /**
-     * @param currentSubNode
+     * @param toolPresetsNode
      * @param pathTemplate
      * @return
      */
-    private CliMigrationPath configureToolPresets(Node currentSubNode,
-            CliMigrationPath pathTemplate) {
-        // TODO Auto-generated method stub
-        System.out.println("TODO: configure tool presets.");
-        return pathTemplate;
+    private CliMigrationPath configureToolPresets(Node toolPresetsNode,
+	    CliMigrationPath pathTemplate) {
+
+	// for all categories
+	//     - create category
+	//     for all category presets
+	// 		for all presets
+	//                   - add preset value and parameters to category
+
+	
+//	final NodeList toolPresetNodes = toolPresetsNode.getChildNodes();
+//	for (int toolPresetNodeIndex = 0; toolPresetNodeIndex < toolPresetNodes.getLength(); toolPresetNodeIndex++) {
+//	    final Node currentPresetNode = toolPresetNodes.item(toolPresetNodeIndex);
+//	    final String currentNodeName = currentPresetNode.getNodeName();
+//	    if ((currentPresetNode.getNodeType() == Node.ELEMENT_NODE)
+//		    && (TEMP_INPUT_FILE.equals(currentNodeName)
+//			    || TEMP_OUTPUT_FILE.equals(currentNodeName) || TEMP_FILE
+//			    .equals(currentNodeName))) {
+//		final Map<String, String> fileLabelAndName = getLabelAndNameAttribute(currentPresetNode);
+//
+//		if (TEMP_INPUT_FILE.equals(currentNodeName)) {
+//		    pathToConfigure.setTempInputFile(fileLabelAndName);
+//		} else if (TEMP_OUTPUT_FILE.equals(currentNodeName)) {
+//		    pathToConfigure.setTempOutputFile(fileLabelAndName);
+//		} else {
+//		    // It's a temp. file declaration
+//		    pathToConfigure.addTempFilesDeclarations(fileLabelAndName);
+//		}
+//	    }
+//	}
+
+	
+	// TODO Auto-generated method stub
+	System.out.println("TODO: configure tool presets.");
+	return pathTemplate;
     }
 
     /**
@@ -122,22 +195,96 @@ public class CliMigrationPathsFactory {
      * @return
      */
     private Collection<Parameter> getToolParameters(Node currentSubNode) {
-        // TODO Auto-generated method stub
-        System.out.println("TODO: configure tool parameters.");
-        return new ArrayList<Parameter>();
+	// TODO Auto-generated method stub
+	System.out.println("TODO: configure tool parameters.");
+//	    final Builder parameterBuilder = new Builder(parameter.getName(), parameter
+//		    .getValue());
+//	    parameterBuilder.description(parameter.getDescription());
+//	    parameterBuilder.type(parameter.getType());
+
+	return new ArrayList<Parameter>();
     }
 
     /**
-     * @param currentSubNode
+     * Parse all declarations of temporary files from <code>tempFilesNode</code>
+     * and add the information to <code>pathToConfigure</code>.
+     * 
+     * @param tempFilesNode
+     *            <code>Node</code> containing declarations of temporary files.
      * @param pathToConfigure
-     * @return
+     *            <code>CliMigrationPath</code> instance to add temp. file
+     *            declarations to.
+     * @return <code>pathToConfigure</code> with any found temp. file
+     *         declarations added.
+     * @throws MigrationPathConfigException
+     *             if any errors were encountered in the
+     *             <code>tempFilesNode</code> node.
      */
-    private CliMigrationPath configureTempFileDeclarations(Node currentSubNode,
-            CliMigrationPath pathToConfigure) {
-        System.out.println("TODO: configure temp files.");
+    private CliMigrationPath configureTempFileDeclarations(Node tempFilesNode,
+	    CliMigrationPath pathToConfigure)
+	    throws MigrationPathConfigException {
 
-        // TODO: Get the temp file list
-        return pathToConfigure;
+	final NodeList tempFileNodes = tempFilesNode.getChildNodes();
+	for (int tempFileNodeIndex = 0; tempFileNodeIndex < tempFileNodes
+		.getLength(); tempFileNodeIndex++) {
+	    final Node currentNode = tempFileNodes.item(tempFileNodeIndex);
+	    final String currentNodeName = currentNode.getNodeName();
+	    if ((currentNode.getNodeType() == Node.ELEMENT_NODE)
+		    && (TEMP_INPUT_FILE.equals(currentNodeName)
+			    || TEMP_OUTPUT_FILE.equals(currentNodeName) || TEMP_FILE
+			    .equals(currentNodeName))) {
+		final Map<String, String> fileLabelAndName = getLabelAndNameAttribute(currentNode);
+
+		if (TEMP_INPUT_FILE.equals(currentNodeName)) {
+		    pathToConfigure.setTempInputFile(fileLabelAndName);
+		} else if (TEMP_OUTPUT_FILE.equals(currentNodeName)) {
+		    pathToConfigure.setTempOutputFile(fileLabelAndName);
+		} else {
+		    // It's a temp. file declaration
+		    pathToConfigure.addTempFilesDeclarations(fileLabelAndName);
+		}
+	    }
+	}
+	return pathToConfigure;
+    }
+
+    /**
+     * Get the value of the mandatory <code>LABEL_ATTRIBUTE</code> and the
+     * optional <code>NAME_ATTRIBUTE</code> of the
+     * <code>elementWithAttributes</code> element. The element may have several
+     * other attributes, however, this method expects that at least the
+     * <code>LABEL_ATTRIBUTE</code> is declared.
+     * 
+     * @param elementWithAttributes
+     *            <code>Node</code> having at least a
+     *            <code>LABEL_ATTRIBUTE</code> and optionally a
+     *            <code>NAME_ATTRIBUTE</code>.
+     * @return a map containing the value of the <code>LABEL_ATTRIBUTE</code>
+     *         mapped with the <code>NAME_ATTRIBUTE</code> value or null if it
+     *         is not declared.
+     * @throws MigrationPathConfigException
+     *             if no <code>LABEL_ATTRIBUTE</code> is declared in
+     *             <code>elementWithAttributes</code>.
+     */
+    private Map<String, String> getLabelAndNameAttribute(
+	    Node elementWithAttributes) throws MigrationPathConfigException {
+
+	final Map<String, String> labelNameMap = new HashMap<String, String>();
+	NamedNodeMap attributes = elementWithAttributes.getAttributes();
+
+	final Node nameNode = attributes.getNamedItem(NAME_ATTRIBUTE);
+	final String nameValue = (nameNode != null) ? nameNode.getNodeValue()
+		: null;
+	try {
+	    final String labelValue = attributes.getNamedItem(LABEL_ATTRIBUTE)
+		    .getNodeValue();
+	    labelNameMap.put(labelValue, nameValue);
+	} catch (NullPointerException npe) {
+	    throw new MigrationPathConfigException(
+		    "No \"label\" attribute declared in node: "
+			    + elementWithAttributes.getNodeName(), npe);
+	}
+	return labelNameMap;
     }
 
     /**
@@ -159,33 +306,33 @@ public class CliMigrationPathsFactory {
      *        instantiated.
      */
     private List<CliMigrationPath> createCliMigrationPathInstances(
-            CliMigrationPath pathTemplate, List<URI> sourceFomatURIs,
-            URI destinationFormatURI) throws MigrationPathConfigException {
+	    CliMigrationPath pathTemplate, List<URI> sourceFomatURIs,
+	    URI destinationFormatURI) throws MigrationPathConfigException {
 
-        final List<CliMigrationPath> paths = new ArrayList<CliMigrationPath>();
-        for (URI sourceFormatUri : sourceFomatURIs) {
-            CliMigrationPath newPath;
-            try {
-                newPath = copyPath(pathTemplate);
-            } catch (URISyntaxException use) {
-                throw new MigrationPathConfigException(
-                        "Failed copying path template when instantiating CliMigrationPath for migration path: "
-                                + sourceFomatURIs
-                                + " -> "
-                                + destinationFormatURI);
-            }
+	final List<CliMigrationPath> paths = new ArrayList<CliMigrationPath>();
+	for (URI sourceFormatUri : sourceFomatURIs) {
+	    CliMigrationPath newPath;
+	    try {
+		newPath = copyPath(pathTemplate);
+	    } catch (URISyntaxException use) {
+		throw new MigrationPathConfigException(
+			"Failed copying path template when instantiating CliMigrationPath for migration path: "
+				+ sourceFomatURIs
+				+ " -> "
+				+ destinationFormatURI);
+	    }
 
-            newPath.setSourceFormat(sourceFormatUri);
-            newPath.setDestinationFormat(destinationFormatURI);
-            newPath.setCommandLine(pathTemplate.getCommandLine());
-            System.out
-                    .println("Createing CliMigrationPath instance for the path: "
-                            + sourceFomatURIs + " -> " + destinationFormatURI);// TODO:
-            // remove
-            // sysout
-            paths.add(newPath);
-        }
-        return paths;
+	    newPath.setSourceFormat(sourceFormatUri);
+	    newPath.setDestinationFormat(destinationFormatURI);
+	    newPath.setCommandLine(pathTemplate.getCommandLine());
+	    System.out
+		    .println("Createing CliMigrationPath instance for the path: "
+			    + sourceFomatURIs + " -> " + destinationFormatURI);// TODO:
+	    // remove
+	    // sysout
+	    paths.add(newPath);
+	}
+	return paths;
     }
 
     /**
@@ -200,18 +347,55 @@ public class CliMigrationPathsFactory {
      *             copied.
      */
     private CliMigrationPath copyPath(CliMigrationPath pathTemplate)
-            throws URISyntaxException {
-        CliMigrationPath pathCopy = new CliMigrationPath();
-        pathCopy.setCommandLine(new String(pathTemplate.getCommandLine()));
-        pathCopy.setDestinationFormat(new URI(new String(pathTemplate
-                .getDestinationFormat().toString())));
-        pathCopy.setSourceFormat(new URI(new String(pathTemplate
-                .getSourceFormat().toString())));
-        pathCopy.setTempFilesDeclarations(pathCopy
-                .getTempInputFileDeclarations());
-        pathCopy.setToolParameters(pathTemplate.getToolParameters());
-        // TODO: Finish!
-        return null;
+	    throws URISyntaxException {
+
+	CliMigrationPath pathCopy = new CliMigrationPath();
+
+	pathCopy.setCommandLine(pathTemplate.getCommandLine());
+
+	// Make a safe copy of the format URIs
+	URI formatURI = pathTemplate.getDestinationFormat();
+	formatURI = (formatURI != null) ? new URI(formatURI.toString())
+		: formatURI;
+	pathCopy.setDestinationFormat(formatURI);
+
+	formatURI = pathTemplate.getSourceFormat();
+	formatURI = (formatURI != null) ? new URI(formatURI.toString())
+		: formatURI;
+	pathCopy.setSourceFormat(formatURI);
+
+	// The below method already makes a safe copy.
+	if (pathTemplate.getTempFileDeclarations() != null) {
+	    pathCopy.addTempFilesDeclarations(pathTemplate
+		    .getTempFileDeclarations());
+	}
+
+	final ArrayList<Parameter> parametersCopy = new ArrayList<Parameter>();
+	for (Parameter parameter : pathTemplate.getToolParameters()) {
+	    final Builder parameterBuilder = new Builder(parameter.getName(), parameter
+		    .getValue());
+	    parameterBuilder.description(parameter.getDescription());
+	    parameterBuilder.type(parameter.getType());
+	    parametersCopy.add(parameterBuilder.build());
+	}
+	pathCopy.setToolParameters(parametersCopy);
+
+	// Make a safe copy of the presets.
+	for (String presetCategory : pathTemplate.getToolPresetCategories()) {
+	    for (String presetValue : pathTemplate
+		    .getToolPresetValues(presetCategory)) {
+		final ArrayList<Parameter> presetParametersCopy = new ArrayList<Parameter>();
+		for (Parameter presetValueParameter : pathTemplate
+			.getToolPresetParameters(presetCategory, presetValue)) {
+		    presetParametersCopy.add(new Parameter(presetValueParameter
+			    .getName(), presetValueParameter.getValue()));
+		}
+		pathCopy.addToolPreset(presetCategory, presetValue,
+			presetParametersCopy);
+	    }
+	}
+
+	return pathCopy;
     }
 
     /**
@@ -227,23 +411,19 @@ public class CliMigrationPathsFactory {
      *             <code>commandLineNode</code>
      */
     private String getCommandLine(Node commandLineNode)
-            throws MigrationPathConfigException {
-        final NodeList childNodes = commandLineNode.getChildNodes();
-        for (int childIndex = 0; childIndex < childNodes.getLength(); childIndex++) {
-            final Node currentNode = childNodes.item(childIndex);
-            if (currentNode.getNodeType() == Node.CDATA_SECTION_NODE) {
-                System.out.println("Found command line: "
-                        + currentNode.getNodeValue().replaceAll("[\n\r]", "")); // TODO:
-                // remove
-                // sysout
-                // Avoid accidental new-lines and carriage returns
-                return currentNode.getNodeValue().replaceAll("[\n\r]", "");
-            }
-        }
+	    throws MigrationPathConfigException {
+	final NodeList childNodes = commandLineNode.getChildNodes();
+	for (int childIndex = 0; childIndex < childNodes.getLength(); childIndex++) {
+	    final Node currentNode = childNodes.item(childIndex);
+	    if (currentNode.getNodeType() == Node.CDATA_SECTION_NODE) {
+		// Avoid accidental new-lines and carriage returns
+		return currentNode.getNodeValue().replaceAll("[\n\r]", "");
+	    }
+	}
 
-        throw new MigrationPathConfigException(
-                "This supposed command line node contains no CDATA element. NodeName = "
-                        + commandLineNode.getNodeName());
+	throw new MigrationPathConfigException(
+		"This supposed command line node contains no CDATA element. NodeName = "
+			+ commandLineNode.getNodeName());
     }
 
     /**
@@ -258,25 +438,22 @@ public class CliMigrationPathsFactory {
      */
     private List<URI> getURIList(Node uriListNode) throws URISyntaxException {
 
-        final List<URI> uriList = new ArrayList<URI>();
-        final NodeList childNodes = uriListNode.getChildNodes();
+	final List<URI> uriList = new ArrayList<URI>();
+	final NodeList childNodes = uriListNode.getChildNodes();
 
-        for (int childIndex = 0; childIndex < childNodes.getLength(); childIndex++) {
-            final Node currentChildNode = childNodes.item(childIndex);
-            if (currentChildNode.getNodeType() == Node.ELEMENT_NODE
-                    && "uri".equals(currentChildNode.getNodeName()
-                            .toLowerCase())) {
-                final NamedNodeMap attributes = currentChildNode
-                        .getAttributes();
-                final Node valueAttributeNode = attributes
-                        .getNamedItem("value");
-                uriList.add(new URI(valueAttributeNode.getNodeValue()));
-                System.out.println("Instantiated URI = "
-                        + valueAttributeNode.getNodeValue());// TODO: remove
-                // sysout
-            }
-        }
-        return uriList;
+	for (int childIndex = 0; childIndex < childNodes.getLength(); childIndex++) {
+	    final Node currentChildNode = childNodes.item(childIndex);
+	    if (currentChildNode.getNodeType() == Node.ELEMENT_NODE
+		    && "uri".equals(currentChildNode.getNodeName()
+			    .toLowerCase())) {
+		final NamedNodeMap attributes = currentChildNode
+			.getAttributes();
+		final Node valueAttributeNode = attributes
+			.getNamedItem("value");
+		uriList.add(new URI(valueAttributeNode.getNodeValue()));
+	    }
+	}
+	return uriList;
     }
 
     // Element fileformats = pathConfiguration.getDocumentElement();
@@ -319,36 +496,39 @@ public class CliMigrationPathsFactory {
     //
     // }
 
+    //TODO: Remember removing the below methods.
+    @SuppressWarnings("unused")
     private static Set<URI> decodeFromOrToNode(Node urilist)
-            throws URISyntaxException {
-        NodeList children = urilist.getChildNodes();
-        Set<URI> uris = new HashSet<URI>();
-        for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                if (child.getNodeName().equals("uri")) {
-                    URI uri = decodeURI(child);
-                    uris.add(uri);
-                }
-            }
-        }
-        return uris;
+	    throws URISyntaxException {
+	NodeList children = urilist.getChildNodes();
+	Set<URI> uris = new HashSet<URI>();
+	for (int i = 0; i < children.getLength(); i++) {
+	    Node child = children.item(i);
+	    if (child.getNodeType() == Node.ELEMENT_NODE) {
+		if (child.getNodeName().equals("uri")) {
+		    URI uri = decodeURI(child);
+		    uris.add(uri);
+		}
+	    }
+	}
+	return uris;
     }
 
     private static URI decodeURI(Node uri) throws URISyntaxException {
-        NamedNodeMap attrs = uri.getAttributes();
+	NamedNodeMap attrs = uri.getAttributes();
 
-        Node item = attrs.getNamedItem("value");
-        String urivalue = item.getNodeValue();
-        return new URI(urivalue);
+	Node item = attrs.getNamedItem("value");
+	String urivalue = item.getNodeValue();
+	return new URI(urivalue);
     }
 
+    @SuppressWarnings("unused")
     private static String decodeCommandNode(Node command) {
-        Node commandtext = command.getFirstChild();
-        if (commandtext.getNodeType() == Node.TEXT_NODE) {
-            return commandtext.getNodeValue();
-        }
-        return "";
+	Node commandtext = command.getFirstChild();
+	if (commandtext.getNodeType() == Node.TEXT_NODE) {
+	    return commandtext.getNodeValue();
+	}
+	return "";
     }
 
 }

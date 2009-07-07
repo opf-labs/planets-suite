@@ -60,7 +60,7 @@ public class CliMigrationPathsFactoryTest {
                 + migrationPaths.getMigrationPath(sourceFormatURI,
                         destinationFormatURI);
 
-        // if(msg.isEmpty());
+         if(msg.isEmpty());
         
         //System.out.println(msg);
     }

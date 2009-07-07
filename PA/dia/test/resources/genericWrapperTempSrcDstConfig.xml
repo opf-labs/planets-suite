@@ -1,247 +1,253 @@
 <paths>
 
-    <path>
-        <!--
-            Silly migration path for conversion of lower case text to upper case
-            text, using 'cat' and 'tr', for demonstration of the usage of
-            temporary source and destination files. The migration paths
-            described by a combination of one of the input formats and the
-            output format will overwrite any similar definitions from any
-            earlier path definitions, that is, definitions closer to the top of
-            the configuration file.
-        -->
-        <sourceformats>
+	<path>
+		<!--
+			Silly migration path for conversion of lower case text to upper case
+			text, using 'cat' and 'tr', for demonstration of the usage of
+			temporary source and destination files. The migration paths described
+			by a combination of one of the input formats and the output format
+			will overwrite any similar definitions from any earlier path
+			definitions, that is, definitions closer to the top of the
+			configuration file.
+		-->
+		<sourceformats>
 
-            <!--
-                List of format URIs identifying the valid input formats for the
-                wrapped command(s) in this "path" section. It is recommended to
-                use PRONOM URIs where possible in order to achieve the most
-                accurate description of the formats. File suffixes are
-                inaccurate as most file formats are available in several
-                revisions.
-            -->
-            <uri value="info:test/lowercase" />
-        </sourceformats>
+			<!--
+				List of format URIs identifying the valid input formats for the
+				wrapped command(s) in this "path" section. It is recommended to use
+				PRONOM URIs where possible in order to achieve the most accurate
+				description of the formats. File suffixes are inaccurate as most
+				file formats are available in several revisions.
+			-->
+			<uri value="info:test/lowercase" />
+		</sourceformats>
 
-        <destinationformat>
-            <!--
-                Format URI identifying the output format of the wrapped
-                command(s) in this "path" section. It is recommended to use a
-                PRONOM URI when possible in order to achieve the most accurate
-                description of the format. File suffixes are inaccurate as most
-                file formats are available in several revisions.
-            -->
-            <uri value="info:test/uppercase" />
-        </destinationformat>
+		<destinationformat>
+			<!--
+				Format URI identifying the output format of the wrapped command(s)
+				in this "path" section. It is recommended to use a PRONOM URI when
+				possible in order to achieve the most accurate description of the
+				format. File suffixes are inaccurate as most file formats are
+				available in several revisions.
+			-->
+			<uri value="info:test/uppercase" />
+		</destinationformat>
 
-        <commandline>
-            <!--
-                This is the exact shell command line to be wrapped, except from
-                that all tags like "%some_label%" are substituted by command
-                parameters and temporary file names. The tag name (in this case
-                "some_label") must be defined in the "toolparameters" section.
-                The same goes for temporary files. In the below example there
-                are three temporary file tags, tempSource, myInterimFile and
-                tempDestination.
-            -->
+		<commandline>
+			<!--
+				This is the exact shell command line to be wrapped, except from that
+				all tags like "%some_label%" are substituted by command parameters
+				and temporary file names. The tag name (in this case "some_label")
+				must be defined in the "toolparameters" section. The same goes for
+				temporary files. In the below example there are three temporary file
+				tags, tempSource, myInterimFile and tempDestination.
+			-->
             <![CDATA[cat %param1% %tempSource > %myInterimFile% && tr %param2%
              %myInterimFile% > %tempDestination]]>
 
-        </commandline>
+		</commandline>
 
 
-        <tempfiles>
-            <!--
-                Any temporary files used in the command line must be defined in
-                this section, that is, the contents of the label attributes of
-                the entries must match the names used between the % signs in the
-                command line. The use of temporary files is optional and depends
-                entirely on the contents of the command line. Further more, a
-                temp. file entry may also specify a name for the temporary file
-                to be generated, if necessary. This is useful for tools that
-                insist on having a given suffix on its input/output files.
-            -->
-            <inputfile label="tempSource">
-                <!--
-                    This definition is used for the file containing the data to
-                    be migrated, that is, the data provided by the caller. If it
-                    is not defined the the tool wrapper expects that the tool
-                    reads its data from standard input and it will therefore
-                    pipe the data to be migrated through there.
-                -->
-            </inputfile>
-            <outputfile label="tempDestination">
-                <!--
-                    This definition is used for the file containing the final
-                    migrated output, that is, the data the tool wrapper should
-                    pick up and return to the caller of the service. If it is
-                    not defined the the tool wrapper expects that the tool sends
-                    the migrated data to standard output, which then will be
-                    picked up and returned to the caller.
-                -->
+		<tempfiles>
+			<!--
+				Any temporary files used in the command line must be defined in this
+				section, that is, the contents of the label attributes of the
+				entries must match the names used between the % signs in the command
+				line. The use of temporary files is optional and depends entirely on
+				the contents of the command line. Further more, a temp. file entry
+				may also specify a name for the temporary file to be generated, if
+				necessary. This is useful for tools that insist on having a given
+				suffix on its input/output files.
+			-->
+			<inputfile label="tempSource">
+				<!--
+					This definition is used for the file containing the data to be
+					migrated, that is, the data provided by the caller. If it is not
+					defined the the tool wrapper expects that the tool reads its data
+					from standard input and it will therefore pipe the data to be
+					migrated through there.
+				-->
+			</inputfile>
+			<outputfile label="tempDestination">
+				<!--
+					This definition is used for the file containing the final migrated
+					output, that is, the data the tool wrapper should pick up and
+					return to the caller of the service. If it is not defined the the
+					tool wrapper expects that the tool sends the migrated data to
+					standard output, which then will be picked up and returned to the
+					caller.
+				-->
 
-            </outputfile>
-            <tempfile label="myInterimFile" name="myDesiredTempFileName.foo">
-                <!--
-                    tempfile entries are used for intermediate temporary files
-                    which may be necessary to create if the wrapped command line
-                    contains chained commands. Multiple tempfile entries are
-                    allowed, however, each should have a unique name and it must
-                    match the names used in the command line.
-                -->
-            </tempfile>
-        </tempfiles>
+			</outputfile>
+			<tempfile label="myInterimFile" name="myDesiredTempFileName.foo">
+				<!--
+					tempfile entries are used for intermediate temporary files which
+					may be necessary to create if the wrapped command line contains
+					chained commands. Multiple tempfile entries are allowed, however,
+					each should have a unique name and it must match the names used in
+					the command line.
+				-->
+			</tempfile>
+		</tempfiles>
 
-        <!--
-            The tool will terminate with an error if not all tool parameters are
-            defined at invocation. Any specified parameters will overwrite the
-            corresponding parameters from any specified tool preset. That is, if
-            the caller of the tool specifies e.g. mode=complete and param1=-n,
-            then the tool will be invoked with param1=-n and param2=[:lower:]'
-            '[:upper:] which will have the same effect as just specifying
-            mode=extra. Given the definitions of this example file.
-        -->
+		<!--
+			The tool will terminate with an error if not all tool parameters are
+			defined at invocation. Any specified parameters will overwrite the
+			corresponding parameters from any specified tool preset. That is, if
+			the caller of the tool specifies e.g. mode=complete and param1=-n,
+			then the tool will be invoked with param1=-n and param2=[:lower:]'
+			'[:upper:] which will have the same effect as just specifying
+			mode=extra. Given the definitions of this example file.
+		-->
 
-        <toolparameters>
-            <!--
-                All these parameters must be specified by the caller if no
-                preset is specified. The occurrences of the parameter names in
-                the above command line will be substituted with the value
-                assigned to them by the caller.
-            -->
-            <parameter name="param1">
-                <description>Command line parameters for the 'cat' command. See
-                    'man cat'.
+		<toolparameters>
+			<!--
+				All these parameters must be specified by the caller if no preset is
+				specified. The occurrences of the parameter names in the above
+				command line will be substituted with the value assigned to them by
+				the caller.
+			-->
+			<parameter name="param1">
+				<description>Command line parameters for the 'cat' command.
+					See
+					'man cat'.
                 </description>
-            </parameter>
-            <parameter name="param2">
-                <description>Command line parameters for the 'tr' command. See
-                    'man tr'.
+			</parameter>
+			<parameter name="param2">
+				<description>Command line parameters for the 'tr' command.
+					See
+					'man tr'.
                 </description>
-            </parameter>
-        </toolparameters>
+			</parameter>
+		</toolparameters>
 
-        <!--
-            Presets which can be used instead of messing with the command line
-            parameters. These presets can also be used as base settings that can
-            be modified by specifying one or more tool parameters at the same
-            time. That is, any explicitly specified tool parameter will
-            overwrite the one from any chosen preset.
-        -->
+		<!--
+			Presets which can be used instead of messing with the command line
+			parameters. These presets can also be used as base settings that can
+			be modified by specifying one or more tool parameters at the same
+			time. That is, any explicitly specified tool parameter will overwrite
+			the one from any chosen preset.
+		-->
 
-        <toolpresets>
-            <!--
-                This section defines all possible preset types for the tool. The
-                caller may only use one of the preset types when calling, e.g.
-                specifying both mode=AC-DC and quality=good would result in an
-                error. If no parameters or preset is specified by the caller,
-                then the "mode" preset type is automatically chosen.
-            -->
-            <optionlist default="mode">
-                <!--
-                    If no parameters or preset is specified by the caller, then
-                    "mode = complete" is automatically chosen.
-                -->
-                <option name="mode">
-                    <optionlist default="complete">
-                        <option name="complete">
-                            <preset name="param1"></preset>
-                            <preset name="param2">'[:lower:]' '[:upper:]'
-                            </preset>
-                            <description>Uppercase all.</description>
-                        </option>
-                        <option name="AC-DC">
-                            <preset name="param1"></preset>
-                            <preset name="param2">'A,D' 'D,A'</preset>
-                            <description>AC-DC to DC-AC</description>
-                        </option>
-                        <option name="extra">
-                            <preset name="param1">-n</preset>
-                            <preset name="param2">'[:lower:]' '[:upper:]'
-                            </preset>
-                            <description>Uppercase all and add line numbers.
-                            </description>
-                        </option>
-                    </optionlist>
-                    <description>
-                        Mode presets for the test tool.
+		<toolpresets>
+			<!--
+				This section defines all possible preset categories/types for the
+				tool. The caller may only use one of the preset categories when
+				calling, e.g. specifying both mode=AC-DC and quality=good would
+				result in an error. If no parameters or preset is specified by the
+				caller, then the default "mode" preset category its default
+				"complete" value is automatically chosen in this example.
+			-->
+			<categories default="mode">
+				<!--
+					If no parameters or preset is specified by the caller, then "mode =
+					complete" is automatically chosen.
+				-->
+				<category name="mode">
+					<presets default="complete">
+						<preset name="complete">
+							<parameter name="param1"><![CDATA[]]>
+							</parameter>
+							<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+							</parameter>
+							<description>Uppercase all.</description>
+						</preset>
+						<preset name="AC-DC">
+							<parameter name="param1"><![CDATA[]]>
+							</parameter>
+							<parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
+							<description>AC-DC to DC-AC</description>
+						</preset>
+						<preset name="extra">
+							<parameter name="param1"><![CDATA[-n]]></parameter>
+							<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+							</parameter>
+							<description>Uppercase all and add line numbers.
+							</description>
+						</preset>
+					</presets>
+					<description>
+						Mode presets for the test tool.
                     </description>
-                </option>
+				</category>
 
-                <!--
-                    This "quality" preset type is essentially the same as the
-                    "mode" type, and is only included to demonstrate that it is
-                    possible for the caller to have more preset types to choose
-                    from.
-                -->
-                <option name="quality">
-                    <optionlist>
-                        <option name="good">
-                            <preset name="param1"></preset>
-                            <preset name="param2">'[:lower:]' '[:upper:]'
-                            </preset>
-                            <description>Uppercase all.</description>
-                        </option>
-                        <option name="better">
-                            <preset name="param1"></preset>
-                            <preset name="param2">'A,D' 'D,A'</preset>
-                            <description>AC-DC to DC-AC</description>
-                        </option>
-                        <option name="best">
-                            <preset name="param1">-n</preset>
-                            <preset name="param2">'[:lower:]' '[:upper:]'
-                            </preset>
-                            <description>Uppercase all and add line numbers.
-                            </description>
-                        </option>
-                    </optionlist>
-                    <description>
-                        Quality presets for the test tool.
+				<!--
+					This "quality" preset category is essentially the same as the "mode"
+					category, and is only included to demonstrate that it is possible for
+					the caller to have more preset categories to choose from.
+				-->
+				<category name="quality">
+					<optionlist>
+						<preset name="good">
+							<parameter name="param1"><![CDATA[]]>
+							</parameter>
+							<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+							</parameter>
+							<description>Uppercase all.</description>
+						</preset>
+						<preset name="better">
+							<parameter name="param1"><![CDATA[]]>
+							</parameter>
+							<parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
+							<description>AC-DC to DC-AC</description>
+						</preset>
+						<preset name="best">
+							<parameter name="param1"><![CDATA[-n]]></parameter>
+							<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+							</parameter>
+							<description>Uppercase all and add line numbers.
+							</description>
+						</preset>
+					</optionlist>
+					<description>
+						Quality presets for the test tool.
                     </description>
-                </option>
-            </optionlist>
-        </toolpresets>
-    </path>
+				</category>
+			</categories>
+		</toolpresets>
+	</path>
 
-    <!--
-        The following path is just an illustration of the possibility to define
-        multiple migration paths for the same wrapped tool. However, there is no
-        validation of that the tool used in the various path definitions are
-        actually the same, as this is not possible due to the fact that the
-        command lines may be substantially different although the same tool is
-        used for the migration, as different helper tools may be used e.g. for
-        pre- or post-processing. Thus, it is the responsibility of the person
-        writing the configuration file that it is in fact the same migration
-        tool used by all the defined paths.
-    -->
-    <path>
+	<!--
+		The following path is just an illustration of the possibility to
+		define multiple migration paths for the same wrapped tool. However,
+		there is no validation of that the tool used in the various path
+		definitions are actually the same, as this is not possible due to the
+		fact that the command lines may be substantially different although
+		the same tool is used for the migration, as different helper tools may
+		be used e.g. for pre- or post-processing. Thus, it is the
+		responsibility of the person writing the configuration file that it is
+		in fact the same migration tool used by all the defined paths.
+	-->
+	<path>
 
-        <sourceformats>
-            <uri value="info:test/foo" />
-        </sourceformats>
+		<sourceformats>
+			<uri value="info:test/foo" />
+		</sourceformats>
 
-        <destinationformat>
-            <uri value="info:test/bar" />
-        </destinationformat>
+		<destinationformat>
+			<uri value="info:test/bar" />
+		</destinationformat>
 
-        <commandline><![CDATA[cat %param1% %tempSource | tr %param2% > %tempDestination]]>
-        </commandline>
+		<commandline><![CDATA[cat %param1% %tempSource | tr %param2% > %tempDestination]]>
+		</commandline>
 
-        <toolparameters>
-            <parameter name="param1">
-                <description>Command line parameters for the 'cat' command. See
-                    'man cat'.
+		<toolparameters>
+			<parameter name="param1">
+				<description>Command line parameters for the 'cat' command.
+					See
+					'man cat'.
                 </description>
-            </parameter>
-            <parameter name="param2">
-                <description>Command line parameters for the 'tr' command. See
-                    'man tr'.
+			</parameter>
+			<parameter name="param2">
+				<description>Command line parameters for the 'tr' command.
+					See
+					'man tr'.
                 </description>
-            </parameter>
-        </toolparameters>
+			</parameter>
+		</toolparameters>
 
-        <toolpresets>
-            <!-- No presets -->
-        </toolpresets>
-    </path>
+		<toolpresets>
+			<!-- No presets -->
+		</toolpresets>
+	</path>
 </paths>
