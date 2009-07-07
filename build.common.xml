@@ -457,7 +457,7 @@
   <target name="test:local" description="executes the included JUnit tests w/o a server" depends="test:src-defined,compile:tests" if="test.local">
     <echo message="TEST:LOCAL: Testing the service code without a server."/>
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
+    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
       <!--
@@ -467,6 +467,8 @@
       <!-- Test config -->
       <sysproperty key="pserv.test.context" value="local"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
+      <!-- Set this property so that the PlanetsLogger can start up okay. -->
+      <sysproperty key="jboss.server.log.dir" value="${pserv.root.dir}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
         <formatter type="xml" extension="-local.xml"/>
@@ -482,7 +484,7 @@
   <target name="test:standalone" description="executes the included JUnit tests in a standalone content (no I.F.)" depends="test:src-defined,compile:tests" if="test.standalone">
     <echo message="TEST:STANDALONE: Testing the service code using a standalone server."/>
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
+    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
       <!--
@@ -492,6 +494,8 @@
       <!-- Test config -->
       <sysproperty key="pserv.test.context" value="standalone"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
+      <!-- Set this property so that the PlanetsLogger can start up okay. -->
+      <sysproperty key="jboss.server.log.dir" value="${pserv.root.dir}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
         <formatter type="xml" extension="-standalone.xml"/>
@@ -522,7 +526,7 @@
     <property name="echoclasspath" refid="run_test_classpath"/>
     <!-- echo message="Classpath = ${echoclasspath}"/ -->
     <!-- Invoke the tests -->
-    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="yes" showoutput="true">
+    <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
       <!--
@@ -536,6 +540,8 @@
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
       <sysproperty key="pserv.test.host" value="${if_server.host}"/>
       <sysproperty key="pserv.test.port" value="${if_server.port}"/>
+      <!-- Set this property so that the PlanetsLogger can start up okay. -->
+      <sysproperty key="jboss.server.log.dir" value="${pserv.root.dir}"/>
       
       <batchtest fork="yes" todir="${reports.dir}">
         <formatter type="xml" extension="-server.xml"/>
