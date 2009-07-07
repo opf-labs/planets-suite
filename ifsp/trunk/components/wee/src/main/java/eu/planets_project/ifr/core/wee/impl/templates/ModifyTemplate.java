@@ -1,19 +1,19 @@
 package eu.planets_project.ifr.core.wee.impl.templates;
 
+import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-// import eu.planets_project.ifr.core.storage.impl.blnewspaper.SimpleBLNewspaperDigitalObjectManagerImpl;
-import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
+import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
+import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
@@ -29,12 +29,9 @@ import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
-import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
-
 public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTemplate{
 
-	private static final Log log = LogFactory.getLog(ModifyTemplate.class);
+	private static final ReportingLog log = new ReportingLog(LogFactory.getLog(ModifyTemplate.class));
 	
 	/**
 	 * Identify service
@@ -71,48 +68,54 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTe
 		int count = 0;
 			
 		String metadata;
-		for(DigitalObject dgo : this.getData()){
-			metadata = null;
-			log.info("Processing file #" + (count + 1));
-			try{		
-				// Identify
-				String[] types = runIdentification(dgo, wfResult);
-				
-				// Extract metadata - will otherwise get lost between steps!
-				List<Metadata> mList = dgo.getMetadata();
-				if ((mList != null) && (mList.size() > 0)) {
-					metadata = mList.get(0).getContent();
-				}
-				
-				if (metadata == null) {
-					log.warn("No metadata contained in DigitalObject!");
-				} else {
-					log.info("Extracted metadata: " + metadata);
-				}
-				 
-				// Modify - rotate
-				dgo = runRotateService(dgo, types[0], metadata, wfResult);
-				
-				// Modify - crop
-				dgo = runCropService(dgo, types[0], metadata, wfResult);
-				
-				// Migrate to JPEG
-				try {
-					FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
-					String ext = fr.getFirstExtension(new URI(types[0]));
-					log.info("Getting extension: " + ext);
-					if (ext != null) {
-						dgo = runMigrateService(dgo, fr.createExtensionUri(ext), wfResult);
-					}
-				} catch (URISyntaxException e) {
-					throw new RuntimeException(e);
-				}
-			}catch(Exception e){
-				log.error("workflow execution error for digitalObject #" + count);
-				log.error(e.getClass() + ": " + e.getMessage());
-			}
-			count++;
-		}		
+		try{
+    		for(DigitalObject dgo : this.getData()){
+    			metadata = null;
+    			log.info("Processing file #" + (count + 1));
+    			try{		
+    				// Identify
+    				String[] types = runIdentification(dgo, wfResult);
+    				
+    				// Extract metadata - will otherwise get lost between steps!
+    				List<Metadata> mList = dgo.getMetadata();
+    				if ((mList != null) && (mList.size() > 0)) {
+    					metadata = mList.get(0).getContent();
+    				}
+    				
+    				if (metadata == null) {
+    					log.warn("No metadata contained in DigitalObject!");
+    				} else {
+    					log.info("Extracted metadata: " + metadata);
+    				}
+    				 
+    				// Modify - rotate
+    				dgo = runRotateService(dgo, types[0], metadata, wfResult);
+    				
+    				// Modify - crop
+    				dgo = runCropService(dgo, types[0], metadata, wfResult);
+    				
+    				// Migrate to JPEG
+    				try {
+    					FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
+    					String ext = fr.getFirstExtension(new URI(types[0]));
+    					log.info("Getting extension: " + ext);
+    					if (ext != null) {
+    						dgo = runMigrateService(dgo, fr.createExtensionUri(ext), wfResult);
+    					}
+    				} catch (URISyntaxException e) {
+    					throw new RuntimeException(e);
+    				}
+    			}catch(Exception e){
+    				log.error("workflow execution error for digitalObject #" + count);
+    				log.error(e.getClass() + ": " + e.getMessage());
+    			}
+    			count++;
+    		}	
+		}
+		finally{
+		    File file = log.reportAsFile();
+		    System.out.println("Wrote report to: " + file.getAbsolutePath());
+		}
 		return null;
 	}
 	
@@ -317,7 +320,6 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTe
 			 log.debug(s);
         	throw new Exception(s);
         }
-		
 		return migrateResult.getDigitalObject();
 	}
 
