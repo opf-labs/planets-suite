@@ -393,7 +393,8 @@ public final class DigitalObjectUtils {
 	public static List<File> getAllFilesFromDigitalObject(DigitalObject digOb) {
 		if(digOb.getFormat().equals(zipType)) {
 			List<File> zipFiles = new ArrayList<File>();
-			File target = FileUtils.getTempFile(getFileNameFromDigObject(digOb, null), "");
+//			File target = FileUtils.getTempFile(getFileNameFromDigObject(digOb, null), "");
+			File target = new File(FileUtils.getPlanetsTmpStoreFolder(), getFileNameFromDigObject(digOb, null));
 			FileUtils.writeInputStreamToFile(digOb.getContent().read(), target);
 			zipFiles.add(target);
 			return zipFiles;
@@ -702,7 +703,7 @@ public final class DigitalObjectUtils {
 		
 		if(title==null) {
 			String defaultTitle = "default_input";
-			title = FileUtils.randomizeFileName(defaultTitle + "." + ext);
+			title = defaultTitle + "." + ext;
 		}
 		
 		if(title.contains(" ")) {
@@ -715,7 +716,7 @@ public final class DigitalObjectUtils {
 		else {
 			title = title + "." + ext;
 		}
-		return title;
+		return FileUtils.randomizeFileName(title);
 		
 	}
 }

@@ -329,7 +329,8 @@ public class ZipUtils {
 				}
 				
 				log.info("[insertFileInto] Writing new Entry: " + targetPath);
-				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_STORED, new Date(toInsert.lastModified()));
+//				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_STORED, new Date(toInsert.lastModified()));
+				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_DEFLATED, new Date(toInsert.lastModified()));
 				
 				if(toInsert.isDirectory()) {
 					out.flush();
@@ -344,7 +345,8 @@ public class ZipUtils {
 					for(int i=0;i<containedPaths.size();i++) {
 						File currentFile = containedFiles.get(i);
 						String currentPath = targetPath.replace("/", "") + File.separator + containedPaths.get(i);
-						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_STORED, new Date(currentFile.lastModified()));
+//						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_STORED, new Date(currentFile.lastModified()));
+						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_DEFLATED, new Date(currentFile.lastModified()));
 						if(currentFile.isFile()) {
 							InputStream loop_in = new FileInputStream(currentFile);
 							FileUtils.writeInputStreamToOutputStream(loop_in, loop_out);
@@ -364,7 +366,8 @@ public class ZipUtils {
 				}
 			}
 			else {
-				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_STORED, new Date(toInsert.lastModified()));
+//				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_STORED, new Date(toInsert.lastModified()));
+				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_DEFLATED, new Date(toInsert.lastModified()));
 				
 				if(toInsert.isDirectory()) {
 					out.flush();
@@ -380,7 +383,8 @@ public class ZipUtils {
 					for(int i=0;i<containedPaths.size();i++) {
 						File currentFile = containedFiles.get(i);
 						String currentPath = targetPath.replace("/", "") + File.separator + containedPaths.get(i);
-						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_STORED, new Date(currentFile.lastModified()));
+//						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_STORED, new Date(currentFile.lastModified()));
+						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_DEFLATED, new Date(currentFile.lastModified()));
 						if(currentFile.isFile()) {
 							InputStream loop_in = new FileInputStream(currentFile);
 							FileUtils.writeInputStreamToOutputStream(loop_in, loop_out);
@@ -450,7 +454,8 @@ public class ZipUtils {
 				}
 				else {
 					try {
-						EntryOutputStream entryWriter = zip64File.openEntryOutputStream(string, FileEntry.iMETHOD_STORED, null);
+//						EntryOutputStream entryWriter = zip64File.openEntryOutputStream(string, FileEntry.iMETHOD_STORED, null);
+						EntryOutputStream entryWriter = zip64File.openEntryOutputStream(string, FileEntry.iMETHOD_DEFLATED, null);
 						entryWriter.flush();
 						entryWriter.close();
 					} catch (FileNotFoundException e) {
@@ -573,7 +578,8 @@ public class ZipUtils {
 		
 		try {
 			
-			out = zip64File.openEntryOutputStream(targetPath.getName(), FileEntry.iMETHOD_STORED, getFileDate(toWrite));
+//			out = zip64File.openEntryOutputStream(targetPath.getName(), FileEntry.iMETHOD_STORED, getFileDate(toWrite));
+			out = zip64File.openEntryOutputStream(targetPath.getName(), FileEntry.iMETHOD_DEFLATED, getFileDate(toWrite));
 			
 			if(!targetPath.isDirectory()) {
 				in = new FileInputStream(toWrite);

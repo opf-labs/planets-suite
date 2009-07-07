@@ -342,6 +342,14 @@ public final class FileUtils {
         }
         return file;
     }
+    /**
+     * @param bytes The data to write
+     * @param dest The destination file
+     * @return The file containing the given data
+     */
+    public static boolean writeByteArrayToFile(final byte[] bytes, File dest) {
+    	return writeByteArrayToFile(bytes, dest.getAbsolutePath()).exists();
+    }
 
     /**
      * Writes the contents of a byte array into a temporary file.
