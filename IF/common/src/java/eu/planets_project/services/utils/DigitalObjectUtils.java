@@ -178,6 +178,25 @@ public final class DigitalObjectUtils {
 	
 	
 	/**
+	 * Creates a file for the content of a given DigitalObject
+	 * @param digitalObject the DigitalObject containing the Content to be written to a File
+	 * @param destFolder the Folder to write the File into
+	 * @param fileName the name the file should have. If no fileName is specified, a randomized default name will be used (dig-ob-content.bin).
+	 * @return the File for the given Content
+	 */
+	public static File getContentAsFile(final DigitalObject digitalObject, File destFolder, String fileName) {
+		if(fileName==null) {
+			fileName = digitalObject.getTitle();
+			if(fileName==null || fileName.equalsIgnoreCase("")) {
+				fileName = FileUtils.randomizeFileName("dig-ob-content.bin"); 
+			}
+		}
+		File contentFile = new File(destFolder, FileUtils.randomizeFileName(fileName));
+		FileUtils.writeInputStreamToFile(digitalObject.getContent().read(), contentFile);
+		return contentFile;
+	}
+	
+	/**
 	 * Creates a Zip-type DigitalObject either from a given folder or from a zip file.
 	 * @param zip_Or_Folder
 	 * @param destZipName
