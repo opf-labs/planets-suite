@@ -158,7 +158,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 //											.title(zippedResult.getZipFile().getName())
 //											.build();
 			
-			DigitalObject resultDigObj = DigitalObjectUtils.createZipTypeDigOb(zippedResult.getZipFile(), zippedResult.getZipFile().getName(), true, true);
+			DigitalObject resultDigObj = DigitalObjectUtils.createZipTypeDigOb(zippedResult.getZipFile(), zippedResult.getZipFile().getName(), true, true, false);
 
 
 			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);

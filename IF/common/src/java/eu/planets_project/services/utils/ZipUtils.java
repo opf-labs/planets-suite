@@ -33,9 +33,10 @@ public class ZipUtils {
 	 * @param srcFolder the folder containing the files to be written to the zip
 	 * @param destFolder the folder to write the Zip file to
 	 * @param zipName the name the zip file should have. If no zipName is passed, the name of the folder will be used.
+	 * @param compress true if the file shoukld be compressed, false if not.
 	 * @return a zip(64) File
 	 */
-	public static File createZip(File srcFolder, File destFolder, String zipName) {
+	public static File createZip(File srcFolder, File destFolder, String zipName, boolean compress) {
 		Zip64File zipFile = null;
 		
 		if(!srcFolder.isDirectory()) {
@@ -66,7 +67,7 @@ public class ZipUtils {
 				FileEntry entry = new FileEntry(currentZipEntryPath);
 				File currentFile = new File(listOfFiles.get(i));
 				
-				FileEntry currentEntry = writeEntry(zipFile, entry, currentFile);
+				FileEntry currentEntry = writeEntry(zipFile, entry, currentFile, compress);
 			}
 			log.info("[createZip] All Files written to zip file: " + zipFile.getDiskFile().getFileName());
 			zipFile.close();
@@ -85,13 +86,14 @@ public class ZipUtils {
 	 * @param srcFolder the folder containing the files to be written to the zip
 	 * @param destFolder the folder to write the Zip file to
 	 * @param zipName the name the zip file should have. If no zipName is passed, the name of the folder will be used.
+	 * @param compress TODO
 	 * @return a ZipResult, containing the zip as a file and the created checksum (MD5)
 	 */
-	public static ZipResult createZipAndCheck(File srcFolder, File destFolder, String zipName) {
+	public static ZipResult createZipAndCheck(File srcFolder, File destFolder, String zipName, boolean compress) {
 		if(zipName==null) {
 			zipName = srcFolder.getName();
 		}
-		File newZipFile = createZip(srcFolder, destFolder, zipName);
+		File newZipFile = createZip(srcFolder, destFolder, zipName, compress);
 		log.info("[createZipAndCheck] Zip file created: " + zipName);
 		ZipResult zipResult = new ZipResult();
 		try {
@@ -304,11 +306,17 @@ public class ZipUtils {
 	public static File insertFileInto(File zipFile, File toInsert, String targetPath) {
 		Zip64File zip64File = null;
 		try {
+			boolean compress = false;
+			
 			zip64File = new Zip64File(zipFile);
 			
-			processAndCreateFolderEntries(zip64File, parseTargetPath(targetPath, toInsert));
-	
 			FileEntry testEntry = getFileEntry(zip64File, targetPath);
+			
+			if(testEntry!= null && testEntry.getMethod() == FileEntry.iMETHOD_DEFLATED) {
+				compress = true;
+			}
+			
+			processAndCreateFolderEntries(zip64File, parseTargetPath(targetPath, toInsert), compress);
 			
 			if(testEntry!=null) {
 				log.info("[insertFileInto] Entry exists: " + testEntry.getName());
@@ -329,8 +337,13 @@ public class ZipUtils {
 				}
 				
 				log.info("[insertFileInto] Writing new Entry: " + targetPath);
-//				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_STORED, new Date(toInsert.lastModified()));
-				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_DEFLATED, new Date(toInsert.lastModified()));
+				EntryOutputStream out = null;
+				if(!compress) {
+					out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_STORED, new Date(toInsert.lastModified()));
+				}
+				else {
+					out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_DEFLATED, new Date(toInsert.lastModified()));
+				}
 				
 				if(toInsert.isDirectory()) {
 					out.flush();
@@ -345,8 +358,13 @@ public class ZipUtils {
 					for(int i=0;i<containedPaths.size();i++) {
 						File currentFile = containedFiles.get(i);
 						String currentPath = targetPath.replace("/", "") + File.separator + containedPaths.get(i);
-//						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_STORED, new Date(currentFile.lastModified()));
-						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_DEFLATED, new Date(currentFile.lastModified()));
+						EntryOutputStream loop_out = null;
+						if(!compress) {
+							loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_STORED, new Date(currentFile.lastModified()));
+						}
+						else {
+							loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_DEFLATED, new Date(currentFile.lastModified()));
+						}
 						if(currentFile.isFile()) {
 							InputStream loop_in = new FileInputStream(currentFile);
 							FileUtils.writeInputStreamToOutputStream(loop_in, loop_out);
@@ -366,8 +384,13 @@ public class ZipUtils {
 				}
 			}
 			else {
-//				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_STORED, new Date(toInsert.lastModified()));
-				EntryOutputStream out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_DEFLATED, new Date(toInsert.lastModified()));
+				EntryOutputStream out = null;
+				if(!compress) {
+					out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_STORED, new Date(toInsert.lastModified()));
+				}
+				else {
+					out = zip64File.openEntryOutputStream(targetPath, FileEntry.iMETHOD_DEFLATED, new Date(toInsert.lastModified()));
+				}
 				
 				if(toInsert.isDirectory()) {
 					out.flush();
@@ -383,8 +406,14 @@ public class ZipUtils {
 					for(int i=0;i<containedPaths.size();i++) {
 						File currentFile = containedFiles.get(i);
 						String currentPath = targetPath.replace("/", "") + File.separator + containedPaths.get(i);
-//						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_STORED, new Date(currentFile.lastModified()));
-						EntryOutputStream loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_DEFLATED, new Date(currentFile.lastModified()));
+						EntryOutputStream loop_out = null;
+						if(!compress) {
+							loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_STORED, new Date(currentFile.lastModified()));
+						}
+						else {
+							loop_out = zip64File.openEntryOutputStream(currentPath, FileEntry.iMETHOD_DEFLATED, new Date(currentFile.lastModified()));
+						}
+						
 						if(currentFile.isFile()) {
 							InputStream loop_in = new FileInputStream(currentFile);
 							FileUtils.writeInputStreamToOutputStream(loop_in, loop_out);
@@ -438,7 +467,7 @@ public class ZipUtils {
 		}
 	}
 	
-	private static void processAndCreateFolderEntries(Zip64File zip64File, List<String> pathParts) {
+	private static void processAndCreateFolderEntries(Zip64File zip64File, List<String> pathParts, boolean compress) {
 		if(pathParts==null) {
 			return;
 		}
@@ -454,8 +483,15 @@ public class ZipUtils {
 				}
 				else {
 					try {
-//						EntryOutputStream entryWriter = zip64File.openEntryOutputStream(string, FileEntry.iMETHOD_STORED, null);
-						EntryOutputStream entryWriter = zip64File.openEntryOutputStream(string, FileEntry.iMETHOD_DEFLATED, null);
+						EntryOutputStream entryWriter = null;
+						
+						if(!compress) {
+							entryWriter = zip64File.openEntryOutputStream(string, FileEntry.iMETHOD_STORED, null);
+						}
+						else {
+							entryWriter = zip64File.openEntryOutputStream(string, FileEntry.iMETHOD_DEFLATED, null);
+						}
+						
 						entryWriter.flush();
 						entryWriter.close();
 					} catch (FileNotFoundException e) {
@@ -570,16 +606,21 @@ public class ZipUtils {
 	}
 	
 	
-	private static FileEntry writeEntry(Zip64File zip64File, FileEntry targetPath, File toWrite) {
+	private static FileEntry writeEntry(Zip64File zip64File, FileEntry targetPath, File toWrite, boolean compress) {
 		InputStream in = null;
 		EntryOutputStream out = null;
 		
-		processAndCreateFolderEntries(zip64File, parseTargetPath(targetPath.getName(), toWrite));
+		processAndCreateFolderEntries(zip64File, parseTargetPath(targetPath.getName(), toWrite), compress);
 		
 		try {
 			
-//			out = zip64File.openEntryOutputStream(targetPath.getName(), FileEntry.iMETHOD_STORED, getFileDate(toWrite));
-			out = zip64File.openEntryOutputStream(targetPath.getName(), FileEntry.iMETHOD_DEFLATED, getFileDate(toWrite));
+			if(!compress) {
+				out = zip64File.openEntryOutputStream(targetPath.getName(), FileEntry.iMETHOD_STORED, getFileDate(toWrite));
+			}
+			else {
+				out = zip64File.openEntryOutputStream(targetPath.getName(), FileEntry.iMETHOD_DEFLATED, getFileDate(toWrite));
+			}
+			
 			
 			if(!targetPath.isDirectory()) {
 				in = new FileInputStream(toWrite);
@@ -606,40 +647,6 @@ public class ZipUtils {
 		return targetPath;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 	
 	private static Date getFileDate(File file) {
 		Date date = new Date(file.lastModified());
@@ -675,51 +682,14 @@ public class ZipUtils {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/**
-	 * Private method to delete a FileEntry including all nested entries "below" tje FileEntry toDelete.
+	 * Private method to delete a FileEntry including all nested entries "below" the FileEntry toDelete.
 	 * @param zip the zip64File to delete the FileEntry toDelete from
 	 * @param toDelete the FileEntry to delete
 	 * @return a list with all deleted file entries.
 	 */
 	private static List<FileEntry> deleteFileEntry(Zip64File zip, FileEntry toDelete) {
 		List<FileEntry> deletedEntries = deleteEntriesRecursively(zip, toDelete, new ArrayList<FileEntry>());
-
-	// Commented that out, as it caused a crash, when the zip64File is closed during processing.
-	//		try {
-	//			zip.close();
-	//		} catch (IOException e) {
-	//			e.printStackTrace();
-	//		}
 		return deletedEntries;
 	}
 	
@@ -776,7 +746,6 @@ public class ZipUtils {
 		FileEntry testEntry = null;
 		testEntry = zip64File.getFileEntry(entryPath);
 		if(testEntry==null) {
-//			log.info("[getFileEntry] " + entryPath + " not found. Maybe it is a directory? Testing for directory entries (ending with \"/\") ");
 			testEntry = zip64File.getFileEntry(entryPath + "/");
 		}
 		if(testEntry!=null) {

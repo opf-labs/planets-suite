@@ -28,6 +28,7 @@ import eu.planets_project.services.migration.floppyImageHelper.impl.FloppyImageH
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.ZipResult;
+import eu.planets_project.services.utils.ZipUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -104,10 +105,10 @@ public class FloppyImageHelperServiceTest {
 		System.out.println("* Testing: Create Floppy Image and Inject Files... *");
 		System.out.println("****************************************************");
 		FileUtils.deleteAllFilesInFolder(OUT_DIR);
-		ZipResult zipResult = FileUtils.createZipFileWithChecksum(FILES_TO_INJECT, OUT_DIR, "test.zip"); 
+		ZipResult zipResult = ZipUtils.createZipAndCheck(FILES_TO_INJECT, OUT_DIR, "test.zip", false); 
 		File zipFile = zipResult.getZipFile();
 //		DigitalObjectContent content = Content.byReference(zipFile).withChecksum(zipResult.getChecksum());
-        DigitalObject input = DigitalObjectUtils.createZipTypeDigOb(zipFile, zipFile.getName(), true, true);
+        DigitalObject input = DigitalObjectUtils.createZipTypeDigOb(zipFile, zipFile.getName(), true, true, false);
 		List<Parameter> parameters = new ArrayList<Parameter> ();
 		parameters.add(new Parameter("modifyImage", "false"));
 		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, format.createExtensionUri("zip"), format.createExtensionUri("ima"), parameters);
@@ -136,6 +137,6 @@ public class FloppyImageHelperServiceTest {
 		FileUtils.writeInputStreamToFile(resultDigObj.getContent().read(), resultFile);
 		DigitalObjectContent resultContent = resultDigObj.getContent();
 //		long resultChecksum = Long.parseLong(resultContent.getChecksum().getValue());
-		FileUtils.extractFilesFromZipAndCheck(resultFile, OUT_DIR, resultContent.getChecksum());
+		ZipUtils.checkAndUnzipTo(resultFile, OUT_DIR, resultContent.getChecksum());
 	}
 }

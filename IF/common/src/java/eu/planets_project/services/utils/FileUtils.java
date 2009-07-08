@@ -657,7 +657,7 @@ public final class FileUtils {
         // Getting a reference to the new ZIP file
         return resultZIP;*/
     	
-    	return ZipUtils.createZip(srcFolder, destFolder, zipFileName);
+    	return ZipUtils.createZip(srcFolder, destFolder, zipFileName, false);
     }
     
     /**
@@ -674,16 +674,16 @@ public final class FileUtils {
     public static ZipResult createZipFileWithChecksum(final File srcFolder,
             final File destFolder, final String zipFileName) {
     	
-        return ZipUtils.createZipAndCheck(srcFolder, destFolder, zipFileName);
+        return ZipUtils.createZipAndCheck(srcFolder, destFolder, zipFileName, false);
     }
     
-    public static File insertFileInZip(File zip, File toInsert, String targetLocationInZip) {
-		return zip;
-    }
-    
-    public static File deleteFileFromZip(File zip, String deleteFileLocationInZip) {
-    	return zip;
-    }
+//    public static File insertFileInZip(File zip, File toInsert, String targetLocationInZip) {
+//		return zip;
+//    }
+//    
+//    public static File deleteFileFromZip(File zip, String deleteFileLocationInZip) {
+//    	return zip;
+//    }
 
     /**
      * Extracts all files from a given Zip file.

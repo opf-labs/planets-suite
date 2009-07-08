@@ -156,7 +156,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 //			.title(zippedResult.getZipFile().getName())
 //			.build();
 			
-			DigitalObject resultDigObj = DigitalObjectUtils.createZipTypeDigOb(zippedResult.getZipFile(), zippedResult.getZipFile().getName(), true, true);
+			DigitalObject resultDigObj = DigitalObjectUtils.createZipTypeDigOb(zippedResult.getZipFile(), zippedResult.getZipFile().getName(), true, true, false);
 
 			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
 			return new MigrateResult(resultDigObj, report);
@@ -215,7 +215,7 @@ public class FloppyImageHelperUnix implements Migrate, FloppyImageHelper {
 
 		log.info("image: " + image + " mounted to " + mountlabel);
 		File srcdir = new File(mountlabel);
-		ZipResult result = ZipUtils.createZipAndCheck(srcdir, TEMP_FOLDER, FileUtils.randomizeFileName("extractedFiles.zip"));
+		ZipResult result = ZipUtils.createZipAndCheck(srcdir, TEMP_FOLDER, FileUtils.randomizeFileName("extractedFiles.zip"), false);
 
 		umount(mountlabel);
 		unbindLoop(loopdev);

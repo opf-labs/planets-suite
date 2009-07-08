@@ -184,7 +184,7 @@ public class VirtualFloppyDrive {
 		
 		// create a ZIP containing the files on the floppy disk...
 //		ZipResult zip = FileUtils.createZipFileWithChecksum(EXTRACTED_FILES_DIR, TEMP_FOLDER, "extracedFiles.zip");
-		ZipResult zip = ZipUtils.createZipAndCheck(EXTRACTED_FILES_DIR, TEMP_FOLDER, FileUtils.randomizeFileName("extracedFiles.zip"));
+		ZipResult zip = ZipUtils.createZipAndCheck(EXTRACTED_FILES_DIR, TEMP_FOLDER, FileUtils.randomizeFileName("extracedFiles.zip"), false);
 		cmd.setCommand(closeImage());
 		cmd.run();
 		process_error.append(cmd.getProcessErrorAsString());

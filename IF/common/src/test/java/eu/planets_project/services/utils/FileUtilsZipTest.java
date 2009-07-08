@@ -25,15 +25,10 @@ public class FileUtilsZipTest {
     @BeforeClass
     public static void setup() {
     	FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
-        zip = FileUtils.createSimpleZipFile(TEST_FILE_FOLDER, OUTPUT_FOLDER,
-                TEST_FILE_FOLDER.getName() + ".zip");
+        zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER,
+                TEST_FILE_FOLDER.getName() + ".zip", false);
     }
 
-    /**
-     * Test method for
-     * {@link eu.planets_project.services.utils.FileUtils#createZipFileWithChecksum(java.io.File, File, java.lang.String)}
-     * .
-     */
     @Test
     public void testCreateSimpleZipFile() {
         File[] files = TEST_FILE_FOLDER.listFiles();
@@ -51,7 +46,7 @@ public class FileUtilsZipTest {
      */
     @Test
     public void testExtractFilesFromZip() {
-        List<File> files = FileUtils.extractFilesFromZip(zip,
+        List<File> files = ZipUtils.unzipTo(zip,
                 EXTRACT_RESULT_OUT);
         if (files != null) {
             for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {
@@ -74,9 +69,9 @@ public class FileUtilsZipTest {
         for (int i = 0; i < files.length; i++) {
             System.out.println(i + ": " + files[i].getAbsolutePath());
         }
-        ZipResult zipResult = FileUtils.createZipFileWithChecksum(
+        ZipResult zipResult = ZipUtils.createZipAndCheck(
                 TEST_FILE_FOLDER, OUTPUT_FOLDER, TEST_FILE_FOLDER.getName()
-                        + ".zip");
+                        + ".zip", false);
         File zip = zipResult.getZipFile();
         System.out.println("Please find ZIP here: " + zip.getAbsolutePath());
         System.out.println("Zip Checksum is: " + zipResult.getChecksum());
@@ -89,13 +84,13 @@ public class FileUtilsZipTest {
      */
     @Test
     public void testcheckAndExtractFilesFromZip() {
-        ZipResult zipResult = FileUtils.createZipFileWithChecksum(
+        ZipResult zipResult = ZipUtils.createZipAndCheck(
                 TEST_FILE_FOLDER, OUTPUT_FOLDER, TEST_FILE_FOLDER.getName()
-                        + ".zip");
+                        + ".zip", false);
         File zip = zipResult.getZipFile();
         System.out.println("Checksum before Extraction: "
                 + zipResult.getChecksum());
-        List<File> files = FileUtils.extractFilesFromZipAndCheck(zip,
+        List<File> files = ZipUtils.checkAndUnzipTo(zip,
                 EXTRACT_RESULT_OUT, zipResult.getChecksum());
         if (files != null) {
             for (Iterator<File> iterator = files.iterator(); iterator.hasNext();) {

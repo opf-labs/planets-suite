@@ -16,8 +16,8 @@ import org.junit.Test;
  */
 public class ZipUtilsTest {
 	
-	private static final File TEST_FILE_FOLDER = 
-			new File("IF/common/src/test/resources/test_zip");
+	private static final File TEST_FILE_FOLDER = new File("IF/common/src/test/resources/test_zip");
+//	private static final File TEST_FILE_FOLDER = new File("C:/Dokumente und Einstellungen/melmsp/Desktop/hartwig/test_zip");
 	
 	private static final File OUTPUT_FOLDER = 
 		FileUtils.createWorkFolderInSysTemp("ZipUtils_Test_Tmp".toUpperCase());
@@ -34,13 +34,13 @@ public class ZipUtilsTest {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.utils.ZipUtils#createZip(java.io.File, java.io.File, java.lang.String)}.
+	 * Test method for {@link eu.planets_project.services.utils.ZipUtils#createZip(java.io.File, java.io.File, java.lang.String, boolean)}.
 	 */
 	@Test
 	public void testCreateZipAndUnzipTo() {
 		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
 		int inputFileCount = FileUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
-		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTest.zip");
+		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTest.zip", true);
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
 		String folderName = zip.getName().substring(0, zip.getName().lastIndexOf("."));
 		File extract = FileUtils.createFolderInWorkFolder(OUTPUT_FOLDER, folderName);
@@ -54,12 +54,12 @@ public class ZipUtilsTest {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.utils.ZipUtils#createZipAndCheck(java.io.File, java.io.File, java.lang.String)}.
+	 * Test method for {@link eu.planets_project.services.utils.ZipUtils#createZipAndCheck(java.io.File, java.io.File, java.lang.String, boolean)}.
 	 */
 	@Test
 	public void testCreateZipAndCheckAndCheckAndUnzip() {
 		int inputFileCount = FileUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
-		ZipResult zip = ZipUtils.createZipAndCheck(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestCheck.zip");
+		ZipResult zip = ZipUtils.createZipAndCheck(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestCheck.zip", true);
 		System.out.println("[Checksum]: Algorith=" + zip.getChecksum().getAlgorithm() + " | checksum=" + zip.getChecksum().getValue());
 		System.out.println("Zip created. Please find it here: " + zip.getZipFile().getAbsolutePath());
 		String folderName = zip.getZipFile().getName().substring(0, zip.getZipFile().getName().lastIndexOf("."));
@@ -80,7 +80,7 @@ public class ZipUtilsTest {
 	public void testRemoveFile() {
 		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
 		int inputFileCount = FileUtils.listAllFilesAndFolders(TEST_FILE_FOLDER, new ArrayList<File>()).size();
-		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestRemove.zip");
+		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestRemove.zip", true);
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
 		String folderName = zip.getName().substring(0, zip.getName().lastIndexOf("."));
 		File extract = FileUtils.createFolderInWorkFolder(OUTPUT_FOLDER, folderName);
@@ -97,7 +97,7 @@ public class ZipUtilsTest {
 	@Test
 	public void testInsertFile() {
 		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
-		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestInsert.zip");
+		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestInsert.zip", true);
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
 		File toInsert = new File("IF/common/src/test/resources/test_zip/images/Kopie von test_gif");
 		File modifiedZip = ZipUtils.insertFileInto(zip, toInsert, "images\\test_gif");
@@ -113,7 +113,7 @@ public class ZipUtilsTest {
 	@Test
 	public void testGetFileFrom() {
 		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
-		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestGetFile.zip");
+		File zip = ZipUtils.createZip(TEST_FILE_FOLDER, OUTPUT_FOLDER, "zipUtilsTestGetFile.zip", true);
 		System.out.println("Zip created. Please find it here: " + zip.getAbsolutePath());
 		
 		File fromZip = ZipUtils.getFileFrom(zip, "images\\test_gif", OUTPUT_FOLDER);

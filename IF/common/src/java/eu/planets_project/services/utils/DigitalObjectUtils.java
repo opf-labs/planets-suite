@@ -183,14 +183,15 @@ public final class DigitalObjectUtils {
 	 * @param destZipName
 	 * @param createByReference
 	 * @param withChecksum
+	 * @param compress TODO
 	 * @return
 	 */
-	public static DigitalObject createZipTypeDigOb(File zip_Or_Folder, String destZipName, boolean createByReference, boolean withChecksum) {
+	public static DigitalObject createZipTypeDigOb(File zip_Or_Folder, String destZipName, boolean createByReference, boolean withChecksum, boolean compress) {
 		if(zip_Or_Folder.isFile() && ZipUtils.isZipFile(zip_Or_Folder)) {
 			return createZipTypeDigitalObjectFromZip(zip_Or_Folder, createByReference, withChecksum);
 		}
 		else {
-			return createZipTypeDigitalObjectFromFolder(zip_Or_Folder, destZipName, createByReference, withChecksum);
+			return createZipTypeDigitalObjectFromFolder(zip_Or_Folder, destZipName, createByReference, withChecksum, compress);
 		}
 	}
 
@@ -202,9 +203,10 @@ public final class DigitalObjectUtils {
 	 * @param destZipName the name the zip file should have. If no name is specified, the name of the folder will be used.
 	 * @param createByReference a flag to set whether you want to create the DigObs by Reference or as stream...
 	 * @param withChecksum creates a zip with a checksum. 
-     * @return a DigitalObject containing the zip file created from "folder" and a list of the files inside the zip as "fragments".
+	 * @param compress TODO
+	 * @return a DigitalObject containing the zip file created from "folder" and a list of the files inside the zip as "fragments".
      */
-    private static DigitalObject createZipTypeDigitalObjectFromFolder(File folder, String destZipName, boolean createByReference, boolean withChecksum) {
+    private static DigitalObject createZipTypeDigitalObjectFromFolder(File folder, String destZipName, boolean createByReference, boolean withChecksum, boolean compress) {
     	String zipName = null;
     	if(destZipName==null) {
     		zipName = folder.getName() + ".zip";
@@ -223,7 +225,7 @@ public final class DigitalObjectUtils {
 //    	FileUtils.deleteAllFilesInFolder(zip_tmp);
     	
     	if(withChecksum) {
-	    	ZipResult zipResult = ZipUtils.createZipAndCheck(folder, zip_tmp, zipName);
+	    	ZipResult zipResult = ZipUtils.createZipAndCheck(folder, zip_tmp, zipName, compress);
 	    	
 	    	if(createByReference) {
 	    		DigitalObject digOb = null;
@@ -246,7 +248,7 @@ public final class DigitalObjectUtils {
 	    	}
     	}
     	else {
-    		File result = ZipUtils.createZip(folder, zip_tmp, zipName);
+    		File result = ZipUtils.createZip(folder, zip_tmp, zipName, compress);
     		
     		if(createByReference) {
 	    		DigitalObject digOb = null;

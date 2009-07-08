@@ -28,10 +28,13 @@ public class DigitalObjectUtilsTest {
 	@Test
 	public void testCreateZipTypeDigObFolder() {
 		printTestTitle("Test createZipTypeDigOb() from FOLDER");
-		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(testFolder, testFolder.getName(), true, false);
+		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(testFolder, testFolder.getName(), true, false, true);
+		
 		assertTrue("DigitalObject should NOT be NULL!", result!=null);
 		printDigOb(result);
-		FileUtils.writeInputStreamToFile(result.getContent().read(), new File(work_folder, result.getTitle()));
+		File resultFile = new File(work_folder, result.getTitle());
+		FileUtils.writeInputStreamToFile(result.getContent().read(), resultFile);
+		System.out.println("Result size: " + resultFile.length());
 	}
 	
 //	@Test
@@ -45,7 +48,7 @@ public class DigitalObjectUtilsTest {
 	@Test
 	public void testCreateZipTypeDigObZip() {
 		printTestTitle("Test createZipTypeDigOb() from ZIP file");
-		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(testZip, testFolder.getName(), true, false);
+		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(testZip, testFolder.getName(), true, false, true);
 		assertTrue("DigitalObject should NOT be NULL!", result!=null);
 		printDigOb(result);
 	}
@@ -79,7 +82,7 @@ public class DigitalObjectUtilsTest {
 	@Test
 	public void testGetFragmentFromZipTypeDigitalObject() {
 		printTestTitle("Test getFragmentFromZipTypeDigitalObject()");
-		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(testFolder, "getFragmentTest.zip", false, false);
+		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(testFolder, "getFragmentTest.zip", false, false, true);
 		List<Fragment> fragments = result.getFragments();
 		DigitalObject fragmentDigOb = null;
 		Random random = new Random();
@@ -94,7 +97,7 @@ public class DigitalObjectUtilsTest {
 	@Test
 	public void testInsertFragmentIntoZipTypeDigitalObject() {
 		printTestTitle("Test insertFragmentIntoZipTypeDigitalObject()");
-		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(testFolder, "insertFragmentTest.zip", false, false);
+		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(testFolder, "insertFragmentTest.zip", false, false, true);
 		List<Fragment> fragments = result.getFragments();
 		DigitalObject insertionResult = null;
 		Random random = new Random();
@@ -110,7 +113,7 @@ public class DigitalObjectUtilsTest {
 	@Test
 	public void testRemoveFragmentFromZipTypeDigitalObject() {
 		printTestTitle("Test removeFragmentFromZipTypeDigitalObject()");
-		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(removeZip, "removeFragmentTest.zip", false, false);
+		DigitalObject result = DigitalObjectUtils.createZipTypeDigOb(removeZip, "removeFragmentTest.zip", false, false, true);
 		printDigOb(result);
 		DigitalObject removeResult = DigitalObjectUtils.removeFragmentFromZipTypeDigitalObject(result, new Fragment("insertedFiles\\images\\laptop.gif"), false);
 		FileUtils.writeInputStreamToFile(removeResult.getContent().read(), new File(work_folder, removeResult.getTitle()));
