@@ -542,7 +542,11 @@ public class PropertyDnDTreeBean{
 			// TODO Auto-generated method stub
 			return null;
 		}
-		public List<OWLNamedClass> getIsSameAs() {
+		public String getHumanReadableName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		public List<OWLIndividual> getIsSameAs() {
 			// TODO Auto-generated method stub
 			return null;
 		}

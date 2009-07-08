@@ -3,12 +3,17 @@
  */
 package eu.planets_project.tb.impl.model.ontology;
 
+import java.net.URI;
 import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import edu.stanford.smi.protegex.owl.ProtegeOWL;
+import edu.stanford.smi.protegex.owl.inference.pellet.ProtegePelletJenaReasoner;
+import edu.stanford.smi.protegex.owl.inference.protegeowl.ReasonerManager;
+import edu.stanford.smi.protegex.owl.inference.reasoner.ProtegeReasoner;
+import edu.stanford.smi.protegex.owl.inference.reasoner.exception.ProtegeReasonerException;
 import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
@@ -27,6 +32,7 @@ public class OntologyHandlerImpl {
 	private Log log = LogFactory.getLog(OntologyHandlerImpl.class);
 	private final String owlresource = "eu/planets_project/tb/impl/XCLOntology.owl";
 	private OWLModel owlModel;
+	private ProtegeReasoner reasoner;
 	private static OntologyHandlerImpl instance;
 	public static final String OWLMODEL_ROOT_CLASS = "XCLOntology:specificationPropertyNames";
 	
@@ -53,10 +59,43 @@ public class OntologyHandlerImpl {
         try {
         	java.io.InputStream ontoStream = getClass().getClassLoader().getResourceAsStream(owlresource);
             this.owlModel = ProtegeOWL.createJenaOWLModelFromInputStream(ontoStream);
+            classifyTaxonomy(createPelletJenaReasoner(this.owlModel));
+            
         } catch (Exception ex) {
             String err = "An error occurred while trying to load the ontology:";
             log.fatal(err,ex);
         }
+    }
+    
+    /**
+     * Register a ProtegePelletJena Reasoner for the given owl model
+     * @param owlModel
+     * @return
+     */
+    private ProtegeReasoner createPelletJenaReasoner(OWLModel owlModel) {
+
+		// Get the reasoner manager and obtain a reasoner for the OWL model. 
+		ReasonerManager reasonerManager = ReasonerManager.getInstance();
+
+		//Get an instance of the Protege Pellet reasoner
+		ProtegeReasoner preasoner = reasonerManager.createProtegeReasoner(owlModel, ProtegePelletJenaReasoner.class);
+		reasoner = preasoner;
+		return preasoner;
+	}
+    
+    /**
+     * @param reasoner
+     * @throws ProtegeReasonerException
+     */
+    private  void classifyTaxonomy(ProtegeReasoner reasoner) throws ProtegeReasonerException{
+    	//classify the whole ontology, which will put the
+		// inferred class hierarchy information directly into the Protege-OWL model. 
+	
+		//reasoner.initialize();
+		//reasoner.computeInferredHierarchy();
+		//reasoner.computeInferredIndividualTypes();
+	
+		//reasoner.classifyTaxonomy(); 
     }
     
     /**

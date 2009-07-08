@@ -3,6 +3,7 @@ package eu.planets_project.tb.impl.model.ontology;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -17,9 +18,13 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import edu.stanford.smi.protegex.owl.inference.protegeowl.ReasonerManager;
+import edu.stanford.smi.protegex.owl.inference.reasoner.ProtegeReasoner;
+import edu.stanford.smi.protegex.owl.inference.reasoner.exception.ProtegeReasonerException;
 import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
+import edu.stanford.smi.protegex.owl.model.OWLObjectProperty;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLNamedClass;
@@ -27,12 +32,12 @@ import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 
 /**
- * This is the Testbed's representation of an ontology property.
- * A) It contains predefined RDF queries of the ontology for basic attributes
+ * This is the Testbed's representation of an ontology property modeled in the specificationPropertyNames XCLOntology class.
+ * A) It contains predefined (RDF) queries of the ontology for basic attributes
  * as e.g. the OWLIndividuals URI within the ontology, comment, unit, name etc. for
  * direct rendering in a bean.
  * B) contains all other information provided by the OWLIndividual and accessible 
- * by the getRDProperty method of this class.
+ * by the getOWLObjectProperty method, also applying the PelletJena reasoner.
  * 
  * @author <a href="mailto:Andrew.Lindley@arcs.ac.at">Andrew Lindley</a>
  * @since 02.March.2009
@@ -50,6 +55,8 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     //FIXME This information is currently hardcoded and must come from the Testbed ontology extension
     private static final String TYPE_DIGITAL_OBJECT = "Digital Object";
     private static final String TYPE_SERVICE = "Service";
+    //the ProtegeReasoner that's connected to the given owl model
+    private ProtegeReasoner reasoner = null;
     
     
     /**
@@ -67,6 +74,19 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     public OntologyPropertyImpl(OWLIndividual individual) { 
     	this.individual = individual;
     }
+    
+
+    /**
+     * Returns the ProtegePelletJenaReasoner that's connected to the given owl model
+     * @return
+     */
+    private ProtegeReasoner getReasoner(){
+    	if(reasoner==null){
+    		ReasonerManager reasonerManager = ReasonerManager.getInstance();
+    		reasonerManager.getProtegeReasoner(this.individual.getOWLModel());
+    	}
+    	return reasoner;
+    }
 
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getOWLIndividual()
@@ -75,133 +95,172 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     	return this.individual;
     }
 
+    private String uri = null;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getURI()
      */
     public String getURI() {
-        return individual.getURI();
+    	if(uri==null){
+    		uri = individual.getURI();
+    	}
+        return uri;
     }
 
-
+    private String name = null;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getName()
      */
     public String getName() {
-        return individual.getLocalName();
+    	if(name==null){
+    		name = individual.getLocalName();
+    	}
+        return name;
+    }
+    
+    
+    private String hrName = null;
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getHumanReadableName()
+     */
+    public String getHumanReadableName(){
+    	if(hrName==null){
+    		//logic to get hrName: if exactly one is_same_as relation - use this as
+    		//human readable name - else use the individual's name
+    		if(this.getIsSameAsNames().size()==1){
+    			//there's a human readable name
+    			hrName = this.getIsSameAsNames().iterator().next();
+    		}
+    		else{
+    			//there may be non or 2..n - in this case use the individual's own name
+    			hrName = this.getName();
+    		}
+    	}
+    	return hrName;
     }
 
-
+    private String parentType = null;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getParentType()
      */
     public String getParentType() {
-    	//get a certain DatatypeProperty
-    	RDFProperty propertyType = individual.getOWLModel()
-    	.getRDFProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-    	Object oType = individual.getPropertyValue(propertyType);
-    	if(oType instanceof DefaultOWLNamedClass){
-        	DefaultOWLNamedClass type = (DefaultOWLNamedClass)oType;
-        	//return a name without the namespace prefixes
-        	return type.getLocalName();
-        }
-        return "";
+    	if(parentType==null){
+	    	//get a certain DatatypeProperty
+	    	RDFProperty propertyType = individual.getOWLModel()
+	    	.getRDFProperty("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+	    	Object oType = individual.getPropertyValue(propertyType);
+	    	if(oType instanceof DefaultOWLNamedClass){
+	        	DefaultOWLNamedClass type = (DefaultOWLNamedClass)oType;
+	        	//return a name without the namespace prefixes
+	        	parentType = type.getLocalName();
+	        }else{
+	        	parentType="";
+	        }
+    	}
+        return parentType;
     }
     
-
+    
+    private String comment = null;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getComment()
      */
     public String getComment() {
-    	//get a certain DatatypeProperty
-        RDFProperty propertyComment = individual.getOWLModel()
-        .getRDFProperty("http://www.w3.org/2000/01/rdf-schema#comment");
-        Object oComment = individual.getPropertyValue(propertyComment);
-        if(oComment instanceof String){
-        	return (String)oComment;
-        } 
+    	if(comment==null){
+	    	//get a certain DatatypeProperty
+	        RDFProperty propertyComment = individual.getOWLModel()
+	        .getRDFProperty("http://www.w3.org/2000/01/rdf-schema#comment");
+	        Object oComment = individual.getPropertyValue(propertyComment);
+	        if(oComment instanceof String){
+	        	comment = (String)oComment;
+	        } else{
+	        	comment = "";
+	        }
+    	}
         //System.out.println("<Prop name: "+property.getBrowserText() +" value: "+individual.getPropertyValue(property));
-        return "";
+        return comment;
     }
     
 
+    private List<String> lis_same_asNames = null;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getIsSameAs()
      */
     public List<String> getIsSameAsNames(){
-    	List<String> ret = new ArrayList<String>();
-    	RDFProperty is_same_as = individual.getOWLModel()
-    	.getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as");
-        Object ois_same_as = individual.getPropertyValue(is_same_as);
-
-        if(ois_same_as instanceof DefaultOWLIndividual){
-        	DefaultOWLIndividual dIsSameAs = (DefaultOWLIndividual)individual.getPropertyValue(is_same_as);
-        	//System.out.println("localname: "+dIsSameAs.getLocalName());
-        	//System.out.println("directType: "+dIsSameAs.getDirectType().toString());
-        	
-        	for(Object x : dIsSameAs.getDirectTypes()){
-        		if(x instanceof DefaultOWLNamedClass){
-        			DefaultOWLNamedClass same = (DefaultOWLNamedClass)x;
-        			//add its human readable name
-        			ret.add(same.getLocalName());
-        		}
-        	}
-        }
-        return ret;
+    	if(lis_same_asNames==null){
+    		lis_same_asNames = new ArrayList<String>();
+	    	Iterator<OWLIndividual> it = this.getIsSameAs().iterator();
+	    	while(it.hasNext()){
+				OWLIndividual sameAsIndividual = it.next();
+				lis_same_asNames.add(sameAsIndividual.getLocalName());
+			}
+    	}
+        return lis_same_asNames;
     }
     
+    
+    private List<OWLIndividual> lis_same_asIndividuals= null;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getIsSameAs()
      */
-    public List<OWLNamedClass> getIsSameAs(){
-    	List<OWLNamedClass> ret = new ArrayList<OWLNamedClass>();
-    	RDFProperty is_same_as = individual.getOWLModel()
-    	.getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as");
-        Object ois_same_as = individual.getPropertyValue(is_same_as);
-
-        if(ois_same_as instanceof DefaultOWLIndividual){
-        	DefaultOWLIndividual dIsSameAs = (DefaultOWLIndividual)individual.getPropertyValue(is_same_as);
-        	//System.out.println("localname: "+dIsSameAs.getLocalName());
-        	//System.out.println("directType: "+dIsSameAs.getDirectType().toString());
-        	
-        	for(Object x : dIsSameAs.getDirectTypes()){
-        		if(x instanceof DefaultOWLNamedClass){
-        			DefaultOWLNamedClass same = (DefaultOWLNamedClass)x;
-        			//add its human readable name
-        			ret.add(same);
-        		}
-        	}
-        }
-        return ret;
+    public List<OWLIndividual> getIsSameAs(){
+    	if(lis_same_asIndividuals==null){
+    		lis_same_asIndividuals = new ArrayList<OWLIndividual>();
+	    	
+			OWLObjectProperty propertyIs_same_as = individual.getOWLModel().getOWLObjectProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as");
+			try {
+				//using the reasoner for resolving the symmetric individual relations
+				Iterator<OWLIndividual> it = reasoner.getRelatedIndividuals(individual, propertyIs_same_as).iterator();
+				while(it.hasNext()){
+					OWLIndividual sameAsIndividual = it.next();
+					lis_same_asIndividuals.add(sameAsIndividual);
+				}
+			} catch (ProtegeReasonerException e) {
+				// TODO Auto-generated catch block
+				log.debug("Problems resolving is_same_as relationship with the pellet reasoner",e);
+			}
+    	}
+    	return lis_same_asIndividuals;
     }
 
-
+    
+    private String unit = null;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getUnit()
      */
     public String getUnit(){
-        RDFProperty unit = individual.getOWLModel()
-        .getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Unit");
-        Object oUnit = individual.getPropertyValue(unit);
-        if(oUnit instanceof DefaultOWLIndividual){
-        	DefaultOWLIndividual dUnit = (DefaultOWLIndividual)individual.getPropertyValue(unit);
-        	return dUnit.getLocalName();
+        if(unit==null){
+	    	RDFProperty propertyUnit = individual.getOWLModel()
+	        .getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Unit");
+	        Object oUnit = individual.getPropertyValue(propertyUnit);
+	        if(oUnit instanceof DefaultOWLIndividual){
+	        	DefaultOWLIndividual dUnit = (DefaultOWLIndividual)individual.getPropertyValue(propertyUnit);
+	        	unit= dUnit.getLocalName();
+	        }
+	        else{
+	        	unit="";
+	        }
         }
-        return "";
+        return unit;
     }
     
+    private String dataType = null;
     /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getDataType()
 	 */
 	public String getDataType() {
-		RDFProperty datatype = individual.getOWLModel()
-		.getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Datatype");
-        //System.out.println("<Prop name: "+datatype.getBrowserText() +" value: "+individual.getPropertyValue(datatype)); 
-        Object oDatatype = individual.getPropertyValue(datatype);
-        if(oDatatype instanceof DefaultOWLIndividual){
-        	DefaultOWLIndividual ddatatype = (DefaultOWLIndividual)individual.getPropertyValue(datatype);
-        	return ddatatype.getLocalName();
-        }
-        return "";
+		if(dataType==null){
+			RDFProperty propertyDatatype = individual.getOWLModel()
+			.getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Datatype");
+	        //System.out.println("<Prop name: "+datatype.getBrowserText() +" value: "+individual.getPropertyValue(datatype)); 
+	        Object oDatatype = individual.getPropertyValue(propertyDatatype);
+	        if(oDatatype instanceof DefaultOWLIndividual){
+	        	DefaultOWLIndividual ddatatype = (DefaultOWLIndividual)individual.getPropertyValue(propertyDatatype);
+	        	dataType = ddatatype.getLocalName();
+	        }else{
+	        	dataType="";
+	        }
+		}
+        return dataType;
 	}
     
     
@@ -218,7 +277,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
      */
     @Override
     public String toString() {
-        return "[uri:"+this.getURI()+", name:"+this.getName()+", unit:"+this.getUnit()+", comment:"+this.getComment()+", type:"+this.getDataType()/*+", autoextractable:"+this.autoextractable*/+"]";
+        return "[uri:"+this.getURI()+", name:"+this.getName()+", human readable name:"+this.getHumanReadableName()+", unit:"+this.getUnit()+", comment:"+this.getComment()+", type:"+this.getDataType()/*+", autoextractable:"+this.autoextractable*/+"]";
     }
     
 

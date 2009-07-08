@@ -21,9 +21,15 @@ public interface OntologyProperty {
 	 	 * @return the properties OWL model identifier
 	 	 */
 	 	public String getURI();
+	 	
+	 	/**
+	 	 * @return a human readable label for the name
+	 	 */
+	 	public String getHumanReadableName();
 
+	 	
 	    /**
-	     * @return a human readable label for the name
+	     * @return the Property's name as defined by the ontology
 	     */
 	    public String getName();
 
@@ -65,9 +71,10 @@ public interface OntologyProperty {
 	    public List<String> getIsSameAsNames();
 	    
 	    /**
-	     * @return a list of 'is_same_as' relationship of this individual OWLNamedClasses objects 
+	     * @return a list of individuals that are connected via 'is_same_as' relationship. Also resolving 
+	     * symmetric object property relationships.  
 	     */
-	    public List<OWLNamedClass> getIsSameAs();
+	    public List<OWLIndividual> getIsSameAs();
 	    
 	    
 	    /**
