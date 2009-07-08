@@ -38,10 +38,12 @@ public class TestbedBatchProcessDaemon extends Thread {
     }
 
     public void run() {
+        TestbedBatchJob job = null;
         while (true) {
-            TestbedBatchJob job = testbedBatchProcessor.pollForNextJob();
+            job = testbedBatchProcessor.pollForNextJob();
             if( job != null ) {
                 this.executeWorkflow(job);
+                job = null;
             } else {
                 try {
                     Thread.sleep(1000);
