@@ -41,6 +41,8 @@ import eu.planets_project.tb.api.system.TestbedStatelessAdmin;
  * @link http://www.jboss.org/community/wiki/Ejb3DisableSfsbPassivation
  * 
  * URGENT Rename to TestbedAdminSessionBean?
+ * URGENT Cache timeouts were still not happening: beans were being persisted for more that JOSSO's 30 minute session length!
+ * Attempting to tweak META-INF/jboss.xml instead...
  * 
  * @author AnJackson
  *

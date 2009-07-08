@@ -10,10 +10,7 @@
  */
 package eu.planets_project.tb.impl.data;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -36,6 +33,10 @@ import eu.planets_project.services.datatypes.DigitalObjectContent;
 import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.tb.api.model.ontology.OntologyProperty;
+import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
+import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
 
 /**
  * @author AnJackson
@@ -118,7 +119,7 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
     @Override
     protected ArrayList<URI> listFileLocation(URI pdURI, File searchRoot)
             throws URISyntaxException {
-        _log.info("Examining file(s) at "+searchRoot);
+        _log.debug("Examining file(s) at "+searchRoot);
         if( searchRoot.listFiles() == null ) {
             return null;
         }
@@ -250,6 +251,27 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
                         _log.error("Exception: "+e);
                         e.printStackTrace();
                     }
+                }
+            }
+        }
+        
+        OntologyHandlerImpl onto = OntologyHandlerImpl.getInstance();
+        for( Property p : properties ) {
+            _log.info( "Property: " + p );
+            OntologyProperty op = onto.getProperty(p.getUri().toString());
+            if( op != null ) {
+                _log.info("P: "+p.getUri()+" OP: "+op.getURI());
+                _log.info("P: "+p.getName()+" OP: "+op.getName());
+                _log.info("P: "+p.getDescription()+" OP: "+op.getComment());
+                _log.info("P: "+p.getType()+" OP: "+op.getType());
+                _log.info("P: "+p.getUnit()+" OP: "+op.getUnit());
+                _log.info("P= "+p.getValue()+" OP: "+op.getDataType());
+                try {
+                    MeasurementImpl measurementinfo = OntoPropertyUtil.createMeasurementFromOntologyProperty(op);
+                    _log.info("Got MeasurementImpl: " + measurementinfo.getDescription() );
+                } catch (Exception e) {
+                    _log.error("Could not turn the OntologyProperty into a MeasurementImpl.");
+                    e.printStackTrace();
                 }
             }
         }

@@ -23,6 +23,10 @@ import javax.activation.MimetypesFileTypeMap;
 import org.apache.myfaces.custom.tree2.TreeNodeBase;
 
 /**
+ * 
+ * URGENT Cache the DigitalObjectRefBean instead of the DOB explicitly?
+ * URGENT Push the property lookups (and others) down to the RefBean instead of here?
+ * 
  * @author AnJackson
  *
  */
@@ -47,7 +51,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
      * Constructor based on Digital Object:
      */
     public DigitalObjectTreeNode( URI uri, DigitalObjectMultiManager dsm ) {
-        log.info("Creating bean for Digital Object at: "+uri);
+        log.debug("Creating bean for Digital Object at: "+uri);
         this.setUri(uri);
         this.dsm = dsm;
         this.setType("file");
@@ -105,7 +109,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     public String getDownloadUri() {
         try {
             String duri = dh.get(this.getUri().toString()).getDownloadUri().toASCIIString();
-            log.info("Returning download location: "+duri);
+            log.debug("Returning download location: "+duri);
             return duri;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -205,7 +209,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
     public String getThumbnailUri() {
         try {
             String duri = dh.get(this.getUri().toString()).getThumbnailUri().toASCIIString();
-            log.info("Returning download location: "+duri);
+            log.debug("Returning thumbnail location: "+duri);
             return duri;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -242,7 +246,7 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
         } else {
             db.removeFromSelection(this.getUri());
         }
-        log.info("Setting 'Selected' to: "+selected);
+        log.debug("Setting 'Selected' to: "+selected);
         db.setSelectedPanel(DigitalObjectBrowser.SELECTION_PANEL);
     }
 

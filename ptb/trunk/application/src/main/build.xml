@@ -264,6 +264,11 @@
 			<fileset dir="${build.dir}">
 				<include name="lib/*.*"/>
 			</fileset>
+  	        <!-- Include config file -->
+  	        <fileset dir="resources">
+              <include name="META-INF/jboss-app.xml"/>
+              <include name="META-INF/jboss.xml"/>
+  	        </fileset>
 	 </ear>
   	
   </target>

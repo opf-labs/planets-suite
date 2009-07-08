@@ -200,7 +200,7 @@ public class DigitalObjectRefBean {
             e.printStackTrace();
             download = null;
         }
-        log.info("Created download URI: "+download);
+        log.debug("Created download URI: "+download);
         return download;
     }
 }
