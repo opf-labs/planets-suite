@@ -2,13 +2,11 @@
 package eu.planets_project.ifr.core.wee.api;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Arrays;
 
 import org.apache.commons.logging.Log;
 
-import eu.planets_project.services.utils.FileUtils;
+import eu.planets_project.services.datatypes.Parameter;
 
 /**
  * A reporting logger that builds up a HTML report from the log messages and
@@ -18,16 +16,8 @@ import eu.planets_project.services.utils.FileUtils;
  */
 public final class ReportingLog implements Log {
 
-    private static final String TEMPLATE = "ReportTemplate.html";
-    private static final String CONTENT_MARKER = "###CONTENT###";
-    static final String LOCAL = "components/wee/src/main/resources/";
-    private static final String WEE_DATA = "/server/default/data/wee/";
-    private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
-    private static final String deployedJBossHome = System
-            .getProperty(JBOSS_HOME_DIR_KEY);
-    private static final String REPORT_OUTPUT_FOLDER = (deployedJBossHome != null ? deployedJBossHome
-            + WEE_DATA
-            : LOCAL);
+    private Log backingLog;
+    private WorkflowReporter reporter;
 
     /**
      * Enum for the different possible levels of log messages.
@@ -42,62 +32,54 @@ public final class ReportingLog implements Log {
         }
     }
 
-    private Log backingLog;
-    private StringBuilder builder = new StringBuilder();
-    // private static final String END = "</html>";
-    private static final String ENTRY =
-    // A template for a workflow report message, used with String.format:
-    "<fieldset><legend><b>Workflow Message</legend>"
-            + "<table bgcolor=%s width=100%%><tr><td>" // first insert: color
-            + "<b>Type: </b>%s<br/> " // second insert: type
-            + "<b>Message: </b>%s<br/>" // third insert: message
-            + "<b>Details: </b>%s<br/>" // fourth insert: details
-            + "</td></tr></table></fieldset>";
+    /**
+     * A message to pass to the reporting log. Will be added to the report.
+     * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
+     */
+    public static final class Message {
+
+        String title;
+        Parameter[] values;
+
+        /**
+         * @param title The message title
+         * @param values The key-value message attributes
+         */
+        public Message(String title, Parameter... values) {
+            this.title = title;
+            this.values = values;
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return String.format("%s: %s", title, Arrays.asList(values));
+        }
+    }
 
     /**
      * @param backingLog The backing log
      */
     public ReportingLog(final Log backingLog) {
         this.backingLog = backingLog;
+        this.reporter = new WorkflowReporter();
     }
 
     /**
      * @return The report assembled during logging
      */
     public String reportAsString() {
-        String content = builder.toString();
-        InputStream stream = this.getClass().getResourceAsStream(TEMPLATE);
-        String template = new String(FileUtils.writeInputStreamToBinary(stream));
-        String result = template.replace(CONTENT_MARKER, content);
-        return result;
+        return reporter.reportAsString();
     }
 
     /**
      * @return The file the HTML report has been written to
      */
     public File reportAsFile() {
-        File file = new File(REPORT_OUTPUT_FOLDER, "wf-report"
-                + System.currentTimeMillis() + ".html");
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(file);
-            writer.write(reportAsString());
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            FileUtils.close(writer);
-        }
-        return file;
-    }
-
-    private String message(Level level, Object message) {
-        return message(level, message, null);
-    }
-
-    private String message(Level level, Object message, Throwable t) {
-        return String.format(ENTRY, level.color, level, message,
-                t == null ? "--" : t.getLocalizedMessage());
+        return reporter.reportAsFile();
     }
 
     /**
@@ -105,8 +87,8 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#debug(java.lang.Object)
      */
     public void debug(Object message) {
+        reporter.reportIfStructured(message, Level.DEBUG, null);
         backingLog.debug(message);
-        builder.append(message(Level.DEBUG, message));
     }
 
     /**
@@ -115,8 +97,8 @@ public final class ReportingLog implements Log {
      *      java.lang.Throwable)
      */
     public void debug(Object message, Throwable t) {
+        reporter.reportIfStructured(message, Level.DEBUG, t);
         backingLog.debug(message, t);
-        builder.append(message(Level.DEBUG, message, t));
     }
 
     /**
@@ -124,8 +106,8 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#error(java.lang.Object)
      */
     public void error(Object message) {
+        reporter.reportIfStructured(message, Level.ERROR, null);
         backingLog.error(message);
-        builder.append(message(Level.ERROR, message));
     }
 
     /**
@@ -134,8 +116,8 @@ public final class ReportingLog implements Log {
      *      java.lang.Throwable)
      */
     public void error(Object message, Throwable t) {
+        reporter.reportIfStructured(message, Level.ERROR, t);
         backingLog.error(message, t);
-        builder.append(message(Level.ERROR, message, t));
     }
 
     /**
@@ -143,8 +125,8 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#fatal(java.lang.Object)
      */
     public void fatal(Object message) {
+        reporter.reportIfStructured(message, Level.FATAL, null);
         backingLog.fatal(message);
-        builder.append(message(Level.FATAL, message));
     }
 
     /**
@@ -153,8 +135,8 @@ public final class ReportingLog implements Log {
      *      java.lang.Throwable)
      */
     public void fatal(Object message, Throwable t) {
+        reporter.reportIfStructured(message, Level.FATAL, t);
         backingLog.fatal(message, t);
-        builder.append(message(Level.FATAL, message, t));
     }
 
     /**
@@ -162,8 +144,8 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#info(java.lang.Object)
      */
     public void info(Object message) {
+        reporter.reportIfStructured(message, Level.INFO, null);
         backingLog.info(message);
-        builder.append(message(Level.INFO, message));
     }
 
     /**
@@ -172,8 +154,8 @@ public final class ReportingLog implements Log {
      *      java.lang.Throwable)
      */
     public void info(Object message, Throwable t) {
+        reporter.reportIfStructured(message, Level.INFO, t);
         backingLog.info(message, t);
-        builder.append(message(Level.INFO, message, t));
     }
 
     /**
@@ -181,8 +163,8 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#trace(java.lang.Object)
      */
     public void trace(Object message) {
+        reporter.reportIfStructured(message, Level.TRACE, null);
         backingLog.trace(message);
-        builder.append(message(Level.TRACE, message));
     }
 
     /**
@@ -191,8 +173,8 @@ public final class ReportingLog implements Log {
      *      java.lang.Throwable)
      */
     public void trace(Object message, Throwable t) {
+        reporter.reportIfStructured(message, Level.TRACE, t);
         backingLog.trace(message, t);
-        builder.append(message(Level.TRACE, message, t));
     }
 
     /**
@@ -200,8 +182,8 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#warn(java.lang.Object)
      */
     public void warn(Object message) {
+        reporter.reportIfStructured(message, Level.WARN, null);
         backingLog.warn(message);
-        builder.append(message(Level.WARN, message));
     }
 
     /**
@@ -210,8 +192,8 @@ public final class ReportingLog implements Log {
      *      java.lang.Throwable)
      */
     public void warn(Object message, Throwable t) {
+        reporter.reportIfStructured(message, Level.WARN, t);
         backingLog.warn(message, t);
-        builder.append(message(Level.WARN, message, t));
     }
 
     /**

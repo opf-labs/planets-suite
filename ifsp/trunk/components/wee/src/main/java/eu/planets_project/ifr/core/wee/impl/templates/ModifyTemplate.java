@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -14,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.ReportingLog;
+import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
@@ -75,7 +77,10 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTe
     			try{		
     				// Identify
     				String[] types = runIdentification(dgo, wfResult);
-    				
+                    log.info(new Message("Identification", new Parameter(
+                            "File", dgo.getTitle()), new Parameter("Result",
+                            Arrays.asList(types).toString())));
+
     				// Extract metadata - will otherwise get lost between steps!
     				List<Metadata> mList = dgo.getMetadata();
     				if ((mList != null) && (mList.size() > 0)) {
@@ -90,9 +95,13 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTe
     				 
     				// Modify - rotate
     				dgo = runRotateService(dgo, types[0], metadata, wfResult);
+                    log.info(new Message("Rotation", new Parameter("Metadata",
+                            metadata)));
     				
     				// Modify - crop
     				dgo = runCropService(dgo, types[0], metadata, wfResult);
+                    log.info(new Message("Cropping", new Parameter("Metadata",
+                            metadata)));
     				
     				// Migrate to JPEG
     				try {
@@ -101,6 +110,9 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTe
     					log.info("Getting extension: " + ext);
     					if (ext != null) {
     						dgo = runMigrateService(dgo, fr.createExtensionUri(ext), wfResult);
+                            log.info(new Message("Migration", new Parameter(
+                                    "Input", ext), new Parameter("Result", dgo
+                                    .getTitle())));
     					}
     				} catch (URISyntaxException e) {
     					throw new RuntimeException(e);
