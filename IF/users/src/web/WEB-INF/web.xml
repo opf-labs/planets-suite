@@ -119,6 +119,14 @@
         </auth-constraint>
     </security-constraint>
 
+    <!-- a little hack... TODO: improve this -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>PlanetsRealm</web-resource-name>
+            <url-pattern>/signup.faces</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>PlanetsRealm</web-resource-name>

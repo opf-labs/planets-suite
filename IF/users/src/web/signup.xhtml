@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:t="http://myfaces.apache.org/tomahawk">
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:define name="title">IF Administration Edit User Profile</ui:define>
+	<ui:define name="content">
+	    <h1><h:outputText value="Signup as new PLANETS user."/></h1>
+	    <p>Please fill out the following form and click the submit button.</p>
+		<h:form id="UserSignupForm" styleClass="userform">
+			<ui:include src="/WEB-INF/templates/user-signup.xhtml"/>
+			<h:commandButton value="Sign-up" action="#{UserSignupBean.signup}" styleClass="button" />
+			<h:commandButton value="Cancel" action="#{UserSignupBean.cancel}" styleClass="button" />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

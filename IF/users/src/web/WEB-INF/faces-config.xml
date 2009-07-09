@@ -13,6 +13,11 @@
 		<managed-bean-class>eu.planets_project.ifr.core.users.gui.UserBackingBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>UserSignupBean</managed-bean-name>
+		<managed-bean-class>eu.planets_project.ifr.core.users.gui.UserSignupBean</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
 
     <managed-bean>
         <managed-bean-name>PlanetsSharedBean</managed-bean-name>
@@ -79,6 +84,14 @@
 		<navigation-case>
 			<from-outcome>cancelnewuser</from-outcome>
 			<to-view-id>/list.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/signup.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>success</from-outcome>
+			<to-view-id>/signupSuccess.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>

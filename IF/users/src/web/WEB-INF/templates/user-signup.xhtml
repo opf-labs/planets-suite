@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:jsp="http://java.sun.com/JSP/Page"
+  xmlns:c="http://java.sun.com/jstl/core" xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:t="http://myfaces.apache.org/tomahawk">
+  <ui:composition>
+    <fieldset>
+      <legend>User Profile</legend>
+      <fieldset>
+        <legend>User Details</legend>
+        <ol>
+          <li>
+            <label for="username">
+              <h:outputText value="User Name" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputText id="username" required="true" validator="#{UserSignupBean.validateUsername}" value="#{UserSignupBean.user.username}">
+            	<f:validateLength minimum="4" maximum="50"/>            
+            </h:inputText>
+            <div class="validmessage"><h:message for="username"/></div>
+          </li>
+          <li>
+            <label for="firstname">
+              <h:outputText value="First Name" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputText id="firstname" required="true" value="#{UserSignupBean.user.firstName}">
+            	<f:validateLength minimum="1" maximum="50"/>            
+            </h:inputText>
+            <div class="validmessage"><h:message for="firstname"/></div>
+          </li>
+          <li>
+            <label for="lastname">
+              <h:outputText value="Last Name" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputText id="lastname" required="true" value="#{UserSignupBean.user.lastName}">
+            	<f:validateLength minimum="1" maximum="50"/>            
+            </h:inputText>
+            <div class="validmessage"><h:message for="lastname"/></div>
+          </li>
+          <li>
+            <label for="email">
+              <h:outputText value="Email" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputText id="email" required="true"  validator="#{UserSignupBean.validateEmail}" value="#{UserSignupBean.user.email}"/>
+            <div class="validmessage"><h:message for="email"/></div>
+          </li>
+        </ol>
+      </fieldset>
+      <fieldset>
+        <legend>Password Details</legend>
+        <ol>
+          <li>
+            <label for="userpassword">
+              <h:outputText value="Password" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputSecret id="password" redisplay="true" required="true" value="#{UserSignupBean.password}">
+            </h:inputSecret>
+            <div class="validmessage"><h:message for="password"/></div>
+          </li>
+          <li>
+            <label for="confirmpassword">
+              <h:outputText value="Confirm" />
+              <em>&nbsp;*</em>
+            </label>
+            <h:inputSecret id="confirmpassword" redisplay="true" required="true"
+              value="#{UserSignupBean.confirmPassword}">
+            </h:inputSecret>
+            <div class="validmessage"><h:message for="confirmpassword"/></div>
+          </li>
+        </ol>
+      </fieldset>
+    </fieldset>
+   </ui:composition>
+</html>
