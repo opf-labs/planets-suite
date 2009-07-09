@@ -120,7 +120,7 @@ public class CliMigrationPaths {
     }
 
     // TODO: the getAsPlanetsPaths() functionality should probably go
-    // somewhere....
+    // somewhere else.
     /**
      * @return The migration paths as planets paths
      */
@@ -134,6 +134,7 @@ public class CliMigrationPaths {
     // return planetspaths.toArray(new MigrationPath[0]);
     //
     // }
+    
     /**
      * Add <code>cliMigrationPath</code> to this collection of migration paths.
      * 
@@ -143,7 +144,7 @@ public class CliMigrationPaths {
      *         this migration path or <code>null</code> if there was no previous
      *         element.
      */
-    public CliMigrationPath addPath(CliMigrationPath cliMigrationPath) {
+    public CliMigrationPath addMigrationPath(CliMigrationPath cliMigrationPath) {
         final PathKey pathKey = new PathKey(cliMigrationPath.getSourceFormat(),
                 cliMigrationPath.getDestinationFormat());
         return migrationPaths.put(pathKey, cliMigrationPath);

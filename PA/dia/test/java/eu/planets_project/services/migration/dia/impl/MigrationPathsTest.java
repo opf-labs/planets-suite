@@ -13,7 +13,7 @@ import org.w3c.dom.Document;
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  * 
  */
-public class CliMigrationPathsFactoryTest {
+public class MigrationPathsTest {
 
     /**
      * Full file path to the test configuration file used by this test class.
@@ -21,7 +21,8 @@ public class CliMigrationPathsFactoryTest {
     private static final String TEST_CONFIGURATION_FILE_NAME = "PA/dia/test/resources/genericWrapperTempSrcDstConfig.xml";
     private final CliMigrationPaths migrationPathsToTest;
 
-    public CliMigrationPathsFactoryTest() throws Exception {
+    public MigrationPathsTest() throws Exception {
+        // TODO: This should go in the test methods.
         final DocumentLocator documentLocator = new DocumentLocator(
                 TEST_CONFIGURATION_FILE_NAME);
         final Document pathsConfiguration = documentLocator.getDocument();
@@ -46,40 +47,17 @@ public class CliMigrationPathsFactoryTest {
     }
 
     /**
-     * Test method for
-     * {@link eu.planets_project.services.migration.dia.impl.CliMigrationPathsFactory#getInstance(org.w3c.dom.Document)}
-     * Verify that we can get migration path instances for all known paths in
-     * the configuration file used by this test class.
+     * TODO: Implement
      */
     @Test
-    public void testGetInstance() throws Exception {
-
-        URI sourceFormat = new URI("info:test/lowercase");
-        URI destinationFormat = new URI("info:test/uppercase");
-        migrationPathsToTest.getMigrationPath(sourceFormat, destinationFormat);
-
-        // Verify that the opposite path does not exist in the configuration.
-        genericGetInstanceFailCheck(destinationFormat, sourceFormat);
-
-        sourceFormat = new URI("info:test/foo");
-        destinationFormat = new URI("info:test/bar");
-        migrationPathsToTest.getMigrationPath(sourceFormat, destinationFormat);
-
-        // Verify that the opposite path does not exist in the configuration.
-        genericGetInstanceFailCheck(destinationFormat, sourceFormat);
+    public void testAddMigrationPath() {
     }
 
     /**
-     * Verify that the individual paths in the <code>CliMigrationPaths</code>
-     * instance are correct.
-     * 
-     * TODO: Finish implementation.
-     * 
-     * @throws Exception
+     * TODO: Implement
      */
     @Test
-    public void testMigrationPaths() throws Exception {
-
+    public void testGetMigrationPath() throws Exception {
         final URI sourceFormatURI = new URI("info:test/lowercase");
         final URI destinationFormatURI = new URI("info:test/uppercase");
 
@@ -95,6 +73,7 @@ public class CliMigrationPathsFactoryTest {
                         "The destination format of the obtained migration path is incorrect.",
                         destinationFormatURI, migrationPath
                                 .getDestinationFormat());
+
     }
 
     /**

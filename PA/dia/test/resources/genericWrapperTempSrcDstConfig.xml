@@ -44,8 +44,8 @@
                 are three temporary file tags, tempSource, myInterimFile and
                 tempDestination.
             -->
-            <![CDATA[cat %param1% %tempSource > %myInterimFile% && tr %param2%
-             %myInterimFile% > %tempDestination]]>
+            <![CDATA[cat #param1 #tempSource > #myInterimFile && tr #param2
+             #myInterimFile > #tempDestination]]>
 
         </commandline>
 
@@ -220,7 +220,7 @@
             <uri value="info:test/bar" />
         </destinationformat>
 
-        <commandline><![CDATA[cat %param1% %tempSource | tr %param2% > %tempDestination]]>
+        <commandline><![CDATA[cat #param1 #tempSource | tr #param2 > #tempDestination]]>
         </commandline>
 
         <toolparameters>

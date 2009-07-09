@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +56,7 @@ public class GenericCLIMigrationWrapper {
 
         // TODO: May throw exception if the parameters are incorrect or
         // insufficient.
-        String command = migrationPath.getConmmandLine(toolParameters);
+        String command = migrationPath.getCommandLine(toolParameters, new HashMap<String,String>());
 
         try {
             final ProcessRunner toolProcessRunner = new ProcessRunner();

@@ -5,10 +5,8 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -23,6 +21,8 @@ import eu.planets_project.services.utils.PlanetsLogger;
  * Factory for construction and initialisation of <code>CliMigrationPaths</code>
  * objects.
  * 
+ * TODO: The documentation of this class still needs some tender love.
+ * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
 public class CliMigrationPathsFactory {
@@ -31,76 +31,101 @@ public class CliMigrationPathsFactory {
      * Code will break if the ELEMENT constant values are not in lowercase!
      */
     private static final String DESCRIPTION_ELEMENT = "description";
+
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String PARAMETER_ELEMENT = "parameter";
+
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String SETTINGS_ELEMENT = "settings";
+
     /**
      * Code will break if the ATTRIBUTE constant values are not in lowercase!
      * 
      */
     private static final String VALUE_ATTRIBUTE = "value";
+
     /**
      * Code will break if the ATTRIBUTE constant values are not in lowercase!
      * 
      */
     private static final String DEFAULT_ATTRIBUTE = "default";
+
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String PRESET_ELEMENT = "preset";
+
     /**
      * Code will break if the ATTRIBUTE constant values are not in lowercase!
      * 
      */
     private static final String LABEL_ATTRIBUTE = "label";
+
     /**
      * Code will break if the ATTRIBUTE constant values are not in lowercase!
      * 
      */
     private static final String NAME_ATTRIBUTE = "name";
+
     /**
      * Code will break if the *_ELEMENT constant values are not in lowercase!
      */
     private static final String TOOL_PRESETS_ELEMENT = "toolpresets";
+
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String TOOL_PARAMETERS_ELEMENT = "toolparameters";
+
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String TEMP_FILES_ELEMENT = "tempfiles";
+
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String COMMAND_LINE_ELEMENT = "commandline";
+
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String DESTINATION_FORMAT_ELEMENT = "destinationformat";
+
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String SOURCE_FORMATS_ELEMENT = "sourceformats";
-    /*
-     * Temp file element names.
+
+    /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
+     * 
      */
-    private static final String TEMP_INPUT_FILE = "inputfile";
-    private static final String TEMP_OUTPUT_FILE = "outputfile";
-    private static final String TEMP_FILE = "outputfile";
+    private static final String TEMP_INPUT_FILE_ELEMENT = "inputfile";
+
+    /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
+     * 
+     */
+    private static final String TEMP_OUTPUT_FILE_ELEMENT = "outputfile";
+
+    /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
+     * 
+     */
+    private static final String TEMP_FILE_ELEMENT = "tempfile";
 
     private PlanetsLogger log = PlanetsLogger
             .getLogger(CliMigrationPathsFactory.class);
@@ -122,6 +147,9 @@ public class CliMigrationPathsFactory {
 
         CliMigrationPaths migrationPaths = new CliMigrationPaths();
 
+        // TODO: I realise that the current way of parsing the configuration is
+        // not optimal. This factory should be refactored to apply a SAX parser
+        // or the like.
         try {
             NodeList topLevelNodes = pathConfiguration.getChildNodes().item(0)
                     .getChildNodes();
@@ -132,7 +160,7 @@ public class CliMigrationPathsFactory {
                         && "path".equals(currentNode.getNodeName()
                                 .toLowerCase())) {
                     for (CliMigrationPath cliMigrationPath : createCliMigrationPathList(currentNode))
-                        migrationPaths.addPath(cliMigrationPath);
+                        migrationPaths.addMigrationPath(cliMigrationPath);
                 }
             }
 
@@ -143,12 +171,26 @@ public class CliMigrationPathsFactory {
         }
     }
 
-    private List<CliMigrationPath> createCliMigrationPathList(Node pathNode)
+    /**
+     * Create a <code>List</code> of <code>CliMigrationPath</code> instances,
+     * based on the migration path configurations in the path element specified
+     * by <code>pathElement</code>.
+     * 
+     * @param pathElement
+     *            a path element from a configuration document.
+     * @return a <code>List</code> of <code>CliMigrationPath</code> instances.
+     * @throws URISyntaxException
+     *             if the configuration contains a malformed URI.
+     * @throws MigrationPathConfigException
+     *             if the format of the path configuration document, specified
+     *             by <code>pathElement</code>, was incorrect.
+     */
+    private List<CliMigrationPath> createCliMigrationPathList(Node pathElement)
             throws URISyntaxException, MigrationPathConfigException {
 
-        final NodeList subNodes = pathNode.getChildNodes();
+        final NodeList subNodes = pathElement.getChildNodes();
         CliMigrationPath pathTemplate = new CliMigrationPath();
-        URI destinationFormatURI = null; // FIXME! FOOO!
+        URI destinationFormatURI = null;
         List<URI> sourceFomatURIs = new ArrayList<URI>();
         for (int subNodeIndex = 0; subNodeIndex < subNodes.getLength(); subNodeIndex++) {
             Node currentSubNode = subNodes.item(subNodeIndex);
@@ -157,10 +199,10 @@ public class CliMigrationPathsFactory {
                     .toLowerCase();
             if (currentSubNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (SOURCE_FORMATS_ELEMENT.equals(currentSubNodeName)) {
-                    sourceFomatURIs = getURIList(currentSubNode);
+                    sourceFomatURIs = createURIList(currentSubNode);
                 } else if (DESTINATION_FORMAT_ELEMENT
                         .equals(currentSubNodeName)) {
-                    destinationFormatURI = getURIList(currentSubNode).get(0);
+                    destinationFormatURI = createURIList(currentSubNode).get(0);
                 } else if (COMMAND_LINE_ELEMENT.equals(currentSubNodeName)) {
                     pathTemplate.setCommandLine(getCommandLine(currentSubNode));
                 } else if (TEMP_FILES_ELEMENT.equals(currentSubNodeName)) {
@@ -168,13 +210,24 @@ public class CliMigrationPathsFactory {
                             currentSubNode, pathTemplate);
                 } else if (TOOL_PARAMETERS_ELEMENT.equals(currentSubNodeName)) {
                     pathTemplate
-                            .setToolParameters(getParameterList(currentSubNode));
+                            .setToolParameters(createParameterList(currentSubNode));
                 } else if (TOOL_PRESETS_ELEMENT.equals(currentSubNodeName)) {
                     pathTemplate = configureToolPresets(currentSubNode,
                             pathTemplate);
                 }
             }
         }
+
+        if (destinationFormatURI == null) {
+            throw new MigrationPathConfigException(
+                    "The path element did not have a destination format URI.");
+        }
+
+        if (sourceFomatURIs.isEmpty()) {
+            throw new MigrationPathConfigException(
+                    "The path element did not have any source format URIs.");
+        }
+
         return createCliMigrationPathInstances(pathTemplate, sourceFomatURIs,
                 destinationFormatURI);
     }
@@ -218,8 +271,14 @@ public class CliMigrationPathsFactory {
     }
 
     /**
+     * Add a new preset to <code>pathToConfigure</code> based on the preset
+     * element in <code>Node presetElement</code>.
+     * 
      * @param pathToConfigure
+     *            <code>CliMigrationPath</code> instance to add a new preset to.
      * @param presetElement
+     *            <code>Node</code> instance containing the configuration of the
+     *            preset to add.
      */
     private CliMigrationPath configurePreset(CliMigrationPath pathToConfigure,
             Node presetElement) {
@@ -246,7 +305,7 @@ public class CliMigrationPathsFactory {
                 final String settingName = getAttributeValue(currentNode,
                         NAME_ATTRIBUTE);
 
-                final Collection<Parameter> settingParameters = getParameterList(currentNode);
+                final Collection<Parameter> settingParameters = createParameterList(currentNode);
                 pathToConfigure.addToolPreset(presetName, settingName,
                         settingParameters);
                 // TODO: Remember the "description" element! it should go with
@@ -258,10 +317,17 @@ public class CliMigrationPathsFactory {
     }
 
     /**
-     * @param childNodes
-     * @return
+     * Create a collection of <code>Parameter</code> instances based on the
+     * parameter (child) elements in <code>nodeWithParameterElements</code>.
+     * 
+     * @param nodeWithParameterElements
+     *            <code>Node</code> instance containing parameter child
+     *            elements.
+     * @return a <code>Collection</code> of <code>Parameter</code> instances
+     *         created from the parameter elements in
+     *         <code>nodeWithParameterElements</code>
      */
-    private Collection<Parameter> getParameterList(
+    private Collection<Parameter> createParameterList(
             Node nodeWithParameterElements) {
 
         Collection<Parameter> parameters = new ArrayList<Parameter>();
@@ -275,7 +341,7 @@ public class CliMigrationPathsFactory {
             if ((currentNode.getNodeType() == Node.ELEMENT_NODE)
                     && (PARAMETER_ELEMENT.equals(currentNodeName))) {
 
-                parameters.add(getParameter(currentNode));
+                parameters.add(createParameter(currentNode));
             }
 
         }
@@ -283,10 +349,16 @@ public class CliMigrationPathsFactory {
     }
 
     /**
+     * Create a <code>Parameter</code> instance based on the configuration in
+     * the parameter element <code>parameterElement</code>.
+     * 
      * @param parameterElement
-     * @return
+     *            parameter element configuration to use for the creation of the
+     *            <code>Parameter</code> instance.
+     * @return a <code>Parameter</code> instance created from the configuration
+     *         information in <code>parameterElement</code>
      */
-    private Parameter getParameter(Node parameterElement) {
+    private Parameter createParameter(Node parameterElement) {
 
         final NodeList parameterSubNodes = parameterElement.getChildNodes();
         String description = "";
@@ -360,14 +432,14 @@ public class CliMigrationPathsFactory {
             final String currentNodeName = currentNode.getNodeName()
                     .toLowerCase();
             if ((currentNode.getNodeType() == Node.ELEMENT_NODE)
-                    && (TEMP_INPUT_FILE.equals(currentNodeName)
-                            || TEMP_OUTPUT_FILE.equals(currentNodeName) || TEMP_FILE
+                    && (TEMP_INPUT_FILE_ELEMENT.equals(currentNodeName)
+                            || TEMP_OUTPUT_FILE_ELEMENT.equals(currentNodeName) || TEMP_FILE_ELEMENT
                             .equals(currentNodeName))) {
                 final Map<String, String> fileLabelAndName = getLabelAndNameAttribute(currentNode);
 
-                if (TEMP_INPUT_FILE.equals(currentNodeName)) {
+                if (TEMP_INPUT_FILE_ELEMENT.equals(currentNodeName)) {
                     pathToConfigure.setTempInputFile(fileLabelAndName);
-                } else if (TEMP_OUTPUT_FILE.equals(currentNodeName)) {
+                } else if (TEMP_OUTPUT_FILE_ELEMENT.equals(currentNodeName)) {
                     pathToConfigure.setTempOutputFile(fileLabelAndName);
                 } else {
                     // It's a temp. file declaration
@@ -458,7 +530,7 @@ public class CliMigrationPathsFactory {
             newPath.setDestinationFormat(destinationFormatURI);
             newPath.setCommandLine(pathTemplate.getCommandLine());
             log.debug("Createing CliMigrationPath instance for the path: "
-                            + sourceFomatURIs + " -> " + destinationFormatURI);
+                    + sourceFomatURIs + " -> " + destinationFormatURI);
             paths.add(newPath);
         }
         return paths;
@@ -569,7 +641,7 @@ public class CliMigrationPathsFactory {
      * @throws URISyntaxException
      *             if a URI in the node is invalid.
      */
-    private List<URI> getURIList(Node uriListNode) throws URISyntaxException {
+    private List<URI> createURIList(Node uriListNode) throws URISyntaxException {
 
         final List<URI> uriList = new ArrayList<URI>();
         final NodeList childNodes = uriListNode.getChildNodes();
@@ -585,80 +657,4 @@ public class CliMigrationPathsFactory {
         }
         return uriList;
     }
-
-    // Element fileformats = pathConfiguration.getDocumentElement();
-    // if (fileformats != null){
-    // NodeList children = fileformats.getChildNodes();
-    // for (int i = 0; i<children.getLength();i++){
-    // Node child = children.item(i);
-    // if (child.getNodeType() == Node.ELEMENT_NODE){
-    // if (child.getNodeName().equals("path")){
-    // CliMigrationPath pathdef = decodePathNode(child);
-    // paths.add(pathdef);
-    // }
-    // }
-    // }
-    // }
-
-    // private static CliMigrationPath decodePathNode(Node path)
-    // throws URISyntaxException {
-    // NodeList children = path.getChildNodes();
-    // Set<URI> froms = null;
-    // Set<URI> tos = null;
-    // String command = null;
-    // for (int i = 0; i < children.getLength(); i++) {
-    // Node child = children.item(i);
-    // if (child.getNodeType() == Node.ELEMENT_NODE) {
-    //
-    // if (child.getNodeName().equals("from")) {
-    // froms = decodeFromOrToNode(child);
-    // }
-    // if (child.getNodeName().equals("to")) {
-    // tos = decodeFromOrToNode(child);
-    // }
-    // if (child.getNodeName().equals("command")) {
-    // command = decodeCommandNode(child);
-    // }
-    //
-    // }
-    // }
-    // return new CliMigrationPath(froms, tos, command);
-    //
-    // }
-
-    // TODO: Remember removing the below methods.
-    @SuppressWarnings("unused")
-    private static Set<URI> decodeFromOrToNode(Node urilist)
-            throws URISyntaxException {
-        NodeList children = urilist.getChildNodes();
-        Set<URI> uris = new HashSet<URI>();
-        for (int i = 0; i < children.getLength(); i++) {
-            Node child = children.item(i);
-            if (child.getNodeType() == Node.ELEMENT_NODE) {
-                if (child.getNodeName().equals("uri")) {
-                    URI uri = decodeURI(child);
-                    uris.add(uri);
-                }
-            }
-        }
-        return uris;
-    }
-
-    private static URI decodeURI(Node uri) throws URISyntaxException {
-        NamedNodeMap attrs = uri.getAttributes();
-
-        Node item = attrs.getNamedItem(VALUE_ATTRIBUTE);
-        String urivalue = item.getNodeValue();
-        return new URI(urivalue);
-    }
-
-    @SuppressWarnings("unused")
-    private static String decodeCommandNode(Node command) {
-        Node commandtext = command.getFirstChild();
-        if (commandtext.getNodeType() == Node.TEXT_NODE) {
-            return commandtext.getNodeValue();
-        }
-        return "";
-    }
-
 }

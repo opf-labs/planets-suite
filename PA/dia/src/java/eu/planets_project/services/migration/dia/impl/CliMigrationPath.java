@@ -3,8 +3,11 @@ package eu.planets_project.services.migration.dia.impl;
 import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import eu.planets_project.services.datatypes.Parameter;
 
@@ -29,22 +32,12 @@ public class CliMigrationPath {
     private String defaultPresetCategoryValue;
 
     /**
-     */
-    CliMigrationPath(URI sourceFormatURI, URI destinationFormatURI,
-	    String commandLine) {
-	this();
-	this.sourceFormatURI = sourceFormatURI;
-	this.destinationFormatURI = destinationFormatURI;
-	this.commandLine = commandLine;
-    }
-
-    /**
      * The default constructor has default access, as it should only be used by
      * factories.
      */
     CliMigrationPath() {
-	parameters = new HashMap<String, Parameter>();
-	presets = new HashMap<String, Map<String, Collection<Parameter>>>();
+        parameters = new HashMap<String, Parameter>();
+        presets = new HashMap<String, Map<String, Collection<Parameter>>>();
     }
 
     /**
@@ -57,7 +50,7 @@ public class CliMigrationPath {
      *         file and otherwise <code>false</code>
      */
     public boolean useTempSourceFile() {
-	return (tempInputFile == null) ? false : !tempInputFile.isEmpty();
+        return (tempInputFile == null) ? false : !tempInputFile.isEmpty();
     }
 
     /**
@@ -70,7 +63,7 @@ public class CliMigrationPath {
      *         associated with the label.
      */
     public Map<String, String> getTempInputFileLabelAndName() {
-	return tempInputFile;
+        return tempInputFile;
     }
 
     /**
@@ -82,7 +75,7 @@ public class CliMigrationPath {
      *            temporary file.
      */
     public void setTempInputFile(Map<String, String> tempFileLabelAndName) {
-	this.tempInputFile = tempFileLabelAndName;
+        this.tempInputFile = tempFileLabelAndName;
     }
 
     /**
@@ -95,7 +88,7 @@ public class CliMigrationPath {
      *         created for its output and otherwise <code>false</code>
      */
     public boolean useTempDestinationFile() {
-	return (tempOutputFile == null) ? false : !tempOutputFile.isEmpty();
+        return (tempOutputFile == null) ? false : !tempOutputFile.isEmpty();
     }
 
     /**
@@ -109,7 +102,7 @@ public class CliMigrationPath {
      */
     public Map<String, String> getTempOutputFileName() {
 
-	return tempOutputFile;
+        return tempOutputFile;
     }
 
     /**
@@ -121,32 +114,131 @@ public class CliMigrationPath {
      *            temporary file.
      */
     public void setTempOutputFile(Map<String, String> tempFileLabelAndName) {
-	this.tempOutputFile = tempFileLabelAndName;
+        this.tempOutputFile = tempFileLabelAndName;
     }
 
     /**
      * Get the command line with the parameter identifiers substituted with the
-     * parameters specified by <code>toolParameters</code>.
+     * parameters specified by <code>toolParameters</code> and any parameter
+     * identifiers matching keys in the <code>tempFileMap</code> will be
+     * replaced with the associated filename. <b>Note:</b> The filenames (that
+     * is, the values) in <code>tempFileMap</code> must be absolute paths
      * 
      * @param toolParameters
+     * @param tempFileMap
+     *            TODO
      * @return String containing the processed command line, ready for
      *         execution.
+     * @throws MigrationException
+     *             if not all necessary parameters, or temporary files were
+     *             defined in order to substitute all the identifiers in the
+     *             command line.
      */
-    public String getConmmandLine(List<Parameter> toolParameters) {
-	// TODO: Substitute parameters
-	// TODO: Check for injection attacks by sanity checking the parameters -
-	// throw exception in case of failure.
-	return commandLine;
+    public String getCommandLine(List<Parameter> toolParameters,
+            Map<String, String> tempFileMap) throws MigrationException {
+        // Get a complete list of identifiers in the command line.
+        Set<String> usedIdentifiers = getIdentifiers(commandLine);
+
+        Set<String> validIdentifiers = getValidParameterNames(toolParameters);
+        validIdentifiers.addAll(getValidFileIdentifiers(tempFileMap));
+
+        if (validIdentifiers.contains(usedIdentifiers) == false) {
+            usedIdentifiers.removeAll(validIdentifiers);
+            // TODO: Verify that usedIdentifiers.toString() works as assumed....
+            throw new MigrationException("Cannot build the command line. "
+                    + "Missing values for these identifiers: "
+                    + usedIdentifiers);
+        }
+
+        // Verify that the caller has provided mappings for all identifiers.
+        // TODO: Substitute parameters
+        // TODO: Check for injection attacks by sanity checking the parameters -
+        // throw exception in case of failure.
+        return commandLine;
     }
 
     /**
-     * Get the un-processed command line.
+     * Get a <code>Set</code> containing all the valid identifiers for file
+     * names parameters from <code>tempFileMap</code>, that is, identifiers that
+     * are not the empty string and that have an associated file name, which
+     * also is not the empty string.
      * 
-     * @return String containing the un-processed command line, containing
+     * @param tempFileMap
+     *            a <code>Map</code> of file identifiers associated with file
+     *            names.
+     * @return a <code>Set</code> containing the valid identifiers from
+     *         <code>parameters</code>.
+     */
+    private Set<String> getValidFileIdentifiers(Map<String, String> tempFileMap) {
+        Set<String> validFileIdentifiers = new HashSet<String>();
+        for (String identifier : tempFileMap.keySet()) {
+            final String fileName = tempFileMap.get(identifier);
+            if ((fileName != null) && ("".equals(fileName) == false)
+                    && ("".equals(identifier) == false)) {
+                validFileIdentifiers.add(fileName);
+            }
+        }
+
+        return validFileIdentifiers;
+    }
+
+    /**
+     * Get a <code>Set</code> containing all the names of parameters from
+     * <code>parameters</code> that have been initialised with a value, and are
+     * thus valid.
+     * 
+     * @param parameters
+     *            a <code>List</code> of parameters to get valid parameters
+     *            from.
+     * @return a <code>Set</code> containing the names of all the parameters
+     *         from <code>parameters</code> that have a value.
+     */
+    private Set<String> getValidParameterNames(List<Parameter> parameters) {
+        Set<String> validParameters = new HashSet<String>();
+        for (Parameter parameter : parameters) {
+            final String parameterName = parameter.getName();
+            if ((parameterName != null) && ("".equals(parameterName) == false)
+                    && (parameter.getValue() != null)) {
+                validParameters.add(parameterName);
+            }
+        }
+
+        return validParameters;
+    }
+
+    /**
+     * Get the names of all identifiers (all words with a leading '#') of the
+     * form <code>%myIdentifier%</code> found in
+     * <code>stringWithIdentifiers</code>. If the previous example was found in
+     * the string, then the returned set would contain the string
+     * &quot;myIdentifier&quot;.
+     * 
+     * @param stringWithIdentifiers
+     *            a <code>String</code> containing identifiers.
+     * @return a <code>Set</code> containing the identifiers found.
+     */
+    private Set<String> getIdentifiers(String stringWithIdentifiers) {
+        Set<String> foundIdentifiers = new HashSet<String>();
+        StringTokenizer stringTokenizer = new StringTokenizer(
+                stringWithIdentifiers);
+        while (stringTokenizer.hasMoreTokens()) {
+            String identifier = stringTokenizer.nextToken();
+            if (identifier.charAt(0) == '#') {
+                identifier = identifier.substring(1);
+                foundIdentifiers.add(identifier);
+            }
+        }
+        return foundIdentifiers;
+    }
+
+    /**
+     * Get the unprocessed command line.
+     * 
+     * @return String containing the unprocessed command line, containing
      *         parameter identifiers/keys.
      */
     public String getCommandLine() {
-	return commandLine;
+        return commandLine;
     }
 
     /**
@@ -160,7 +252,7 @@ public class CliMigrationPath {
      *            <code>String</code> containing the command line to set.
      */
     public void setCommandLine(String commandLine) {
-	this.commandLine = commandLine;
+        this.commandLine = commandLine;
     }
 
     /**
@@ -170,7 +262,7 @@ public class CliMigrationPath {
      * @return ID of the default preset category
      */
     public String getDefaultPresetCategory() {
-	return defaultPresetCategory;
+        return defaultPresetCategory;
     }
 
     /**
@@ -181,7 +273,7 @@ public class CliMigrationPath {
      *            the ID of the default preset category.
      */
     public void setDefaultPresetCategory(String defaultPresetCategory) {
-	this.defaultPresetCategory = defaultPresetCategory;
+        this.defaultPresetCategory = defaultPresetCategory;
     }
 
     /**
@@ -192,7 +284,7 @@ public class CliMigrationPath {
      * @return ID of the default preset category value
      */
     public String getDefaultPresetCategoryValue() {
-	return defaultPresetCategoryValue;
+        return defaultPresetCategoryValue;
     }
 
     /**
@@ -204,7 +296,7 @@ public class CliMigrationPath {
      *            the ID of the default preset category value.
      */
     public void setDefaultPresetCategoryValue(String defaultPresetCategoryValue) {
-	this.defaultPresetCategoryValue = defaultPresetCategoryValue;
+        this.defaultPresetCategoryValue = defaultPresetCategoryValue;
     }
 
     /**
@@ -214,7 +306,7 @@ public class CliMigrationPath {
      *         migration path.
      */
     public URI getDestinationFormat() {
-	return destinationFormatURI;
+        return destinationFormatURI;
     }
 
     /**
@@ -225,7 +317,7 @@ public class CliMigrationPath {
      *            destination format <code>URI</code> to set.
      */
     public void setDestinationFormat(URI destinationFormatURI) {
-	this.destinationFormatURI = destinationFormatURI;
+        this.destinationFormatURI = destinationFormatURI;
     }
 
     /**
@@ -235,7 +327,7 @@ public class CliMigrationPath {
      *         path.
      */
     public URI getSourceFormat() {
-	return sourceFormatURI;
+        return sourceFormatURI;
     }
 
     /**
@@ -246,19 +338,22 @@ public class CliMigrationPath {
      *            source format <code>URI</code> to set.
      */
     public void setSourceFormat(URI sourceFormatURI) {
-	this.sourceFormatURI = sourceFormatURI;
+        this.sourceFormatURI = sourceFormatURI;
     }
 
     /**
-     * Get a map defining the relationship between the labels in the command
-     * line that should be substituted with file names of temporary files with
-     * the actual names of these.
+     * Get a map defining the relationship between the identifiers in the
+     * command line that should be substituted with file names of temporary
+     * files with the actual names of these. However, not all labels (keys in
+     * the map) are guaranteed to be associated with a file name, thus the
+     * caller of this method will have to add these mappings before passing them
+     * on to the {@link getCommandLine} method.
      * 
      * @return a map containing a paring of temp. file labels and optionally a
      *         file name.
      */
     public Map<String, String> getTempFileDeclarations() {
-	return tempFiles;
+        return tempFiles;
     }
 
     /**
@@ -281,7 +376,7 @@ public class CliMigrationPath {
      */
     public String addTempFilesDeclaration(String label, String filename) {
 
-	return tempFiles.put(label, filename);
+        return tempFiles.put(label, filename);
     }
 
     /**
@@ -297,12 +392,12 @@ public class CliMigrationPath {
      *            a file name to be added to the internal map.
      */
     public void addTempFilesDeclarations(
-	    Map<String, String> tempFileDeclarations) {
+            Map<String, String> tempFileDeclarations) {
 
-	for (String tempFileLabel : tempFileDeclarations.keySet()) {
-	    addTempFilesDeclaration(tempFileLabel, tempFileDeclarations
-		    .get(tempFileLabel));
-	}
+        for (String tempFileLabel : tempFileDeclarations.keySet()) {
+            addTempFilesDeclaration(tempFileLabel, tempFileDeclarations
+                    .get(tempFileLabel));
+        }
     }
 
     /**
@@ -317,7 +412,7 @@ public class CliMigrationPath {
      *         execute the command line of this migration path.
      */
     public Collection<Parameter> getToolParameters() {
-	return parameters.values();
+        return parameters.values();
     }
 
     /**
@@ -330,58 +425,9 @@ public class CliMigrationPath {
      *            actual command to execute.
      */
     public void setToolParameters(Collection<Parameter> toolParameters) {
-	for (Parameter parameter : toolParameters) {
-	    parameters.put(parameter.getName(), parameter);
-	}
-    }
-
-    /**
-     * Get a collection of all available preset categories for this migration
-     * path.
-     * 
-     * @return <code>Collection</code> containing the names/IDs of all the
-     *         available preset categories.
-     */
-    public Collection<String> getToolPresetCategories() {
-	return presets.keySet();
-    }
-
-    /**
-     * Get a collection of valid values of a preset category.
-     * 
-     * @param presetCategory
-     *            <code>String</code> identifying the preset category to get the
-     *            valid values for.
-     * @return <code>Collection</code> of valid preset values for the specified
-     *         category.
-     */
-    public Collection<String> getToolPresetValues(String presetCategory) {
-	return presets.get(presetCategory).keySet();
-    }
-
-    /**
-     * Get the pre-configured parameters for the specified
-     * <code>presetCategory</code> and <code>presetValue</code>. A command-line
-     * will be configured to behave as the preset specifies when the returned
-     * parameters are passed on to {@link getCommandLine}.
-     * 
-     * @param presetCategory
-     *            <code>String</code> identifying the preset category that the
-     *            <code>presetValue</code> belongs to.
-     * @param presetValue
-     *            <code>String</code> identifying the collection of
-     *            pre-configured parameters to get.
-     * @return a <code>Collection</code> og pre-configured
-     *         <code>Parameter</code> instances or <code>null</code> if no
-     *         preset has been configured for the specified combination of
-     *         preset category and value.
-     * @throws NullPointerException
-     *             if <code>presetCategory</code> has not been defined in the
-     *             configuration.
-     */
-    public Collection<Parameter> getToolPresetParameters(String presetCategory,
-	    String presetValue) {
-	return presets.get(presetCategory).get(presetValue);
+        for (Parameter parameter : toolParameters) {
+            parameters.put(parameter.getName(), parameter);
+        }
     }
 
     /**
@@ -410,31 +456,80 @@ public class CliMigrationPath {
      *             if any of the parameters are <code>null</code>
      */
     public Collection<Parameter> addToolPreset(String category,
-	    String categoryValue, Collection<Parameter> categoryValueParameters) {
+            String categoryValue, Collection<Parameter> categoryValueParameters) {
 
-	if (category == null || categoryValue == null || categoryValue == null) {
-	    throw new NullPointerException(
-		    "At least one parameter is null. category = " + category
-			    + "  categoryValue = " + categoryValue
-			    + "  categoryValueParameters = "
-			    + categoryValueParameters);
-	}
+        if (category == null || categoryValue == null || categoryValue == null) {
+            throw new NullPointerException(
+                    "At least one parameter is null. category = " + category
+                            + "  categoryValue = " + categoryValue
+                            + "  categoryValueParameters = "
+                            + categoryValueParameters);
+        }
 
-	// Ensure that the category exists.
-	if (presets.get(category) == null) {
-	    presets.put(category, new HashMap<String, Collection<Parameter>>());
-	}
+        // Ensure that the category exists.
+        if (presets.get(category) == null) {
+            presets.put(category, new HashMap<String, Collection<Parameter>>());
+        }
 
-	// Add the value and its parameters to the category.
-	final Map<String, Collection<Parameter>> categoryValueMappings = presets
-		.get(category);
-	return categoryValueMappings
-		.put(categoryValue, categoryValueParameters);
+        // Add the value and its parameters to the category.
+        final Map<String, Collection<Parameter>> categoryValueMappings = presets
+                .get(category);
+        return categoryValueMappings
+                .put(categoryValue, categoryValueParameters);
+    }
+
+    /**
+     * Get a collection of all available preset categories for this migration
+     * path.
+     * 
+     * @return <code>Collection</code> containing the names/IDs of all the
+     *         available preset categories.
+     */
+    public Collection<String> getToolPresetCategories() {
+        return presets.keySet();
+    }
+
+    /**
+     * Get a collection of valid values of a preset category.
+     * 
+     * @param presetCategory
+     *            <code>String</code> identifying the preset category to get the
+     *            valid values for.
+     * @return <code>Collection</code> of valid preset values for the specified
+     *         category.
+     */
+    public Collection<String> getToolPresetValues(String presetCategory) {
+        return presets.get(presetCategory).keySet();
+    }
+
+    /**
+     * Get the pre-configured parameters for the specified
+     * <code>presetCategory</code> and <code>presetValue</code>. A command-line
+     * will be configured to behave as the preset specifies when the returned
+     * parameters are passed on to {@link getCommandLine}.
+     * 
+     * @param presetCategory
+     *            <code>String</code> identifying the preset category that the
+     *            <code>presetValue</code> belongs to.
+     * @param presetValue
+     *            <code>String</code> identifying the collection of
+     *            pre-configured parameters to get.
+     * @return a <code>Collection</code> og pre-configured
+     *         <code>Parameter</code> instances or <code>null</code> if no
+     *         preset has been configured for the specified combination of
+     *         preset category and value.
+     * @throws NullPointerException
+     *             if <code>presetCategory</code> has not been defined in the
+     *             configuration.
+     */
+    public Collection<Parameter> getToolPresetParameters(String presetCategory,
+            String presetValue) {
+        return presets.get(presetCategory).get(presetValue);
     }
 
     public String toString() {
-	return "CliMigrationPath: " + sourceFormatURI + " -> "
-		+ destinationFormatURI + " Command: " + commandLine;
+        return "CliMigrationPath: " + sourceFormatURI + " -> "
+                + destinationFormatURI + " Command: " + commandLine;
     }
 
 }
