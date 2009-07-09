@@ -142,14 +142,18 @@ public class CliMigrationPath {
         Set<String> validIdentifiers = getValidParameterNames(toolParameters);
         validIdentifiers.addAll(getValidFileIdentifiers(tempFileMap));
 
-        if (validIdentifiers.contains(usedIdentifiers) == false) {
+        if (validIdentifiers.containsAll(usedIdentifiers) == false) {
             usedIdentifiers.removeAll(validIdentifiers);
-            // TODO: Verify that usedIdentifiers.toString() works as assumed....
             throw new MigrationException("Cannot build the command line. "
                     + "Missing values for these identifiers: "
                     + usedIdentifiers);
         }
 
+        String executableCommandLine = commandLine;
+        for (Parameter parameter : toolParameters) {
+            System.out.println("Replacing " + parameter.getName() + " with " + parameter.getValue());
+            executableCommandLine = executableCommandLine.replaceAll("(#"+parameter.getName()+")", parameter.getValue());
+        }
         // Verify that the caller has provided mappings for all identifiers.
         // TODO: Substitute parameters
         // TODO: Check for injection attacks by sanity checking the parameters -
@@ -170,15 +174,15 @@ public class CliMigrationPath {
      *         <code>parameters</code>.
      */
     private Set<String> getValidFileIdentifiers(Map<String, String> tempFileMap) {
+
         Set<String> validFileIdentifiers = new HashSet<String>();
         for (String identifier : tempFileMap.keySet()) {
             final String fileName = tempFileMap.get(identifier);
             if ((fileName != null) && ("".equals(fileName) == false)
                     && ("".equals(identifier) == false)) {
-                validFileIdentifiers.add(fileName);
+                validFileIdentifiers.add(identifier);
             }
         }
-
         return validFileIdentifiers;
     }
 

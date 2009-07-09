@@ -55,14 +55,16 @@ public class CliMigrationPathTest {
         // Options for the 'tr' command
         toolParameters.add(new Parameter("param2", "'[:lower:]' '[:upper:]'"));
 
-        // TODO: Find a way for passing the file mappings
-
+        HashMap<String,String> tempFileMap = new HashMap<String,String>();
+        tempFileMap.put("tempSource", "random-source-name");
+        tempFileMap.put("tempDestination", "random-destination-name");
+        tempFileMap.put("myInterimFile", "random-temp-file-name");
         final String executableCommandLine = cliMigrationPath
-                .getCommandLine(toolParameters, new HashMap<String,String>());
+                .getCommandLine(toolParameters, tempFileMap);
 
-        final String expectedCommandLine = "cat -n #tempSource > "
-                + "#myInterimFile && tr '[:lower:]' '[:upper:]' "
-                + "#myInterimFile > " + "#tempDestination";
+        final String expectedCommandLine = "cat -n random-source-name > "
+                + "random-temp-file-name && tr '[:lower:]' '[:upper:]' "
+                + "random-temp-file-name > " + "random-destination-name";
 
         System.out.println("expected: " + expectedCommandLine + "\n\nactual: " + executableCommandLine);
         Assert.assertEquals("Un-expected output from getCommandLine().",

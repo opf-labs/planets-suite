@@ -89,6 +89,7 @@ public class MigrationPathsTest {
      *            <code>URI</code> identifying the desired destination format of
      *            the path.
      */
+    @SuppressWarnings("unused")
     private void genericGetInstanceFailCheck(URI sourceFormat,
             URI destinationFormat) {
         try {
