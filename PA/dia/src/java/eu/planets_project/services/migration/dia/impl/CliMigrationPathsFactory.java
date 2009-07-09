@@ -1,6 +1,3 @@
-/**
- * 
- */
 package eu.planets_project.services.migration.dia.impl;
 
 import java.net.URI;
@@ -31,34 +28,41 @@ import eu.planets_project.services.utils.PlanetsLogger;
 public class CliMigrationPathsFactory {
 
     /**
-     * 
+     * Code will break if the ELEMENT constant values are not in lowercase!
      */
     private static final String DESCRIPTION_ELEMENT = "description";
     /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String PARAMETER_ELEMENT = "parameter";
     /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String SETTINGS_ELEMENT = "settings";
     /**
+     * Code will break if the ATTRIBUTE constant values are not in lowercase!
      * 
      */
     private static final String VALUE_ATTRIBUTE = "value";
     /**
+     * Code will break if the ATTRIBUTE constant values are not in lowercase!
      * 
      */
     private static final String DEFAULT_ATTRIBUTE = "default";
     /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String PRESET_ELEMENT = "preset";
     /**
+     * Code will break if the ATTRIBUTE constant values are not in lowercase!
      * 
      */
     private static final String LABEL_ATTRIBUTE = "label";
     /**
+     * Code will break if the ATTRIBUTE constant values are not in lowercase!
      * 
      */
     private static final String NAME_ATTRIBUTE = "name";
@@ -67,22 +71,27 @@ public class CliMigrationPathsFactory {
      */
     private static final String TOOL_PRESETS_ELEMENT = "toolpresets";
     /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String TOOL_PARAMETERS_ELEMENT = "toolparameters";
     /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String TEMP_FILES_ELEMENT = "tempfiles";
     /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String COMMAND_LINE_ELEMENT = "commandline";
     /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String DESTINATION_FORMAT_ELEMENT = "destinationformat";
     /**
+     * Code will break if the ELEMENT constant values are not in lowercase!
      * 
      */
     private static final String SOURCE_FORMATS_ELEMENT = "sourceformats";
@@ -93,7 +102,6 @@ public class CliMigrationPathsFactory {
     private static final String TEMP_OUTPUT_FILE = "outputfile";
     private static final String TEMP_FILE = "outputfile";
 
-    @SuppressWarnings("unused")
     private PlanetsLogger log = PlanetsLogger
             .getLogger(CliMigrationPathsFactory.class);
 
@@ -449,11 +457,8 @@ public class CliMigrationPathsFactory {
             newPath.setSourceFormat(sourceFormatUri);
             newPath.setDestinationFormat(destinationFormatURI);
             newPath.setCommandLine(pathTemplate.getCommandLine());
-            System.out
-                    .println("Createing CliMigrationPath instance for the path: "
-                            + sourceFomatURIs + " -> " + destinationFormatURI);// TODO:
-            // remove
-            // sysout
+            log.debug("Createing CliMigrationPath instance for the path: "
+                            + sourceFomatURIs + " -> " + destinationFormatURI);
             paths.add(newPath);
         }
         return paths;
