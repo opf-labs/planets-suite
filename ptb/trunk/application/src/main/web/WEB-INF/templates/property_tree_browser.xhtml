@@ -87,7 +87,7 @@
 					<rich:treeNode id="treeLeafNode" type="leaf" dragType="props" iconLeaf="/graphics/iconLeaf.gif"> 
 		                 <rich:dndParam name="label" type="drag">property: #{item.name}</rich:dndParam>
 		                 <a4j:support event="ondblclick" actionListener="#{simpleTreeDndBean.processPropertyDblClick}" reRender="selproppanel" eventsQueue="foo" rendered="#{(not empty expApproved) ? (!expApproved) : true}"/>
-		                 <h:outputText value="#{item.name}"/>
+		                 <h:outputText value="#{item.humanReadableName}"/>
 		                 <rich:contextMenu event="oncontextmenu" attached="true" id="treenodemenu" submitMode="ajax" rendered="#{(not empty expApproved) ? (!expApproved) : simpleTreeDndBean.contextMenuEnabled.selected}">
                                  <rich:menuItem id="addprop" actionListener="#{simpleTreeDndBean.processLeafContextMenuAddProperty}" reRender="selproppanel" eventsQueue="foo">
 									<b>add property</b> to clipboard
@@ -106,7 +106,6 @@
 		        	<h:outputText value="data-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.dataType}" /><br/>
 		        	<h:outputText value="addressed layer: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.type}" /><br/>
 		        	<h:outputText value="comment: " style="font-weight:bold;"/><h:outputText escape="false"  value="#{simpleTreeDndBean.selTreeNode.data.comment}"/><br/>
-		        	<h:outputText value="TEST HRN: " style="font-weight:bold;"/><h:outputText escape="false"  value="#{simpleTreeDndBean.selTreeNode.data.humanReadableName}"/><br/>
 		        </rich:simpleTogglePanel>
 
 		        <!-- selected properties drop-off zone -->
@@ -130,13 +129,13 @@
 	                            <f:param value="#{propNodes.data.URI}" name="selPropID"/>
 	                       </a4j:commandLink>
 	                    </rich:column>
-	                    <rich:column sortBy="#{propNodes.data.name}" sortOrder="DESCENDING">
+	                    <rich:column sortBy="#{propNodes.data.humanReadableName}" sortOrder="DESCENDING">
 	                    	<f:facet name="header">
 	                    		<h:outputText value="selected property"/>
 	                    	</f:facet>
 	                    	<a4j:commandLink action="#{simpleTreeDndBean.processDetailsForSelProp}" reRender="infoPanel">
 	                    		<f:param value="#{propNodes.data.URI}" name="selPropID"/>
-	                    		<h:outputText value="#{propNodes.data.name}"></h:outputText>
+	                    		<h:outputText value="#{propNodes.data.humanReadableName}"></h:outputText>
 	                    	</a4j:commandLink> 
 	                    </rich:column>   
 	                    <c:if test="#{(! empty Standalone) and (Standalone=='false')}">

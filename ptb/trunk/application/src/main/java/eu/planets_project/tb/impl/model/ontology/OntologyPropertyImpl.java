@@ -3,6 +3,7 @@ package eu.planets_project.tb.impl.model.ontology;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -83,7 +84,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     private ProtegeReasoner getReasoner(){
     	if(reasoner==null){
     		ReasonerManager reasonerManager = ReasonerManager.getInstance();
-    		reasonerManager.getProtegeReasoner(this.individual.getOWLModel());
+    		reasoner = reasonerManager.getProtegeReasoner(this.individual.getOWLModel());
     	}
     	return reasoner;
     }
@@ -209,7 +210,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
 			OWLObjectProperty propertyIs_same_as = individual.getOWLModel().getOWLObjectProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as");
 			try {
 				//using the reasoner for resolving the symmetric individual relations
-				Iterator<OWLIndividual> it = reasoner.getRelatedIndividuals(individual, propertyIs_same_as).iterator();
+				Iterator<OWLIndividual> it = this.getReasoner().getRelatedIndividuals(individual, propertyIs_same_as).iterator();
 				while(it.hasNext()){
 					OWLIndividual sameAsIndividual = it.next();
 					lis_same_asIndividuals.add(sameAsIndividual);

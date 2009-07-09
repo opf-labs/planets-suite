@@ -239,15 +239,22 @@
           <include name="pdf-transcoder.jar" />
           <include name="batik-*.jar" />
           <include name="opencsv-*.jar" />
-          <include name="protege*.jar" />
           <include name="orphanNodesAlg.jar" />
-          <include name="jena.jar" />
           <include name="iri.jar" />
           <include name="icu4j_3_4.jar" />
 		  <!-- additional libs for OAI harvesting -->
           <include name="oai4j-0.6b1.jar" />
           <include name="dom4j-1.6.1.jar" />
           <include name="jaxen-1.1.1.jar" />
+          <!-- additional libs jena/pellet reasoning -->
+          <include name="jena.jar" />
+          <include name="protege*.jar" />
+          <include name="pellet*.jar" />
+          <include name="xsdlib.jar" />
+          <include name="aterm-java-1.6.jar" />
+          <include name="relaxngDatatype.jar" />
+           <include name="slf4j*.jar" />
+           <include name="owlapi-bin.jar" />
 		</fileset>
 	</move>
 
@@ -258,7 +265,7 @@
 			  <fileset dir="${build.dir}" includes="*.jar,*.war"/>
 			  <manifest>
 				 <attribute name="Implementation-Title" value="Planets Testbed"/>
-				 <attribute name="Class-Path" value="lib/commons-io-1.4.jar lib/castor-xml.jar"/>
+				 <attribute name="Class-Path" value="lib/commons-io-1.4.jar lib/castor-xml.jar lib/xsdlib.jar"/>
 			</manifest>
 			<!-- includes libs for the ear-->
 			<fileset dir="${build.dir}">
