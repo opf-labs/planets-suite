@@ -9,7 +9,7 @@ import java.util.HashMap;
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class CliMigrationPaths {
+public class CliMigrationPaths { //TODO: Should implement an interface to allow implement new versions to support new configuration file formats.
 
     /**
      * <code>PathKey</code> is a utility class used for keys for storage and

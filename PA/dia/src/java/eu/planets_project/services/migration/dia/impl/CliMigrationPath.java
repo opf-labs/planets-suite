@@ -18,7 +18,7 @@ import eu.planets_project.services.datatypes.Parameter;
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class CliMigrationPath {
+public class CliMigrationPath { //TODO: Should implement an interface to allow implement new versions to support new configuration file formats.
 
     private URI sourceFormatURI;
     private URI destinationFormatURI;

@@ -149,7 +149,12 @@ public class CliMigrationPathsFactory {
 
         // TODO: I realise that the current way of parsing the configuration is
         // not optimal. This factory should be refactored to apply a SAX parser
-        // or the like.
+        // or the like. Also, this factory should apply a separate
+        // CliMigrationPaths builder (implementing an interface), so it is
+        // possible to support older versions of the configuration document.
+        // That is, the factory should also check the version number of the
+        // configuration.
+
         try {
             NodeList topLevelNodes = pathConfiguration.getChildNodes().item(0)
                     .getChildNodes();
