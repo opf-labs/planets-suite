@@ -1,5 +1,10 @@
 <paths>
     <!-- TODO: Woohaa! We completely forgot a version number! -->
+    <!--
+        TODO: We need a command string for getting version information from the
+        tool and a string containing the expected output in order to verify that
+        the tool is indeed the tool that originally was wrapped.
+    -->
     <path>
         <!--
             Silly migration path for conversion of lower case text to upper case
@@ -37,7 +42,7 @@
         <commandline>
             <!--
                 This is the exact shell command line to be wrapped, except from
-                that all tags like "%some_label%" are substituted by command
+                that all tags like "#some_label" are substituted by command
                 parameters and temporary file names. The tag name (in this case
                 "some_label") must be defined in the "toolparameters" section.
                 The same goes for temporary files. In the below example there
@@ -47,6 +52,10 @@
             <![CDATA[cat #param1 #tempSource > #myInterimFile && tr #param2
              #myInterimFile > #tempDestination]]>
 
+            <!--
+                TODO: The command line element must match the ProcessRunner and
+                consist of a command and a list of parameters.
+            -->
         </commandline>
 
 

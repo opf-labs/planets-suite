@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -18,12 +17,14 @@ import eu.planets_project.services.datatypes.Parameter;
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class CliMigrationPath { //TODO: Should implement an interface to allow implement new versions to support new configuration file formats.
+public class CliMigrationPath { // TODO: Should implement an interface to allow
+    // implement new versions to support new
+    // configuration file formats.
 
     private URI sourceFormatURI;
     private URI destinationFormatURI;
     private Map<String, String> tempFiles;
-    private Map<String, String> tempInputFile;
+    private Map<String, String> tempSourceFile;
     private Map<String, String> tempOutputFile;
     private Map<String, Parameter> parameters;
     private Map<String, Map<String, Collection<Parameter>>> presets;
@@ -38,6 +39,7 @@ public class CliMigrationPath { //TODO: Should implement an interface to allow i
     CliMigrationPath() {
         parameters = new HashMap<String, Parameter>();
         presets = new HashMap<String, Map<String, Collection<Parameter>>>();
+        tempFiles = new HashMap<String, String>();
     }
 
     /**
@@ -50,7 +52,7 @@ public class CliMigrationPath { //TODO: Should implement an interface to allow i
      *         file and otherwise <code>false</code>
      */
     public boolean useTempSourceFile() {
-        return (tempInputFile == null) ? false : !tempInputFile.isEmpty();
+        return (tempSourceFile == null) ? false : !tempSourceFile.isEmpty();
     }
 
     /**
@@ -62,8 +64,8 @@ public class CliMigrationPath { //TODO: Should implement an interface to allow i
      *         the file name may be <code>null</code> if no name has been
      *         associated with the label.
      */
-    public Map<String, String> getTempInputFileLabelAndName() {
-        return tempInputFile;
+    public Map<String, String> getTempSourceFileLabelAndName() {
+        return tempSourceFile;
     }
 
     /**
@@ -75,7 +77,7 @@ public class CliMigrationPath { //TODO: Should implement an interface to allow i
      *            temporary file.
      */
     public void setTempInputFile(Map<String, String> tempFileLabelAndName) {
-        this.tempInputFile = tempFileLabelAndName;
+        this.tempSourceFile = tempFileLabelAndName;
     }
 
     /**
@@ -134,13 +136,20 @@ public class CliMigrationPath { //TODO: Should implement an interface to allow i
      *             defined in order to substitute all the identifiers in the
      *             command line.
      */
-    public String getCommandLine(List<Parameter> toolParameters,
+    public String getCommandLine(Collection<Parameter> toolParameters,
             Map<String, String> tempFileMap) throws MigrationException {
-        // Get a complete list of identifiers in the command line.
-        Set<String> usedIdentifiers = getIdentifiers(commandLine);
 
-        Set<String> validIdentifiers = getValidParameterNames(toolParameters);
+        // Get a complete list of identifiers in the command line.
+        final Set<String> usedIdentifiers = getIdentifiers(commandLine);
+
+        final Set<String> validIdentifiers = getValidParameterNames(toolParameters);
         validIdentifiers.addAll(getValidFileIdentifiers(tempFileMap));
+
+        // TODO: Check the parameters and filename mappings for injection
+        // attacks by sanity checking the parameters -
+        // throw exception in case of failure. However, it may be safe omitting
+        // the test for the file name mappings, as they are solely based on the
+        // configuration file and what the generic wrapper is doing.
 
         if (validIdentifiers.containsAll(usedIdentifiers) == false) {
             usedIdentifiers.removeAll(validIdentifiers);
@@ -151,14 +160,16 @@ public class CliMigrationPath { //TODO: Should implement an interface to allow i
 
         String executableCommandLine = commandLine;
         for (Parameter parameter : toolParameters) {
-            System.out.println("Replacing " + parameter.getName() + " with " + parameter.getValue());
-            executableCommandLine = executableCommandLine.replaceAll("(#"+parameter.getName()+")", parameter.getValue());
+            executableCommandLine = executableCommandLine.replaceAll("#"
+                    + parameter.getName(), parameter.getValue());
         }
-        // Verify that the caller has provided mappings for all identifiers.
-        // TODO: Substitute parameters
-        // TODO: Check for injection attacks by sanity checking the parameters -
-        // throw exception in case of failure.
-        return commandLine;
+
+        for (String fileIdentifier : tempFileMap.keySet()) {
+            executableCommandLine = executableCommandLine.replaceAll("#"
+                    + fileIdentifier, tempFileMap.get(fileIdentifier));
+        }
+
+        return executableCommandLine;
     }
 
     /**
@@ -192,12 +203,12 @@ public class CliMigrationPath { //TODO: Should implement an interface to allow i
      * thus valid.
      * 
      * @param parameters
-     *            a <code>List</code> of parameters to get valid parameters
+     *            a <code>Collection</code> of parameters to get valid parameters
      *            from.
      * @return a <code>Set</code> containing the names of all the parameters
      *         from <code>parameters</code> that have a value.
      */
-    private Set<String> getValidParameterNames(List<Parameter> parameters) {
+    private Set<String> getValidParameterNames(Collection<Parameter> parameters) {
         Set<String> validParameters = new HashSet<String>();
         for (Parameter parameter : parameters) {
             final String parameterName = parameter.getName();
@@ -435,6 +446,8 @@ public class CliMigrationPath { //TODO: Should implement an interface to allow i
     }
 
     /**
+     * TODO: The presets should have a class of their own
+     * 
      * Add a preset to this migration path. A preset belongs to a category and
      * its value is essentially just a collection of pre-defined parameters for
      * the command line to be wrapped. An example of a category could be
