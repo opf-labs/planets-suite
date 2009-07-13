@@ -64,6 +64,7 @@ import eu.planets_project.tb.gui.backing.exp.ExperimentStageBean;
 import eu.planets_project.tb.gui.backing.exp.MeasurementPropertyResultsBean;
 import eu.planets_project.tb.gui.backing.exp.ResultsForDigitalObjectBean;
 import eu.planets_project.tb.gui.backing.exp.EvaluationPropertyResultsBean.EvalRecordBean;
+import eu.planets_project.tb.gui.backing.exp.view.EmulationInspector;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
@@ -89,6 +90,7 @@ import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
+import eu.planets_project.tb.impl.services.mockups.workflow.ViewerWorkflow;
 
 
 /**
@@ -1960,10 +1962,16 @@ public class ExperimentBean {
     	String etype = this.getEtype();
     	String[] stagesToCompare = null;
     	
+    	/*
+    	 * Decides which stages are connected for evaluation and determines a common set of properties
+    	 * . e.g. within an migration experiment we're evaluating a common set of properties pre and post migration process.
+    	 */
     	if( etype.equals( AdminManagerImpl.IDENTIFY ) ) {
             stagesToCompare = new String[]{IdentifyWorkflow.STAGE_IDENTIFY};
         } else if( etype.equals( AdminManagerImpl.MIGRATE ) ) {
         	stagesToCompare = new String[]{MigrateWorkflow.STAGE_PRE_MIGRATE,MigrateWorkflow.STAGE_POST_MIGRATE};
+        } else if(etype.equals( AdminManagerImpl.EMULATE)){
+        	stagesToCompare = new String[]{ViewerWorkflow.STAGE_CREATEVIEW};
         }
     	//get the manual property results
     	List<EvaluationPropertyResultsBean> manualProps = this.getEvaluationPropertyResultsBeansHelper(inputDigoRef, stagesToCompare, true);
@@ -2016,7 +2024,9 @@ public class ExperimentBean {
 		for(int i=0; i<lpropertyIDs.length;i++){
 			Vector<String> propertyIDs = lpropertyIDs[i];
 			if(i==0){
-				commonPropIDs = propertyIDs;
+				if(propertyIDs!=null){
+					commonPropIDs = propertyIDs;
+				}
 			}else{
 				List<String> propsForRemoval = new ArrayList<String>();
 				for(String propID : commonPropIDs){
