@@ -2,7 +2,7 @@ package eu.planets_project.ifr.core.wee.api;
 
 import java.io.File;
 
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,8 +18,8 @@ import eu.planets_project.services.datatypes.Parameter;
 public class ReportingLogTests {
     private static final String WRONG = "Something went wrong!";
 
-    private final ReportingLog LOG = new ReportingLog(LogFactory
-            .getLog(ReportingLogTests.class));
+    private final ReportingLog LOG = new ReportingLog(Logger
+            .getLogger(ReportingLogTests.class));
 
     @Before
     public void logStuff() {

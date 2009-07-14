@@ -7,6 +7,7 @@ import java.io.InputStream;
 
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.log4j.SimpleLayout;
 
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Level;
@@ -19,6 +20,7 @@ import eu.planets_project.services.utils.FileUtils;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 final class WorkflowReporter {
+    private static final String REPORT_HTML = "wf-report.html";
     private static final long TIME = System.currentTimeMillis();
     private StringBuilder builder = new StringBuilder();
     private static final String TEMPLATE = "ReportTemplate.html";
@@ -29,21 +31,8 @@ final class WorkflowReporter {
     private static final String JBOSS_HOME = System
             .getProperty(JBOSS_HOME_DIR_KEY);
     static final String REPORT_OUTPUT_FOLDER = (JBOSS_HOME != null ? JBOSS_HOME
-            + WEE_DATA
-            : LOCAL);
-    private static final File LOG_FILE = new File(REPORT_OUTPUT_FOLDER, "wf-log"
-            + TIME + ".txt");
-    static {
-        System.setProperty("org.apache.commons.logging.Log",
-                "org.apache.commons.logging.impl.Log4JLogger");
-        try {
-            LogManager.getRootLogger().addAppender(
-                    new FileAppender(new SimpleLayout(), LOG_FILE
-                            .getAbsolutePath()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+            + WEE_DATA : LOCAL)
+            + "/id-" + TIME;
     private static final String ENTRY =
     // A template for a workflow report message, used with String.format:
     "<fieldset><legend><b>%s</legend>" // first insert: the title
@@ -79,7 +68,7 @@ final class WorkflowReporter {
      * @return The file the HTML report has been written to
      */
     File reportAsFile() {
-        File file = new File(REPORT_OUTPUT_FOLDER, "wf-report" + TIME + ".html");
+        File file = new File(REPORT_OUTPUT_FOLDER, REPORT_HTML);
         FileWriter writer = null;
         try {
             writer = new FileWriter(file);
@@ -117,9 +106,5 @@ final class WorkflowReporter {
                     parameter.getValue()));
         }
         return builder.toString();
-    }
-
-    public File logAsFile() {
-        return LOG_FILE;
     }
 }

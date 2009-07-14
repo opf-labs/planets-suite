@@ -2,9 +2,14 @@
 package eu.planets_project.ifr.core.wee.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.commons.logging.Log;
+import org.apache.log4j.FileAppender;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
+import org.apache.log4j.SimpleLayout;
 
 import eu.planets_project.services.datatypes.Parameter;
 
@@ -16,8 +21,10 @@ import eu.planets_project.services.datatypes.Parameter;
  */
 public final class ReportingLog implements Log {
 
-    private Log backingLog;
+    private Logger backingLog;
     private WorkflowReporter reporter;
+    private static final File logFile = new File(
+            WorkflowReporter.REPORT_OUTPUT_FOLDER, "wf-log.txt");
 
     /**
      * Enum for the different possible levels of log messages.
@@ -63,8 +70,14 @@ public final class ReportingLog implements Log {
     /**
      * @param backingLog The backing log
      */
-    public ReportingLog(final Log backingLog) {
+    public ReportingLog(final Logger backingLog) {
         this.backingLog = backingLog;
+        try {
+            backingLog.addAppender(new FileAppender(new SimpleLayout(), logFile
+                    .getAbsolutePath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.reporter = new WorkflowReporter();
     }
 
@@ -86,7 +99,7 @@ public final class ReportingLog implements Log {
      * @return The file the logging messages have been written to
      */
     public File logAsFile() {
-        return reporter.logAsFile();
+        return logFile;
     }
 
     /**
@@ -216,7 +229,7 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#isErrorEnabled()
      */
     public boolean isErrorEnabled() {
-        return backingLog.isErrorEnabled();
+        return backingLog.isEnabledFor(Priority.ERROR);
     }
 
     /**
@@ -224,7 +237,7 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#isFatalEnabled()
      */
     public boolean isFatalEnabled() {
-        return backingLog.isFatalEnabled();
+        return backingLog.isEnabledFor(Priority.FATAL);
     }
 
     /**
@@ -248,7 +261,7 @@ public final class ReportingLog implements Log {
      * @see org.apache.commons.logging.Log#isWarnEnabled()
      */
     public boolean isWarnEnabled() {
-        return backingLog.isWarnEnabled();
+        return backingLog.isEnabledFor(Priority.WARN);
     }
 
     /**

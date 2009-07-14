@@ -12,7 +12,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -36,8 +36,8 @@ import eu.planets_project.services.modify.ModifyResult;
 public class ModifyTemplate extends WorkflowTemplateHelper implements
         WorkflowTemplate {
 
-    private static final ReportingLog log = new ReportingLog(LogFactory
-            .getLog(ModifyTemplate.class));
+    private static final ReportingLog log = new ReportingLog(Logger
+            .getLogger(ModifyTemplate.class));
 
     /**
      * Identify service
