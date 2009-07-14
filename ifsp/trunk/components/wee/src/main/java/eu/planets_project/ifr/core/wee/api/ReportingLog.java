@@ -83,6 +83,13 @@ public final class ReportingLog implements Log {
     }
 
     /**
+     * @return The file the logging messages have been written to
+     */
+    public File logAsFile() {
+        return reporter.logAsFile();
+    }
+
+    /**
      * {@inheritDoc}
      * @see org.apache.commons.logging.Log#debug(java.lang.Object)
      */
@@ -242,5 +249,12 @@ public final class ReportingLog implements Log {
      */
     public boolean isWarnEnabled() {
         return backingLog.isWarnEnabled();
+    }
+
+    /**
+     * @return The folder the reporting log writes the report and the log to
+     */
+    public File getOutputFolder() {
+        return new File(WorkflowReporter.REPORT_OUTPUT_FOLDER);
     }
 }

@@ -1,7 +1,10 @@
 package eu.planets_project.ifr.core.wee.api.workflow;
 
+import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,6 +13,7 @@ import java.util.Map;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 
 /**
  * @author <a href="mailto:andrew.lindley@arcs.ac.at">Andrew Lindley</a>
@@ -112,5 +116,25 @@ public abstract class WorkflowTemplateHelper implements Serializable{
 	public void setData(List<DigitalObject> data){
 		this.data = data;
 	}
+	
+    /**
+     * @param objects The digital objects
+     * @param folder The folder to store the files in
+     * @return References to the given digital object, stored in the given
+     *         folder
+     */
+    public static List<URL> reference(List<DigitalObject> objects, File folder) {
+        List<URL> urls = new ArrayList<URL>();
+        List<File> files = DigitalObjectUtils.getDigitalObjectsAsFiles(objects,
+                folder);
+        for (File f : files) {
+            try {
+                urls.add(f.toURL());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+        return urls;
+    }
 
 }

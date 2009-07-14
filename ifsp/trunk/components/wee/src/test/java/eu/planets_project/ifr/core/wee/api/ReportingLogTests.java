@@ -18,20 +18,6 @@ import eu.planets_project.services.datatypes.Parameter;
 public class ReportingLogTests {
     private static final String WRONG = "Something went wrong!";
 
-    static {
-        /*
-         * See
-         * http://commons.apache.org/logging/apidocs/org/apache/commons/logging
-         * /impl/SimpleLog.html
-         */
-        System.setProperty("org.apache.commons.logging.Log",
-                "org.apache.commons.logging.impl.SimpleLog");
-        System.setProperty("org.apache.commons.logging.simplelog.showdatetime",
-                "false");
-        System.setProperty("org.apache.commons.logging.simplelog.defaultlog",
-                "trace");
-    }
-
     private final ReportingLog LOG = new ReportingLog(LogFactory
             .getLog(ReportingLogTests.class));
 
@@ -103,7 +89,16 @@ public class ReportingLogTests {
     @Test
     public void writeReport() {
         File file = LOG.reportAsFile();
+        Assert.assertNotNull("Report file should not be null", file);
         Assert.assertTrue("Report file should exist", file.exists());
-        System.out.println("Wrote report to: " + file.getAbsolutePath());
+        System.err.println("Wrote report to: " + file.getAbsolutePath());
+    }
+    
+    @Test
+    public void getLog() {
+        File file = LOG.logAsFile();
+        Assert.assertNotNull("Log file should not be null", file);
+        Assert.assertTrue("Log file should exist", file.exists());
+        System.err.println("Wrote log to: " + file.getAbsolutePath());
     }
 }
