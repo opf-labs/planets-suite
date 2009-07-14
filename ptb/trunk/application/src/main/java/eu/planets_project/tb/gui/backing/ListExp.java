@@ -22,6 +22,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
+import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
 
 import java.util.Collection;
 import eu.planets_project.ifr.core.security.api.model.User;
@@ -124,7 +125,8 @@ public class ListExp extends SortableList {
       }
     
     public Collection<Experiment> getAllExpAwaitingAuth()
-    {    
+    {
+        // Get the experiments-to-approve list:
         TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
         Collection<Experiment> myExps = testbedMan.getAllExperimentsAwaitingApproval();
          currExps = Collections.list(Collections.enumeration(myExps));

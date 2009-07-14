@@ -28,7 +28,8 @@ public class TestbedBatchProcessDaemon extends Thread {
     
     TestbedBatchProcessor testbedBatchProcessor;
     
-    long secs = 0;
+    long msecs = 0;
+    long sleepms = 500;
 
     /**
      * @param testbedBatchProcessor
@@ -40,14 +41,16 @@ public class TestbedBatchProcessDaemon extends Thread {
     public void run() {
         TestbedBatchJob job = null;
         while (true) {
+            //log.debug("Looking for a job: t="+this.getSecs());
             job = testbedBatchProcessor.pollForNextJob();
             if( job != null ) {
                 this.executeWorkflow(job);
                 job = null;
             } else {
                 try {
-                    Thread.sleep(1000);
-                    secs++;
+                    Thread.sleep( this.sleepms );
+                    msecs += this.sleepms;
+                    //log.debug("Slept: t="+this.getSecs());
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -57,7 +60,7 @@ public class TestbedBatchProcessDaemon extends Thread {
     }
 
     public long getSecs() {
-        return secs;
+        return msecs/1000;
     }
     
     public void executeWorkflow( TestbedBatchJob job ) {

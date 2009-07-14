@@ -14,8 +14,9 @@ import org.apache.commons.logging.LogFactory;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 
 /**
+ * This bean is managed by JSF and is given application scope.
+ * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
  */
 public class TestbedBatchProcessor {
     
@@ -27,8 +28,10 @@ public class TestbedBatchProcessor {
     private int job_id = 0;
     
     public TestbedBatchProcessor() {
-       daemon = new TestbedBatchProcessDaemon(this);
-       daemon.start();
+        log.info("Constructing BG process.");
+        daemon = new TestbedBatchProcessDaemon(this);
+        daemon.start();
+        log.info("Daemon started.");
     }
 
     /**
@@ -48,6 +51,7 @@ public class TestbedBatchProcessor {
         TestbedBatchJob testbedBatchJob = new TestbedBatchJob( expID, workflow, digitalObjects );
         job_id++;
         String job_key ="TBK:"+job_id;
+        log.info("Queuing job : "+job_key);
         jobs.put(job_key, testbedBatchJob);
         jobsQueued.add(job_key);
         log.info("Job has been queued : "+job_key);

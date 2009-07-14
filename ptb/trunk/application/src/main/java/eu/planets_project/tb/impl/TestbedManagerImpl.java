@@ -29,6 +29,7 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.tb.impl.system.ServiceExecutionHandlerImpl;
+import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.TestbedManager;
@@ -56,6 +57,8 @@ public class TestbedManagerImpl
 	// The version number of the Testbed.  Can be overridden in BackendResources.properties.
 	private String tbVersion = "0.9";
 	
+    // Look for the batch system... 
+    TestbedBatchProcessor tbp = (TestbedBatchProcessor)JSFUtil.getManagedObject("TestbedBatchProcessor");
 	
 	/**
 	 * This Class implements the Java singleton pattern and therefore the constructor should be private
