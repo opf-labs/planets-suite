@@ -15,7 +15,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 
 /**
  * TODO This is rather awkward, and should really be handled by the faces-config navigation. But, I don't know how else to deal with the ExperimentBean that is placed in the session manually.
- * 
+ * eu.planets_project.tb.gui.ExpDesignPhaseListener.afterPhase(ExpDesignPhaseListener.java:37)
  * @author AnJackson
  *
  */
@@ -34,6 +34,7 @@ public class ExpDesignPhaseListener implements PhaseListener {
         ebr.setEid( (String) context.getExternalContext().getRequestParameterMap().get("eid") );
         */
         
+        if( context == null  || context.getViewRoot() == null ) return;
         String viewId = context.getViewRoot().getViewId();
         // log.debug("ViewID: "+viewId);
         if( viewId.startsWith("/exp/exp_stage") ) {
