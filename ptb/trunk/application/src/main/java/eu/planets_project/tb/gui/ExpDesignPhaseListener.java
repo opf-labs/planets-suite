@@ -4,13 +4,13 @@
 package eu.planets_project.tb.gui;
 
 import javax.faces.context.FacesContext;
+
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
-import eu.planets_project.tb.gui.backing.exp.ExpBeanReqManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
 
 /**
