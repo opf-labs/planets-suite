@@ -62,6 +62,7 @@ import eu.planets_project.ifr.core.registry.api.RegistryFactory;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectDirectoryLister;
 import eu.planets_project.ifr.core.wdt.impl.data.DigitalObjectReference;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.PlanetsException;
@@ -309,7 +310,12 @@ public class WorkflowBackingBean {
 				progString = status;
 				// System.out.println("Status is: " + progString);
 				if (status.equals("COMPLETED") || status.equals("FAILED")) {
+					WorkflowResult wr = weeService.getResult(workflowUUID);
+					String rurl = wr.getReport().toURI().toString();
+					System.out.println("Got a report URL: " + rurl);
 					swb.setStopTime(System.currentTimeMillis());
+					swb.setReportURL(rurl);
+					swb.setReportExists(true);
 					workflowUUID = null;
 					workflowStarted = false;
 					wfCount = -1;
@@ -1277,13 +1283,16 @@ public class WorkflowBackingBean {
 		private UUID uuid;
 		private String xmlConfigName;
 		private String status;
+		private String reportURL;
 		private long startTime;
 		private long stopTime;
 		private int numberObjects;
 		private SimpleDateFormat formatter;
+		private Boolean reportExists;
 
 		public SubmittedWorkflowBean() {
 			formatter = new SimpleDateFormat("MMM yyyy HH:mm:ss");
+			this.reportExists = new Boolean(false);
 		}
 
 		// Getters
@@ -1328,6 +1337,14 @@ public class WorkflowBackingBean {
 				return "";
 			}
 		}
+		
+		public String getReportURL() {
+			return this.reportURL;
+		}
+		
+		public Boolean getReportExists() {
+			return this.reportExists;
+		}
 
 		// Setters
 		public void setUuid(UUID id) {
@@ -1352,6 +1369,14 @@ public class WorkflowBackingBean {
 
 		public void setNumberObjects(int num) {
 			this.numberObjects = num;
+		}
+		
+		public void setReportURL(String rurl) {
+			this.reportURL = rurl;
+		}
+		
+		public void setReportExists(boolean exists) {
+			this.reportExists = new Boolean(exists);
 		}
 
 	}

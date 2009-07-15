@@ -297,6 +297,9 @@
 		                        <rich:column>
 		                            <h:outputText value="Execution Time (ms)" />
 		                        </rich:column>
+		                        <rich:column>
+		                            <h:outputText value="Report Link" />
+		                        </rich:column>
 		                    </rich:columnGroup>
 		                </f:facet>
 		                <rich:column>
@@ -316,6 +319,14 @@
 		                </rich:column>
 		                <rich:column>
 		                	<h:outputText value="#{workflows.executionTime}" />
+		                </rich:column>
+		                <rich:column>
+		                	<h:outputLink
+		                	rendered="#{workflows.reportExists}"
+		                	value="#{workflows.reportURL}"
+		                	target="_blank">
+		                		<h:outputText value="report" />
+		                	</h:outputLink>
 		                </rich:column>
 		            </rich:dataTable>
 	            </rich:panel>
