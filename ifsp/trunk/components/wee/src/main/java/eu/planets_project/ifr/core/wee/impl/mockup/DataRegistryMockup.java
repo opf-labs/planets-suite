@@ -183,6 +183,7 @@ public class DataRegistryMockup implements DataManagerLocal{
 			for(String s : ret){
 				try {
 					retURI[count] = new URI(s);
+					count++;
 				} catch (URISyntaxException e) {
 					e.printStackTrace();
 				}
