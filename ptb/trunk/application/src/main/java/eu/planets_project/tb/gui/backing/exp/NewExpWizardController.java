@@ -1890,7 +1890,9 @@ public class NewExpWizardController{
             exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeIdentify");
         } else if( etype.equals( AdminManagerImpl.MIGRATE ) ) {
             exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeMigrate");
-        } else {
+	    } else if( etype.equals( AdminManagerImpl.EMULATE) ) {
+	        exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeViewer");
+	    }else {
             // For unrecognised experiment types, set to NULL:
             log.error("unrecognised experiment type");
         	return "goToStage3";
