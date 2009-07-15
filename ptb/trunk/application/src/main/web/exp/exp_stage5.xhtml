@@ -31,8 +31,7 @@
        <ui:param name="PlaceBandAsHeader" value="true" />
     </ui:include>
 
-<h:panelGroup class="expRunStatusPanel">
-#{NewExp_Controller.executeExperimentProgress}
+<h:panelGroup class="expRunStatusPanel" rendered="#{NewExp_Controller.executeExperimentProgress != 9999}">
     <a4j:outputPanel id="progressPanel">
       <h:panelGroup styleClass="#{NewExp_Controller.experimentExecutable.executionRunning ? 'expRunStatusRun' : 'expRunStatusWait' }">
       <h:outputText value="Executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times." 
