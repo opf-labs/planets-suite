@@ -17,6 +17,7 @@ import edu.stanford.smi.protegex.owl.inference.reasoner.exception.ProtegeReasone
 import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
+import edu.stanford.smi.protegex.owl.model.RDFIndividual;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
@@ -110,7 +111,7 @@ public class OntologyHandlerImpl {
     	OWLNamedClass startClass = owlModel.getOWLNamedClass(OWLMODEL_ROOT_CLASS);
     	
     	//TB property uris correspond to OWLIndividuals
-    	OWLIndividual individual = this.getOWLModel().getOWLIndividual(uri);
+    	RDFIndividual individual = this.getOWLModel().getRDFIndividual(uri);
     	
     	if(individual != null){
         	//create ontology property for this individual

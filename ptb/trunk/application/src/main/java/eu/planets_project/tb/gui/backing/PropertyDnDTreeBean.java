@@ -61,12 +61,14 @@ public class PropertyDnDTreeBean{
 	private static String filterTreeStringOld = "";
 	private ArrayList<SelectItem> viewsSelectItems = new ArrayList<SelectItem>();
 	private String selectedview = null;
+	private String selectedviewOld = "";
 	private TreeNode rootNode = null;
 	private String rootNodeName = "";
     private TreeNode selNode;
     //structure: Map<ID,TreeNode>
     private Map<String,TreeNode> dndSelNodes = new HashMap<String,TreeNode>();
     private static final String VIEW_STANDARD = "standard";
+    private static final String VIEW_TBEXTENDED = "extended";
     private static final String VIEW_ROTHENBERG = "rothenberg";
     
     private static Log log = LogFactory.getLog(PropertyDnDTreeBean.class);
@@ -76,7 +78,7 @@ public class PropertyDnDTreeBean{
 
     //requires a no-arg constructor
     public PropertyDnDTreeBean(){
-    	fillAvailableViews(new String[]{VIEW_STANDARD,VIEW_ROTHENBERG});
+    	fillAvailableViews(new String[]{VIEW_STANDARD,VIEW_TBEXTENDED,VIEW_ROTHENBERG});
     	loadOwlOntology();
     }
     
@@ -90,6 +92,8 @@ public class PropertyDnDTreeBean{
     private void loadTree(boolean applyFilter){
     	
     	this.filterTreeStringOld = this.getFilterTreeString();
+    	this.selectedviewOld = this.getSelectedViewItem();
+    	
     	rootNode = new TreeNodeImpl();
 
     	if(this.selectedview.equals(VIEW_STANDARD)){
@@ -98,12 +102,15 @@ public class PropertyDnDTreeBean{
     			TreeViews.standardTraverseTree(startClass, new Vector(), rootNode, applyFilter);
     	}
     	if(this.selectedview.equals(VIEW_ROTHENBERG)){
-    		//TODO add rothenbergTraverseTree
-    		OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology:specificationPropertyNames");
-    		//OWLNamedClass startClass = owlModel.getOWLNamedClass("Testbed:RothenbergCategories");
+    		OWLNamedClass startClass = owlModel.getOWLNamedClass("Testbed:RothenbergCategories");
     		this.rootNodeName = startClass.getLocalName();
     		TreeViews.standardTraverseTree(startClass, new Vector(), rootNode, applyFilter);
     		//TreeViews.rothenbergTraverseTree(startClass, new Vector(), rootNode, applyFilter);
+    	}
+    	if(this.selectedview.equals(VIEW_TBEXTENDED)){
+    		OWLNamedClass startClass = owlModel.getOWLNamedClass("Testbed:TestbedProperties");
+    		this.rootNodeName = startClass.getLocalName();
+    		TreeViews.standardTraverseTree(startClass, new Vector(), rootNode, applyFilter);
     	}
     }
     
@@ -112,12 +119,28 @@ public class PropertyDnDTreeBean{
     }
     
     public void setFilterTreeString(String s){
-    	if(s.equals("")){
+    	/*if(s.equals("")){
     		filterTreeString = null;
-    		this.loadTree(false);
     	}else{
     		filterTreeString = s;
-    	}
+    	}*/
+    	filterTreeString = s;
+    	this.checkReloadTree();
+    }
+    
+    private void checkReloadTree(){
+    	//check if the filter or tree view has changed
+    	if(this.filterStringChanged() || this.treeViewChanged()){
+    		//check if the filter shall be applied
+    		if(this.filterStringSet()){
+    			this.loadTree(true);
+    			return;
+    		}
+    		else{
+    			this.loadTree(false);
+    			return;
+    		}
+    	}	
     }
     
     /**
@@ -222,9 +245,37 @@ public class PropertyDnDTreeBean{
 		this.dndSelNodes.clear();
 	}
     
+    /**
+     * Indicates if the filter string changed since the last time the tree was updated
+     * @return
+     */
     private boolean filterStringChanged(){
     	String filter = this.getFilterTreeString();
-    	if(filter.equalsIgnoreCase(this.filterTreeStringOld)){
+    	if(filter==null||filter.equalsIgnoreCase(this.filterTreeStringOld)){
+    		return false;
+    	}
+    	return true;
+    }
+    
+    /**
+     * Indicates if a filter string has been set and shall be used
+     * @return
+     */
+    private boolean filterStringSet(){
+    	if(getFilterTreeString()==null||getFilterTreeString().equals("")){
+    		return false;
+    	}
+    	return true;
+    }
+    
+    /**
+     * Indicates if the selected treeview (rothenberg, standard, etc.) changed since 
+     * the tree was updated the last time
+     * @return
+     */
+    private boolean treeViewChanged(){
+    	String treeview = this.getSelectedViewItem();
+    	if(treeview.equalsIgnoreCase(this.selectedviewOld)){
     		return false;
     	}
     	return true;
@@ -234,11 +285,7 @@ public class PropertyDnDTreeBean{
         if (rootNode == null) {
             loadTree(false);
         }else{
-        	if(this.getFilterTreeString()!=null){
-        		if(filterStringChanged()){
-        			loadTree(true);
-        		}
-        	}
+        	checkReloadTree();
         }
         return rootNode;
     }
@@ -310,7 +357,7 @@ public class PropertyDnDTreeBean{
      */
     public Boolean adviseNodeOpened(UITree tree) {
         //root always elapsed 
-    	if(((OntologyProperty)tree.getRowData()).getName().equals(this.rootNodeName)){return Boolean.TRUE;}
+    	if(((OntologyProperty)tree.getRowData()).getName().startsWith(this.rootNodeName)){return Boolean.TRUE;}
     	
     	//for all other nodes check if collapse/expand was chosen
     	if (!bCollapstree)
