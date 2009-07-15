@@ -28,7 +28,9 @@ public class EvaluationPropertyResultsBean extends MeasurementPropertyResultsBea
 	
 	public void addMeasurementResult(Calendar runDate, String stageName, MeasurementRecordImpl result){
 		//fetch the hm and add an additional stageName that shall be compared for the propertyID
-		this.evalresults.get(runDate.getTimeInMillis()).put(stageName, new EvalRecordBean(result));
+	    if( runDate != null && this.evalresults.get(runDate.getTimeInMillis()) != null) {
+	        this.evalresults.get(runDate.getTimeInMillis()).put(stageName, new EvalRecordBean(result));
+	    }
 	}
 	
 	/**
