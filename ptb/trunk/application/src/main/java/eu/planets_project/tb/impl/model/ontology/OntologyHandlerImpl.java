@@ -30,7 +30,7 @@ import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 public class OntologyHandlerImpl {
 	
 	private Log log = LogFactory.getLog(OntologyHandlerImpl.class);
-	private final String owlresource = "eu/planets_project/tb/impl/XCLOntology.owl";
+	private final String owlresource = "eu/planets_project/tb/impl/TestbedOntology.owl";
 	private OWLModel owlModel;
 	private ProtegeReasoner reasoner;
 	private static OntologyHandlerImpl instance;
@@ -91,11 +91,11 @@ public class OntologyHandlerImpl {
     	//classify the whole ontology, which will put the
 		// inferred class hierarchy information directly into the Protege-OWL model. 
 	
-		//reasoner.initialize();
-		//reasoner.computeInferredHierarchy();
-		//reasoner.computeInferredIndividualTypes();
+		reasoner.initialize();
+		reasoner.computeInferredHierarchy();
+		reasoner.computeInferredIndividualTypes();
 	
-		//reasoner.classifyTaxonomy(); 
+		reasoner.classifyTaxonomy(); 
     }
     
     /**

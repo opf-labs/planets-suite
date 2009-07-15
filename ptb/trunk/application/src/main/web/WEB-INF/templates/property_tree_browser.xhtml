@@ -101,11 +101,12 @@
             	<!-- selected property info panel -->
 	            <rich:simpleTogglePanel id="infoPanel" switchType="client" label="selected property information panel" style="margin:2px;">
 		            <h:outputText value="selected node: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.nodeTitle}" /><br/>
+		            <h:panelGroup rendered="#{(simpleTreeDndBean.selTreeNode.data.humanReadableName != simpleTreeDndBean.nodeTitle)}"><h:outputText value="human readable name: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.humanReadableName}" /><br/></h:panelGroup>
 		            <h:outputText value="uri: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.URI}"/><br/>
-		            <h:outputText value="parent-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.parentType}"/><br/>
-		        	<h:outputText value="data-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.dataType}" /><br/>
-		        	<h:outputText value="addressed layer: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.type}" /><br/>
-		        	<h:outputText value="comment: " style="font-weight:bold;"/><h:outputText escape="false"  value="#{simpleTreeDndBean.selTreeNode.data.comment}"/><br/>
+		            <h:panelGroup rendered="#{not empty simpleTreeDndBean.selTreeNode.data.parentType}"><h:outputText value="parent-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.parentType}"/><br/></h:panelGroup>
+		        	<h:panelGroup rendered="#{not empty simpleTreeDndBean.selTreeNode.data.dataType}"><h:outputText value="data-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.dataType}" /><br/></h:panelGroup>
+		        	<h:panelGroup rendered="#{not empty simpleTreeDndBean.selTreeNode.data.type}"><h:outputText value="addressed layer: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.type}" /><br/></h:panelGroup>
+		        	<h:panelGroup rendered="#{not empty simpleTreeDndBean.selTreeNode.data.comment}"><h:outputText value="comment: " style="font-weight:bold;"/><h:outputText escape="false"  value="#{simpleTreeDndBean.selTreeNode.data.comment}"/><br/></h:panelGroup>
 		        </rich:simpleTogglePanel>
 
 		        <!-- selected properties drop-off zone -->

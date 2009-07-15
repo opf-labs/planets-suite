@@ -32,6 +32,7 @@ import org.richfaces.model.TreeRowKey;
 import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
+import edu.stanford.smi.protegex.owl.model.RDFIndividual;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLNamedClass;
@@ -99,8 +100,10 @@ public class PropertyDnDTreeBean{
     	if(this.selectedview.equals(VIEW_ROTHENBERG)){
     		//TODO add rothenbergTraverseTree
     		OWLNamedClass startClass = owlModel.getOWLNamedClass("XCLOntology:specificationPropertyNames");
+    		//OWLNamedClass startClass = owlModel.getOWLNamedClass("Testbed:RothenbergCategories");
     		this.rootNodeName = startClass.getLocalName();
     		TreeViews.standardTraverseTree(startClass, new Vector(), rootNode, applyFilter);
+    		//TreeViews.rothenbergTraverseTree(startClass, new Vector(), rootNode, applyFilter);
     	}
     }
     
@@ -450,28 +453,36 @@ public class PropertyDnDTreeBean{
     private static class TreeViews{
     	
     	public static TreeNode standardTraverseTree(OWLNamedClass cl, List stack, TreeNode node, boolean applyfilter) {
+    		Collection<RDFIndividual> instances = cl.getInstances(false); 
 
-    		Collection<OWLIndividual> instances = cl.getInstances(false);    
             //adding a new category - isn't backed by any data, not even name??
             TreeNode childClass = new TreeNodeImpl();
             String instanceCountText = instances.size()>0 ? " ("+instances.size()+")" : "";
             childClass.setData(new DummyOntologyProperty(cl.getLocalName()+instanceCountText));
             //addChild(key, nodeImpl
             node.addChild(cl.getURI(),childClass);
-            
+
             if (instances.size() > 0) {
-                for (Iterator<OWLIndividual> jt = instances.iterator(); jt.hasNext();) {
-                	OWLIndividual individual = (OWLIndividual) jt.next();    
-                	TreeNode child = new TreeNodeImpl();
-                    OntologyProperty ontologyProperty = new OntologyPropertyImpl(individual);
-                    
-                    boolean bMatchesFilter = true;
- 	                if(applyfilter)
- 	                	bMatchesFilter =  ontologyProperty.getName().toLowerCase().contains(filterTreeString.toLowerCase());
-                    if(bMatchesFilter){
-	 	                child.setData(ontologyProperty);
-	                    childClass.addChild(ontologyProperty.getURI(), child);
-	                }
+                for (Iterator<RDFIndividual> jt = instances.iterator(); jt.hasNext();) {
+                	try{
+	                	RDFIndividual individual = (RDFIndividual)jt.next();
+	                	//OWLIndividual individual = (OWLIndividual) jt.next();    
+	                	TreeNode child = new TreeNodeImpl();
+	                    OntologyProperty ontologyProperty = new OntologyPropertyImpl(individual);
+	                    
+	                    boolean bMatchesFilter = true;
+	 	                if(applyfilter){
+	 	                	boolean b1 = ontologyProperty.getName().toLowerCase().contains(filterTreeString.toLowerCase());
+	 	                	boolean b2 = ontologyProperty.getHumanReadableName().toLowerCase().contains(filterTreeString.toLowerCase());
+	 	                	bMatchesFilter =  b1||b2;
+	 	                }
+	 	                if(bMatchesFilter){
+		 	                child.setData(ontologyProperty);
+		                    childClass.addChild(ontologyProperty.getURI(), child);
+		                }
+                	}catch(ClassCastException e){
+                		log.debug("Shouldn't happen any more: Filtering out RDFIndividual");
+                	}
                 }
             }
             if (!stack.contains(cl)) {
@@ -546,7 +557,7 @@ public class PropertyDnDTreeBean{
 			// TODO Auto-generated method stub
 			return null;
 		}
-		public List<OWLIndividual> getIsSameAs() {
+		public List<RDFIndividual> getIsSameAs() {
 			// TODO Auto-generated method stub
 			return null;
 		}

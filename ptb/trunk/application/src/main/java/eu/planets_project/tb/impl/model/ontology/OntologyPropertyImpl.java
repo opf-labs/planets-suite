@@ -26,6 +26,7 @@ import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLModel;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
 import edu.stanford.smi.protegex.owl.model.OWLObjectProperty;
+import edu.stanford.smi.protegex.owl.model.RDFIndividual;
 import edu.stanford.smi.protegex.owl.model.RDFProperty;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLNamedClass;
@@ -52,7 +53,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     private long id;
     private Log log = LogFactory.getLog(OntologyPropertyImpl.class);
     //the owl model element containing the nodes property links
-    private OWLIndividual individual;
+    private RDFIndividual individual;
     //FIXME This information is currently hardcoded and must come from the Testbed ontology extension
     private static final String TYPE_DIGITAL_OBJECT = "Digital Object";
     private static final String TYPE_SERVICE = "Service";
@@ -72,7 +73,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
      * The default constructor
      * @param individual
      */
-    public OntologyPropertyImpl(OWLIndividual individual) { 
+    public OntologyPropertyImpl(RDFIndividual individual) { 
     	this.individual = individual;
     }
     
@@ -90,9 +91,9 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     }
 
     /* (non-Javadoc)
-     * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getOWLIndividual()
+     * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getRDFIndividual()
      */
-    public OWLIndividual getOWLIndividual(){
+    public RDFIndividual getRDFIndividual(){
     	return this.individual;
     }
 
@@ -189,9 +190,9 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     public List<String> getIsSameAsNames(){
     	if(lis_same_asNames==null){
     		lis_same_asNames = new ArrayList<String>();
-	    	Iterator<OWLIndividual> it = this.getIsSameAs().iterator();
+	    	Iterator<RDFIndividual> it = this.getIsSameAs().iterator();
 	    	while(it.hasNext()){
-				OWLIndividual sameAsIndividual = it.next();
+				RDFIndividual sameAsIndividual = it.next();
 				lis_same_asNames.add(sameAsIndividual.getLocalName());
 			}
     	}
@@ -199,18 +200,18 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     }
     
     
-    private List<OWLIndividual> lis_same_asIndividuals= null;
+    private List<RDFIndividual> lis_same_asIndividuals= null;
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ontology.OntologyProperty#getIsSameAs()
      */
-    public List<OWLIndividual> getIsSameAs(){
+    public List<RDFIndividual> getIsSameAs(){
     	if(lis_same_asIndividuals==null){
-    		lis_same_asIndividuals = new ArrayList<OWLIndividual>();
-	    	
+    		lis_same_asIndividuals = new ArrayList<RDFIndividual>();    
+    		
 			OWLObjectProperty propertyIs_same_as = individual.getOWLModel().getOWLObjectProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as");
 			try {
 				//using the reasoner for resolving the symmetric individual relations
-				Iterator<OWLIndividual> it = this.getReasoner().getRelatedIndividuals(individual, propertyIs_same_as).iterator();
+				Iterator<OWLIndividual> it = this.getReasoner().getRelatedIndividuals(convertRDFIndividual(individual), propertyIs_same_as).iterator();
 				while(it.hasNext()){
 					OWLIndividual sameAsIndividual = it.next();
 					lis_same_asIndividuals.add(sameAsIndividual);
@@ -218,6 +219,8 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
 			} catch (ProtegeReasonerException e) {
 				// TODO Auto-generated catch block
 				log.debug("Problems resolving is_same_as relationship with the pellet reasoner",e);
+			} catch(java.lang.ClassCastException e2){
+				log.debug("Not resolving an OWLIndividual with the is_same_as relationship");
 			}
     	}
     	return lis_same_asIndividuals;
@@ -314,6 +317,19 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
 	public String getType() {
 		//FIXME currently all properties reflect digital object specific behavior -> TB ontology extension
 		return this.TYPE_DIGITAL_OBJECT;
+	}
+	
+	/**
+	 * converts RDFIndividual (super class) to OWLIndividual (sub class) if possible
+	 * @param indiv
+	 * @return
+	 */
+	private OWLIndividual convertRDFIndividual(RDFIndividual indiv) throws ClassCastException{
+		try{
+			return (OWLIndividual)indiv;
+		}catch(ClassCastException e){
+			throw new ClassCastException("RDFIndividual "+indiv.getLocalName() + " not of type OWLIndividual");
+		}
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.stanford.smi.protegex.owl.model.OWLIndividual;
 import edu.stanford.smi.protegex.owl.model.OWLNamedClass;
+import edu.stanford.smi.protegex.owl.model.RDFIndividual;
 /**
  * This is the Testbed's interface of an ontology property.
  * It only contains fields that are used for rendering within the application
@@ -74,7 +75,7 @@ public interface OntologyProperty {
 	     * @return a list of individuals that are connected via 'is_same_as' relationship. Also resolving 
 	     * symmetric object property relationships.  
 	     */
-	    public List<OWLIndividual> getIsSameAs();
+	    public List<RDFIndividual> getIsSameAs();
 	    
 	    
 	    /**
@@ -88,7 +89,7 @@ public interface OntologyProperty {
 	     * The OWLIndividual element the implementing property object uses to extract its data from
 	     * @return
 	     */
-	    public OWLIndividual getOWLIndividual();
+	    public RDFIndividual getRDFIndividual();
 
 	    
 	    public boolean isUnitDefined();
