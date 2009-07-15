@@ -32,6 +32,7 @@
     </ui:include>
 
 <h:panelGroup class="expRunStatusPanel">
+#{NewExp_Controller.executeExperimentProgress}
     <a4j:outputPanel id="progressPanel">
       <h:panelGroup styleClass="#{NewExp_Controller.experimentExecutable.executionRunning ? 'expRunStatusRun' : 'expRunStatusWait' }">
       <h:outputText value="Executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times." 
@@ -394,10 +395,10 @@
 
 <!-- ******************  -->
 
-        <rich:simpleTogglePanel label="Hacky Development And Debug Options" opened="false" rendered="#{UserBean.admin}">
+        <rich:simpleTogglePanel label="Admin Options" opened="false" rendered="#{UserBean.admin}">
          <p>
        #{NewExp_Controller.executeExperimentIsRunning}, and #{TestbedBatchProcessor.daemon.secs}
-       <h:commandButton value="HACK! Click to abort runningness." action="#{NewExp_Controller.commandResetAfterFailure}" />
+       <h:commandButton value="Click to abort 'runningness' and reset as 'never ran'." action="#{NewExp_Controller.commandResetAfterFailure}" />
          </p>
 
     <h:panelGroup rendered="#{((not NewExp_Controller.experimentExecutable.executionRunning) and (NewExp_Controller.experimentExecutable.executionCompleted))}">
