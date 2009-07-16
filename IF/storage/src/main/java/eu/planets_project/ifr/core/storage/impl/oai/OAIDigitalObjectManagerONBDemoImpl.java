@@ -56,8 +56,19 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 	}
 	
 	@Override
+	public List<URI> list(URI pdURI) {
+        // Perform OAI-PMH request without time range ('from' and 'until' are optional in OAI-PMH!)
+        try {
+            return list(pdURI, null);
+        } catch (QueryValidationException e) {
+            // Since query is null, this can never happen
+            return new ArrayList<URI>();
+        }
+	}
+	
+	@Override
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
-    	if (pdURI == null) {
+    	if ((pdURI == null) || pdURI.equals(root)) {
     		// OAI hierarchy is flat (no sub-directories) - only allow 'null' as pdURI!
 	    	ArrayList<URI> resultList = new ArrayList<URI>();
 	    	
@@ -127,9 +138,9 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
     
 	/**
 	 * Basic tests.
-	 * 
+	 *
 	public static void main(String[] args) {
-		OAIDigitalObjectManagerONBImpl oaiImpl = new OAIDigitalObjectManagerONBImpl("http://archiv-test.onb.ac.at:8881/OAI-PUB");
+		OAIDigitalObjectManagerONBDemoImpl oaiImpl = new OAIDigitalObjectManagerONBDemoImpl("http://archiv-test.onb.ac.at:8881/OAI-PUB");
 		
 		// ListIdentifiers
 		System.out.println("starting query.");
@@ -148,7 +159,6 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 		}
 		
 		System.out.println("done.");
-	}
-	*/
+	}*/
 
 }
