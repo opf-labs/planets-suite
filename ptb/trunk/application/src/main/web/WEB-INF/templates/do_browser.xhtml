@@ -192,23 +192,19 @@
                 <h:commandButton action="#{DobBrowser.clearSelection}"
                   value="Remove All Items From Selection"/>
             </p>
-            
-                <h:panelGroup rendered="#{isInExperiment}">
-                <p>
-                <h:commandButton action="#{DobBrowser.addToExperiment}"
-                  value="#{res['browse_data.addToExperiment']}"/>
-                </p>
-                <p>
-                <h:commandButton action="goToStage2"
-                  value="#{res['browse_data.returnToExperiment']}"/>
-                </p>
-                </h:panelGroup>
 
             </ui:fragment>
             
             <ui:fragment rendered="#{DobBrowser.selectionSize == 0}">
               <p>Drag objects here to add them to the current selection.</p>
             </ui:fragment>
+
+            <h:panelGroup rendered="#{isInExperiment}">
+              <p>
+                <h:commandButton action="#{DobBrowser.addToExperiment}"
+                  value="#{res['browse_data.addToExperiment']}" disabled="#{DobBrowser.selectionSize == 0}"/>
+              </p>
+            </h:panelGroup>
             
             </a4j:outputPanel>
         </rich:panelBarItem>
@@ -221,6 +217,13 @@
                 
          </h:panelGrid>
          
+                <h:panelGroup rendered="#{isInExperiment}">
+                <p>
+                <h:commandButton action="goToStage2"
+                  value="#{res['browse_data.returnToExperiment']}"/>
+                </p>
+                </h:panelGroup>
+                
                 
     </div>
    </div>
