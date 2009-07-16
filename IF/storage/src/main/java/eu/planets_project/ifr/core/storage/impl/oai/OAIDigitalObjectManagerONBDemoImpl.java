@@ -27,11 +27,18 @@ import eu.planets_project.services.datatypes.DigitalObject;
  */
 public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObjectManagerImpl {
 	
+	private URI root = null;
+	
 	/**
 	 * Create ONB connector with default settings
 	 */
 	public OAIDigitalObjectManagerONBDemoImpl() {
 		super("http://archiv-test.onb.ac.at:8881/OAI-PUB", "de2aleph", "dtl2aleph");
+		try {
+			this.root = new URI("http://archiv-test.onb.ac.at:8881/ONB-OAI");
+		} catch (URISyntaxException e) {
+			// Can never happen
+		}
 	}
 	
 	/**
@@ -41,6 +48,11 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 	 */
 	public OAIDigitalObjectManagerONBDemoImpl(String endpoint) {
 		super(endpoint, "de2aleph", "dtl2aleph");
+		try {
+			this.root = new URI("http://archiv-test.onb.ac.at:8881/ONB-OAI");
+		} catch (URISyntaxException e) {
+			// Can never happen
+		}
 	}
 	
 	@Override
@@ -107,6 +119,10 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 		} catch (Exception e) {
 			throw new DigitalObjectNotFoundException("Error retrieving object from " + pdURI.toString() + " (" + e.getMessage() + ")");
 		}
+    }
+    
+    public URI getRootURI() {
+    	return root;
     }
     
 	/**

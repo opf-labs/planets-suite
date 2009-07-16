@@ -32,7 +32,7 @@ public abstract class AbstractOAIDigitalObjectManagerImpl implements DigitalObje
     /**
      * OAI-style date format.
      */
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    protected SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	
 	/**
      * OAI endpoint base URL.
