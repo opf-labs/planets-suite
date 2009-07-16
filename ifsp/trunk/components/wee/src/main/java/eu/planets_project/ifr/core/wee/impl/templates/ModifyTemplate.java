@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -33,11 +34,16 @@ import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 
-public class ModifyTemplate extends WorkflowTemplateHelper implements
-        WorkflowTemplate {
+public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTemplate {
 
-    private static final ReportingLog log = new ReportingLog(Logger
-            .getLogger(ModifyTemplate.class));
+    private transient ReportingLog log = initLog();
+
+    /**
+     * @return A reporting log
+     */
+    private ReportingLog initLog() {
+        return new ReportingLog(Logger.getLogger(ModifyTemplate.class));
+    }
 
     /**
      * Identify service
@@ -65,7 +71,8 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#describe()
      */
     public String describe() {
-        return "The structure of a workflow is defined within its execute method. This specific workflow tests the modify interface";
+        return "The structure of a workflow is defined within its execute method. This specific workflow tests the "
+                + "modify interface";
     }
 
     /*
@@ -74,10 +81,12 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#execute()
      */
     public WorkflowResult execute() {
+        /* We want fresh logs and report for every run: */
+        log = initLog();
         WorkflowResult wfResult = null;
         int count = 0;
         List<DigitalObject> objects = new ArrayList<DigitalObject>();
-
+        log.trace(WorkflowTemplateHelper.overview(this));
         String metadata;
         try {
             for (DigitalObject dgo : this.getData()) {
@@ -86,9 +95,8 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
                 try {
                     // Identify
                     String[] types = runIdentification(dgo, wfResult);
-                    log.info(new Message("Identification", new Parameter(
-                            "File", dgo.getTitle()), new Parameter("Result",
-                            Arrays.asList(types).toString())));
+                    log.info(new Message("Identification", new Parameter("File", dgo.getTitle()), new Parameter(
+                            "Result", Arrays.asList(types).toString())));
 
                     // Extract metadata - will otherwise get lost between steps!
                     List<Metadata> mList = dgo.getMetadata();
@@ -104,48 +112,43 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
 
                     // Modify - rotate
                     dgo = runRotateService(dgo, types[0], metadata, wfResult);
-                    log.info(new Message("Rotation", new Parameter("Metadata",
-                            metadata)));
+                    log.info(new Message("Rotation", new Parameter("Metadata", metadata)));
 
                     // Modify - crop
                     dgo = runCropService(dgo, types[0], metadata, wfResult);
-                    log.info(new Message("Cropping", new Parameter("Metadata",
-                            metadata)));
+                    log.info(new Message("Cropping", new Parameter("Metadata", metadata)));
 
                     // Migrate to JPEG
                     try {
-                        FormatRegistry fr = FormatRegistryFactory
-                                .getFormatRegistry();
+                        FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
                         String ext = fr.getFirstExtension(new URI(types[0]));
                         log.info("Getting extension: " + ext);
                         if (ext != null) {
-                            dgo = runMigrateService(dgo, fr
-                                    .createExtensionUri(ext), wfResult);
+                            dgo = runMigrateService(dgo, fr.createExtensionUri(ext), wfResult);
                             objects.add(dgo);
-                            log.info(new Message("Migration", new Parameter(
-                                    "Input", ext), new Parameter("Result", dgo
+                            log.info(new Message("Migration", new Parameter("Input", ext), new Parameter("Result", dgo
                                     .getTitle())));
                         }
                     } catch (URISyntaxException e) {
                         throw new RuntimeException(e);
                     }
                 } catch (Exception e) {
-                    log.error("workflow execution error for digitalObject #"
-                            + count);
+                    log.error("workflow execution error for digitalObject #" + count);
                     log.error(e.getClass() + ": " + e.getMessage());
                 }
                 count++;
             }
         } finally {
+            /* A final message: */
+            List<URL> results = WorkflowTemplateHelper.reference(objects, log.getOutputFolder());
+            log.trace(WorkflowTemplateHelper.link(results));
+            /* Now write the stuff to disk: */
             File reportFile = log.reportAsFile();
             File logFile = log.logAsFile();
-            List<URL> results = WorkflowTemplateHelper.reference(objects, log
-                    .getOutputFolder());
-            System.out.println("Wrote report to: "
-                    + reportFile.getAbsolutePath());
+            System.out.println("Wrote report to: " + reportFile.getAbsolutePath());
+            /* And return a result object: */
             try {
-                wfResult = new WorkflowResult(reportFile.toURL(), logFile
-                        .toURL(), results);
+                wfResult = new WorkflowResult(reportFile.toURL(), logFile.toURL(), results);
                 System.out.println("Workflow result: " + wfResult);
                 return wfResult;
             } catch (MalformedURLException e) {
@@ -156,7 +159,7 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
     }
 
     public static void main(String[] args) {
-        log.debug("Stuff!");
+        new ModifyTemplate().log.debug("Stuff!");
     }
 
     /**
@@ -177,8 +180,7 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
      *         } return digObjects; }
      */
 
-    private String[] runIdentification(DigitalObject digo,
-            WorkflowResult wfresult) throws Exception {
+    private String[] runIdentification(DigitalObject digo, WorkflowResult wfresult) throws Exception {
         log.info("STEP 1: Identification...");
         List<Parameter> parameterList = new ArrayList<Parameter>();
         IdentifyResult results = identify.identify(digo, parameterList);
@@ -207,9 +209,8 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
         return strings;
     }
 
-    private DigitalObject runRotateService(DigitalObject digO,
-            String inputFormat, String metadata, WorkflowResult wfresult)
-            throws Exception {
+    private DigitalObject runRotateService(DigitalObject digO, String inputFormat, String metadata,
+            WorkflowResult wfresult) throws Exception {
         log.info("STEP 2: Rotation...");
         URI inputFormatURI = new URI(inputFormat);
 
@@ -217,8 +218,7 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
         // performance and ease of use
         int skew = 0;
         if (metadata != null) {
-            Pattern pageImagePattern = Pattern
-                    .compile("<pageSkew>((.|\n)*?)</pageSkew>");
+            Pattern pageImagePattern = Pattern.compile("<pageSkew>((.|\n)*?)</pageSkew>");
             Matcher m = null;
             String sSkew = null;
             m = pageImagePattern.matcher(metadata);
@@ -233,19 +233,16 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
                 }
             }
         } else {
-            log
-                    .warn("No metadata available - defaulting to parameters in XML config");
+            log.warn("No metadata available - defaulting to parameters in XML config");
         }
 
         // Create service parameter list
         if (skew != 0) {
             List<Parameter> parameterList = new ArrayList<Parameter>();
             log.info("Extracted skew parameter: " + skew);
-            parameterList.add(new Parameter("rotateCounterClockwise", Double
-                    .toString(((double) skew) / 100)));
+            parameterList.add(new Parameter("rotateCounterClockwise", Double.toString(((double) skew) / 100)));
 
-            ModifyResult modifyResult = this.rotate.modify(digO,
-                    inputFormatURI, parameterList);
+            ModifyResult modifyResult = this.rotate.modify(digO, inputFormatURI, parameterList);
             ServiceReport report = modifyResult.getReport();
 
             if (report.getType() == Type.ERROR) {
@@ -261,16 +258,14 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
         }
     }
 
-    private DigitalObject runCropService(DigitalObject digO,
-            String inputFormat, String metadata, WorkflowResult wfresult)
-            throws Exception {
+    private DigitalObject runCropService(DigitalObject digO, String inputFormat, String metadata,
+            WorkflowResult wfresult) throws Exception {
         log.info("STEP 3: Crop...");
         URI inputFormatURI = new URI(inputFormat);
 
         // Get cropping parameters from metadata - uses RegEx for high
         // performance and ease of use
-        Pattern pageImagePattern = Pattern
-                .compile("<pageCoordinates>((.|\n)*?)</pageCoordinates>");
+        Pattern pageImagePattern = Pattern.compile("<pageCoordinates>((.|\n)*?)</pageCoordinates>");
         Matcher m = null;
         String coords = null;
         if (metadata != null) {
@@ -278,8 +273,7 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
             if (m.find())
                 coords = m.group(1);
         } else {
-            log
-                    .warn("No metadata available - defaulting to parameters in XML config!");
+            log.warn("No metadata available - defaulting to parameters in XML config!");
         }
 
         boolean success = false;
@@ -298,8 +292,7 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
                     right = Integer.parseInt(st.nextToken());
                     success = true;
                 } catch (NumberFormatException e) {
-                    log.warn("Could not parse cropping params: "
-                            + e.getMessage());
+                    log.warn("Could not parse cropping params: " + e.getMessage());
                 }
             }
         }
@@ -307,34 +300,28 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
         // Create service parameter list
         List<Parameter> parameterList = new ArrayList<Parameter>();
         if (success) {
-            log.info("Extracted cropping coordinates: " + left + "/" + top
-                    + "/" + right + "/" + bottom);
+            log.info("Extracted cropping coordinates: " + left + "/" + top + "/" + right + "/" + bottom);
 
-            parameterList
-                    .add(new Parameter("top_left_point", top + "," + left));
-            parameterList.add(new Parameter("bottom_right_point", bottom + ","
-                    + right));
+            parameterList.add(new Parameter("top_left_point", top + "," + left));
+            parameterList.add(new Parameter("bottom_right_point", bottom + "," + right));
         } else {
             log
                     .warn("No cropping coordinates found in DigitalObject metadata - defaulting to parameters in XML config!");
 
             Parameter pTopLeftPoint;
             Parameter pBottomRightPoint;
-            pTopLeftPoint = this.getServiceCallConfigs(this.crop)
-                    .getPropertyAsParameter("top_left_point");
+            pTopLeftPoint = this.getServiceCallConfigs(this.crop).getPropertyAsParameter("top_left_point");
             if (pTopLeftPoint != null) {
                 parameterList.add(pTopLeftPoint);
             }
 
-            pBottomRightPoint = this.getServiceCallConfigs(this.crop)
-                    .getPropertyAsParameter("bottom_right_point");
+            pBottomRightPoint = this.getServiceCallConfigs(this.crop).getPropertyAsParameter("bottom_right_point");
             if (pBottomRightPoint != null) {
                 parameterList.add(pBottomRightPoint);
             }
         }
 
-        ModifyResult modifyResult = this.crop.modify(digO, inputFormatURI,
-                parameterList);
+        ModifyResult modifyResult = this.crop.modify(digO, inputFormatURI, parameterList);
         ServiceReport report = modifyResult.getReport();
 
         if (report.getType() == Type.ERROR) {
@@ -346,30 +333,26 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements
         return modifyResult.getDigitalObject();
     }
 
-    private DigitalObject runMigrateService(DigitalObject digO,
-            URI migrateFromURI, WorkflowResult wfresult) throws Exception {
+    private DigitalObject runMigrateService(DigitalObject digO, URI migrateFromURI, WorkflowResult wfresult)
+            throws Exception {
         log.info("STEP 4: Migrating to JPG...");
         // URI migrateFromURI = new URI(migrateFrom);
-        URI migrateToURI = this.getServiceCallConfigs(this.migrate)
-                .getPropertyAsURI(SER_PARAM_MIGRATE_TO);
+        URI migrateToURI = this.getServiceCallConfigs(this.migrate).getPropertyAsURI(SER_PARAM_MIGRATE_TO);
 
         // Create service parameter list
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        Parameter pCompressionType = this.getServiceCallConfigs(this.migrate)
-                .getPropertyAsParameter("compressionType");
+        Parameter pCompressionType = this.getServiceCallConfigs(this.migrate).getPropertyAsParameter("compressionType");
         if (pCompressionType != null) {
             parameterList.add(pCompressionType);
         }
 
-        Parameter pCompressionQuality = this
-                .getServiceCallConfigs(this.migrate).getPropertyAsParameter(
-                        "compressionQuality");
+        Parameter pCompressionQuality = this.getServiceCallConfigs(this.migrate).getPropertyAsParameter(
+                "compressionQuality");
         if (pCompressionQuality != null) {
             parameterList.add(pCompressionQuality);
         }
 
-        MigrateResult migrateResult = this.migrate.migrate(digO,
-                migrateFromURI, migrateToURI, parameterList);
+        MigrateResult migrateResult = this.migrate.migrate(digO, migrateFromURI, migrateToURI, parameterList);
         ServiceReport report = migrateResult.getReport();
 
         if (report.getType() == Type.ERROR) {

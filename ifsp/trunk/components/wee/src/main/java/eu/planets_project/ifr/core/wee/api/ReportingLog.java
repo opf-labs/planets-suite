@@ -23,8 +23,7 @@ public final class ReportingLog implements Log {
 
     private Logger backingLog;
     private WorkflowReporter reporter;
-    private static final File logFile = new File(
-            WorkflowReporter.REPORT_OUTPUT_FOLDER, "wf-log.txt");
+    private final File logFile;
 
     /**
      * Enum for the different possible levels of log messages.
@@ -72,13 +71,13 @@ public final class ReportingLog implements Log {
      */
     public ReportingLog(final Logger backingLog) {
         this.backingLog = backingLog;
+        this.reporter = new WorkflowReporter();
+        this.logFile = new File(reporter.reportOutputFolder, "wf-log.txt");
         try {
-            backingLog.addAppender(new FileAppender(new SimpleLayout(), logFile
-                    .getAbsolutePath()));
+            backingLog.addAppender(new FileAppender(new SimpleLayout(), logFile.getAbsolutePath()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.reporter = new WorkflowReporter();
     }
 
     /**
@@ -268,6 +267,6 @@ public final class ReportingLog implements Log {
      * @return The folder the reporting log writes the report and the log to
      */
     public File getOutputFolder() {
-        return new File(WorkflowReporter.REPORT_OUTPUT_FOLDER);
+        return new File(reporter.reportOutputFolder);
     }
 }
