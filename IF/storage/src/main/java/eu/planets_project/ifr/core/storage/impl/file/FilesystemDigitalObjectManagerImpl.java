@@ -129,8 +129,8 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 	 * @throws URISyntaxException
 	 */
 	protected ArrayList<URI> listFileLocation(URI pdURI, File searchRoot ) throws URISyntaxException {
-        ArrayList<URI> retVal = new ArrayList<URI>();
         if (searchRoot.exists() && searchRoot.isDirectory()) {
+            ArrayList<URI> retVal = new ArrayList<URI>();
             // Create a filter to avoid do metadata files
             FilenameFilter filter = new FilenameFilter() {
                 public boolean accept(File f, String name) {
@@ -147,8 +147,10 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
                     retVal.add( createNewPathUri( pdURI, pdURI.getPath() + s ) );
                 }
             }
+            return retVal;
         }
-        return retVal;
+        // If does not exist, or is a file.
+        return null;
 	}
 
 	/**
