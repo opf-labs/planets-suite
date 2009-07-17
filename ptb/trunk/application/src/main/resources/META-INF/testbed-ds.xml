@@ -31,7 +31,7 @@
     <min-pool-size>5</min-pool-size>
 
     <!-- The maximum connections in a pool/sub-pool -->
-    <max-pool-size>20</max-pool-size>
+    <max-pool-size>50</max-pool-size>
 
     <!-- The time before an unused connection is destroyed -->
     <!-- NOTE: This is the check period. It will be destroyed somewhere between 1x and 2x this timeout after last use -->
@@ -40,7 +40,9 @@
 
     <!-- Whether to check all statements are closed when the connection is returned to the pool,
       this is a debugging feature that should be turned off in production -->
+      <!-- 
     <track-statements />
+       -->
 
     <!-- Use the security domain defined in conf/login-config.xml 
     <security-domain>HsqlDbRealm</security-domain>
