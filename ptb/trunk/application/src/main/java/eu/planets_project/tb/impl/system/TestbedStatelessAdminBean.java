@@ -48,7 +48,7 @@ import eu.planets_project.tb.api.system.TestbedStatelessAdmin;
  *
  */
 @Stateful
-@CacheConfig(maxSize=100000, idleTimeoutSeconds=600, removalTimeoutSeconds=300)
+//@CacheConfig(maxSize=100000, idleTimeoutSeconds=600, removalTimeoutSeconds=300)
 @Local(TestbedStatelessAdmin.class)
 @Remote(TestbedStatelessAdmin.class)
 @LocalBinding(jndiBinding="planets-project.eu/tb/TestbedAdminBean")

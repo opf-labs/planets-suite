@@ -10,8 +10,8 @@
    <session>
      <ejb-name>TestbedStatelessAdminBean</ejb-name>
      <cache-config>
-       <idle-timeout-seconds>600</idle-timeout-seconds>
-       <remove-timeout-seconds>300</remove-timeout-seconds>
+       <idle-timeout-seconds>60</idle-timeout-seconds>
+       <remove-timeout-seconds>30</remove-timeout-seconds>
      </cache-config>
    </session>
   
