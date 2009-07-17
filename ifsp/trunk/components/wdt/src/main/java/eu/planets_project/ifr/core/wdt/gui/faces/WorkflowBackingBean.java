@@ -627,6 +627,10 @@ public class WorkflowBackingBean {
 					DigitalObject o = null;
 					try {
 						o = dr.getDataManager(dobURI).retrieve(dobURI);
+						DigitalObject.Builder b = new DigitalObject.Builder(o);
+						o = b.title(dor.getLeafname()).build();
+						logger.info("adding file name: " + dor.getLeafname());
+						
 					} catch (DigitalObjectNotFoundException e) {
 						errorMessageString
 								.add("\nUnable to retrieve selected digital object!");

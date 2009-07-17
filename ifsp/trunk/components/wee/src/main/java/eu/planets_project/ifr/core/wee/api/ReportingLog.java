@@ -80,6 +80,7 @@ public final class ReportingLog implements Log {
         }
     }
 
+
     /**
      * @return The report assembled during logging
      */

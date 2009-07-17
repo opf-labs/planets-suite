@@ -179,8 +179,7 @@ public class FileSystemDataManager implements DigitalObjectManager {
     /* (non-Javadoc)
      * @see eu.planets_project.ifr.core.storage.api.DataManagerLocal#retrieve(java.net.URI)
      */
-    public DigitalObject retrieve(URI pdURI)
-		throws DigitalObjectNotFoundException {
+    public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
  
     	DigitalObject retObj = null;
 	
@@ -194,9 +193,8 @@ public class FileSystemDataManager implements DigitalObjectManager {
     			log.error(e.getStackTrace());
     		}
     		// Create DigitalObject from file reference
-            retObj = new DigitalObject.Builder(Content
-    				.byReference(dobURL)).build();
-            
+            retObj = new DigitalObject.Builder(Content.byReference(dobURL)).build();
+                        
             /* something wrong here
             BufferedReader reader = new BufferedReader(new FileReader(f));
 			StringBuilder fileData = new StringBuilder(1024);
