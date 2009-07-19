@@ -142,7 +142,9 @@ public class TestbedBatchProcessDaemon extends Thread {
         exp.getExperimentExecution().setEndDate(Calendar.getInstance());
         
         // Persist these changes:
+        log.info("Attempting to store results...");
         edao.updateExperiment(exp);
+        log.info("Results have been stored in the experiment.");
     }
     
     /**

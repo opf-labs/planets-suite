@@ -93,9 +93,11 @@ public class TestbedBatchProcessor {
      * @return
      */
     protected synchronized TestbedBatchJob pollForNextJob() {
-        String jobid = this.jobsQueued.poll();
-        if( jobid == null ) return null;
-        return jobs.get( jobid );
+        if( this.jobsQueued.peek() == null ) {
+            return null;
+        } else {
+            return jobs.get( this.jobsQueued.poll() );
+        }
     }
     
 }

@@ -5,13 +5,18 @@
  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
  http://www.jboss.org/j2ee/schema/jboss_5_0.xsd"
  version="3.0">
- <enterprise-beans>
+ 
+ <!-- For unknown reasons, this is needed to avoid authentication failure when you use @RunAs! 
+      See http://www.jboss.org/index.html?module=bb&op=viewtopic&p=4142183#4142183 -->
+ <unauthenticated-principal>anonymous</unauthenticated-principal>
 
+ <enterprise-beans>
+ 
    <session>
      <ejb-name>TestbedStatelessAdminBean</ejb-name>
      <cache-config>
-       <idle-timeout-seconds>60</idle-timeout-seconds>
-       <remove-timeout-seconds>30</remove-timeout-seconds>
+       <idle-timeout-seconds>600</idle-timeout-seconds>
+       <remove-timeout-seconds>300</remove-timeout-seconds>
      </cache-config>
    </session>
   

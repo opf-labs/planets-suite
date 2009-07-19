@@ -51,8 +51,9 @@ public class ExperimentPersistencyImpl implements ExperimentPersistencyRemote {
 	}
 
 	public void updateExperiment(Experiment experiment) {
-        log.debug("Updating experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
+        log.info("Updating experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
 		manager.merge(experiment);
+        log.info("Updated experiment: " + experiment.getExperimentSetup().getBasicProperties().getExperimentName() );
 	}
 
 	@SuppressWarnings("unchecked")
