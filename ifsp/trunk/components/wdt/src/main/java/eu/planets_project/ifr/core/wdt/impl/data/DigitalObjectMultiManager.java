@@ -110,7 +110,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      * @param puri The URI of the resource of interest.
      * @return The DataManagerLocal instance that is responsible for that URI.
      */
-    private DigitalObjectManager findDataManager( URI puri ) {
+    private DigitalObjectManager findDataManager( URI puri ) {    	
         if( puri == null ) return null;
         
         // First, normalise the URI to ensure people can't peek inside using /../../..
@@ -163,6 +163,8 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+    	} else if (pdURI.toString().indexOf("archiv-test.onb.ac.at") > 0) {
+    		dm = findDataManager(dss[3].uri);
     	} else {
     		dm = findDataManager(pdURI);
     	}
