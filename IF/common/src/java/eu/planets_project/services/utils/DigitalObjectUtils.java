@@ -452,20 +452,22 @@ public final class DigitalObjectUtils {
      * @param targetFolder The folder to store result files in
      * @return The child elements of the given digital object as files
      */
-    public static List<File> getDigitalObjectsAsFiles(
-            final List<DigitalObject> listOfDigObjs, final File targetFolder) {
+    public static List<File> getDigitalObjectsAsFiles(final List<DigitalObject> listOfDigObjs, final File targetFolder) {
         List<File> containedFiles = new ArrayList<File>();
+        LOG.info("received list of dig obj with lengh: "+ listOfDigObjs.size());
         if (listOfDigObjs.size() > 0) {
             for (DigitalObject currentDigObj : listOfDigObjs) {
                 String name = currentDigObj.getTitle();
                 if (name == null) {
-                    return null;
+                    //return null;
+                    name = "name_is_null";
                 }
+                LOG.info("name of dig obj is: "+name);
                 containedFiles.add(FileUtils.writeInputStreamToFile(
                         currentDigObj.getContent().read(), targetFolder, name));
             }
         }
-        LOG.debug(String.format("Returning %s files", containedFiles.size()));
+        LOG.info(String.format("Returning %s files", containedFiles.size()));
         return containedFiles;
     }
     
