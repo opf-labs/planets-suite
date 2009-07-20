@@ -46,6 +46,9 @@ final class WorkflowReporter {
         return System.currentTimeMillis();
     }
     
+    public String getTime() {
+    	return ""+time;
+    }
 
     private String initOutputFolder() {
         return (JBOSS_HOME != null ? JBOSS_HOME + WEE_DATA : LOCAL) + "/id-" + time;

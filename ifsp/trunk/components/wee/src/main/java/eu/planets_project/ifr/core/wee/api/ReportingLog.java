@@ -270,4 +270,8 @@ public final class ReportingLog implements Log {
     public File getOutputFolder() {
         return new File(reporter.reportOutputFolder);
     }
+    
+		public String getTime() {
+    	return reporter.getTime();
+    }
 }
