@@ -13,7 +13,7 @@
 	
 	<!-- wdt additions-->
 	<target name="build" depends="compile" description="overrides default build">
- 			<copy file="${src.dir}/${ui.bundle}" tofile="${build.dir}/classes/${ui.bundle}"/>
+		<copy file="${src.dir}/${ui.bundle}" tofile="${build.dir}/classes/${ui.bundle}"/>
  			<build component="${component.name}"/>
     	<executed target="build" component="${component.name}"/>
 	</target>	
