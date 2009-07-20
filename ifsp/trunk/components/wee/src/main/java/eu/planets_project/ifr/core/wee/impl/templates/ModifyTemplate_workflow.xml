@@ -5,11 +5,11 @@
   </template>
   <services>
     <service id="identify">
-      <endpoint>http://localhost:8080/pserv-pc-droid/Droid?wsdl</endpoint>
+      <endpoint>http://localhost:80/pserv-pc-droid/Droid?wsdl</endpoint>
     </service>
     
     <service id="rotate">
-      <endpoint>http://localhost:8080/pserv-pa-imagemagick/ImageMagickRotate?wsdl</endpoint>
+      <endpoint>http://localhost:80/pserv-pa-imagemagick/ImageMagickRotate?wsdl</endpoint>
       <parameters>
         <param>
           <name>rotateClockwise</name>
@@ -19,7 +19,7 @@
     </service>
 
     <service id="crop">
-      <endpoint>http://localhost:8080/pserv-pa-imagemagick/ImageMagickCrop?wsdl</endpoint>
+      <endpoint>http://localhost:80/pserv-pa-imagemagick/ImageMagickCrop?wsdl</endpoint>
       <parameters>
         <param>
           <name>top_left_point</name>
@@ -34,7 +34,7 @@
     </service>
     
     <service id="migrate">
-      <endpoint>http://localhost:8080/pserv-pa-imagemagick/ImageMagickMigrate?wsdl</endpoint>
+      <endpoint>http://localhost:80/pserv-pa-imagemagick/ImageMagickMigrate?wsdl</endpoint>
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_to_fmt</name>
