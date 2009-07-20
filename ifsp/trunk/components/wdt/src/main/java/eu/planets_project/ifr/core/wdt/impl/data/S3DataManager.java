@@ -24,6 +24,8 @@ import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
+import org.jets3t.service.Jets3tProperties;
+
 
 public class S3DataManager implements DigitalObjectManager {
 
@@ -45,19 +47,31 @@ public class S3DataManager implements DigitalObjectManager {
     public S3DataManager() {  
     	awsCredentials = null;
     	s3Service = null;
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR, 24);
-        expiryDate = cal.getTime();
+      Calendar cal = Calendar.getInstance();
+      cal.add(Calendar.HOUR, 24);
+      expiryDate = cal.getTime();
+      
+      try {
+      	java.io.InputStream jets3tPStream = this.getClass().getResourceAsStream("jets3t.properties");
+      	Jets3tProperties props = Jets3tProperties.getInstance(jets3tPStream, "jets3t.properties");
+      	props.loadAndReplaceProperties(jets3tPStream, "jets3t.properties");
+      } catch (Exception e) {
+      	log.error("unable to load: "+ "jets3t.properties");
+      	log.error(""+e);
+      }
+      
     	try {
     		awsCredentials = loadAWSCredentials();
+    		
     	} catch (IOException ex) {
-			log.error("IO exception - unable to load " + SAMPLES_PROPERTIES_NAME);
-			log.error(ex.getMessage());
-			log.error(ex.getStackTrace());
+				log.error("IO exception - unable to load " + SAMPLES_PROPERTIES_NAME);
+				log.error(ex.getMessage());
+				log.error(ex.getStackTrace());
     	}
     	if (awsCredentials!=null) {
 	    	try {
-				s3Service = new RestS3Service(awsCredentials);
+				s3Service = new RestS3Service(awsCredentials);				
+				log.error("S3 service https only : "+s3Service.isHttpsOnly());
 			} catch (S3ServiceException e) {
 				log.error("S3 service exception - unable to connect with given credentials.");
 				log.error(e.getMessage());
@@ -229,7 +243,7 @@ public class S3DataManager implements DigitalObjectManager {
         AWSCredentials awsCredentials = new AWSCredentials(
             testProperties.getProperty(AWS_ACCESS_KEY_PROPERTY_NAME),
             testProperties.getProperty(AWS_SECRET_KEY_PROPERTY_NAME));
-        
+            
         String uriString = testProperties.getProperty(AWS_S3_ENDPOINT);
         bucket = uriString.substring(uriString.lastIndexOf('/')+1);
         
