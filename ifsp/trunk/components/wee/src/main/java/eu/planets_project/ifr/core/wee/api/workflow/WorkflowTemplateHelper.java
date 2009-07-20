@@ -155,7 +155,7 @@ public abstract class WorkflowTemplateHelper implements Serializable {
         }
         return urls;
     }
-
+    
     /**
      * @param results URLs to files (output of {@link #reference(List, File)})
      * @return The message linking to the given files, to be passed to a
@@ -165,8 +165,10 @@ public abstract class WorkflowTemplateHelper implements Serializable {
         List<Parameter> links = new ArrayList<Parameter>();
         for (int i = 0; i < results.size(); i++) {
             URL url = results.get(i);
+            String url_ = url.toString();
             String[] strings = url.getFile().split("/");
-            links.add(new Parameter("File " + (i + 1), String.format("<a href='%s'>%s</a>", url,
+            //hack to change from file uri to relative path
+            links.add(new Parameter("File " + (i + 1), String.format("<a href='%s'>%s</a>", /*url*/strings[strings.length - 1],
                     strings[strings.length - 1])));
         }
         Parameter[] array = links.toArray(new Parameter[] {});
