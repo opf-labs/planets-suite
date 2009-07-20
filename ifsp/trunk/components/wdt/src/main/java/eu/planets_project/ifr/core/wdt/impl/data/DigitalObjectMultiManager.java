@@ -14,6 +14,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
 import eu.planets_project.ifr.core.storage.impl.blnewspaper.SimpleBLNewspaperDigitalObjectManagerImpl;
+import eu.planets_project.ifr.core.storage.impl.oai.OAIDigitalObjectManagerONBDemoImpl;
 import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
@@ -43,7 +44,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      */
     public DigitalObjectMultiManager() {
         // Allocate the data sources:
-        dss = new DataSource[3];
+        dss = new DataSource[4];
         
         // The File System Data Registry:
         DigitalObjectManager fsdm = new FileSystemDataManager();
@@ -62,6 +63,12 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         dss[2] = new DataSource();
         dss[2].dm = bln;
         dss[2].uri = ((SimpleBLNewspaperDigitalObjectManagerImpl)bln).getRootURI().normalize();
+   
+        // The ONB OAI DigitalObjectManager
+        DigitalObjectManager onb = new OAIDigitalObjectManagerONBDemoImpl();
+        dss[3] = new DataSource();
+        dss[3].dm = onb;
+        dss[3].uri = ((OAIDigitalObjectManagerONBDemoImpl)onb).getRootURI().normalize();
         
         /*
         // The Planets Data Registry:
