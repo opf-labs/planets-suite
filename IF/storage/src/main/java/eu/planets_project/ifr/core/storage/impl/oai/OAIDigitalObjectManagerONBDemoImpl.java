@@ -76,7 +76,7 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 	    	try {
 	    		RecordsList list;
 	    		if (q == null) {
-		    		list = server.listRecords(metaDataPrefix, "2009-07-14T10:50:20Z", "2009-07-14T16:38:20Z", set);	    			
+		    		list = server.listRecords(metaDataPrefix, "2009-07-12T10:50:20Z", "2009-07-14T16:38:20Z", set);	    			
 	    		} else {
 	    			if (!(q instanceof QueryDateRange))
 	    				throw new QueryValidationException("Unsupported query type");
@@ -125,7 +125,10 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 			// no matter whether located at ONB or not
             DigitalObject.Builder dob = new DigitalObject.Builder(Content.byReference(pdURI.toURL()));
             String uriStr = pdURI.toString();
+            System.out.println("Building: " + uriStr);
+            System.out.println("DigitalObject: " + dob.toString());
             dob.title(uriStr.substring(uriStr.lastIndexOf('?') + 5) + ".tif");
+            System.out.println("Title: " + dob.getTitle());
             return dob.build();
 		} catch (Exception e) {
 			throw new DigitalObjectNotFoundException("Error retrieving object from " + pdURI.toString() + " (" + e.getMessage() + ")");
@@ -138,7 +141,7 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
     
 	/**
 	 * Basic tests.
-	 *
+	 */
 	public static void main(String[] args) {
 		OAIDigitalObjectManagerONBDemoImpl oaiImpl = new OAIDigitalObjectManagerONBDemoImpl("http://archiv-test.onb.ac.at:8881/OAI-PUB");
 		
@@ -159,6 +162,6 @@ public class OAIDigitalObjectManagerONBDemoImpl extends AbstractOAIDigitalObject
 		}
 		
 		System.out.println("done.");
-	}*/
+	}
 
 }
