@@ -84,8 +84,9 @@ public class MigrateTemplate extends WorkflowTemplateHelper implements WorkflowT
                         //String ext = fr.getFirstExtension(new URI(types[0]));
                         log.info("Getting extension: " + ext);
                         if (ext != null) {
-                            dgo = runMigrateService(dgo, fr.createExtensionUri(ext), wfResult);
-                            objects.add(dgo);
+                            DigitalObject dgoOut = runMigrateService(dgo, fr.createExtensionUri(ext), wfResult);
+                            
+                            objects.add(dgoOut);
                             log.info(new Message("Migration", new Parameter("Input", ext), new Parameter("Result", dgo
                                     .getTitle())));
                         }
@@ -167,6 +168,15 @@ public class MigrateTemplate extends WorkflowTemplateHelper implements WorkflowT
         }
 
         MigrateResult migrateResult = this.migrate.migrate(digO, migrateFromURI, migrateToURI, parameterList);
+        
+        DigitalObject dgoOut = migrateResult.getDigitalObject();
+        
+				//put filename without extenstion if empty
+				if(dgoOut.getTitle() == null) {
+					String title_ = digO.getTitle().substring(0,digO.getTitle().lastIndexOf('.'));
+					if(migrateToURI.toString().toLowerCase().lastIndexOf("siard") > 0) title_ = title_ + ".siard";
+					dgoOut = (new DigitalObject.Builder(dgoOut)).title(title_).build();
+				}
 
         ServiceReport report = migrateResult.getReport();
 
@@ -175,7 +185,7 @@ public class MigrateTemplate extends WorkflowTemplateHelper implements WorkflowT
             log.debug(s);
             throw new Exception(s);
         }
-        return migrateResult.getDigitalObject();
+        return dgoOut;
     }
 
 }
