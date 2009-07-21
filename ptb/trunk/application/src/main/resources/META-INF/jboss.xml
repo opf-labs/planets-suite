@@ -10,6 +10,7 @@
       See http://www.jboss.org/index.html?module=bb&op=viewtopic&p=4142183#4142183 -->
  <unauthenticated-principal>anonymous</unauthenticated-principal>
 
+<!--
  <enterprise-beans>
  
    <session>
@@ -21,4 +22,6 @@
    </session>
   
  </enterprise-beans>
+-->
+ 
 </jboss>
