@@ -5,7 +5,7 @@
   </template>
   <services>
     <service id="migrate">
-      <endpoint>http://localhost:80/pserv-pa-mdb2siard/Mdb2SiardMigrate?wsdl</endpoint>
+      <endpoint>http://winxp.planets-project.arcs.ac.at:80/pserv-pa-mdb2siard/Mdb2SiardMigrate?wsdl</endpoint>
       <parameters>
         <param>
           <name>planets:service/migration/input/migrate_to_fmt</name>

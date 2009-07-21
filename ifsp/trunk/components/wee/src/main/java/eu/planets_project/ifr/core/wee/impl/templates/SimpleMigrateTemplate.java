@@ -41,7 +41,7 @@ public class SimpleMigrateTemplate extends WorkflowTemplateHelper implements Wor
      * @return A reporting log
      */
     private ReportingLog initLog() {
-        return new ReportingLog(Logger.getLogger(MigrateByValue.class));
+        return new ReportingLog(Logger.getLogger(SimpleMigrateTemplate.class));
     }
 
     /**
@@ -127,7 +127,7 @@ public class SimpleMigrateTemplate extends WorkflowTemplateHelper implements Wor
     }
 
     public static void main(String[] args) {
-        new MigrateByValue().log.debug("Stuff!");
+        new SimpleMigrateTemplate().log.debug("Stuff!");
     }
     
     public String getHostName() {
