@@ -66,18 +66,20 @@ public class DigitalObjectReference {
     public String getLeafname() {
         if( puri == null ) return "";
         
-        String path = puri.toString();
+        String path;
+        if (puri.toString().indexOf("DeliveryManager?pid=") > -1) {
+        	// Special treatment for ONB files!
+        	path = puri.toString();
+        	path = path.substring(path.indexOf("DeliveryManager?pid=") + 20) + ".tif";
+        } else {
+        	path = puri.getPath();
+        }
+        
         if( path == null ) return "";
         
         // Trim any trailing slash:
         if( path.lastIndexOf("/") == path.length()-1 ) {
             path = path.substring(0, path.length()-1 );
-        }
-        
-        // Special treatment for ONB files!
-        int onbClipIdx = path.indexOf("DeliveryManager?pid=");
-        if (onbClipIdx > -1) {
-        	path = path.substring(onbClipIdx + 20) + ".tif";
         }
         
         // Return the portion up to the last slash:
