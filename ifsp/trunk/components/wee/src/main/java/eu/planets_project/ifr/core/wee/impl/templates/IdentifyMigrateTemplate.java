@@ -7,6 +7,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
@@ -33,11 +34,16 @@ import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 
-public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
-        WorkflowTemplate {
+public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements WorkflowTemplate {
 
-    private static final ReportingLog log = new ReportingLog(Logger
-            .getLogger(IdentifyMigrateTemplate.class));
+    private transient ReportingLog log = initLog();
+
+    /**
+     * @return A reporting log
+     */
+    private ReportingLog initLog() {
+        return new ReportingLog(Logger.getLogger(IdentifyMigrateTemplate.class));
+    }
 
     /**
      * Identify service
@@ -45,7 +51,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
     private Identify identify;
 
     /**
-     * Migrate service
+     * Migrate service (to JPEG)
      */
     private Migrate migrate;
 
@@ -55,7 +61,8 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#describe()
      */
     public String describe() {
-        return "The structure of a workflow is defined within its execute method. This specific workflow tests the migrate interface";
+        return "The structure of a workflow is defined within its execute method. This specific workflow tests the "
+                + "modify interface";
     }
 
     /*
@@ -64,10 +71,12 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
      * eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#execute()
      */
     public WorkflowResult execute() {
+        /* We want fresh logs and report for every run: */
+        log = initLog();
         WorkflowResult wfResult = null;
         int count = 0;
         List<DigitalObject> objects = new ArrayList<DigitalObject>();
-
+        log.trace(WorkflowTemplateHelper.overview(this));
         String metadata;
         try {
             for (DigitalObject dgo : this.getData()) {
@@ -76,9 +85,8 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
                 try {
                     // Identify
                     String[] types = runIdentification(dgo, wfResult);
-                    log.info(new Message("Identification", new Parameter(
-                            "File", dgo.getTitle()), new Parameter("Result",
-                            Arrays.asList(types).toString())));
+                    log.info(new Message("Identification", new Parameter("File", dgo.getTitle()), new Parameter(
+                            "Result", Arrays.asList(types).toString())));
 
                     // Extract metadata - will otherwise get lost between steps!
                     List<Metadata> mList = dgo.getMetadata();
@@ -91,44 +99,42 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
                     } else {
                         log.info("Extracted metadata: " + metadata);
                     }
-
+                    
                     // Migrate
                     try {
-                        FormatRegistry fr = FormatRegistryFactory
-                                .getFormatRegistry();
+                        FormatRegistry fr = FormatRegistryFactory.getFormatRegistry();
                         String ext = fr.getFirstExtension(new URI(types[0]));
                         log.info("Getting extension: " + ext);
                         if (ext != null) {
-                            dgo = runMigrateService(dgo, fr
-                                    .createExtensionUri(ext), wfResult);
+                            dgo = runMigrateService(dgo, fr.createExtensionUri(ext), wfResult);
                             objects.add(dgo);
-                            log.info(new Message("Migration", new Parameter(
-                                    "Input", ext), new Parameter("Result", dgo
+                            log.info(new Message("Migration", new Parameter("Input", ext), new Parameter("Result", dgo
                                     .getTitle())));
                         }
                     } catch (URISyntaxException e) {
                         throw new RuntimeException(e);
                     }
                 } catch (Exception e) {
-                    log.error("workflow execution error for digitalObject #"
-                            + count);
+                    log.error("workflow execution error for digitalObject #" + count);
                     log.error(e.getClass() + ": " + e.getMessage());
+                    System.out.println(e);
                 }
                 count++;
             }
         } finally {
+            /* A final message: */
+            List<URL> results = WorkflowTemplateHelper.reference(objects, log.getOutputFolder());
+            log.trace(WorkflowTemplateHelper.link(results));
+            /* Now write the stuff to disk: */
             File reportFile = log.reportAsFile();
             File logFile = log.logAsFile();
-            List<URL> results = WorkflowTemplateHelper.reference(objects, log
-                    .getOutputFolder());
-            System.out.println("Wrote report to: "
-                    + reportFile.getAbsolutePath());
-             
-            System.out.println("jboss home url:"+System.getProperty("jboss.home.url"));
-              
+            System.out.println("Wrote report to: " + reportFile.getAbsolutePath());
+            /* And return a result object: */
             try {
-                wfResult = new WorkflowResult(reportFile.toURL(), logFile
-                        .toURL(), results);
+            		//URL reportURL = reportFile.toURL();
+								String outFolder = "http://"+this.getHostName()+":80/data/wee/id-"+log.getTime();
+            		URL reportURL = new URL(outFolder+"/wf-report.html");
+                wfResult = new WorkflowResult(reportURL, logFile.toURL(), results);
                 System.out.println("Workflow result: " + wfResult);
                 return wfResult;
             } catch (MalformedURLException e) {
@@ -139,7 +145,25 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
     }
 
     public static void main(String[] args) {
-        log.debug("Stuff!");
+        new IdentifyMigrateTemplate().log.debug("Stuff!");
+    }
+    
+    public String getHostName() {
+    	try {
+        java.net.InetAddress addr = java.net.InetAddress.getLocalHost();
+    
+        // Get IP Address
+        byte[] ipAddr = addr.getAddress();
+    
+        // Get hostname
+        //String hostname = addr.getHostName();
+        String hostname = addr.getHostAddress();
+       	return hostname;
+       	
+    	} catch (Exception e) {
+    		System.out.println(e);
+    	}
+    	return null;
     }
 
     /**
@@ -160,8 +184,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
      *         } return digObjects; }
      */
 
-    private String[] runIdentification(DigitalObject digo,
-            WorkflowResult wfresult) throws Exception {
+    private String[] runIdentification(DigitalObject digo, WorkflowResult wfresult) throws Exception {
         log.info("STEP 1: Identification...");
         List<Parameter> parameterList = new ArrayList<Parameter>();
         IdentifyResult results = identify.identify(digo, parameterList);
@@ -190,30 +213,28 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements
         return strings;
     }
 
-    private DigitalObject runMigrateService(DigitalObject digO,
-            URI migrateFromURI, WorkflowResult wfresult) throws Exception {
-        log.info("STEP 2: Migrating...");
+    private DigitalObject runMigrateService(DigitalObject digO, URI migrateFromURI, WorkflowResult wfresult)
+            throws Exception {
+        log.info("STEP 2: Migrating ...");
         // URI migrateFromURI = new URI(migrateFrom);
-        URI migrateToURI = this.getServiceCallConfigs(this.migrate)
-                .getPropertyAsURI(SER_PARAM_MIGRATE_TO);
+
+        URI migrateToURI = this.getServiceCallConfigs(this.migrate).getPropertyAsURI(SER_PARAM_MIGRATE_TO);
 
         // Create service parameter list
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        Parameter pCompressionType = this.getServiceCallConfigs(this.migrate)
-                .getPropertyAsParameter("compressionType");
+        Parameter pCompressionType = this.getServiceCallConfigs(this.migrate).getPropertyAsParameter("compressionType");
         if (pCompressionType != null) {
             parameterList.add(pCompressionType);
         }
 
-        Parameter pCompressionQuality = this
-                .getServiceCallConfigs(this.migrate).getPropertyAsParameter(
-                        "compressionQuality");
+        Parameter pCompressionQuality = this.getServiceCallConfigs(this.migrate).getPropertyAsParameter(
+                "compressionQuality");
         if (pCompressionQuality != null) {
             parameterList.add(pCompressionQuality);
         }
 
-        MigrateResult migrateResult = this.migrate.migrate(digO,
-                migrateFromURI, migrateToURI, parameterList);
+        MigrateResult migrateResult = this.migrate.migrate(digO, migrateFromURI, migrateToURI, parameterList);
+
         ServiceReport report = migrateResult.getReport();
 
         if (report.getType() == Type.ERROR) {
