@@ -311,7 +311,7 @@ public class WorkflowBackingBean {
 				// System.out.println("Status is: " + progString);
 				if (status.equals("COMPLETED") || status.equals("FAILED")) {
 					WorkflowResult wr = weeService.getResult(workflowUUID);
-					String rurl = wr.getReport().toURI().toString();
+					String rurl = wr.getReport().toString();
 					System.out.println("Got a report URL: " + rurl);
 					swb.setStopTime(System.currentTimeMillis());
 					swb.setReportURL(rurl);
