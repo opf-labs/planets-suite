@@ -1,0 +1,28 @@
+Manifest-Version: 1.0
+Created-By: Hartwig Thomas for Swiss Federal Archives, Berne, Switzerland
+Specification-Title: Migrate
+Specification-Version: 1
+Specification-Vendor: PLANETS project
+ImplementationTitle: Mdb2SiardMigrate
+ImplementationVersion: 1.0
+Implementation-Vendor: PLANETS project
+Main-Class: eu.planets_project.services.migration.mdb2siard.Mdb2SiardMigratePublish_1_0
+Class-Path: ../lib/GenericMigrate-1-0.jar 
+  ../lib/activation.jar
+  ../lib/FastInfoset.jar
+  ../lib/http.jar
+  ../lib/jaxb-impl.jar
+  ../lib/jaxb-xjc.jar
+  ../lib/jaxws-rt.jar
+  ../lib/jaxws-tools.jar
+  ../lib/jsr173_api.jar
+  ../lib/jsr181-api.jar
+  ../lib/jsr250-api.jar
+  ../lib/mimepull.jar
+  ../lib/resolver.jar
+  ../lib/saaj-api.jar
+  ../lib/saaj-impl.jar
+  ../lib/stax-ex.jar
+  ../lib/streambuffer.jar
+  ../lib/woodstox.jar
+Sealed: false

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.6.0_02"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v6.0"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/woodstox.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/activation.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/FastInfoset.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/http.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jaxws-api.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jaxws-rt.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jaxws-tools.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jsr173_api.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jsr181-api.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/jsr250-api.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/mimepull.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/resolver.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/saaj-api.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/saaj-impl.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/stax-ex.jar"/>
+	<classpathentry kind="lib" path="C:/Projects/PLANETS/jaxws-ri/lib/streambuffer.jar"/>
+	<classpathentry kind="lib" path="lib/GenericMigrate-1-0.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

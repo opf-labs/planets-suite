@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime' version='2.0'>
+  <endpoint
+    name='Mdb2SiardMigrateWebService-1-0'
+    implementation='eu.planets_project.services.migration.mdb2siard.Mdb2SiardMigrate_1_0'
+    url-pattern='/*'/>
+</endpoints>
