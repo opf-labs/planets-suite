@@ -85,10 +85,20 @@ public class FileUploadBean
         
         // Store the original name of the file.
         originalName = _upFile.getName();
+        int lastSlash = originalName.lastIndexOf("/");
+        if( lastSlash != -1 ) {
+            originalName = originalName.substring( lastSlash + 1, originalName.length() );
+        }
+        lastSlash = originalName.lastIndexOf("\\");
+        if( lastSlash != -1 ) {
+            originalName = originalName.substring( lastSlash + 1, originalName.length() );
+        }
+        log.info("Storing under name: " + originalName );
+        
         // If keeping, submit to the data handler.
         if( keep ) {
-          try {        	
-            this._name = dh.storeBytestream(_upFile.getInputStream(), _upFile.getName()).toString();
+          try {
+            this._name = dh.storeBytestream(_upFile.getInputStream(), originalName).toString();
           } catch (IOException e) {e.printStackTrace(); return "error-upload";}
 
         } else {
