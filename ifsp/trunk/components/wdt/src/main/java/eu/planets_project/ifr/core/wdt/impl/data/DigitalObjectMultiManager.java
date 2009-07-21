@@ -158,7 +158,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
     	DigitalObjectManager dm = null;
     	if (pdURI.toString().indexOf("amazonaws.com") > 0) {
     		try {
-				dm = findDataManager(new URI("http://www.amazonaws.com/planets/"));
+				dm = findDataManager(new URI("http://www.amazonaws.com/planets-s3/"));
 			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
