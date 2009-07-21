@@ -139,7 +139,7 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTe
                 count++;
             }
         } finally {
-            /* A final message: */
+						/* A final message: */
             List<URL> results = WorkflowTemplateHelper.reference(objects, log.getOutputFolder());
             log.trace(WorkflowTemplateHelper.link(results));
             /* Now write the stuff to disk: */
@@ -148,19 +148,24 @@ public class ModifyTemplate extends WorkflowTemplateHelper implements WorkflowTe
             System.out.println("Wrote report to: " + reportFile.getAbsolutePath());
             /* And return a result object: */
             try {
-                wfResult = new WorkflowResult(reportFile.toURL(), logFile.toURL(), results);
+            		//URL reportURL = reportFile.toURL();
+								String outFolder = "http://"+"localhost"+":80/data/wee/id-"+log.getTime();
+            		URL reportURL = new URL(outFolder+"/wf-report.html");
+                wfResult = new WorkflowResult(reportURL, logFile.toURL(), results);
                 System.out.println("Workflow result: " + wfResult);
                 return wfResult;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }
         }
-        return null;
+        return null;        
+ 
     }
 
     public static void main(String[] args) {
         new ModifyTemplate().log.debug("Stuff!");
     }
+
 
     /**
      * Warning! Overrides the standard getData() Method of the
