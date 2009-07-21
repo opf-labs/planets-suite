@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Created-By: Hartwig Thomas for Swiss Federal Archives, Berne, Switzerland
-Specification-Title: Migrate
-Specification-Version: 1
-Specification-Vendor: PLANETS project
-ImplementationTitle: GenericMigrate
-ImplementationVersion: 1.0
-Implementation-Vendor: PLANETS project
-Sealed: true
