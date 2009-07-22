@@ -1,6 +1,8 @@
 package eu.planets_project.ifr.core.wdt.impl.data;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 
 /**
@@ -23,14 +25,33 @@ public class DigitalObjectReference {
     
     // Constructor from URI:
     public DigitalObjectReference( URI puri ) {
-        this.puri = puri;
+    	this.puri = puri;
     }
 
     /**
      * @return the puri
      */
     public URI getUri() {
-        return puri;
+    	return puri;
+    }
+    
+    public URI getScreenUri() {
+    	// Special treatment for BL newspapers
+    	System.out.println("Returning URI...");
+    	if ((puri != null) && (puri.toString().indexOf("jboss-web.deployer/ROOT.war/bl-newspaper/WO1") > -1)) {
+    		String url = puri.toString();
+        	System.out.println("URL before: " + url);
+        	url = "http://ubuntu.planets-project.arcs.ac.at/" + url.substring(url.indexOf("bl-newspaper"));
+        	System.out.println("URL after: " + url);
+        	try {
+        		return new URI(url);
+        	} catch (URISyntaxException e) {
+        		System.out.println("SHOULD NEVER HAPPEN!");
+        	}
+        	return puri;
+    	} else {
+    		return puri;
+    	}
     }
 
     /**
