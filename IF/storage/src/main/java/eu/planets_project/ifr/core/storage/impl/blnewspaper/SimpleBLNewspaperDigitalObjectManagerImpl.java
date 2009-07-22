@@ -74,7 +74,17 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
             } else {
                 localDataDir = System.getProperty("jboss.home.dir") +
 				System.getProperty("file.separator") +
-				"bl-newspaper";            	
+				"server" +
+				System.getProperty("file.separator") +
+				"default" +
+				System.getProperty("file.separator") +
+				"deploy" + 
+				System.getProperty("file.separator") +
+				"jboss-web.deployer" +
+				System.getProperty("file.separator") +
+				"ROOT.war" + 
+				System.getProperty("file.separator") +
+				"bl-newspaper";
             }
             
             // Open the localDataDir
@@ -159,7 +169,7 @@ public class SimpleBLNewspaperDigitalObjectManagerImpl implements DigitalObjectM
 	 * {@inheritDoc}
 	 * @see eu.planets_project.ifr.core.storage.api.DigitalObjectManager#retrieve(java.net.URI)
 	 */
-	public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
+    public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
 		// Get file reference
 		_log.info("retrieving: " + pdURI.toString());
 		File file = new File(pdURI);
