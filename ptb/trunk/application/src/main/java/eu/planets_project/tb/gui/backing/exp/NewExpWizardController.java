@@ -1298,11 +1298,14 @@ public class NewExpWizardController{
             testbedMan.updateExperiment(exp);
             log.info("Status: Invoked = "+exp.getExperimentExecutable().isExecutableInvoked());
             log.info("Status: Invoked = "+exp.getExperimentExecution().isExecutionInvoked());
+            log.info("Status: Queue = "+exp.getExperimentExecutable().getBatchExecutionIdentifier() 
+                    + " " + exp.getExperimentExecutable().getBatchQueueIdentifier() );
 	  }
 
 	  public void executeExperimentStart() {
               this.executeExperiment();
 	  }
+	  
 	  public boolean getExecuteExperimentIsRunning() {
 	      // Return:
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
@@ -1310,21 +1313,26 @@ public class NewExpWizardController{
           boolean running = exp.getExperimentExecutable().isExecutionRunning();
           return running;
 	  }
+	  
 	  public int getExecuteExperimentProgress() {
           TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
           ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
           refreshExperimentBean();
           Experiment exp = expBean.getExperiment();
-          boolean running = exp.getExperimentExecutable().isExecutionRunning();
-          
-          if( running == false ) {
-              if( exp.getExperimentExecutable().isExecutionCompleted() ) return 101;
-              return -1;
+
+          if( exp.getExperimentExecutable() !=  null ) {
+              log.info("Looking for experiment status... "+exp.getExperimentExecutable().getBatchExecutionIdentifier());
           }
+          log.info("Invoked: "+exp.getExperimentExecutable().isExecutableInvoked());
+          log.info("Complete: "+exp.getExperimentExecutable().isExecutionCompleted());
           
-          log.info("Looking for experiment status... "+exp.getExperimentExecutable().getBatchExecutionIdentifier());
+          // If this exp has never been run, return -1:
+          if( exp.getExperimentExecutable().isExecutableInvoked() == false ) return -1;
+          // If this exp has been run, and is currently 'completed', return 101:
+          if( exp.getExperimentExecutable().isExecutionCompleted() ) return 101;
           
-          
+          log.info("Still looking for..."+exp.getExperimentExecutable().getBatchExecutionIdentifier());
+         
           TestbedBatchProcessor tbp = (TestbedBatchProcessor)JSFUtil.getManagedObject("TestbedBatchProcessor");
           String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
           log.info("Looking for experiment status under job key: "+job_key+" : " + tbp.getJobStatus(job_key));

@@ -102,7 +102,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 			executable.setBatchExecutionIdentifier(queue_key);
             executable.setExecutableInvoked(true);
             executable.setExecutionCompleted(false);
-            
+            log.info("Got key: "+queue_key);
 	}
 	
 	
