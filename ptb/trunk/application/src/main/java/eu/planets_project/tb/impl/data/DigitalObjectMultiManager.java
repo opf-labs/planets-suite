@@ -43,6 +43,9 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
 
     // The array of data source:
     private List<DataSource> dss;
+
+    // The default file store for results.
+    private DataSource ds_fdom;
     
     /**
      * URGENT Refactor this and make it less horribly cut-and-pasty...
@@ -58,18 +61,18 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         try {
             dm = this.getPlanetsDataManager();
             // URGENT This was causing an authentication exception!
-            dss.add(0, new DataSource(dm.list(null)[0], new DOMDataManager(dm) ));
-            dss.get(0).setDescription("The Planets shared storage area.");
+            DataSource ds_pdm = new DataSource(dm.list(null)[0], new DOMDataManager(dm) );
+            ds_pdm.setDescription("The Planets shared storage area.");
+            dss.add( ds_pdm );
         } catch( SOAPException e ) {
             log.error("Error creating data registry URI: " + e );
-            dss = null;
-            return;
         }
         
         // The File System Data Registry:
         FileSystemDataManager fsdm = new FileSystemDataManager();
-        dss.add( 1, new DataSource(fsdm.getRootURI(), new DOMDataManager(fsdm)) );
-        dss.get(1).setDescription("The Testbed FTP area.");
+        DataSource ds_fsdm = new DataSource(fsdm.getRootURI(), new DOMDataManager(fsdm));
+        ds_fsdm.setDescription("The Testbed FTP area.");
+        dss.add( ds_fsdm );
         
         // The DOMs supported...
         String fsname = "experiment-files";
@@ -77,14 +80,16 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         File fsf = new File( fsloc );
         if( ! fsf.exists() ) fsf.mkdirs();
         DigitalObjectManager fdom = FilesystemDigitalObjectManagerImpl.getInstance( fsname, fsf );
-        dss.add(2, new DataSource( fdom.list(null).get(0), fdom));
-        dss.get(2).setDescription("The Testbed upload and result storage space.");
+        ds_fdom = new DataSource( fdom.list(null).get(0), fdom);
+        ds_fdom.setDescription("The Testbed upload and result storage space.");
+        dss.add( ds_fdom );
         
         
         // Blue Marble:
         DigitalObjectManager bmdom = new BlueMarbleDigitalObjectManagerImpl();
-        dss.add(3, new DataSource( bmdom.list(null).get(0), bmdom ));
-        dss.get(3).setDescription("The Blue Marble image collection, from NASA.");
+        DataSource ds_bmdom = new DataSource( bmdom.list(null).get(0), bmdom );
+        ds_bmdom.setDescription("The Blue Marble image collection, from NASA.");
+        dss.add( ds_bmdom );
 
         // XCDL Corpus
         fsname = "xcdl-corpus-files";
@@ -92,13 +97,15 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         fsf = new File( fsloc );
         if( ! fsf.exists() ) fsf.mkdirs();
         DigitalObjectManager xdom = XcdlCorpusDigitalObjectManagerImpl.getInstance( fsname, fsf );
-        dss.add(4, new DataSource( xdom.list(null).get(0), xdom));
-        dss.get(4).setDescription("The XCDL Corpus.");
+        DataSource ds_xdom = new DataSource( xdom.list(null).get(0), xdom);
+        ds_xdom.setDescription("The XCDL Corpus.");
+        dss.add( ds_xdom );
  /*
         // Yahoo Image Search:
         DigitalObjectManager ydom = new YahooImageAPIDigitalObjectManagerImpl();
-        dss.add(4, new DataSource( ydom.list(null).get(0), ydom ));
-        dss.get(4).setDescription("Yahoo image search data source.");
+        DataSource ds_ydom = new DataSource( ydom.list(null).get(0), ydom );
+        ds_ydom.setDescription("Yahoo image search data source.");
+        dss.add( ds_ydom );
 */        
     }
     
@@ -107,7 +114,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      * @return
      */
     public DataSource getDefaultStorageSpace() {
-        return this.dss.get(2);
+        return this.ds_fdom;
     }
     
     /**
