@@ -73,7 +73,7 @@
           <rich:column styleClass="#{srb.selected ? 'cellSelected' : 'cellUnselected' }" rendered="#{srb.enabled}">
           
             <h:panelGroup styleClass="infoFloat">
-              <i><h:outputLink value="#{srb.serviceDescription.endpoint}" target="_blank">@<h:outputText value="#{srb.serviceDescription.endpoint.host} "/><t:graphicImage value="/graphics/external-link.png" alt="Open WSDL in new window..."/></h:outputLink></i>
+              <i><h:outputLink value="#{srb.serviceDescription.endpoint}" target="_blank">@<t:graphicImage value="/graphics/external-link.png" alt="Open WSDL in new window..."/></h:outputLink></i>
             </h:panelGroup>
             
             <h:commandLink rendered="#{srb.enabled}" styleClass="selectableEnabled">
