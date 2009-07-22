@@ -357,6 +357,13 @@ public class ListExp extends SortableList {
             exp.getExperimentApproval().setState(Experiment.STATE_COMPLETED);
             exp.getExperimentExecution().setState(Experiment.STATE_IN_PROGRESS);
             testbedMan.updateExperiment(exp);
+            //send email to helpdesk to inform them of approval
+            PlanetsMailMessage mailer = new PlanetsMailMessage();
+            mailer.setSender("noreply@planets-project.eu");
+            mailer.setSubject("Testbed Experiment Deleted");
+            mailer.setBody("Experiment "+exp.getExperimentSetup().getBasicProperties().getExperimentName()+" approved.");
+            mailer.addRecipient("Helpdesktb@planets-project.eu");
+            mailer.send();
             return "success";
         }
         
@@ -382,6 +389,7 @@ public class ListExp extends SortableList {
           mailer.setSubject("Testbed Experiment Deleted");
           mailer.setBody("Experiment "+expBean.getEname()+" deleted.");
           mailer.addRecipient(expBean.getEcontactemail());
+          mailer.addCcRecipient("Helpdesktb@planets-project.eu");
           mailer.send();
 
 	      // go back to 'my experiments' page
