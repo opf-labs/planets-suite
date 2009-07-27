@@ -44,7 +44,6 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
 
     @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
     @XmlMimeType("application/octet-stream")
-    @XmlAttachmentRef()
     /*
      * FIXME: This field is non-serializable and non-transient. We can't make it
      * serializable because it's not ours and we can't make it transient because
@@ -52,6 +51,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
      * by GUI components. Possible solutions: using different UI components;
      * using some sort of wrapper object in the GUI (SerializableDigitalObject).
      */
+    //@XmlAttachmentRef() This momentarily appeared to fix some issues, but no longer.
     private DataHandler dataHandler;
 
     /***/
