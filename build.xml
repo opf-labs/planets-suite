@@ -186,7 +186,8 @@
   
   <!-- ================= -->
   
-  <target name="undeploy:all" depends="props:set,deploy:common">
+  <!-- <target name="undeploy:all" depends="props:set,deploy:common"> -->
+  <target name="undeploy:all" depends="props:set">
     <foreach target="undeploy:sub" param="sub.build" inheritall="false">
       <path refid="all.sub.projects"/>
     </foreach>
