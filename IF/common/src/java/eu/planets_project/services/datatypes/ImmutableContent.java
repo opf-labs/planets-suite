@@ -1,6 +1,7 @@
 package eu.planets_project.services.datatypes;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -9,7 +10,6 @@ import java.net.URL;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.activation.FileTypeMap;
-import javax.xml.bind.annotation.XmlAttachmentRef;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlMimeType;
