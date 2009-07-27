@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.activation.FileTypeMap;
+import javax.xml.bind.annotation.XmlAttachmentRef;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlMimeType;
@@ -43,6 +44,7 @@ final class ImmutableContent implements DigitalObjectContent, Serializable {
 
     @XmlElement(namespace = PlanetsServices.OBJECTS_NS)
     @XmlMimeType("application/octet-stream")
+    @XmlAttachmentRef()
     /*
      * FIXME: This field is non-serializable and non-transient. We can't make it
      * serializable because it's not ours and we can't make it transient because
