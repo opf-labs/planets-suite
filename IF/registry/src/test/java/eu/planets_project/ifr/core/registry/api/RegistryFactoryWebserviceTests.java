@@ -16,7 +16,6 @@ public class RegistryFactoryWebserviceTests extends RegistryWebserviceTests {
     @BeforeClass
     public static void registryCreation() {
         registry = new RegistryFactoryWebserviceTests().createRegistry();
-        System.err.println("CREATED registry in REGISTRY_FACTORY_WS_TESTS: " + registry);
     }
 
     /**
@@ -38,7 +37,7 @@ public class RegistryFactoryWebserviceTests extends RegistryWebserviceTests {
              * takes a full WSDL location and returns the registry webservice at
              * that location.
              */
-            return remoteRegistry != null ? remoteRegistry : fallBack();
+            return remoteRegistry != null && serverMode() ? remoteRegistry : fallBack();
         } catch (WebServiceException x) {
             /*
              * We need this particular case when we have a running server but

@@ -27,7 +27,6 @@ public class RegistryWebserviceTests {
     @BeforeClass
     public static void registryCreation() {
         registry = new RegistryWebserviceTests().createRegistry();
-        System.err.println("CREATED registry in REGISTRY_WS_TESTS: " + registry);
     }
 
     @Test
@@ -91,7 +90,7 @@ public class RegistryWebserviceTests {
         Assert.assertNotNull(query);
     }
 
-    private static boolean serverMode() {
+    static boolean serverMode() {
         String property = System.getProperty("pserv.test.context");
         return property != null && property.equals("server");
     }
