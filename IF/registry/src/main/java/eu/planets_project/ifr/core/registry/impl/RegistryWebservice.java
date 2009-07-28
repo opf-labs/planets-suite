@@ -2,10 +2,11 @@ package eu.planets_project.ifr.core.registry.impl;
 
 import java.util.List;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.jws.WebMethod;
+import javax.jws.WebResult;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,10 +22,9 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * Registry web service implementation.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@Local(Registry.class)
-@Remote(Registry.class)
-@Stateless()
-@WebService(name = RegistryWebservice.NAME, serviceName = Registry.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.ifr.core.registry.api.Registry")
+@Stateless
+@WebService(name = RegistryWebservice.NAME, serviceName = Registry.NAME, targetNamespace = PlanetsServices.NS)
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
 public final class RegistryWebservice implements Registry {
     /***/
     private static final long serialVersionUID = 1L;
@@ -32,26 +32,34 @@ public final class RegistryWebservice implements Registry {
     private Registry registry = RegistryFactory.getRegistry();
     /***/
     @SuppressWarnings("unused")
-    private static Log log = LogFactory.getLog(RegistryWebservice.class
-            .getName());
+    private static Log log = LogFactory.getLog(RegistryWebservice.class.getName());
     /***/
     static final String NAME = "RegistryWebservice";
 
-    /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.Registry#clear()
-     */
-    public Response clear() {
-        return registry.clear();
-    }
+    /* Query methods available via web service: */
 
     /**
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.registry.api.Registry#query(eu.planets_project.services.datatypes.ServiceDescription)
      */
+    @WebMethod
+    @WebResult
     public List<ServiceDescription> query(final ServiceDescription example) {
         return registry.query(example);
     }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.registry.api.Registry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
+     *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
+     */
+    @WebMethod
+    @WebResult
+    public List<ServiceDescription> queryWithMode(final ServiceDescription example, final MatchingMode mode) {
+        return registry.queryWithMode(example, mode);
+    }
+
+    /* Methods only available locally, not via web service: */
 
     /**
      * {@inheritDoc}
@@ -59,8 +67,7 @@ public final class RegistryWebservice implements Registry {
      */
     public Response register(final ServiceDescription serviceDescription) {
         if (serviceDescription == null) {
-            throw new IllegalArgumentException(
-                    "Can't register a service description that is null!");
+            throw new IllegalArgumentException("Can't register a service description that is null!");
         }
         return registry.register(serviceDescription);
     }
@@ -75,12 +82,10 @@ public final class RegistryWebservice implements Registry {
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.registry.api.Registry#queryWithMode(eu.planets_project.services.datatypes.ServiceDescription,
-     *      eu.planets_project.ifr.core.registry.impl.Query.MatchingMode)
+     * @see eu.planets_project.ifr.core.registry.api.Registry#clear()
      */
-    public List<ServiceDescription> queryWithMode(
-            final ServiceDescription example, final MatchingMode mode) {
-        return registry.queryWithMode(example, mode);
+    public Response clear() {
+        return registry.clear();
     }
 
 }

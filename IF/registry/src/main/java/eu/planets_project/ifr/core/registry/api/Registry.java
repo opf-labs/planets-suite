@@ -3,11 +3,9 @@ package eu.planets_project.ifr.core.registry.api;
 import java.util.List;
 
 import javax.jws.WebMethod;
-import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.namespace.QName;
-import javax.xml.ws.BindingType;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.ServiceDescription;
@@ -18,8 +16,7 @@ import eu.planets_project.services.datatypes.ServiceDescription;
  * @see ServiceDescription
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = Registry.NAME, targetNamespace = PlanetsServices.NS)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@WebService
 public interface Registry {
 
     /** The interface name. */
@@ -31,9 +28,7 @@ public interface Registry {
      * @param serviceDescription The service description to register
      * @return A response message
      */
-    @WebMethod
-    @WebResult
-    Response register(@WebParam ServiceDescription serviceDescription);
+    Response register(ServiceDescription serviceDescription);
 
     /**
      * Query by example registry lookup.
@@ -43,7 +38,7 @@ public interface Registry {
      */
     @WebMethod
     @WebResult
-    List<ServiceDescription> query(@WebParam ServiceDescription example);
+    List<ServiceDescription> query(ServiceDescription example);
 
     /**
      * Query by example registry lookup with a specified lookup strategy.
@@ -60,22 +55,17 @@ public interface Registry {
      * This method does not overload query(...) as overloading is not supported
      * in recent versions of the WSDL (1.2, 2.0)
      */
-    List<ServiceDescription> queryWithMode(
-            @WebParam ServiceDescription example, @WebParam MatchingMode mode);
+    List<ServiceDescription> queryWithMode(ServiceDescription example, MatchingMode mode);
 
     /**
      * Clears the registry of all entries.
      * @return A response message
      */
-    @WebMethod
-    @WebResult
     Response clear();
 
     /**
      * @param example The sample of the service descriptions to delete
      * @return A response message
      */
-    @WebMethod
-    @WebResult
-    Response delete(@WebParam ServiceDescription example);
+    Response delete(ServiceDescription example);
 }
