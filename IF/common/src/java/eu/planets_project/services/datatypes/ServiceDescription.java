@@ -64,7 +64,12 @@ import java.util.List;
 @XmlType(namespace = PlanetsServices.SERVICES_NS)
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public final class ServiceDescription {
-
+    
+    /** URI to use for service description properties. */
+    public static final URI PROPERTY = URI.create("planets:property/service_description"); 
+    
+    /** Key to be used for properties indicating authorized roles. */
+    public static final String AUTHORIZED_ROLES = "authorized_roles";
 
     /**
      * A brief name by which this service is known.

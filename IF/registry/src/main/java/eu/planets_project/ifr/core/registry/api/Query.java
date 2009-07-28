@@ -35,11 +35,9 @@ final class Query {
     /**
      * @param sample The sample description
      * @param mode The matching strategy to use
-     * @return Returns the service descriptions corresponding to the given
-     *         sample instance
+     * @return Returns the service descriptions corresponding to the given sample instance
      */
-    List<ServiceDescription> byExample(final ServiceDescription sample,
-            final MatchingMode mode) {
+    List<ServiceDescription> byExample(final ServiceDescription sample, final MatchingMode mode) {
         List<ServiceDescription> result = new ArrayList<ServiceDescription>();
         for (ServiceDescription description : descriptions) {
             if (matches(description, sample, mode)) {
@@ -50,21 +48,21 @@ final class Query {
     }
 
     /**
-     * Compares a candidate and a sample instance reflectively, using a marker
-     * annotation. This means the ServiceDescription class can be extended by
-     * new values and these values can be used for the query by example
+     * Compares a candidate and a sample instance reflectively, using a marker annotation. This means the
+     * ServiceDescription class can be extended by new values and these values can be used for the query by example
      * functionality without changing this class.
      * @param candidate The candidate service description
      * @param sample The query-by-example sample instance
      * @param mode The match mode to use
-     * @return True, if the given candidate is described by the given sample,
-     *         else false
+     * @return True, if the given candidate is described by the given sample, else false
      */
-    private static boolean matches(final ServiceDescription candidate,
-            final ServiceDescription sample, final MatchingMode mode) {
+    private static boolean matches(final ServiceDescription candidate, final ServiceDescription sample,
+            final MatchingMode mode) {
         if (candidate == null) {
-            throw new IllegalArgumentException(
-                    "Candidate service description is null!");
+            throw new IllegalArgumentException("Candidate service description is null!");
+        }
+        if (!Access.authorized(candidate)) {
+            return false;
         }
         /* If no sample is given any description matches: */
         if (sample == null) {
@@ -74,40 +72,32 @@ final class Query {
         Method[] methods = clazz.getMethods();
         for (Method method : methods) {
             /*
-             * We only compare values of methods marked with the Queryable
-             * annotation:
+             * We only compare values of methods marked with the Queryable annotation:
              */
             if (method.getAnnotation(Queryable.class) != null) {
                 try {
                     Object sampleValue = method.invoke(sample);
                     Object candidateValue = method.invoke(candidate);
-                    String message = String
-                            .format(
-                                    "Comparing values for method '%s' of query example '%s' to candidate instance '%s'.",
-                                    method.getName(), sampleValue,
-                                    candidateValue);
+                    String message = String.format(
+                            "Comparing values for method '%s' of query example '%s' to candidate instance '%s'.",
+                            method.getName(), sampleValue, candidateValue);
                     log.debug(message);
                     /*
-                     * If the sample value is null, we don't want to consider
-                     * it:
+                     * If the sample value is null, we don't want to consider it:
                      */
                     if (sampleValue != null) {
                         if (candidateValue == null) {
                             /*
-                             * The sample value is not null, but the candidate
-                             * is, we have no match:
+                             * The sample value is not null, but the candidate is, we have no match:
                              */
                             return false;
                         } else {
                             /*
-                             * Now, none of the values are null... we now first
-                             * check for Collections:
+                             * Now, none of the values are null... we now first check for Collections:
                              */
-                            if (sampleValue instanceof Collection<?>
-                                    && candidateValue instanceof Collection<?>) {
+                            if (sampleValue instanceof Collection<?> && candidateValue instanceof Collection<?>) {
                                 /*
-                                 * They need not be equals, but all sample
-                                 * values should be in the candidate:
+                                 * They need not be equals, but all sample values should be in the candidate:
                                  */
                                 Collection<?> cands = (Collection<?>) candidateValue;
                                 Collection<?> samps = (Collection<?>) sampleValue;
@@ -116,12 +106,10 @@ final class Query {
                                 }
                             } else {
                                 /*
-                                 * Finally, we can do the normal comparison
-                                 * here: if two non-null, non-Collection values
+                                 * Finally, we can do the normal comparison here: if two non-null, non-Collection values
                                  * are not equal the candidate does not match:
                                  */
-                                if (!(mode.matches(candidateValue.toString(),
-                                        sampleValue.toString()))) {
+                                if (!(mode.matches(candidateValue.toString(), sampleValue.toString()))) {
                                     return false;
                                 }
                             }
@@ -145,14 +133,13 @@ final class Query {
      * @param mode The matching mode to use
      * @return True, if all the sample elements match a candidate element
      */
-    private static boolean containsAll(final Collection<?> cands,
-            final Collection<?> samps, final MatchingMode mode) {
+    private static boolean containsAll(final Collection<?> cands, final Collection<?> samps, final MatchingMode mode) {
         int matched = 0;
         for (Object sample : samps) {
             for (Object candidate : cands) {
                 /*
-                 * If we are dealing with URIs, we want to map the different
-                 * kinds (extension URIs, Pronom URIs) onto each other:
+                 * If we are dealing with URIs, we want to map the different kinds (extension URIs, Pronom URIs) onto
+                 * each other:
                  */
                 if (candidate instanceof URI && sample instanceof URI) {
                     if (mappable((URI) candidate, (URI) sample, mode)) {
@@ -175,8 +162,7 @@ final class Query {
      * @param mode The query mode
      * @return True, if the sample can be mapped onto the candidate URI
      */
-    private static boolean mappable(final URI candidate, final URI sample,
-            final MatchingMode mode) {
+    private static boolean mappable(final URI candidate, final URI sample, final MatchingMode mode) {
         /* No mapping required: */
         if (mode.matches(candidate.toString(), sample.toString())) {
             return true;
@@ -187,8 +173,7 @@ final class Query {
         /* If one of the aliases of the candidate and the sample match we're OK: */
         for (URI sampleAlias : sampleAliases) {
             for (URI candidateAlias : candidateAliases) {
-                if (mode.matches(candidateAlias.toString(), sampleAlias
-                        .toString())) {
+                if (mode.matches(candidateAlias.toString(), sampleAlias.toString())) {
                     return true;
                 }
             }

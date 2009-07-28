@@ -14,14 +14,13 @@ import java.net.URI;
 /**
  * Property representation using an URI as ID.
  * <p>
- * For the most common case (a property with ID, name and value), use the
- * {@link #Property(URI, String, String)} constructor:
+ * For the most common case (a property with ID, name and value), use the {@link #Property(URI, String, String)}
+ * constructor:
  * </p>
  * <p>
  * {@code Property p = new Property(uri, name, value);}
  * </p>
- * Only the ID is actually required. To create properties with less or more
- * attributes, use a {@link Property.Builder}:
+ * Only the ID is actually required. To create properties with less or more attributes, use a {@link Property.Builder}:
  * <p>
  * {@code Property p = new Property.Builder(uri).unit(unit).build();}
  * </p>
@@ -53,8 +52,8 @@ public final class Property {
     private Property() {}
 
     /**
-     * Create a property with id, name and value. To create properties with less
-     * or more attributes, use a {@link Property.Builder} instead.
+     * Create a property with id, name and value. To create properties with less or more attributes, use a
+     * {@link Property.Builder} instead.
      * @param uri The property ID
      * @param name The property name
      * @param value The property value
@@ -125,10 +124,8 @@ public final class Property {
      */
     @Override
     public String toString() {
-        return String.format(
-                "%s [%s] '%s' = '%s' (description=%s unit=%s type=%s)", this
-                        .getClass().getSimpleName(), uri, name, value,
-                description, unit, type);
+        return String.format("%s [%s] '%s' = '%s' (description=%s unit=%s type=%s)", this.getClass().getSimpleName(),
+                uri, name, value, description, unit, type);
     }
 
     /**
@@ -140,9 +137,8 @@ public final class Property {
         final int prime = 31;
         int result = 1;
         /*
-         * Our defaults plus the fact that we are immutable guarantee that no
-         * attribute can ever be null, so we can skip the tedious null checks
-         * here.
+         * Our defaults plus the fact that we are immutable guarantee that no attribute can ever be null, so we can skip
+         * the tedious null checks here. FIXME: not true, only the builder checks this, not the one constructor...
          */
         result = prime * result + description.hashCode();
         result = prime * result + name.hashCode();
@@ -165,15 +161,11 @@ public final class Property {
         /* We know we have an instance of Property now, so casting is safe. */
         Property that = (Property) obj;
         /*
-         * Our defaults plus the fact that we are immutable guarantee that no
-         * attribute can ever be null, so we can skip the tedious null checks
-         * here.
+         * Our defaults plus the fact that we are immutable guarantee that no attribute can ever be null, so we can skip
+         * the tedious null checks here. FIXME: not true, only the builder checks this, not the one constructor...
          */
-        return this.uri.equals(that.uri) 
-                && this.name.equals(that.name)
-                && this.value.equals(that.value) 
-                && this.type.equals(that.type)
-                && this.unit.equals(that.unit)
+        return this.uri.equals(that.uri) && this.name.equals(that.name) && this.value.equals(that.value)
+                && this.type.equals(that.type) && this.unit.equals(that.unit)
                 && this.description.equals(that.description);
     }
 
@@ -197,8 +189,7 @@ public final class Property {
          */
         public Builder(final URI uri) {
             if (uri == null) {
-                throw new IllegalArgumentException(
-                        "Property ID uri must not be null!");
+                throw new IllegalArgumentException("Property ID uri must not be null!");
             }
             this.uri = uri;
         }
@@ -254,5 +245,15 @@ public final class Property {
         public Property build() {
             return new Property(this);
         }
+    }
+
+    /**
+     * This is a convenience method, equivalent to
+     * "new Property(ServiceDescription.PROPERTY, ServiceDescription.AUTHORIZED_ROLES, roles)".
+     * @param roles The authorized roles, comma-separated (e.g. "admin,provider")
+     * @return A property to be used to indicate the given roles are authenticated (e.g. in a ServiceDescription)
+     */
+    public static Property authorizedRoles(final String roles) {
+        return new Property(ServiceDescription.PROPERTY, ServiceDescription.AUTHORIZED_ROLES, roles);
     }
 }
