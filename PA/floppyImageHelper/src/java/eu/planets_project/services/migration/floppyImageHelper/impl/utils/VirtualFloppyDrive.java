@@ -49,7 +49,7 @@ public class VirtualFloppyDrive {
 		EXTRACTED_FILES_DIR = FileUtils.createFolderInWorkFolder(TEMP_FOLDER, EXTRACTION_OUT_FOLDER_NAME);
 	}
 	
-	public VirtualFloppyDriveResult createImageAndInjectFiles(List<File> filesToInject) {
+	public FloppyHelperResult createImageAndInjectFiles(List<File> filesToInject) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -128,7 +128,7 @@ public class VirtualFloppyDrive {
 
 	// Open an existing floppy image file and mount it with vfd.exe to
 	// get the files on it. Then return them as a ZIP.
-	public VirtualFloppyDriveResult openImageAndGetFiles(File imageFile) {
+	public FloppyHelperResult openImageAndGetFiles(File imageFile) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -200,7 +200,7 @@ public class VirtualFloppyDrive {
 		return this.returnWithSuccess(process_output.toString(), null, zip);
 	}
 	
-	public VirtualFloppyDriveResult addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
+	public FloppyHelperResult addFilesToFloppyImage(File floppyImage, List<File> filesToAdd) {
 		if(!toolInstalledProperly()) {
 			return this.returnWithError(process_error.toString());
 		}
@@ -426,17 +426,17 @@ public class VirtualFloppyDrive {
 		}
 	}
 
-	private VirtualFloppyDriveResult returnWithError(String message) {
-		VirtualFloppyDriveResult vfdResult = new VirtualFloppyDriveResult();
+	private FloppyHelperResult returnWithError(String message) {
+		FloppyHelperResult vfdResult = new FloppyHelperResult();
 		vfdResult.setMessage(message);
 		vfdResult.setResultFile(null);
 		vfdResult.setZipResult(null);
-		vfdResult.setState(VirtualFloppyDriveResult.ERROR);
+		vfdResult.setState(FloppyHelperResult.ERROR);
 		return vfdResult;
 	}
 
-	private VirtualFloppyDriveResult returnWithSuccess(String message, File resultFile, ZipResult zip) {
-		VirtualFloppyDriveResult vfdResult = new VirtualFloppyDriveResult();
+	private FloppyHelperResult returnWithSuccess(String message, File resultFile, ZipResult zip) {
+		FloppyHelperResult vfdResult = new FloppyHelperResult();
 		vfdResult.setMessage(message);
 		if(resultFile!=null) {
 			vfdResult.setResultFile(resultFile);
@@ -444,7 +444,7 @@ public class VirtualFloppyDrive {
 		else {
 			vfdResult.setZipResult(zip);
 		}
-		vfdResult.setState(VirtualFloppyDriveResult.SUCCESS);
+		vfdResult.setState(FloppyHelperResult.SUCCESS);
 		return vfdResult;
 	}
 

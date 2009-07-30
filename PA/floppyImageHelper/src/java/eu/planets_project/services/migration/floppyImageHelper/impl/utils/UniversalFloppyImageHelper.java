@@ -40,10 +40,10 @@ import eu.planets_project.services.utils.ZipUtils;
 //        serviceName = Migrate.NAME,
 //        targetNamespace = PlanetsServices.NS,
 //        endpointInterface = "eu.planets_project.services.migrate.Migrate")
-public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
+public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
 	
 	private File TEMP_FOLDER = null;
-	private String TEMP_FOLDER_NAME = "FLOPPY_IMAGE_HELPER_WIN";
+	private String TEMP_FOLDER_NAME = "UFIH_TMP";
 	
 	private File EXTRACTED_FILES = null;
 	private String sessionID = FileUtils.randomizeFileName("");
@@ -60,10 +60,9 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	
     private PlanetsLogger log = PlanetsLogger.getLogger(this.getClass());
     
-    private VirtualFloppyDrive vfd = new VirtualFloppyDrive();
-//    private Fat_Imgen vfd = new Fat_Imgen();
+    private Fat_Imgen fat_imgen = new Fat_Imgen();
     
-    public FloppyImageHelperWin() {
+    public UniversalFloppyImageHelper() {
     	// clean the temp folder for this app at startup...
 		TEMP_FOLDER = FileUtils.createWorkFolderInSysTemp(TEMP_FOLDER_NAME);
 		FileUtils.deleteAllFilesInFolder(TEMP_FOLDER);
@@ -79,7 +78,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
     public ServiceDescription describe() {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(FloppyImageHelperService.NAME, Migrate.class.getCanonicalName());
         sd.author("Peter Melms, mailto:peter.melms@uni-koeln.de");
-        sd.description("This service is a wrapper for the 'Virtual Floppy Drive' Commandline tool for Windows." + br +
+        sd.description("This service is a wrapper for the 'Fat_Imgen' Commandline tool." + br +
         				"This tools is able to create Floppy disk images - 1.44 MB - from scratch, containing files of your choice." + br +
         				"This is the first possible direction. The other one is the Extraction of files from a floppy disk image." +
         				"This service accepts:" + br +
@@ -89,12 +88,12 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
         				"3) An '.IMA'/'.IMG' file. In this case, the service will extract all files from that floppy image and return a set of files (as a ZIP).");
         sd.classname(this.getClass().getCanonicalName());
         sd.version("1.0");
-        sd.tool( Tool.create(null, "Virtual Floppy Drive (vfd.exe)", "v2.1.2008.0206", null, "http://chitchat.at.infoseek.co.jp/vmware/vfd.html"));
+        sd.tool( Tool.create(null, "Fat_Imgen (fat_imgen.exe)", "v2.1.1", null, "http://www.ohloh.net/p/fat_imgen"));
         List<MigrationPath> pathways = new ArrayList<MigrationPath>();
         pathways.add(new MigrationPath(format.createExtensionUri("ZIP"), format.createExtensionUri("IMA"), null));
         pathways.add(new MigrationPath(format.createExtensionUri("ANY"), format.createExtensionUri("IMA"), null));
         pathways.add(new MigrationPath(format.createExtensionUri("IMA"), format.createExtensionUri("ZIP"), null));
-        pathways.add(new MigrationPath(format.createExtensionUri("IMG"), format.createExtensionUri("ZIP"), null));
+//        pathways.add(new MigrationPath(format.createExtensionUri("IMG"), format.createExtensionUri("ZIP"), null));
         
         sd.paths(pathways.toArray(new MigrationPath[] {}));
         return sd.build();
@@ -112,7 +111,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 	public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
 			URI outputFormat, List<Parameter> parameters) {
 		
-		FloppyHelperResult vfdResult = null;
+		FloppyHelperResult fat_imgen_result = null;
         String inFormat = format.getFirstExtension(inputFormat).toUpperCase();
 		
 		List<File> extractedFiles = null;
@@ -143,15 +142,24 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 		ZipResult zippedResult = null;
 		
 		if((inFormat.endsWith("IMA")) || inFormat.endsWith("IMG")) {
-			vfdResult = vfd.openImageAndGetFiles(inputFile);
-			if(vfdResult.resultIsZip) {
-				zippedResult = vfdResult.getZipResult();
+			fat_imgen_result = fat_imgen.openImageAndGetFiles(inputFile);
+			if(fat_imgen_result.resultIsZip) {
+				zippedResult = fat_imgen_result.getZipResult();
 			}
 			else {
-				return this.returnWithErrorMessage(vfdResult.getMessage(), null);
+				return this.returnWithErrorMessage(fat_imgen_result.getMessage(), null);
 			}
 			
+//			DigitalObjectContent zipContent = Content.byReference(zippedResult.getZipFile())
+//												 .withChecksum(zippedResult.getChecksum());
+			
+//			DigitalObject resultDigObj = new DigitalObject.Builder(zipContent)
+//											.format(format.createExtensionUri("zip"))
+//											.title(zippedResult.getZipFile().getName())
+//											.build();
+			
 			DigitalObject resultDigObj = DigitalObjectUtils.createZipTypeDigOb(zippedResult.getZipFile(), zippedResult.getZipFile().getName(), true, true, false);
+
 
 			ServiceReport report = new ServiceReport(Type.INFO, Status.SUCCESS, PROCESS_OUT);
 			log.info("Created Service report...");
@@ -167,13 +175,13 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 			else {
 				extractedFiles = ZipUtils.unzipTo(inputFile, EXTRACTED_FILES);
 			}
-			vfdResult = vfd.createImageAndInjectFiles(extractedFiles);
-			if(!vfdResult.resultIsZip) {
-				imageFile = vfdResult.getResultFile();
+			fat_imgen_result = fat_imgen.createImageAndInjectFiles(extractedFiles);
+			if(!fat_imgen_result.resultIsZip) {
+				imageFile = fat_imgen_result.getResultFile();
 //				log.info(vfdResult.getMessage());
 			}
 			else {
-				return this.returnWithErrorMessage(vfdResult.getMessage(), null);
+				return this.returnWithErrorMessage(fat_imgen_result.getError(), null);
 			}
 			
 		}
@@ -183,8 +191,8 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 			List<File> tmpList = new ArrayList<File>();
 			tmpList.add(inputFile);
 			
-			vfdResult = vfd.createImageAndInjectFiles(tmpList);
-			imageFile = vfdResult.getResultFile();
+			fat_imgen_result = fat_imgen.createImageAndInjectFiles(tmpList);
+			imageFile = fat_imgen_result.getResultFile();
 			
 			if(imageFile==null) {
 				 return this.returnWithErrorMessage(PROCESS_ERROR, null);
@@ -192,7 +200,7 @@ public class FloppyImageHelperWin implements Migrate, FloppyImageHelper {
 		}
 		
 		// If we have reached this line, we should have an image file created, so wrap a DigObj around that and return 
-		// a MigrateResult...
+		// a MigrateResult... 
 		DigitalObject resultDigObj = new DigitalObject.Builder(Content.byReference(imageFile))
 										.format(outputFormat)
 										.title(imageFile.getName())

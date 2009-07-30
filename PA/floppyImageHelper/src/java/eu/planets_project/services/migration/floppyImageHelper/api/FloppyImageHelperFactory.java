@@ -5,7 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyImageHelperUnix;
-import eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyImageHelperWin;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.UniversalFloppyImageHelper;
 
 public final class FloppyImageHelperFactory {
 
@@ -23,13 +23,14 @@ public final class FloppyImageHelperFactory {
      * @return A windows based FloppyImageHelper instance
      */
     public static FloppyImageHelper getFloppyImageHelperInstance() {
-        return checkOperatingSystemAndCreateInstance();
+//        return checkOperatingSystemAndCreateInstance();
+        return new UniversalFloppyImageHelper();
     }
     
     private static FloppyImageHelper checkOperatingSystemAndCreateInstance() {
 		FloppyImageHelper floppyHelper = null;
 		if(OS.contains("windows")) {
-			floppyHelper = new FloppyImageHelperWin();
+			floppyHelper = new UniversalFloppyImageHelper();
 			log.info("Created FloppyImageHelper instance of type: " + floppyHelper.getClass().getCanonicalName());
 			return floppyHelper;
 		}

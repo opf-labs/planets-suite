@@ -22,6 +22,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
+import eu.planets_project.services.migration.floppyImageHelper.impl.utils.FloppyHelperResult;
 import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VirtualFloppyDrive;
 import eu.planets_project.services.migration.floppyImageHelper.impl.utils.VirtualFloppyDriveResult;
 import eu.planets_project.services.modification.floppyImageModify.api.FloppyImageModify;
@@ -134,7 +135,7 @@ public class FloppyImageModifyWin implements Modify, FloppyImageModify {
 		
 		List<File> containedFiles = DigitalObjectUtils.getDigitalObjectsAsFiles(contained, TEMP_FOLDER);
 		
-		VirtualFloppyDriveResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
+		FloppyHelperResult vfdResult = vfd.addFilesToFloppyImage(originalImageFile, containedFiles);
 		
 		File modifiedImage = vfdResult.getResultFile();
 		

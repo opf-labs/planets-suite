@@ -6,7 +6,6 @@ package eu.planets_project.services.migration.floppyImageHelper;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Level;
@@ -19,7 +18,6 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.DigitalObjectContent;
-import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.Migrate;
@@ -108,10 +106,8 @@ public class FloppyImageHelperServiceTest {
 		ZipResult zipResult = ZipUtils.createZipAndCheck(FILES_TO_INJECT, OUT_DIR, "test.zip", false); 
 		File zipFile = zipResult.getZipFile();
 //		DigitalObjectContent content = Content.byReference(zipFile).withChecksum(zipResult.getChecksum());
-        DigitalObject input = DigitalObjectUtils.createZipTypeDigOb(zipFile, zipFile.getName(), true, true, false);
-		List<Parameter> parameters = new ArrayList<Parameter> ();
-		parameters.add(new Parameter("modifyImage", "false"));
-		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, format.createExtensionUri("zip"), format.createExtensionUri("ima"), parameters);
+        DigitalObject input = DigitalObjectUtils.createZipTypeDigOb(zipFile, zipFile.getName(), true, true, true);
+		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, format.createExtensionUri("zip"), format.createExtensionUri("ima"), null);
 		ServiceReport report = migrateResult.getReport();
 		System.out.println(report);
 		assertTrue("Resulting DigitalObject should NOT be NULL!!!", migrateResult.getDigitalObject()!=null);
