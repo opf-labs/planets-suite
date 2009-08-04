@@ -1,10 +1,10 @@
-package eu.planets_project.services.migration.dia.impl;
+package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
-import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPath;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPaths;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPathsFactory;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.utils.DocumentLocator;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPath;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPaths;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPathsFactory;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;

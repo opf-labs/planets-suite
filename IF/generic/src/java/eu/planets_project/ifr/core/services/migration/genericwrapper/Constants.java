@@ -1,4 +1,4 @@
-package eu.planets_project.services.migration.dia.impl.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
 /**
  * TODO abr forgot to document this class

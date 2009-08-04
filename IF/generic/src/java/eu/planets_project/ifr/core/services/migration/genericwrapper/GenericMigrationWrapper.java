@@ -1,4 +1,4 @@
-package eu.planets_project.services.migration.dia.impl.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -8,8 +8,8 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationInitialisationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationInitialisationException;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
@@ -22,9 +22,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public class GenericMigrationWrapper {
 
@@ -91,10 +89,10 @@ public class GenericMigrationWrapper {
             handleTempSourceFile(migrationPath,sourceObject, workfolder);
         }
 
-        File outputFile= null;
+
         //handle temp output file
         if (migrationPath.useTempDestinationFile()){
-            outputFile = handleTempDestinationFile(migrationPath,workfolder);
+            handleTempDestinationFile(migrationPath,workfolder);
         }
 
 
@@ -102,18 +100,16 @@ public class GenericMigrationWrapper {
 
 
         try {
-            final ProcessRunner toolProcessRunner = new ProcessRunner();
-
             InputStream processStandardInput = null;
-            if (migrationPath.useTempSourceFile()){
-                //fine, is alreade written
-            } else{
+            if (!migrationPath.useTempSourceFile()) {
                 //serve the file on standard input
                 processStandardInput = sourceObject.getContent().read();
+            } else {
+                //fine, is alreade written
             }
 
-
-
+            //Execute the tool
+            final ProcessRunner toolProcessRunner = new ProcessRunner();
             ServiceReport serviceReport = executeToolProcess(toolProcessRunner,
                                                              command, processStandardInput);
 
@@ -132,6 +128,7 @@ public class GenericMigrationWrapper {
                 return new MigrateResult(null, serviceReport);
             }
 
+
             //cleanup
             if (migrationPath.useTempSourceFile()){
                 migrationPath.getTempSourceFile().getFile().delete();
@@ -145,11 +142,12 @@ public class GenericMigrationWrapper {
             byte[] destinationObjectBytes;
             if (migrationPath.useTempDestinationFile()){
                 //we should read a temp file afterwards
-
+                File outputfile = migrationPath.getTempOutputFile().getFile();
                 destinationObjectBytes = FileUtils
-                        .writeInputStreamToBinary(new FileInputStream(
-                                migrationPath.getTempOutputFile().getFile()));
-                migrationPath.getTempOutputFile().getFile().delete();
+                        .writeInputStreamToBinary(
+                                new FileInputStream(outputfile));
+                outputfile.delete();
+
                 String message = "Successfully migrated object with title '"
                                  + sourceObject.getTitle() + "' from format URI: "
                                  + sourceFormat + " to " + destinationFormat
@@ -159,7 +157,6 @@ public class GenericMigrationWrapper {
                                  + toolProcessRunner.getProcessErrorAsString();
                 serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
                                                   message);
-
 
             } else {
                 //we should read the output
@@ -181,7 +178,9 @@ public class GenericMigrationWrapper {
             //TODO cleanup the dir
 
             final DigitalObject destinationObject = new DigitalObject.Builder(
-                    Content.byValue(destinationObjectBytes)).build();
+                    Content.byValue(destinationObjectBytes))
+                    .format(destinationFormat)
+                    .build();
 
             return new MigrateResult(destinationObject, serviceReport);
 
@@ -193,11 +192,11 @@ public class GenericMigrationWrapper {
         }
     }
 
-    private File handleTempDestinationFile(MigrationPath migrationPath,
+    private void handleTempDestinationFile(MigrationPath migrationPath,
                                            File workfolder) {
         TempFile outputemp = migrationPath.getTempOutputFile();
         outputemp.setFile(createTemp(workfolder,outputemp));
-        return outputemp.getFile();
+
     }
 
     private void handleTempSourceFile(MigrationPath migrationPath,
@@ -272,41 +271,6 @@ public class GenericMigrationWrapper {
         return serviceReport;
     }
 
-    // FIXME! KILL
-    // private File[] createTempFiles(String humanReadableClue) {
-    //
-    // final Date now = new Date();
-    // final String tempBaseFileName = humanReadableClue + UUID.randomUUID() +
-    // now.getTime();
-    // final File sourceTempFile = FileUtils.getTempFile(tempBaseFileName,
-    // "source");
-    // final File destinationTempFile = FileUtils.getTempFile(tempBaseFileName,
-    // "destination");
-    // return new File[]{sourceTempFile, destinationTempFile};
-    // }
 
-    private File createSourceTempFile(DigitalObject sourceObject,
-                                      String tempFileBaseName) {
 
-        final File sourceTempFile = FileUtils.getTempFile(tempFileBaseName,
-                                                          "source");
-
-        // Write the digital object to the temporary source file.
-        FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
-                                         sourceTempFile);
-
-        return sourceTempFile;
-    }
-
-    private File createDestinationTempFile(String tempFileBaseName) {
-
-        return FileUtils.getTempFile(tempFileBaseName, "destination");
-    }
-
-    private String generateTempFileBaseName(DigitalObject sourceObject,
-                                            String humanReadableClue) {
-
-        final Date now = new Date();
-        return humanReadableClue + UUID.randomUUID() + now.getTime();
-    }
 }

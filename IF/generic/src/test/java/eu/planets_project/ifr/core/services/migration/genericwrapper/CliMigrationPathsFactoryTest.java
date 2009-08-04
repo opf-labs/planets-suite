@@ -1,10 +1,10 @@
-package eu.planets_project.services.migration.dia.impl;
+package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
-import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPath;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPaths;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPathsFactory;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.utils.DocumentLocator;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPath;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPaths;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPathsFactory;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
@@ -51,7 +51,7 @@ public class CliMigrationPathsFactoryTest {
 
     /**
      * Test method for
-     * {@link eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPathsFactory#getMigrationPaths(org.w3c.dom.Document)}
+     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPathsFactory#getMigrationPaths(org.w3c.dom.Document)}
      * Verify that we can get migration path instances for all known paths in
      * the configuration file used by this test class.
      */

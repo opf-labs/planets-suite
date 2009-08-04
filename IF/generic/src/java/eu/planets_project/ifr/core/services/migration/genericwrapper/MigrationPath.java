@@ -1,7 +1,7 @@
-package eu.planets_project.services.migration.dia.impl.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 import java.net.URI;
@@ -14,7 +14,9 @@ import java.util.*;
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class MigrationPath implements Cloneable { // TODO: Should implement an interface to allow
+public class MigrationPath implements Cloneable {
+
+    // TODO: Should implement an interface to allow
     // implement new versions to support new
     // configuration file formats.
 
@@ -37,7 +39,7 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
      * The default constructor has default access, as it should only be used by
      * factories.
      */
-    public MigrationPath() {
+    MigrationPath() {
         parameters = new HashMap<String, Parameter>();
         presets = new HashMap<String, Map<String, Collection<Parameter>>>();
         tempFiles = new ArrayList<TempFile>();
@@ -46,8 +48,7 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
     /**
      * Test whether the tool expects its input from a temporary input file or
      * standard input. If the response is <code>true</code> then the caller must
-     * call {@link #getTempInputFileName} to verify whether the tool expects that
-     * the input file has a special name or not.
+     * call {@link #getTempSourceFile()} to get hold of the temp input file
      *
      * @return <code>true</code> if the tool must have its input via a temporary
      *         file and otherwise <code>false</code>
@@ -57,24 +58,16 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
     }
 
     /**
-     * Get the label identifying the temporary input file in the command line
-     * string and the desired name of the actual input file.
-     *
-     * @return <code>Map</code> containing the label of the temporary input file
-     *         and the associated name of the file desired by the tool. However,
-     *         the file name may be <code>null</code> if no name has been
-     *         associated with the label.
+     * Get the temp file object for the input fule
+     * @return the temp file
      */
     public TempFile getTempSourceFile() {
         return tempSourceFile;
     }
 
     /**
-     * Set the label and the optional file name for the temporary input file
-     * needed by the migration tool.
-     *
-     * @param tempFile
-     *            <code>Map</code> associating the label with the name of the
+     * Set the temp input file to be used
+     * @param tempFile the temp file
      */
     public void setTempInputFile(TempFile tempFile) {
         this.tempSourceFile = tempFile;
@@ -83,8 +76,7 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
     /**
      * Test whether the tool needs to write its output to a temporary file or
      * standard input. If the response is <code>true</code> then the caller must
-     * call {@link #getTempOutputFile} to verify whether the tool expects
-     * that the output file has a special name or not.
+     * call {@link #getTempOutputFile} to get the output file
      *
      * @return <code>true</code> if the tool needs a temporary file to be
      *         created for its output and otherwise <code>false</code>
@@ -94,13 +86,7 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
     }
 
     /**
-     * Get the label identifying the temporary output file in the command line
-     * string and the desired name of the actual input file.
-     *
-     * @return <code>Map</code> containing the label of the temporary output
-     *         file and the associated name of the file desired by the tool.
-     *         However, the file name may be <code>null</code> if no name has
-     *         been associated with the label.
+     * Get the temp output file
      */
     public TempFile getTempOutputFile() {
 
@@ -108,11 +94,7 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
     }
 
     /**
-     * Set the label and the optional file name for the temporary output file
-     * needed by the migration tool.
-     *
-     * @param tempOutputFile
-     *            <code>Map</code> associating the label with the name of the
+     * Set the temp file
      */
     public void setTempOutputFile(TempFile tempOutputFile) {
         this.tempOutputFile = tempOutputFile;
@@ -120,12 +102,16 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
 
     /**
      * Get the command line with the parameter identifiers substituted with the
-     * parameters specified by <code>toolParameters</code> and any parameter
-     * identifiers matching keys in the <code>tempFileMap</code> will be
-     * replaced with the associated filename. <b>Note:</b> The filenames (that
-     * is, the values) in <code>tempFileMap</code> must be absolute paths
+     * parameters specified by <code>toolParameters</code>, and any tempfiles
+     * replaces with their absolute location.
      *
-     * @param toolParameters
+     * The command line should be ready to feed into the processrunner.
+     *
+     * Note that all the temp files must have been initialised with File objects
+     * by this time, as the absolute location of these files are replaced into
+     * the command line
+     *
+     * @param toolParameters the parameters to the tool
      * @return String containing the processed command line, ready for
      *         execution.
      * @throws MigrationException
@@ -169,7 +155,6 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
         log.info("Found these valid identifiers");
         log.info(validIdentifiers);
 
-
         log.info(tempSourceFile);
         for (TempFile tempfile: tempFiles){
             log.info("Adding tempfile "+tempfile.getCodename()+" as valid identifier");
@@ -192,7 +177,7 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
         // the test for the file name mappings, as they are solely based on the
         // configuration file and what the generic wrapper is doing.
 
-        if (validIdentifiers.containsAll(usedIdentifiers) == false) {
+        if (!validIdentifiers.containsAll(usedIdentifiers)) {
             usedIdentifiers.removeAll(validIdentifiers);
             throw new MigrationException("Cannot build the command line. "
                                          + "Missing values for these identifiers: "
@@ -201,24 +186,38 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
 
         String executableCommandLine = commandLine;
         for (Parameter parameter : toolParameters) {
-            executableCommandLine = executableCommandLine.replaceAll("#"
-                                                                     + parameter.getName(), parameter.getValue());
+            executableCommandLine =
+                    executableCommandLine
+                            .replaceAll("#"
+                                        + parameter.getName(),
+                                        parameter.getValue());
         }
 
         for (TempFile tempFile : tempFiles) {
-            executableCommandLine = executableCommandLine.replaceAll("#" + tempFile.getCodename(),tempFile.getFile().getAbsolutePath());
+            executableCommandLine
+                    = executableCommandLine
+                    .replaceAll("#"
+                                + tempFile.getCodename(),
+                                tempFile.getFile().getAbsolutePath());
         }
         if (useTempSourceFile()){
-            executableCommandLine = executableCommandLine.replaceAll("#" + tempSourceFile.getCodename(),tempSourceFile.getFile().getAbsolutePath());
+            executableCommandLine
+                    = executableCommandLine
+                    .replaceAll("#"
+                                + tempSourceFile.getCodename(),
+                                tempSourceFile.getFile().getAbsolutePath());
         }
         if (useTempDestinationFile()){
-            executableCommandLine = executableCommandLine.replaceAll("#" + tempOutputFile.getCodename(),tempOutputFile.getFile().getAbsolutePath());
+            executableCommandLine
+                    = executableCommandLine
+                    .replaceAll("#" + tempOutputFile.getCodename(),
+                                tempOutputFile.getFile().getAbsolutePath());
         }
 
 
         return executableCommandLine;
     }
- 
+
 
     /**
      * Get a <code>Set</code> containing all the names of parameters from
@@ -380,30 +379,16 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
     }
 
     /**
-     * Get a map defining the relationship between the identifiers in the
-     * command line that should be substituted with file names of temporary
-     * files with the actual names of these. However, not all labels (keys in
-     * the map) are guaranteed to be associated with a file name, thus the
-     * caller of this method will have to add these mappings before passing them
-     * on to the {@link getCommandLine} method.
+     * Get the list of interim temp files.
      *
-     * @return a map containing a paring of temp. file labels and optionally a
-     *         file name.
+     * @return a list of temp files.
      */
     public List<TempFile> getTempFileDeclarations() {
         return tempFiles;
     }
 
     /**
-     * Add a map defining the relationship between the labels in the command
-     * line that should be substituted with file names of temporary files with
-     * the actual names of these. Multiple calls to this method will just add
-     * more mappings to the internal map, however, if a label in the specified
-     * map has already been used in the internal map of this migration path,
-     * then the previous mapping will be removed.
-     *
-     * @param tempFileDeclarations
-     *            a map containing a paring of temp. file labels and optionally
+     * Add a list of temp files
      */
     public void addTempFilesDeclarations(
             List<TempFile> tempFileDeclarations) {
@@ -412,10 +397,10 @@ public class MigrationPath implements Cloneable { // TODO: Should implement an i
     }
 
     public void addTempFilesDeclaration(
-                TempFile tempFileDeclaration) {
-            tempFiles.add(tempFileDeclaration);
+            TempFile tempFileDeclaration) {
+        tempFiles.add(tempFileDeclaration);
 
-        }
+    }
 
 
     /**

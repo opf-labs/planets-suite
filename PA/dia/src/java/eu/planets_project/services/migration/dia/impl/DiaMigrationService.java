@@ -13,8 +13,8 @@ import javax.ejb.Stateless;
 import javax.jws.WebService;
 
 import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.utils.DocumentLocator;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.GenericMigrationWrapper;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.GenericMigrationWrapper;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;

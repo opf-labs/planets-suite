@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.services.migration.dia.impl.genericwrapper.utils;
+package eu.planets_project.ifr.core.services.migration.genericwrapper.utils;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.services.migration.dia.impl.genericwrapper.utils;
+package eu.planets_project.ifr.core.services.migration.genericwrapper.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

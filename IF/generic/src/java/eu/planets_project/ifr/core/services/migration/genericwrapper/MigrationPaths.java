@@ -1,7 +1,7 @@
-package eu.planets_project.services.migration.dia.impl.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
-import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
-import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.NoSuchPathException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.NoSuchPathException;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 import java.net.URI;
