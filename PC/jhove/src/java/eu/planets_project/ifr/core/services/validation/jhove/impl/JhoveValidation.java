@@ -67,10 +67,12 @@ public final class JhoveValidation implements Validate, Serializable {
         ServiceDescription.Builder sd = new ServiceDescription.Builder(
                 "JHOVE Validation Service", Validate.class.getCanonicalName());
         sd.classname(this.getClass().getCanonicalName());
-        sd.description("Validation service using JHOVE (1.3).");
+        sd.description("Validation service using JHOVE (1.4).");
         sd.author("Fabian Steeg");
-        sd.tool(Tool.create(null, "JHOVE", "1.3", null,
+        sd.tool(Tool.create(null, "JHOVE", "1.4", null,
                 "http://hul.harvard.edu/jhove/"));
+        sd.logo(URI.create("http://hul.harvard.edu/jhove/jhove-logo.gif"));
+        sd.furtherInfo(URI.create("http://hul.harvard.edu/jhove/"));
         sd.inputFormats(JhoveIdentification.inputFormats());
         sd.serviceProvider("The Planets Consortium");
         return sd.build();
