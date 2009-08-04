@@ -1,8 +1,54 @@
 <serviceWrapping>
 
-    <description>
+    <serviceDescription>
+        <title>
+         testTitle
+        </title>
+        <description>
+          testDescription
+        </description>
+        <tool>
+            <name>
 
-    </description>
+            </name>
+            <identifier>
+
+            </identifier>
+            <description>
+
+            </description>
+            <homepage>
+
+            </homepage>
+            <version>
+
+            </version>
+        </tool>
+        <version>
+
+        </version>
+        <creator>
+           testCreator
+        </creator>
+        <publisher>
+           testPublisher
+        </publisher>
+        <identifier>
+           testIdent
+        </identifier>
+        <instructions>
+            testIgnoreMe
+        </instructions>
+        <furtherinfo>
+             testIgnoreMe
+        </furtherinfo>
+        <logo>
+             testIgnoreMe
+        </logo>
+        <classname>
+
+        </classname>
+    </serviceDescription>
 
 
     <paths>

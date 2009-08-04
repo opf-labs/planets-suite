@@ -131,6 +131,7 @@ public class DiaMigrationServiceTest extends TestCase {
 		//      	System.out.println(suffix + " : " + formatURIMap.get(suffix));
 		//      }
 
+        //example
 	}
 
 	@SuppressWarnings("unused")

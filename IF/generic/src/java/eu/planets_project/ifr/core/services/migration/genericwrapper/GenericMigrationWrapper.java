@@ -40,6 +40,9 @@ public class GenericMigrationWrapper {
         try {
             MigrationPathsFactory pathsFactory = new MigrationPathsFactory();
             migrationPaths = pathsFactory.getMigrationPaths(configuration);
+   ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
+            serviceDescription = serviceFactory.getServiceDescription(configuration);
+            
         } catch (Exception e) {
             throw new MigrationInitialisationException(
                     "Failed initialising migration path data from the configuration document: "

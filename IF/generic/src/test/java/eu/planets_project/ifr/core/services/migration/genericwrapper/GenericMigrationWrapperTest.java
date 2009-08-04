@@ -1,10 +1,7 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
 import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
-import eu.planets_project.services.datatypes.Content;
-import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.*;
 import eu.planets_project.services.migrate.MigrateResult;
 import junit.framework.Assert;
 import org.junit.After;
@@ -32,7 +29,8 @@ public class GenericMigrationWrapperTest {
 
     private final URI sourceFormatURI;
     private final URI destinationFormatURI;
-
+    private GenericMigrationWrapper genericWrapper;
+final List<Parameter> testParameters = new ArrayList<Parameter>();
     /**
      */
     public GenericMigrationWrapperTest() throws Exception {
@@ -43,6 +41,12 @@ public class GenericMigrationWrapperTest {
     @Before
     public void setUp() throws Exception {
 
+        testParameters.add(new Parameter("mode", "complete"));
+
+        DocumentLocator documentLocator = new DocumentLocator("genericWrapperTempSrcDstConfig.xml");
+         genericWrapper = new GenericMigrationWrapper(
+                documentLocator.getDocument());
+
     }
 
     @After
@@ -50,15 +54,14 @@ public class GenericMigrationWrapperTest {
     }
 
     @Test
+    public void testDescribe(){
+        ServiceDescription sb = genericWrapper.describe();
+        System.out.println(sb);
+    }
+
+    @Test
     public void testMigrateUsingTempFiles() throws Exception {
 
-        final List<Parameter> testParameters = new ArrayList<Parameter>();
-        testParameters.add(new Parameter("mode", "complete"));
-
-        DocumentLocator documentLocator = new DocumentLocator(
-                TEST_FILE_PATH + "/genericWrapperTempSrcDstConfig.xml");
-        GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
-                documentLocator.getDocument());
 
         MigrateResult migrationResult = genericWrapper.migrate(
                 getDigitalTestObject(), sourceFormatURI, destinationFormatURI,
