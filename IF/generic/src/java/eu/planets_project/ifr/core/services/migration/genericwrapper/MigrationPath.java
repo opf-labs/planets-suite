@@ -143,9 +143,15 @@ public class MigrationPath implements Cloneable {
         if (!setDefault){
             //lookup the value of the default preset
             //get the param names and values from there
-            Collection<Parameter> defaultparams = presets.get(defaultpreset).get(
-                    getDefaultPresetCategoryValue());
-            toolParameters.addAll(defaultparams);
+            Map<String, Collection<Parameter>> preset = presets.get(
+                    defaultpreset);
+            if (preset != null){
+                Collection<Parameter> defaultparams =preset.get(
+                        getDefaultPresetCategoryValue());
+                toolParameters.addAll(defaultparams);
+            } else {
+                //There is no default preset
+            }
         }
 
 

@@ -1,12 +1,11 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
+import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.GenericMigrationWrapper;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
@@ -21,13 +20,13 @@ import java.util.List;
  * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class GenericCLIMigrationWrapperTest {
+public class GenericMigrationWrapperTest {
 
     /**
      * File path to the test files used by this test class.
      */
     private static final File TEST_FILE_PATH = new File(
-            "PA/dia/test/resources/");
+            "IF/generic/test/resources/");
 
     private static final String TEST_FILE_NAME = "Arrows_doublestraight_arrow2.dia";
 
@@ -36,9 +35,9 @@ public class GenericCLIMigrationWrapperTest {
 
     /**
      */
-    public GenericCLIMigrationWrapperTest() throws Exception {
-        sourceFormatURI = new URI("info:test/lowercase"); // DIA URI
-        destinationFormatURI = new URI("info:test/uppercase"); // SVG version 1.0
+    public GenericMigrationWrapperTest() throws Exception {
+        sourceFormatURI = new URI("info:test/lowercase");
+        destinationFormatURI = new URI("info:test/uppercase");
     }
 
     @Before

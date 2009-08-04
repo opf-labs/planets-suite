@@ -1,8 +1,5 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPath;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPaths;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPathsFactory;
 import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
 import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
 import junit.framework.Assert;
@@ -22,11 +19,10 @@ public class MigrationPathsTest {
     /**
      * Full file path to the test configuration file used by this test class.
      */
-    private static final String TEST_CONFIGURATION_FILE_NAME = "PA/dia/test/resources/genericWrapperTempSrcDstConfig.xml";
+    private static final String TEST_CONFIGURATION_FILE_NAME = "IF/generic/test/resources/genericWrapperTempSrcDstConfig.xml";
     private final MigrationPaths migrationPathsToTest;
 
     public MigrationPathsTest() throws Exception {
-        // TODO: This should go in the test methods.
         final DocumentLocator documentLocator = new DocumentLocator(
                 TEST_CONFIGURATION_FILE_NAME);
         final Document pathsConfiguration = documentLocator.getDocument();
@@ -51,17 +47,40 @@ public class MigrationPathsTest {
     }
 
     /**
-     * TODO: Implement
-     */
-    @Test
-    public void testAddMigrationPath() {
-    }
-
-    /**
-     * TODO: Implement
+     * Test method for
+     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPathsFactory#getMigrationPaths(org.w3c.dom.Document)}
+     * Verify that we can get migration path instances for all known paths in
+     * the configuration file used by this test class.
      */
     @Test
     public void testGetMigrationPath() throws Exception {
+
+        URI sourceFormat = new URI("info:test/lowercase");
+        URI destinationFormat = new URI("info:test/uppercase");
+        migrationPathsToTest.getMigrationPath(sourceFormat, destinationFormat);
+
+        // Verify that the opposite path does not exist in the configuration.
+        genericGetInstanceFailCheck(destinationFormat, sourceFormat);
+
+        sourceFormat = new URI("info:test/foo");
+        destinationFormat = new URI("info:test/bar");
+        migrationPathsToTest.getMigrationPath(sourceFormat, destinationFormat);
+
+        // Verify that the opposite path does not exist in the configuration.
+        genericGetInstanceFailCheck(destinationFormat, sourceFormat);
+    }
+
+    /**
+     * Verify that the individual paths in the <code>CliMigrationPaths</code>
+     * instance are correct.
+     * 
+     * TODO: Finish implementation.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testMigrationPaths() throws Exception {
+
         final URI sourceFormatURI = new URI("info:test/lowercase");
         final URI destinationFormatURI = new URI("info:test/uppercase");
 
@@ -77,7 +96,6 @@ public class MigrationPathsTest {
                         "The destination format of the obtained migration path is incorrect.",
                         destinationFormatURI, migrationPath
                                 .getDestinationFormat());
-
     }
 
     /**
@@ -93,7 +111,6 @@ public class MigrationPathsTest {
      *            <code>URI</code> identifying the desired destination format of
      *            the path.
      */
-    @SuppressWarnings("unused")
     private void genericGetInstanceFailCheck(URI sourceFormat,
             URI destinationFormat) {
         try {

@@ -1,20 +1,20 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
 import eu.planets_project.services.datatypes.Parameter;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.MigrationPath;
 import junit.framework.Assert;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  * 
  */
-public class CliMigrationPathTest {
+public class MigrationPathTest {
+
 
     /**
      * @throws java.lang.Exception
@@ -54,16 +54,24 @@ public class CliMigrationPathTest {
         // Options for the 'tr' command
         toolParameters.add(new Parameter("param2", "'[:lower:]' '[:upper:]'"));
 
-        HashMap<String,String> tempFileMap = new HashMap<String,String>();
-        tempFileMap.put("tempSource", "random-source-name");
-        tempFileMap.put("tempDestination", "random-destination-name");
-        tempFileMap.put("myInterimFile", "random-temp-file-name");
+        TempFile input = new TempFile("tempSource");
+        input.setFile(new File("/random-source-name"));
+        migrationPath.setTempInputFile(input);
+
+        TempFile output = new TempFile("tempDestination");
+        output.setFile(new File("/random-destination-name"));
+        migrationPath.setTempOutputFile(output);
+
+        TempFile tempfile = new TempFile("myInterimFile");
+        tempfile.setFile(new File("/random-temp-file-name"));
+        migrationPath.addTempFilesDeclaration(tempfile);
+
         final String executableCommandLine = migrationPath
                 .getCommandLine(toolParameters);
 
-        final String expectedCommandLine = "cat -n random-source-name > "
-                + "random-temp-file-name && tr '[:lower:]' '[:upper:]' "
-                + "random-temp-file-name > " + "random-destination-name";
+        final String expectedCommandLine = "cat -n /random-source-name > "
+                + "/random-temp-file-name && tr '[:lower:]' '[:upper:]' "
+                + "/random-temp-file-name > " + "/random-destination-name";
 
         System.out.println("expected: " + expectedCommandLine + "\n\nactual: " + executableCommandLine);
         Assert.assertEquals("Un-expected output from getCommandLine().",
