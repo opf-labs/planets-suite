@@ -3,17 +3,6 @@
  */
 package eu.planets_project.services.migration.dia.impl;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
@@ -21,6 +10,15 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.test.ServiceCreator;
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author tsh
@@ -67,7 +65,6 @@ public class DiaMigrationServiceTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link eu.planets_project.services.migration.dia.impl.DiaMigrationService#migrate(eu.planets_project.services.datatypes.DigitalObject, java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)}.
 	 */
 	@Test
 	public void testMigrationDiaToSvg() throws Exception {
