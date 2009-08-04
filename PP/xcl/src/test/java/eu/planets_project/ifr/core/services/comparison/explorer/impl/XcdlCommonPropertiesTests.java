@@ -112,7 +112,7 @@ public class XcdlCommonPropertiesTests {
         String info = compareResult.getReport().getMessage();
         assertTrue("Result contains an error: " + info, !info.contains("Error"));
         assertTrue("Wrong result: " + info, info
-                .startsWith("<fpmResponse><format puid="));
+                .startsWith("<XCLExplorer><format puid="));
         assertTrue("No result found: " + info, !info.contains("unavailable"));
         printInfo(list, info);
     }

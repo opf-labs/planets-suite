@@ -126,7 +126,8 @@ public final class XcdlCommonProperties implements CommonProperties {
         LOG.error("Process Error: " + processError);
         String result = FileUtils.readTxtFileIntoString(new File(FPMTOOL_HOME
                 + FPMTOOL_OUT));
-        LOG.info("Returning joint file format properties, starts with: " + result.substring(0, 200) + "...");
+        LOG.info("Returning joint file format properties, starts with: "
+                + result.substring(0, Math.min(200, result.length())) + "...");
         return result;
     }
 

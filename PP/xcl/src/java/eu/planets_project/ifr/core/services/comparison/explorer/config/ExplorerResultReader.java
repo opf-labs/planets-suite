@@ -43,7 +43,7 @@ public final class ExplorerResultReader {
                 // mElem.getChildTextTrim("mDescription")).values(
                 // mElem.getChildTextTrim("mType")).build());
                 // }
-                String type = pElem.getChildTextTrim("id");
+                String type = pElem.getChildTextTrim("id").replaceAll("id", "");
                 String name = pElem.getChildTextTrim("name");
                 Property p = new Property.Builder(XcdlProperties
                         .makePropertyURI(type, name)).name(name).type(type)
