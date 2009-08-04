@@ -1,4 +1,4 @@
-package eu.planets_project.services.migration.dia.impl;
+package eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions;
 
 public class MigrationInitialisationException extends Exception {
 

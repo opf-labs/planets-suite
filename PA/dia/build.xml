@@ -19,7 +19,7 @@
     <!-- Specify the source directories for this component -->
     <property name="src.dir" value="${appDir}/src/java"/>
     <property name="lib.dir" value="${appDir}/lib"/>
-    <property name="src.resources" value="${appDir}/src/resources"/>
+    <property name="src.resources" value="${appDir}/test/resources"/>
     <!--<property name="src.web" value="${appDir}/src/web"/>-->
 
     <!-- Unit testing definitions -->

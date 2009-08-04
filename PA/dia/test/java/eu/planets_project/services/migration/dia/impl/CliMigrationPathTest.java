@@ -1,15 +1,14 @@
 package eu.planets_project.services.migration.dia.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPath;
 import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import eu.planets_project.services.datatypes.Parameter;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
@@ -43,11 +42,11 @@ public class CliMigrationPathTest {
                 + "#tempDestination";
 
         // The first trivial test.
-        final CliMigrationPath cliMigrationPath = new CliMigrationPath();
-        cliMigrationPath.setCommandLine(originalCommandLine);
+        final MigrationPath migrationPath = new MigrationPath();
+        migrationPath.setCommandLine(originalCommandLine);
         Assert.assertEquals(
                 "getCommandLine() did not return the value just set.",
-                originalCommandLine, cliMigrationPath.getCommandLine());
+                originalCommandLine, migrationPath.getCommandLine());
 
         final ArrayList<Parameter> toolParameters = new ArrayList<Parameter>();
         // Options for the 'cat' command
@@ -59,8 +58,8 @@ public class CliMigrationPathTest {
         tempFileMap.put("tempSource", "random-source-name");
         tempFileMap.put("tempDestination", "random-destination-name");
         tempFileMap.put("myInterimFile", "random-temp-file-name");
-        final String executableCommandLine = cliMigrationPath
-                .getCommandLine(toolParameters, tempFileMap);
+        final String executableCommandLine = migrationPath
+                .getCommandLine(toolParameters);
 
         final String expectedCommandLine = "cat -n random-source-name > "
                 + "random-temp-file-name && tr '[:lower:]' '[:upper:]' "

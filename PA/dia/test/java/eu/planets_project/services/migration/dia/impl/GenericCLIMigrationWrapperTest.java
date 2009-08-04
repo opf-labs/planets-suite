@@ -1,21 +1,21 @@
 package eu.planets_project.services.migration.dia.impl;
 
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.Assert;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.utils.DocumentLocator;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.GenericMigrationWrapper;
+import junit.framework.Assert;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -58,7 +58,7 @@ public class GenericCLIMigrationWrapperTest {
 
         DocumentLocator documentLocator = new DocumentLocator(
                 TEST_FILE_PATH + "/genericWrapperTempSrcDstConfig.xml");
-        GenericCLIMigrationWrapper genericWrapper = new GenericCLIMigrationWrapper(
+        GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
                 documentLocator.getDocument());
 
         MigrateResult migrationResult = genericWrapper.migrate(

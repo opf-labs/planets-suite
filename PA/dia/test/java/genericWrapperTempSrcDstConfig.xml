@@ -56,8 +56,7 @@
                     are three temporary file tags, tempSource, myInterimFile and
                     tempDestination.
                 -->
-                <![CDATA[cat #param1 #tempSource > #myInterimFile && tr #param2
-             #myInterimFile > #tempDestination]]>
+                <![CDATA[head #tempSource > #tempDestination]]>
 
                 <!--
                     TODO: The command line element must match the ProcessRunner and

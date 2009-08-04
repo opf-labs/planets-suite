@@ -1,31 +1,32 @@
-package eu.planets_project.services.migration.dia.impl;
-
-import java.net.URI;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
+package eu.planets_project.services.migration.dia.impl.genericwrapper;
 
 import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.services.utils.PlanetsLogger;
+
+import java.net.URI;
+import java.util.*;
 
 /**
  * Migration path containing all information necessary to execute a (chain of)
  * command-line migration tool(s).
- * 
+ *
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class CliMigrationPath { // TODO: Should implement an interface to allow
+public class MigrationPath implements Cloneable { // TODO: Should implement an interface to allow
     // implement new versions to support new
     // configuration file formats.
 
+    private PlanetsLogger log = PlanetsLogger
+            .getLogger(MigrationPath.class);
+
+
     private URI sourceFormatURI;
     private URI destinationFormatURI;
-    private Map<String, String> tempFiles;
-    private Map<String, String> tempSourceFile;
-    private Map<String, String> tempOutputFile;
+    private List<TempFile> tempFiles;
+    private TempFile tempSourceFile;
+    private TempFile tempOutputFile;
     private Map<String, Parameter> parameters;
     private Map<String, Map<String, Collection<Parameter>>> presets;
     private String commandLine;
@@ -36,73 +37,72 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * The default constructor has default access, as it should only be used by
      * factories.
      */
-    CliMigrationPath() {
+    public MigrationPath() {
         parameters = new HashMap<String, Parameter>();
         presets = new HashMap<String, Map<String, Collection<Parameter>>>();
-        tempFiles = new HashMap<String, String>();
+        tempFiles = new ArrayList<TempFile>();
     }
 
     /**
      * Test whether the tool expects its input from a temporary input file or
      * standard input. If the response is <code>true</code> then the caller must
-     * call {@link getTempInputFileName} to verify whether the tool expects that
+     * call {@link #getTempInputFileName} to verify whether the tool expects that
      * the input file has a special name or not.
-     * 
+     *
      * @return <code>true</code> if the tool must have its input via a temporary
      *         file and otherwise <code>false</code>
      */
     public boolean useTempSourceFile() {
-        return (tempSourceFile == null) ? false : !tempSourceFile.isEmpty();
+        return tempSourceFile != null;
     }
 
     /**
      * Get the label identifying the temporary input file in the command line
      * string and the desired name of the actual input file.
-     * 
+     *
      * @return <code>Map</code> containing the label of the temporary input file
      *         and the associated name of the file desired by the tool. However,
      *         the file name may be <code>null</code> if no name has been
      *         associated with the label.
      */
-    public Map<String, String> getTempSourceFileLabelAndName() {
+    public TempFile getTempSourceFile() {
         return tempSourceFile;
     }
 
     /**
      * Set the label and the optional file name for the temporary input file
      * needed by the migration tool.
-     * 
-     * @param tempFileLabelAndName
+     *
+     * @param tempFile
      *            <code>Map</code> associating the label with the name of the
-     *            temporary file.
      */
-    public void setTempInputFile(Map<String, String> tempFileLabelAndName) {
-        this.tempSourceFile = tempFileLabelAndName;
+    public void setTempInputFile(TempFile tempFile) {
+        this.tempSourceFile = tempFile;
     }
 
     /**
      * Test whether the tool needs to write its output to a temporary file or
      * standard input. If the response is <code>true</code> then the caller must
-     * call {@link getTempOutputFileName} to verify whether the tool expects
+     * call {@link #getTempOutputFile} to verify whether the tool expects
      * that the output file has a special name or not.
-     * 
+     *
      * @return <code>true</code> if the tool needs a temporary file to be
      *         created for its output and otherwise <code>false</code>
      */
     public boolean useTempDestinationFile() {
-        return (tempOutputFile == null) ? false : !tempOutputFile.isEmpty();
+        return tempOutputFile != null;
     }
 
     /**
      * Get the label identifying the temporary output file in the command line
      * string and the desired name of the actual input file.
-     * 
+     *
      * @return <code>Map</code> containing the label of the temporary output
      *         file and the associated name of the file desired by the tool.
      *         However, the file name may be <code>null</code> if no name has
      *         been associated with the label.
      */
-    public Map<String, String> getTempOutputFileName() {
+    public TempFile getTempOutputFile() {
 
         return tempOutputFile;
     }
@@ -110,13 +110,12 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
     /**
      * Set the label and the optional file name for the temporary output file
      * needed by the migration tool.
-     * 
-     * @param tempFileLabelAndName
+     *
+     * @param tempOutputFile
      *            <code>Map</code> associating the label with the name of the
-     *            temporary file.
      */
-    public void setTempOutputFile(Map<String, String> tempFileLabelAndName) {
-        this.tempOutputFile = tempFileLabelAndName;
+    public void setTempOutputFile(TempFile tempOutputFile) {
+        this.tempOutputFile = tempOutputFile;
     }
 
     /**
@@ -125,10 +124,8 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * identifiers matching keys in the <code>tempFileMap</code> will be
      * replaced with the associated filename. <b>Note:</b> The filenames (that
      * is, the values) in <code>tempFileMap</code> must be absolute paths
-     * 
+     *
      * @param toolParameters
-     * @param tempFileMap
-     *            TODO
      * @return String containing the processed command line, ready for
      *         execution.
      * @throws MigrationException
@@ -136,14 +133,58 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      *             defined in order to substitute all the identifiers in the
      *             command line.
      */
-    public String getCommandLine(Collection<Parameter> toolParameters,
-            Map<String, String> tempFileMap) throws MigrationException {
+    public String getCommandLine(Collection<Parameter> toolParameters) throws MigrationException {
 
+        log.info("Entering getCommandLine");
         // Get a complete list of identifiers in the command line.
         final Set<String> usedIdentifiers = getIdentifiers(commandLine);
 
+        //TODO: Work with other presets than the default one
+        String defaultpreset = getDefaultPresetCategory();
+        //if the tool parameters contain this preset
+        boolean setDefault = false;
+        for (Parameter toolparam: toolParameters){
+            if (toolparam.getName().equals(defaultpreset)){
+                setDefault = true;
+                Collection<Parameter> presetparams = presets.
+                        get(defaultpreset).get(toolparam.getValue());
+                toolParameters.addAll(presetparams);
+                break;
+            }
+        }
+
+        //if the tool parameters does not contain this preset
+        if (!setDefault){
+            //lookup the value of the default preset
+            //get the param names and values from there
+            Collection<Parameter> defaultparams = presets.get(defaultpreset).get(
+                    getDefaultPresetCategoryValue());
+            toolParameters.addAll(defaultparams);
+        }
+
+
+
         final Set<String> validIdentifiers = getValidParameterNames(toolParameters);
-        validIdentifiers.addAll(getValidFileIdentifiers(tempFileMap));
+
+        log.info("Found these valid identifiers");
+        log.info(validIdentifiers);
+
+
+        log.info(tempSourceFile);
+        for (TempFile tempfile: tempFiles){
+            log.info("Adding tempfile "+tempfile.getCodename()+" as valid identifier");
+            validIdentifiers.add(tempfile.getCodename());
+        }
+
+        if (useTempSourceFile()){
+            log.info("Adding temp input file as valid identifier " + tempSourceFile.getCodename());
+            validIdentifiers.add(tempSourceFile.getCodename());
+        }
+
+        if (useTempDestinationFile()){
+            log.info("Adding temp dest file as valid identifier: "+ tempOutputFile.getCodename());
+            validIdentifiers.add(tempOutputFile.getCodename());
+        }
 
         // TODO: Check the parameters and filename mappings for injection
         // attacks by sanity checking the parameters -
@@ -154,54 +195,36 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
         if (validIdentifiers.containsAll(usedIdentifiers) == false) {
             usedIdentifiers.removeAll(validIdentifiers);
             throw new MigrationException("Cannot build the command line. "
-                    + "Missing values for these identifiers: "
-                    + usedIdentifiers);
+                                         + "Missing values for these identifiers: "
+                                         + usedIdentifiers);
         }
 
         String executableCommandLine = commandLine;
         for (Parameter parameter : toolParameters) {
             executableCommandLine = executableCommandLine.replaceAll("#"
-                    + parameter.getName(), parameter.getValue());
+                                                                     + parameter.getName(), parameter.getValue());
         }
 
-        for (String fileIdentifier : tempFileMap.keySet()) {
-            executableCommandLine = executableCommandLine.replaceAll("#"
-                    + fileIdentifier, tempFileMap.get(fileIdentifier));
+        for (TempFile tempFile : tempFiles) {
+            executableCommandLine = executableCommandLine.replaceAll("#" + tempFile.getCodename(),tempFile.getFile().getAbsolutePath());
         }
+        if (useTempSourceFile()){
+            executableCommandLine = executableCommandLine.replaceAll("#" + tempSourceFile.getCodename(),tempSourceFile.getFile().getAbsolutePath());
+        }
+        if (useTempDestinationFile()){
+            executableCommandLine = executableCommandLine.replaceAll("#" + tempOutputFile.getCodename(),tempOutputFile.getFile().getAbsolutePath());
+        }
+
 
         return executableCommandLine;
     }
-
-    /**
-     * Get a <code>Set</code> containing all the valid identifiers for file
-     * names parameters from <code>tempFileMap</code>, that is, identifiers that
-     * are not the empty string and that have an associated file name, which
-     * also is not the empty string.
-     * 
-     * @param tempFileMap
-     *            a <code>Map</code> of file identifiers associated with file
-     *            names.
-     * @return a <code>Set</code> containing the valid identifiers from
-     *         <code>parameters</code>.
-     */
-    private Set<String> getValidFileIdentifiers(Map<String, String> tempFileMap) {
-
-        Set<String> validFileIdentifiers = new HashSet<String>();
-        for (String identifier : tempFileMap.keySet()) {
-            final String fileName = tempFileMap.get(identifier);
-            if ((fileName != null) && ("".equals(fileName) == false)
-                    && ("".equals(identifier) == false)) {
-                validFileIdentifiers.add(identifier);
-            }
-        }
-        return validFileIdentifiers;
-    }
+ 
 
     /**
      * Get a <code>Set</code> containing all the names of parameters from
      * <code>parameters</code> that have been initialised with a value, and are
      * thus valid.
-     * 
+     *
      * @param parameters
      *            a <code>Collection</code> of parameters to get valid parameters
      *            from.
@@ -213,7 +236,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
         for (Parameter parameter : parameters) {
             final String parameterName = parameter.getName();
             if ((parameterName != null) && ("".equals(parameterName) == false)
-                    && (parameter.getValue() != null)) {
+                && (parameter.getValue() != null)) {
                 validParameters.add(parameterName);
             }
         }
@@ -227,7 +250,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * <code>stringWithIdentifiers</code>. If the previous example was found in
      * the string, then the returned set would contain the string
      * &quot;myIdentifier&quot;.
-     * 
+     *
      * @param stringWithIdentifiers
      *            a <code>String</code> containing identifiers.
      * @return a <code>Set</code> containing the identifiers found.
@@ -248,7 +271,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
 
     /**
      * Get the unprocessed command line.
-     * 
+     *
      * @return String containing the unprocessed command line, containing
      *         parameter identifiers/keys.
      */
@@ -261,8 +284,8 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * may contain tags of the form <code>%my_tag%</code> to indicate that
      * either a parameter or a name of a temporary file must be put in place at
      * a specific location. However, these tags must be defined using the
-     * {@link setToolParameters} or {@link setTempFileDeclarations} methods.
-     * 
+     * {@link #setToolParameters} or {@link #setTempFileDeclarations} methods.
+     *
      * @param commandLine
      *            <code>String</code> containing the command line to set.
      */
@@ -273,7 +296,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
     /**
      * Get the ID of the default preset category to apply if no preset or
      * parameters are specified by the user of this migration path.
-     * 
+     *
      * @return ID of the default preset category
      */
     public String getDefaultPresetCategory() {
@@ -283,7 +306,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
     /**
      * Set the ID of the default preset category to apply if no preset or
      * parameters are specified by the user of this migration path.
-     * 
+     *
      * @param defaultPresetCategory
      *            the ID of the default preset category.
      */
@@ -295,7 +318,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * Get the ID of the default preset category value to apply together with
      * the default preset category ID, if no preset or parameters are specified
      * by the user of this migration path.
-     * 
+     *
      * @return ID of the default preset category value
      */
     public String getDefaultPresetCategoryValue() {
@@ -306,7 +329,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * Set the ID of the default preset category value to apply together with
      * the default preset category ID, if no preset or parameters are specified
      * by the user of this migration path.
-     * 
+     *
      * @param defaultPresetCategoryValue
      *            the ID of the default preset category value.
      */
@@ -316,7 +339,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
 
     /**
      * Get the destination format <code>URI</code> of this migration path.
-     * 
+     *
      * @return <code>URI</code> identifying the destination format of this
      *         migration path.
      */
@@ -327,7 +350,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
     /**
      * Set the destination format <code>URI</code> for this
      * <code>CliMigrationPath</code>.
-     * 
+     *
      * @param destinationFormatURI
      *            destination format <code>URI</code> to set.
      */
@@ -337,7 +360,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
 
     /**
      * Get the source format <code>URI</code> of this migration path.
-     * 
+     *
      * @return <code>URI</code> identifying the source format of this migration
      *         path.
      */
@@ -348,7 +371,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
     /**
      * Set the source format <code>URI</code> for this
      * <code>CliMigrationPath</code>.
-     * 
+     *
      * @param sourceFormatURI
      *            source format <code>URI</code> to set.
      */
@@ -363,35 +386,12 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * the map) are guaranteed to be associated with a file name, thus the
      * caller of this method will have to add these mappings before passing them
      * on to the {@link getCommandLine} method.
-     * 
+     *
      * @return a map containing a paring of temp. file labels and optionally a
      *         file name.
      */
-    public Map<String, String> getTempFileDeclarations() {
+    public List<TempFile> getTempFileDeclarations() {
         return tempFiles;
-    }
-
-    /**
-     * Add a relationship between the <code>label</code> and
-     * <code>filename</code>. The label must match a label used in the command
-     * line, indicating that it should be substituted with a name of a temporary
-     * file. That file name can either be specified by <code>filename</code> or
-     * it will be auto-generated if it is omitted (<code>null</code>). Multiple
-     * calls to this method will just add more mappings to the internal map,
-     * however, if the specified label has already been used in the internal map
-     * of this migration path, then the previous mapping will be removed.
-     * 
-     * @param tempFileDeclarations
-     *            a map containing a paring of temp. file labels and optionally
-     *            a file name to be added to the internal map.
-     * @return the value previously associated with <code>label</code> or
-     *         <code>null</code> if no value was associated with it. However, it
-     *         may also indicate that <code>label</code> was actually associated
-     *         with <code>null</code>.
-     */
-    public String addTempFilesDeclaration(String label, String filename) {
-
-        return tempFiles.put(label, filename);
     }
 
     /**
@@ -401,19 +401,22 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * more mappings to the internal map, however, if a label in the specified
      * map has already been used in the internal map of this migration path,
      * then the previous mapping will be removed.
-     * 
+     *
      * @param tempFileDeclarations
      *            a map containing a paring of temp. file labels and optionally
-     *            a file name to be added to the internal map.
      */
     public void addTempFilesDeclarations(
-            Map<String, String> tempFileDeclarations) {
+            List<TempFile> tempFileDeclarations) {
+        tempFiles.addAll(tempFileDeclarations);
 
-        for (String tempFileLabel : tempFileDeclarations.keySet()) {
-            addTempFilesDeclaration(tempFileLabel, tempFileDeclarations
-                    .get(tempFileLabel));
-        }
     }
+
+    public void addTempFilesDeclaration(
+                TempFile tempFileDeclaration) {
+            tempFiles.add(tempFileDeclaration);
+
+        }
+
 
     /**
      * Get all the parameters that must be initialised in order to execute the
@@ -421,7 +424,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * specified, thus, their values must be initialised prior calling the
      * {@link getCommandLine} method to obtain the actual command line to
      * execute.
-     * 
+     *
      * @return <code>Collection</code> containing an <code>Parameter</code>
      *         instance for each parameter that must be specified in order to
      *         execute the command line of this migration path.
@@ -433,7 +436,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
     /**
      * Declare a list of parameters that the user of the tool must provide
      * values for in order to execute the tool.
-     * 
+     *
      * @param toolParameters
      *            Collection of tool parameters that must be initialised and
      *            passed on to the {@link getCommandLine} method to get the
@@ -447,7 +450,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
 
     /**
      * TODO: The presets should have a class of their own
-     * 
+     *
      * Add a preset to this migration path. A preset belongs to a category and
      * its value is essentially just a collection of pre-defined parameters for
      * the command line to be wrapped. An example of a category could be
@@ -456,7 +459,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * instances in the associated <code>categoryValueParameters</code> could
      * for example have the name <code>&quot;commandargs&quot;</code> and the
      * value <code>&quot;-v -a42 -z&quot;</code>
-     * 
+     *
      * @param category
      *            <code>String</code> identifying the category of the preset to
      *            modify.
@@ -473,14 +476,14 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      *             if any of the parameters are <code>null</code>
      */
     public Collection<Parameter> addToolPreset(String category,
-            String categoryValue, Collection<Parameter> categoryValueParameters) {
+                                               String categoryValue, Collection<Parameter> categoryValueParameters) {
 
         if (category == null || categoryValue == null || categoryValue == null) {
             throw new NullPointerException(
                     "At least one parameter is null. category = " + category
-                            + "  categoryValue = " + categoryValue
-                            + "  categoryValueParameters = "
-                            + categoryValueParameters);
+                    + "  categoryValue = " + categoryValue
+                    + "  categoryValueParameters = "
+                    + categoryValueParameters);
         }
 
         // Ensure that the category exists.
@@ -498,7 +501,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
     /**
      * Get a collection of all available preset categories for this migration
      * path.
-     * 
+     *
      * @return <code>Collection</code> containing the names/IDs of all the
      *         available preset categories.
      */
@@ -508,7 +511,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
 
     /**
      * Get a collection of valid values of a preset category.
-     * 
+     *
      * @param presetCategory
      *            <code>String</code> identifying the preset category to get the
      *            valid values for.
@@ -524,7 +527,7 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      * <code>presetCategory</code> and <code>presetValue</code>. A command-line
      * will be configured to behave as the preset specifies when the returned
      * parameters are passed on to {@link getCommandLine}.
-     * 
+     *
      * @param presetCategory
      *            <code>String</code> identifying the preset category that the
      *            <code>presetValue</code> belongs to.
@@ -540,13 +543,17 @@ public class CliMigrationPath { // TODO: Should implement an interface to allow
      *             configuration.
      */
     public Collection<Parameter> getToolPresetParameters(String presetCategory,
-            String presetValue) {
+                                                         String presetValue) {
         return presets.get(presetCategory).get(presetValue);
     }
 
     public String toString() {
         return "CliMigrationPath: " + sourceFormatURI + " -> "
-                + destinationFormatURI + " Command: " + commandLine;
+               + destinationFormatURI + " Command: " + commandLine;
     }
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }

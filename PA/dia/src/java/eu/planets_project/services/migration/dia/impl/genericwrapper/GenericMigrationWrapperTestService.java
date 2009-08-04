@@ -1,21 +1,4 @@
-package eu.planets_project.services.migration.dia.impl;
-
-import java.io.InputStream;
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.jws.WebService;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
+package eu.planets_project.services.migration.dia.impl.genericwrapper;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -24,7 +7,24 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.utils.ResourceLocator;
 import eu.planets_project.services.utils.PlanetsLogger;
+import org.w3c.dom.Document;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.jws.WebService;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * DiaMigrationService testing service.
@@ -34,8 +34,9 @@ import eu.planets_project.services.utils.PlanetsLogger;
 @Local(Migrate.class)
 @Remote(Migrate.class)
 @Stateless
-@WebService(name = GenericCLIMigrationWrapperTestService.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
-public final class GenericCLIMigrationWrapperTestService implements Migrate,
+@WebService(name = GenericMigrationWrapperTestService.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
+public final class GenericMigrationWrapperTestService
+        implements Migrate,
         Serializable {
 
     /** The unique class id */
@@ -45,7 +46,7 @@ public final class GenericCLIMigrationWrapperTestService implements Migrate,
     static final String NAME = "GenericCLIMigrationWrapperTestService";
 
     private PlanetsLogger log = PlanetsLogger
-            .getLogger(GenericCLIMigrationWrapperTestService.class);
+            .getLogger(GenericMigrationWrapperTestService.class);
 
     /**
      * {@inheritDoc}
@@ -78,7 +79,7 @@ public final class GenericCLIMigrationWrapperTestService implements Migrate,
 
             
             
-            GenericCLIMigrationWrapper genericWrapper = new GenericCLIMigrationWrapper(
+            GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
                     configDocument);
             migrationResult = genericWrapper.migrate(digitalObject,
                     inputFormat, outputFormat, parameters);

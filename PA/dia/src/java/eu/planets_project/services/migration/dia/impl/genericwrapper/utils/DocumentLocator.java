@@ -1,17 +1,16 @@
 /**
  * 
  */
-package eu.planets_project.services.migration.dia.impl;
+package eu.planets_project.services.migration.dia.impl.genericwrapper.utils;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * The <code>DocumentLocator</code> provides methods for locating, loading and
@@ -39,7 +38,7 @@ public class DocumentLocator extends ResourceLocator {
     /**
      * Get a <code>Document</code> instance containing the contents of the
      * located document resource. This method will first attempt finding the
-     * resource by using the {@link getResourceStream} method.
+     * resource by using the {@link #getResourceStream} method.
      * 
      * @return <code>Document</code> containing the resource data.
      * @throws FileNotFoundException

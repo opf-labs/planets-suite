@@ -79,8 +79,8 @@ public class DiaMigrationServiceTest extends TestCase {
 		 */
 		final File diaTestFile = new File(TEST_FILE_PATH, diaTestFileName);
 
-		final URI diaFormatURI = new URI("info:pronom/x-fmt/381"); // DIA URI
-		final URI svgFormatURI1 = new URI("info:pronom/fmt/91"); // SVG version 1.0
+		final URI diaFormatURI = new URI("info:test/lowercase"); // DIA URI
+		final URI svgFormatURI1 = new URI("info:test/uppercase"); // SVG version 1.0
 		//final URI svgFormatURI2 = new URI("info:pronom/fmt/92"); // SVG version 1.1
 
 

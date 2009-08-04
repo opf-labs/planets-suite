@@ -1,7 +1,12 @@
-package eu.planets_project.services.migration.dia.impl;
+package eu.planets_project.services.migration.dia.impl.genericwrapper;
+
+import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.NoSuchPathException;
+import eu.planets_project.services.utils.PlanetsLogger;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Create migration paths from an XML config file.
@@ -9,7 +14,12 @@ import java.util.HashMap;
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class CliMigrationPaths { //TODO: Should implement an interface to allow implement new versions to support new configuration file formats.
+public class MigrationPaths {
+
+//TODO: Should implement an interface to allow implement new versions to support new configuration file formats.
+private PlanetsLogger log = PlanetsLogger
+        .getLogger(MigrationPaths.class);
+
 
     /**
      * <code>PathKey</code> is a utility class used for keys for storage and
@@ -79,15 +89,15 @@ public class CliMigrationPaths { //TODO: Should implement an interface to allow 
             return true;
         }
 
-        private CliMigrationPaths getOuterType() {
-            return CliMigrationPaths.this;
+        private MigrationPaths getOuterType() {
+            return MigrationPaths.this;
         }
     }
 
-    private HashMap<PathKey, CliMigrationPath> migrationPaths;
+    private HashMap<PathKey, MigrationPath> migrationPaths;
 
-    public CliMigrationPaths() {
-        migrationPaths = new HashMap<PathKey, CliMigrationPath>();
+    public MigrationPaths() {
+        migrationPaths = new HashMap<PathKey, MigrationPath>();
     }
 
     /**
@@ -105,13 +115,13 @@ public class CliMigrationPaths { //TODO: Should implement an interface to allow 
      * @throws MigrationException
      *             if no matching path was found.
      */
-    public CliMigrationPath getMigrationPath(URI sourceFormat,
-            URI destinationFormat) throws MigrationException {
+    public MigrationPath getMigrationPath(URI sourceFormat,
+            URI destinationFormat) throws NoSuchPathException {
 
         final PathKey pathKey = new PathKey(sourceFormat, destinationFormat);
-        final CliMigrationPath migrationPath = migrationPaths.get(pathKey);
+        final MigrationPath migrationPath = migrationPaths.get(pathKey);
         if (migrationPath == null) {
-            throw new MigrationException(
+            throw new NoSuchPathException(
                     "No migration path found for source format URI=\""
                             + sourceFormat + "\" and destination format URI=\""
                             + destinationFormat + "\"");
@@ -138,16 +148,22 @@ public class CliMigrationPaths { //TODO: Should implement an interface to allow 
     /**
      * Add <code>cliMigrationPath</code> to this collection of migration paths.
      * 
-     * @param cliMigrationPath
+     * @param migrationPath
      *            the <code>CliMigrationPath</code> to add.
      * @return the previous <code>CliMigrationPath</code> instance stored for
      *         this migration path or <code>null</code> if there was no previous
      *         element.
      */
-    public CliMigrationPath addMigrationPath(CliMigrationPath cliMigrationPath) {
-        final PathKey pathKey = new PathKey(cliMigrationPath.getSourceFormat(),
-                cliMigrationPath.getDestinationFormat());
-        return migrationPaths.put(pathKey, cliMigrationPath);
+    public MigrationPath addMigrationPath(MigrationPath migrationPath) {
+        final PathKey pathKey = new PathKey(migrationPath.getSourceFormat(),
+                migrationPath.getDestinationFormat());
+        return migrationPaths.put(pathKey, migrationPath);
     }
 
+
+    public void addAll(List<MigrationPath> migrationpaths){
+        for (MigrationPath path:migrationpaths){
+            addMigrationPath(path);
+        }
+    }
 }

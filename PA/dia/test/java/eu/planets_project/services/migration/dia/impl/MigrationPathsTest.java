@@ -1,13 +1,17 @@
 package eu.planets_project.services.migration.dia.impl;
 
-import java.net.URI;
-
+import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPath;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPaths;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.MigrationPathsFactory;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.services.migration.dia.impl.genericwrapper.utils.DocumentLocator;
 import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
+
+import java.net.URI;
 
 /**
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
@@ -19,7 +23,7 @@ public class MigrationPathsTest {
      * Full file path to the test configuration file used by this test class.
      */
     private static final String TEST_CONFIGURATION_FILE_NAME = "PA/dia/test/resources/genericWrapperTempSrcDstConfig.xml";
-    private final CliMigrationPaths migrationPathsToTest;
+    private final MigrationPaths migrationPathsToTest;
 
     public MigrationPathsTest() throws Exception {
         // TODO: This should go in the test methods.
@@ -27,9 +31,9 @@ public class MigrationPathsTest {
                 TEST_CONFIGURATION_FILE_NAME);
         final Document pathsConfiguration = documentLocator.getDocument();
 
-        final CliMigrationPathsFactory migrationPathsFactory = new CliMigrationPathsFactory();
+        final MigrationPathsFactory migrationPathsFactory = new MigrationPathsFactory();
         migrationPathsToTest = migrationPathsFactory
-                .getInstance(pathsConfiguration);
+                .getMigrationPaths(pathsConfiguration);
     }
 
     /**
@@ -61,7 +65,7 @@ public class MigrationPathsTest {
         final URI sourceFormatURI = new URI("info:test/lowercase");
         final URI destinationFormatURI = new URI("info:test/uppercase");
 
-        CliMigrationPath migrationPath = migrationPathsToTest.getMigrationPath(
+        MigrationPath migrationPath = migrationPathsToTest.getMigrationPath(
                 sourceFormatURI, destinationFormatURI);
         Assert
                 .assertEquals(

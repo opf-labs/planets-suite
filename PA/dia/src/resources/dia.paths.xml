@@ -65,7 +65,7 @@
 			<uri value="planets:fmt/ext/pnm" />
 
 			<!--
-				RAS URI <uri value="info:pronom/x-fmt/184"/> <!-- TIF URIs
+				RAS URI <uri value="info:pronom/x-fmt/184"/> 
 			-->
 			<uri value="info:pronom/fmt/7" />
 			<uri value="info:pronom/fmt/8" />
