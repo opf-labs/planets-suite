@@ -142,6 +142,7 @@ public class GenericMigrationWrapper {
 
 
             //READING THE OUTPUT
+            //TODO return a reference to the outputfile
             byte[] destinationObjectBytes;
             if (migrationPath.useTempDestinationFile()){
                 //we should read a temp file afterwards
