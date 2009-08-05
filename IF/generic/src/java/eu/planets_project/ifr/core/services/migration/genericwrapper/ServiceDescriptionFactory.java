@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationPathConfigException;
@@ -12,6 +13,9 @@ import org.w3c.dom.Node;
 import java.util.List;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.MalformedURLException;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,6 +40,7 @@ public class ServiceDescriptionFactory {
 
         String title = null, description = null, version = null, creator = null, publisher = null, identifier = null,
                 instructions = null, furtherinfo = null, logo = null, classname = null;
+        Tool tool = null;
 
         for (int nodeIndex = 0; nodeIndex < topLevelNodes.getLength(); nodeIndex++) {
             final Node currentNode = topLevelNodes.item(nodeIndex);
@@ -45,7 +50,7 @@ public class ServiceDescriptionFactory {
                 }else if(currentNode.getNodeName().equals("description")){
                     description = currentNode.getTextContent();
                 }else if(currentNode.getNodeName().equals("tool")){
-                                       //TODO: handle tool
+                    tool = parseTool(currentNode);
                 }else if(currentNode.getNodeName().equals("version")){
                     version = currentNode.getTextContent();
                 }else if(currentNode.getNodeName().equals("creator")){
@@ -81,6 +86,7 @@ public class ServiceDescriptionFactory {
         builder.identifier(identifier);
         builder.instructions(instructions);
         builder.version(version);
+        builder.tool(tool);
         builder.serviceProvider(publisher);
 
         if(furtherinfo != null){
@@ -112,4 +118,46 @@ public class ServiceDescriptionFactory {
 
     }
 
-}
+    private Tool parseTool (Node tool) throws ConfigurationException {
+        NodeList topLevelNodes = tool.getChildNodes();
+        String description = null, version = null, identifier = null, name = null, homepage = null;
+
+        for (int nodeIndex = 0; nodeIndex < topLevelNodes.getLength(); nodeIndex++) {
+            final Node currentNode = topLevelNodes.item(nodeIndex);
+            if (currentNode.getNodeType() == Node.ELEMENT_NODE){
+                if(currentNode.getNodeName().equals("description")){
+                    description = currentNode.getTextContent();
+                }else if(currentNode.getNodeName().equals("version")){
+                    version = currentNode.getTextContent();
+                }else if(currentNode.getNodeName().equals("identifier")){
+                    identifier = currentNode.getTextContent();
+                }else if(currentNode.getNodeName().equals("name")){
+                    name = currentNode.getTextContent();
+                }else if(currentNode.getNodeName().equals("homepage")){
+                    homepage = currentNode.getTextContent();
+                }
+
+            }
+
+
+        }
+        URL homepageURL = null;
+        URI identifierURI = null;
+        if(homepage != null){
+            try {
+                homepageURL = new URL(homepage);
+            } catch (MalformedURLException e) {
+                throw new ConfigurationException("Homepage not set to valid value", e);
+            }
+        }
+        if(identifier != null){
+            try {
+                identifierURI = new URI(identifier);
+            } catch (URISyntaxException e) {
+                throw new ConfigurationException("identifier not set to valid value", e);
+            }
+        }
+
+        Tool t = new Tool(identifierURI, name, version, description, homepageURL);
+        return t;
+    }
