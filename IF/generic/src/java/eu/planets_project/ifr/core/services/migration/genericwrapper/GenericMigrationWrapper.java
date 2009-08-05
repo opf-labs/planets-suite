@@ -41,7 +41,7 @@ public class GenericMigrationWrapper {
             MigrationPathsFactory pathsFactory = new MigrationPathsFactory();
             migrationPaths = pathsFactory.getMigrationPaths(configuration);
    ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
-            serviceDescription = serviceFactory.getServiceDescription(configuration);
+            serviceDescription = serviceFactory.getServiceDescription(configuration, migrationPaths.getAsPlanetsPaths());
             
         } catch (Exception e) {
             throw new MigrationInitialisationException(

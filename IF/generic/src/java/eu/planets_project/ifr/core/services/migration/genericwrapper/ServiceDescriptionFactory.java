@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List;
 
 
 /**
@@ -27,7 +28,10 @@ public class ServiceDescriptionFactory {
 
 
 
-    public ServiceDescription getServiceDescription(Document configuration) throws ConfigurationException {
+    public ServiceDescription getServiceDescription(
+            Document configuration,
+            List<eu.planets_project.services.datatypes.MigrationPath> paths)
+            throws ConfigurationException {
 
 
         NodeList topLevelNodes = configuration
@@ -35,8 +39,10 @@ public class ServiceDescriptionFactory {
                 .item(0)
                 .getChildNodes();
 
-        String title = null, description = null, version = null, creator = null, publisher = null, identifier = null,
-                instructions = null, furtherinfo = null, logo = null, classname = null;
+        String title = null, description = null, version = null, creator = null,
+                publisher = null, identifier = null,
+                instructions = null, furtherinfo = null, logo = null,
+                classname = null;
         Tool tool = null;
 
         for (int nodeIndex = 0; nodeIndex < topLevelNodes.getLength(); nodeIndex++) {
@@ -87,6 +93,7 @@ public class ServiceDescriptionFactory {
         builder.version(version);
         builder.tool(tool);
         builder.serviceProvider(publisher);
+        builder.paths(paths.toArray(new eu.planets_project.services.datatypes.MigrationPath[paths.size()]));
 
         if(furtherinfo != null){
             try {
@@ -103,17 +110,7 @@ public class ServiceDescriptionFactory {
             }
         }
 
-
-
-
-
-
-
         return builder.build();
-
-
-
-
 
     }
 

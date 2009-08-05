@@ -11,15 +11,19 @@
             <name>
 
             </name>
+<!--
             <identifier>
 
             </identifier>
+-->
             <description>
 
             </description>
+<!--
             <homepage>
 
             </homepage>
+-->
             <version>
 
             </version>
@@ -40,6 +44,7 @@
             testIgnoreMe
         </instructions>
 <!--
+
         <furtherinfo>
              testIgnoreMe
         </furtherinfo>
@@ -47,6 +52,7 @@
              testIgnoreMe
         </logo>
 -->
+
         <classname>
 
         </classname>

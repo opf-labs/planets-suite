@@ -5,6 +5,7 @@ import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.
 import eu.planets_project.services.utils.PlanetsLogger;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -165,5 +166,16 @@ private PlanetsLogger log = PlanetsLogger
         for (MigrationPath path:migrationpaths){
             addMigrationPath(path);
         }
+    }
+
+    public List<eu.planets_project.services.datatypes.MigrationPath> getAsPlanetsPaths(){
+
+        List<eu.planets_project.services.datatypes.MigrationPath> planetspaths
+                = new ArrayList<eu.planets_project.services.datatypes.MigrationPath>();
+        for (MigrationPath migrationPath : migrationPaths.values()) {
+            planetspaths.add(migrationPath.getAsPlanetsPath());
+
+        }
+        return planetspaths;
     }
 }

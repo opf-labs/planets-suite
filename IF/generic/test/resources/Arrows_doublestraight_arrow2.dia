@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dia:diagram xmlns:dia="http://www.lysator.liu.se/~alla/dia/">
+  <dia:diagramdata>
+    <dia:attribute name="background">
+      <dia:color val="#ffffff"/>
+    </dia:attribute>
+    <dia:attribute name="paper">
+      <dia:composite type="paper">
+        <dia:attribute name="name">
+          <dia:string>#A4#</dia:string>
+        </dia:attribute>
+        <dia:attribute name="tmargin">
+          <dia:real val="2.8222000598907471"/>
+        </dia:attribute>
+        <dia:attribute name="bmargin">
+          <dia:real val="2.8222000598907471"/>
+        </dia:attribute>
+        <dia:attribute name="lmargin">
+          <dia:real val="2.8222000598907471"/>
+        </dia:attribute>
+        <dia:attribute name="rmargin">
+          <dia:real val="2.8222000598907471"/>
+        </dia:attribute>
+        <dia:attribute name="is_portrait">
+          <dia:boolean val="true"/>
+        </dia:attribute>
+        <dia:attribute name="scaling">
+          <dia:real val="1"/>
+        </dia:attribute>
+        <dia:attribute name="fitto">
+          <dia:boolean val="false"/>
+        </dia:attribute>
+      </dia:composite>
+    </dia:attribute>
+  </dia:diagramdata>
+  <dia:layer name="Background" visible="true">
+    <dia:object type="Standard - Polygon" version="0" id="O0">
+      <dia:attribute name="obj_pos">
+        <dia:point val="2.0955,1.61925"/>
+      </dia:attribute>
+      <dia:attribute name="obj_bb">
+        <dia:rectangle val="0.834799,0.818924;5.16595,3.37208"/>
+      </dia:attribute>
+      <dia:attribute name="poly_points">
+        <dia:point val="2.0955,1.61925"/>
+        <dia:point val="2.0955,0.85725"/>
+        <dia:point val="0.85725,2.0955"/>
+        <dia:point val="2.0955,3.33375"/>
+        <dia:point val="2.0955,2.57175"/>
+        <dia:point val="3.90525,2.57175"/>
+        <dia:point val="3.90525,3.33375"/>
+        <dia:point val="5.1435,2.0955"/>
+        <dia:point val="3.90525,0.85725"/>
+        <dia:point val="3.90525,1.61925"/>
+        <dia:point val="2.0955,1.61925"/>
+      </dia:attribute>
+      <dia:attribute name="line_width">
+        <dia:real val="0.03175"/>
+      </dia:attribute>
+      <dia:attribute name="inner_color">
+        <dia:color val="#ffffff"/>
+      </dia:attribute>
+      <dia:attribute name="show_background">
+        <dia:boolean val="true"/>
+      </dia:attribute>
+    </dia:object>
+  </dia:layer>
+</dia:diagram>

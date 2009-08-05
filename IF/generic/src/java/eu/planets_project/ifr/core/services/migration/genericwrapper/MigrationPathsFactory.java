@@ -164,9 +164,10 @@ public class MigrationPathsFactory {
     private MigrationPath configureToolPresets(Node toolPresetsElement,
                                                MigrationPath pathToConfigure) {
 
+
         // Get the name of the default preset, if it has not been set yet.
-        if (pathToConfigure.getDefaultPresetCategory() == null) {
-            pathToConfigure.setDefaultPresetCategory(getAttributeValue(
+        if (pathToConfigure.getDefaultPreset() == null) {
+            pathToConfigure.setDefaultPreset(getAttributeValue(
                     toolPresetsElement, Constants.DEFAULT_ATTRIBUTE));
         }
 
@@ -200,21 +201,21 @@ public class MigrationPathsFactory {
     private MigrationPath configurePreset(MigrationPath pathToConfigure,
                                           Node presetElement) {
 
-        // Get the name of the default preset setting, if it has not been set
-        // yet.
-        if (pathToConfigure.getDefaultPresetCategoryValue() == null) {
-            pathToConfigure.setDefaultPresetCategoryValue(getAttributeValue(
-                    presetElement, Constants.DEFAULT_ATTRIBUTE));
-        }
-
         final String presetName = getAttributeValue(presetElement,
                                                     Constants.NAME_ATTRIBUTE);
+        Preset preset = new Preset(presetName);
+        String presetdefault = getAttributeValue(presetElement,Constants.DEFAULT_ATTRIBUTE);
+        if (presetdefault != null){
+            preset.setDefaultSetting(presetdefault);
+        }
+
         final NodeList settingsNodes = presetElement.getChildNodes();
         for (int settingsIndex = 0; settingsIndex < settingsNodes.getLength(); settingsIndex++) {
 
             final Node currentNode = settingsNodes.item(settingsIndex);
             final String currentNodeName = currentNode.getNodeName()
                     .toLowerCase();
+
 
             if ((currentNode.getNodeType() == Node.ELEMENT_NODE)
                 && (Constants.SETTINGS_ELEMENT.equals(currentNodeName))) {
@@ -223,13 +224,11 @@ public class MigrationPathsFactory {
                                                              Constants.NAME_ATTRIBUTE);
 
                 final Collection<Parameter> settingParameters = createParameterList(currentNode);
-                pathToConfigure.addToolPreset(presetName, settingName,
-                                              settingParameters);
-                // TODO: Remember the "description" element! it should go with
-                // the setting information...
+                preset.addSetting(settingName,settingParameters);
             }
 
         }
+        pathToConfigure.addPreset(preset);
         return pathToConfigure;
     }
 
@@ -428,73 +427,6 @@ public class MigrationPathsFactory {
             paths.add(newPath);
         }
         return paths;
-    }
-
-    /**
-     * Make a safe (deep) copy of the contents of <code>pathTemplate</code>.
-     *
-     * @param pathTemplate
-     *            <code>CliMigrationPath</code> instance to copy.
-     * @return a copy of <code>pathTemplate</code> that shares no data with the
-     *         original.
-     * @throws URISyntaxException
-     *             in the unlikely event that a <code>URI</code> could not be
-     *             copied.
-     */
-    private MigrationPath copyPath(MigrationPath pathTemplate)
-            throws URISyntaxException {
-
-        MigrationPath pathCopy = new MigrationPath();
-
-        pathCopy.setCommandLine(pathTemplate.getCommandLine());
-
-        // Make a safe copy of the format URIs
-        URI formatURI = pathTemplate.getDestinationFormat();
-        formatURI = (formatURI != null) ? new URI(formatURI.toString())
-                                        : formatURI;
-        pathCopy.setDestinationFormat(formatURI);
-
-        formatURI = pathTemplate.getSourceFormat();
-        formatURI = (formatURI != null) ? new URI(formatURI.toString())
-                                        : formatURI;
-        pathCopy.setSourceFormat(formatURI);
-
-        // The below method already makes a safe copy.
-        if (pathTemplate.getTempFileDeclarations() != null) {
-            pathCopy.addTempFilesDeclarations(pathTemplate
-                    .getTempFileDeclarations());
-        }
-
-        final ArrayList<Parameter> parametersCopy = new ArrayList<Parameter>();
-        for (Parameter parameter : pathTemplate.getToolParameters()) {
-            final Builder parameterBuilder = new Builder(parameter.getName(),
-                                                         parameter.getValue());
-            parameterBuilder.description(parameter.getDescription());
-            parameterBuilder.type(parameter.getType());
-            parametersCopy.add(parameterBuilder.build());
-        }
-        pathCopy.setToolParameters(parametersCopy);
-
-        // Make a safe copy of the presets.
-        for (String presetCategory : pathTemplate.getToolPresetCategories()) {
-            for (String presetValue : pathTemplate
-                    .getToolPresetValues(presetCategory)) {
-                final ArrayList<Parameter> presetParametersCopy = new ArrayList<Parameter>();
-                for (Parameter presetValueParameter : pathTemplate
-                        .getToolPresetParameters(presetCategory, presetValue)) {
-                    presetParametersCopy.add(new Parameter(presetValueParameter
-                            .getName(), presetValueParameter.getValue()));
-                }
-                pathCopy.addToolPreset(presetCategory, presetValue,
-                                       presetParametersCopy);
-            }
-        }
-        pathCopy.setDefaultPresetCategory(pathTemplate
-                .getDefaultPresetCategory());
-        pathCopy.setDefaultPresetCategoryValue(pathTemplate
-                .getDefaultPresetCategoryValue());
-
-        return pathCopy;
     }
 
     /**

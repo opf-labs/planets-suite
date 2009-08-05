@@ -1,20 +1,8 @@
 package eu.planets_project.services.migration.dia.impl;
 
-import java.io.Serializable;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.ejb.Local;
-import javax.ejb.Remote;
-import javax.ejb.Stateless;
-import javax.jws.WebService;
-
-import eu.planets_project.services.PlanetsServices;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
 import eu.planets_project.ifr.core.services.migration.genericwrapper.GenericMigrationWrapper;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
+import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.MigrationPath;
 import eu.planets_project.services.datatypes.Parameter;
@@ -22,6 +10,17 @@ import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.utils.PlanetsLogger;
+
+import javax.ejb.Local;
+import javax.ejb.Remote;
+import javax.ejb.Stateless;
+import javax.jws.WebService;
+import java.io.Serializable;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * DiaMigrationService testing service.
@@ -46,13 +45,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
     private PlanetsLogger log = PlanetsLogger
             .getLogger(DiaMigrationService.class);
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject,
-     *      java.net.URI, java.net.URI,
-     *      eu.planets_project.services.datatypes.Parameter)
-     */
+
     public MigrateResult migrate(final DigitalObject digitalObject,
                                  URI inputFormat, URI outputFormat, List<Parameter> parameters) {
 

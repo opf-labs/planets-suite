@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="serviceWrapping" type="serviceWrappingType"/>
+  <xs:complexType name="pathType">
+    <xs:sequence>
+      <xs:element type="sourceformatsType" name="sourceformats">
+        <xs:annotation>
+          <xs:documentation>Silly migration path for conversion of lower case text to upper case
+                text, using 'cat' and 'tr', for demonstration of the usage of
+                temporary source and destination files. The migration paths
+                described by a combination of one of the input formats and the
+                output format will overwrite any similar definitions from any
+                earlier path definitions, that is, definitions closer to the top of
+                the configuration file.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element type="destinationformatType" name="destinationformat"/>
+      <xs:element name="commandline">
+        <xs:annotation>
+          <xs:documentation>This is the exact shell command line to be wrapped, except from
+                    that all tags like "#some_label" are substituted by command
+                    parameters and temporary file names. The tag name (in this case
+                    "some_label") must be defined in the "toolparameters" section.
+                    The same goes for temporary files. In the below example there
+                    are three temporary file tags, tempSource, myInterimFile and
+                    tempDestination.
+                
+                    TODO: The command line element must match the ProcessRunner and
+                    consist of a command and a list of parameters.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="
+                
+                head #tempSource > #tempDestination
+
+                
+            "/>
+            <xs:enumeration value="cat #param1 #tempSource | tr #param2 > #tempDestination
+            "/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element type="tempfilesType" name="tempfiles" minOccurs="0"/>
+      <xs:element type="toolparametersType" name="toolparameters">
+        <xs:annotation>
+          <xs:documentation>The tool will terminate with an error if not all tool parameters are
+                defined at invocation. Any specified parameters will overwrite the
+                corresponding parameters from any specified tool preset. That is, if
+                the caller of the tool specifies e.g. mode=complete and param1=-n,
+                then the tool will be invoked with param1=-n and param2=[:lower:]'
+                '[:upper:] which will have the same effect as just specifying
+                mode=extra. Given the definitions of this example file.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element type="toolpresetsType" name="toolpresets">
+        <xs:annotation>
+          <xs:documentation>Tool presets can be used instead of messing with the command line
+                parameters. However, these presets can also be used as default
+                settings which will make it possible only to specify a some of the
+                parameters for the tool, as unspecified parameters just can be taken
+                from the defaults.
+             No presets</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="settingsType">
+    <xs:sequence>
+      <xs:element type="parameterType" name="parameter" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element name="description">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Uppercase all."/>
+            <xs:enumeration value="AC-DC to DC-AC"/>
+            <xs:enumeration value="Uppercase all and add line numbers.
+                        "/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="tempfileType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="label"/>
+        <xs:attribute type="xs:string" name="name"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="presetType">
+    <xs:sequence>
+      <xs:element type="settingsType" name="settings" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element name="description">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Mode presets for the test tool."/>
+            <xs:enumeration value="Quality presets for the test tool.
+                    "/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="optional"/>
+    <xs:attribute type="xs:string" name="default" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="tempfilesType">
+    <xs:sequence>
+      <xs:element type="inputfileType" name="inputfile">
+        <xs:annotation>
+          <xs:documentation>Any temporary files used in the command line must be defined in
+                    this section, that is, the contents of the label attributes of
+                    the entries must match the names used between the % signs in the
+                    command line. The use of temporary files is optional and depends
+                    entirely on the contents of the command line. Further more, a
+                    temp. file entry may also specify a name for the temporary file
+                    to be generated, if necessary. This is useful for tools that
+                    insist on having a given suffix on its input/output files.
+                
+                        This definition is used for the file containing the data to
+                        be migrated, that is, the data provided by the caller. If it
+                        is not defined the the tool wrapper expects that the tool
+                        reads its data from standard input and it will therefore
+                        pipe the data to be migrated through there.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element type="outputfileType" name="outputfile">
+        <xs:annotation>
+          <xs:documentation>This definition is used for the file containing the final
+                        migrated output, that is, the data the tool wrapper should
+                        pick up and return to the caller of the service. If it is
+                        not defined the the tool wrapper expects that the tool sends
+                        the migrated data to standard output, which then will be
+                        picked up and returned to the caller.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element type="tempfileType" name="tempfile">
+        <xs:annotation>
+          <xs:documentation>tempfile entries are used for intermediate temporary files
+                        which may be necessary to create if the wrapped command line
+                        contains chained commands. Multiple tempfile entries are
+                        allowed, however, each should have a unique name and it must
+                        match the names used in the command line.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="pathsType">
+    <xs:sequence>
+      <xs:element type="pathType" name="path" maxOccurs="unbounded" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>TODO: Woohaa! We completely forgot a version number! 
+            TODO: We need a command string for getting version information from the
+            tool and a string containing the expected output in order to verify that
+            the tool is indeed the tool that originally was wrapped.
+        
+            The following path is just an illustration of the possibility to define
+            multiple migration paths for the same wrapped tool. However, there is no
+            validation of that the tool used in the various path definitions are
+            actually the same, as this is not possible due to the fact that the
+            command lines may be substantially different although the same tool is
+            used for the migration, as different helper tools may be used e.g. for
+            pre- or post-processing. Thus, it is the responsibility of the person
+            writing the configuration file that it is in fact the same migration
+            tool used by all the defined paths.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="uriType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="value" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="toolparametersType">
+    <xs:sequence>
+      <xs:element type="parameterType" name="parameter" maxOccurs="unbounded" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>All these parameters must be specified by the caller if no
+                    preset is specified. The occurrences of the parameter names in
+                    the above command line will be substituted with the value
+                    assigned to them by the caller.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="destinationformatType">
+    <xs:sequence>
+      <xs:element type="uriType" name="uri">
+        <xs:annotation>
+          <xs:documentation>Format URI identifying the output format of the wrapped
+                    command(s) in this "path" section. It is recommended to use a
+                    PRONOM URI when possible in order to achieve the most accurate
+                    description of the format. File suffixes are inaccurate as most
+                    file formats are available in several revisions.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="inputfileType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="label"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="parameterType" mixed="true">
+    <xs:sequence>
+      <xs:element name="description" minOccurs="0">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Command line parameters for the 'cat'
+                        command.
+                        See
+                        'man cat'.
+                    "/>
+            <xs:enumeration value="Command line parameters for the 'tr'
+                        command.
+                        See
+                        'man tr'.
+                    "/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="toolpresetsType" mixed="true">
+    <xs:sequence>
+      <xs:element type="presetType" name="preset" maxOccurs="unbounded" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>This section defines all possible preset categories for the
+                    tool. The caller may use only one of the preset categories when
+                    calling, e.g. specifying both mode=AC-DC and quality=good would
+                    result in an error. If no parameters or preset is specified by
+                    the caller, then the default "mode" preset category and its
+                    default "complete" value is automatically chosen in this
+                    example.
+                
+                    This "quality" preset category is essentially the same as the
+                    "mode" category, and is only included to demonstrate that it is
+                    possible for the caller to have more preset categories to choose
+                    from.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="default" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="serviceDescriptionType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="title"/>
+      <xs:element type="xs:string" name="description"/>
+      <xs:element type="toolType" name="tool"/>
+      <xs:element type="xs:string" name="version"/>
+      <xs:element type="xs:string" name="creator"/>
+      <xs:element type="xs:string" name="publisher"/>
+      <xs:element type="xs:string" name="identifier"/>
+      <xs:element type="xs:string" name="instructions"/>
+      <xs:element type="xs:string" name="furtherinfo"/>
+      <xs:element type="xs:string" name="logo"/>
+      <xs:element type="xs:string" name="classname"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sourceformatsType">
+    <xs:sequence>
+      <xs:element type="uriType" name="uri">
+        <xs:annotation>
+          <xs:documentation>List of format URIs identifying the valid input formats for the
+                    wrapped command(s) in this "path" section. It is recommended to
+                    use PRONOM URIs where possible in order to achieve the most
+                    accurate description of the formats. File suffixes are
+                    inaccurate as most file formats are available in several
+                    revisions.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="outputfileType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="label"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="serviceWrappingType">
+    <xs:sequence>
+      <xs:element type="serviceDescriptionType" name="serviceDescription"/>
+      <xs:element type="pathsType" name="paths"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="toolType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="name"/>
+      <xs:element type="xs:string" name="identifier"/>
+      <xs:element type="xs:string" name="description"/>
+      <xs:element type="xs:string" name="homepage"/>
+      <xs:element type="xs:string" name="version"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
