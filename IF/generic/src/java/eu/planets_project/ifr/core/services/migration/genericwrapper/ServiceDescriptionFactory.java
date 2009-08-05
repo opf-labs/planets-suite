@@ -27,7 +27,6 @@ public class ServiceDescriptionFactory {
             .getLogger(ServiceDescriptionFactory.class);
 
 
-
     public ServiceDescription getServiceDescription(
             Document configuration,
             List<eu.planets_project.services.datatypes.MigrationPath> paths)
@@ -35,7 +34,7 @@ public class ServiceDescriptionFactory {
 
 
         NodeList topLevelNodes = configuration
-                .getElementsByTagName("serviceDescription")
+                .getElementsByTagName(Constants.SERVICE_DESCRIPTION)
                 .item(0)
                 .getChildNodes();
 
@@ -48,28 +47,28 @@ public class ServiceDescriptionFactory {
         for (int nodeIndex = 0; nodeIndex < topLevelNodes.getLength(); nodeIndex++) {
             final Node currentNode = topLevelNodes.item(nodeIndex);
             if (currentNode.getNodeType() == Node.ELEMENT_NODE){
-                if (currentNode.getNodeName().equals("title")){
-                    title = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("description")){
-                    description = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("tool")){
+                if (currentNode.getNodeName().equals(Constants.TITLE)){
+                    title = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.DESCRIPTION)){
+                    description = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.TOOL)){
                     tool = parseTool(currentNode);
-                }else if(currentNode.getNodeName().equals("version")){
-                    version = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("creator")){
-                    creator = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("publisher")){
-                    publisher = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("identifier")){
-                    identifier = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("instructions")){
-                    instructions = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("furtherinfo")){
-                    furtherinfo = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("logo")){
-                    logo = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("classname")){
-                    classname = currentNode.getTextContent();
+                }else if(currentNode.getNodeName().equals(Constants.VERSION)){
+                    version = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.CREATOR)){
+                    creator = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.PUBLISHER)){
+                    publisher = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.IDENTIFIER)){
+                    identifier = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.INSTRUCTIONS)){
+                    instructions = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.FURTHERINFO)){
+                    furtherinfo = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.LOGO)){
+                    logo = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.CLASSNAME)){
+                    classname = currentNode.getTextContent().trim();
                 }
             }
         }
@@ -121,16 +120,16 @@ public class ServiceDescriptionFactory {
         for (int nodeIndex = 0; nodeIndex < topLevelNodes.getLength(); nodeIndex++) {
             final Node currentNode = topLevelNodes.item(nodeIndex);
             if (currentNode.getNodeType() == Node.ELEMENT_NODE){
-                if(currentNode.getNodeName().equals("description")){
-                    description = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("version")){
-                    version = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("identifier")){
-                    identifier = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("name")){
-                    name = currentNode.getTextContent();
-                }else if(currentNode.getNodeName().equals("homepage")){
-                    homepage = currentNode.getTextContent();
+                if(currentNode.getNodeName().equals(Constants.DESCRIPTION)){
+                    description = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.VERSION)){
+                    version = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.IDENTIFIER)){
+                    identifier = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.NAME)){
+                    name = currentNode.getTextContent().trim();
+                }else if(currentNode.getNodeName().equals(Constants.HOMEPAGE)){
+                    homepage = currentNode.getTextContent().trim();
                 }
 
             }

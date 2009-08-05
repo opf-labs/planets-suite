@@ -101,8 +101,8 @@ public class MigrationPathsFactory {
         final NodeList subNodes = pathElement.getChildNodes();
         MigrationPath pathTemplate = new MigrationPath();
 
-        URI destinationFormatURI = null;
-        List<URI> sourceFormatURIs = new ArrayList<URI>();
+        URI outputformatURI = null;
+        List<URI> inputformatURIs = new ArrayList<URI>();
 
         for (int subNodeIndex = 0; subNodeIndex < subNodes.getLength(); subNodeIndex++) {
 
@@ -113,10 +113,10 @@ public class MigrationPathsFactory {
 
             if (currentSubNode.getNodeType() == Node.ELEMENT_NODE) {
                 if (Constants.SOURCE_FORMATS_ELEMENT.equals(currentSubNodeName)) {
-                    sourceFormatURIs = createURIList(currentSubNode);
+                    inputformatURIs = createURIList(currentSubNode);
                 } else
                 if (Constants.DESTINATION_FORMAT_ELEMENT.equals(currentSubNodeName)) {
-                    destinationFormatURI = createURIList(currentSubNode).get(0);
+                    outputformatURI = createURIList(currentSubNode).get(0);
                 } else if (Constants.COMMAND_LINE_ELEMENT.equals(currentSubNodeName)) {
                     pathTemplate.setCommandLine(getCommandLine(currentSubNode));
                 } else if (Constants.TEMP_FILES_ELEMENT.equals(currentSubNodeName)) {
@@ -132,19 +132,19 @@ public class MigrationPathsFactory {
             }
         }
 
-        if (destinationFormatURI == null) {
+        if (outputformatURI == null) {
             throw new MigrationPathConfigException(
                     "The path element did not have a destination format URI.");
         }
 
-        if (sourceFormatURIs.isEmpty()) {
+        if (inputformatURIs.isEmpty()) {
             throw new MigrationPathConfigException(
                     "The path element did not have any source format URIs.");
         }
 
         List<MigrationPath> result = createCliMigrationPathInstances(pathTemplate,
-                                                                     sourceFormatURIs,
-                                                                     destinationFormatURI);
+                                                                     inputformatURIs,
+                                                                     outputformatURI);
         log.info("Leaving createCliMigrationPathList");
         return result;
     }

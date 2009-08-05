@@ -66,12 +66,12 @@ public class Constants {
      * Code will break if the ELEMENT constant values are not in lowercase!
      *
      */
-    static final String DESTINATION_FORMAT_ELEMENT = "destinationformat";
+    static final String DESTINATION_FORMAT_ELEMENT = "outputformat";
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      *
      */
-    static final String SOURCE_FORMATS_ELEMENT = "sourceformats";
+    static final String SOURCE_FORMATS_ELEMENT = "inputformats";
     /**
      * Code will break if the ELEMENT constant values are not in lowercase!
      *
@@ -87,4 +87,18 @@ public class Constants {
      *
      */
     static final String TEMP_FILE_ELEMENT = "tempfile";
+    static final String DESCRIPTION = "description";
+    static final String TOOL = "tool";
+    static final String VERSION = "version";
+    static final String CREATOR = "creator";
+    static final String PUBLISHER = "publisher";
+    static final String IDENTIFIER = "identifier";
+    static final String INSTRUCTIONS = "instructions";
+    static final String FURTHERINFO = "furtherinfo";
+    static final String LOGO = "logo";
+    static final String CLASSNAME = "classname";
+    static final String NAME = "name";
+    static final String HOMEPAGE = "homepage";
+    static final String TITLE = "title";
+    public static final String SERVICE_DESCRIPTION = "serviceDescription";
 }

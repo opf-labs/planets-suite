@@ -1,0 +1,298 @@
+<serviceWrapping>
+    <serviceDescription>
+
+        <!--
+        Description of the service, in this case ps2pdf.
+        In this case the description is only for testing purposes
+        and thus not informative.
+        Notice the URIs/URLs are without empty spaces.
+        -->
+
+        <title>
+            ff
+        </title>
+        <description>
+            fff
+        </description>
+        <tool>
+            <name>
+                fff
+            </name>
+            <identifier>http://spu.spu</identifier>
+            <description>
+                fff
+            </description>
+            <homepage>http://spu.spu</homepage>
+            <version>
+                ddd
+            </version>
+        </tool>
+        <version>
+            ddd
+        </version>
+        <creator>
+            dddd
+        </creator>
+        <publisher>
+            ddd
+        </publisher>
+        <identifier>http://spu.spu</identifier>
+        <instructions>
+            ddd
+        </instructions>
+        <furtherinfo>http://spu.spu</furtherinfo>
+        <logo>http://spu.spu</logo>
+        <classname>
+            ddd
+        </classname>
+    </serviceDescription>
+    <paths>
+        <path>
+            <!--
+            migrates ps-file to pdf1.2 format (Acrobat 3-and-later)
+            -->
+            <inputformats>
+                <!--
+                    List of format URIs identifying the valid input formats for the
+                    wrapped command(s) in this "path" section. It is recommended to
+                    use PRONOM URIs where possible in order to achieve the most
+                    accurate description of the formats. File suffixes are
+                    inaccurate as most file formats are available in several
+                    revisions.
+                -->
+                <uri value="info:pronom/x-fmt/91"/>
+                <uri value="info:pronom/x-fmt/406"/>
+                <uri value="info:pronom/x-fmt/407"/>
+                <uri value="info:pronom/x-fmt/408"/>
+            </inputformats>
+
+            <outputformat>
+                <!--
+                         Format URI identifying the output format of the wrapped
+                         command(s) in this "path" section. It is recommended to use a
+                         PRONOM URI when possible in order to achieve the most accurate
+                         description of the format. File suffixes are inaccurate as most
+                         file formats are available in several revisions.
+                     -->
+                <uri value="info:pronom/fmt/16"/>
+            </outputformat>
+
+            <commandline>
+                <!--
+                This is the exact commandline to be wrapped.
+                In this case the ps2pdf.
+                Parameters can be given but are not necessary.
+                Default setting is 'normal' which runs without parameters.
+                tempSource and tempDestination are generated adresses used
+                while the file is being migrated.
+                -->
+                <![CDATA[ps2pdf12 #param1 #tempSource #tempDestination]]>
+            </commandline>
+
+
+            <tempfiles>
+                <inputfile label="tempSource">
+                </inputfile>
+                <outputfile label="tempDestination">
+                </outputfile>
+            </tempfiles>
+
+            <toolparameters>
+                <parameter name="param1">
+                    <description>Command line parameters for the 'ps2pdf'
+                        command.
+                        See
+                        'man gs'.
+                    </description>
+                </parameter>
+
+
+            </toolparameters>
+            <toolpresets default="mode">
+                <preset name="mode" default="Normal">
+                    <description>
+                        Takes the options Normal or Silent.
+                        Defaults to 'normal'.
+                    </description>
+                    <settings name="Silent">
+                        <parameter name="param1"><![CDATA['-q']]>
+                        </parameter>
+                        <description>Silent Running</description>
+                    </settings>
+                    <settings name="Normal">
+                        <parameter name="param1"><![CDATA[]]>
+                        </parameter>
+                        <description>Normal</description>
+                    </settings>
+                </preset>
+
+            </toolpresets>
+
+        </path>
+        <path>
+            <!--
+            migrates ps-file to pdf1.3 format (Acrobat 4-and-later)
+            -->
+            <sourceformats>
+                <!--
+                    List of format URIs identifying the valid input formats for the
+                    wrapped command(s) in this "path" section. It is recommended to
+                    use PRONOM URIs where possible in order to achieve the most
+                    accurate description of the formats. File suffixes are
+                    inaccurate as most file formats are available in several
+                    revisions.
+                -->
+                <uri value="info:pronom/x-fmt/91"/>
+                <uri value="info:pronom/x-fmt/406"/>
+                <uri value="info:pronom/x-fmt/407"/>
+                <uri value="info:pronom/x-fmt/408"/>
+            </sourceformats>
+
+            <destinationformat>
+                <!--
+                         Format URI identifying the output format of the wrapped
+                         command(s) in this "path" section. It is recommended to use a
+                         PRONOM URI when possible in order to achieve the most accurate
+                         description of the format. File suffixes are inaccurate as most
+                         file formats are available in several revisions.
+                     -->
+                <uri value="info:pronom/fmt/17"/>
+            </destinationformat>
+
+            <commandline>
+                <!--
+                This is the exact commandline to be wrapped.
+                In this case the ps2pdf.
+                Parameters can be given but are not necessary.
+                Default setting is 'normal' which runs without parameters.
+                tempSource and tempDestination are generated adresses used
+                while the file is being migrated.
+                -->
+                <![CDATA[ps2pdf13 #param1 #tempSource #tempDestination]]>
+            </commandline>
+
+
+            <tempfiles>
+                <inputfile label="tempSource">
+                </inputfile>
+                <outputfile label="tempDestination">
+                </outputfile>
+            </tempfiles>
+
+            <toolparameters>
+                <parameter name="param1">
+                    <description>Command line parameters for the 'ps2pdf'
+                        command.
+                        See
+                        'man gs'.
+                    </description>
+                </parameter>
+
+
+            </toolparameters>
+            <toolpresets default="mode">
+                <preset name="mode" default="Normal">
+                    <description>
+                        Takes the options Normal or Silent.
+                        Defaults to 'normal'.
+                    </description>
+                    <settings name="Silent">
+                        <parameter name="param1"><![CDATA['-q']]>
+                        </parameter>
+                        <description>Silent Running</description>
+                    </settings>
+                    <settings name="Normal">
+                        <parameter name="param1"><![CDATA[]]>
+                        </parameter>
+                        <description>Normal</description>
+                    </settings>
+                </preset>
+
+            </toolpresets>
+
+        </path>
+        <path>
+            <!--
+            migrates ps-file to pdf1.4 format (Acrobat 5-and-later)
+            -->
+            <sourceformats>
+                <!--
+                    List of format URIs identifying the valid input formats for the
+                    wrapped command(s) in this "path" section. It is recommended to
+                    use PRONOM URIs where possible in order to achieve the most
+                    accurate description of the formats. File suffixes are
+                    inaccurate as most file formats are available in several
+                    revisions.
+                -->
+                <uri value="info:pronom/x-fmt/91"/>
+                <uri value="info:pronom/x-fmt/406"/>
+                <uri value="info:pronom/x-fmt/407"/>
+                <uri value="info:pronom/x-fmt/408"/>
+            </sourceformats>
+
+            <destinationformat>
+                <!--
+                         Format URI identifying the output format of the wrapped
+                         command(s) in this "path" section. It is recommended to use a
+                         PRONOM URI when possible in order to achieve the most accurate
+                         description of the format. File suffixes are inaccurate as most
+                         file formats are available in several revisions.
+                     -->
+                <uri value="info:pronom/fmt/18"/>
+            </destinationformat>
+
+            <commandline>
+                <!--
+                This is the exact commandline to be wrapped.
+                In this case the ps2pdf.
+                Parameters can be given but are not necessary.
+                Default setting is 'normal' which runs without parameters.
+                tempSource and tempDestination are generated adresses used
+                while the file is being migrated.
+                -->
+                <![CDATA[ps2pdf14  #param1 #tempSource #tempDestination]]>
+            </commandline>
+
+
+            <tempfiles>
+                <inputfile label="tempSource">
+                </inputfile>
+                <outputfile label="tempDestination">
+                </outputfile>
+            </tempfiles>
+
+            <toolparameters>
+                <parameter name="param1">
+                    <description>Command line parameters for the 'ps2pdf'
+                        command.
+                        See
+                        'man gs'.
+                    </description>
+                </parameter>
+
+
+            </toolparameters>
+            <toolpresets default="mode">
+                <preset name="mode" default="Normal">
+                    <description>
+                        Takes the options Normal or Silent.
+                        Defaults to 'normal'.
+                    </description>
+                    <settings name="Silent">
+                        <parameter name="param1"><![CDATA['-q']]>
+                        </parameter>
+                        <description>Silent Running</description>
+                    </settings>
+                    <settings name="Normal">
+                        <parameter name="param1"><![CDATA[]]>
+                        </parameter>
+                        <description>Normal</description>
+                    </settings>
+                </preset>
+
+            </toolpresets>
+        </path>
+
+
+    </paths>
+</serviceWrapping>

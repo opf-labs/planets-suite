@@ -50,7 +50,12 @@
     <ant dir="IF/techreg" inheritAll="false" />
     <ant dir="IF/common" inheritAll="false" target="compile:common"/>
   </target>
-  
+
+    <target name="compile:generic" depends="compile:common">
+      <ant dir="IF/generic" inheritAll="false" target="compile:common"/>
+    </target>
+
+
   <!-- ================= -->
   
   <!-- This target installs the IF example services. -->
