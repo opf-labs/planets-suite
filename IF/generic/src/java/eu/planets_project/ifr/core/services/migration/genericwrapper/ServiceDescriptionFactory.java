@@ -1,20 +1,17 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.ConfigurationException;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.datatypes.Tool;
 import eu.planets_project.services.utils.PlanetsLogger;
-import eu.planets_project.services.migrate.Migrate;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationPathConfigException;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.ConfigurationException;
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
-import java.util.List;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.MalformedURLException;
 
 
 /**
@@ -79,7 +76,9 @@ public class ServiceDescriptionFactory {
         if(creator == null){
             throw new ConfigurationException("creator not set in configfile");
         }
-        ServiceDescription.Builder builder = new ServiceDescription.Builder(title, "Migrate");
+        ServiceDescription.Builder builder =
+                new ServiceDescription.Builder(title,
+                                               "eu.planets_project.ifr.services.migrate.Migrate");
         builder.author(creator);
         builder.classname(classname);
         builder.description(description);
@@ -161,3 +160,4 @@ public class ServiceDescriptionFactory {
         Tool t = new Tool(identifierURI, name, version, description, homepageURL);
         return t;
     }
+}
