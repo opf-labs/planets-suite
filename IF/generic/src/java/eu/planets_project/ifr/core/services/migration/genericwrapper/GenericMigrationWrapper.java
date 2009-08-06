@@ -1,5 +1,7 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationInitialisationException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -8,20 +10,16 @@ import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationInitialisationException;
 import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.PlanetsLogger;
 import eu.planets_project.services.utils.ProcessRunner;
 import org.w3c.dom.Document;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GenericMigrationWrapper {
@@ -34,15 +32,25 @@ public class GenericMigrationWrapper {
 
     private ServiceDescription serviceDescription;
 
+
+
+    private boolean returnByReference;
+
     public GenericMigrationWrapper(Document configuration)
             throws MigrationInitialisationException {
 
         try {
             MigrationPathsFactory pathsFactory = new MigrationPathsFactory();
             migrationPaths = pathsFactory.getMigrationPaths(configuration);
-   ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
+            ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
             serviceDescription = serviceFactory.getServiceDescription(configuration, migrationPaths.getAsPlanetsPaths());
-            
+            String result = configuration.getDocumentElement().getAttribute(
+                    "returnByReference");
+            if (result != null){
+                returnByReference = Boolean.valueOf(result);
+            }
+
+
         } catch (Exception e) {
             throw new MigrationInitialisationException(
                     "Failed initialising migration path data from the configuration document: "
@@ -99,101 +107,101 @@ public class GenericMigrationWrapper {
         }
 
 
-        String command = migrationPath.getCommandLine(toolParameters);
-
-
-        try {
-            InputStream processStandardInput = null;
-            if (!migrationPath.useTempSourceFile()) {
-                //serve the file on standard input
-                processStandardInput = sourceObject.getContent().read();
-            } else {
-                //fine, is alreade written
-            }
-
-            //Execute the tool
-            final ProcessRunner toolProcessRunner = new ProcessRunner();
-            ServiceReport serviceReport = executeToolProcess(toolProcessRunner,
-                                                             command, processStandardInput);
+        List<String> command = migrationPath.getCommandLine(toolParameters);
 
 
 
-            if (serviceReport.getType() == Type.ERROR) {
-                String message = "Failed migrating object with title '"
-                                 + sourceObject.getTitle() + "' from format URI: "
-                                 + sourceFormat + " to " + destinationFormat
-                                 + " Standard output: "
-                                 + toolProcessRunner.getProcessOutputAsString()
-                                 + "\nStandard error output: "
-                                 + toolProcessRunner.getProcessErrorAsString();
-                serviceReport = new ServiceReport(Type.ERROR,
-                                                  Status.TOOL_ERROR, message);
-                return new MigrateResult(null, serviceReport);
-            }
-
-
-            //cleanup
-            if (migrationPath.useTempSourceFile()){
-                migrationPath.getTempSourceFile().getFile().delete();
-            }
-            for (TempFile tempFile : migrationPath.getTempFileDeclarations()) {
-                tempFile.getFile().delete();
-            }
-
-
-            //READING THE OUTPUT
-            //TODO return a reference to the outputfile
-            byte[] destinationObjectBytes;
-            if (migrationPath.useTempDestinationFile()){
-                //we should read a temp file afterwards
-                File outputfile = migrationPath.getTempOutputFile().getFile();
-                destinationObjectBytes = FileUtils
-                        .writeInputStreamToBinary(
-                                new FileInputStream(outputfile));
-                outputfile.delete();
-
-                String message = "Successfully migrated object with title '"
-                                 + sourceObject.getTitle() + "' from format URI: "
-                                 + sourceFormat + " to " + destinationFormat
-                                 + " Standard output: "
-                                 + toolProcessRunner.getProcessOutputAsString()
-                                 + "\nStandard error output: "
-                                 + toolProcessRunner.getProcessErrorAsString();
-                serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-                                                  message);
-
-            } else {
-                //we should read the output
-                destinationObjectBytes = FileUtils
-                        .writeInputStreamToBinary(toolProcessRunner
-                                .getProcessOutput());
-
-                String message = "Successfully migrated object with title '"
-                                 + sourceObject.getTitle() + "' from format URI: "
-                                 + sourceFormat + " to " + destinationFormat
-                                 + " Standard error output: "
-                                 + toolProcessRunner.getProcessErrorAsString();
-                serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-                                                  message);
-
-
-            }
-
-            //TODO cleanup the dir
-
-            final DigitalObject destinationObject = new DigitalObject.Builder(
-                    Content.byValue(destinationObjectBytes))
-                    .format(destinationFormat)
-                    .build();
-
-            return new MigrateResult(destinationObject, serviceReport);
-
-        } catch (IOException ioe) {
-            throw new MigrationException("Failed migrating object with title '"
-                                         + sourceObject.getTitle() + " from format URI: "
-                                         + sourceFormat + " to : " + destinationFormat
-                                         + " due to problems while handling temporary files.", ioe);
+        InputStream processStandardInput = null;
+        if (!migrationPath.useTempSourceFile()) {
+            //serve the file on standard input
+            processStandardInput = sourceObject.getContent().read();
+        } else {
+            //fine, is alreade written
         }
+
+        //Execute the tool
+        final ProcessRunner toolProcessRunner = new ProcessRunner();
+        ServiceReport serviceReport = executeToolProcess(toolProcessRunner,
+                                                         command, processStandardInput);
+
+
+
+        if (serviceReport.getType() == Type.ERROR) {
+            String message = "Failed migrating object with title '"
+                             + sourceObject.getTitle() + "' from format URI: "
+                             + sourceFormat + " to " + destinationFormat
+                             + " Standard output: "
+                             + toolProcessRunner.getProcessOutputAsString()
+                             + "\nStandard error output: "
+                             + toolProcessRunner.getProcessErrorAsString();
+            serviceReport = new ServiceReport(Type.ERROR,
+                                              Status.TOOL_ERROR, message);
+            return new MigrateResult(null, serviceReport);
+        }
+
+
+        //cleanup
+        if (migrationPath.useTempSourceFile()){
+            migrationPath.getTempSourceFile().getFile().delete();
+        }
+        for (TempFile tempFile : migrationPath.getTempFileDeclarations()) {
+            tempFile.getFile().delete();
+        }
+
+
+        //READING THE OUTPUT
+        //TODO return a reference to the outputfile
+        DigitalObject.Builder builder;
+
+
+        if (migrationPath.useTempDestinationFile()){
+            //we should read a temp file afterwards
+            File outputfile = migrationPath.getTempOutputFile().getFile();
+            if (returnByReference){
+                builder = new DigitalObject.Builder(Content.byReference(outputfile));
+            } else {
+                builder = new DigitalObject.Builder(Content.byValue(outputfile));
+                outputfile.delete();
+            }
+
+
+            String message = "Successfully migrated object with title '"
+                             + sourceObject.getTitle() + "' from format URI: "
+                             + sourceFormat + " to " + destinationFormat
+                             + " Standard output: "
+                             + toolProcessRunner.getProcessOutputAsString()
+                             + "\nStandard error output: "
+                             + toolProcessRunner.getProcessErrorAsString();
+            serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                                              message);
+
+        } else {
+
+            if (returnByReference){
+                //we should read the output
+                builder = new DigitalObject.Builder(Content.byReference(toolProcessRunner.getProcessOutput()));
+            } else{
+                builder = new DigitalObject.Builder(Content.byValue(toolProcessRunner.getProcessOutput()));
+            }
+            String message = "Successfully migrated object with title '"
+                             + sourceObject.getTitle() + "' from format URI: "
+                             + sourceFormat + " to " + destinationFormat
+                             + " Standard error output: "
+                             + toolProcessRunner.getProcessErrorAsString();
+            serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                                              message);
+
+
+        }
+
+
+        //TODO cleanup the dir
+        DigitalObject destinationObject = builder
+                .format(destinationFormat)
+                .build();
+
+        return new MigrateResult(destinationObject, serviceReport);
+
     }
 
     private void handleTempDestinationFile(MigrationPath migrationPath,
@@ -217,7 +225,7 @@ public class GenericMigrationWrapper {
 
         //if useTempFiles
         //create work folder
-        File workfolder = FileUtils.createWorkFolderInSysTemp(FileUtils.randomizeFileName("hardcodename"));
+        File workfolder = FileUtils.createWorkFolderInSysTemp(FileUtils.randomizeFileName(serviceDescription.getName()));
 
         log.info("Created workfolder "+ workfolder.getAbsolutePath());
 
@@ -255,10 +263,10 @@ public class GenericMigrationWrapper {
     }
 
     private ServiceReport executeToolProcess(ProcessRunner toolProcessRunner,
-                                             String command, InputStream processStandardInput) {
+                                             List<String> command, InputStream processStandardInput) {
 
         toolProcessRunner.setInputStream(processStandardInput);
-        toolProcessRunner.setCommand(Arrays.asList("/bin/sh", "-c", command));
+        toolProcessRunner.setCommand(command);
         toolProcessRunner.setCollection(true);
         toolProcessRunner.setOutputCollectionByteSize(-1);
 

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
@@ -43,7 +44,7 @@ public class MigrationPathTest {
 
         // The first trivial test.
         final MigrationPath migrationPath = new MigrationPath();
-        migrationPath.setCommandLine(originalCommandLine);
+        migrationPath.setCommandLine(Arrays.asList("/bin/sh","-c",originalCommandLine));
         Assert.assertEquals(
                 "getCommandLine() did not return the value just set.",
                 originalCommandLine, migrationPath.getCommandLine());
@@ -67,7 +68,7 @@ public class MigrationPathTest {
         migrationPath.addTempFilesDeclaration(tempfile);
 
         final String executableCommandLine = migrationPath
-                .getCommandLine(toolParameters);
+                .getCommandLine(toolParameters).get(2);
 
         final String expectedCommandLine = "cat -n /random-source-name > "
                 + "/random-temp-file-name && tr '[:lower:]' '[:upper:]' "

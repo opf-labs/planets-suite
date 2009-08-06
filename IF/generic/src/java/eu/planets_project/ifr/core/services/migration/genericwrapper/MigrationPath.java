@@ -31,7 +31,7 @@ public class MigrationPath implements Cloneable {
     private TempFile tempOutputFile;
     private Map<String, Parameter> parameters;
     private Map<String,Preset> presets;
-    private String commandLine;
+    private List<String> commandLine;
     private String defaultPreset;
 
 
@@ -119,7 +119,7 @@ public class MigrationPath implements Cloneable {
      *             defined in order to substitute all the identifiers in the
      *             command line.
      */
-    public String getCommandLine(Collection<Parameter> toolParameters) throws MigrationException {
+    public List<String> getCommandLine(Collection<Parameter> toolParameters) throws MigrationException {
 
         log.info("Entering getCommandLine");
         // Get a complete list of identifiers in the command line.
@@ -190,36 +190,30 @@ public class MigrationPath implements Cloneable {
                                          + usedIdentifiers);
         }
 
-        String executableCommandLine = commandLine;
-        for (Parameter parameter : toolParameters) {
-            executableCommandLine =
-                    executableCommandLine
-                            .replaceAll("#"
-                                        + parameter.getName(),
-                                        parameter.getValue());
-        }
+        List<String> executableCommandLine = new ArrayList<String>();
+        for (String cmd:commandLine){
+            for (Parameter parameter : toolParameters) {
+                cmd = cmd.replaceAll("#"
+                                     + parameter.getName(),
+                                     parameter.getValue());
+            }
 
-        for (TempFile tempFile : tempFiles) {
-            executableCommandLine
-                    = executableCommandLine
-                    .replaceAll("#"
-                                + tempFile.getCodename(),
-                                tempFile.getFile().getAbsolutePath());
+            for (TempFile tempFile : tempFiles) {
+                cmd = cmd.replaceAll("#"
+                                     + tempFile.getCodename(),
+                                     tempFile.getFile().getAbsolutePath());
+            }
+            if (useTempSourceFile()){
+                cmd = cmd.replaceAll("#"
+                                     + tempSourceFile.getCodename(),
+                                     tempSourceFile.getFile().getAbsolutePath());
+            }
+            if (useTempDestinationFile()){
+                cmd = cmd.replaceAll("#" + tempOutputFile.getCodename(),
+                                     tempOutputFile.getFile().getAbsolutePath());
+            }
+            executableCommandLine.add(cmd);
         }
-        if (useTempSourceFile()){
-            executableCommandLine
-                    = executableCommandLine
-                    .replaceAll("#"
-                                + tempSourceFile.getCodename(),
-                                tempSourceFile.getFile().getAbsolutePath());
-        }
-        if (useTempDestinationFile()){
-            executableCommandLine
-                    = executableCommandLine
-                    .replaceAll("#" + tempOutputFile.getCodename(),
-                                tempOutputFile.getFile().getAbsolutePath());
-        }
-
 
         return executableCommandLine;
     }
@@ -256,19 +250,22 @@ public class MigrationPath implements Cloneable {
      * the string, then the returned set would contain the string
      * &quot;myIdentifier&quot;.
      *
-     * @param stringWithIdentifiers
+     * @param stringListWithIdentifiers
      *            a <code>String</code> containing identifiers.
      * @return a <code>Set</code> containing the identifiers found.
      */
-    private Set<String> getIdentifiers(String stringWithIdentifiers) {
+    private Set<String> getIdentifiers(List<String> stringListWithIdentifiers) {
         Set<String> foundIdentifiers = new HashSet<String>();
-        StringTokenizer stringTokenizer = new StringTokenizer(
-                stringWithIdentifiers);
-        while (stringTokenizer.hasMoreTokens()) {
-            String identifier = stringTokenizer.nextToken();
-            if (identifier.charAt(0) == '#') {
-                identifier = identifier.substring(1);
-                foundIdentifiers.add(identifier);
+
+        for (String stringWithIdentifiers:stringListWithIdentifiers){
+            StringTokenizer stringTokenizer = new StringTokenizer(
+                    stringWithIdentifiers);
+            while (stringTokenizer.hasMoreTokens()) {
+                String identifier = stringTokenizer.nextToken();
+                if (identifier.charAt(0) == '#') {
+                    identifier = identifier.substring(1);
+                    foundIdentifiers.add(identifier);
+                }
             }
         }
         return foundIdentifiers;
@@ -280,7 +277,7 @@ public class MigrationPath implements Cloneable {
      * @return String containing the unprocessed command line, containing
      *         parameter identifiers/keys.
      */
-    public String getCommandLine() {
+    public List<String> getCommandLine() {
         return commandLine;
     }
 
@@ -294,7 +291,7 @@ public class MigrationPath implements Cloneable {
      * @param commandLine
      *            <code>String</code> containing the command line to set.
      */
-    public void setCommandLine(String commandLine) {
+    public void setCommandLine(List<String> commandLine) {
         this.commandLine = commandLine;
     }
 
@@ -447,7 +444,7 @@ public class MigrationPath implements Cloneable {
         for (Preset preset : presets.values()) {
             params.add(preset.getAsPlanetsParameter());
         }
-        return new eu.planets_project.services.datatypes.MigrationPath(informat,outformat,params); 
+        return new eu.planets_project.services.datatypes.MigrationPath(informat,outformat,params);
     }
 
     public void addPreset(Preset preset) {

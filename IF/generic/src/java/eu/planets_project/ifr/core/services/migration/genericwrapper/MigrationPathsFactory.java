@@ -441,20 +441,20 @@ public class MigrationPathsFactory {
      *             if not <code>TEXT_NODE</code> element was not found in
      *             <code>commandLineNode</code>
      */
-    private String getCommandLine(Node commandLineNode)
+    private List<String> getCommandLine(Node commandLineNode)
             throws MigrationPathConfigException {
         final NodeList childNodes = commandLineNode.getChildNodes();
+
+        List<String> commands = new ArrayList<String>();
         for (int childIndex = 0; childIndex < childNodes.getLength(); childIndex++) {
             final Node currentNode = childNodes.item(childIndex);
-            if (currentNode.getNodeType() == Node.CDATA_SECTION_NODE) {
-                // Avoid accidental new-lines and carriage returns
-                return currentNode.getNodeValue().replaceAll("[\n\r]", "");
+            if (currentNode.getNodeType() == Node.ELEMENT_NODE){
+                if (currentNode.getNodeName().equals("cmd")){
+                    commands.add(currentNode.getTextContent().trim());
+                }
             }
         }
-
-        throw new MigrationPathConfigException(
-                "This supposed command line node contains no CDATA element. NodeName = "
-                + commandLineNode.getNodeName());
+        return commands;
     }
 
     /**

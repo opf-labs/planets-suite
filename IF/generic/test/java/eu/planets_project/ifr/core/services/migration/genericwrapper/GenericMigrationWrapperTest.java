@@ -43,7 +43,7 @@ final List<Parameter> testParameters = new ArrayList<Parameter>();
 
         testParameters.add(new Parameter("mode", "complete"));
 
-        DocumentLocator documentLocator = new DocumentLocator("genericWrapperTempSrcDstConfig.xml");
+        DocumentLocator documentLocator = new DocumentLocator("exampleConfigfile.xml");
          genericWrapper = new GenericMigrationWrapper(
                 documentLocator.getDocument());
 
