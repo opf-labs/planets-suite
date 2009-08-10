@@ -13,7 +13,7 @@ import eu.planets_project.services.datatypes.Property;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class ResultPropertiesReaderTests {
-    private static final String OUTPUT = "PP/xcl/src/resources/output.xml";
+    private static final String OUTPUT = "PP/xcl/src/test/resources/copra.xml";
 
     /** Test reading XCDL comparator result files. */
     @Test

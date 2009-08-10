@@ -31,7 +31,7 @@ public final class ComparatorWrapper {
     private ComparatorWrapper() {}
 
     /** The filename of the result file. */
-    private static final String RESULT_FILENAME = "cpr.cpr";
+    private static final String RESULT_FILENAME = "copra.xml";
     /** A planets logger. */
     private static final Log LOG = LogFactory.getLog(ComparatorWrapper.class);
     /** The home of the comparator command-line tool. */
@@ -86,6 +86,9 @@ public final class ComparatorWrapper {
         return result;
     }
 
+    /**
+     * @return The file formats supported by the comparator
+     */
     public static List<URI> getSupportedInputFormats() {
         List<URI> inputFormats = new ArrayList<URI>();
         inputFormats.add(FormatRegistryFactory.getFormatRegistry()

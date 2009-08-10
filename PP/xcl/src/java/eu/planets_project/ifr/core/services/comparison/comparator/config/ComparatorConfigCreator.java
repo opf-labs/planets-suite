@@ -8,13 +8,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Coco;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.CompSet;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.MeasureType;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Metric;
-import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.PcRequest;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Property;
-import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Source;
-import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Target;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
@@ -24,7 +22,7 @@ import eu.planets_project.services.datatypes.Parameter;
  */
 public final class ComparatorConfigCreator {
 
-    private String pcrXml;
+    private String cocoXml;
 
     /**
      * @param config The config elements
@@ -36,14 +34,14 @@ public final class ComparatorConfigCreator {
                             + "comparison.comparator.config.generated");
             Marshaller marshaller = jc.createMarshaller();
             StringWriter stringWriter = new StringWriter();
-            PcRequest pcrObject = createPcrObject(config);
+            Coco pcrObject = createCocoObject(config);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty("jaxb.schemaLocation",
-                    "http://www.planets-project.eu/xcl/schemas/xcl  pcr.xsd");
+                    "http://www.planets-project.eu/xcl/schemas/xcl /res/schemas/coco.xsd");
             marshaller.marshal(pcrObject, stringWriter);
-            this.pcrXml = stringWriter.toString();
+            this.cocoXml = stringWriter.toString();
             System.out.println(String.format("Marshalled %s to:\n%s",
-                    pcrObject, pcrXml));
+                    pcrObject, cocoXml));
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -53,22 +51,12 @@ public final class ComparatorConfigCreator {
      * @param config The config elements
      * @return Returns a {@link PcRequest} corresponding to the properties
      */
-    private PcRequest createPcrObject(final List<Parameter> config) {
-        PcRequest result = new PcRequest();
+    private Coco createCocoObject(final List<Parameter> config) {
+        Coco result = new Coco();
         CompSet set = new CompSet();
         result.getCompSets().add(set);
         for (Parameter prop : config) {
-            if (prop.getName().equals("source")) {
-                Source s = new Source();
-                s.setName(prop.getValue());
-                set.setSource(s);
-            } else if (prop.getName().equals("target")) {
-                Target t = new Target();
-                t.setName(prop.getValue());
-                set.setTarget(t);
-            } else {
-                addPropertyElement(set, prop);
-            }
+            addPropertyElement(set, prop);
         }
         return result;
     }
@@ -89,7 +77,6 @@ public final class ComparatorConfigCreator {
                     MeasureType[] values = MeasureType.values();
                     for (MeasureType type : values) {
                         if (type.name().toLowerCase().equals(lowerTokens[1])) {
-                            p.setUnit(type);
                             break;
                         }
                     }
@@ -125,7 +112,7 @@ public final class ComparatorConfigCreator {
      *         the comparator.
      */
     public String getComparatorConfigXml() {
-        return pcrXml;
+        return cocoXml;
     }
 
     private String[] clean(final String[] split) {

@@ -13,12 +13,11 @@ import eu.planets_project.services.datatypes.Parameter;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public class ComparatorConfigParserTests {
-    private static final String CPR = "PP/xcl/src/java/eu/planets_project/"
-            + "ifr/core/services/comparison/comparator/config/samplePCR.xml";
+    private static final String COCO = "PP/xcl/src/test/resources/cocoImage.xml";
 
     @Test
     public void testParser() {
-        check(new ComparatorConfigParser(new File(CPR)));
+        check(new ComparatorConfigParser(new File(COCO)));
     }
 
     /**

@@ -8,40 +8,40 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Coco;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.CompSet;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Metric;
-import eu.planets_project.ifr.core.services.comparison.comparator.config.generated.PcRequest;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
- * Access to a complete XCDL comparator config file (PCR), via JAXB-generated
+ * Access to a complete XCDL comparator config file (Coco), via JAXB-generated
  * classes.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class ComparatorConfigParser {
 
-    private File pcrFile;
-    private PcRequest pcr;
+    private File cocoFile;
+    private Coco coco;
 
     /**
-     * @param xcdl The comparator config file
+     * @param coco The comparator config file
      */
-    public ComparatorConfigParser(final File xcdl) {
-        this.pcrFile = xcdl;
-        this.pcr = loadPcr();
+    public ComparatorConfigParser(final File coco) {
+        this.cocoFile = coco;
+        this.coco = loadCoco();
     }
 
     /**
-     * @return The XCDL root object
+     * @return The Coco root object
      */
-    private PcRequest loadPcr() {
+    private Coco loadCoco() {
         try {
             JAXBContext jc = JAXBContext
                     .newInstance("eu.planets_project.ifr.core.services.comparison.comparator.config.generated");
             Unmarshaller unmarshaller = jc.createUnmarshaller();
-            java.lang.Object object = unmarshaller.unmarshal(pcrFile);
+            java.lang.Object object = unmarshaller.unmarshal(cocoFile);
             System.out.println(object.getClass());
-            return (PcRequest) object;
+            return (Coco) object;
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -53,9 +53,8 @@ public final class ComparatorConfigParser {
      */
     public List<Parameter> getProperties() {
         List<Parameter> result = new ArrayList<Parameter>();
-        result.addAll(getBasicProperties());
-        CompSet compSet = pcr.getCompSets().get(0);
-        // TODO what about multiple files in the PCR?
+        CompSet compSet = coco.getCompSets().get(0);
+        // TODO what about multiple files in the Coco?
         List<eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Property> list = compSet
                 .getProperties();
         for (eu.planets_project.ifr.core.services.comparison.comparator.config.generated.Property property : list) {
@@ -64,9 +63,8 @@ public final class ComparatorConfigParser {
             List<Metric> pcrMetrics = property.getMetrics();
             for (Metric metric : pcrMetrics) {
                 int metricId = metric.getId();
-                metrics.append("metric").append(" ").append(metric.getName())
-                        .append(" ").append(String.valueOf(metricId)).append(
-                                ",");
+                metrics.append("metric").append(" ").append(metric.getName()).append(" ").append(
+                        String.valueOf(metricId)).append(",");
             }
             String mString = metrics.toString();
             if (mString.endsWith(",")) {
@@ -80,22 +78,9 @@ public final class ComparatorConfigParser {
     }
 
     /**
-     * @return The basic string properties
-     */
-    public List<Parameter> getBasicProperties() {
-        List<Parameter> result = new ArrayList<Parameter>();
-        CompSet compSet = pcr.getCompSets().get(0);
-        Parameter p1 = new Parameter("source", compSet.getSource().getName());
-        Parameter p2 = new Parameter("target", compSet.getTarget().getName());
-        result.add(p1);
-        result.add(p2);
-        return result;
-    }
-
-    /**
      * @return the full comparator config object tree
      */
-    public PcRequest getPcRequest() {
-        return pcr;
+    public Coco getCoco() {
+        return coco;
     }
 }

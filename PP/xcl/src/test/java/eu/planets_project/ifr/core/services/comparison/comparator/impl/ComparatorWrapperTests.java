@@ -24,9 +24,7 @@ public final class ComparatorWrapperTests {
     /***/
     static final String XCDL1 = "PP/xcl/src/resources/XCDL1.xcdl";
     /***/
-    static final String PCR_SINGLE = "PP/xcl/src/resources/defaultPCR.xml";
-    /***/
-    static final String PCR_MULTI = "PP/xcl/src/resources/defaultPCRMulti.xml";
+    static final String COCO_IMAGE = "PP/xcl/src/test/resources/cocoImage.xml";
 
     /** Tests if the required environment variable is set. */
     @Test
@@ -40,7 +38,7 @@ public final class ComparatorWrapperTests {
     public void testWrapperTwoWithConfig() {
         String result = ComparatorWrapper.compare(
                 ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
-                        .read(XCDL2)), ComparatorWrapper.read(PCR_SINGLE));
+                        .read(XCDL2)), ComparatorWrapper.read(COCO_IMAGE));
         System.out.println("Result: " + result);
         check(result);
     }
@@ -61,7 +59,7 @@ public final class ComparatorWrapperTests {
         String result = ComparatorWrapper.compare(
                 ComparatorWrapper.read(XCDL1), Arrays.asList(ComparatorWrapper
                         .read(XCDL2), ComparatorWrapper.read(XCDL3)),
-                ComparatorWrapper.read(PCR_MULTI));
+                ComparatorWrapper.read(COCO_IMAGE));
         check(result);
     }
 
@@ -91,7 +89,7 @@ public final class ComparatorWrapperTests {
      * @param properties The result properties to check
      */
     public static void check(final List<Property> properties) {
-        Assert.assertTrue(properties.size() > 0);
+        Assert.assertTrue("Property list should not be empty", properties.size() > 0);
         System.out.println("Comparator returned: ");
         for (Property prop : properties) {
             System.out.println(prop);

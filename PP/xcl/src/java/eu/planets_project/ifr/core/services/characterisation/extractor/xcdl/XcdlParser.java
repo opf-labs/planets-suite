@@ -166,7 +166,7 @@ public final class XcdlParser implements XcdlAccess {
          * makes no sense whatsoever; could we get rid of property sets here
          * altogether?
          */
-        "ref i_i1_i5 suggestedPaletteAlpha").build());
+        "ref i_i1_i1_i5 suggestedPaletteAlpha").build());
         for (eu.planets_project.services.datatypes.Property property : properties) {
             result
                     .add(new eu.planets_project.services.datatypes.Property.Builder(

@@ -36,7 +36,7 @@ public class SampleXclUsage {
     private static final String SAMPLES = RESOURCES + "test_samples/";
     private static final String ORIGINAL = SAMPLES + "gif/basketball.gif";
     private static final String CONVERTED = SAMPLES + "jpeg/basketball.jpg";
-    private static final String COCO = RESOURCES + "sampleComparatorConfig.xml";
+    private static final String COCO = RESOURCES + "cocoImage.xml";
     /* We get a PRONOM ID for the original and the converted file: */
     private static final FormatRegistry REGISTRY = FormatRegistryFactory
             .getFormatRegistry();

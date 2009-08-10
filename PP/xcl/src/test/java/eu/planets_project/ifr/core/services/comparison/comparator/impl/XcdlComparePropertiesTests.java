@@ -53,7 +53,7 @@ public final class XcdlComparePropertiesTests {
         byte[] data2 = FileUtils.readFileIntoByteArray(new File(
                 ComparatorWrapperTests.XCDL2));
         byte[] configData = FileUtils.readFileIntoByteArray(new File(
-                ComparatorWrapperTests.PCR_SINGLE));
+                ComparatorWrapperTests.COCO_IMAGE));
         testServices(data1, data2, configData);
     }
 
