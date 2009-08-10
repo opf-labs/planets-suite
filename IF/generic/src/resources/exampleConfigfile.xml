@@ -109,8 +109,7 @@
                 <parameter name="param1">
                     <description>Command line parameters for the 'ps2pdf'
                         command.
-                        See
-                        'man gs'.
+                        See 'man gs'.
                     </description>
                 </parameter>
 
