@@ -12,18 +12,12 @@ import org.junit.Test;
  */
 public class XcdlPropertiesTests {
     private static final String NAME = "testProp";
-    private static final String ID = "5";
-    final static URI URI = XcdlProperties.makePropertyURI(ID, NAME);
+    final static URI URI = XcdlProperties.makePropertyURI(NAME);
 
     @Test
     public void makeUri() {
-        Assert.assertEquals("planets:pc/xcdl/property/id5/testProp", URI
+        Assert.assertEquals(XcdlProperties.URI_ROOT+"testProp", URI
                 .toString());
-    }
-
-    @Test
-    public void getIdFromUri() {
-        Assert.assertEquals(ID, XcdlProperties.getIdFromUri(URI));
     }
 
     @Test

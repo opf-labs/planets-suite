@@ -45,9 +45,7 @@ public final class XcdlProperties implements XcdlAccess {
                 Element labVal = e.getChild("valueSet", NS).getChild(
                         "labValue", NS);
                 String value = labVal.getChildText("val", NS);
-                String id = e.getChild("name", NS).getAttributeValue("id")
-                        .replaceAll("id", "");
-                URI propUri = XcdlProperties.makePropertyURI(id, name);
+                URI propUri = XcdlProperties.makePropertyURI(name);
                 Property p = new Property.Builder(propUri).name(name).value(
                         value).type(labVal.getChildText("type", NS)).build();
                 properties.add(p);
@@ -75,7 +73,7 @@ public final class XcdlProperties implements XcdlAccess {
 
     /* Relatively unrelated: static methods for handling property uris: */
 
-    private static final String URI_ROOT = "planets:pc/xcdl/property/";
+    static final String URI_ROOT = "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#";
 
     private File xcdlFile;
 
@@ -87,14 +85,12 @@ public final class XcdlProperties implements XcdlAccess {
     }
 
     /**
-     * @param id The property ID
      * @param name The property name
      * @return A uniform URI for the property
      */
-    public static URI makePropertyURI(final String id, final String name) {
+    public static URI makePropertyURI(final String name) {
         try {
-            URI propUri = new URI(XcdlProperties.URI_ROOT + "id" + id + "/"
-                    + name);
+            URI propUri = new URI(XcdlProperties.URI_ROOT + name);
             return propUri;
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -122,24 +118,10 @@ public final class XcdlProperties implements XcdlAccess {
 
     /**
      * @param uri The property URI
-     * @return The raw ID (e.g. 61)
-     */
-    public static String getIdFromUri(final URI uri) {
-        String[] split = tokenize(uri);
-        return split[split.length - 2].replace("id", "");
-    }
-
-    /**
-     * @param uri The property URI
      * @return The raw property name (e.g. imageHeight)
      */
     public static String getNameFromUri(final URI uri) {
-        String[] split = tokenize(uri);
-        return split[split.length - 1];
-    }
-
-    private static String[] tokenize(URI uri) {
-        return uri.toString().split("/");
+        return uri.toString().split("#")[1];
     }
 
 }

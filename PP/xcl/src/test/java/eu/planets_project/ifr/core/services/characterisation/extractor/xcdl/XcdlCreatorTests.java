@@ -30,7 +30,7 @@ public class XcdlCreatorTests {
         List<Property> norm = Arrays
                 .asList(
                 /* Norm data: */
-                new Property.Builder(XcdlProperties.makePropertyURI("1",
+                new Property.Builder(XcdlProperties.makePropertyURI(
                         "normData"))
                         .name("normData")
                         .type("normData")
@@ -41,7 +41,7 @@ public class XcdlCreatorTests {
         /* Property sets: */
         List<Property> sets = Arrays
                 .asList(new Property.Builder(XcdlProperties.makePropertyURI(
-                        "1", "propertySet"))
+                        "propertySet"))
                         .name("propertySet")
                         .type("propertySet")
                         .description(
@@ -51,7 +51,7 @@ public class XcdlCreatorTests {
         List<Property> properties = Arrays
                 .asList(
                         new Property.Builder(XcdlProperties.makePropertyURI(
-                                "74", "property"))
+                                "property"))
                                 .name("property")
                                 .type("property")
                                 .description(
@@ -59,7 +59,7 @@ public class XcdlCreatorTests {
                                                 + "valueSet i_i1_i217_s5, labValue 0 int inch, dataRef id_1 global")
                                 .build(),
                         new Property.Builder(XcdlProperties.makePropertyURI(
-                                "73", "property"))
+                                "property"))
                                 .name("property")
                                 .type("property")
                                 .description(
@@ -104,7 +104,7 @@ public class XcdlCreatorTests {
     @Test(expected = IllegalArgumentException.class)
     public void testFaultyProp() {
         new XcdlCreator(Arrays.asList(new Property.Builder(XcdlProperties
-                .makePropertyURI("some", "totally")).name("random").value(
+                .makePropertyURI("totally")).name("random").value(
                 "property").build()));
     }
 }

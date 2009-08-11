@@ -83,8 +83,7 @@ public final class XcdlParser implements XcdlAccess {
                 for (ValueSet valueSet : valueSets) {
                     LabValue labValue = valueSet.getLabValue();
                     List<Val> val = labValue.getVals();
-                    String id = property.getName().getId().replaceAll("id", "");
-                    URI propUri = XcdlProperties.makePropertyURI(id, name);
+                    URI propUri = XcdlProperties.makePropertyURI(name);
                     String value = val.get(0).getValues().get(0);
                     String type = PropertyName.PROPERTY.s;
                     String unit = labValue.getTypes().get(0).getValue().value();
@@ -155,11 +154,11 @@ public final class XcdlParser implements XcdlAccess {
         }
         List<eu.planets_project.services.datatypes.Property> result = new ArrayList<eu.planets_project.services.datatypes.Property>();
         result.add(new eu.planets_project.services.datatypes.Property.Builder(
-                XcdlProperties.makePropertyURI("1", "normData")).name(
+                XcdlProperties.makePropertyURI("normData")).name(
                 "normData").type("normData").description("object").value(
                 "00 01 02 03 04 05 06 07 08 09 0a").build());
         result.add(new eu.planets_project.services.datatypes.Property.Builder(
-                XcdlProperties.makePropertyURI("id_0", "propertySet")).name(
+                XcdlProperties.makePropertyURI("propertySet")).name(
                 "propertySet").type("propertySet").description(
         /*
          * FIXME: this following ID is particularly nasty and setting it here

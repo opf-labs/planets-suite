@@ -77,8 +77,8 @@ public final class ResultPropertiesReader {
                 String description = state.equals("complete") ? processMetrics(e) : "";
                 String name = e.getAttributeValue("name");
                 String desc = "[" + description + "]";
-                Property result = new Property.Builder(XcdlProperties.makePropertyURI(e.getAttributeValue("id")
-                        .replaceAll("id", ""), name)).name(name).value(state).description(desc).build();
+                Property result = new Property.Builder(XcdlProperties.makePropertyURI(name)).name(name).value(state)
+                        .description(desc).build();
                 properties.add(result);
             }
         } catch (JDOMException e) {

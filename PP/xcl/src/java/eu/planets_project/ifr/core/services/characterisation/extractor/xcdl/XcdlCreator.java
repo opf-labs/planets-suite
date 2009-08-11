@@ -135,8 +135,7 @@ public class XcdlCreator {
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
             Property prop) {
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property p = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property();
-        String propId = XcdlProperties.getIdFromUri(prop.getUri());
-        p.setId("p" + propId);
+       
         /*
          * This is where it gets ugly: we map our property values onto the XCDL
          * XML types:
@@ -147,6 +146,8 @@ public class XcdlCreator {
         String[] valueSetTokens = clean(levelOneTokens[2].split(" "));
         String[] labValTokens = clean(levelOneTokens[3].split(" "));
         String[] dataRefTokens = clean(levelOneTokens[4].split(" "));
+        
+        p.setId("p" + nameTokens[1].replaceAll("id", ""));
 
         p.setSource(SourceType.fromValue(valueTokens[0].toLowerCase()));
         p.setCat(CatType.fromValue(valueTokens[1].toLowerCase()));
@@ -199,8 +200,7 @@ public class XcdlCreator {
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
             Property prop) {
         PropertySet set = new PropertySet();
-        String propId = XcdlProperties.getIdFromUri(prop.getUri());
-        set.setId("id" + propId);
+        set.setId("id_0");
         ValueSetRelations rel = new ValueSetRelations();
         String desc = prop.getDescription();
         if (desc == null || !desc.contains(" ")) {
@@ -209,7 +209,7 @@ public class XcdlCreator {
         }
         String[] levelOneTokens = desc.split(",");
         for (String s : levelOneTokens) {
-            String[] tokens = s.split(" ");
+            String[] tokens = s.trim().split(" ");
             Ref ref = new Ref();
             ref.setValueSetId(tokens[1]);
             ref.setName(tokens[2]);
@@ -229,8 +229,7 @@ public class XcdlCreator {
                     "Normdata property must have a description");
         }
         normData.setType(InformType.fromValue(description.toLowerCase()));
-        String propId = XcdlProperties.getIdFromUri(prop.getUri());
-        normData.setId("nd" + propId);
+        normData.setId("nd1");
         if (prop.getValue() == null) {
             throw new IllegalArgumentException("Normdata must have a value");
         }
@@ -252,21 +251,6 @@ public class XcdlCreator {
         }
         return type;
     }
-
-//    private MeasureType determineMeasureType(Property labProp) {
-//        String d = labProp.getUnit();
-//        MeasureType type = MeasureType.BIT;
-//        try {
-//            type = MeasureType.fromValue(d);
-//        } catch (IllegalArgumentException e) {
-//            System.err
-//                    .println(String
-//                            .format(
-//                                    "Warning: could not create a MeasureType for '%s', defaulting to '%s'",
-//                                    d, type));
-//        }
-//        return type;
-//    }
 
     private LabValType determineLabValType(String description) {
         LabValType labValType = LabValType.STRING;

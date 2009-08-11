@@ -196,9 +196,8 @@ public final class XcdlCharacterise implements Characterise, Serializable {
          */
         List<Property> resultProps = new ArrayList<Property>();
         for (Property prop : list) {
-            Property fileFormatProperty = new Property(XcdlProperties
-                    .makePropertyURI(prop.getType(), prop.getName()), prop
-                    .getName(), null);
+            Property fileFormatProperty = new Property(XcdlProperties.makePropertyURI(prop.getName()), prop.getName(),
+                    null);
             resultProps.add(fileFormatProperty);
         }
         return resultProps;

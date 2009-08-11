@@ -46,7 +46,7 @@ public final class ExplorerResultReader {
                 String type = pElem.getChildTextTrim("id").replaceAll("id", "");
                 String name = pElem.getChildTextTrim("name");
                 Property p = new Property.Builder(XcdlProperties
-                        .makePropertyURI(type, name)).name(name).type(type)
+                        .makePropertyURI(name)).name(name).type(type)
                         .description(pElem.getChildTextTrim("description"))
                         .unit(pElem.getChildTextTrim("unit")).value(
                                 pElem.getChildTextTrim("type").trim())
