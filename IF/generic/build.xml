@@ -22,6 +22,9 @@
      <property name="lib.dir" value="${appDir}/lib"/>
      <property name="src.resources" value="${appDir}/test/resources"/>
      <!--<property name="src.web" value="${appDir}/src/web"/>-->
+	
+	<!-- Define the API part-->
+	<property name="src.api.includes" value="eu/planets_project/ifr/core/services/migration/genericwrapper/**" />
 
      <!-- Unit testing definitions -->
      <property name="test.src.dir" value="${appDir}/test/java" />
