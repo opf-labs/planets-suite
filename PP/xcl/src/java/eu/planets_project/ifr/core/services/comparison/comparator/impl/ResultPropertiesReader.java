@@ -73,22 +73,12 @@ public final class ResultPropertiesReader {
             List<?> propElems = obj.getChildren("property", NS);
             for (Object object : propElems) {
                 Element e = (Element) object;
+                String state = e.getAttributeValue("state");
+                String description = state.equals("complete") ? processMetrics(e) : "";
                 String name = e.getAttributeValue("name");
-                String unit = e.getAttributeValue("unit");
-                String status = e.getAttributeValue("compStatus");
-                Element valuesElement = e.getChild("values", NS);
-                String valuesSrc = null;
-                String valuesTar = null;
-                String valuesType = null;
-                if (valuesElement != null) {
-                    valuesType = valuesElement.getAttributeValue("type");
-                    valuesSrc = valuesElement.getChildText("src", NS);
-                    valuesTar = valuesElement.getChildText("tar", NS);
-                }
-                Property result;
-                result = new Property.Builder(XcdlProperties.makePropertyURI(e.getAttributeValue("id"), name)).type(
-                        valuesType).name(name).value(valuesSrc + "," + valuesTar).description(status).unit(unit)
-                        .build();
+                String desc = "[" + description + "]";
+                Property result = new Property.Builder(XcdlProperties.makePropertyURI(e.getAttributeValue("id")
+                        .replaceAll("id", ""), name)).name(name).value(state).description(desc).build();
                 properties.add(result);
             }
         } catch (JDOMException e) {
@@ -97,5 +87,20 @@ public final class ResultPropertiesReader {
             e.printStackTrace();
         }
         return properties;
+    }
+
+    private String processMetrics(final Element propertyElement) {
+        StringBuilder descriptionBuilder = new StringBuilder();
+        Element metricsElem = propertyElement.getChild("metrics", NS);
+        if (metricsElem != null) {
+            List<?> metrics = metricsElem.getChildren();
+            for (Object mObject : metrics) {
+                Element m = (Element) mObject;
+                String metricName = m.getAttributeValue("name");
+                String resultString = m.getChildText("result", NS);
+                descriptionBuilder.append(String.format(" %s=%s", metricName, resultString));
+            }
+        }
+        return descriptionBuilder.toString().trim();
     }
 }
