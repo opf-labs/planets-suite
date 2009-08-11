@@ -23,8 +23,8 @@ public final class FloppyImageHelperFactory {
      * @return A windows based FloppyImageHelper instance
      */
     public static FloppyImageHelper getFloppyImageHelperInstance() {
-//        return checkOperatingSystemAndCreateInstance();
-        return new UniversalFloppyImageHelper();
+        return checkOperatingSystemAndCreateInstance();
+//        return new UniversalFloppyImageHelper();
     }
     
     private static FloppyImageHelper checkOperatingSystemAndCreateInstance() {
@@ -35,7 +35,7 @@ public final class FloppyImageHelperFactory {
 			return floppyHelper;
 		}
 		if(OS.contains("linux") || OS.contains("unix") /*|| OS.contains("mac")*/) {
-			floppyHelper = new FloppyImageHelperUnix();
+			floppyHelper = new UniversalFloppyImageHelper();
 			log.info("Created FloppyImageHelper instance of type: " + floppyHelper.getClass().getCanonicalName());
 			return floppyHelper;
 		}
