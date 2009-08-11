@@ -75,7 +75,7 @@
     </fileset>
   </path>
   
-  <target name="deploy:all" depends="props:set,deploy:common">
+  <target name="deploy:all" depends="props:set,compile:generic,deploy:common">
     <foreach target="deploy:sub" param="sub.build" inheritall="false">
       <path refid="all.sub.projects"/>
     </foreach>
