@@ -5,6 +5,8 @@ package eu.planets_project.tb.impl.serialization;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.UUID;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
@@ -53,6 +55,26 @@ public class ExperimentFileCache {
         try {
             File tmp = createTempFile();
             ExperimentViaJAXB.writeToFile(exp, tmp);
+            log.info("Written to file: "+tmp.getName());
+            return tmp.getName();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+	public String createExperimentsExport( Collection<Experiment> allExps ) {
+        try {
+            File tmp = createTempFile();
+            Iterator expIterator = allExps.iterator();
+            ExperimentImpl exp = null;
+            while (expIterator.hasNext()) {
+            	exp = (ExperimentImpl) expIterator.next(); 
+            	ExperimentViaJAXB.writeToFile(exp, tmp);
+
+            }
             log.info("Written to file: "+tmp.getName());
             return tmp.getName();
         } catch (IOException e) {

@@ -245,7 +245,7 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
                     String xcdls = md.getContent();
                     // Read properties from the XCDL:
                     try {
-                        properties = new XcdlParser(xcdls).getProperties();
+                        //properties = new XcdlParser(xcdls).getProperties();
                     } catch (Exception e ) {
                         _log.error("Failed to read in XCDL properties!");
                         _log.error("Exception: "+e);

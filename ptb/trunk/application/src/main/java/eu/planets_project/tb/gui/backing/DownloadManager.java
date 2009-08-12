@@ -11,6 +11,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
 
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
@@ -130,8 +133,30 @@ public class DownloadManager {
         }
         return "success";
     }
-
-
+/*
+ * Exports all exps as individual files, but you have to know the path to the temp directory
+ */  
+    @SuppressWarnings("unchecked")
+	public String downloadAllExperiments(Collection<Experiment> allExps) {
+    	//FacesContext ctx = FacesContext.getCurrentInstance();
+    	Iterator expIterator = allExps.iterator();
+        ExperimentImpl exp = null;
+        while (expIterator.hasNext()) {
+        	exp = (ExperimentImpl) expIterator.next(); 
+        	expCache.createExperimentExport(exp);
+        }
+    	return "success";
+    }
+  
+    /*
+     * Attempts to export all exps into a single xml file, could then provide a download link
+     
+	public String downloadAllExperiments(Collection<Experiment> allExps) {
+        expCache.createExperimentsExport(allExps);
+    	return "success";
+    }
+    */
+    
     // Helpers (can be refactored to public utility class) ----------------------------------------
 
     private static void close(Closeable resource) {

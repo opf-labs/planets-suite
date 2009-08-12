@@ -31,6 +31,9 @@
     		<h:graphicImage  value="/graphics/spinner.gif"/>
         </f:facet>
     </a4j:status>
+
+	<h:commandButton action="#{ListExp_Backing.exportAllExperimentsAction}" value="Export All" rendered="#{UserBean.admin}"/>
+
     <t:dataTable id="dataTable_allExp"
                  styleClass="tbTable"
                  var="exp"

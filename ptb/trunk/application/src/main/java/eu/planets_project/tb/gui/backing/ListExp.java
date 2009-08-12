@@ -265,6 +265,14 @@ public class ListExp extends SortableList {
 	        DownloadManager dm = (DownloadManager)JSFUtil.getManagedObject("DownloadManager");
 	        return dm.downloadExperiment( (ExperimentImpl)selectedExperiment );
 	    }
+	    
+	    public String exportAllExperimentsAction() {
+	    	log.debug("Exporting all experiments");
+	    	TestbedManager testbedMan = (TestbedManager)JSFUtil.getManagedObject("TestbedManager");  
+	    	Collection<Experiment> allExps = testbedMan.getAllExperiments();
+            DownloadManager dm = (DownloadManager)JSFUtil.getManagedObject("DownloadManager");
+	        return dm.downloadAllExperiments( allExps );
+	    }
 
         public String viewExperimentToApprove()
         {
