@@ -86,29 +86,37 @@ public class GenericMigrationWrapper {
         final MigrationPath migrationPath = migrationPaths
                 .getMigrationPath(sourceFormat, destinationFormat);
 
+        log.info("Found migrationpath from "+sourceFormat+" to "+destinationFormat);
+
         //If called with null parameters, use an empty list instead
         if (toolParameters == null){
+            log.info("Called with null parameters");
             toolParameters = new ArrayList<Parameter>();
         }
 
 
         //make workfolder, and reserve filenames in this folder.
+        log.info("Making workfolder for migration");
         File workfolder = handleTempfiles(migrationPath);
 
         //handle temp input file
+
         if (migrationPath.useTempSourceFile()){
+            log.info("Migrationpath uses temp source file, reading digital object into file");
             handleTempSourceFile(migrationPath,sourceObject, workfolder);
         }
 
 
         //handle temp output file
         if (migrationPath.useTempDestinationFile()){
+            log.info("Migrationpath uses temp destination path");
             handleTempDestinationFile(migrationPath,workfolder);
         }
 
 
         List<String> command = migrationPath.getCommandLine(toolParameters);
-
+        log.info("Command line found: ");
+        log.info(command);
 
 
         InputStream processStandardInput = null;
