@@ -1,0 +1,14 @@
+<planetsDatastream>
+    <contentDatastream name="CONTENT"/>
+    <titleDatastream name="DC">
+        <xpath>
+            //
+        </xpath>
+        <namespace name="dc"></namespace>
+        <namespace name="oaidc"></namespace>
+    </titleDatastream>
+    <metadata datastream="DC" field="author">
+
+    </metadata>
+
+</planetsDatastream>

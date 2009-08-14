@@ -1,21 +1,26 @@
 package eu.planets_project.fedora;
 
+import dk.statsbiblioteket.doms.ContentModel;
+import dk.statsbiblioteket.doms.DataObject;
+import dk.statsbiblioteket.doms.Fedora;
+import dk.statsbiblioteket.doms.FedoraFactory;
+import dk.statsbiblioteket.doms.FedoraUserToken;
+import dk.statsbiblioteket.doms.exceptions.FedoraConnectionException;
+import dk.statsbiblioteket.doms.exceptions.ObjectNotFoundException;
+import eu.planets_project.fedora.queries.TripleStoreQuery;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager;
 import eu.planets_project.ifr.core.storage.api.query.Query;
 import eu.planets_project.ifr.core.storage.api.query.QueryString;
 import eu.planets_project.ifr.core.storage.api.query.QueryValidationException;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
-import eu.planets_project.fedora.planetsdatastream.PlanetsdatastreamType;
-import org.w3c.dom.Document;
+import eu.planets_project.services.datatypes.Metadata;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.JAXBElement;
 import java.net.URI;
+import java.net.URL;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * TODO abr forgot to document this class
@@ -23,15 +28,47 @@ import java.util.Set;
 public class FedoraObjectManager implements DigitalObjectManager{
 
 
+    public static final String transformMethod = "transform";
 
-    private FedoraConnector connector;
+
+    Fedora fedora;
+    private static final String PLANETSCONTENTMODEL = "doms:PlanetsContentModelContentModel";
+    private  ContentModel planetsmodel;
+    private boolean initialised = false;
 
     public FedoraObjectManager(String username, String password, String server) {
-        connector = new FedoraConnector(username,password,server);
+        FedoraUserToken token = new FedoraUserToken(username,password,server);
+
+        FedoraFactory factory = new FedoraFactory();
+
+        fedora = factory.getInstance(token);
+        try {
+
+            planetsmodel = fedora.getObject(PLANETSCONTENTMODEL);
+            initialised = true;
+        } catch (FedoraConnectionException e) {
+            initialised = false;
+        } catch (ObjectNotFoundException e) {
+            initialised = false;
+        }
+
     }
 
 
     public void store(URI pdURI, DigitalObject digitalObject) throws DigitalObjectNotStoredException {
+        throw new DigitalObjectNotStoredException("The current DigitalObjectManager interface is not compatible with store routines in Fedora");
+/*
+
+        try {
+            dk.statsbiblioteket.doms.DigitalObject object = fedora.getObject(pdURI.toString());
+
+
+        } catch (FedoraConnectionException e) {
+            throw new DigitalObjectNotStoredException(e);
+        } catch (ObjectNotFoundException e) {
+            throw new DigitalObjectNotStoredException(e);
+        }
+
         if (!isWritable(pdURI)){
             throw new DigitalObjectNotStoredException("This object is not writable");
         }
@@ -77,37 +114,143 @@ public class FedoraObjectManager implements DigitalObjectManager{
 
         } catch (JAXBException e) {
             throw new DigitalObjectNotStoredException("Failed to read in the " +
-                    "planets datastream, so the store procedure could not be " +
-                    "completed",e);
+                                                      "planets datastream, so the store procedure could not be " +
+                                                      "completed",e);
         }
 
+*/
     }
 
     public boolean isWritable(URI pdURI) {
-        return connector.isWritable(pdURI);
+        try {
+            dk.statsbiblioteket.doms.DigitalObject object = fedora.getObject(pdURI.toString());
+            return object.isWritable();
+        } catch (FedoraConnectionException e) {
+            return false;
+        } catch (ObjectNotFoundException e) {
+            return false;
+        }
+
+
     }
 
     public List<URI> list(URI pdURI) {
+        //TODO implement
+
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException {
-        if (!connector.exist(pdURI)){
-            throw new DigitalObjectNotFoundException("Object not found in the repository");
+
+
+    /**
+     * Retrieves a digital object from a fedora repository.
+     * <br>
+     * The fedora repository is queried through it's REST interface.
+     * <br>
+     *
+     * This method draws upon a custom Fedora disseminator, that
+     * transform the object to planets xml format.
+     * <br>
+     * <ul>
+     * <li>The object title is set to the fedora object title
+     * <li>The DC datastream is stored as a Metadata object
+     * <li>The Content datastream is stored as a reference in the content object
+     * <li>The permanentURL is set the the url of the object in the repository
+     *</ul>
+
+     *
+     * @param pdURI
+     *            URI with the fedora pid of the object
+     * @return a new immutable digital object with the information from the repository
+     * @throws DigitalObjectNotFoundException If the object is not found in the repository
+     * @throws RepositoryException If there is a problem communication with the repository
+     */
+    public DigitalObject retrieve(URI pdURI) throws DigitalObjectNotFoundException, RepositoryException {
+        if (!initialised){
+            throw new RepositoryException("Connector not initialised");
         }
-        //find the object
 
-        //find the planets content model for the object
+        try {
 
-        //decode the streams for the planets object
 
-        //grab the relevant streams, and create a planets object
+            //find the object
+            dk.statsbiblioteket.doms.DigitalObject object = fedora.getObject(pdURI.toString());
 
-        //return this
-        return null;
+            if (object instanceof DataObject) {
+                DataObject o = (DataObject) object;
+                //find the planets content model for the object
+                List<ContentModel> contentmodels;
+                contentmodels = o.getContentModels();
+
+                ContentModel planetsmodel = null;
+                for (ContentModel contentmodel:contentmodels){
+                    if (isPlanetsModel(contentmodel)){
+                        planetsmodel = contentmodel;
+                        break;
+                    }
+                }
+                if (planetsmodel == null){
+                    throw new RepositoryException("Object is not a planets object");
+                }
+                //decode the streams for the planets object
+                URL contenturl = getContentStream(planetsmodel,o);
+                String title = getTitle(planetsmodel,o);
+                Metadata[] metadata = getMetadata(planetsmodel,o);
+                URI permanent = getPermanentURI(planetsmodel,o);
+
+                //grab the relevant streams, and create a planets object
+                DigitalObject.Builder builder
+                        = new DigitalObject.Builder(
+                        Content.byReference(contenturl));
+                builder.title(title);
+                builder.metadata(metadata);
+                builder.permanentUri(permanent);
+
+                //return this
+                return builder.build();
+            } else {
+                throw new DigitalObjectNotFoundException("Object is not a data object");
+            }
+
+        } catch (FedoraConnectionException e) {
+            throw new RepositoryException(e);
+        } catch (ObjectNotFoundException e) {
+            throw new DigitalObjectNotFoundException("The object was not found",e);
+        }
     }
 
+    private URI getPermanentURI(ContentModel planetsmodel, DataObject o) {
+        try {
+            if (!o.getPid().startsWith("info:fedora/")){
+                return new URI("info:fedora/"+o.getPid());
+            } else {
+                return new URI(o.getPid());
+            }
+        } catch (URISyntaxException e) {
+            throw new RepositoryException("Dataobject has invalid pid",e);
+        }
+    }
+
+    private Metadata[] getMetadata(ContentModel planetsmodel, DataObject o) {
+        return new Metadata[0];  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private String getTitle(ContentModel planetsmodel, DataObject o) {
+        return null;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private URL getContentStream(ContentModel planetsmodel, DataObject o) {
+        return null;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private boolean isPlanetsModel(ContentModel contentmodel) {
+        return contentmodel.hasContentModel(planetsmodel);
+    }
+
+
     public List<Class<? extends Query>> getQueryTypes() {
+
+        //TODO implement
         ArrayList<Class<? extends Query>> list = new ArrayList<Class<? extends Query>>();
         list.add(TripleStoreQuery.class);
         list.add(QueryString.class);
@@ -117,6 +260,8 @@ public class FedoraObjectManager implements DigitalObjectManager{
     }
 
     public List<URI> list(URI pdURI, Query q) throws QueryValidationException {
+
+        //TODO implement
         if (q instanceof TripleStoreQuery){
             return null;
         }

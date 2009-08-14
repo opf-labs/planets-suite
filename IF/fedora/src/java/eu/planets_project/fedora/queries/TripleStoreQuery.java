@@ -1,4 +1,4 @@
-package eu.planets_project.fedora;
+package eu.planets_project.fedora.queries;
 
 import eu.planets_project.ifr.core.storage.api.query.Query;
 
