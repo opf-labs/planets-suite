@@ -153,9 +153,10 @@ public final class XcdlParser implements XcdlAccess {
             System.out.println(property);
         }
         List<eu.planets_project.services.datatypes.Property> result = new ArrayList<eu.planets_project.services.datatypes.Property>();
+        String type = "Image"; //TODO add text file support
         result.add(new eu.planets_project.services.datatypes.Property.Builder(
-                XcdlProperties.makePropertyURI("normData")).name(
-                "normData").type("normData").description("image").value( //TODO add text file support
+                XcdlProperties.makePropertyURI("normData" + type)).name(
+                "normData" + type).type("normData").description(type.toLowerCase()).value( 
                 "00 01 02 03 04 05 06 07 08 09 0a").build());
         result.add(new eu.planets_project.services.datatypes.Property.Builder(
                 XcdlProperties.makePropertyURI("propertySet")).name(

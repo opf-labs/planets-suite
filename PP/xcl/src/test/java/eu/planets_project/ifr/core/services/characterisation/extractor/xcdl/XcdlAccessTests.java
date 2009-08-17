@@ -26,8 +26,7 @@ public class XcdlAccessTests {
     @Test
     public void testProperties() {
         /*
-         * Test the simple implementation which only picks out the essential
-         * values from the XCDL:
+         * Test the simple implementation which only picks out the essential values from the XCDL:
          */
         check(new XcdlProperties(new File(XCDL)));
     }
@@ -35,8 +34,7 @@ public class XcdlAccessTests {
     @Test
     public void testParser() {
         /*
-         * Test the full parser which parses the complete XCDL including norm
-         * data and property set:
+         * Test the full parser which parses the complete XCDL including norm data and property set:
          */
         check(new XcdlParser(new File(XCDL)));
     }
@@ -44,8 +42,7 @@ public class XcdlAccessTests {
     @Test
     public void testBoth() {
         /*
-         * Both implementations should not return identical results (see
-         * comments above):
+         * Both implementations should not return identical results (see comments above):
          */
         List<Property> p1 = new XcdlProperties(new File(XCDL)).getProperties();
         List<Property> p2 = new XcdlParser(new File(XCDL)).getProperties();
@@ -56,25 +53,22 @@ public class XcdlAccessTests {
     public void testListPropertiesMatchExtractedProperties() {
         XcdlCharacterise characterise = new XcdlCharacterise();
         /* Check what we can expect for PNG: */
-        URI uri = FormatRegistryFactory.getFormatRegistry()
-                .getUrisForExtension("png").iterator().next();
+        URI uri = FormatRegistryFactory.getFormatRegistry().getUrisForExtension("png").iterator().next();
         List<Property> extractable = characterise.listProperties(uri);
         /* Now we actually extract a PNG: */
-        CharacteriseResult result = characterise.characterise(
-                new DigitalObject.Builder(Content
-                        .byValue(new File(PNG))).format(uri).build(), null);
+        CharacteriseResult result = characterise.characterise(new DigitalObject.Builder(Content.byValue(new File(PNG)))
+                .format(uri).build(), null);
         List<Property> extracted = result.getProperties();
         /* And check if the IDs correspond: */
         assertAllExtractedPropsAreListedAsExtractable(extractable, extracted);
     }
 
-    private void assertAllExtractedPropsAreListedAsExtractable(
-            List<Property> extractable, List<Property> extracted) {
+    private void assertAllExtractedPropsAreListedAsExtractable(List<Property> extractable, List<Property> extracted) {
         extracted = XcdlProperties.realProperties(extracted);
         for (Property property : extracted) {
             /*
-             * TODO: In the future, when the types are the same, we can just
-             * check if extractable contains property, until then:
+             * TODO: In the future, when the types are the same, we can just check if extractable contains property,
+             * until then:
              */
             boolean found = false;
             for (Property fileFormatProperty : extractable) {
@@ -83,10 +77,8 @@ public class XcdlAccessTests {
                     break;
                 }
             }
-            Assert
-                    .assertTrue(
-                            "List of supposedly extractable properties does not contain an extracted property: "
-                                    + property, found);
+            Assert.assertTrue("List of supposedly extractable properties does not contain an extracted property: "
+                    + property, found);
         }
     }
 
@@ -95,7 +87,19 @@ public class XcdlAccessTests {
      */
     private void check(final XcdlAccess xcdlAccess) {
         List<Property> properties = xcdlAccess.getProperties();
-        Assert.assertTrue("No properties extracted by "
-                + xcdlAccess.getClass().getSimpleName(), properties.size() > 0);
+        Assert.assertTrue("No properties extracted by " + xcdlAccess.getClass().getSimpleName(), properties.size() > 0);
+        testNormDataPropertyName(xcdlAccess);
+    }
+    
+    private void testNormDataPropertyName(XcdlAccess access) {
+        List<Property> properties = access.getProperties();
+        for (Property property : properties) {
+            String uri = property.getUri().toString();
+            if (uri.contains("normData")) {
+                String type = "Image"; //TODO add text file support
+                Assert.assertEquals("Norm data property URI should match the ID used in the ontology;",
+                        "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#normData" + type, uri);
+            }
+        }
     }
 }
