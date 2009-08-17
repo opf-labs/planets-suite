@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import org.jdom.Document;
 import org.jdom.Element;
@@ -14,7 +13,6 @@ import org.jdom.input.SAXBuilder;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.services.datatypes.Property;
-import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Access to CPR (the XCDL comparator result format) properties.
@@ -30,31 +28,7 @@ public final class ResultPropertiesReader {
      * @param cprFile The CPR comparator result file
      */
     public ResultPropertiesReader(final File cprFile) {
-        this.cprFile = fix(cprFile);
-    }
-
-    /**
-     * FIXME temporary workaround for a bug in the 1.0 comparator beta.
-     * @param file The file to fix
-     * @return The fixed file
-     */
-    private File fix(final File file) {
-        String content = FileUtils.readTxtFileIntoString(file);
-        Scanner s = new Scanner(content);
-        boolean closedProperty = false;
-        StringBuilder builder = new StringBuilder();
-        while (s.hasNextLine()) {
-            String line = s.nextLine().trim();
-            if (!(line.equals("</property>") && closedProperty)) {
-                builder.append(line).append("\n");
-            }
-            if (line.startsWith("<property") && line.endsWith("/>")) {
-                closedProperty = true;
-            } else {
-                closedProperty = false;
-            }
-        }
-        return FileUtils.writeStringToFile(builder.toString(), file);
+        this.cprFile = cprFile;
     }
 
     /**
