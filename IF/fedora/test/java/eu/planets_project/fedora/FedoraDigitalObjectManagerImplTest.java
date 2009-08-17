@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 /**
- * Tests for the {@link FedoraDigitalObjectManagerImpl}.
+ * Tests for the {@link FedoraObjectManager}.
  */
 public class FedoraDigitalObjectManagerImplTest extends TestCase{
 
@@ -24,7 +24,7 @@ public class FedoraDigitalObjectManagerImplTest extends TestCase{
      * @throws URISyntaxException
      */
     public void testRetrieve() throws DigitalObjectManager.DigitalObjectNotFoundException, URISyntaxException, IOException {
-        DigitalObjectManager man = new FedoraDigitalObjectManagerImpl("fedoraAdmin","fedoraAdminPass","http://localhost:7910/fedora");
+        DigitalObjectManager man = new FedoraObjectManager("fedoraAdmin","fedoraAdminPass","http://localhost:7910/fedora");
 
         DigitalObject r = man.retrieve(new URI("demo:dc2mods.1"));
         String title = r.getTitle();

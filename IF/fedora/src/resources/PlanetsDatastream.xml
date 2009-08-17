@@ -4,7 +4,7 @@
         <xpath>
             //
         </xpath>
-        <namespace name="dc"></namespace>
+        <namespace name="dc"'r</namespace>
         <namespace name="oaidc"></namespace>
     </titleDatastream>
     <metadata datastream="DC" field="author">
