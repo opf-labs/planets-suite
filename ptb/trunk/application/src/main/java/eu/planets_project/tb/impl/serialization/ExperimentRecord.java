@@ -99,12 +99,22 @@ public class ExperimentRecord {
         // Persist the experiment:
         long eid = edao.persistExperiment(er.experiment);
         
-        // Update the comments to the new experiment id:
+        for( CommentImpl c : er.comments ) {
+        	// Update the comments to the new experiment id:
+            c.setExperimentID(eid);
+            // Persist the comments:
+            long cid = cmp.persistComment(c);//
+            // Correct the parent ids:
+            //c.setParentID(parentID)
+            
+            // Persist the comments:
+            cmp.persistComment(c);
+        }        
         
-        // Persist the comments:
-        
-        // Go through the comments and correct the parent ids:
-        
+        // Update the comments to the new experiment id:            
+        // Persist the comments:            
+        // Go through the comments and correct the parent ids:            
+        // Don't forget to persist the id changes to the DB:
         // Don't forget to persist the id changes to the DB:
         
         // return the experiment id:

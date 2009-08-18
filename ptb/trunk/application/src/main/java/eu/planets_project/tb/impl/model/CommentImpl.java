@@ -214,4 +214,9 @@ public class CommentImpl implements Comment, java.io.Serializable {
         this.parentID = parentID;
     }
 
+	public void setXmlCommentID(long commentID) {
+		// TODO Auto-generated method stub
+		this.commentID = commentID;
+	}
+
 }
