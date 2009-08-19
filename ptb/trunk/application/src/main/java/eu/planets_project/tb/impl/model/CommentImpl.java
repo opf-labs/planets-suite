@@ -32,15 +32,23 @@ public class CommentImpl implements Comment, java.io.Serializable {
 	
 	@Id
 	@GeneratedValue
+	@XmlTransient
 	private long commentID;
+    // Also store the comment identifier in the serialised form, but separately from the @Id
+    private long xmlCommentID;
+    // The ID of the parent comment:
 	private long parentID = -1;
+	// The ID of the parent Experiment
+	@XmlTransient
 	private long experimentID;
+	// The point at which the comment was added.
 	private String experimentPhaseID;
 	private String title;
 	private String comment;
 	private String authorID;
 	//time in millis
 	private Calendar postDate;
+
 	
 	//Default constructor required for EJB persistency
 	public CommentImpl(){
@@ -74,6 +82,13 @@ public class CommentImpl implements Comment, java.io.Serializable {
 	public long getCommentID() {
 		return this.commentID;
 	}
+
+    /**
+     * @param commentID the commentID to set
+     */
+    public void setCommentID(long commentID) {
+        this.commentID = commentID;
+    }
 
     /* (non-Javadoc)
 	 * @see eu.planets_project.tb.api.model.Comment#getExperimentPhaseID()
@@ -214,9 +229,20 @@ public class CommentImpl implements Comment, java.io.Serializable {
         this.parentID = parentID;
     }
 
-	public void setXmlCommentID(long commentID) {
-		// TODO Auto-generated method stub
-		this.commentID = commentID;
-	}
+    /* For serialisation */
+    
+    /**
+     * @return the xmlCommentID
+     */
+    public long getXmlCommentID() {
+        return xmlCommentID;
+    }
+
+    /**
+     * @param xmlCommentID the xmlCommentID to set
+     */
+    public void setXmlCommentID(long xmlCommentID) {
+        this.xmlCommentID = xmlCommentID;
+    }
 
 }
