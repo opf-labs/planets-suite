@@ -32,11 +32,12 @@ import eu.planets_project.services.utils.ProcessRunner;
  */
 public class CoreExtractor {
 
-    private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME")
-            + File.separator;
-    // private static final String SYSTEM_TEMP =
-    // System.getProperty("java.io.tmpdir");
-    // private static final String SYSTEM_TEMP = null;
+	private static String XCLTOOLS_HOME = (System.getenv("XCLTOOLS_HOME") + File.separator);
+    private static String EXTRACTOR_HOME = (XCLTOOLS_HOME
+    										+ File.separator
+											+ "extractor"
+											+ File.separator).replace(File.separator + File.separator, File.separator);
+    private static final String EXTRACTOR_TOOL = "extractor";
     private String extractorWork = null;
     private static String EXTRACTOR_IN = "INPUT";
     private static String EXTRACTOR_OUT = "OUTPUT";
@@ -195,7 +196,7 @@ public class CoreExtractor {
         plogger.info("Configuring Commandline");
 
         extractor_arguments = new ArrayList<String>();
-        extractor_arguments.add(EXTRACTOR_HOME + "extractor");
+        extractor_arguments.add(EXTRACTOR_HOME + EXTRACTOR_TOOL);
         String srcFilePath = srcFile.getAbsolutePath().replace('\\', '/');
         // System.out.println("Src-file path: " + srcFilePath);
         plogger.info("Input-Image file path: " + srcFilePath);

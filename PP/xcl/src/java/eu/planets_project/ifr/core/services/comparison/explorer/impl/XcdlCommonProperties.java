@@ -42,8 +42,12 @@ import eu.planets_project.services.utils.ProcessRunner;
 public final class XcdlCommonProperties implements CommonProperties {
     static final String NAME = "XcdlCommonProperties";
     private static final Log LOG = LogFactory.getLog(XcdlCommonProperties.class);
-    private static final String FPMTOOL_HOME = System.getenv("FPMTOOL_HOME")
-            + File.separator;
+    private static final String XCLTOOLS_HOME = System.getenv("XCLTOOLS_HOME") + File.separator;
+    private static String XCLEXPLORER_HOME = (XCLTOOLS_HOME
+    											+ File.separator
+    											+ "XCLExplorer" 
+    											+ File.separator).replace(File.separatorChar + File.separator, File.separator);
+    private static final String XCLEXPLORER_TOOL = "XCLExplorer";
     private static final String FPMTOOL_OUT = "fpm.fpm";
 
     /**
@@ -114,17 +118,19 @@ public final class XcdlCommonProperties implements CommonProperties {
      */
     private String basicCompareFormatProperties(final String parameters) {
         ProcessRunner shell = new ProcessRunner();
-        List<String> command = Arrays.asList(FPMTOOL_HOME + "fpmTool",
+        List<String> command = Arrays.asList(XCLEXPLORER_HOME + XCLEXPLORER_TOOL,
                 parameters);
         shell.setCommand(command);
-        shell.setStartingDir(new File(FPMTOOL_HOME));
+        shell.setStartingDir(new File(XCLEXPLORER_HOME));
+        LOG.info("XCLTOOLS_HOME = " + XCLTOOLS_HOME);
+        LOG.info("XCLExplorer home dir: " + XCLEXPLORER_HOME);
         LOG.info("Running: " + command);
         shell.run();
         String processOutput = shell.getProcessOutputAsString();
         String processError = shell.getProcessErrorAsString();
         LOG.info("Process Output: " + processOutput);
         LOG.error("Process Error: " + processError);
-        String result = FileUtils.readTxtFileIntoString(new File(FPMTOOL_HOME
+        String result = FileUtils.readTxtFileIntoString(new File(XCLEXPLORER_HOME
                 + FPMTOOL_OUT));
         LOG.info("Returning joint file format properties, starts with: "
                 + result.substring(0, Math.min(200, result.length())) + "...");

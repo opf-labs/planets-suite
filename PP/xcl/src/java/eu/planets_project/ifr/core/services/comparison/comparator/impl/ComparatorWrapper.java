@@ -35,9 +35,13 @@ public final class ComparatorWrapper {
     /** A planets logger. */
     private static final Log LOG = LogFactory.getLog(ComparatorWrapper.class);
     /** The home of the comparator command-line tool. */
-    static final String COMPARATOR_HOME = System.getenv("COMPARATOR_HOME")
-            + (System.getenv("COMPARATOR_HOME").endsWith(File.separator) ? ""
-                    : File.separator);
+    private static String XCLTOOLS_HOME = System.getenv("XCLTOOLS_HOME") + File.separator;
+    static final String COMPARATOR_HOME = (XCLTOOLS_HOME
+    										+ File.separator
+    										+ "comparator" 
+    										+ File.separator
+    										+ "v1.0"
+    										+ File.separator).replace(File.separator + File.separator, File.separator);
     /** The default config file; is used when no config is specified. */
     private static final String DEFAULT_CONFIG = COMPARATOR_HOME
             + "defaultPCR.xml";
