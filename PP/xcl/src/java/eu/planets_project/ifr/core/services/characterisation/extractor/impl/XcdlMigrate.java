@@ -112,78 +112,69 @@ public final class XcdlMigrate implements Migrate {
         return sd.build();
     }
 
-    public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat,
-	        URI outputFormat, List<Parameter> parameters) {
-	    URI format = inputFormat;
-	    if (!CoreExtractor.supported(inputFormat, parameters)) {
-	        return new MigrateResult(null, CoreExtractor
-	                .unsupportedInputFormatReport(inputFormat));
-	    }
-	    LOG.info("Working on digital object: " + digitalObject);
-	    
-	    File xcelFile = new File(XCDL_MIGRATE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
-	    
-	    DigitalObject resultDigOb = null;
-	    
-	    String optionalFormatXCEL = null;
-	
-	    CoreExtractor coreExtractor = new CoreExtractor(XcdlMigrate.NAME, LOG);
-	
-	    File result = null;
-	
-	    if (parameters != null) {
-	        if (parameters.size() != 0) {
-	            for (Parameter currentParameter : parameters) {
-	                String currentName = currentParameter.getName();
-	
-	                if (currentName.equalsIgnoreCase("optionalXCELString")) {
-	                    optionalFormatXCEL = currentParameter.getValue();
-	                    FileUtils.writeStringToFile(optionalFormatXCEL, xcelFile);
-	                    break;
-	                }
-	            }
-	
-	        }
-	    }
-	
-	    if (optionalFormatXCEL != null) {
-	        result = coreExtractor.extractXCDL(digitalObject, inputFormat, xcelFile, parameters);
-	    } else {
-	        result = coreExtractor.extractXCDL(digitalObject, inputFormat, null, parameters);
-	    }
-	
-	    if (result.exists()) {
-	
-            resultDigOb = new DigitalObject.Builder(Content
-                        .byReference(result))
-            			.title(result.getName())
-            			.format(fReg.createExtensionUri("xcdl"))
-            			.build();
-            
-            ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-            "OK");
-            
-            return new MigrateResult(resultDigOb, sReport);
-	        
-	    } else {
-	        return this.returnWithErrorMessage("ERROR: No XCDL created!", null);
-	    }
-	}
+    public MigrateResult migrate(DigitalObject digitalObject, URI inputFormat, URI outputFormat,
+            List<Parameter> parameters) {
+        if (!CoreExtractor.supported(inputFormat, parameters)) {
+            return new MigrateResult(null, CoreExtractor.unsupportedInputFormatReport(inputFormat));
+        }
+        LOG.info("Working on digital object: " + digitalObject);
 
-	/**
-	 * @param message an optional message on what happened to the service
-	 * @param e the Exception e which causes the problem
-	 * @return CharacteriseResult containing a Error-Report
-	 */
-	private MigrateResult returnWithErrorMessage(final String message,
-	        final Exception e) {
-	    if (e == null) {
-	        return new MigrateResult(null, ServiceUtils
-	                .createErrorReport(message));
-	    } else {
-	        return new MigrateResult(null, ServiceUtils
-	                .createExceptionErrorReport(message, e));
-	    }
-	}
+        File xcelFile = new File(XCDL_MIGRATE_TMP, FileUtils.randomizeFileName("xcel_input.xml"));
+
+        DigitalObject resultDigOb = null;
+
+        String optionalFormatXCEL = null;
+
+        CoreExtractor coreExtractor = new CoreExtractor(XcdlMigrate.NAME, LOG);
+
+        File result = null;
+
+        if (parameters != null) {
+            if (parameters.size() != 0) {
+                for (Parameter currentParameter : parameters) {
+                    String currentName = currentParameter.getName();
+
+                    if (currentName.equalsIgnoreCase("optionalXCELString")) {
+                        optionalFormatXCEL = currentParameter.getValue();
+                        FileUtils.writeStringToFile(optionalFormatXCEL, xcelFile);
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        if (optionalFormatXCEL != null) {
+            result = coreExtractor.extractXCDL(digitalObject, inputFormat, xcelFile, parameters);
+        } else {
+            result = coreExtractor.extractXCDL(digitalObject, inputFormat, null, parameters);
+        }
+
+        if (result.exists()) {
+
+            resultDigOb = new DigitalObject.Builder(Content.byReference(result)).title(result.getName()).format(
+                    fReg.createExtensionUri("xcdl")).build();
+
+            ServiceReport sReport = new ServiceReport(Type.INFO, Status.SUCCESS, "OK");
+
+            return new MigrateResult(resultDigOb, sReport);
+
+        } else {
+            return this.returnWithErrorMessage("ERROR: No XCDL created!", null);
+        }
+    }
+
+    /**
+     * @param message an optional message on what happened to the service
+     * @param e the Exception e which causes the problem
+     * @return CharacteriseResult containing a Error-Report
+     */
+    private MigrateResult returnWithErrorMessage(final String message, final Exception e) {
+        if (e == null) {
+            return new MigrateResult(null, ServiceUtils.createErrorReport(message));
+        } else {
+            return new MigrateResult(null, ServiceUtils.createExceptionErrorReport(message, e));
+        }
+    }
 
 }

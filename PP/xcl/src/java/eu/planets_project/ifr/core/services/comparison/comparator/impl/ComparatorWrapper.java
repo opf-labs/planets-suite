@@ -35,7 +35,7 @@ public final class ComparatorWrapper {
     /** A planets logger. */
     private static final Log LOG = LogFactory.getLog(ComparatorWrapper.class);
     /** The home of the comparator command-line tool. */
-    private static String XCLTOOLS_HOME = System.getenv("XCLTOOLS_HOME") + File.separator;
+    private static final String XCLTOOLS_HOME = System.getenv("XCLTOOLS_HOME") + File.separator;
     static final String COMPARATOR_HOME = (XCLTOOLS_HOME
     										+ File.separator
     										+ "comparator" 
@@ -221,6 +221,8 @@ public final class ComparatorWrapper {
         commands.addAll(Arrays.asList("-c", pcrFile.getAbsolutePath()));
         commands.addAll(Arrays.asList("-o", outputFolder.getAbsolutePath()
                 + File.separator));
+        //TODO remove when tool issues are resolved:
+        commands.add("-novalidation");
         return commands;
     }
 

@@ -86,7 +86,7 @@ public final class ComparatorConfigCreator {
         if (prop.getValue() != null) {
             String[] metrics = clean(prop.getValue().split(","));
             for (String metric : metrics) {
-                String[] mToks = metric.split(" ");
+                String[] mToks = splitWithoutEmptyStrings(metric, " ");
                 if (mToks.length != 3) {
                     throw new IllegalArgumentException(
                             "Cannot work with metric string: " + metric);
@@ -105,6 +105,17 @@ public final class ComparatorConfigCreator {
             }
         }
         set.getProperties().add(p);
+    }
+
+    private String[] splitWithoutEmptyStrings(String string, String regex) {
+        List<String> list = new ArrayList<String>();
+        String[] strings = string.split(regex);
+        for (String s : strings) {
+            if(s.trim().length()>0){
+                list.add(s.trim());
+            }
+        }
+        return list.toArray(new String[]{});
     }
 
     /**

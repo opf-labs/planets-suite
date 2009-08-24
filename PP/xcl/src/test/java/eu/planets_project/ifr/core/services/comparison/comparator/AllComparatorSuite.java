@@ -3,7 +3,8 @@ package eu.planets_project.ifr.core.services.comparison.comparator;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import eu.planets_project.ifr.core.services.SampleXclUsage;
+import eu.planets_project.ifr.core.services.SampleXclUsageImage;
+import eu.planets_project.ifr.core.services.SampleXclUsageText;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreatorTests;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParserTests;
 import eu.planets_project.ifr.core.services.comparison.comparator.impl.ComparatorWrapperTests;
@@ -20,5 +21,6 @@ import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompa
 @Suite.SuiteClasses( { ComparatorWrapperTests.class, XcdlCompareTests.class,
         ResultPropertiesReaderTests.class, ComparatorConfigCreatorTests.class,
         ComparatorConfigParserTests.class, XcdlComparePropertiesTests.class,
-        SampleXclUsage.class /* Overall sample, but in the end Comparator */})
+        /* Overall samples, but in the end Comparator: */
+        SampleXclUsageImage.class, SampleXclUsageText.class})
 public class AllComparatorSuite { }

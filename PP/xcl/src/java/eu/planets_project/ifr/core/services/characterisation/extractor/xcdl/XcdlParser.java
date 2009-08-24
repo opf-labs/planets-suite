@@ -16,6 +16,7 @@ import javax.xml.bind.Unmarshaller;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlCreator.PropertyName;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.DataRef;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue;
+import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.NormData;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.ValueSet;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Xcdl;
@@ -36,25 +37,25 @@ public final class XcdlParser implements XcdlAccess {
     public XcdlParser(final File xcdl) {
         FileReader fileReader = null;
         try {
-            fileReader = new FileReader( xcdl );
+            fileReader = new FileReader(xcdl);
             this.xcdl = loadXcdl(fileReader);
         } catch (FileNotFoundException e) {
-            this.xcdl =  null;
+            this.xcdl = null;
             FileUtils.close(fileReader);
         }
     }
-    
+
     /**
      * @param xcdl The XCDL, held in a String.
      */
-    public XcdlParser(final String xcdl ) {
-        this.xcdl = loadXcdl( new StringReader( xcdl ));
+    public XcdlParser(final String xcdl) {
+        this.xcdl = loadXcdl(new StringReader(xcdl));
     }
 
     /**
      * @return The XCDL root object
      */
-    private Xcdl loadXcdl( Reader source ) {
+    private Xcdl loadXcdl(final Reader source) {
         try {
             JAXBContext jc = JAXBContext
                     .newInstance("eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated");
@@ -76,21 +77,33 @@ public final class XcdlParser implements XcdlAccess {
         List<eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object> list = xcdl
                 .getObjects();
         for (eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object o : list) {
+            if (o.getNormDatas().size() > 0) {
+                NormData normData = o.getNormDatas().get(0);
+                String normDataType = normData.getType().value();
+                normDataType = Character.toUpperCase(normDataType.charAt(0)) + normDataType.substring(1);
+                result.add(new eu.planets_project.services.datatypes.Property.Builder(XcdlProperties
+                        .makePropertyURI("normData" + normDataType)).name("normData" + normDataType).type("normData")
+                        .description(normDataType.toLowerCase()).value(normData.getValue()).build());
+            }
             List<Property> properties = o.getProperties();
             for (Property property : properties) {
                 String name = property.getName().getValues().get(0);
                 List<ValueSet> valueSets = property.getValueSets();
                 for (ValueSet valueSet : valueSets) {
                     LabValue labValue = valueSet.getLabValue();
-                    List<Val> val = labValue.getVals();
                     URI propUri = XcdlProperties.makePropertyURI(name);
-                    String value = val.get(0).getValues().get(0);
+                    String value = "";
+                    String unit = "";
+                    if (labValue != null) {
+                        List<Val> val = labValue.getVals();
+                        List<String> values = val.get(0).getValues();
+                        value = values.size() > 0 ? values.get(0) : "";
+                        unit = labValue.getTypes().get(0).getValue().value();
+                    }
                     String type = PropertyName.PROPERTY.s;
-                    String unit = labValue.getTypes().get(0).getValue().value();
                     String description = createDescription(property, valueSet);
                     eu.planets_project.services.datatypes.Property p = new eu.planets_project.services.datatypes.Property.Builder(
-                            propUri).name(name).value(value).type(type).unit(
-                            unit).description(description).build();
+                            propUri).name(name).value(value).type(type).unit(unit).description(description).build();
                     result.add(p);
                 }
             }
@@ -98,20 +111,16 @@ public final class XcdlParser implements XcdlAccess {
         return fixPropertiesForXcdl(result);
     }
 
-    private String createDescription(final Property property,
-            final ValueSet valueSet) {
+    private String createDescription(final Property property, final ValueSet valueSet) {
         List<DataRef> dataReves = valueSet.getDataReves();
-        String result = String.format("%s %s, name %s %s, "
-                + "valueSet %s, labValue %s %s inch, dataRef %s %s", property
-                .getSource().value(), property.getCat().value(), property
-                .getName().getId(), property.getName().getValues().get(0),
-                valueSet.getId(), valueSet.getLabValue().getVals().get(0)
-                        .getValues().get(0), valueSet.getLabValue().getTypes()
-                        .get(0).getValue().value(), dataReves == null
-                        || dataReves.size() == 0 ? "null" : dataReves.get(0)
-                        .getPropertySetId(), dataReves == null
-                        || dataReves.size() == 0 ? "null" : dataReves.get(0)
-                        .getInd().value());
+        LabValue labValue = valueSet.getLabValue();
+        List<String> values = labValue != null ? labValue.getVals().get(0).getValues() : new ArrayList<String>();
+        String result = String.format("%s %s, name %s %s, " + "valueSet %s, labValue %s %s inch, dataRef %s %s",
+                property.getSource().value(), property.getCat().value(), property.getName().getId(), property.getName()
+                        .getValues().get(0), valueSet.getId(), values.size() > 0 ? values.get(0) : "",
+                labValue != null ? labValue.getTypes().get(0).getValue().value() : "null", dataReves == null
+                        || dataReves.size() == 0 ? "null" : dataReves.get(0).getPropertySetId(), dataReves == null
+                        || dataReves.size() == 0 ? "null" : dataReves.get(0).getInd().value());
         System.out.println("Generated description: " + result);
         return result;
     }
@@ -127,11 +136,9 @@ public final class XcdlParser implements XcdlAccess {
      * @param args unused
      */
     public static void main(final String[] args) {
-        XcdlParser p = new XcdlParser(
-                new File(
-                        "PP/xcl/src/java/eu/planets_project/ifr/core/services/characterisation/extractor/xcdl/xcdl.xml"));
-        List<eu.planets_project.services.datatypes.Property> properties = p
-                .getProperties();
+        XcdlParser p = new XcdlParser(new File(
+                "PP/xcl/src/java/eu/planets_project/ifr/core/services/characterisation/extractor/xcdl/xcdl.xml"));
+        List<eu.planets_project.services.datatypes.Property> properties = p.getProperties();
         for (eu.planets_project.services.datatypes.Property property : properties) {
             System.out.println(property);
         }
@@ -144,39 +151,27 @@ public final class XcdlParser implements XcdlAccess {
     static List<eu.planets_project.services.datatypes.Property> fixPropertiesForXcdl(
             List<eu.planets_project.services.datatypes.Property> properties) {
         /*
-         * This is totally work in progress... The basic idea is: We wrap all
-         * this stuff here around the plain properties to make it work for the
-         * XCDL comparator.
+         * This is totally work in progress... The basic idea is: We wrap all this stuff here around the plain
+         * properties to make it work for the XCDL comparator.
          */
         System.out.println("Attempting to convert properties: ");
         for (eu.planets_project.services.datatypes.Property property : properties) {
             System.out.println(property);
         }
         List<eu.planets_project.services.datatypes.Property> result = new ArrayList<eu.planets_project.services.datatypes.Property>();
-        String type = "Image"; //TODO add text file support
-        result.add(new eu.planets_project.services.datatypes.Property.Builder(
-                XcdlProperties.makePropertyURI("normData" + type)).name(
-                "normData" + type).type("normData").description(type.toLowerCase()).value( 
-                "00 01 02 03 04 05 06 07 08 09 0a").build());
-        result.add(new eu.planets_project.services.datatypes.Property.Builder(
-                XcdlProperties.makePropertyURI("propertySet")).name(
-                "propertySet").type("propertySet").description(
+        result.add(new eu.planets_project.services.datatypes.Property.Builder(XcdlProperties
+                .makePropertyURI("propertySet")).name("propertySet").type("propertySet").description(
         /*
-         * FIXME: this following ID is particularly nasty and setting it here
-         * makes no sense whatsoever; could we get rid of property sets here
-         * altogether?
+         * FIXME: this following ID is particularly nasty and setting it here makes no sense whatsoever; could we get
+         * rid of property sets here altogether?
          */
         "ref i_i1_i1_i5 suggestedPaletteAlpha").build());
         for (eu.planets_project.services.datatypes.Property property : properties) {
-            result
-                    .add(new eu.planets_project.services.datatypes.Property.Builder(
-                            property.getUri()).name(property.getName()).type(
-                            property.getType()).value(property.getValue())
-                            .unit(property.getUnit()).description(
-                                    /* FIXME ...since this is really nasty too: */
-                                    property.getDescription().replace(
-                                            "dataRef null null",
-                                            "dataRef id_0 global")).build());
+            result.add(new eu.planets_project.services.datatypes.Property.Builder(property.getUri()).name(
+                    property.getName()).type(property.getType()).value(property.getValue()).unit(property.getUnit())
+                    .description(
+                    /* FIXME ...since this is really nasty too: */
+                    property.getDescription().replace("dataRef null null", "dataRef id_0 global")).build());
         }
         return result;
     }
