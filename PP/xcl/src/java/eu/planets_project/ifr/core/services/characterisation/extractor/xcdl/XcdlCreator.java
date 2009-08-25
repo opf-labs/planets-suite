@@ -28,38 +28,33 @@ import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.gene
 import eu.planets_project.services.datatypes.Property;
 
 /**
- * Creates an XCDL XML string from a list of properties.
+ * Creates an XCDL XML string from lists of properties.
  * <p/>
  * Note: This is work in progress.
  * @see XcdlCreatorTests
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public class XcdlCreator {
+public final class XcdlCreator {
 
     private String xcdlXml;
 
     /**
-     * @param xcdlProps Properties to be converted into an XCDL. It is assumed
-     *        these are properties of a single object and will be represented as
-     *        a single object in the resulting XCDL. The props need to contain
+     * @param xcdlProps Properties to be converted into an XCDL. Each list represents the properties of a single object.
      */
 
-    public XcdlCreator(List<Property> xcdlProps) {
+    public XcdlCreator(final List<List<Property>> xcdlProps) {
         try {
-            JAXBContext jc = JAXBContext
-                    .newInstance("eu.planets_project.ifr.core.services."
-                            + "characterisation.extractor.xcdl.generated");
+            JAXBContext jc = JAXBContext.newInstance("eu.planets_project.ifr.core.services."
+                    + "characterisation.extractor.xcdl.generated");
             Marshaller marshaller = jc.createMarshaller();
             StringWriter stringWriter = new StringWriter();
             Xcdl xcdl = createXcdlObject(xcdlProps);
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller
-                    .setProperty("jaxb.schemaLocation",
-                            "http://www.planets-project.eu/xcl/schemas/xcl res/xcl/xcdl/XCDLCore.xsd");
+            marshaller.setProperty("jaxb.schemaLocation",
+                    "http://www.planets-project.eu/xcl/schemas/xcl res/xcl/xcdl/XCDLCore.xsd");
             marshaller.marshal(xcdl, stringWriter);
             this.xcdlXml = stringWriter.toString();
-            System.out.println(String.format("Marshalled %s to:\n%s", xcdl,
-                    xcdlXml));
+            System.out.println(String.format("Marshalled %s to:\n%s", xcdl, xcdlXml));
         } catch (JAXBException e) {
             e.printStackTrace();
         }
@@ -96,49 +91,39 @@ public class XcdlCreator {
         }
     }
 
-    private Xcdl createXcdlObject(List<Property> xcdlProps) {
-        /*
-         * The given properties are assumed to be properties of a single object
-         * and are thus wrapped in a single XCDL-Object.
-         */
-        eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object();
-        object.setId("generated_" + String.valueOf(System.currentTimeMillis()));
-        for (Property prop : xcdlProps) {
-            if (prop.getType() == null) {
-                throw new IllegalArgumentException("Property has no name: "
-                        + prop);
-            }
-            if (prop.getType().toLowerCase().equals(PropertyName.NORMDATA.s)) {
-                addNormData(object, prop);
-            } else if (prop.getType().toLowerCase().equals(
-                    PropertyName.PROPERTYSET.s)) {
-                addPropertySet(object, prop);
-            } else if (prop.getType().toLowerCase().equals(
-                    PropertyName.PROPERTY.s)) {
-                addProperty(object, prop);
-            } else {
-                throw new IllegalArgumentException(
-                        String
-                                .format(
-                                        "Cannot convert property with type '%s', only know about '%s'",
-                                        prop.getType(), Arrays
-                                                .asList(PropertyName.values())));
-            }
-        }
+    private Xcdl createXcdlObject(List<List<Property>> xcdlProps) {
         Xcdl xcdl = new Xcdl();
         xcdl.setId("generated_" + String.valueOf(System.currentTimeMillis()));
-        xcdl.getObjects().add(object);
+        for (List<Property> list : xcdlProps) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object();
+            object.setId("generated_" + String.valueOf(System.currentTimeMillis()));
+            for (Property prop : list) {
+                if (prop.getType() == null) {
+                    throw new IllegalArgumentException("Property has no name: " + prop);
+                }
+                if (prop.getType().toLowerCase().equals(PropertyName.NORMDATA.s)) {
+                    addNormData(object, prop);
+                } else if (prop.getType().toLowerCase().equals(PropertyName.PROPERTYSET.s)) {
+                    addPropertySet(object, prop);
+                } else if (prop.getType().toLowerCase().equals(PropertyName.PROPERTY.s)) {
+                    addProperty(object, prop);
+                } else {
+                    throw new IllegalArgumentException(String.format(
+                            "Cannot convert property with type '%s', only know about '%s'", prop.getType(), Arrays
+                                    .asList(PropertyName.values())));
+                }
+            }
+            xcdl.getObjects().add(object);
+        }
         return xcdl;
     }
 
     private void addProperty(
-            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
-            Property prop) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop) {
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property p = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property();
-       
+
         /*
-         * This is where it gets ugly: we map our property values onto the XCDL
-         * XML types:
+         * This is where it gets ugly: we map our property values onto the XCDL XML types:
          */
         String[] levelOneTokens = clean(prop.getDescription().split(","));
         String[] valueTokens = clean(levelOneTokens[0].split(" "));
@@ -146,7 +131,7 @@ public class XcdlCreator {
         String[] valueSetTokens = clean(levelOneTokens[2].split(" "));
         String[] labValTokens = clean(levelOneTokens[3].split(" "));
         String[] dataRefTokens = clean(levelOneTokens[4].split(" "));
-        
+
         p.setId("p" + nameTokens[1].replaceAll("id", ""));
 
         p.setSource(SourceType.fromValue(valueTokens[0].toLowerCase()));
@@ -197,15 +182,13 @@ public class XcdlCreator {
     }
 
     private void addPropertySet(
-            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
-            Property prop) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop) {
         PropertySet set = new PropertySet();
         set.setId("id_0");
         ValueSetRelations rel = new ValueSetRelations();
         String desc = prop.getDescription();
         if (desc == null || !desc.contains(" ")) {
-            throw new IllegalArgumentException(String.format(
-                    "Cannot use description '%s' here", desc));
+            throw new IllegalArgumentException(String.format("Cannot use description '%s' here", desc));
         }
         String[] levelOneTokens = desc.split(",");
         for (String s : levelOneTokens) {
@@ -220,13 +203,11 @@ public class XcdlCreator {
     }
 
     private void addNormData(
-            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
-            Property prop) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop) {
         NormData normData = new NormData();
         String description = prop.getDescription();
         if (description == null || description.trim().equals("")) {
-            throw new IllegalArgumentException(
-                    "Normdata property must have a description");
+            throw new IllegalArgumentException("Normdata property must have a description");
         }
         normData.setType(InformType.fromValue(description.toLowerCase()));
         normData.setId("nd1");
@@ -243,11 +224,8 @@ public class XcdlCreator {
         try {
             type = DataRefType.fromValue(d);
         } catch (IllegalArgumentException e) {
-            System.err
-                    .println(String
-                            .format(
-                                    "Warning: could not create a DataRefType for '%s', defaulting to '%s'",
-                                    d, type));
+            System.err.println(String.format("Warning: could not create a DataRefType for '%s', defaulting to '%s'", d,
+                    type));
         }
         return type;
     }
@@ -258,11 +236,8 @@ public class XcdlCreator {
         try {
             labValType = LabValType.fromValue(labValProp);
         } catch (IllegalArgumentException e) {
-            System.err
-                    .println(String
-                            .format(
-                                    "Warning: could not create a LabValType for '%s', defaulting to '%s'",
-                                    labValProp, labValType));
+            System.err.println(String.format("Warning: could not create a LabValType for '%s', defaulting to '%s'",
+                    labValProp, labValType));
         }
         return labValType;
     }

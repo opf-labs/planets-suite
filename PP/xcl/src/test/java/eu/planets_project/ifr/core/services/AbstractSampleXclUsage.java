@@ -94,16 +94,11 @@ public abstract class AbstractSampleXclUsage {
         CharacteriseResult firstResult = characterisation.characterise(files()[0], null);
         CharacteriseResult secondResult = characterisation.characterise(files()[1], null);
         /*
-         * We set up the comparison. First, the values to compare:
-         */
-        List<Property> firstProps = firstResult.getProperties();
-        List<Property> secondProps = secondResult.getProperties();
-        /*
-         * Then we compare the properties of the files, using the config as parameters:
+         * We compare the properties of the files, using the config as parameters:
          */
         CompareProperties comparison = new XcdlCompareProperties();
         List<Parameter> configProperties = comparison.convertConfig(config());
-        CompareResult result = comparison.compare(firstProps, secondProps, configProperties);
+        CompareResult result = comparison.compare(firstResult, secondResult, configProperties);
         System.out.println("Result: " + result + " " + result.getProperties());
     }
 
@@ -117,14 +112,11 @@ public abstract class AbstractSampleXclUsage {
                 "/pserv-xcl/XcdlCharacterise?wsdl");
         CharacteriseResult firstResult = characterisation.characterise(files()[0], null);
         CharacteriseResult secondResult = characterisation.characterise(files()[1], null);
-        /* We set up the comparison. First, the values to compare: */
-        List<Property> firstProps = firstResult.getProperties();
-        List<Property> secondProps = secondResult.getProperties();
         /* CompareProperties: */
         CompareProperties comparison = ServiceCreator.createTestService(CompareProperties.QNAME,
                 XcdlCompareProperties.class, "/pserv-xcl/XcdlCompareProperties?wsdl");
         List<Parameter> configProperties = comparison.convertConfig(config());
-        CompareResult result = comparison.compare(firstProps, secondProps, configProperties);
+        CompareResult result = comparison.compare(firstResult, secondResult, configProperties);
         System.out.println("Result: " + result + " " + result.getProperties());
     }
 }
