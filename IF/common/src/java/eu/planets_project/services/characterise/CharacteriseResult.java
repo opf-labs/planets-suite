@@ -3,6 +3,8 @@
  */
 package eu.planets_project.services.characterise;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -15,6 +17,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 /**
  * Result type for the {@link Characterise} interface.
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
+ * @author <a href="mailto:fabian.steeg@uni-koeln.de">Fabian Steeg</a> (recursive structure)
  */
 @XmlRootElement
 @XmlAccessorType(value = XmlAccessType.FIELD)
@@ -23,7 +26,9 @@ public final class CharacteriseResult {
     private ServiceReport report;
 
     private List<Property> props;
-
+    
+    private List<CharacteriseResult> results;
+    
     /**
      * For JAXB.
      */
@@ -36,16 +41,28 @@ public final class CharacteriseResult {
      */
     public CharacteriseResult(final List<Property> props,
             final ServiceReport report) {
-        super();
         this.props = props;
         this.report = report;
+        this.results = new ArrayList<CharacteriseResult>(); 
+    }
+    
+    /**
+     * @param props The characterisation result properties
+     * @param report The service report
+     * @param results The embedded results
+     */
+    public CharacteriseResult(final List<Property> props,
+            final ServiceReport report, final List<CharacteriseResult> results) {
+        this.props = props;
+        this.report = report;
+        this.results = results; 
     }
 
     /**
-     * @return The result properties
+     * @return An unmodifiable view of the result properties
      */
     public List<Property> getProperties() {
-        return props;
+        return Collections.unmodifiableList(props);
     }
 
     /**
@@ -53,5 +70,12 @@ public final class CharacteriseResult {
      */
     public ServiceReport getReport() {
         return report;
+    }
+
+    /**
+     * @return An unmodifiable view of the embedded results
+     */
+    public List<CharacteriseResult> getResults() {
+        return Collections.unmodifiableList(results);
     }
 }
