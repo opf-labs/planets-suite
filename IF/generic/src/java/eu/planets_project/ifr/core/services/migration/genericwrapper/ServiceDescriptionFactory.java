@@ -29,7 +29,7 @@ public class ServiceDescriptionFactory {
 
     public ServiceDescription getServiceDescription(
             Document configuration,
-            List<eu.planets_project.services.datatypes.MigrationPath> paths)
+            List<eu.planets_project.services.datatypes.MigrationPath> paths, String canonicalName)
             throws ConfigurationException {
 
 
@@ -40,8 +40,8 @@ public class ServiceDescriptionFactory {
 
         String title = null, description = null, version = null, creator = null,
                 publisher = null, identifier = null,
-                instructions = null, furtherinfo = null, logo = null,
-                classname = null;
+                instructions = null, furtherinfo = null, logo = null;
+
         Tool tool = null;
 
         for (int nodeIndex = 0; nodeIndex < topLevelNodes.getLength(); nodeIndex++) {
@@ -67,16 +67,11 @@ public class ServiceDescriptionFactory {
                     furtherinfo = currentNode.getTextContent().trim();
                 }else if(currentNode.getNodeName().equals(Constants.LOGO)){
                     logo = currentNode.getTextContent().trim();
-                }else if(currentNode.getNodeName().equals(Constants.CLASSNAME)){
-                    classname = currentNode.getTextContent().trim();
                 }
             }
         }
         if(title == null){
             throw new ConfigurationException("title not set in configfile");
-        }
-        if(classname == null){
-            throw new ConfigurationException("classname not set in configfile");
         }
         if(creator == null){
             throw new ConfigurationException("creator not set in configfile");
@@ -85,7 +80,7 @@ public class ServiceDescriptionFactory {
                 new ServiceDescription.Builder(title,
                                                "eu.planets_project.ifr.services.migrate.Migrate");
         builder.author(creator);
-        builder.classname(classname);
+        builder.classname(canonicalName);
         builder.description(description);
         builder.identifier(identifier);
         builder.instructions(instructions);

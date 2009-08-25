@@ -36,14 +36,14 @@ public class GenericMigrationWrapper {
 
     private boolean returnByReference;
 
-    public GenericMigrationWrapper(Document configuration)
+    public GenericMigrationWrapper(Document configuration, String canonicalName)
             throws MigrationInitialisationException {
 
         try {
             MigrationPathsFactory pathsFactory = new MigrationPathsFactory();
             migrationPaths = pathsFactory.getMigrationPaths(configuration);
             ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
-            serviceDescription = serviceFactory.getServiceDescription(configuration, migrationPaths.getAsPlanetsPaths());
+            serviceDescription = serviceFactory.getServiceDescription(configuration, migrationPaths.getAsPlanetsPaths(),canonicalName);
             String result = configuration.getDocumentElement().getAttribute(
                     "returnByReference");
             if (result != null){

@@ -54,7 +54,7 @@ public final class DiaMigrationService implements Migrate, Serializable {
         MigrateResult migrationResult;
         try {
             GenericMigrationWrapper genericWrapper = new GenericMigrationWrapper(
-                    documentLocator.getDocument());
+                    documentLocator.getDocument(), this.getClass().getCanonicalName());
             migrationResult = genericWrapper.migrate(digitalObject,
                                                      inputFormat, outputFormat, parameters);
         } catch (Exception e) {
