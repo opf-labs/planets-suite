@@ -20,25 +20,19 @@ public final class XcdlCharacteriseUnitHelper {
     static final String LOCALHOST = "http://localhost:8080";
     /** Test server address of the JBoss instance. */
     static final String PLANETARIUM = "http://planetarium.hki.uni-koeln.de:8080";
-    /** System Temp folder */
+    /** System Temp folder. */
     private static final String SYSTEM_TEMP = System.getProperty("java.io.tmpdir");
-    
-    //private static String EXTRACTOR_HOME = System.getenv("EXTRACTOR_HOME") + File.separator;
     
     /***/
     static final String BASIC_EXTRACTOR2BINARY_TEST_OUT = SYSTEM_TEMP + File.separator + "BASIC_EXTRACTOR2BINARY_TEST_OUT";
-    
     static final String EXTRACTOR2URI_OUTPUT_DIR = SYSTEM_TEMP + File.separator + "EXTRACTOR2URI_TEST_OUT";
-    
     static final String EXTRACTOR_LOCAL_TEST_OUT = "EXTRACTOR_LOCAL_TEST_OUT";
-    
     static final String EXTRACTOR_SERVER_TEST_OUT = "EXTRACTOR_SERVER_TEST_OUT";
-    
     static final String EXTRACTOR_STANDALONE_TEST_OUT = "EXTRACTOR_STANDALONE_TEST_OUT";
-           
-    static final String SAMPLE_FILE = "PP/xcl/src/test/resources/sample_files/bgai4a16.png";
-
-    static final String SAMPLE_XCEL = "PP/xcl/src/test/resources/sample_files/xcel_png.xml";
+    static final String SAMPLE_FILE_PNG = "PP/xcl/src/test/resources/sample_files/bgai4a16.png";
+    static final String SAMPLE_XCEL_PNG = "PP/xcl/src/test/resources/sample_files/xcel_png.xml";
+    static final String SAMPLE_FILE_PDF = "PP/xcl/src/test/resources/sample_files/basi0g01.pdf";
+    static final String SAMPLE_XCEL_PDF = "PP/xcl/src/test/resources/sample_files/xcel_pdf.xml";
 
     /**
      * We enforce non-instantiability with a private constructor.

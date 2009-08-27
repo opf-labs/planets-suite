@@ -27,6 +27,13 @@ public final class CharacteriseResult {
 
     private List<Property> props;
     
+    /*
+     * Proposed way to support embedded results: embedding CharacteriseResult itself, instead of introducing a new class
+     * or reusing some other class. This seems to be the most straightforward approach. It keeps the simple case simple
+     * and does not change the API for it. Also, for the sample scenario of text files with embedded images, I believe
+     * it makes sense: we have a separate characterisation result for each embedded object, aggregated into a result for
+     * the complete object.
+     */
     private List<CharacteriseResult> results;
     
     /**
@@ -62,7 +69,8 @@ public final class CharacteriseResult {
      * @return An unmodifiable view of the result properties
      */
     public List<Property> getProperties() {
-        return Collections.unmodifiableList(props);
+        // The extra check here is necessary as JAXB unmarshalls empty lists to null.
+        return Collections.unmodifiableList(props == null ? new ArrayList<Property>() : props);
     }
 
     /**
@@ -76,6 +84,7 @@ public final class CharacteriseResult {
      * @return An unmodifiable view of the embedded results
      */
     public List<CharacteriseResult> getResults() {
-        return Collections.unmodifiableList(results);
+        // The extra check here is necessary as JAXB unmarshalls empty lists to null.
+        return Collections.unmodifiableList(results == null ? new ArrayList<CharacteriseResult>() : results);
     }
 }

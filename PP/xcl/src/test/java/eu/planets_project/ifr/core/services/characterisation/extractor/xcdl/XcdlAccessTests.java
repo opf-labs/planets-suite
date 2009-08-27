@@ -24,19 +24,19 @@ public class XcdlAccessTests {
     private static final String PNG = "PP/xcl/src/resources/basi0g08.png";
 
     @Test
-    public void testProperties() {
+    public void testPropertiesImage() {
         /*
          * Test the simple implementation which only picks out the essential values from the XCDL:
          */
-        check(new XcdlProperties(new File(XCDL)));
+        check(new XcdlProperties(new File(XCDL)), "Image");
     }
 
     @Test
-    public void testParser() {
+    public void testParserImage() {
         /*
          * Test the full parser which parses the complete XCDL including norm data and property set:
          */
-        check(new XcdlParser(new File(XCDL)));
+        check(new XcdlParser(new File(XCDL)), "Image");
     }
 
     @Test
@@ -44,8 +44,8 @@ public class XcdlAccessTests {
         /*
          * Both implementations should not return identical results (see comments above):
          */
-        List<Property> p1 = new XcdlProperties(new File(XCDL)).getProperties();
-        List<Property> p2 = new XcdlParser(new File(XCDL)).getProperties();
+        CharacteriseResult p1 = new XcdlProperties(new File(XCDL)).getProperties();
+        CharacteriseResult p2 = new XcdlParser(new File(XCDL)).getProperties();
         Assert.assertNotSame(p1, p2);
     }
 
@@ -85,20 +85,19 @@ public class XcdlAccessTests {
     /**
      * @param xcdlAccess The access to check
      */
-    private void check(final XcdlAccess xcdlAccess) {
-        List<Property> properties = xcdlAccess.getProperties();
+    private void check(final XcdlAccess xcdlAccess, String normDataType) {
+        List<Property> properties = xcdlAccess.getProperties().getProperties(); // FIXME naming
         Assert.assertTrue("No properties extracted by " + xcdlAccess.getClass().getSimpleName(), properties.size() > 0);
-        testNormDataPropertyName(xcdlAccess);
+        testNormDataPropertyName(xcdlAccess, normDataType);
     }
     
-    private void testNormDataPropertyName(XcdlAccess access) {
-        List<Property> properties = access.getProperties();
+    private void testNormDataPropertyName(XcdlAccess access, String normDataType) {
+        List<Property> properties = access.getProperties().getProperties(); // FIXME naming
         for (Property property : properties) {
             String uri = property.getUri().toString();
             if (uri.contains("normData")) {
-                String type = "Image"; //TODO add text file support
                 Assert.assertEquals("Norm data property URI should match the ID used in the ontology;",
-                        "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#normData" + type, uri);
+                        "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#normData" + normDataType, uri);
             }
         }
     }

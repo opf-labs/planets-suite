@@ -1,8 +1,6 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.xcdl;
 
-import java.util.List;
-
-import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.characterise.CharacteriseResult;
 
 /**
  * Access to an XCDL document.
@@ -10,9 +8,9 @@ import eu.planets_project.services.datatypes.Property;
  */
 public interface XcdlAccess {
     /**
-     * @return A list of properties, extracted from the XCDL file. Note that
-     *         this only returns a restricted part of the XCDL. For a complete
-     *         access to the XCDL, use {@link XcdlParser}.
+     * @return Possibly nested lists of properties, extracted from the XCDL file and wrapped into a CharacterizeResult
+     *         (which can be used with the {@link CompareProperties} interface). Note that this only returns a
+     *         restricted part of the XCDL. For complete access to the XCDL, use {@link XcdlParser}.
      */
-    List<Property> getProperties();
+    CharacteriseResult getProperties();
 }

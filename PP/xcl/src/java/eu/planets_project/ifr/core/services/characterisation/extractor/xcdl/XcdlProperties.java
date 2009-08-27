@@ -14,25 +14,27 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlCreator.PropertyName;
+import eu.planets_project.services.characterise.CharacteriseResult;
 import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 
 /**
- * Access to XCDL properties based on XML processing only (no dependencies on
- * the JAXB-generated classes).
+ * Access to XCDL properties based on XML processing only (no dependencies on the JAXB-generated classes).
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class XcdlProperties implements XcdlAccess {
 
     /* XcdlAccess implementation: */
 
-    private static final Namespace NS = Namespace
-            .getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
+    private static final Namespace NS = Namespace.getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
 
     /**
      * {@inheritDoc}
      * @see eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccess#getProperties()
      */
-    public List<Property> getProperties() {
+    public CharacteriseResult getProperties() {
         List<Property> properties = new ArrayList<Property>();
         SAXBuilder builder = new SAXBuilder();
         try {
@@ -42,12 +44,11 @@ public final class XcdlProperties implements XcdlAccess {
             for (Object object : propElems) {
                 Element e = (Element) object;
                 String name = e.getChildText("name", NS);
-                Element labVal = e.getChild("valueSet", NS).getChild(
-                        "labValue", NS);
+                Element labVal = e.getChild("valueSet", NS).getChild("labValue", NS);
                 String value = labVal.getChildText("val", NS);
                 URI propUri = XcdlProperties.makePropertyURI(name);
-                Property p = new Property.Builder(propUri).name(name).value(
-                        value).type(labVal.getChildText("type", NS)).build();
+                Property p = new Property.Builder(propUri).name(name).value(value)
+                        .type(labVal.getChildText("type", NS)).build();
                 properties.add(p);
             }
         } catch (JDOMException e) {
@@ -55,20 +56,8 @@ public final class XcdlProperties implements XcdlAccess {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return XcdlParser.fixPropertiesForXcdl(properties);
-    }
-
-    /**
-     * @param args unused
-     */
-    public static void main(final String[] args) {
-        XcdlProperties xcdlProperties = new XcdlProperties(
-                new File(
-                        "PP/xcl/src/java/eu/planets_project/ifr/core/services/characterisation/extractor/xcdl/xcdl.xml"));
-        List<Property> properties = xcdlProperties.getProperties();
-        for (Property property : properties) {
-            System.out.println(property);
-        }
+        return new CharacteriseResult(XcdlParser.fixPropertiesForXcdl(properties), new ServiceReport(Type.INFO,
+                Status.SUCCESS, "Flat properties from XCDL"));
     }
 
     /* Relatively unrelated: static methods for handling property uris: */
@@ -99,17 +88,14 @@ public final class XcdlProperties implements XcdlAccess {
     }
 
     /**
-     * @param properties The XCDL properties, possibly including norm data and
-     *        set properties to be filtered
-     * @return A new list containing only the property objects that are actual
-     *         XCDL properties (no norm data or property sets)
+     * @param properties The XCDL properties, possibly including norm data and set properties to be filtered
+     * @return A new list containing only the property objects that are actual XCDL properties (no norm data or property
+     *         sets)
      */
     public static List<Property> realProperties(final List<Property> properties) {
         List<Property> result = new ArrayList<Property>();
         for (Property property : properties) {
-            if (property.getType() != null
-                    && property.getType().equalsIgnoreCase(
-                            PropertyName.PROPERTY.s)) {
+            if (property.getType() != null && property.getType().equalsIgnoreCase(PropertyName.PROPERTY.s)) {
                 result.add(property);
             }
         }

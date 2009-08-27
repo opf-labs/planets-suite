@@ -114,12 +114,11 @@ public final class XcdlCompareProperties implements CompareProperties {
     public CharacteriseResult convertInput(final DigitalObject inputFile) {
         File file = FileUtils.writeByteArrayToTempFile(FileUtils
                 .writeInputStreamToBinary(inputFile.getContent().read()));
-        List<Property> props = new XcdlParser(file).getProperties();
-        if (props.size() == 0) {
+        CharacteriseResult props = new XcdlParser(file).getProperties();
+        if (props.getProperties().size() == 0) {
             throw new IllegalStateException("Could not parse any properties from: " + file.getAbsolutePath());
         }
-        ArrayList<Property> list = new ArrayList<Property>(props);
-        return new CharacteriseResult(list, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
+        return props;
     }
 
     /**
