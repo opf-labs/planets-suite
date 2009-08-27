@@ -45,7 +45,7 @@ final List<Parameter> testParameters = new ArrayList<Parameter>();
 
         DocumentLocator documentLocator = new DocumentLocator("exampleConfigfile.xml");
          genericWrapper = new GenericMigrationWrapper(
-                documentLocator.getDocument());
+                documentLocator.getDocument(), this.getClass().getCanonicalName());
 
     }
 
