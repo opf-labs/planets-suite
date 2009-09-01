@@ -7,7 +7,7 @@ digraph registry {
   WS[label = "{RegistryWebservice|registry:Registry\n...|...}"]
   Persistent[label = "{PersistentRegistry|registry:Registry\n...|...}"]
   ServiceRegistry[label = "{\<\<Interface\>\>\nRegistry||...}"]
-  Factory[label = "{RegistryFactory|...|getInstance():Registry\n...}"]
+  Factory[label = "{RegistryFactory|...|getRegistry():Registry\n...}"]
   NonIfProgrammer[label = "External Programmer\n (web service instance)" style=rounded]
   IfProgrammer[label = "IF Programmer\n(local instance)" style=rounded]
   
