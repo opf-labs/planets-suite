@@ -17,6 +17,7 @@ import eu.planets_project.services.compare.CommonProperties;
 import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.datatypes.ServiceReport;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -26,22 +27,19 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 public class XcdlCommonPropertiesTests {
 
     private static final String WSDL = "/pserv-xcl/XcdlCommonProperties?wsdl";
-    
+
     @Test
-	public void testDescribe() {
-		CommonProperties c = ServiceCreator.createTestService(XcdlCommonProperties.QNAME,
-				XcdlCommonProperties.class, WSDL);
-		ServiceDescription sd = c.describe();
+    public void testDescribe() {
+        CommonProperties c = ServiceCreator.createTestService(XcdlCommonProperties.QNAME, XcdlCommonProperties.class,
+                WSDL);
+        ServiceDescription sd = c.describe();
         assertTrue("The ServiceDescription should not be NULL.", sd != null);
         System.out.println("test: describe()");
-        System.out
-                .println("--------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------");
         System.out.println();
-        System.out.println("Received ServiceDescription from: "
-                + c.getClass().getName());
+        System.out.println("Received ServiceDescription from: " + c.getClass().getName());
         System.out.println(sd.toXmlFormatted());
-        System.out
-                .println("--------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------");
     }
 
     @Test
@@ -73,9 +71,8 @@ public class XcdlCommonPropertiesTests {
      * @param suffixes The suffixes of the file formats to test
      */
     private void testFor(final String... suffixes) {
-        CommonProperties commonProperties = ServiceCreator.createTestService(
-                CommonProperties.QNAME, XcdlCommonProperties.class,
-                WSDL);
+        CommonProperties commonProperties = ServiceCreator.createTestService(CommonProperties.QNAME,
+                XcdlCommonProperties.class, WSDL);
         FormatRegistry registry = FormatRegistryFactory.getFormatRegistry();
         List<URI> puids = new ArrayList<URI>();
         for (String suffix : suffixes) {
@@ -89,40 +86,32 @@ public class XcdlCommonPropertiesTests {
     private void testUnion(CommonProperties commonProperties, List<URI> puids) {
         CompareResult union = commonProperties.union(puids);
         commonCheck(union, union.getProperties());
-        List<Property> properties = commonProperties.union(
-                Arrays.asList(puids.get(0))).getProperties();
+        List<Property> properties = commonProperties.union(Arrays.asList(puids.get(0))).getProperties();
         Assert.assertTrue("Less union properties than properties of one only",
                 union.getProperties().size() >= properties.size());
     }
 
-    private void testIntersection(CommonProperties commonProperties,
-            List<URI> puids) {
+    private void testIntersection(CommonProperties commonProperties, List<URI> puids) {
         CompareResult intersection = commonProperties.intersection(puids);
         commonCheck(intersection, intersection.getProperties());
-        Assert.assertTrue(
-                "More intersection properties than properties of one only",
-                intersection.getProperties().size() <= commonProperties
-                        .intersection(Arrays.asList(puids.get(0)))
-                        .getProperties().size());
+        Assert.assertTrue("More intersection properties than properties of one only", intersection.getProperties()
+                .size() <= commonProperties.intersection(Arrays.asList(puids.get(0))).getProperties().size());
     }
 
-    private void commonCheck(final CompareResult compareResult,
-            final List<Property> list) {
+    private void commonCheck(final CompareResult compareResult, final List<Property> list) {
         assertNotNull("response was null", list);
-        String info = compareResult.getReport().getMessage();
-        assertTrue("Result contains an error: " + info, !info.contains("Error"));
-        assertTrue("Wrong result: " + info, info
-                .startsWith("<XCLExplorer><format puid="));
-        assertTrue("No result found: " + info, !info.contains("unavailable"));
-        printInfo(list, info);
+        ServiceReport report = compareResult.getReport();
+        Assert.assertEquals("Service report should be of type INFO", ServiceReport.Type.INFO, report.getType());
+        Assert.assertEquals("Service report should have status SUCCESS", ServiceReport.Status.SUCCESS, report
+                .getStatus());
+        Assert.assertNotNull("Service report should have a message", report.getMessage());
+        printInfo(list);
     }
 
     /**
      * @param list The properties
-     * @param info The raw result
      */
-    private void printInfo(final List<Property> list, final String info) {
-        // System.out.println("FPM raw result: " + info);
+    private void printInfo(final List<Property> list) {
         System.out.println("FPM props result: ");
         for (Property prop : list) {
             System.out.println(prop);
