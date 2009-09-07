@@ -12,5 +12,5 @@ public interface XcdlAccess {
      *         (which can be used with the {@link CompareProperties} interface). Note that this only returns a
      *         restricted part of the XCDL. For complete access to the XCDL, use {@link XcdlParser}.
      */
-    CharacteriseResult getProperties();
+    CharacteriseResult getCharacteriseResult();
 }

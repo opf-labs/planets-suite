@@ -20,11 +20,6 @@ public class XcdlCreatorTests {
 
     @BeforeClass
     public static void setup() {
-        /*
-         * TODO: Does this make any sense? Probably not so much from an API perspective, but maybe when such properties
-         * are generated... Can we unclutter this? Should we use enums for the string values? Should we get them from
-         * the annotations of the generated classes, e.g. PropertySet.class.getAnnotation(XmlRootElement.class).name();?
-         */
         List<Property> norm = Arrays.asList(
         /* Norm data: */
         new Property.Builder(XcdlProperties.makePropertyURI("normData")).name("normData").type("normData").description(

@@ -112,12 +112,9 @@ public final class XcdlCompareProperties implements CompareProperties {
      * @see eu.planets_project.services.compare.CompareCharacteriseResults#convertInput(eu.planets_project.services.datatypes.DigitalObject)
      */
     public CharacteriseResult convertInput(final DigitalObject inputFile) {
-        File file = FileUtils.writeByteArrayToTempFile(FileUtils
-                .writeInputStreamToBinary(inputFile.getContent().read()));
-        //TODO: pass InputStream to the parser instead (or the digital object?) 
-        CharacteriseResult props = new XcdlParser(file).getProperties();
+        CharacteriseResult props = new XcdlParser(inputFile.getContent().read()).getCharacteriseResult();
         if (props.getProperties().size() == 0) {
-            throw new IllegalStateException("Could not parse any properties from: " + file.getAbsolutePath());
+            throw new IllegalStateException("Could not parse any properties from: " + inputFile);
         }
         return props;
     }

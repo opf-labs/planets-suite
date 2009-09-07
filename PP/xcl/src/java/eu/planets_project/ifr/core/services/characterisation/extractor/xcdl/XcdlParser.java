@@ -1,10 +1,8 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.xcdl;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.io.Reader;
-import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,52 +34,48 @@ public final class XcdlParser implements XcdlAccess {
     private Xcdl xcdl;
 
     /**
-     * @param xcdl The XCDL file
+     * @param xcdl The reader containing the XCDL to parse.
      */
-    public XcdlParser(final File xcdl) {
+    public XcdlParser(final Reader xcdl) {
         FileReader fileReader = null;
         try {
-            fileReader = new FileReader(xcdl);
-            this.xcdl = loadXcdl(fileReader);
-        } catch (FileNotFoundException e) {
-            this.xcdl = null;
+            this.xcdl = (Xcdl) createUnmarshaller().unmarshal(xcdl);
+        } catch (JAXBException e) {
+            e.printStackTrace();
             FileUtils.close(fileReader);
             throw new IllegalArgumentException("Could not load XCDL from " + xcdl);
         }
     }
 
     /**
-     * @param xcdl The XCDL, held in a String.
+     * @param xcdl The input stream containing the XCDL to parse.
      */
-    public XcdlParser(final String xcdl) {
-        this.xcdl = loadXcdl(new StringReader(xcdl));
-        if(this.xcdl == null){
+    public XcdlParser(final InputStream xcdl) {
+        try {
+            this.xcdl = (Xcdl) createUnmarshaller().unmarshal(xcdl);
+        } catch (JAXBException e) {
+            e.printStackTrace();
             throw new IllegalArgumentException("Could not load XCDL from " + xcdl);
         }
     }
 
-    /**
-     * @param source The Reader to read the XCDL from
-     * @return The XCDL root object
-     */
-    private Xcdl loadXcdl(final Reader source) {
+    private Unmarshaller createUnmarshaller() {
+        Unmarshaller unmarshaller = null;
         try {
             JAXBContext jc = JAXBContext
                     .newInstance("eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated");
-            Unmarshaller unmarshaller = jc.createUnmarshaller();
-            java.lang.Object object = unmarshaller.unmarshal(source);
-            return (Xcdl) object;
+            unmarshaller = jc.createUnmarshaller();
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-        return null;
+        return unmarshaller;
     }
 
     /**
      * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccess#getProperties()
+     * @see eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccess#getCharacteriseResult()
      */
-    public CharacteriseResult getProperties() {
+    public CharacteriseResult getCharacteriseResult() {
         List<eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object> list = xcdl
                 .getObjects();
         List<List<eu.planets_project.services.datatypes.Property>> all = new ArrayList<List<eu.planets_project.services.datatypes.Property>>();

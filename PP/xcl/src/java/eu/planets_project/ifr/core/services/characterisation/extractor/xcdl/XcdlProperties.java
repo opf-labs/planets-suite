@@ -1,7 +1,9 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.xcdl;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -30,31 +32,53 @@ public final class XcdlProperties implements XcdlAccess {
 
     private static final Namespace NS = Namespace.getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
 
+    private Document doc;
+
     /**
-     * {@inheritDoc}
-     * @see eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccess#getProperties()
+     * @param xcdl The XCDL reader (e.g. FileReader, StringReader)
      */
-    public CharacteriseResult getProperties() {
-        List<Property> properties = new ArrayList<Property>();
-        SAXBuilder builder = new SAXBuilder();
+    public XcdlProperties(final Reader xcdl) {
         try {
-            Document doc = builder.build(xcdlFile);
-            Element obj = doc.getRootElement().getChild("object", NS);
-            List<?> propElems = obj.getChildren("property", NS);
-            for (Object object : propElems) {
-                Element e = (Element) object;
-                String name = e.getChildText("name", NS);
-                Element labVal = e.getChild("valueSet", NS).getChild("labValue", NS);
-                String value = labVal.getChildText("val", NS);
-                URI propUri = XcdlProperties.makePropertyURI(name);
-                Property p = new Property.Builder(propUri).name(name).value(value)
-                        .type(labVal.getChildText("type", NS)).build();
-                properties.add(p);
-            }
+            this.doc = new SAXBuilder().build(xcdl);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JDOMException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param xcdl The XCDL input stream
+     */
+    public XcdlProperties(final InputStream xcdl) {
+        try {
+            this.doc = new SAXBuilder().build(xcdl);
         } catch (JDOMException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlAccess#getCharacteriseResult()
+     */
+    public CharacteriseResult getCharacteriseResult() {
+        List<Property> properties = new ArrayList<Property>();
+        Element obj = doc.getRootElement().getChild("object", NS);
+        List<?> propElems = obj.getChildren("property", NS);
+        for (Object object : propElems) {
+            Element e = (Element) object;
+            String name = e.getChildText("name", NS);
+            Element labVal = e.getChild("valueSet", NS).getChild("labValue", NS);
+            String value = labVal.getChildText("val", NS);
+            URI propUri = XcdlProperties.makePropertyURI(name);
+            Property p = new Property.Builder(propUri).name(name).value(value).type(labVal.getChildText("type", NS))
+                    .build();
+            properties.add(p);
         }
         return new CharacteriseResult(XcdlParser.fixPropertiesForXcdl(properties), new ServiceReport(Type.INFO,
                 Status.SUCCESS, "Flat properties from XCDL"));
@@ -63,15 +87,6 @@ public final class XcdlProperties implements XcdlAccess {
     /* Relatively unrelated: static methods for handling property uris: */
 
     static final String URI_ROOT = "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#";
-
-    private File xcdlFile;
-
-    /**
-     * @param xcdlFile The XCDL file
-     */
-    public XcdlProperties(final File xcdlFile) {
-        this.xcdlFile = xcdlFile;
-    }
 
     /**
      * @param name The property name

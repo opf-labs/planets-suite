@@ -27,8 +27,6 @@ import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
  * Abstract tests of the extractor. Which input and XCEL files actually are used is determined by subclasses.
- * <p/>
- * TODO: clean up both local and in the data registry after the tests
  * @author Peter Melms
  * @author Fabian Steeg
  */

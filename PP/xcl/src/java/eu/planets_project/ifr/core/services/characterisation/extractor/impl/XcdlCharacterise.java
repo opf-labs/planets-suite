@@ -1,6 +1,8 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.ArrayList;
@@ -47,8 +49,8 @@ public final class XcdlCharacterise implements Characterise, Serializable {
      */
     public static final String OUT_DIR = NAME.toUpperCase() + "_OUT" + File.separator;
 
-    public static final File XCDL_CHARACTERISE_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(),
-            NAME + "_TMP");
+    public static final File XCDL_CHARACTERISE_TMP = FileUtils.createFolderInWorkFolder(FileUtils
+            .getPlanetsTmpStoreFolder(), NAME + "_TMP");
 
     /**
      * the logger.
@@ -88,10 +90,22 @@ public final class XcdlCharacterise implements Characterise, Serializable {
         }
 
         if (result.exists()) {
-            return new XcdlParser(result).getProperties();
+            try {
+                return new XcdlParser(new FileReader(result)).getCharacteriseResult();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return returnWithError();
+            }
         } else {
-            return this.returnWithErrorMessage("ERROR: No XCDL created!", null);
+            return returnWithError();
         }
+    }
+
+    /**
+     * @return
+     */
+    private CharacteriseResult returnWithError() {
+        return this.returnWithErrorMessage("ERROR: No XCDL created!", null);
     }
 
     /**

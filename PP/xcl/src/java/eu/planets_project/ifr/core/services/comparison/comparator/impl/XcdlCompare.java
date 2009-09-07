@@ -38,19 +38,19 @@ public final class XcdlCompare implements Compare {
      * @see eu.planets_project.services.compare.Compare#compare(eu.planets_project.services.datatypes.DigitalObject[],
      *      eu.planets_project.services.datatypes.DigitalObject)
      */
-    public CompareResult compare(final DigitalObject first,
-            final DigitalObject second, final List<Parameter> config) {
+    public CompareResult compare(final DigitalObject first, final DigitalObject second, final List<Parameter> config) {
         if (first == null || second == null) {
-            throw new IllegalArgumentException(
-                    "Digital objects to compare must not be null");
+            throw new IllegalArgumentException("Digital objects to compare must not be null");
         }
-        String pcr = new ComparatorConfigCreator(config)
-                .getComparatorConfigXml();
-        String result = ComparatorWrapper.compare(read(first), Arrays
-                .asList(read(second)), pcr);
+        //TODO Hm, I guess this is not OK? (fsteeg)
+        // List<URI> supported = ComparatorWrapper.getSupportedInputFormats();
+        // if (!supported.contains(first.getFormat()) || !supported.contains(second.getFormat())) {
+        // throw new IllegalArgumentException("Unsupported format!");
+        // }
+        String pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
+        String result = ComparatorWrapper.compare(read(first), Arrays.asList(read(second)), pcr);
         List<Property> props = propertiesFrom(result);
-        return new CompareResult(props, new ServiceReport(Type.INFO,
-                Status.SUCCESS, "OK"));
+        return new CompareResult(props, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
     }
 
     /**
@@ -81,8 +81,7 @@ public final class XcdlCompare implements Compare {
      */
     public ServiceDescription describe() {
         /* TODO: Set input formats to XCDL PUID when there is one. */
-        return new ServiceDescription.Builder(NAME, Compare.class
-                .getCanonicalName())
+        return new ServiceDescription.Builder(NAME, Compare.class.getCanonicalName())
                 .classname(this.getClass().getCanonicalName())
                 .author("Fabian Steeg")
                 .description(
@@ -91,8 +90,7 @@ public final class XcdlCompare implements Compare {
                                 + "The Comparator allows to check how much information has been lost during a migration process."
                                 + "To use the Comparator with a list of properties instead of .xcdl files, please use the XcdlCompareProperties service!")
                 .serviceProvider("The Planets Consortium").inputFormats(
-                        ComparatorWrapper.getSupportedInputFormats().toArray(
-                                new URI[] {})).build();
+                        ComparatorWrapper.getSupportedInputFormats().toArray(new URI[] {})).build();
     }
 
     /**
