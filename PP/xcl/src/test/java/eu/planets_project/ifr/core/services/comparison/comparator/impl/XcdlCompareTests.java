@@ -12,7 +12,6 @@ import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.utils.FileUtils;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
@@ -20,58 +19,47 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * @author Fabian Steeg
  */
 public final class XcdlCompareTests {
+    
+    private static final String WSDL = "/pserv-xcl/XcdlCompare?wsdl";
 
     @Test
     public void testDescribe() {
-        Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME,
-                XcdlCompare.class, WSDL);
+        Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME, XcdlCompare.class, WSDL);
         ServiceDescription sd = c.describe();
-        assertTrue("The ServiceDescription should not be NULL.", sd != null);
-        System.out.println("test: describe()");
-        System.out
-                .println("--------------------------------------------------------------------");
-        System.out.println();
-        System.out.println("Received ServiceDescription from: "
-                + c.getClass().getName());
-        System.out.println(sd.toXmlFormatted());
-        System.out
-                .println("--------------------------------------------------------------------");
+        assertTrue("The service description should not be null", sd != null);
     }
 
-    private static final String WSDL = "/pserv-xcl/XcdlCompare?wsdl";
-
-    /**
-     * Tests PP comparator comparison using the XCDL comparator.
-     */
     @Test
-    public void testService() {
-        byte[] data1 = FileUtils.readFileIntoByteArray(new File(
-                ComparatorWrapperTests.XCDL1));
-        byte[] data2 = FileUtils.readFileIntoByteArray(new File(
-                ComparatorWrapperTests.XCDL2));
-        byte[] configData = FileUtils.readFileIntoByteArray(new File(
-                ComparatorWrapperTests.COCO_IMAGE));
-        testServices(data1, data2, configData);
+    public void xcdlComparison(){
+        testWith(ComparatorWrapperTests.XCDL1, ComparatorWrapperTests.XCDL2, ComparatorWrapperTests.COCO_IMAGE);
+    }
+    
+    //@Test Not yet supported
+    public void imageComparison(){
+        testWith(ComparatorWrapperTests.GIF, ComparatorWrapperTests.JPG, ComparatorWrapperTests.COCO_IMAGE);
+    }
+    
+    //@Test Not yet supported
+    public void textComparison(){
+        testWith(ComparatorWrapperTests.DOCX, ComparatorWrapperTests.PDF, ComparatorWrapperTests.COCO_TEXT);
+    }
+
+    private void testWith(String file1, String file2, String config) {
+        testServices(new File(file1), new File(file2), new File(config));
     }
 
     /**
      * Tests the services that use the actual value strings.
-     * @param data1 The XCDL1 data
-     * @param data2 The XCDL2 data
-     * @param configData The config data
+     * @param file1 The XCDL1 data
+     * @param file2 The XCDL2 data
+     * @param file3 The config data
      */
-    protected void testServices(final byte[] data1, final byte[] data2,
-            final byte[] configData) {
-        Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME,
-                XcdlCompare.class, WSDL);
-        DigitalObject first = new DigitalObject.Builder(Content.byValue(data1))
-                .build();
-        DigitalObject second = new DigitalObject.Builder(Content.byValue(data2))
-                .build();
-        DigitalObject configFile = new DigitalObject.Builder(Content
-                .byValue(configData)).build();
-        List<Property> properties = c.compare(first, second,
-                c.convert(configFile)).getProperties();
+    protected void testServices(final File file1, final File file2, final File file3) {
+        Compare c = ServiceCreator.createTestService(XcdlCompare.QNAME, XcdlCompare.class, WSDL);
+        DigitalObject first = new DigitalObject.Builder(Content.byValue(file1)).build();
+        DigitalObject second = new DigitalObject.Builder(Content.byValue(file2)).build();
+        DigitalObject configFile = new DigitalObject.Builder(Content.byValue(file3)).build();
+        List<Property> properties = c.compare(first, second, c.convert(configFile)).getProperties();
         ComparatorWrapperTests.check(properties);
     }
 }

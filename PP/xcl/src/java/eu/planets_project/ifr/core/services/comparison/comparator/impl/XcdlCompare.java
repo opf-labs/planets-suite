@@ -100,8 +100,7 @@ public final class XcdlCompare implements Compare {
      * @see eu.planets_project.services.compare.Compare#convert(eu.planets_project.services.datatypes.DigitalObject)
      */
     public List<Parameter> convert(final DigitalObject configFile) {
-        File file = FileUtils.writeByteArrayToTempFile(FileUtils
-                .writeInputStreamToBinary(configFile.getContent().read()));
-        return new ComparatorConfigParser(file).getProperties();
+        InputStream inputStream = configFile.getContent().read();
+        return new ComparatorConfigParser(inputStream).getProperties();
     }
 }

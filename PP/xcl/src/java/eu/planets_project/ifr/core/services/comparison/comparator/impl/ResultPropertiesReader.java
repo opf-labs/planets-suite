@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.jdom.input.SAXBuilder;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlProperties;
 import eu.planets_project.services.datatypes.Property;
+import eu.planets_project.services.utils.FileUtils;
 
 /**
  * Access to CPR (the XCDL comparator result format) properties.
@@ -22,14 +24,14 @@ public final class ResultPropertiesReader {
 
     private static final Namespace NS = Namespace.getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
 
-    private File cprFile;
+    private String cprString = "";
 
     /**
      * @param cprFile The CPR comparator result file
      */
     public ResultPropertiesReader(final File cprFile) {
-        this.cprFile = cprFile;
-    }
+        this.cprString = FileUtils.readTxtFileIntoString(cprFile);
+    }               
 
     /**
      * @return The properties in the given CPR file
@@ -38,7 +40,7 @@ public final class ResultPropertiesReader {
         List<Property> properties = new ArrayList<Property>();
         SAXBuilder builder = new SAXBuilder();
         try {
-            Document doc = builder.build(cprFile);
+            Document doc = builder.build(new StringReader(cprString));
             Element obj = doc.getRootElement().getChild("set", NS);
             if (obj == null) {
                 String childText = doc.getRootElement().getChildText("error", NS);

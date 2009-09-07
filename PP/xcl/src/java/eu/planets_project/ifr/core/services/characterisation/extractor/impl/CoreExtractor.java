@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,11 +59,8 @@ public class CoreExtractor {
      */
     public CoreExtractor(String extractorName, Log logger) {
         this.plogger = logger;
-//        SYSTEM_TEMP = FileUtils.createWorkFolderInSysTemp(EXTRACTOR_WORK);
         thisExtractorName = extractorName;
-//        outputFileName = thisExtractorName.toLowerCase() + "_xcdl_out.xcdl";
         extractorWork = extractorName.toUpperCase();
-//        WORK_TMP = FileUtils.createFolderInWorkFolder(FileUtils.getPlanetsTmpStoreFolder(), extractorWork);
     }
 
     // this is a work around to disable norm data output in XCDL,
@@ -71,19 +69,14 @@ public class CoreExtractor {
     private File removeNormData(File XCDLtoRemoveNormDataFrom) {
         SAXBuilder saxBuilder = new SAXBuilder();
         Document xcdlDoc;
-
         XMLOutputter xmlOut = new XMLOutputter();
         BufferedWriter xmlWriter;
-
         File cleanedXCDL = FileUtils.getTempFile("cleanedXCDL", "xcdl");
-
         try {
-            xcdlDoc = saxBuilder.build(XCDLtoRemoveNormDataFrom);
-
+            String xcdlToChange = FileUtils.readTxtFileIntoString(XCDLtoRemoveNormDataFrom);
+            xcdlDoc = saxBuilder.build(new StringReader(xcdlToChange));
             Element rootXCDL = xcdlDoc.getRootElement();
-
             List<Element> content = rootXCDL.getChildren();
-
             for (Element objectElement : content) {
                 List<Element> objectChildren = objectElement.getChildren();
                 for (Element level2Element : objectChildren) {
@@ -205,7 +198,6 @@ public class CoreExtractor {
         String outputFilePath = extractor_out_folder.getAbsolutePath()
                 + File.separator + outputFileName;
         outputFilePath = outputFilePath.replace('\\', '/');
-        // System.out.println("Output-file path: " + outputFilePath);
 
         /* If we have no XCEL, let the extractor find the appropriate one: */
         if (xcelFile != null) {
@@ -285,12 +277,13 @@ public class CoreExtractor {
         }
 
         plogger.info("Creating File to return...");
-
+//        System.out.println("Output-file path: " + outputFilePath);
         File resultXCDL = new File(outputFilePath);
 
 //        byte[] cleanedXCDL = null;
 
         if (normDataDisabled) {
+//            System.out.println("Removing normData...");
             return removeNormData(resultXCDL);
 //            binary_out = cleanedXCDL;
         }

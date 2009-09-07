@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.config;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,38 +15,52 @@ import eu.planets_project.ifr.core.services.comparison.comparator.config.generat
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
- * Access to a complete XCDL comparator config file (Coco), via JAXB-generated
- * classes.
+ * Access to a complete XCDL comparator config file (Coco), via JAXB-generated classes.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class ComparatorConfigParser {
 
-    private File cocoFile;
     private Coco coco;
 
     /**
      * @param coco The comparator config file
      */
     public ComparatorConfigParser(final File coco) {
-        this.cocoFile = coco;
-        this.coco = loadCoco();
-    }
-
-    /**
-     * @return The Coco root object
-     */
-    private Coco loadCoco() {
         try {
-            JAXBContext jc = JAXBContext
-                    .newInstance("eu.planets_project.ifr.core.services.comparison.comparator.config.generated");
-            Unmarshaller unmarshaller = jc.createUnmarshaller();
-            java.lang.Object object = unmarshaller.unmarshal(cocoFile);
+            Unmarshaller unmarshaller = createUnmarshaller();
+            java.lang.Object object = unmarshaller.unmarshal(coco);
             System.out.println(object.getClass());
-            return (Coco) object;
+            this.coco = (Coco) object;
         } catch (JAXBException e) {
             e.printStackTrace();
         }
-        return null;
+        if (this.coco == null) {
+            throw new IllegalArgumentException("Could not load COCO from " + coco);
+        }
+    }
+
+    /**
+     * @param coco The comparator config file
+     */
+    public ComparatorConfigParser(final InputStream coco) {
+        try {
+            Unmarshaller unmarshaller = createUnmarshaller();
+            java.lang.Object object = unmarshaller.unmarshal(coco);
+            System.out.println(object.getClass());
+            this.coco = (Coco) object;
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        if (this.coco == null) {
+            throw new IllegalArgumentException("Could not load COCO from " + coco);
+        }
+    }
+
+    private Unmarshaller createUnmarshaller() throws JAXBException {
+        JAXBContext jc = JAXBContext
+                .newInstance("eu.planets_project.ifr.core.services.comparison.comparator.config.generated");
+        Unmarshaller unmarshaller = jc.createUnmarshaller();
+        return unmarshaller;
     }
 
     /**

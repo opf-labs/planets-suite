@@ -53,7 +53,7 @@ public class SampleXclUsageImage extends AbstractSampleXclUsage {
      */
     @Override
     protected DigitalObject config() {
-        return new DigitalObject.Builder(Content.byReference(new File(COCO))).build();
+        return new DigitalObject.Builder(Content.byValue(new File(COCO))).build();
     }
 
     /**

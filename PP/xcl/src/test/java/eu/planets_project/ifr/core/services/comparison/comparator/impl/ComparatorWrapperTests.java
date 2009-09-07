@@ -17,15 +17,15 @@ import eu.planets_project.services.datatypes.Property;
  * @author Fabian Steeg
  */
 public final class ComparatorWrapperTests {
-    /***/
     static final String XCDL3 = "PP/xcl/src/resources/XCDL3.xcdl";
-    /***/
     static final String XCDL2 = "PP/xcl/src/resources/XCDL2.xcdl";
-    /***/
     static final String XCDL1 = "PP/xcl/src/resources/XCDL1.xcdl";
-    /***/
     static final String COCO_IMAGE = "PP/xcl/src/test/resources/cocoImage.xml";
-
+    static final String JPG = "PP/xcl/src/test/resources/sample_files/basketball.jpg";
+    static final String GIF = "PP/xcl/src/test/resources/sample_files/basketball.gif";
+    static final String PDF = "PP/xcl/src/test/resources/sample_files/basi0g01.pdf";
+    static final String DOCX = "PP/xcl/src/test/resources/sample_files/basi0g01.docx";
+    static final String COCO_TEXT = "PP/xcl/src/test/resources/cocoText.xml";
     /** Tests if the required environment variable is set. */
     @Test
     public void environment() {

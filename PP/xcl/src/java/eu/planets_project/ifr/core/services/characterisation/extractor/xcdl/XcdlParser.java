@@ -46,6 +46,7 @@ public final class XcdlParser implements XcdlAccess {
         } catch (FileNotFoundException e) {
             this.xcdl = null;
             FileUtils.close(fileReader);
+            throw new IllegalArgumentException("Could not load XCDL from " + xcdl);
         }
     }
 
@@ -54,9 +55,13 @@ public final class XcdlParser implements XcdlAccess {
      */
     public XcdlParser(final String xcdl) {
         this.xcdl = loadXcdl(new StringReader(xcdl));
+        if(this.xcdl == null){
+            throw new IllegalArgumentException("Could not load XCDL from " + xcdl);
+        }
     }
 
     /**
+     * @param source The Reader to read the XCDL from
      * @return The XCDL root object
      */
     private Xcdl loadXcdl(final Reader source) {
