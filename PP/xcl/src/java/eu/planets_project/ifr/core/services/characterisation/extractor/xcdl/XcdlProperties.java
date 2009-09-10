@@ -80,7 +80,7 @@ public final class XcdlProperties implements XcdlAccess {
                     .build();
             properties.add(p);
         }
-        return new CharacteriseResult(XcdlParser.fixPropertiesForXcdl(properties), new ServiceReport(Type.INFO,
+        return new CharacteriseResult(properties, new ServiceReport(Type.INFO,
                 Status.SUCCESS, "Flat properties from XCDL"));
     }
 

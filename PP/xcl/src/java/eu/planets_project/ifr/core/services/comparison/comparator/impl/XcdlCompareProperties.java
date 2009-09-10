@@ -57,7 +57,7 @@ public final class XcdlCompareProperties implements CompareProperties {
         if (result.getProperties().size() > 0) {
             list.add(result.getProperties());
             return list;
-        } else if (result.getProperties().size() > 0) {
+        } else if (result.getResults().size() > 0) {
             for (CharacteriseResult embedded : result.getResults()) {
                 list.addAll(propertyLists(embedded));
             }

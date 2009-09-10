@@ -10,8 +10,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.CatType;
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.DataRef;
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.DataRefType;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.InformType;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValType;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue;
@@ -94,6 +92,7 @@ public final class XcdlCreator {
     private Xcdl createXcdlObject(List<List<Property>> xcdlProps) {
         Xcdl xcdl = new Xcdl();
         xcdl.setId("generated_" + String.valueOf(System.currentTimeMillis()));
+        int normDataCount = 0, propSetCount = 0;
         for (List<Property> list : xcdlProps) {
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object();
             object.setId("generated_" + String.valueOf(System.currentTimeMillis()));
@@ -102,9 +101,9 @@ public final class XcdlCreator {
                     throw new IllegalArgumentException("Property has no name: " + prop);
                 }
                 if (prop.getType().toLowerCase().equals(PropertyName.NORMDATA.s)) {
-                    addNormData(object, prop);
+                    addNormData(object, prop, normDataCount); normDataCount++;
                 } else if (prop.getType().toLowerCase().equals(PropertyName.PROPERTYSET.s)) {
-                    addPropertySet(object, prop);
+                    addPropertySet(object, prop, propSetCount); propSetCount++;
                 } else if (prop.getType().toLowerCase().equals(PropertyName.PROPERTY.s)) {
                     addProperty(object, prop);
                 } else {
@@ -130,9 +129,8 @@ public final class XcdlCreator {
         String[] nameTokens = clean(levelOneTokens[1].split(" "));
         String[] valueSetTokens = clean(levelOneTokens[2].split(" "));
         String[] labValTokens = clean(levelOneTokens[3].split(" "));
-        String[] dataRefTokens = clean(levelOneTokens[4].split(" "));
 
-        p.setId("p" + nameTokens[1].replaceAll("id", ""));
+        p.setId("p" +"-"+object.getId()+"-"+ nameTokens[1].replaceAll("id", ""));
 
         p.setSource(SourceType.fromValue(valueTokens[0].toLowerCase()));
         p.setCat(CatType.fromValue(valueTokens[1].toLowerCase()));
@@ -143,8 +141,7 @@ public final class XcdlCreator {
         name.setId(nameTokens[1]);
         p.setName(name);
 
-        // TODO no multiple value sets, no multiple lab vals or data refs per
-        // value set, is this OK?
+        // TODO no multiple value sets, no multiple lab vals or data refs per value set, is this OK?
 
         /* The value set element: */
         ValueSet set = new ValueSet();
@@ -159,12 +156,6 @@ public final class XcdlCreator {
         val.getValues().add(labValTokens[1]);
         labValue.getVals().add(val);
         set.setLabValue(labValue);
-
-        /* The data ref: */
-        DataRef dataRef = new DataRef();
-        dataRef.setPropertySetId(dataRefTokens[1]);
-        dataRef.setInd(determineDataRef(dataRefTokens[2]));
-        set.getDataReves().add(dataRef);
 
         p.getValueSets().add(set);
         object.getProperties().add(p);
@@ -182,9 +173,9 @@ public final class XcdlCreator {
     }
 
     private void addPropertySet(
-            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop, int propSetCount) {
         PropertySet set = new PropertySet();
-        set.setId("id_0");
+        set.setId("id_" + propSetCount);
         ValueSetRelations rel = new ValueSetRelations();
         String desc = prop.getDescription();
         if (desc == null || !desc.contains(" ")) {
@@ -203,31 +194,19 @@ public final class XcdlCreator {
     }
 
     private void addNormData(
-            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop, int normDataCount) {
         NormData normData = new NormData();
         String description = prop.getDescription();
         if (description == null || description.trim().equals("")) {
             throw new IllegalArgumentException("Normdata property must have a description");
         }
         normData.setType(InformType.fromValue(description.toLowerCase()));
-        normData.setId("nd1");
+        normData.setId("nd" + normDataCount);
         if (prop.getValue() == null) {
             throw new IllegalArgumentException("Normdata must have a value");
         }
         normData.setValue(prop.getValue());
         object.getNormDatas().add(normData);
-    }
-
-    private DataRefType determineDataRef(String description) {
-        String d = description;
-        DataRefType type = DataRefType.NONE;
-        try {
-            type = DataRefType.fromValue(d);
-        } catch (IllegalArgumentException e) {
-            System.err.println(String.format("Warning: could not create a DataRefType for '%s', defaulting to '%s'", d,
-                    type));
-        }
-        return type;
     }
 
     private LabValType determineLabValType(String description) {

@@ -223,6 +223,7 @@ public final class ComparatorWrapper {
                 + File.separator));
         //TODO remove when tool issues are resolved:
         commands.add("-novalidation");
+        commands.addAll(Arrays.asList("-recursive" /*,"-outdata", "NORMDATA"*/));
         return commands;
     }
 

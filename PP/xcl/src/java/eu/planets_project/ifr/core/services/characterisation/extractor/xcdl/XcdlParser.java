@@ -12,7 +12,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.XcdlCreator.PropertyName;
-import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.DataRef;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.LabValue;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.NormData;
 import eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property;
@@ -80,7 +79,7 @@ public final class XcdlParser implements XcdlAccess {
                 .getObjects();
         List<List<eu.planets_project.services.datatypes.Property>> all = new ArrayList<List<eu.planets_project.services.datatypes.Property>>();
         for (eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object o : list) {
-            all.add(fixPropertiesForXcdl(objectProperties(o)));
+            all.add(objectProperties(o));
         }
         if (all.size() == 1) {
             return new CharacteriseResult(all.get(0), new ServiceReport(Type.INFO, Status.SUCCESS, "Flat properties"));
@@ -142,15 +141,12 @@ public final class XcdlParser implements XcdlAccess {
     }
 
     private String createDescription(final Property property, final ValueSet valueSet) {
-        List<DataRef> dataReves = valueSet.getDataReves();
         LabValue labValue = valueSet.getLabValue();
         List<String> values = labValue != null ? labValue.getVals().get(0).getValues() : new ArrayList<String>();
-        String result = String.format("%s %s, name %s %s, " + "valueSet %s, labValue %s %s inch, dataRef %s %s",
+        String result = String.format("%s %s, name %s %s, " + "valueSet %s, labValue %s %s inch",
                 property.getSource().value(), property.getCat().value(), property.getName().getId(), property.getName()
                         .getValues().get(0), valueSet.getId(), values.size() > 0 ? values.get(0) : "",
-                labValue != null ? labValue.getTypes().get(0).getValue().value() : "null", dataReves == null
-                        || dataReves.size() == 0 ? "null" : dataReves.get(0).getPropertySetId(), dataReves == null
-                        || dataReves.size() == 0 ? "null" : dataReves.get(0).getInd().value());
+                labValue != null ? labValue.getTypes().get(0).getValue().value() : "null");
         System.out.println("Generated description: " + result);
         return result;
     }
@@ -160,37 +156,5 @@ public final class XcdlParser implements XcdlAccess {
      */
     public Xcdl getXcdl() {
         return xcdl;
-    }
-
-    /**
-     * NOTE: This is a temporary solution.
-     * @return The properties parsed from the XCDL file
-     */
-    static List<eu.planets_project.services.datatypes.Property> fixPropertiesForXcdl(
-            List<eu.planets_project.services.datatypes.Property> properties) {
-        /*
-         * This is totally work in progress... The basic idea is: We wrap all this stuff here around the plain
-         * properties to make it work for the XCDL comparator.
-         */
-        System.out.println("Attempting to convert properties: ");
-        for (eu.planets_project.services.datatypes.Property property : properties) {
-            System.out.println(property);
-        }
-        List<eu.planets_project.services.datatypes.Property> result = new ArrayList<eu.planets_project.services.datatypes.Property>();
-        result.add(new eu.planets_project.services.datatypes.Property.Builder(XcdlProperties
-                .makePropertyURI("propertySet")).name("propertySet").type("propertySet").description(
-        /*
-         * FIXME: this following ID is particularly nasty and setting it here makes no sense whatsoever; could we get
-         * rid of property sets here altogether?
-         */
-        "ref i_i1_i1_i5 suggestedPaletteAlpha").build());
-        for (eu.planets_project.services.datatypes.Property property : properties) {
-            result.add(new eu.planets_project.services.datatypes.Property.Builder(property.getUri()).name(
-                    property.getName()).type(property.getType()).value(property.getValue()).unit(property.getUnit())
-                    .description(
-                    /* FIXME ...since this is really nasty too: */
-                    property.getDescription().replace("dataRef null null", "dataRef id_0 global")).build());
-        }
-        return result;
     }
 }

@@ -41,6 +41,7 @@ public final class ResultPropertiesReader {
         SAXBuilder builder = new SAXBuilder();
         try {
             Document doc = builder.build(new StringReader(cprString));
+            //TODO iterate over sets, embed results...
             Element obj = doc.getRootElement().getChild("set", NS);
             if (obj == null) {
                 String childText = doc.getRootElement().getChildText("error", NS);

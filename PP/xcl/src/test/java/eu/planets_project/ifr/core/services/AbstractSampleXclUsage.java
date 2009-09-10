@@ -28,7 +28,7 @@ import eu.planets_project.services.utils.test.ServiceCreator;
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public abstract class AbstractSampleXclUsage {
-    
+
     private static final URI XCDL_ID = URI.create("planets:/xcdl"); // not used
     protected static final FormatRegistry REGISTRY = FormatRegistryFactory.getFormatRegistry();
 
@@ -40,7 +40,7 @@ public abstract class AbstractSampleXclUsage {
 
     /** @return The IDs corresponding to the files. */
     protected abstract URI[] ids();
-    
+
     /** @return The extractor parameters */
     protected abstract List<List<Parameter>> parameters();
 
@@ -49,8 +49,10 @@ public abstract class AbstractSampleXclUsage {
     public void viaXcdlMigration() {
         /* We migrate both to XCDL (for details see XcdlMigrateTests): */
         Migrate migration = new XcdlMigrate();
-        DigitalObject firstXcdl = migration.migrate(files()[0], ids()[0], XCDL_ID, parameters().get(0)).getDigitalObject();
-        DigitalObject secondXcdl = migration.migrate(files()[1], ids()[1], XCDL_ID, parameters().get(1)).getDigitalObject();
+        DigitalObject firstXcdl = migration.migrate(files()[0], ids()[0], XCDL_ID, parameters().get(0))
+                .getDigitalObject();
+        DigitalObject secondXcdl = migration.migrate(files()[1], ids()[1], XCDL_ID, parameters().get(1))
+                .getDigitalObject();
         /* We compare both XCDL files (for details see XcdlCompareTests): */
         Compare comparison = new XcdlCompare();
         List<Parameter> configProperties = comparison.convert(config());
@@ -65,8 +67,10 @@ public abstract class AbstractSampleXclUsage {
         /* Migrate to XCDL: */
         Migrate migration = ServiceCreator.createTestService(Migrate.QNAME, XcdlMigrate.class,
                 "/pserv-xcl/XcdlMigrate?wsdl");
-        DigitalObject firstXcdl = migration.migrate(files()[0], ids()[0], XCDL_ID, parameters().get(0)).getDigitalObject();
-        DigitalObject secondXcdl = migration.migrate(files()[1], ids()[1], XCDL_ID, parameters().get(1)).getDigitalObject();
+        DigitalObject firstXcdl = migration.migrate(files()[0], ids()[0], XCDL_ID, parameters().get(0))
+                .getDigitalObject();
+        DigitalObject secondXcdl = migration.migrate(files()[1], ids()[1], XCDL_ID, parameters().get(1))
+                .getDigitalObject();
         /* Compare the XCDL files: */
         Compare comparison = ServiceCreator.createTestService(Compare.QNAME, XcdlCompare.class,
                 "/pserv-xcl/XcdlCompare?wsdl");
