@@ -36,34 +36,38 @@ public final class ResultPropertiesReader {
     /**
      * @return The properties in the given CPR file
      */
-    public List<Property> getProperties() {
-        List<Property> properties = new ArrayList<Property>();
+    public List<List<Property>> getProperties() {
+        List<List<Property>> all = new ArrayList<List<Property>>();
         SAXBuilder builder = new SAXBuilder();
         try {
             Document doc = builder.build(new StringReader(cprString));
-            //TODO iterate over sets, embed results...
-            Element obj = doc.getRootElement().getChild("set", NS);
-            if (obj == null) {
+            if (doc.getRootElement().getChild("set", NS) == null) {
                 String childText = doc.getRootElement().getChildText("error", NS);
                 throw new IllegalArgumentException("Can't process document: " + childText);
             }
-            List<?> propElems = obj.getChildren("property", NS);
-            for (Object object : propElems) {
-                Element e = (Element) object;
-                String state = e.getAttributeValue("state");
-                String description = state.equals("complete") ? processMetrics(e) : "";
-                String name = e.getAttributeValue("name");
-                String desc = "[" + description + "]";
-                Property result = new Property.Builder(XcdlProperties.makePropertyURI(name)).name(name).value(state)
-                        .description(desc).build();
-                properties.add(result);
+            @SuppressWarnings("unchecked") // JDOM API
+            List<Element> sets = doc.getRootElement().getChildren("set", NS);
+            for (Element set : sets) {
+                List<Property> properties = new ArrayList<Property>();
+                List<?> propElems = set.getChildren("property", NS);
+                for (Object object : propElems) {
+                    Element e = (Element) object;
+                    String state = e.getAttributeValue("state");
+                    String description = state.equals("complete") ? processMetrics(e) : "";
+                    String name = e.getAttributeValue("name");
+                    String desc = "[" + description + "]";
+                    Property result = new Property.Builder(XcdlProperties.makePropertyURI(name)).name(name).value(state)
+                            .description(desc).build();
+                    properties.add(result);
+                }
+                all.add(properties);
             }
         } catch (JDOMException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return properties;
+        return all;
     }
 
     private String processMetrics(final Element propertyElement) {

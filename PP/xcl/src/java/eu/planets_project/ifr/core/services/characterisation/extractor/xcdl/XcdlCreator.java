@@ -91,11 +91,12 @@ public final class XcdlCreator {
 
     private Xcdl createXcdlObject(List<List<Property>> xcdlProps) {
         Xcdl xcdl = new Xcdl();
-        xcdl.setId("generated_" + String.valueOf(System.currentTimeMillis()));
-        int normDataCount = 0, propSetCount = 0;
+        xcdl.setId("0");
+        int normDataCount = 1, propSetCount = 0, objectCount = 1;
         for (List<Property> list : xcdlProps) {
             eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object();
-            object.setId("generated_" + String.valueOf(System.currentTimeMillis()));
+            object.setId("o" + objectCount);
+            objectCount++;
             for (Property prop : list) {
                 if (prop.getType() == null) {
                     throw new IllegalArgumentException("Property has no name: " + prop);
@@ -130,7 +131,7 @@ public final class XcdlCreator {
         String[] valueSetTokens = clean(levelOneTokens[2].split(" "));
         String[] labValTokens = clean(levelOneTokens[3].split(" "));
 
-        p.setId("p" +"-"+object.getId()+"-"+ nameTokens[1].replaceAll("id", ""));
+        p.setId("p" + "-" + object.getId() + "-" + nameTokens[1].replaceAll("id", ""));
 
         p.setSource(SourceType.fromValue(valueTokens[0].toLowerCase()));
         p.setCat(CatType.fromValue(valueTokens[1].toLowerCase()));

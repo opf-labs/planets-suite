@@ -221,8 +221,6 @@ public final class ComparatorWrapper {
         commands.addAll(Arrays.asList("-c", pcrFile.getAbsolutePath()));
         commands.addAll(Arrays.asList("-o", outputFolder.getAbsolutePath()
                 + File.separator));
-        //TODO remove when tool issues are resolved:
-        commands.add("-novalidation");
         commands.addAll(Arrays.asList("-recursive" /*,"-outdata", "NORMDATA"*/));
         return commands;
     }

@@ -4,7 +4,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import eu.planets_project.ifr.core.services.SampleXclUsageImage;
-import eu.planets_project.ifr.core.services.SampleXclUsageTextDocxPdf;
 import eu.planets_project.ifr.core.services.SampleXclUsageTextPdfPdf;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreatorTests;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParserTests;
@@ -19,9 +18,9 @@ import eu.planets_project.ifr.core.services.comparison.comparator.impl.XcdlCompa
  */
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { ComparatorWrapperTests.class, XcdlCompareTests.class,
-        ResultPropertiesReaderTests.class, ComparatorConfigCreatorTests.class,
-        ComparatorConfigParserTests.class, XcdlComparePropertiesTests.class,
+@Suite.SuiteClasses( { ComparatorWrapperTests.class, XcdlCompareTests.class, ResultPropertiesReaderTests.class,
+        ComparatorConfigCreatorTests.class, ComparatorConfigParserTests.class, XcdlComparePropertiesTests.class,
         /* Overall samples, but in the end Comparator: */
-        SampleXclUsageImage.class, SampleXclUsageTextDocxPdf.class, SampleXclUsageTextPdfPdf.class})
-public class AllComparatorSuite { }
+        SampleXclUsageImage.class, SampleXclUsageTextPdfPdf.class
+/* TODO: enable when tool issues are resolved *//* , SampleXclUsageTextDocxPdf.class */})
+public class AllComparatorSuite {}

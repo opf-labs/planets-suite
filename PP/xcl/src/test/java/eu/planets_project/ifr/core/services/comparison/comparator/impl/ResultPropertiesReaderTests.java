@@ -25,10 +25,10 @@ public final class ResultPropertiesReaderTests {
      * @param reader The access to check
      */
     private void check(final ResultPropertiesReader reader) {
-        List<Property> properties = reader.getProperties();
+        List<List<Property>> properties = reader.getProperties();
         Assert.assertTrue("No properties extracted by "
                 + reader.getClass().getSimpleName(), properties.size() > 0);
-        for (Property prop : properties) {
+        for (List<Property> prop : properties) {
             System.out.println(prop);
         }
     }

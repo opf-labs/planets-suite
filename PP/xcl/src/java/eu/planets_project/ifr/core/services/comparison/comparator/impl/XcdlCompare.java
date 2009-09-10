@@ -3,6 +3,7 @@ package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,22 +43,42 @@ public final class XcdlCompare implements Compare {
         if (first == null || second == null) {
             throw new IllegalArgumentException("Digital objects to compare must not be null");
         }
-        //TODO Hm, I guess this is not OK? (fsteeg)
+        // TODO Hm, I guess this is not OK? (fsteeg)
         // List<URI> supported = ComparatorWrapper.getSupportedInputFormats();
         // if (!supported.contains(first.getFormat()) || !supported.contains(second.getFormat())) {
         // throw new IllegalArgumentException("Unsupported format!");
         // }
         String pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
         String result = ComparatorWrapper.compare(read(first), Arrays.asList(read(second)), pcr);
-        List<Property> props = propertiesFrom(result);
-        return new CompareResult(props, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
+        List<List<Property>> props = propertiesFrom(result);
+        return compareResult(props);
+    }
+
+    /**
+     * @param props The 1-level nested result properties
+     * @return A compare result object with either top-level properties only or without top-level properties but
+     *         embedded results
+     */
+    static CompareResult compareResult(final List<List<Property>> props) {
+        if (props.size() == 1) {
+            return new CompareResult(props.get(0), new ServiceReport(Type.INFO, Status.SUCCESS,
+                    "Top-level comparison result without embedded results"));
+        } else {
+            List<CompareResult> embedded = new ArrayList<CompareResult>();
+            for (List<Property> list : props) {
+                embedded.add(new CompareResult(list, new ServiceReport(Type.INFO, Status.SUCCESS,
+                        "Embedded comparison result")));
+            }
+            return new CompareResult(new ArrayList<Property>(), new ServiceReport(Type.INFO, Status.SUCCESS,
+                    "Top-level comparison result with embedded results"), embedded);
+        }
     }
 
     /**
      * @param result The comparator result
      * @return The properties found in the result XML
      */
-    private List<Property> propertiesFrom(final String result) {
+    private List<List<Property>> propertiesFrom(final String result) {
         File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
         return new ResultPropertiesReader(file).getProperties();
     }
@@ -72,6 +93,7 @@ public final class XcdlCompare implements Compare {
         }
         InputStream stream = digitalObject.getContent().read();
         String content = new String(FileUtils.writeInputStreamToBinary(stream));
+        System.out.println("XCDL: " + content);
         return content;
     }
 

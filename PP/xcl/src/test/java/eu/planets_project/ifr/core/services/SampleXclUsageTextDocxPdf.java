@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import junit.framework.Assert;
+
+import eu.planets_project.services.compare.CompareResult;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -58,6 +61,10 @@ public class SampleXclUsageTextDocxPdf extends AbstractSampleXclUsage {
         return new DigitalObject.Builder(Content.byReference(new File(COCO))).build();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.services.AbstractSampleXclUsage#parameters()
+     */
     @Override
     protected List<List<Parameter>> parameters() {
         ArrayList<List<Parameter>> list = new ArrayList<List<Parameter>>();
@@ -65,6 +72,18 @@ public class SampleXclUsageTextDocxPdf extends AbstractSampleXclUsage {
                 "PP/xcl/src/test/resources/sample_files/xcel_docx.xml")))));
         list.add(null); // no parameters for PDF extraction
         return list;
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see eu.planets_project.ifr.core.services.AbstractSampleXclUsage#checkCompareResult(eu.planets_project.services.compare.CompareResult)
+     */
+    @Override
+    protected void checkCompareResult(CompareResult result) {
+        Assert.assertTrue("Text file comparison result should contain only embedded results", result
+                .getProperties().size() == 0
+                && result.getResults().size() > 0);
+
     }
 
 }

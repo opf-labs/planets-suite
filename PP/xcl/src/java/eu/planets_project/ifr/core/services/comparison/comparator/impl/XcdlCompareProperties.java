@@ -20,9 +20,6 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
 import eu.planets_project.services.datatypes.ServiceDescription;
-import eu.planets_project.services.datatypes.ServiceReport;
-import eu.planets_project.services.datatypes.ServiceReport.Status;
-import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
@@ -77,15 +74,15 @@ public final class XcdlCompareProperties implements CompareProperties {
         String secondXcdl = new XcdlCreator(second).getXcdlXml();
         String comparatorConfig = new ComparatorConfigCreator(config).getComparatorConfigXml();
         String result = ComparatorWrapper.compare(firstXcdl, Arrays.asList(secondXcdl), comparatorConfig);
-        List<Property> props = propertiesFrom(result);
-        return new CompareResult(props, new ServiceReport(Type.INFO, Status.SUCCESS, "OK"));
+        List<List<Property>> props = propertiesFrom(result);
+        return XcdlCompare.compareResult(props);
     }
 
     /**
      * @param result The comparator result
      * @return The properties found in the result XML
      */
-    private List<Property> propertiesFrom(final String result) {
+    private List<List<Property>> propertiesFrom(final String result) {
         File file = FileUtils.writeByteArrayToTempFile(result.getBytes());
         return new ResultPropertiesReader(file).getProperties();
     }
