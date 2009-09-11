@@ -1,0 +1,228 @@
+     <!-- ************START WITH Property EXPERIMENT EVALUTION TB v0.9 *****************-->
+<a4j:form>
+<c:if test="#{!ExperimentBean.oldExperiment}">
+    <a4j:region id="propertyevalregion" renderRegionOnly="true">
+        <rich:simpleTogglePanel label="#{res['exp_stage6.propertyEval']}" opened="true" switchType="ajax">
+            <h:panelGroup>
+                <p>Browse the experiment's output over all executions and evaluate the
+                outcomes of your experiment against the properties you specified
+                during Stage 3 of the experiment and the data you recorded in step5.</p>
+                <c:if test="#{ExperimentBean.etype == 'migrate'}">
+                    <p>
+                    For this experiment type the Testbed evaluation process questions:
+                    <b>How well has the property information measured in the input object (determined in the pre-characterisation stage) been preserved within the migrated objects (characterised through the post-characterisation process)</b>
+                    <br/>Please note: Currently the Testbed can only evaluate common properties in the stages pre- and post-characterisation. If no data for evaluation is presented you may
+                    have chosen different services for the pre- and post-characterisation process or did not provide data for the manually measured properties.
+                    </p>
+                </c:if>
+                <c:if test="#{ExperimentBean.etype == 'identify'}">
+                    <p>
+                    For this experiment type the Testbed evaluation process questions:
+                    <b>How well has the captured/measured/extracted property information match your expectations</b>
+                    </p>
+                </c:if>
+            </h:panelGroup> 
+            <h:panelGrid columns="2" styleClass="expDesignerPanel">
+    <rich:dataTable value="#{ExperimentBean.experimentInputDataValues}" var="inputDigoItem" rows="10" 
+     reRender="inputDigObjectRefTableStage6_ds" styleClass="tbTable"
+     id="inputDigObjectRefTableStage6" rowKeyVar="count">
+         <rich:column>
+             <f:facet name="header">
+                 <h:outputText value="Input DigitalObjects Record"/>
+             </f:facet>
+             <a4j:commandLink actionListener="#{ExperimentBean.processDigitalObjectRefInStep6DigoEvalTable}" ajaxSingle="true" eventsQueue="foo" ignoreDupResponses="true" reRender="inputDigObjectRefTableStage6,evalPropertyTableStep6Group">
+                <h:outputText id="recoutputtext" value="record: #{count+1}: id: #{inputDigoItem.digitalObjectName}" styleClass="#{ ( inputDigoItem.digitalObject eq ExperimentBean.selDigitalObjectRefInStep6DigoEvalTable ) ? 'isSelected' : 'isNotSelected'}" /> 
+                <a4j:actionparam name="selInputDataRef" value="#{inputDigoItem.digitalObject}"/>
+            </a4j:commandLink>
+         </rich:column>
+          <f:facet name="footer">
+             <rich:datascroller for="inputDigObjectRefTableStage6" id="inputDigObjectRefTableStage6_ds" renderIfSinglePage="false"></rich:datascroller>
+         </f:facet>
+     </rich:dataTable>
+
+    <h:panelGroup id="evalPropertyTableStep6Group">
+    <rich:dataTable id="evalPropertyTableStep6" value="#{ExperimentBean.evaluationPropertyResultsBeans}" var="tableVar" rows="10" styleClass="tbTable"
+    onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+    onRowMouseOut="this.style.backgroundColor='#FFFFFF'"
+    reRender="evalPropertyTableStep6_ds">
+        
+        <f:facet name="header">
+            <rich:columnGroup>
+                <rich:column colspan="2">
+                    <h:outputText value="Property Information" />
+                </rich:column>
+                <rich:column colspan="#{ExperimentBean.allRunDatesSize}">
+                    <h:outputText value="Experiment Execution Measurements Runs" />
+                </rich:column>  
+                <rich:column colspan="1">
+                    <h:outputText value="Property Evaluation" />
+                </rich:column>
+            </rich:columnGroup>
+        </f:facet>
+
+        <!-- start outputing the data: property name + unit -->
+        <rich:column id="colstagename" breakBefore="true">
+            <f:facet name="header">
+                <h:outputText value="name"/>
+            </f:facet>
+            <h:outputText value="#{tableVar.measurementInfo.name}" rendered="#{not empty tableVar.measurementInfo.name}"/>
+            <h:outputText value="#{tableVar.measurementPropertyID}" rendered="#{empty tableVar.measurementInfo.name}"/>
+            <rich:toolTip style="width:500px;" showDelay="500" rendered="#{not empty tableVar.measurementInfo.name}">
+                <h:outputText value="#{tableVar.measurementInfo.description}"/>
+              <h:panelGroup rendered="#{tableVar.measurementPropertyID != null}">
+                <br/><i><h:outputText value="(URI: #{tableVar.measurementPropertyID})"/></i>
+              </h:panelGroup>
+            </rich:toolTip>
+        </rich:column>  
+        <rich:column id="colstageunit">
+            <f:facet name="header">
+                <h:outputText value="unit"/>
+            </f:facet>
+            <h:outputText value="#{tableVar.measurementInfo.unit}"/>
+        </rich:column>      
+
+        <rich:columns value="#{ExperimentBean.allRunDates}" index="index" var="rundatesColVar">
+           <f:facet name="header">
+                <h:outputText value="#{rundatesColVar.time}">
+                    <f:convertDateTime type="both" dateStyle="short"/>
+                </h:outputText>
+            </f:facet>
+          
+           <a4j:repeat value="#{tableVar.stageNames}" var="stagname">
+               <h:panelGroup>
+                <i><h:outputText value="#{stagname}:"/></i><br/>
+                <b>
+                <h:outputText value="#{tableVar.allEvalResults[rundatesColVar.timeInMillis][stagname].recordValue}" rendered="#{((tableVar.allEvalResults[rundatesColVar.timeInMillis][stagname]!=null) and (tableVar.allEvalResults[rundatesColVar.timeInMillis][stagname].recordValue !=null))}"/>
+                <h:outputText value="no result" rendered="#{!((tableVar.allEvalResults[rundatesColVar.timeInMillis][stagname]!=null) and (tableVar.allEvalResults[rundatesColVar.timeInMillis][stagname].recordValue !=null))}"/>
+                </b>
+                <br/>
+               
+               </h:panelGroup>
+           </a4j:repeat>
+        </rich:columns>     
+        
+        <rich:column id="linepropevalcol">
+            <f:facet name="header">
+                <h:outputText value="value"/>
+            </f:facet>
+             <rich:inplaceSelect value="#{tableVar.propertyEvalValue}" 
+                defaultLabel="Click here to edit" valueChangeListener="#{NewExp_Controller.processLineEvalValChange}"
+                rendered="#{ExperimentBean.experiment.currentPhaseIndex lt 7}" reRender="inputDigObjectRefTableStage6">
+                <f:selectItem itemValue="1" itemLabel="1 - very good" />
+                <f:selectItem itemValue="2" itemLabel="2 - good" />
+                <f:selectItem itemValue="3" itemLabel="3 - bad" />
+                <f:selectItem itemValue="4" itemLabel="4 - very bad" />
+                <a4j:support event="onviewactivated" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true"> 
+                    <a4j:actionparam name="propertyID" value="#{tableVar.measurementPropertyID}"/>
+                    <a4j:actionparam name="inputDigoRef" value="#{tableVar.inputDigoRef}"/>
+                </a4j:support>
+            </rich:inplaceSelect>
+            <t:graphicImage value="/graphics/expEval1.gif" rendered="#{tableVar.propertyEvalValue eq 1}" alt="1 - very good" title="1 - very good"/>
+            <t:graphicImage value="/graphics/expEval2.gif" rendered="#{tableVar.propertyEvalValue eq 2}" alt="2 - good" title="2 - good"/>
+            <t:graphicImage value="/graphics/expEval3.gif" rendered="#{tableVar.propertyEvalValue eq 3}" alt="3 - bad" title="3 - bad"/>
+            <t:graphicImage value="/graphics/expEval4.gif" rendered="#{tableVar.propertyEvalValue eq 4}" alt="4 - very bad" title="4 - very bad"/>
+            <h:outputText value="no evaluation" rendered="#{(ExperimentBean.experiment.currentPhaseIndex gt 6) and (tableVar.propertyEvalValue eq -1)}"/>
+        </rich:column>  
+        
+         <f:facet name="footer">
+             <rich:datascroller for="evalPropertyTableStep6" id="evalPropertyTableStep6_ds" renderIfSinglePage="false"></rich:datascroller>
+         </f:facet>     
+    </rich:dataTable>
+    <h:outputText value="There is no data for evaluation available!" rendered="#{empty ExperimentBean.evaluationPropertyResultsBeans}"/>
+    </h:panelGroup>
+</h:panelGrid>
+</rich:simpleTogglePanel>
+</a4j:region>
+    <!-- *************END WITH Property EXPERIMENT EVALUATION TB v0.9************************ -->
+    
+    
+    <!-- *************Start WITH Overall EXPERIMENT EVALUATION TB v0.9************************ -->
+    <a4j:region id="overallevalregion" renderRegionOnly="true">
+        <rich:simpleTogglePanel label="#{res['exp_stage6.headingBG']}" opened="true" switchType="ajax">
+            <h:panelGroup>
+                <p>
+                    Finally the overall experiment success indicator is calculated. It is possible to 
+                    give certain properties a weight multiplicator dependent on the experiment's focus
+                </p>
+            </h:panelGroup>
+            <h:panelGrid columns="3" styleClass="expDesignerPanel">
+                <rich:panel id="overallWeightsPanel">
+                    <f:facet name="header">
+                        <h:outputText value="Property Weights"/>
+                    </f:facet>
+                     <fieldset>
+                        <legend><h:outputText value="overall weights"/></legend>
+                         <a4j:repeat value="#{ExperimentBean.propertyIDsForOverallExperimentEvaluation}" var="property">
+                         <h:panelGrid columns="1">
+                            <h:panelGroup>
+                            <h:outputText value="#{property.name}" rendered="#{not empty property.name}"/>
+                            <h:outputText value="#{property.identifier}" rendered="#{empty property.name}"/><br/>
+                            <rich:inputNumberSlider value="#{ExperimentBean.experiment.experimentEvaluation.overallPropertyEvalWeights[property.identifier]}" showInput="false"
+                                enableManualInput="false" showBoundaryValues="false" 
+                                showToolTip="false" width="150" maxValue="5" minValue="1" step="1" disabled="#{ExperimentBean.currentStage gt 6}">
+                                <a4j:support event="onchange" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true" reRender="overallWeightsPanel"> 
+                                    <a4j:actionparam name="propertyID" value="#{property.identifier}"/>
+                                </a4j:support>
+                            </rich:inputNumberSlider>
+                            </h:panelGroup>
+                            <h:panelGroup rendered="#{(ExperimentBean.experiment.experimentEvaluation.overallPropertyEvalWeights[property.identifier] != null)}">
+                                <h:outputText value="underweight" rendered="#{ExperimentBean.experiment.experimentEvaluation.overallPropertyEvalWeights[property.identifier] eq 1}"/>
+                                <h:outputText value="weight below average" rendered="#{ExperimentBean.experiment.experimentEvaluation.overallPropertyEvalWeights[property.identifier] eq 2}"/>
+                                <h:outputText value="average weight" rendered="#{ExperimentBean.experiment.experimentEvaluation.overallPropertyEvalWeights[property.identifier] eq 3}"/>
+                                <h:outputText value="weight above average" rendered="#{ExperimentBean.experiment.experimentEvaluation.overallPropertyEvalWeights[property.identifier] eq 4}"/>
+                                <h:outputText value="overweight" rendered="#{ExperimentBean.experiment.experimentEvaluation.overallPropertyEvalWeights[property.identifier] eq 5}"/>
+                            </h:panelGroup>
+                            </h:panelGrid>
+                            <rich:spacer height="20px"/>
+                        </a4j:repeat>
+                    </fieldset>
+                </rich:panel>
+                <rich:panel id="overallEvalCalcPanel">
+                    <f:facet name="header">
+                        <h:outputText value="Experiment Overview"/>
+                    </f:facet>
+                     <fieldset>
+                        <legend><h:outputText value="experiment indicator"/></legend>
+                        The experiment's measured objectives have been evaluated with the overall score of: <b>#{NewExp_Controller.calculateOverallEvaluation}</b><br/> and took into account: <br/><b>
+                        <h:outputText value="#{NewExp_Controller.numberOfEvaluatedProperties}" rendered="#{NewExp_Controller.numberOfEvaluatedProperties != -1}"/> evaluated records</b>.<br/><b>
+                        <h:outputText value="#{NewExp_Controller.numberOfNotEvaluatedProperties}" rendered="#{NewExp_Controller.numberOfNotEvaluatedProperties != -1}"/> still not evaluated records</b>.<br/>
+                        <t:graphicImage value="/graphics/expEval1.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 2) and (NewExp_Controller.calculateOverallEvaluation >= 1)}" alt="1 - very good" title="1 - very good"/>
+                        <t:graphicImage value="/graphics/expEval2.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 3) and (NewExp_Controller.calculateOverallEvaluation >= 2)}" alt="2 - good" title="2 - good"/>
+                        <t:graphicImage value="/graphics/expEval3.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 4) and (NewExp_Controller.calculateOverallEvaluation >= 3)}" alt="3 - bad" title="3 - bad"/>
+                        <t:graphicImage value="/graphics/expEval4.gif" rendered="#{(NewExp_Controller.calculateOverallEvaluation lt 5) and (NewExp_Controller.calculateOverallEvaluation >= 4)}" alt="4 - very bad" title="4 - very bad"/>
+                        <br/>Additional aggregators can be computed after the experiment has been finalized.
+                        
+                     </fieldset>
+                     <a4j:commandButton value="reload" action="#{NewExp_Controller.getCalculateOverallEvaluation}" rendered="#{ExperimentBean.currentStage lt 7}" reRender="overallEvalCalcPanel"/>
+                </rich:panel>
+                <rich:panel>
+                 <!-- experiment report TODO switch to rich:editor for this component-->
+                    <f:facet name="header">
+                        <h:outputText value="#{res['exp_stage6.report']}"/>
+                    </f:facet>
+                    <p>
+                    Please provide a short written summary on this experiment. What went well/bad, which expectations were met, which experiment to follow-up..
+                    </p>
+                   <p>
+                       <h:outputLabel value="#{res['exp_stage6.reportTitle']}" for="repTitle" ></h:outputLabel>
+                       <h:inputText required="false" id="repTitle" value="#{ExperimentBean.reportHeader}" size="82" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" >
+                            <a4j:support requestDelay="1000" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
+                       </h:inputText>
+                       <h:message for="repTitle" errorClass="errorMessage" infoClass="infoMessage"/>
+                   </p>
+                   <p>
+                       <h:outputLabel value="#{res['exp_stage6.reportBody']}" for="repBody" ></h:outputLabel>
+                       <h:inputTextarea rows="10" cols="80" required="false" id="repBody" value="#{ExperimentBean.reportBody}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" >
+                            <a4j:support requestDelay="1000" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
+                       </h:inputTextarea>
+                       <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
+                   </p>
+                   <a4j:commandButton value="save" action="#{NewExp_Controller.saveExperiment}" reRender="overallEvalCalcPanel" disabled="#{ExperimentBean.currentStage gt 6}"></a4j:commandButton>
+                </rich:panel>
+            </h:panelGrid>
+        </rich:simpleTogglePanel>
+    </a4j:region>
+    <!-- *************End WITH Overall EXPERIMENT EVALUATION TB v0.9************************ -->
+    
+    </c:if>
+</a4j:form>

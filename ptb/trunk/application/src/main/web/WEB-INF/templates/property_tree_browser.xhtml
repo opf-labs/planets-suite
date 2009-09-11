@@ -38,15 +38,15 @@
                 <!-- select different view on the tree and possibly apply a full-text filter on the tree's nodes -->
                 <rich:simpleTogglePanel switchType="client" label="apply settings: full-text filtering and different tree views" style="margin:2px;">            
     				<a4j:region id="settings">
-	    				<h:outputText value="filter properties: "/><h:inputText id="filterTree" value="#{simpleTreeDndBean.filterTreeString}" maxlength="500">
+	    				<h:outputText value="filter properties: "/><h:inputText id="filterTree" value="#{OntologyDnDBean.filterTreeString}" maxlength="500">
 	                    	<a4j:support requestDelay="1000" event="onkeyup" reRender="propertytree" eventsQueue="foo" ignoreDupResponses="true"/>
 	            		</h:inputText>
 			
 	            		<!-- trigger collaps/expand of the tree -->
-	            		<a4j:commandButton id="collapsButton" value="collapse" action="#{simpleTreeDndBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
+	            		<a4j:commandButton id="collapsButton" value="collapse" action="#{OntologyDnDBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
 	            			<f:param value="collaps" name="collapsexpand"/>
 	            		</a4j:commandButton>
-	            		<a4j:commandButton id="expandButton" value="expand" action="#{simpleTreeDndBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
+	            		<a4j:commandButton id="expandButton" value="expand" action="#{OntologyDnDBean.processCollapsExpandTree}" reRender="propertytree" eventsQueue="foo">
 	            			<f:param value="expand" name="collapsexpand"/>
 	            		</a4j:commandButton>
 	            		<a4j:status for="settings">
@@ -59,15 +59,15 @@
             			<br/> 		
 	            		<p>
 	            		<h:outputText value="tree-context menu (slow!): "/>
-						<h:selectBooleanCheckbox binding="#{simpleTreeDndBean.contextMenuEnabled}" >
+						<h:selectBooleanCheckbox binding="#{OntologyDnDBean.contextMenuEnabled}" >
 							<a4j:support id="contextoptionchange" event="onchange" reRender="propertytree" eventsQueue="foo"/>
 						</h:selectBooleanCheckbox>
 						<rich:spacer width="10"/>
 	            		<!-- select between different views of the tree -->
 						<h:outputText value="select tree view: "/>
-						<rich:inplaceSelect id="treeviewselector" value="#{simpleTreeDndBean.selectedViewItem}"
+						<rich:inplaceSelect id="treeviewselector" value="#{OntologyDnDBean.selectedViewItem}"
 							        defaultLabel="click here to change" >
-							<f:selectItems id="treeviews" value="#{simpleTreeDndBean.availableViews}" />
+							<f:selectItems id="treeviews" value="#{OntologyDnDBean.availableViews}" />
 						    <a4j:support id="treeviewchange" event="onviewactivated" reRender="propertytree" eventsQueue="foo"/>
 						</rich:inplaceSelect>	
 						<img src="${facesContext.externalContext.requestContextPath}/graphics/help.gif" alt="" title="" onmouseover="return overlib('&lt;p style=\'width:121px;text-align:left;\'&gt;#{res['browse_ontology.tree_view']}&lt;/p&gt;', OFFSETX, 20, OFFSETY, -20, WIDTH, 130);" onmouseout="return nd();" />
@@ -76,20 +76,20 @@
 
     			</rich:simpleTogglePanel>  
   
-	            <rich:tree style="width:300px" nodeSelectListener="#{simpleTreeDndBean.processSelection}" 
+	            <rich:tree style="width:300px" nodeSelectListener="#{OntologyDnDBean.processSelection}" 
 	                reRender="infoPanel,selproppanel" ajaxSubmitSelection="true" ignoreDupResponses="true" eventsQueue="foo"
-	                switchType="client" id="propertytree" value="#{simpleTreeDndBean.treeNode}" var="item" 
-	                dragIndicator="indicator2"  adviseNodeOpened="#{simpleTreeDndBean.adviseNodeOpened}"
+	                switchType="client" id="propertytree" value="#{OntologyDnDBean.treeNode}" var="item" 
+	                dragIndicator="indicator2"  adviseNodeOpened="#{OntologyDnDBean.adviseNodeOpened}"
 	                treeNodeVar="treeNode" nodeFace="#{empty item.type == true ? 'node' : 'leaf'}">
 	                <rich:treeNode type="node" icon="/graphics/iconFolder.gif" iconLeaf="/graphics/iconFolder.gif">
 						<h:outputText value="#{item.name}" id="treenodeitemname"/>
 					</rich:treeNode>
 					<rich:treeNode id="treeLeafNode" type="leaf" dragType="props" iconLeaf="/graphics/iconLeaf.gif"> 
 		                 <rich:dndParam name="label" type="drag">property: #{item.name}</rich:dndParam>
-		                 <a4j:support event="ondblclick" actionListener="#{simpleTreeDndBean.processPropertyDblClick}" reRender="selproppanel" eventsQueue="foo" rendered="#{(not empty expApproved) ? (!expApproved) : true}"/>
+		                 <a4j:support event="ondblclick" actionListener="#{OntologyDnDBean.processPropertyDblClick}" reRender="selproppanel" eventsQueue="foo" rendered="#{(not empty expApproved) ? (!expApproved) : true}"/>
 		                 <h:outputText value="#{item.humanReadableName}"/>
-		                 <rich:contextMenu event="oncontextmenu" attached="true" id="treenodemenu" submitMode="ajax" rendered="#{(not empty expApproved) ? (!expApproved) : simpleTreeDndBean.contextMenuEnabled.selected}">
-                                 <rich:menuItem id="addprop" actionListener="#{simpleTreeDndBean.processLeafContextMenuAddProperty}" reRender="selproppanel" eventsQueue="foo">
+		                 <rich:contextMenu event="oncontextmenu" attached="true" id="treenodemenu" submitMode="ajax" rendered="#{(not empty expApproved) ? (!expApproved) : OntologyDnDBean.contextMenuEnabled.selected}">
+                                 <rich:menuItem id="addprop" actionListener="#{OntologyDnDBean.processLeafContextMenuAddProperty}" reRender="selproppanel" eventsQueue="foo">
 									<b>add property</b> to clipboard
 								</rich:menuItem>
                                 <rich:menuItem value="close"/>
@@ -100,32 +100,32 @@
             <h:panelGrid columns="1" width="100%">
             	<!-- selected property info panel -->
 	            <rich:simpleTogglePanel id="infoPanel" switchType="client" label="selected property information panel" style="margin:2px;">
-		            <h:outputText value="selected node: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.nodeTitle}" /><br/>
-		            <h:panelGroup rendered="#{(simpleTreeDndBean.selTreeNode.data.humanReadableName != simpleTreeDndBean.nodeTitle)}"><h:outputText value="human readable name: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.humanReadableName}" /><br/></h:panelGroup>
-		            <h:outputText value="uri: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.URI}"/><br/>
-		            <h:panelGroup rendered="#{not empty simpleTreeDndBean.selTreeNode.data.parentType}"><h:outputText value="parent-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.parentType}"/><br/></h:panelGroup>
-		        	<h:panelGroup rendered="#{not empty simpleTreeDndBean.selTreeNode.data.dataType}"><h:outputText value="data-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.dataType}" /><br/></h:panelGroup>
-		        	<h:panelGroup rendered="#{not empty simpleTreeDndBean.selTreeNode.data.type}"><h:outputText value="addressed layer: " style="font-weight:bold;"/><h:outputText escape="false" value="#{simpleTreeDndBean.selTreeNode.data.type}" /><br/></h:panelGroup>
-		        	<h:panelGroup rendered="#{not empty simpleTreeDndBean.selTreeNode.data.comment}"><h:outputText value="comment: " style="font-weight:bold;"/><h:outputText escape="false"  value="#{simpleTreeDndBean.selTreeNode.data.comment}"/><br/></h:panelGroup>
+		            <h:outputText value="selected node: " style="font-weight:bold;"/><h:outputText escape="false" value="#{OntologyDnDBean.nodeTitle}" /><br/>
+		            <h:panelGroup rendered="#{(OntologyDnDBean.selTreeNode.data.humanReadableName != OntologyDnDBean.nodeTitle)}"><h:outputText value="human readable name: " style="font-weight:bold;"/><h:outputText escape="false" value="#{OntologyDnDBean.selTreeNode.data.humanReadableName}" /><br/></h:panelGroup>
+		            <h:outputText value="uri: " style="font-weight:bold;"/><h:outputText escape="false" value="#{OntologyDnDBean.selTreeNode.data.URI}"/><br/>
+		            <h:panelGroup rendered="#{not empty OntologyDnDBean.selTreeNode.data.parentType}"><h:outputText value="parent-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{OntologyDnDBean.selTreeNode.data.parentType}"/><br/></h:panelGroup>
+		        	<h:panelGroup rendered="#{not empty OntologyDnDBean.selTreeNode.data.dataType}"><h:outputText value="data-type: " style="font-weight:bold;"/><h:outputText escape="false" value="#{OntologyDnDBean.selTreeNode.data.dataType}" /><br/></h:panelGroup>
+		        	<h:panelGroup rendered="#{not empty OntologyDnDBean.selTreeNode.data.type}"><h:outputText value="addressed layer: " style="font-weight:bold;"/><h:outputText escape="false" value="#{OntologyDnDBean.selTreeNode.data.type}" /><br/></h:panelGroup>
+		        	<h:panelGroup rendered="#{not empty OntologyDnDBean.selTreeNode.data.comment}"><h:outputText value="comment: " style="font-weight:bold;"/><h:outputText escape="false"  value="#{OntologyDnDBean.selTreeNode.data.comment}"/><br/></h:panelGroup>
 		        </rich:simpleTogglePanel>
 
 		        <!-- selected properties drop-off zone -->
 	            <rich:panel id="selproppanel" style="droppanel">
 	                <f:facet name="header">
-	                    <a4j:outputPanel ajaxRendered="true"><h:outputText value="clipboard" /> <a4j:commandButton id="clearclipboardprops" value="clear" action="#{simpleTreeDndBean.removeAllSelectedProps}" reRender="selproppanel,clearclipboardprops" eventsQueue="foo" disabled="#{(simpleTreeDndBean.selNodesSize lt 1) or (expApproved)}"/></a4j:outputPanel>
+	                    <a4j:outputPanel ajaxRendered="true"><h:outputText value="clipboard" /> <a4j:commandButton id="clearclipboardprops" value="clear" action="#{OntologyDnDBean.removeAllSelectedProps}" reRender="selproppanel,clearclipboardprops" eventsQueue="foo" disabled="#{(OntologyDnDBean.selNodesSize lt 1) or (expApproved)}"/></a4j:outputPanel>
 	                </f:facet>
 	                <rich:dropSupport id="dropsupport" acceptedTypes="#{expApproved ? 'none' : 'props'}" dropValue="selpropdrop"
-	                    dropListener="#{simpleTreeDndBean.processDrop}" reRender="selproppanel">
+	                    dropListener="#{OntologyDnDBean.processDrop}" reRender="selproppanel">
 	                </rich:dropSupport>
 	
-			        <rich:dataTable id="selprops" value="#{simpleTreeDndBean.selNodes}" var="propNodes" rows="10" 
-				        reRender="selprops_ds" styleClass="tbTable" binding="#{simpleTreeDndBean.selPropTable}" rendered="#{simpleTreeDndBean.selNodesSize >0}">
+			        <rich:dataTable id="selprops" value="#{OntologyDnDBean.selNodes}" var="propNodes" rows="10" 
+				        reRender="selprops_ds" styleClass="tbTable" binding="#{OntologyDnDBean.selPropTable}" rendered="#{OntologyDnDBean.selNodesSize >0}">
 	
 	 					<rich:column>
 	                    	<f:facet name="header">
 	                    		<h:outputText value="remove"/>
 	                    	</f:facet>
-	                    	<a4j:commandLink action="#{simpleTreeDndBean.processRemoveSelProp}" reRender="infoPanel,selproppanel" rendered="#{!expApproved}">
+	                    	<a4j:commandLink action="#{OntologyDnDBean.processRemoveSelProp}" reRender="infoPanel,selproppanel" rendered="#{!expApproved}">
 	                            <img src="${facesContext.externalContext.requestContextPath}/graphics/button_delete_query.gif" alt="remove" title="remove"/>
 	                            <f:param value="#{propNodes.data.URI}" name="selPropID"/>
 	                       </a4j:commandLink>
@@ -134,7 +134,7 @@
 	                    	<f:facet name="header">
 	                    		<h:outputText value="selected property"/>
 	                    	</f:facet>
-	                    	<a4j:commandLink action="#{simpleTreeDndBean.processDetailsForSelProp}" reRender="infoPanel">
+	                    	<a4j:commandLink action="#{OntologyDnDBean.processDetailsForSelProp}" reRender="infoPanel">
 	                    		<f:param value="#{propNodes.data.URI}" name="selPropID"/>
 	                    		<h:outputText value="#{propNodes.data.humanReadableName}"></h:outputText>
 	                    	</a4j:commandLink> 
@@ -144,15 +144,15 @@
 	                    	<f:facet name="header">
 	                    		<h:outputText value="measure in experiment stage"/>
 	                    	</f:facet>
-	                    	<a4j:repeat id="propusagerepeater" value="#{experimentStages}" var="stage" binding="#{simpleTreeDndBean.repeater}">
+	                    	<a4j:repeat id="propusagerepeater" value="#{experimentStages}" var="stage" binding="#{OntologyDnDBean.repeater}">
 
                     			<h:outputText value="#{stage.name}: "/>
                     			
-                    			<a4j:commandButton value="true" actionListener="#{simpleTreeDndBean.selStagePropChange}" reRender="selprops" eventsQueue="foo" disabled="#{simpleTreeDndBean.stageSelectedState[propNodes.data.URI][stage.name]=='true'}">
+                    			<a4j:commandButton value="true" actionListener="#{OntologyDnDBean.selStagePropChange}" reRender="selprops" eventsQueue="foo" disabled="#{OntologyDnDBean.stageSelectedState[propNodes.data.URI][stage.name]=='true'}">
 	            					<f:param value="#{propNodes.data.URI}" name="selPropID"/>
                                     <f:param value="#{stage.name}" name="selPropStageName"/>
 	            				</a4j:commandButton>
-	            				<a4j:commandButton value="false" actionListener="#{simpleTreeDndBean.selStagePropChange}" reRender="selprops" eventsQueue="foo" disabled="#{simpleTreeDndBean.stageSelectedState[propNodes.data.URI][stage.name]=='false'}">
+	            				<a4j:commandButton value="false" actionListener="#{OntologyDnDBean.selStagePropChange}" reRender="selprops" eventsQueue="foo" disabled="#{OntologyDnDBean.stageSelectedState[propNodes.data.URI][stage.name]=='false'}">
 	            					<f:param value="#{propNodes.data.URI}" name="selPropID"/>
                                     <f:param value="#{stage.name}" name="selPropStageName"/>
 	            				</a4j:commandButton>

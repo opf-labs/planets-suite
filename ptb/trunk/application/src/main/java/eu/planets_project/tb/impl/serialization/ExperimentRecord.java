@@ -37,9 +37,14 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ExperimentRecord {
 
+    /* The Experiment */
     ExperimentImpl experiment;
+    
+    /* The Comments associated with the Experiment */
     List<CommentImpl> comments;
+    
 
+    /* The hooks to the DB back-end */
     private static ExperimentPersistencyRemote edao = ExperimentPersistencyImpl.getInstance();
     private static CommentPersistencyRemote cmp = CommentPersistencyImpl.getInstance();
 

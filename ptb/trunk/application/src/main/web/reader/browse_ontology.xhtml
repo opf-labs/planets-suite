@@ -20,7 +20,10 @@
 		<div id="mainwrapper">
 		<div id="maincol">
 		<div class="innertubemain">
-        	<ui:include src="/WEB-INF/templates/property_tree_browser.xhtml"/>
+        	<ui:include src="/WEB-INF/templates/property_tree_browser.xhtml">
+               <ui:param name="OntologyDnDBean" value="#{Manager_Backing.ontologyDnDBean}"/>
+            </ui:include>
+            
         	<p>&#160;</p>
 	        <p>&#160;</p>
 	        <p>&#160;</p>

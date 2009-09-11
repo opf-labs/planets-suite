@@ -253,9 +253,6 @@ public class ListExp extends SortableList {
 	          return "viewExp";
 	      }
 	      
-	      //reinit the ontologyDnDBean
-	      Manager.initOntologDnDBean();
-	              
 	      // go to edit page
 	      return "editExp";
 	    }

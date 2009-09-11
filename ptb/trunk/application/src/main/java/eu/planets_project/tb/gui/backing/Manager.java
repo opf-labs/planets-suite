@@ -29,9 +29,6 @@ public class Manager {
     public String initExperimentAction() {
         ExpBeanReqManager.putExperimentIntoSessionExperimentBean( null );
 	    
-		//every new experiment requires a new ontologyDnDBean
-		this.initOntologDnDBean();
-		
 		return "success";
     }
     
@@ -114,14 +111,14 @@ public class Manager {
 		ctx.getExternalContext().getSessionMap().put("AutoEvalSerUserConfigBean", evalConfBean);
     }
     
+    PropertyDnDTreeBean ontologyBean = null;
     /**
      * Used to (re)init the session-scoped managed object simpleTreeDnDBean for the ontology browser
      * @return
      */
-    public static String initOntologDnDBean(){
-    	FacesContext ctx = FacesContext.getCurrentInstance();
-		ctx.getExternalContext().getSessionMap().put("simpleTreeDndBean", new PropertyDnDTreeBean());
-		return "browse_ontology";
+    public PropertyDnDTreeBean getOntologyDnDBean(){
+		if( ontologyBean == null ) ontologyBean = new PropertyDnDTreeBean();
+		return ontologyBean;
     }
     
     /* --- Test user email sending... */

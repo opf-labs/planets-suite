@@ -2263,4 +2263,15 @@ public class ExperimentBean {
     		}
     	return propertyIDsForExperimentEvaluation;
     }
+
+    
+    PropertyDnDTreeBean simpleTreeDndBean = null;
+    /**
+     * Get the DnD Ontology Bean, creating it if required.
+     * @return
+     */
+    public PropertyDnDTreeBean getOntologyDnDBean() {
+        if( simpleTreeDndBean == null ) simpleTreeDndBean = new PropertyDnDTreeBean();
+        return simpleTreeDndBean;
+    }
 }

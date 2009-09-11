@@ -1,0 +1,111 @@
+<!-- the manually measured properties -->
+<a4j:region id="regionManualPropsTogglePanel" renderRegionOnly="true">
+<rich:simpleTogglePanel id="manualprops" label="#{res['exp_stage3.ontologyProps']}" opened="true" switchType="client">  
+    <p>These are the selected properties that the Testbed <b>cannot</b> automatically measure during your experiment, and so must be measured manually instead.</p>
+    <p><b>How to add manually measured properties:</b></p>
+    <ol>
+        <li>Click on 'open digital object property selector'</li>
+        <li>Browse the ontology of properties to find those you would like to manually measure</li>
+        <li>Copy each property to your clipboard by either <b>double-clicking</b> on it or <b>drag and dropping</b> it into the clipboard</li>
+        <li>For each property click on the 'true' button to select which stage of the workflow you'd like to measure the property (if your experiment only uses one service select 'true' for this)</li>
+        <li>Once you have added all required properties and specified where they are to be measured click the 'add to experiment' button.</li>
+    </ol>
+    <a4j:region id="regionManualProps" renderRegionOnly="true">
+    <h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
+        <rich:panel styleClass="expExecLogPanel">
+            <rich:dataTable value="#{NewExp_Controller.stages}" var="stage" styleClass="tbTable">
+                <rich:column> 
+                    <f:facet name="header">
+                        <h:outputText value="Experiment Stage"/>
+                    </f:facet>
+                    <h:commandLink>
+                        <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectStageActionListener"/>
+                        <h:outputText value="#{stage.name}" styleClass="#{ ( ExperimentBean.selectedStage.name eq stage.name ) ? 'isSelected' : 'isNotSelected'}" />
+                    </h:commandLink>
+                </rich:column>
+            </rich:dataTable>
+             
+            <h:panelGroup rendered="#{ExperimentBean.selectedStage == null}">
+              Select an experiment stage to view.
+            </h:panelGroup>
+            <h:panelGroup rendered="#{ExperimentBean.selectedStage != null}">
+            <p>
+            Stage: #{ExperimentBean.selectedStage.name}
+            </p>
+            <p>
+            #{ExperimentBean.selectedStage.description}
+            </p>
+            </h:panelGroup>
+         </rich:panel>
+        <rich:panel styleClass="expMeasurementPanel">
+            <rich:dataTable value="#{NewExp_Controller.manualObservables}" var="prop" rows="10" 
+            reRender="propmanual_ds" styleClass="tbTable" binding="#{NewExp_Controller.manualObsTable}"
+            id="manualMeasurmentTable">
+    
+                <rich:column> 
+                    <f:facet name="header">
+                        <h:outputText value="Measure"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox value="#{prop.selected}"  disabled="#{ExperimentBean.approved}" 
+                    valueChangeListener="#{NewExp_Controller.handleManualObsSelectChangeListener}">
+                        <a4j:support event="onclick" reRender="manualMeasurmentTable" eventsQueue="foo" rendered="#{!ExperimentBean.approved}"/>
+                    </h:selectBooleanCheckbox>
+                </rich:column>
+                
+                <rich:column sortBy="#{prop.type}">
+                    <f:facet name="header">
+                        <h:outputText value="Type"/>
+                    </f:facet>
+                    <h:outputText value="#{prop.type}"/> 
+                </rich:column>
+                
+                <rich:column sortBy="#{prop.name}" sortOrder="DESCENDING">
+                    <f:facet name="header">
+                        <h:outputText value="Name"/>
+                    </f:facet>
+                    <t:graphicImage value="/graphics/help.gif" style="float: right; padding: 1px 5px;"/>
+                    <h:outputText value="#{prop.name}"/>
+                    <rich:toolTip showDelay="500">
+                      <h:outputText value="#{prop.description}"/>
+                      <h:panelGroup rendered="#{prop.identifier != null}">
+                        <br/><i><h:outputText value="(URI: #{prop.identifier})"/></i>
+                      </h:panelGroup>
+                    </rich:toolTip>
+                </rich:column>
+                
+                <rich:column sortBy="#{prop.unit}">
+                    <f:facet name="header">
+                        <h:outputText value="Unit"/>
+                    </f:facet>
+                    <h:outputText value="#{prop.unit}"/> 
+                </rich:column>
+                
+                <f:facet name="footer">
+                    <rich:datascroller for="manualMeasurmentTable" id="propmanual_ds" renderIfSinglePage="false"></rich:datascroller>
+                </f:facet>
+            </rich:dataTable>
+        </rich:panel>
+    </h:panelGrid>
+    </a4j:region>
+    
+    <a4j:region id="regionOntologyTreeBrowserToggle" renderRegionOnly="true">
+        <a4j:status>
+            <f:facet name="start">
+                <h:graphicImage  value="/graphics/spinner.gif"/>
+            </f:facet>
+        </a4j:status>
+    <!-- integrating the ontology browser
+    <rich:simpleTogglePanel id="ontologytree" label="open digital object property selector" opened="false" switchType="ajax">
+        <a4j:region id="regionOntologyTreeBrowser" renderRegionOnly="true">
+            <ui:include src="/WEB-INF/templates/property_tree_browser.xhtml">
+               <ui:param name="Standalone" value="false" />
+               <ui:param name="experimentStages" value="#{NewExp_Controller.stages}" />
+               <ui:param name="expApproved" value="#{ExperimentBean.approved}"/>
+               <ui:param name="OntologyDnDBean" value=" # { ExperimentBean.ontologyDnDBean } "/>
+            </ui:include>
+        </a4j:region>
+    </rich:simpleTogglePanel>
+     -->
+    </a4j:region>
+</rich:simpleTogglePanel>
+</a4j:region>

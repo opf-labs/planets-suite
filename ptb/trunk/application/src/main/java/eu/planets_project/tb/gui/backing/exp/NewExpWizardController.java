@@ -1908,7 +1908,7 @@ public class NewExpWizardController{
     	
     	//get the information from the ontology tree bean
     	FacesContext ctx = FacesContext.getCurrentInstance();
-		PropertyDnDTreeBean treeBean = (PropertyDnDTreeBean)JSFUtil.getManagedObject("simpleTreeDndBean");
+		PropertyDnDTreeBean treeBean = expBean.getOntologyDnDBean();
 		if(treeBean==null){
 			// ontology tree bean has not been set
 	        log.error("ontology tree bean not set");

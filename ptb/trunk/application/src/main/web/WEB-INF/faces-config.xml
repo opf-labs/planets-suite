@@ -143,13 +143,7 @@
 		<managed-bean-name>PlanetsSharedBean</managed-bean-name>
 		<managed-bean-class>eu.planets_project.webui.PlanetsSharedBackingBean</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>simpleTreeDndBean</managed-bean-name>
-		<managed-bean-class>eu.planets_project.tb.gui.backing.PropertyDnDTreeBean</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	
+	</managed-bean>	
 	<!--End Managed Beans -->
 
 	<!-- Start Navigation Rules: General Navigation Rules -->
