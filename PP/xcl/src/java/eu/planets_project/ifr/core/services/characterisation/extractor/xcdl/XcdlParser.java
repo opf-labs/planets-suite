@@ -30,6 +30,7 @@ import eu.planets_project.services.utils.FileUtils;
  */
 public final class XcdlParser implements XcdlAccess {
 
+    static final String NONE = "none";
     private Xcdl xcdl;
 
     /**
@@ -142,11 +143,17 @@ public final class XcdlParser implements XcdlAccess {
 
     private String createDescription(final Property property, final ValueSet valueSet) {
         LabValue labValue = valueSet.getLabValue();
+        String objectRef = valueSet.getObjectRef();
         List<String> values = labValue != null ? labValue.getVals().get(0).getValues() : new ArrayList<String>();
-        String result = String.format("%s %s, name %s %s, " + "valueSet %s, labValue %s %s inch",
-                property.getSource().value(), property.getCat().value(), property.getName().getId(), property.getName()
-                        .getValues().get(0), valueSet.getId(), values.size() > 0 ? values.get(0) : "",
-                labValue != null ? labValue.getTypes().get(0).getValue().value() : "null");
+        String result = String.format("%s %s, name %s %s, " + "valueSet %s, labValue %s %s inch, objectRef %s",
+                property.getSource().value(), 
+                property.getCat().value(), 
+                property.getName().getId(), 
+                property.getName().getValues().get(0), 
+                valueSet.getId(), 
+                values.size() > 0 ? values.get(0) : "",
+                labValue != null ? labValue.getTypes().get(0).getValue().value() : NONE,
+                objectRef != null ? objectRef : NONE);
         System.out.println("Generated description: " + result);
         return result;
     }

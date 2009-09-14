@@ -102,9 +102,11 @@ public final class XcdlCreator {
                     throw new IllegalArgumentException("Property has no name: " + prop);
                 }
                 if (prop.getType().toLowerCase().equals(PropertyName.NORMDATA.s)) {
-                    addNormData(object, prop, normDataCount); normDataCount++;
+                    addNormData(object, prop, normDataCount);
+                    normDataCount++;
                 } else if (prop.getType().toLowerCase().equals(PropertyName.PROPERTYSET.s)) {
-                    addPropertySet(object, prop, propSetCount); propSetCount++;
+                    addPropertySet(object, prop, propSetCount);
+                    propSetCount++;
                 } else if (prop.getType().toLowerCase().equals(PropertyName.PROPERTY.s)) {
                     addProperty(object, prop);
                 } else {
@@ -130,6 +132,7 @@ public final class XcdlCreator {
         String[] nameTokens = clean(levelOneTokens[1].split(" "));
         String[] valueSetTokens = clean(levelOneTokens[2].split(" "));
         String[] labValTokens = clean(levelOneTokens[3].split(" "));
+        String[] objectRefTokens = clean(levelOneTokens[4].split(" "));
 
         p.setId("p" + "-" + object.getId() + "-" + nameTokens[1].replaceAll("id", ""));
 
@@ -147,6 +150,10 @@ public final class XcdlCreator {
         /* The value set element: */
         ValueSet set = new ValueSet();
         set.setId(valueSetTokens[1]);
+        String oRef = objectRefTokens[1].trim();
+        if (!oRef.equals(XcdlParser.NONE)) {
+            set.setObjectRef(oRef);
+        }
 
         /* The lab val: */
         LabValue labValue = new LabValue();
@@ -174,7 +181,8 @@ public final class XcdlCreator {
     }
 
     private void addPropertySet(
-            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop, int propSetCount) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
+            Property prop, int propSetCount) {
         PropertySet set = new PropertySet();
         set.setId("id_" + propSetCount);
         ValueSetRelations rel = new ValueSetRelations();
@@ -195,7 +203,8 @@ public final class XcdlCreator {
     }
 
     private void addNormData(
-            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop, int normDataCount) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
+            Property prop, int normDataCount) {
         NormData normData = new NormData();
         String description = prop.getDescription();
         if (description == null || description.trim().equals("")) {
