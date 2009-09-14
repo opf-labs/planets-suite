@@ -1,3 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition>
+
 <!-- the manually measured properties -->
 <a4j:region id="regionManualPropsTogglePanel" renderRegionOnly="true">
 <rich:simpleTogglePanel id="manualprops" label="#{res['exp_stage3.ontologyProps']}" opened="true" switchType="client">  
@@ -94,18 +107,21 @@
                 <h:graphicImage  value="/graphics/spinner.gif"/>
             </f:facet>
         </a4j:status>
-    <!-- integrating the ontology browser
+    <!-- integrating the ontology browser -->
     <rich:simpleTogglePanel id="ontologytree" label="open digital object property selector" opened="false" switchType="ajax">
         <a4j:region id="regionOntologyTreeBrowser" renderRegionOnly="true">
             <ui:include src="/WEB-INF/templates/property_tree_browser.xhtml">
                <ui:param name="Standalone" value="false" />
                <ui:param name="experimentStages" value="#{NewExp_Controller.stages}" />
                <ui:param name="expApproved" value="#{ExperimentBean.approved}"/>
-               <ui:param name="OntologyDnDBean" value=" # { ExperimentBean.ontologyDnDBean } "/>
+               <ui:param name="OntologyDnDBean" value="#{ExperimentBean.ontologyDnDBean}"/>
             </ui:include>
         </a4j:region>
     </rich:simpleTogglePanel>
-     -->
     </a4j:region>
 </rich:simpleTogglePanel>
 </a4j:region>
+
+</ui:composition>
+</body>
+</html>

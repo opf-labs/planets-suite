@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition>
+
+ <a4j:form>
+                <rich:panel>
+                 <!-- experiment report TODO switch to rich:editor for this component-->
+                    <f:facet name="header">
+                        <h:outputText value="#{res['exp_stage6.report']}"/>
+                    </f:facet>
+                    <p>
+                    Please provide a short written summary on this experiment. What went well/bad, which expectations were met, which experiment to follow-up..
+                    </p>
+                   <p>
+                       <h:outputLabel value="#{res['exp_stage6.reportTitle']}" for="repTitle" ></h:outputLabel>
+                       <h:inputText required="false" id="repTitle" value="#{ExperimentBean.reportHeader}" size="82" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" >
+                            <a4j:support requestDelay="1000" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
+                       </h:inputText>
+                       <h:message for="repTitle" errorClass="errorMessage" infoClass="infoMessage"/>
+                   </p>
+                   <p>
+                       <h:outputLabel value="#{res['exp_stage6.reportBody']}" for="repBody" ></h:outputLabel>
+                       <h:inputTextarea rows="10" cols="80" required="false" id="repBody" value="#{ExperimentBean.reportBody}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" >
+                            <a4j:support requestDelay="1000" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
+                       </h:inputTextarea>
+                       <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
+                   </p>
+                   <a4j:commandButton value="save" action="#{NewExp_Controller.saveExperiment}" disabled="#{ExperimentBean.currentStage gt 6}"></a4j:commandButton>
+                </rich:panel>
+
+</a4j:form>
+<!-- End of simple evaluation form. -->
+
+</ui:composition>
+
+</body>
+</html>

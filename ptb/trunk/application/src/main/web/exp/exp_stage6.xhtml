@@ -34,37 +34,17 @@
 
 </h:form>
 
-<!-- Manual evaluation clipped out from here.  If it goes back in, please include is as a template. -->
-<!-- Replaced with the following... -->
-<a4j:form>
-                <rich:panel>
-                 <!-- experiment report TODO switch to rich:editor for this component-->
-                    <f:facet name="header">
-                        <h:outputText value="#{res['exp_stage6.report']}"/>
-                    </f:facet>
-                    <p>
-                    Please provide a short written summary on this experiment. What went well/bad, which expectations were met, which experiment to follow-up..
-                    </p>
-                   <p>
-                       <h:outputLabel value="#{res['exp_stage6.reportTitle']}" for="repTitle" ></h:outputLabel>
-                       <h:inputText required="false" id="repTitle" value="#{ExperimentBean.reportHeader}" size="82" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" >
-                            <a4j:support requestDelay="1000" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
-                       </h:inputText>
-                       <h:message for="repTitle" errorClass="errorMessage" infoClass="infoMessage"/>
-                   </p>
-                   <p>
-                       <h:outputLabel value="#{res['exp_stage6.reportBody']}" for="repBody" ></h:outputLabel>
-                       <h:inputTextarea rows="10" cols="80" required="false" id="repBody" value="#{ExperimentBean.reportBody}" readonly="#{ExperimentBean.finished}" disabled="#{ExperimentBean.finished}" >
-                            <a4j:support requestDelay="1000" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
-                       </h:inputTextarea>
-                       <h:message for="repBody" errorClass="errorMessage" infoClass="infoMessage"/>
-                   </p>
-                   <a4j:commandButton value="save" action="#{NewExp_Controller.saveExperiment}" disabled="#{ExperimentBean.currentStage gt 6}"></a4j:commandButton>
-                </rich:panel>
 
-</a4j:form>
-<!-- End of simple evaluation form. -->
+
+
+
+    <!-- Manual evaluation: -->
+    <ui:include src="/WEB-INF/templates/exp_stage6_manual_evaluation.xhtml"/>
     	
+      
+      
+      
+      
 <!-- ****************************** OLD EXPERIMENTS TB v0.5 INFORMATION**************************** -->
 <c:if test="#{ExperimentBean.oldExperiment}">
 	<ui:include src="/WEB-INF/templates/old-exps/stage6_evaluate_old.xhtml">
