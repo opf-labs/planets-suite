@@ -29,6 +29,7 @@ public class BackendProperties {
     
     // Testbed properties
     public static final String TB_VERSION = "testbed.version";
+    public static final String XCLONTOLOGY_LOCATION = "ontology.xclontology.namespace";
    
 
     // Experiment properties.

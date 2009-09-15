@@ -32,6 +32,7 @@ import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLIndividual;
 import edu.stanford.smi.protegex.owl.model.impl.DefaultOWLNamedClass;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
+import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
  * This is the Testbed's representation of an ontology property modeled in the specificationPropertyNames XCLOntology class.
@@ -59,6 +60,7 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     private static final String TYPE_SERVICE = "Service";
     //the ProtegeReasoner that's connected to the given owl model
     private ProtegeReasoner reasoner = null;
+    private String xclOntologyLocation = "";
     
     
     /**
@@ -75,6 +77,8 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
      */
     public OntologyPropertyImpl(RDFIndividual individual) { 
     	this.individual = individual;
+    	//retrieves a String similar to http://planetarium.hki.uni-koeln.de/planets_cms/sites/default/files/XCLOntology.owl
+    	this.xclOntologyLocation = new BackendProperties().getProperty(BackendProperties.XCLONTOLOGY_LOCATION);
     }
     
 
@@ -208,7 +212,8 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
     	if(lis_same_asIndividuals==null){
     		lis_same_asIndividuals = new ArrayList<RDFIndividual>();    
     		
-			OWLObjectProperty propertyIs_same_as = individual.getOWLModel().getOWLObjectProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as");
+    		//object property e.g. http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#is_same_as
+			OWLObjectProperty propertyIs_same_as = individual.getOWLModel().getOWLObjectProperty(this.xclOntologyLocation+"#is_same_as");
 			try {
 				//using the reasoner for resolving the symmetric individual relations
 				Iterator<OWLIndividual> it = this.getReasoner().getRelatedIndividuals(convertRDFIndividual(individual), propertyIs_same_as).iterator();
@@ -233,8 +238,9 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
      */
     public String getUnit(){
         if(unit==null){
-	    	RDFProperty propertyUnit = individual.getOWLModel()
-	        .getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Unit");
+	    	//rdf property unit: http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Unit
+        	RDFProperty propertyUnit = individual.getOWLModel()
+	        .getRDFProperty(this.xclOntologyLocation+"#Unit");
 	        Object oUnit = individual.getPropertyValue(propertyUnit);
 	        if(oUnit instanceof DefaultOWLIndividual){
 	        	DefaultOWLIndividual dUnit = (DefaultOWLIndividual)individual.getPropertyValue(propertyUnit);
@@ -253,8 +259,9 @@ public class OntologyPropertyImpl implements OntologyProperty, Cloneable, Serial
 	 */
 	public String getDataType() {
 		if(dataType==null){
+			//rdf property datatype: http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Datatype
 			RDFProperty propertyDatatype = individual.getOWLModel()
-			.getRDFProperty("http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#Datatype");
+			.getRDFProperty(this.xclOntologyLocation+"#Datatype");
 	        //System.out.println("<Prop name: "+datatype.getBrowserText() +" value: "+individual.getPropertyValue(datatype)); 
 	        Object oDatatype = individual.getPropertyValue(propertyDatatype);
 	        if(oDatatype instanceof DefaultOWLIndividual){
