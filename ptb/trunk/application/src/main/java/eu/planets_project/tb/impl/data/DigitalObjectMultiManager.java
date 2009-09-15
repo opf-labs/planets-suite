@@ -65,7 +65,11 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
             ds_pdm.setDescription("The Planets shared storage area.");
             dss.add( ds_pdm );
         } catch( SOAPException e ) {
+            log.error("SOAPException creating data registry URI: " + e );
+            e.printStackTrace();
+        } catch( Exception e ) {
             log.error("Error creating data registry URI: " + e );
+            e.printStackTrace();
         }
         
         // The File System Data Registry:
