@@ -109,7 +109,7 @@ public abstract class AbstractSampleXclUsage {
         List<Parameter> configProperties = comparison.convertConfig(config());
         CompareResult result = comparison.compare(firstResult, secondResult, configProperties);
         System.out.println("Result: " + result + " " + result.getProperties());
-        // checkCompareResult(result); //FIXME: we get only flat results for embedded XCDLs via characterisation
+        checkCompareResult(result);
     }
 
     /**
@@ -128,6 +128,6 @@ public abstract class AbstractSampleXclUsage {
         List<Parameter> configProperties = comparison.convertConfig(config());
         CompareResult result = comparison.compare(firstResult, secondResult, configProperties);
         System.out.println("Result: " + result + " " + result.getProperties());
-        // checkCompareResult(result); //FIXME: we get only flat results for embedded XCDLs via characterisation
+        checkCompareResult(result);
     }
 }
