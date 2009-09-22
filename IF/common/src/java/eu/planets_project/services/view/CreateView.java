@@ -71,6 +71,7 @@ public interface CreateView extends PlanetsService {
             String sessionIdentifier );
     
     /**
+     * FIXME Should this have an optional list of parameters?
      * @param sessionIdentifier A key that allows the service  to uniquely identify the user's session.
      * @return A description of the current state of that session, optionally including properties determined from the session.
      */
