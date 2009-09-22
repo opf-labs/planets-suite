@@ -89,6 +89,7 @@ public class UniversalFloppyImageHelper implements Migrate, FloppyImageHelper {
         sd.classname(this.getClass().getCanonicalName());
         sd.version("1.0");
         sd.tool( Tool.create(null, "Fat_Imgen (fat_imgen.exe)", "v2.1.1", null, "http://www.ohloh.net/p/fat_imgen"));
+        sd.logo(URI.create("http://bits.ohloh.net/attachments/18083/floppy_64x64_med.png"));
         List<MigrationPath> pathways = new ArrayList<MigrationPath>();
         pathways.add(new MigrationPath(format.createExtensionUri("ZIP"), format.createExtensionUri("IMA"), null));
         pathways.add(new MigrationPath(format.createExtensionUri("ANY"), format.createExtensionUri("IMA"), null));
