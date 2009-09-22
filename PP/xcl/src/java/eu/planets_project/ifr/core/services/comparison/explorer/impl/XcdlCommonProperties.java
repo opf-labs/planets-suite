@@ -95,6 +95,7 @@ public final class XcdlCommonProperties implements CommonProperties {
         return ServiceDescription
                 .create(NAME, CommonProperties.class.getCanonicalName())
                 .classname(this.getClass().getCanonicalName())
+                .logo(URI.create("http://www.planets-project.eu/graphics/Planets_Logo.png"))
                 .description(
                         "This service is a wrapper for the XcdlExplorer command line tool (formerly known as FPM-Tool)\n"
                                 + "developed at the UzK.\n"

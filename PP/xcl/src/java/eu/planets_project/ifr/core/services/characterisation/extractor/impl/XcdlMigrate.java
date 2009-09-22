@@ -99,7 +99,7 @@ public final class XcdlMigrate implements Migrate {
                                 + "If no XCEL String is passed, the Extractor tool will try to  find the corresponding XCEL himself.")
                 .build();
         parameterList.add(optionalXCELString);
-
+        sd.logo(URI.create("http://www.planets-project.eu/graphics/Planets_Logo.png"));
         sd.parameters(parameterList);
         sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(
                 new URI[] {}));

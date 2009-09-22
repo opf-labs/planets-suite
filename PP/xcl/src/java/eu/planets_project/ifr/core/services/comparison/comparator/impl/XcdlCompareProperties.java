@@ -1,6 +1,7 @@
 package eu.planets_project.ifr.core.services.comparison.comparator.impl;
 
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -101,6 +102,7 @@ public final class XcdlCompareProperties implements CompareProperties {
                         + "To enable this, a xcdl file is created on the fly for each list of"
                         + "properties and is used as input for the Comparator command line tool."
                         + "IMPORTANT NOTE: To use .xcdl files directly, please use the XcdlCompare service!")
+                .logo(URI.create("http://www.planets-project.eu/graphics/Planets_Logo.png"))
                 .serviceProvider("The Planets Consortium").build();
     }
 

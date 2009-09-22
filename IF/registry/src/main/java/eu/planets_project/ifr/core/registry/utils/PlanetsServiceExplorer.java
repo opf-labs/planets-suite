@@ -17,6 +17,8 @@ import org.w3c.dom.Element;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.characterise.Characterise;
 import eu.planets_project.services.compare.CommonProperties;
+import eu.planets_project.services.compare.Compare;
+import eu.planets_project.services.compare.CompareProperties;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.migrate.Migrate;
@@ -45,6 +47,8 @@ public class PlanetsServiceExplorer {
         classmap.put(Validate.QNAME, Validate.class);
         classmap.put(Characterise.QNAME, Characterise.class);
         classmap.put(CreateView.QNAME, CreateView.class);
+        classmap.put(Compare.QNAME, Compare.class);
+        classmap.put(CompareProperties.QNAME, CompareProperties.class);
     }
 
     /**

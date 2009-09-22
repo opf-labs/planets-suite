@@ -111,6 +111,7 @@ public final class XcdlCompare implements Compare {
                                 + "This services is a wrapper for the Comparator command line tool developed at the UzK."
                                 + "The Comparator allows to check how much information has been lost during a migration process."
                                 + "To use the Comparator with a list of properties instead of .xcdl files, please use the XcdlCompareProperties service!")
+                .logo(URI.create("http://www.planets-project.eu/graphics/Planets_Logo.png"))
                 .serviceProvider("The Planets Consortium").inputFormats(
                         ComparatorWrapper.getSupportedInputFormats().toArray(new URI[] {})).build();
     }

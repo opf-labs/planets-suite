@@ -148,7 +148,7 @@ public final class XcdlCharacterise implements Characterise, Serializable {
         parameterList.add(enableRawData);
 
         sd.parameters(parameterList);
-
+        sd.logo(URI.create("http://www.planets-project.eu/graphics/Planets_Logo.png"));
         sd.inputFormats(CoreExtractor.getSupportedInputFormats().toArray(new URI[] {}));
         sd.serviceProvider("The Planets Consortium");
 
