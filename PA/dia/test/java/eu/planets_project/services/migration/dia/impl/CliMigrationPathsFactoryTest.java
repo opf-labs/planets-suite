@@ -51,9 +51,10 @@ public class CliMigrationPathsFactoryTest {
      * Verify that we can get migration path instances for all known paths in
      * the configuration file used by this test class.
      */
+    // FIXME! this is not actually a test of the getInstance() method. It is already executed in the constructor.
     @Test
     public void testGetInstance() throws Exception {
-
+        
         URI sourceFormat = new URI("info:test/lowercase");
         URI destinationFormat = new URI("info:test/uppercase");
         migrationPathsToTest.getMigrationPath(sourceFormat, destinationFormat);
