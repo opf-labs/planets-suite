@@ -102,10 +102,21 @@ public class MurkyFactory {
         final List<URI> sourceFormatURIs = getURIList(pathNode, "inputformats");
 
         // Get output format
-        final URI destinationFormatURI = getURIList(pathNode, "outputformat")
-                .get(0);
+        final List<URI> destinationFormatURIs = getURIList(pathNode,
+                "outputformat");
 
+        if (destinationFormatURIs.size() > 1) {
+            throw new MigrationPathConfigException(
+                    "The 'outputformat' element of a 'path' element must contain exactly one 'URI' element and not "
+                            + destinationFormatURIs.size() + " 'URI' elements.");
+        }
+
+        final URI destinationFormatURI = destinationFormatURIs.get(0);
+
+        final List<String> commandLineFragments = getCommandLineFragments(pathNode,
+                "commandline");
         // Get command line
+
         // Get temp files
         // Get tool parameters
         // Get tool presets
@@ -171,6 +182,16 @@ public class MurkyFactory {
             paths.add(newPath);
         }
         return paths;
+    }
+
+    /**
+     * @param pathNode
+     * @param string
+     * @return
+     */
+    private List<String> getCommandLineFragments(Node pathNode, String commandLineElementName) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**

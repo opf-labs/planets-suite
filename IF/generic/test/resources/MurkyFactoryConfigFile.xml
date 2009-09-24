@@ -78,25 +78,26 @@
             </outputformat>
 
             <commandline>
-                <cmd>
+                <command>
                     /bin/sh
-                </cmd>
-                <cmd>
+                </command>
+                <commandparameters>
+                    <parameter>
                     -c
-                </cmd>
-                <cmd>
-                    <!--
-                    This is the exact commandline to be wrapped.
-                    In this case the ps2pdf.
-                    Parameters can be given but are not necessary.
-                    Default setting is 'normal' which runs without parameters.
-                    tempSource and tempDestination are generated adresses used
-                    while the file is being migrated.
-                    -->
-                    ps2pdf12 #param1 #tempSource #tempDestination
-                </cmd>
+                    </parameter>
+                    <parameter>
+                        <!--
+                        This is the exact commandline to be wrapped.
+                        In this case the ps2pdf.
+                        Parameters can be given but are not necessary.
+                        Default setting is 'normal' which runs without parameters.
+                        tempSource and tempDestination are generated adresses used
+                        while the file is being migrated.
+                        -->
+                        ps2pdf12 #param1 #tempSource #tempDestination
+                    </parameter>
+                </commandparameters>
             </commandline>
-
 
             <tempfiles>
                 <inputfile label="tempSource">
