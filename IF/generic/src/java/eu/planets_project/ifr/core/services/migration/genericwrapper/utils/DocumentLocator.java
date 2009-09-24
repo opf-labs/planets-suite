@@ -57,6 +57,7 @@ public class DocumentLocator extends ResourceLocator {
             final DocumentBuilderFactory docBuilderFacctory = DocumentBuilderFactory
                     .newInstance();
 
+            docBuilderFacctory.setNamespaceAware(true);
             final DocumentBuilder documentBuilder = docBuilderFacctory
                     .newDocumentBuilder();
 
