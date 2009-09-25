@@ -4,7 +4,9 @@
 package eu.planets_project.tb.impl.serialization;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.UUID;
@@ -54,7 +56,8 @@ public class ExperimentFileCache {
     public String createExperimentExport( ExperimentImpl exp ) {
         try {
             File tmp = createTempFile();
-            ExperimentViaJAXB.writeToFile(exp, tmp);
+            //ExperimentViaJAXB.writeToFile(exp, tmp);
+            ExperimentRecords.writeExperimentsToOutputStream( new FileOutputStream( tmp ), exp );
             log.info("Written to file: "+tmp.getName());
             return tmp.getName();
         } catch (IOException e) {
@@ -68,13 +71,7 @@ public class ExperimentFileCache {
 	public String createExperimentsExport( Collection<Experiment> allExps ) {
         try {
             File tmp = createTempFile();
-            Iterator expIterator = allExps.iterator();
-            ExperimentImpl exp = null;
-            while (expIterator.hasNext()) {
-            	exp = (ExperimentImpl) expIterator.next(); 
-            	ExperimentViaJAXB.writeToFile(exp, tmp);
-
-            }
+            ExperimentRecords.writeExperimentsToOutputStream(new FileOutputStream( tmp ), allExps );
             log.info("Written to file: "+tmp.getName());
             return tmp.getName();
         } catch (IOException e) {

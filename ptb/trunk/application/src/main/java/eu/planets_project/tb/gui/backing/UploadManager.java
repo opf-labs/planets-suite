@@ -4,6 +4,7 @@
 package eu.planets_project.tb.gui.backing;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Calendar;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
@@ -15,6 +16,7 @@ import eu.planets_project.tb.gui.backing.FileUploadBean;
 import eu.planets_project.tb.gui.backing.exp.NewExpWizardController;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
+import eu.planets_project.tb.impl.serialization.ExperimentRecords;
 import eu.planets_project.tb.impl.serialization.ExperimentViaJAXB;
 
 
@@ -71,7 +73,8 @@ public class UploadManager {
      */
     public String importExperiment( File uploaded ) {
         try {
-            long eid = ExperimentViaJAXB.storeNewExperiment( uploaded );
+        	ExperimentRecords er = ExperimentRecords.readFromInputStream(new FileInputStream(uploaded));
+        	er.storeInDatabase();
         } catch ( Exception e ) {
             e.printStackTrace();
             return "import_failed";

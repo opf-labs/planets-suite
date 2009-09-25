@@ -53,7 +53,7 @@ public class ExperimentRecord {
     /*
      * Constructor used by JAXB when importing.
      */
-    public ExperimentRecord() {
+    protected ExperimentRecord() {
     }
     
     /*

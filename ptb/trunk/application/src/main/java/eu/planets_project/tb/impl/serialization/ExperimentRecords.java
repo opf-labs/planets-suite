@@ -10,8 +10,11 @@
  */
 package eu.planets_project.tb.impl.serialization;
 
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -24,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.tb.api.model.Experiment;
 
 /**
  * @author AnJackson
@@ -34,13 +38,33 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 public class ExperimentRecords {
 
     /* The list of experiments */
-    List<ExperimentRecord> experimentRecords;
+    List<ExperimentRecord> experimentRecords = new ArrayList<ExperimentRecord>();
     
     @XmlTransient
     private static PlanetsLogger log = PlanetsLogger.getLogger(ExperimentRecords.class);
 
     /* For JAXB */
-    public ExperimentRecords() {
+    protected ExperimentRecords() {
+    }
+    
+    /* Main */
+    public ExperimentRecords( long eid ) {
+    	experimentRecords.add( new ExperimentRecord(eid));
+    }
+    /* */
+    public ExperimentRecords( Experiment ... exps ) {
+    	for( Experiment e : exps ) {
+    		experimentRecords.add( new ExperimentRecord(e.getEntityID()));
+    	}
+    }
+   
+    /**
+     * 
+     */
+    public void storeInDatabase() {
+    	for( ExperimentRecord e : experimentRecords ) {
+    		ExperimentRecord.importExperimentRecord(e);
+    	}
     }
 
     /**
@@ -63,7 +87,7 @@ public class ExperimentRecords {
      * @param exp
      * @param out
      */
-    public static void writeToOutputStream( ExperimentRecords exp, OutputStream out ) {
+    private static void writeToOutputStream( ExperimentRecords exp, OutputStream out ) {
         try {
             JAXBContext jc = JAXBContext.newInstance();
             Marshaller m = jc.createMarshaller();
@@ -73,5 +97,22 @@ public class ExperimentRecords {
             log.fatal("Writing Experiments to XML failed: "+e);
         }
     }
+
+    /**
+     * @param out
+     * @param exps
+     */
+	public static void writeExperimentsToOutputStream(OutputStream out, Experiment ... exps) {
+		writeToOutputStream( new ExperimentRecords( exps ), out);
+	}
+
+	/**
+	 * 
+	 * @param out
+	 * @param ecol
+	 */
+	public static void writeExperimentsToOutputStream( OutputStream out, Collection<Experiment> ecol ) {
+		writeExperimentsToOutputStream(out, ecol.toArray(new Experiment[ecol.size()]));
+	}
     
 }

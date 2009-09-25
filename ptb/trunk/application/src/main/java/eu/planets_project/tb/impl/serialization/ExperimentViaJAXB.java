@@ -44,7 +44,7 @@ public class ExperimentViaJAXB {
      * @param input
      * @return
      */
-    public static ExperimentImpl readFromFile( File input ) {
+    private static ExperimentImpl readFromFile( File input ) {
         try {
             return readFromInputStream(new FileInputStream( input ));
         } catch (FileNotFoundException e) {
@@ -57,7 +57,7 @@ public class ExperimentViaJAXB {
      * @param experiment
      * @param output
      */
-    public static void writeToFile( ExperimentImpl exp, File output ) {
+    private static void writeToFile( ExperimentImpl exp, File output ) {
         try {
             writeToOutputStream( exp,  new FileOutputStream(output) );
         } catch (FileNotFoundException e) {
@@ -87,7 +87,7 @@ public class ExperimentViaJAXB {
      * @param in
      * @return
      */
-    public static ExperimentImpl readFromInputStream( InputStream in ) {
+    private static ExperimentImpl readFromInputStream( InputStream in ) {
         try {
             JAXBContext jc = JAXBContext.newInstance( PACKAGE_CONTEXT );
             Unmarshaller u = jc.createUnmarshaller();
@@ -103,7 +103,7 @@ public class ExperimentViaJAXB {
      * @param exp
      * @param out
      */
-    public static void writeToOutputStream( ExperimentImpl exp, OutputStream out ) {
+    private static void writeToOutputStream( ExperimentImpl exp, OutputStream out ) {
         try {
             JAXBContext jc = JAXBContext.newInstance( PACKAGE_CONTEXT );
             Marshaller m = jc.createMarshaller();
@@ -119,7 +119,7 @@ public class ExperimentViaJAXB {
      * @param uploaded The File containing the experiment XML.
      * @return the ID of the new experiment.
      */
-    public static long storeNewExperiment(File uploaded) {
+    private static long storeNewExperiment(File uploaded) {
         log.info("Importing experiment from file: "+uploaded.getPath());
         ExperimentImpl exp = ExperimentViaJAXB.readFromFile(uploaded);
         log.info("Parsed into Experiment: "+exp.getExperimentSetup().getBasicProperties().getExperimentName());
@@ -140,7 +140,7 @@ public class ExperimentViaJAXB {
      * @param exp The experiment to store.
      * @return the ID of the new experiment.
      */
-    public static long storeExperiment( ExperimentImpl exp ) {
+    private static long storeExperiment( ExperimentImpl exp ) {
         // Merge into DB
         TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
         long lExpID = testbedMan.registerExperiment(exp);
