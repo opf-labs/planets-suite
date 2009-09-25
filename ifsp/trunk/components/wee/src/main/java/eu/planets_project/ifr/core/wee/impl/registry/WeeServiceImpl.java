@@ -1,5 +1,6 @@
 package eu.planets_project.ifr.core.wee.impl.registry;
 
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.jboss.annotation.ejb.RemoteBinding;
 
 import eu.planets_project.ifr.core.wee.api.WeeManager;
+import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowInstance;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
@@ -40,6 +42,7 @@ public class WeeServiceImpl implements WeeService, Serializable{
 	public static final String NAME = "WorkflowExecutionManager";
 	private Log log = LogFactory.getLog(WeeServiceImpl.class);
 	private static final long serialVersionUID = 5568083679737239315L;
+	WorkflowConfigUtil wfConfUtil = new WorkflowConfigUtil();
 	WeeManager weeManager;
 	
 	public WeeServiceImpl(){
@@ -74,8 +77,9 @@ public class WeeServiceImpl implements WeeService, Serializable{
 			String workflowTemplateName, String xmlWorkflowConfig)
 			throws Exception {
 		
+		wfConfUtil.checkValidXMLConfig(xmlWorkflowConfig);
 		//read the xml config data and create java representation of it
-		WorkflowConf wfConf = this.unmarshalWorkflowConfig(xmlWorkflowConfig);
+		WorkflowConf wfConf = WorkflowConfigUtil.unmarshalWorkflowConfig(xmlWorkflowConfig);
 		//use workflowFactory to create a new WorkflowInstance with the provided data
 		WorkflowInstance wfInstance = WorkflowFactory.create(wfConf, digObjs);
 		log.debug("created workflow instance ID: "+wfInstance.getWorkflowID() +" for template "+wfConf.getTemplate().getClazz());
@@ -86,19 +90,5 @@ public class WeeServiceImpl implements WeeService, Serializable{
 		return ticket;
 	}
 
-	/**
-	 * Uses the JAXB to provide a java api for the xml config marshalling/unmarshalling
-	 * @return
-	 */
-	private WorkflowConf unmarshalWorkflowConfig(String xml) throws Exception{
-		try {
-			JAXBContext context = JAXBContext.newInstance(WorkflowConf.class); 
-			Unmarshaller um = context.createUnmarshaller(); 
-			WorkflowConf wfc = (WorkflowConf) um.unmarshal(new StringReader(xml)); 
-			return wfc;
-		} catch (Exception e) {
-			log.error("unmarshalWorkflowConfig failed",e);
-			throw e;
-		}
-	}
+	
 }
