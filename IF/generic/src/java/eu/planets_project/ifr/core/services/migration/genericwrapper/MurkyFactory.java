@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
@@ -113,9 +114,9 @@ public class MurkyFactory {
 
         final URI destinationFormatURI = destinationFormatURIs.get(0);
 
-        final List<String> commandLineFragments = getCommandLineFragments(pathNode,
-                "commandline");
-        // Get command line
+        // Get command line and command line parameters
+        final List<String> commandLineFragments = getCommandLineFragments(
+                pathNode, "commandline");
 
         // Get temp files
         // Get tool parameters
@@ -123,75 +124,73 @@ public class MurkyFactory {
 
         // for each input format {create a path element}.
 
-        // <path>
-        //
-        // <commandline>
-        // <cmd>
-        // /bin/sh
-        // </cmd>
-        // <cmd>
-        // -c
-        // </cmd>
-        // <cmd>
-        // ps2pdf12 #param1 #tempSource #tempDestination
-        // </cmd>
-        // </commandline>
-        //
-        //
-        // <tempfiles>
-        // <inputfile label="tempSource">
-        // </inputfile>
-        // <outputfile label="tempDestination">
-        // </outputfile>
-        // </tempfiles>
-        //
-        // <toolparameters>
-        // <parameter name="param1">
-        // <description>Command line parameters for the 'ps2pdf'
-        // </description>
-        // </parameter>
-        //
-        //
-        // </toolparameters>
-        // <toolpresets default="mode">
-        // <preset name="mode" default="Normal">
-        // <description>
-        // </description>
-        // <settings name="Silent">
-        // <parameter name="param1"><![CDATA['-q']]>
-        // </parameter>
-        // <description>Silent Running</description>
-        // </settings>
-        // <settings name="Normal">
-        // <parameter name="param1"><![CDATA[]]>
-        // </parameter>
-        // <description>Normal</description>
-        // </settings>
-        // </preset>
-        // </toolpresets>
-        // </path>
-
         final List<MigrationPath> paths = new ArrayList<MigrationPath>();
         for (URI sourceFormatURI : sourceFormatURIs) {
             MigrationPath newPath = new MigrationPath();
 
             newPath.setSourceFormat(sourceFormatURI);
             newPath.setDestinationFormat(destinationFormatURI);
-            log.debug("Createing CliMigrationPath instance for the path: "
-                    + sourceFormatURI + " -> " + destinationFormatURI);
+            newPath.setCommandLine(commandLineFragments);
             paths.add(newPath);
         }
         return paths;
     }
 
     /**
+     * Get the command line fragments from the element named
+     * <code>commandLineElementName</code>. The fragments are returned in a list
+     * containing the command as the first element, followed by any command
+     * parameter strings.
+     * 
      * @param pathNode
-     * @param string
-     * @return
+     *            Document node containing a <code>&lt;path&gt;</code> element.
+     * @param commandLineElementName
+     *            XML tag name of the command line element.
+     * @return <code>List</code> containing all command line fragments from the
+     *         element specified by <code>commandLineElementName</code>.
+     * @throws MigrationPathConfigException
+     *             if the command and its parameters could not be extracted from
+     *             the document node.
      */
-    private List<String> getCommandLineFragments(Node pathNode, String commandLineElementName) {
-        // TODO Auto-generated method stub
-        return null;
+    private List<String> getCommandLineFragments(Node pathNode,
+            String commandLineElementName) throws MigrationPathConfigException {
+
+        final List<String> commandLineFragments = new ArrayList<String>();
+        final XPath pathsXPath = xPathFactory.newXPath();
+
+        try {
+            final Node commandNode = (Node) pathsXPath.evaluate(
+                    commandLineElementName + "/command", pathNode,
+                    XPathConstants.NODE);
+
+            final String command = commandNode.getTextContent().trim();
+
+            if (command.isEmpty()) {
+                throw new MigrationPathConfigException(
+                        "No command was specified in the '"
+                                + commandLineElementName + "' element in the '"
+                                + pathNode.getNodeName() + "' element.");
+            }
+            commandLineFragments.add(command);
+
+            final NodeList parameterNodes = (NodeList) pathsXPath.evaluate(
+                    commandLineElementName + "/commandparameters/parameter",
+                    pathNode, XPathConstants.NODESET);
+
+            for (int parameterIndex = 0; parameterIndex < parameterNodes
+                    .getLength(); parameterIndex++) {
+
+                final Node parameterNode = parameterNodes.item(parameterIndex);
+                commandLineFragments.add(parameterNode.getTextContent().trim());
+            }
+
+            return commandLineFragments;
+        } catch (XPathExpressionException xpee) {
+            throw new MigrationPathConfigException(
+                    "Failed reading command and parameters from the '"
+                            + commandLineElementName + "' element in the '"
+                            + pathNode.getNodeName() + "' element.", xpee);
+        }
     }
 
     /**
