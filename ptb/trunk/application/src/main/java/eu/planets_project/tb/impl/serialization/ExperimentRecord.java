@@ -11,7 +11,9 @@
 package eu.planets_project.tb.impl.serialization;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -71,12 +73,10 @@ public class ExperimentRecord {
     /**
      * Factory that does everything required when exporting an experiment as an Experiment Record
      * 
-     * FIXME IMPORTANT The Comments use the DB ID key to locate the parent comment.
-     * The ID should be changed when you import/export the comments.
+     * IMPORTANT The Comments use the DB ID key to locate the parent comment.
+     * The ID should be changed when you import the comments.
      * i.e. we use different fields in the persisted version, and patch up on import.
      * Similarly, the experiment ID must be added to each comment when re-loading.
-     * 
-     * FIXME Finish this!
      * 
      * @param experimentId
      * @return
@@ -89,13 +89,14 @@ public class ExperimentRecord {
             c.setXmlCommentID( c.getCommentID() );
         }
         // TODO Optionally add files? Or perhaps they should be stored at the ExperimentRecords level?
+        // NOTE that this is not required for basic migration between DBs, as the data refs will remain valid.
         return er;
     }
 
     /**
      * Factory that does everything required when importing an experiment from an ExperimentRecord.
      * 
-     * FIXME Finish this!
+     * FIXME Test this comment loader!
      * 
      * @param er
      * @return
@@ -103,24 +104,28 @@ public class ExperimentRecord {
     static public long importExperimentRecord( ExperimentRecord er ) {
         // Persist the experiment:
         long eid = edao.persistExperiment(er.experiment);
+        // Also remember the comments, to make it easier to patch up the lists:
+        HashMap<Long,Comment> cmts = new HashMap<Long,Comment>();
         
+        // Persist the comments, using the correct experiment ID:
         for( CommentImpl c : er.comments ) {
         	// Update the comments to the new experiment id:
             c.setExperimentID(eid);
             // Persist the comments:
-            long cid = cmp.persistComment(c);//
-            // Correct the parent ids:
-            //c.setParentID(parentID)
-            
-            // Persist the comments:
-            cmp.persistComment(c);
+            long cid = cmp.persistComment(c);
+            // Retrieve it again, for cross-reference resolution:
+            cmts.put(new Long(c.getXmlCommentID()), cmp.findComment(cid));
         }        
         
-        // Update the comments to the new experiment id:            
-        // Persist the comments:            
-        // Go through the comments and correct the parent ids:            
-        // Don't forget to persist the id changes to the DB:
-        // Don't forget to persist the id changes to the DB:
+        // Go through the comments and correct the parent IDs:
+        for( Comment c1 : cmts.values() ) {
+        	// For this old identifier, look for it's parent comment:
+        	Comment c2 = cmts.get(c1.getParentID());
+        	// Update the parent ID to the new comment ID:
+			c1.setParentID( c2.getCommentID() );
+	        // Don't forget to persist the id changes to the DB:
+			cmp.updateComment(c1);
+        }
         
         // return the experiment id:
         return eid;
