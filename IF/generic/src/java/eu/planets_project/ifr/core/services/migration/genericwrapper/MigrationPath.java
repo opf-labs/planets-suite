@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Migration path containing all information necessary to execute a (chain of)
  * command-line migration tool(s).
- *
+ * 
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
@@ -20,9 +20,7 @@ public class MigrationPath implements Cloneable {
     // implement new versions to support new
     // configuration file formats.
 
-    private PlanetsLogger log = PlanetsLogger
-            .getLogger(MigrationPath.class);
-
+    private PlanetsLogger log = PlanetsLogger.getLogger(MigrationPath.class);
 
     private URI sourceFormatURI;
     private URI destinationFormatURI;
@@ -30,10 +28,9 @@ public class MigrationPath implements Cloneable {
     private TempFile tempSourceFile;
     private TempFile tempOutputFile;
     private Map<String, Parameter> parameters;
-    private Map<String,Preset> presets;
+    private Map<String, Preset> presets;
     private List<String> commandLine;
     private String defaultPreset;
-
 
     /**
      * The default constructor has default access, as it should only be used by
@@ -41,7 +38,7 @@ public class MigrationPath implements Cloneable {
      */
     MigrationPath() {
         parameters = new HashMap<String, Parameter>();
-        presets = new HashMap<String,Preset>();
+        presets = new HashMap<String, Preset>();
         tempFiles = new ArrayList<TempFile>();
     }
 
@@ -49,7 +46,7 @@ public class MigrationPath implements Cloneable {
      * Test whether the tool expects its input from a temporary input file or
      * standard input. If the response is <code>true</code> then the caller must
      * call {@link #getTempSourceFile()} to get hold of the temp input file
-     *
+     * 
      * @return <code>true</code> if the tool must have its input via a temporary
      *         file and otherwise <code>false</code>
      */
@@ -59,6 +56,7 @@ public class MigrationPath implements Cloneable {
 
     /**
      * Get the temp file object for the input fule
+     * 
      * @return the temp file
      */
     public TempFile getTempSourceFile() {
@@ -67,7 +65,9 @@ public class MigrationPath implements Cloneable {
 
     /**
      * Set the temp input file to be used
-     * @param tempFile the temp file
+     * 
+     * @param tempFile
+     *            the temp file
      */
     public void setTempInputFile(TempFile tempFile) {
         this.tempSourceFile = tempFile;
@@ -77,7 +77,7 @@ public class MigrationPath implements Cloneable {
      * Test whether the tool needs to write its output to a temporary file or
      * standard input. If the response is <code>true</code> then the caller must
      * call {@link #getTempOutputFile} to get the output file
-     *
+     * 
      * @return <code>true</code> if the tool needs a temporary file to be
      *         created for its output and otherwise <code>false</code>
      */
@@ -104,14 +104,15 @@ public class MigrationPath implements Cloneable {
      * Get the command line with the parameter identifiers substituted with the
      * parameters specified by <code>toolParameters</code>, and any tempfiles
      * replaces with their absolute location.
-     *
+     * 
      * The command line should be ready to feed into the processrunner.
-     *
+     * 
      * Note that all the temp files must have been initialised with File objects
      * by this time, as the absolute location of these files are replaced into
      * the command line
-     *
-     * @param toolParameters the parameters to the tool
+     * 
+     * @param toolParameters
+     *            the parameters to the tool
      * @return String containing the processed command line, ready for
      *         execution.
      * @throws MigrationException
@@ -119,42 +120,41 @@ public class MigrationPath implements Cloneable {
      *             defined in order to substitute all the identifiers in the
      *             command line.
      */
-    public List<String> getCommandLine(Collection<Parameter> toolParameters) throws MigrationException {
+    public List<String> getCommandLine(Collection<Parameter> toolParameters)
+            throws MigrationException {
 
         log.info("Entering getCommandLine");
         // Get a complete list of identifiers in the command line.
         final Set<String> usedIdentifiers = getIdentifiers(commandLine);
 
-        //TODO: Work with other presets than the default one
+        // TODO: Work with other presets than the default one
 
         String defaultpreset = getDefaultPreset();
-        //if the tool parameters contain this preset
+        // if the tool parameters contain this preset
         boolean setDefault = false;
-        for (Parameter toolparam: toolParameters){
-            if (toolparam.getName().equals(defaultpreset)){
+        for (Parameter toolparam : toolParameters) {
+            if (toolparam.getName().equals(defaultpreset)) {
                 setDefault = true;
-                Collection<Parameter> presetparams = presets.
-                        get(defaultpreset).getParameters(toolparam.getValue());
+                Collection<Parameter> presetparams = presets.get(defaultpreset)
+                        .getParameters(toolparam.getValue());
                 toolParameters.addAll(presetparams);
                 break;
             }
         }
 
-        //if the tool parameters does not contain this preset
-        if (!setDefault){
-            //lookup the value of the default preset
-            //get the param names and values from there
-            Preset preset = presets.get(
-                    defaultpreset);
-            if (preset != null){
-                Collection<Parameter> defaultparams =preset.getDefaultParameters();
+        // if the tool parameters does not contain this preset
+        if (!setDefault) {
+            // lookup the value of the default preset
+            // get the param names and values from there
+            Preset preset = presets.get(defaultpreset);
+            if (preset != null) {
+                Collection<Parameter> defaultparams = preset
+                        .getDefaultParameters();
                 toolParameters.addAll(defaultparams);
             } else {
-                //There is no default preset
+                // There is no default preset
             }
         }
-
-
 
         final Set<String> validIdentifiers = getValidParameterNames(toolParameters);
 
@@ -162,18 +162,21 @@ public class MigrationPath implements Cloneable {
         log.info(validIdentifiers);
 
         log.info(tempSourceFile);
-        for (TempFile tempfile: tempFiles){
-            log.info("Adding tempfile "+tempfile.getCodename()+" as valid identifier");
+        for (TempFile tempfile : tempFiles) {
+            log.info("Adding tempfile " + tempfile.getCodename()
+                    + " as valid identifier");
             validIdentifiers.add(tempfile.getCodename());
         }
 
-        if (useTempSourceFile()){
-            log.info("Adding temp input file as valid identifier " + tempSourceFile.getCodename());
+        if (useTempSourceFile()) {
+            log.info("Adding temp input file as valid identifier "
+                    + tempSourceFile.getCodename());
             validIdentifiers.add(tempSourceFile.getCodename());
         }
 
-        if (useTempDestinationFile()){
-            log.info("Adding temp dest file as valid identifier: "+ tempOutputFile.getCodename());
+        if (useTempDestinationFile()) {
+            log.info("Adding temp dest file as valid identifier: "
+                    + tempOutputFile.getCodename());
             validIdentifiers.add(tempOutputFile.getCodename());
         }
 
@@ -186,31 +189,28 @@ public class MigrationPath implements Cloneable {
         if (!validIdentifiers.containsAll(usedIdentifiers)) {
             usedIdentifiers.removeAll(validIdentifiers);
             throw new MigrationException("Cannot build the command line. "
-                                         + "Missing values for these identifiers: "
-                                         + usedIdentifiers);
+                    + "Missing values for these identifiers: "
+                    + usedIdentifiers);
         }
 
         List<String> executableCommandLine = new ArrayList<String>();
-        for (String cmd:commandLine){
+        for (String cmd : commandLine) {
             for (Parameter parameter : toolParameters) {
-                cmd = cmd.replaceAll("#"
-                                     + parameter.getName(),
-                                     parameter.getValue());
+                cmd = cmd.replaceAll("#" + parameter.getName(), parameter
+                        .getValue());
             }
 
             for (TempFile tempFile : tempFiles) {
-                cmd = cmd.replaceAll("#"
-                                     + tempFile.getCodename(),
-                                     tempFile.getFile().getAbsolutePath());
+                cmd = cmd.replaceAll("#" + tempFile.getCodename(), tempFile
+                        .getFile().getAbsolutePath());
             }
-            if (useTempSourceFile()){
-                cmd = cmd.replaceAll("#"
-                                     + tempSourceFile.getCodename(),
-                                     tempSourceFile.getFile().getAbsolutePath());
+            if (useTempSourceFile()) {
+                cmd = cmd.replaceAll("#" + tempSourceFile.getCodename(),
+                        tempSourceFile.getFile().getAbsolutePath());
             }
-            if (useTempDestinationFile()){
+            if (useTempDestinationFile()) {
                 cmd = cmd.replaceAll("#" + tempOutputFile.getCodename(),
-                                     tempOutputFile.getFile().getAbsolutePath());
+                        tempOutputFile.getFile().getAbsolutePath());
             }
             executableCommandLine.add(cmd);
         }
@@ -218,15 +218,14 @@ public class MigrationPath implements Cloneable {
         return executableCommandLine;
     }
 
-
     /**
      * Get a <code>Set</code> containing all the names of parameters from
      * <code>parameters</code> that have been initialised with a value, and are
      * thus valid.
-     *
+     * 
      * @param parameters
-     *            a <code>Collection</code> of parameters to get valid parameters
-     *            from.
+     *            a <code>Collection</code> of parameters to get valid
+     *            parameters from.
      * @return a <code>Set</code> containing the names of all the parameters
      *         from <code>parameters</code> that have a value.
      */
@@ -235,7 +234,7 @@ public class MigrationPath implements Cloneable {
         for (Parameter parameter : parameters) {
             final String parameterName = parameter.getName();
             if ((parameterName != null) && ("".equals(parameterName) == false)
-                && (parameter.getValue() != null)) {
+                    && (parameter.getValue() != null)) {
                 validParameters.add(parameterName);
             }
         }
@@ -249,7 +248,7 @@ public class MigrationPath implements Cloneable {
      * <code>stringWithIdentifiers</code>. If the previous example was found in
      * the string, then the returned set would contain the string
      * &quot;myIdentifier&quot;.
-     *
+     * 
      * @param stringListWithIdentifiers
      *            a <code>String</code> containing identifiers.
      * @return a <code>Set</code> containing the identifiers found.
@@ -257,7 +256,7 @@ public class MigrationPath implements Cloneable {
     private Set<String> getIdentifiers(List<String> stringListWithIdentifiers) {
         Set<String> foundIdentifiers = new HashSet<String>();
 
-        for (String stringWithIdentifiers:stringListWithIdentifiers){
+        for (String stringWithIdentifiers : stringListWithIdentifiers) {
             StringTokenizer stringTokenizer = new StringTokenizer(
                     stringWithIdentifiers);
             while (stringTokenizer.hasMoreTokens()) {
@@ -273,7 +272,7 @@ public class MigrationPath implements Cloneable {
 
     /**
      * Get the unprocessed command line.
-     *
+     * 
      * @return String containing the unprocessed command line, containing
      *         parameter identifiers/keys.
      */
@@ -286,8 +285,8 @@ public class MigrationPath implements Cloneable {
      * may contain tags of the form <code>%my_tag%</code> to indicate that
      * either a parameter or a name of a temporary file must be put in place at
      * a specific location. However, these tags must be defined using the
-     * {@link #setToolParameters}  methods.
-     *
+     * {@link #setToolParameters} methods.
+     * 
      * @param commandLine
      *            <code>String</code> containing the command line to set.
      */
@@ -298,7 +297,7 @@ public class MigrationPath implements Cloneable {
     /**
      * Get the ID of the default preset category to apply if no preset or
      * parameters are specified by the user of this migration path.
-     *
+     * 
      * @return ID of the default preset category
      */
     public String getDefaultPreset() {
@@ -308,7 +307,7 @@ public class MigrationPath implements Cloneable {
     /**
      * Set the ID of the default preset category to apply if no preset or
      * parameters are specified by the user of this migration path.
-     *
+     * 
      * @param defaultPreset
      *            the ID of the default preset category.
      */
@@ -316,10 +315,9 @@ public class MigrationPath implements Cloneable {
         this.defaultPreset = defaultPreset;
     }
 
-
     /**
      * Get the destination format <code>URI</code> of this migration path.
-     *
+     * 
      * @return <code>URI</code> identifying the destination format of this
      *         migration path.
      */
@@ -330,7 +328,7 @@ public class MigrationPath implements Cloneable {
     /**
      * Set the destination format <code>URI</code> for this
      * <code>CliMigrationPath</code>.
-     *
+     * 
      * @param destinationFormatURI
      *            destination format <code>URI</code> to set.
      */
@@ -340,7 +338,7 @@ public class MigrationPath implements Cloneable {
 
     /**
      * Get the source format <code>URI</code> of this migration path.
-     *
+     * 
      * @return <code>URI</code> identifying the source format of this migration
      *         path.
      */
@@ -351,7 +349,7 @@ public class MigrationPath implements Cloneable {
     /**
      * Set the source format <code>URI</code> for this
      * <code>CliMigrationPath</code>.
-     *
+     * 
      * @param sourceFormatURI
      *            source format <code>URI</code> to set.
      */
@@ -361,7 +359,7 @@ public class MigrationPath implements Cloneable {
 
     /**
      * Get the list of interim temp files.
-     *
+     * 
      * @return a list of temp files.
      */
     public List<TempFile> getTempFileDeclarations() {
@@ -371,18 +369,15 @@ public class MigrationPath implements Cloneable {
     /**
      * Add a list of temp files
      */
-    public void addTempFilesDeclarations(
-            List<TempFile> tempFileDeclarations) {
+    public void addTempFilesDeclarations(List<TempFile> tempFileDeclarations) {
         tempFiles.addAll(tempFileDeclarations);
 
     }
 
-    public void addTempFilesDeclaration(
-            TempFile tempFileDeclaration) {
+    public void addTempFilesDeclaration(TempFile tempFileDeclaration) {
         tempFiles.add(tempFileDeclaration);
 
     }
-
 
     /**
      * Get all the parameters that must be initialised in order to execute the
@@ -390,7 +385,7 @@ public class MigrationPath implements Cloneable {
      * specified, thus, their values must be initialised prior calling the
      * {@link #getCommandLine} method to obtain the actual command line to
      * execute.
-     *
+     * 
      * @return <code>Collection</code> containing an <code>Parameter</code>
      *         instance for each parameter that must be specified in order to
      *         execute the command line of this migration path.
@@ -402,7 +397,7 @@ public class MigrationPath implements Cloneable {
     /**
      * Declare a list of parameters that the user of the tool must provide
      * values for in order to execute the tool.
-     *
+     * 
      * @param toolParameters
      *            Collection of tool parameters that must be initialised and
      *            passed on to the {@link #getCommandLine} method to get the
@@ -417,7 +412,7 @@ public class MigrationPath implements Cloneable {
     /**
      * Get a collection of all available preset categories for this migration
      * path.
-     *
+     * 
      * @return <code>Collection</code> containing the names/IDs of all the
      *         available preset categories.
      */
@@ -427,16 +422,18 @@ public class MigrationPath implements Cloneable {
 
     public String toString() {
         return "CliMigrationPath: " + sourceFormatURI + " -> "
-               + destinationFormatURI + " Command: " + commandLine;
+                + destinationFormatURI + " Command: " + commandLine;
     }
 
+    // TODO: clone() will probably be obsolete with the introduction of the new
+    // version of the migration path factory
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        return super.clone();    //To change body of overridden methods use File | Settings | File Templates.
+        return super.clone(); // To change body of overridden methods use File |
+                              // Settings | File Templates.
     }
 
-
-    public eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath(){
+    public eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath() {
         URI outformat = getDestinationFormat();
         URI informat = getSourceFormat();
         List<Parameter> params = new ArrayList<Parameter>();
@@ -444,10 +441,11 @@ public class MigrationPath implements Cloneable {
         for (Preset preset : presets.values()) {
             params.add(preset.getAsPlanetsParameter());
         }
-        return new eu.planets_project.services.datatypes.MigrationPath(informat,outformat,params);
+        return new eu.planets_project.services.datatypes.MigrationPath(
+                informat, outformat, params);
     }
 
     public void addPreset(Preset preset) {
-        presets.put(preset.getName(),preset);
+        presets.put(preset.getName(), preset);
     }
 }
