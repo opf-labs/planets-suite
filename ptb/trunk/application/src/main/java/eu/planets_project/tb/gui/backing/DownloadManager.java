@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -19,7 +21,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.activation.MimetypesFileTypeMap;
 
+import org.jfree.util.Log;
 
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -31,6 +36,7 @@ import eu.planets_project.tb.impl.serialization.ExperimentFileCache;
  *
  */
 public class DownloadManager {
+    private static PlanetsLogger log = PlanetsLogger.getLogger(DownloadManager.class);
 
     /**
      * 
@@ -55,7 +61,7 @@ public class DownloadManager {
      */
     public String downloadExperiment( ExperimentImpl exp ) {
         String expExportID = expCache.createExperimentExport(exp);
-        return downloadExportedExperiment(expExportID, exp);
+        return downloadExportedExperiment(expExportID, exp.getExperimentSetup().getBasicProperties().getExperimentName() );
     }
 
 
@@ -64,7 +70,7 @@ public class DownloadManager {
      * @return
      * @throws IOException
      */
-    public String downloadExportedExperiment( String expExportID, ExperimentImpl exp ) {
+    public String downloadExportedExperiment( String expExportID, String downloadName ) {
         FacesContext ctx = FacesContext.getCurrentInstance();
 
         // Decode the file name (might contain spaces and on) and prepare file object.
@@ -107,8 +113,7 @@ public class DownloadManager {
             response.setContentType(contentType);
             response.setContentLength(contentLength);
             response.setHeader(
-                "Content-disposition", "attachment; filename=\"" + 
-                exp.getExperimentSetup().getBasicProperties().getExperimentName() + ".xml\"");
+                "Content-disposition", "attachment; filename=\"" + downloadName + ".xml\"");
             output = new BufferedOutputStream(response.getOutputStream());
 
             // Write file out:
@@ -133,29 +138,21 @@ public class DownloadManager {
         }
         return "success";
     }
-/*
- * Exports all exps as individual files, but you have to know the path to the temp directory
- */  
-    @SuppressWarnings("unchecked")
+    
+    /**
+     * Exports all exps as one big file.
+     *
+     * @param allExps
+     * @return
+     */
 	public String downloadAllExperiments(Collection<Experiment> allExps) {
-    	//FacesContext ctx = FacesContext.getCurrentInstance();
-    	Iterator expIterator = allExps.iterator();
-        ExperimentImpl exp = null;
-        while (expIterator.hasNext()) {
-        	exp = (ExperimentImpl) expIterator.next(); 
-        	expCache.createExperimentExport(exp);
-        }
-    	return "success";
+        String expExportID = expCache.createExperimentsExport(allExps);
+        log.info("Cached all experiments in: " + expExportID );
+        Calendar date = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        return downloadExportedExperiment(expExportID, "all-experiments-"+df.format(date.getTime()));
     }
   
-    /*
-     * Attempts to export all exps into a single xml file, could then provide a download link
-     
-	public String downloadAllExperiments(Collection<Experiment> allExps) {
-        expCache.createExperimentsExport(allExps);
-    	return "success";
-    }
-    */
     
     // Helpers (can be refactored to public utility class) ----------------------------------------
 

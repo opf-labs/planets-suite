@@ -132,10 +132,12 @@ public class ExperimentRecord {
         for( Comment c1 : cmts.values() ) {
         	// For this old identifier, look for it's parent comment:
         	Comment c2 = cmts.get(c1.getParentID());
-        	// Update the parent ID to the new comment ID:
-			c1.setParentID( c2.getCommentID() );
-	        // Don't forget to persist the id changes to the DB:
-			cmp.updateComment(c1);
+        	if( c2 != null ) {
+        	    // Update the parent ID to the new comment ID:
+        	    c1.setParentID( c2.getCommentID() );
+        	    // Don't forget to persist the id changes to the DB:
+        	    cmp.updateComment(c1);
+        	}
         }
         
         // return the experiment id:

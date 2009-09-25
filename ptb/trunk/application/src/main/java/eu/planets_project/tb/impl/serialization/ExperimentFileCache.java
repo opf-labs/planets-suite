@@ -53,7 +53,7 @@ public class ExperimentFileCache {
      * @param exp
      * @return
      */
-    public String createExperimentExport( ExperimentImpl exp ) {
+    public String createExperimentExport( ExperimentImpl ... exp ) {
         try {
             File tmp = createTempFile();
             //ExperimentViaJAXB.writeToFile(exp, tmp);
