@@ -74,7 +74,13 @@ public class CommentPersistencyImpl implements CommentPersistencyRemote {
         Query query = manager.createQuery("from CommentImpl");
         return (List<Comment>) query.getResultList();
     }
-    
+
+    public List<Comment> getAllComments(long experimentID) {
+        Query query = manager.createQuery("from CommentImpl where experimentID=:expid");
+        query.setParameter("expid", experimentID);
+        return (List<Comment>) query.getResultList();
+    }
+
     public List<Comment> getComments(long experimentID, String experimentPhaseID) {
         Query query = manager.createQuery("from CommentImpl where experimentID=:expid and parentID=:parentid");
         query.setParameter("expid", experimentID);

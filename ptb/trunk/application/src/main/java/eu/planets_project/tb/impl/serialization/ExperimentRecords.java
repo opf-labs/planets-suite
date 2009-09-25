@@ -23,11 +23,13 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.impl.model.CommentImpl;
 
 /**
  * @author AnJackson
@@ -38,6 +40,7 @@ import eu.planets_project.tb.api.model.Experiment;
 public class ExperimentRecords {
 
     /* The list of experiments */
+    @XmlElement(name="experimentRecord", type=ExperimentRecord.class)
     List<ExperimentRecord> experimentRecords = new ArrayList<ExperimentRecord>();
     
     @XmlTransient
@@ -73,7 +76,7 @@ public class ExperimentRecords {
      */
     public static ExperimentRecords readFromInputStream( InputStream in ) {
         try {
-            JAXBContext jc = JAXBContext.newInstance();
+            JAXBContext jc = JAXBContext.newInstance(ExperimentRecords.class);
             Unmarshaller u = jc.createUnmarshaller();
             ExperimentRecords exp = (ExperimentRecords) u.unmarshal( in );
             return exp;
@@ -89,7 +92,7 @@ public class ExperimentRecords {
      */
     private static void writeToOutputStream( ExperimentRecords exp, OutputStream out ) {
         try {
-            JAXBContext jc = JAXBContext.newInstance();
+            JAXBContext jc = JAXBContext.newInstance(ExperimentRecords.class);
             Marshaller m = jc.createMarshaller();
             m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             m.marshal( exp, out );

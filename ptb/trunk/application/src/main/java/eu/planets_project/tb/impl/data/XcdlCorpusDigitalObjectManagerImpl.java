@@ -12,6 +12,7 @@ package eu.planets_project.tb.impl.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -245,7 +246,12 @@ public class XcdlCorpusDigitalObjectManagerImpl extends
                     String xcdls = md.getContent();
                     // Read properties from the XCDL:
                     try {
-                        //properties = new XcdlParser(xcdls).getProperties();
+                        // TODO Make this work again!
+                        // Old form:
+                        // properties = new XcdlParser(xcdls).getProperties();
+                        // New form:
+                        // TODO Make this cope with recursive properties?
+                        // properties = new XcdlParser( new StringReader(xcdls) ).getCharacteriseResult().getProperties();
                     } catch (Exception e ) {
                         _log.error("Failed to read in XCDL properties!");
                         _log.error("Exception: "+e);
