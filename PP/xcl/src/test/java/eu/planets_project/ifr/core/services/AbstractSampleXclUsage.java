@@ -23,8 +23,9 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.utils.test.ServiceCreator;
 
 /**
- * Abstract high level sample usage of the XCL services to compare two files. Which files actually are used is
- * determined by subclasses. For detailed usage of the individual services, see their corresponding tests.
+ * Abstract high level sample usage of the XCL services to compare two files. Which files actually
+ * are used is determined by subclasses. For detailed usage of the individual services, see their
+ * corresponding tests.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public abstract class AbstractSampleXclUsage {
@@ -47,15 +48,27 @@ public abstract class AbstractSampleXclUsage {
     /** @param result The compare result to check */
     protected abstract void checkCompareResult(final CompareResult result);
 
+    /**  Compare digital objects directly, without explicitly calling the extractor. */
+    @Test
+    public void viaDirectComparison() {
+        /* We compare both files files (for details see XcdlCompareTests): */
+        Compare comparison = new XcdlCompare();
+        List<Parameter> configProperties = comparison.convert(config());
+        CompareResult result = comparison.compare(files()[0], files()[1], configProperties);
+        /* And print the result: */
+        System.out.println("Result: " + result + " " + result.getProperties());
+        checkCompareResult(result);
+    }
+
     /** Sample usage via XCDL, using local Java objects. */
     @Test
     public void viaXcdlMigration() {
         /* We migrate both to XCDL (for details see XcdlMigrateTests): */
         Migrate migration = new XcdlMigrate();
-        DigitalObject firstXcdl = migration.migrate(files()[0], ids()[0], XCDL_ID, parameters().get(0))
-                .getDigitalObject();
-        DigitalObject secondXcdl = migration.migrate(files()[1], ids()[1], XCDL_ID, parameters().get(1))
-                .getDigitalObject();
+        DigitalObject firstXcdl = migration.migrate(files()[0], ids()[0], XCDL_ID,
+                parameters().get(0)).getDigitalObject();
+        DigitalObject secondXcdl = migration.migrate(files()[1], ids()[1], XCDL_ID,
+                parameters().get(1)).getDigitalObject();
         /* We compare both XCDL files (for details see XcdlCompareTests): */
         Compare comparison = new XcdlCompare();
         List<Parameter> configProperties = comparison.convert(config());
@@ -71,10 +84,10 @@ public abstract class AbstractSampleXclUsage {
         /* Migrate to XCDL: */
         Migrate migration = ServiceCreator.createTestService(Migrate.QNAME, XcdlMigrate.class,
                 "/pserv-xcl/XcdlMigrate?wsdl");
-        DigitalObject firstXcdl = migration.migrate(files()[0], ids()[0], XCDL_ID, parameters().get(0))
-                .getDigitalObject();
-        DigitalObject secondXcdl = migration.migrate(files()[1], ids()[1], XCDL_ID, parameters().get(1))
-                .getDigitalObject();
+        DigitalObject firstXcdl = migration.migrate(files()[0], ids()[0], XCDL_ID,
+                parameters().get(0)).getDigitalObject();
+        DigitalObject secondXcdl = migration.migrate(files()[1], ids()[1], XCDL_ID,
+                parameters().get(1)).getDigitalObject();
         /* Compare the XCDL files: */
         Compare comparison = ServiceCreator.createTestService(Compare.QNAME, XcdlCompare.class,
                 "/pserv-xcl/XcdlCompare?wsdl");
@@ -93,11 +106,12 @@ public abstract class AbstractSampleXclUsage {
     @Test
     public void viaXcdlCharacterisation() {
         /*
-         * We perform the characterisation, this time using the actual Characterise interface. The advantage here,
-         * besides the less verbose API compared to using the Migrate interface, is that we can exchange the
-         * XcdlCharacterise implementation with a different Characterise implementation, and compare their results in
-         * the future (currently, only these two Implementation work together, i.e. XcdlCompareProperties will not work
-         * with any Characterise implementation yet).
+         * We perform the characterisation, this time using the actual Characterise interface. The
+         * advantage here, besides the less verbose API compared to using the Migrate interface, is
+         * that we can exchange the XcdlCharacterise implementation with a different Characterise
+         * implementation, and compare their results in the future (currently, only these two
+         * Implementation work together, i.e. XcdlCompareProperties will not work with any
+         * Characterise implementation yet).
          */
         Characterise characterisation = new XcdlCharacterise();
         CharacteriseResult firstResult = characterisation.characterise(files()[0], null);
@@ -113,13 +127,14 @@ public abstract class AbstractSampleXclUsage {
     }
 
     /**
-     * Sample usage of the XCL services via the Characterise interface, using remote objects retrieved via web service.
+     * Sample usage of the XCL services via the Characterise interface, using remote objects
+     * retrieved via web service.
      */
     @Test
     public void viaXcdlCharacterisationWithServiceCreator() {
         /* Characterise: */
-        Characterise characterisation = ServiceCreator.createTestService(Characterise.QNAME, XcdlCharacterise.class,
-                "/pserv-xcl/XcdlCharacterise?wsdl");
+        Characterise characterisation = ServiceCreator.createTestService(Characterise.QNAME,
+                XcdlCharacterise.class, "/pserv-xcl/XcdlCharacterise?wsdl");
         CharacteriseResult firstResult = characterisation.characterise(files()[0], null);
         CharacteriseResult secondResult = characterisation.characterise(files()[1], null);
         /* CompareProperties: */

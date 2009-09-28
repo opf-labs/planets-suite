@@ -10,11 +10,15 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
 
+import org.apache.commons.logging.LogFactory;
+
+import eu.planets_project.ifr.core.services.characterisation.extractor.impl.CoreExtractor;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigCreator;
 import eu.planets_project.ifr.core.services.comparison.comparator.config.ComparatorConfigParser;
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.compare.Compare;
 import eu.planets_project.services.compare.CompareResult;
+import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Property;
@@ -25,10 +29,11 @@ import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.utils.FileUtils;
 
 /**
- * XCDL Comparator service. Compares XCDL files wrapped as digital objects.
+ * XCL Comparator service. Compares image, text or XCDL files wrapped as digital objects.
+ * @see {@link AbstractSampleXclUsage}
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-@WebService(name = XcdlCompare.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare")
+@WebService( name = XcdlCompare.NAME, serviceName = Compare.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.compare.Compare" )
 @Stateless
 public final class XcdlCompare implements Compare {
     /***/
@@ -39,25 +44,30 @@ public final class XcdlCompare implements Compare {
      * @see eu.planets_project.services.compare.Compare#compare(eu.planets_project.services.datatypes.DigitalObject[],
      *      eu.planets_project.services.datatypes.DigitalObject)
      */
-    public CompareResult compare(final DigitalObject first, final DigitalObject second, final List<Parameter> config) {
+    public CompareResult compare(final DigitalObject first, final DigitalObject second,
+            final List<Parameter> config) {
         if (first == null || second == null) {
             throw new IllegalArgumentException("Digital objects to compare must not be null");
         }
-        // TODO Hm, I guess this is not OK? (fsteeg)
-        // List<URI> supported = ComparatorWrapper.getSupportedInputFormats();
-        // if (!supported.contains(first.getFormat()) || !supported.contains(second.getFormat())) {
-        // throw new IllegalArgumentException("Unsupported format!");
-        // }
         String pcr = new ComparatorConfigCreator(config).getComparatorConfigXml();
-        String result = ComparatorWrapper.compare(read(first), Arrays.asList(read(second)), pcr);
+        String result = ComparatorWrapper.compare(xcdlFor(first), Arrays.asList(xcdlFor(second)), pcr);
         List<List<Property>> props = propertiesFrom(result);
         return compareResult(props);
     }
 
+    private String xcdlFor(DigitalObject object) {
+        // Try using the extractor to create an XCDL for the input file:
+        File xcdl = new CoreExtractor(getClass().getName(), LogFactory.getLog(getClass()))
+                .extractXCDL(object, null, null, null);
+        // Return either the extracted XCDL (if it exists) or assume the file is an XCDL:
+        return xcdl.exists()
+                ? read(new DigitalObject.Builder(Content.byReference(xcdl)).build()) : read(object);
+    }
+
     /**
      * @param props The 1-level nested result properties
-     * @return A compare result object with either top-level properties only or without top-level properties but
-     *         embedded results
+     * @return A compare result object with either top-level properties only or without top-level
+     *         properties but embedded results
      */
     static CompareResult compareResult(final List<List<Property>> props) {
         if (props.size() == 1) {
@@ -69,8 +79,8 @@ public final class XcdlCompare implements Compare {
                 embedded.add(new CompareResult(list, new ServiceReport(Type.INFO, Status.SUCCESS,
                         "Embedded comparison result")));
             }
-            return new CompareResult(new ArrayList<Property>(), new ServiceReport(Type.INFO, Status.SUCCESS,
-                    "Top-level comparison result with embedded results"), embedded);
+            return new CompareResult(new ArrayList<Property>(), new ServiceReport(Type.INFO,
+                    Status.SUCCESS, "Top-level comparison result with embedded results"), embedded);
         }
     }
 
@@ -92,9 +102,8 @@ public final class XcdlCompare implements Compare {
             throw new IllegalArgumentException("Digital object is null!");
         }
         InputStream stream = digitalObject.getContent().read();
-        String content = new String(FileUtils.writeInputStreamToBinary(stream));
-        System.out.println("XCDL: " + content);
-        return content;
+        System.out.println("XCDL: " + stream);
+        return stream == null ? null : new String(FileUtils.writeInputStreamToBinary(stream));
     }
 
     /**
