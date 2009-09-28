@@ -119,6 +119,9 @@ public class MurkyFactory {
                 pathNode, "commandline");
 
         // Get temp files
+//        final List<String> tempFileLabels = getTempFileLabels(pathNode,
+//                "tempfiles");
+        
         // Get tool parameters
         // Get tool presets
 
@@ -131,9 +134,20 @@ public class MurkyFactory {
             newPath.setSourceFormat(sourceFormatURI);
             newPath.setDestinationFormat(destinationFormatURI);
             newPath.setCommandLine(commandLineFragments);
+//            newPath.addTempFilesDeclaration(tempFileDeclaration);
             paths.add(newPath);
         }
         return paths;
+    }
+
+    /**
+     * @param pathNode
+     * @param string
+     * @return
+     */
+    private List<String> getTempFileLabels(Node pathNode, String string) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**

@@ -113,9 +113,8 @@
                         See 'man gs'.
                     </description>
                 </parameter>
-
-
             </toolparameters>
+            
             <toolpresets default="mode">
                 <preset name="mode" default="Normal">
                     <description>
