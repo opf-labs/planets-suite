@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition rendered="#{ExperimentBean.etype == 'executablepp'}">
+  
+  <!-- subview:Modal Panel - overlay screen for configuring wfParameters -->
+  <f:subview xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a4j="http://richfaces.org/a4j"
+      xmlns:rich="http://richfaces.org/rich"> 
+      
+    <rich:modalPanel id="configEditParamsPanel" width="800" height="600" showWhenRendered="false">
+        <f:facet name="header">
+            <h:panelGroup>
+                <h:outputText value="Workflow Service - Parameter configuration"></h:outputText>
+            </h:panelGroup>
+        </f:facet>
+        <f:facet name="controls">
+            <h:panelGroup>
+            	<h:outputText value="cancel" id="hidepanel"/>
+                <rich:componentControl for="configEditParamsPanel" attachTo="hidepanel,returnToMain" operation="hide" event="onclick"/>
+            </h:panelGroup>
+        </f:facet>
+        <h:panelGroup id="configEditParamsBody">
+        <h:message for="editparamspanel" /> 
+        <rich:panel id="editparamspanel">
+      		<a4j:form>
+      		<h:outputText value="Edit Parameters for service: #{ExpTypeExecutablePP.editedSBId}"/>
+            	<h:dataTable binding="#{ExpTypeExecutablePP.parameterTable}" var="params" value="#{ExpTypeExecutablePP.serviceParametersToEdit}">
+		              <f:facet name="header">
+		                  <rich:columnGroup>
+		                      <rich:column>
+		                          <h:outputText value="Name" />
+		                      </rich:column>
+		                      <rich:column>
+		                          <h:outputText value="Value" />
+		                      </rich:column>
+		                      <rich:column>
+		                          <h:outputText value="Change Value" />
+		                      </rich:column>
+		                      <rich:column>
+		                          <h:outputText value="Remove Parameter" />
+		                      </rich:column>
+		                  </rich:columnGroup>
+		              </f:facet>
+	                  <rich:column>
+	                      <h:outputText value="#{params.name}"></h:outputText>
+	                  </rich:column>
+	                  <rich:column>
+	                      <h:outputText value="#{params.value}"></h:outputText>
+	                  </rich:column>
+	                  <rich:column>
+	                      <h:commandButton action="#{ExpTypeExecutablePP.updateParameter}" value="Update" />
+	                  </rich:column>
+	                  <rich:column>
+	                      <h:commandButton action="#{ExpTypeExecutablePP.removeParameter}" value="Delete" />
+	                  </rich:column>
+          		</h:dataTable>
+          		<rich:panel>
+          			<f:facet name="header">
+          				<h:outputText value="New Parameter Value" />
+          			</f:facet>
+          			<h:inputText value="#{ExpTypeExecutablePP.newValue}"/>
+          		</rich:panel>
+			</a4j:form>
+			
+			<h:form>
+			<rich:panel>
+		       <f:facet name="header">Add Parameter</f:facet>
+		       <h:panelGrid columns="2">
+			        <h:panelGrid columns="2">
+			            <h:outputText value="Name: "/>
+			            <h:inputText value="#{ExpTypeExecutablePP.parameterName}" />
+			            <h:outputText value="Value:"/>
+			            <h:inputText value="#{ExpTypeExecutablePP.parameterValue}" />
+			        </h:panelGrid>
+					<h:commandButton actionListener="#{ExpTypeExecutablePP.addParameter}" value="Add"/>
+		    	</h:panelGrid>
+     		</rich:panel>
+     		</h:form>
+     		
+			<a4j:form>
+		    	<h:panelGroup>
+		 			<a4j:commandButton id="returnToMain" value="Done" reRender="wfConfigPanelGroup"/>
+		 		</h:panelGroup>
+	 		</a4j:form>
+	</rich:panel>
+    </h:panelGroup>
+    </rich:modalPanel>
+</f:subview>
+<!-- END subview:Modal Panel - overlay screen for configuring wfParameters -->
+  </ui:composition>
+</body>
+</html>

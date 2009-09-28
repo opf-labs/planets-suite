@@ -1,0 +1,738 @@
+package eu.planets_project.tb.gui.backing.exp;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.faces.component.html.HtmlDataTable;
+import javax.faces.component.html.HtmlSelectOneMenu;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
+import javax.xml.bind.JAXBException;
+
+import org.richfaces.component.html.HtmlInplaceSelect;
+
+
+import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters.Param;
+import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
+import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
+import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+
+public class ExpTypeExecutablePP extends ExpTypeBackingBean {
+
+	private PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeExecutablePP.class, "testbed-log4j.xml");
+	private HashMap<String, String> serviceTypes;
+	private ArrayList<ServiceBean> serviceBeans;
+	//mapping of service IDs in the workflow XML to ServiceBeans
+	private HashMap<String, ServiceBean> serviceLookup;
+	// This hash maps service endpoints to service names
+	private HashMap<String, String> serviceNameMap;
+	private WorkflowConfigUtil wfConfigUtil;
+	private HtmlDataTable parameterTable;
+	//The service bean used on the editParameter screen
+	private ServiceBean sbiq;
+	private String newValue = "";
+	private String parameterName = "";
+	private String parameterValue = "";
+	
+	public ExpTypeExecutablePP(){
+		initBean();
+	}
+	
+	private void initBean(){
+		serviceBeans = new ArrayList<ServiceBean>();
+		serviceLookup = new HashMap<String, ServiceBean>();
+		serviceNameMap = new HashMap<String, String>();
+		// build service types map
+		serviceTypes = new HashMap<String, String>();
+		serviceTypes.put("Characterise",
+				"eu.planets_project.services.characterise.Characterise");
+		serviceTypes.put("Compare",
+				"eu.planets_project.services.compare.Compare");
+		serviceTypes.put("Identify",
+				"eu.planets_project.services.identify.Identify");
+		serviceTypes.put("Migrate",
+				"eu.planets_project.services.migrate.Migrate");
+		serviceTypes.put("Validate",
+				"eu.planets_project.services.validate.Validate");
+		serviceTypes.put("Modify", "eu.planets_project.services.modify.Modify");
+		serviceTypes.put("CreateView",
+				"eu.planets_project.services.view.CreateView");
+		serviceTypes.put("ViewAction",
+				"eu.planets_project.services.view.ViewAction");
+		wfConfigUtil = new WorkflowConfigUtil();
+	}
+	
+	HashMap<String,List<MeasurementImpl>> manualObsCache;
+    long cacheExperimentID;
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getManualObservables()
+	 */
+	@Override
+	public HashMap<String, List<MeasurementImpl>> getManualObservables() {
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	if(manualObsCache==null||(cacheExperimentID != expBean.getExperiment().getEntityID())){
+    		cacheExperimentID = expBean.getExperiment().getEntityID();
+    		
+        	//query for properties that have been added from the Ontology
+        	HashMap<String,Vector<String>> ontoPropIDs = new HashMap<String, Vector<String>>();
+        	for(ExperimentStageBean stage : expBean.getStages()){
+        		ontoPropIDs.put(stage.getName(),expBean.getExperiment().getExperimentExecutable().getManualProperties(stage.getName()));
+        	}
+        	
+        	//this is the static list of manual properties - normally empty
+        	HashMap<String,List<MeasurementImpl>> staticWFobs = getWorkflow(AdminManagerImpl.EXECUTABLEPP).getManualObservables();
+        	
+        	//FIXME AL: staticWFobs returns wrong items - where are they added - exclude staticWFobs for now
+        	//manualObsCache = mergeManualObservables(staticWFobs, ontoPropIDs);
+        	manualObsCache = mergeManualObservables(null, ontoPropIDs);
+    	}
+    	return manualObsCache;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getObservables()
+	 */
+	@Override
+	public HashMap<String, List<MeasurementImpl>> getObservables() {
+		return getWorkflow(AdminManagerImpl.EXECUTABLEPP).getObservables();
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#getStageBeans()
+	 */
+	@Override
+	public List<ExperimentStageBean> getStageBeans() {
+		 return getWorkflow(AdminManagerImpl.EXECUTABLEPP).getStages();
+	}
+	
+	// ---------- INFORMATION FOR STAGE2 --------------
+	private boolean bValidXMLConfig = false;
+	public boolean isValidXMLConfig(){
+		return bValidXMLConfig;
+	}
+	
+	public void setXMLConfigValid(boolean valid){
+		this.bValidXMLConfig = valid;
+	}
+    
+	private boolean bXMLConfigUploaded = false;
+	public boolean isXMLConfigFileProvided(){
+		return bXMLConfigUploaded;
+	}
+	
+	public void setXMLConfigFileProvided(boolean provided){
+		this.bXMLConfigUploaded = provided;
+	}
+	
+    String xmlConfigFileRef = null;
+    /**
+     * A pointer to the uploaded xml config file that was submitted to the system 
+     * @param fileRef
+     */
+    public void setWeeXMLConfigFileRef(String fileRef){
+    	this.xmlConfigFileRef = fileRef;
+    }
+    
+    public String getWeeXMLConfigFileRef(){
+    	if(xmlConfigFileRef == null)
+    		return "";
+    	return xmlConfigFileRef;
+    }
+    
+    WorkflowConf wfConf = null;
+    public void setWeeXMLConfig(WorkflowConf wfConfig){
+    	this.wfConf = wfConfig;
+    }
+    
+    public WorkflowConf getWeeXMLConfig(){
+    	return wfConf;
+    }
+    
+    public void checkAndParseWorkflowConfigObject(String fileRef) throws Exception{
+    	try {
+    		String xmlConfigContent = helperReadDigoToString(fileRef);
+	        //check validity against schema
+	        wfConfigUtil.checkValidXMLConfig(xmlConfigContent);
+	        //unmarshall the object with JAXB
+	        WorkflowConf config = WorkflowConfigUtil.unmarshalWorkflowConfig(xmlConfigContent);
+	        
+	        //fill the with information
+	        this.setWeeXMLConfigFileRef(fileRef);
+	        this.setXMLConfigFileProvided(true);
+	        this.setWeeXMLConfig(config);
+	        this.setXMLConfigValid(true);
+	        log.debug("Workflow XML config file valid and properly parsed - configuration written to bean for workflow: "+config.getTemplate().getClazz());
+		
+		} catch (DigitalObjectNotFoundException e) {
+			this.setXMLConfigFileProvided(false);
+			throw e;
+		} catch (URISyntaxException e) {
+			this.setXMLConfigFileProvided(false);
+			throw e;
+		} catch (IOException e) {
+			this.setXMLConfigFileProvided(false);
+			throw e;
+		} catch (JAXBException e) {
+			this.setXMLConfigValid(false);
+			throw e;
+		}
+    }
+    
+    /**
+     * A helper to read the content of a xmlConfigFile from a given ref location into a String
+     * @param fileRef
+     * @return
+     * @throws IOException
+     * @throws DigitalObjectNotFoundException
+     * @throws URISyntaxException
+     */
+    private String helperReadDigoToString(String fileRef) throws IOException, DigitalObjectNotFoundException, URISyntaxException{
+    	DigitalObjectMultiManager digoManager = new DigitalObjectMultiManager();
+		DigitalObject xmlTemplateDigo = digoManager.retrieve(new URI(fileRef));
+	    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(xmlTemplateDigo.getContent().read()));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = null;
+
+        while ((line = bufferedReader.readLine()) != null) {
+        stringBuilder.append(line + "\n");
+        }
+        bufferedReader.close();
+        return stringBuilder.toString();
+    }
+    
+    
+    public boolean isTemplateAvailableInWftRegistry(){
+    	return bWfTemplateAvailableInRegistry;
+    }
+    
+    private boolean bWfTemplateAvailableInRegistry = false;
+    public void setTemplateAvailableInWftRegistry(boolean available){
+    	bWfTemplateAvailableInRegistry = available;
+    }
+    
+    private String wfDescription = null;
+    public void setWFDescription(String description){
+    	wfDescription = description;
+    }
+    
+    public String getWFDescription(){
+    	return this.wfDescription;
+    }
+    
+    /**
+     * Looks for the "public String describe()" method, creates a substring until the next appearance of "}"
+     * and finally runs a regexp to remove special chars.
+     * @param javafile
+     * @return
+     */
+    public String helperParseDescription(String content){
+    	String token1 = "public String describe(){";
+    	String token2 = "}";
+    	String regexp = "[a-z A-Z 0-9 () . \\\\s]+";
+    	
+    	int itoken1 = content.indexOf(token1);
+    	if(content.indexOf(token1)!=-1){
+    		int itoken2 = content.indexOf(token2,itoken1);
+    		if(itoken2!=-1){
+    			String text = content.substring(itoken1+token1.length(), itoken2);
+    			Pattern urlpattern = Pattern.compile(regexp);
+    			Matcher m = urlpattern.matcher(text);
+    			StringBuffer buff = new StringBuffer();
+    			buff = m.appendTail(buff);
+    			return buff.toString();
+    		}
+    	}
+    	return null;
+    }
+    
+    
+    /**
+     * Extracts Service Endpoint and Parameter information from a given xml configuration
+     * and queries the service registry to retrieve Service type, etc. and checks if it's registered
+     */
+    public void populateServiceInformationFromWorkflowConfig(){
+    	WorkflowConf wfConfig = this.getWeeXMLConfig();
+    	Services services = wfConfig.getServices();
+    	if(services==null)
+    		return;
+    	List<Service> lServices = services.getService();
+    	//now iterate over all declared services from the config
+    	for(Service service : lServices){
+    		if(service.getId()!=null){
+    			ServiceBean sb = new ServiceBean(service.getId());
+    			//check if we've got a valid endpoint
+    			if(service.getEndpoint()!=null){
+    				sb.setServiceEndpoint(service.getEndpoint());
+    				//now query the service registry for this endpoint..
+    				try {
+    					//fetch the metadata from the service registry - but no default params
+    					helperGetMetadataFromSerRegistry(sb,service.getEndpoint(),false);
+    					
+    				} catch (Exception ex) {
+    					log.debug("Unable lookup service endpoint: "+ service.getEndpoint()+ex);
+    				}
+    			}
+    			else{
+    				//no service endpoint was provided
+    				log.debug("Found a service element with no endpoint: ");
+    			}
+    			//now Iterate over all params that were passed along
+    			if(service.getParameters()!=null){
+	    			for(Param param : service.getParameters().getParam()){
+	    				String pName = param.getName();
+	    				String pValue = param.getValue();
+	    				if((pName!=null)&&(pValue!=null)){
+	    					//add them to the WfServiceBean
+	    					ServiceParameter sp = new ServiceParameter(
+									pName, pValue);
+							sb.addParameter(sp);
+	    				}
+	    			}
+    			}
+    			serviceBeans.add(sb);
+				serviceLookup.put(service.getId(), sb);
+    		}	
+    		else{
+    			log.debug("Found a service element with no Id");
+    		}
+    	}
+    }
+    
+    /**
+     * Retrieves all available metadata (service description, name, type, etc.) from the service registry
+     * and updates this information on the given ServiceBean.
+     * invokes getServiceDescirptionFromServiceRegistry()
+     * @param sb
+     * @param sEndpoint
+     * @param addDefaultParams allows to trigger if the default parameters shall be added to the service bean
+     * @return
+     * @throws Exception 
+     * @throws MalformedURLException 
+     */
+    private ServiceDescription helperGetMetadataFromSerRegistry(ServiceBean sb, String sEndpoint, boolean addDefaultParams) throws Exception{
+    	try{
+    		ServiceDescription sdesc = getServiceDescirptionFromServiceRegistry(sEndpoint);
+    		sb.setServiceName(sdesc.getName());
+			String serType = sdesc.getType();
+			sb.setServiceDescription(sdesc.getDescription());
+			sb.setServiceType(serType.substring(serType
+					.lastIndexOf('.') + 1));
+			if(addDefaultParams){
+				//get default parameters for Service
+				List<Parameter> pList = sdesc.getParameters();
+				if (pList != null) {
+					Iterator<Parameter> it = pList.iterator();
+					while (it.hasNext()) {
+						Parameter par = it.next();
+						ServiceParameter spar = new ServiceParameter(par
+								.getName(), par.getValue());
+						sb.addParameter(spar);
+					}
+				} else {
+					log.info("Service: " + sdesc.getName() +" has no default parameters.");
+				}
+			}
+			sb.setServiceAvailable(true);
+			return sdesc;
+    	}catch(Exception e){
+			sb.setServiceAvailable(false);
+			sb.setRequestedServiceEndpoint(sEndpoint);
+			throw e;
+    	}
+    }
+    
+    /**
+     * retrieves a service description from the service registry if there's only exact one endpoint matching the query
+     * @param sEndpoint
+     * @return
+     * @throws Exception
+     */
+    private ServiceDescription getServiceDescirptionFromServiceRegistry(String sEndpoint) throws Exception{
+    	URL sendsURL = new URL(sEndpoint);
+		List<ServiceDescription> regSer = registry
+				.query(new ServiceDescription.Builder(null,
+						null).endpoint(sendsURL).build());
+		if ((regSer.size() < 1)||(regSer.size() > 1)) {
+			String err = "Unable to find service corresponding to endpoint or uniquly identifying it: "+ sendsURL;
+			log.debug(err);
+			throw new Exception(err);
+		}
+		else{
+			ServiceDescription sdesc = regSer.get(0);
+			return sdesc;
+		}
+    }
+
+    
+    public void serviceSelectionChanged(ValueChangeEvent event) {
+    	//HtmlInplaceSelect sel = (HtmlInplaceSelect) event.getComponent();
+    	HtmlSelectOneMenu sel = (HtmlSelectOneMenu) event.getComponent();
+    	String selServiceEndpoint = (String)event.getNewValue();
+    	
+    	FacesContext context = FacesContext.getCurrentInstance();
+		Object o1 = context.getExternalContext().getRequestParameterMap().get("selServiceID");
+		String sForServiceID;
+		if(o1!=null){
+			sForServiceID = (String)o1; 
+		}
+		else{return;}
+		ServiceBean serviceBean = serviceLookup.get(sForServiceID);
+		if (serviceBean == null) {
+			log.debug("Unable to lookup service bean with ID: "+ sForServiceID);
+			return;
+		}
+		if (selServiceEndpoint.equals("None")) {
+			serviceBean.setServiceName("None");
+			serviceBean.setServiceEndpoint("");
+			serviceBean.setServiceDescription("");
+			serviceBean.clearParameters();
+			return;
+		}
+		String selServiceName = serviceNameMap.get(selServiceEndpoint);
+		if (selServiceName == null) {
+			log.debug("Unable to lookup service name for endpoint: "+ selServiceEndpoint);
+			return;
+		}
+		serviceBean.clearParameters();
+		try {
+			//query the registry and update the serviceBean with all the information found
+			this.helperGetMetadataFromSerRegistry(serviceBean,selServiceEndpoint,true);
+			
+		}catch(Exception e){
+			log.debug("Unable to lookup service with endpoint: "+selServiceEndpoint);
+		}
+
+		serviceBean.setServiceName(selServiceName);
+		serviceBean.setServiceEndpoint(selServiceEndpoint);
+    }
+    
+    
+	public List<ServiceBean> getServiceBeans() {
+		return serviceBeans;
+	}   
+	
+	// INFORMATION REQUIRED FOR THE EDIT PARAMETER WF SCREEN
+	public HtmlDataTable getParameterTable() {
+		return parameterTable;
+	}
+	
+	public void setParameterTable(HtmlDataTable parameterTable) {
+		this.parameterTable = parameterTable;
+	}
+	
+	public List<ServiceParameter> getServiceParametersToEdit() {
+		List<ServiceParameter> sps = new ArrayList<ServiceParameter>();
+		if (sbiq != null) {
+			sps = sbiq.getServiceParameters();
+		}
+		return sps;
+	}
+	
+	public void updateParameter() {
+		if (newValue == null) {
+			//TODO AL: add errorMessage for GUI component?
+			log.debug("New value is null - cannot update!");
+			return;
+		}
+		if (newValue.equals("")) {
+			//TODO AL: add errorMessage for GUI component?
+			log.debug("Invalid new value - cannot update!");
+			return;
+		}
+		int dataRow = parameterTable.getRowIndex();
+		String pn = sbiq.getServiceParameters().get(dataRow).getName();
+		sbiq.getServiceParameters().remove(dataRow);
+		sbiq.getServiceParameters().add(dataRow,
+				new ServiceParameter(pn, newValue));
+	}
+	
+	public void removeParameter() {
+		int dataRow = parameterTable.getRowIndex();
+		sbiq.getServiceParameters().remove(dataRow);
+	}
+
+	public void addParameter(ActionEvent event) {
+		if (sbiq == null) {
+			log.debug("No ServiceBean selected!");
+			return;
+		}
+		if (parameterName.equals("")) {
+			//TODO AL: create ErrorMessage for GUI Component
+			log.debug("Unable to create new parameter: name undefined!");
+			return;
+		}
+		if (parameterValue.equals("")) {
+			//TODO AL: create ErrorMessage for GUI Component
+			log.debug("Unable to create new parameter: value undefined!");
+			return;
+		}
+		sbiq.addParameter(new ServiceParameter(parameterName, parameterValue));
+	}
+	
+	public String getNewValue() {
+		return newValue;
+	}
+	
+	public void setNewValue(String value) {
+		this.newValue = value;
+	}
+	
+	public String getParameterName() {
+		return this.parameterName;
+	}
+
+	public String getParameterValue() {
+		return this.parameterValue;
+	}
+	
+	public void setParameterName(String name) {
+		this.parameterName = name;
+	}
+
+	public void setParameterValue(String value) {
+		this.parameterValue = value;
+	}
+	
+	public String getEditedSBId() {
+		String selectedRecordId = getServiceBeanIdForEditParam();
+		if ((selectedRecordId == null)||selectedRecordId.equals("")){
+			if(sbiq!=null){
+				return sbiq.getServiceId();
+			}
+			log.debug("Unable to identify a selected service Id!");
+			return "";
+		}
+		ServiceBean sb = serviceLookup.get(selectedRecordId);
+		if (sb != null) {
+			sbiq = sb;
+			return selectedRecordId;
+		}
+		log.debug("Unable to identify a serviceBean Id!");
+		return "";
+	}
+	
+	private String getParamValueFromRequest(String s) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		String value = facesContext.getExternalContext()
+				.getRequestParameterMap().get(s);
+		return value;
+	}
+	
+	
+	private String sServiceBeanIdForEditParam="";
+	public void commandSetServiceBeanIdForEditParam(ActionEvent evt){
+		FacesContext context = FacesContext.getCurrentInstance();
+		Object o1 = context.getExternalContext().getRequestParameterMap().get("selServiceID");
+		if(o1==null){
+			return;
+		}
+		sServiceBeanIdForEditParam = (String)o1; 
+	}
+	
+	private String getServiceBeanIdForEditParam(){
+		if(sServiceBeanIdForEditParam!=null){
+			return sServiceBeanIdForEditParam;
+		}
+		else{
+			return "";
+		}
+	}
+	
+	//END INFORMATION REQUIRED FOR THE EDIT PARAMETER WF SCREEN
+
+	/**
+	 * A backing bean for handling services contained in the surrounding workflow
+	 * 
+	 */
+	public class ServiceBean {
+
+		private String serviceId;
+		private String serviceType;
+		private String serviceName;
+		private String serviceEndpoint;
+		private String serviceDescription="";
+		private ArrayList<ServiceParameter> serviceParameters;
+		private ArrayList<SelectItem> serviceNames;
+		private boolean bServiceAvailable = false;
+
+		public ServiceBean() {
+			this.serviceName = "None";
+			this.serviceParameters = new ArrayList<ServiceParameter>();
+		}
+
+		public ServiceBean(String id) {
+			this.serviceId = id;
+			this.serviceName = "None";
+			this.serviceParameters = new ArrayList<ServiceParameter>();
+		}
+		
+		public boolean isServiceAvailable(){
+			return bServiceAvailable;
+		}
+
+		/**
+		 * Indicates if a service is available to the system the wftemplate is triggered from
+		 * i.e. from the local service registry
+		 * @param available
+		 */
+		public void setServiceAvailable(boolean available){
+			bServiceAvailable = available;
+		}	
+		
+		private String sRequestedServiceEndpoint="";
+		/**
+		 * Even if a endpoint is not registered in the service registry we're storing
+		 * it here to tell a user to register if for using it within this workflow
+		 * @return
+		 */
+		public String getRequestedServiceEndpoint(){
+			return sRequestedServiceEndpoint;
+		}
+		
+		public void setRequestedServiceEndpoint(String s){
+			if(s!=null){
+				sRequestedServiceEndpoint = s;
+			}
+		}
+
+		public String getServiceId() {
+			return serviceId;
+		}
+
+		public String getServiceType() {
+			return serviceType;
+		}
+
+		public String getServiceName() {
+			return serviceName;
+		}
+		
+		public String getServiceDescription(){
+			return serviceDescription;
+		}
+		
+		public void setServiceDescription(String s){
+			if(s!=null){
+				serviceDescription =s;
+			}
+		}
+
+		public String getServiceEndpoint() {
+			return serviceEndpoint;
+		}
+
+		public List<ServiceParameter> getServiceParameters() {
+			return serviceParameters;
+		}
+
+		public void setServiceId(String id) {
+			this.serviceId = id;
+		}
+
+		public void setServiceType(String type) {
+			this.serviceType = type;
+			serviceNames = new ArrayList<SelectItem>();
+			serviceNames.add(new SelectItem("None", "Select an Endpoint..."));
+			serviceNames.add(new SelectItem("None", "None"));
+			if (serviceType != null) {
+				String serviceClass = serviceTypes.get(serviceType);
+				List<ServiceDescription> services = registry
+						.query(new ServiceDescription.Builder(null,
+								serviceClass).build());
+				Iterator<ServiceDescription> it = services.iterator();
+				while (it.hasNext()) {
+					ServiceDescription sd = it.next();
+					serviceNames.add(new SelectItem(
+							sd.getEndpoint().toString(), sd.getName()));
+					serviceNameMap.put(sd.getEndpoint().toString(), sd
+							.getName());
+				}
+			}
+		}
+
+		public void setServiceName(String name) {
+			this.serviceName = name;
+		}
+
+		public void setServiceEndpoint(String endpoint) {
+			this.serviceEndpoint = endpoint;
+		}
+
+		public void addParameter(ServiceParameter par) {
+			this.serviceParameters.add(par);
+		}
+
+		public void removeParameter(ServiceParameter par) {
+			this.serviceParameters.remove(par);
+		}
+
+		public List<SelectItem> getEndpointOptions() {
+			if (serviceNames == null) {
+				serviceNames = new ArrayList<SelectItem>();
+				serviceNames
+						.add(new SelectItem("None", "Select an Endpoint..."));
+				serviceNames.add(new SelectItem("None", "None"));
+			}
+			return serviceNames;
+		}
+
+		public void clearParameters() {
+			this.serviceParameters.clear();
+		}
+	}
+
+	public class ServiceParameter {
+		private String name;
+		private String value;
+
+		public ServiceParameter() {
+		}
+
+		public ServiceParameter(String n, String v) {
+			this.name = n;
+			this.value = v;
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public String getValue() {
+			return this.value;
+		}
+
+		public void setName(String n) {
+			this.name = n;
+		}
+
+		public void setValue(String v) {
+			this.value = v;
+		}
+	}
+
+}

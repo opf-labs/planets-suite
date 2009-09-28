@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition rendered="#{ExperimentBean.etype == 'executablepp'}">
+  
+  <!-- subview:Modal Panel - overlay screen for configuring wfParameters -->
+  <ui:include src="/WEB-INF/templates/exp-types/stage2_editWeeWFParams.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+  </ui:include>
+
+<h:panelGroup id="workflowRegion">
+   <fieldset>
+       <legend>Executable (Plato) Preservation Plan Experiment</legend>
+       <p>This experiment type allows you to upload and execute a pre-defined Planets 'executable preservation plan'. Once you have chosen your workflow configuration you'll be able to modify the predefined settings before invoking it.</p> 
+       
+     <h:outputLink value="#" id="link">
+        Show Modal Panel 
+        <rich:componentControl for="configEditParamsPanel" attachTo="link" operation="show" event="onclick"/>
+     </h:outputLink>
+       
+       
+       <!-- Toggle panel for upload xml config section -->
+       <rich:simpleTogglePanel id="userxmlconfuploadpanel" label="Upload an executable preservation plan" opened="true" switchType="client">  
+       <h:outputText value="Please upload an executable preservation plan (xml-configuration file), which you want to run your experiment upon."/> 
+        <p class="center">        
+           <t:inputFileUpload id="xmlconfigupload"
+                 value="#{FileUploadBean.upFile}"
+                 storage="file"
+                 styleClass="fileUploadInput"
+                 required="false"
+                 maxlength="10000000"  
+                 readonly="#{ExperimentBean.approved}" 
+                 disabled="#{ExperimentBean.approved}"/>
+                 
+           <h:commandLink id="link_addXMLConfigtem" 
+               action="#{NewExp_Controller.commandUploadWfXMLConfigFile}" 
+               disabled="#{ExperimentBean.approved}"
+               readonly="#{ExperimentBean.approved}">
+               <t:graphicImage value="/graphics/list-add.png" alt="Add" title="Add"/> #{res['button.add']}
+           </h:commandLink>
+           <h:message for="xmlconfigupload" />   
+       </p>
+       </rich:simpleTogglePanel>
+       
+       <!-- allow browsing from previously uploaded user configs -->        
+       <rich:simpleTogglePanel id="userxmlconfbrowserpanel" label="or select from previously uploaded workflow configurations" opened="false" switchType="client">  
+	    <p>Please select from the list of your <b>previously uploaded</b> workflow configurations which you are able to open and reuse.</p>
+	    <p><b>We're sorry, this feature is currently not available.</b></p>                     
+	   </rich:simpleTogglePanel>
+		<br/>
+       <h:panelGroup rendered="#{ExpTypeExecutablePP.XMLConfigFileProvided}">
+         <t:graphicImage value="/graphics/toolbar_logout.gif" rendered="#{!ExpTypeExecutablePP.validXMLConfig}"/>
+	     <h:outputText value=" Invalid configuration file" rendered="#{!ExpTypeExecutablePP.validXMLConfig}"/>
+	     <t:graphicImage value="/graphics/state_ok.gif" rendered="#{ExpTypeExecutablePP.validXMLConfig}"/>
+	     <h:outputText value=" Valid configuration file" rendered="#{ExpTypeExecutablePP.validXMLConfig}"/><br/>
+       
+       	 <t:graphicImage value="/graphics/toolbar_logout.gif" rendered="#{!ExpTypeExecutablePP.templateAvailableInWftRegistry}"/>
+	     <h:outputText value=" requested workflow not available on the system" rendered="#{!ExpTypeExecutablePP.templateAvailableInWftRegistry}"/>
+	     <t:graphicImage value="/graphics/state_ok.gif" rendered="#{ExpTypeExecutablePP.templateAvailableInWftRegistry}"/>
+	     <h:outputText value=" requested workflow available on the system" rendered="#{ExpTypeExecutablePP.templateAvailableInWftRegistry}"/><br/>
+       </h:panelGroup>
+  </fieldset>
+
+  <h:panelGroup id="wfConfigPanelGroup" rendered="#{(ExpTypeExecutablePP.XMLConfigFileProvided) and (ExpTypeExecutablePP.validXMLConfig) and (ExpTypeExecutablePP.templateAvailableInWftRegistry)}">
+  	<fieldset>
+  	  <a4j:region id="regionWFMetadata" renderRegionOnly="true">
+  	    <a4j:status>
+            <f:facet name="start">
+                <h:graphicImage  value="/graphics/spinner.gif"/>
+            </f:facet>
+        </a4j:status>
+	   	<legend>You have selected to use the following workflow</legend>
+	    <rich:panel id="panelWFMetadata">
+		    <p><b>workflow class: </b><h:outputText value="#{ExpTypeExecutablePP.weeXMLConfig.template.clazz}"/></p>
+			<p><b>graphical represenation: </b>We are sorry, but this workflow has now graphical representation associated.</p>
+			<p><b>workflow description: </b><h:outputText value="#{ExpTypeExecutablePP.WFDescription}" rendered="#{ExpTypeExecutablePP.WFDescription != null}"/><a4j:commandLink value="fetch" action="#{NewExp_Controller.getWFDescriptionForTemplate}" rendered="#{ExpTypeExecutablePP.WFDescription == null}" reRender="panelWFMetadata"/></p>
+			<p><b>Service details: </b>The workflow was configured to run with the following service details.</p>
+		</rich:panel>
+	  </a4j:region>	
+	  <a4j:region id="regioneditWFPanel" selfRendered="true" immediate="true">	
+	  	<a4j:status>
+            <f:facet name="start">
+                <h:graphicImage  value="/graphics/spinner.gif"/>
+            </f:facet>
+    	</a4j:status>
+		<!-- Selection of service endpoints and parameters -->  	
+  		<rich:panel id="editWFServicesPanel">
+        	<f:facet name="header">Edit Service Details</f:facet>
+                <rich:dataTable id="serviceConfigTable"
+                    onRowMouseOver="this.style.backgroundColor='#F1F1F1'"
+                    onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+                    var="service" value="#{ExpTypeExecutablePP.serviceBeans}">
+                
+                    <f:facet name="header">
+                        <rich:columnGroup>
+                            <rich:column colspan="4">
+                                <h:outputText value="Services" />
+                            </rich:column>
+                            <rich:column colspan="2">
+                                <h:outputText value="Parameters" />
+                            </rich:column>
+                            <rich:column breakBefore="true">
+                                <h:outputText value="Status" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Service ID" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Type" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Selected Endpoint" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Name/Value Pairs" />
+                            </rich:column>
+                            <rich:column>
+                                <h:outputText value="Add Parameter" />
+                            </rich:column>
+                        </rich:columnGroup>
+                    </f:facet>  
+                    <rich:column>
+                    	<t:graphicImage value="/graphics/state_ok.gif" rendered="#{service.serviceAvailable}"/>
+                    	<t:graphicImage value="/graphics/toolbar_logout.gif" rendered="#{!service.serviceAvailable}"/>
+                    </rich:column>             
+                    <rich:column>
+                    	<h:outputText value="#{service.serviceId}" />
+                    </rich:column>
+                    <rich:column>
+                    	<h:outputText value="#{service.serviceType}" />
+                    </rich:column>     
+                    <rich:column id="colSerEndpoint">
+                    	<h:panelGrid id="panelColSerEndpoint" columns="2" rendered="#{service.serviceAvailable}">
+	                    	<h:outputText value="#{service.serviceName}" />
+                    		<h:selectOneMenu 
+						    	label="#{service.serviceId}"
+						    	valueChangeListener="#{ExpTypeExecutablePP.serviceSelectionChanged}"
+						    	immediate="true" >
+						    	<f:selectItems value="#{service.endpointOptions}"/>
+						    	<a4j:support event="onchange" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true" reRender="serviceConfigTable">
+				                	<a4j:actionparam name="selServiceID" value="#{service.serviceId}"/>
+				                </a4j:support>
+						    </h:selectOneMenu>
+						    <rich:toolTip style="width:500px;" showDelay="500">
+               						<h:outputText value="Service Description:"/>
+					              	<h:panelGroup>
+					                	<br/><i><h:outputText value="#{service.serviceDescription}"/></i>
+					              	</h:panelGroup>
+           					</rich:toolTip>
+						</h:panelGrid>
+						<h:panelGrid columns="2" rendered="#{!service.serviceAvailable}">
+	                    	The requested endpoint <h:outputText value="#{service.requestedServiceEndpoint}" style="color:red;"/> is not available on the system. Please contact helpdesk.
+	         
+						</h:panelGrid>
+                    </rich:column>  
+                    <rich:column>
+	                    <rich:dataTable var="params" value="#{service.serviceParameters}">
+		                    <f:facet name="header">
+		                        <rich:columnGroup>
+		                            <rich:column>
+		                                <h:outputText value="Name" />
+		                            </rich:column>
+		                            <rich:column>
+		                                <h:outputText value="Value" />
+		                            </rich:column>
+		                        </rich:columnGroup>
+		                    </f:facet>
+	                        <rich:column>
+	                            <h:outputText value="#{params.name}"></h:outputText>
+	                        </rich:column>
+	                        <rich:column>
+	                            <h:outputText value="#{params.value}"></h:outputText>
+	                        </rich:column>
+	                    </rich:dataTable>
+	                </rich:column>	                    
+	                <rich:column>
+	                		<a4j:commandButton value="Edit Parameters" id="editParamButton" actionListener="#{ExpTypeExecutablePP.commandSetServiceBeanIdForEditParam}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');" reRender="configEditParamsBody">
+	                			<a4j:actionparam name="selServiceID" value="#{service.serviceId}"/>
+	                		</a4j:commandButton>
+	                </rich:column>	                   
+	            </rich:dataTable>
+		</rich:panel>
+	</a4j:region>	
+			<!-- END OF Selection of service endpoints and parameters -->  	
+  	</fieldset>
+  </h:panelGroup>
+</h:panelGroup>
+  </ui:composition>
+</body>
+</html>

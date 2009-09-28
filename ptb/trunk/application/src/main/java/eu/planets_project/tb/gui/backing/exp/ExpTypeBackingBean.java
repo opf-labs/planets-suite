@@ -19,6 +19,7 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
 import eu.planets_project.tb.impl.model.ontology.OntologyHandlerImpl;
 import eu.planets_project.tb.impl.model.ontology.util.OntoPropertyUtil;
+import eu.planets_project.tb.impl.services.mockups.workflow.ExecutablePPWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
@@ -51,7 +52,7 @@ public abstract class ExpTypeBackingBean {
     public abstract List<ExperimentStageBean> getStageBeans();
     
     /**
-     * TODO Note that this is also a point that requires expantions when adding types.
+     * TODO Note that this is also a point that requires expansions when adding types.
      * @param etype
      * @return
      */
@@ -63,6 +64,9 @@ public abstract class ExpTypeBackingBean {
             exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeMigrate");
         } else if( etype.equals( AdminManagerImpl.EMULATE ) ) {
             exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeViewer");
+        } else if( etype.equals( AdminManagerImpl.EXECUTABLEPP ) ) {
+            exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeExecutablePP");
+  
         } else {
             // For unrecognised experiment types, set to NULL:
             exptype = null;
@@ -93,6 +97,11 @@ public abstract class ExpTypeBackingBean {
             log.info("Running a Emulate experiment.");
             if( ewfCache == null || ( ! (ewfCache instanceof ViewerWorkflow) ) )
                 ewfCache = new ViewerWorkflow();
+            
+        } else if( AdminManagerImpl.EXECUTABLEPP.equals(etype)) {
+            log.info("Running an Executable PP experiment.");
+            if( ewfCache == null || ( ! (ewfCache instanceof ExecutablePPWorkflow) ) )
+                ewfCache = new ExecutablePPWorkflow();
             
         } else {
             log.error("Unknown experiment type: "+etype);

@@ -1,6 +1,13 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
+import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
+import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
+import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
+import eu.planets_project.services.PlanetsException;
+import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.BasicProperties;
@@ -26,6 +33,7 @@ import eu.planets_project.tb.gui.backing.PropertyDnDTreeBean;
 import eu.planets_project.tb.gui.backing.UploadManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
 import eu.planets_project.tb.impl.model.BasicPropertiesImpl;
@@ -49,13 +57,17 @@ import eu.planets_project.tb.impl.services.EvaluationTestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
+import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
 import eu.planets_project.tb.impl.system.TestbedBatchJob;
 import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
 
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.FieldPosition;
@@ -77,6 +89,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
+import javax.xml.bind.JAXBException;
 
 import org.richfaces.component.html.HtmlDataTable;
 
@@ -1612,6 +1625,47 @@ public class NewExpWizardController{
     	}
     	return ret;
     }
+    
+    public String commandUploadWfXMLConfigFile(){
+    	ExpTypeExecutablePP eTypeExecPP = (ExpTypeExecutablePP)ExpTypeBackingBean.getExpTypeBean(AdminManagerImpl.EXECUTABLEPP);
+    	
+    	//0) upload the specified WFconfig to the user's personal repository for storing it
+        log.info("commandUploadWfXMLConfigFile: uploading an xml configuration for a WEE WF.");
+		FileUploadBean uploadBean = UploadManager.uploadFile(true);
+		if( uploadBean == null ) {
+	        log.warn("commandUploadWfXMLConfigFile: Uploaded file was null.");
+		    return "goToStage2";
+		}
+		String fileRef = uploadBean.getUniqueFileName();
+		log.debug("Uploaded file: uniqueFileName: "+fileRef);
+
+		eTypeExecPP.setXMLConfigFileProvided(true);
+    	
+    	//1) Check the configuration and parse the WorkflowConfig object 
+    	try {
+			eTypeExecPP.checkAndParseWorkflowConfigObject(fileRef);
+			
+		} catch (Exception e) {
+			return "goToStage2";
+		}
+    	
+		//2) check if the workflow is available on the WEE Template registry
+		String wfClass = eTypeExecPP.getWeeXMLConfig().getTemplate().getClazz();
+		WftRegistryService wftRegistryService = WeeRemoteUtil.getInstance().getWeeRegistryService();
+		if (wftRegistryService.getAllSupportedQNames().contains(wfClass)){
+			eTypeExecPP.setTemplateAvailableInWftRegistry(true);
+		}else{
+			eTypeExecPP.setTemplateAvailableInWftRegistry(false);
+			return "goToStage2";
+		}
+		
+		//3) populate the bean with servic specific information
+		eTypeExecPP.populateServiceInformationFromWorkflowConfig();
+
+    	//reload stage2 and display the further navigation options
+        log.info("commandUploadWfXMLConfigFile DONE");
+    	return "goToStage2";
+    }
 
 /*
  * END methods for new_experiment wizard page
@@ -1900,6 +1954,8 @@ public class NewExpWizardController{
             exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeMigrate");
 	    } else if( etype.equals( AdminManagerImpl.EMULATE) ) {
 	        exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeViewer");
+	    } else if( etype.equals( AdminManagerImpl.EXECUTABLEPP) ) {
+	        exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeExecutablePP");
 	    }else {
             // For unrecognised experiment types, set to NULL:
             log.error("unrecognised experiment type");
@@ -2265,5 +2321,24 @@ public class NewExpWizardController{
     	return countNotEvaluationItems;
     }
     
-    
+    /**
+     * Fetches the registered worfklow source file and extracts the Information that's located within the getDescription method for a given WFTemplate name
+     * parses it and stores this information within the bean.
+     */
+    public void getWFDescriptionForTemplate(){
+    	ExpTypeExecutablePP eTypeExecPP = (ExpTypeExecutablePP)ExpTypeBackingBean.getExpTypeBean(AdminManagerImpl.EXECUTABLEPP);
+    	WftRegistryService wftRegistryService = WeeRemoteUtil.getInstance().getWeeRegistryService();
+    	try {
+    		byte[] bContent = wftRegistryService.getWFTemplate(eTypeExecPP.getWeeXMLConfig().getTemplate().getClazz());
+    		if(bContent!=null){
+				String wfTemplateContent = new String(bContent);
+				String sDescription = eTypeExecPP.helperParseDescription(wfTemplateContent);
+				eTypeExecPP.setWFDescription(sDescription);
+    		}
+    	} catch (PlanetsException e) {
+			String err = "No workflow description available";
+			eTypeExecPP.setWFDescription(err);
+			log.debug(err,e);
+		}
+    }
 }

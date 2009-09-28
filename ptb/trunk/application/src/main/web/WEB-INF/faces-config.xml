@@ -57,6 +57,11 @@
         <managed-bean-class>eu.planets_project.tb.gui.backing.exp.ExpTypeViewer</managed-bean-class>
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
+    <managed-bean>
+        <managed-bean-name>ExpTypeExecutablePP</managed-bean-name>
+        <managed-bean-class>eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
 	<managed-bean>
 		<managed-bean-name>ListExp_Backing</managed-bean-name>
 		<managed-bean-class>eu.planets_project.tb.gui.backing.ListExp</managed-bean-class>
