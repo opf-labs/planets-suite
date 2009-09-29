@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,6 +33,7 @@ public class ZipUtilsTest {
 	public static void setUpBeforeClass() throws Exception {
 		FileUtils.deleteAllFilesInFolder(OUTPUT_FOLDER);
 	}
+	
 
 	/**
 	 * Test method for {@link eu.planets_project.services.utils.ZipUtils#createZip(java.io.File, java.io.File, java.lang.String, boolean)}.

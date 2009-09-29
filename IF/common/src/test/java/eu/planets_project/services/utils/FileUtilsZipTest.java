@@ -17,7 +17,7 @@ public class FileUtilsZipTest {
     private static final File TEST_FILE_FOLDER = new File(
             "IF/common/src/test/resources/test_zip");
     private static final File OUTPUT_FOLDER = FileUtils
-            .createWorkFolderInSysTemp("FileUtilsZipTest_OUT");
+            .createWorkFolderInSysTemp(FileUtils.randomizeFileName("FileUtilsZipTest"));
     private static final File EXTRACT_RESULT_OUT = FileUtils
             .createFolderInWorkFolder(OUTPUT_FOLDER, "EXTRACTED");
     private static File zip = null;
@@ -70,8 +70,8 @@ public class FileUtilsZipTest {
             System.out.println(i + ": " + files[i].getAbsolutePath());
         }
         ZipResult zipResult = ZipUtils.createZipAndCheck(
-                TEST_FILE_FOLDER, OUTPUT_FOLDER, TEST_FILE_FOLDER.getName()
-                        + ".zip", false);
+                TEST_FILE_FOLDER, OUTPUT_FOLDER, FileUtils.randomizeFileName(TEST_FILE_FOLDER.getName()
+                        + ".zip"), false);
         File zip = zipResult.getZipFile();
         System.out.println("Please find ZIP here: " + zip.getAbsolutePath());
         System.out.println("Zip Checksum is: " + zipResult.getChecksum());
@@ -85,8 +85,8 @@ public class FileUtilsZipTest {
     @Test
     public void testcheckAndExtractFilesFromZip() {
         ZipResult zipResult = ZipUtils.createZipAndCheck(
-                TEST_FILE_FOLDER, OUTPUT_FOLDER, TEST_FILE_FOLDER.getName()
-                        + ".zip", false);
+                TEST_FILE_FOLDER, OUTPUT_FOLDER, FileUtils.randomizeFileName(TEST_FILE_FOLDER.getName()
+                        + ".zip"), false);
         File zip = zipResult.getZipFile();
         System.out.println("Checksum before Extraction: "
                 + zipResult.getChecksum());

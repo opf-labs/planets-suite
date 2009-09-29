@@ -1,17 +1,9 @@
 package eu.planets_project.services.utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,7 +30,6 @@ import eu.planets_project.services.datatypes.Checksum;
  *
  */
 public final class FileUtils {
-    private static final int BUFFER = 32768;
 
     private static Log log = LogFactory.getLog(FileUtils.class);
 
@@ -44,6 +37,8 @@ public final class FileUtils {
             .getProperty("java.io.tmpdir");
 
     private static final String TEMP_STORE_DIR = "planets-if-temp-store".toUpperCase();
+    
+    
 
     /** We enforce non-instantiability with a private constructor. */
     private FileUtils() {}
@@ -72,7 +67,17 @@ public final class FileUtils {
     public static boolean clearPlanetsTmpStoreFolder() {
     	File tmpStore = getPlanetsTmpStoreFolder();
     	if(tmpStore.exists()) {
-    		return deleteAllFilesInFolder(tmpStore);
+    		try {
+				org.apache.commons.io.FileUtils.cleanDirectory(tmpStore);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(tmpStore.list().length==0) {
+				return true;
+			}
+			else {
+				return false;
+			}
     	}
     	else {
     		return true;
@@ -82,9 +87,10 @@ public final class FileUtils {
     /**
      * @param name The name to use when generating the temp file
      * @param suffix The suffix for the temp file to be created
-     * @return Returns a temp file created in the System-Temp folder
+     * @return Returns a temp file created in the System-Temp folder, that will be deleted on exit.
      */
     public static File getTempFile(final String name, final String suffix) {
+    	
         String suffixToUse = suffix == null ? ".tmp" : suffix;
         // Add a dot if missing:
         if (!suffixToUse.startsWith(".")) {
@@ -138,17 +144,16 @@ public final class FileUtils {
 
     /**
      * @param src The source file
-     * @return An input stream created from the file
+     * @return An input stream created from the file or 'null' if no Inputstream could be created.
      */
     public static InputStream getInputStreamFromFile(File src) {
-        BufferedInputStream fileIn = null;
-
-        try {
-            fileIn = new BufferedInputStream(new FileInputStream(src));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return fileIn;
+    	InputStream in = null;
+    	try {
+			in = org.apache.commons.io.FileUtils.openInputStream(src);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return in;
     }
 
     /**
@@ -156,13 +161,13 @@ public final class FileUtils {
      * @return A stream to the given file
      */
     public static OutputStream getOutputStreamToFile(File dest) {
-        BufferedOutputStream fileOut = null;
-        try {
-            fileOut = new BufferedOutputStream(new FileOutputStream(dest));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return fileOut;
+    	OutputStream out = null;
+    	try {
+			out = org.apache.commons.io.FileUtils.openOutputStream(dest);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return out;
     }
 
     
@@ -205,15 +210,21 @@ public final class FileUtils {
     	if(outFileExtension==null) {
     		outFileExtension = "bin";
     	}
+    	
+    	String outExt = null;
+    	if(!outFileExtension.startsWith(".")) {
+    		outExt = "." + outFileExtension;
+    	}
+    	
 		if(inputFileName.contains(" ")) {
 			inputFileName = inputFileName.replaceAll(" ", "_");
 		}
 		
 		if(inputFileName.contains(".")) {
-			fileName = inputFileName.substring(0, inputFileName.lastIndexOf(".")) + "." + outFileExtension;
+			fileName = FilenameUtils.getBaseName(inputFileName) + outExt;
 		}
 		else {
-			fileName = inputFileName + "." + outFileExtension;
+			fileName = inputFileName + outExt;
 		}
 		return fileName;
     }
@@ -224,20 +235,19 @@ public final class FileUtils {
      * @return True, if successful
      */
     public static boolean copyFileTo(File src, File dest) {
-        InputStream in = getInputStreamFromFile(src);
-        OutputStream out = getOutputStreamToFile(dest);
-        long destSize = writeInputStreamToOutputStream(in, out);
-        if (destSize == src.length()) {
-            close(in);
-            flush(out);
-            close(out);
-            return true;
-        } else {
-            close(in);
-            flush(out);
-            close(out);
-            return false;
-        }
+    	try {
+			org.apache.commons.io.FileUtils.copyFile(src, dest);
+			String size = org.apache.commons.io.FileUtils.byteCountToDisplaySize(dest.length());
+			log.info("Copied " + size + " to: " + dest.getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if(dest.exists() && dest.length()==src.length()) {
+			return true;
+		}
+		else {
+			return false;
+		}
     }
 
     /**
@@ -295,25 +305,13 @@ public final class FileUtils {
      * @return Returns the contents of the given file as a byte array
      */
     public static byte[] readFileIntoByteArray(final File file) {
-        byte[] array = null;
-        try {
-            BufferedInputStream in = new BufferedInputStream(
-                    new FileInputStream(file));
-            if (file.length() > Integer.MAX_VALUE) {
-                throw new IllegalArgumentException("The file at "
-                        + file.getAbsolutePath()
-                        + " is too large to be represented as a byte array!");
-            }
-            array = new byte[(int) file.length()];
-            in.read(array);
-            in.close();
-            return array;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+    	byte[] array = null;
+		try {
+			array = org.apache.commons.io.FileUtils.readFileToByteArray(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	return array;
     }
 
     /**
@@ -323,24 +321,13 @@ public final class FileUtils {
      */
     public static File writeByteArrayToFile(final byte[] bytes,
             final String fileName) {
-        File file = new File(fileName);
-        try {
-            file.createNewFile();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        BufferedOutputStream out;
-        try {
-            out = new BufferedOutputStream(new FileOutputStream(fileName));
-            out.write(bytes);
-            out.flush();
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return file;
+    	File destFile = new File(fileName);
+    	try {
+			org.apache.commons.io.FileUtils.writeByteArrayToFile(destFile, bytes);
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
+		return destFile;
     }
     /**
      * @param bytes The data to write
@@ -348,7 +335,12 @@ public final class FileUtils {
      * @return The file containing the given data
      */
     public static boolean writeByteArrayToFile(final byte[] bytes, File dest) {
-    	return writeByteArrayToFile(bytes, dest.getAbsolutePath()).exists();
+    	try {
+			org.apache.commons.io.FileUtils.writeByteArrayToFile(dest, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    	return (dest.length()!=0);
     }
 
     /**
@@ -358,19 +350,12 @@ public final class FileUtils {
      */
     public static File writeByteArrayToTempFile(final byte[] bytes) {
         File file = null;
+        file = getTempFile("planets", null);
         try {
-            file = getTempFile("planets", null);
-
-            BufferedOutputStream out = new BufferedOutputStream(
-                    new FileOutputStream(file), BUFFER);
-            out.write(bytes);
-            out.flush();
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+			org.apache.commons.io.FileUtils.writeByteArrayToFile(file, bytes);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         return file;
     }
 
@@ -380,22 +365,11 @@ public final class FileUtils {
      */
     public static String readTxtFileIntoString(final File textFile) {
         String resultString = null;
-        StringBuffer buffer = new StringBuffer();
-        String line = null;
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(textFile));
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-                buffer.append("\n");
-            }
-            reader.close();
-            resultString = buffer.toString();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			resultString = org.apache.commons.io.FileUtils.readFileToString(textFile);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
         return resultString;
     }
 
@@ -406,17 +380,24 @@ public final class FileUtils {
      */
     public static File writeStringToFile(final String content,
             final String destination) {
-        File result = new File(destination);
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(result),
-                    BUFFER);
-            writer.write(content);
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return result;
+    	File file = new File(destination);
+    	try {
+			org.apache.commons.io.FileUtils.writeStringToFile(file, content);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return file;
+//        File result = new File(destination);
+//        try {
+//            BufferedWriter writer = new BufferedWriter(new FileWriter(result),
+//                    BUFFER);
+//            writer.write(content);
+//            writer.flush();
+//            writer.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
     }
 
     /**
@@ -425,16 +406,23 @@ public final class FileUtils {
      * @return file A file at destination with the given content
      */
     public static File writeStringToFile(final String content, final File target) {
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(target),
-                    BUFFER);
-            writer.write(content);
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return target;
+    	try {
+			org.apache.commons.io.FileUtils.writeStringToFile(target, content);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return target;
+    	
+//        try {
+//            BufferedWriter writer = new BufferedWriter(new FileWriter(target),
+//                    BUFFER);
+//            writer.write(content);
+//            writer.flush();
+//            writer.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return target;
     }
 
     /**
@@ -442,18 +430,25 @@ public final class FileUtils {
      * @return The byte array created from the stream
      */
     public static byte[] writeInputStreamToBinary(final InputStream inputStream) {
-        ByteArrayOutputStream boStream = new ByteArrayOutputStream();
-        long size = writeInputStreamToOutputStream(inputStream, boStream);
-        try {
-            boStream.flush();
-            boStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (size > 0) {
-            return boStream.toByteArray();
-        }
-        return null;
+    	byte[] array = null;
+    	try {
+			array = IOUtils.toByteArray(inputStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return array;
+//        ByteArrayOutputStream boStream = new ByteArrayOutputStream();
+//        long size = writeInputStreamToOutputStream(inputStream, boStream);
+//        try {
+//            boStream.flush();
+//            boStream.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        if (size > 0) {
+//            return boStream.toByteArray();
+//        }
+//        return null;
     }
 
     /**
@@ -463,23 +458,35 @@ public final class FileUtils {
      */
     public static void writeInputStreamToFile(final InputStream stream,
             final File target) {
-        BufferedOutputStream bos = null;
-        FileOutputStream fileOut = null;
-        try {
-            fileOut = new FileOutputStream(target);
-            bos = new BufferedOutputStream(fileOut);
-        } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-        }
-        long size = writeInputStreamToOutputStream(stream, bos);
-        try {
-            if (bos != null) {
-                bos.flush();
-                bos.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	long size = 0;
+    	FileOutputStream fileOut;
+		try {
+			fileOut = new FileOutputStream(target);
+			size = IOUtils.copyLarge(stream, fileOut);
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+//        BufferedOutputStream bos = null;
+//        FileOutputStream fileOut = null;
+//        try {
+//            fileOut = new FileOutputStream(target);
+//            bos = new BufferedOutputStream(fileOut);
+//        } catch (FileNotFoundException e1) {
+//            e1.printStackTrace();
+//        }
+//        long size = writeInputStreamToOutputStream(stream, bos);
+//        try {
+//            if (bos != null) {
+//                bos.flush();
+//                bos.close();
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         if (log.isInfoEnabled()) {
             log.info("Wrote " + size + " bytes to " + target.getAbsolutePath());
         } else {
@@ -499,8 +506,10 @@ public final class FileUtils {
      */
     public static File writeInputStreamToFile(final InputStream in,
             final File parentFolder, final String fileName) {
+    	
         String name = fileName;
         File target = new File(parentFolder, name);
+        
         if (target.exists()) {
             long randonNr = (long) (Math.random() * 1000000);
             if (fileName.contains(".")) {
@@ -542,34 +551,41 @@ public final class FileUtils {
      */
     public static long writeInputStreamToOutputStream(final InputStream in,
             final OutputStream out) {
-        long size = 0;
-        try {
-            int dataBit;
-            byte[] buf = new byte[BUFFER];
-            while ((dataBit = in.read(buf)) != -1) {
-                out.write(buf, 0, dataBit);
-                size += dataBit;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 0;
-        } finally {
-            try {
-                if (out != null) {
-                    out.flush();
-                    // Commented the following line out, because it caused a
-                    // crash with the zip utility methods,
-                    // when the ZipWriter tried to close the current ZipEntry.
-                    // After a short look at the referencing methods, it seems
-                    // that all Outputstreams are closed outside this
-                    // this method! So it should do no harm to remove it here?!
-                    // out.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return 0;
-            }
-        }
+    	long size = 0;
+    	try {
+			size = IOUtils.copyLarge(in, out);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+    	
+//        long size = 0;
+//        try {
+//            int dataBit;
+//            byte[] buf = new byte[BUFFER];
+//            while ((dataBit = in.read(buf)) != -1) {
+//                out.write(buf, 0, dataBit);
+//                size += dataBit;
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return 0;
+//        } finally {
+//            try {
+//                if (out != null) {
+//                    out.flush();
+//                    // Commented the following line out, because it caused a
+//                    // crash with the zip utility methods,
+//                    // when the ZipWriter tried to close the current ZipEntry.
+//                    // After a short look at the referencing methods, it seems
+//                    // that all Outputstreams are closed outside this
+//                    // this method! So it should do no harm to remove it here?!
+//                    // out.close();
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                return 0;
+//            }
+//        }
         log.info("Wrote " + size + " bytes.");
         return size;
     }
@@ -584,79 +600,6 @@ public final class FileUtils {
      */
     public static File createSimpleZipFile(final File srcFolder,
             final File destFolder, final String zipFileName) {
-       /* // The target zip file
-        File resultZIP = new File(destFolder, zipFileName);
-        // Creating an empty ArrayList for calling the listAllFiles method with
-        // "resultFolder" as root.
-        ArrayList<String> listOfFiles = new ArrayList<String>();
-        // Calling the recursive method listAllFiles, which lists all files in
-        // all folders in the resultFolder.
-        ArrayList<String> resultFileList;
-        // try {
-        resultFileList = listAllFilesAndFolders(srcFolder, listOfFiles);
-        if (resultFileList.size() == 0) {
-            return null;
-        } else {
-            // "Normalize" the paths in resultFileList for creation of
-            // ZipEntries
-            
-//        	ArrayList<String> normalizedPaths = new ArrayList<String>();
-//            for (int i = 0; i < resultFileList.size(); i++) {
-//                String currentPath = resultFileList.get(i);
-//                // Strip the beginning of the String, except the "[FOLDER-NAME]
-//                // itself\"....
-//                int index = currentPath.indexOf(srcFolder.getName());
-//                currentPath = currentPath.substring(index);
-//                // Delete the [FOLDER-NAME] part of the paths
-//                currentPath = currentPath.replace(srcFolder.getName()
-//                        + File.separator, "");
-//                // add the normalized path to the list
-//                normalizedPaths.add(currentPath);
-//            }
-        	
-        	List<String> normalizedPaths = normalizePaths(srcFolder);
-            
-            // Write the output ZIP
-            ZipOutputStream zipWriter;
-            try {
-                zipWriter = new ZipOutputStream(new FileOutputStream(resultZIP));
-                // zipWriter.setMethod(ZipOutputStream.DEFLATED);
-                zipWriter.setLevel(ZIP_COMPRESSION_LEVEL);
-                // writing the resultFiles to the ZIP
-                for (int i = 0; i < normalizedPaths.size(); i++) {
-                    // Creating the ZipEntries using the normalizedList
-                    ZipEntry zipEntry = new ZipEntry(normalizedPaths.get(i));
-                    if (zipEntry.isDirectory()) {
-                        zipWriter.putNextEntry(zipEntry);
-                    } else {
-                        zipWriter.putNextEntry(zipEntry);
-                        // And getting the files to write for the ZipEntry from
-                        // the
-                        // resultFileList
-                        File currentFile = new File(resultFileList.get(i));
-                        if (currentFile.isFile()) {
-                            long size = writeInputStreamToOutputStream(
-                                    new FileInputStream(currentFile), zipWriter);
-                            log.info(String.format(
-                                    "Wrote %s bytes from %s to %s", size,
-                                    currentFile, zipWriter));
-                            zipWriter.flush();
-                            zipWriter.closeEntry();
-                        }
-                    }
-                }
-                zipWriter.flush();
-                zipWriter.finish();
-                zipWriter.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        // Getting a reference to the new ZIP file
-        return resultZIP;*/
-    	
     	return ZipUtils.createZip(srcFolder, destFolder, zipFileName, false);
     }
     
@@ -677,13 +620,6 @@ public final class FileUtils {
         return ZipUtils.createZipAndCheck(srcFolder, destFolder, zipFileName, false);
     }
     
-//    public static File insertFileInZip(File zip, File toInsert, String targetLocationInZip) {
-//		return zip;
-//    }
-//    
-//    public static File deleteFileFromZip(File zip, String deleteFileLocationInZip) {
-//    	return zip;
-//    }
 
     /**
      * Extracts all files from a given Zip file.
@@ -759,6 +695,16 @@ public final class FileUtils {
             throw new IllegalArgumentException("Could not rename: " + file);
         }
         return renamedFile;
+    }
+    
+    /**
+     * Calculates the overall size of all files in '<strong>directory</strong>'
+     * 
+     * @param directory the folder containing the files
+     * @return the overall size of all contained files
+     */
+    public static long calculateSize(final File directory) {
+    	return org.apache.commons.io.FileUtils.sizeOfDirectory(directory);
     }
 
     /**
@@ -911,15 +857,16 @@ public final class FileUtils {
      * @return The extension or null
      */
     public static String getExtensionFromFile(final File file) {
-        String name = file.getName();
-        String extension = null;
-        if (name.contains(".")) {
-            int index = name.indexOf(".");
-            extension = name.substring(index + 1);
-            return extension;
-        } else {
-            return null;
-        }
+    	return FilenameUtils.getExtension(file.getName());
+//        String name = file.getName();
+//        String extension = null;
+//        if (name.contains(".")) {
+//            int index = name.indexOf(".");
+//            extension = name.substring(index + 1);
+//            return extension;
+//        } else {
+//            return null;
+//        }
     }
 
     /**
@@ -987,43 +934,48 @@ public final class FileUtils {
 	 * @return true, if all folders were deleted and false, if not.
 	 */
 	public static boolean deleteTempFiles(final File workFolder) {
-	    return deleteTempFiles(workFolder, true);
+		try {
+			org.apache.commons.io.FileUtils.deleteDirectory(workFolder);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    return !workFolder.exists();
 	}
 	
 	
-	/**
-	 * This method deletes all the content in a folder, without the need of
-	 * passing it a PlanetsLogger instance!
-	 * @param workFolder the folder you wish to delete. All contained folders
-	 *        will be deleted recursively
-	 * @return true, if all folders were deleted and false, if not.
-	 */
-	private static boolean deleteTempFiles(final File workFolder, boolean deleteFolder) {
-	    if (workFolder.isDirectory()) {
-	        File[] entries = workFolder.listFiles();
-	        for (int i = 0; i < entries.length; i++) {
-	            File current = entries[i];
-	            boolean deleteTempFiles = deleteTempFiles(current);
-	            if (!deleteTempFiles) {
-	                return false;
-	            } else {
-	                log.info("Deleted: " + current);
-	            }
-	        }
-	        if(deleteFolder) {
-	        	return workFolder.delete() ? true : false;
-	        }
-	        else {
-	        	return true;
-	        }
-	    }
-	    if(deleteFolder) {
-	    	return workFolder.delete() ? true : false;
-	    } 
-	    else {
-	    	return true;
-	    }
-	}
+//	/**
+//	 * This method deletes all the content in a folder, without the need of
+//	 * passing it a PlanetsLogger instance!
+//	 * @param workFolder the folder you wish to delete. All contained folders
+//	 *        will be deleted recursively
+//	 * @return true, if all folders were deleted and false, if not.
+//	 */
+//	private static boolean deleteTempFiles(final File workFolder, boolean deleteFolder) {
+//	    if (workFolder.isDirectory()) {
+//	        File[] entries = workFolder.listFiles();
+//	        for (int i = 0; i < entries.length; i++) {
+//	            File current = entries[i];
+//	            boolean deleteTempFiles = deleteTempFiles(current);
+//	            if (!deleteTempFiles) {
+//	                return false;
+//	            } else {
+//	                log.info("Deleted: " + current);
+//	            }
+//	        }
+//	        if(deleteFolder) {
+//	        	return workFolder.delete() ? true : false;
+//	        }
+//	        else {
+//	        	return true;
+//	        }
+//	    }
+//	    if(deleteFolder) {
+//	    	return workFolder.delete() ? true : false;
+//	    } 
+//	    else {
+//	    	return true;
+//	    }
+//	}
 	
 	
 	
@@ -1034,7 +986,14 @@ public final class FileUtils {
 	 * @return true, if all files has been deleted.
 	 */
 	public static boolean deleteAllFilesInFolder(final File folder) {
-		return deleteTempFiles(folder, false);
+		try {
+			int fileCount = folder.list().length;
+			org.apache.commons.io.FileUtils.cleanDirectory(folder);
+			log.info("Deleted " + fileCount + " files in: " + folder.getAbsolutePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return (folder.list().length==0);
 	}
 	
 
