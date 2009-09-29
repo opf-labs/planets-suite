@@ -179,7 +179,7 @@ public class MurkyFactory {
 
             final String command = commandNode.getTextContent().trim();
 
-            if (command.isEmpty()) {
+            if (command.length() == 0) {
                 throw new MigrationPathConfigException(
                         "No command was specified in the '"
                                 + commandLineElementName + "' element in the '"
