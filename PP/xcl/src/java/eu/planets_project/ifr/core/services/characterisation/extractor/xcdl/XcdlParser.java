@@ -83,15 +83,17 @@ public final class XcdlParser implements XcdlAccess {
             all.add(objectProperties(o));
         }
         if (all.size() == 1) {
-            return new CharacteriseResult(all.get(0), new ServiceReport(Type.INFO, Status.SUCCESS, "Flat properties"));
+            return new CharacteriseResult(all.get(0), new ServiceReport(Type.INFO, Status.SUCCESS,
+                    "Flat properties"));
         }
         List<CharacteriseResult> embeddedResults = new ArrayList<CharacteriseResult>();
         for (List<eu.planets_project.services.datatypes.Property> props : all) {
-            embeddedResults.add(new CharacteriseResult(props, new ServiceReport(Type.INFO, Status.SUCCESS,
-                    "Embedded properties")));
+            embeddedResults.add(new CharacteriseResult(props, new ServiceReport(Type.INFO,
+                    Status.SUCCESS, "Embedded properties")));
         }
-        return new CharacteriseResult(new ArrayList<eu.planets_project.services.datatypes.Property>(),
-                new ServiceReport(Type.INFO, Status.SUCCESS, "Empty top-level properties"), embeddedResults);
+        return new CharacteriseResult(
+                new ArrayList<eu.planets_project.services.datatypes.Property>(), new ServiceReport(
+                        Type.INFO, Status.SUCCESS, "Empty top-level properties"), embeddedResults);
     }
 
     private List<eu.planets_project.services.datatypes.Property> objectProperties(
@@ -111,22 +113,22 @@ public final class XcdlParser implements XcdlAccess {
         return result;
     }
 
-    private eu.planets_project.services.datatypes.Property objectProperty(Property property, String name,
-            ValueSet valueSet) {
+    private eu.planets_project.services.datatypes.Property objectProperty(Property property,
+            String name, ValueSet valueSet) {
         LabValue labValue = valueSet.getLabValue();
         URI propUri = XcdlProperties.makePropertyURI(name);
         String value = "";
-        String unit = "";
+        String unit = NONE;
         if (labValue != null) {
             List<Val> val = labValue.getVals();
             List<String> values = val.get(0).getValues();
             value = values.size() > 0 ? values.get(0) : "";
             unit = labValue.getTypes().get(0).getValue().value();
         }
-        String type = PropertyName.PROPERTY.s;
         String description = createDescription(property, valueSet);
         eu.planets_project.services.datatypes.Property p = new eu.planets_project.services.datatypes.Property.Builder(
-                propUri).name(name).value(value).type(type).unit(unit).description(description).build();
+                propUri).name(name).value(value).type(unit).unit(unit).description(description)
+                .build();
         return p;
     }
 
@@ -136,24 +138,18 @@ public final class XcdlParser implements XcdlAccess {
         String normDataType = normData.getType().value();
         normDataType = Character.toUpperCase(normDataType.charAt(0)) + normDataType.substring(1);
         eu.planets_project.services.datatypes.Property build = new eu.planets_project.services.datatypes.Property.Builder(
-                XcdlProperties.makePropertyURI("normData" + normDataType)).name("normData" + normDataType).type(
-                "normData").description(normDataType.toLowerCase()).value(normData.getValue()).build();
+                XcdlProperties.makePropertyURI("normData" + normDataType)).name(
+                "normData" + normDataType).type(normDataType.toLowerCase()).description(
+                "raw descr, normData " + normData.getId()).value(normData.getValue()).build();
         return build;
     }
 
     private String createDescription(final Property property, final ValueSet valueSet) {
-        LabValue labValue = valueSet.getLabValue();
-        String objectRef = valueSet.getObjectRef();
-        List<String> values = labValue != null ? labValue.getVals().get(0).getValues() : new ArrayList<String>();
-        String result = String.format("%s %s, name %s %s, " + "valueSet %s, labValue %s %s inch, objectRef %s",
-                property.getSource().value(), 
-                property.getCat().value(), 
-                property.getName().getId(), 
-                property.getName().getValues().get(0), 
-                valueSet.getId(), 
-                values.size() > 0 ? values.get(0) : "",
-                labValue != null ? labValue.getTypes().get(0).getValue().value() : NONE,
-                objectRef != null ? objectRef : NONE);
+        String objectRef = valueSet.getObjectRef() != null ? valueSet.getObjectRef() : NONE;
+        /* e.g. "raw desc, property id118, valueSet i_i1_i1_s32, objectRef none" */
+        String result = String.format("%s %s, %s %s, valueSet %s, objectRef %s", property
+                .getSource().value(), property.getCat().value(), PropertyName.PROPERTY.s, property
+                .getName().getId(), valueSet.getId(), objectRef);
         System.out.println("Generated description: " + result);
         return result;
     }

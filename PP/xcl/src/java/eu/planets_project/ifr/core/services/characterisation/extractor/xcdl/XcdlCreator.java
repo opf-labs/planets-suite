@@ -37,7 +37,8 @@ public final class XcdlCreator {
     private String xcdlXml;
 
     /**
-     * @param xcdlProps Properties to be converted into an XCDL. Each list represents the properties of a single object.
+     * @param xcdlProps Properties to be converted into an XCDL. Each list represents the properties
+     *            of a single object.
      */
 
     public XcdlCreator(final List<List<Property>> xcdlProps) {
@@ -73,7 +74,8 @@ public final class XcdlCreator {
      * Names for XCDL properties.
      */
     enum PropertyName {
-        PROPERTY("property"), PROPERTYSET("propertyset"), NORMDATA("normdata");
+        //TODO can we get rid of the normdata spacial case now that we have valid normadata IDs?
+        PROPERTY("property"), PROPERTYSET("propertyset"), NORMDATA("normdata"); 
         String s;
 
         private PropertyName(String s) {
@@ -98,30 +100,33 @@ public final class XcdlCreator {
             object.setId("o" + objectCount);
             objectCount++;
             for (Property prop : list) {
-                if (prop.getType() == null) {
+                // TODO: currently unused (only in tests) special case for property sets
+                String type = prop.getName().toLowerCase().equals(PropertyName.PROPERTYSET.s)
+                        ? PropertyName.PROPERTYSET.s : XcdlCreator.typeFromDescription(prop);
+                if (type == null) {
                     throw new IllegalArgumentException("Property has no name: " + prop);
                 }
-                if (prop.getType().toLowerCase().equals(PropertyName.NORMDATA.s)) {
+                if (type.toLowerCase().equals(PropertyName.NORMDATA.s)) {
                     addNormData(object, prop, normDataCount);
                     normDataCount++;
-                } else if (prop.getType().toLowerCase().equals(PropertyName.PROPERTYSET.s)) {
+                } else if (type.toLowerCase().equals(PropertyName.PROPERTYSET.s)) {
                     addPropertySet(object, prop, propSetCount);
                     propSetCount++;
-                } else if (prop.getType().toLowerCase().equals(PropertyName.PROPERTY.s)) {
+                } else if (type.toLowerCase().equals(PropertyName.PROPERTY.s)) {
                     addProperty(object, prop);
                 } else {
                     throw new IllegalArgumentException(String.format(
-                            "Cannot convert property with type '%s', only know about '%s'", prop.getType(), Arrays
-                                    .asList(PropertyName.values())));
+                            "Cannot convert property with type '%s', only know about '%s'", type,
+                            Arrays.asList(PropertyName.values())));
                 }
             }
             xcdl.getObjects().add(object);
         }
         return xcdl;
     }
-
     private void addProperty(
-            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object, Property prop) {
+            eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Object object,
+            Property prop) {
         eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property p = new eu.planets_project.ifr.core.services.characterisation.extractor.xcdl.generated.Property();
 
         /*
@@ -131,8 +136,7 @@ public final class XcdlCreator {
         String[] valueTokens = clean(levelOneTokens[0].split(" "));
         String[] nameTokens = clean(levelOneTokens[1].split(" "));
         String[] valueSetTokens = clean(levelOneTokens[2].split(" "));
-        String[] labValTokens = clean(levelOneTokens[3].split(" "));
-        String[] objectRefTokens = clean(levelOneTokens[4].split(" "));
+        String[] objectRefTokens = clean(levelOneTokens[3].split(" "));
 
         p.setId("p" + "-" + object.getId() + "-" + nameTokens[1].replaceAll("id", ""));
 
@@ -141,7 +145,7 @@ public final class XcdlCreator {
 
         /* The name element: */
         Name name = new Name();
-        name.getValues().add(nameTokens[2]);
+        name.getValues().add(prop.getName());
         name.setId(nameTokens[1]);
         p.setName(name);
 
@@ -158,10 +162,10 @@ public final class XcdlCreator {
         /* The lab val: */
         LabValue labValue = new LabValue();
         Type type = new Type();
-        type.setValue(determineLabValType(labValTokens[2]));
+        type.setValue(determineLabValType(prop.getName()));
         labValue.getTypes().add(type);
         Val val = new Val();
-        val.getValues().add(labValTokens[1]);
+        val.getValues().add(prop.getValue());
         labValue.getVals().add(val);
         set.setLabValue(labValue);
 
@@ -188,7 +192,8 @@ public final class XcdlCreator {
         ValueSetRelations rel = new ValueSetRelations();
         String desc = prop.getDescription();
         if (desc == null || !desc.contains(" ")) {
-            throw new IllegalArgumentException(String.format("Cannot use description '%s' here", desc));
+            throw new IllegalArgumentException(String.format("Cannot use description '%s' here",
+                    desc));
         }
         String[] levelOneTokens = desc.split(",");
         for (String s : levelOneTokens) {
@@ -210,7 +215,7 @@ public final class XcdlCreator {
         if (description == null || description.trim().equals("")) {
             throw new IllegalArgumentException("Normdata property must have a description");
         }
-        normData.setType(InformType.fromValue(description.toLowerCase()));
+        normData.setType(InformType.fromValue(prop.getType()));
         normData.setId("nd" + normDataCount);
         if (prop.getValue() == null) {
             throw new IllegalArgumentException("Normdata must have a value");
@@ -225,10 +230,23 @@ public final class XcdlCreator {
         try {
             labValType = LabValType.fromValue(labValProp);
         } catch (IllegalArgumentException e) {
-            System.err.println(String.format("Warning: could not create a LabValType for '%s', defaulting to '%s'",
+            System.err.println(String.format(
+                    "Warning: could not create a LabValType for '%s', defaulting to '%s'",
                     labValProp, labValType));
         }
         return labValType;
+    }
+
+    static String typeFromDescription(Property property) {
+        String trim = null;
+        try {
+            trim = property.getDescription().split(",")[1].trim().split(" ")[0].trim();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            IllegalArgumentException x = new IllegalArgumentException(
+                    "Could not parse property description: " + property.getDescription());
+            x.initCause(e);
+        }
+        return trim;
     }
 
 }

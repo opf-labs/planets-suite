@@ -23,14 +23,16 @@ import eu.planets_project.services.datatypes.ServiceReport.Status;
 import eu.planets_project.services.datatypes.ServiceReport.Type;
 
 /**
- * Access to XCDL properties based on XML processing only (no dependencies on the JAXB-generated classes).
+ * Access to XCDL properties based on XML processing only (no dependencies on the JAXB-generated
+ * classes).
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 public final class XcdlProperties implements XcdlAccess {
 
     /* XcdlAccess implementation: */
 
-    private static final Namespace NS = Namespace.getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
+    private static final Namespace NS = Namespace
+            .getNamespace("http://www.planets-project.eu/xcl/schemas/xcl");
 
     private Document doc;
 
@@ -76,12 +78,12 @@ public final class XcdlProperties implements XcdlAccess {
             Element labVal = e.getChild("valueSet", NS).getChild("labValue", NS);
             String value = labVal.getChildText("val", NS);
             URI propUri = XcdlProperties.makePropertyURI(name);
-            Property p = new Property.Builder(propUri).name(name).value(value).type(labVal.getChildText("type", NS))
-                    .build();
+            Property p = new Property.Builder(propUri).name(name).value(value).type(
+                    labVal.getChildText("type", NS)).build();
             properties.add(p);
         }
-        return new CharacteriseResult(properties, new ServiceReport(Type.INFO,
-                Status.SUCCESS, "Flat properties from XCDL"));
+        return new CharacteriseResult(properties, new ServiceReport(Type.INFO, Status.SUCCESS,
+                "Flat properties from XCDL"));
     }
 
     /* Relatively unrelated: static methods for handling property uris: */
@@ -103,14 +105,16 @@ public final class XcdlProperties implements XcdlAccess {
     }
 
     /**
-     * @param properties The XCDL properties, possibly including norm data and set properties to be filtered
-     * @return A new list containing only the property objects that are actual XCDL properties (no norm data or property
-     *         sets)
+     * @param properties The XCDL properties, possibly including norm data and set properties to be
+     *            filtered
+     * @return A new list containing only the property objects that are actual XCDL properties (no
+     *         norm data or property sets)
      */
     public static List<Property> realProperties(final List<Property> properties) {
         List<Property> result = new ArrayList<Property>();
         for (Property property : properties) {
-            if (property.getType() != null && property.getType().equalsIgnoreCase(PropertyName.PROPERTY.s)) {
+            String type = XcdlCreator.typeFromDescription(property);
+            if (type != null && type.equalsIgnoreCase(PropertyName.PROPERTY.s)) {
                 result.add(property);
             }
         }

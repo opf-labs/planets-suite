@@ -55,17 +55,19 @@ public class XcdlAccessTests {
     public void testListPropertiesMatchExtractedProperties() {
         XcdlCharacterise characterise = new XcdlCharacterise();
         /* Check what we can expect for PNG: */
-        URI uri = FormatRegistryFactory.getFormatRegistry().getUrisForExtension("png").iterator().next();
+        URI uri = FormatRegistryFactory.getFormatRegistry().getUrisForExtension("png").iterator()
+                .next();
         List<Property> extractable = characterise.listProperties(uri);
         /* Now we actually extract a PNG: */
-        CharacteriseResult result = characterise.characterise(new DigitalObject.Builder(Content.byValue(new File(PNG)))
-                .format(uri).build(), null);
+        CharacteriseResult result = characterise.characterise(new DigitalObject.Builder(Content
+                .byValue(new File(PNG))).format(uri).build(), null);
         List<Property> extracted = result.getProperties();
         /* And check if the IDs correspond: */
         assertAllExtractedPropsAreListedAsExtractable(extractable, extracted);
     }
 
-    private void assertAllExtractedPropsAreListedAsExtractable(List<Property> extractable, List<Property> extracted) {
+    private void assertAllExtractedPropsAreListedAsExtractable(List<Property> extractable,
+            List<Property> extracted) {
         extracted = XcdlProperties.realProperties(extracted);
         for (Property property : extracted) {
             boolean found = false;
@@ -75,8 +77,9 @@ public class XcdlAccessTests {
                     break;
                 }
             }
-            Assert.assertTrue("List of supposedly extractable properties should contain extracted property: "
-                    + property, found);
+            Assert.assertTrue(
+                    "List of supposedly extractable properties should contain extracted property: "
+                            + property, found);
         }
     }
 
@@ -85,8 +88,15 @@ public class XcdlAccessTests {
      */
     private void check(final XcdlAccess xcdlAccess, String normDataType) {
         List<Property> properties = xcdlAccess.getCharacteriseResult().getProperties();
-        Assert.assertTrue("No properties extracted by " + xcdlAccess.getClass().getSimpleName(), properties.size() > 0);
+        Assert.assertTrue("No properties extracted by " + xcdlAccess.getClass().getSimpleName(),
+                properties.size() > 0);
         testNormDataPropertyName(xcdlAccess, normDataType);
+        for (Property prop : properties) {
+            Assert.assertTrue("Properties should not have empty values", prop.getValue().trim()
+                    .length() > 0);
+            Assert.assertTrue("Properties should not have empty names", prop.getName().trim()
+                    .length() > 0);
+        }
     }
 
     private void testNormDataPropertyName(XcdlAccess access, String normDataType) {
@@ -94,7 +104,8 @@ public class XcdlAccessTests {
         for (Property property : properties) {
             String uri = property.getUri().toString();
             if (uri.contains("normData")) {
-                Assert.assertEquals("Norm data property URI should match the ID used in the ontology;",
+                Assert.assertEquals(
+                        "Norm data property URI should match the ID used in the ontology;",
                         "http://planetarium.hki.uni-koeln.de/public/XCL/ontology/XCLOntology.owl#normData"
                                 + normDataType, uri);
             }
