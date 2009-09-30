@@ -31,7 +31,9 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjec
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Template;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters.Param;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -181,6 +183,11 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
     	this.wfConf = wfConfig;
     }
     
+    /**
+     * The original xmlConfig file that was submitted by the user - it does not contain any changes made during
+     * step2 editParameters
+     * @return
+     */
     public WorkflowConf getWeeXMLConfig(){
     	return wfConf;
     }
@@ -237,6 +244,70 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
         return stringBuilder.toString();
     }
     
+    /**
+     * Takes the current configuration (which may consist of 
+     * a) an uploaded xml configuration,
+     * b) the altered parameter and service selection in step2 and 
+     * marshalls all this into an WorkflowConf object
+     * wich may be offered to the client for downloading (by serealizing it to XML) or for submitting it to the wee (WorkflowFactory).
+     * @return
+     */
+    public WorkflowConf buildWorkflowConfFromCurrentConfiguration(){
+    	String wfConfigXML = this.buildXMLConfigFromCurrentConfiguration();
+    	try {
+			return wfConfigUtil.unmarshalWorkflowConfig(wfConfigXML);
+		} catch (JAXBException e) {
+			log.debug("Unable to retrieve the WorkflowConfiguration",e);
+			return null;
+		}
+    }
+    
+    /**
+     * Is the same as buildWorkflowConfFromCurrentConfiguration but returns the xml representation
+     * instead of the WorkflowConf object. This may be offered for downloading.
+     * @see buildWorkflowConfFromCurrentConfiguration
+     * @return
+     */
+    public String buildXMLConfigFromCurrentConfiguration(){
+    	WorkflowConf conf = new WorkflowConf();
+    	
+    	//1.add the template retrieved from the uploaded wfconfig
+    	Template serTempl = this.getWeeXMLConfig().getTemplate();
+    	
+    	Services services = new Services();
+    	//2.browse through the servicebeans and build the Services object
+    	for(ServiceBean sb : this.getServiceBeans()){
+    		Service service = new Service();
+    		service.setId(sb.getServiceId());
+    		service.setEndpoint(sb.getServiceEndpoint());
+    		
+    		Parameters parameters = new Parameters();
+    		//3. iterate over all parameters that have been created/altered
+    		for(ServiceParameter param : sb.getServiceParameters()){
+    			Param parameter = new Param();
+    			parameter.setName(param.getName());
+    			parameter.setValue(param.getValue());
+    			parameters.getParam().add(parameter);
+    		}
+    		if(parameters.getParam().size()>0){
+    			//there needs to be a Parameter element only if there's a param for being xsd compliant
+    			service.setParameters(parameters);
+    		}
+    		
+    		services.getService().add(service);
+    	}
+    	
+    	conf.setServices(services);
+    	conf.setTemplate(serTempl);
+    	
+    	try {
+			return wfConfigUtil.marshalWorkflowConfigToXMLTemplate(conf);
+		} catch (Exception e) {
+			log.debug("Unable to retrieve the XMLWorkflowConfiguration",e);
+			return null;
+		}
+    }
+   
     
     public boolean isTemplateAvailableInWftRegistry(){
     	return bWfTemplateAvailableInRegistry;
