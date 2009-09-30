@@ -63,7 +63,7 @@
 	     <h:outputText value=" Valid configuration file" rendered="#{ExpTypeExecutablePP.validXMLConfig}"/><br/>
        
        	 <t:graphicImage value="/graphics/toolbar_logout.gif" rendered="#{!ExpTypeExecutablePP.templateAvailableInWftRegistry}"/>
-	     <h:outputText value=" requested workflow not available on the system" rendered="#{!ExpTypeExecutablePP.templateAvailableInWftRegistry}"/>
+	     <h:outputText value=" requested workflow not available on the workflow execution system" rendered="#{!ExpTypeExecutablePP.templateAvailableInWftRegistry}"/>
 	     <t:graphicImage value="/graphics/state_ok.gif" rendered="#{ExpTypeExecutablePP.templateAvailableInWftRegistry}"/>
 	     <h:outputText value=" requested workflow available on the system" rendered="#{ExpTypeExecutablePP.templateAvailableInWftRegistry}"/><br/>
        </h:panelGroup>
@@ -182,7 +182,7 @@
 	                    </rich:dataTable>
 	                </rich:column>	                    
 	                <rich:column>
-	                		<a4j:commandButton value="Edit Parameters" id="editParamButton" actionListener="#{ExpTypeExecutablePP.commandSetServiceBeanIdForEditParam}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');" reRender="configEditParamsBody">
+	                		<a4j:commandButton value="Edit Parameters" id="editParamButton" ajaxSingle="true" actionListener="#{ExpTypeExecutablePP.commandSetServiceBeanForEditParam}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');" reRender="configEditParamsBody">
 	                			<a4j:actionparam name="selServiceID" value="#{service.serviceId}"/>
 	                		</a4j:commandButton>
 	                </rich:column>	                   

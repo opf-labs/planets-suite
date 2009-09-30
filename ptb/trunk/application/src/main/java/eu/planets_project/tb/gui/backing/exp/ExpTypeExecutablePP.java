@@ -53,17 +53,21 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	private HashMap<String, String> serviceNameMap;
 	private WorkflowConfigUtil wfConfigUtil;
 	private HtmlDataTable parameterTable;
+	private WorkflowConf wfConf;
 	//The service bean used on the editParameter screen
 	private ServiceBean sbiq;
 	private String newValue = "";
 	private String parameterName = "";
 	private String parameterValue = "";
+	//contains the default parameters from ser. registry for a given service ID
+	private HashMap<String,List<Parameter>> defaulParamsFromRegistryForServiceID;
 	
 	public ExpTypeExecutablePP(){
 		initBean();
 	}
 	
 	private void initBean(){
+		wfConf = null;
 		serviceBeans = new ArrayList<ServiceBean>();
 		serviceLookup = new HashMap<String, ServiceBean>();
 		serviceNameMap = new HashMap<String, String>();
@@ -85,6 +89,15 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		serviceTypes.put("ViewAction",
 				"eu.planets_project.services.view.ViewAction");
 		wfConfigUtil = new WorkflowConfigUtil();
+		defaulParamsFromRegistryForServiceID = new HashMap<String,List<Parameter>>();
+	}
+	
+	
+	/**
+	 * reinits the bean for the step where an template gets uploaded 
+	 */
+	public void reInitBeanForWFXMLConfigUploaded(){
+		this.initBean();
 	}
 	
 	HashMap<String,List<MeasurementImpl>> manualObsCache;
@@ -164,7 +177,6 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
     	return xmlConfigFileRef;
     }
     
-    WorkflowConf wfConf = null;
     public void setWeeXMLConfig(WorkflowConf wfConfig){
     	this.wfConf = wfConfig;
     }
@@ -353,6 +365,8 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 								.getName(), par.getValue());
 						sb.addParameter(spar);
 					}
+					//also pupulate the default parameters in the cache object
+					defaulParamsFromRegistryForServiceID.put(sb.getServiceId(), pList);
 				} else {
 					log.info("Service: " + sdesc.getName() +" has no default parameters.");
 				}
@@ -476,6 +490,10 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		sbiq.getServiceParameters().remove(dataRow);
 	}
 
+	/**
+	 * Add a parameter in the editParam screen
+	 * @param event
+	 */
 	public void addParameter(ActionEvent event) {
 		if (sbiq == null) {
 			log.debug("No ServiceBean selected!");
@@ -492,6 +510,8 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 			return;
 		}
 		sbiq.addParameter(new ServiceParameter(parameterName, parameterValue));
+		this.parameterName ="";
+		this.parameterValue ="";
 	}
 	
 	public String getNewValue() {
@@ -518,22 +538,24 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		this.parameterValue = value;
 	}
 	
-	public String getEditedSBId() {
-		String selectedRecordId = getServiceBeanIdForEditParam();
-		if ((selectedRecordId == null)||selectedRecordId.equals("")){
-			if(sbiq!=null){
-				return sbiq.getServiceId();
-			}
-			log.debug("Unable to identify a selected service Id!");
-			return "";
+	/**
+	 * Sets a sb record for the edit process
+	 * @param sb
+	 */
+	public void setSBForEdit(ServiceBean sb){
+		this.sbiq = sb;
+	}
+	
+	
+	/**
+	 * Returns the bean that's used on the editParam screen
+	 * @return
+	 */
+	public ServiceBean getEditedSB(){
+		if(sbiq!=null){
+			return sbiq;
 		}
-		ServiceBean sb = serviceLookup.get(selectedRecordId);
-		if (sb != null) {
-			sbiq = sb;
-			return selectedRecordId;
-		}
-		log.debug("Unable to identify a serviceBean Id!");
-		return "";
+		return null;
 	}
 	
 	private String getParamValueFromRequest(String s) {
@@ -544,24 +566,39 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	}
 	
 	
-	private String sServiceBeanIdForEditParam="";
-	public void commandSetServiceBeanIdForEditParam(ActionEvent evt){
+	
+	public void commandSetServiceBeanForEditParam(ActionEvent evt){
 		FacesContext context = FacesContext.getCurrentInstance();
 		Object o1 = context.getExternalContext().getRequestParameterMap().get("selServiceID");
 		if(o1==null){
 			return;
 		}
-		sServiceBeanIdForEditParam = (String)o1; 
+		String sServiceBeanIdForEditParam = (String)o1; 
+		this.newValue="";
+		this.parameterName="";
+		this.parameterValue="";
+
+		//set the bean that's used for the edit mode - but clone it (allows cancel and update button)
+		ServiceBean sb = this.serviceLookup.get(sServiceBeanIdForEditParam);
+		ServiceBean sbForEdit = sb.clone();
+		this.setSBForEdit(sbForEdit);
 	}
 	
-	private String getServiceBeanIdForEditParam(){
-		if(sServiceBeanIdForEditParam!=null){
-			return sServiceBeanIdForEditParam;
-		}
-		else{
-			return "";
+	/**
+	 * Triggers the update parameter information process from the edit service parameters screen to update
+	 * the service bean record with the new parameters
+	 */
+	public void commandUpdateServiceBeanFromEditParamScreen(ActionEvent evt){
+		
+		//update the service bean's parameter information from the edit-bean
+		ServiceBean sb = this.serviceLookup.get(this.sbiq.getServiceId());
+		sb.clearParameters();
+		
+		for(ServiceParameter param : this.getEditedSB().getServiceParameters()){
+			sb.addParameter(param);
 		}
 	}
+	
 	
 	//END INFORMATION REQUIRED FOR THE EDIT PARAMETER WF SCREEN
 
@@ -569,7 +606,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	 * A backing bean for handling services contained in the surrounding workflow
 	 * 
 	 */
-	public class ServiceBean {
+	public class ServiceBean implements Cloneable{
 
 		private String serviceId;
 		private String serviceType;
@@ -704,9 +741,28 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		public void clearParameters() {
 			this.serviceParameters.clear();
 		}
+		
+		/* 
+		 * clone the object and create a deep copy for the serviceParameter to decouple them from the original object
+		 * this allows its usage on the edit Screen
+		 */
+		public ServiceBean clone(){
+			try{
+				ServiceBean clonedSB = (ServiceBean)super.clone();
+				clonedSB.serviceParameters = new ArrayList<ServiceParameter>();
+				
+				for(ServiceParameter param : this.getServiceParameters()){
+					clonedSB.serviceParameters.add(param.clone());
+				}
+				return clonedSB;
+			}catch(Exception e){
+				log.error("Clone ServiceBean not supported"+e);
+				return null;
+			}
+		}
 	}
 
-	public class ServiceParameter {
+	public class ServiceParameter implements Cloneable{
 		private String name;
 		private String value;
 
@@ -732,6 +788,15 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 
 		public void setValue(String v) {
 			this.value = v;
+		}
+		
+		public ServiceParameter clone(){
+			try {
+				return (ServiceParameter) super.clone();
+			} catch (CloneNotSupportedException e) {
+				log.error("Clone not supported for ServiceParameter "+e);
+				return null;
+			}
 		}
 	}
 

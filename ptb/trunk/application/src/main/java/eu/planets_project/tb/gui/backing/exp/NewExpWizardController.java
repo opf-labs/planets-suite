@@ -1628,6 +1628,7 @@ public class NewExpWizardController{
     
     public String commandUploadWfXMLConfigFile(){
     	ExpTypeExecutablePP eTypeExecPP = (ExpTypeExecutablePP)ExpTypeBackingBean.getExpTypeBean(AdminManagerImpl.EXECUTABLEPP);
+    	eTypeExecPP.reInitBeanForWFXMLConfigUploaded();
     	
     	//0) upload the specified WFconfig to the user's personal repository for storing it
         log.info("commandUploadWfXMLConfigFile: uploading an xml configuration for a WEE WF.");
