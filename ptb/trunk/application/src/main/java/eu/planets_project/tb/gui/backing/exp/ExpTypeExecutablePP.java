@@ -27,6 +27,8 @@ import org.richfaces.component.html.HtmlInplaceSelect;
 
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.security.api.model.User;
+import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
@@ -38,6 +40,7 @@ import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Servi
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -62,7 +65,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	private String parameterName = "";
 	private String parameterValue = "";
 	//contains the default parameters from ser. registry for a given service ID
-	private HashMap<String,List<Parameter>> defaulParamsFromRegistryForServiceID;
+	//private HashMap<String,List<Parameter>> defaulParamsFromRegistryForServiceID;
 	
 	public ExpTypeExecutablePP(){
 		initBean();
@@ -91,7 +94,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		serviceTypes.put("ViewAction",
 				"eu.planets_project.services.view.ViewAction");
 		wfConfigUtil = new WorkflowConfigUtil();
-		defaulParamsFromRegistryForServiceID = new HashMap<String,List<Parameter>>();
+		//defaulParamsFromRegistryForServiceID = new HashMap<String,List<Parameter>>();
 	}
 	
 	
@@ -412,12 +415,12 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
      * invokes getServiceDescirptionFromServiceRegistry()
      * @param sb
      * @param sEndpoint
-     * @param addDefaultParams allows to trigger if the default parameters shall be added to the service bean
+     * @param addDefaultParams allows to trigger if the default parameters shall be added to the service bean as standard parameters
      * @return
      * @throws Exception 
      * @throws MalformedURLException 
      */
-    private ServiceDescription helperGetMetadataFromSerRegistry(ServiceBean sb, String sEndpoint, boolean addDefaultParams) throws Exception{
+    private ServiceDescription helperGetMetadataFromSerRegistry(ServiceBean sb, String sEndpoint, boolean addDefaultParamsAsStandardParams) throws Exception{
     	try{
     		ServiceDescription sdesc = getServiceDescirptionFromServiceRegistry(sEndpoint);
     		sb.setServiceName(sdesc.getName());
@@ -425,23 +428,28 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 			sb.setServiceDescription(sdesc.getDescription());
 			sb.setServiceType(serType.substring(serType
 					.lastIndexOf('.') + 1));
-			if(addDefaultParams){
-				//get default parameters for Service
-				List<Parameter> pList = sdesc.getParameters();
-				if (pList != null) {
-					Iterator<Parameter> it = pList.iterator();
-					while (it.hasNext()) {
-						Parameter par = it.next();
-						ServiceParameter spar = new ServiceParameter(par
-								.getName(), par.getValue());
+			
+			//get default parameters for Service
+			List<Parameter> pList = sdesc.getParameters();
+			if (pList != null) {
+				Iterator<Parameter> it = pList.iterator();
+				while (it.hasNext()) {
+					Parameter par = it.next();
+					ServiceParameter spar = new ServiceParameter(par
+							.getName(), par.getValue());
+					//decide if the default params are added as standard params
+					if(addDefaultParamsAsStandardParams){
 						sb.addParameter(spar);
 					}
-					//also pupulate the default parameters in the cache object
-					defaulParamsFromRegistryForServiceID.put(sb.getServiceId(), pList);
-				} else {
-					log.info("Service: " + sdesc.getName() +" has no default parameters.");
+					//add the default params to the bean
+					sb.addDefaultParameter(spar);
 				}
+				//also pupulate the default parameters in the cache object
+				//defaulParamsFromRegistryForServiceID.put(sb.getServiceId(), pList);
+			} else {
+				log.info("Service: " + sdesc.getName() +" has no default parameters.");
 			}
+
 			sb.setServiceAvailable(true);
 			return sdesc;
     	}catch(Exception e){
@@ -670,6 +678,26 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		}
 	}
 	
+	 /**
+	  * Provides information for the auto-complete form on the param screen.
+	  * @param query
+	  * @return
+	 */
+	public List<ServiceParameter> suggestMatchingDefaultParamsByName(Object query) {
+	        if( query == null) return null;
+	        // look for matching default params
+	        String q = (String) query;
+	        // Filter this into a list of matching parameters:
+	        ArrayList<ServiceParameter> matches = new ArrayList<ServiceParameter>();
+	        for(ServiceParameter sp :  this.getEditedSB().getDefaultServiceParameters()){
+	            if( sp.getName().startsWith(q) ||
+	            	sp.getName().contains(q)) {
+	                  matches.add(sp);
+	            }
+	        }
+	        return matches;
+	    }
+	
 	
 	//END INFORMATION REQUIRED FOR THE EDIT PARAMETER WF SCREEN
 
@@ -687,16 +715,19 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		private ArrayList<ServiceParameter> serviceParameters;
 		private ArrayList<SelectItem> serviceNames;
 		private boolean bServiceAvailable = false;
+		private ArrayList<ServiceParameter> defaultParameters;
 
 		public ServiceBean() {
 			this.serviceName = "None";
 			this.serviceParameters = new ArrayList<ServiceParameter>();
+			this.defaultParameters = new ArrayList<ServiceParameter>(); 
 		}
 
 		public ServiceBean(String id) {
 			this.serviceId = id;
 			this.serviceName = "None";
 			this.serviceParameters = new ArrayList<ServiceParameter>();
+			this.defaultParameters = new ArrayList<ServiceParameter>(); 
 		}
 		
 		public boolean isServiceAvailable(){
@@ -812,6 +843,21 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		public void clearParameters() {
 			this.serviceParameters.clear();
 		}
+		
+		public void addDefaultParameter(ServiceParameter param){
+			this.getDefaultServiceParameters().add(param);
+		}
+		
+		/**
+		 * Contains the default parameters as provided through the service registry
+		 * This field may not be populated for every item
+		 * @return
+		 */
+		public List<ServiceParameter> getDefaultServiceParameters() {
+			return this.defaultParameters;
+		}
+		
+		
 		
 		/* 
 		 * clone the object and create a deep copy for the serviceParameter to decouple them from the original object

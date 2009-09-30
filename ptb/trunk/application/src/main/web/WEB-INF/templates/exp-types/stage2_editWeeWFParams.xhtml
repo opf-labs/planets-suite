@@ -83,18 +83,30 @@
 		       <h:panelGrid columns="2">
 			        <h:panelGrid columns="2">
 			            <h:outputText value="Name: "/>
-			            <h:inputText value="#{ExpTypeExecutablePP.parameterName}" >
-			            	<a4j:support requestDelay="100" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
-			            </h:inputText>
+			            <h:inputText id="paramNameinput" value="#{ExpTypeExecutablePP.parameterName}" />
 			            
 			            <h:outputText value="Value:"/>
-			            <h:inputText value="#{ExpTypeExecutablePP.parameterValue}">
-			            	<a4j:support requestDelay="100" event="onkeyup" eventsQueue="foo" ignoreDupResponses="true"/>
-			            </h:inputText>
+			            <h:inputText value="#{ExpTypeExecutablePP.parameterValue}"/>
 			        </h:panelGrid>
 					<a4j:commandButton actionListener="#{ExpTypeExecutablePP.addParameter}" value="Add" eventsQueue="foo" ignoreDupResponses="true" reRender="configEditParamsBody"/>
 		    	</h:panelGrid>
      		</rich:panel>
+     		
+            <rich:suggestionbox id="suggestionDefaultParams" height="60" width="500"
+            	rules="none"
+            	suggestionAction="#{ExpTypeExecutablePP.suggestMatchingDefaultParamsByName}" var="qparams"
+            	for="paramNameinput" fetchValue="#{qparams.name}"
+            	nothingLabel="No matching users found." columnClasses="center"
+            	requestDelay="100" eventsQueue="foo" ignoreDupResponses="true"
+            	ajaxSingle="true">
+            	<h:column>
+                    <f:facet name="header">
+                        <h:outputText value="123"></h:outputText>
+                    </f:facet>
+                    <h:outputText value="name: #{qparams.name} " /><h:outputText value=" values: #{qparams.value}" />
+                </h:column>
+      		</rich:suggestionbox>
+     	
      	</a4j:form>
 	    	<h:panelGroup>
 	 			<a4j:commandButton id="returnToMain" actionListener="#{ExpTypeExecutablePP.commandUpdateServiceBeanFromEditParamScreen}" ajaxSingle="true" value="Done" eventsQueue="foo" ignoreDupResponses="true" oncomplete="Richfaces.hideModalPanel('configEditParamsPanel');" reRender="wfConfigPanelGroup,configEditParamsBody"/>
