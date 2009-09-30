@@ -15,6 +15,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -36,7 +37,7 @@ public class WorkflowConfigUtil {
 	private static Log log = LogFactory.getLog(WorkflowConfigUtil.class);
 	
 	/**
-	 * Uses the JAXB to provide a java api for the xml config marshalling/unmarshalling
+	 * Uses the JAXB to provide a java api for the xml config marshalling/unmarshalling of workflow configurations
 	 * @return
 	 * @throws JAXBException 
 	 */
@@ -54,9 +55,19 @@ public class WorkflowConfigUtil {
 			} 
 	}
 	
-	public static String marshalWorkflowConfigToXMLTemplate(WorkflowConf wfConfig) throws JAXBException, IOException{
+	/**
+	 * Uses the JAXB to provide a java api for the xml config marshalling/unmarshalling of workflow configurations
+	 * @param wfConfig
+	 * @return
+	 * @throws JAXBException
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	public String marshalWorkflowConfigToXMLTemplate(WorkflowConf wfConfig) throws JAXBException, IOException, SAXException{
 
 		JAXBContext context;
+		InputStream bis = getClass().getClassLoader().getResourceAsStream(
+		"planets_wdt.xsd");
 		try {
 			 //Create temp file.
 	        File temp = File.createTempFile("wfconfig", ".xml");
@@ -66,7 +77,18 @@ public class WorkflowConfigUtil {
 	        
 			context = JAXBContext.newInstance(WorkflowConf.class);
 			Marshaller m = context.createMarshaller(); 
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
+			m.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION, "planets_wdt.xsd");
+
+			// create a SchemaFactory
+			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			// load a schema, represented by a Schema instance
+			Schema schema = factory.newSchema(new StreamSource(bis));
+			m.setSchema(schema);
+			
+			//now call the actual marshalling job
 			m.marshal(wfConfig,fos);
+			
 			
 			String ret = readXMLConfigFileToString(temp);
 			return ret;
@@ -76,6 +98,9 @@ public class WorkflowConfigUtil {
 		}catch (IOException e2) {
 			log.error("marshalWorkflowConfigToXML failed due to properly reading inputFile",e2);
 			throw e2;
+		} catch (SAXException e3) {
+			log.error("marshalWorkflowConfigToXML failed",e3);
+			throw e3;
 		} 
 	}
 	
