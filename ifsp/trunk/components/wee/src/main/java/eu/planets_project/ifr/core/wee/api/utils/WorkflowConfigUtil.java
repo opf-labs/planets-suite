@@ -1,13 +1,19 @@
 package eu.planets_project.ifr.core.wee.api.utils;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -46,8 +52,43 @@ public class WorkflowConfigUtil {
 				log.error("unmarshalWorkflowConfig failed",e);
 				throw e;
 			} 
+	}
+	
+	public static String marshalWorkflowConfigToXMLTemplate(WorkflowConf wfConfig) throws JAXBException, IOException{
 
+		JAXBContext context;
+		try {
+			 //Create temp file.
+	        File temp = File.createTempFile("wfconfig", ".xml");
+	        //Delete temp file when program exits.
+	        temp.deleteOnExit();
+	        FileOutputStream fos = new FileOutputStream(temp);
+	        
+			context = JAXBContext.newInstance(WorkflowConf.class);
+			Marshaller m = context.createMarshaller(); 
+			m.marshal(wfConfig,fos);
+			
+			String ret = readXMLConfigFileToString(temp);
+			return ret;
+		} catch (JAXBException e) {
+			log.error("marshalWorkflowConfigToXML failed",e);
+			throw e;
+		}catch (IOException e2) {
+			log.error("marshalWorkflowConfigToXML failed due to properly reading inputFile",e2);
+			throw e2;
+		} 
+	}
+	
+	private static String readXMLConfigFileToString(File file) throws IOException{
+		BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line = null;
 
+        while ((line = bufferedReader.readLine()) != null) {
+        stringBuilder.append(line + "\n");
+        }
+        bufferedReader.close();
+        return stringBuilder.toString();
 	}
 	
 	private void checkValidXMLConfig(InputStream xmlWFConfig) throws Exception{
