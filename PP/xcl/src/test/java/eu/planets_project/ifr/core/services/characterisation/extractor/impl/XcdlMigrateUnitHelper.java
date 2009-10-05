@@ -32,7 +32,7 @@ public final class XcdlMigrateUnitHelper {
     static final File TIFF_INPUT = new File(RESOURCES + "test_samples/tiff/jello.tif");
     static final File BMP_INPUT = new File(RESOURCES + "test_samples/bmp/TRU256.BMP");
     static final File GIF_INPUT = new File(RESOURCES + "test_samples/gif/spaldingbasketball.gif");
-    static final File PDF_INPUT = new File(RESOURCES + "test_samples/pdf/quatsch.pdf");
+    static final File PDF_INPUT = new File(RESOURCES + "test_samples/pdf/SizeTest.pdf");
     static final File JPEG_INPUT = new File(RESOURCES + "test_samples/jpeg/sanyo-vpcg250.jpg");
     static final File PNG_INPUT = new File(RESOURCES + "test_samples/png/basi4a16.png");
     static final File STRANGE_TIFF_FILE = new File("PA/imagemagick/test/resources/test_images/test_tiff/strange_tiff.tif");

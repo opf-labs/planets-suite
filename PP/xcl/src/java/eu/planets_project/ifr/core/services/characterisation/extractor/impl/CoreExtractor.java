@@ -279,14 +279,16 @@ public class CoreExtractor {
         plogger.info("Creating File to return...");
 //        System.out.println("Output-file path: " + outputFilePath);
         File resultXCDL = new File(outputFilePath);
-
+        if(!resultXCDL.exists()) {
+        	throw new IllegalStateException("File doesn't exist: " + resultXCDL.getAbsolutePath());
+        }
 //        byte[] cleanedXCDL = null;
 
-        if (normDataDisabled) {
+//        if (normDataDisabled) {
 //            System.out.println("Removing normData...");
-            return removeNormData(resultXCDL);
-//            binary_out = cleanedXCDL;
-        }
+//            return removeNormData(resultXCDL);
+////            binary_out = cleanedXCDL;
+//        }
 
         return resultXCDL;
     }
