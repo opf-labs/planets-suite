@@ -2,7 +2,9 @@ package eu.planets_project.ifr.core.services.migration.genericwrapper;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -118,10 +120,15 @@ public class MurkyFactory {
         final List<String> commandLineFragments = getCommandLineFragments(
                 pathNode, "commandline");
 
-        // Get temp files
-//        final List<String> tempFileLabels = getTempFileLabels(pathNode,
-//                "tempfiles");
+        // Get input file name
         
+
+        // Get output file name
+
+        // Get temp files
+        final Map<String, String> tempFileDeclarations = getTempFileDeclarations(
+                pathNode, "tempfiles");
+
         // Get tool parameters
         // Get tool presets
 
@@ -134,20 +141,67 @@ public class MurkyFactory {
             newPath.setSourceFormat(sourceFormatURI);
             newPath.setDestinationFormat(destinationFormatURI);
             newPath.setCommandLine(commandLineFragments);
-//            newPath.addTempFilesDeclaration(tempFileDeclaration);
+            newPath.addTempFilesDeclarations(tempFileDeclarations);
             paths.add(newPath);
         }
         return paths;
     }
 
     /**
+     * Parse all declarations of temporary files from <code>tempFilesNode</code>
+     * and add the information to <code>pathToConfigure</code>.
+     * 
      * @param pathNode
-     * @param string
-     * @return
+     *            <code>Node</code> containing the current path node being
+     *            processed.
+     * @param tempFilesElementName
+     *            Name of the element containing the temp. file elements.
+     * 
+     * @return a <code>Map</code> containing the labels of the declared temp.
+     *         files and associated desired filename (if defined).
+     * 
+     * @throws MigrationPathConfigException
+     *             if any errors were encountered while parsing the node
+     *             specified <code>tempFilesElementName</code> in the
+     *             <code>pathNode</code>.
      */
-    private List<String> getTempFileLabels(Node pathNode, String string) {
-        // TODO Auto-generated method stub
-        return null;
+    private Map<String, String> getTempFileDeclarations(Node pathNode,
+            String tempFilesElementName) throws MigrationPathConfigException {
+
+        final HashMap<String, String> tempFileMappings = new HashMap<String, String>();
+        final XPath pathsXPath = xPathFactory.newXPath();
+
+        try {
+            final NodeList tempFileNodes = (NodeList) pathsXPath.evaluate(
+                    tempFilesElementName + "/tempfile", pathNode,
+                    XPathConstants.NODESET);
+
+            for (int tempfileIndex = 0; tempfileIndex < tempFileNodes
+                    .getLength(); tempfileIndex++) {
+
+                final Node tempfileNode = tempFileNodes.item(tempfileIndex);
+
+                final String tempFileLabel = getAttributeValue(tempfileNode,
+                        "label");
+                if (tempFileLabel == null) {
+                    throw new MigrationPathConfigException(
+                            "No \"label\" attribute declared in node: "
+                                    + tempfileNode.getNodeName());
+
+                }
+
+                final String tempFileName = getAttributeValue(tempfileNode,
+                        "name");
+                tempFileMappings.put(tempFileLabel, tempFileName);
+            }
+
+            return tempFileMappings;
+        } catch (XPathExpressionException xpee) {
+            throw new MigrationPathConfigException(
+                    "Failed reading temp. file elements from the '"
+                            + tempFilesElementName + "' element in the '"
+                            + pathNode.getNodeName() + "' element.", xpee);
+        }
     }
 
     /**

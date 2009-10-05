@@ -25,6 +25,7 @@ public class MigrationPath implements Cloneable {
     private URI sourceFormatURI;
     private URI destinationFormatURI;
     private List<TempFile> tempFiles;
+    private Map<String, String> newTempFiles;
     private TempFile tempSourceFile;
     private TempFile tempOutputFile;
     private Map<String, Parameter> parameters;
@@ -40,6 +41,7 @@ public class MigrationPath implements Cloneable {
         parameters = new HashMap<String, Parameter>();
         presets = new HashMap<String, Preset>();
         tempFiles = new ArrayList<TempFile>();
+        newTempFiles = new HashMap<String, String>();
     }
 
     /**
@@ -368,15 +370,60 @@ public class MigrationPath implements Cloneable {
 
     /**
      * Add a list of temp files
+     * @deprecated {@link MigrationPath#addTempFilesDeclarations(Map)} will replace this method
      */
+    @Deprecated
     public void addTempFilesDeclarations(List<TempFile> tempFileDeclarations) {
         tempFiles.addAll(tempFileDeclarations);
 
     }
+    
+    /**
+     * Add a map defining the relationship between the labels in the command
+     * line that should be substituted with file names of temporary files with
+     * the actual names of these. Multiple calls to this method will just add
+     * more mappings to the internal map, however, if a label in the specified
+     * map has already been used in the internal map of this migration path,
+     * then the previous mapping will be removed.
+     * 
+     * @param tempFileDeclarations
+     *            a map containing a paring of temp. file labels and optionally
+     *            a file name to be added to the internal map.
+     */
+    public void addTempFilesDeclarations(
+            Map<String, String> tempFileDeclarations) {
 
+        newTempFiles.putAll(tempFileDeclarations);
+    }
+
+    //TODO: Kill when the time is right.
+    @Deprecated
     public void addTempFilesDeclaration(TempFile tempFileDeclaration) {
         tempFiles.add(tempFileDeclaration);
 
+    }
+
+    /**
+     * Add a relationship between the <code>label</code> and
+     * <code>filename</code>. The label must match a label used in the command
+     * line, indicating that it should be substituted with a name of a temporary
+     * file. That file name can either be specified by <code>filename</code> or
+     * it will be auto-generated if it is omitted (<code>null</code>). Multiple
+     * calls to this method will just add more mappings to the internal map,
+     * however, if the specified label has already been used in the internal map
+     * of this migration path, then the previous mapping will be removed.
+     * 
+     * @param tempFileDeclarations
+     *            a map containing a paring of temp. file labels and optionally
+     *            a file name to be added to the internal map.
+     * @return the value previously associated with <code>label</code> or
+     *         <code>null</code> if no value was associated with it. However, it
+     *         may also indicate that <code>label</code> was actually associated
+     *         with <code>null</code>.
+     */
+    public String addTempFilesDeclaration(String label, String filename) {
+
+        return newTempFiles.put(label, filename);
     }
 
     /**
