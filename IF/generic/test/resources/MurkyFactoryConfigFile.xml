@@ -45,6 +45,7 @@
             ddd
         </classname>
     </serviceDescription>
+
     <paths>
         <path>
             <!--
@@ -114,7 +115,7 @@
                     </description>
                 </parameter>
             </toolparameters>
-            
+
             <toolpresets default="mode">
                 <preset name="mode" default="Normal">
                     <description>
@@ -135,8 +136,8 @@
                 </preset>
 
             </toolpresets>
-
         </path>
+
         <path>
             <!--
                 migrates ps-file to pdf1.3 format (Acrobat 4-and-later)
@@ -189,8 +190,6 @@
                 </commandparameters>
             </commandline>
 
-
-
             <tempfiles>
                 <inputfile label="tempSource">
                 </inputfile>
@@ -229,8 +228,8 @@
                 </preset>
 
             </toolpresets>
-
         </path>
+
         <path>
             <!--
                 migrates ps-file to pdf1.4 format (Acrobat 5-and-later)
@@ -334,7 +333,6 @@
                 of the configuration file.
             -->
             <inputformats>
-
                 <!--
                     List of format URIs identifying the valid input formats for
                     the wrapped command(s) in this "path" section. It is
@@ -359,6 +357,15 @@
             </outputformat>
 
             <commandline>
+                <!--
+                    This is the exact shell command line to be wrapped, except
+                    from that all tags like "#some_label" are substituted by
+                    command parameters and temporary file names. The tag name
+                    (in this case "some_label") must be defined in the
+                    "toolparameters" section. The same goes for temporary files.
+                    In the below example there are three temporary file tags,
+                    tempSource, myInterimFile and tempDestination.
+                -->
                 <command>
                     /bin/sh
                 </command>
@@ -367,7 +374,7 @@
                         -c
                     </parameter>
                     <parameter>
-                        head #tempSource > #tempDestination
+                        <![CDATA[cat #param1 #tempSource > #myInterimFile && tr #param2 #myInterimFile > #tempDestination]]>
                     </parameter>
                 </commandparameters>
             </commandline>
@@ -441,14 +448,14 @@
                         command.
                         See
                         'man cat'.
-                    </description>
+                </description>
                 </parameter>
                 <parameter name="param2">
                     <description>Command line parameters for the 'tr'
                         command.
                         See
                         'man tr'.
-                    </description>
+                </description>
                 </parameter>
             </toolparameters>
 
@@ -475,21 +482,21 @@
                         </parameter>
                         <parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
                         </parameter>
-                        <description>Uppercase all.</description>
+                        <description>Uppercase all text.</description>
                     </settings>
                     <settings name="AC-DC">
                         <parameter name="param1"><![CDATA[]]>
                         </parameter>
                         <parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
-                        <description>AC-DC to DC-AC</description>
+                        <description>Change AC-DC to DC-AC</description>
                     </settings>
                     <settings name="extra">
                         <parameter name="param1"><![CDATA[-n]]></parameter>
                         <parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
                         </parameter>
-                        <description>Uppercase all and add line
+                        <description>Uppercase all text and add line
                             numbers.
-                        </description>
+                    </description>
                     </settings>
                     <description>Mode presets for the test tool.
                     </description>
@@ -521,7 +528,7 @@
                         </parameter>
                         <description>Uppercase all and add line
                             numbers.
-                        </description>
+                    </description>
                     </settings>
                     <description>Quality presets for the test tool.
                     </description>
@@ -529,5 +536,62 @@
             </toolpresets>
         </path>
 
+        <!--
+            The following path is just an illustration of the possibility to
+            define multiple migration paths for the same wrapped tool. However,
+            there is no validation of that the tool used in the various path
+            definitions are actually the same, as this is not possible due to
+            the fact that the command lines may be substantially different
+            although the same tool is used for the migration, as different
+            helper tools may be used e.g. for pre- or post-processing. Thus, it
+            is the responsibility of the person writing the configuration file
+            that it is in fact the same migration tool used by all the defined
+            paths.
+        -->
+        <path>
+
+            <inputformats>
+                <uri value="info:test/foo" />
+            </inputformats>
+
+            <outputformat>
+                <uri value="info:test/bar" />
+            </outputformat>
+
+            <commandline>
+                <command>
+                    /bin/sh
+                </command>
+                <commandparameters>
+                    <parameter>
+                        -c
+                    </parameter>
+                    <parameter>
+                        <![CDATA[cat #param1 #tempSource | tr #param2 > #tempDestination]]>
+                    </parameter>
+                </commandparameters>
+            </commandline>
+
+            <toolparameters>
+                <parameter name="param1">
+                    <description>Command line parameters for the 'cat'
+                        command.
+                        See
+                        'man cat'.
+                </description>
+                </parameter>
+                <parameter name="param2">
+                    <description>Command line parameters for the 'tr'
+                        command.
+                        See
+                        'man tr'.
+                </description>
+                </parameter>
+            </toolparameters>
+
+            <toolpresets>
+                <!-- No presets -->
+            </toolpresets>
+        </path>
     </paths>
 </serviceWrapping>

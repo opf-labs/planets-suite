@@ -47,6 +47,10 @@ public class MurkyFactoryTest {
      * Test method for
      * {@link eu.planets_project.ifr.core.services.migration.genericwrapper.MurkyFactory#getMigrationPaths(org.w3c.dom.Document)}
      * .
+     * 
+     * This test verifies that the factory produces the correct number of
+     * migration paths from the test configuration file and fetches a specific
+     * migration path from it to verify that all its information is correct.
      */
     @Test
     public void testGetMigrationPaths() throws Exception {
@@ -59,8 +63,8 @@ public class MurkyFactoryTest {
         assertEquals("The factory returned a wrong number of migration paths.",
                 13, migrationPaths.getAsPlanetsPaths().size());
 
-        final URI inputFormatURI = new URI("info:pronom/x-fmt/406");
-        final URI outputFormatURI = new URI("info:pronom/fmt/17");
+        final URI inputFormatURI = new URI("info:test/lowercase");
+        final URI outputFormatURI = new URI("info:test/uppercase");
 
         MigrationPath migrationPath = migrationPaths.getMigrationPath(
                 inputFormatURI, outputFormatURI);
@@ -69,12 +73,15 @@ public class MurkyFactoryTest {
                 + "'" + inputFormatURI + "' to '" + outputFormatURI + "'",
                 migrationPath);
 
+        // Verify the command line information
         List<String> expectedCommandFragments = new ArrayList<String>();
         expectedCommandFragments.add("/bin/sh");
         expectedCommandFragments.add("-c");
         expectedCommandFragments
                 .add("ps2pdf12 #param1 #tempSource #tempDestination");
         commandLineTest(migrationPath, expectedCommandFragments);
+
+        // Verify the temporary file information
     }
 
     /**
