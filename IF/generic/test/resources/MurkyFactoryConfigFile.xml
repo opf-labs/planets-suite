@@ -47,6 +47,20 @@
     </serviceDescription>
 
     <paths>
+
+
+        <!--
+            The following path is just an illustration of the possibility to
+            define multiple migration paths for the same wrapped tool. However,
+            there is no validation of that the tool used in the various path
+            definitions are actually the same, as this is not possible due to
+            the fact that the command lines may be substantially different
+            although the same tool is used for the migration, as different
+            helper tools may be used e.g. for pre- or post-processing. Thus, it
+            is the responsibility of the person writing the configuration file
+            that it is in fact the same migration tool used by all the defined
+            paths.
+        -->
         <path>
             <!--
                 migrates ps-file to pdf1.2 format (Acrobat 3-and-later)
@@ -536,18 +550,6 @@
             </toolpresets>
         </path>
 
-        <!--
-            The following path is just an illustration of the possibility to
-            define multiple migration paths for the same wrapped tool. However,
-            there is no validation of that the tool used in the various path
-            definitions are actually the same, as this is not possible due to
-            the fact that the command lines may be substantially different
-            although the same tool is used for the migration, as different
-            helper tools may be used e.g. for pre- or post-processing. Thus, it
-            is the responsibility of the person writing the configuration file
-            that it is in fact the same migration tool used by all the defined
-            paths.
-        -->
         <path>
 
             <inputformats>

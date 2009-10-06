@@ -61,7 +61,7 @@ public class MurkyFactoryTest {
 
         // TODO: Test the correctness of each and every migration path!
         assertEquals("The factory returned a wrong number of migration paths.",
-                13, migrationPaths.getAsPlanetsPaths().size());
+                14, migrationPaths.getAsPlanetsPaths().size());
 
         final URI inputFormatURI = new URI("info:test/lowercase");
         final URI outputFormatURI = new URI("info:test/uppercase");
@@ -78,7 +78,7 @@ public class MurkyFactoryTest {
         expectedCommandFragments.add("/bin/sh");
         expectedCommandFragments.add("-c");
         expectedCommandFragments
-                .add("ps2pdf12 #param1 #tempSource #tempDestination");
+                .add("cat #param1 #tempSource > #myInterimFile && tr #param2 #myInterimFile > #tempDestination");
         commandLineTest(migrationPath, expectedCommandFragments);
 
         // Verify the temporary file information
