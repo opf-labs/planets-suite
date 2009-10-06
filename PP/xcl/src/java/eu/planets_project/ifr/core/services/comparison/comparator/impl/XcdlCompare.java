@@ -60,7 +60,7 @@ public final class XcdlCompare implements Compare {
         File xcdl = new CoreExtractor(getClass().getName(), LogFactory.getLog(getClass()))
                 .extractXCDL(object, null, null, null);
         // Return either the extracted XCDL (if it exists) or assume the file is an XCDL:
-        return xcdl.exists()
+        return xcdl!=null && xcdl.exists()
                 ? read(new DigitalObject.Builder(Content.byReference(xcdl)).build()) : read(object);
     }
 

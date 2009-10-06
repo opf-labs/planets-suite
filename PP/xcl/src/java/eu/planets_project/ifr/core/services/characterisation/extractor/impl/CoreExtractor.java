@@ -1,21 +1,12 @@
 package eu.planets_project.ifr.core.services.characterisation.extractor.impl;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
 
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistry;
 import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
@@ -47,7 +38,6 @@ public class CoreExtractor {
     private String thisExtractorName;
     private Log plogger;
     private static String NO_NORM_DATA_FLAG = "disableNormDataInXCDL";
-    private boolean normDataDisabled = false;
     private static String RAW_DATA_FLAG = "enableRawDataInXCDL";
     private static String OPTIONAL_XCEL_PARAM = "optionalXCELString";
     public static final FormatRegistry format = FormatRegistryFactory
@@ -61,42 +51,6 @@ public class CoreExtractor {
         this.plogger = logger;
         thisExtractorName = extractorName;
         extractorWork = extractorName.toUpperCase();
-    }
-
-    // this is a work around to disable norm data output in XCDL,
-    // as long as flag in extractor does not work
-    @SuppressWarnings("unchecked")
-    private File removeNormData(File XCDLtoRemoveNormDataFrom) {
-        SAXBuilder saxBuilder = new SAXBuilder();
-        Document xcdlDoc;
-        XMLOutputter xmlOut = new XMLOutputter();
-        BufferedWriter xmlWriter;
-        File cleanedXCDL = FileUtils.getTempFile("cleanedXCDL", "xcdl");
-        try {
-            String xcdlToChange = FileUtils.readTxtFileIntoString(XCDLtoRemoveNormDataFrom);
-            xcdlDoc = saxBuilder.build(new StringReader(xcdlToChange));
-            Element rootXCDL = xcdlDoc.getRootElement();
-            List<Element> content = rootXCDL.getChildren();
-            for (Element objectElement : content) {
-                List<Element> objectChildren = objectElement.getChildren();
-                for (Element level2Element : objectChildren) {
-                    if (level2Element.getName().equalsIgnoreCase("normData")) {
-                        level2Element.detach();
-                        break;
-                    }
-
-                }
-            }
-            xmlWriter = new BufferedWriter(new FileWriter(cleanedXCDL));
-            xmlOut.output(xcdlDoc, xmlWriter);
-
-        } catch (JDOMException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        normDataDisabled = false;
-        return cleanedXCDL;
     }
 
     public static List<URI> getSupportedInputFormats() {
@@ -125,7 +79,7 @@ public class CoreExtractor {
      * @param inputFormat TODO
      * @param xcelFile
      * @param parameters
-     * @return xcdl as byte array
+     * @return The resulting XCDL file created by the Extractor, or null if no file was written
      */
     public File extractXCDL(DigitalObject input, URI inputFormat,
             File xcelFile, List<Parameter> parameters) {
@@ -243,7 +197,6 @@ public class CoreExtractor {
                                 + parameter.getValue());
                         plogger.info("Configuring Extractor to skip NormData!");
                         extractor_arguments.add(parameter.getValue());
-                        normDataDisabled = true;
                         continue;
                     } else {
                         plogger.warn("Invalid parameter: " + name + " = '"
@@ -280,16 +233,9 @@ public class CoreExtractor {
 //        System.out.println("Output-file path: " + outputFilePath);
         File resultXCDL = new File(outputFilePath);
         if(!resultXCDL.exists()) {
-        	throw new IllegalStateException("File doesn't exist: " + resultXCDL.getAbsolutePath());
+            plogger.error("File doesn't exist: " + resultXCDL.getAbsolutePath());
+        	return null;
         }
-//        byte[] cleanedXCDL = null;
-
-//        if (normDataDisabled) {
-//            System.out.println("Removing normData...");
-//            return removeNormData(resultXCDL);
-////            binary_out = cleanedXCDL;
-//        }
-
         return resultXCDL;
     }
     

@@ -2,78 +2,94 @@ package eu.planets_project.services.datatypes;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import eu.planets_project.services.utils.FileUtils;
 
 /**
- * Tests for Content objects. Reads the same data using Content objects both by
- * value and by reference, checking for equality of the results.
- * 
+ * Tests for Content objects. Reads the same data using Content objects both by value and by
+ * reference, checking for equality of the results.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
- * 
  */
 public final class ContentTests {
     private static final String LOCATION = "IF/common/src/test/resources/sample_content.txt";
+
+    private File file;
     private URL url;
-    private byte[] bytes;
+    private InputStream stream;
+    private byte[] byteArray;
+    private String content;
 
-    /** Creates the content value and reference. */
     @Before
-    public void setup() {
-        /* For a test file, we create the actual value and a reference: */
-        java.io.File file = new java.io.File(LOCATION);
-        bytes = FileUtils.readFileIntoByteArray(file);
-        try {
-            url = file.toURI().toURL();
-        } catch (MalformedURLException e1) {
-            e1.printStackTrace();
-        }
+    public void init() throws IOException {
+        file = new File(LOCATION);
+        url = file.toURI().toURL();
+        stream = url.openStream();
+        byteArray = FileUtils.readFileIntoByteArray(file);
+        content = FileUtils.readTxtFileIntoString(file);
     }
 
-    /** Tests reading by reference and by value. */
     @Test
-    public void reading() {
-        /*
-         * We create a content by reference and a content by value for the same
-         * content (on the disk):
-         */
-        DigitalObjectContent reference = Content.byReference(url);
-        DigitalObjectContent value = Content.byValue(bytes);
-        System.out.println("Created: " + reference);
-        System.out.println("Created: " + value);
-        /* Then, we read both contents: */
-        String readReference = read(reference.read());
-        String readValue = read(value.read());
-        /* These should be identical: */
-        System.out.println(String.format(
-                "Read by value: '%s', by reference: '%s'", readValue,
-                readReference));
-        assertEquals(
-                "Reading by reference and reading by value return different results;",
-                readValue, readReference);
+    public void byReferenceToFile() {
+        test(Content.byReference(file));
+    }
+    
+    @Test
+    public void byReferenceToInputStream() {
+        test(Content.byReference(stream));
+    }
+    
+    @Test
+    public void byReferenceToUrl() {
+        test(Content.byReference(url));
     }
 
-    /** Equality tests for content objects. */
     @Test
-    public void equality() {
+    public void byValueOfFile() {
+        test(Content.byValue(file));
+    }
+    
+    @Test
+    public void byValueOfInputStream() {
+        test(Content.byValue(stream));
+    }
+    
+    @Test
+    public void byValueOfByteArray() {
+        test(Content.byValue(byteArray));
+    }
+
+    private void test(DigitalObjectContent object) {
+        Assert.assertEquals("Original content and wrapped content should be equal", content,
+                read(object.read()));
+    }
+
+    @Test
+    public void equals() {
         DigitalObjectContent c1 = Content.byReference(url);
         DigitalObjectContent c2 = Content.byReference(url);
         assertEquals("Equal object don't equal;", c1, c2);
-        assertEquals("Equal objects have different string representations;", c1
-                .toString(), c2.toString());
-        Set<DigitalObjectContent> set = new HashSet<DigitalObjectContent>(Arrays.asList(c1, c1, c1));
-        assertEquals("Set contains duplicates;", 1, set.size());
+        assertEquals("Equal objects have different string representations;", c1.toString(), c2
+                .toString());
 
+    }
+
+    @Test
+    public void hashcode() {
+        Set<DigitalObjectContent> set = new HashSet<DigitalObjectContent>(Arrays.asList(Content
+                .byReference(url), Content.byReference(url), Content.byReference(url)));
+        assertEquals("Set contains duplicates;", 1, set.size());
     }
 
     /**
@@ -84,9 +100,9 @@ public final class ContentTests {
         StringBuilder builder = new StringBuilder();
         Scanner s = new Scanner(source);
         while (s.hasNextLine()) {
-            builder.append(s.nextLine());
+            builder.append(s.nextLine()).append("\n");
         }
-        return builder.toString();
+        return builder.toString().trim();
     }
 
 }
