@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions;
 
 /**
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;

@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
 /**
  * TODO abr forgot to document this class

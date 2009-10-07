@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationPathConfigException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationPathConfigException;
 import eu.planets_project.services.utils.PlanetsLogger;
 
 /**

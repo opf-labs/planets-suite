@@ -1,6 +1,7 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.GenericMigrationWrapper;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.utils.DocumentLocator;
 import eu.planets_project.services.datatypes.*;
 import eu.planets_project.services.migrate.MigrateResult;
 import junit.framework.Assert;

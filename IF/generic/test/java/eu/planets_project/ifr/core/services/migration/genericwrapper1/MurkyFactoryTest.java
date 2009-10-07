@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
@@ -12,7 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper.utils.DocumentLocator;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.MigrationPath;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.MigrationPaths;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.MurkyFactory;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.utils.DocumentLocator;
 
 /**
  * 
@@ -45,7 +48,7 @@ public class MurkyFactoryTest {
 
     /**
      * Test method for
-     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper.MurkyFactory#getMigrationPaths(org.w3c.dom.Document)}
+     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper1.MurkyFactory#getMigrationPaths(org.w3c.dom.Document)}
      * .
      * 
      * This test verifies that the factory produces the correct number of

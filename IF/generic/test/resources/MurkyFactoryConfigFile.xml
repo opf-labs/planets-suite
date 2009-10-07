@@ -393,6 +393,8 @@
                 </commandparameters>
             </commandline>
 
+
+<!-- FIXME! in/output "files" probably should have their own sections -->
             <tempfiles>
                 <!--
                     Any temporary files used in the command line must be defined

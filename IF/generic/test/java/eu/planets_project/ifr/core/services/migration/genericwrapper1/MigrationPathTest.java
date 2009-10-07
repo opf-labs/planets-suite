@@ -1,5 +1,7 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.MigrationPath;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.TempFile;
 import eu.planets_project.services.datatypes.Parameter;
 import junit.framework.Assert;
 import org.junit.After;

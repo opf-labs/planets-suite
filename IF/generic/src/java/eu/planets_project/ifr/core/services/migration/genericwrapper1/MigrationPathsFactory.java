@@ -1,8 +1,8 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameter.Builder;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationPathConfigException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationPathConfigException;
 import eu.planets_project.services.utils.PlanetsLogger;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;

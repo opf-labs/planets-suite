@@ -1,7 +1,7 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationException;
-import eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions.MigrationInitialisationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationInitialisationException;
 import eu.planets_project.services.datatypes.Content;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;

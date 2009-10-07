@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper.exceptions;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions;
 
 public class MigrationInitialisationException extends Exception {
 

@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper;
+package eu.planets_project.ifr.core.services.migration.genericwrapper1;
 
 import eu.planets_project.services.datatypes.Parameter;
 
