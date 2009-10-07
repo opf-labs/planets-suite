@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper1;
+package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import java.net.URI;
 
@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 
-import eu.planets_project.ifr.core.services.migration.genericwrapper1.exceptions.MigrationException;
-import eu.planets_project.ifr.core.services.migration.genericwrapper1.utils.DocumentLocator;
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.exceptions.MigrationException;
+import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.DocumentLocator;
 
 /**
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
@@ -50,7 +50,7 @@ public class MigrationPathsTest {
 
     /**
      * Test method for
-     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper1.MigrationPathsFactory#getMigrationPaths(org.w3c.dom.Document)}
+     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPathsFactory#getMigrationPaths(org.w3c.dom.Document)}
      * Verify that we can get migration path instances for all known paths in
      * the configuration file used by this test class.
      */

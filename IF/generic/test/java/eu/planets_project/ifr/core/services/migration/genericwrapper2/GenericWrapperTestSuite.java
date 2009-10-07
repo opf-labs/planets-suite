@@ -1,4 +1,4 @@
-package eu.planets_project.ifr.core.services.migration.genericwrapper1;
+package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -13,6 +13,8 @@ import org.junit.runners.Suite;
  * Pdf2Html service test suite.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { MigrationPathsTest.class, MigrationPathsTest.class})
+@Suite.SuiteClasses( { MurkyFactoryTest.class })
+//@Suite.SuiteClasses( { MigrationPathsTest.class, MigrationPathsTest.class,
+//        MurkyFactoryTest.class })
 public class GenericWrapperTestSuite {
 }
