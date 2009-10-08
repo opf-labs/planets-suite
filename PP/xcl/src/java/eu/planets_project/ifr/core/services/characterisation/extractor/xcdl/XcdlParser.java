@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -103,11 +105,16 @@ public final class XcdlParser implements XcdlAccess {
             result.add(normDataProperty(o));
         }
         List<Property> properties = o.getProperties();
+        Set<String> added = new HashSet<String>();
         for (Property property : properties) {
             String name = property.getName().getValues().get(0);
             List<ValueSet> valueSets = property.getValueSets();
             for (ValueSet valueSet : valueSets) {
-                result.add(objectProperty(property, name, valueSet));
+                // Avoid duplicate properties, which cause validation errors in the comparator
+                if (!added.contains(name)) {
+                    result.add(objectProperty(property, name, valueSet));
+                    added.add(name);
+                }
             }
         }
         return result;

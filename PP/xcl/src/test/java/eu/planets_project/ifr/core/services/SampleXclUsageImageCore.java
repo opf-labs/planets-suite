@@ -13,19 +13,19 @@ import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 
 /**
- * Sample XCL services usage implementation using image files.
+ * Sample XCL services usage implementation using image files directly supported by the extractor (PNG, TIFF).
  * @see AbstractSampleXclUsage
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
-public class SampleXclUsageImage extends AbstractSampleXclUsage {
+public class SampleXclUsageImageCore extends AbstractSampleXclUsage {
 
     /* Given the input file, the output file and a comparator config file: */
     private static final String RES = "PP/xcl/src/test/resources/";
     private static final String SAMPLES = RES + "sample_files/basketball.";
-    private static final String GIF = "gif";
-    private static final String JPG = "jpg";
-    private static final String GIF_FILE = SAMPLES + GIF;
-    private static final String JPG_FILE = SAMPLES + JPG;
+    private static final String PNG = "png";
+    private static final String TIFF = "tiff";
+    private static final String PNG_FILE = SAMPLES + PNG;
+    private static final String TIFF_FILE = SAMPLES + TIFF;
     private static final String COCO = RES + "cocoImage.xml";
 
     /**
@@ -35,8 +35,8 @@ public class SampleXclUsageImage extends AbstractSampleXclUsage {
     @Override
     protected DigitalObject[] files() {
         return new DigitalObject[] {
-                new DigitalObject.Builder(Content.byReference(new File(GIF_FILE))).format(ids()[0]).build(),
-                new DigitalObject.Builder(Content.byReference(new File(JPG_FILE))).format(ids()[1]).build() };
+                new DigitalObject.Builder(Content.byReference(new File(PNG_FILE))).format(ids()[0]).build(),
+                new DigitalObject.Builder(Content.byReference(new File(TIFF_FILE))).format(ids()[1]).build() };
     }
 
     /**
@@ -46,8 +46,8 @@ public class SampleXclUsageImage extends AbstractSampleXclUsage {
     @Override
     protected URI[] ids() {
         /* We get a PRONOM ID for the original and the converted file: */
-        return new URI[] { REGISTRY.getUrisForExtension(GIF).iterator().next(),
-                REGISTRY.getUrisForExtension(JPG).iterator().next() };
+        return new URI[] { REGISTRY.getUrisForExtension(PNG).iterator().next(),
+                REGISTRY.getUrisForExtension(TIFF).iterator().next() };
     }
 
     /**
@@ -66,8 +66,8 @@ public class SampleXclUsageImage extends AbstractSampleXclUsage {
     @Override
     protected List<List<Parameter>> parameters() {
         ArrayList<List<Parameter>> list = new ArrayList<List<Parameter>>();
-        list.add(null); // no parameters for GIF extraction
-        list.add(null); // no parameters for JPG extraction
+        list.add(null); // no parameters for PNG extraction
+        list.add(null); // no parameters for TIFF extraction
         return list;
     }
 

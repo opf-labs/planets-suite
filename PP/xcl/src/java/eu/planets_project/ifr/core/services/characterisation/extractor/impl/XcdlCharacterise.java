@@ -89,7 +89,7 @@ public final class XcdlCharacterise implements Characterise, Serializable {
             result = coreExtractor.extractXCDL(digitalObject, null, null, parameters);
         }
 
-        if (result.exists()) {
+        if (result != null && result.exists()) {
             try {
                 return new XcdlParser(new FileReader(result)).getCharacteriseResult();
             } catch (FileNotFoundException e) {

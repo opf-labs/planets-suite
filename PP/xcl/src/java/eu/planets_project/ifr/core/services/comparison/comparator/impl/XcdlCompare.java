@@ -60,7 +60,7 @@ public final class XcdlCompare implements Compare {
         File xcdl = new CoreExtractor(getClass().getName(), LogFactory.getLog(getClass()))
                 .extractXCDL(object, null, null, null);
         // Return either the extracted XCDL (if it exists) or assume the file is an XCDL:
-        return xcdl!=null && xcdl.exists()
+        return xcdl != null && xcdl.exists()
                 ? read(new DigitalObject.Builder(Content.byReference(xcdl)).build()) : read(object);
     }
 
@@ -102,8 +102,11 @@ public final class XcdlCompare implements Compare {
             throw new IllegalArgumentException("Digital object is null!");
         }
         InputStream stream = digitalObject.getContent().read();
-        System.out.println("XCDL: " + stream);
-        return stream == null ? null : new String(FileUtils.writeInputStreamToBinary(stream));
+        String xcdl = new String(FileUtils.writeInputStreamToBinary(stream));
+        if (!xcdl.toLowerCase().contains("<xcdl")) {
+            throw new IllegalArgumentException("Digital object given is no XCDL: " + xcdl);
+        }
+        return stream == null ? null : xcdl;
     }
 
     /**

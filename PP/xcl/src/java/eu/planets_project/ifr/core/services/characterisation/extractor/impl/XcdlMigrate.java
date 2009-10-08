@@ -150,7 +150,7 @@ public final class XcdlMigrate implements Migrate {
             result = coreExtractor.extractXCDL(digitalObject, inputFormat, null, parameters);
         }
 
-        if (result.exists()) {
+        if (result != null && result.exists()) {
 
             resultDigOb = new DigitalObject.Builder(Content.byReference(result)).title(result.getName()).format(
                     fReg.createExtensionUri("xcdl")).build();
