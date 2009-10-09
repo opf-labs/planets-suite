@@ -86,7 +86,8 @@ public class FileIdentify implements Identify {
         File tmpInFile = FileUtils.writeByteArrayToTempFile(binary);
 
         // Right we'll need to create a suitable command line
-        String[] commands = new String[] {FileServiceSetup.getProperties().getProperty("cygwin.file.location"),
+        // String[] commands = new String[] {FileServiceSetup.getProperties().getProperty("cygwin.file.location"),
+		String[] commands = new String[] {FileServiceSetup.getFileLocation(),
         								  "-i",
         								  "-b",
         								  tmpInFile.getAbsolutePath()};

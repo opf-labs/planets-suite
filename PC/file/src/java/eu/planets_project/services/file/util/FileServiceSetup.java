@@ -24,6 +24,8 @@ public class FileServiceSetup {
     private static Log _log = LogFactory.getLog(FileServiceSetup.class);
     /** Properties file location and Properties holder */
 	private static final String PROPERTIES_PATH = "eu/planets_project/services/file/FileIdentify.properties";
+	/** Location of cygwin file.exe **/
+	private static final String FILECYGWIN_HOME = System.getenv("FILECYGWIN_HOME");
 
 	/**
 	 * The properties loaded from the properties file
@@ -47,7 +49,8 @@ public class FileServiceSetup {
 		if (FileServiceSetup._properties == null) FileServiceSetup.loadProperties();
 		
 		// Now let's get the cygwin file location property and make sure it exists
-		File cygwinFile = new File(_properties.getProperty("cygwin.file.location"));
+		// File cygwinFile = new File(_properties.getProperty("cygwin.file.location"));
+		File cygwinFile = new File(FILECYGWIN_HOME, "file.exe");
 		return cygwinFile.exists();
 	}
 	
@@ -58,6 +61,14 @@ public class FileServiceSetup {
 	public static Properties getProperties() {
 		if (FileServiceSetup._properties == null) FileServiceSetup.loadProperties();
 		return FileServiceSetup._properties;
+	}
+	
+	/**
+	 * @return
+	 * 		The absolute pathname of the executable
+	 */
+	public static String getFileLocation() {
+		return new File(FILECYGWIN_HOME, "file.exe").getAbsolutePath();
 	}
 	
 	//======================================================================
