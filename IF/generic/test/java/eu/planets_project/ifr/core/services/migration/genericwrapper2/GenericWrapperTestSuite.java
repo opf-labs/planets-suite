@@ -6,14 +6,10 @@ import org.junit.runners.Suite;
 /**
  * 
  * 
- * @author Thomas Skou Hansen <tsh@statsbiblioteket.dk>
- */
-
-/**
- * Pdf2Html service test suite.
+ * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt; 
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { MurkyFactoryTest.class })
+@Suite.SuiteClasses( { DBMigrationPathFactoryTest.class })
 //@Suite.SuiteClasses( { MigrationPathsTest.class, MigrationPathsTest.class,
 //        MurkyFactoryTest.class })
 public class GenericWrapperTestSuite {

@@ -7,13 +7,16 @@ import java.util.Map;
 import java.util.HashMap;
 
 /**
- * TODO abr forgot to document this class
+ * Data carrier for tool presets from the generic wrapper configuration.
+ * 
+ * @author Asger Blekinge-Rasmussen
+ * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class Preset {
+class Preset {
 
     private String name;
 
-    private Map<String, Collection<Parameter>> parameters;
+    private Map<String, Collection<Parameter>> settings;
 
     private String defaultSetting;
 
@@ -21,7 +24,7 @@ public class Preset {
 
     public Preset(String name) {
         this.name = name;
-        parameters = new HashMap<String, Collection<Parameter>>();
+        settings = new HashMap<String, Collection<Parameter>>();
     }
 
     public String getName() {
@@ -30,7 +33,7 @@ public class Preset {
 
     public void addSetting(String settingName,
                            Collection<Parameter> settingParameters) {
-        parameters.put(settingName,settingParameters);
+        settings.put(settingName,settingParameters);
     }
 
     public void setDefaultSetting(String defaultSetting) {
@@ -38,11 +41,11 @@ public class Preset {
     }
 
     public Collection<Parameter> getDefaultParameters() {
-        return parameters.get(defaultSetting);
+        return settings.get(defaultSetting);
     }
 
     public Collection<Parameter> getParameters(String value) {
-        return parameters.get(value);
+        return settings.get(value);
     }
 
     public Parameter getAsPlanetsParameter(){

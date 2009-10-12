@@ -16,6 +16,8 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.Parameter.Builder;
 import eu.planets_project.services.utils.PlanetsLogger;
 
+// TODO: Kill this class ASAP!
+
 /**
  * Factory for construction and initialisation of <code>CliMigrationPaths</code>
  * objects.
@@ -24,37 +26,28 @@ import eu.planets_project.services.utils.PlanetsLogger;
  *
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
-public class MigrationPathsFactory {
+public class V1MigrationPathFactory implements MigrationPathFactory {
 
     private PlanetsLogger log = PlanetsLogger
-            .getLogger(MigrationPathsFactory.class);
+            .getLogger(V1MigrationPathFactory.class);
+	private Document pathConfiguration;
 
+    public V1MigrationPathFactory(Document pathConfiguration) {
+    	this.pathConfiguration = pathConfiguration;
+    }
+    
     // TODO: We should create a schema for the configuration file and refer to
     // it in this javadoc. Also, this factory should check the specified config
     // file against the schema. The config file is currently not validated.
-    /**
-     * Create a <code>CliMigrationPaths</code> object containing the migration
-     * paths described by the <code>pathConfiguration</code> document.
-     *
-     * @return A <code>CliMigrationPaths</code> object containing all the paths
-     *         configured in the configuration document specified.
-     * @throws MigrationPathConfigException
-     *             if the contents of <code>pathConfiguration</code> is invalid.
-     */
-    public MigrationPaths getMigrationPaths(Document pathConfiguration)
+    /* (non-Javadoc)
+	 * @see eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPathFactory#getMigrationPaths(org.w3c.dom.Document)
+	 */
+    public MigrationPaths getAllMigrationPaths()
             throws MigrationPathConfigException {
 
         MigrationPaths migrationPaths = new MigrationPaths();
 
         log.info("Entering getInstance with configuration");
-
-        // TODO: I realise that the current way of parsing the configuration is
-        // not optimal. This factory should be refactored to apply a SAX parser
-        // or the like. Also, this factory should apply a separate
-        // CliMigrationPaths builder (implementing an interface), so it is
-        // possible to support older versions of the configuration document.
-        // That is, the factory should also check the version number of the
-        // configuration.
 
         try {
             NodeList topLevelNodes = pathConfiguration
@@ -100,7 +93,7 @@ public class MigrationPathsFactory {
 
         log.info("Entering createCliMigrationPathList");
         final NodeList subNodes = pathElement.getChildNodes();
-        MigrationPath pathTemplate = new MigrationPath();
+        MigrationPathImpl pathTemplate = new MigrationPathImpl();
 
         URI outputformatURI = null;
         List<URI> inputformatURIs = new ArrayList<URI>();
@@ -162,8 +155,8 @@ public class MigrationPathsFactory {
      *            information to.
      * @return <code>pathToConfigure</code> with the configured tool presets.
      */
-    private MigrationPath configureToolPresets(Node toolPresetsElement,
-                                               MigrationPath pathToConfigure) {
+    private MigrationPathImpl configureToolPresets(Node toolPresetsElement,
+                                               MigrationPathImpl pathToConfigure) {
 
 
         // Get the name of the default preset, if it has not been set yet.
@@ -199,7 +192,7 @@ public class MigrationPathsFactory {
      *            <code>Node</code> instance containing the configuration of the
      *            preset to add.
      */
-    private MigrationPath configurePreset(MigrationPath pathToConfigure,
+    private MigrationPathImpl configurePreset(MigrationPathImpl pathToConfigure,
                                           Node presetElement) {
 
         final String presetName = getAttributeValue(presetElement,
@@ -338,8 +331,8 @@ public class MigrationPathsFactory {
      *             if any errors were encountered in the
      *             <code>tempFilesNode</code> node.
      */
-    private MigrationPath configureTempFileDeclarations(Node tempFilesNode,
-                                                        MigrationPath pathToConfigure)
+    private MigrationPathImpl configureTempFileDeclarations(Node tempFilesNode,
+                                                        MigrationPathImpl pathToConfigure)
             throws MigrationPathConfigException {
 
         log.info("Entering configureTempFileDeclarations");
@@ -375,7 +368,7 @@ public class MigrationPathsFactory {
                     log.info("This is the output file");
 
                 } else if (Constants.TEMP_FILE_ELEMENT.equals(currentNodeName)){
-                    pathToConfigure.addTempFilesDeclaration(tempfile);
+                    pathToConfigure.addTempFilesDeclaration(tempfile.getCodename(), tempfile.getRequestedName());
                     log.info("This is just a temp file");
                 }
             }
@@ -410,16 +403,16 @@ public class MigrationPathsFactory {
 
         final List<MigrationPath> paths = new ArrayList<MigrationPath>();
         for (URI sourceFormatUri : sourceFomatURIs) {
-            MigrationPath newPath;
-            try {
-                newPath = (MigrationPath) pathTemplate.clone();
-            }  catch (CloneNotSupportedException e) {
-                throw new MigrationPathConfigException(
-                        "Failed copying path template when instantiating CliMigrationPath for migration path: "
-                        + sourceFomatURIs
-                        + " -> "
-                        + destinationFormatURI);
-            }
+            MigrationPathImpl newPath;
+//            try {
+                newPath = new MigrationPathImpl();//XXX Spoiled code to make it compile! (MigrationPathImpl) pathTemplate.clone();
+//            }  catch (CloneNotSupportedException e) {
+//                throw new MigrationPathConfigException(
+//                        "Failed copying path template when instantiating CliMigrationPath for migration path: "
+//                        + sourceFomatURIs
+//                        + " -> "
+//                        + destinationFormatURI);
+//            }
 
             newPath.setSourceFormat(sourceFormatUri);
             newPath.setDestinationFormat(destinationFormatURI);

@@ -41,8 +41,8 @@ public class GenericMigrationWrapper {
             throws MigrationInitialisationException {
 
         try {
-            MigrationPathsFactory pathsFactory = new MigrationPathsFactory();
-            migrationPaths = pathsFactory.getMigrationPaths(configuration);
+            MigrationPathFactory pathsFactory = new DBMigrationPathFactory(configuration);
+            migrationPaths = pathsFactory.getAllMigrationPaths();
             ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
             serviceDescription = serviceFactory.getServiceDescription(configuration, migrationPaths.getAsPlanetsPaths(),canonicalName);
             String result = configuration.getDocumentElement().getAttribute(
@@ -116,6 +116,8 @@ public class GenericMigrationWrapper {
 
 
         List<String> command = migrationPath.getCommandLine(toolParameters);
+        
+        //FIXME! The command line keyword substitution should take place here and not in the migration path object!
         log.info("Command line found: ");
         log.info(command);
 
@@ -153,10 +155,12 @@ public class GenericMigrationWrapper {
         if (migrationPath.useTempSourceFile()){
             migrationPath.getTempSourceFile().getFile().delete();
         }
+        
+        /* FIXME! The temp. file clean up is now broken.
         for (TempFile tempFile : migrationPath.getTempFileDeclarations()) {
             tempFile.getFile().delete();
         }
-
+        */
 
         //READING THE OUTPUT
         //TODO return a reference to the outputfile
@@ -229,6 +233,7 @@ public class GenericMigrationWrapper {
         sourcetempfile.setFile(realtemp);
     }
 
+    //FIXME! Messed up method name
     private File handleTempfiles(MigrationPath migrationPath) {
         log.info("Entering handleTempFiles");
 
@@ -239,11 +244,13 @@ public class GenericMigrationWrapper {
         log.info("Created workfolder "+ workfolder.getAbsolutePath());
 
         //for each normal tempfile,
+        /* FIXME! Temp file creation is now broken.
         List<TempFile> tempfiles = migrationPath.getTempFileDeclarations();
         for (TempFile tempfile:tempfiles){
             tempfile.setFile(createTemp(workfolder,tempfile));
 
         }
+        */
         return workfolder;
     }
 

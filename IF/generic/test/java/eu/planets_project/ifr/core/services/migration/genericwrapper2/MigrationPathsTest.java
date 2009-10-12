@@ -29,9 +29,9 @@ public class MigrationPathsTest {
                 TEST_CONFIGURATION_FILE_NAME);
         final Document pathsConfiguration = documentLocator.getDocument();
 
-        final MigrationPathsFactory migrationPathsFactory = new MigrationPathsFactory();
+        final MigrationPathFactory migrationPathsFactory = new V1MigrationPathFactory(pathsConfiguration);
         migrationPathsToTest = migrationPathsFactory
-                .getMigrationPaths(pathsConfiguration);
+                .getAllMigrationPaths();
     }
 
     /**
@@ -50,7 +50,7 @@ public class MigrationPathsTest {
 
     /**
      * Test method for
-     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPathsFactory#getMigrationPaths(org.w3c.dom.Document)}
+     * {@link eu.planets_project.ifr.core.services.migration.genericwrapper2.V1MigrationPathFactory#getAllMigrationPaths(org.w3c.dom.Document)}
      * Verify that we can get migration path instances for all known paths in
      * the configuration file used by this test class.
      */
