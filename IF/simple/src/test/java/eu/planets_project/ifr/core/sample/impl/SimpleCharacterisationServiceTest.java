@@ -74,7 +74,7 @@ public class SimpleCharacterisationServiceTest {
      * test sizing from a URL reference
      * @throws MalformedURLException 
      */
-    @Test
+    @Test //fails on Mac due to a bug related to temp files and SAX/JAXB
     public void testSizeAFileRef() throws MalformedURLException {
         /* set up a binary */
         byte[] binary = new byte[(int)(Math.random()*1024*10)];

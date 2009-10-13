@@ -8,6 +8,9 @@ import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.jws.WebService;
+import javax.xml.ws.BindingType;
+
+import org.jboss.annotation.ejb.TransactionTimeout;
 
 import eu.planets_project.services.PlanetsServices;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -20,15 +23,16 @@ import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
 
 /**
- * PassThruMigrationService testing service. This service does nothing except to
- * implement the Migrate interface to allow real-world testing of digital
- * objects.
+ * PassThruMigrationService testing service. This service does nothing except to implement the Migrate interface to
+ * allow real-world testing of digital objects.
  * @author Fabian Steeg (fabian.steeg@uni-koeln.de)
  */
 @Local(Migrate.class)
 @Remote(Migrate.class)
 @Stateless
 @WebService(name = PassThruMigrationService.NAME, serviceName = Migrate.NAME, targetNamespace = PlanetsServices.NS, endpointInterface = "eu.planets_project.services.migrate.Migrate")
+@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@TransactionTimeout(100000)
 public final class PassThruMigrationService implements Migrate, Serializable {
     /** The service name. */
     static final String NAME = "PassThruMigrationService";
@@ -39,27 +43,24 @@ public final class PassThruMigrationService implements Migrate, Serializable {
     /**
      * {@inheritDoc}
      * @see eu.planets_project.services.migrate.Migrate#migrate(eu.planets_project.services.datatypes.DigitalObject,
-     *      java.net.URI, java.net.URI,
-     *      eu.planets_project.services.datatypes.Parameter)
+     *      java.net.URI, java.net.URI, eu.planets_project.services.datatypes.Parameter)
      */
-    public MigrateResult migrate(final DigitalObject digitalObject,
-            URI inputFormat, final URI outputFormat,
+    public MigrateResult migrate(final DigitalObject digitalObject, URI inputFormat, final URI outputFormat,
             final List<Parameter> parameters) {
         /*
-         * We just return a new digital object with the same required arguments
-         * as the given:
+         * We just return a new digital object with the same required arguments as the given:
          */
         DigitalObject newDO = new DigitalObject.Builder(digitalObject).build();
         boolean success = newDO != null;
         ServiceReport report;
         if (success) {
-            report = new ServiceReport(Type.INFO, Status.SUCCESS,
-                    "Passed through");
+            report = new ServiceReport(Type.INFO, Status.SUCCESS, "Passed through");
         } else {
-            report = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
-                    "Null result");
+            report = new ServiceReport(Type.ERROR, Status.TOOL_ERROR, "Null result");
         }
-        return new MigrateResult(newDO, report);
+        MigrateResult migrateResult = new MigrateResult(newDO, report);
+        System.out.println("Pass-through migration: " + migrateResult);
+        return migrateResult;
     }
 
     /**
@@ -67,12 +68,9 @@ public final class PassThruMigrationService implements Migrate, Serializable {
      * @see eu.planets_project.services.PlanetsService#describe()
      */
     public ServiceDescription describe() {
-        ServiceDescription.Builder mds = new ServiceDescription.Builder(NAME,
-                Migrate.class.getCanonicalName());
-        mds
-                .description("A pass-thru test service, that simply clones and passes data through unchanged.");
-        mds
-                .author("Fabian Steeg <fabian.steeg@uni-koeln.de>, Andrew Jackson <Andrew.Jackson@bl.uk>");
+        ServiceDescription.Builder mds = new ServiceDescription.Builder(NAME, Migrate.class.getCanonicalName());
+        mds.description("A pass-thru test service, that simply clones and passes data through unchanged.");
+        mds.author("Fabian Steeg <fabian.steeg@uni-koeln.de>, Andrew Jackson <Andrew.Jackson@bl.uk>");
         mds.classname(this.getClass().getCanonicalName());
         return mds.build();
     }

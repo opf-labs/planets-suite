@@ -63,7 +63,7 @@ public class AlwaysSaysValidService implements Validate {
             return new ValidateResult.Builder(format, sr).build();
         } else {
             ValidateResult result = new ValidateResult.Builder(format, sr)
-                    .ofThisFormat(false).build();
+                    .ofThisFormat(true).validInRegardToThisFormat(true).build();
             return result;
         }
     }

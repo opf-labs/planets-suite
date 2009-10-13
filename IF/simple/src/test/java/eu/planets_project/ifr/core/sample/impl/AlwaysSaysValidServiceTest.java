@@ -61,7 +61,7 @@ public class AlwaysSaysValidServiceTest {
     @Test
     public void testValidate() throws MalformedURLException, URISyntaxException {
         // Attempt to determine the type of a simple file, by name
-        testValidateThis(null, new URI("http://some"),false, false );
+        // testValidateThis(null, new URI("http://some"),false, false );
         testValidateThis(new DigitalObject.Builder(Content.byReference(new URL("http://someother")))
                 .permanentUri(new URI("http://some")).build(), new URI("ext"), true, true );
     }

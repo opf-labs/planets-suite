@@ -1,7 +1,6 @@
 package eu.planets_project.ifr.core.sample.impl;
 
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 
 import junit.framework.TestCase;
@@ -44,7 +43,6 @@ public final class PassThruMigrationServiceTest extends TestCase {
      */
     @Override
     protected void tearDown() throws Exception {
-        // TODO Auto-generated method stub
         super.tearDown();
     }
 
@@ -69,8 +67,7 @@ public final class PassThruMigrationServiceTest extends TestCase {
              * we simply pass one into the service and expect one back:
              */
             DigitalObject input = new DigitalObject.Builder(Content
-                    .byReference(new URL("http://some"))).permanentUri(
-                    URI.create("http://some")).build();
+                    .byReference(new URL("http://some"))).build();
             System.out.println("Input: " + input);
 
             MigrateResult mr = dom.migrate(input, null, null, null);
