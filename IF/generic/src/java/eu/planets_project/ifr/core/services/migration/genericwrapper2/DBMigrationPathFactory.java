@@ -12,6 +12,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import org.apache.xalan.templates.ElemEmpty;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -152,6 +153,15 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 				pathNode, "toolparameters");
 
 		// Get tool presets
+		Collection<Preset> toolPresets = getToolPresets(pathNode, "toolpresets");
+
+		// Tool presets are optional, so if there are no presets do not attempt
+		// to read the default attribute - it would end bad.
+		String defaultPresetName = "";
+		if (!toolPresets.isEmpty()) {
+			defaultPresetName = getDefaultAttributeValue(pathNode,
+					"toolpresets");
+		}
 
 		// for each input format {create a path element}.
 
@@ -162,19 +172,154 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 			newPath.setSourceFormat(sourceFormatURI);
 			newPath.setDestinationFormat(destinationFormatURI);
 			newPath.setCommandLine(commandLineFragments);
-			
+
 			// TODO: Add input/output (file) information!
-			
+
 			newPath.setTempFilesDeclarations(tempFileDeclarations);
 			newPath.setToolParameters(toolParameters);
-			
+			newPath.setDefaultPreset(defaultPresetName);
+			newPath.setToolPresets(toolPresets);
+
 			paths.add(newPath);
 		}
 		return paths;
 	}
 
+	private String getDefaultAttributeValue(Node pathNode,
+			String nameOfElementWithDefaultAttribute)
+			throws MigrationPathConfigException {
+
+		final XPath pathsXPath = xPathFactory.newXPath();
+
+		try {
+			final Node elementWithDefaultAttribute = (Node) pathsXPath
+					.evaluate(nameOfElementWithDefaultAttribute, pathNode,
+							XPathConstants.NODE);
+
+			if (elementWithDefaultAttribute == null) {
+				throw new MigrationPathConfigException("No '"
+						+ nameOfElementWithDefaultAttribute
+						+ "' element declared in node: "
+						+ pathNode.getNodeName());
+			}
+
+			final String defaultAttributeValue = getAttributeValue(
+					elementWithDefaultAttribute, "default");
+
+			if (defaultAttributeValue.length() == 0) {
+				throw new MigrationPathConfigException(
+						"Empty \"default\" attribute declared in node: "
+								+ elementWithDefaultAttribute.getNodeName());
+			}
+
+			return defaultAttributeValue;
+		} catch (XPathExpressionException xpee) {
+			throw new MigrationPathConfigException(
+					"Failed reading the 'default' attribute of the '"
+							+ nameOfElementWithDefaultAttribute
+							+ "' element in the '" + pathNode.getNodeName()
+							+ "' element.", xpee);
+		}
+	}
+
+	private Collection<Preset> getToolPresets(Node pathNode,
+			String presetsElementName) throws MigrationPathConfigException {
+
+		final XPath pathsXPath = xPathFactory.newXPath();
+		Collection<Preset> toolPresets = new ArrayList<Preset>();
+
+		try {
+			final NodeList presetNodes = (NodeList) pathsXPath.evaluate(
+					presetsElementName + "/" + "preset", pathNode,
+					XPathConstants.NODESET);
+
+			for (int presetIndex = 0; presetIndex < presetNodes.getLength(); presetIndex++) {
+
+				final Node presetNode = presetNodes.item(presetIndex);
+
+				final String presetName = getAttributeValue(presetNode, "name");
+				if (presetName.length() == 0) {
+					throw new MigrationPathConfigException(
+							"Empty \"name\" attribute declared in node: "
+									+ presetNode.getNodeName());
+				}
+
+				final String defaultPresetName = getAttributeValue(presetNode,
+						"default");
+
+				final Node descriptionNode = (Node) pathsXPath.evaluate(
+						"description", presetNode, XPathConstants.NODE);
+
+				final String description = descriptionNode.getTextContent();
+
+				final Collection<PresetSetting> presetSettings = getPresetSettings(presetNode);
+
+				final Preset newPreset = new Preset(presetName, presetSettings,
+						defaultPresetName);
+				newPreset.setDescription(description);
+
+				toolPresets.add(newPreset);
+			}
+
+			return toolPresets;
+		} catch (XPathExpressionException xpee) {
+			throw new MigrationPathConfigException(
+					"Failed reading tool preset elements from the '"
+							+ presetsElementName + "' element in the '"
+							+ pathNode.getNodeName() + "' element.", xpee);
+		}
+	}
+
+	private Collection<PresetSetting> getPresetSettings(Node presetNode)
+			throws MigrationPathConfigException {
+
+		final XPath pathsXPath = xPathFactory.newXPath();
+		Collection<PresetSetting> presetSettings = new ArrayList<PresetSetting>();
+
+		try {
+			final NodeList presetSettingNodes = (NodeList) pathsXPath.evaluate(
+					"settings", presetNode, XPathConstants.NODESET);
+
+			for (int settingsIndex = 0; settingsIndex < presetSettingNodes
+					.getLength(); settingsIndex++) {
+
+				final Node settingsNode = presetSettingNodes
+						.item(settingsIndex);
+
+				final String settingsName = getAttributeValue(settingsNode,
+						"name");
+
+				if (settingsName.length() == 0) {
+					throw new MigrationPathConfigException(
+							"Empty \"name\" attribute declared in node: "
+									+ settingsNode.getNodeName());
+				}
+
+				Collection<Parameter> parameters = getToolParameters(
+						presetNode, "settings");
+
+				final Node descriptionNode = (Node) pathsXPath.evaluate(
+						"description", settingsNode, XPathConstants.NODE);
+
+				final String description = descriptionNode.getTextContent();
+
+				final PresetSetting presetSetting = new PresetSetting(
+						settingsName, parameters);
+				presetSetting.setDescription(description);
+				presetSettings.add(presetSetting);
+			}
+
+			return presetSettings;
+		} catch (XPathExpressionException xpee) {
+			throw new MigrationPathConfigException(
+					"Failed reading preset settings elements from the '"
+							+ presetNode.getNodeName() + "' element.", xpee);
+		}
+
+	}
+
 	private Collection<Parameter> getToolParameters(Node pathNode,
-			String toolParametersElementName)
+			String nameOfElementContainingParameters)
 			throws MigrationPathConfigException {
 
 		final XPath pathsXPath = xPathFactory.newXPath();
@@ -182,8 +327,8 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 
 		try {
 			final NodeList parameterNodes = (NodeList) pathsXPath.evaluate(
-					toolParametersElementName + "/" + "parameter", pathNode,
-					XPathConstants.NODESET);
+					nameOfElementContainingParameters + "/" + "parameter",
+					pathNode, XPathConstants.NODESET);
 
 			for (int parameterIndex = 0; parameterIndex < parameterNodes
 					.getLength(); parameterIndex++) {
@@ -198,13 +343,14 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 									+ parameterNode.getNodeName());
 				}
 
-				final String tempFileName = getAttributeValue(parameterNode,
-						"name");
-
 				final Node descriptionNode = (Node) pathsXPath.evaluate(
 						"description", parameterNode, XPathConstants.NODE);
 
-				final String description = descriptionNode.getTextContent();
+				String description = "";
+				if (descriptionNode != null) {
+					description = descriptionNode.getTextContent();
+				}
+
 				final Builder parameterBuilder = new Builder(parameterName,
 						null);
 				parameterBuilder.description(description);
@@ -216,8 +362,9 @@ public class DBMigrationPathFactory implements MigrationPathFactory {
 		} catch (XPathExpressionException xpee) {
 			throw new MigrationPathConfigException(
 					"Failed reading tool parameter elements from the '"
-							+ toolParametersElementName + "' element in the '"
-							+ pathNode.getNodeName() + "' element.", xpee);
+							+ nameOfElementContainingParameters
+							+ "' element in the '" + pathNode.getNodeName()
+							+ "' element.", xpee);
 		}
 	}
 

@@ -32,9 +32,9 @@ class MigrationPathImpl implements MigrationPath {
 	private TempFile tempSourceFile;
 	private TempFile tempOutputFile;
 	private Map<String, Parameter> parameters;
-	private Map<String, Preset> presets;
+	private Map<String, Preset> presets; //TODO: Consider whether it is an advantage/necessary to use a map rather than just a collectiton
 	private List<String> commandLine;
-	private String defaultPreset;
+	private String defaultPresetName;
 
 	/**
 	 * The default constructor has default access, as it should only be used by
@@ -131,7 +131,7 @@ class MigrationPathImpl implements MigrationPath {
 			if (toolparam.getName().equals(defaultpreset)) {
 				setDefault = true;
 				Collection<Parameter> presetparams = presets.get(defaultpreset)
-						.getParameters(toolparam.getValue());
+						.getSetting(toolparam.getValue()).getParameters();
 				toolParameters.addAll(presetparams);
 				break;
 			}
@@ -144,7 +144,7 @@ class MigrationPathImpl implements MigrationPath {
 			Preset preset = presets.get(defaultpreset);
 			if (preset != null) {
 				Collection<Parameter> defaultparams = preset
-						.getDefaultParameters();
+						.getDefaultSetting().getParameters();
 				toolParameters.addAll(defaultparams);
 			} else {
 				// There is no default preset
@@ -315,7 +315,7 @@ class MigrationPathImpl implements MigrationPath {
 	 * #getDefaultPreset()
 	 */
 	public String getDefaultPreset() {
-		return defaultPreset;
+		return defaultPresetName;
 	}
 
 	/**
@@ -326,7 +326,7 @@ class MigrationPathImpl implements MigrationPath {
 	 *            the ID of the default preset category.
 	 */
 	public void setDefaultPreset(String defaultPreset) {
-		this.defaultPreset = defaultPreset;
+		this.defaultPresetName = defaultPreset;
 	}
 
 	/*
@@ -482,9 +482,30 @@ class MigrationPathImpl implements MigrationPath {
 		return presets.keySet();
 	}
 
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath#getAllToolPresets()
+	 */
+	public Collection<Preset> getAllToolPresets() {
+		return presets.values();
+	}
+
 	public String toString() {
 		return "CliMigrationPath: " + sourceFormatURI + " -> "
 				+ destinationFormatURI + " Command: " + commandLine;
+	}
+
+	/**
+	 * Set the presets for this <code>MigrationPathImpl</code> instance.
+	 *  
+	 * @param toolPresets Collection of presets to set.
+	 */
+	void setToolPresets(Collection<Preset> toolPresets) {
+		
+		presets = new HashMap<String, Preset>();
+		for(Preset preset : toolPresets) {
+			presets.put(preset.getName(), preset);
+		}
 	}
 
 	/*
@@ -494,6 +515,7 @@ class MigrationPathImpl implements MigrationPath {
 	 * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
 	 * #getAsPlanetsPath()
 	 */
+/*FIXME! KILL, KILL. KILL it would be more suitable to put this in the generic wrapper class.
 	public eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath() {
 		URI outformat = getDestinationFormat();
 		URI informat = getSourceFormat();
@@ -509,4 +531,5 @@ class MigrationPathImpl implements MigrationPath {
 	public void addPreset(Preset preset) {
 		presets.put(preset.getName(), preset);
 	}
+	*/
 }

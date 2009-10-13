@@ -29,7 +29,7 @@ public class MigrationPathsTest {
                 TEST_CONFIGURATION_FILE_NAME);
         final Document pathsConfiguration = documentLocator.getDocument();
 
-        final MigrationPathFactory migrationPathsFactory = new V1MigrationPathFactory(pathsConfiguration);
+        final MigrationPathFactory migrationPathsFactory = new DBMigrationPathFactory(pathsConfiguration);
         migrationPathsToTest = migrationPathsFactory
                 .getAllMigrationPaths();
     }

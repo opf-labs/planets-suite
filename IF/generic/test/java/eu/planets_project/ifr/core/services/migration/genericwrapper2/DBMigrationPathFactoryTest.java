@@ -72,7 +72,7 @@ public class DBMigrationPathFactoryTest {
 		// TODO: Test the correctness of each and every migration path! Modify
 		// the configuration file to contain fewer paths.
 		assertEquals("The factory returned a wrong number of migration paths.",
-				14, migrationPaths.getAsPlanetsPaths().size());
+				14, migrationPaths.getAllMigrationPaths().size());
 
 		final URI inputFormatURI = new URI("info:test/lowercase");
 		final URI outputFormatURI = new URI("info:test/uppercase");
@@ -133,7 +133,28 @@ public class DBMigrationPathFactoryTest {
 		}
 		
 		// Verify the tool presets.
-		
+		Collection<Preset> toolPresets = migrationPath.getAllToolPresets();
+		assertEquals("Un-expected number of presets defined for the tested migration path.", 2, toolPresets.size());
+
+		final HashMap<String, Preset> presetMap = new HashMap<String, Preset>();
+		for (Preset preset : toolPresets) {
+			presetMap.put(preset.getName(), preset);
+		}
+
+		final String[] expectedPresetNames = { "mode", "quality" };
+		for (String presetName : expectedPresetNames) {
+			final Preset currentPreset = presetMap.get(presetName);
+			assertNotNull("The preset '" + presetName
+					+ "' was not defined for the migration path.",
+					currentPreset);
+
+			assertNotNull("No description specified for preset: "
+					+ presetName, currentPreset.getDescription());
+			assertFalse("Empty description for preset: " + presetName,
+					currentPreset.getDescription().length() == 0);
+			
+			// TODO: Check number of parameters and so on.
+		}
 	}
 
 	/**

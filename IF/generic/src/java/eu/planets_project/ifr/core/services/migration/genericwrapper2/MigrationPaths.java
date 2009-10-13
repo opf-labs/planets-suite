@@ -1,7 +1,7 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
 import java.net.URI;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -166,13 +166,30 @@ public class MigrationPaths {
 		}
 	}
 
-	public List<eu.planets_project.services.datatypes.MigrationPath> getAsPlanetsPaths() {
-
-		List<eu.planets_project.services.datatypes.MigrationPath> planetspaths = new ArrayList<eu.planets_project.services.datatypes.MigrationPath>();
-		for (MigrationPath migrationPath : migrationPaths.values()) {
-			planetspaths.add(migrationPath.getAsPlanetsPath());
-
-		}
-		return planetspaths;
+	/**
+	 * Get all the migration paths held by this <code>MigrationPaths</code>
+	 * instance.
+	 * 
+	 * @return a <code>Collection</code> containing all the
+	 *         <code>MigrationPath<code> instances held by this <code>MigrationPaths</code>
+	 *         instance.
+	 */
+	public Collection<MigrationPath> getAllMigrationPaths() {
+		return migrationPaths.values();
 	}
+
+	/*
+	 * FIXME! KILL, KILL. KILL it would be more suitable to put this in the
+	 * generic wrapper class.
+	 * 
+	 * public List<eu.planets_project.services.datatypes.MigrationPath>
+	 * getAsPlanetsPaths() {
+	 * 
+	 * List<eu.planets_project.services.datatypes.MigrationPath> planetspaths =
+	 * new ArrayList<eu.planets_project.services.datatypes.MigrationPath>(); for
+	 * (MigrationPath migrationPath : migrationPaths.values()) {
+	 * planetspaths.add(migrationPath.getAsPlanetsPath());
+	 * 
+	 * } return planetspaths; }
+	 */
 }

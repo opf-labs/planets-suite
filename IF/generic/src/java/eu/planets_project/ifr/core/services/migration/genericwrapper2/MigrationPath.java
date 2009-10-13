@@ -137,6 +137,11 @@ public interface MigrationPath {
 	 */
 	Collection<String> getToolPresetCategories();
 
+	
 	//TODO: Consider killing this method. It makes this interface swiss-armyknifish
+/*FIXME! KILL, KILL. KILL it would be more suitable to put this in the generic wrapper class.
 	eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath();
+	*/
+
+	Collection<Preset> getAllToolPresets();
 }

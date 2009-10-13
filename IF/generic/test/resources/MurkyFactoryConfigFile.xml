@@ -387,7 +387,7 @@
 			-->
 
 			<toolinput>
-				<stdin/>
+				<stdin />
 				<!-- Input enten fra stdin eller temp. fil. -->
 				<!--
 					This definition is used for the file containing the data to be
@@ -401,7 +401,8 @@
 			<tooloutput>
 				<!--
 					Kanalisere enten stdout eller temp. fil over i et Content objekt.
-					By value / reference "flueben" sættes (jfr. by value / by reference kaldsparametren fra kalderen af det wrappede tool).
+					By value / reference "flueben" sættes (jfr. by value / by reference
+					kaldsparametren fra kalderen af det wrappede tool).
 				-->
 				<!--
 					This definition is used for the file containing the final migrated
@@ -527,7 +528,7 @@
 					possible for the caller to have more preset categories to choose
 					from.
 				-->
-				<preset name="quality">
+				<preset name="quality" default="good">
 					<settings name="good">
 						<parameter name="param1"><![CDATA[]]>
 						</parameter>
@@ -598,9 +599,7 @@
 				</parameter>
 			</toolparameters>
 
-			<toolpresets>
-				<!-- No presets -->
-			</toolpresets>
+			<!-- No presets -->
 		</path>
 	</paths>
 </serviceWrapping>

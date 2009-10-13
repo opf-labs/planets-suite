@@ -1,57 +1,81 @@
 package eu.planets_project.ifr.core.services.migration.genericwrapper2;
 
-import eu.planets_project.services.datatypes.Parameter;
-
 import java.util.Collection;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Data carrier for tool presets from the generic wrapper configuration.
+ * Data carrier for tool presets from the generic wrapper configuration. A
+ * preset may contain one or more settings which again contains a collection of
+ * parameters. Thus, one could have e.g. a quality preset with three settings;
+ * Good, Better and Best. Each of these settings then holds the necessary
+ * parameters which must applied in order to achieve the quality described by
+ * the preset setting.
  * 
  * @author Asger Blekinge-Rasmussen
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
 class Preset {
 
-    private String name;
+	private String name;
 
-    private Map<String, Collection<Parameter>> settings;
+	private Map<String, PresetSetting> settings;
 
-    private String defaultSetting;
+	private String defaultSettingName;
 
-    private String description;
+	private String description;
 
-    public Preset(String name) {
-        this.name = name;
-        settings = new HashMap<String, Collection<Parameter>>();
-    }
+	Preset(String name, Collection<PresetSetting> settings,
+			String defaultSettingName) {
+		this.name = name;
+		this.defaultSettingName = defaultSettingName;
+		this.settings = new HashMap<String, PresetSetting>();
+		for (PresetSetting presetSetting : settings) {
+			this.settings.put(presetSetting.getName(), presetSetting);
+		}
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void addSetting(String settingName,
-                           Collection<Parameter> settingParameters) {
-        settings.put(settingName,settingParameters);
-    }
+	public PresetSetting getDefaultSetting() {
+		return settings.get(defaultSettingName);
+	}
 
-    public void setDefaultSetting(String defaultSetting) {
-        this.defaultSetting = defaultSetting;
-    }
+	public Collection<PresetSetting> getAllSettings() {
+		return settings.values();
+	}
 
-    public Collection<Parameter> getDefaultParameters() {
-        return settings.get(defaultSetting);
-    }
+	public PresetSetting getSetting(String settingName) {
+		return settings.get(settingName);
+	}
 
-    public Collection<Parameter> getParameters(String value) {
-        return settings.get(value);
-    }
+	/**
+	 * Get the description for this <code>Preset</code> describing the effect of
+	 * applying its different preset settings.
+	 * 
+	 * @return <code>String</code> containing the description
+	 */
+	public String getDescription() {
+		return description;
+	}
 
-    public Parameter getAsPlanetsParameter(){
+	/**
+	 * Set the description for this <code>Preset</code> describing the effect of
+	 * applying its different preset settings.
+	 * 
+	 * @param description
+	 *            <code>String</code> containing the description text.
+	 */
+	void setDescription(String description) {
+		this.description = description;
+	}
 
-        Parameter.Builder pb = new Parameter.Builder(name,defaultSetting);
-        pb.description(description);
-        return pb.build();
-    }
+	/*
+	 * FIXME! KILL, KILL, KILL.... public Parameter getAsPlanetsParameter() {
+	 * 
+	 * Parameter.Builder pb = new Parameter.Builder(name, defaultSettingName);
+	 * pb.description(description); return pb.build(); }
+	 */
 }
