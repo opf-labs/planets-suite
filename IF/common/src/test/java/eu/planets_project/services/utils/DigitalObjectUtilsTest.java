@@ -28,7 +28,7 @@ public class DigitalObjectUtilsTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		System.out.println("Cleaning out PLANETS_IF_TMP_STORE folder..." + FileUtils.clearPlanetsTmpStoreFolder());
+		System.out.println("Cleaning out Dig-OB-UTILS-TMP folder..." + DigitalObjectUtils.cleanUpTmpFiles());
 	}
 	
 	@Test

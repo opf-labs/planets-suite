@@ -742,4 +742,8 @@ public final class DigitalObjectUtils {
 		return FileUtils.randomizeFileName(title);
 		
 	}
+	
+	public static boolean cleanUpTmpFiles() {
+		return FileUtils.deleteAllFilesInFolder(utils_tmp);
+	}
 }
