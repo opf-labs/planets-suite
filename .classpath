@@ -225,7 +225,7 @@
 	<classpathentry kind="lib" path="PC/libtiff/lib/jna.jar"/>
 	<classpathentry kind="lib" path="lib/standalone/el-api.jar"/>
 	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfdom.jar"/>
-	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar"/>
+	<classpathentry kind="lib" path="PC/odf-toolkit/lib/odfvalidator.jar" sourcepath="E:/OdfValidator Source/src"/>
 	<classpathentry kind="lib" path="IF/jaxr/lib/axis.jar"/>
 	<classpathentry kind="lib" path="IF/jaxr/lib/commons-discovery-0.2.jar"/>
 	<classpathentry kind="lib" path="IF/jaxr/lib/juddi-service.jar"/>

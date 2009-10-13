@@ -239,7 +239,7 @@ public final class DigitalObjectUtils {
     			zipName = destZipName + ".zip";
     		}
     	}
-    	FileUtils.deleteAllFilesInFolder(utils_tmp);
+//    	FileUtils.deleteAllFilesInFolder(utils_tmp);
     	File zip_tmp = FileUtils.createFolderInWorkFolder(utils_tmp, FileUtils.randomizeFileName("zip_from_folder_tmp"));
 //    	FileUtils.deleteAllFilesInFolder(zip_tmp);
     	
@@ -425,7 +425,7 @@ public final class DigitalObjectUtils {
 		}
 		else {
 			List<File> files = new ArrayList<File>();
-			FileUtils.deleteAllFilesInFolder(utils_tmp);
+//			FileUtils.deleteAllFilesInFolder(utils_tmp);
 			File tmp = FileUtils.createFolderInWorkFolder(utils_tmp, FileUtils.randomizeFileName("get-all-files-tmp"));
 //			FileUtils.deleteAllFilesInFolder(tmp);
 			File content = new File(tmp, getFileNameFromDigObject(digOb, null)); 
@@ -488,9 +488,9 @@ public final class DigitalObjectUtils {
     		return null;
     	}
     	// Do all the tmpFolder related stuff....
-    	String tmpfolderName = getFolderNameFromDigObject(digOb);
+    	String tmpfolderName = FileUtils.randomizeFileName(getFolderNameFromDigObject(digOb));
     	File digObTmp = FileUtils.createFolderInWorkFolder(utils_tmp, tmpfolderName);
-    	FileUtils.deleteAllFilesInFolder(digObTmp);
+//    	FileUtils.deleteAllFilesInFolder(digObTmp);
     	File zip = getZipAsFile(digOb);
     	
     	File target = ZipUtils.getFileFrom(zip, fragment.getId(), digObTmp);    	

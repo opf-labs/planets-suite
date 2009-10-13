@@ -67,11 +67,7 @@ public final class FileUtils {
     public static boolean clearPlanetsTmpStoreFolder() {
     	File tmpStore = getPlanetsTmpStoreFolder();
     	if(tmpStore.exists()) {
-    		try {
-				org.apache.commons.io.FileUtils.cleanDirectory(tmpStore);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+    		deleteAllFilesInFolder(tmpStore);
 			if(tmpStore.list().length==0) {
 				return true;
 			}
@@ -987,11 +983,17 @@ public final class FileUtils {
 	 */
 	public static boolean deleteAllFilesInFolder(final File folder) {
 		try {
-			int fileCount = folder.list().length;
+			List<File> filesToDelete = listAllFilesAndFolders(folder, new ArrayList<File>());
+			int fileCount = filesToDelete.size();
+//			int fileCount = folder.list().length;
 			org.apache.commons.io.FileUtils.cleanDirectory(folder);
+			for (File file : filesToDelete) {
+				log.debug("[FileUtils] Deleted file: " + file.getName());
+			}
 			log.info("Deleted " + fileCount + " files in: " + folder.getAbsolutePath());
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.warn("[FileUtils.deleteAllFilesInFolder()]: Couldn't delete all files! " + e.getMessage());
+//			e.printStackTrace();
 		}
 		return (folder.list().length==0);
 	}

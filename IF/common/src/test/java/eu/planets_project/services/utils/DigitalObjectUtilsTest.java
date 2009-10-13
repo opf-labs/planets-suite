@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Random;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -24,6 +25,11 @@ public class DigitalObjectUtilsTest {
 	File testZip = new File("tests/test-files/archives/test_pdf.zip");
 	File removeZip = new File("tests/test-files/archives/insertFragmentTest.zip");
 	File work_folder = FileUtils.createWorkFolderInSysTemp("DigitalObjectUtilsTest_TMP".toUpperCase()); 
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		System.out.println("Cleaning out PLANETS_IF_TMP_STORE folder..." + FileUtils.clearPlanetsTmpStoreFolder());
+	}
 	
 	@Test
 	public void testCreateZipTypeDigObFolder() {
