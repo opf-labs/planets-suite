@@ -233,6 +233,9 @@ public class ZipUtils {
 					i++;
 				}
 			}
+			else {
+				return new Fragment[]{};
+			}
 			zip64File.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
