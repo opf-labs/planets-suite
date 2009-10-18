@@ -107,7 +107,7 @@ public class TiffValidation implements Validate, Serializable
 		boolean valid = basicValidateOneBinary(tempFile, fmt);
 
 		result = new ValidateResult.Builder(fmt, new ServiceReport(Type.INFO,
-                Status.SUCCESS, "OK")).ofThisFormat(valid).build();
+                Status.SUCCESS, "OK")).ofThisFormat(valid).validInRegardToThisFormat(valid).build();
 
 		return result;
 	}
