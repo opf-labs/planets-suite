@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.services.TestbedServiceTemplateImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 
 /**
@@ -215,9 +217,21 @@ public interface ExperimentExecutable extends Executable{
 	public ExperimentWorkflow getWorkflow();
     public void setWorkflowType( String expType ) throws Exception;
     
+    /**
+	 * Switching to WEE backend...
+	 * Defines the workflow to execute in terms of:
+	 *  a) WFConfig (service endpoints, service params, etc.)
+	 *  b) Additional Metadata- for workflows ported to the WEE backend
+	 * @return The stored configuration for a WEE backend workflow
+	 */
+	public WorkflowConf getWEEWorkflowConfig();
+	public void setWEEWorkflowConfig(WorkflowConf wfConfig);
+    
     /** The results */
     public void setBatchExecutionRecords(List<BatchExecutionRecordImpl> executionRecords);
     public List<BatchExecutionRecordImpl> getBatchExecutionRecords();
     public int getNumBatchExecutionRecords();
+    
+	
 
 }

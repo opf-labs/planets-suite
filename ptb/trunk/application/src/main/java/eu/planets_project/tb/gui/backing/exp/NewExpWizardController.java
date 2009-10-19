@@ -631,10 +631,15 @@ public class NewExpWizardController{
         // Verify that the experiment is configured correctly...
         
         // Get the workflow, to force the workflow to be configured based on the parameters.
-        String expType = exp.getExperimentSetup().getExperimentTypeID();
+        String exType = exp.getExperimentSetup().getExperimentTypeID();
         try {
-            log.info("Setting experiment type to:" + expType);
-            exp.getExperimentExecutable().setWorkflowType(expType);
+            log.info("Setting experiment type to:" + exType);
+            exp.getExperimentExecutable().setWorkflowType(exType);
+            
+            //Additional data for all workflows using the wee - store step2 wf_configuration here
+            ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(exType);
+            exptype.saveExpTypeBean_Step2_WorkflowConfiguration_ToDBModel();
+            	
         } catch( Exception e ) {
             FacesMessage fmsg = new FacesMessage();
             fmsg.setSummary("There was an error when configuring your experiment:  "+e.getMessage()+" Please check the workflow parameter(s). ");

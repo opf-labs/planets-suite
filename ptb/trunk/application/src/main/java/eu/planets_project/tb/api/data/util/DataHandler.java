@@ -19,8 +19,23 @@ import eu.planets_project.tb.impl.data.DigitalObjectDirectoryLister;
  * @author Andrew Lindley, ARC. Andrew Jackson, BL.
  */
 public interface DataHandler {
-	
 
+	/**
+	 * Creates a temporary File object in the Tomcats's externally available directory
+	 * This might be used for exposing config files, etc. temporarily for download while the backing information is persisted in the db model.
+	 * This should only be used for information that doesn't belong in any data registry!
+	 * @return
+	 */
+	public File createTempFileInExternallyAccessableDir() throws IOException; 
+	/**
+	 * Extracts the external format for this given temporary file as e.g. created by 'createTempFileInExternallyAccessableDir'
+	 * @param tempFileInExternalDir
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws FileNotFoundException if the file was already deleted or can't be found
+	 */
+	public URI getHttpFileRef(File tempFileInExternalDir) throws URISyntaxException, FileNotFoundException;	
+	
     /* --- Adding to the repository -- */
 
     /**

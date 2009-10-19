@@ -26,6 +26,7 @@ public class BackendProperties {
     public static final String JBOSS_FILEOUTBASE = "JBoss.FileOutDir";
     public static final String JBOSS_LOCALDATADIR = "JBoss.LocalDataDir";
     public static final String JBOSS_ALTLOCALDATADIR = "JBoss.AltLocalDataDir";
+    public static final String JBOSS_EXTERNALLY_REACHABLE_FILEDIR = "Jboss.ExternallyReachableFiledir";
     
     // Testbed properties
     public static final String TB_VERSION = "testbed.version";
@@ -116,6 +117,10 @@ public class BackendProperties {
      */
     public String getTestbedVersion() {
         return properties.getProperty(TB_VERSION);
+    }
+    
+    public String getExternallyReachableFiledir() {
+        return properties.getProperty(JBOSS_EXTERNALLY_REACHABLE_FILEDIR);
     }
     
 }

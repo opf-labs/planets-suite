@@ -26,6 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.logging.Log;
 
 import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
+import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
@@ -84,6 +85,10 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	//no one-to-one annotation, as we want to persist this data by value and not per reference
 	private TestbedServiceTemplateImpl tbServiceTemplate;
 	private String sSelectedServiceOperationName="";
+	
+	/** Information required for switching to WEE backend - Start*/
+	private WorkflowConf weeworkflowConfig;
+	/** Information required for switching to WEE backend - End*/
 
 	//A logger for this - transient: it's not persisted with this entity
     @Transient
@@ -636,5 +641,21 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
         exe.execEndDate = null;
         exe.execStartDate = null;
     }
+
+    
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#getWEEWorkflowConfig()
+	 */
+	public WorkflowConf getWEEWorkflowConfig() {
+		return this.weeworkflowConfig;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.ExperimentExecutable#setWEEWorkflowConfig(eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf)
+	 */
+	public void setWEEWorkflowConfig(WorkflowConf wfConfig) {
+		this.weeworkflowConfig = wfConfig;
+		
+	}
 
 }

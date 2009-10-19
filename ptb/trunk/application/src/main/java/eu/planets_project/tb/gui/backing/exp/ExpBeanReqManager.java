@@ -12,6 +12,7 @@ import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.model.Experiment;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
 
 /**
@@ -19,7 +20,10 @@ import eu.planets_project.tb.impl.model.ExperimentImpl;
  * A request-scope bean that handles inspection of a service.  The URLs and JSF links pass an
  * f:param to this bean, which looks up the service and makes it available to the page.
  * 
+ * Also the experiment specific ExpTypeBeans are initialized with experiment data.
+ * 
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
+ * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
  *
  */
 public class ExpBeanReqManager {
@@ -93,6 +97,7 @@ public class ExpBeanReqManager {
         ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_SESSION, expBean);
         // FIXME This overrides the experimental behaviour and returns to the default logic.
         ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_REQUEST, expBean);
+        updateExpTypeBeanForExperimentInSession();
         return expBean;
     }
 
@@ -108,7 +113,22 @@ public class ExpBeanReqManager {
         ctx.getExternalContext().getRequestMap().put(EXP_BEAN_IN_REQUEST, expBean);
         // Also overwrite the bean stored in the session.
         ctx.getExternalContext().getSessionMap().put(EXP_BEAN_IN_SESSION, expBean);
+        //finally update the experiment-type specific bean for this expBean
+        updateExpTypeBeanForExperimentInSession();
         return expBean;
+    }
+    
+    
+    /**
+     * This method grabs the ExperimentBean from the session and initializes the required
+     * expType specific beans' 'fill' methods for this expBean
+     * @param exp
+     */
+    private static void updateExpTypeBeanForExperimentInSession(){
+         ExpTypeBackingBean exptype = (ExpTypeBackingBean)JSFUtil.getManagedObject("ExpTypeExecutablePP");
+         //a kind of fill method for the expTypeBean for the current expBean
+         exptype.initExpTypeBeanForExistingExperiment();
+
     }
 
 }

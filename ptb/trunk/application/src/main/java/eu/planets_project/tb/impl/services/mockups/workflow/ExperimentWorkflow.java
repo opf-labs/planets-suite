@@ -14,6 +14,7 @@ import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
  *
  */
+@Deprecated
 public interface ExperimentWorkflow {
     
     /**
@@ -37,7 +38,6 @@ public interface ExperimentWorkflow {
      * @throws Exception Throws an exception if there are any problems with the parameters.  FIXME Is using an Exception sane?
      */
     public void setParameters( HashMap<String,String> parameters ) throws Exception;
-    
     public HashMap<String, String> getParameters();
 
     /**

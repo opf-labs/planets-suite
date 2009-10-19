@@ -82,7 +82,11 @@
 		    <p><b>workflow class: </b><h:outputText value="#{ExpTypeExecutablePP.weeXMLConfig.template.clazz}"/></p>
 			<p><b>graphical represenation: </b>We are sorry, but this workflow has now graphical representation associated.</p>
 			<p><b>workflow description: </b><h:outputText value="#{ExpTypeExecutablePP.WFDescription}" rendered="#{ExpTypeExecutablePP.WFDescription != null}"/><a4j:commandLink value="fetch" action="#{NewExp_Controller.getWFDescriptionForTemplate}" rendered="#{ExpTypeExecutablePP.WFDescription == null}" reRender="panelWFMetadata"/></p>
-			<p><b>Service details: </b>The workflow was configured to run with the following service details.</p>
+			<p><b>Service details: </b>The workflow was configured to run with the following service details.
+				<h:outputLink value="#{ExpTypeExecutablePP.tempFileDownloadLinkForCurrentXMLConfig}" rendered="#{ExpTypeExecutablePP.tempFileDownloadLinkForCurrentXMLConfig != null}">
+          		<h:outputText value="download.."/>
+        </h:outputLink>	
+			</p>
 		</rich:panel>
 	  </a4j:region>	
 	  <a4j:region id="regioneditWFPanel" selfRendered="true" immediate="true">	

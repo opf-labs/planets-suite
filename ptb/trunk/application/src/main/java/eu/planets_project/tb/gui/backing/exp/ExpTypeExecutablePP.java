@@ -1,8 +1,13 @@
 package eu.planets_project.tb.gui.backing.exp;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -37,16 +42,28 @@ import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Templ
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services.Service.Parameters.Param;
+import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
+import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
+import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
 
+/**
+ * 
+ * A session-scope bean that's backing the executable preservation plan experiment type
+ * 
+ * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
+ *
+ */
 public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 
 	private PlanetsLogger log = PlanetsLogger.getLogger(ExpTypeExecutablePP.class, "testbed-log4j.xml");
@@ -64,8 +81,15 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	private String newValue = "";
 	private String parameterName = "";
 	private String parameterValue = "";
-	//contains the default parameters from ser. registry for a given service ID
-	//private HashMap<String,List<Parameter>> defaulParamsFromRegistryForServiceID;
+	private boolean bValidXMLConfig,bXMLConfigUploaded,bWfTemplateAvailableInRegistry;
+    private String xmlConfigFileRef;
+    private String wfDescription;
+    //for caching purposes when exposing the current xml configuration
+    private int currXMLConfigHashCode;
+    private String currXMLConfigTempFileURI;
+	//Current experiment ID for checking if the reinit must be called.
+	//private String currExpId="";
+    
 	
 	public ExpTypeExecutablePP(){
 		initBean();
@@ -94,7 +118,63 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		serviceTypes.put("ViewAction",
 				"eu.planets_project.services.view.ViewAction");
 		wfConfigUtil = new WorkflowConfigUtil();
-		//defaulParamsFromRegistryForServiceID = new HashMap<String,List<Parameter>>();
+		bValidXMLConfig = false;
+		bXMLConfigUploaded = false;
+		xmlConfigFileRef = null;
+	    wfDescription = null;
+	    bWfTemplateAvailableInRegistry = false;
+	    currXMLConfigHashCode=0;
+	    currXMLConfigTempFileURI = null;
+	}
+	
+	/**
+	 * This method is used to initialize this bean from a given experiment
+	 * (i.e. WorkflowConf object as it is persisted in the db.)
+	 * @param wfConf
+	 */
+	@Override
+	public void initExpTypeBeanForExistingExperiment(){
+		//1) reinit the bean
+		initBean();
+		
+		//fetch the data to populate from
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+		if(expBean.getExperiment()==null){
+			//this is the case when the 'new experiment' hasn't been persisted
+			return;
+		}
+		WorkflowConf storedConf = expBean.getExperiment().getExperimentExecutable().getWEEWorkflowConfig();
+	
+		//2) possibly populate bean from stored information 
+		if(storedConf!=null){	
+			this.setWeeXMLConfig(storedConf);
+			//and call the populate from wfConfig method
+	        populateServiceInformationFromWorkflowConfig();
+	        this.setXMLConfigFileProvided(true);
+	        //fill additional required gui information
+	        this.setWeeXMLConfigFileRef("empty");
+	        this.setXMLConfigFileProvided(true);
+	        this.setXMLConfigValid(true);
+	        
+	        //check if the template is still available on the wee system
+	        WftRegistryService wftRegistryService = WeeRemoteUtil.getInstance().getWeeRegistryService();
+			if (wftRegistryService.getAllSupportedQNames().contains(storedConf.getTemplate().getClazz())){
+				this.setTemplateAvailableInWftRegistry(true);
+			}else{
+				this.setTemplateAvailableInWftRegistry(false);
+			}
+		}
+	}
+	
+	
+	/**
+	 * Takes the bean's information and persist it into the testbed's db model
+	 * i.e. the experiment's executable.setWorkflowConfig method
+	 */
+	@Override
+	public void saveExpTypeBean_Step2_WorkflowConfiguration_ToDBModel(){
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        expBean.getExperiment().getExperimentExecutable().setWEEWorkflowConfig(this.buildWorkflowConfFromCurrentConfiguration());
 	}
 	
 	
@@ -104,6 +184,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	public void reInitBeanForWFXMLConfigUploaded(){
 		this.initBean();
 	}
+	
 	
 	HashMap<String,List<MeasurementImpl>> manualObsCache;
     long cacheExperimentID;
@@ -149,7 +230,6 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	}
 	
 	// ---------- INFORMATION FOR STAGE2 --------------
-	private boolean bValidXMLConfig = false;
 	public boolean isValidXMLConfig(){
 		return bValidXMLConfig;
 	}
@@ -158,7 +238,6 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		this.bValidXMLConfig = valid;
 	}
     
-	private boolean bXMLConfigUploaded = false;
 	public boolean isXMLConfigFileProvided(){
 		return bXMLConfigUploaded;
 	}
@@ -167,7 +246,6 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		this.bXMLConfigUploaded = provided;
 	}
 	
-    String xmlConfigFileRef = null;
     /**
      * A pointer to the uploaded xml config file that was submitted to the system 
      * @param fileRef
@@ -194,6 +272,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
     public WorkflowConf getWeeXMLConfig(){
     	return wfConf;
     }
+    
     
     public void checkAndParseWorkflowConfigObject(String fileRef) throws Exception{
     	try {
@@ -310,18 +389,53 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 			return null;
 		}
     }
+    
+    /**
+     * Builds the currentXMLConfig from the given service/param configuration
+     * and writes it to a temporary file that's accessible via an external url ref.
+     * This can be used within the browser to download the currentXMLConfig
+     * @return
+     */
+    public String getTempFileDownloadLinkForCurrentXMLConfig(){
+		DataHandler dh = new DataHandlerImpl();
+		String currXMLConfig = buildXMLConfigFromCurrentConfiguration();
+		if(currXMLConfig==null){
+			return null;
+		}
+		//save it's hashcode - for caching purposes
+		if((this.currXMLConfigHashCode!=-1)&&(this.currXMLConfigHashCode!=currXMLConfig.hashCode())){
+			this.currXMLConfigHashCode =  currXMLConfig.hashCode();
+			
+			try {
+				//get a temporary file
+				File f = dh.createTempFileInExternallyAccessableDir();
+				Writer out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(f), "UTF-8" ) );
+				out.write(currXMLConfig);
+				out.close();
+				currXMLConfigTempFileURI = ""+dh.getHttpFileRef(f);
+				return currXMLConfigTempFileURI;
+			} catch (Exception e) {
+				log.debug("Error getting TempFileDownloadLinkForCurrentXMLConfig "+e);
+				return null;
+			}
+		}
+		else{
+			//FIXME: still missing to check if this temp file ref still exists
+			//returned the cached object
+			return this.currXMLConfigTempFileURI;
+		}
+		
+    }
    
     
     public boolean isTemplateAvailableInWftRegistry(){
     	return bWfTemplateAvailableInRegistry;
     }
     
-    private boolean bWfTemplateAvailableInRegistry = false;
     public void setTemplateAvailableInWftRegistry(boolean available){
     	bWfTemplateAvailableInRegistry = available;
     }
     
-    private String wfDescription = null;
     public void setWFDescription(String description){
     	wfDescription = description;
     }
@@ -380,7 +494,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
     					helperGetMetadataFromSerRegistry(sb,service.getEndpoint(),false);
     					
     				} catch (Exception ex) {
-    					log.debug("Unable lookup service endpoint: "+ service.getEndpoint()+ex);
+    					log.debug("Unable to lookup service endpoint: "+ service.getEndpoint()+ex);
     				}
     			}
     			else{
@@ -684,20 +798,19 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	  * @return
 	 */
 	public List<ServiceParameter> suggestMatchingDefaultParamsByName(Object query) {
-	        if( query == null) return null;
-	        // look for matching default params
-	        String q = (String) query;
-	        // Filter this into a list of matching parameters:
-	        ArrayList<ServiceParameter> matches = new ArrayList<ServiceParameter>();
-	        for(ServiceParameter sp :  this.getEditedSB().getDefaultServiceParameters()){
-	            if( sp.getName().startsWith(q) ||
-	            	sp.getName().contains(q)) {
-	                  matches.add(sp);
-	            }
-	        }
-	        return matches;
-	    }
-	
+        if( query == null) return null;
+        // look for matching default params
+        String q = (String) query;
+        // Filter this into a list of matching parameters:
+        ArrayList<ServiceParameter> matches = new ArrayList<ServiceParameter>();
+        for(ServiceParameter sp :  this.getEditedSB().getDefaultServiceParameters()){
+            if( sp.getName().startsWith(q) ||
+            	sp.getName().contains(q)) {
+                  matches.add(sp);
+            }
+        }
+        return matches;
+    }
 	
 	//END INFORMATION REQUIRED FOR THE EDIT PARAMETER WF SCREEN
 

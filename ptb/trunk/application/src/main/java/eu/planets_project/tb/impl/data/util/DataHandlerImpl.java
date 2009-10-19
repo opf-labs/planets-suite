@@ -42,6 +42,7 @@ import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.system.BackendProperties;
 
 /**
+ * This information is valid for old v0.5 experiments
  * The TB file handler has the purpose of
  *  - converting local file refs into http container exposed ones
  *    e.g. local file: IFServer/\server\default\deploy\jbossweb-tomcat55.sar\ROOT.war\planets-testbed\inputdata\Text1.doc
@@ -53,7 +54,7 @@ import eu.planets_project.tb.impl.system.BackendProperties;
  * References returned are relative filenames w.r.t. the Testbed data directory.
  * 
  * Older versions supported full pathnames, and the resolver deals with those too.
- * 
+ * -------------------
  * FIXME Future version should store references for DigitalObjects in 
  * 
  * @author Andrew Lindley, ARC. Andrew Jackson, BL.
@@ -81,6 +82,8 @@ public class DataHandlerImpl implements DataHandler {
 	// The new generic filestore (as opposed to using separate directories for input and output:
     private static final String FILE_DIR_PATH = "/planets-testbed/filestore";
 	private String FileStoreDir;
+	
+	private String externallyReachableFiledir;
 
 	//Apache AXIS Base64 encoder/decoder
 	Base64 base64 = new Base64();
@@ -98,10 +101,35 @@ public class DataHandlerImpl implements DataHandler {
 	 */
 	private void readProperties(){
 	    // Set the file store directories relative to the TB data file directory:
-        localFileDirBase = BackendProperties.getTBFileDir();
+        BackendProperties bp = new BackendProperties();
+		localFileDirBase = bp.getTBFileDir();
         FileInDir = localFileDirBase + IN_DIR_PATH;
         FileOutDir = localFileDirBase + OUT_DIR_PATH;
         FileStoreDir = localFileDirBase + FILE_DIR_PATH;
+        externallyReachableFiledir = bp.getExternallyReachableFiledir();
+	}
+	
+	/* (non-Javadoc)
+	 * Only possible as long as we're using the tomcat's \jbossweb-tomcat55.sar\ROOT.war
+	 * as location for storing files, as this is accessible from outside.
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#getHttpFileRef(java.io.File)
+	 */
+	public URI getHttpFileRef(File localFileRef,boolean input) throws URISyntaxException, FileNotFoundException{
+	    if(!localFileRef.canRead()){
+	    	throw new FileNotFoundException(localFileRef +" not found");
+	    }
+		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+	   	String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
+	   	//distinguish between inputdata and outputdata
+	   	if(input){
+	   		//URI input file ref to be created
+	   		//URI(scheme,authority,path,query,fragement)
+	   		return new URI("http",authority,"/planets-testbed/inputdata/"+localFileRef.getName(),null,null);
+	   	}
+	   	else{
+	   		//URI output file ref to be created
+	   		return new URI("http",authority,"/planets-testbed/outputdata/"+localFileRef.getName(),null,null);
+	   	}
 	}
 	
     /* -------------------------------------------------------------------------------------------------- */
@@ -502,10 +530,17 @@ public class DataHandlerImpl implements DataHandler {
 
     /* -------------------------------------------------------------------------------------------------- */
     
+    /**
+     * Creates a temporary that's deleted on exit.
+     * @return
+     * @throws IOException
+     */
     public static File createTemporaryFile() throws IOException {
-        File f = File.createTempFile("dataHandlerTemp", null);
-        f.deleteOnExit();
-        return f;
+    	int lowerBound = 1; int upperBound = 9999;
+		int random = (int) (lowerBound + Math.random() * ( upperBound - lowerBound) );
+		File f = File.createTempFile("dataHandlerTemp"+random, null);
+		f.deleteOnExit();
+		return f;
     }
     
 	/* (non-Javadoc)
@@ -559,5 +594,39 @@ public class DataHandlerImpl implements DataHandler {
     public static DataHandler findDataHandler() {
         return new DataHandlerImpl();
     }
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#createTempFileInExternallyAccessableDir()
+	 */
+	public File createTempFileInExternallyAccessableDir() throws IOException {
+		
+		File f = createTemporaryFile();
+		File dir = new File(externallyReachableFiledir);
+		log.info(dir.exists());
+		File target = new File(dir.getAbsoluteFile()+"/"+f.getName());
+		target.deleteOnExit();
+		boolean success = f.renameTo(target);
+		if(success){
+			return target;
+		}else{
+			throw new IOException("Problems moving data from temp to externally reachable jboss-web deployer dir");
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#getHttpFileRef(java.io.File)
+	 */
+	public URI getHttpFileRef(File tempFileInExternalDir)
+			throws URISyntaxException, FileNotFoundException {
+		//URI file ref for file to be created
+		if(!tempFileInExternalDir.canRead()){
+	    	throw new FileNotFoundException("getHttpFileRef for "+tempFileInExternalDir +" not found");
+	    }
+		HttpServletRequest req = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+	   	String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
+
+   		//URI(scheme,authority,path,query,fragement)
+   		return new URI("http",authority,"/planets-testbed/"+tempFileInExternalDir.getName(),null,null);
+	}
 
 }

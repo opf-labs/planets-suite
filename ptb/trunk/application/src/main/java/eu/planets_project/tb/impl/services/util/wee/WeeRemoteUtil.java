@@ -9,7 +9,6 @@ import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.api.RegistryFactory;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WeeService;
 import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
-import eu.planets_project.tb.gui.backing.exp.ExpTypeExecutablePP;
 
 /**
  * An util object for getting instances of the WeeService, WftRegistryService and ServiceRegistry remote objects

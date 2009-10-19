@@ -179,5 +179,25 @@ public abstract class ExpTypeBackingBean {
     	return ret;
     }
     
+    /**
+     * This method is used to init the expTye backing beans for a given experiment.
+     * i.e. init the beans that are related to a specific experiment type. Most types as
+     * expTypeIdentify, expTypeMigrate, etc. don't require this 'fill' method.
+     * Others as expTypeExecutablePP need to override this method.
+     */
+    public void initExpTypeBeanForExistingExperiment(){
+    	
+    }
+    
+    //TODO this method was introduced with the WEE backend and should used by all experiments that update to the WEE
+    //backend for persisting  wizard step2
+    /**
+     * This method is used to persist the ExpTypeBean specific information within step2 'configure workflow'
+     * of an experiment to the DB model.
+     */
+    public void saveExpTypeBean_Step2_WorkflowConfiguration_ToDBModel(){
+    	
+    }
+    
 
 }
