@@ -44,7 +44,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
      */
     public DigitalObjectMultiManager() {
         // Allocate the data sources:
-        dss = new DataSource[4];
+        dss = new DataSource[3];
         
         // The File System Data Registry:
         DigitalObjectManager fsdm = new FileSystemDataManager();
@@ -65,10 +65,12 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         dss[2].uri = ((SimpleBLNewspaperDigitalObjectManagerImpl)bln).getRootURI().normalize();
    
         // The ONB OAI DigitalObjectManager
+        /* This OAI source is no longer available, so disable this
         DigitalObjectManager onb = new OAIDigitalObjectManagerONBDemoImpl();
         dss[3] = new DataSource();
         dss[3].dm = onb;
         dss[3].uri = ((OAIDigitalObjectManagerONBDemoImpl)onb).getRootURI().normalize();
+        */
         
         /*
         // The Planets Data Registry:
