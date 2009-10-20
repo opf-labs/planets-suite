@@ -639,10 +639,11 @@ public class NewExpWizardController{
             //Additional data for all workflows using the wee - store step2 wf_configuration here
             ExpTypeBackingBean exptype = ExpTypeBackingBean.getExpTypeBean(exType);
             exptype.saveExpTypeBean_Step2_WorkflowConfiguration_ToDBModel();
+            exptype.checkExpTypeBean_Step2_WorkflowConfigurationOK();
             	
         } catch( Exception e ) {
             FacesMessage fmsg = new FacesMessage();
-            fmsg.setSummary("There was an error when configuring your experiment:  "+e.getMessage()+" Please check the workflow parameter(s). ");
+            fmsg.setSummary("There was an error when configuring your experiment workflow:  "+e.getMessage());
             fmsg.setDetail("ERROR: " + e );
             fmsg.setSeverity(FacesMessage.SEVERITY_ERROR);
             FacesContext ctx = FacesContext.getCurrentInstance();

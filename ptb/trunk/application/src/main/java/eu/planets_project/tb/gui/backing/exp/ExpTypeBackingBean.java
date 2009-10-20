@@ -119,7 +119,8 @@ public abstract class ExpTypeBackingBean {
             	}
                
             } catch (Exception e) {
-                e.printStackTrace();
+                //Version v1.0 - the ExperimentExecutable().getParameters() aren't any longer used! All Information is encoded in a WFConf object
+            	//TODO AL remove the Parameters from the ExperimentExecutable AND the ExpTypeBackingBean
             }
         }
         return ewfCache;
@@ -189,15 +190,21 @@ public abstract class ExpTypeBackingBean {
     	
     }
     
-    //TODO this method was introduced with the WEE backend and should used by all experiments that update to the WEE
+    //TODO AL version 1.0: this method was introduced with the WEE backend and should used by all experiments that update to the WEE
     //backend for persisting  wizard step2
     /**
+     * since version 1.0
      * This method is used to persist the ExpTypeBean specific information within step2 'configure workflow'
      * of an experiment to the DB model.
      */
     public void saveExpTypeBean_Step2_WorkflowConfiguration_ToDBModel(){
-    	
     }
-    
+
+    /**
+     * since version 1.0
+     * This method is used to check the ExpTypeBean specific workflow configuration is valid
+     * @throws Exception use the Exception to pass a meaningfull statement to the user
+     */
+    public abstract void checkExpTypeBean_Step2_WorkflowConfigurationOK() throws Exception;
 
 }

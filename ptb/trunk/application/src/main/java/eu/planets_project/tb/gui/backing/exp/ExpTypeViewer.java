@@ -141,6 +141,16 @@ public class ExpTypeViewer extends ExpTypeBackingBean {
         // Now return the results:
         return results;
     }
+
+    /* 
+	 * TODO AL: version 1.0 uses this structure to check for a valid workflow (exp-type specific) configuration.
+	 * (non-Javadoc)
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#checkExpTypeBean_Step2_WorkflowConfigurationOK()
+	 */
+    @Override
+    public void checkExpTypeBean_Step2_WorkflowConfigurationOK() throws Exception{
+		// TODO Auto-generated method stub
+	}
     
     
 }

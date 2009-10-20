@@ -112,6 +112,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
     /* (non-Javadoc)
      * @see eu.planets_project.tb.api.model.ExperimentExecutable#getParameters()
      */
+	@Deprecated
     public HashMap<String, String> getParameters() {
         if( parameters == null )
             parameters = new HashMap<String,String>();

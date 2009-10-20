@@ -178,6 +178,53 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	}
 	
 	
+	/* 
+	 * TODO AL: version 1.0 uses this structure to check for a valid workflow (exp-type specific) configuration.
+	 * (non-Javadoc)
+	 * @see eu.planets_project.tb.gui.backing.exp.ExpTypeBackingBean#checkExpTypeBean_Step2_WorkflowConfigurationOK()
+	 */
+	@Override
+	public void checkExpTypeBean_Step2_WorkflowConfigurationOK() throws Exception{
+		
+		//1. check valid configuration file provided
+		if(!this.isValidXMLConfig()){
+			throw new Exception("The provided workflow configuration file is not valid");
+		}	
+		//2 check workflow available on system
+		if(!isTemplateAvailableInWftRegistry()){
+			throw new Exception("The selected workflow is not available on the execution engine - please contact Testbed helpdesk");
+		}
+		//3 check all selected services available
+		if(!helperCheckAllSelectedServicesAvailable()){
+			throw new Exception("One or more selected services are not available within the Testbed - please contact Testbed helpdesk");
+		}
+	}
+	
+	
+	/**
+	 * Checks if all specified/selected services are registered within the
+	 * service registry.
+	 * @return
+	 */
+	private boolean helperCheckAllSelectedServicesAvailable(){
+		boolean bOK = true;
+		for(ServiceBean sb : this.getAllCurrentlyUsedServices()){
+			if(!sb.isServiceAvailable()){
+				bOK = false;
+			}
+		}
+		return bOK;
+	}
+	
+	/**
+	 * Returns a List of ServiceBean objects containing information for
+	 * all services that are currently used within the worfklow configuration
+	 * @return
+	 */
+	public List<ServiceBean> getAllCurrentlyUsedServices(){
+		return this.serviceBeans;
+	}
+	
 	/**
 	 * reinits the bean for the step where an template gets uploaded 
 	 */

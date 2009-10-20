@@ -41,6 +41,7 @@ public interface ExperimentExecutable extends Executable{
 	/**
 	 * Executable parameters
 	 */
+	@Deprecated
     public HashMap<String,String> getParameters();
     public void setParameters(HashMap<String,String> pars);
 	

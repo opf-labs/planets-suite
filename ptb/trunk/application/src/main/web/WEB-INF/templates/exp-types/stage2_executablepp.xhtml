@@ -21,14 +21,8 @@
        <legend>Executable (Plato) Preservation Plan Experiment</legend>
        <p>This experiment type allows you to upload and execute a pre-defined Planets 'executable preservation plan'. Once you have chosen your workflow configuration you'll be able to modify the predefined settings before invoking it.</p> 
        
-     <h:outputLink value="#" id="link">
-        Show Modal Panel 
-        <rich:componentControl for="configEditParamsPanel" attachTo="link" operation="show" event="onclick"/>
-     </h:outputLink>
-       
-       
        <!-- Toggle panel for upload xml config section -->
-       <rich:simpleTogglePanel id="userxmlconfuploadpanel" label="Upload an executable preservation plan" opened="true" switchType="client">  
+       <rich:simpleTogglePanel id="userxmlconfuploadpanel" label="Upload an executable preservation plan" opened="true" switchType="client" rendered="#{!ExperimentBean.approved}">  
        <h:outputText value="Please upload an executable preservation plan (xml-configuration file), which you want to run your experiment upon."/> 
         <p class="center">        
            <t:inputFileUpload id="xmlconfigupload"
@@ -51,7 +45,7 @@
        </rich:simpleTogglePanel>
        
        <!-- allow browsing from previously uploaded user configs -->        
-       <rich:simpleTogglePanel id="userxmlconfbrowserpanel" label="or select from previously uploaded workflow configurations" opened="false" switchType="client">  
+       <rich:simpleTogglePanel id="userxmlconfbrowserpanel" label="or select from previously uploaded workflow configurations" opened="false" switchType="client" rendered="#{!ExperimentBean.approved}">  
 	    <p>Please select from the list of your <b>previously uploaded</b> workflow configurations which you are able to open and reuse.</p>
 	    <p><b>We're sorry, this feature is currently not available.</b></p>                     
 	   </rich:simpleTogglePanel>
@@ -79,11 +73,11 @@
         </a4j:status>
 	   	<legend>You have selected to use the following workflow</legend>
 	    <rich:panel id="panelWFMetadata">
-		    <p><b>workflow class: </b><h:outputText value="#{ExpTypeExecutablePP.weeXMLConfig.template.clazz}"/></p>
-			<p><b>graphical represenation: </b>We are sorry, but this workflow has now graphical representation associated.</p>
-			<p><b>workflow description: </b><h:outputText value="#{ExpTypeExecutablePP.WFDescription}" rendered="#{ExpTypeExecutablePP.WFDescription != null}"/><a4j:commandLink value="fetch" action="#{NewExp_Controller.getWFDescriptionForTemplate}" rendered="#{ExpTypeExecutablePP.WFDescription == null}" reRender="panelWFMetadata"/></p>
-			<p><b>Service details: </b>The workflow was configured to run with the following service details.
-				<h:outputLink value="#{ExpTypeExecutablePP.tempFileDownloadLinkForCurrentXMLConfig}" rendered="#{ExpTypeExecutablePP.tempFileDownloadLinkForCurrentXMLConfig != null}">
+		    <p><h:outputText value="workflow class: " style="font-weight:bold;"/><h:outputText value="#{ExpTypeExecutablePP.weeXMLConfig.template.clazz}"/></p>
+			<p><h:outputText value="graphical represenation: " style="font-weight:bold;"/><h:outputText value="We are sorry, but this workflow has now graphical representation associated."/></p>
+			<p><h:outputText value="workflow description: " style="font-weight:bold;"/><h:outputText value="#{ExpTypeExecutablePP.WFDescription}" rendered="#{ExpTypeExecutablePP.WFDescription != null}"/><a4j:commandLink value="fetch" action="#{NewExp_Controller.getWFDescriptionForTemplate}" rendered="#{(ExpTypeExecutablePP.WFDescription == null) and (!ExperimentBean.approved)}" reRender="panelWFMetadata"/></p>
+			<p><h:outputText value="Service details: " style="font-weight:bold;"/><h:outputText value="The workflow was configured to run with the following service details."/>
+				<h:outputLink target="_blank" value="#{ExpTypeExecutablePP.tempFileDownloadLinkForCurrentXMLConfig}" rendered="#{ExpTypeExecutablePP.tempFileDownloadLinkForCurrentXMLConfig != null}">
           		<h:outputText value="download.."/>
         </h:outputLink>	
 			</p>
@@ -147,7 +141,7 @@
                     		<h:selectOneMenu 
 						    	label="#{service.serviceId}"
 						    	valueChangeListener="#{ExpTypeExecutablePP.serviceSelectionChanged}"
-						    	immediate="true" >
+						    	immediate="true" disabled="#{ExperimentBean.approved}">
 						    	<f:selectItems value="#{service.endpointOptions}"/>
 						    	<a4j:support event="onchange" eventsQueue="foo" ignoreDupResponses="true" ajaxSingle="true" reRender="serviceConfigTable">
 				                	<a4j:actionparam name="selServiceID" value="#{service.serviceId}"/>
@@ -186,7 +180,7 @@
 	                    </rich:dataTable>
 	                </rich:column>	                    
 	                <rich:column>
-	                		<a4j:commandButton value="Edit Parameters" id="editParamButton" ajaxSingle="true" actionListener="#{ExpTypeExecutablePP.commandSetServiceBeanForEditParam}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');" reRender="configEditParamsBody">
+	                		<a4j:commandButton value="Edit Parameters" id="editParamButton" ajaxSingle="true" actionListener="#{ExpTypeExecutablePP.commandSetServiceBeanForEditParam}" oncomplete="Richfaces.showModalPanel('configEditParamsPanel');window.scrollTo(0,0);" reRender="configEditParamsBody" disabled="#{ExperimentBean.approved}">
 	                			<a4j:actionparam name="selServiceID" value="#{service.serviceId}"/>
 	                		</a4j:commandButton>
 	                </rich:column>	                   
