@@ -127,7 +127,7 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = { "template", "services", "data" })
 @XmlRootElement(name = "workflowConf")
-public class WorkflowConf {
+public class WorkflowConf implements java.io.Serializable{
 
     @XmlElement(required = true)
     protected WorkflowConf.Template template;
@@ -222,7 +222,7 @@ public class WorkflowConf {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = { "base64OrRefURL" })
-    public static class Data {
+    public static class Data implements java.io.Serializable{
 
         @XmlElements( {
                 @XmlElement(name = "refURL", type = WorkflowConf.Data.RefURL.class),
@@ -432,7 +432,7 @@ public class WorkflowConf {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = { "service" })
-    public static class Services {
+    public static class Services implements java.io.Serializable{
 
         @XmlElement(required = true)
         protected List<WorkflowConf.Services.Service> service;
@@ -505,7 +505,7 @@ public class WorkflowConf {
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = { "endpoint", "parameters" })
-        public static class Service {
+        public static class Service implements java.io.Serializable{
 
             @XmlElement(required = true)
             @XmlSchemaType(name = "anyURI")
@@ -597,7 +597,7 @@ public class WorkflowConf {
              */
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = { "param" })
-            public static class Parameters {
+            public static class Parameters implements java.io.Serializable{
 
                 @XmlElement(required = true)
                 protected List<WorkflowConf.Services.Service.Parameters.Param> param;
@@ -649,7 +649,7 @@ public class WorkflowConf {
                  */
                 @XmlAccessorType(XmlAccessType.FIELD)
                 @XmlType(name = "", propOrder = { "name", "value" })
-                public static class Param {
+                public static class Param implements java.io.Serializable{
 
                     @XmlElement(required = true)
                     @XmlSchemaType(name = "anyURI")
@@ -718,7 +718,7 @@ public class WorkflowConf {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = { "clazz" })
-    public static class Template {
+    public static class Template implements java.io.Serializable{
 
         @XmlElement(name = "class", required = true)
         protected String clazz;
