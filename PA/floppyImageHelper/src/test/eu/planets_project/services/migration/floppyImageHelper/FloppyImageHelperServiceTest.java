@@ -106,7 +106,7 @@ public class FloppyImageHelperServiceTest {
 		ZipResult zipResult = ZipUtils.createZipAndCheck(FILES_TO_INJECT, OUT_DIR, "test.zip", false); 
 		File zipFile = zipResult.getZipFile();
 //		DigitalObjectContent content = Content.byReference(zipFile).withChecksum(zipResult.getChecksum());
-        DigitalObject input = DigitalObjectUtils.createZipTypeDigOb(zipFile, zipFile.getName(), true, true, true);
+        DigitalObject input = DigitalObjectUtils.createZipTypeDigitalObject(zipFile, zipFile.getName(), true, true, true);
 		MigrateResult migrateResult = FLOPPY_IMAGE_HELPER.migrate(input, format.createExtensionUri("zip"), format.createExtensionUri("ima"), null);
 		ServiceReport report = migrateResult.getReport();
 		System.out.println(report);
