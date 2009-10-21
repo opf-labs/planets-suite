@@ -242,7 +242,7 @@ public class ODFValidatorWrapper {
     public static ValidateResult validateODF( DigitalObject dob, URI format ) {
         
         Configuration aConfig = null;
-        String aVersion = null;
+        String aVersion = "1.0";
         /*
          *             else if( aArg.equals("-1.0") || aArg.equals("-1.1") || aArg.equals("-1.2") )
             {
@@ -251,7 +251,7 @@ public class ODFValidatorWrapper {
          */
         boolean bUseMathDTD = false;
         int nMode = ODFPackageValidator.VALIDATE;
-        // nMode = ODFPackageValidator.CHECK_CONFORMANCE;
+        //nMode = ODFPackageValidator.CHECK_CONFORMANCE;
         String aBaseURI = null;
        
         try
@@ -260,11 +260,23 @@ public class ODFValidatorWrapper {
             ByteArrayOutputStream buf = new ByteArrayOutputStream();
             //PrintStream aOut = aOutputFileName != null ? new PrintStream( aOutputFileName ) : System.out;
             PrintStream aOut = new PrintStream(buf);
+            aOut = System.out;
             
             ODFValidator aValidator = new ODFValidator( aConfig, Logger.INFO, aVersion, bUseMathDTD );
+            
+            
+            if( dob == null || dob.getContent() == null ) {
+                throw new ODFValidatorException("ERROR! NULL DigitalObject or Content.");
+            }
 
+            if( aValidator == null ) {
+                throw new ODFValidatorException("ERROR! NULL ODFValidator.");
+            }
+            
             //aValidator.validate(aOut, aFileNames, aExcludeRegExp, nMode, bRecursive, aFilterFileName );
-            aValidator.validateStream(aOut, dob.getContent().read(), aBaseURI , nMode, null);
+            boolean result = aValidator.validateStream(aOut, dob.getContent().read(), aBaseURI , nMode, null);
+            System.out.println("Got valiudator result: "+result);
+            
         }
         catch( ODFValidatorException e )
         {
@@ -272,6 +284,7 @@ public class ODFValidatorWrapper {
             System.out.println( "Validation aborted." );
         }
         
+        // TODO Return a result?
         return null;
     }
         

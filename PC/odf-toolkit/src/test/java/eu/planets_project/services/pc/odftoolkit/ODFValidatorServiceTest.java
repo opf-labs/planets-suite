@@ -4,6 +4,7 @@ package eu.planets_project.services.pc.odftoolkit;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -56,7 +57,14 @@ public class ODFValidatorServiceTest {
      */
     @Test
     public void testValidate() throws MalformedURLException, URISyntaxException {
-        // Attempt to determine the type of a simple file, by name
+        // Attempt to ODFToolkit/odf-validator-src/dist/test.odt
+        testValidateThis(new DigitalObject.Builder( Content.byValue(new File("PC/odf-toolkit/src/test/resources/HelloWorld.odt") ) ).build() , new URI("planets:fmt/ext/odf"),
+        true);
+        System.out.println("Got this far.");
+        testValidateThis(new DigitalObject.Builder( Content.byReference(new File("PC/odf-toolkit/src/test/resources/HelloWorld.doc") ) ).build() , new URI("planets:fmt/ext/odf"),
+                true);
+        testValidateThis(new DigitalObject.Builder( Content.byReference(new File("PC/odf-toolkit/src/test/resources/HelloWorld.sxw") ) ).build() , new URI("planets:fmt/ext/odf"),
+                false);
         testValidateThis(null, new URI("http://some"), false );
         testValidateThis(new DigitalObject.Builder( Content.byReference(new URL("http://someother") ) ).build() , new URI("ext"),
                 true);
@@ -72,6 +80,7 @@ public class ODFValidatorServiceTest {
         ValidateResult vr = ids.validate(dob, type, null );
         
         /* Check the result */
+        assertTrue("The returned result was null. ", vr != null);
         System.out.println("Recieved validity: " + vr.isOfThisFormat() + ", " + vr.isValidInRegardToThisFormat() );
         System.out.println("Recieved service report: " + vr.getReport() );
         assertEquals("The returned type did not match the expected;", valid , vr.isOfThisFormat() && vr.isValidInRegardToThisFormat() ) ;
