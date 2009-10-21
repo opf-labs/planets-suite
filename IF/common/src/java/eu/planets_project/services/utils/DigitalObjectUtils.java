@@ -495,7 +495,7 @@ public final class DigitalObjectUtils {
 	 * @param targetFolder The folder to store result files in
 	 * @return The child elements of the given digital object as files
 	 */
-	private static List<File> getDigitalObjectsAsFiles(final List<DigitalObject> listOfDigObjs, final File targetFolder) {
+	public static List<File> getDigitalObjectsAsFiles(final List<DigitalObject> listOfDigObjs, final File targetFolder) {
 	    List<File> containedFiles = new ArrayList<File>();
 	    LOG.info("received list of dig obj with lengh: "+ listOfDigObjs.size());
 	    if (listOfDigObjs.size() > 0) {
