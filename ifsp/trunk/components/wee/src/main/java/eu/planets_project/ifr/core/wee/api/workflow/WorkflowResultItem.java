@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceReport;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WorkflowResultItem implements Serializable{
@@ -26,8 +27,7 @@ public class WorkflowResultItem implements Serializable{
     private String digoOut;
     private List<String> extractedInformation;
     private String logInfo = "";
-    private String serviceReportStatus;
-    private String serviceReportType;
+    private ServiceReport serReport;
     
     //required for JAXB - even if empty
     private WorkflowResultItem(){
@@ -124,20 +124,13 @@ public class WorkflowResultItem implements Serializable{
 		return extractedInformation;
 	}
 
-	public String getServiceReportStatus() {
-		return serviceReportStatus;
+
+	public ServiceReport getServiceReport() {
+		return serReport;
 	}
 
-	public void setServiceReportStatus(String serviceReportStatus) {
-		this.serviceReportStatus = serviceReportStatus;
-	}
-
-	public String getServiceReportType() {
-		return serviceReportType;
-	}
-
-	public void setServiceReportType(String serviceReportType) {
-		this.serviceReportType = serviceReportType;
+	public void setServiceReport(ServiceReport serviceReport) {
+		this.serReport = serviceReport;
 	}
 	
 	/**
@@ -146,8 +139,8 @@ public class WorkflowResultItem implements Serializable{
      */
     @Override
     public String toString() {
-        return String.format("%s, actionIdentifier: %s,inputDigo: %s, outputDigo: %s,logInfo: %s, serviceReportStatus: %s, serviceReportType: %s, start-time: %s, end-time: %s", this
-                .getClass().getSimpleName(), sActionIdentifier, digoIn, digoOut,logInfo, serviceReportStatus, serviceReportType, startTime, endTime);
+        return String.format("%s, actionIdentifier: %s,logInfo: %s, serviceReport: %s,  start-time: %s, end-time: %s", this
+                .getClass().getSimpleName(), sActionIdentifier,logInfo, serReport, startTime, endTime);
     }
 
 }

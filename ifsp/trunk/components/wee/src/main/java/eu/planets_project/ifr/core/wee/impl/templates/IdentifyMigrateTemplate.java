@@ -217,8 +217,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         List<URI> types = results.getTypes();
 
         //report service status and type
-        wfResultItem.setServiceReportType(report.getType().toString());
-        wfResultItem.setServiceReportStatus(report.getStatus().toString());
+        wfResultItem.setServiceReport(report);
 
         if (report.getType() == Type.ERROR) {
             String s = "Service execution failed: " + report.getMessage();
@@ -282,8 +281,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         ServiceReport report = migrateResult.getReport();
         
         //report service status and type
-        wfResultItem.setServiceReportType(report.getType().toString());
-        wfResultItem.setServiceReportStatus(report.getStatus().toString());
+        wfResultItem.setServiceReport(report);
 
         if (report.getType() == Type.ERROR) {
             String s = "Service execution failed: " + report.getMessage();
