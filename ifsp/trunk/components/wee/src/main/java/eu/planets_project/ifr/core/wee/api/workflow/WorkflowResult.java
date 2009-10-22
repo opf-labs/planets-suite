@@ -5,10 +5,13 @@ package eu.planets_project.ifr.core.wee.api.workflow;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+
+import eu.planets_project.services.datatypes.DigitalObject;
 
 /**
  * TODO The return object of a workflow execution still needs to be defined. It
@@ -28,8 +31,11 @@ public class WorkflowResult implements Serializable {
     private static final long serialVersionUID = -7804803563573452403L;
 
     @SuppressWarnings("unused")
-    // For JAXB
-    private WorkflowResult() {}
+    // For JAXB - even if empty
+    public WorkflowResult() {
+    	this.startTime = System.currentTimeMillis();
+    	resultItems = new LinkedList<WorkflowResultItem>();
+    }
 
     // TODO Needs to be defined
     // digital objects with result data or registry pointers
@@ -39,6 +45,9 @@ public class WorkflowResult implements Serializable {
     private List<URL> results;
     private URL log;
     private URL report;
+    private List<WorkflowResultItem> resultItems;
+    private long startTime=-1;
+    private long endTime=-1;
 
     /**
      * @param report The location of the report
@@ -46,6 +55,7 @@ public class WorkflowResult implements Serializable {
      * @param results The location of the results
      */
     public WorkflowResult(URL report, URL log, List<URL> results) {
+    	this();
         this.report = report;
         this.log = log;
         this.results = results;
@@ -57,15 +67,25 @@ public class WorkflowResult implements Serializable {
      */
     @Override
     public String toString() {
-        return String.format("%s, report: %s, log: %s, results: %s", this
-                .getClass().getSimpleName(), report, log, results);
+        return String.format("%s, report: %s, log: %s, results: %s, result-items: %s, start-time: %s, end-time: %s", this
+                .getClass().getSimpleName(), report, log, results, resultItems, startTime, endTime);
     }
 
     /**
+     * A list of URL pointers to all objects that have been created within this workflow
      * @return the objects
      */
+    @Deprecated
     public List<URL> getResults() {
         return results;
+    }
+    
+    /**
+     * @return the objects
+     */
+    @Deprecated
+    public void setResults(List<URL> results) {
+        this.results = results;
     }
 
     /**
@@ -74,6 +94,13 @@ public class WorkflowResult implements Serializable {
     public URL getLog() {
         return log;
     }
+    
+    /**
+     * @return the log
+     */
+    public void setLog(URL log) {
+        this.log = log;
+    }
 
     /**
      * @return the report
@@ -81,5 +108,118 @@ public class WorkflowResult implements Serializable {
     public URL getReport() {
         return report;
     }
+    
+    public void setReport(URL report) {
+        this.report = report;
+    }
+    
+    /**
+     * Start Time of the entire workflow - server specific timestamp
+     * @param millis
+     */
+    public void setStartTime(long millis){
+    	this.startTime = millis;
+    }
+    
+    
+    /**
+     * End Time of the entire workflow - server specific timestamp
+     * @param millis
+     */
+    public void setEndTime(long millis){
+    	this.endTime = millis;
+    }
+    
+    /**
+     * Start Time of the entire workflow - server specific timestamp
+     * @param millis
+     */
+    public long getStartTime(){
+    	return startTime;
+    }
+    
+    /**
+     * End Time of the entire workflow - server specific timestamp
+     * @param millis
+     */
+    public long getEndTime(){
+    	return endTime;
+    }
+    
+    /**
+     * Duration if the start time and end time of the workflow have been set
+     * @return
+     */
+    public long getDuration(){
+    	if((this.getStartTime()!=-1)&&(this.getEndTime()!=-1)){
+    		return this.getEndTime() - this.getStartTime();
+    	}
+    	return -1;
+    }
+    
+    /**
+     * returns a list of WorkflowResultItems in the order they took place 
+     * @return
+     */
+    public List<WorkflowResultItem> getWorkflowResultItems(){
+    	return resultItems;
+    }
+    
+    public void addWorkflowResultItem(WorkflowResultItem item){
+    	this.getWorkflowResultItems().add(item);
+    }
+    
+	/**
+	 * Document a 'migration' specific workflow result item
+	 * @param inputDigo - the input data
+	 * @param outputDigo - possibly an output file
+	 * @param startTime - before the 'migration' service was called
+	 * @param endTime - after the 'migration' service returned
+	 * @param logInfo - any additional logInformation for this step
+	 */
+	public void addMigrationWorkflowResultItem(DigitalObject inputDigo, DigitalObject outputDigo, long startTime, long endTime, String logInfo){
+		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_MIGRATION,startTime,endTime);
+		item.setInputDigitalObject(inputDigo);
+		if(outputDigo!=null){
+			item.setOutputDigitalObject(outputDigo);
+		}
+		item.setLogInfo(logInfo);
+	}
+	
+	/**
+	 * Document a 'identification' specific workflow result item
+	 * @param inputDigo - the input data
+	 * @param identifier - possibly the extracted identifier(s)
+	 * @param startTime - before the 'identification' service was called
+	 * @param endTime - after the 'identification' service returned
+	 * @param logInfo - any additional logInformation for this step
+	 */
+	public void addIdentificationWorkflowResultItem(DigitalObject inputDigo, List<String> identifier, long startTime, long endTime, String logInfo){
+		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_IDENTIFICATION,startTime,endTime);
+		item.setInputDigitalObject(inputDigo);
+		if((identifier!=null)&&(identifier.size()>0)){
+			item.setExtractedInformation(identifier);
+		}
+		item.setLogInfo(logInfo);
+	}
+	
+	/**
+	 * Document a 'characterisation' specific workflow result item
+	 * @param inputDigo - the input data
+	 * @param characterisation - extracted characteristics
+	 * @param startTime - before the 'characterisation' service was called
+	 * @param endTime - after the 'characterisation' service returned
+	 * @param logInfo - any additional logInformation for this step
+	 */
+	public void addCharacterisationWorkflowResultItem(DigitalObject inputDigo, List<String> characterisation, long startTime, long endTime, String logInfo){
+		WorkflowResultItem item = new WorkflowResultItem(WorkflowResultItem.SERVICE_ACTION_CHARACTERISATION,startTime,endTime);
+		item.setInputDigitalObject(inputDigo);
+		if((characterisation!=null)&&(characterisation.size()>0)){
+			item.setExtractedInformation(characterisation);
+		}
+		item.setLogInfo(logInfo);
+	}
+	
+	//TODO continue for other Planets supported service types as create view, etc...
 
 }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import eu.planets_project.ifr.core.common.conf.PlanetsServerConfig;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -182,6 +185,16 @@ public abstract class WorkflowTemplateHelper implements Serializable {
     public static Message overview(WorkflowTemplate template) {
         return new Message("Overview", new Parameter("Description", template.describe()), new Parameter("Started",
                 new Date(System.currentTimeMillis()).toString()));
+    }
+    
+    /**
+     * Returns host and port of the system the wee is running on as configured through AppServer installation
+     * @return
+     * @throws URISyntaxException
+     */
+    public String getHostAuthority() throws URISyntaxException{
+    	String authority = PlanetsServerConfig.getHostname() + ":" + PlanetsServerConfig.getPort();
+        return authority;
     }
 
 }

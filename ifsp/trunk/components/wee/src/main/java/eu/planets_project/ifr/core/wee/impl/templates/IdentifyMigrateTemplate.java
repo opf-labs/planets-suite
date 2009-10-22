@@ -7,11 +7,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -20,6 +16,7 @@ import eu.planets_project.ifr.core.techreg.formats.FormatRegistryFactory;
 import eu.planets_project.ifr.core.wee.api.ReportingLog;
 import eu.planets_project.ifr.core.wee.api.ReportingLog.Message;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplateHelper;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -31,8 +28,6 @@ import eu.planets_project.services.identify.Identify;
 import eu.planets_project.services.identify.IdentifyResult;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.services.migrate.MigrateResult;
-import eu.planets_project.services.modify.Modify;
-import eu.planets_project.services.modify.ModifyResult;
 
 public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements WorkflowTemplate {
 
@@ -73,7 +68,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
     public WorkflowResult execute() {
         /* We want fresh logs and report for every run: */
         log = initLog();
-        WorkflowResult wfResult = null;
+        WorkflowResult wfResult = new WorkflowResult();
         int count = 0;
         List<DigitalObject> objects = new ArrayList<DigitalObject>();
         log.trace(WorkflowTemplateHelper.overview(this));
@@ -122,6 +117,9 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
                 count++;
             }
         } finally {
+        	//document endTime of the workflow
+        	wfResult.setEndTime(System.currentTimeMillis());
+        	
             /* A final message: */
             List<URL> results = WorkflowTemplateHelper.reference(objects, log.getOutputFolder());
             log.trace(WorkflowTemplateHelper.link(results));
@@ -131,15 +129,24 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
             System.out.println("Wrote report to: " + reportFile.getAbsolutePath());
             /* And return a result object: */
             try {
-            		//URL reportURL = reportFile.toURL();
-								String outFolder = "http://"+this.getHostName()+":80/data/wee/id-"+log.getTime();
-            		URL reportURL = new URL(outFolder+"/wf-report.html");
-                wfResult = new WorkflowResult(reportURL, logFile.toURL(), results);
-                System.out.println("Workflow result: " + wfResult);
+            	URI outFolder = new URI("http",this.getHostAuthority(),"/data/wee/id-"+log.getTime(),null,null);
+				//String outFolder = "http://"+getHostName()+"/data/wee/id-"+log.getTime();
+            	URL reportURL = new URL(""+outFolder+"/wf-report.html");
+            	URL logFileURL = new URL(""+outFolder+"/wf-log.txt");
+            	//wfResult = new WorkflowResult(reportURL, logFile.toURL(), results);           
+            	
+            	wfResult.setReport(reportURL);
+                wfResult.setLog(logFileURL);
+                wfResult.setResults(results);
+                
+            	System.out.println("Workflow result: " + wfResult);
                 return wfResult;
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-            }
+            } catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
         return null;
     }
@@ -148,7 +155,9 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         new IdentifyMigrateTemplate().log.debug("Stuff!");
     }
     
-    public String getHostName() {
+    //FIXME the localHost cannot be reached externally but the results may note be
+    //available on the instance the WEE is running
+   /* public String getHostName() {
     	try {
         java.net.InetAddress addr = java.net.InetAddress.getLocalHost();
     
@@ -159,12 +168,13 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         //String hostname = addr.getHostName();
         String hostname = addr.getHostAddress();
        	return hostname;
+    	return this.getHostAuthority();
        	
     	} catch (Exception e) {
     		System.out.println(e);
     	}
     	return null;
-    }
+    }*/
 
     /**
      * Warning! Overrides the standard getData() Method of the
@@ -186,20 +196,41 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
 
     private String[] runIdentification(DigitalObject digo, WorkflowResult wfresult) throws Exception {
         log.info("STEP 1: Identification...");
+        
+        //an object used to ducument the results of a service call for the WorkflowResult
+        //document the service type and start-time
+        WorkflowResultItem wfResultItem = new WorkflowResultItem(
+        		WorkflowResultItem.SERVICE_ACTION_IDENTIFICATION,
+        		System.currentTimeMillis());
+        wfresult.addWorkflowResultItem(wfResultItem);
+        
+        //now actually execute the identify operation of the service
         List<Parameter> parameterList = new ArrayList<Parameter>();
         IdentifyResult results = identify.identify(digo, parameterList);
+        
+        //document the end-time and input digital object
+        wfResultItem.setEndTime(System.currentTimeMillis());
+        wfResultItem.setInputDigitalObject(digo);
+        
+        //have a look at the service's results
         ServiceReport report = results.getReport();
         List<URI> types = results.getTypes();
+
+        //report service status and type
+        wfResultItem.setServiceReportType(report.getType().toString());
+        wfResultItem.setServiceReportStatus(report.getStatus().toString());
 
         if (report.getType() == Type.ERROR) {
             String s = "Service execution failed: " + report.getMessage();
             log.debug(s);
+            wfResultItem.setLogInfo(s);
             throw new Exception(s);
         }
 
         if (types.size() < 1) {
             String s = "The specified file type is currently not supported by this workflow";
             log.debug(s);
+            wfResultItem.setLogInfo(s);
             throw new Exception(s);
         }
 
@@ -208,16 +239,26 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         for (URI uri : types) {
             strings[count] = uri.toASCIIString();
             log.debug(strings[count]);
+            //document the result
+            wfResultItem.addExtractedInformation(strings[count]);
             count++;
         }
         return strings;
     }
 
+    
     private DigitalObject runMigrateService(DigitalObject digO, URI migrateFromURI, WorkflowResult wfresult)
             throws Exception {
         log.info("STEP 2: Migrating ...");
+        
+        //an object used to ducument the results of a service call for the WorkflowResult
+        //document the service type and start-time
+        WorkflowResultItem wfResultItem = new WorkflowResultItem(
+        		WorkflowResultItem.SERVICE_ACTION_MIGRATION,
+        		System.currentTimeMillis());
+        wfresult.addWorkflowResultItem(wfResultItem);
+        
         // URI migrateFromURI = new URI(migrateFrom);
-
         URI migrateToURI = this.getServiceCallConfigs(this.migrate).getPropertyAsURI(SER_PARAM_MIGRATE_TO);
 
         // Create service parameter list
@@ -233,15 +274,27 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
             parameterList.add(pCompressionQuality);
         }
 
+        wfResultItem.setStartTime(System.currentTimeMillis());
+        wfResultItem.setInputDigitalObject(digO);
         MigrateResult migrateResult = this.migrate.migrate(digO, migrateFromURI, migrateToURI, parameterList);
-
+        wfResultItem.setEndTime(System.currentTimeMillis());
+        
         ServiceReport report = migrateResult.getReport();
+        
+        //report service status and type
+        wfResultItem.setServiceReportType(report.getType().toString());
+        wfResultItem.setServiceReportStatus(report.getStatus().toString());
 
         if (report.getType() == Type.ERROR) {
             String s = "Service execution failed: " + report.getMessage();
             log.debug(s);
+            wfResultItem.setLogInfo(s);
             throw new Exception(s);
         }
+        
+        //add report on outputDigitalObject
+        wfResultItem.setOutputDigitalObject(migrateResult.getDigitalObject());
+        
         return migrateResult.getDigitalObject();
     }
 
