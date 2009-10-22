@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.junit.After;
 import org.junit.Before;
@@ -65,15 +66,17 @@ public class DBMigrationPathFactoryTest {
 	@Test
 	public void testGetMigrationPaths() throws Exception {
 
+		// TODO: This test has become pretty bloated and ugly. It needs a
+		// makeover.
 		MigrationPaths migrationPaths = migrationPathFactory
 				.getAllMigrationPaths();
 		assertNotNull(migrationPaths);
 
-		// TODO: Test the correctness of each and every migration path! Modify
-		// the configuration file to contain fewer paths.
+		// Verify the number of paths.
 		assertEquals("The factory returned a wrong number of migration paths.",
 				14, migrationPaths.getAllMigrationPaths().size());
 
+		// Verify a specific migration path
 		final URI inputFormatURI = new URI("info:test/lowercase");
 		final URI outputFormatURI = new URI("info:test/uppercase");
 
@@ -91,8 +94,11 @@ public class DBMigrationPathFactoryTest {
 		expectedCommandFragments
 				.add("cat #param1 #tempSource > #myInterimFile && tr #param2 #myInterimFile > #tempDestination");
 		commandLineTest(migrationPath, expectedCommandFragments);
- 
-		// TODO: Verify the input / output (file) information.
+
+		// Verify the tool input configuration.
+		
+		
+		// Verify the tool output configuration.
 
 		// Verify the temporary file information
 		Map<String, String> tempFileMappings = migrationPath
@@ -131,29 +137,70 @@ public class DBMigrationPathFactoryTest {
 			assertFalse("Empty description for parameter: " + parameterName,
 					currentParameter.getDescription().length() == 0);
 		}
-		
+
 		// Verify the tool presets.
 		Collection<Preset> toolPresets = migrationPath.getAllToolPresets();
-		assertEquals("Un-expected number of presets defined for the tested migration path.", 2, toolPresets.size());
+		assertEquals(
+				"Un-expected number of presets defined for the tested migration path.",
+				2, toolPresets.size());
 
 		final HashMap<String, Preset> presetMap = new HashMap<String, Preset>();
 		for (Preset preset : toolPresets) {
 			presetMap.put(preset.getName(), preset);
 		}
 
-		final String[] expectedPresetNames = { "mode", "quality" };
-		for (String presetName : expectedPresetNames) {
+		final HashMap<String, String[]> expectedPresetSettingNameMap = new HashMap<String, String[]>();
+		expectedPresetSettingNameMap.put("mode", new String[] { "complete",
+				"AC-DC", "extra" });
+		expectedPresetSettingNameMap.put("quality", new String[] { "good",
+				"better", "best" });
+
+		for (String presetName : expectedPresetSettingNameMap.keySet()) {
 			final Preset currentPreset = presetMap.get(presetName);
 			assertNotNull("The preset '" + presetName
 					+ "' was not defined for the migration path.",
 					currentPreset);
 
-			assertNotNull("No description specified for preset: "
-					+ presetName, currentPreset.getDescription());
+			assertNotNull("No description specified for preset: " + presetName,
+					currentPreset.getDescription());
 			assertFalse("Empty description for preset: " + presetName,
 					currentPreset.getDescription().length() == 0);
-			
-			// TODO: Check number of parameters and so on.
+
+			assertNotNull("The preset '" + currentPreset.getName()
+					+ "' has no default setting.", currentPreset
+					.getDefaultSetting().getDescription());
+
+			assertEquals("Un-expected number of settings defined for the '"
+					+ currentPreset.getName() + "' preset.", 3, currentPreset
+					.getAllSettings().size());
+
+			// Check the setting names for the current preset.
+			for (String settingName : expectedPresetSettingNameMap
+					.get(presetName)) {
+				final PresetSetting currentPresetSetting = currentPreset
+						.getSetting(settingName);
+				assertNotNull(
+						"The '" + settingName + "' is undefined for the '"
+								+ presetName + "' preset.",
+						currentPresetSetting);
+
+				assertNotNull("The '" + settingName + "' in the '" + presetName
+						+ "' preset has no description.", currentPresetSetting
+						.getDescription());
+
+				final ArrayList<String> settingParameterNames = new ArrayList<String>();
+				for (Parameter settingParameter : currentPresetSetting
+						.getParameters()) {
+					settingParameterNames.add(settingParameter.getName());
+				}
+
+				for (String parameterName : expectedParameterNames) {
+					assertNotNull("The '" + parameterName
+							+ "' is not defined in the '" + settingName
+							+ "' setting of the '" + presetName + "' preset.",
+							settingParameterNames.contains(parameterName));
+				}
+			}
 		}
 	}
 

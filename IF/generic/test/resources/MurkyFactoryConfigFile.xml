@@ -1,4 +1,4 @@
-<serviceWrapping version="1.0" returnByReference="true">
+<serviceWrapping version="1.0">
 	<serviceDescription>
 
 		<!--
@@ -46,9 +46,25 @@
         </classname>
 	</serviceDescription>
 
+	<selfTests>
+		<test name="tr version test">
+			<command>
+				/bin/sh
+            </command>
+			<commandparameters>
+				<parameter>
+					-c
+                </parameter>
+				<parameter>
+					tr --version | md5sum
+                </parameter>
+			</commandparameters>
+			<expectedOutput>9bac2d02bdb596a4d3297e44e5c8008 -</expectedOutput>
+			<expectedExitCode>0</expectedExitCode>
+		</test>
+	</selfTests>
+
 	<paths>
-
-
 		<!--
 			The following path is just an illustration of the possibility to
 			define multiple migration paths for the same wrapped tool. However,
@@ -398,7 +414,7 @@
 				-->
 			</toolinput>
 
-			<tooloutput>
+			<tooloutput returnType="reference|value">
 				<!--
 					Kanalisere enten stdout eller temp. fil over i et Content objekt.
 					By value / reference "flueben" sættes (jfr. by value / by reference

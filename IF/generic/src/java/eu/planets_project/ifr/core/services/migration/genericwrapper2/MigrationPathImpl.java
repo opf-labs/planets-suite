@@ -33,7 +33,7 @@ class MigrationPathImpl implements MigrationPath {
 	private TempFile tempOutputFile;
 	private Map<String, Parameter> parameters;
 	private Map<String, Preset> presets; //TODO: Consider whether it is an advantage/necessary to use a map rather than just a collectiton
-	private List<String> commandLine;
+	private List<String> commandLine; //TODO: It would be sensible having a command class now that we will have to have more commands in connection with the selftest functionality. 
 	private String defaultPresetName;
 
 	/**
