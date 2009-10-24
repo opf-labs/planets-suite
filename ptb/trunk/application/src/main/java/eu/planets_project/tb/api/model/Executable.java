@@ -72,9 +72,27 @@ public interface Executable {
 	public TestbedServiceTemplate getServiceTemplate();
 	public void setServiceTemplate(TestbedServiceTemplate template);
 	
-    public void setBatchQueueIdentifier(String batchQueueIdentifier);
-    public String getBatchQueueIdentifier();
+
+    /**
+     * Identifies the WorkflowExecution System we're using
+     * @param batchQueueIdentifier
+     */
+    public void setBatchSystemIdentifier(String batchQueueIdentifier);
+    /**
+     * Identifies the WorkflowExecution System we're using
+     * @return
+     */
+    public String getBatchSystemIdentifier();
+    
+    /**
+     * Identifier (ticket) for a submitted batch job.
+     * @param batchExecutionIdentifier
+     */
     public void setBatchExecutionIdentifier(String batchExecutionIdentifier);
+    /**
+     * Identifier (ticket) for a submitted batch job.
+     * @return
+     */
     public String getBatchExecutionIdentifier();
 
 }

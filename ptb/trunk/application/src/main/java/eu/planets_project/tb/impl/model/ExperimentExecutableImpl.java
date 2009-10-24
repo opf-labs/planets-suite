@@ -86,8 +86,9 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	private TestbedServiceTemplateImpl tbServiceTemplate;
 	private String sSelectedServiceOperationName="";
 	
-	/** Information required for switching to WEE backend - Start*/
+	/** Information required for switching to WEE backend (TB version-1.0) - Start*/
 	private WorkflowConf weeworkflowConfig;
+	private String batchExecutionSystemIdentifier="";
 	/** Information required for switching to WEE backend - End*/
 
 	//A logger for this - transient: it's not persisted with this entity
@@ -635,7 +636,7 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
     public static void clearExecutionRecords( ExperimentExecutableImpl exe ) {
         exe.setBatchExecutionRecords(new Vector<BatchExecutionRecordImpl>());
         exe.setBatchExecutionIdentifier(null);
-        exe.setBatchQueueIdentifier(null);
+        exe.setBatchSystemIdentifier(null);
         exe.setExecutableInvoked(false);
         exe.setExecutionCompleted(false);
         exe.setExecutionSuccess(false);
@@ -657,6 +658,20 @@ public class ExperimentExecutableImpl extends ExecutableImpl implements Experime
 	public void setWEEWorkflowConfig(WorkflowConf wfConfig) {
 		this.weeworkflowConfig = wfConfig;
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Executable#getBatchSystemIdentifier()
+	 */
+	public String getBatchSystemIdentifier() {
+		return this.batchExecutionSystemIdentifier;
+	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.model.Executable#setBatchSystemIdentifier(java.lang.String)
+	 */
+	public void setBatchSystemIdentifier(String batchSystemIdentifier) {
+		this.batchExecutionSystemIdentifier = batchSystemIdentifier;
 	}
 
 }

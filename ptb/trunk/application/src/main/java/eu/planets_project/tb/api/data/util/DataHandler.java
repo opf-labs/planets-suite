@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.List;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.tb.api.model.Experiment;
@@ -80,5 +82,12 @@ public interface DataHandler {
      * @return a wrapped up Digital Object.
      */
     public DigitalObjectRefBean get( String id ) throws FileNotFoundException;
+    
+    /**
+	 * returns a DigitalObject representation for all local file refs that we're able to find
+	 * @param localFileRefs
+	 * @return
+	 */
+    public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs);
     
 }

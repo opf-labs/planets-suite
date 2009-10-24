@@ -9,7 +9,7 @@
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>TestbedBatchProcessor</managed-bean-name>
-		<managed-bean-class>eu.planets_project.tb.impl.system.TestbedBatchProcessor</managed-bean-class>
+		<managed-bean-class>eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor</managed-bean-class>
 		<managed-bean-scope>application</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package eu.planets_project.tb.impl.system;
+package eu.planets_project.tb.impl.system.batch;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -14,8 +14,10 @@ import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 
 /**
+ * A class for temporarily parking details that are related to a batch execution job
+ * i.e. execution status, output objects, start/end date, etc., workflowResults
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
+ * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andy Lindley</a>
  */
 public class TestbedBatchJob {
     private static Log log = LogFactory.getLog(TestbedBatchJob.class);
@@ -25,15 +27,34 @@ public class TestbedBatchJob {
     public static final String DONE = "done";
     public static final String FAILED = "failed";
     public static final String NO_SUCH_JOB = "no-such-job";
-
+    
+    public static final String POSITION_NOT_SUPPORTED = "query position not supported";
+    public static final String POSITION_IN_PROGRESS = "execution in progress";
+    public static final String POSITION_COMPLETED = "execution completed";
+    
     private long expID = -1;
     private ExperimentWorkflow workflow;
+    //the digital Objects to execute upon
     private Collection<String> digitalObjects;
     private String status;
     private int percentComplete;
     private HashMap<String,WorkflowResult> results = new HashMap<String,WorkflowResult>();
     private Calendar startDate;
     private Calendar endDate;
+    private String positionInQueue = "-1";
+    //a workflow result (log) object depending on the engine we're using 
+    private Object workflowResultEngineReport;
+    //a workflow failure object depending on the engine we're using
+    private Object overallWorkflowFailureReport;
+    
+    
+    /**
+     * constructor used for WEE experiments
+     * @param expID
+     */
+    public TestbedBatchJob(long expID){
+    	this(expID,null,null);
+    }
 
     /**
      * @param workflow
@@ -58,6 +79,7 @@ public class TestbedBatchJob {
     /**
      * @return the workflow
      */
+    @Deprecated
     public ExperimentWorkflow getWorkflow() {
         return workflow;
     }
@@ -97,6 +119,20 @@ public class TestbedBatchJob {
      */
     public void setPercentComplete(int percentComplete) {
         this.percentComplete = percentComplete;
+    }
+    
+    /**
+     * @return the percentComplete
+     */
+    public String getPositionInQueue() {
+        return this.positionInQueue;
+    }
+
+    /**
+     * @param percentComplete the percentComplete to set
+     */
+    public void setPositionInQueue(int percentComplete) {
+       this.positionInQueue = percentComplete+"";
     }
 
     /**
@@ -143,5 +179,38 @@ public class TestbedBatchJob {
     public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
     }
+
+	/**
+	 * The result object as returned by the workflow engine (e.g. WorkflowResult for WEE)
+	 * @return
+	 */
+	public Object getWorkflowResultEngineReport() {
+		return workflowResultEngineReport;
+	}
+
+	/**
+	 * 	 
+	 * The result object as returned by the workflow engine (e.g. WorkflowResult for WEE)
+	 * @param workflowResultEngineReport
+	 */
+	public void setWorkflowResultEngineReport(Object workflowResultEngineReport) {
+		this.workflowResultEngineReport = workflowResultEngineReport;
+	}
+	
+	/**
+	 * A failure object as returned by either the workflow engine or the BatchProcessExecutionListener
+	 * @return
+	 */
+	public Object getWorkflowFailureReport() {
+		return overallWorkflowFailureReport;
+	}
+
+	/**
+	 * A failure object as returned by either the workflow engine or the BatchProcessExecutionListener
+	 * @param workflowFailureReport
+	 */
+	public void setWorkflowFailureReport(Object workflowFailureReport) {
+		this.overallWorkflowFailureReport = workflowFailureReport;
+	}
     
 }

@@ -145,31 +145,32 @@ public abstract class ExecutableImpl implements Executable, java.io.Serializable
 		return ((isExecutableInvoked())&&(!isExecutionCompleted()));
 	}
 
-    /**
-     * @return the batchExecutionIdentifier
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.Executable#getBatchExecutionIdentifier()
      */
     public String getBatchExecutionIdentifier() {
         return batchExecutionIdentifier;
     }
 
-    /**
-     * @param batchExecutionIdentifier the batchExecutionIdentifier to set
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.Executable#setBatchExecutionIdentifier(java.lang.String)
      */
     public void setBatchExecutionIdentifier(String batchExecutionIdentifier) {
         this.batchExecutionIdentifier = batchExecutionIdentifier;
     }
     
-    /**
-     * @return the batchQueueIdentifier
+
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.Executable#getBatchSystemIdentifier()
      */
-    public String getBatchQueueIdentifier() {
+    public String getBatchSystemIdentifier() {
         return batchQueueIdentifier;
     }
 
-    /**
-     * @param batchQueueIdentifier the batchQueueIdentifier to set
+    /* (non-Javadoc)
+     * @see eu.planets_project.tb.api.model.Executable#setBatchSystemIdentifier(java.lang.String)
      */
-    public void setBatchQueueIdentifier(String batchQueueIdentifier) {
+    public void setBatchSystemIdentifier(String batchQueueIdentifier) {
         this.batchQueueIdentifier = batchQueueIdentifier;
     }
     

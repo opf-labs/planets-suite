@@ -58,8 +58,8 @@ import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
 import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
-import eu.planets_project.tb.impl.system.TestbedBatchJob;
-import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
+import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
+import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
 
 import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
@@ -1318,7 +1318,7 @@ public class NewExpWizardController{
             log.info("Status: Invoked = "+exp.getExperimentExecutable().isExecutableInvoked());
             log.info("Status: Invoked = "+exp.getExperimentExecution().isExecutionInvoked());
             log.info("Status: Queue = "+exp.getExperimentExecutable().getBatchExecutionIdentifier() 
-                    + " " + exp.getExperimentExecutable().getBatchQueueIdentifier() );
+                    + " " + exp.getExperimentExecutable().getBatchSystemIdentifier() );
 	  }
 
 	  public void executeExperimentStart() {

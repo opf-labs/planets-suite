@@ -43,6 +43,7 @@ public interface ExperimentExecutable extends Executable{
 	 */
 	@Deprecated
     public HashMap<String,String> getParameters();
+	@Deprecated
     public void setParameters(HashMap<String,String> pars);
 	
     /**
@@ -215,6 +216,7 @@ public interface ExperimentExecutable extends Executable{
 	 * @return The experiment type to invoke.
 	 * @throws Exception 
 	 */
+	@Deprecated
 	public ExperimentWorkflow getWorkflow();
     public void setWorkflowType( String expType ) throws Exception;
     
@@ -232,7 +234,6 @@ public interface ExperimentExecutable extends Executable{
     public void setBatchExecutionRecords(List<BatchExecutionRecordImpl> executionRecords);
     public List<BatchExecutionRecordImpl> getBatchExecutionRecords();
     public int getNumBatchExecutionRecords();
-    
 	
 
 }

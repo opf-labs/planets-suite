@@ -36,6 +36,7 @@ import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Template;
@@ -46,7 +47,10 @@ import eu.planets_project.ifr.core.wee.api.wsinterface.WftRegistryService;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
+import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
@@ -174,7 +178,11 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	@Override
 	public void saveExpTypeBean_Step2_WorkflowConfiguration_ToDBModel(){
 		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
-        expBean.getExperiment().getExperimentExecutable().setWEEWorkflowConfig(this.buildWorkflowConfFromCurrentConfiguration());
+        //store information in the db entities
+		ExperimentExecutable expExecutable = expBean.getExperiment().getExperimentExecutable();
+        expExecutable.setWEEWorkflowConfig(this.buildWorkflowConfFromCurrentConfiguration());
+        //specify which batch processing system WEE or TB/Local we want to use for this experiment
+        expExecutable.setBatchSystemIdentifier(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
 	}
 	
 	
@@ -557,7 +565,8 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	    					//add them to the WfServiceBean
 	    					ServiceParameter sp = new ServiceParameter(
 									pName, pValue);
-							sb.addParameter(sp);
+	    					
+	    					sb.addParameter(sp);
 	    				}
 	    			}
     			}
@@ -605,12 +614,31 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 					//add the default params to the bean
 					sb.addDefaultParameter(spar);
 				}
-				//also pupulate the default parameters in the cache object
-				//defaulParamsFromRegistryForServiceID.put(sb.getServiceId(), pList);
 			} else {
 				log.info("Service: " + sdesc.getName() +" has no default parameters.");
 			}
 
+			//FIXME: dirty solution. Offer the migrate_from and migrate_to parameters for type 'Migrate' service 
+			//TODO offer a pull down list for mime-types
+			if(serType.endsWith(Migrate.NAME)){
+				if((!sb.getDefaultServiceParameters().contains(WorkflowTemplate.SER_PARAM_MIGRATE_FROM))){
+					ServiceParameter spar = new ServiceParameter(WorkflowTemplate.SER_PARAM_MIGRATE_FROM,"planets:fmt/ext/png");
+					sb.addDefaultParameter(spar);
+				}
+				if((addDefaultParamsAsStandardParams)&&(!sb.getServiceParameters().contains(WorkflowTemplate.SER_PARAM_MIGRATE_FROM))){
+					ServiceParameter spar = new ServiceParameter(WorkflowTemplate.SER_PARAM_MIGRATE_FROM,"planets:fmt/ext/png");
+					sb.addParameter(spar);
+				}
+				if((!sb.getDefaultServiceParameters().contains(WorkflowTemplate.SER_PARAM_MIGRATE_TO))){
+					ServiceParameter spar = new ServiceParameter(WorkflowTemplate.SER_PARAM_MIGRATE_TO,"planets:fmt/ext/png");
+					sb.addDefaultParameter(spar);
+				}
+				if((addDefaultParamsAsStandardParams)&&(!sb.getServiceParameters().contains(WorkflowTemplate.SER_PARAM_MIGRATE_TO))){
+					ServiceParameter spar = new ServiceParameter(WorkflowTemplate.SER_PARAM_MIGRATE_TO,"planets:fmt/ext/png");
+					sb.addParameter(spar);
+				}
+			}
+			
 			sb.setServiceAvailable(true);
 			return sdesc;
     	}catch(Exception e){
@@ -948,6 +976,21 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		public List<ServiceParameter> getServiceParameters() {
 			return serviceParameters;
 		}
+		
+		/**
+		 * Checks if a given ServiceParameterName is already contained in the list
+		 * off added ServiceParameters
+		 * @param paramName
+		 * @return
+		 */
+		private ServiceParameter getServiceParamContained(String paramName){
+			for(ServiceParameter sp : this.getServiceParameters()){
+				if(sp.getName().equals(paramName)){
+					return sp;
+				}
+			}
+			return null;
+		}
 
 		public void setServiceId(String id) {
 			this.serviceId = id;
@@ -983,6 +1026,13 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 		}
 
 		public void addParameter(ServiceParameter par) {
+			//ServiceParameters names need to be used uniquely - decide update or new
+			ServiceParameter spUpdate = this.getServiceParamContained(par.getName());
+			if(spUpdate!=null){
+				//delete
+				this.removeParameter(spUpdate);
+			}
+			//finally add add
 			this.serviceParameters.add(par);
 		}
 
@@ -1002,6 +1052,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 
 		public void clearParameters() {
 			this.serviceParameters.clear();
+			this.defaultParameters.clear();
 		}
 		
 		public void addDefaultParameter(ServiceParameter param){

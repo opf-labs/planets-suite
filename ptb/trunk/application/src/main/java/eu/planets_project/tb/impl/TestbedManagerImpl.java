@@ -29,7 +29,7 @@ import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
 import eu.planets_project.tb.impl.services.ServiceTemplateRegistryImpl;
 import eu.planets_project.tb.impl.system.BackendProperties;
 import eu.planets_project.tb.impl.system.ServiceExecutionHandlerImpl;
-import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
+import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
 import eu.planets_project.tb.api.AdminManager;
 import eu.planets_project.tb.api.CommentManager;
 import eu.planets_project.tb.api.TestbedManager;

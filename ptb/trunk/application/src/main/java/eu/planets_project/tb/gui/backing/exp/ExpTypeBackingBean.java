@@ -12,7 +12,9 @@ import eu.planets_project.ifr.core.common.logging.PlanetsLogger;
 import eu.planets_project.ifr.core.registry.api.Registry;
 import eu.planets_project.ifr.core.registry.api.RegistryFactory;
 import eu.planets_project.services.datatypes.ServiceDescription;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.model.ontology.OntologyProperty;
+import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -24,6 +26,7 @@ import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.ViewerWorkflow;
+import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -198,6 +201,11 @@ public abstract class ExpTypeBackingBean {
      * of an experiment to the DB model.
      */
     public void saveExpTypeBean_Step2_WorkflowConfiguration_ToDBModel(){
+		ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        //store information in the db entities
+		ExperimentExecutable expExecutable = expBean.getExperiment().getExperimentExecutable();
+        //specify which batch processing system WEE or TB/Local we want to use for this experiment - default it's the old TB one.
+        expExecutable.setBatchSystemIdentifier(BatchProcessor.BATCH_IDENTIFIER_TESTBED_LOCAL);
     }
 
     /**

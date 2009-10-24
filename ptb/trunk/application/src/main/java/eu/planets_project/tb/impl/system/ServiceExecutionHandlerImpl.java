@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Map.Entry;
@@ -43,6 +44,8 @@ import eu.planets_project.tb.api.services.mockups.workflow.Workflow;
 import eu.planets_project.tb.api.services.util.ServiceRequestBuilder;
 import eu.planets_project.tb.api.services.util.ServiceRespondsExtractor;
 import eu.planets_project.tb.api.system.ServiceExecutionHandler;
+import eu.planets_project.tb.api.system.batch.BatchProcessor;
+import eu.planets_project.tb.impl.system.batch.TestbedBatchProcessorManager;
 import eu.planets_project.tb.gui.backing.admin.wsclient.faces.WSClientBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
@@ -90,26 +93,54 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 			    log.error("executeExperiment: executable is null!");
 			    return;
 			}
+			
+			//DECIDE UPON WHICH BATCH_QUEUE WAS CHOSEN WHAT PROCESSOR TO CALL
 			// Look for the batch system... 
-			TestbedBatchProcessor tbp = (TestbedBatchProcessor)JSFUtil.getManagedObject("TestbedBatchProcessor");
-
-			// Invoke, depending on the experiment type:
-			ExperimentWorkflow ewf = executable.getWorkflow();
-			log.info("Submitting workflow: "+ewf);
-			log.info("Got inputs #"+executable.getInputData().size());
-			String queue_key = tbp.submitBatch( exp.getEntityID(), ewf , executable.getInputData());
-			executable.setBatchQueueIdentifier("TB#LOCAL");
-			executable.setBatchExecutionIdentifier(queue_key);
-            executable.setExecutableInvoked(true);
-            executable.setExecutionCompleted(false);
-            log.info("Got key: "+queue_key);
+			TestbedBatchProcessorManager tbBatchManager = TestbedBatchProcessorManager.getInstance();
+			BatchProcessor bp;
+			
+			//a) TB-experiment types before version1.0 - these use the ExperimentWorkflow
+			if(executable.getBatchSystemIdentifier().equals(BatchProcessor.BATCH_IDENTIFIER_TESTBED_LOCAL)){
+				//get the specific batchProcessor implementation
+				bp = tbBatchManager.getBatchProcessor(BatchProcessor.BATCH_IDENTIFIER_TESTBED_LOCAL);
+				// Invoke, depending on the experiment type:
+				ExperimentWorkflow ewf = executable.getWorkflow();
+				log.info("Submitting workflow: "+ewf+" to batch processor: "+BatchProcessor.BATCH_IDENTIFIER_TESTBED_LOCAL);
+				log.info("Got inputs #"+executable.getInputData().size());
+				String queue_key = bp.submitBatch( exp.getEntityID(), ewf , executable.getInputData());
+				//already set: executable.setBatchQueueIdentifier(BatchProcessor.BATCH_QUEUE_TESTBED_LOCAL);
+				executable.setBatchExecutionIdentifier(queue_key);
+	            executable.setExecutableInvoked(true);
+	            executable.setExecutionCompleted(false);
+	            log.info("Got key: "+queue_key);
+			}
+			
+			//b) TB-experiment types using the wee batch processor
+			if(executable.getBatchSystemIdentifier().equals(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL)){
+				//get the specific batchProcessor implementation
+				bp = tbBatchManager.getBatchProcessor(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
+				log.info("Submitting wee workflow: to batch processor: "+BatchProcessor.BATCH_IDENTIFIER_TESTBED_LOCAL);
+				log.info("Got inputs #"+executable.getInputData().size());
+				DataHandler dh = new DataHandlerImpl();
+				List<DigitalObject> digos = dh.convertFileRefsToDigos(executable.getInputData());
+				//submit the batch process to the WEE
+				String queue_key = bp.sumitBatch(exp.getEntityID(), digos, executable.getWEEWorkflowConfig());
+				executable.setBatchExecutionIdentifier(queue_key);
+	            executable.setExecutableInvoked(true);
+	            executable.setExecutionCompleted(false);
+	            log.info("Got key: "+queue_key);
+			}
 	}
+	
+
 	
 	
 	/**
+	 * 
      * @param exp
 	 * @throws Exception 
      */
+	@Deprecated
     private void executeOldExperiment(Experiment exp) throws Exception {
         ExperimentExecutable executable = exp.getExperimentExecutable();
             //set the testbed's output file directory (e.g. tomcat55..)

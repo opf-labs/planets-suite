@@ -22,7 +22,7 @@ import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.gui.util.SortableList;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.model.ExperimentImpl;
-import eu.planets_project.tb.impl.system.TestbedBatchProcessor;
+import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
 
 import java.util.Collection;
 import eu.planets_project.ifr.core.security.api.model.User;

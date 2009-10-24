@@ -16,6 +16,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 
@@ -356,6 +358,24 @@ public class DataHandlerImpl implements DataHandler {
         
         
     }
+    
+	/**
+	 * returns a DigitalObject representation for all local file refs that we're able to find
+	 * @param localFileRefs
+	 * @return
+	 */
+	public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs){
+		List<DigitalObject> ret = new ArrayList<DigitalObject>();
+		for(String fileRef : localFileRefs){
+			try {
+				DigitalObjectRefBean refBean = this.findDOinDataRegistry(fileRef);
+				ret.add(refBean.getDigitalObject());
+			} catch (FileNotFoundException e) {
+				log.debug("Error creating digo for "+fileRef);
+			}
+		}
+		return ret;
+	}
 
 
     /* -------------------------------------------------------------------------------------------------- */

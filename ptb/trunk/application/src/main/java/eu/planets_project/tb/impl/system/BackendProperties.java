@@ -32,7 +32,10 @@ public class BackendProperties {
     public static final String TB_VERSION = "testbed.version";
     public static final String XCLONTOLOGY_LOCATION = "ontology.xclontology.namespace";
    
-
+    //settings for the batch execution system
+    public static final String TIMEOUT_AUTO_APPROVED_EXPERIMENTS = "wee.polling-time.autoapproved";
+    public static final String TIMEOUT_MANUALLY_APPROVED_EXPERIMENTS = "wee.polling-time.manuallyproved";
+    
     // Experiment properties.
     // The max number of input files before admin approval is required to run the experiment.
     public static final String EXP_ADMIN_NOINPUTS = "experiment.adminThreshold.noInputs";

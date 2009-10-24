@@ -28,7 +28,7 @@ import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.model.exec.MeasurementRecordImpl;
 import eu.planets_project.tb.impl.persistency.ExecutionRecordPersistency;
-import eu.planets_project.tb.impl.system.TestbedBatchJob;
+import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
@@ -51,7 +51,7 @@ public class WorkflowResult {
     URL mainEndpoint;
     
     /** */
-    protected WorkflowResult() {}
+    public WorkflowResult() {}
 
 
     /**
