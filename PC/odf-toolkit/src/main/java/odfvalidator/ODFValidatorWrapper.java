@@ -15,6 +15,9 @@ import java.util.Vector;
 import java.net.URI;
 
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.ServiceReport;
+import eu.planets_project.services.datatypes.ServiceReport.Status;
+import eu.planets_project.services.datatypes.ServiceReport.Type;
 import eu.planets_project.services.validate.ValidateResult;
 
 /**
@@ -240,9 +243,14 @@ public class ODFValidatorWrapper {
      * @return the result of the validation of the ODF file
      */
     public static ValidateResult validateODF( DigitalObject dob, URI format ) {
+        // These will contain the validation results before the ValidateResult is built.
+        // NOTE that 'null' means 'cannot determine whether statement is true or false'.
+        Boolean ofThisFormat = null;
+        Boolean validWrtThisFormat = null;
         
         Configuration aConfig = null;
-        String aVersion = "1.0";
+        // TODO Support proper format URIs and map from those to '1.0','1.1' or '1.2':
+        String aVersion = "1.2";
         /*
          *             else if( aArg.equals("-1.0") || aArg.equals("-1.1") || aArg.equals("-1.2") )
             {
@@ -250,6 +258,7 @@ public class ODFValidatorWrapper {
             }
          */
         boolean bUseMathDTD = false;
+        // TODO Run the validator twice, and map VALIDATE and CONFORMANCE results onto wellformed/valid results?
         int nMode = ODFPackageValidator.VALIDATE;
         //nMode = ODFPackageValidator.CHECK_CONFORMANCE;
         String aBaseURI = null;
@@ -261,6 +270,7 @@ public class ODFValidatorWrapper {
             //PrintStream aOut = aOutputFileName != null ? new PrintStream( aOutputFileName ) : System.out;
             PrintStream aOut = new PrintStream(buf);
             aOut = System.out;
+            // TODO Catch the output in a buffer instead of using System.out, and send it back (see below).
             
             ODFValidator aValidator = new ODFValidator( aConfig, Logger.INFO, aVersion, bUseMathDTD );
             
@@ -273,10 +283,12 @@ public class ODFValidatorWrapper {
                 throw new ODFValidatorException("ERROR! NULL ODFValidator.");
             }
             
+            // NOTE that the validator does not return 'valid', but 'hasErrors'.
             //aValidator.validate(aOut, aFileNames, aExcludeRegExp, nMode, bRecursive, aFilterFileName );
-            boolean result = aValidator.validateStream(aOut, dob.getContent().read(), aBaseURI , nMode, null);
-            System.out.println("Got valiudator result: "+result);
+            boolean hasErrors = aValidator.validateStream(aOut, dob.getContent().read(), aBaseURI , nMode, null);
+            System.out.println("hasErrors: "+hasErrors);
             
+            ofThisFormat = !hasErrors;
         }
         catch( ODFValidatorException e )
         {
@@ -284,8 +296,12 @@ public class ODFValidatorWrapper {
             System.out.println( "Validation aborted." );
         }
         
-        // TODO Return a result?
-        return null;
+        // TODO return a result that contains the verdict.
+        // TODO Patch in the log from the output stream.
+        ValidateResult.Builder vrb = new ValidateResult.Builder(format, new ServiceReport(Type.INFO, Status.SUCCESS, "Executed.") );
+        vrb.ofThisFormat(ofThisFormat);
+        vrb.validInRegardToThisFormat(validWrtThisFormat);
+        return vrb.build();
     }
         
     private static void printUsage()  
