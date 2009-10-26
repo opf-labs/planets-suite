@@ -161,7 +161,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	        	submitTicketForPollingToQueue(retTicket,this.QueueName_shortTimeout,this.getBatchProcessorSystemIdentifier());
 	        }
 	        //2b manually approved experiments - use longTimeout (3 Days)
-	        if(exp.getExperimentApproval().getApprovalUsersIDs().contains(AdminManagerImpl.APPROVAL_AUTOMATIC_USER)){
+	        if(!exp.getExperimentApproval().getApprovalUsersIDs().contains(AdminManagerImpl.APPROVAL_AUTOMATIC_USER)){
 	        	submitTicketForPollingToQueue(retTicket,this.QueueName_longTimeout,this.getBatchProcessorSystemIdentifier());
 	        }
 	        return retTicket;
@@ -253,9 +253,11 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	 */
 	public boolean isStarted(String job_key){
 		try {
-			if((weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.RUNNING))||
-			(weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.COMPLETED))||
-			(weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.FAILED))){
+			String status = weeService.getStatus(UUID.fromString(job_key));
+			if(
+			status.equals(WorkflowExecutionStatus.RUNNING)||
+			status.equals(WorkflowExecutionStatus.COMPLETED)||
+			status.equals(WorkflowExecutionStatus.FAILED)){
 				return true;
 			}
 			else{
@@ -273,6 +275,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	 */
 	public boolean isCompleted(String job_key) {
 		try {
+			String status = weeService.getStatus(UUID.fromString(job_key));
 			if((weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.COMPLETED))||
 			   (weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.FAILED))){
 				return true;

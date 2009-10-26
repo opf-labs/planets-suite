@@ -53,7 +53,7 @@ public class BatchExperimentListenerShortTimeout implements MessageListener{
     	//specify the timeout for this listener
     	BackendProperties bp = new BackendProperties();
     	int timeout = Integer.parseInt(bp.getProperty(bp.TIMEOUT_AUTO_APPROVED_EXPERIMENTS));
-    	timeOutMillis = timeout * 1000;
+    	timeOutMillis = timeout / 1000;
     	
     }
 

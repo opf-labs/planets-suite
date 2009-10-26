@@ -34,6 +34,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjec
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.Experiment;
@@ -360,21 +361,18 @@ public class DataHandlerImpl implements DataHandler {
     }
     
 	/**
-	 * returns a DigitalObject representation for all local file refs that we're able to find
+	 * returns a DigitalObject (contained by reference) representation for all local file refs that we're able to find
 	 * @param localFileRefs
 	 * @return
 	 */
 	public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs){
-		List<DigitalObject> ret = new ArrayList<DigitalObject>();
+		List<File> temps = new ArrayList<File>();
 		for(String fileRef : localFileRefs){
-			try {
-				DigitalObjectRefBean refBean = this.findDOinDataRegistry(fileRef);
-				ret.add(refBean.getDigitalObject());
-			} catch (FileNotFoundException e) {
-				log.debug("Error creating digo for "+fileRef);
-			}
+			temps.add(new File(fileRef));
 		}
-		return ret;
+		//this does not work as the DigitalObject.Content uses javax.activation.DataHandler which is not serializable!!
+		//DigitalObjectUtils.createContainedAsStream(temps);
+		return DigitalObjectUtils.createContainedbyReference(temps);
 	}
 
 

@@ -119,7 +119,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 			if(executable.getBatchSystemIdentifier().equals(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL)){
 				//get the specific batchProcessor implementation
 				bp = tbBatchManager.getBatchProcessor(BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
-				log.info("Submitting wee workflow: to batch processor: "+BatchProcessor.BATCH_IDENTIFIER_TESTBED_LOCAL);
+				log.info("Submitting workflow to batch processor: "+BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
 				log.info("Got inputs #"+executable.getInputData().size());
 				DataHandler dh = new DataHandlerImpl();
 				List<DigitalObject> digos = dh.convertFileRefsToDigos(executable.getInputData());

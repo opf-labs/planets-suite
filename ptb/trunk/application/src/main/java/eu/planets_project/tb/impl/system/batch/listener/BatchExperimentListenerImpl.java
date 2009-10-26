@@ -44,7 +44,7 @@ public class BatchExperimentListenerImpl {
             	 ticket = msg.getText();
                  batchProcessorID = msg.getStringProperty(BatchProcessor.QUEUE_PROPERTY_NAME_FOR_SENDING);
                  
-				log.debug("BatchExperimentListener_shortTimeout: received message at timestamp: " + msg.getJMSTimestamp());
+				log.debug("BatchExperimentListener_shortTimeout: received message at timestamp: " + msg.getJMSTimestamp()+" for ticket: "+ticket+ "on batch processor: "+batchProcessorID);
 			} catch (JMSException e) {
 				log.debug(e);
 				return;
@@ -72,6 +72,7 @@ public class BatchExperimentListenerImpl {
         		if(!bInfomredStarted){
 	        		//callback: inform once about started
 	        		bp.notifyStart(ticket, bp.getJob(ticket));
+	        		log.debug("BatchExecutionListener: notify STARTED for: "+ticket);
 	        		bInfomredStarted=true;
         		}
         		
@@ -79,16 +80,22 @@ public class BatchExperimentListenerImpl {
         			TestbedBatchJob job = bp.getJob(ticket);
         			job.setStatus(TestbedBatchJob.RUNNING);
         			bp.notifyRunning(ticket, job);
+	        		log.debug("BatchExecutionListener: notify RUNNING for: "+ticket);
+
         		}
         		
         		if(bp.isUpdated(ticket)){
         			bp.notifyUpdate(ticket, bp.getJob(ticket));
+	        		log.debug("BatchExecutionListener: notify UPDATE for: "+ticket);
+
         		}
         		
         		if(bp.isFailed(ticket)){
         			TestbedBatchJob job = bp.getJob(ticket);
         			job.setStatus(TestbedBatchJob.FAILED);
         			bp.notifyFailed(ticket, job);
+	        		log.debug("BatchExecutionListener: notify FAILED for: "+ticket);
+
         		}
         		
         		//check if completed
@@ -96,6 +103,8 @@ public class BatchExperimentListenerImpl {
         			TestbedBatchJob job = bp.getJob(ticket);
         			job.setStatus(TestbedBatchJob.DONE);
         			bp.notifyComplete(ticket, job);
+	        		log.debug("BatchExecutionListener: notify COMPLETE for: "+ticket);
+
         			return;
         		}
         		
@@ -119,6 +128,7 @@ public class BatchExperimentListenerImpl {
 		job.setStatus(TestbedBatchJob.FAILED);
 		job.setWorkflowFailureReport(new String("BatchExperimentListener with timeout of "+timeOutMillis/1000+" Sec. has timed-out. This normally indicates a failure within the remote workflow execution processor"));
 		bp.notifyFailed(ticket, job);
+		log.debug("BatchExecutionListener: notify FAILED due to time-out for: "+ticket);
 	}
 
 }

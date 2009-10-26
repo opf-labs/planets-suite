@@ -51,8 +51,8 @@ public class BatchExperimentListenerLongTimeout implements MessageListener{
     	
     	//specify the timeout for this listener
     	BackendProperties bp = new BackendProperties();
-    	int timeout = Integer.parseInt(bp.getProperty(bp.TIMEOUT_AUTO_APPROVED_EXPERIMENTS));
-    	timeOutMillis = timeout * 1000;
+    	int timeout = Integer.parseInt(bp.getProperty(bp.TIMEOUT_MANUALLY_APPROVED_EXPERIMENTS));
+    	timeOutMillis = timeout / 1000;
     	
     }
 
