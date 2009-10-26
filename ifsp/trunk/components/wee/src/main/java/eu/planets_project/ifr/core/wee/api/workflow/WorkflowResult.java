@@ -48,6 +48,7 @@ public class WorkflowResult implements Serializable {
     private List<WorkflowResultItem> resultItems;
     private long startTime=-1;
     private long endTime=-1;
+    private String partialResults;
 
     /**
      * @param report The location of the report
@@ -222,4 +223,31 @@ public class WorkflowResult implements Serializable {
 	
 	//TODO continue for other Planets supported service types as create view, etc...
 
+	/**
+	 * Indicates if partial results or all results are contained within this WF report
+	 * @return
+	 */
+	public boolean isPartialResults() {
+		if(this.getProgress()<100){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
+	/**
+	 * Indicates the percentage of digital objects out of the overall job
+	 * have been processed. This does not give any information about the success / failure
+	 * @return 0-100
+	 */
+	public int getProgress(){
+		//For now we don't support incremental WorkflowResult updates - set it to 100%
+		return 100;
+	}
+	
+	public void setProgress(int i){
+		//TODO
+	}
 }
