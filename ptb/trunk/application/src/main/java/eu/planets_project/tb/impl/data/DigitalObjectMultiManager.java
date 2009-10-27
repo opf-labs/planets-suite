@@ -261,6 +261,15 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         if( dm == null ) return null;
         return dm.list(pdURI, q);
     }
+	
+		    public URI update(URI original, DigitalObject digitalObject) throws DigitalObjectNotStoredException, DigitalObjectNotFoundException {
+    	throw new DigitalObjectNotStoredException("not supported");
+    }
+
+    
+	public URI storeAsNew(DigitalObject digitalObject) throws DigitalObjectNotStoredException {
+		throw new DigitalObjectNotStoredException("not supported");
+	}
 
 
 }
