@@ -28,6 +28,11 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
+		<managed-bean-name>WEEAdmin</managed-bean-name>
+		<managed-bean-class>eu.planets_project.tb.gui.backing.admin.ManageWEE</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
 		<managed-bean-name>Login_Backing</managed-bean-name>
 		<managed-bean-class>eu.planets_project.tb.gui.backing.Login</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
@@ -209,8 +214,8 @@
 			<redirect />
 		</navigation-case>
 		<navigation-case>
-			<from-outcome>manage_users</from-outcome>
-			<to-view-id>/admin/manage_users.xhtml</to-view-id>
+			<from-outcome>manage_tb</from-outcome>
+			<to-view-id>/admin/manage_tb.xhtml</to-view-id>
 			<redirect />
 		</navigation-case>
 		<navigation-case>
@@ -383,8 +388,8 @@
    <redirect/>
   </navigation-case>
   <navigation-case>
-   <from-outcome>manage_users</from-outcome>
-   <to-view-id>/admin/manage_users.xhtml</to-view-id>
+   <from-outcome>manage_tb</from-outcome>
+   <to-view-id>/admin/manage_tb.xhtml</to-view-id>
    <redirect/>
   </navigation-case>
   <navigation-case>

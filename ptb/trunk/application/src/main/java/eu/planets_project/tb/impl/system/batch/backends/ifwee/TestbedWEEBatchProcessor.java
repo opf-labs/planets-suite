@@ -212,6 +212,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	public void notifyComplete(String job_key, TestbedBatchJob job) {
 		this.setJob(job_key, job);
 		weeTBUpdater.processNotify_WorkflowCompleted(job.getExpID(),(WorkflowResult)job.getWorkflowResultEngineReport());
+		log.debug("callback notify wee for "+job_key);
 	}
 	
 	/* (non-Javadoc)
@@ -220,6 +221,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	public void notifyFailed(String job_key, TestbedBatchJob job) {
 		this.setJob(job_key, job);
 		weeTBUpdater.processNotify_WorkflowFailed(job.getExpID(),(String)job.getWorkflowFailureReport());
+		log.debug("callback notify wee for "+job_key);
 	}
 
 
@@ -276,8 +278,8 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	public boolean isCompleted(String job_key) {
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
-			if((weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.COMPLETED))||
-			   (weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.FAILED))){
+			if(status.equals(WorkflowExecutionStatus.COMPLETED)||
+			   status.equals(WorkflowExecutionStatus.FAILED)){
 				return true;
 			}
 			else{
@@ -317,7 +319,8 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	 */
 	public boolean isFailed(String job_key) {
 		try {
-			if(weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.FAILED)){
+			String status = weeService.getStatus(UUID.fromString(job_key));
+			if(status.equals(WorkflowExecutionStatus.FAILED)){
 				return true;
 			}
 			else{
@@ -335,7 +338,8 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	 */
 	public boolean isRunning(String job_key) {
 		try {
-			if((weeService.getStatus(UUID.fromString((job_key))).equals(WorkflowExecutionStatus.RUNNING))){
+			String status = weeService.getStatus(UUID.fromString(job_key));
+			if(status.equals(WorkflowExecutionStatus.RUNNING)){
 				return true;
 			}
 			else{

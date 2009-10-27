@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+<ui:composition template="/WEB-INF/templates/main_template.xhtml">
+  <ui:define name="title">
+    Testbed : Management
+  </ui:define>
+
+<ui:define name="header">
+	<ui:include src="/WEB-INF/templates/header.xhtml">
+		<ui:param name="page" value="manage"/>
+	</ui:include>
+</ui:define>
+
+  <ui:define name="content">
+<div id="mainwrapper">
+<div id="maincol">
+<div class="innertubemain">
+   <rich:simpleTogglePanel label="Manage Users" opened="true" switchType="client">  
+   <fieldset>
+       <legend>Manage Users</legend>
+       <p>You can use the <a target="_blank" href="/users/list.faces">Planets Administration Pages</a> to manage the user accounts on the Testbed.</p> 
+   </fieldset>
+   </rich:simpleTogglePanel>
+      
+   <rich:simpleTogglePanel label="Manage Workflow Templates" opened="true" switchType="client">  
+   <fieldset>
+   	   <legend>Workflow Execution Engine (WEE)</legend>
+	   <p>You can use this form to upload workflow templates to the Workflow Execution Enginge so that they are usable within an experiment</p>
+	   <h:panelGrid columns="2">
+       <rich:panel>
+	    <f:facet name="header">
+	    	<h:outputText styleClass="headerText" value="Registered Templates" />
+	    </f:facet>
+	    <rich:dataTable id="templates" value="#{WEEAdmin.templates}" var="temps" >
+	    	<rich:column>
+		        <f:facet name="header">
+		          <h:outputText value="Template Name" />
+		        </f:facet>
+	    		<a4j:form id="chooseTemplateForm">
+		            <h:outputText value="#{temps}"/>
+	            </a4j:form>
+	    	</rich:column>
+	    </rich:dataTable>
+       </rich:panel>
+	<rich:panel>
+           <f:facet name="header">
+               <h:outputText value="Register a Template Class"/>
+           </f:facet>
+		<a4j:form enctype="multipart/form-data" id="uploadTemplateForm" name="uploadTemplateForm">
+			<t:inputFileUpload 
+			  id="myUploadedTemplate" 
+			  storage="file" 
+			  value="#{WEEAdmin.myUploadedFile}"/>
+	        <h:outputText value=" "/>
+	        <h:commandButton value="Add Template" action="#{WEEAdmin.processTemplate}"/>
+	        <h:outputText value=" "/>
+		</a4j:form>
+     		</rich:panel>
+ 		</h:panelGrid>
+ 		<h:panelGrid columns="1" id="ErrorPanel">
+        <rich:panel>
+            <rich:dataTable var="errors" value="#{WEEAdmin.errorMessageString}">
+             <f:facet name="header">
+                 <rich:columnGroup>
+                     <rich:column>
+                         <h:outputText value="Error Messages" />
+                     </rich:column>
+                 </rich:columnGroup>
+             </f:facet>
+                <rich:column>
+                    <h:outputText value="#{errors}"></h:outputText>
+                </rich:column>
+            </rich:dataTable>
+        </rich:panel>
+	</h:panelGrid>
+  </fieldset>
+</rich:simpleTogglePanel>
+  
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>&#160;</p>
+        
+</div>
+</div>
+</div>
+
+
+<div id="leftcol">
+<!-- 
+<h3 class="leftcol">Create New User</h3>
+<div class="innertube">
+<form method="get" action="create-user">
+<p class="leftcol">
+Create a new Experimenter, Reader or Administrator.</p>
+<p class="leftcol"><input type="submit" value="Create User" /></p>
+</form>
+</div>
+-->
+
+<h3 class="leftcol">User Stats</h3>
+<div class="innertube">
+<p class="leftcol"><b>Users:</b><br />
+28 experimenters (5 online)<br />
+15 readers (0 online)<br />
+1 administrator (1 online)</p>
+<hr />
+<p class="leftcol"><b>Most recent log-in:</b> brian on 25/07/07 at 12:00BST</p>
+
+</div>
+<h3 class="leftcol">Workflow Engine Stats</h3>
+<div class="innertube">
+<p class="leftcol"><b>Currently Available:</b><br />
+number of available templates: #{WEEAdmin.nrOfTemplates} <br /></p>
+</div>
+</div>
+  
+  </ui:define>
+  <ui:define name="footer">
+		<ui:include src="/WEB-INF/templates/footer.xhtml"/>
+	</ui:define>
+</ui:composition>
+
+</body>
+</html>

@@ -210,19 +210,19 @@
 			</li>
 			</c:if>
        -->
-			<c:if test="${page == 'manage_users'}">
+			<c:if test="${page == 'manage'}">
 				<li id="current">
-				<h:commandLink action="manage_users" rendered="#{UserBean.admin}">
+				<h:commandLink action="manage_tb" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_usermanage.gif" class="toolbar"/>
-					<h:outputText value="#{res['manage_users.pageTitle']}"/>
+					<h:outputText value="#{res['manage_tb.pageTitle']}"/>
 				</h:commandLink>
 				</li>
 			</c:if>
-			<c:if test="${page != 'manage_users' and UserBean.admin == true}">
+			<c:if test="${page != 'manage' and UserBean.admin == true}">
 				<li>
-				<h:commandLink action="manage_users" rendered="#{UserBean.admin}">
+				<h:commandLink action="manage_tb" rendered="#{UserBean.admin}">
 					<img src="${facesContext.externalContext.requestContextPath}/graphics/toolbar_usermanage.gif" class="toolbar"/>
-					<h:outputText value="#{res['manage_users.pageTitle']}"/>
+					<h:outputText value="#{res['manage_tb.pageTitle']}"/>
 				</h:commandLink>
 			</li>
 			</c:if>

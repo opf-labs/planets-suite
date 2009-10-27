@@ -122,7 +122,7 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 				log.info("Submitting workflow to batch processor: "+BatchProcessor.BATCH_QUEUE_TESTBED_WEE_LOCAL);
 				log.info("Got inputs #"+executable.getInputData().size());
 				DataHandler dh = new DataHandlerImpl();
-				List<DigitalObject> digos = dh.convertFileRefsToDigos(executable.getInputData());
+				List<DigitalObject> digos = dh.convertFileRefsToURLAccessibleDigos(executable.getInputData());
 				//submit the batch process to the WEE
 				String queue_key = bp.sumitBatch(exp.getEntityID(), digos, executable.getWEEWorkflowConfig());
 				executable.setBatchExecutionIdentifier(queue_key);

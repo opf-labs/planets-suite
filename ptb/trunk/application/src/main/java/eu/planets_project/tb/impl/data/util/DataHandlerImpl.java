@@ -3,6 +3,8 @@
  */
 package eu.planets_project.tb.impl.data.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,12 +12,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +39,7 @@ import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjec
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotStoredException;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Content;
+import eu.planets_project.services.datatypes.Metadata;
 import eu.planets_project.services.utils.DigitalObjectUtils;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
@@ -63,6 +69,11 @@ import eu.planets_project.tb.impl.system.BackendProperties;
  * @author Andrew Lindley, ARC. Andrew Jackson, BL.
  * 
  */ 
+/**
+ * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
+ * @since 27.10.2009
+ *
+ */
 public class DataHandlerImpl implements DataHandler {
     
     // A reference to the data manager itself:
@@ -361,7 +372,7 @@ public class DataHandlerImpl implements DataHandler {
     }
     
 	/**
-	 * returns a DigitalObject (contained by reference) representation for all local file refs that we're able to find
+	 * returns a List of DigitalObjects (content by reference) representation for all local file refs that we're able to access
 	 * @param localFileRefs
 	 * @return
 	 */
@@ -373,6 +384,47 @@ public class DataHandlerImpl implements DataHandler {
 		//this does not work as the DigitalObject.Content uses javax.activation.DataHandler which is not serializable!!
 		//DigitalObjectUtils.createContainedAsStream(temps);
 		return DigitalObjectUtils.createContainedbyReference(temps);
+	}
+	
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#convertFileRefsToURLAccessibleDigos(java.util.Collection)
+	 */
+	public List<DigitalObject> convertFileRefsToURLAccessibleDigos(Collection<String> localFileRefs){
+		List<DigitalObject> ret = new ArrayList<DigitalObject>();
+		for(String fileRef : localFileRefs){
+			try {
+		        //this by default returns a digo (content by value) - that's not serializable due to the javax.xml.DataHandler used
+		        DigitalObjectMultiManager digoManager = new DigitalObjectMultiManager();
+				DigitalObject refByValueDigo = digoManager.retrieve(new URI(fileRef));
+				
+				//create a temp file that's copied and exposed as URL
+				File f = DigitalObjectUtils.getContentAsTempFile(refByValueDigo);
+				File exposedFile = this.copyLocalFileAsTempFileInExternallyAccessableDir(f.getAbsolutePath());
+				URI httpRef = this.getHttpFileRef(exposedFile);
+				
+				//adding the original location as metadata record
+		        URI objectRef = URI.create(fileRef);
+		        
+		        //build the digo by reference
+				DigitalObject o = new DigitalObject.Builder(Content
+		                .byReference(httpRef.toURL())).title(new File(fileRef).getName()).permanentUri(objectRef).build();
+				ret.add(o);
+				
+				//finally only clean up this unused temp file - not the URL exposed one!
+				DigitalObjectUtils.cleanUpTmpFiles();
+				
+			} catch (IOException e) {
+				log.debug("DataHandler.convertFileRefsToURLAccessibleDigos - Could not resolve fileRef "+fileRef);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				log.debug("DataHandler.convertFileRefsToURLAccessibleDigos - could not resolve a URL ro the temp fileRef "+fileRef);
+			} catch (DigitalObjectNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return ret;
 	}
 
 
@@ -629,6 +681,26 @@ public class DataHandlerImpl implements DataHandler {
 		}else{
 			throw new IOException("Problems moving data from temp to externally reachable jboss-web deployer dir");
 		}
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.data.util.DataHandler#copyLocalFileAsTempFileInExternallyAccessableDir(java.lang.String)
+	 */
+	public File copyLocalFileAsTempFileInExternallyAccessableDir(String localFileRef) throws IOException{
+		//get a temporary file
+		File f = this.createTempFileInExternallyAccessableDir();
+	 	
+		//copying one file to another with FileChannel 
+		//@see http://www.exampledepot.com/egs/java.nio/File2File.html
+		FileChannel srcChannel = new FileInputStream(localFileRef).getChannel();
+		FileChannel dstChannel = new FileOutputStream(f).getChannel();
+		// Copy file contents from source to destination
+        dstChannel.transferFrom(srcChannel, 0, srcChannel.size());
+        //Close the channels
+        srcChannel.close();
+        dstChannel.close();
+		return f;
 	}
 
 	/* (non-Javadoc)

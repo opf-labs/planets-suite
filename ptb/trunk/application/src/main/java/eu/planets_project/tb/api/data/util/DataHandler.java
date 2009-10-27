@@ -90,4 +90,21 @@ public interface DataHandler {
 	 */
     public List<DigitalObject> convertFileRefsToDigos(Collection<String> localFileRefs);
     
+	/**
+	 * Copies a file from its local location as a temp file into the system's externally accessible directory
+	 * @param localFileRef
+	 * @return
+	 * @throws IOException
+	 */
+    public File copyLocalFileAsTempFileInExternallyAccessableDir(String localFileRef)throws IOException;
+
+	/**
+	 * This method returns a List of DigitalObjects (content by reference) representation for all local file refs that we're able to access
+	 * The boolean trigger allows to expose these files as temporary files in an externally reachable location and adds its content by reference
+	 * to this URL. The original file location is kept within the originator field.
+	 * @param localFileRefs
+	 * @return
+	 */
+    public List<DigitalObject> convertFileRefsToURLAccessibleDigos(Collection<String> localFileRefs);
+    
 }

@@ -23,6 +23,7 @@ public class BatchExperimentListenerImpl {
 	private static final Log log = LogFactory.getLog(BatchExperimentListenerImpl.class);
 	
 	public void doOnMessage(Message m, long timeOutMillis, Thread thread){
+		log.debug("BatchExecutionListener: doOnMessage");
 		//1.check if message got redelivered before doing any processing
     	try {
 			if(m.getJMSRedelivered()){
