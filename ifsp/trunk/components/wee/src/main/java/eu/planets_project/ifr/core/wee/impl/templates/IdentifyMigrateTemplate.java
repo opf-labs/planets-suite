@@ -208,9 +208,10 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         List<Parameter> parameterList = new ArrayList<Parameter>();
         IdentifyResult results = identify.identify(digo, parameterList);
         
-        //document the end-time and input digital object
+        //document the end-time and input digital object and the params
         wfResultItem.setEndTime(System.currentTimeMillis());
         wfResultItem.setInputDigitalObject(digo);
+        wfResultItem.setServiceParameters(parameterList);
         
         //have a look at the service's results
         ServiceReport report = results.getReport();
@@ -275,6 +276,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
 
         wfResultItem.setStartTime(System.currentTimeMillis());
         wfResultItem.setInputDigitalObject(digO);
+        wfResultItem.setServiceParameters(parameterList);
         MigrateResult migrateResult = this.migrate.migrate(digO, migrateFromURI, migrateToURI, parameterList);
         wfResultItem.setEndTime(System.currentTimeMillis());
         

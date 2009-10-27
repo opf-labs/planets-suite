@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 import eu.planets_project.services.datatypes.DigitalObject;
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceReport;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -28,10 +29,13 @@ public class WorkflowResultItem implements Serializable{
     private List<String> extractedInformation;
     private String logInfo = "";
     private ServiceReport serReport;
+    //a list of the actually called serviceParameters
+    private List<Parameter> serParams;
     
     //required for JAXB - even if empty
     private WorkflowResultItem(){
     	extractedInformation = new ArrayList<String>();
+    	serParams = new ArrayList<Parameter>();
     }
 	
     /**
@@ -50,6 +54,7 @@ public class WorkflowResultItem implements Serializable{
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
+	
 	
 	public void setInputDigitalObject(DigitalObject inDigo){
 		this.digoIn = inDigo.toXml();
@@ -142,5 +147,13 @@ public class WorkflowResultItem implements Serializable{
         return String.format("%s, actionIdentifier: %s,logInfo: %s, serviceReport: %s,  start-time: %s, end-time: %s", this
                 .getClass().getSimpleName(), sActionIdentifier,logInfo, serReport, startTime, endTime);
     }
+
+	public List<Parameter> getServiceParameters() {
+		return serParams;
+	}
+
+	public void setServiceParameters(List<Parameter> serviceParams) {
+		this.serParams = serviceParams;
+	}
 
 }
