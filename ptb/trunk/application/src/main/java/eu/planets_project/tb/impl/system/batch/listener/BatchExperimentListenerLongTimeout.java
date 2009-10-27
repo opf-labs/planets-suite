@@ -41,18 +41,16 @@ public class BatchExperimentListenerLongTimeout implements MessageListener{
     public MessageDrivenContext mdc;
     //set timeOut for polling on this message as specified within properties file. if no result could be pulled in
     //within this time - the execution is assumed to have failed. (or only partially fulfilled)
-    public final int timeOutMillis;
-    //the period between re-querying the workflow system on this ticket
-    public final int sleep = 30000;
-    
+    private long timeOutMillis;
+
     
     public BatchExperimentListenerLongTimeout(){
     	//constructor (even if empty) - required for MDB creation
     	
     	//specify the timeout for this listener
     	BackendProperties bp = new BackendProperties();
-    	int timeout = Integer.parseInt(bp.getProperty(bp.TIMEOUT_MANUALLY_APPROVED_EXPERIMENTS));
-    	timeOutMillis = timeout / 1000;
+    	long timeout = Long.parseLong(bp.getProperty(bp.TIMEOUT_MANUALLY_APPROVED_EXPERIMENTS));
+    	timeOutMillis = timeout * 1000;
     	
     }
 

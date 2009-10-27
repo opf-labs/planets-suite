@@ -21,6 +21,9 @@ import eu.planets_project.tb.impl.system.batch.TestbedBatchProcessorManager;
  */
 public class BatchExperimentListenerImpl {
 	private static final Log log = LogFactory.getLog(BatchExperimentListenerImpl.class);
+    //the period between re-querying the workflow system on this ticket
+    private final int sleep = 30000;
+    
 	
 	public void doOnMessage(Message m, long timeOutMillis, Thread thread){
 		log.debug("BatchExecutionListener: doOnMessage");
@@ -113,7 +116,7 @@ public class BatchExperimentListenerImpl {
         	
         	//status is: still no completed - sleep and repoll
             try {
-            	thread.sleep(30000);
+            	thread.sleep(sleep);
     		} catch (InterruptedException e) {
     			log.debug("Error while waiting for ticket: "+ticket, e);
     			TestbedBatchJob job = bp.getJob(ticket);

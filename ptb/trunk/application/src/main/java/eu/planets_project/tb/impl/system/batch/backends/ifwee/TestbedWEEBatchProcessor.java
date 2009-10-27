@@ -257,9 +257,9 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
 			if(
-			status.equals(WorkflowExecutionStatus.RUNNING)||
-			status.equals(WorkflowExecutionStatus.COMPLETED)||
-			status.equals(WorkflowExecutionStatus.FAILED)){
+			status.equals(WorkflowExecutionStatus.RUNNING.toString())||
+			status.equals(WorkflowExecutionStatus.COMPLETED.toString())||
+			status.equals(WorkflowExecutionStatus.FAILED.toString())){
 				return true;
 			}
 			else{
@@ -278,8 +278,8 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	public boolean isCompleted(String job_key) {
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
-			if(status.equals(WorkflowExecutionStatus.COMPLETED)||
-			   status.equals(WorkflowExecutionStatus.FAILED)){
+			if(status.equals(WorkflowExecutionStatus.COMPLETED.toString())||
+			   status.equals(WorkflowExecutionStatus.FAILED.toString())){
 				return true;
 			}
 			else{
@@ -320,7 +320,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	public boolean isFailed(String job_key) {
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
-			if(status.equals(WorkflowExecutionStatus.FAILED)){
+			if(status.equals(WorkflowExecutionStatus.FAILED.toString())){
 				return true;
 			}
 			else{
@@ -339,7 +339,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	public boolean isRunning(String job_key) {
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
-			if(status.equals(WorkflowExecutionStatus.RUNNING)){
+			if(status.equals(WorkflowExecutionStatus.RUNNING.toString())){
 				return true;
 			}
 			else{
