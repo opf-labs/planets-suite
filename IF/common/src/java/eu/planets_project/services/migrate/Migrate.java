@@ -14,6 +14,7 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.BindingType;
 import javax.xml.ws.RequestWrapper;
 import javax.xml.ws.ResponseWrapper;
+import javax.xml.ws.soap.SOAPBinding;
 
 import eu.planets_project.services.PlanetsService;
 import eu.planets_project.services.PlanetsServices;
@@ -37,7 +38,7 @@ import eu.planets_project.services.datatypes.Parameter;
 @WebService(
         name = Migrate.NAME, 
         targetNamespace = PlanetsServices.NS)
-@BindingType(value = "http://schemas.xmlsoap.org/wsdl/soap/http?mtom=true")
+@BindingType(value = SOAPBinding.SOAP11HTTP_MTOM_BINDING )
 public interface Migrate extends PlanetsService {
     /** The interface name */
     String NAME = "Migrate";
