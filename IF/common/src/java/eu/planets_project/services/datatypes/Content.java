@@ -20,7 +20,7 @@ public final class Content {
      */
 
     /**
-     * Create (streamed) content by reference.
+     * Create content by reference.
      * @param reference The URL reference to the actual content
      * @return A content instance referencing the given location
      */
