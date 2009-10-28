@@ -52,6 +52,26 @@
     </then>
   </if>
 
+  <!-- Allow proxy to be set, optionally: -->
+  <if>
+    <isset property="http.proxyHost"/>
+    <else>
+      <property name="http.proxyHost" value=""/>
+    </else>
+  </if>
+  <if>
+    <isset property="http.proxyPort"/>
+    <else>
+      <property name="http.proxyPort" value=""/>
+    </else>
+  </if>
+  <if>
+    <isset property="http.nonProxyHosts"/>
+    <else>
+      <property name="http.nonProxyHosts" value=""/>
+    </else>
+  </if>
+
   <!-- The IF server classpath -->
   <if>
     <isset property="use.if.classpath"/>
@@ -460,10 +480,9 @@
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
-      <!--
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
-      -->
+      <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
       <!-- Test config -->
       <sysproperty key="pserv.test.context" value="local"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
@@ -487,10 +506,9 @@
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="standalone_test_classpath" />
-      <!--
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
-      -->
+      <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
       <!-- Test config -->
       <sysproperty key="pserv.test.context" value="standalone"/>
       <sysproperty key="pserv.root.dir" value="${pserv.root.dir}"/>
@@ -519,7 +537,7 @@
     <if>
       <isset property="if_server.port"/>
       <else>
-        <fail message="You must set the if_server.host and if_server.port properties to specifyt the server to be tested."/>
+        <fail message="You must set the if_server.host and if_server.port properties to specify the server to be tested."/>
       </else>
     </if>
     <!-- Emit the property to the ant console -->
@@ -529,9 +547,10 @@
     <junit fork="yes" haltonfailure="no" dir="${pserv.root.dir}" printsummary="withOutAndErr" showoutput="true">
       <jvmarg value="${test.vmarg.boot.classpath}"/>
       <classpath refid="run_test_classpath" />
-      <!--
       <sysproperty key="http.proxyHost" value="${http.proxyHost}"/>
       <sysproperty key="http.proxyPort" value="${http.proxyPort}"/>
+      <sysproperty key="http.nonProxyHosts" value="${http.nonProxyHosts}"/>
+      <!--
       <sysproperty key="file.encoding" value="utf-8"/>
       <sysproperty key="line.separator" value="\n"/>
       -->
