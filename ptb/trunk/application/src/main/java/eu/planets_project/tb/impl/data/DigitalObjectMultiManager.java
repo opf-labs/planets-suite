@@ -227,7 +227,7 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         if( dm == null ) {        
             throw new DigitalObjectNotStoredException("Could not store the digital object at " + pdURI);
         }
-        dm.store(pdURI, digitalObject);
+        dm.storeAsNew(digitalObject);
     }
 
     /* (non-Javadoc)
