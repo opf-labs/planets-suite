@@ -91,13 +91,11 @@ public class MigrateWrapper implements Migrate {
 
         // Transform the DO into a single binary, if that is sane
         byte[] binary = null;
-		/*
         if (digitalObject.getContent() == null
                 && digitalObject.getContained() != null) {
             return new MigrateResult(null, ServiceUtils
                     .createErrorReport("This service cannot deal with composite digital objects.") );
         }
-		*/
         return m.migrate(digitalObject, inputFormat, outputFormat, parameters);
     }
 

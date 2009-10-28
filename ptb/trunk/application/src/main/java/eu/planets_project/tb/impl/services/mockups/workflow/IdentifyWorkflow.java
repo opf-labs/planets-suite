@@ -275,13 +275,11 @@ public class IdentifyWorkflow implements ExperimentWorkflow {
             bytes += getSizeOfContent(dob.getContent());
         }
         // Recurse into sub-dobs:
-		/*
         if( dob.getContained() != null ) {
             for( DigitalObject cdob : dob.getContained() ) {
                 bytes += getContentSize( cdob );
             }
         }
-		*/
         // Return the total:
         return bytes;
     }

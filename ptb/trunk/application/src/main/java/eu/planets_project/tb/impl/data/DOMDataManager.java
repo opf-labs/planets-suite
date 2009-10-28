@@ -110,14 +110,5 @@ public class DOMDataManager implements DigitalObjectManager {
             throws DigitalObjectNotStoredException {
         throw new DigitalObjectNotStoredException("Could not store the digital object at " + pdURI);
     }
-	
-	    public URI update(URI original, DigitalObject digitalObject) throws DigitalObjectNotStoredException, DigitalObjectNotFoundException {
-    	throw new DigitalObjectNotStoredException("not supported");
-    }
-
-    
-	public URI storeAsNew(DigitalObject digitalObject) throws DigitalObjectNotStoredException {
-		throw new DigitalObjectNotStoredException("not supported");
-	}
 
 }
