@@ -414,11 +414,9 @@
 				-->
 			</toolinput>
 
-			<tooloutput returnType="reference|value">
+			<tooloutput>
 				<!--
 					Kanalisere enten stdout eller temp. fil over i et Content objekt.
-					By value / reference "flueben" sættes (jfr. by value / by reference
-					kaldsparametren fra kalderen af det wrappede tool).
 				-->
 				<!--
 					This definition is used for the file containing the final migrated

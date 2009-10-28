@@ -33,7 +33,7 @@ public class GenericMigrationWrapper {
 
 	private ServiceDescription serviceDescription;
 
-	private boolean returnByReference; //TODO: This must be a parameter of the generic wrapper!!
+	private boolean returnByReference; //TODO: This must be a parameter of the generic wrapper!! Default to return by reference!!
 
 	public GenericMigrationWrapper(Document configuration, String canonicalName)
 			throws MigrationInitialisationException {
@@ -159,14 +159,14 @@ public class GenericMigrationWrapper {
 
 		// handle temp input file
 
-		if (migrationPath.useTempSourceFile()) {
+		if (!migrationPath.getToolInputProfile().usePipedIO()) {
 			log
 					.info("Migrationpath uses temp source file, reading digital object into file");
 			handleTempSourceFile(migrationPath, sourceObject, workfolder);
 		}
 
 		// handle temp output file
-		if (migrationPath.useTempDestinationFile()) {
+		if (!migrationPath.getToolOutputProfile().usePipedIO()) {
 			log.info("Migrationpath uses temp destination path");
 			handleTempDestinationFile(migrationPath, workfolder);
 		}
@@ -179,11 +179,11 @@ public class GenericMigrationWrapper {
 		log.info(command);
 
 		InputStream processStandardInput = null;
-		if (!migrationPath.useTempSourceFile()) {
+		if (migrationPath.getToolInputProfile().usePipedIO()) {
 			// serve the file on standard input
 			processStandardInput = sourceObject.getContent().read();
 		} else {
-			// fine, is alreade written
+			// fine, is already written
 		}
 
 		// Execute the tool
@@ -205,8 +205,9 @@ public class GenericMigrationWrapper {
 		}
 
 		// cleanup
-		if (migrationPath.useTempSourceFile()) {
-			migrationPath.getTempSourceFile().getFile().delete();
+		if (!migrationPath.getToolInputProfile().usePipedIO()) {
+		    //FIXME! Refactor!
+			//migrationPath.getTempSourceFile().getFile().delete();
 		}
 
 		/*
@@ -219,9 +220,10 @@ public class GenericMigrationWrapper {
 		// TODO return a reference to the outputfile
 		DigitalObject.Builder builder;
 
-		if (migrationPath.useTempDestinationFile()) {
+		final ToolIOProfile toolOutputProfile = migrationPath.getToolOutputProfile();
+		if (!toolOutputProfile.usePipedIO()) {
 			// we should read a temp file afterwards
-			File outputfile = migrationPath.getTempOutputFile().getFile();
+			File outputfile = new File("");//FIXME! Create temp. file!!
 			if (returnByReference) {
 				builder = new DigitalObject.Builder(Content
 						.byReference(outputfile));
@@ -270,14 +272,16 @@ public class GenericMigrationWrapper {
 
 	private void handleTempDestinationFile(MigrationPath migrationPath,
 			File workfolder) {
-		TempFile outputemp = migrationPath.getTempOutputFile();
+//		TempFile outputemp = migrationPath.getTempOutputFile();
+		TempFile outputemp = new TempFile("FIXME - Fake"); //FIXME! dooo somesing enterrigent
 		outputemp.setFile(createTemp(workfolder, outputemp));
 
 	}
 
 	private void handleTempSourceFile(MigrationPath migrationPath,
 			DigitalObject sourceObject, File workfolder) throws IOException {
-		TempFile sourcetempfile = migrationPath.getTempSourceFile();
+//		TempFile sourcetempfile = migrationPath.getTempSourceFile();
+		TempFile sourcetempfile = new TempFile("FIXME - Fake"); //FIXME! dooo somesing enterrigent
 		File realtemp = createTemp(workfolder, sourcetempfile);
 		FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
 				realtemp);

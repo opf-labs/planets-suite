@@ -16,36 +16,21 @@ import eu.planets_project.services.datatypes.Parameter;
 public interface MigrationPath {
 
 	/**
-	 * Test whether the tool expects its input from a temporary input file or
-	 * standard input. If the response is <code>true</code> then the caller must
-	 * call {@link #getTempSourceFile()} to get hold of the temp input file
+	 * Get the input profile for the migration tool which contains information
+	 * about how the object to be migrated should be passed on to the tool.
 	 * 
-	 * @return <code>true</code> if the tool must have its input via a temporary
-	 *         file and otherwise <code>false</code>
+	 * @return <code>ToolIOProfile</code> instance containing the input profile.
 	 */
-	boolean useTempSourceFile();
+	ToolIOProfile getToolInputProfile();
 
 	/**
-	 * Get the temp file object for the input fule
+	 * Get the output profile for the migration tool which contains information
+	 * about how to get the migration output back from the tool and how it
+	 * should be delivered to the should be passed on to the tool.
 	 * 
-	 * @return the temp file
+	 * @return <code>ToolIOProfile</code> instance containing the input profile.
 	 */
-	TempFile getTempSourceFile();
-
-	/**
-	 * Test whether the tool needs to write its output to a temporary file or
-	 * standard input. If the response is <code>true</code> then the caller must
-	 * call {@link #getTempOutputFile} to get the output file
-	 * 
-	 * @return <code>true</code> if the tool needs a temporary file to be
-	 *         created for its output and otherwise <code>false</code>
-	 */
-	boolean useTempDestinationFile();
-
-	/**
-	 * Get the temp output file
-	 */
-	TempFile getTempOutputFile();
+	ToolIOProfile getToolOutputProfile();
 
 	/**
 	 * Get the command line with the parameter identifiers substituted with the
@@ -137,11 +122,13 @@ public interface MigrationPath {
 	 */
 	Collection<String> getToolPresetCategories();
 
-	
-	//TODO: Consider killing this method. It makes this interface swiss-armyknifish
-/*FIXME! KILL, KILL. KILL it would be more suitable to put this in the generic wrapper class.
-	eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath();
-	*/
+	// TODO: Consider killing this method. It makes this interface
+	// swiss-armyknifish
+	/*
+	 * FIXME! KILL, KILL. KILL it would be more suitable to put this in the
+	 * generic wrapper class.
+	 * eu.planets_project.services.datatypes.MigrationPath getAsPlanetsPath();
+	 */
 
 	Collection<Preset> getAllToolPresets();
 }

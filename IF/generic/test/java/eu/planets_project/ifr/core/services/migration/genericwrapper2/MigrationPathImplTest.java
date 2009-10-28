@@ -54,7 +54,7 @@ public class MigrationPathImplTest {
 
         TempFile input = new TempFile("tempSource");
         input.setFile(new File("/random-source-name"));
-        migrationPath.setTempInputFile(input);
+        //FIXME! migrationPath.setTempInputFile(input);
 
         TempFile output = new TempFile("tempDestination");
         output.setFile(new File("/random-destination-name"));
