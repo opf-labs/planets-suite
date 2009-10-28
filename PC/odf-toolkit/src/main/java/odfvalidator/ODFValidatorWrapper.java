@@ -259,8 +259,10 @@ public class ODFValidatorWrapper {
          */
         boolean bUseMathDTD = false;
         // TODO Run the validator twice, and map VALIDATE and CONFORMANCE results onto wellformed/valid results?
-        int nMode = ODFPackageValidator.VALIDATE;
+        int nMode = ODFPackageValidator.VALIDATE; 
+        //nMode = ODFPackageValidator.VALIDATE_STRICT;
         //nMode = ODFPackageValidator.CHECK_CONFORMANCE;
+        // This page has information on check modes: http://tools.services.openoffice.org/odfvalidator/info/
         String aBaseURI = null;
        
         try
