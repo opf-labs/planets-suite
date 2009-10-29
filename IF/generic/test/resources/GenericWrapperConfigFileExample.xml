@@ -1,0 +1,771 @@
+<serviceWrapping version="1.0">
+
+	<serviceDescription>
+
+		<!--
+			Description of the service, in this case ps2pdf. In this case the
+			description is only for testing purposes and thus not informative.
+			Notice the URIs/URLs are without empty spaces.
+		-->
+
+		<title>
+			ff
+        </title>
+		<description>
+			fff
+        </description>
+		<tool>
+			<name>
+				fff
+            </name>
+			<identifier>http://spu.spu</identifier>
+			<description>
+				fff
+            </description>
+			<homepage>http://spu.spu</homepage>
+			<version>
+				ddd
+            </version>
+		</tool>
+		<version>
+			ddd
+        </version>
+		<creator>
+			dddd
+        </creator>
+		<publisher>
+			ddd
+        </publisher>
+		<identifier>http://spu.spu</identifier>
+		<instructions>
+			ddd
+        </instructions>
+		<furtherinfo>http://spu.spu</furtherinfo>
+		<logo>http://spu.spu</logo>
+		<classname>
+			ddd
+        </classname>
+	</serviceDescription>
+
+	<!--
+		The self-test section is currently not used and should thus be omitted
+		in the current wrappings.
+	-->
+	<selfTests>
+		<test name="tr version test">
+			<command>
+				/bin/sh
+            </command>
+			<commandparameters>
+				<parameter>
+					-c
+                </parameter>
+				<parameter>
+					tr --version | md5sum
+                </parameter>
+			</commandparameters>
+			<expectedOutput>9bac2d02bdb596a4d3297e44e5c8008 -</expectedOutput>
+			<expectedExitCode>0</expectedExitCode>
+		</test>
+	</selfTests>
+
+	<paths>
+		<!--
+			The following path is just an illustration of the possibility to
+			define multiple migration paths for the same wrapped tool. However,
+			there is no validation of that the tool used in the various path
+			definitions are actually the same, as this is not possible due to the
+			fact that the command lines may be substantially different although
+			the same tool is used for the migration, as different helper tools
+			may be used e.g. for pre- or post-processing. Thus, it is the
+			responsibility of the person writing the configuration file that it
+			is in fact the same migration tool used by all the defined paths.
+		-->
+		<path>
+			<!--
+				migrates ps-file to pdf1.2 format (Acrobat 3-and-later)
+			-->
+			<inputformats>
+				<!--
+					List of format URIs identifying the valid input formats for the
+					wrapped command(s) in this "path" section. It is recommended to use
+					PRONOM URIs where possible in order to achieve the most accurate
+					description of the formats. File suffixes are inaccurate as most
+					file formats are available in several revisions.
+				-->
+				<uri value="info:pronom/x-fmt/91" />
+				<uri value="info:pronom/x-fmt/406" />
+				<uri value="info:pronom/x-fmt/407" />
+				<uri value="info:pronom/x-fmt/408" />
+			</inputformats>
+
+			<outputformat>
+				<!--
+					Format URI identifying the output format of the wrapped command(s)
+					in this "path" section. It is recommended to use a PRONOM URI when
+					possible in order to achieve the most accurate description of the
+					format. File suffixes are inaccurate as most file formats are
+					available in several revisions.
+				-->
+				<uri value="info:pronom/fmt/16" />
+			</outputformat>
+
+			<commandline>
+				<command>
+					/bin/sh
+                </command>
+				<commandparameters>
+					<parameter>
+						-c
+                    </parameter>
+					<parameter>
+						<!--
+							This is the exact commandline to be wrapped. In this case the
+							ps2pdf. Parameters can be given but are not necessary. Default
+							setting is 'normal' which runs without parameters. tempSource and
+							tempDestination are generated adresses used while the file is
+							being migrated.
+						-->
+						ps2pdf12 #param1 #tempSource #tempDestination
+					</parameter>
+				</commandparameters>
+			</commandline>
+
+			<toolinput>
+
+				<!-- Input enten fra stdin eller temp. fil. <stdin /> -->
+				<!--
+					This definition is used for the file containing the data to be
+					migrated, that is, the data provided by the caller. If it is not
+					defined the the tool wrapper expects that the tool reads its data
+					from standard input and it will therefore pipe the data to be
+					migrated through there.
+				-->
+				<tempfile label="tempSource">
+					<!--
+						Get the object to migrate from a temporary file automatically
+						named by the wrapper. The name attribute is only necessary if the
+						tool requires a specific name for the input file.
+					-->
+				</tempfile>
+			</toolinput>
+
+			<tooloutput>
+				<!--
+					Kanalisere enten stdout eller temp. fil over i et Content objekt.
+				-->
+				<!--
+					This definition is used for the file containing the final migrated
+					output, that is, the data the tool wrapper should pick up and
+					return to the caller of the service. If it is not defined the the
+					tool wrapper expects that the tool sends the migrated data to
+					standard output, which then will be picked up and returned to the
+					caller.
+				-->
+				<tempfile label="tempDestination">
+					<!--
+						Return the output to a temporary file automatically named by the
+						wrapper. If a specific name is needed for the output file then the
+						"name" attribute must be specified as well.
+					-->
+				</tempfile>
+			</tooloutput>
+
+			<tempfiles>
+			</tempfiles>
+
+			<toolparameters>
+				<parameter name="param1">
+					<description>Command line parameters for the 'ps2pdf'
+						command.
+						See
+						'man gs'.
+                    </description>
+				</parameter>
+			</toolparameters>
+
+			<toolpresets default="mode">
+				<preset name="mode" default="Normal">
+					<description>
+						Takes the options Normal or Silent.
+						Defaults to
+						'normal'.
+                    </description>
+					<settings name="Silent">
+						<parameter name="param1"><![CDATA['-q']]>
+						</parameter>
+						<description>Silent Running</description>
+					</settings>
+					<settings name="Normal">
+						<parameter name="param1"><![CDATA[]]>
+						</parameter>
+						<description>Normal</description>
+					</settings>
+				</preset>
+
+			</toolpresets>
+		</path>
+
+		<path>
+			<!--
+				migrates ps-file to pdf1.3 format (Acrobat 4-and-later)
+			-->
+			<inputformats>
+				<!--
+					List of format URIs identifying the valid input formats for the
+					wrapped command(s) in this "path" section. It is recommended to use
+					PRONOM URIs where possible in order to achieve the most accurate
+					description of the formats. File suffixes are inaccurate as most
+					file formats are available in several revisions.
+				-->
+				<uri value="info:pronom/x-fmt/91" />
+				<uri value="info:pronom/x-fmt/406" />
+				<uri value="info:pronom/x-fmt/407" />
+				<uri value="info:pronom/x-fmt/408" />
+			</inputformats>
+
+			<outputformat>
+				<!--
+					Format URI identifying the output format of the wrapped command(s)
+					in this "path" section. It is recommended to use a PRONOM URI when
+					possible in order to achieve the most accurate description of the
+					format. File suffixes are inaccurate as most file formats are
+					available in several revisions.
+				-->
+				<uri value="info:pronom/fmt/17" />
+			</outputformat>
+			<commandline>
+				<command>
+					/bin/sh
+                </command>
+				<commandparameters>
+					<parameter>
+						-c
+                    </parameter>
+					<parameter>
+						<!--
+							This is the exact commandline to be wrapped. In this case the
+							ps2pdf. Parameters can be given but are not necessary. Default
+							setting is 'normal' which runs without parameters. tempSource and
+							tempDestination are generated adresses used while the file is
+							being migrated.
+						-->
+						ps2pdf12 #param1 #tempSource #tempDestination
+					</parameter>
+				</commandparameters>
+			</commandline>
+
+			<toolinput>
+
+				<!-- Input enten fra stdin eller temp. fil. <stdin /> -->
+				<!--
+					This definition is used for the file containing the data to be
+					migrated, that is, the data provided by the caller. If it is not
+					defined the the tool wrapper expects that the tool reads its data
+					from standard input and it will therefore pipe the data to be
+					migrated through there.
+				-->
+				<tempfile label="tempSource">
+					<!--
+						Get the object to migrate from a temporary file automatically
+						named by the wrapper. The name attribute is only necessary if the
+						tool requires a specific name for the input file.
+					-->
+				</tempfile>
+			</toolinput>
+
+			<tooloutput>
+				<!--
+					Kanalisere enten stdout eller temp. fil over i et Content objekt.
+				-->
+				<!--
+					This definition is used for the file containing the final migrated
+					output, that is, the data the tool wrapper should pick up and
+					return to the caller of the service. If it is not defined the the
+					tool wrapper expects that the tool sends the migrated data to
+					standard output, which then will be picked up and returned to the
+					caller.
+				-->
+				<tempfile label="tempDestination">
+					<!--
+						Return the output to a temporary file automatically named by the
+						wrapper. If a specific name is needed for the output file then the
+						"name" attribute must be specified as well.
+					-->
+				</tempfile>
+			</tooloutput>
+
+			<tempfiles>
+			</tempfiles>
+
+			<toolparameters>
+				<parameter name="param1">
+					<description>Command line parameters for the 'ps2pdf'
+						command.
+						See
+						'man gs'.
+                    </description>
+				</parameter>
+
+
+			</toolparameters>
+			<toolpresets default="mode">
+				<preset name="mode" default="Normal">
+					<description>
+						Takes the options Normal or Silent.
+						Defaults to
+						'normal'.
+                    </description>
+					<settings name="Silent">
+						<parameter name="param1"><![CDATA['-q']]>
+						</parameter>
+						<description>Silent Running</description>
+					</settings>
+					<settings name="Normal">
+						<parameter name="param1"><![CDATA[]]>
+						</parameter>
+						<description>Normal</description>
+					</settings>
+				</preset>
+
+			</toolpresets>
+		</path>
+
+		<path>
+			<!--
+				migrates ps-file to pdf1.4 format (Acrobat 5-and-later)
+			-->
+			<inputformats>
+				<!--
+					List of format URIs identifying the valid input formats for the
+					wrapped command(s) in this "path" section. It is recommended to use
+					PRONOM URIs where possible in order to achieve the most accurate
+					description of the formats. File suffixes are inaccurate as most
+					file formats are available in several revisions.
+				-->
+				<uri value="info:pronom/x-fmt/91" />
+				<uri value="info:pronom/x-fmt/406" />
+				<uri value="info:pronom/x-fmt/407" />
+				<uri value="info:pronom/x-fmt/408" />
+			</inputformats>
+
+			<outputformat>
+				<!--
+					Format URI identifying the output format of the wrapped command(s)
+					in this "path" section. It is recommended to use a PRONOM URI when
+					possible in order to achieve the most accurate description of the
+					format. File suffixes are inaccurate as most file formats are
+					available in several revisions.
+				-->
+				<uri value="info:pronom/fmt/18" />
+			</outputformat>
+			<commandline>
+				<command>
+					/bin/sh
+                </command>
+				<commandparameters>
+					<parameter>
+						-c
+                    </parameter>
+					<parameter>
+						<!--
+							This is the exact commandline to be wrapped. In this case the
+							ps2pdf. Parameters can be given but are not necessary. Default
+							setting is 'normal' which runs without parameters. tempSource and
+							tempDestination are generated adresses used while the file is
+							being migrated.
+						-->
+						ps2pdf12 #param1 #tempSource #tempDestination
+					</parameter>
+				</commandparameters>
+			</commandline>
+
+			<toolinput>
+
+				<!-- Input enten fra stdin eller temp. fil. <stdin /> -->
+				<!--
+					This definition is used for the file containing the data to be
+					migrated, that is, the data provided by the caller. If it is not
+					defined the the tool wrapper expects that the tool reads its data
+					from standard input and it will therefore pipe the data to be
+					migrated through there.
+				-->
+				<tempfile label="tempSource">
+					<!--
+						Get the object to migrate from a temporary file automatically
+						named by the wrapper. The name attribute is only necessary if the
+						tool requires a specific name for the input file.
+					-->
+				</tempfile>
+			</toolinput>
+
+			<tooloutput>
+				<!--
+					Kanalisere enten stdout eller temp. fil over i et Content objekt.
+				-->
+				<!--
+					This definition is used for the file containing the final migrated
+					output, that is, the data the tool wrapper should pick up and
+					return to the caller of the service. If it is not defined the the
+					tool wrapper expects that the tool sends the migrated data to
+					standard output, which then will be picked up and returned to the
+					caller.
+				-->
+				<tempfile label="tempDestination">
+					<!--
+						Return the output to a temporary file automatically named by the
+						wrapper. If a specific name is needed for the output file then the
+						"name" attribute must be specified as well.
+					-->
+				</tempfile>
+			</tooloutput>
+
+			<tempfiles>
+			</tempfiles>
+
+			<toolparameters>
+				<parameter name="param1">
+					<description>Command line parameters for the 'ps2pdf'
+						command.
+						See
+						'man gs'.
+                    </description>
+				</parameter>
+
+
+			</toolparameters>
+			<toolpresets default="mode">
+				<preset name="mode" default="Normal">
+					<description>
+						Takes the options Normal or Silent.
+						Defaults to
+						'normal'.
+                    </description>
+					<settings name="Silent">
+						<parameter name="param1"><![CDATA['-q']]>
+						</parameter>
+						<description>Silent Running</description>
+					</settings>
+					<settings name="Normal">
+						<parameter name="param1"><![CDATA[]]>
+						</parameter>
+						<description>Normal</description>
+					</settings>
+				</preset>
+
+			</toolpresets>
+		</path>
+
+		<path>
+			<!--
+				Silly migration path for conversion of lower case text to upper case
+				text, using 'cat' and 'tr', for demonstration of the usage of
+				temporary source and destination files. The migration paths
+				described by a combination of one of the input formats and the
+				output format will overwrite any similar definitions from any
+				earlier path definitions, that is, definitions closer to the top of
+				the configuration file.
+			-->
+			<inputformats>
+				<!--
+					List of format URIs identifying the valid input formats for the
+					wrapped command(s) in this "path" section. It is recommended to use
+					PRONOM URIs where possible in order to achieve the most accurate
+					description of the formats. File suffixes are inaccurate as most
+					file formats are available in several revisions.
+				-->
+				<uri value="info:test/lowercase" />
+			</inputformats>
+
+			<outputformat>
+				<!--
+					Format URI identifying the output format of the wrapped command(s)
+					in this "path" section. It is recommended to use a PRONOM URI when
+					possible in order to achieve the most accurate description of the
+					format. File suffixes are inaccurate as most file formats are
+					available in several revisions.
+				-->
+				<uri value="info:test/uppercase" />
+			</outputformat>
+
+			<commandline>
+				<!--
+					This is the exact shell command line to be wrapped, except from
+					that all tags like "#some_label" are substituted by command
+					parameters and temporary file names. The tag name (in this case
+					"some_label") must be defined in the "toolparameters" section. The
+					same goes for temporary files. In the below example there are three
+					temporary file tags, tempSource, myInterimFile and tempDestination.
+				-->
+				<command>
+					/bin/sh
+                </command>
+				<commandparameters>
+					<parameter>
+						-c
+                    </parameter>
+					<parameter>
+                        <![CDATA[cat #param1 #tempSource > #myInterimFile && tr #param2 #myInterimFile > #tempDestination]]>
+					</parameter>
+				</commandparameters>
+			</commandline>
+
+
+			<!--
+				FIXME! in/output "files" probably should have their own sections
+			-->
+
+			<toolinput>
+
+				<!-- Input enten fra stdin eller temp. fil. <stdin /> -->
+				<!--
+					This definition is used for the file containing the data to be
+					migrated, that is, the data provided by the caller. If it is not
+					defined the the tool wrapper expects that the tool reads its data
+					from standard input and it will therefore pipe the data to be
+					migrated through there.
+				-->
+				<tempfile label="tempSource" name="desiredInputFileName">
+					<!--
+						Get the object to migrate from a temporary file with a specific
+						name. The name attribute is only necessary if the tool requires a
+						specific name for the input file.
+					-->
+				</tempfile>
+			</toolinput>
+
+			<tooloutput>
+				<!--
+					Kanalisere enten stdout eller temp. fil over i et Content objekt.
+				-->
+				<!--
+					This definition is used for the file containing the final migrated
+					output, that is, the data the tool wrapper should pick up and
+					return to the caller of the service. If it is not defined the the
+					tool wrapper expects that the tool sends the migrated data to
+					standard output, which then will be picked up and returned to the
+					caller.
+				-->
+				<tempfile label="tempDestination">
+					<!--
+						Return the output to a temporary file automatically named by the
+						wrapper. If a specific name is needed for the output file then the
+						"name" attribute must be specified as well.
+					-->
+				</tempfile>
+			</tooloutput>
+
+			<tempfiles>
+				<!--
+					Any temporary files used in the command line must be defined in
+					this section, that is, the contents of the label attributes of the
+					entries must match the names used between the % signs in the
+					command line. The use of temporary files is optional and depends
+					entirely on the contents of the command line. Further more, a temp.
+					file entry may also specify a name for the temporary file to be
+					generated, if necessary. This is useful for tools that insist on
+					having a given suffix on its input/output files.
+				-->
+				<tempfile label="myInterimFile" name="myDesiredTempFileName.foo">
+					<!--
+						tempfile entries are used for intermediate temporary files which
+						may be necessary to create if the wrapped command line contains
+						chained commands. Multiple tempfile entries are allowed, however,
+						each should have a unique name and it must match the names used in
+						the command line.
+					-->
+				</tempfile>
+			</tempfiles>
+
+			<!--
+				The tool will terminate with an error if not all tool parameters are
+				defined at invocation. Any specified parameters will overwrite the
+				corresponding parameters from any specified tool preset. That is, if
+				the caller of the tool specifies e.g. mode=complete and param1=-n,
+				then the tool will be invoked with param1=-n and param2=[:lower:]'
+				'[:upper:] which will have the same effect as just specifying
+				mode=extra. Given the definitions of this example file.
+			-->
+
+			<toolparameters>
+				<!--
+					All these parameters must be specified by the caller if no preset
+					is specified. The occurrences of the parameter names in the above
+					command line will be substituted with the value assigned to them by
+					the caller.
+				-->
+				<parameter name="param1" value="7">
+					<description>Command line parameters for the 'cat'
+						command.
+						See
+						'man
+						cat'.
+                	</description>
+				</parameter>
+				<parameter name="param2" value="42">
+					<!-- Demonstration of CDATA usage in descriptions. -->
+					<description><![CDATA[Command line parameters for the 'tr'
+						command.
+						See
+						'man
+						tr'.]]>
+					</description>
+				</parameter>
+			</toolparameters>
+
+			<!--
+				Tool presets can be used instead of messing with the command line
+				parameters. However, these presets can also be used as default
+				settings which will make it possible only to specify a some of the
+				parameters for the tool, as unspecified parameters just can be taken
+				from the defaults.
+			-->
+			<toolpresets default="mode">
+				<!--
+					This section defines all possible preset categories for the tool.
+					The caller may use only one of the preset categories when calling,
+					e.g. specifying both mode=AC-DC and quality=good would result in an
+					error. If no parameters or preset is specified by the caller, then
+					the default "mode" preset category and its default "complete" value
+					is automatically chosen in this example.
+				-->
+				<preset name="mode" default="complete">
+					<settings name="complete">
+						<parameter name="param1"><![CDATA[]]>
+						</parameter>
+						<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+						</parameter>
+						<description>Uppercase all text.</description>
+					</settings>
+					<settings name="AC-DC">
+						<parameter name="param1"><![CDATA[]]>
+						</parameter>
+						<parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
+						<description>Change AC-DC to DC-AC</description>
+					</settings>
+					<settings name="extra">
+						<parameter name="param1"><![CDATA[-n]]></parameter>
+						<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+						</parameter>
+						<description>Uppercase all text and add line
+							numbers.
+                    </description>
+					</settings>
+					<description>Mode presets for the test tool.
+                    </description>
+				</preset>
+
+				<!--
+					This "quality" preset category is essentially the same as the
+					"mode" category, and is only included to demonstrate that it is
+					possible for the caller to have more preset categories to choose
+					from.
+				-->
+				<preset name="quality" default="good">
+					<settings name="good">
+						<parameter name="param1"><![CDATA[]]>
+						</parameter>
+						<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+						</parameter>
+						<description>Uppercase all.</description>
+					</settings>
+					<settings name="better">
+						<parameter name="param1"><![CDATA[]]>
+						</parameter>
+						<parameter name="param2"><![CDATA['A,D' 'D,A']]></parameter>
+						<description>AC-DC to DC-AC</description>
+					</settings>
+					<settings name="best">
+						<parameter name="param1"><![CDATA[-n]]></parameter>
+						<parameter name="param2"><![CDATA['[:lower:]' '[:upper:]']]>
+						</parameter>
+						<description>Uppercase all and add line
+							numbers.
+                    </description>
+					</settings>
+					<description>Quality presets for the test tool.
+                    </description>
+				</preset>
+			</toolpresets>
+		</path>
+
+		<path>
+
+			<inputformats>
+				<uri value="info:test/foo" />
+			</inputformats>
+
+			<outputformat>
+				<uri value="info:test/bar" />
+			</outputformat>
+
+			<commandline>
+				<command>
+					/bin/sh
+                </command>
+				<commandparameters>
+					<parameter>
+						-c
+                    </parameter>
+					<parameter>
+                        <![CDATA[cat #param1 - | tr #param2 > #tempDestination]]>
+					</parameter>
+				</commandparameters>
+			</commandline>
+
+			<toolinput>
+
+				<piped />
+				<!--
+					This definition is used for the file containing the data to be
+					migrated, that is, the data provided by the caller. If it is not
+					defined the the tool wrapper expects that the tool reads its data
+					from standard input and it will therefore pipe the data to be
+					migrated through there.
+				-->
+			</toolinput>
+
+			<tooloutput>
+				<!--
+					Kanalisere enten stdout eller temp. fil over i et Content objekt.
+				-->
+				<!--
+					This definition is used for the file containing the final migrated
+					output, that is, the data the tool wrapper should pick up and
+					return to the caller of the service. If it is not defined the the
+					tool wrapper expects that the tool sends the migrated data to
+					standard output, which then will be picked up and returned to the
+					caller.
+				-->
+				<tempfile label="tempDestination">
+					<!--
+						Return the output to a temporary file automatically named by the
+						wrapper. If a specific name is needed for the output file then the
+						"name" attribute must be specified as well.
+					-->
+				</tempfile>
+			</tooloutput>
+
+			<toolparameters>
+				<parameter name="param1">
+					<description>Command line parameters for the 'cat'
+						command.
+						See
+						'man
+						cat'.
+                </description>
+				</parameter>
+				<parameter name="param2">
+					<description>Command line parameters for the 'tr'
+						command.
+						See
+						'man
+						tr'.
+                </description>
+				</parameter>
+			</toolparameters>
+
+			<!-- No presets -->
+		</path>
+	</paths>
+</serviceWrapping>
