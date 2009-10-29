@@ -31,8 +31,6 @@ class MigrationPathImpl implements MigrationPath {
     private URI sourceFormatURI;
     private URI destinationFormatURI;
     private Map<String, String> tempFiles;
-    private TempFile tempSourceFile; //FIXME! KILL
-    private TempFile tempOutputFile;//FIXME! KILL
     private Map<String, Parameter> parameters;
     private Map<String, Preset> presets; // TODO: Consider whether it is an
     // advantage/necessary to use a map
@@ -51,36 +49,6 @@ class MigrationPathImpl implements MigrationPath {
 	parameters = new HashMap<String, Parameter>();
 	presets = new HashMap<String, Preset>();
 	tempFiles = new HashMap<String, String>();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #useTempDestinationFile()
-     */
-    public boolean useTempDestinationFile() {
-	return tempOutputFile != null;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * eu.planets_project.ifr.core.services.migration.genericwrapper2.MigrationPath
-     * #getTempOutputFile()
-     */
-    public TempFile getTempOutputFile() {
-
-	return tempOutputFile;
-    }
-
-    /**
-     * Set the temp file
-     */
-    public void setTempOutputFile(TempFile tempOutputFile) {
-	this.tempOutputFile = tempOutputFile;
     }
 
     /*
@@ -130,16 +98,18 @@ class MigrationPathImpl implements MigrationPath {
 
 	validIdentifiers.addAll(getValidFileIdentifiers(tempFiles));
 
-	if (!getToolInputProfile().usePipedIO()) {
+	final ToolIOProfile toolInputProfile = getToolInputProfile(); 
+	if (!toolInputProfile.usePipedIO()) {
 	    log.info("Adding temp input file as valid identifier "
-		    + tempSourceFile.getCodename());
-	    validIdentifiers.add(tempSourceFile.getCodename());
+		    + toolInputProfile.getCommandLineFileLabel());
+	    validIdentifiers.add(toolInputProfile.getCommandLineFileLabel());
 	}
 
-	if (useTempDestinationFile()) {
+	final ToolIOProfile toolOuptpuProfile = getToolOutputProfile();
+	if (!toolOuptpuProfile.usePipedIO()) {
 	    log.info("Adding temp dest file as valid identifier: "
-		    + tempOutputFile.getCodename());
-	    validIdentifiers.add(tempOutputFile.getCodename());
+		    + toolOuptpuProfile.getCommandLineFileLabel());
+	    validIdentifiers.add(toolOuptpuProfile.getCommandLineFileLabel());
 	}
 
 	// TODO: Check the parameters and filename mappings for injection
@@ -169,13 +139,13 @@ class MigrationPathImpl implements MigrationPath {
 		cmd = cmd.replaceAll("#" + tempFileLabel, tempFiles
 			.get(tempFileLabel));
 	    }
-	    if (!getToolInputProfile().usePipedIO()) {
-		cmd = cmd.replaceAll("#" + tempSourceFile.getCodename(),
-			tempSourceFile.getFile().getAbsolutePath());
-	    }
-	    if (useTempDestinationFile()) {
-		cmd = cmd.replaceAll("#" + tempOutputFile.getCodename(),
-			tempOutputFile.getFile().getAbsolutePath());
+	    //FIXME! Broken!
+	    if (!toolOuptpuProfile.usePipedIO()) {
+//		cmd = cmd.replaceAll("#" + tempSourceFile.getCodename(),
+//			tempSourceFile.getFile().getAbsolutePath());
+	    } else {
+//		cmd = cmd.replaceAll("#" + tempOutputFile.getCodename(),
+//			tempOutputFile.getFile().getAbsolutePath());
 	    }
 	    executableCommandLine.add(cmd);
 	}
