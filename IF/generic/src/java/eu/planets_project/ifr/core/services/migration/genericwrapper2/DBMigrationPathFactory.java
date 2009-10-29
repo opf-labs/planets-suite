@@ -12,7 +12,6 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
-import org.apache.xalan.templates.ElemEmpty;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -28,6 +27,7 @@ import eu.planets_project.services.utils.PlanetsLogger;
  * objects based on a configuration described in a <code>Document<code>.
  *
  * TODO: The documentation of this class still needs some tender love.
+ * 
  * 
  * @author Thomas Skou Hansen &lt;tsh@statsbiblioteket.dk&gt;
  */
