@@ -1,24 +1,34 @@
 package eu.planets_project.tb.impl.system.batch.backends.ifwee;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.view.CreateViewResult;
+import eu.planets_project.tb.api.TestbedManager;
 import eu.planets_project.tb.api.data.util.DataHandler;
 import eu.planets_project.tb.api.model.Experiment;
+import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.persistency.ExperimentPersistencyRemote;
 import eu.planets_project.tb.gui.backing.ServiceBrowser;
+import eu.planets_project.tb.gui.util.JSFUtil;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
+import eu.planets_project.tb.impl.model.exec.BatchWorkflowResultLogImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionStageRecordImpl;
 import eu.planets_project.tb.impl.persistency.ExperimentPersistencyImpl;
+import eu.planets_project.tb.impl.serialization.JaxbUtil;
 import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
 
 
@@ -30,12 +40,16 @@ import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
  */
 public class WEEBatchExperimentTestbedUpdater {
 	
+	private static final Log log = LogFactory.getLog(WEEBatchExperimentTestbedUpdater.class);
+	
 	private TestbedWEEBatchProcessor tbWEEBatch;
 	private ExperimentPersistencyRemote edao;
+	private TestbedManager testbedMan;
 	
 	public WEEBatchExperimentTestbedUpdater(){
 		tbWEEBatch = TestbedWEEBatchProcessor.getInstance();
 		edao = ExperimentPersistencyImpl.getInstance();
+		testbedMan = TestbedManagerImpl.getInstance();
 	}
 	 
 	
@@ -50,15 +64,52 @@ public class WEEBatchExperimentTestbedUpdater {
 	
 	/**
 	 * All actions of mapping/saving WorkflowResult object into the Testbed's db model for a 
-	 * completed workflow execution
+	 * completed workflow execution. In here all the TB specific mapping is done.
+	 * 	1. extract digital objects created
+	 *	2. store the WorkflowResult 
+	 *	3. set all the stage information
 	 * @param expID
-	 * @param result
+	 * @param weeWFResult
 	 */
-	public void processNotify_WorkflowCompleted(long expID, WorkflowResult result){
+	public void processNotify_WorkflowCompleted(long expID, WorkflowResult weeWFResult){
 		//TODO AL: implement
-		//1. extract digital objects created
-		//2. store the WorkflowResult 
-		//3. set all the stage information
+		if(weeWFResult==null){
+			this.processNotify_WorkflowFailed(expID, "WorkflowResult not available");
+			return;
+		}
+		//create a BatchExecutionRecord
+		BatchExecutionRecordImpl batchRecord = new BatchExecutionRecordImpl();
+		//startTime
+		Calendar c1 = new GregorianCalendar();
+		c1.setTimeInMillis(weeWFResult.getStartTime());
+		batchRecord.setStartDate(c1);
+		
+		//endTime
+		Calendar c2 = new GregorianCalendar();
+		c2.setTimeInMillis(weeWFResult.getEndTime());
+		batchRecord.setStartDate(c2);
+	
+		BatchWorkflowResultLogImpl wfResultLog = new BatchWorkflowResultLogImpl();
+		try {
+			//try serializing the workflow result log- as this is the way it needs to be stored
+			String wfResultxml = JaxbUtil.marshallObjectwithJAXB(WorkflowResult.class, weeWFResult);
+			log.debug("Successfully serialized the workflowResult Log via Jaxb" );
+			//store the wfResultLog in the db model bean
+			wfResultLog.setSerializedWorkflowResult(wfResultxml);
+		} catch (Exception e) {
+			log.debug("Problems serializing wfResultLog object",e);
+			this.processNotify_WorkflowFailed(expID, "WorkflowResult not serializable");
+			return;
+		}
+		
+		batchRecord.setWorkflowExecutionLog(wfResultLog);
+		batchRecord.setBatchRunSucceeded(true);
+		
+		//now add the Records
+		ExecutionRecordImpl execRecord = new ExecutionRecordImpl();
+		//TODO AL CONTINUE HERE extract digos, set executable end time, etc.
+		
+		this.helperUpdateExpWithBatchRecord(expID, batchRecord);
 	}
 	
 	/**
@@ -68,8 +119,30 @@ public class WEEBatchExperimentTestbedUpdater {
 	 * @param failureReason
 	 */
 	public void processNotify_WorkflowFailed(long expID,String failureReason){
-		//TODO AL: implement
-		//3. set all the stage information
+		BatchExecutionRecordImpl batchRecord = new BatchExecutionRecordImpl();
+		batchRecord.setBatchRunSucceeded(false);
+		
+		this.helperUpdateExpWithBatchRecord(expID, batchRecord);
+		//TODO AL: any more fields to set?
+	}
+	
+	/**
+	 * All actions of setting an experiment into state 'processing has started'
+	 * @param expID
+	 */
+	public void processNotify_WorkflowStarted(long expID){
+		Experiment exp = testbedMan.getExperiment(expID);
+    	exp.getExperimentExecutable().setExecutableInvoked(true);
+    	//testbedMan.updateExperiment(exp);
+    	edao.updateExperiment(exp);
+	}
+	
+	private void helperUpdateExpWithBatchRecord(long expID,BatchExecutionRecordImpl record){
+    	Experiment exp = testbedMan.getExperiment(expID);
+    	exp.getExperimentExecutable().getBatchExecutionRecords().add(record);
+		exp.getExperimentExecutable().setExecutionCompleted(true);
+		//testbedMan.updateExperiment(exp);
+		edao.updateExperiment(exp);
 	}
 	
 	//CHOSE HOW TO DO THIS - define Arguments
@@ -78,111 +151,57 @@ public class WEEBatchExperimentTestbedUpdater {
 		
 	}
 	
-	/**
-	 * Takes a workflow execution engine specific result object and populates the
-	 * Testbed's batchjob result object with information.
-	 * In here all the TB specific mapping is done.
-	 * @param job - an existing TestbedBatchJob to update
-	 * @param weeWFResult
-	 * @return
-	 */
-	private TestbedBatchJob updateTBBatchJob(TestbedBatchJob job, WorkflowResult weeWFResult){
-		
-		Experiment exp = edao.findExperiment(job.getExpID());
-        // Set up the DB:
-        //TODO AL: check: BatchExecutionRecordImpl batch = this.createExperimentBatch(job, exp);
-        
-		if(!weeWFResult.isPartialResults()){
-			//we're having a full WorkflowResult
-			
-		  //a) set workflow results
-			//startTime
-			Calendar c1 = new GregorianCalendar();
-			c1.setTimeInMillis(weeWFResult.getStartTime());
-			job.setStartDate(c1);
-			
-			//endTime
-			Calendar c2 = new GregorianCalendar();
-			c2.setTimeInMillis(weeWFResult.getEndTime());
-			job.setEndDate(c2);
-			
-			//percentComplete
-			job.setPercentComplete(weeWFResult.getProgress());
-			
-			//status
-			job.setStatus(TestbedBatchJob.DONE);
-			
-		  //b) set workflow_item results
-            for( WorkflowResultItem item : weeWFResult.getWorkflowResultItems() ) {
-               
-            	eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult tbWFR = new eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult();
-            	tbWFR.setReport(item.getServiceReport());
-            	//...
-            	
-            	//TODO AL: for now just extract the DigitalObject
-            	//...
+	/*private ExecutionRecordImpl createExecutionRecordToExperiment(long eid, WorkflowResult wfr, String filename) {
+        DataHandler dh = new DataHandlerImpl();
+        try {
+            ExecutionRecordImpl rec = new ExecutionRecordImpl();
+            rec.setDigitalObjectReferenceCopy(filename);
+            try {
+                rec.setDigitalObjectSource(dh.get(filename).getName());
+            } catch (FileNotFoundException e) {
+                rec.setDigitalObjectSource(filename);
             }
+            // FIXME Set this in the job somewhere:
+            rec.setDate(Calendar.getInstance());
+            List<ExecutionStageRecordImpl> stages = rec.getStages();
+            
+            if( wfr != null && wfr.getStages() != null ) {
+                // Examine the result:
+                if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wfr.getResultType())) {
+                    rec.setDigitalObjectResult( (DigitalObject) wfr.getResult(), exp );
+                    
+                } else if(WorkflowResult.RESULT_CREATEVIEW_RESULT.equals(wfr.getResultType()) ) {
+                    CreateViewResult cvr = (CreateViewResult) wfr.getResult( );
+                    Properties vp = new Properties();
+                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_SESSION_ID, cvr.getSessionIdentifier());
+                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_VIEW_URL, cvr.getViewURL().toString());
+                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_ENDPOINT_URL, wfr.getMainEndpoint().toString() );
+                    rec.setPropertiesListResult(vp);
+                    
+                } else {
+                    rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
+                }
                 
-			
-		}
-		else{
-			//TODO AL: take care of incremental updates when supported by WEE...
-		}
-		return job;
-	}
-	
-	 /*public static void recordWorkflowResultToExperiment(long eid, WorkflowResult wfr, String filename,
-	            BatchExecutionRecordImpl batch, Experiment exp ) {
-	        DataHandler dh = new DataHandlerImpl();
-	        try {
-	            ExecutionRecordImpl rec = new ExecutionRecordImpl();
-	            rec.setDigitalObjectReferenceCopy(filename);
-	            try {
-	                rec.setDigitalObjectSource(dh.get(filename).getName());
-	            } catch (FileNotFoundException e) {
-	                rec.setDigitalObjectSource(filename);
-	            }
-	            // FIXME Set this in the job somewhere:
-	            rec.setDate(Calendar.getInstance());
-	            List<ExecutionStageRecordImpl> stages = rec.getStages();
-	            
-	            if( wfr != null && wfr.getStages() != null ) {
-	                // Examine the result:
-	                if( WorkflowResult.RESULT_DIGITAL_OBJECT.equals(wfr.getResultType())) {
-	                    rec.setDigitalObjectResult( (DigitalObject) wfr.getResult(), exp );
-	                    
-	                } else if(WorkflowResult.RESULT_CREATEVIEW_RESULT.equals(wfr.getResultType()) ) {
-	                    CreateViewResult cvr = (CreateViewResult) wfr.getResult( );
-	                    Properties vp = new Properties();
-	                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_SESSION_ID, cvr.getSessionIdentifier());
-	                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_VIEW_URL, cvr.getViewURL().toString());
-	                    vp.setProperty(ExecutionRecordImpl.RESULT_PROPERTY_CREATEVIEW_ENDPOINT_URL, wfr.getMainEndpoint().toString() );
-	                    rec.setPropertiesListResult(vp);
-	                    
-	                } else {
-	                    rec.setResultType(ExecutionRecordImpl.RESULT_MEASUREMENTS_ONLY);
-	                }
-	                
-	                // Now pull out the stages, which include the measurements etc:
-	                for( ExecutionStageRecordImpl stage : wfr.getStages() ) {
-	                    // FIXME Can this be done from the session's Service Registry instead, please!?
-	                    if( stage.getEndpoint() != null ) {
-	                        log.info("Recording info about endpoint: "+stage.getEndpoint());
-	                        stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( eid, stage.getEndpoint(), Calendar.getInstance() ) );
-	                    }
-	                    // Re-reference this stage object from the Experiment:
-	                    stages.add(stage);
-	                }
-	            }
+                // Now pull out the stages, which include the measurements etc:
+                for( ExecutionStageRecordImpl stage : wfr.getStages() ) {
+                    // FIXME Can this be done from the session's Service Registry instead, please!?
+                    if( stage.getEndpoint() != null ) {
+                        log.info("Recording info about endpoint: "+stage.getEndpoint());
+                        stage.setServiceRecord( ServiceBrowser.createServiceRecordFromEndpoint( eid, stage.getEndpoint(), Calendar.getInstance() ) );
+                    }
+                    // Re-reference this stage object from the Experiment:
+                    stages.add(stage);
+                }
+            }
 
-	            batch.getRuns().add(rec);
-	            log.info("Added records ("+batch.getRuns().size()+") for "+rec.getDigitalObjectSource());
-	        } catch( Exception e ) {
-	            log.error("Exception while parsing Execution Record.");
-	            e.printStackTrace();
-	        }
-	        
-	    }*/
+            batch.getRuns().add(rec);
+            log.info("Added records ("+batch.getRuns().size()+") for "+rec.getDigitalObjectSource());
+        } catch( Exception e ) {
+            log.error("Exception while parsing Execution Record.");
+            e.printStackTrace();
+        }
+        
+    }*/
 
 	
 	/**

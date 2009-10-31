@@ -21,7 +21,8 @@ import eu.planets_project.tb.impl.model.ExperimentExecutableImpl;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
+ * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
+ * Contains all execution records over all input digital objects
  */
 @Embeddable
 @XmlRootElement(name = "BatchExecutionRecord")
@@ -49,6 +50,9 @@ public class BatchExecutionRecordImpl implements Serializable {
 //    @OneToMany
     private Vector<ExecutionRecordImpl> runs = new Vector<ExecutionRecordImpl>();
     //private List<ExecutionRecordImpl> runs;
+    
+    //a batch execution record containing log, etc. information for the entire execution
+    private BatchWorkflowResultLogImpl wfEngineExecutionResultLog;
     
     /**
      * @return the id
@@ -119,6 +123,25 @@ public class BatchExecutionRecordImpl implements Serializable {
     public void setRuns(List<ExecutionRecordImpl> runs) {
         this.runs = new Vector<ExecutionRecordImpl>(runs);
     }
+
+	/**
+	 * a batch execution record containing log, etc. information for the entire execution
+	 * e.g. for the WEE batch processor: WorkflowResult Object
+	 * @return
+	 */
+	public BatchWorkflowResultLogImpl getWorkflowExecutionLog() {
+		return wfEngineExecutionResultLog;
+	}
+
+	/**
+	 * 	/**
+	 * a batch execution record containing log, etc. information for the entire execution
+	 * e.g. for the WEE batch processor: WorkflowResult Object
+	 * @param workflowExecutionLog
+	 */
+	public void setWorkflowExecutionLog(BatchWorkflowResultLogImpl workflowExecutionLog) {
+		this.wfEngineExecutionResultLog = workflowExecutionLog;
+	}
 
  
 }

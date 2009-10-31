@@ -24,6 +24,7 @@ import eu.planets_project.tb.api.services.TestbedServiceTemplate;
 import eu.planets_project.tb.api.services.TestbedServiceTemplate.ServiceOperation;
 import eu.planets_project.tb.api.services.tags.DefaultServiceTagHandler;
 import eu.planets_project.tb.api.services.tags.ServiceTag;
+import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.BenchmarkBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
@@ -33,6 +34,7 @@ import eu.planets_project.tb.gui.backing.PropertyDnDTreeBean;
 import eu.planets_project.tb.gui.backing.UploadManager;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
+import eu.planets_project.tb.impl.TestbedManagerImpl;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.exceptions.InvalidInputException;
@@ -59,6 +61,7 @@ import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 import eu.planets_project.tb.impl.services.tags.DefaultServiceTagHandlerImpl;
 import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
 import eu.planets_project.tb.impl.system.batch.TestbedBatchJob;
+import eu.planets_project.tb.impl.system.batch.TestbedBatchProcessorManager;
 import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
 
 import javax.faces.application.Application;
@@ -1352,21 +1355,22 @@ public class NewExpWizardController{
           
           log.info("Still looking for..."+exp.getExperimentExecutable().getBatchExecutionIdentifier());
          
-          TestbedBatchProcessor tbp = (TestbedBatchProcessor)JSFUtil.getManagedObject("TestbedBatchProcessor");
+          //get the batch processor that's responsible for this job
+          BatchProcessor pb = TestbedBatchProcessorManager.getInstance().getBatchProcessor(exp.getExperimentExecutable().getBatchSystemIdentifier());
           String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
-          log.info("Looking for experiment status under job key: "+job_key+" : " + tbp.getJobStatus(job_key));
-
-          if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.NO_SUCH_JOB ) ) {
+          log.info("Looking for experiment status under job key: "+job_key+" : " + pb.getJobStatus(job_key));
+          
+          if( pb.getJobStatus(job_key).equals(TestbedBatchJob.NO_SUCH_JOB ) ) {
               log.info("Got No Such Job.");
               exp.getExperimentExecutable().setExecutionSuccess(false);
               exp.getExperimentExecutable().setExecutionCompleted(true);
               testbedMan.updateExperiment(exp);
               return -1;
-          } else if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.NOT_STARTED) ) {
+          } else if( pb.getJobStatus(job_key).equals(TestbedBatchJob.NOT_STARTED) ) {
               log.info("Got NOT STARTED.");
               return 0;
-          } else if( tbp.getJobStatus(job_key).equals(TestbedBatchJob.RUNNING) ) {
-              int percent = tbp.getJobPercentComplete(job_key);
+          } else if( pb.getJobStatus(job_key).equals(TestbedBatchJob.RUNNING) ) {
+              int percent = pb.getJobPercentComplete(job_key);
               // Return percentage:
               log.info("Got percent complete:" + percent);
               return percent;
@@ -1375,6 +1379,56 @@ public class NewExpWizardController{
               log.info("Got job complete.");
               // Appears to need to return a number greater that 100 in order to force the progress bar to refresh properly.
               return 101;
+          }
+	  }
+	  
+	  public String getPositionInBatchProcessorQueue() {
+          TestbedManager testbedMan = (TestbedManager) JSFUtil.getManagedObject("TestbedManager");
+          ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+          refreshExperimentBean();
+          Experiment exp = expBean.getExperiment();
+
+          if( exp.getExperimentExecutable() !=  null ) {
+              log.info("Looking for position on the batch processor for... "+exp.getExperimentExecutable().getBatchExecutionIdentifier());
+          }
+          else{
+        	  return "not supported";
+          }
+          
+          //get the batch processor that's responsible for this job
+          BatchProcessor pb = TestbedBatchProcessorManager.getInstance().getBatchProcessor(exp.getExperimentExecutable().getBatchSystemIdentifier());
+          String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
+          log.info("Looking for current position on batch processor for job key: "+job_key+" : " + pb.getJobStatus(job_key));
+          
+          if( pb.getJobStatus(job_key).equals(TestbedBatchJob.NO_SUCH_JOB ) ) {
+              log.info("Got No Such Job.");
+              return "not supported";
+          }else {
+              String positionMessage = pb.getPositionInQueue(job_key);
+              log.debug("Returning current position on batch processor for job key: "+job_key+" position: " + positionMessage);
+              return positionMessage;
+          }
+	  }
+	  
+	  public boolean isCurrentBatchJobQueued() {
+		  TestbedManager testbedMan = TestbedManagerImpl.getInstance();
+          ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+          refreshExperimentBean();
+          Experiment exp = expBean.getExperiment();
+
+          if( exp.getExperimentExecutable() ==  null ) {
+              return false;
+          }
+          else{
+			  //get the batch processor that's responsible for this job
+	          BatchProcessor pb = TestbedBatchProcessorManager.getInstance().getBatchProcessor(exp.getExperimentExecutable().getBatchSystemIdentifier());
+	          String job_key = exp.getExperimentExecutable().getBatchExecutionIdentifier();
+	          if( pb.getJobStatus(job_key).equals(TestbedBatchJob.NO_SUCH_JOB ) ) {
+	              log.info("Got No Such Job.");
+	              return false;
+	          }else {
+	              return pb.isQueued(job_key);
+	          }
           }
 	  }
 

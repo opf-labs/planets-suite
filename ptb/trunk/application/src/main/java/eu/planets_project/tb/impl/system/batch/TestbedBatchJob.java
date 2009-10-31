@@ -10,6 +10,7 @@ import java.util.HashMap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.tb.impl.model.exec.BatchWorkflowResultLogImpl;
 import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 
@@ -43,9 +44,9 @@ public class TestbedBatchJob {
     private Calendar endDate;
     private String positionInQueue = "-1";
     //a workflow result (log) object depending on the engine we're using 
-    private Object workflowResultEngineReport;
+    private BatchWorkflowResultLogImpl workflowResultEngineReport;
     //a workflow failure object depending on the engine we're using
-    private Object overallWorkflowFailureReport;
+    private String overallWorkflowFailureReport;
     
     
     /**
@@ -184,7 +185,7 @@ public class TestbedBatchJob {
 	 * The result object as returned by the workflow engine (e.g. WorkflowResult for WEE)
 	 * @return
 	 */
-	public Object getWorkflowResultEngineReport() {
+	public BatchWorkflowResultLogImpl getWorkflowResultEngineReport() {
 		return workflowResultEngineReport;
 	}
 
@@ -193,7 +194,7 @@ public class TestbedBatchJob {
 	 * The result object as returned by the workflow engine (e.g. WorkflowResult for WEE)
 	 * @param workflowResultEngineReport
 	 */
-	public void setWorkflowResultEngineReport(Object workflowResultEngineReport) {
+	public void setWorkflowResultEngineReport(BatchWorkflowResultLogImpl workflowResultEngineReport) {
 		this.workflowResultEngineReport = workflowResultEngineReport;
 	}
 	
@@ -201,7 +202,7 @@ public class TestbedBatchJob {
 	 * A failure object as returned by either the workflow engine or the BatchProcessExecutionListener
 	 * @return
 	 */
-	public Object getWorkflowFailureReport() {
+	public String getWorkflowFailureReport() {
 		return overallWorkflowFailureReport;
 	}
 
@@ -209,7 +210,7 @@ public class TestbedBatchJob {
 	 * A failure object as returned by either the workflow engine or the BatchProcessExecutionListener
 	 * @param workflowFailureReport
 	 */
-	public void setWorkflowFailureReport(Object workflowFailureReport) {
+	public void setWorkflowFailureReport(String workflowFailureReport) {
 		this.overallWorkflowFailureReport = workflowFailureReport;
 	}
     

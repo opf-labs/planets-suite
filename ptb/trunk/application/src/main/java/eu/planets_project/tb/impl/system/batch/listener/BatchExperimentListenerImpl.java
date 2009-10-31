@@ -61,6 +61,12 @@ public class BatchExperimentListenerImpl {
         TestbedBatchProcessorManager batchManager = TestbedBatchProcessorManager.getInstance();
         BatchProcessor bp = batchManager.getBatchProcessor(batchProcessorID);
         
+        //check rollback and if batch processor has persistent jobs
+        if((bp.getJob(ticket)==null) || (bp.getJobStatus(ticket).equals(TestbedBatchJob.NO_SUCH_JOB ))){
+        	log.debug("EJBTransactionRollback - BatchProcessor no persistent job - dropp job: "+ticket);
+        	return;
+        }
+        
         //4. check for updates and store extracted information in experiment
         long t0 = System.currentTimeMillis();
         long t1 = System.currentTimeMillis();

@@ -246,5 +246,13 @@ public class TestbedBatchProcessor implements BatchProcessor{
 		// TODO Auto-generated method stub
 		
 	}
+
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#isQueued(java.lang.String)
+	 */
+	public boolean isQueued(String job_key) {
+		// TODO Auto-generated method stub
+		return false;
+	}
     
 }

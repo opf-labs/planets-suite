@@ -1,6 +1,7 @@
 package eu.planets_project.tb.impl.system.batch.backends.ifwee;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -128,7 +129,12 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 		if( this.getJobStatus(job_key).equals(TestbedBatchJob.DONE)){
 			return TestbedBatchJob.POSITION_COMPLETED;
 		}
-		return this.getJob(job_key).getPositionInQueue();
+		try {
+			return weeService.getPositionInQueue(UUID.fromString(job_key))+"";
+		} catch (Exception e) {
+			log.debug("WEE getPositionInQueue error for job: "+job_key);
+			return TestbedBatchJob.POSITION_NOT_SUPPORTED;
+		}
 	}
 
 	@Deprecated
@@ -210,8 +216,14 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#notifyComplete(java.lang.String, eu.planets_project.tb.impl.system.TestbedBatchJob)
 	 */
 	public void notifyComplete(String job_key, TestbedBatchJob job) {
-		this.setJob(job_key, job);
-		weeTBUpdater.processNotify_WorkflowCompleted(job.getExpID(),(WorkflowResult)job.getWorkflowResultEngineReport());
+		//this.setJob(job_key, job);
+		WorkflowResult wfLog=null;
+		try {
+			wfLog = weeService.getResult(UUID.fromString(job_key));
+		} catch (Exception e) {
+			log.debug("error building UUID from String "+job_key+ "processNotify_WorkflowCompleted without a WorkflowResult");
+		}
+		weeTBUpdater.processNotify_WorkflowCompleted(job.getExpID(),wfLog);
 		log.debug("callback notify wee for "+job_key);
 	}
 	
@@ -219,7 +231,7 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#notifyFailed(java.lang.String, eu.planets_project.tb.impl.system.TestbedBatchJob)
 	 */
 	public void notifyFailed(String job_key, TestbedBatchJob job) {
-		this.setJob(job_key, job);
+		//this.setJob(job_key, job);
 		weeTBUpdater.processNotify_WorkflowFailed(job.getExpID(),(String)job.getWorkflowFailureReport());
 		log.debug("callback notify wee for "+job_key);
 	}
@@ -246,8 +258,9 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#notifyStart(java.lang.String, eu.planets_project.tb.impl.system.TestbedBatchJob)
 	 */
 	public void notifyStart(String job_key, TestbedBatchJob job) {
-		//TODO AL: currently not used...
-		
+		//this.setJob(job_key, job);
+		weeTBUpdater.processNotify_WorkflowStarted(job.getExpID());
+		log.debug("callback notify wee for "+job_key);
 	}
 	
 	/* (non-Javadoc)
@@ -340,6 +353,28 @@ public class TestbedWEEBatchProcessor implements BatchProcessor{
 		try {
 			String status = weeService.getStatus(UUID.fromString(job_key));
 			if(status.equals(WorkflowExecutionStatus.RUNNING.toString())){
+				return true;
+			}
+			else{
+				return false;
+			}
+		} catch (Exception e) {
+			log.error("unable to build UUID for "+job_key+" "+e);
+			return false;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see eu.planets_project.tb.api.system.batch.BatchProcessor#isQueued(java.lang.String)
+	 */
+	public boolean isQueued(String job_key) {
+		try {
+			String status = weeService.getStatus(UUID.fromString(job_key));
+			if((!status.equals(WorkflowExecutionStatus.RUNNING.toString()))&&
+			   (!status.equals(WorkflowExecutionStatus.COMPLETED.toString()))){
+				return true;
+			}
+			else if(status.equals(WorkflowExecutionStatus.SUBMITTED.toString())){
 				return true;
 			}
 			else{

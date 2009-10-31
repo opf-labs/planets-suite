@@ -29,6 +29,7 @@ public interface BatchProcessor {
 	 public static final String JOB_STATUS_RUNNING = "running";
 	 public static final String JOB_STATUS_DONE = "done";
 	 public static final String JOB_STATUS_FAILED = "failed";
+	 public static final String JOB_STATUS_QUEUED = "queued";
 	 public static final String JOB_STATUS_NO_SUCH_JOB = "no-such-job";
 	
 	@Deprecated
@@ -115,6 +116,13 @@ public interface BatchProcessor {
      * @return
      */
     public boolean isRunning(String job_key);
+    
+    /**
+     * Returns if the job on the batch processor is currently queued and not running.
+     * @param job_key
+     * @return
+     */
+    public boolean isQueued(String job_key);
     
 
     /**

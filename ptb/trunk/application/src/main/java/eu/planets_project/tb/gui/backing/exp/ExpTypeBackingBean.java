@@ -26,7 +26,6 @@ import eu.planets_project.tb.impl.services.mockups.workflow.ExperimentWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.IdentifyWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
 import eu.planets_project.tb.impl.services.mockups.workflow.ViewerWorkflow;
-import eu.planets_project.tb.impl.system.batch.backends.tbown.TestbedBatchProcessor;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>

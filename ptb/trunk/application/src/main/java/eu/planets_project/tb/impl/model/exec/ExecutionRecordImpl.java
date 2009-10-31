@@ -38,7 +38,8 @@ import eu.planets_project.tb.impl.services.mockups.workflow.WorkflowResult;
 
 /**
  * @author <a href="mailto:Andrew.Jackson@bl.uk">Andy Jackson</a>
- *
+ * @author <a href="mailto:Andrew.Lindley@ait.ac.at">Andrew Lindley</a>
+ * This class deals with all aspects of execution for a given inputDigitalObjct record
  */
 @Embeddable
 @XmlRootElement(name = "ExecutionRecord")
