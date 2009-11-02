@@ -39,7 +39,11 @@ public class ManageWEE {
 	}
 	
 	public ArrayList<String> getTemplates() {
-		return weeRegistry.getAllSupportedQNames();
+		ArrayList<String> templates = weeRegistry.getAllSupportedQNames();
+		if(templates==null){
+			return new ArrayList<String>();
+		}
+		return templates;
 	}
 	
 	public void setMyUploadedFile(UploadedFile myUploadedFile) {

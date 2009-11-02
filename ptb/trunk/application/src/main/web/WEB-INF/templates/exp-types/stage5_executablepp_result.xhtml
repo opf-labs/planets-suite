@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core"	
+    xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition rendered="ExperimentBean != null}">
+
+     <rich:dataTable value="#{ExpTypeExecutablePP.executablePPResults}" 
+         var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
+        <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
+          <f:facet name="header">Digital Object</f:facet>
+          <h:outputLink value="#{res.downloadURL}">
+             <h:outputText value="#{res.digitalObjectName}"/>
+          </h:outputLink>
+        </rich:column>
+        <rich:column>
+          <f:facet name="header">Results</f:facet>
+          
+         <a4j:repeat value="#{res.migrations}" var="mdo">
+          
+         <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
+           <h:outputText value="#{mdo.digitalObjectResult}"/>
+         </h:outputLink>
+         <br/>
+
+         </a4j:repeat>
+          
+          
+        </rich:column>
+        <f:facet name="footer">
+          <rich:datascroller id="dolist_ds" renderIfSinglePage="false"></rich:datascroller>
+        </f:facet>
+     </rich:dataTable>
+
+  </ui:composition>
+</body>
+</html>

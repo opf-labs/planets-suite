@@ -73,6 +73,14 @@ public class ExecutionRecordImpl implements Serializable {
     /** The Digest/fixity algorithm to use. If you change this, all files will appear to have 'changed'. */
     public static final String FIXITY_ALG = "MD5";
     
+    /** wee batch engine related properties **/
+    public static final String WFResult_LOG = "wfresult.log";
+    public static final String WFResult_ActionIdentifier = "wfresult.actionidentifier";
+    public static final String WFResult_Parameters = "wfresult.parameters";
+    public static final String WFResult_ExtractedInformation = "wfresult.extractedInformation";
+    public static final String WFResult_ActionStartTime = "wfresult.actionStartTime";
+    public static final String WFResult_ActionEndTime = "wfresult.actionEndTime";
+    
     /**
      * Computes the MD5 hash of an input stream.
      * @param in The input stream to hash.
@@ -120,8 +128,11 @@ public class ExecutionRecordImpl implements Serializable {
     // A fixity check for this digital object.
     private String digitalObjectFixity;
     
-    // The date of this invocation:
-    private Calendar date;
+    // The start date of this invocation:
+    private Calendar startDate;
+    
+    // The end date of this invocation:
+    private Calendar endDate;
     
     /** The sequence of stages of this experiment. */
     private Vector<ExecutionStageRecordImpl> stages = new Vector<ExecutionStageRecordImpl>();
@@ -221,15 +232,29 @@ public class ExecutionRecordImpl implements Serializable {
     /**
      * @return the date
      */
-    public Calendar getDate() {
-        return date;
+    public Calendar getStartDate() {
+        return startDate;
     }
 
     /**
      * @param date the date to set
      */
-    public void setDate(Calendar date) {
-        this.date = date;
+    public void setStartDate(Calendar date) {
+        this.startDate = date;
+    }
+    
+    /**
+     * @return the date
+     */
+    public Calendar getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setEndDate(Calendar date) {
+        this.endDate = date;
     }
     
     /**

@@ -1,15 +1,20 @@
 package eu.planets_project.tb.impl.system.batch.backends.ifwee;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResultItem;
 import eu.planets_project.services.datatypes.DigitalObject;
@@ -45,15 +50,16 @@ public class WEEBatchExperimentTestbedUpdater {
 	private TestbedWEEBatchProcessor tbWEEBatch;
 	private ExperimentPersistencyRemote edao;
 	private TestbedManager testbedMan;
+	private DataHandler dh;
 	
 	public WEEBatchExperimentTestbedUpdater(){
 		tbWEEBatch = TestbedWEEBatchProcessor.getInstance();
 		edao = ExperimentPersistencyImpl.getInstance();
 		testbedMan = TestbedManagerImpl.getInstance();
+		dh = new DataHandlerImpl();
+
 	}
 	 
-	
-	//TODO AL: check if these methods are needed and at the right place here
 	/*public void processNotify_WorkflowQueued(){
 		
 	}
@@ -72,7 +78,7 @@ public class WEEBatchExperimentTestbedUpdater {
 	 * @param weeWFResult
 	 */
 	public void processNotify_WorkflowCompleted(long expID, WorkflowResult weeWFResult){
-		//TODO AL: implement
+		Experiment exp = testbedMan.getExperiment(expID);
 		if(weeWFResult==null){
 			this.processNotify_WorkflowFailed(expID, "WorkflowResult not available");
 			return;
@@ -105,11 +111,47 @@ public class WEEBatchExperimentTestbedUpdater {
 		batchRecord.setWorkflowExecutionLog(wfResultLog);
 		batchRecord.setBatchRunSucceeded(true);
 		
-		//now add the Records
-		ExecutionRecordImpl execRecord = new ExecutionRecordImpl();
-		//TODO AL CONTINUE HERE extract digos, set executable end time, etc.
+		//now iterate over the results and extract and store all crated digos
+		List<ExecutionRecordImpl> execRecords = new ArrayList<ExecutionRecordImpl>();
 		
-		this.helperUpdateExpWithBatchRecord(expID, batchRecord);
+		Map<URI,List<WorkflowResultItem>> structuredResults = this.getAllWFResultItemsPerInputDigo(weeWFResult);
+		//FIXME AL: We still need to crate empty executionRecords for the items that weren't processed by the wee (e.g. expSetup.getInputData and compare to the log)
+		for(URI inputDigoURI : structuredResults.keySet()){
+			ExecutionRecordImpl execRecord = new ExecutionRecordImpl();
+			//the input Digo for all this information is about
+			execRecord.setDigitalObjectReferenceCopy(inputDigoURI+"");
+			
+			//iterate over the results and document the migration action - all other information goes into properties.
+			for(WorkflowResultItem wfResultItem : structuredResults.get(inputDigoURI)){
+				
+				//check if this record was about the migration action
+				String action = wfResultItem.getSActionIdentifier();
+				if(action.equals(WorkflowResultItem.SERVICE_ACTION_MIGRATION)){
+					DigitalObject outputDigo = wfResultItem.getOutputDigitalObject();
+					if(outputDigo!=null){
+						//download the ResultDigo into the TB and store it's reference
+						execRecord.setDigitalObjectResult(outputDigo, exp);
+						Calendar start = new GregorianCalendar();
+						start.setTimeInMillis(wfResultItem.getStartTime());
+						Calendar end = new GregorianCalendar();
+						end.setTimeInMillis(wfResultItem.getEndTime());
+						execRecord.setEndDate(end);
+					}
+				}
+				//document all other metadata for actions: identification, etc. as properties over all actions
+				try{
+					execRecord = this.updateProperties(execRecord, wfResultItem);
+				}catch(Exception e){
+					log.error("Problems crating execution record properties for a workflowResultItem "+e);
+				}
+			}
+			
+			//got all information - now add the record for this inputDigo
+			execRecords.add(execRecord);
+		}
+		batchRecord.setRuns(execRecords);
+
+		this.helperUpdateExpWithBatchRecord(exp, batchRecord);
 	}
 	
 	/**
@@ -119,10 +161,11 @@ public class WEEBatchExperimentTestbedUpdater {
 	 * @param failureReason
 	 */
 	public void processNotify_WorkflowFailed(long expID,String failureReason){
+		Experiment exp = testbedMan.getExperiment(expID);
 		BatchExecutionRecordImpl batchRecord = new BatchExecutionRecordImpl();
 		batchRecord.setBatchRunSucceeded(false);
 		
-		this.helperUpdateExpWithBatchRecord(expID, batchRecord);
+		this.helperUpdateExpWithBatchRecord(exp, batchRecord);
 		//TODO AL: any more fields to set?
 	}
 	
@@ -137,19 +180,13 @@ public class WEEBatchExperimentTestbedUpdater {
     	edao.updateExperiment(exp);
 	}
 	
-	private void helperUpdateExpWithBatchRecord(long expID,BatchExecutionRecordImpl record){
-    	Experiment exp = testbedMan.getExperiment(expID);
+	private void helperUpdateExpWithBatchRecord(Experiment exp,BatchExecutionRecordImpl record){
     	exp.getExperimentExecutable().getBatchExecutionRecords().add(record);
 		exp.getExperimentExecutable().setExecutionCompleted(true);
 		//testbedMan.updateExperiment(exp);
 		edao.updateExperiment(exp);
 	}
 	
-	//CHOSE HOW TO DO THIS - define Arguments
-	//update Experiment information with the WEE execution results
-	private void storeWorkflowResultForDigo( ){
-		
-	}
 	
 	/*private ExecutionRecordImpl createExecutionRecordToExperiment(long eid, WorkflowResult wfr, String filename) {
         DataHandler dh = new DataHandlerImpl();
@@ -204,107 +241,79 @@ public class WEEBatchExperimentTestbedUpdater {
     }*/
 
 	
+
 	/**
-	 * @see TestbedBatchProcessDaemon
-	 * @param job
-	 * @param exp
+	 * Takes a Wee WorkflowResult object and creates a map with DigoPermanentURI of the inputDigital object
+	 * and all of it's WorkflowResultItems that were created. Please note: it does not take the InputDigos the TB submitted the job with,
+	 * but all object's that were recorded in the WorkflowResultItem.setInputDigitalObject and groups them by 
+	 * the getAboutExecutionDigoRef()
+	 * @param wfResult
+	 * @param digoPermURI
 	 * @return
 	 */
-	/*private BatchExecutionRecordImpl createExperimentBatch(TestbedBatchJob job, Experiment exp) {
-        BatchExecutionRecordImpl batch = new BatchExecutionRecordImpl();
-        exp.getExperimentExecutable().getBatchExecutionRecords().add(batch);
-        batch.setStartDate(job.getStartDate());
-        edao.updateExperiment(exp);
-        
-        return batch;
-    }*/
-	
-	
-	
-	/*
-	 * DELTE
-	public void executeWorkflow( TestbedBatchJob job ) {
-        job.setStatus(TestbedBatchJob.RUNNING);
-        job.setPercentComplete(0);
-        job.setStartDate(Calendar.getInstance());
-        Experiment exp = edao.findExperiment(job.getExpID());
-        // Set up the DB:
-        BatchExecutionRecordImpl batch = this.createExperimentBatch(job, exp);
-        
-        try {
-            // FIXME, Some experiment types may take all DOBs into one workflow?  Emulation?
-            
-            // Set up the basics:
-            DataHandler dh = new DataHandlerImpl();
-            int total = job.getDigitalObjects().size();
-            int i = 0;
-            
-            
-            // Process each in turn:
-            for( String filename : job.getDigitalObjects() ) {
-                log.info("Running job: "+(i+1)+"/"+total);
-                DigitalObject dob = dh.get(filename).getDigitalObject();
-                WorkflowResult wfr = null;
-                
-                // Actually run the workflow:
-                try {
-                    wfr = this.executeWorkflowOn(job, dob);
-                    job.setWorkflowResult(filename, wfr);
-                } catch( Exception e ) {
-                    e.printStackTrace();
-                }
-                
-                // Report:
-                if( wfr != null ) {
-                    if( wfr.getReport() != null ) {
-                        log.info("Got report: " + wfr.getReport().toString());
-                    }
-                    // Is there a result?
-                    if( wfr.getResult() != null ) {
-                        log.info("Got result: "+wfr.getResult().toString());
-                    }
-                }
+	private Map<URI,List<WorkflowResultItem>> getAllWFResultItemsPerInputDigo(WorkflowResult wfResult){
+		//the structure: Map<InputDigoPermanentURI, List<WorkflowResultItem>>
+		Map<URI,List<WorkflowResultItem>> ret = new HashMap<URI,List<WorkflowResultItem>>();
+		for(WorkflowResultItem wfResultItem : wfResult.getWorkflowResultItems()){
+			
+			URI digoCalledInExecute = wfResultItem.getAboutExecutionDigoRef();
+			//the permanentURI is the reference for the TB stored Digos when submitting
+			if(digoCalledInExecute!=null){
+				//check if we already extracted any information for this digo
+				if(!ret.keySet().contains(digoCalledInExecute)){
+					//create new record for this digo
+					List<WorkflowResultItem> resItems = new ArrayList<WorkflowResultItem>();
+					ret.put(digoCalledInExecute, resItems);
+				}
 
-                
-                // Store results in the database:
-                this.storeWorkflowResults(job, wfr, dob, filename, batch, exp );
-                
-                log.info("Ran job: "+(i+1)+"/"+total);
-                // Update counter:
-                i++;
-                job.setPercentComplete((int)(100.0*i/total));
-            }
-            
-            // Record that all went well:
-            log.info("Status: DONE - All went well.");
-            // Set the job status:
-            job.setStatus(TestbedBatchJob.DONE);
-            job.setPercentComplete(100);
-            job.setEndDate(Calendar.getInstance());
-            // Record batch info:
-            exp.getExperimentExecutable().setExecutionSuccess(true);
-            batch.setBatchRunSucceeded(true);
-        } catch( Exception e ) {
-            job.setStatus(TestbedBatchJob.FAILED);
-            job.setPercentComplete(100);
-            job.setEndDate(Calendar.getInstance());
-            log.error("Job failed, with exception: "+e);
-            batch.setBatchRunSucceeded(false);
-            exp.getExperimentExecutable().setExecutionSuccess(false);
-            e.printStackTrace();
-        }
-
-        // Record general information:
-        batch.setEndDate(job.getEndDate());
-        exp.getExperimentExecutable().setExecutableInvoked(true);
-        exp.getExperimentExecutable().setExecutionCompleted(true);
-        exp.getExperimentExecutable().setExecutionEndDate(Calendar.getInstance().getTimeInMillis());
-        exp.getExperimentExecution().setEndDate(Calendar.getInstance());
-        
-        // Persist these changes:
-        log.info("Attempting to store results...");
-        edao.updateExperiment(exp);
-        log.info("Results have been stored in the experiment.");
-        */
+				//now update the return object
+				ret.get(digoCalledInExecute).add(wfResultItem);
+			}
+		}
+		return ret;
+	}
+	
+	
+	/**
+	 * Properties contain screen readable information for stage5 for a given ExecutionRecord
+	 * @param execRecord
+	 * @param wfResultItem
+	 * @return
+	 * @throws IOException
+	 */
+	private ExecutionRecordImpl updateProperties(ExecutionRecordImpl execRecord, WorkflowResultItem wfResultItem) throws IOException{
+		Properties p;
+		if(execRecord.getPropertiesListResult()==null){
+	    	p = new Properties();
+	    }
+	    else{
+	    	p = execRecord.getPropertiesListResult();
+	    }
+		//create a property name that has the action identifier as part of it.
+		if((wfResultItem.getLogInfo()!=null)&&(!wfResultItem.getLogInfo().equals(""))){
+			p.setProperty(ExecutionRecordImpl.WFResult_LOG+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getLogInfo());
+		}
+		if((wfResultItem.getSActionIdentifier()!=null)&&(!wfResultItem.getSActionIdentifier().equals(""))){
+			p.setProperty(ExecutionRecordImpl.WFResult_ActionIdentifier+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getSActionIdentifier());
+		}
+		if((wfResultItem.getServiceParameters()!=null)&&(wfResultItem.getServiceParameters().size()>0)){
+			String sFormatted="";
+			for(Parameter sp: wfResultItem.getServiceParameters()){
+				sFormatted+=sp.getName()+" = "+sp.getValue();
+			}
+			p.setProperty(ExecutionRecordImpl.WFResult_Parameters+"_"+wfResultItem.getSActionIdentifier(), sFormatted);
+		}
+		if((wfResultItem.getExtractedInformation()!=null)&&(wfResultItem.getExtractedInformation().size()>0)){
+			p.setProperty(ExecutionRecordImpl.WFResult_ExtractedInformation+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getExtractedInformation().toString());
+		}
+		if(wfResultItem.getStartTime()!=-1){
+			p.setProperty(ExecutionRecordImpl.WFResult_ActionStartTime+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getStartTime()+"");
+		}
+		if(wfResultItem.getEndTime()!=-1){
+			p.setProperty(ExecutionRecordImpl.WFResult_ActionEndTime+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getEndTime()+"");
+		}
+		execRecord.setPropertiesListResult(p);
+		return execRecord;
+	}
 
 }

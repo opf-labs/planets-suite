@@ -148,7 +148,7 @@ public class WorkflowResult {
                 rec.setDigitalObjectSource(filename);
             }
             // FIXME Set this in the job somewhere:
-            rec.setDate(Calendar.getInstance());
+            rec.setEndDate(Calendar.getInstance());
             List<ExecutionStageRecordImpl> stages = rec.getStages();
             
             if( wfr != null && wfr.getStages() != null ) {

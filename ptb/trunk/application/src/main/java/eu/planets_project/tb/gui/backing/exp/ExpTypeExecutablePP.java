@@ -3,6 +3,7 @@ package eu.planets_project.tb.gui.backing.exp;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -49,16 +50,21 @@ import eu.planets_project.services.datatypes.Parameter;
 import eu.planets_project.services.datatypes.ServiceDescription;
 import eu.planets_project.services.migrate.Migrate;
 import eu.planets_project.tb.api.data.util.DataHandler;
+import eu.planets_project.tb.api.data.util.DigitalObjectRefBean;
 import eu.planets_project.tb.api.model.ExperimentExecutable;
 import eu.planets_project.tb.api.system.batch.BatchProcessor;
 import eu.planets_project.tb.gui.UserBean;
 import eu.planets_project.tb.gui.backing.ExperimentBean;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeMigrate.MigrateResultForDO;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeMigrate.MigrationResultBean;
+import eu.planets_project.tb.gui.backing.exp.ExpTypeViewer.CreateViewResultsForDO;
+import eu.planets_project.tb.gui.backing.exp.view.ViewResultBean;
 import eu.planets_project.tb.gui.util.JSFUtil;
 import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
-import eu.planets_project.tb.impl.services.mockups.workflow.MigrateWorkflow;
+import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
 import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
 
 /**
@@ -1127,5 +1133,103 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 			}
 		}
 	}
+	
+    /* ------------------------------------------- */
+    
+    /**
+     * A Bean to hold the results on each digital object.
+     */
+    public class ExecutablePPResultsForDO  extends ResultsForDigitalObjectBean {
+
+		public ExecutablePPResultsForDO(String input) {
+			super(input);
+		}
+		
+		public List<ExecutablePPResultBean> getMigrations() {
+            List<ExecutablePPResultBean> migs = new Vector<ExecutablePPResultBean>();
+            int i = 1;
+            for( ExecutionRecordImpl exerec : this.getExecutionRecords() ) {
+                migs.add(new ExecutablePPResultBean( i, exerec ) );
+                i++;
+            }
+            return migs;
+        }
+    }
+    
+    public class ExecutablePPResultBean {
+
+        private int batchId;
+        private ExecutionRecordImpl exerec;
+
+        /**
+         * @param exerec
+         */
+        public ExecutablePPResultBean(int batchId, ExecutionRecordImpl exerec) {
+            this.batchId = batchId;
+            this.exerec = exerec;
+        }
+        
+        /**
+         * @return
+         */
+        public String getDigitalObjectResult() {
+            String dobRef = exerec.getResult();
+            String summary = "Run "+batchId+": ";
+            if( dobRef != null ) {
+                DataHandler dh = new DataHandlerImpl();
+                DigitalObjectRefBean dobr;
+                try {
+                    dobr = dh.get(dobRef);
+                } catch (FileNotFoundException e) {
+                    log.error("Could not find file. "+e);
+                    return "";
+                }
+                summary += dobr.getName();
+                long size = dobr.getSize();
+                if( size >= 0 ) {
+                    summary += " ("+size+" bytes)";
+                }
+                return summary;
+            }
+            summary += "No Result.";
+            return summary;
+        }
+
+        /**
+         * @return
+         */
+        public String getDigitalObjectDownloadURL() {
+            String dobRef = exerec.getResult();
+            if( dobRef != null ) {
+                DataHandler dh = new DataHandlerImpl();
+                try {
+                    DigitalObjectRefBean dobr = dh.get(dobRef);
+                    return dobr.getDownloadUri().toString();
+                } catch (FileNotFoundException e) {
+                    log.error("Failed to generate download URL. " + e);
+                    return "";
+                }
+            }
+            return "";
+        }
+    }
+    
+    
+    /**
+     * @return
+     */
+    public List<ExecutablePPResultsForDO> getExecutablePPResults() {
+        ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+        List<ExecutablePPResultsForDO> results = new Vector<ExecutablePPResultsForDO>();
+        // Populate using the results:
+        for( String file : expBean.getExperimentInputData().values() ) {
+        	ExecutablePPResultsForDO res = new ExecutablePPResultsForDO(file);
+            results.add(res);
+        }
+
+        // Now return the results:
+        return results;
+        
+    }
 
 }
