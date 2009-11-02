@@ -1,11 +1,13 @@
 package eu.planets_project.ifr.core.wee.api.workflow;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 import eu.planets_project.services.datatypes.DigitalObject;
 import eu.planets_project.services.datatypes.Parameter;
@@ -31,25 +33,49 @@ public class WorkflowResultItem implements Serializable{
     private ServiceReport serReport;
     //a list of the actually called serviceParameters
     private List<Parameter> serParams;
+    //the inputDigitalObject reference on which the execute was called. This can be different from the digoIn.
+    //e.g. if you identify-migrate-identify then this would have the same identifier (the digo ref the execute was called from) but different inputDigos.
+    private URI aboutExecutionDigoRef;
+    @XmlTransient
+    private boolean aboutExecutionDigoDifferentThanInputDigo = false;
     
     //required for JAXB - even if empty
     private WorkflowResultItem(){
     	extractedInformation = new ArrayList<String>();
     	serParams = new ArrayList<Parameter>();
     }
-	
+    
     /**
-     * The most common constructor
+     * The most common constructor - if no reference to the aboutDigo is given, then we assume that the inputDigitalObject
+     * is also the one that the execute method is currently processing.
      * @param serviceActionIdentifier
      * @param startTime
      * @param endTime
      */
     public WorkflowResultItem(String serviceActionIdentifier, long startTime){
-    	this(serviceActionIdentifier,startTime,-1);
+    	this(null,serviceActionIdentifier,startTime,-1);
+    }
+	
+    /**
+     * The most common constructor
+     * @param aboutDigo The original reference for which the execute was called
+     * @param serviceActionIdentifier
+     * @param startTime
+     * @param endTime
+     */
+    public WorkflowResultItem(DigitalObject aboutDigo, String serviceActionIdentifier, long startTime){
+    	this(aboutDigo,serviceActionIdentifier,startTime,-1);
     }
     
-	public WorkflowResultItem(String serviceActionIdentifier, long startTime, long endTime){
+	public WorkflowResultItem(DigitalObject aboutDigo,String serviceActionIdentifier, long startTime, long endTime){
 		this();
+		if(aboutDigo==null){
+			aboutExecutionDigoDifferentThanInputDigo = false;
+		}
+		else{
+			aboutExecutionDigoDifferentThanInputDigo = true;
+			this.aboutExecutionDigoRef = aboutDigo.getPermanentUri();
+		}
 		this.sActionIdentifier = serviceActionIdentifier;
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -58,6 +84,9 @@ public class WorkflowResultItem implements Serializable{
 	
 	public void setInputDigitalObject(DigitalObject inDigo){
 		this.digoIn = inDigo.toXml();
+		if(!aboutExecutionDigoDifferentThanInputDigo){
+			this.aboutExecutionDigoRef = inDigo.getPermanentUri();
+		}
 	}
 	
 	public void setOutputDigitalObject(DigitalObject outDigo){
@@ -154,6 +183,14 @@ public class WorkflowResultItem implements Serializable{
 
 	public void setServiceParameters(List<Parameter> serviceParams) {
 		this.serParams = serviceParams;
+	}
+
+	public URI getAboutExecutionDigoRef() {
+		return aboutExecutionDigoRef;
+	}
+
+	public void setAboutExecutionDigoRef(URI aboutExecutionDigoRef) {
+		this.aboutExecutionDigoRef = aboutExecutionDigoRef;
 	}
 
 }
