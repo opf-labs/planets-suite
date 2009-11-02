@@ -16,6 +16,7 @@ import eu.planets_project.services.datatypes.ServiceReport;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class WorkflowResultItem implements Serializable{
 	
+	public static final String GENERAL_WORKFLOW_ACTION = "general workflow action";
     public static final String SERVICE_ACTION_MIGRATION = "migration";
     public static final String SERVICE_ACTION_IDENTIFICATION = "identification";
     public static final String SERVICE_ACTION_CHARACTERISATION = "characterisation";
@@ -149,12 +150,22 @@ public class WorkflowResultItem implements Serializable{
 	}
 
 	public DigitalObject getInputDigitalObject() {
-		return new DigitalObject.Builder(this.digoIn).build();
+		if(this.digoIn!=null){
+			return new DigitalObject.Builder(this.digoIn).build();
+		}
+		else{
+			return null;
+		}
 	}
 
 
 	public DigitalObject getOutputDigitalObject() {
-		return new DigitalObject.Builder(this.digoOut).build();
+		if(this.digoOut!=null){
+			return new DigitalObject.Builder(this.digoOut).build();
+		}
+		else{
+			return null;
+		}
 	}
 
 

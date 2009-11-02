@@ -110,9 +110,15 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
                         throw new RuntimeException(e);
                     }
                 } catch (Exception e) {
-                    log.error("workflow execution error for digitalObject #" + count);
+                	String err = "workflow execution error for digitalObject #" + count;
+                    log.error(err);
                     log.error(e.getClass() + ": " + e.getMessage());
                     System.out.println(e);
+                    WorkflowResultItem wfResultItem = new WorkflowResultItem(dgo,
+                    		WorkflowResultItem.GENERAL_WORKFLOW_ACTION,
+                    		System.currentTimeMillis());
+                    wfResultItem.setLogInfo(err);
+                    wfResult.addWorkflowResultItem(wfResultItem);
                 }
                 count++;
             }
@@ -250,52 +256,53 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
     private DigitalObject runMigrateService(DigitalObject digO, URI migrateFromURI, WorkflowResult wfresult)
             throws Exception {
         log.info("STEP 2: Migrating ...");
-        
-        //an object used to ducument the results of a service call for the WorkflowResult
-        //document the service type and start-time
-        WorkflowResultItem wfResultItem = new WorkflowResultItem(
-        		WorkflowResultItem.SERVICE_ACTION_MIGRATION,
-        		System.currentTimeMillis());
-        wfresult.addWorkflowResultItem(wfResultItem);
-        
-        // URI migrateFromURI = new URI(migrateFrom);
-        URI migrateToURI = this.getServiceCallConfigs(this.migrate).getPropertyAsURI(SER_PARAM_MIGRATE_TO);
-
-        // Create service parameter list
-        List<Parameter> parameterList = new ArrayList<Parameter>();
-        Parameter pCompressionType = this.getServiceCallConfigs(this.migrate).getPropertyAsParameter("compressionType");
-        if (pCompressionType != null) {
-            parameterList.add(pCompressionType);
-        }
-
-        Parameter pCompressionQuality = this.getServiceCallConfigs(this.migrate).getPropertyAsParameter(
-                "compressionQuality");
-        if (pCompressionQuality != null) {
-            parameterList.add(pCompressionQuality);
-        }
-
-        wfResultItem.setStartTime(System.currentTimeMillis());
-        wfResultItem.setInputDigitalObject(digO);
-        wfResultItem.setServiceParameters(parameterList);
-        MigrateResult migrateResult = this.migrate.migrate(digO, migrateFromURI, migrateToURI, parameterList);
-        wfResultItem.setEndTime(System.currentTimeMillis());
-        
-        ServiceReport report = migrateResult.getReport();
-        
-        //report service status and type
-        wfResultItem.setServiceReport(report);
-
-        if (report.getType() == Type.ERROR) {
-            String s = "Service execution failed: " + report.getMessage();
-            log.debug(s);
-            wfResultItem.setLogInfo(s);
-            throw new Exception(s);
-        }
-        
-        //add report on outputDigitalObject
-        wfResultItem.setOutputDigitalObject(migrateResult.getDigitalObject());
-        
-        return migrateResult.getDigitalObject();
+ 
+		//an object used to ducument the results of a service call for the WorkflowResult
+		//document the service type and start-time
+		WorkflowResultItem wfResultItem = new WorkflowResultItem(
+				WorkflowResultItem.SERVICE_ACTION_MIGRATION, System
+						.currentTimeMillis());
+		wfresult.addWorkflowResultItem(wfResultItem);
+		
+	    try {
+			// URI migrateFromURI = new URI(migrateFrom);
+			URI migrateToURI = this.getServiceCallConfigs(this.migrate)
+					.getPropertyAsURI(SER_PARAM_MIGRATE_TO);
+			// Create service parameter list
+			List<Parameter> parameterList = new ArrayList<Parameter>();
+			Parameter pCompressionType = this.getServiceCallConfigs(
+					this.migrate).getPropertyAsParameter("compressionType");
+			if (pCompressionType != null) {
+				parameterList.add(pCompressionType);
+			}
+			Parameter pCompressionQuality = this.getServiceCallConfigs(
+					this.migrate).getPropertyAsParameter("compressionQuality");
+			if (pCompressionQuality != null) {
+				parameterList.add(pCompressionQuality);
+			}
+			wfResultItem.setStartTime(System.currentTimeMillis());
+			wfResultItem.setInputDigitalObject(digO);
+			wfResultItem.setServiceParameters(parameterList);
+			MigrateResult migrateResult = this.migrate.migrate(digO,
+					migrateFromURI, migrateToURI, parameterList);
+			wfResultItem.setEndTime(System.currentTimeMillis());
+			ServiceReport report = migrateResult.getReport();
+			//report service status and type
+			wfResultItem.setServiceReport(report);
+			if (report.getType() == Type.ERROR) {
+				String s = "Service execution failed: " + report.getMessage();
+				log.debug(s);
+				wfResultItem.setLogInfo(s);
+				throw new Exception(s);
+			}
+			//add report on outputDigitalObject
+			wfResultItem.setOutputDigitalObject(migrateResult
+					.getDigitalObject());
+			return migrateResult.getDigitalObject();
+		} catch (Exception e) {
+			wfResultItem.setLogInfo("Migration failed "+e);
+			throw e;
+		}
     }
 
 }
