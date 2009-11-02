@@ -349,11 +349,12 @@ public class ExecutionRecordImpl implements Serializable {
     
     /* -- */
     
-    public void setDigitalObjectResult( DigitalObject dob, Experiment exp ) {
+    public URI setDigitalObjectResult( DigitalObject dob, Experiment exp ) {
         DataHandler dh = new DataHandlerImpl();
         URI storeUri = dh.storeDigitalObject(dob, exp);
         this.setResult(storeUri.toString());
         this.setResultType(ExecutionRecordImpl.RESULT_DATAHANDLER_REF);
+        return storeUri;
     }
     
     public void setDobRefResult( String storeKey ) {

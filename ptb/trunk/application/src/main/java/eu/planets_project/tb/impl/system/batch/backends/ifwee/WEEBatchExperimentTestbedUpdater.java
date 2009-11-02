@@ -120,7 +120,7 @@ public class WEEBatchExperimentTestbedUpdater {
 			ExecutionRecordImpl execRecord = new ExecutionRecordImpl();
 			//the input Digo for all this information is about
 			execRecord.setDigitalObjectReferenceCopy(inputDigoURI+"");
-			
+			Properties p = new Properties();
 			//iterate over the results and document the migration action - all other information goes into properties.
 			for(WorkflowResultItem wfResultItem : structuredResults.get(inputDigoURI)){
 				
@@ -130,7 +130,9 @@ public class WEEBatchExperimentTestbedUpdater {
 					DigitalObject outputDigo = wfResultItem.getOutputDigitalObject();
 					if(outputDigo!=null){
 						//download the ResultDigo into the TB and store it's reference
-						execRecord.setDigitalObjectResult(outputDigo, exp);
+						//FIXME: currently not possible to mix DIGO and PROPERTY result: 
+						URI tbUri = execRecord.setDigitalObjectResult(outputDigo, exp);
+						p.put(ExecutionRecordImpl.RESULT_PROPERTY_URI, tbUri.toString());
 						Calendar start = new GregorianCalendar();
 						start.setTimeInMillis(wfResultItem.getStartTime());
 						Calendar end = new GregorianCalendar();
@@ -140,10 +142,15 @@ public class WEEBatchExperimentTestbedUpdater {
 				}
 				//document all other metadata for actions: identification, etc. as properties over all actions
 				try{
-					execRecord = this.updateProperties(execRecord, wfResultItem);
+					this.updateProperties(p, wfResultItem);
 				}catch(Exception e){
 					log.error("Problems crating execution record properties for a workflowResultItem "+e);
 				}
+			}
+			try {
+				execRecord.setPropertiesListResult(p);
+			} catch (IOException e) {
+				log.debug("Problem adding properties to executionRecord: "+e);
 			}
 			
 			//got all information - now add the record for this inputDigo
@@ -281,14 +288,8 @@ public class WEEBatchExperimentTestbedUpdater {
 	 * @return
 	 * @throws IOException
 	 */
-	private ExecutionRecordImpl updateProperties(ExecutionRecordImpl execRecord, WorkflowResultItem wfResultItem) throws IOException{
-		Properties p;
-		if(execRecord.getPropertiesListResult()==null){
-	    	p = new Properties();
-	    }
-	    else{
-	    	p = execRecord.getPropertiesListResult();
-	    }
+	private Properties updateProperties(Properties p, WorkflowResultItem wfResultItem) throws IOException{
+
 		//create a property name that has the action identifier as part of it.
 		if((wfResultItem.getLogInfo()!=null)&&(!wfResultItem.getLogInfo().equals(""))){
 			p.setProperty(ExecutionRecordImpl.WFResult_LOG+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getLogInfo());
@@ -299,7 +300,7 @@ public class WEEBatchExperimentTestbedUpdater {
 		if((wfResultItem.getServiceParameters()!=null)&&(wfResultItem.getServiceParameters().size()>0)){
 			String sFormatted="";
 			for(Parameter sp: wfResultItem.getServiceParameters()){
-				sFormatted+=sp.getName()+" = "+sp.getValue();
+				sFormatted+="["+sp.getName()+" = "+sp.getValue()+"] ";
 			}
 			p.setProperty(ExecutionRecordImpl.WFResult_Parameters+"_"+wfResultItem.getSActionIdentifier(), sFormatted);
 		}
@@ -312,8 +313,7 @@ public class WEEBatchExperimentTestbedUpdater {
 		if(wfResultItem.getEndTime()!=-1){
 			p.setProperty(ExecutionRecordImpl.WFResult_ActionEndTime+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getEndTime()+"");
 		}
-		execRecord.setPropertiesListResult(p);
-		return execRecord;
+		return p;
 	}
 
 }

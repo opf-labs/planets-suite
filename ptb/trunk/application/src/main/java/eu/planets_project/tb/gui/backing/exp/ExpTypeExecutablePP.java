@@ -14,9 +14,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1160,6 +1162,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 
         private int batchId;
         private ExecutionRecordImpl exerec;
+        private Properties props;
 
         /**
          * @param exerec
@@ -1167,19 +1170,27 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
         public ExecutablePPResultBean(int batchId, ExecutionRecordImpl exerec) {
             this.batchId = batchId;
             this.exerec = exerec;
+            try {
+				props =  exerec.getPropertiesListResult();
+			} catch (IOException e) {
+				log.debug("No Properties recorded for the batch: "+batchId);
+				props = new Properties();
+			}
         }
         
+        
         /**
+         * get the DigoResult object if there's one
          * @return
          */
         public String getDigitalObjectResult() {
-            String dobRef = exerec.getResult();
+			String tbDigoURI = (String) props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
             String summary = "Run "+batchId+": ";
-            if( dobRef != null ) {
+            if( tbDigoURI != null ) {
                 DataHandler dh = new DataHandlerImpl();
                 DigitalObjectRefBean dobr;
                 try {
-                    dobr = dh.get(dobRef);
+                    dobr = dh.get(tbDigoURI);
                 } catch (FileNotFoundException e) {
                     log.error("Could not find file. "+e);
                     return "";
@@ -1194,16 +1205,30 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
             summary += "No Result.";
             return summary;
         }
+        
+        public List<String> getResultProperties() {
+			List<String> ret = new ArrayList<String>();
+			Enumeration enumeration = props.keys();
+			while(enumeration.hasMoreElements()){
+				String key = (String)enumeration.nextElement();
+				String value = props.getProperty(key);
+				if(!key.equals(ExecutionRecordImpl.RESULT_PROPERTY_URI)){
+					ret.add("["+key+"= "+value+"]");
+				}
+			}
+			return ret;	
+        }
 
+        
         /**
          * @return
          */
         public String getDigitalObjectDownloadURL() {
-            String dobRef = exerec.getResult();
-            if( dobRef != null ) {
+        	String tbDigoURI = (String) props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
+            if( tbDigoURI != null ) {
                 DataHandler dh = new DataHandlerImpl();
                 try {
-                    DigitalObjectRefBean dobr = dh.get(dobRef);
+                    DigitalObjectRefBean dobr = dh.get(tbDigoURI);
                     return dobr.getDownloadUri().toString();
                 } catch (FileNotFoundException e) {
                     log.error("Failed to generate download URL. " + e);

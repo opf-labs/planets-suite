@@ -10,7 +10,7 @@
     xmlns:rich="http://richfaces.org/rich">
 <body>
   <ui:composition rendered="ExperimentBean != null}">
-
+Hier Andrew
      <rich:dataTable value="#{ExpTypeExecutablePP.executablePPResults}" 
          var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
         <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
@@ -19,16 +19,19 @@
              <h:outputText value="#{res.digitalObjectName}"/>
           </h:outputLink>
         </rich:column>
-        <rich:column>
+        <rich:column width="80%">
           <f:facet name="header">Results</f:facet>
           
          <a4j:repeat value="#{res.migrations}" var="mdo">
-          
-         <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
-           <h:outputText value="#{mdo.digitalObjectResult}"/>
-         </h:outputLink>
-         <br/>
-
+	        <h:outputLink value="#{mdo.digitalObjectDownloadURL}">
+	          <h:outputText value="#{mdo.digitalObjectResult}"/>
+	        </h:outputLink>
+	        <rich:simpleTogglePanel label="execution log data" opened="false" switchType="client" >  
+		        <a4j:repeat value="#{mdo.resultProperties}" var="prop">
+		        	<h:outputText value="#{prop}"/><br/>
+		        </a4j:repeat>
+		    </rich:simpleTogglePanel>
+		    <br/>
          </a4j:repeat>
           
           

@@ -122,6 +122,14 @@
         </ui:include>
         
         </c:if>
+        
+         <c:if test="#{ExperimentBean.etype == 'executablepp'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_executablepp_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
+        
+        </c:if>
 
      
         <p>

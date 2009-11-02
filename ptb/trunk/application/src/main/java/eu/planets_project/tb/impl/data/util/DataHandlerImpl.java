@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.activation.MimetypesFileTypeMap;
 import javax.faces.context.FacesContext;
@@ -224,7 +225,8 @@ public class DataHandlerImpl implements DataHandler {
         // Pick a name for the object.
         String name = dob.getTitle();
         if( name == null || "".equals(name) ) {
-            name = exp.getExperimentSetup().getBasicProperties().getExperimentName()+".digitalObject";
+        	UUID randomSequence = UUID.randomUUID();
+            name = exp.getExperimentSetup().getBasicProperties().getExperimentName()+"-"+randomSequence+".digitalObject";
         }
         
         // look at the location and pick a unique name.
