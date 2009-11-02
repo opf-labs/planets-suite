@@ -55,6 +55,10 @@ public class WorkflowResultItem implements Serializable{
     public WorkflowResultItem(String serviceActionIdentifier, long startTime){
     	this(null,serviceActionIdentifier,startTime,-1);
     }
+    
+    public WorkflowResultItem(String serviceActionIdentifier, long startTime, long endTime){
+    	this(null,serviceActionIdentifier,startTime,endTime);
+    }
 	
     /**
      * The most common constructor
