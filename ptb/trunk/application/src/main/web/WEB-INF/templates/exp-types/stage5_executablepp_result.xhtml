@@ -10,7 +10,7 @@
     xmlns:rich="http://richfaces.org/rich">
 <body>
   <ui:composition rendered="ExperimentBean != null}">
-Hier Andrew
+
      <rich:dataTable value="#{ExpTypeExecutablePP.executablePPResults}" 
          var="res" styleClass="tbTable" reRender="dolist_ds" rows="10" width="100%">
         <rich:column sortBy="#{res.digitalObjectName}" sortOrder="DESCENDING">
