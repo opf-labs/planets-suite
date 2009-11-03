@@ -18,7 +18,6 @@ import eu.planets_project.ifr.core.services.migration.genericwrapper2.utils.Docu
  */
 public class MigrationPathsTest {
 
-    //FIXME! Remove this silly commit test comment.
     /**
      * Full file path to the test configuration file used by this test class.
      */

@@ -27,46 +27,53 @@ import eu.planets_project.services.utils.ProcessRunner;
 public class GenericMigrationWrapper {
 
     private PlanetsLogger log = PlanetsLogger
-	    .getLogger(GenericMigrationWrapper.class);
+            .getLogger(GenericMigrationWrapper.class);
 
     private MigrationPaths migrationPaths;
+    private final String canonicalName;
+    private final TemporaryFileFactory tempFileFactory;
 
     private ServiceDescription serviceDescription; // TODO: Consider building
-						   // IF-dependent objects
-						   // outside this class.
+    // IF-dependent objects
+    // outside this class.
 
     private boolean returnByReference; // TODO: This must be a parameter of the
-				       // generic wrapper!! Default to return by
-				       // reference!!
+
+    // generic wrapper!! Default to return by
+    // reference!!
 
     // TODO: It would probably be nice to pass a factory for creation of
     // temporary files on order to avoid a tight coupling with the Planets J2EE
     // way of creating such.
-    public GenericMigrationWrapper(Document configuration, String canonicalName)
-	    throws MigrationInitialisationException {
+    public GenericMigrationWrapper(Document configuration, String toolIdentifier)
+            throws MigrationInitialisationException {
 
-	try {
-	    MigrationPathFactory pathsFactory = new DBMigrationPathFactory(
-		    configuration);
-	    migrationPaths = pathsFactory.getAllMigrationPaths();
-	    ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
-	    List<eu.planets_project.services.datatypes.MigrationPath> planetsPaths = convertToPlanetsPaths(migrationPaths
-		    .getAllMigrationPaths());
-	    serviceDescription = serviceFactory.getServiceDescription(
-		    configuration, planetsPaths, canonicalName);
-	    String result = configuration.getDocumentElement().getAttribute(
-		    "returnByReference");
-	    if (result != null) {
-		returnByReference = Boolean.valueOf(result);
-	    }
+        this.canonicalName = toolIdentifier;
+        tempFileFactory = new J2EETempFileFactory(canonicalName);
 
-	} catch (Exception e) {
-	    throw new MigrationInitialisationException(
-		    "Failed initialising migration path data from the configuration document: "
-			    + configuration.getNodeName(), e);
-	}
+        try {
+            MigrationPathFactory pathsFactory = new DBMigrationPathFactory(
+                    configuration);
+            migrationPaths = pathsFactory.getAllMigrationPaths();
+            ServiceDescriptionFactory serviceFactory = new ServiceDescriptionFactory();
+            List<eu.planets_project.services.datatypes.MigrationPath> planetsPaths = convertToPlanetsPaths(migrationPaths
+                    .getAllMigrationPaths());
+            serviceDescription = serviceFactory.getServiceDescription(
+                    configuration, planetsPaths, toolIdentifier);
+            String result = configuration.getDocumentElement().getAttribute(
+                    "returnByReference");// FIXME! This will become a input
+            // parameter of the migrate method.
+            if (result != null) {
+                returnByReference = Boolean.valueOf(result);
+            }
 
-	// TODO: parse and initialise the ServiceDescription
+        } catch (Exception e) {
+            throw new MigrationInitialisationException(
+                    "Failed initialising migration path data from the configuration document: "
+                            + configuration.getNodeName(), e);
+        }
+
+        // TODO: parse and initialise the ServiceDescription
     }
 
     /**
@@ -106,138 +113,153 @@ public class GenericMigrationWrapper {
      *             this method.
      */
     public MigrateResult migrate(DigitalObject sourceObject, URI sourceFormat,
-	    URI destinationFormat, List<Parameter> toolParameters)
-	    throws MigrationException, IOException {
+            URI destinationFormat, List<Parameter> toolParameters)
+            throws MigrationException, IOException {
 
-	/*
-	 * - Validate that the proper parameters are set for the migration path
-	 * identified by sourceFormat and destinationFormat
-	 */
-	final MigrationPath migrationPath = migrationPaths.getMigrationPath(
-		sourceFormat, destinationFormat);
+        /*
+         * Validate that the proper parameters are set for the migration path
+         * identified by sourceFormat and destinationFormat
+         */
+        final MigrationPath migrationPath = migrationPaths.getMigrationPath(
+                sourceFormat, destinationFormat);
 
-	// If called with null parameters, use an empty list instead
-	if (toolParameters == null) {
-	    log.info("Called with null parameters");
-	    toolParameters = new ArrayList<Parameter>();
-	}
+        // If called with null parameters, use an empty list instead
+        if (toolParameters == null) {
+            log.warn("Called with null parameters. Assuming the caller ment"
+                    + " to calle with an empty list.");
+            toolParameters = new ArrayList<Parameter>();
+        }
 
-	// make workfolder, and reserve filenames in this folder.
-	log.info("Making workfolder for migration");
-	File workfolder = handleTempfiles(migrationPath);
+        // Prepare a temporary input file containing the digital object if the
+        // tool needs it.
+        File inputTempFile;
+        final ToolIOProfile inputIOProfile = migrationPath
+                .getToolInputProfile();
+        if (!inputIOProfile.usePipedIO()) {
+            log
+                    .info("Migrationpath uses temp source file, reading digital object into file");
+            inputTempFile = createTempFile(inputIOProfile);
+            FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
+                    inputTempFile);
+        }
 
-	// handle temp input file
+        // Prepare a temporary file for the migrated object if the tool writes
+        // to a file.
+        File outputTempFile;
+        final ToolIOProfile outputIOProfile = migrationPath
+                .getToolOutputProfile();
+        if (!outputIOProfile.usePipedIO()) {
+            log.info("Migrationpath uses temp destination path");
+            outputTempFile = createTempFile(outputIOProfile);
+        }
 
-	if (!migrationPath.getToolInputProfile().usePipedIO()) {
-	    log
-		    .info("Migrationpath uses temp source file, reading digital object into file");
-	    handleTempSourceFile(migrationPath, sourceObject, workfolder);
-	}
+        List<String> command = migrationPath.getCommandLine(toolParameters);
 
-	// handle temp output file
-	if (!migrationPath.getToolOutputProfile().usePipedIO()) {
-	    log.info("Migrationpath uses temp destination path");
-	    handleTempDestinationFile(migrationPath, workfolder);
-	}
+        // FIXME! The command line keyword substitution should take place here
+        // and not in the migration path object!
+        log.info("Command line found: ");
+        log.info(command);
 
-	List<String> command = migrationPath.getCommandLine(toolParameters);
+        InputStream processStandardInput = null;
+        if (migrationPath.getToolInputProfile().usePipedIO()) {
+            // serve the file on standard input
+            processStandardInput = sourceObject.getContent().read();
+        } else {
+            // fine, is already written
+        }
 
-	// FIXME! The command line keyword substitution should take place here
-	// and not in the migration path object!
-	log.info("Command line found: ");
-	log.info(command);
+        // Execute the tool
+        final ProcessRunner toolProcessRunner = new ProcessRunner();
+        ServiceReport serviceReport = executeToolProcess(toolProcessRunner,
+                command, processStandardInput);
 
-	InputStream processStandardInput = null;
-	if (migrationPath.getToolInputProfile().usePipedIO()) {
-	    // serve the file on standard input
-	    processStandardInput = sourceObject.getContent().read();
-	} else {
-	    // fine, is already written
-	}
+        if (serviceReport.getType() == Type.ERROR) {
+            String message = "Failed migrating object with title '"
+                    + sourceObject.getTitle() + "' from format URI: "
+                    + sourceFormat + " to " + destinationFormat
+                    + " Standard output: "
+                    + toolProcessRunner.getProcessOutputAsString()
+                    + "\nStandard error output: "
+                    + toolProcessRunner.getProcessErrorAsString();
+            serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
+                    message);
+            return new MigrateResult(null, serviceReport);
+        }
 
-	// Execute the tool
-	final ProcessRunner toolProcessRunner = new ProcessRunner();
-	ServiceReport serviceReport = executeToolProcess(toolProcessRunner,
-		command, processStandardInput);
+        // cleanup
+        if (!migrationPath.getToolInputProfile().usePipedIO()) {
+            // FIXME! Refactor!
+            // migrationPath.getTempSourceFile().getFile().delete();
+        }
 
-	if (serviceReport.getType() == Type.ERROR) {
-	    String message = "Failed migrating object with title '"
-		    + sourceObject.getTitle() + "' from format URI: "
-		    + sourceFormat + " to " + destinationFormat
-		    + " Standard output: "
-		    + toolProcessRunner.getProcessOutputAsString()
-		    + "\nStandard error output: "
-		    + toolProcessRunner.getProcessErrorAsString();
-	    serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
-		    message);
-	    return new MigrateResult(null, serviceReport);
-	}
+        /*
+         * FIXME! The temp. file clean up is now broken. for (TempFile tempFile
+         * : migrationPath.getTempFileDeclarations()) {
+         * tempFile.getFile().delete(); }
+         */
 
-	// cleanup
-	if (!migrationPath.getToolInputProfile().usePipedIO()) {
-	    // FIXME! Refactor!
-	    // migrationPath.getTempSourceFile().getFile().delete();
-	}
+        // READING THE OUTPUT
+        // TODO return a reference to the outputfile
+        DigitalObject.Builder builder;
 
-	/*
-	 * FIXME! The temp. file clean up is now broken. for (TempFile tempFile
-	 * : migrationPath.getTempFileDeclarations()) {
-	 * tempFile.getFile().delete(); }
-	 */
+        final ToolIOProfile toolOutputProfile = migrationPath
+                .getToolOutputProfile();
+        if (!toolOutputProfile.usePipedIO()) {
+            // we should read a temp file afterwards
+            File outputfile = new File("");// FIXME! Create temp. file!!
+            if (returnByReference) {
+                builder = new DigitalObject.Builder(Content
+                        .byReference(outputfile));
+            } else {
+                builder = new DigitalObject.Builder(Content.byValue(outputfile));
+                outputfile.delete();
+            }
 
-	// READING THE OUTPUT
-	// TODO return a reference to the outputfile
-	DigitalObject.Builder builder;
+            String message = "Successfully migrated object with title '"
+                    + sourceObject.getTitle() + "' from format URI: "
+                    + sourceFormat + " to " + destinationFormat
+                    + " Standard output: "
+                    + toolProcessRunner.getProcessOutputAsString()
+                    + "\nStandard error output: "
+                    + toolProcessRunner.getProcessErrorAsString();
+            serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                    message);
 
-	final ToolIOProfile toolOutputProfile = migrationPath
-		.getToolOutputProfile();
-	if (!toolOutputProfile.usePipedIO()) {
-	    // we should read a temp file afterwards
-	    File outputfile = new File("");// FIXME! Create temp. file!!
-	    if (returnByReference) {
-		builder = new DigitalObject.Builder(Content
-			.byReference(outputfile));
-	    } else {
-		builder = new DigitalObject.Builder(Content.byValue(outputfile));
-		outputfile.delete();
-	    }
+        } else {
 
-	    String message = "Successfully migrated object with title '"
-		    + sourceObject.getTitle() + "' from format URI: "
-		    + sourceFormat + " to " + destinationFormat
-		    + " Standard output: "
-		    + toolProcessRunner.getProcessOutputAsString()
-		    + "\nStandard error output: "
-		    + toolProcessRunner.getProcessErrorAsString();
-	    serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-		    message);
+            if (returnByReference) {
+                // we should read the output
+                builder = new DigitalObject.Builder(Content
+                        .byReference(toolProcessRunner.getProcessOutput()));
+            } else {
+                builder = new DigitalObject.Builder(Content
+                        .byValue(toolProcessRunner.getProcessOutput()));
+            }
+            String message = "Successfully migrated object with title '"
+                    + sourceObject.getTitle() + "' from format URI: "
+                    + sourceFormat + " to " + destinationFormat
+                    + " Standard error output: "
+                    + toolProcessRunner.getProcessErrorAsString();
+            serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                    message);
 
-	} else {
+        }
 
-	    if (returnByReference) {
-		// we should read the output
-		builder = new DigitalObject.Builder(Content
-			.byReference(toolProcessRunner.getProcessOutput()));
-	    } else {
-		builder = new DigitalObject.Builder(Content
-			.byValue(toolProcessRunner.getProcessOutput()));
-	    }
-	    String message = "Successfully migrated object with title '"
-		    + sourceObject.getTitle() + "' from format URI: "
-		    + sourceFormat + " to " + destinationFormat
-		    + " Standard error output: "
-		    + toolProcessRunner.getProcessErrorAsString();
-	    serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-		    message);
+        // TODO cleanup the dir
+        DigitalObject destinationObject = builder.format(destinationFormat)
+                .build();
 
-	}
+        return new MigrateResult(destinationObject, serviceReport);
 
-	// TODO cleanup the dir
-	DigitalObject destinationObject = builder.format(destinationFormat)
-		.build();
+    }
 
-	return new MigrateResult(destinationObject, serviceReport);
-
+    /**
+     * @param outputIOProfile
+     * @return
+     */
+    private File createTempFile(ToolIOProfile outputIOProfile) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     /**
@@ -258,123 +280,74 @@ public class GenericMigrationWrapper {
      */
     private List<eu.planets_project.services.datatypes.MigrationPath> convertToPlanetsPaths(
             Collection<MigrationPath> genericWrapperMigrationPaths) {
-    
+
         final ArrayList<eu.planets_project.services.datatypes.MigrationPath> planetsPaths = new ArrayList<eu.planets_project.services.datatypes.MigrationPath>();
         for (MigrationPath migrationPath : genericWrapperMigrationPaths) {
-    
+
             List<Parameter> planetsParameters = new ArrayList<Parameter>();
             planetsParameters.addAll(migrationPath.getToolParameters());
-    
+
             // Add a parameter for each preset (category)
             for (Preset preset : migrationPath.getAllToolPresets()) {
-    
-        	Parameter.Builder parameterBuilder = new Parameter.Builder(
-        		preset.getName(), null);
-    
-        	// Append a description of the valid values for the preset
-        	// parameter.
-        	String usageDescription = "\n\nValid values : Description\n";
-    
-        	for (PresetSetting presetSetting : preset.getAllSettings()) {
-    
-        	    usageDescription += "\n" + presetSetting.getName() + " : "
-        		    + presetSetting.getDescription();
-        	}
-    
-        	parameterBuilder.description(preset.getDescription()
-        		+ usageDescription);
-    
-        	planetsParameters.add(parameterBuilder.build());
+
+                Parameter.Builder parameterBuilder = new Parameter.Builder(
+                        preset.getName(), null);
+
+                // Append a description of the valid values for the preset
+                // parameter.
+                String usageDescription = "\n\nValid values : Description\n";
+
+                for (PresetSetting presetSetting : preset.getAllSettings()) {
+
+                    usageDescription += "\n" + presetSetting.getName() + " : "
+                            + presetSetting.getDescription();
+                }
+
+                parameterBuilder.description(preset.getDescription()
+                        + usageDescription);
+
+                planetsParameters.add(parameterBuilder.build());
             }
             planetsPaths
-        	    .add(new eu.planets_project.services.datatypes.MigrationPath(
-        		    migrationPath.getSourceFormat(), migrationPath
-        			    .getDestinationFormat(), planetsParameters));
+                    .add(new eu.planets_project.services.datatypes.MigrationPath(
+                            migrationPath.getSourceFormat(), migrationPath
+                                    .getDestinationFormat(), planetsParameters));
         }
-    
+
         return planetsPaths;
     }
 
-    private void handleTempDestinationFile(MigrationPath migrationPath,
-	    File workfolder) {
-	// TempFile outputemp = migrationPath.getTempOutputFile();
-	TempFile outputemp = new TempFile("FIXME - Fake"); // FIXME! dooo
-							   // somesing
-							   // enterrigent
-	outputemp.setFile(createTemp(workfolder, outputemp));
+    private ServiceReport executeToolProcess(ProcessRunner toolProcessRunner,
+            List<String> command, InputStream processStandardInput) {
 
+        toolProcessRunner.setInputStream(processStandardInput);
+        toolProcessRunner.setCommand(command);
+        toolProcessRunner.setCollection(true);
+        toolProcessRunner.setOutputCollectionByteSize(-1);
+
+        toolProcessRunner.run();
+        ServiceReport serviceReport;
+        boolean toolError = toolProcessRunner.getReturnCode() == -1;
+        if (toolError) {
+            serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
+                    toolProcessRunner.getProcessErrorAsString());
+        } else {
+            serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
+                    toolProcessRunner.getProcessOutputAsString());
+        }
+        return serviceReport;
     }
 
     private void handleTempSourceFile(MigrationPath migrationPath,
-	    DigitalObject sourceObject, File workfolder) throws IOException {
-	// TempFile sourcetempfile = migrationPath.getTempSourceFile();
-	TempFile sourcetempfile = new TempFile("FIXME - Fake"); // FIXME! dooo
-								// somesing
-								// enterrigent
-	File realtemp = createTemp(workfolder, sourcetempfile);
-	FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
-		realtemp);
-	sourcetempfile.setFile(realtemp);
-    }
-
-    // FIXME! Messed up method name
-    private File handleTempfiles(MigrationPath migrationPath) {
-	log.info("Entering handleTempFiles");
-
-	// if useTempFiles
-	// create work folder
-	File workfolder = FileUtils.createWorkFolderInSysTemp(FileUtils
-		.randomizeFileName(serviceDescription.getName()));
-
-	log.info("Created workfolder " + workfolder.getAbsolutePath());
-
-	// for each normal tempfile,
-	/*
-	 * FIXME! Temp file creation is now broken. List<TempFile> tempfiles =
-	 * migrationPath.getTempFileDeclarations(); for (TempFile
-	 * tempfile:tempfiles){
-	 * tempfile.setFile(createTemp(workfolder,tempfile));
-	 * 
-	 * }
-	 */
-	return workfolder;
-    }
-
-    private File createTemp(File workfolder, TempFile tempfile) {
-
-	String name = tempfile.getRequestedName();
-	if ("".equals(name)) {
-	    name = FileUtils.randomizeFileName(tempfile.getCodename());
-	}
-
-	File uncreatedfile = new File(workfolder.getAbsolutePath()
-		+ File.separator + name);
-	log.info("For tempfile " + tempfile.getCodename()
-		+ " created tempfile in workfolder: "
-		+ uncreatedfile.getAbsolutePath());
-	return uncreatedfile;
-
-    }
-
-    private ServiceReport executeToolProcess(ProcessRunner toolProcessRunner,
-	    List<String> command, InputStream processStandardInput) {
-
-	toolProcessRunner.setInputStream(processStandardInput);
-	toolProcessRunner.setCommand(command);
-	toolProcessRunner.setCollection(true);
-	toolProcessRunner.setOutputCollectionByteSize(-1);
-
-	toolProcessRunner.run();
-	ServiceReport serviceReport;
-	boolean toolError = toolProcessRunner.getReturnCode() == -1;
-	if (toolError) {
-	    serviceReport = new ServiceReport(Type.ERROR, Status.TOOL_ERROR,
-		    toolProcessRunner.getProcessErrorAsString());
-	} else {
-	    serviceReport = new ServiceReport(Type.INFO, Status.SUCCESS,
-		    toolProcessRunner.getProcessOutputAsString());
-	}
-	return serviceReport;
+            DigitalObject sourceObject, File workfolder) throws IOException {
+        // TempFile sourcetempfile = migrationPath.getTempSourceFile();
+        TempFile sourcetempfile = new TempFile("FIXME - Fake"); // FIXME! dooo
+        // somesing
+        // enterrigent
+//        File realtemp = createTemp(workfolder, sourcetempfile);
+//        FileUtils.writeInputStreamToFile(sourceObject.getContent().read(),
+//                realtemp);
+//        sourcetempfile.setFile(realtemp);
     }
 
 }
