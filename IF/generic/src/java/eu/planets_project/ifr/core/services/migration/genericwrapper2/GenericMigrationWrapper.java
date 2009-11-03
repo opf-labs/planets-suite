@@ -30,7 +30,7 @@ public class GenericMigrationWrapper {
             .getLogger(GenericMigrationWrapper.class);
 
     private MigrationPaths migrationPaths;
-    private final String canonicalName;
+    private final String toolIdentifier;
     private final TemporaryFileFactory tempFileFactory;
 
     private ServiceDescription serviceDescription; // TODO: Consider building
@@ -48,8 +48,8 @@ public class GenericMigrationWrapper {
     public GenericMigrationWrapper(Document configuration, String toolIdentifier)
             throws MigrationInitialisationException {
 
-        this.canonicalName = toolIdentifier;
-        tempFileFactory = new J2EETempFileFactory(canonicalName);
+        this.toolIdentifier = toolIdentifier;
+        tempFileFactory = new J2EETempFileFactory(toolIdentifier);
 
         try {
             MigrationPathFactory pathsFactory = new DBMigrationPathFactory(
@@ -132,7 +132,7 @@ public class GenericMigrationWrapper {
 
         // Prepare a temporary input file containing the digital object if the
         // tool needs it.
-        File inputTempFile;
+        File inputTempFile = null;
         final ToolIOProfile inputIOProfile = migrationPath
                 .getToolInputProfile();
         if (!inputIOProfile.usePipedIO()) {
@@ -145,7 +145,7 @@ public class GenericMigrationWrapper {
 
         // Prepare a temporary file for the migrated object if the tool writes
         // to a file.
-        File outputTempFile;
+        File outputTempFile = null;
         final ToolIOProfile outputIOProfile = migrationPath
                 .getToolOutputProfile();
         if (!outputIOProfile.usePipedIO()) {
@@ -186,17 +186,17 @@ public class GenericMigrationWrapper {
             return new MigrateResult(null, serviceReport);
         }
 
-        // cleanup
-        if (!migrationPath.getToolInputProfile().usePipedIO()) {
-            // FIXME! Refactor!
-            // migrationPath.getTempSourceFile().getFile().delete();
+        // Cleanup temporary files.
+
+        if (inputTempFile != null) {
+            inputTempFile.delete();
+        }
+        if (outputTempFile != null) {
+            outputTempFile.delete();
         }
 
-        /*
-         * FIXME! The temp. file clean up is now broken. for (TempFile tempFile
-         * : migrationPath.getTempFileDeclarations()) {
-         * tempFile.getFile().delete(); }
-         */
+        //TODO: Delete any intermediate temporary files.
+        
 
         // READING THE OUTPUT
         // TODO return a reference to the outputfile
