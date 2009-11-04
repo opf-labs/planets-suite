@@ -27,11 +27,17 @@
 	          <h:outputText value="#{mdo.digitalObjectResult}"/>
 	        </h:outputLink>
 	        <rich:simpleTogglePanel label="execution log data" opened="false" switchType="client" >  
+		        <!-- all properties that have been recorded on the execution engine -->
 		        <a4j:repeat value="#{mdo.resultProperties}" var="prop">
 		        	<h:outputText value="#{prop}"/><br/>
 		        </a4j:repeat>
+		        <!-- intermediate results of an migration if there was any -->
+		         <a4j:repeat value="#{mdo.interimResultDownloadURL}" var="imr" rowKeyVar="count">
+		         	<h:outputLink value="#{imr}">
+		        		<h:outputText value="intermediate.migration.result #{count}"/>
+		        	</h:outputLink><br/>
+		        </a4j:repeat>
 		    </rich:simpleTogglePanel>
-		    <br/>
          </a4j:repeat>
           
           

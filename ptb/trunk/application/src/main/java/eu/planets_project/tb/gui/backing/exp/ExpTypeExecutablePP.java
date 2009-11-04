@@ -14,6 +14,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -514,7 +515,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
      * @return
      */
     public String helperParseDescription(String content){
-    	String token1 = "public String describe(){";
+    	String token1 = "public String describe() {";
     	String token2 = "}";
     	String regexp = "[a-z A-Z 0-9 () . \\\\s]+";
     	
@@ -1184,13 +1185,13 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
          * @return
          */
         public String getDigitalObjectResult() {
-			String tbDigoURI = (String) props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
+			Object tbDigoURI = props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
             String summary = "Run "+batchId+": ";
             if( tbDigoURI != null ) {
                 DataHandler dh = new DataHandlerImpl();
                 DigitalObjectRefBean dobr;
                 try {
-                    dobr = dh.get(tbDigoURI);
+                    dobr = dh.get((String)tbDigoURI);
                 } catch (FileNotFoundException e) {
                     log.error("Could not find file. "+e);
                     return "";
@@ -1206,29 +1207,64 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
             return summary;
         }
         
+        /**
+         * Gets a String represenation of all information that was logged for the workflow
+         * except pointers to migration_results or migration_interim_results
+         * @return
+         */
         public List<String> getResultProperties() {
 			List<String> ret = new ArrayList<String>();
 			Enumeration enumeration = props.keys();
 			while(enumeration.hasMoreElements()){
 				String key = (String)enumeration.nextElement();
 				String value = props.getProperty(key);
-				if(!key.equals(ExecutionRecordImpl.RESULT_PROPERTY_URI)){
+				if(!key.startsWith(ExecutionRecordImpl.RESULT_PROPERTY_URI)){
 					ret.add("["+key+"= "+value+"]");
 				}
 			}
+			// Sort list in Case-insensitive sort
+            Collections.sort(ret, String.CASE_INSENSITIVE_ORDER);
 			return ret;	
         }
-
+        
+        /**
+         * If any migration took place: link the interim digos in the GUI
+         * @return
+         */
+        public List<String> getInterimResultDownloadURL() {
+        	List<String> ret = new ArrayList<String>();
+			Enumeration enumeration = props.keys();
+			while(enumeration.hasMoreElements()){
+				String key = (String)enumeration.nextElement();
+				String value = props.getProperty(key);
+				//keys start with the 
+				if(key.startsWith(ExecutionRecordImpl.RESULT_PROPERTY_INTERIM_RESULT_URI)){
+					ret.add(getDigitalObjectDownloadURL(props.getProperty(key)));
+				}
+			}
+			// Sort list in Case-insensitive sort
+            Collections.sort(ret, String.CASE_INSENSITIVE_ORDER);
+			return ret;	
+        }
         
         /**
          * @return
          */
         public String getDigitalObjectDownloadURL() {
-        	String tbDigoURI = (String) props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
+        	Object tbDigoURI = props.get(ExecutionRecordImpl.RESULT_PROPERTY_URI);
+        	return getDigitalObjectDownloadURL(tbDigoURI);
+        }
+        
+        /**
+         * Creates an external http:// object ref for any TB datamanager ref.
+         * e.g. https://localhost:8443/testbed/reader/download.jsp?fid=file%253A%252FD%253A%252FImplementation%252Fifr_server%252Fplanets-ftp%252Fusa_bundesstaaten_png.png
+         * @return
+         */
+        private String getDigitalObjectDownloadURL(Object tbDigoURI) {
             if( tbDigoURI != null ) {
                 DataHandler dh = new DataHandlerImpl();
                 try {
-                    DigitalObjectRefBean dobr = dh.get(tbDigoURI);
+                    DigitalObjectRefBean dobr = dh.get((String)tbDigoURI);
                     return dobr.getDownloadUri().toString();
                 } catch (FileNotFoundException e) {
                     log.error("Failed to generate download URL. " + e);

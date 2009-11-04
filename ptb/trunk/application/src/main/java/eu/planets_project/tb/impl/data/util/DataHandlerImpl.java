@@ -28,6 +28,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 import javax.activation.MimetypesFileTypeMap;
+import javax.crypto.spec.DHGenParameterSpec;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -400,10 +401,15 @@ public class DataHandlerImpl implements DataHandler {
 		        DigitalObjectMultiManager digoManager = new DigitalObjectMultiManager();
 				DigitalObject refByValueDigo = digoManager.retrieve(new URI(fileRef));
 				
-				//create a temp file that's copied and exposed as URL
-				File f = DigitalObjectUtils.getContentAsTempFile(refByValueDigo);
-				File exposedFile = this.copyLocalFileAsTempFileInExternallyAccessableDir(f.getAbsolutePath());
-				URI httpRef = this.getHttpFileRef(exposedFile);
+				/* create a temp file that's copied and exposed as URL (through download.jsp)
+				 File f = DigitalObjectUtils.getContentAsTempFile(refByValueDigo);
+				 File exposedFile = this.copyLocalFileAsTempFileInExternallyAccessableDir(f.getAbsolutePath());
+				 URI httpRef = this.getHttpFileRef(exposedFile);
+				*/
+				//expose the object by URL
+				DataHandler dh = new DataHandlerImpl();
+				DigitalObjectRefBean digoRef = dh.get(fileRef);
+				URI httpRef = digoRef.getDownloadUri();
 				
 				//adding the original location as metadata record
 		        URI objectRef = URI.create(fileRef);

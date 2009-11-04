@@ -92,6 +92,8 @@ public interface DataHandler {
     
 	/**
 	 * Copies a file from its local location as a temp file into the system's externally accessible directory
+	 * There the file is accessible even if the Testbed stopped. File is deleted on JVM shutdown.
+	 * Other solution: download.jsp and DataHandler.get(tbURI).getDownloadUri()
 	 * @param localFileRef
 	 * @return
 	 * @throws IOException

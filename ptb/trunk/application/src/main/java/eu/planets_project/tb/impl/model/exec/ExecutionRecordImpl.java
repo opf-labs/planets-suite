@@ -61,6 +61,7 @@ public class ExecutionRecordImpl implements Serializable {
     
     /* Properties the TB understands */
     public static final String RESULT_PROPERTY_URI = "tb.result.uri";
+    public static final String RESULT_PROPERTY_INTERIM_RESULT_URI = "tb.result.uri.interim.result";
     public static final String RESULT_PROPERTY_DIGITAL_OBJECT = "tb.result.digital_object";
     public static final String RESULT_PROPERTY_CREATEVIEW_SESSION_ID = "tb.result.createview.session_id";
     public static final String RESULT_PROPERTY_CREATEVIEW_VIEW_URL = "tb.result.createview.view_url";
@@ -80,6 +81,8 @@ public class ExecutionRecordImpl implements Serializable {
     public static final String WFResult_ExtractedInformation = "wfresult.extractedInformation";
     public static final String WFResult_ActionStartTime = "wfresult.actionStartTime";
     public static final String WFResult_ActionEndTime = "wfresult.actionEndTime";
+    public static final String WFResult_ServiceEndpoint = "wfresult.serviceEndpoint";
+    public static final String WFResult_ServiceReport = "wfresult.serviceReport";
     
     /**
      * Computes the MD5 hash of an input stream.

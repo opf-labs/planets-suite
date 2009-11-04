@@ -117,6 +117,7 @@ public class WEEBatchExperimentTestbedUpdater {
 		Map<URI,List<WorkflowResultItem>> structuredResults = this.getAllWFResultItemsPerInputDigo(weeWFResult);
 		//FIXME AL: We still need to crate empty executionRecords for the items that weren't processed by the wee (e.g. expSetup.getInputData and compare to the log)
 		for(URI inputDigoURI : structuredResults.keySet()){
+			int actionCounter = 0;
 			ExecutionRecordImpl execRecord = new ExecutionRecordImpl();
 			//the input Digo for all this information is about
 			execRecord.setDigitalObjectReferenceCopy(inputDigoURI+"");
@@ -124,15 +125,24 @@ public class WEEBatchExperimentTestbedUpdater {
 			//iterate over the results and document the migration action - all other information goes into properties.
 			for(WorkflowResultItem wfResultItem : structuredResults.get(inputDigoURI)){
 				
-				//check if this record was about the migration action
+				//1. check if this record was about the migration action
 				String action = wfResultItem.getSActionIdentifier();
-				if(action.equals(WorkflowResultItem.SERVICE_ACTION_MIGRATION)){
+				if(action.startsWith(WorkflowResultItem.SERVICE_ACTION_MIGRATION)){
 					DigitalObject outputDigo = wfResultItem.getOutputDigitalObject();
 					if(outputDigo!=null){
-						//download the ResultDigo into the TB and store it's reference
-						//FIXME: currently not possible to mix DIGO and PROPERTY result: 
-						URI tbUri = execRecord.setDigitalObjectResult(outputDigo, exp);
-						p.put(ExecutionRecordImpl.RESULT_PROPERTY_URI, tbUri.toString());
+						//1.a download the ResultDigo into the TB and store it's reference - if it's the final migration producing the output object
+						if(action.equals(WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION)){
+							//documenting the final output object
+							URI tbUri = execRecord.setDigitalObjectResult(outputDigo, exp);
+							//FIXME: currently not possible to mix DIGO and PROPERTY result: 
+							p.put(ExecutionRecordImpl.RESULT_PROPERTY_URI, tbUri.toString());
+						}
+						else{
+						//1.b documenting the interim results in a multi-migration-workflow
+							DataHandler dh = new DataHandlerImpl();
+					        URI tbUri = dh.storeDigitalObject(outputDigo, exp);
+					        p.put(ExecutionRecordImpl.RESULT_PROPERTY_INTERIM_RESULT_URI+"["+actionCounter+"]", tbUri.toString());
+						}
 						Calendar start = new GregorianCalendar();
 						start.setTimeInMillis(wfResultItem.getStartTime());
 						Calendar end = new GregorianCalendar();
@@ -140,12 +150,14 @@ public class WEEBatchExperimentTestbedUpdater {
 						execRecord.setEndDate(end);
 					}
 				}
-				//document all other metadata for actions: identification, etc. as properties over all actions
+
+				//2. document all other metadata for actions: identification, etc. as properties over all actions
 				try{
-					this.updateProperties(p, wfResultItem);
+					this.updateProperties(actionCounter, p, wfResultItem);
 				}catch(Exception e){
 					log.error("Problems crating execution record properties for a workflowResultItem "+e);
 				}
+				actionCounter++;
 			}
 			try {
 				execRecord.setPropertiesListResult(p);
@@ -288,30 +300,36 @@ public class WEEBatchExperimentTestbedUpdater {
 	 * @return
 	 * @throws IOException
 	 */
-	private Properties updateProperties(Properties p, WorkflowResultItem wfResultItem) throws IOException{
+	private Properties updateProperties(int count, Properties p, WorkflowResultItem wfResultItem) throws IOException{
 
 		//create a property name that has the action identifier as part of it.
-		if((wfResultItem.getLogInfo()!=null)&&(!wfResultItem.getLogInfo().equals(""))){
-			p.setProperty(ExecutionRecordImpl.WFResult_LOG+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getLogInfo());
+		if((wfResultItem.getServiceEndpoint()!=null)&&(!wfResultItem.getServiceEndpoint().equals(""))){
+			p.setProperty(ExecutionRecordImpl.WFResult_ServiceEndpoint+"["+count+"]", wfResultItem.getServiceEndpoint());
+		}
+		if((wfResultItem.getLogInfo()!=null)&&(wfResultItem.getLogInfo().size()>0)){
+			p.setProperty(ExecutionRecordImpl.WFResult_LOG+"["+count+"]", wfResultItem.getLogInfo().toString());
 		}
 		if((wfResultItem.getSActionIdentifier()!=null)&&(!wfResultItem.getSActionIdentifier().equals(""))){
-			p.setProperty(ExecutionRecordImpl.WFResult_ActionIdentifier+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getSActionIdentifier());
+			p.setProperty(ExecutionRecordImpl.WFResult_ActionIdentifier+"["+count+"]", wfResultItem.getSActionIdentifier());
 		}
 		if((wfResultItem.getServiceParameters()!=null)&&(wfResultItem.getServiceParameters().size()>0)){
 			String sFormatted="";
 			for(Parameter sp: wfResultItem.getServiceParameters()){
 				sFormatted+="["+sp.getName()+" = "+sp.getValue()+"] ";
 			}
-			p.setProperty(ExecutionRecordImpl.WFResult_Parameters+"_"+wfResultItem.getSActionIdentifier(), sFormatted);
+			p.setProperty(ExecutionRecordImpl.WFResult_Parameters+"["+count+"]", sFormatted);
 		}
 		if((wfResultItem.getExtractedInformation()!=null)&&(wfResultItem.getExtractedInformation().size()>0)){
-			p.setProperty(ExecutionRecordImpl.WFResult_ExtractedInformation+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getExtractedInformation().toString());
+			p.setProperty(ExecutionRecordImpl.WFResult_ExtractedInformation+"["+count+"]", wfResultItem.getExtractedInformation().toString());
 		}
 		if(wfResultItem.getStartTime()!=-1){
-			p.setProperty(ExecutionRecordImpl.WFResult_ActionStartTime+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getStartTime()+"");
+			p.setProperty(ExecutionRecordImpl.WFResult_ActionStartTime+"["+count+"]", wfResultItem.getStartTime()+"");
 		}
 		if(wfResultItem.getEndTime()!=-1){
-			p.setProperty(ExecutionRecordImpl.WFResult_ActionEndTime+"_"+wfResultItem.getSActionIdentifier(), wfResultItem.getEndTime()+"");
+			p.setProperty(ExecutionRecordImpl.WFResult_ActionEndTime+"["+count+"]", wfResultItem.getEndTime()+"");
+		}
+		if(wfResultItem.getServiceReport()!=null){
+			p.setProperty(ExecutionRecordImpl.WFResult_ServiceReport+"["+count+"]", wfResultItem.getServiceReport().toString());
 		}
 		return p;
 	}
