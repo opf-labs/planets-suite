@@ -48,23 +48,14 @@
        <ui:param name="ExperimentPhase" value="2" />
        <ui:param name="PlaceBandAsHeader" value="true" />
     </ui:include>
-    <p>At this stage you can specify the design your experiment.  This involves selecting an <b>experiment type</b> and one or more <b>preservation services</b> in the left-hand section of the page, and selecting the <b>digital objects</b> you wish to pass through your chosen services in the right-hand section of the page.</p>
-      <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
-  
-        <c:if test="#{ExperimentBean.oldExperiment}">
 
-    <ui:include src="/WEB-INF/templates/old-exps/stage2_body.xhtml">
+      <ui:include src="/WEB-INF/templates/global_error_box.xhtml"/>
+
+
+    <ui:include src="/WEB-INF/templates/exp/exp_designer.xhtml">
        <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
     </ui:include>
-        
-        </c:if>
-        <c:if test="#{ ! ExperimentBean.oldExperiment}">
-        
-    <ui:include src="/WEB-INF/templates/exp-types/stage2.xhtml">
-       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
-    </ui:include>
-        
-        </c:if>
+
 
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="2" />

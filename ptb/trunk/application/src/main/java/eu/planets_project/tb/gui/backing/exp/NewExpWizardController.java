@@ -827,6 +827,7 @@ public class NewExpWizardController{
      * of the "new" experiment
      */
     private String commandSaveExperimentAs() {
+        // FIXME This only save-as-es the ExperimentBean in the session! When invoked from menu, it's different!
         log.info("Attempting to save this experiment as a new experiment.");
         ExperimentBean oldExpBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
         

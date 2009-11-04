@@ -30,75 +30,11 @@
     </ui:include>
 
 
-    <!--  Title, containing the status or result: -->    
-    <h2 class="main">
-    <h:outputText value="#{res['approve_exp.approvalStatus']}&#160;"/>
-    <h:outputText value="#{res['approve_exp.awaitApproval']}" rendered="#{ExperimentBean.experiment.awaitingApproval}"/>
-    <h:outputText value="#{res['approve_exp.approved']}" rendered="#{ExperimentBean.experiment.approved}"/>
-    <h:outputText value="#{res['approve_exp.denied']}" rendered="#{ExperimentBean.experiment.denied}" styleClass="#{ExperimentBean.experiment.denied ? 'approvalDeniedHeader' : ''}"/>
-    </h2>
-    
-    <!-- AWAITING APPROVAL -->
+    <ui:include src="/WEB-INF/templates/exp/exp_approval.xhtml">
+       <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+    </ui:include>
 
-    <h:panelGroup rendered="#{ExperimentBean.experiment.awaitingApproval}">
-<p><b>Your experiment has been submitted for approval and execution.</b></p>
-<p>Your experiment will checked by the Testbed administrator, depending on the intensity of your experiment and the size of the experiment dataset.</p>
-<p>If your experiment requires manual approval the Testbed administrator may approve your experiment for immediate execution, schedule your experiment for execution at a later time or request that you make changes to your experiment before it is executed.  If changes are requested the administrator will notify you and control of the experiment will be returned to you.</p>
-<hr />
-    <h:commandButton value="#{res['approve_exp.checkStatus']}"
-                        action="#{NewExp_Controller.updateExperimentBeanState}"/>
-    </h:panelGroup>
 
-<!-- APPROVED -->
-    
-    <h:panelGroup rendered="#{ExperimentBean.experiment.approved}">
-<p><b>Your experiment has been approved for execution.</b></p>
-<fieldset>
-<legend>#{res['approve_exp.evaluation']}</legend>
-
-<h:panelGroup rendered="#{ExperimentBean.experiment.experimentApproval.explanation != '' }">
-<p>
-<b><h:outputText value="#{res['approve_exp.explanation']}" /></b><br/>
-<br/>
-<h:outputText value="#{ExperimentBean.experiment.experimentApproval.explanation}" />
-</p>
-</h:panelGroup>
-
-<p style="text-align: right">
-<br/>
-<h:outputText value="#{res['approve_exp.decision']}" /> by <b><h:outputText value="#{ExperimentBean.experiment.usernameOfApprover}" /></b>.
-</p>
-</fieldset>
-
-    </h:panelGroup>
-
-<!--  DENIED  -->
-
-    <h:panelGroup rendered="#{ExperimentBean.experiment.denied}">
-<p><b>Your experiment has NOT been approved for execution.</b></p>
-<fieldset>
-<legend>#{res['approve_exp.evaluation']}</legend>
-
-<h:panelGroup rendered="#{ExperimentBean.experiment.experimentApproval.explanation != '' }">
-<p>
-<b><h:outputText value="#{res['approve_exp.explanation']}" /></b><br/>
-<br/>
-<h:outputText value="#{ExperimentBean.experiment.experimentApproval.explanation}" />
-</p>
-</h:panelGroup>
-
-<p style="text-align: right">
-<br/>
-<h:outputText value="#{res['approve_exp.decision']}" /> by <b><h:outputText value="#{ExperimentBean.experiment.usernameOfApprover}" /></b>.
-</p>
-</fieldset>
-
-<p>
-Please modify your experiment:<br/>
- <h:commandButton value="#{res['approve_exp.reEdit']}"
-                        action="#{NewExp_Controller.unsubmitAndEdit}"/>
-</p>
-    </h:panelGroup>
 
     <ui:include src="/WEB-INF/templates/exp_page_bands.xhtml">
        <ui:param name="ExperimentPhase" value="4" />

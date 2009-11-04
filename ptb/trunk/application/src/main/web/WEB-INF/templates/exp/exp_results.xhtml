@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:c="http://java.sun.com/jstl/core" 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:a4j="http://richfaces.org/a4j"
+    xmlns:rich="http://richfaces.org/rich">
+<body>
+  <ui:composition rendered="#{ExperimentBean != null}">
+
+<a4j:outputPanel id="executedResults">
+<h:panelGroup rendered="#{ NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }">
+<!-- START Automated Results -->
+<a4j:region id="regionAutoMResults" renderRegionOnly="true">
+<rich:simpleTogglePanel label="#{res['exp_stage5.automaticResults']}" opened="true" switchType="ajax">
+	<p>These are the results the Testbed has automatically measured and recorded for your experiment.</p>
+
+    <rich:tabPanel width="100%" selectedTab="OverallResultTab" rendered="#{NewExp_Controller.experimentExecutable.numBatchExecutionRecords > 0 }" switchType="ajax">
+        <rich:tab label="Overall Results" name="OverallResultTab">
+     
+
+        <c:if test="#{ExperimentBean.etype == 'identify'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_identify_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
+          
+        </c:if>
+
+                
+        <c:if test="#{ExperimentBean.etype == 'migrate'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_migrate_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
+        
+        </c:if>
+
+     
+        <c:if test="#{ExperimentBean.etype == 'emulate'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_createview_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
+        
+        </c:if>
+        
+         <c:if test="#{ExperimentBean.etype == 'executablepp'}">
+        
+        <ui:include src="/WEB-INF/templates/exp-types/stage5_executablepp_result.xhtml">
+           <ui:param name="ExperimentBean" value="#{ExperimentBean}" />
+        </ui:include>
+        
+        </c:if>
+
+     
+        <p>
+        The experiment has been executed #{NewExp_Controller.experimentExecutable.numBatchExecutionRecords} times on #{NewExp_Controller.experimentExecutable.numberOfInputs} digital objects.
+        </p>
+        
+        </rich:tab>
+
+        
+        <rich:tab label="Service Statistics">
+            <p>
+            Runtime statistics here. e.g. execution time of each service/stage, versus (exec, type, size).
+            </p>
+            <p>
+            <img src="#{ExperimentBean.servicePlotImageUrl}" />
+            </p>
+        </rich:tab>
+        
+        <rich:tab label="Raw Execution Log" name="ExeLogTab">
+            
+<h:panelGrid columns="2" styleClass="expDesignerPanel" columnClasses="doListColumn,expDesignColumn">
+            <rich:panel styleClass="expExecLogPanel">
+                
+     <rich:dataTable id="batchExecRecordsTable" value="#{NewExp_Controller.experimentExecutable.batchExecutionRecords}" 
+         var="batch" styleClass="tbTable" reRender="exelog_ds" rows="10" rowKeyVar="counter">
+      <rich:column sortBy="#{batch.endDate}" sortOrder="DESCENDING">
+        <f:facet name="header">Execution Date</f:facet>
+        <a4j:commandLink reRender="execResultsDetailPanel,batchExecRecordsTable">
+          	<f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
+        	<h:outputText value="#{batch.startDate.time}" styleClass="#{ ( ExperimentBean.selectedBatchExecutionRecord.startDate.time eq batch.startDate.time ) ? 'isSelected' : 'isNotSelected'}" >
+          		<f:convertDateTime type="both" dateStyle="short"/>
+        	</h:outputText>
+        </a4j:commandLink>
+      </rich:column>
+      <rich:column>
+        <f:facet name="header">Execution Success</f:facet>
+        <a4j:commandLink reRender="execResultsDetailPanel,batchExecRecordsTable">
+          <f:actionListener type="eu.planets_project.tb.gui.backing.exp.SelectBatchExecutionRecordActionListener"/>
+          <h:outputText value="#{batch.batchRunSucceeded}"/>
+        </a4j:commandLink>
+      </rich:column>
+      
+      <f:facet name="footer">
+         <rich:datascroller id="exelog_ds" renderIfSinglePage="false"></rich:datascroller>
+      </f:facet>
+      
+    </rich:dataTable>
+    
+    </rich:panel>
+    <rich:panel id="execResultsDetailPanel" styleClass="expMeasurementPanel">
+                <f:facet name="header">
+                Execution Results In Detail
+                </f:facet>
+                
+         <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord != null}">
+         
+         <a4j:repeat value="#{ExperimentBean.selectedBatchExecutionRecord.runs}" var="run" rowKeyVar="count">
+         <rich:simpleTogglePanel label="data entry: #{count+1} - #{run.digitalObjectSource}" opened="#{count>0 ? false : true}" switchType="client">
+
+         <a4j:repeat value="#{run.stages}" var="stage">
+        
+          <rich:dataTable value="#{stage.measuredObservables}" var="m" styleClass="tbTable">
+                <f:facet name="header">#{stage.stage}</f:facet>
+            <rich:column>
+              <f:facet name="header">Measurement</f:facet>
+              
+                <!--  Full property definitions is available:  -->
+                <h:panelGroup rendered="#{m.name != null}">
+                  <t:graphicImage value="/graphics/help.gif" style="float: right; padding: 1px 5px;"/>
+                  <h:outputText value="#{m.name}"/>
+                </h:panelGroup>
+                <rich:toolTip showDelay="500" rendered="#{m.name != null}">
+                  <h:outputText value="#{m.description}"/>
+                  <h:panelGroup rendered="#{m.identifier != null}">
+                    <br/><i><h:outputText value="(URI: #{m.identifier})"/></i>
+                  </h:panelGroup>
+                </rich:toolTip>
+                
+                <!-- Otherwise, just show the property ID: -->
+                <h:panelGroup rendered="#{m.name == null}">
+                  <i><h:outputText value="#{m.identifier}"/></i>
+                </h:panelGroup>
+                
+            </rich:column>
+            <rich:column>
+              <f:facet name="header">Value</f:facet>
+              <h:outputText value="#{m.value}"/><h:outputText value=" [#{m.unit}]" rendered="#{m.unitDefined}"/>
+            </rich:column>
+          </rich:dataTable>
+          
+         </a4j:repeat>
+         
+         </rich:simpleTogglePanel>
+         <br/>
+         </a4j:repeat>
+         
+         </h:panelGroup>
+         
+         <h:panelGroup rendered="#{ExperimentBean.selectedBatchExecutionRecord == null}">
+         <p>Please select a batch execution time (on the left) to see the batch results.</p>
+         </h:panelGroup>
+                
+    </rich:panel>
+    
+    </h:panelGrid>
+
+    <p>         
+        <h:outputLink value="/testbed/reader/results.jsp">
+          <f:param name="eid" value="#{ExperimentBean.experiment.entityID}"/>
+          <h:outputText value="Click here to download data from all runs, in CSV format..."/>
+        </h:outputLink>
+    </p>
+
+        </rich:tab>
+        
+        <rich:tab label="Server Specification">
+       	 <ui:include src="/WEB-INF/templates/server_spec.xhtml" />
+        </rich:tab>
+        
+     </rich:tabPanel>
+
+</rich:simpleTogglePanel>
+
+</a4j:region>
+<!-- END Automated Results -->
+
+<!-- Manual evaluation: -->
+<ui:include src="/WEB-INF/templates/exp_stage5_manual_properties.xhtml"/>
+
+
+</h:panelGroup>
+</a4j:outputPanel>
+
+  </ui:composition>
+</body>
+</html>

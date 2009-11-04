@@ -114,6 +114,9 @@ public class DigitalObjectTreeNode extends TreeNodeBase implements java.io.Seria
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
