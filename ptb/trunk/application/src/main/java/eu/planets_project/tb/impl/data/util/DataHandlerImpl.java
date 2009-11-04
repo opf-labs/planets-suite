@@ -401,15 +401,15 @@ public class DataHandlerImpl implements DataHandler {
 		        DigitalObjectMultiManager digoManager = new DigitalObjectMultiManager();
 				DigitalObject refByValueDigo = digoManager.retrieve(new URI(fileRef));
 				
-				/* create a temp file that's copied and exposed as URL (through download.jsp)
-				 File f = DigitalObjectUtils.getContentAsTempFile(refByValueDigo);
-				 File exposedFile = this.copyLocalFileAsTempFileInExternallyAccessableDir(f.getAbsolutePath());
-				 URI httpRef = this.getHttpFileRef(exposedFile);
-				*/
-				//expose the object by URL
-				DataHandler dh = new DataHandlerImpl();
+				//create a statically accessible temp file that's copied and exposed as URL (through download.jsp)
+				File f = DigitalObjectUtils.getContentAsTempFile(refByValueDigo);
+				File exposedFile = this.copyLocalFileAsTempFileInExternallyAccessableDir(f.getAbsolutePath());
+				URI httpRef = this.getHttpFileRef(exposedFile);
+				
+				/*DataHandler dh = new DataHandlerImpl();
 				DigitalObjectRefBean digoRef = dh.get(fileRef);
-				URI httpRef = digoRef.getDownloadUri();
+				//not possible as this requires authentication
+				URI httpRef = digoRef.getDownloadUri();*/
 				
 				//adding the original location as metadata record
 		        URI objectRef = URI.create(fileRef);
