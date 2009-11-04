@@ -25,33 +25,25 @@ import eu.planets_project.services.migrate.MigrateResult;
  */
 public class GenericMigrationWrapperTest {
 
-    /**
-     * File path to the test files used by this test class.
-     */
-    private static final File TEST_FILE_PATH = new File(
-            "IF/generic/test/resources/");
-
-    private static final String TEST_FILE_NAME = "Arrows_doublestraight_arrow2.dia";
-
     private final URI sourceFormatURI;
     private final URI destinationFormatURI;
     private GenericMigrationWrapper genericWrapper;
-final List<Parameter> testParameters = new ArrayList<Parameter>();
+    final List<Parameter> testParameters = new ArrayList<Parameter>();
+
     /**
      */
     public GenericMigrationWrapperTest() throws Exception {
-        sourceFormatURI = new URI("info:test/lowercase");
-        destinationFormatURI = new URI("info:test/uppercase");
+	sourceFormatURI = new URI("info:test/lowercase");
+	destinationFormatURI = new URI("info:test/uppercase");
     }
 
     @Before
     public void setUp() throws Exception {
 
-        testParameters.add(new Parameter("mode", "complete"));
-
-        DocumentLocator documentLocator = new DocumentLocator("exampleConfigfile.xml");
-         genericWrapper = new GenericMigrationWrapper(
-                documentLocator.getDocument(), this.getClass().getCanonicalName());
+	DocumentLocator documentLocator = new DocumentLocator(
+		"GenericWrapperConfigFileExample.xml");
+	genericWrapper = new GenericMigrationWrapper(documentLocator
+		.getDocument(), this.getClass().getCanonicalName());
 
     }
 
@@ -60,31 +52,33 @@ final List<Parameter> testParameters = new ArrayList<Parameter>();
     }
 
     @Test
-    public void testDescribe(){
-        ServiceDescription sb = genericWrapper.describe();
-        System.out.println(sb);
+    public void testDescribe() {
+	ServiceDescription sb = genericWrapper.describe();
+	System.out.println(sb);
     }
 
     @Test
     public void testMigrateUsingTempFiles() throws Exception {
+	testParameters.add(new Parameter("mode", "complete"));
 
 
-        MigrateResult migrationResult = genericWrapper.migrate(
-                getDigitalTestObject(), sourceFormatURI, destinationFormatURI,
-                testParameters);
+	MigrateResult migrationResult = genericWrapper.migrate(
+		getDigitalTestObject(), sourceFormatURI, destinationFormatURI,
+		testParameters);
 
-        Assert.assertEquals(ServiceReport.Status.SUCCESS, migrationResult
-                .getReport().getStatus());
+	Assert.assertEquals(ServiceReport.Status.SUCCESS, migrationResult
+		.getReport().getStatus());
     }
 
     private DigitalObject getDigitalTestObject() {
-        final File diaTestFile = new File(TEST_FILE_PATH, TEST_FILE_NAME);
 
-        DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
-                Content.byValue(diaTestFile));
-        digitalObjectBuilder.format(sourceFormatURI);
-        digitalObjectBuilder.title(TEST_FILE_NAME);
-        return digitalObjectBuilder.build();
+	final byte[] digitalObjectData = ("this is a lowercase text for "
+		+ "migration to uppercase").getBytes();
 
+	DigitalObject.Builder digitalObjectBuilder = new DigitalObject.Builder(
+		Content.byValue(digitalObjectData));
+	digitalObjectBuilder.format(sourceFormatURI);
+	digitalObjectBuilder.title("Lowercase test text");
+	return digitalObjectBuilder.build();
     }
 }
