@@ -186,7 +186,7 @@ public class WorkflowResult implements Serializable {
 		if(outputDigo!=null){
 			item.setOutputDigitalObject(outputDigo);
 		}
-		item.setLogInfo(logInfo);
+		item.addLogInfo(logInfo);
 	}
 	
 	/**
@@ -203,7 +203,7 @@ public class WorkflowResult implements Serializable {
 		if((identifier!=null)&&(identifier.size()>0)){
 			item.setExtractedInformation(identifier);
 		}
-		item.setLogInfo(logInfo);
+		item.addLogInfo(logInfo);
 	}
 	
 	/**
@@ -220,7 +220,7 @@ public class WorkflowResult implements Serializable {
 		if((characterisation!=null)&&(characterisation.size()>0)){
 			item.setExtractedInformation(characterisation);
 		}
-		item.setLogInfo(logInfo);
+		item.addLogInfo(logInfo);
 	}
 	
 	//TODO continue for other Planets supported service types as create view, etc...

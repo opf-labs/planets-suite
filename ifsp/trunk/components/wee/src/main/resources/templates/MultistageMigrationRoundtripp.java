@@ -143,6 +143,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 			wfResultItem.setInputDigitalObject(digO);
 			wfResultItem.setServiceParameters(parameterList);
 			wfResultItem.setStartTime(System.currentTimeMillis());
+	        wfResultItem.setServiceEndpoint(migrationService.describe().getEndpoint().toExternalForm());
 			
 			//now call the migration
 			MigrateResult migrateResult = migrationService.migrate(digO,

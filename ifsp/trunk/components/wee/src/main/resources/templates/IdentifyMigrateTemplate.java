@@ -218,7 +218,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         wfResultItem.setEndTime(System.currentTimeMillis());
         wfResultItem.setInputDigitalObject(digo);
         wfResultItem.setServiceParameters(parameterList);
-        wfResultItem.setServiceEndpoint(identify.describe().getEndpoint()+"");
+        wfResultItem.setServiceEndpoint(identify.describe().getEndpoint().toExternalForm());
         
         //have a look at the service's results
         ServiceReport report = results.getReport();
@@ -281,7 +281,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
 			if (pCompressionQuality != null) {
 				parameterList.add(pCompressionQuality);
 			}
-			wfResultItem.setServiceEndpoint(migrate.describe().getEndpoint()+"");
+			wfResultItem.setServiceEndpoint(migrate.describe().getEndpoint().toExternalForm());
 			wfResultItem.setStartTime(System.currentTimeMillis());
 			wfResultItem.setInputDigitalObject(digO);
 			wfResultItem.setServiceParameters(parameterList);
