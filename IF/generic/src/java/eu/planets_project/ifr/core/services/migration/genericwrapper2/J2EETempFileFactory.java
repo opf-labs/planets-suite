@@ -11,7 +11,7 @@ import eu.planets_project.services.utils.FileUtils;
  */
 class J2EETempFileFactory implements TemporaryFileFactory {
 
-    final File tempFileDir;
+    private final File tempFileDir;
 
     /**
      * Create a factory for creation of temporary files. The files will be
@@ -28,10 +28,21 @@ class J2EETempFileFactory implements TemporaryFileFactory {
      */
     J2EETempFileFactory(String tempFileDirID) {
 
-        final String randomizedTempFileDirName = FileUtils
-                .randomizeFileName(tempFileDirID);
-        tempFileDir = FileUtils
-                .createWorkFolderInSysTemp(randomizedTempFileDirName);
+	final String randomizedTempFileDirName = FileUtils
+		.randomizeFileName(tempFileDirID);
+	tempFileDir = FileUtils
+		.createWorkFolderInSysTemp(randomizedTempFileDirName);
+    }
+
+    /**
+     * Get the path to the temporary directory where the temporary files,
+     * created by this factory, are created.
+     * 
+     * @return <code>File</code> instance containing the path to the temporary
+     *         files created by this factory.
+     */
+    public File getTempFileDir() {
+	return tempFileDir;
     }
 
     /**
@@ -44,7 +55,7 @@ class J2EETempFileFactory implements TemporaryFileFactory {
      */
     public File prepareRandomNamedTempFile() {
 
-        return prepareRandomNamedTempFile("");
+	return prepareRandomNamedTempFile("");
     }
 
     /**
@@ -59,15 +70,16 @@ class J2EETempFileFactory implements TemporaryFileFactory {
      * @param humanReadableID
      *            String containing a human readable ID to add to the randomly
      *            generated filename.
+     * 
      * @return <code>File</code> instance identifying a randomly named
      *         (including a human readable ID) file in the temporary file
      *         folder.
      */
     public File prepareRandomNamedTempFile(String humanReadableID) {
-        final String randomizedName = FileUtils
-                .randomizeFileName(humanReadableID);
+	final String randomizedName = FileUtils
+		.randomizeFileName(humanReadableID);
 
-        return prepareTempFile(randomizedName);
+	return prepareTempFile(randomizedName);
     }
 
     /**
@@ -82,20 +94,25 @@ class J2EETempFileFactory implements TemporaryFileFactory {
      *            String containing desired name of the temporary file. If the
      *            name is a file path rather than a simple name then the path
      *            will be added to the temporary file path.
+     * 
      * @return <code>File</code> instance identifying a randomly named
      *         (including a human readable ID) file in the temporary file
      *         folder.
+     * 
+     * @throws IllegalArgumentException
+     *             if <code>desiredName</code> is either <code>null</code> or an
+     *             empty string.
      */
     public File prepareTempFile(String desiredName) {
 
-        if (desiredName == null || desiredName.length() == 0) {
-            throw new IllegalArgumentException(
-                    String
-                            .format(
-                                    "The desired name of a temporary file must not be null or empty (was: '%s')",
-                                    desiredName));
-        }
+	if (desiredName == null || desiredName.length() == 0) {
+	    throw new IllegalArgumentException(
+		    String
+			    .format(
+				    "The desired name of a temporary file must not be null or empty (was: '%s')",
+				    desiredName));
+	}
 
-        return new File(tempFileDir, desiredName);
+	return new File(getTempFileDir(), desiredName);
     }
 }
