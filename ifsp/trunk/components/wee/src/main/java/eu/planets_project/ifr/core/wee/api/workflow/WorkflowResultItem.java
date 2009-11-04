@@ -18,6 +18,8 @@ public class WorkflowResultItem implements Serializable{
 	
 	public static final String GENERAL_WORKFLOW_ACTION = "general workflow action";
     public static final String SERVICE_ACTION_MIGRATION = "migration";
+    //used to indicate the final migration that produces the output object
+    public static final String SERVICE_ACTION_FINAL_MIGRATION = "migration.final";
     public static final String SERVICE_ACTION_IDENTIFICATION = "identification";
     public static final String SERVICE_ACTION_CHARACTERISATION = "characterisation";
     public static final String SERVICE_ACTION_CREATEVIEW = "create view";
@@ -30,8 +32,9 @@ public class WorkflowResultItem implements Serializable{
     //xml serialization of the digital object
     private String digoOut;
     private List<String> extractedInformation;
-    private String logInfo = "";
+    private List<String> logInfo;
     private ServiceReport serReport;
+    private String serviceEndpoint;
     //a list of the actually called serviceParameters
     private List<Parameter> serParams;
     //the inputDigitalObject reference on which the execute was called. This can be different from the digoIn.
@@ -44,6 +47,7 @@ public class WorkflowResultItem implements Serializable{
     private WorkflowResultItem(){
     	extractedInformation = new ArrayList<String>();
     	serParams = new ArrayList<Parameter>();
+    	logInfo = new ArrayList<String>();
     }
     
     /**
@@ -88,14 +92,19 @@ public class WorkflowResultItem implements Serializable{
 	
 	
 	public void setInputDigitalObject(DigitalObject inDigo){
-		this.digoIn = inDigo.toXml();
-		if(!aboutExecutionDigoDifferentThanInputDigo){
-			this.aboutExecutionDigoRef = inDigo.getPermanentUri();
+		if(inDigo!=null){
+			this.digoIn = inDigo.toXml();
+			if(!aboutExecutionDigoDifferentThanInputDigo){
+				this.aboutExecutionDigoRef = inDigo.getPermanentUri();
+			}
 		}
 	}
 	
 	public void setOutputDigitalObject(DigitalObject outDigo){
-		this.digoOut = outDigo.toXml();
+		if(outDigo!=null){
+			this.digoOut = outDigo.toXml();
+			this.addLogInfo("Successfully added OutputDigitalObject");
+		}
 	}
 	
 	public void setExtractedInformation(List<String> information){
@@ -106,11 +115,11 @@ public class WorkflowResultItem implements Serializable{
 		this.extractedInformation.add(information);
 	}
 	
-	public void setLogInfo(String logInfo){
-		this.logInfo = logInfo;
+	public void addLogInfo(String logInfo){
+		this.logInfo.add(logInfo);
 	}
 	
-	public String getLogInfo(){
+	public List<String> getLogInfo(){
 		return this.logInfo;
 	}
 
@@ -206,6 +215,14 @@ public class WorkflowResultItem implements Serializable{
 
 	public void setAboutExecutionDigoRef(URI aboutExecutionDigoRef) {
 		this.aboutExecutionDigoRef = aboutExecutionDigoRef;
+	}
+
+	public String getServiceEndpoint() {
+		return serviceEndpoint;
+	}
+
+	public void setServiceEndpoint(String serviceEndpoint) {
+		this.serviceEndpoint = serviceEndpoint;
 	}
 
 }

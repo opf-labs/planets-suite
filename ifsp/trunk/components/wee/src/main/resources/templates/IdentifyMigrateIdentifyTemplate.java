@@ -35,7 +35,7 @@ public class IdentifyMigrateIdentifyTemplate extends WorkflowTemplateHelper impl
 	/* (non-Javadoc)
 	 * @see eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate#describe()
 	 */
-	public String describe(){
+	public String describe() {
 		return "The structure of a workflow is defined within its execute method. This specific workflow"+"\n" 
 		+"1) calls a Planets identification service"+"\n"
 		+"2) uses the first returned type as input to trigger a migration from the extracted fmt and a configured (fixed) target fmt"+"\n"

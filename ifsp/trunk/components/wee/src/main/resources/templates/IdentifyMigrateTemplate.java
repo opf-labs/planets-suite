@@ -117,7 +117,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
                     WorkflowResultItem wfResultItem = new WorkflowResultItem(dgo,
                     		WorkflowResultItem.GENERAL_WORKFLOW_ACTION,
                     		System.currentTimeMillis());
-                    wfResultItem.setLogInfo(err);
+                    wfResultItem.addLogInfo(err);
                     wfResult.addWorkflowResultItem(wfResultItem);
                 }
                 count++;
@@ -218,6 +218,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         wfResultItem.setEndTime(System.currentTimeMillis());
         wfResultItem.setInputDigitalObject(digo);
         wfResultItem.setServiceParameters(parameterList);
+        wfResultItem.setServiceEndpoint(identify.describe().getEndpoint()+"");
         
         //have a look at the service's results
         ServiceReport report = results.getReport();
@@ -229,14 +230,14 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
         if (report.getType() == Type.ERROR) {
             String s = "Service execution failed: " + report.getMessage();
             log.debug(s);
-            wfResultItem.setLogInfo(s);
+            wfResultItem.addLogInfo(s);
             throw new Exception(s);
         }
 
         if (types.size() < 1) {
             String s = "The specified file type is currently not supported by this workflow";
             log.debug(s);
-            wfResultItem.setLogInfo(s);
+            wfResultItem.addLogInfo(s);
             throw new Exception(s);
         }
 
@@ -260,7 +261,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
 		//an object used to ducument the results of a service call for the WorkflowResult
 		//document the service type and start-time
 		WorkflowResultItem wfResultItem = new WorkflowResultItem(
-				WorkflowResultItem.SERVICE_ACTION_MIGRATION, System
+				WorkflowResultItem.SERVICE_ACTION_FINAL_MIGRATION, System
 						.currentTimeMillis());
 		wfresult.addWorkflowResultItem(wfResultItem);
 		
@@ -280,6 +281,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
 			if (pCompressionQuality != null) {
 				parameterList.add(pCompressionQuality);
 			}
+			wfResultItem.setServiceEndpoint(migrate.describe().getEndpoint()+"");
 			wfResultItem.setStartTime(System.currentTimeMillis());
 			wfResultItem.setInputDigitalObject(digO);
 			wfResultItem.setServiceParameters(parameterList);
@@ -292,7 +294,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
 			if (report.getType() == Type.ERROR) {
 				String s = "Service execution failed: " + report.getMessage();
 				log.debug(s);
-				wfResultItem.setLogInfo(s);
+				wfResultItem.addLogInfo(s);
 				throw new Exception(s);
 			}
 			//add report on outputDigitalObject
@@ -300,7 +302,7 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
 					.getDigitalObject());
 			return migrateResult.getDigitalObject();
 		} catch (Exception e) {
-			wfResultItem.setLogInfo("Migration failed "+e);
+			wfResultItem.addLogInfo("Migration failed "+e);
 			throw e;
 		}
     }
