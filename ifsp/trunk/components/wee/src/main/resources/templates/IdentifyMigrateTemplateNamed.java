@@ -34,7 +34,7 @@ import eu.planets_project.services.migrate.MigrateResult;
 import eu.planets_project.services.modify.Modify;
 import eu.planets_project.services.modify.ModifyResult;
 
-public class IdentifyMigrateTemplate4 extends WorkflowTemplateHelper implements WorkflowTemplate {
+public class IdentifyMigrateTemplateNamed extends WorkflowTemplateHelper implements WorkflowTemplate {
 
     private transient ReportingLog log = initLog();
     
@@ -42,7 +42,7 @@ public class IdentifyMigrateTemplate4 extends WorkflowTemplateHelper implements 
      * @return A reporting log
      */
     private ReportingLog initLog() {
-        return new ReportingLog(Logger.getLogger(IdentifyMigrateTemplate4.class));
+        return new ReportingLog(Logger.getLogger(IdentifyMigrateTemplateNamed.class));
     }
 
     /**
@@ -163,7 +163,7 @@ public class IdentifyMigrateTemplate4 extends WorkflowTemplateHelper implements 
     }
 
     public static void main(String[] args) {
-        new IdentifyMigrateTemplate4().log.debug("Stuff!");
+        new IdentifyMigrateTemplateNamed().log.debug("Stuff!");
     }
     
     public String getHostName() {
