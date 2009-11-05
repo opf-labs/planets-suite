@@ -55,7 +55,7 @@ public class TestbedManagerImpl
 	ExperimentPersistencyRemote edao;
 	
 	// The version number of the Testbed.  Can be overridden in BackendResources.properties.
-	private String tbVersion = "0.9.5";
+	private String tbVersion = "1.0.0";
 	
     // Look for the batch system... 
     TestbedBatchProcessor tbp = (TestbedBatchProcessor)JSFUtil.getManagedObject("TestbedBatchProcessor");
