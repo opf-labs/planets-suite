@@ -125,10 +125,18 @@ public class ServiceExecutionHandlerImpl implements ServiceExecutionHandler{
 				List<DigitalObject> digos = dh.convertFileRefsToURLAccessibleDigos(executable.getInputData());
 				//submit the batch process to the WEE
 				String queue_key = bp.sumitBatch(exp.getEntityID(), digos, executable.getWEEWorkflowConfig());
-				executable.setBatchExecutionIdentifier(queue_key);
-	            //executable.setExecutableInvoked(true);
-	            executable.setExecutionCompleted(false);
-	            log.info("Got key: "+queue_key);
+				if((queue_key!=null)&&(!queue_key.equals(""))){
+					executable.setBatchExecutionIdentifier(queue_key);
+					//executable.setExecutableInvoked(true);
+		            executable.setExecutionCompleted(false);
+		            log.info("Got key: "+queue_key);
+				}else{
+					//something on the batch processor went wrong....
+					//FIXME: This is not really sufficient... inform notify_failed?
+					executable.setExecutionCompleted(true);
+					executable.setExecutionSuccess(false);
+				}
+	            
 			}
 	}
 	

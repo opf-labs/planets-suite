@@ -40,6 +40,7 @@ import eu.planets_project.ifr.core.security.api.model.User;
 import eu.planets_project.ifr.core.security.api.services.UserManager;
 import eu.planets_project.ifr.core.storage.api.DigitalObjectManager.DigitalObjectNotFoundException;
 import eu.planets_project.ifr.core.wee.api.utils.WorkflowConfigUtil;
+import eu.planets_project.ifr.core.wee.api.workflow.WorkflowResult;
 import eu.planets_project.ifr.core.wee.api.workflow.WorkflowTemplate;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf;
 import eu.planets_project.ifr.core.wee.api.workflow.generated.WorkflowConf.Services;
@@ -67,7 +68,9 @@ import eu.planets_project.tb.impl.AdminManagerImpl;
 import eu.planets_project.tb.impl.data.DigitalObjectMultiManager;
 import eu.planets_project.tb.impl.data.util.DataHandlerImpl;
 import eu.planets_project.tb.impl.model.eval.MeasurementImpl;
+import eu.planets_project.tb.impl.model.exec.BatchExecutionRecordImpl;
 import eu.planets_project.tb.impl.model.exec.ExecutionRecordImpl;
+import eu.planets_project.tb.impl.serialization.JaxbUtil;
 import eu.planets_project.tb.impl.services.util.wee.WeeRemoteUtil;
 
 /**
@@ -102,6 +105,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
     private String currXMLConfigTempFileURI;
 	//Current experiment ID for checking if the reinit must be called.
 	//private String currExpId="";
+    private List<String> lTempFileDownloadLinkForWEEWFResults;
     
 	
 	public ExpTypeExecutablePP(){
@@ -138,6 +142,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 	    bWfTemplateAvailableInRegistry = false;
 	    currXMLConfigHashCode=0;
 	    currXMLConfigTempFileURI = null;
+	    lTempFileDownloadLinkForWEEWFResults = null;
 	}
 	
 	/**
@@ -1273,6 +1278,7 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
             }
             return "";
         }
+        
     }
     
     
@@ -1290,7 +1296,45 @@ public class ExpTypeExecutablePP extends ExpTypeBackingBean {
 
         // Now return the results:
         return results;
-        
     }
+    
+    /**
+     * Get download links for all BatchExecutionRecordImpl - in future we're only
+     * gonna have one batchRecord anyway.
+     * @return
+     */
+    public List<String> getTempFileDownloadLinkForWEEWFResults(){
+    	ExperimentBean expBean = (ExperimentBean)JSFUtil.getManagedObject("ExperimentBean");
+    	if(lTempFileDownloadLinkForWEEWFResults==null){
+			//init the cache variable
+    		lTempFileDownloadLinkForWEEWFResults = new ArrayList<String>();
+		}
+    	if(expBean.getExperiment()==null){
+			//this is the case when the 'new experiment' hasn't been persisted
+			return new ArrayList<String>();
+		}
+		for(BatchExecutionRecordImpl batchRec : expBean.getExperiment().getExperimentExecutable().getBatchExecutionRecords()){
+			if((batchRec.getWorkflowExecutionLog()!=null)&&(batchRec.getWorkflowExecutionLog().getSerializedWorkflowResult()!=null)){
+				//create a temp file for this.
+				DataHandler dh = new DataHandlerImpl();
+				try {
+					//get a temporary file
+					File f = dh.createTempFileInExternallyAccessableDir();
+					Writer out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(f), "UTF-8" ) );
+					out.write(batchRec.getWorkflowExecutionLog().getSerializedWorkflowResult());
+					out.close();
+					lTempFileDownloadLinkForWEEWFResults.add(""+dh.getHttpFileRef(f));
+				} catch (Exception e) {
+					log.debug("Error getting getTempFileDownloadLinkForWEEWFResults "+e);
+					return new ArrayList<String>();
+				}
+			}
+			else{
+				return new ArrayList<String>();
+			}
+		}
+		return lTempFileDownloadLinkForWEEWFResults;
+    }
+    
 
 }
