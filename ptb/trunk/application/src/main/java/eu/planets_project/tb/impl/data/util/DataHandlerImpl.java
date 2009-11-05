@@ -724,7 +724,9 @@ public class DataHandlerImpl implements DataHandler {
 	   	String authority = req.getLocalName()+":"+Integer.toString(req.getLocalPort());
 
    		//URI(scheme,authority,path,query,fragement)
-   		return new URI("http",authority,"/planets-testbed/"+tempFileInExternalDir.getName(),null,null);
+   	    URI ret = new URI("http",authority,"/planets-testbed/"+tempFileInExternalDir.getName(),null,null);
+   	    log.debug("returning httpFileRef: "+ret+" for: "+tempFileInExternalDir.getAbsolutePath());
+   	    return ret;
 	}
 
 }
