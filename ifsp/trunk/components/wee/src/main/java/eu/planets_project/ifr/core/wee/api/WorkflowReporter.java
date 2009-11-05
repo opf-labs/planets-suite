@@ -19,7 +19,7 @@ final class WorkflowReporter {
     private static final String TEMPLATE = "ReportTemplate.html";
     private static final String CONTENT_MARKER = "###CONTENT###";
     private static final String LOCAL = "components/wee/src/main/resources/";
-    private static final String WEE_DATA = "/server/default/deploy/jboss-web.deployer/ROOT.war/data/wee";
+    private static final String WEE_DATA = "/planets-ftp/gen";
     private static final String JBOSS_HOME_DIR_KEY = "jboss.home.dir";
     private static final String JBOSS_HOME = System.getProperty(JBOSS_HOME_DIR_KEY);
     private static final String ENTRY =
