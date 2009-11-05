@@ -2,6 +2,7 @@ package eu.planets_project.ifr.core.wee.api.workflow;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -221,8 +222,11 @@ public class WorkflowResultItem implements Serializable{
 		return serviceEndpoint;
 	}
 
-	public void setServiceEndpoint(String serviceEndpoint) {
-		this.serviceEndpoint = serviceEndpoint;
+	public void setServiceEndpoint(URL serviceEndpoint) {
+		if(serviceEndpoint!=null){
+			this.serviceEndpoint = serviceEndpoint.toExternalForm();
+		}
+		
 	}
 
 }

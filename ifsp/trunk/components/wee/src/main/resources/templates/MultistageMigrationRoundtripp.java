@@ -18,6 +18,10 @@ import eu.planets_project.services.migrate.MigrateResult;
 
 //TODO AL: EXTEND THIS TEMPLATE SO THAT THE XCDL FOR INPUT AND OUTPUT FILE ARE CREATED
 //TODO SS: extend compareDigoIdentical method
+/**
+ * @author <a href="mailto:andrew.lindley@ait.ac.at">Andrew Lindley</a>
+ * @since 03.11.2009
+ */
 public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implements WorkflowTemplate {
 
 	private WorkflowResult wfResult;
@@ -134,7 +138,7 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 			wfResultItem.addLogInfo("set migrate from: "+migrateFromURI);
 			
 	    	if((migrateToURI==null)&&(migrateFromURI==null)){
-	    		String err = "No parameter for: 'migrate_to/to_filetype' specified";
+	    		String err = "No parameter for: 'migrate_to/from_filetype' specified";
 	    		wfResultItem.addLogInfo(err);
 	    		throw new Exception(err);
 	    	}
@@ -143,9 +147,12 @@ public class MultistageMigrationRoundtripp extends WorkflowTemplateHelper implem
 			wfResultItem.setInputDigitalObject(digO);
 			wfResultItem.setServiceParameters(parameterList);
 			wfResultItem.setStartTime(System.currentTimeMillis());
-	        wfResultItem.setServiceEndpoint(migrationService.describe().getEndpoint().toExternalForm());
+	        wfResultItem.setServiceEndpoint(migrationService.describe().getEndpoint());
 			
 			//now call the migration
+			//Test: Maybe some services don't filter the parameter List??
+	        ////TODO AL: TEMP TESTING REMOVE LINE
+	    	parameterList.clear();
 			MigrateResult migrateResult = migrationService.migrate(digO,
 					migrateFromURI, migrateToURI, parameterList);
 			
