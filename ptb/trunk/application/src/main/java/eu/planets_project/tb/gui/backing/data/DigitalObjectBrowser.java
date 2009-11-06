@@ -41,8 +41,8 @@ public class DigitalObjectBrowser {
     /* Image thumbnail background color setting. */
     private int previewBackgroundColourIndex = 50;
     
-    // FIXME Hard-coded upper limit on automatic select-all size:
-    private static final int SELECT_ALL_MAX_SIZE = 400;
+    // Hard-coded upper limit on automatic select-all size, to avoid (near)infinite loops.
+    private static final int SELECT_ALL_MAX_SIZE = 100000;
 
     /**
      * Constructor to set up the initial tree model.
