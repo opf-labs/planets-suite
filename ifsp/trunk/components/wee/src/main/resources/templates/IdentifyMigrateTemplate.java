@@ -285,9 +285,13 @@ public class IdentifyMigrateTemplate extends WorkflowTemplateHelper implements W
 			wfResultItem.setStartTime(System.currentTimeMillis());
 			wfResultItem.setInputDigitalObject(digO);
 			wfResultItem.setServiceParameters(parameterList);
+			
+			//migrate
 			MigrateResult migrateResult = this.migrate.migrate(digO,
 					migrateFromURI, migrateToURI, parameterList);
+			
 			wfResultItem.setEndTime(System.currentTimeMillis());
+			wfResultItem.addLogInfo("migration from: "+migrateFromURI+" to: "+migrateToURI+" took place");
 			ServiceReport report = migrateResult.getReport();
 			//report service status and type
 			wfResultItem.setServiceReport(report);

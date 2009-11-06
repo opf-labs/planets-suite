@@ -24,6 +24,7 @@ public class WorkflowResultItem implements Serializable{
     public static final String SERVICE_ACTION_IDENTIFICATION = "identification";
     public static final String SERVICE_ACTION_CHARACTERISATION = "characterisation";
     public static final String SERVICE_ACTION_CREATEVIEW = "create view";
+    public static final String SERVICE_ACTION_COMPARE = "compare";
     
     private long startTime = -1;
     private long endTime = -1;
