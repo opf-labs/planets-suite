@@ -175,7 +175,7 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			throws DigitalObjectNotFoundException {
 		DigitalObject retObj = null;
         DigitalObject.Builder dob;
-	
+
 		try {
 			PDURI parsedURI = new PDURI(pdURI);
 			parsedURI.replaceDecodedPath(parsedURI.getDataRegistryPath() + FilesystemDigitalObjectManagerImpl.DO_EXTENSION);
@@ -190,7 +190,16 @@ public class FilesystemDigitalObjectManagerImpl implements DigitalObjectManager 
 			        fileData.append(buf, 0, numRead);
 			    }
 			    reader.close();
-			    dob = new DigitalObject.Builder(fileData.toString());
+			    // Add title to the dob
+      		String title = null;
+          title = fullPath;
+					if(title.contains(".") && title.contains("/")) 
+					{
+							title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
+					}
+			    FilesystemDigitalObjectManagerImpl._log.debug("Add title: " + title);
+												
+			    dob = new DigitalObject.Builder(fileData.toString()).title(title);
 			    DigitalObjectContent c = Content.byReference(dob.getContent().read());
 			    dob.content(c);
 			} else {
