@@ -186,14 +186,25 @@ public class FileSystemDataManager implements DigitalObjectManager {
 //		try {
     		log.info("retrieving: " + pdURI.toString());
     		URL dobURL = null;
+    		String title = null;
     		try {
+    			// Add title to the dob
+          title = pdURI.toString();
+					if(title.contains(".") && title.contains("/")) 
+					{
+							title = title.substring(title.lastIndexOf("/") + 1, title.lastIndexOf("."));
+					}
+			    log.info("Add title: " + title);
+					
     			dobURL = pdURI.toURL();
     		} catch (MalformedURLException e) {
     			log.error("\nSelected digital object has an invalid URL!");
     			log.error(e.getStackTrace());
     		}
     		// Create DigitalObject from file reference
-            retObj = new DigitalObject.Builder(Content.byReference(dobURL)).build();
+  		  retObj = new DigitalObject.Builder(Content.byReference(dobURL))
+                  							  .title(title)
+                  							  .build();
                         
             /* something wrong here
             BufferedReader reader = new BufferedReader(new FileReader(f));
