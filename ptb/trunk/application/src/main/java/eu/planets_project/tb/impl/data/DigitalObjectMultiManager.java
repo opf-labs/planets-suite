@@ -104,6 +104,17 @@ public class DigitalObjectMultiManager implements DigitalObjectManager {
         DataSource ds_xdom = new DataSource( xdom.list(null).get(0), xdom);
         ds_xdom.setDescription("The XCDL Corpus.");
         dss.add( ds_xdom );
+        
+        // The ONB Corpus...
+        fsname = "onb-corpus";
+        fsloc  = System.getProperty("jboss.home.dir") + System.getProperty("file.separator") + "onb-corpus" + System.getProperty("file.separator");
+        fsf = new File( fsloc );
+        if( ! fsf.exists() ) fsf.mkdirs();
+        DigitalObjectManager odom = FilesystemDigitalObjectManagerImpl.getInstance( fsname, fsf );
+        DataSource onb_dom = new DataSource( odom.list(null).get(0), odom);
+        onb_dom.setDescription("Sample files from the ONB.");
+        dss.add(  onb_dom );
+        
  /*
         // Yahoo Image Search:
         DigitalObjectManager ydom = new YahooImageAPIDigitalObjectManagerImpl();
